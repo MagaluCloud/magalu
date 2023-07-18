@@ -139,7 +139,6 @@ func getPathAction(
 		PathParams:        pathParams,
 		HeaderParams:      headerParams,
 		RequestBodyParams: requestBodyParams,
-		Request:           operation.RequestBody,
 		Security:          kinSecReqToParser(operation.Security),
 	}
 }

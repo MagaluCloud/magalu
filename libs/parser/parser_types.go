@@ -78,7 +78,6 @@ type OpenAPIAction struct {
 	PathParams        []*OpenAPIParameter
 	HeaderParams      []*OpenAPIParameter
 	RequestBodyParams []*OpenAPIParameter
-	Request           *openapi3.RequestBodyRef
 	Security          []*OpenAPISecurityRequirement
 }
 
