@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 	"net/http"
+	"log"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -194,18 +195,42 @@ func addOpenApiGroup(parentCmd *cobra.Command, kind string) {
 	})
 }
 
-func loadParametersIntoCommand(action *parser.OpenAPIAction, cmd *cobra.Command) {
-	action.PathParams, action.HeaderParam = GetParams(action.Parameters)
-	action.RequestBodyParam = GetRequestBodyParams(action)
+func addParamFlagToCommand(cmd *cobra.Command, p *parser.OpenAPIParameter) {
+	name := p.Name
 
+	switch p.Type {
+	case "boolean":
+		cmd.Flags().Bool(name, false, p.Description)
+	case "integer":
+		cmd.Flags().Int(name, 0, p.Description)
+	case "number":
+		cmd.Flags().Float64(name, 0.0, p.Description)
+	case "string":
+		cmd.Flags().String(name, "", p.Description)
+	case "array[boolean]":
+		cmd.Flags().BoolSlice(name, []bool{}, p.Description)
+	case "array[integer]":
+		cmd.Flags().IntSlice(name, []int{}, p.Description)
+	case "array[number]":
+		log.Printf("number slice not implemented for param %s", p.Name)
+	case "array[string]":
+		cmd.Flags().StringSlice(name, []string{}, p.Description)
+	}
+
+	if p.Required {
+		cmd.MarkFlagRequired(name)
+	}
+}
+
+func loadParametersIntoCommand(action *parser.OpenAPIAction, cmd *cobra.Command) {
 	for _, p := range action.PathParams {
-		AddFlag(cmd, p)
+		addParamFlagToCommand(cmd, p)
 	}
-	for _, p := range action.HeaderParam {
-		AddFlag(cmd, p)
+	for _, p := range action.HeaderParams {
+		addParamFlagToCommand(cmd, p)
 	}
-	for _, p := range action.RequestBodyParam {
-		AddFlag(cmd, p)
+	for _, p := range action.RequestBodyParams {
+		addParamFlagToCommand(cmd, p)
 	}
 }
 
@@ -231,7 +256,7 @@ func AddOpenApiActionCmd(
 			}
 
 			header := http.Header{}
-			for _, param := range action.HeaderParam {
+			for _, param := range action.HeaderParams {
 				if cmd.Flags().Changed(param.Name) {
 					value := cmd.Flags().Lookup(param.Name)
 					header.Add(param.Name, value.Value.String())

@@ -59,21 +59,20 @@ type OpenAPIModule struct {
 }
 
 type OpenAPIAction struct {
-	Name             string
-	Summary          string
-	Description      string
-	ServerURL        string
-	PathName         string
-	HttpMethod       HttpMethod
-	Tags             openapi3.Tags
-	Deprecated       bool
-	Parameters       openapi3.Parameters
-	PathParams       []*OpenAPIParameter
-	HeaderParam      []*OpenAPIParameter
-	RequestBodyParam []*OpenAPIParameter
-	Request          *openapi3.RequestBodyRef
-	Responses        openapi3.Responses
-	Security         *openapi3.SecurityRequirements
+	Name              string
+	Summary           string
+	Description       string
+	ServerURL         string
+	PathName          string
+	HttpMethod        HttpMethod
+	Tags              openapi3.Tags
+	Deprecated        bool
+	PathParams        []*OpenAPIParameter
+	HeaderParams      []*OpenAPIParameter
+	RequestBodyParams []*OpenAPIParameter
+	Request           *openapi3.RequestBodyRef
+	Responses         openapi3.Responses
+	Security          *openapi3.SecurityRequirements
 }
 
 type openAPIActionContext struct {

@@ -30,25 +30,6 @@ func (module *OpenAPIModule) ActionsByTag() map[*openapi3.Tag][]*OpenAPIAction {
 	return result
 }
 
-func JoinParameters(base openapi3.Parameters, merger openapi3.Parameters) openapi3.Parameters {
-	resultMap := make(map[string]*openapi3.ParameterRef)
-
-	for _, o := range base {
-		resultMap[o.Value.Name] = o
-	}
-
-	for _, o := range merger {
-		resultMap[o.Value.Name] = o
-	}
-
-	return functional.TransformMap(
-		resultMap,
-		func(key string, obj *openapi3.ParameterRef) *openapi3.ParameterRef {
-			return obj
-		},
-	)
-}
-
 func filterTags(tags openapi3.Tags, include []string) openapi3.Tags {
 	result := make(openapi3.Tags, 0)
 	for _, tag := range tags {
@@ -129,19 +110,25 @@ func getPathAction(
 	operation *openapi3.Operation,
 	ctx *openAPIActionContext,
 ) *OpenAPIAction {
+	allParameters := joinParameters(&ctx.Parameters, &operation.Parameters)
+	pathParams, headerParams := getParams(allParameters)
+	requestBodyParams := getRequestBodyParams(operation.RequestBody)
+
 	return &OpenAPIAction{
-		Name:        getActionName(httpMethod, pathName),
-		Summary:     operation.Summary + ctx.Summary,
-		Description: operation.Description + ctx.Description,
-		ServerURL:   getServerURL(operation.Servers) + ctx.ServerURL,
-		PathName:    pathName,
-		HttpMethod:  httpMethod,
-		Tags:        filterTags(ctx.Tags, operation.Tags),
-		Deprecated:  operation.Deprecated,
-		Parameters:  JoinParameters(ctx.Parameters, operation.Parameters),
-		Request:     operation.RequestBody,
-		Responses:   operation.Responses,
-		Security:    operation.Security,
+		Name:              getActionName(httpMethod, pathName),
+		Summary:           operation.Summary + ctx.Summary,
+		Description:       operation.Description + ctx.Description,
+		ServerURL:         getServerURL(operation.Servers) + ctx.ServerURL,
+		PathName:          pathName,
+		HttpMethod:        httpMethod,
+		Tags:              filterTags(ctx.Tags, operation.Tags),
+		Deprecated:        operation.Deprecated,
+		PathParams:        pathParams,
+		HeaderParams:      headerParams,
+		RequestBodyParams: requestBodyParams,
+		Request:           operation.RequestBody,
+		Responses:         operation.Responses,
+		Security:          operation.Security,
 	}
 }
 
