@@ -35,12 +35,12 @@ func isRequiredProperty(requriedSet []string, property string) bool {
 	return false
 }
 
-func GetParams(parameters openapi3.Parameters) ([]*parser.Param, []*parser.Param) {
-	pathParams := []*parser.Param{}
-	headerParams := []*parser.Param{}
+func GetParams(parameters openapi3.Parameters) ([]*parser.OpenAPIParameter, []*parser.OpenAPIParameter) {
+	pathParams := []*parser.OpenAPIParameter{}
+	headerParams := []*parser.OpenAPIParameter{}
 
 	for _, parameterRef := range parameters {
-		parameter := parser.Param{
+		parameter := parser.OpenAPIParameter{
 			Type:        parameterRef.Value.Schema.Value.Type,
 			Name:        parameterRef.Value.Name,
 			Required:    parameterRef.Value.Required,
@@ -59,9 +59,9 @@ func GetParams(parameters openapi3.Parameters) ([]*parser.Param, []*parser.Param
 	return pathParams, headerParams
 }
 
-func GetRequestBodyParams(action *parser.OpenAPIAction) []*parser.Param {
+func GetRequestBodyParams(action *parser.OpenAPIAction) []*parser.OpenAPIParameter {
 
-	requestBodyParams := []*parser.Param{}
+	requestBodyParams := []*parser.OpenAPIParameter{}
 
 	request := action.Request
 	if request == nil {
@@ -75,7 +75,7 @@ func GetRequestBodyParams(action *parser.OpenAPIAction) []*parser.Param {
 		property := propertyRef.Value
 
 		sanitizedName := SanitizeFlagName(property.Title)
-		parameter := parser.Param{
+		parameter := parser.OpenAPIParameter{
 			Type:        property.Type,
 			Name:        sanitizedName,
 			Required:    isRequiredProperty(requiredProperties, sanitizedName),
@@ -88,7 +88,7 @@ func GetRequestBodyParams(action *parser.OpenAPIAction) []*parser.Param {
 	return requestBodyParams
 }
 
-func AddFlag(cmd *cobra.Command, p *parser.Param) {
+func AddFlag(cmd *cobra.Command, p *parser.OpenAPIParameter) {
 	name := p.Name
 
 	switch p.Type {

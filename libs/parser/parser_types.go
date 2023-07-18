@@ -68,9 +68,9 @@ type OpenAPIAction struct {
 	Tags             openapi3.Tags
 	Deprecated       bool
 	Parameters       openapi3.Parameters
-	PathParams       []*Param
-	HeaderParam      []*Param
-	RequestBodyParam []*Param
+	PathParams       []*OpenAPIParameter
+	HeaderParam      []*OpenAPIParameter
+	RequestBodyParam []*OpenAPIParameter
 	Request          *openapi3.RequestBodyRef
 	Responses        openapi3.Responses
 	Security         *openapi3.SecurityRequirements
@@ -85,13 +85,13 @@ type OpenAPIActionContext struct {
 	SecurityRequirements openapi3.SecurityRequirements
 }
 
-type Param struct {
+type OpenAPIParameter struct {
 	Type        string
 	Name        string
 	Required    bool
 	DisplayName string
 	Description string
 	Explode     bool
-	Default     interface{}
-	Example     interface{}
+	Default     any
+	Example     any
 }

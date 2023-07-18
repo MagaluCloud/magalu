@@ -8,7 +8,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func GetRequestBody(cmd *cobra.Command, flags []*parser.Param) *strings.Reader {
+func GetRequestBody(cmd *cobra.Command, flags []*parser.OpenAPIParameter) *strings.Reader {
 	fields := []string{}
 	body := []string{}
 
