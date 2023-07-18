@@ -65,6 +65,7 @@ type OpenAPIModule struct {
 	Actions              []*OpenAPIAction
 }
 
+// TODO: Add Responses field if needed
 type OpenAPIAction struct {
 	Name              string
 	Summary           string
@@ -78,7 +79,6 @@ type OpenAPIAction struct {
 	HeaderParams      []*OpenAPIParameter
 	RequestBodyParams []*OpenAPIParameter
 	Request           *openapi3.RequestBodyRef
-	Responses         openapi3.Responses
 	Security          []*OpenAPISecurityRequirement
 }
 
