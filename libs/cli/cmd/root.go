@@ -2,14 +2,13 @@ package cmd
 
 import (
 	"fmt"
-	"net/http"
 	"log"
+	"net/http"
 	"os"
 	"path/filepath"
 	"regexp"
 	"strings"
 
-	"github.com/getkin/kin-openapi/openapi3"
 	"github.com/profusion/magalu/libs/parser"
 	"github.com/spf13/cobra"
 
@@ -127,7 +126,7 @@ func createOpenApiResourceCmdLoader(
 
 func createOpenApiActionCmdLoader(
 	module *parser.OpenAPIModule,
-	tag *openapi3.Tag,
+	tag *parser.OpenAPITag,
 ) DynamicArgLoader {
 	return createCommonDynamicArgLoader(
 		func(cmd *cobra.Command) error {
@@ -281,7 +280,7 @@ func runHelpE(cmd *cobra.Command, args []string) error {
 func AddOpenApiResourceCmd(
 	parentCmd *cobra.Command,
 	module *parser.OpenAPIModule,
-	tag *openapi3.Tag,
+	tag *parser.OpenAPITag,
 ) (*cobra.Command, DynamicArgLoader, error) {
 	resourceCmd := &cobra.Command{
 		Use:     tag.Name,

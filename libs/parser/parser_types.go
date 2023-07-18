@@ -42,9 +42,14 @@ type OpenAPIFileInfo struct {
 	Version     string
 }
 
+type OpenAPITag struct {
+	Name        string
+	Description string
+}
+
 type openAPIContext struct {
 	ServerURL            string
-	Tags                 openapi3.Tags
+	Tags                 []*OpenAPITag
 	SecurityRequirements openapi3.SecurityRequirements
 }
 
@@ -53,7 +58,7 @@ type OpenAPIModule struct {
 	Description          string
 	Version              string
 	ServerURL            string
-	Tags                 openapi3.Tags
+	Tags                 []*OpenAPITag
 	SecurityRequirements *openapi3.SecurityRequirements
 	Actions              []*OpenAPIAction
 }
@@ -65,7 +70,7 @@ type OpenAPIAction struct {
 	ServerURL         string
 	PathName          string
 	HttpMethod        HttpMethod
-	Tags              openapi3.Tags
+	Tags              []*OpenAPITag
 	Deprecated        bool
 	PathParams        []*OpenAPIParameter
 	HeaderParams      []*OpenAPIParameter
@@ -80,7 +85,7 @@ type openAPIActionContext struct {
 	Parameters           openapi3.Parameters
 	Summary              string
 	Description          string
-	Tags                 openapi3.Tags
+	Tags                 []*OpenAPITag
 	SecurityRequirements openapi3.SecurityRequirements
 }
 

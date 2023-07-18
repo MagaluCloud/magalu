@@ -12,8 +12,8 @@ import (
 	"github.com/profusion/magalu/libs/functional"
 )
 
-func (module *OpenAPIModule) ActionsByTag() map[*openapi3.Tag][]*OpenAPIAction {
-	result := make(map[*openapi3.Tag][]*OpenAPIAction)
+func (module *OpenAPIModule) ActionsByTag() map[*OpenAPITag][]*OpenAPIAction {
+	result := make(map[*OpenAPITag][]*OpenAPIAction)
 
 	for _, action := range module.Actions {
 		for _, tag := range action.Tags {
@@ -30,8 +30,8 @@ func (module *OpenAPIModule) ActionsByTag() map[*openapi3.Tag][]*OpenAPIAction {
 	return result
 }
 
-func filterTags(tags openapi3.Tags, include []string) openapi3.Tags {
-	result := make(openapi3.Tags, 0)
+func filterTags(tags []*OpenAPITag, include []string) []*OpenAPITag {
+	result := make([]*OpenAPITag, 0)
 	for _, tag := range tags {
 		if functional.Contains(include, tag.Name) {
 			result = append(result, tag)
@@ -185,17 +185,20 @@ func LoadOpenAPI(fileInfo *OpenAPIFileInfo) (*OpenAPIModule, error) {
 	/* Define BaseURL for module */
 	serverURL := getServerURL(&doc.Servers)
 
-	openAPICtx := openAPIContext{
-		ServerURL:            serverURL,
-		Tags:                 doc.Tags,
-		SecurityRequirements: doc.Security,
+	sortedTags := make([]*OpenAPITag, len(doc.Tags))
+	for i, t := range doc.Tags {
+		sortedTags[i] = &OpenAPITag{Name: t.Name, Description: t.Description}
 	}
-	actions := getAllActionsInPaths(doc.Paths, &openAPICtx)
-
-	sortedTags := doc.Tags
 	sort.Slice(sortedTags, func(i, j int) bool {
 		return sortedTags[i].Name < sortedTags[j].Name
 	})
+
+	openAPICtx := openAPIContext{
+		ServerURL:            serverURL,
+		Tags:                 sortedTags,
+		SecurityRequirements: doc.Security,
+	}
+	actions := getAllActionsInPaths(doc.Paths, &openAPICtx)
 
 	module := &OpenAPIModule{
 		Name:                 fileInfo.Name,
