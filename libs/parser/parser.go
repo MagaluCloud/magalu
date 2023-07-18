@@ -127,7 +127,7 @@ func getPathAction(
 	pathName string,
 	httpMethod HttpMethod,
 	operation *openapi3.Operation,
-	ctx OpenAPIActionContext,
+	ctx *openAPIActionContext,
 ) *OpenAPIAction {
 	return &OpenAPIAction{
 		Name:        getActionName(httpMethod, pathName),
@@ -148,9 +148,9 @@ func getPathAction(
 func getPathActions(
 	pathName string,
 	pathItem *openapi3.PathItem,
-	ctx *OpenAPIContext,
+	ctx *openAPIContext,
 ) []*OpenAPIAction {
-	actionCtx := OpenAPIActionContext{
+	actionCtx := openAPIActionContext{
 		ServerURL:            getServerURL(&pathItem.Servers) + ctx.ServerURL,
 		Parameters:           pathItem.Parameters,
 		Summary:              pathItem.Summary,
@@ -164,7 +164,7 @@ func getPathActions(
 		operation := getHttpMethodOperation(method, pathItem)
 
 		if operation != nil {
-			action := getPathAction(pathName, method, operation, actionCtx)
+			action := getPathAction(pathName, method, operation, &actionCtx)
 			result = append(result, action)
 		}
 	}
@@ -173,7 +173,7 @@ func getPathActions(
 
 func getAllActionsInPaths(
 	paths openapi3.Paths,
-	ctx *OpenAPIContext,
+	ctx *openAPIContext,
 ) []*OpenAPIAction {
 	result := make([]*OpenAPIAction, 0)
 
@@ -198,7 +198,7 @@ func LoadOpenAPI(fileInfo *OpenAPIFileInfo) (*OpenAPIModule, error) {
 	/* Define BaseURL for module */
 	serverURL := getServerURL(&doc.Servers)
 
-	openAPICtx := OpenAPIContext{
+	openAPICtx := openAPIContext{
 		ServerURL:            serverURL,
 		Tags:                 doc.Tags,
 		SecurityRequirements: doc.Security,

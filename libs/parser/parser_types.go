@@ -42,7 +42,7 @@ type OpenAPIFileInfo struct {
 	Version     string
 }
 
-type OpenAPIContext struct {
+type openAPIContext struct {
 	ServerURL            string
 	Tags                 openapi3.Tags
 	SecurityRequirements openapi3.SecurityRequirements
@@ -76,7 +76,7 @@ type OpenAPIAction struct {
 	Security         *openapi3.SecurityRequirements
 }
 
-type OpenAPIActionContext struct {
+type openAPIActionContext struct {
 	ServerURL            string
 	Parameters           openapi3.Parameters
 	Summary              string
