@@ -40,6 +40,19 @@ func filterTags(tags []*OpenAPITag, include []string) []*OpenAPITag {
 	return result
 }
 
+func kinSecReqToParser(sr *openapi3.SecurityRequirements) []*OpenAPISecurityRequirement {
+	if sr == nil || (*sr) == nil {
+		return []*OpenAPISecurityRequirement{}
+	}
+
+	result := make([]*OpenAPISecurityRequirement, len(*sr))
+	for i, o := range *sr {
+		asParserType := OpenAPISecurityRequirement(o)
+		result[i] = &asParserType
+	}
+	return result
+}
+
 func CollapsePointer[T any](optional *T, fallback *T) *T {
 	if optional != nil {
 		return optional
@@ -128,7 +141,7 @@ func getPathAction(
 		RequestBodyParams: requestBodyParams,
 		Request:           operation.RequestBody,
 		Responses:         operation.Responses,
-		Security:          operation.Security,
+		Security:          kinSecReqToParser(operation.Security),
 	}
 }
 
@@ -206,7 +219,7 @@ func LoadOpenAPI(fileInfo *OpenAPIFileInfo) (*OpenAPIModule, error) {
 		Version:              doc.OpenAPI,
 		ServerURL:            serverURL,
 		Tags:                 sortedTags,
-		SecurityRequirements: &doc.Security,
+		SecurityRequirements: kinSecReqToParser(&doc.Security),
 		Actions:              actions,
 	}
 

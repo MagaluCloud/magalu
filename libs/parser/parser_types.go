@@ -47,6 +47,8 @@ type OpenAPITag struct {
 	Description string
 }
 
+type OpenAPISecurityRequirement map[string][]string
+
 type openAPIContext struct {
 	ServerURL            string
 	Tags                 []*OpenAPITag
@@ -59,7 +61,7 @@ type OpenAPIModule struct {
 	Version              string
 	ServerURL            string
 	Tags                 []*OpenAPITag
-	SecurityRequirements *openapi3.SecurityRequirements
+	SecurityRequirements []*OpenAPISecurityRequirement
 	Actions              []*OpenAPIAction
 }
 
@@ -77,7 +79,7 @@ type OpenAPIAction struct {
 	RequestBodyParams []*OpenAPIParameter
 	Request           *openapi3.RequestBodyRef
 	Responses         openapi3.Responses
-	Security          *openapi3.SecurityRequirements
+	Security          []*OpenAPISecurityRequirement
 }
 
 type openAPIActionContext struct {
