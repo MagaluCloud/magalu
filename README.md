@@ -18,3 +18,51 @@ parsed OpenAPI spec.
 
 To run the project, the only dependency needed is [Go](https://go.dev/dl/). To
 install, visit the official link with the instructions.
+
+## Contributing
+
+### pre-commit
+
+We use [pre-commit](https://pre-commit.com/) to install git hooks and enforce
+lint, formatting, tests, commit messages and others. This tool depends on
+Python as well. On pre-commit we enforce:
+
+* On `commit-msg` for all commits:
+    * [Conventional commit](https://www.conventionalcommits.org/en/v1.0.0/) pattern
+    with [commitzen](https://github.com/commitizen/cz-cli)
+* On `pre-commit` for Go files:
+    * Complete set of [golangci-lint](https://golangci-lint.run/): `errcheck`,
+    `gosimple`, `govet`, `ineffasign`, `staticcheck`, `unused`
+
+#### Installation
+
+#### Mac
+```sh
+brew install pre-commit
+```
+
+#### pip
+
+```sh
+pip install pre-commit
+```
+
+For other types of installation, check their
+[official doc](https://pre-commit.com/#install).
+
+#### Configuration
+
+After installing, the developer must configure the git hooks inside its clone:
+
+```sh
+pre-commit install
+```
+
+### Linters
+
+We install the go linters via `pre-commit`, so it is automatically run by the
+pre-commit git hook. However, if one wants to run standalone it can be done via:
+
+```sh
+pre-commit run golangci-lint
+```
