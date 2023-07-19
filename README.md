@@ -14,10 +14,16 @@ defined in runtime based on the parsed OpenAPI spec.
 * **TF Provider**: Terraform provider plugin with its resources generated from the
 parsed OpenAPI spec.
 
+Most of our code is written in Golang, however there are some utility scripts written
+in Python as well.
+
 ## Dependencies
 
-To run the project, the only dependency needed is [Go](https://go.dev/dl/). To
+To run the project, the main dependency needed is [Go](https://go.dev/dl/). To
 install, visit the official link with the instructions.
+
+There are some utility scripts written in [Python](https://www.python.org/downloads/).
+To install, visit the official website.
 
 ## Contributing
 
@@ -33,6 +39,8 @@ Python as well. On pre-commit we enforce:
 * On `pre-commit` for Go files:
     * Complete set of [golangci-lint](https://golangci-lint.run/): `errcheck`,
     `gosimple`, `govet`, `ineffasign`, `staticcheck`, `unused`
+* On `pre-commit` for Python files:
+    * `flake8` and `black` enforcing pep code styles
 
 #### Installation
 
