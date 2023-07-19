@@ -1,0 +1,43 @@
+default_install_hook_types: [pre-commit, pre-push, commit-msg]
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+    -   id: trailing-whitespace
+        stages: [pre-commit, pre-push]
+    -   id: end-of-file-fixer
+        stages: [pre-commit, pre-push]
+        exclude: ^examples/.*schema[.](json|py)
+    -   id: check-yaml
+        stages: [pre-commit, pre-push]
+    -   id: check-added-large-files
+        stages: [pre-commit, pre-push]
+    -   id: check-shebang-scripts-are-executable
+        stages: [pre-commit, pre-push]
+    -   id: check-merge-conflict
+        stages: [pre-commit, pre-push]
+    -   id: mixed-line-ending
+        stages: [pre-commit, pre-push]
+
+-   repo: https://github.com/golangci/golangci-lint
+    rev: v1.53.3
+    hooks:
+    -   id: golangci-lint
+        stages: [pre-commit, pre-push]
+        # Need to specify manually due to this issue:
+        # https://github.com/golangci/golangci-lint/issues/2654
+        args: [./libs/functional, ./libs/cli, ./libs/parser]
+
+-   repo: https://github.com/dnephin/pre-commit-golang
+    rev: v0.5.0
+    hooks:
+    -   id: go-fmt
+        stages: [pre-commit, pre-push]
+    -   id: go-imports
+        stages: [pre-commit, pre-push]
+
+-   repo: https://github.com/commitizen-tools/commitizen
+    rev: v3.5.2
+    hooks:
+    -   id: commitizen
+        stages: [commit-msg]
