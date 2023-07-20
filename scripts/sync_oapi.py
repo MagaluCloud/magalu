@@ -78,6 +78,42 @@ def save_external(spec: OAPISchema, path: str):
         yaml.dump(spec, fd, sort_keys=False, indent=4)
 
 
+def change_error_response(spec: OAPISchema):
+    """
+    Kong modifies the error messages. Instead of the default object with details
+    key with an array of items, it simplifies the error response with an object
+    containing `message` and `slug`:
+
+    Internal Error:
+    {
+        "detail": [
+            "loc": ["string", 1]
+            "msg": "foo",
+            "type":  "bar"
+        ]
+    }
+
+    Kong Error:
+    {
+        "message": "foo",
+        "slug": "bar
+    }
+
+    This function patches any component in the schema markes as error and replace
+    with `message` and `slug` object definition
+    """
+    components_schema = spec.get("components", {}).get("schemas", {})
+    for coponent_name, schema in components_schema.items():
+        if "error" not in coponent_name.lower():
+            continue
+        schema["type"] = "object"
+        schema["properties"] = {
+            "message": {"title": "Message", "type": "string"},
+            "slug": {"title": "Slug", "type": "string"},
+        }
+        schema["example"] = {"message": "Unauthorized", "slug": "Unauthorized"}
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         prog="SyncOAPI",
@@ -120,7 +156,8 @@ if __name__ == "__main__":
     # Replace server url
     update_server_urls(external_spec)
 
-    # TODO: Replace Error Object
+    # Replace Error Object
+    change_error_response(external_spec)
 
     # Write external to file
     save_external(external_spec, args.output)
