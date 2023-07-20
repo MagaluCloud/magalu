@@ -11,7 +11,7 @@ paths:
     /v0/healthcheck:
         get:
             tags:
-                - healthchecks
+            - healthchecks
             summary: Healthcheck
             description: Check api status
             operationId: healthcheck_v0_healthcheck_get
@@ -23,12 +23,12 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/Healthcheck'
             security:
-                - OAuth2:
-                    - virtual-machine.read
+            -   OAuth2:
+                - virtual-machine.read
     /v0/images:
         get:
             tags:
-                - images
+            - images
             summary: List Images
             description: Retrive a list of images
             operationId: list_images_v0_images_get
@@ -40,11 +40,11 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/ListImageResponse'
             security:
-                - OAuth2:
-                    - virtual-machine.read
+            -   OAuth2:
+                - virtual-machine.read
         post:
             tags:
-                - images
+            - images
             summary: Create Image
             description: Creates images only in DB
             operationId: create_image_v0_images_post
@@ -68,24 +68,24 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             security:
-                - OAuth2:
-                    - virtual-machine.write
-    '/v0/images/{image_id}':
+            -   OAuth2:
+                - virtual-machine.write
+    /v0/images/{image_id}:
         delete:
             tags:
-                - images
+            - images
             summary: Delete Image
             description: Deletes images only in DB
             operationId: delete_image_v0_images__image_id__delete
             parameters:
-                -   description: image_id
-                    required: true
-                    schema:
-                        title: Image Id
-                        type: string
-                        format: uuid
-                    name: image_id
-                    in: path
+            -   description: image_id
+                required: true
+                schema:
+                    title: Image Id
+                    type: string
+                    format: uuid
+                name: image_id
+                in: path
             responses:
                 '204':
                     description: Successful Response
@@ -96,12 +96,12 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             security:
-                - OAuth2:
-                    - virtual-machine.write
+            -   OAuth2:
+                - virtual-machine.write
     /v0/instance_types:
         get:
             tags:
-                - instance-types
+            - instance-types
             summary: List Instance Types
             description: Returns a list of instance types
             operationId: list_instance_types_v0_instance_types_get
@@ -113,11 +113,11 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/InstanceTypesListResponse'
             security:
-                - OAuth2:
-                    - virtual-machine.read
+            -   OAuth2:
+                - virtual-machine.read
         post:
             tags:
-                - instance-types
+            - instance-types
             summary: Create Instance Type
             description: Creates a instance type in DB only
             operationId: create_instance_type_v0_instance_types_post
@@ -141,12 +141,12 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             security:
-                - OAuth2:
-                    - virtual-machine.write
+            -   OAuth2:
+                - virtual-machine.write
     /v0/instance_types_all:
         get:
             tags:
-                - instance-types
+            - instance-types
             summary: List Instance Types All
             description: Returns a list of all instance types
             operationId: list_instance_types_all_v0_instance_types_all_get
@@ -158,24 +158,24 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/InstanceTypeDbListResponse'
             security:
-                - OAuth2:
-                    - virtual-machine.read
-    '/v0/instance_types/{instance_type_id}':
+            -   OAuth2:
+                - virtual-machine.read
+    /v0/instance_types/{instance_type_id}:
         delete:
             tags:
-                - instance-types
+            - instance-types
             summary: Delete Instance Type
             description: Deletes a instance type in DB only
             operationId: delete_instance_type_v0_instance_types__instance_type_id__delete
             parameters:
-                -   description: instance_type_id
-                    required: true
-                    schema:
-                        title: Instance Type Id
-                        type: string
-                        format: uuid
-                    name: instance_type_id
-                    in: path
+            -   description: instance_type_id
+                required: true
+                schema:
+                    title: Instance Type Id
+                    type: string
+                    format: uuid
+                name: instance_type_id
+                in: path
             responses:
                 '204':
                     description: Successful Response
@@ -186,24 +186,24 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             security:
-                - OAuth2:
-                    - virtual-machine.write
+            -   OAuth2:
+                - virtual-machine.write
     /v0/instances:
         get:
             tags:
-                - instances
+            - instances
             summary: List Instances
             description: Returns a list of instances for a provided tenant_id
             operationId: list_instances_v0_instances_get
             parameters:
-                -   description: x-tenant-id
-                    required: true
-                    schema:
-                        title: X-Tenant-Id
-                        type: string
-                        format: uuid
-                    name: x-tenant-id
-                    in: header
+            -   description: x-tenant-id
+                required: true
+                schema:
+                    title: X-Tenant-Id
+                    type: string
+                    format: uuid
+                name: x-tenant-id
+                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -218,23 +218,23 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             security:
-                - OAuth2:
-                    - virtual-machine.read
+            -   OAuth2:
+                - virtual-machine.read
         post:
             tags:
-                - instances
+            - instances
             summary: Instance Create
             description: Create a instance asynchronously
             operationId: instance_create_v0_instances_post
             parameters:
-                -   description: x-tenant-id
-                    required: true
-                    schema:
-                        title: X-Tenant-Id
-                        type: string
-                        format: uuid
-                    name: x-tenant-id
-                    in: header
+            -   description: x-tenant-id
+                required: true
+                schema:
+                    title: X-Tenant-Id
+                    type: string
+                    format: uuid
+                name: x-tenant-id
+                in: header
             requestBody:
                 content:
                     application/json:
@@ -255,32 +255,32 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             security:
-                - OAuth2:
-                    - virtual-machine.write
-    '/v0/instances/{id}':
+            -   OAuth2:
+                - virtual-machine.write
+    /v0/instances/{id}:
         get:
             tags:
-                - instances
+            - instances
             summary: Instance Details
             description: Returns a instance details
             operationId: instance_details_v0_instances__id__get
             parameters:
-                -   description: id
-                    required: true
-                    schema:
-                        title: Id
-                        type: string
-                        format: uuid
-                    name: id
-                    in: path
-                -   description: x-tenant-id
-                    required: true
-                    schema:
-                        title: X-Tenant-Id
-                        type: string
-                        format: uuid
-                    name: x-tenant-id
-                    in: header
+            -   description: id
+                required: true
+                schema:
+                    title: Id
+                    type: string
+                    format: uuid
+                name: id
+                in: path
+            -   description: x-tenant-id
+                required: true
+                schema:
+                    title: X-Tenant-Id
+                    type: string
+                    format: uuid
+                name: x-tenant-id
+                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -295,31 +295,31 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             security:
-                - OAuth2:
-                    - virtual-machine.read
+            -   OAuth2:
+                - virtual-machine.read
         delete:
             tags:
-                - instances
+            - instances
             summary: Instance Delete
             description: Delete a instance
             operationId: instance_delete_v0_instances__id__delete
             parameters:
-                -   description: id
-                    required: true
-                    schema:
-                        title: Id
-                        type: string
-                        format: uuid
-                    name: id
-                    in: path
-                -   description: x-tenant-id
-                    required: true
-                    schema:
-                        title: X-Tenant-Id
-                        type: string
-                        format: uuid
-                    name: x-tenant-id
-                    in: header
+            -   description: id
+                required: true
+                schema:
+                    title: Id
+                    type: string
+                    format: uuid
+                name: id
+                in: path
+            -   description: x-tenant-id
+                required: true
+                schema:
+                    title: X-Tenant-Id
+                    type: string
+                    format: uuid
+                name: x-tenant-id
+                in: header
             responses:
                 '204':
                     description: Successful Response
@@ -330,31 +330,31 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             security:
-                - OAuth2:
-                    - virtual-machine.write
+            -   OAuth2:
+                - virtual-machine.write
         patch:
             tags:
-                - instances
+            - instances
             summary: Update Instance Status
             description: Update a instance
             operationId: update_instance_status_v0_instances__id__patch
             parameters:
-                -   description: id
-                    required: true
-                    schema:
-                        title: Id
-                        type: string
-                        format: uuid
-                    name: id
-                    in: path
-                -   description: x-tenant-id
-                    required: true
-                    schema:
-                        title: X-Tenant-Id
-                        type: string
-                        format: uuid
-                    name: x-tenant-id
-                    in: header
+            -   description: id
+                required: true
+                schema:
+                    title: Id
+                    type: string
+                    format: uuid
+                name: id
+                in: path
+            -   description: x-tenant-id
+                required: true
+                schema:
+                    title: X-Tenant-Id
+                    type: string
+                    format: uuid
+                name: x-tenant-id
+                in: header
             requestBody:
                 content:
                     application/json:
@@ -371,32 +371,32 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             security:
-                - OAuth2:
-                    - virtual-machine.write
-    '/v0/instances/{id}/events':
+            -   OAuth2:
+                - virtual-machine.write
+    /v0/instances/{id}/events:
         get:
             tags:
-                - instances
+            - instances
             summary: List Instance Events
             description: Returns a list for all events in a instance
             operationId: list_instance_events_v0_instances__id__events_get
             parameters:
-                -   description: id
-                    required: true
-                    schema:
-                        title: Id
-                        type: string
-                        format: uuid
-                    name: id
-                    in: path
-                -   description: x-tenant-id
-                    required: true
-                    schema:
-                        title: X-Tenant-Id
-                        type: string
-                        format: uuid
-                    name: x-tenant-id
-                    in: header
+            -   description: id
+                required: true
+                schema:
+                    title: Id
+                    type: string
+                    format: uuid
+                name: id
+                in: path
+            -   description: x-tenant-id
+                required: true
+                schema:
+                    title: X-Tenant-Id
+                    type: string
+                    format: uuid
+                name: x-tenant-id
+                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -411,40 +411,40 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             security:
-                - OAuth2:
-                    - virtual-machine.read
-    '/v0/instances/{id}/events/{event_id}':
+            -   OAuth2:
+                - virtual-machine.read
+    /v0/instances/{id}/events/{event_id}:
         get:
             tags:
-                - instances
+            - instances
             summary: Details Instance Event
             description: Returns the event details for the instance
             operationId: details_instance_event_v0_instances__id__events__event_id__get
             parameters:
-                -   description: id
-                    required: true
-                    schema:
-                        title: Id
-                        type: string
-                        format: uuid
-                    name: id
-                    in: path
-                -   description: event_id
-                    required: true
-                    schema:
-                        title: Event Id
-                        type: string
-                        format: uuid
-                    name: event_id
-                    in: path
-                -   description: x-tenant-id
-                    required: true
-                    schema:
-                        title: X-Tenant-Id
-                        type: string
-                        format: uuid
-                    name: x-tenant-id
-                    in: header
+            -   description: id
+                required: true
+                schema:
+                    title: Id
+                    type: string
+                    format: uuid
+                name: id
+                in: path
+            -   description: event_id
+                required: true
+                schema:
+                    title: Event Id
+                    type: string
+                    format: uuid
+                name: event_id
+                in: path
+            -   description: x-tenant-id
+                required: true
+                schema:
+                    title: X-Tenant-Id
+                    type: string
+                    format: uuid
+                name: x-tenant-id
+                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -459,24 +459,24 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             security:
-                - OAuth2:
-                    - virtual-machine.read
+            -   OAuth2:
+                - virtual-machine.read
     /v0/keypairs:
         get:
             tags:
-                - keypairs
+            - keypairs
             summary: List Keypairs
             description: Returns a list of keypairs from a provided tenant_id
             operationId: list_keypairs_v0_keypairs_get
             parameters:
-                -   description: x-tenant-id
-                    required: true
-                    schema:
-                        title: X-Tenant-Id
-                        type: string
-                        format: uuid
-                    name: x-tenant-id
-                    in: header
+            -   description: x-tenant-id
+                required: true
+                schema:
+                    title: X-Tenant-Id
+                    type: string
+                    format: uuid
+                name: x-tenant-id
+                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -491,23 +491,23 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             security:
-                - OAuth2:
-                    - virtual-machine.read
+            -   OAuth2:
+                - virtual-machine.read
         post:
             tags:
-                - keypairs
+            - keypairs
             summary: Create Keypair
             description: Create a keypair
             operationId: create_keypair_v0_keypairs_post
             parameters:
-                -   description: x-tenant-id
-                    required: true
-                    schema:
-                        title: X-Tenant-Id
-                        type: string
-                        format: uuid
-                    name: x-tenant-id
-                    in: header
+            -   description: x-tenant-id
+                required: true
+                schema:
+                    title: X-Tenant-Id
+                    type: string
+                    format: uuid
+                name: x-tenant-id
+                in: header
             requestBody:
                 content:
                     application/json:
@@ -528,31 +528,31 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             security:
-                - OAuth2:
-                    - virtual-machine.write
-    '/v0/keypairs/{keypair_name}':
+            -   OAuth2:
+                - virtual-machine.write
+    /v0/keypairs/{keypair_name}:
         post:
             tags:
-                - keypairs
+            - keypairs
             summary: Create Private Public Key
             description: Create a private and public key
             operationId: create_private_public_key_v0_keypairs__keypair_name__post
             parameters:
-                -   description: keypair_name
-                    required: true
-                    schema:
-                        title: Keypair Name
-                        type: string
-                    name: keypair_name
-                    in: path
-                -   description: x-tenant-id
-                    required: true
-                    schema:
-                        title: X-Tenant-Id
-                        type: string
-                        format: uuid
-                    name: x-tenant-id
-                    in: header
+            -   description: keypair_name
+                required: true
+                schema:
+                    title: Keypair Name
+                    type: string
+                name: keypair_name
+                in: path
+            -   description: x-tenant-id
+                required: true
+                schema:
+                    title: X-Tenant-Id
+                    type: string
+                    format: uuid
+                name: x-tenant-id
+                in: header
             responses:
                 '201':
                     description: Successful Response
@@ -567,30 +567,30 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             security:
-                - OAuth2:
-                    - virtual-machine.write
+            -   OAuth2:
+                - virtual-machine.write
         delete:
             tags:
-                - keypairs
+            - keypairs
             summary: Delete Keypair
             description: Delete a keypair
             operationId: delete_keypair_v0_keypairs__keypair_name__delete
             parameters:
-                -   description: keypair_name
-                    required: true
-                    schema:
-                        title: Keypair Name
-                        type: string
-                    name: keypair_name
-                    in: path
-                -   description: x-tenant-id
-                    required: true
-                    schema:
-                        title: X-Tenant-Id
-                        type: string
-                        format: uuid
-                    name: x-tenant-id
-                    in: header
+            -   description: keypair_name
+                required: true
+                schema:
+                    title: Keypair Name
+                    type: string
+                name: keypair_name
+                in: path
+            -   description: x-tenant-id
+                required: true
+                schema:
+                    title: X-Tenant-Id
+                    type: string
+                    format: uuid
+                name: x-tenant-id
+                in: header
             responses:
                 '204':
                     description: Successful Response
@@ -601,32 +601,33 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             security:
-                - OAuth2:
-                    - virtual-machine.write
+            -   OAuth2:
+                - virtual-machine.write
     /v0/usage:
         get:
             tags:
-                - usage
+            - usage
             summary: Get usage
-            description: Retrieve usage for specific quota_slug (vcpus, ram, disk & instances)
+            description: Retrieve usage for specific quota_slug (vcpus, ram, disk
+                & instances)
             operationId: get_usage_v0_usage_get
             parameters:
-                -   description: quota_slug
-                    required: false
-                    schema:
-                        title: Quota Slug
-                        type: string
-                        format: string
-                    name: quota_slug
-                    in: query
-                -   description: x-tenant-id
-                    required: true
-                    schema:
-                        title: X-Tenant-Id
-                        type: string
-                        format: uuid
-                    name: x-tenant-id
-                    in: header
+            -   description: quota_slug
+                required: false
+                schema:
+                    title: Quota Slug
+                    type: string
+                    format: string
+                name: quota_slug
+                in: query
+            -   description: x-tenant-id
+                required: true
+                schema:
+                    title: X-Tenant-Id
+                    type: string
+                    format: uuid
+                name: x-tenant-id
+                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -645,7 +646,7 @@ components:
         CreateResponse:
             title: CreateResponse
             required:
-                - id
+            - id
             type: object
             properties:
                 id:
@@ -658,15 +659,19 @@ components:
             title: HTTPValidationError
             type: object
             properties:
-                detail:
-                    title: Detail
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/ValidationError'
+                message:
+                    title: Message
+                    type: string
+                slug:
+                    title: Slug
+                    type: string
+            example:
+                message: Unauthorized
+                slug: Unauthorized
         Healthcheck:
             title: Healthcheck
             required:
-                - status
+            - status
             type: object
             properties:
                 status:
@@ -677,7 +682,7 @@ components:
         IdResponse:
             title: IdResponse
             required:
-                - id
+            - id
             type: object
             properties:
                 id:
@@ -688,7 +693,7 @@ components:
         ImageInstanceResponse:
             title: ImageInstanceResponse
             required:
-                - name
+            - name
             type: object
             properties:
                 name:
@@ -697,9 +702,9 @@ components:
         ImageRequest:
             title: ImageRequest
             required:
-                - id
-                - sku
-                - internal
+            - id
+            - sku
+            - internal
             type: object
             properties:
                 id:
@@ -719,9 +724,9 @@ components:
         ImageResponse:
             title: ImageResponse
             required:
-                - id
-                - name
-                - size
+            - id
+            - name
+            - size
             type: object
             properties:
                 id:
@@ -753,9 +758,9 @@ components:
         InstanceCreateRequest:
             title: InstanceCreateRequest
             required:
-                - name
-                - type
-                - image
+            - name
+            - type
+            - image
             type: object
             properties:
                 name:
@@ -792,15 +797,15 @@ components:
                 image: ubuntu-1234
                 availability_zone: br-regiao-1a
                 network_interfaces:
-                    - id: 76e3b8c4-407f-422b-a1e9-343a40faf1cd
+                -   id: 76e3b8c4-407f-422b-a1e9-343a40faf1cd
                 allocate_fip: true
                 user_data: some_base64_script
         InstanceEventDetailsResponse:
             title: InstanceEventDetailsResponse
             required:
-                - event
-                - event_id
-                - start_time
+            - event
+            - event_id
+            - start_time
             type: object
             properties:
                 event:
@@ -824,9 +829,9 @@ components:
         InstanceEventResponse:
             title: InstanceEventResponse
             required:
-                - event
-                - event_id
-                - start_time
+            - event
+            - event_id
+            - start_time
             type: object
             properties:
                 event:
@@ -846,7 +851,7 @@ components:
         InstancePatchRequest:
             title: InstancePatchRequest
             required:
-                - status
+            - status
             type: object
             properties:
                 status:
@@ -856,11 +861,11 @@ components:
         InstanceResponse:
             title: InstanceResponse
             required:
-                - id
-                - instance_type
-                - image
-                - status
-                - created_at
+            - id
+            - instance_type
+            - image
+            - status
+            - created_at
             type: object
             properties:
                 id:
@@ -950,38 +955,35 @@ components:
                 key_name: keypair_name_here
                 availability_zone: br-regiao-1a
                 volumes:
-                    - id: 176f2b61-306e-4d6f-977d-b9d5bf916322
+                -   id: 176f2b61-306e-4d6f-977d-b9d5bf916322
                 network_interfaces:
-                    -
-                        mac_address: 'fa:12:12:12:12:12'
-                        network:
-                            name: vpc-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx-network
-                        addresses:
-                            -
-                                ip_address: 172.0.0.1
-                                version: 4
-                                type: fixed
-                            -
-                                ip_address: 159.0.0.1
-                                version: 4
-                                type: floating
+                -   mac_address: fa:12:12:12:12:12
+                    network:
+                        name: vpc-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx-network
+                    addresses:
+                    -   ip_address: 172.0.0.1
+                        version: 4
+                        type: fixed
+                    -   ip_address: 159.0.0.1
+                        version: 4
+                        type: floating
                 security_groups:
-                    - id: 2d313622-c9cb-4454-b9bb-cdf6dfa74690
-                      name: port-name
+                -   id: 2d313622-c9cb-4454-b9bb-cdf6dfa74690
+                    name: port-name
                 ports:
-                    - id: cd8792d1-0367-4c2d-bd76-3e11cbaa8e61
+                -   id: cd8792d1-0367-4c2d-bd76-3e11cbaa8e61
                 error: some error description
         InstanceStatus:
             title: InstanceStatus
             enum:
-                - shutoff
-                - active
+            - shutoff
+            - active
             type: string
             description: An enumeration.
         InstanceTypeDbListResponse:
             title: InstanceTypeDbListResponse
             required:
-                - instance_types
+            - instance_types
             type: object
             properties:
                 instance_types:
@@ -991,17 +993,17 @@ components:
                         $ref: '#/components/schemas/InstanceTypeDbResponse'
             example:
                 instance_types:
-                    -   id: acf5fe8c-70d9-4d78-b58d-e06858a452ba
-                        name: abc.small
-                        sku: sku1234
-                        internal: false
+                -   id: acf5fe8c-70d9-4d78-b58d-e06858a452ba
+                    name: abc.small
+                    sku: sku1234
+                    internal: false
         InstanceTypeDbResponse:
             title: InstanceTypeDbResponse
             required:
-                - id
-                - name
-                - sku
-                - internal
+            - id
+            - name
+            - sku
+            - internal
             type: object
             properties:
                 id:
@@ -1025,7 +1027,7 @@ components:
         InstanceTypeForInstanceResponse:
             title: InstanceTypeForInstanceResponse
             required:
-                - name
+            - name
             type: object
             properties:
                 name:
@@ -1034,7 +1036,7 @@ components:
         InstanceTypesListResponse:
             title: InstanceTypesListResponse
             required:
-                - instance_types
+            - instance_types
             type: object
             properties:
                 instance_types:
@@ -1044,18 +1046,18 @@ components:
                         $ref: '#/components/schemas/InstanceTypesResponse'
             example:
                 instance_types:
-                    -   id: acf5fe8c-70d9-4d78-b58d-e06858a452ba
-                        name: abc.small
-                        vcpus: 2
-                        ram: 2
-                        disk: 10
-                        sku: sku1234
+                -   id: acf5fe8c-70d9-4d78-b58d-e06858a452ba
+                    name: abc.small
+                    vcpus: 2
+                    ram: 2
+                    disk: 10
+                    sku: sku1234
         InstanceTypesRequest:
             title: InstanceTypesRequest
             required:
-                - id
-                - sku
-                - internal
+            - id
+            - sku
+            - internal
             type: object
             properties:
                 id:
@@ -1075,12 +1077,12 @@ components:
         InstanceTypesResponse:
             title: InstanceTypesResponse
             required:
-                - id
-                - name
-                - vcpus
-                - ram
-                - disk
-                - sku
+            - id
+            - name
+            - vcpus
+            - ram
+            - disk
+            - sku
             type: object
             properties:
                 id:
@@ -1112,7 +1114,7 @@ components:
         InstanceVolumeResponse:
             title: InstanceVolumeResponse
             required:
-                - id
+            - id
             type: object
             properties:
                 id:
@@ -1122,9 +1124,9 @@ components:
         KeypairCreateResponse:
             title: KeypairCreateResponse
             required:
-                - name
-                - private_key
-                - public_key
+            - name
+            - private_key
+            - public_key
             type: object
             properties:
                 name:
@@ -1143,7 +1145,7 @@ components:
         KeypairRequest:
             title: KeypairRequest
             required:
-                - name
+            - name
             type: object
             properties:
                 name:
@@ -1158,8 +1160,8 @@ components:
         KeypairResponse:
             title: KeypairResponse
             required:
-                - name
-                - public_key
+            - name
+            - public_key
             type: object
             properties:
                 name:
@@ -1174,7 +1176,7 @@ components:
         KeypairsListResponse:
             title: KeypairsListResponse
             required:
-                - keypairs
+            - keypairs
             type: object
             properties:
                 keypairs:
@@ -1184,13 +1186,12 @@ components:
                         $ref: '#/components/schemas/KeypairResponse'
             example:
                 keypairs:
-                    -
-                        name: keypair_name_here
-                        public_key: some ssh public key here...
+                -   name: keypair_name_here
+                    public_key: some ssh public key here...
         ListImageResponse:
             title: ListImageResponse
             required:
-                - images
+            - images
             type: object
             properties:
                 images:
@@ -1200,16 +1201,16 @@ components:
                         $ref: '#/components/schemas/ImageResponse'
             example:
                 images:
-                    -   id: acf5fe8c-70d9-4d78-b58d-e06858a452ba
-                        name: ubuntu
-                        os_distribution: Ubuntu
-                        version: yy.zz
-                        size: 10
-                        sku: sku1234
+                -   id: acf5fe8c-70d9-4d78-b58d-e06858a452ba
+                    name: ubuntu
+                    os_distribution: Ubuntu
+                    version: yy.zz
+                    size: 10
+                    sku: sku1234
         ListInstanceEventResponse:
             title: ListInstanceEventResponse
             required:
-                - events
+            - events
             type: object
             properties:
                 events:
@@ -1219,16 +1220,16 @@ components:
                         $ref: '#/components/schemas/InstanceEventResponse'
             example:
                 events:
-                    -   event: suspend
-                        event_id: acf5fe8c-70d9-4d78-b58d-e06858a452ba
-                        start_time: '2023-01-24T18:01:01.000000'
-                    -   event: pause
-                        event_id: acf5fe8c-70d9-4d78-b58d-e06858a452ba
-                        start_time: '2023-01-24T18:01:01.000000'
+                -   event: suspend
+                    event_id: acf5fe8c-70d9-4d78-b58d-e06858a452ba
+                    start_time: '2023-01-24T18:01:01.000000'
+                -   event: pause
+                    event_id: acf5fe8c-70d9-4d78-b58d-e06858a452ba
+                    start_time: '2023-01-24T18:01:01.000000'
         ListInstanceResponse:
             title: ListInstanceResponse
             required:
-                - instances
+            - instances
             type: object
             properties:
                 instances:
@@ -1238,55 +1239,55 @@ components:
                         $ref: '#/components/schemas/InstanceResponse'
             example:
                 instances:
+                -   id: acf5fe8c-70d9-4d78-b58d-e06858a452ba
+                    instance_id: acf5fe8c-70d9-4d78-b58d-e06858a452ba
+                    name: instance name
+                    image:
+                        name: ubuntu-1234
+                    instance_type:
+                        name: abc.small
+                    vcpus: 2
+                    memory: 4
+                    root_storage: 10
+                    power_state: 1
+                    power_state_label: active
+                    status: ACTIVE
+                    created_at: '2022-06-10T18:33:12Z'
+                    updated_at: '2022-06-11T18:33:12Z'
+                    key_name: keypair_name_here
+                    availability_zone: br-regiao-1a
+                    volumes:
                     -   id: acf5fe8c-70d9-4d78-b58d-e06858a452ba
-                        instance_id: acf5fe8c-70d9-4d78-b58d-e06858a452ba
-                        name: instance name
-                        image:
-                            name: ubuntu-1234
-                        instance_type:
-                            name: abc.small
-                        vcpus: 2
-                        memory: 4
-                        root_storage: 10
-                        power_state: 1
-                        power_state_label: active
-                        status: ACTIVE
-                        created_at: '2022-06-10T18:33:12Z'
-                        updated_at: '2022-06-11T18:33:12Z'
-                        key_name: keypair_name_here
-                        availability_zone: br-regiao-1a
-                        volumes:
-                            -  id: acf5fe8c-70d9-4d78-b58d-e06858a452ba
-                        network_interfaces:
-                            -   mac_address: 'fa:12:12:12:12:12'
-                                network:
-                                    name: vpc-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx-network
-                                addresses:
-                                    -   ip_address: 172.0.0.1
-                                        version: 4
-                                        type: fixed
-                                    -   ip_address: 159.0.0.1
-                                        version: 4
-                                        type: floating
-                        security_groups:
-                            -   id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-                                name: port-name
-                        ports:
-                            -   id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-                        error: some error description
-                    -   id: acf5fe8c-70d9-4d78-b58d-e06858a452ba
-                        name: some name instance
-                        instance_type:
-                            name: cloud-bs1.xsmall
-                        image:
-                            name: cloud-ubuntu-20.04 LTS
-                        status: pending
-                        created_at: '2022-09-01 12:54:15.635186'
-                        key_name: some_keypair_name
-                        volumes: []
-                        network_interfaces: []
-                        security_groups: []
-                        ports: []
+                    network_interfaces:
+                    -   mac_address: fa:12:12:12:12:12
+                        network:
+                            name: vpc-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx-network
+                        addresses:
+                        -   ip_address: 172.0.0.1
+                            version: 4
+                            type: fixed
+                        -   ip_address: 159.0.0.1
+                            version: 4
+                            type: floating
+                    security_groups:
+                    -   id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                        name: port-name
+                    ports:
+                    -   id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                    error: some error description
+                -   id: acf5fe8c-70d9-4d78-b58d-e06858a452ba
+                    name: some name instance
+                    instance_type:
+                        name: cloud-bs1.xsmall
+                    image:
+                        name: cloud-ubuntu-20.04 LTS
+                    status: pending
+                    created_at: '2022-09-01 12:54:15.635186'
+                    key_name: some_keypair_name
+                    volumes: []
+                    network_interfaces: []
+                    security_groups: []
+                    ports: []
         NetworkAddress:
             title: NetworkAddress
             type: object
@@ -1303,7 +1304,7 @@ components:
         NetworkID:
             title: NetworkID
             required:
-                - id
+            - id
             type: object
             properties:
                 id:
@@ -1319,7 +1320,7 @@ components:
         NetworkInterface:
             title: NetworkInterface
             required:
-                - addresses
+            - addresses
             type: object
             properties:
                 mac_address:
@@ -1345,31 +1346,25 @@ components:
         ValidationError:
             title: ValidationError
             required:
-                - loc
-                - msg
-                - type
+            - loc
+            - msg
+            - type
             type: object
             properties:
-                loc:
-                    title: Location
-                    type: array
-                    items:
-                        anyOf:
-                            -
-                                type: string
-                            -
-                                type: integer
-                msg:
+                message:
                     title: Message
                     type: string
-                type:
-                    title: Error Type
+                slug:
+                    title: Slug
                     type: string
+            example:
+                message: Unauthorized
+                slug: Unauthorized
         ResourceUsage:
             title: ResourceUsage
             required:
-                - quota_slug
-                - used
+            - quota_slug
+            - used
             type: object
             properties:
                 quota_slug:
@@ -1381,7 +1376,7 @@ components:
         ListResourceUsage:
             title: ListResourceUsage
             required:
-                - results
+            - results
             type: object
             properties:
                 results:
@@ -1391,18 +1386,14 @@ components:
                         $ref: '#/components/schemas/ResourceUsage'
             example:
                 results:
-                    -
-                        quota_slug: "vcpus"
-                        used: 0
-                    -
-                        quota_slug: "disk"
-                        used: 0
-                    -
-                        quota_slug: "ram"
-                        used: 0
-                    -
-                        quota_slug: "instances"
-                        used: 0
+                -   quota_slug: vcpus
+                    used: 0
+                -   quota_slug: disk
+                    used: 0
+                -   quota_slug: ram
+                    used: 0
+                -   quota_slug: instances
+                    used: 0
     securitySchemes:
         OAuth2:
             flows:
@@ -1410,22 +1401,23 @@ components:
                     authorizationUrl: https://idp-maas-sandbox.ipet.sh/auth/realms/master/protocol/openid-connect/auth
                     tokenUrl: https://idp-maas-sandbox.ipet.sh/auth/realms/master/protocol/openid-connect/token
                     scopes:
-                        virtual-machine.read: Ler informações de recursos IaaS
-                        virtual-machine.write: Escrever informações de recursos IaaS
+                        virtual-machine.read: "Ler informa\xE7\xF5es de recursos IaaS"
+                        virtual-machine.write: "Escrever informa\xE7\xF5es de recursos\
+                            \ IaaS"
             type: oauth2
             description: OAuth2 via IDPA
 tags:
-    - name: instances
-      description: instances
-    - name: healthchecks
-      description: healthchecks
-    - name: keypairs
-      description: keypairs
-    - name: instance-types
-      description: instance types
-    - name: images
-      description: images
-    - name: usage
-      description: usage
+-   name: instances
+    description: instances
+-   name: healthchecks
+    description: healthchecks
+-   name: keypairs
+    description: keypairs
+-   name: instance-types
+    description: instance types
+-   name: images
+    description: images
+-   name: usage
+    description: usage
 servers:
-    - url: https://api-virtual-machine.br-ne-1.jaxyendy.com
+-   url: https://api-virtual-machine.br-ne-1.jaxyendy.com

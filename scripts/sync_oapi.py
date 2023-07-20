@@ -7,28 +7,26 @@ import json
 
 SERVER_URL_MAP = {
     # VM
-    "https://virtual-machine.br-ne-1.jaxyendy.com/docs": (
-        "https://api-virtual-machine.br-ne-1.jaxyendy.com/"
+    "https://virtual-machine.br-ne-1.jaxyendy.com": (
+        "https://api-virtual-machine.br-ne-1.jaxyendy.com"
     ),
     "https://virtual-machine.br-ne1-prod.jaxyendy.com": (
-        "https://api-virtual-machine.br-ne-1.jaxyendy.com/"
+        "https://api-virtual-machine.br-ne-1.jaxyendy.com"
     ),
     # Block Storage
-    "https://block-storage.br-ne-1.jaxyendy.com/docs": (
-        "https://api-block-storage.br-ne-1.jaxyendy.com/"
+    "https://block-storage.br-ne-1.jaxyendy.com": (
+        "https://api-block-storage.br-ne-1.jaxyendy.com"
     ),
     # VPC
-    "https://vpc.br-ne-1.jaxyendy.com/docs": ("https://api-vpc.br-ne-1.jaxyendy.com/"),
+    "https://vpc.br-ne-1.jaxyendy.com": ("https://api-vpc.br-ne-1.jaxyendy.com"),
     # Object Storage
-    "https://object-storage.br-ne-1.jaxyendy.com/docs": (
-        "https://api-object-storage.br-ne-1.jaxyendy.com/"
+    "https://object-storage.br-ne-1.jaxyendy.com": (
+        "https://api-object-storage.br-ne-1.jaxyendy.com"
     ),
     # DBaaS
-    "https://dbaas.br-ne-1.jaxyendy.com/docs": (
-        "https://api-dbaas.br-ne-1.jaxyendy.com/"
-    ),
+    "https://dbaas.br-ne-1.jaxyendy.com": ("https://api-dbaas.br-ne-1.jaxyendy.com"),
     # K8S
-    "https://mke.br-ne-1.jaxyendy.com/docs": ("https://api-mke.br-ne-1.jaxyendy.com/"),
+    "https://mke.br-ne-1.jaxyendy.com": ("https://api-mke.br-ne-1.jaxyendy.com"),
 }
 
 OAPISchema = Dict[str, Any]
@@ -75,7 +73,7 @@ def update_server_urls(spec: OAPISchema):
 
 def save_external(spec: OAPISchema, path: str):
     with open(path, "w") as fd:
-        yaml.dump(spec, fd, sort_keys=False, indent=4)
+        yaml.dump(spec, fd, sort_keys=False, indent=4, allow_unicode=True)
 
 
 def change_error_response(spec: OAPISchema):
@@ -140,8 +138,7 @@ if __name__ == "__main__":
         "-o",
         "--output",
         type=str,
-        default="new-ext-oapi.yaml",
-        help="Path to save the new external YAML. Defaults to 'new-ext-oapi.yaml'",
+        help="Path to save the new external YAML. Defaults to overwrite external spec",
     )
     args = parser.parse_args()
 
@@ -160,4 +157,4 @@ if __name__ == "__main__":
     change_error_response(external_spec)
 
     # Write external to file
-    save_external(external_spec, args.output)
+    save_external(external_spec, args.output or args.external_spec_path)

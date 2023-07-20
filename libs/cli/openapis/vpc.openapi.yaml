@@ -1,19 +1,19 @@
 openapi: 3.0.2
 info:
-  title: vpc-api-product
-  version: 1.59.0
-  description: APIs referentes ao produto de VPC
-  contact:
-    name: Tribo IAAS Cloud
-    url: "https://github.com/luizalabs"
-    email: thullyo.cunha@luizalabs.com
+    title: vpc-api-product
+    version: 1.59.0
+    description: APIs referentes ao produto de VPC
+    contact:
+        name: Tribo IAAS Cloud
+        url: https://github.com/luizalabs
+        email: thullyo.cunha@luizalabs.com
 servers:
-  - url: "https://vpc.br-ne-1.jaxyendy.com"
+-   url: https://api-vpc.br-ne-1.jaxyendy.com
 paths:
     /v0/healthcheck:
         get:
             tags:
-                - healthcheck
+            - healthcheck
             summary: Healthcheck
             description: Check api status
             operationId: healthcheck_v0_healthcheck_get
@@ -25,30 +25,31 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/Healthcheck'
             security:
-                - OAuth2:
-                    - network.read
+            -   OAuth2:
+                - network.read
     /v0/xaas/ports/all:
         delete:
             tags:
-                - xaas_port
+            - xaas_port
             summary: Delete Port Xaas All
-            description: Delete all ports of VPCs for a provided tenant_id of an project type
+            description: Delete all ports of VPCs for a provided tenant_id of an project
+                type
             operationId: deleteAllXaasPorts
             parameters:
-                -   description: Project Type
-                    required: true
-                    schema:
-                        $ref: '#/components/schemas/ProjectType'
-                    name: project_type
-                    in: query
-                -   description: Tenant Id
-                    required: true
-                    schema:
-                        title: X-Tenant-Id
-                        type: string
-                        format: uuid
-                    name: x-tenant-id
-                    in: header
+            -   description: Project Type
+                required: true
+                schema:
+                    $ref: '#/components/schemas/ProjectType'
+                name: project_type
+                in: query
+            -   description: Tenant Id
+                required: true
+                schema:
+                    title: X-Tenant-Id
+                    type: string
+                    format: uuid
+                name: x-tenant-id
+                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -62,36 +63,36 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
-    '/v0/xaas/vpcs/{vpc_id}/ports':
+    /v0/xaas/vpcs/{vpc_id}/ports:
         post:
             tags:
-                - xaas_port
+            - xaas_port
             summary: Create Port Xaas
             description: Create a Port on an xaas project
             operationId: createPortXaas
             parameters:
-                -   description: VPC ID
-                    required: true
-                    schema:
-                        title: Vpc_id
-                        type: string
-                        format: uuid
-                    name: vpc_id
-                    in: path
-                -   description: Project Type
-                    required: true
-                    schema:
-                        $ref: '#/components/schemas/ProjectType'
-                    name: project_type
-                    in: query
-                -   description: Tenant Id
-                    required: true
-                    schema:
-                        title: X-Tenant-Id
-                        type: string
-                        format: uuid
-                    name: x-tenant-id
-                    in: header
+            -   description: VPC ID
+                required: true
+                schema:
+                    title: Vpc_id
+                    type: string
+                    format: uuid
+                name: vpc_id
+                in: path
+            -   description: Project Type
+                required: true
+                schema:
+                    $ref: '#/components/schemas/ProjectType'
+                name: project_type
+                in: query
+            -   description: Tenant Id
+                required: true
+                schema:
+                    title: X-Tenant-Id
+                    type: string
+                    format: uuid
+                name: x-tenant-id
+                in: header
             requestBody:
                 content:
                     application/json:
@@ -111,44 +112,44 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
-    '/v0/xaas/ports/{port_id}/attach/{security_group_id}':
+    /v0/xaas/ports/{port_id}/attach/{security_group_id}:
         post:
             tags:
-                - xaas_port
+            - xaas_port
             summary: Attach XAAS Security Group
             description: XAAS Attach a Security Group to a Port
             operationId: attachXaasSecurityGroup
             parameters:
-                -   description: Port ID
-                    required: true
-                    schema:
-                        title: Port Id
-                        type: string
-                        format: uuid
-                    name: port_id
-                    in: path
-                -   description: Security Group ID
-                    required: true
-                    schema:
-                        title: Security Group Id
-                        type: string
-                        format: uuid
-                    name: security_group_id
-                    in: path
-                -   description: Project Type
-                    required: true
-                    schema:
-                        $ref: '#/components/schemas/ProjectType'
-                    name: project_type
-                    in: query
-                -   description: Tenant Id
-                    required: true
-                    schema:
-                        title: X-Tenant-Id
-                        type: string
-                        format: uuid
-                    name: x-tenant-id
-                    in: header
+            -   description: Port ID
+                required: true
+                schema:
+                    title: Port Id
+                    type: string
+                    format: uuid
+                name: port_id
+                in: path
+            -   description: Security Group ID
+                required: true
+                schema:
+                    title: Security Group Id
+                    type: string
+                    format: uuid
+                name: security_group_id
+                in: path
+            -   description: Project Type
+                required: true
+                schema:
+                    $ref: '#/components/schemas/ProjectType'
+                name: project_type
+                in: query
+            -   description: Tenant Id
+                required: true
+                schema:
+                    title: X-Tenant-Id
+                    type: string
+                    format: uuid
+                name: x-tenant-id
+                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -161,44 +162,44 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
-    '/v0/xaas/ports/{port_id}/detach/{security_group_id}':
+    /v0/xaas/ports/{port_id}/detach/{security_group_id}:
         post:
             tags:
-                - xaas_port
+            - xaas_port
             summary: Detach XAAS Security Group
             description: XAAS Detach a Security Group to a Port
             operationId: detachXaasSecurityGroup
             parameters:
-                -   description: Port ID
-                    required: true
-                    schema:
-                        title: Port Id
-                        type: string
-                        format: uuid
-                    name: port_id
-                    in: path
-                -   description: Security Group ID
-                    required: true
-                    schema:
-                        title: Security Group Id
-                        type: string
-                        format: uuid
-                    name: security_group_id
-                    in: path
-                -   description: Project Type
-                    required: true
-                    schema:
-                        $ref: '#/components/schemas/ProjectType'
-                    name: project_type
-                    in: query
-                -   description: Tenant Id
-                    required: true
-                    schema:
-                        title: X-Tenant-Id
-                        type: string
-                        format: uuid
-                    name: x-tenant-id
-                    in: header
+            -   description: Port ID
+                required: true
+                schema:
+                    title: Port Id
+                    type: string
+                    format: uuid
+                name: port_id
+                in: path
+            -   description: Security Group ID
+                required: true
+                schema:
+                    title: Security Group Id
+                    type: string
+                    format: uuid
+                name: security_group_id
+                in: path
+            -   description: Project Type
+                required: true
+                schema:
+                    $ref: '#/components/schemas/ProjectType'
+                name: project_type
+                in: query
+            -   description: Tenant Id
+                required: true
+                schema:
+                    title: X-Tenant-Id
+                    type: string
+                    format: uuid
+                name: x-tenant-id
+                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -211,36 +212,36 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
-    '/v0/xaas/ports/{port_id}':
+    /v0/xaas/ports/{port_id}:
         delete:
             tags:
-                - xaas_port
+            - xaas_port
             summary: Delete Port Xaas
             description: Delete a port from the provided tenant_id from an xaas project
             operationId: deletePortXaas
             parameters:
-                -   description: Port ID
-                    required: true
-                    schema:
-                        title: Port Id
-                        type: string
-                        format: uuid
-                    name: port_id
-                    in: path
-                -   description: Project Type
-                    required: true
-                    schema:
-                        $ref: '#/components/schemas/ProjectType'
-                    name: project_type
-                    in: query
-                -   description: Tenant Id
-                    required: true
-                    schema:
-                        title: X-Tenant-Id
-                        type: string
-                        format: uuid
-                    name: x-tenant-id
-                    in: header
+            -   description: Port ID
+                required: true
+                schema:
+                    title: Port Id
+                    type: string
+                    format: uuid
+                name: port_id
+                in: path
+            -   description: Project Type
+                required: true
+                schema:
+                    $ref: '#/components/schemas/ProjectType'
+                name: project_type
+                in: query
+            -   description: Tenant Id
+                required: true
+                schema:
+                    title: X-Tenant-Id
+                    type: string
+                    format: uuid
+                name: x-tenant-id
+                in: header
             responses:
                 '204':
                     description: Successful Response
@@ -250,30 +251,30 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
-    '/v0/vpcs/{vpc_id}/ports':
+    /v0/vpcs/{vpc_id}/ports:
         get:
             tags:
-                - port
+            - port
             summary: List Ports
             description: Returns a list of ports for a provided vpc
             operationId: listPorts
             parameters:
-                -   description: VPC ID
-                    required: true
-                    schema:
-                        title: Vpc Id
-                        type: string
-                        format: uuid
-                    name: vpc_id
-                    in: path
-                -   description: Tenant Id
-                    required: true
-                    schema:
-                        title: X-Tenant-Id
-                        type: string
-                        format: uuid
-                    name: x-tenant-id
-                    in: header
+            -   description: VPC ID
+                required: true
+                schema:
+                    title: Vpc Id
+                    type: string
+                    format: uuid
+                name: vpc_id
+                in: path
+            -   description: Tenant Id
+                required: true
+                schema:
+                    title: X-Tenant-Id
+                    type: string
+                    format: uuid
+                name: x-tenant-id
+                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -288,31 +289,31 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             security:
-                - OAuth2:
-                    - network.read
+            -   OAuth2:
+                - network.read
         post:
             tags:
-                - port
+            - port
             summary: Create Port
             description: Create a Port
             operationId: createPort
             parameters:
-                -   description: VPC ID
-                    required: true
-                    schema:
-                        title: Vpc Id
-                        type: string
-                        format: uuid
-                    name: vpc_id
-                    in: path
-                -   description: Tenant Id
-                    required: true
-                    schema:
-                        title: X-Tenant-Id
-                        type: string
-                        format: uuid
-                    name: x-tenant-id
-                    in: header
+            -   description: VPC ID
+                required: true
+                schema:
+                    title: Vpc Id
+                    type: string
+                    format: uuid
+                name: vpc_id
+                in: path
+            -   description: Tenant Id
+                required: true
+                schema:
+                    title: X-Tenant-Id
+                    type: string
+                    format: uuid
+                name: x-tenant-id
+                in: header
             requestBody:
                 content:
                     application/json:
@@ -333,32 +334,32 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             security:
-                - OAuth2:
-                    - network.write
-    '/v0/ports/{port_id}':
+            -   OAuth2:
+                - network.write
+    /v0/ports/{port_id}:
         get:
             tags:
-                - port
+            - port
             summary: Port Details
             description: Return a port details
             operationId: portDetails
             parameters:
-                -   description: Port ID
-                    required: true
-                    schema:
-                        title: Port Id
-                        type: string
-                        format: uuid
-                    name: port_id
-                    in: path
-                -   description: Tenant Id
-                    required: true
-                    schema:
-                        title: X-Tenant-Id
-                        type: string
-                        format: uuid
-                    name: x-tenant-id
-                    in: header
+            -   description: Port ID
+                required: true
+                schema:
+                    title: Port Id
+                    type: string
+                    format: uuid
+                name: port_id
+                in: path
+            -   description: Tenant Id
+                required: true
+                schema:
+                    title: X-Tenant-Id
+                    type: string
+                    format: uuid
+                name: x-tenant-id
+                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -373,31 +374,31 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             security:
-                - OAuth2:
-                    - network.read
+            -   OAuth2:
+                - network.read
         delete:
             tags:
-                - port
+            - port
             summary: Delete Port
             description: Delete a port from the provided tenant_id
             operationId: deletePort
             parameters:
-                -   description: Port ID
-                    required: true
-                    schema:
-                        title: Port Id
-                        type: string
-                        format: uuid
-                    name: port_id
-                    in: path
-                -   description: Tenant Id
-                    required: true
-                    schema:
-                        title: X-Tenant-Id
-                        type: string
-                        format: uuid
-                    name: x-tenant-id
-                    in: header
+            -   description: Port ID
+                required: true
+                schema:
+                    title: Port Id
+                    type: string
+                    format: uuid
+                name: port_id
+                in: path
+            -   description: Tenant Id
+                required: true
+                schema:
+                    title: X-Tenant-Id
+                    type: string
+                    format: uuid
+                name: x-tenant-id
+                in: header
             responses:
                 '204':
                     description: Successful Response
@@ -408,33 +409,33 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             security:
-                - OAuth2:
-                    - network.write
+            -   OAuth2:
+                - network.write
     /v0/ports:
         get:
             tags:
-                - port
+            - port
             summary: Details of a Port list
             description: Return a detailed list of ports
             operationId: portsDetailedList
             parameters:
-                -   description: Port IDs query
-                    required: false
-                    schema:
-                        title: Port Id List
-                        type: array
-                        items:
-                            type: string
-                    name: port_id_list
-                    in: query
-                -   description: Tenant Id
-                    required: true
-                    schema:
-                        title: X-Tenant-Id
+            -   description: Port IDs query
+                required: false
+                schema:
+                    title: Port Id List
+                    type: array
+                    items:
                         type: string
-                        format: uuid
-                    name: x-tenant-id
-                    in: header
+                name: port_id_list
+                in: query
+            -   description: Tenant Id
+                required: true
+                schema:
+                    title: X-Tenant-Id
+                    type: string
+                    format: uuid
+                name: x-tenant-id
+                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -452,24 +453,24 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             security:
-                - OAuth2:
-                    - network.read
+            -   OAuth2:
+                - network.read
     /v0/ports/all:
         delete:
             tags:
-                - port
+            - port
             summary: Delete Port All
             operationId: deleteAllPorts
             description: Delete all port from tenant
             parameters:
-                -   description: Tenant Id
-                    required: true
-                    schema:
-                        title: X-Tenant-Id
-                        type: string
-                        format: uuid
-                    name: x-tenant-id
-                    in: header
+            -   description: Tenant Id
+                required: true
+                schema:
+                    title: X-Tenant-Id
+                    type: string
+                    format: uuid
+                name: x-tenant-id
+                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -484,40 +485,40 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             security:
-                - OAuth2:
-                    - network.write
-    '/v0/ports/{port_id}/attach/{security_group_id}':
+            -   OAuth2:
+                - network.write
+    /v0/ports/{port_id}/attach/{security_group_id}:
         post:
             tags:
-                - port
+            - port
             summary: Attach Security Group
             description: Attach a Security Group to a Port
             operationId: attachSecurityGroup
             parameters:
-                -   description: Port ID
-                    required: true
-                    schema:
-                        title: Port Id
-                        type: string
-                        format: uuid
-                    name: port_id
-                    in: path
-                -   description: Security Group ID
-                    required: true
-                    schema:
-                        title: Security Group Id
-                        type: string
-                        format: uuid
-                    name: security_group_id
-                    in: path
-                -   description: Tenant Id
-                    required: true
-                    schema:
-                        title: X-Tenant-Id
-                        type: string
-                        format: uuid
-                    name: x-tenant-id
-                    in: header
+            -   description: Port ID
+                required: true
+                schema:
+                    title: Port Id
+                    type: string
+                    format: uuid
+                name: port_id
+                in: path
+            -   description: Security Group ID
+                required: true
+                schema:
+                    title: Security Group Id
+                    type: string
+                    format: uuid
+                name: security_group_id
+                in: path
+            -   description: Tenant Id
+                required: true
+                schema:
+                    title: X-Tenant-Id
+                    type: string
+                    format: uuid
+                name: x-tenant-id
+                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -531,40 +532,40 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             security:
-                - OAuth2:
-                    - network.write
-    '/v0/ports/{port_id}/detach/{security_group_id}':
+            -   OAuth2:
+                - network.write
+    /v0/ports/{port_id}/detach/{security_group_id}:
         post:
             tags:
-                - port
+            - port
             summary: Detach Security Group
             description: Detach a Security Group to a Port
             operationId: detachSecurityGroup
             parameters:
-                -   description: Port ID
-                    required: true
-                    schema:
-                        title: Port Id
-                        type: string
-                        format: uuid
-                    name: port_id
-                    in: path
-                -   description: Security Group ID
-                    required: true
-                    schema:
-                        title: Security Group Id
-                        type: string
-                        format: uuid
-                    name: security_group_id
-                    in: path
-                -   description: Tenant Id
-                    required: true
-                    schema:
-                        title: X-Tenant-Id
-                        type: string
-                        format: uuid
-                    name: x-tenant-id
-                    in: header
+            -   description: Port ID
+                required: true
+                schema:
+                    title: Port Id
+                    type: string
+                    format: uuid
+                name: port_id
+                in: path
+            -   description: Security Group ID
+                required: true
+                schema:
+                    title: Security Group Id
+                    type: string
+                    format: uuid
+                name: security_group_id
+                in: path
+            -   description: Tenant Id
+                required: true
+                schema:
+                    title: X-Tenant-Id
+                    type: string
+                    format: uuid
+                name: x-tenant-id
+                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -578,32 +579,32 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             security:
-                - OAuth2:
-                    - network.write
-    '/v0/vpcs/{vpc_id}/public_ips':
+            -   OAuth2:
+                - network.write
+    /v0/vpcs/{vpc_id}/public_ips:
         get:
             tags:
-                - public_ip
+            - public_ip
             summary: List Public IPs
             description: Returns a list of Public IPs for a provided vpc_id
             operationId: ListPublicIps
             parameters:
-                -   description: VPC ID
-                    required: true
-                    schema:
-                        title: Vpc Id
-                        type: string
-                        format: uuid
-                    name: vpc_id
-                    in: path
-                -   description: Tenant Id
-                    required: true
-                    schema:
-                        title: X-Tenant-Id
-                        type: string
-                        format: uuid
-                    name: x-tenant-id
-                    in: header
+            -   description: VPC ID
+                required: true
+                schema:
+                    title: Vpc Id
+                    type: string
+                    format: uuid
+                name: vpc_id
+                in: path
+            -   description: Tenant Id
+                required: true
+                schema:
+                    title: X-Tenant-Id
+                    type: string
+                    format: uuid
+                name: x-tenant-id
+                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -618,31 +619,31 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             security:
-                - OAuth2:
-                    - network.read
+            -   OAuth2:
+                - network.read
         post:
             tags:
-                - public_ip
+            - public_ip
             summary: Create Public IP
             description: Create a Public IP
             operationId: createPublicIp
             parameters:
-                -   description: VPC ID
-                    required: true
-                    schema:
-                        title: Vpc Id
-                        type: string
-                        format: uuid
-                    name: vpc_id
-                    in: path
-                -   description: Tenant Id
-                    required: true
-                    schema:
-                        title: X-Tenant-Id
-                        type: string
-                        format: uuid
-                    name: x-tenant-id
-                    in: header
+            -   description: VPC ID
+                required: true
+                schema:
+                    title: Vpc Id
+                    type: string
+                    format: uuid
+                name: vpc_id
+                in: path
+            -   description: Tenant Id
+                required: true
+                schema:
+                    title: X-Tenant-Id
+                    type: string
+                    format: uuid
+                name: x-tenant-id
+                in: header
             requestBody:
                 content:
                     application/json:
@@ -663,32 +664,32 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             security:
-                - OAuth2:
-                    - network.write
-    '/v0/public_ips/{public_ip_id}':
+            -   OAuth2:
+                - network.write
+    /v0/public_ips/{public_ip_id}:
         get:
             tags:
-                - public_ip
+            - public_ip
             summary: Public IP Details
             description: Return a Public IP details
             operationId: publicIpDetails
             parameters:
-                -   description: Public IP ID
-                    required: true
-                    schema:
-                        title: Public Ip Id
-                        type: string
-                        format: uuid
-                    name: public_ip_id
-                    in: path
-                -   description: Tenant Id
-                    required: true
-                    schema:
-                        title: X-Tenant-Id
-                        type: string
-                        format: uuid
-                    name: x-tenant-id
-                    in: header
+            -   description: Public IP ID
+                required: true
+                schema:
+                    title: Public Ip Id
+                    type: string
+                    format: uuid
+                name: public_ip_id
+                in: path
+            -   description: Tenant Id
+                required: true
+                schema:
+                    title: X-Tenant-Id
+                    type: string
+                    format: uuid
+                name: x-tenant-id
+                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -703,31 +704,31 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             security:
-                - OAuth2:
-                    - network.read
+            -   OAuth2:
+                - network.read
         delete:
             tags:
-                - public_ip
+            - public_ip
             summary: Delete Public IP
             description: Delete a Public IP from the provided tenant_id
             operationId: deletePublicIp
             parameters:
-                -   description: Public IP ID
-                    required: true
-                    schema:
-                        title: Public Ip Id
-                        type: string
-                        format: uuid
-                    name: public_ip_id
-                    in: path
-                -   description: Tenant Id
-                    required: true
-                    schema:
-                        title: X-Tenant-Id
-                        type: string
-                        format: uuid
-                    name: x-tenant-id
-                    in: header
+            -   description: Public IP ID
+                required: true
+                schema:
+                    title: Public Ip Id
+                    type: string
+                    format: uuid
+                name: public_ip_id
+                in: path
+            -   description: Tenant Id
+                required: true
+                schema:
+                    title: X-Tenant-Id
+                    type: string
+                    format: uuid
+                name: x-tenant-id
+                in: header
             responses:
                 '204':
                     description: Successful Response
@@ -738,40 +739,40 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             security:
-                - OAuth2:
-                    - network.write
-    '/v0/public_ips/{public_ip_id}/attach/{port_id}':
+            -   OAuth2:
+                - network.write
+    /v0/public_ips/{public_ip_id}/attach/{port_id}:
         post:
             tags:
-                - public_ip
+            - public_ip
             summary: Attach Public IP
             description: Attach a Public IP to a Port
             operationId: attachPublicIp
             parameters:
-                -   description: Public IP ID
-                    required: true
-                    schema:
-                        title: Public Ip Id
-                        type: string
-                        format: uuid
-                    name: public_ip_id
-                    in: path
-                -   description: Port ID
-                    required: true
-                    schema:
-                        title: Port Id
-                        type: string
-                        format: uuid
-                    name: port_id
-                    in: path
-                -   description: Tenant Id
-                    required: true
-                    schema:
-                        title: X-Tenant-Id
-                        type: string
-                        format: uuid
-                    name: x-tenant-id
-                    in: header
+            -   description: Public IP ID
+                required: true
+                schema:
+                    title: Public Ip Id
+                    type: string
+                    format: uuid
+                name: public_ip_id
+                in: path
+            -   description: Port ID
+                required: true
+                schema:
+                    title: Port Id
+                    type: string
+                    format: uuid
+                name: port_id
+                in: path
+            -   description: Tenant Id
+                required: true
+                schema:
+                    title: X-Tenant-Id
+                    type: string
+                    format: uuid
+                name: x-tenant-id
+                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -785,40 +786,40 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             security:
-                - OAuth2:
-                    - network.write
-    '/v0/public_ips/{public_ip_id}/detach/{port_id}':
+            -   OAuth2:
+                - network.write
+    /v0/public_ips/{public_ip_id}/detach/{port_id}:
         post:
             tags:
-                - public_ip
+            - public_ip
             summary: Detach Public IP
             description: Detach a Public IP to a Port
             operationId: detachPublicIp
             parameters:
-                -   description: Public IP ID
-                    required: true
-                    schema:
-                        title: Public Ip Id
-                        type: string
-                        format: uuid
-                    name: public_ip_id
-                    in: path
-                -   description: Port ID
-                    required: true
-                    schema:
-                        title: Port Id
-                        type: string
-                        format: uuid
-                    name: port_id
-                    in: path
-                -   description: Tenant Id
-                    required: true
-                    schema:
-                        title: X-Tenant-Id
-                        type: string
-                        format: uuid
-                    name: x-tenant-id
-                    in: header
+            -   description: Public IP ID
+                required: true
+                schema:
+                    title: Public Ip Id
+                    type: string
+                    format: uuid
+                name: public_ip_id
+                in: path
+            -   description: Port ID
+                required: true
+                schema:
+                    title: Port Id
+                    type: string
+                    format: uuid
+                name: port_id
+                in: path
+            -   description: Tenant Id
+                required: true
+                schema:
+                    title: X-Tenant-Id
+                    type: string
+                    format: uuid
+                name: x-tenant-id
+                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -832,24 +833,24 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             security:
-                - OAuth2:
-                    - network.write
+            -   OAuth2:
+                - network.write
     /v0/public_ips:
         get:
             tags:
-                - public_ip
-            summary: "Tenant's public IP list"
-            description: "Return a tenant's public ip list"
+            - public_ip
+            summary: Tenant's public IP list
+            description: Return a tenant's public ip list
             operationId: tenantPublicIpList
             parameters:
-                -   description: Tenant Id
-                    required: true
-                    schema:
-                        title: X-Tenant-Id
-                        type: string
-                        format: uuid
-                    name: x-tenant-id
-                    in: header
+            -   description: Tenant Id
+                required: true
+                schema:
+                    title: X-Tenant-Id
+                    type: string
+                    format: uuid
+                name: x-tenant-id
+                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -864,32 +865,32 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             security:
-                - OAuth2:
-                    - network.read
-    '/v0/security_groups/{security_group_id}/rules':
+            -   OAuth2:
+                - network.read
+    /v0/security_groups/{security_group_id}/rules:
         get:
             tags:
-                - rule
+            - rule
             summary: List Rules
             description: Returns a list of rules for a provided security_group_id
             operationId: listRules
             parameters:
-                -   description: Security Group ID
-                    required: true
-                    schema:
-                        title: Security Group Id
-                        type: string
-                        format: uuid
-                    name: security_group_id
-                    in: path
-                -   description: Tenant Id
-                    required: true
-                    schema:
-                        title: X-Tenant-Id
-                        type: string
-                        format: uuid
-                    name: x-tenant-id
-                    in: header
+            -   description: Security Group ID
+                required: true
+                schema:
+                    title: Security Group Id
+                    type: string
+                    format: uuid
+                name: security_group_id
+                in: path
+            -   description: Tenant Id
+                required: true
+                schema:
+                    title: X-Tenant-Id
+                    type: string
+                    format: uuid
+                name: x-tenant-id
+                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -904,31 +905,31 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             security:
-                - OAuth2:
-                    - network.read
+            -   OAuth2:
+                - network.read
         post:
             tags:
-                - rule
+            - rule
             summary: Create Rule
             description: Create a Rule
             operationId: createRule
             parameters:
-                -   description: Security Group ID
-                    required: true
-                    schema:
-                        title: Security Group Id
-                        type: string
-                        format: uuid
-                    name: security_group_id
-                    in: path
-                -   description: Tenant Id
-                    required: true
-                    schema:
-                        title: X-Tenant-Id
-                        type: string
-                        format: uuid
-                    name: x-tenant-id
-                    in: header
+            -   description: Security Group ID
+                required: true
+                schema:
+                    title: Security Group Id
+                    type: string
+                    format: uuid
+                name: security_group_id
+                in: path
+            -   description: Tenant Id
+                required: true
+                schema:
+                    title: X-Tenant-Id
+                    type: string
+                    format: uuid
+                name: x-tenant-id
+                in: header
             requestBody:
                 content:
                     application/json:
@@ -949,32 +950,32 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             security:
-                - OAuth2:
-                    - network.write
-    '/v0/rules/{rule_id}':
+            -   OAuth2:
+                - network.write
+    /v0/rules/{rule_id}:
         get:
             tags:
-                - rule
+            - rule
             summary: Rule Details
             description: Return a rule details
             operationId: ruleDetails
             parameters:
-                -   description: Rule ID
-                    required: true
-                    schema:
-                        title: Rule Id
-                        type: string
-                        format: uuid
-                    name: rule_id
-                    in: path
-                -   description: Tenant Id
-                    required: true
-                    schema:
-                        title: X-Tenant-Id
-                        type: string
-                        format: uuid
-                    name: x-tenant-id
-                    in: header
+            -   description: Rule ID
+                required: true
+                schema:
+                    title: Rule Id
+                    type: string
+                    format: uuid
+                name: rule_id
+                in: path
+            -   description: Tenant Id
+                required: true
+                schema:
+                    title: X-Tenant-Id
+                    type: string
+                    format: uuid
+                name: x-tenant-id
+                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -989,31 +990,31 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             security:
-                - OAuth2:
-                    - network.read
+            -   OAuth2:
+                - network.read
         delete:
             tags:
-                - rule
+            - rule
             summary: Delete a Rule
             description: Delete a rule from the provided tenant_id
             operationId: deleteRule
             parameters:
-                -   description: Rule ID
-                    required: true
-                    schema:
-                        title: Rule Id
-                        type: string
-                        format: uuid
-                    name: rule_id
-                    in: path
-                -   description: Tenant Id
-                    required: true
-                    schema:
-                        title: X-Tenant-Id
-                        type: string
-                        format: uuid
-                    name: x-tenant-id
-                    in: header
+            -   description: Rule ID
+                required: true
+                schema:
+                    title: Rule Id
+                    type: string
+                    format: uuid
+                name: rule_id
+                in: path
+            -   description: Tenant Id
+                required: true
+                schema:
+                    title: X-Tenant-Id
+                    type: string
+                    format: uuid
+                name: x-tenant-id
+                in: header
             responses:
                 '204':
                     description: Successful Response
@@ -1024,38 +1025,38 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             security:
-                - OAuth2:
-                    - network.write
-    '/v0/xaas/security_groups/{security_group_id}/rules':
+            -   OAuth2:
+                - network.write
+    /v0/xaas/security_groups/{security_group_id}/rules:
         get:
             tags:
-                - xaas_rule
+            - xaas_rule
             summary: List Rules
             description: Returns a list of rules for a provided security_group_id
             operationId: listRulesXaas
             parameters:
-                -   description: Security Group ID
-                    required: true
-                    schema:
-                        title: Security Group Id
-                        type: string
-                        format: uuid
-                    name: security_group_id
-                    in: path
-                -   description: Project Type
-                    required: true
-                    schema:
-                        $ref: '#/components/schemas/ProjectType'
-                    name: project_type
-                    in: query
-                -   description: Tenant Id
-                    required: true
-                    schema:
-                        title: X-Tenant-Id
-                        type: string
-                        format: uuid
-                    name: x-tenant-id
-                    in: header
+            -   description: Security Group ID
+                required: true
+                schema:
+                    title: Security Group Id
+                    type: string
+                    format: uuid
+                name: security_group_id
+                in: path
+            -   description: Project Type
+                required: true
+                schema:
+                    $ref: '#/components/schemas/ProjectType'
+                name: project_type
+                in: query
+            -   description: Tenant Id
+                required: true
+                schema:
+                    title: X-Tenant-Id
+                    type: string
+                    format: uuid
+                name: x-tenant-id
+                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -1071,33 +1072,33 @@ paths:
                                 $ref: '#/components/schemas/HTTPValidationError'
         post:
             tags:
-                - xaas_rule
+            - xaas_rule
             summary: Create Rule
             description: Create a Rule
             operationId: createRuleXaas
             parameters:
-                -   description: Security Group ID
-                    required: true
-                    schema:
-                        title: Security Group Id
-                        type: string
-                        format: uuid
-                    name: security_group_id
-                    in: path
-                -   description: Project Type
-                    required: true
-                    schema:
-                        $ref: '#/components/schemas/ProjectType'
-                    name: project_type
-                    in: query
-                -   description: Tenant Id
-                    required: true
-                    schema:
-                        title: X-Tenant-Id
-                        type: string
-                        format: uuid
-                    name: x-tenant-id
-                    in: header
+            -   description: Security Group ID
+                required: true
+                schema:
+                    title: Security Group Id
+                    type: string
+                    format: uuid
+                name: security_group_id
+                in: path
+            -   description: Project Type
+                required: true
+                schema:
+                    $ref: '#/components/schemas/ProjectType'
+                name: project_type
+                in: query
+            -   description: Tenant Id
+                required: true
+                schema:
+                    title: X-Tenant-Id
+                    type: string
+                    format: uuid
+                name: x-tenant-id
+                in: header
             requestBody:
                 content:
                     application/json:
@@ -1117,36 +1118,36 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
-    '/v0/xaas/rules/{rule_id}':
+    /v0/xaas/rules/{rule_id}:
         get:
             tags:
-                - xaas_rule
+            - xaas_rule
             summary: Rule Details
             description: Return a rule details
             operationId: ruleDetailsXaas
             parameters:
-                -   description: Rule ID
-                    required: true
-                    schema:
-                        title: Rule Id
-                        type: string
-                        format: uuid
-                    name: rule_id
-                    in: path
-                -   description: Project Type
-                    required: true
-                    schema:
-                        $ref: '#/components/schemas/ProjectType'
-                    name: project_type
-                    in: query
-                -   description: Tenant Id
-                    required: true
-                    schema:
-                        title: X-Tenant-Id
-                        type: string
-                        format: uuid
-                    name: x-tenant-id
-                    in: header
+            -   description: Rule ID
+                required: true
+                schema:
+                    title: Rule Id
+                    type: string
+                    format: uuid
+                name: rule_id
+                in: path
+            -   description: Project Type
+                required: true
+                schema:
+                    $ref: '#/components/schemas/ProjectType'
+                name: project_type
+                in: query
+            -   description: Tenant Id
+                required: true
+                schema:
+                    title: X-Tenant-Id
+                    type: string
+                    format: uuid
+                name: x-tenant-id
+                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -1162,33 +1163,33 @@ paths:
                                 $ref: '#/components/schemas/HTTPValidationError'
         delete:
             tags:
-                - xaas_rule
+            - xaas_rule
             summary: Delete a Rule
             description: Delete a rule from the provided tenant_id
             operationId: deleteRuleXaas
             parameters:
-                -   description: Rule ID
-                    required: true
-                    schema:
-                        title: Rule Id
-                        type: string
-                        format: uuid
-                    name: rule_id
-                    in: path
-                -   description: Project Type
-                    required: true
-                    schema:
-                        $ref: '#/components/schemas/ProjectType'
-                    name: project_type
-                    in: query
-                -   description: Tenant Id
-                    required: true
-                    schema:
-                        title: X-Tenant-Id
-                        type: string
-                        format: uuid
-                    name: x-tenant-id
-                    in: header
+            -   description: Rule ID
+                required: true
+                schema:
+                    title: Rule Id
+                    type: string
+                    format: uuid
+                name: rule_id
+                in: path
+            -   description: Project Type
+                required: true
+                schema:
+                    $ref: '#/components/schemas/ProjectType'
+                name: project_type
+                in: query
+            -   description: Tenant Id
+                required: true
+                schema:
+                    title: X-Tenant-Id
+                    type: string
+                    format: uuid
+                name: x-tenant-id
+                in: header
             responses:
                 '204':
                     description: Successful Response
@@ -1198,30 +1199,30 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
-    '/v0/vpcs/{vpc_id}/security_groups':
+    /v0/vpcs/{vpc_id}/security_groups:
         get:
             tags:
-                - security_group
+            - security_group
             summary: List Security Groups
             description: Returns a list of security groups for a provided vpc_id
             operationId: listSecurityGroup
             parameters:
-                -   description: VPC ID
-                    required: true
-                    schema:
-                        title: Vpc Id
-                        type: string
-                        format: uuid
-                    name: vpc_id
-                    in: path
-                -   description: Tenant Id
-                    required: true
-                    schema:
-                        title: X-Tenant-Id
-                        type: string
-                        format: uuid
-                    name: x-tenant-id
-                    in: header
+            -   description: VPC ID
+                required: true
+                schema:
+                    title: Vpc Id
+                    type: string
+                    format: uuid
+                name: vpc_id
+                in: path
+            -   description: Tenant Id
+                required: true
+                schema:
+                    title: X-Tenant-Id
+                    type: string
+                    format: uuid
+                name: x-tenant-id
+                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -1236,31 +1237,31 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             security:
-                - OAuth2:
-                    - network.read
+            -   OAuth2:
+                - network.read
         post:
             tags:
-                - security_group
+            - security_group
             summary: Create Security Group
             description: Create a Security Group
             operationId: createSecurityGroup
             parameters:
-                -   description: VPC ID
-                    required: true
-                    schema:
-                        title: Vpc Id
-                        type: string
-                        format: uuid
-                    name: vpc_id
-                    in: path
-                -   description: Tenant Id
-                    required: true
-                    schema:
-                        title: X-Tenant-Id
-                        type: string
-                        format: uuid
-                    name: x-tenant-id
-                    in: header
+            -   description: VPC ID
+                required: true
+                schema:
+                    title: Vpc Id
+                    type: string
+                    format: uuid
+                name: vpc_id
+                in: path
+            -   description: Tenant Id
+                required: true
+                schema:
+                    title: X-Tenant-Id
+                    type: string
+                    format: uuid
+                name: x-tenant-id
+                in: header
             requestBody:
                 content:
                     application/json:
@@ -1281,32 +1282,32 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             security:
-                - OAuth2:
-                    - network.write
-    '/v0/security_groups/{security_group_id}':
+            -   OAuth2:
+                - network.write
+    /v0/security_groups/{security_group_id}:
         get:
             tags:
-                - security_group
+            - security_group
             summary: Security Group Details
             description: Return a security group details
             operationId: securityGroupDetails
             parameters:
-                -   description: Security Group ID
-                    required: true
-                    schema:
-                        title: Security Group Id
-                        type: string
-                        format: uuid
-                    name: security_group_id
-                    in: path
-                -   description: Tenant Id
-                    required: true
-                    schema:
-                        title: X-Tenant-Id
-                        type: string
-                        format: uuid
-                    name: x-tenant-id
-                    in: header
+            -   description: Security Group ID
+                required: true
+                schema:
+                    title: Security Group Id
+                    type: string
+                    format: uuid
+                name: security_group_id
+                in: path
+            -   description: Tenant Id
+                required: true
+                schema:
+                    title: X-Tenant-Id
+                    type: string
+                    format: uuid
+                name: x-tenant-id
+                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -1321,31 +1322,31 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             security:
-                - OAuth2:
-                    - network.read
+            -   OAuth2:
+                - network.read
         delete:
             tags:
-                - security_group
+            - security_group
             summary: Delete a security group
             description: Delete a security group from the provided tenant_id
             operationId: deleteSecurityGroup
             parameters:
-                -   description: Security Group ID
-                    required: true
-                    schema:
-                        title: Security Group Id
-                        type: string
-                        format: uuid
-                    name: security_group_id
-                    in: path
-                -   description: Tenant Id
-                    required: true
-                    schema:
-                        title: X-Tenant-Id
-                        type: string
-                        format: uuid
-                    name: x-tenant-id
-                    in: header
+            -   description: Security Group ID
+                required: true
+                schema:
+                    title: Security Group Id
+                    type: string
+                    format: uuid
+                name: security_group_id
+                in: path
+            -   description: Tenant Id
+                required: true
+                schema:
+                    title: X-Tenant-Id
+                    type: string
+                    format: uuid
+                name: x-tenant-id
+                in: header
             responses:
                 '204':
                     description: Successful Response
@@ -1356,38 +1357,38 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             security:
-                - OAuth2:
-                    - network.write
-    '/v0/xaas/vpcs/{vpc_id}/security_groups':
+            -   OAuth2:
+                - network.write
+    /v0/xaas/vpcs/{vpc_id}/security_groups:
         get:
             tags:
-                - xaas_security_group
+            - xaas_security_group
             summary: List Security Groups
             description: Returns a list of security groups for a provided vpc_id
             operationId: listSecurityGroupXaas
             parameters:
-                -   description: VPC ID
-                    required: true
-                    schema:
-                        title: Vpc Id
-                        type: string
-                        format: uuid
-                    name: vpc_id
-                    in: path
-                -   description: Project Type
-                    required: true
-                    schema:
-                        $ref: '#/components/schemas/ProjectType'
-                    name: project_type
-                    in: query
-                -   description: Tenant Id
-                    required: true
-                    schema:
-                        title: X-Tenant-Id
-                        type: string
-                        format: uuid
-                    name: x-tenant-id
-                    in: header
+            -   description: VPC ID
+                required: true
+                schema:
+                    title: Vpc Id
+                    type: string
+                    format: uuid
+                name: vpc_id
+                in: path
+            -   description: Project Type
+                required: true
+                schema:
+                    $ref: '#/components/schemas/ProjectType'
+                name: project_type
+                in: query
+            -   description: Tenant Id
+                required: true
+                schema:
+                    title: X-Tenant-Id
+                    type: string
+                    format: uuid
+                name: x-tenant-id
+                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -1403,33 +1404,33 @@ paths:
                                 $ref: '#/components/schemas/HTTPValidationError'
         post:
             tags:
-                - xaas_security_group
+            - xaas_security_group
             summary: Create Security Group
             description: Create a Security Group
             operationId: createSecurityGroupXaas
             parameters:
-                -   description: VPC ID
-                    required: true
-                    schema:
-                        title: Vpc Id
-                        type: string
-                        format: uuid
-                    name: vpc_id
-                    in: path
-                -   description: Project Type
-                    required: true
-                    schema:
-                        $ref: '#/components/schemas/ProjectType'
-                    name: project_type
-                    in: query
-                -   description: Tenant Id
-                    required: true
-                    schema:
-                        title: X-Tenant-Id
-                        type: string
-                        format: uuid
-                    name: x-tenant-id
-                    in: header
+            -   description: VPC ID
+                required: true
+                schema:
+                    title: Vpc Id
+                    type: string
+                    format: uuid
+                name: vpc_id
+                in: path
+            -   description: Project Type
+                required: true
+                schema:
+                    $ref: '#/components/schemas/ProjectType'
+                name: project_type
+                in: query
+            -   description: Tenant Id
+                required: true
+                schema:
+                    title: X-Tenant-Id
+                    type: string
+                    format: uuid
+                name: x-tenant-id
+                in: header
             requestBody:
                 content:
                     application/json:
@@ -1449,36 +1450,36 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
-    '/v0/xaas/security_groups/{security_group_id}':
+    /v0/xaas/security_groups/{security_group_id}:
         get:
             tags:
-                - xaas_security_group
+            - xaas_security_group
             summary: Security Group Details
             description: Return a security group details
             operationId: securityGroupDetailsXaas
             parameters:
-                -   description: Security Group ID
-                    required: true
-                    schema:
-                        title: Security Group Id
-                        type: string
-                        format: uuid
-                    name: security_group_id
-                    in: path
-                -   description: Project Type
-                    required: true
-                    schema:
-                        $ref: '#/components/schemas/ProjectType'
-                    name: project_type
-                    in: query
-                -   description: Tenant Id
-                    required: true
-                    schema:
-                        title: X-Tenant-Id
-                        type: string
-                        format: uuid
-                    name: x-tenant-id
-                    in: header
+            -   description: Security Group ID
+                required: true
+                schema:
+                    title: Security Group Id
+                    type: string
+                    format: uuid
+                name: security_group_id
+                in: path
+            -   description: Project Type
+                required: true
+                schema:
+                    $ref: '#/components/schemas/ProjectType'
+                name: project_type
+                in: query
+            -   description: Tenant Id
+                required: true
+                schema:
+                    title: X-Tenant-Id
+                    type: string
+                    format: uuid
+                name: x-tenant-id
+                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -1494,33 +1495,33 @@ paths:
                                 $ref: '#/components/schemas/HTTPValidationError'
         delete:
             tags:
-                - xaas_security_group
+            - xaas_security_group
             summary: Delete a security group
             description: Delete a security group from the provided tenant_id
             operationId: deleteSecurityGroupXaas
             parameters:
-                -   description: Security Group ID
-                    required: true
-                    schema:
-                        title: Security Group Id
-                        type: string
-                        format: uuid
-                    name: security_group_id
-                    in: path
-                -   description: Project Type
-                    required: true
-                    schema:
-                        $ref: '#/components/schemas/ProjectType'
-                    name: project_type
-                    in: query
-                -   description: Tenant Id
-                    required: true
-                    schema:
-                        title: X-Tenant-Id
-                        type: string
-                        format: uuid
-                    name: x-tenant-id
-                    in: header
+            -   description: Security Group ID
+                required: true
+                schema:
+                    title: Security Group Id
+                    type: string
+                    format: uuid
+                name: security_group_id
+                in: path
+            -   description: Project Type
+                required: true
+                schema:
+                    $ref: '#/components/schemas/ProjectType'
+                name: project_type
+                in: query
+            -   description: Tenant Id
+                required: true
+                schema:
+                    title: X-Tenant-Id
+                    type: string
+                    format: uuid
+                name: x-tenant-id
+                in: header
             responses:
                 '204':
                     description: Successful Response
@@ -1530,36 +1531,36 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
-    '/v0/xaas/vpcs/{vpc_id}/subnetpools':
+    /v0/xaas/vpcs/{vpc_id}/subnetpools:
         get:
             tags:
-                - xaas_subnetpools
+            - xaas_subnetpools
             summary: List Subnet Pools by VPC
             description: Returns a list of subnet pools inside a specific VPC
             operationId: getSubnetPoolsByVPC
             parameters:
-                -   description: VPC ID
-                    required: true
-                    schema:
-                        title: Vpc Id
-                        type: string
-                        format: uuid
-                    name: vpc_id
-                    in: path
-                -   description: Project Type
-                    required: true
-                    schema:
-                        $ref: '#/components/schemas/ProjectType'
-                    name: project_type
-                    in: query
-                -   description: Tenant Id
-                    required: true
-                    schema:
-                        title: X-Tenant-Id
-                        type: string
-                        format: uuid
-                    name: x-tenant-id
-                    in: header
+            -   description: VPC ID
+                required: true
+                schema:
+                    title: Vpc Id
+                    type: string
+                    format: uuid
+                name: vpc_id
+                in: path
+            -   description: Project Type
+                required: true
+                schema:
+                    $ref: '#/components/schemas/ProjectType'
+                name: project_type
+                in: query
+            -   description: Tenant Id
+                required: true
+                schema:
+                    title: X-Tenant-Id
+                    type: string
+                    format: uuid
+                name: x-tenant-id
+                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -1575,33 +1576,33 @@ paths:
                                 $ref: '#/components/schemas/HTTPValidationError'
         post:
             tags:
-                - xaas_subnetpools
+            - xaas_subnetpools
             summary: Create a Subnet Pool in a VPC
             description: Create a Subnet Pool
             operationId: createSubnetPoolInVPC
             parameters:
-                -   description: VPC ID
-                    required: true
-                    schema:
-                        title: Vpc Id
-                        type: string
-                        format: uuid
-                    name: vpc_id
-                    in: path
-                -   description: Project Type
-                    required: true
-                    schema:
-                        $ref: '#/components/schemas/ProjectType'
-                    name: project_type
-                    in: query
-                -   description: Tenant Id
-                    required: true
-                    schema:
-                        title: X-Tenant-Id
-                        type: string
-                        format: uuid
-                    name: x-tenant-id
-                    in: header
+            -   description: VPC ID
+                required: true
+                schema:
+                    title: Vpc Id
+                    type: string
+                    format: uuid
+                name: vpc_id
+                in: path
+            -   description: Project Type
+                required: true
+                schema:
+                    $ref: '#/components/schemas/ProjectType'
+                name: project_type
+                in: query
+            -   description: Tenant Id
+                required: true
+                schema:
+                    title: X-Tenant-Id
+                    type: string
+                    format: uuid
+                name: x-tenant-id
+                in: header
             requestBody:
                 content:
                     application/json:
@@ -1624,25 +1625,25 @@ paths:
     /v0/xaas/subnetpools:
         get:
             tags:
-                - xaas_subnetpools
+            - xaas_subnetpools
             summary: List Subnet Pools by Tenant
-            description: "Returns a list of Subnet Pools for the current tenant's project"
+            description: Returns a list of Subnet Pools for the current tenant's project
             operationId: listSubnetPoolsByTenant
             parameters:
-                -   description: Project Type
-                    required: true
-                    schema:
-                        $ref: '#/components/schemas/ProjectType'
-                    name: project_type
-                    in: query
-                -   description: Tenant Id
-                    required: true
-                    schema:
-                        title: X-Tenant-Id
-                        type: string
-                        format: uuid
-                    name: x-tenant-id
-                    in: header
+            -   description: Project Type
+                required: true
+                schema:
+                    $ref: '#/components/schemas/ProjectType'
+                name: project_type
+                in: query
+            -   description: Tenant Id
+                required: true
+                schema:
+                    title: X-Tenant-Id
+                    type: string
+                    format: uuid
+                name: x-tenant-id
+                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -1656,36 +1657,36 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
-    '/v0/xaas/subnetpools/{subnetpool_id}':
+    /v0/xaas/subnetpools/{subnetpool_id}:
         get:
             tags:
-                - xaas_subnetpools
+            - xaas_subnetpools
             summary: Get Subnet Pool by ID
             description: Get details of a specific Subnet Pool
             operationId: getDetailedSubnetPool
             parameters:
-                -   description: Subnetpool ID
-                    required: true
-                    schema:
-                        title: Subnetpool Id
-                        type: string
-                        format: uuid
-                    name: subnetpool_id
-                    in: path
-                -   description: Project Type
-                    required: true
-                    schema:
-                        $ref: '#/components/schemas/ProjectType'
-                    name: project_type
-                    in: query
-                -   description: Tenant Id
-                    required: true
-                    schema:
-                        title: X-Tenant-Id
-                        type: string
-                        format: uuid
-                    name: x-tenant-id
-                    in: header
+            -   description: Subnetpool ID
+                required: true
+                schema:
+                    title: Subnetpool Id
+                    type: string
+                    format: uuid
+                name: subnetpool_id
+                in: path
+            -   description: Project Type
+                required: true
+                schema:
+                    $ref: '#/components/schemas/ProjectType'
+                name: project_type
+                in: query
+            -   description: Tenant Id
+                required: true
+                schema:
+                    title: X-Tenant-Id
+                    type: string
+                    format: uuid
+                name: x-tenant-id
+                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -1701,33 +1702,33 @@ paths:
                                 $ref: '#/components/schemas/HTTPValidationError'
         delete:
             tags:
-                - xaas_subnetpools
+            - xaas_subnetpools
             summary: Delete Subnet Pool by ID
             description: Delete one Subnet Pool by ID
             operationId: deleteSubnetPoolByID
             parameters:
-                -   description: Subnetpool ID
-                    required: true
-                    schema:
-                        title: Subnetpool Id
-                        type: string
-                        format: uuid
-                    name: subnetpool_id
-                    in: path
-                -   description: Project Type
-                    required: true
-                    schema:
-                        $ref: '#/components/schemas/ProjectType'
-                    name: project_type
-                    in: query
-                -   description: Tenant Id
-                    required: true
-                    schema:
-                        title: X-Tenant-Id
-                        type: string
-                        format: uuid
-                    name: x-tenant-id
-                    in: header
+            -   description: Subnetpool ID
+                required: true
+                schema:
+                    title: Subnetpool Id
+                    type: string
+                    format: uuid
+                name: subnetpool_id
+                in: path
+            -   description: Project Type
+                required: true
+                schema:
+                    $ref: '#/components/schemas/ProjectType'
+                name: project_type
+                in: query
+            -   description: Tenant Id
+                required: true
+                schema:
+                    title: X-Tenant-Id
+                    type: string
+                    format: uuid
+                name: x-tenant-id
+                in: header
             responses:
                 '204':
                     description: Successful Response
@@ -1737,30 +1738,30 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
-    '/v0/vpcs/{vpc_id}/subnets':
+    /v0/vpcs/{vpc_id}/subnets:
         get:
             tags:
-                - subnets
+            - subnets
             summary: List Subnets
             description: Returns a list of subnets for a provided vpc_id
             operationId: listSubnets
             parameters:
-                -   description: VPC ID
-                    required: true
-                    schema:
-                        title: Vpc Id
-                        type: string
-                        format: uuid
-                    name: vpc_id
-                    in: path
-                -   description: Tenant Id
-                    required: true
-                    schema:
-                        title: X-Tenant-Id
-                        type: string
-                        format: uuid
-                    name: x-tenant-id
-                    in: header
+            -   description: VPC ID
+                required: true
+                schema:
+                    title: Vpc Id
+                    type: string
+                    format: uuid
+                name: vpc_id
+                in: path
+            -   description: Tenant Id
+                required: true
+                schema:
+                    title: X-Tenant-Id
+                    type: string
+                    format: uuid
+                name: x-tenant-id
+                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -1775,31 +1776,31 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             security:
-                - OAuth2:
-                    - network.read
+            -   OAuth2:
+                - network.read
         post:
             tags:
-                - subnets
+            - subnets
             summary: Create Subnet
             description: Create a Subnet
             operationId: createSubnet
             parameters:
-                -   description: VPC ID
-                    required: true
-                    schema:
-                        title: Vpc Id
-                        type: string
-                        format: uuid
-                    name: vpc_id
-                    in: path
-                -   description: Tenant Id
-                    required: true
-                    schema:
-                        title: X-Tenant-Id
-                        type: string
-                        format: uuid
-                    name: x-tenant-id
-                    in: header
+            -   description: VPC ID
+                required: true
+                schema:
+                    title: Vpc Id
+                    type: string
+                    format: uuid
+                name: vpc_id
+                in: path
+            -   description: Tenant Id
+                required: true
+                schema:
+                    title: X-Tenant-Id
+                    type: string
+                    format: uuid
+                name: x-tenant-id
+                in: header
             requestBody:
                 content:
                     application/json:
@@ -1820,38 +1821,38 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             security:
-                - OAuth2:
-                    - network.write
-    '/v0/xaas/vpcs/{vpc_id}/subnets':
+            -   OAuth2:
+                - network.write
+    /v0/xaas/vpcs/{vpc_id}/subnets:
         get:
             tags:
-                - xaas_subnets
+            - xaas_subnets
             summary: List XAAS Subnets
             description: Returns a list of XAAS subnets from the provided vpc_id
             operationId: listXAASSubnets
             parameters:
-                -   description: VPC ID
-                    required: true
-                    schema:
-                        title: Vpc Id
-                        type: string
-                        format: uuid
-                    name: vpc_id
-                    in: path
-                -   description: Project Type
-                    required: true
-                    schema:
-                        $ref: '#/components/schemas/ProjectType'
-                    name: project_type
-                    in: query
-                -   description: Tenant Id
-                    required: true
-                    schema:
-                        title: X-Tenant-Id
-                        type: string
-                        format: uuid
-                    name: x-tenant-id
-                    in: header
+            -   description: VPC ID
+                required: true
+                schema:
+                    title: Vpc Id
+                    type: string
+                    format: uuid
+                name: vpc_id
+                in: path
+            -   description: Project Type
+                required: true
+                schema:
+                    $ref: '#/components/schemas/ProjectType'
+                name: project_type
+                in: query
+            -   description: Tenant Id
+                required: true
+                schema:
+                    title: X-Tenant-Id
+                    type: string
+                    format: uuid
+                name: x-tenant-id
+                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -1865,30 +1866,30 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
-    '/v0/subnets/{subnet_id}':
+    /v0/subnets/{subnet_id}:
         get:
             tags:
-                - subnets
+            - subnets
             summary: Subnet Details
             description: Returns a subnet details
             operationId: subnetDetails
             parameters:
-                -   description: Subnet ID
-                    required: true
-                    schema:
-                        title: Subnet Id
-                        type: string
-                        format: uuid
-                    name: subnet_id
-                    in: path
-                -   description: Tenant Id
-                    required: true
-                    schema:
-                        title: X-Tenant-Id
-                        type: string
-                        format: uuid
-                    name: x-tenant-id
-                    in: header
+            -   description: Subnet ID
+                required: true
+                schema:
+                    title: Subnet Id
+                    type: string
+                    format: uuid
+                name: subnet_id
+                in: path
+            -   description: Tenant Id
+                required: true
+                schema:
+                    title: X-Tenant-Id
+                    type: string
+                    format: uuid
+                name: x-tenant-id
+                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -1903,31 +1904,31 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             security:
-                    - OAuth2:
-                        - network.read
+            -   OAuth2:
+                - network.read
         delete:
             tags:
-                - subnets
+            - subnets
             summary: Delete a Subnet
             description: Delete a subnet from the provided tenant_id
             operationId: deleteSubnet
             parameters:
-                -   description: Subnet ID
-                    required: true
-                    schema:
-                        title: Subnet Id
-                        type: string
-                        format: uuid
-                    name: subnet_id
-                    in: path
-                -   description: Tenant Id
-                    required: true
-                    schema:
-                        title: X-Tenant-Id
-                        type: string
-                        format: uuid
-                    name: x-tenant-id
-                    in: header
+            -   description: Subnet ID
+                required: true
+                schema:
+                    title: Subnet Id
+                    type: string
+                    format: uuid
+                name: subnet_id
+                in: path
+            -   description: Tenant Id
+                required: true
+                schema:
+                    title: X-Tenant-Id
+                    type: string
+                    format: uuid
+                name: x-tenant-id
+                in: header
             responses:
                 '204':
                     description: Successful Response
@@ -1938,24 +1939,24 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             security:
-                - OAuth2:
-                    - network.write
+            -   OAuth2:
+                - network.write
     /v0/vpcs/default:
         post:
             tags:
-                - vpc
+            - vpc
             summary: Create Vpc Default
             operationId: create_vpc_default_v0_vpcs_default_post
             description: Create a default vpc
             parameters:
-                -   description: Tenant Id
-                    required: true
-                    schema:
-                        title: X-Tenant-Id
-                        type: string
-                        format: uuid
-                    name: x-tenant-id
-                    in: header
+            -   description: Tenant Id
+                required: true
+                schema:
+                    title: X-Tenant-Id
+                    type: string
+                    format: uuid
+                name: x-tenant-id
+                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -1972,19 +1973,19 @@ paths:
     /v0/vpcs:
         get:
             tags:
-                - vpc
+            - vpc
             summary: List VPC
             description: Returns a list of VPCs for a provided tenant_id
             operationId: listVpcs
             parameters:
-                -   description: Tenant Id
-                    required: true
-                    schema:
-                        title: X-Tenant-Id
-                        type: string
-                        format: uuid
-                    name: x-tenant-id
-                    in: header
+            -   description: Tenant Id
+                required: true
+                schema:
+                    title: X-Tenant-Id
+                    type: string
+                    format: uuid
+                name: x-tenant-id
+                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -1999,24 +2000,24 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             security:
-                - OAuth2:
-                    - network.read
-                - MGCApiKey: []
+            -   OAuth2:
+                - network.read
+            -   MGCApiKey: []
         post:
             tags:
-                - vpc
+            - vpc
             summary: Create VPC
             description: Create a VPC
             operationId: createVpc
             parameters:
-                -   description: Tenant Id
-                    required: true
-                    schema:
-                        title: X-Tenant-Id
-                        type: string
-                        format: uuid
-                    name: x-tenant-id
-                    in: header
+            -   description: Tenant Id
+                required: true
+                schema:
+                    title: X-Tenant-Id
+                    type: string
+                    format: uuid
+                name: x-tenant-id
+                in: header
             requestBody:
                 content:
                     application/json:
@@ -2037,32 +2038,32 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             security:
-                - OAuth2:
-                    - network.write
-    '/v0/vpcs/{vpc_id}':
+            -   OAuth2:
+                - network.write
+    /v0/vpcs/{vpc_id}:
         get:
             tags:
-                - vpc
+            - vpc
             summary: VPC Details
             description: Return a VPC details
             operationId: vpcDetails
             parameters:
-                -   description: VPC ID
-                    required: true
-                    schema:
-                        title: Vpc Id
-                        type: string
-                        format: uuid
-                    name: vpc_id
-                    in: path
-                -   description: Tenant Id
-                    required: true
-                    schema:
-                        title: X-Tenant-Id
-                        type: string
-                        format: uuid
-                    name: x-tenant-id
-                    in: header
+            -   description: VPC ID
+                required: true
+                schema:
+                    title: Vpc Id
+                    type: string
+                    format: uuid
+                name: vpc_id
+                in: path
+            -   description: Tenant Id
+                required: true
+                schema:
+                    title: X-Tenant-Id
+                    type: string
+                    format: uuid
+                name: x-tenant-id
+                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -2077,31 +2078,31 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             security:
-                - OAuth2:
-                    - network.read
+            -   OAuth2:
+                - network.read
         delete:
             tags:
-                - vpc
+            - vpc
             summary: Delete VPC
             description: Delete a VPC from the provided tenant_id
             operationId: deleteVpc
             parameters:
-                -   description: VPC ID
-                    required: true
-                    schema:
-                        title: Vpc Id
-                        type: string
-                        format: uuid
-                    name: vpc_id
-                    in: path
-                -   description: Tenant Id
-                    required: true
-                    schema:
-                        title: X-Tenant-Id
-                        type: string
-                        format: uuid
-                    name: x-tenant-id
-                    in: header
+            -   description: VPC ID
+                required: true
+                schema:
+                    title: Vpc Id
+                    type: string
+                    format: uuid
+                name: vpc_id
+                in: path
+            -   description: Tenant Id
+                required: true
+                schema:
+                    title: X-Tenant-Id
+                    type: string
+                    format: uuid
+                name: x-tenant-id
+                in: header
             responses:
                 '204':
                     description: Successful Response
@@ -2112,23 +2113,23 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             security:
-                - OAuth2:
-                    - network.write
+            -   OAuth2:
+                - network.write
     /v0/vpcs/all:
         delete:
             tags:
-                - vpc
+            - vpc
             summary: Delete Vpc All
             operationId: deleteAllVpcs
             parameters:
-                -   description: Tenant Id
-                    required: true
-                    schema:
-                        title: X-Tenant-Id
-                        type: string
-                        format: uuid
-                    name: x-tenant-id
-                    in: header
+            -   description: Tenant Id
+                required: true
+                schema:
+                    title: X-Tenant-Id
+                    type: string
+                    format: uuid
+                name: x-tenant-id
+                in: header
             description: Delete all vpcs from tenant
             responses:
                 '200':
@@ -2146,25 +2147,26 @@ paths:
     /v0/xaas/vpcs/default:
         post:
             tags:
-                - xaas_vpc
+            - xaas_vpc
             summary: Create Vpc Xaas Default
-            description: Create a default VPC for a provided tenant_id of an project type
+            description: Create a default VPC for a provided tenant_id of an project
+                type
             operationId: create_vpc_xaas_default_v0_xaas_vpcs_default_post
             parameters:
-                -   description: Project Type
-                    required: true
-                    schema:
-                        $ref: '#/components/schemas/ProjectType'
-                    name: project_type
-                    in: query
-                -   description: Tenant Id
-                    required: true
-                    schema:
-                        title: X-Tenant-Id
-                        type: string
-                        format: uuid
-                    name: x-tenant-id
-                    in: header
+            -   description: Project Type
+                required: true
+                schema:
+                    $ref: '#/components/schemas/ProjectType'
+                name: project_type
+                in: query
+            -   description: Tenant Id
+                required: true
+                schema:
+                    title: X-Tenant-Id
+                    type: string
+                    format: uuid
+                name: x-tenant-id
+                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -2181,25 +2183,26 @@ paths:
     /v0/xaas/vpcs:
         get:
             tags:
-                - xaas_vpc
+            - xaas_vpc
             summary: List VPC with project type
-            description: Returns a list of VPCs for a provided tenant_id of an project type
+            description: Returns a list of VPCs for a provided tenant_id of an project
+                type
             operationId: listVpcsProjectType
             parameters:
-                -   description: Project Type
-                    required: true
-                    schema:
-                        $ref: '#/components/schemas/ProjectType'
-                    name: project_type
-                    in: query
-                -   description: Tenant Id
-                    required: true
-                    schema:
-                        title: X-Tenant-Id
-                        type: string
-                        format: uuid
-                    name: x-tenant-id
-                    in: header
+            -   description: Project Type
+                required: true
+                schema:
+                    $ref: '#/components/schemas/ProjectType'
+                name: project_type
+                in: query
+            -   description: Tenant Id
+                required: true
+                schema:
+                    title: X-Tenant-Id
+                    type: string
+                    format: uuid
+                name: x-tenant-id
+                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -2215,25 +2218,25 @@ paths:
                                 $ref: '#/components/schemas/HTTPValidationError'
         post:
             tags:
-                - xaas_vpc
+            - xaas_vpc
             summary: Create Vpc Xaas
             description: Create a VPC for a provided tenant_id of an project type
             operationId: create_vpc_xaas_v0_xaas_vpcs_post
             parameters:
-                -   description: Project Type
-                    required: true
-                    schema:
-                        $ref: '#/components/schemas/ProjectType'
-                    name: project_type
-                    in: query
-                -   description: Tenant Id
-                    required: true
-                    schema:
-                        title: X-Tenant-Id
-                        type: string
-                        format: uuid
-                    name: x-tenant-id
-                    in: header
+            -   description: Project Type
+                required: true
+                schema:
+                    $ref: '#/components/schemas/ProjectType'
+                name: project_type
+                in: query
+            -   description: Tenant Id
+                required: true
+                schema:
+                    title: X-Tenant-Id
+                    type: string
+                    format: uuid
+                name: x-tenant-id
+                in: header
             requestBody:
                 content:
                     application/json:
@@ -2256,24 +2259,25 @@ paths:
     /v0/xaas/vpcs/all:
         delete:
             tags:
-                - xaas_vpc
+            - xaas_vpc
             summary: Delete Vpc Xaas All
-            description: Delete all of VPCs for a provided tenant_id of an project type
+            description: Delete all of VPCs for a provided tenant_id of an project
+                type
             operationId: deleteAllVpcsXaas
             parameters:
-                -   description: Project Type
-                    required: true
-                    schema:
-                        $ref: '#/components/schemas/ProjectType'
-                    name: project_type
-                    in: query
-                -   description: Tenant Id
-                    required: true
-                    schema:
-                        title: X-Tenant-Id
-                        type: string
-                    name: x-tenant-id
-                    in: header
+            -   description: Project Type
+                required: true
+                schema:
+                    $ref: '#/components/schemas/ProjectType'
+                name: project_type
+                in: query
+            -   description: Tenant Id
+                required: true
+                schema:
+                    title: X-Tenant-Id
+                    type: string
+                name: x-tenant-id
+                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -2287,36 +2291,36 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
-    '/v0/xaas/vpcs/{vpc_id}/add_route':
+    /v0/xaas/vpcs/{vpc_id}/add_route:
         post:
             tags:
-                - xaas_vpc
+            - xaas_vpc
             summary: Add Route on VPC
             description: Create a static route for VPC
             operationId: addVpcRoute
             parameters:
-                -   description: VPC ID
-                    required: true
-                    schema:
-                        title: Vpc Id
-                        type: string
-                        format: uuid
-                    name: vpc_id
-                    in: path
-                -   description: Project Type
-                    required: true
-                    schema:
-                        $ref: '#/components/schemas/ProjectType'
-                    name: project_type
-                    in: query
-                -   description: Tenant Id
-                    required: true
-                    schema:
-                        title: X-Tenant-Id
-                        type: string
-                        format: uuid
-                    name: x-tenant-id
-                    in: header
+            -   description: VPC ID
+                required: true
+                schema:
+                    title: Vpc Id
+                    type: string
+                    format: uuid
+                name: vpc_id
+                in: path
+            -   description: Project Type
+                required: true
+                schema:
+                    $ref: '#/components/schemas/ProjectType'
+                name: project_type
+                in: query
+            -   description: Tenant Id
+                required: true
+                schema:
+                    title: X-Tenant-Id
+                    type: string
+                    format: uuid
+                name: x-tenant-id
+                in: header
             requestBody:
                 content:
                     application/json:
@@ -2335,36 +2339,36 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
-    '/v0/xaas/vpcs/{vpc_id}/delete_route':
+    /v0/xaas/vpcs/{vpc_id}/delete_route:
         post:
             tags:
-                - xaas_vpc
+            - xaas_vpc
             summary: Delete Route on VPC
             description: Delete a static route for VPC
             operationId: delVpcRoute
             parameters:
-                -   description: VPC ID
-                    required: true
-                    schema:
-                        title: Vpc Id
-                        type: string
-                        format: uuid
-                    name: vpc_id
-                    in: path
-                -   description: Project Type
-                    required: true
-                    schema:
-                        $ref: '#/components/schemas/ProjectType'
-                    name: project_type
-                    in: query
-                -   description: Tenant Id
-                    required: true
-                    schema:
-                        title: X-Tenant-Id
-                        type: string
-                        format: uuid
-                    name: x-tenant-id
-                    in: header
+            -   description: VPC ID
+                required: true
+                schema:
+                    title: Vpc Id
+                    type: string
+                    format: uuid
+                name: vpc_id
+                in: path
+            -   description: Project Type
+                required: true
+                schema:
+                    $ref: '#/components/schemas/ProjectType'
+                name: project_type
+                in: query
+            -   description: Tenant Id
+                required: true
+                schema:
+                    title: X-Tenant-Id
+                    type: string
+                    format: uuid
+                name: x-tenant-id
+                in: header
             requestBody:
                 content:
                     application/json:
@@ -2380,36 +2384,36 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
-    '/v0/xaas/vpcs/{vpc_id}/add_interface':
+    /v0/xaas/vpcs/{vpc_id}/add_interface:
         post:
             tags:
-                - xaas_vpc
+            - xaas_vpc
             summary: Add VPC router interface
             description: Create a VPC router interface
             operationId: addVpcRouterInterface
             parameters:
-                -   description: VPC ID
-                    required: true
-                    schema:
-                        title: Vpc Id
-                        type: string
-                        format: uuid
-                    name: vpc_id
-                    in: path
-                -   description: Project Type
-                    required: true
-                    schema:
-                        $ref: '#/components/schemas/ProjectType'
-                    name: project_type
-                    in: query
-                -   description: Tenant Id
-                    required: true
-                    schema:
-                        title: X-Tenant-Id
-                        type: string
-                        format: uuid
-                    name: x-tenant-id
-                    in: header
+            -   description: VPC ID
+                required: true
+                schema:
+                    title: Vpc Id
+                    type: string
+                    format: uuid
+                name: vpc_id
+                in: path
+            -   description: Project Type
+                required: true
+                schema:
+                    $ref: '#/components/schemas/ProjectType'
+                name: project_type
+                in: query
+            -   description: Tenant Id
+                required: true
+                schema:
+                    title: X-Tenant-Id
+                    type: string
+                    format: uuid
+                name: x-tenant-id
+                in: header
             requestBody:
                 content:
                     application/json:
@@ -2429,44 +2433,44 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
-    '/v0/xaas/vpcs/{vpc_id}/delete_interface/{interface_id}':
+    /v0/xaas/vpcs/{vpc_id}/delete_interface/{interface_id}:
         delete:
             tags:
-                - xaas_vpc
+            - xaas_vpc
             summary: Delete VPC router interface
             description: Delete a VPC router interface
             operationId: delVpcRouterInterface
             parameters:
-                -   description: VPC ID
-                    required: true
-                    schema:
-                        title: Vpc Id
-                        type: string
-                        format: uuid
-                    name: vpc_id
-                    in: path
-                -   description: Interface ID
-                    required: true
-                    schema:
-                        title: Interface Id
-                        type: string
-                        format: uuid
-                    name: interface_id
-                    in: path
-                -   description: Project Type
-                    required: true
-                    schema:
-                        $ref: '#/components/schemas/ProjectType'
-                    name: project_type
-                    in: query
-                -   description: Tenant Id
-                    required: true
-                    schema:
-                        title: X-Tenant-Id
-                        type: string
-                        format: uuid
-                    name: x-tenant-id
-                    in: header
+            -   description: VPC ID
+                required: true
+                schema:
+                    title: Vpc Id
+                    type: string
+                    format: uuid
+                name: vpc_id
+                in: path
+            -   description: Interface ID
+                required: true
+                schema:
+                    title: Interface Id
+                    type: string
+                    format: uuid
+                name: interface_id
+                in: path
+            -   description: Project Type
+                required: true
+                schema:
+                    $ref: '#/components/schemas/ProjectType'
+                name: project_type
+                in: query
+            -   description: Tenant Id
+                required: true
+                schema:
+                    title: X-Tenant-Id
+                    type: string
+                    format: uuid
+                name: x-tenant-id
+                in: header
             responses:
                 '204':
                     description: Successful Response
@@ -2476,36 +2480,36 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
-    '/v0/xaas/vpcs/{vpc_id}/interfaces':
+    /v0/xaas/vpcs/{vpc_id}/interfaces:
         get:
             tags:
-                - xaas_vpc
+            - xaas_vpc
             summary: List VPC Router interface with project type
-            description: "Returns a Router Interface's list from a VPC"
+            description: Returns a Router Interface's list from a VPC
             operationId: listVpcRouterInterfacesProjectType
             parameters:
-                -   description: VPC ID
-                    required: true
-                    schema:
-                        title: Vpc Id
-                        type: string
-                        format: uuid
-                    name: vpc_id
-                    in: path
-                -   description: Project Type
-                    required: true
-                    schema:
-                        $ref: '#/components/schemas/ProjectType'
-                    name: project_type
-                    in: query
-                -   description: Tenant Id
-                    required: true
-                    schema:
-                        title: X-Tenant-Id
-                        type: string
-                        format: uuid
-                    name: x-tenant-id
-                    in: header
+            -   description: VPC ID
+                required: true
+                schema:
+                    title: Vpc Id
+                    type: string
+                    format: uuid
+                name: vpc_id
+                in: path
+            -   description: Project Type
+                required: true
+                schema:
+                    $ref: '#/components/schemas/ProjectType'
+                name: project_type
+                in: query
+            -   description: Tenant Id
+                required: true
+                schema:
+                    title: X-Tenant-Id
+                    type: string
+                    format: uuid
+                name: x-tenant-id
+                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -2519,28 +2523,28 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
-    '/v0/usage':
+    /v0/usage:
         get:
             tags:
-                - quotas
+            - quotas
             summary: List usage quotas
-            description: "Return a list of usage quotas from a provided tenant"
+            description: Return a list of usage quotas from a provided tenant
             operationId: usageQuotasList
             parameters:
-                -   description: Quota
-                    required: true
-                    schema:
-                        $ref: '#/components/schemas/QuotaSlug'
-                    name: quota_slug
-                    in: query
-                -   description: Tenant Id
-                    required: true
-                    schema:
-                        title: X-Tenant-Id
-                        type: string
-                        format: uuid
-                    name: x-tenant-id
-                    in: header
+            -   description: Quota
+                required: true
+                schema:
+                    $ref: '#/components/schemas/QuotaSlug'
+                name: quota_slug
+                in: query
+            -   description: Tenant Id
+                required: true
+                schema:
+                    title: X-Tenant-Id
+                    type: string
+                    format: uuid
+                name: x-tenant-id
+                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -2555,8 +2559,8 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             security:
-                - OAuth2:
-                    - network.read
+            -   OAuth2:
+                - network.read
 components:
     schemas:
         AddInterfaceRequest:
@@ -2572,15 +2576,19 @@ components:
             title: HTTPValidationError
             type: object
             properties:
-                detail:
-                    title: Detail
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/ValidationError'
+                message:
+                    title: Message
+                    type: string
+                slug:
+                    title: Slug
+                    type: string
+            example:
+                message: Unauthorized
+                slug: Unauthorized
         Healthcheck:
             title: Healthcheck
             required:
-                - status
+            - status
             type: object
             properties:
                 status:
@@ -2591,7 +2599,7 @@ components:
         PortCreateRequest:
             title: PortCreateRequest
             required:
-                - name
+            - name
             type: object
             properties:
                 name:
@@ -2613,7 +2621,7 @@ components:
         PortCreateResponse:
             title: PortCreateResponse
             required:
-                - id
+            - id
             type: object
             properties:
                 id:
@@ -2637,15 +2645,11 @@ components:
                     default: []
             example:
                 deleted_ports:
-                    -
-                        openstack: 0
-                    -
-                        database: 0
+                -   openstack: 0
+                -   database: 0
                 deleted_public_ips:
-                    -
-                        openstack: 0
-                    -
-                        database: 0
+                -   openstack: 0
+                -   database: 0
         PortResponse:
             title: PortResponse
             type: object
@@ -2697,18 +2701,17 @@ components:
                 subnet_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                 is_port_security_enabled: true
                 security_groups:
-                    - xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                - xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                 public_ip:
-                    -
-                        public_ip_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-                        public_ip: 100.94.5.31
+                -   public_ip_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                    public_ip: 100.94.5.31
                 ip_address: 172.20.0.2
                 created_at: '2023-04-17T17:31:28Z'
                 updated: '2023-04-17T17:31:28Z'
         PortsList:
             title: PortsList
             required:
-                - ports
+            - ports
             type: object
             properties:
                 ports:
@@ -2718,33 +2721,31 @@ components:
                         $ref: '#/components/schemas/PortResponse'
             example:
                 ports:
-                    -
-                        id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-                        name: port_name
-                        description: port description
-                        is_admin_state_up: true
-                        subnet_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-                        is_port_security_enabled: true
-                        security_groups:
-                            - xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-                        public_ip:
-                            -
-                                public_ip_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-                                public_ip: 100.94.5.31
-                        ip_address: 172.20.0.2
-                        created_at: '2023-04-17T17:31:28Z'
-                        updated: '2023-04-17T17:31:28Z'
+                -   id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                    name: port_name
+                    description: port description
+                    is_admin_state_up: true
+                    subnet_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                    is_port_security_enabled: true
+                    security_groups:
+                    - xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                    public_ip:
+                    -   public_ip_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                        public_ip: 100.94.5.31
+                    ip_address: 172.20.0.2
+                    created_at: '2023-04-17T17:31:28Z'
+                    updated: '2023-04-17T17:31:28Z'
         ProjectType:
             title: ProjectType
             enum:
-                - dbaas
-                - iamaas
-                - default
+            - dbaas
+            - iamaas
+            - default
             description: An enumeration.
         QuotaSlug:
             title: QuotaSlug
             enum:
-                - public_ips
+            - public_ips
             description: An enumeration.
         ListQuotaUsagePublicIp:
             title: ListQuotaUsagePublicIp
@@ -2766,11 +2767,10 @@ components:
                                         title: QuotaUsagePublicIp
                                         type: integer
             example:
-                response: 
-                    results: 
-                        - 
-                            quota_slug: public_ip
-                            used: 10
+                response:
+                    results:
+                    -   quota_slug: public_ip
+                        used: 10
         PublicIpCreateRequest:
             title: PublicIpCreateRequest
             type: object
@@ -2783,7 +2783,7 @@ components:
         PublicIpCreateResponse:
             title: PublicIpCreateResponse
             required:
-                - id
+            - id
             type: object
             properties:
                 id:
@@ -2840,7 +2840,7 @@ components:
         PublicIpsList:
             title: PublicIpsList
             required:
-                - public_ips
+            - public_ips
             type: object
             properties:
                 public_ips:
@@ -2850,14 +2850,13 @@ components:
                         $ref: '#/components/schemas/PublicIpDb'
             example:
                 public_ips:
-                    -
-                        id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-                        vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-                        description: port description
-                        public_ip: 100.94.5.31
-                        port_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-                        created_at: '2023-04-17T17:31:28Z'
-                        updated: '2023-04-17T17:31:28Z'
+                -   id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                    vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                    description: port description
+                    public_ip: 100.94.5.31
+                    port_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                    created_at: '2023-04-17T17:31:28Z'
+                    updated: '2023-04-17T17:31:28Z'
         RouterInterfaceResponse:
             title: RouterInterfaceResponse
             type: object
@@ -2895,12 +2894,11 @@ components:
                     default: []
             example:
                 router_interfaces:
-                    -
-                        id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-                        vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-                        ip_address: 172.20.0.2
-                        nic_vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-                        created_at: '2023-04-17T17:31:28Z'
+                -   id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                    vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                    ip_address: 172.20.0.2
+                    nic_vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                    created_at: '2023-04-17T17:31:28Z'
         RuleCreateRequest:
             title: RuleCreateRequest
             type: object
@@ -2937,7 +2935,7 @@ components:
         RuleCreateResponse:
             title: RuleCreateResponse
             required:
-                - id
+            - id
             type: object
             properties:
                 id:
@@ -2993,7 +2991,7 @@ components:
         RulesList:
             title: RulesList
             required:
-                - rules
+            - rules
             type: object
             properties:
                 rules:
@@ -3003,17 +3001,16 @@ components:
                         $ref: '#/components/schemas/RuleResponse'
             example:
                 rules:
-                    -
-                        id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-                        security_group_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-                        direction: egress
-                        port_range_min: 8028
-                        port_range_max: 8028
-                        protocol: tcp
-                        remote_ip_prefix: 100.94.0.0/24
-                        remote_group_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-                        ethertype: IPv4
-                        created_at: '2023-04-17T17:31:28Z'
+                -   id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                    security_group_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                    direction: egress
+                    port_range_min: 8028
+                    port_range_max: 8028
+                    protocol: tcp
+                    remote_ip_prefix: 100.94.0.0/24
+                    remote_group_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                    ethertype: IPv4
+                    created_at: '2023-04-17T17:31:28Z'
         SecurityGroupCreateRequest:
             title: SecurityGroupCreateRequest
             type: object
@@ -3075,21 +3072,20 @@ components:
                 created_at: '2023-04-17T17:31:28Z'
                 updated: '2023-04-17T17:31:28Z'
                 rules:
-                    -
-                        id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-                        security_group_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-                        direction: egress
-                        port_range_min: 8028
-                        port_range_max: 8028
-                        protocol: tcp
-                        remote_ip_prefix: 100.94.0.0/24
-                        remote_group_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-                        ethertype: IPv4
-                        created_at: '2023-04-17T17:31:28Z'
+                -   id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                    security_group_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                    direction: egress
+                    port_range_min: 8028
+                    port_range_max: 8028
+                    protocol: tcp
+                    remote_ip_prefix: 100.94.0.0/24
+                    remote_group_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                    ethertype: IPv4
+                    created_at: '2023-04-17T17:31:28Z'
         SecurityGroupList:
             title: SecurityGroupList
             required:
-                - security_groups
+            - security_groups
             type: object
             properties:
                 security_groups:
@@ -3099,13 +3095,12 @@ components:
                         $ref: '#/components/schemas/SecurityGroupResponse'
             example:
                 security_groups:
-                    -
-                        id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-                        vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-                        name: security_group_name
-                        description: security group description
-                        created_at: '2023-04-17T17:31:28Z'
-                        updated: '2023-04-17T17:31:28Z'
+                -   id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                    vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                    name: security_group_name
+                    description: security group description
+                    created_at: '2023-04-17T17:31:28Z'
+                    updated: '2023-04-17T17:31:28Z'
         SecurityGroupResponse:
             title: SecurityGroupResponse
             type: object
@@ -3159,7 +3154,7 @@ components:
         SubnetCreateResponse:
             title: SubnetCreateResponse
             required:
-                - id
+            - id
             type: object
             properties:
                 id:
@@ -3170,15 +3165,15 @@ components:
         SubnetPoolDetailsResponse:
             title: SubnetPoolDetailsResponse
             required:
-                - id
-                - tenant_id
-                - vpc_id
-                - name
-                - pool_prefix
-                - min_prefix_length
-                - max_prefix_length
-                - default_prefix_length
-                - description
+            - id
+            - tenant_id
+            - vpc_id
+            - name
+            - pool_prefix
+            - min_prefix_length
+            - max_prefix_length
+            - default_prefix_length
+            - description
             type: object
             properties:
                 id:
@@ -3210,14 +3205,15 @@ components:
                 description:
                     title: Description
                     type: string
-            description: A Pydantic model representing the request for creating one Subnet Pool.
+            description: A Pydantic model representing the request for creating one
+                Subnet Pool.
             example:
                 id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                 tenant_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                 vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                 name: some_subnet_pool
                 pool_prefix:
-                    - 172.26.0.0/16
+                - 172.26.0.0/16
                 min_prefix_length: 24
                 max_prefix_length: 28
                 default_prefix_length: 26
@@ -3225,8 +3221,8 @@ components:
         SubnetPoolRequest:
             title: SubnetPoolRequest
             required:
-                - name
-                - description
+            - name
+            - description
             type: object
             properties:
                 name:
@@ -3261,7 +3257,8 @@ components:
                     title: Address Scope Id
                     type: string
                     description: The ID of the address scope for the subnet pool
-            description: A Pydantic model representing the request for creating one Subnet Pool.
+            description: A Pydantic model representing the request for creating one
+                Subnet Pool.
             example:
                 name: some_subnet_pool
                 pool_prefix: 172.26.0.0/16
@@ -3273,11 +3270,11 @@ components:
         SubnetPoolResponse:
             title: SubnetPoolResponse
             required:
-                - id
-                - tenant_id
-                - vpc_id
-                - name
-                - external_id
+            - id
+            - tenant_id
+            - vpc_id
+            - name
+            - external_id
             type: object
             properties:
                 id:
@@ -3299,23 +3296,12 @@ components:
                     title: External Id
                     type: string
                     format: uuid
-            description: >-
-                A Pydantic model representing a response for Subnet Pool
-                creation.
-
-                Attributes:
-
-                    id (str): The ID of the subnet pool.
-
-                    tenant_id (str): The ID of the tenant that owns the subnet
-                pool.
-
-                    vpc_id (str): The ID of the VPC that the subnet pool belongs
-                to.
-
-                    name (str): The name of the subnet pool.
-
-                    external_id (str): The ID of the subnet pool in OpenStack.
+            description: "A Pydantic model representing a response for Subnet Pool\
+                \ creation.\nAttributes:\n\n    id (str): The ID of the subnet pool.\n\
+                \n    tenant_id (str): The ID of the tenant that owns the subnet\n\
+                pool.\n\n    vpc_id (str): The ID of the VPC that the subnet pool\
+                \ belongs\nto.\n\n    name (str): The name of the subnet pool.\n\n\
+                \    external_id (str): The ID of the subnet pool in OpenStack."
             example:
                 id: cb676c02-add1-4060-8611-63d9d7fcf117
                 tenant_id: 9584f0e8-d72f-4910-999a-c43b81e469fe
@@ -3335,18 +3321,18 @@ components:
             description: A Pydantic model representing a list of Subnet Pools.
             example:
                 subnetpools:
-                    - id: cb676c02-add1-4060-8611-63d9d7fcf117
-                      tenant_id: 9584f0e8-d72f-4910-999a-c43b81e469fe
-                      vpc_id: 657bdd54-530c-45f0-b8d1-5fcfe6aee9c5
-                      name: some_subnet_pool
-                      external_id: 5d3efb64-97cd-4e1d-a082-44cc97018227
+                -   id: cb676c02-add1-4060-8611-63d9d7fcf117
+                    tenant_id: 9584f0e8-d72f-4910-999a-c43b81e469fe
+                    vpc_id: 657bdd54-530c-45f0-b8d1-5fcfe6aee9c5
+                    name: some_subnet_pool
+                    external_id: 5d3efb64-97cd-4e1d-a082-44cc97018227
         SubnetResponse:
             title: SubnetResponse
             required:
-                - id
-                - vpc_id
-                - cidr_block
-                - ip_version
+            - id
+            - vpc_id
+            - cidr_block
+            - ip_version
             type: object
             properties:
                 id:
@@ -3385,12 +3371,12 @@ components:
         SubnetResponseXAAS:
             title: SubnetResponseXAAS
             required:
-                - id
-                - vpc_id
-                - cidr
-                - ethertype
-                - cidr_block
-                - ip_version
+            - id
+            - vpc_id
+            - cidr
+            - ethertype
+            - cidr_block
+            - ip_version
             type: object
             properties:
                 id:
@@ -3440,8 +3426,10 @@ components:
                 updated: '2023-04-17T17:31:28Z'
                 subnetpool_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                 external_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-                cidr_block: "[ATENÇÃO] - Este campo futuramente substituirá 'cidr'"
-                ip_version: "[ATENÇÃO] - Este campo futuramente substituirá 'ethertype'"
+                cidr_block: "[ATEN\xC7\xC3O] - Este campo futuramente substituir\xE1\
+                    \ 'cidr'"
+                ip_version: "[ATEN\xC7\xC3O] - Este campo futuramente substituir\xE1\
+                    \ 'ethertype'"
         SubnetsResponse:
             title: SubnetsResponse
             type: object
@@ -3454,15 +3442,14 @@ components:
                     default: []
             example:
                 subnets:
-                    -
-                        id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-                        vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-                        name: vpc_name
-                        description: vpc description
-                        cidr_block: 172.20.0.0/24
-                        ip_version: '4'
-                        created_at: '2023-04-17T17:31:28Z'
-                        updated: '2023-04-17T17:31:28Z'
+                -   id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                    vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                    name: vpc_name
+                    description: vpc description
+                    cidr_block: 172.20.0.0/24
+                    ip_version: '4'
+                    created_at: '2023-04-17T17:31:28Z'
+                    updated: '2023-04-17T17:31:28Z'
         SubnetsResponseXAAS:
             title: SubnetsResponseXAAS
             type: object
@@ -3475,46 +3462,41 @@ components:
                     default: []
             example:
                 subnets:
-                    -
-                        id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-                        vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-                        name: vpc_name
-                        description: vpc description
-                        cidr: 172.20.0.0/24
-                        ethertype: '4'
-                        created_at: '2023-04-17T17:31:28Z'
-                        updated: '2023-04-17T17:31:28Z'
-                        subnetpool_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-                        external_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-                        cidr_block: "[ATENÇÃO] - Este campo futuramente substituirá 'cidr'"
-                        ip_version: "[ATENÇÃO] - Este campo futuramente substituirá 'ethertype'"
+                -   id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                    vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                    name: vpc_name
+                    description: vpc description
+                    cidr: 172.20.0.0/24
+                    ethertype: '4'
+                    created_at: '2023-04-17T17:31:28Z'
+                    updated: '2023-04-17T17:31:28Z'
+                    subnetpool_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                    external_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                    cidr_block: "[ATEN\xC7\xC3O] - Este campo futuramente substituir\xE1\
+                        \ 'cidr'"
+                    ip_version: "[ATEN\xC7\xC3O] - Este campo futuramente substituir\xE1\
+                        \ 'ethertype'"
         ValidationError:
             title: ValidationError
             required:
-                - loc
-                - msg
-                - type
+            - loc
+            - msg
+            - type
             type: object
             properties:
-                loc:
-                    title: Location
-                    type: array
-                    items:
-                        anyOf:
-                            -
-                                type: string
-                            -
-                                type: integer
-                msg:
+                message:
                     title: Message
                     type: string
-                type:
-                    title: Error Type
+                slug:
+                    title: Slug
                     type: string
+            example:
+                message: Unauthorized
+                slug: Unauthorized
         VpcCreateRequest:
             title: VpcCreateRequest
             required:
-                - name
+            - name
             type: object
             properties:
                 name:
@@ -3561,25 +3543,17 @@ components:
                     default: []
             example:
                 deleted_vpcs:
-                    -
-                        database: 0
-                    -
-                        openstack: 0
+                -   database: 0
+                -   openstack: 0
                 deleted_routers:
-                    -
-                        database: 0
-                    -
-                        openstack: 0
+                -   database: 0
+                -   openstack: 0
                 deleted_networks:
-                    -
-                        database: 0
-                    -
-                        openstack: 0
+                -   database: 0
+                -   openstack: 0
                 deleted_security_groups:
-                    -
-                        database: 0
-                    -
-                        openstack: 0
+                -   database: 0
+                -   openstack: 0
         VpcResponse:
             title: VpcResponse
             type: object
@@ -3636,9 +3610,9 @@ components:
                 external_network: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                 network_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                 subnets:
-                    - xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                - xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                 security_groups:
-                    - xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                - xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                 created_at: '2023-04-17T17:31:28Z'
                 updated: '2023-04-17T17:31:28Z'
                 is_default: true
@@ -3654,27 +3628,26 @@ components:
                     default: []
             example:
                 vpcs:
-                    -
-                        id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-                        tenant_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-                        project_type: default
-                        name: vpc_name
-                        description: vpc description
-                        router_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-                        external_network: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-                        network_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-                        subnets:
-                            - xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-                        security_groups:
-                            - xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-                        created_at: '2023-04-17T17:31:28Z'
-                        updated: '2023-04-17T17:31:28Z'
-                        is_default: true
+                -   id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                    tenant_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                    project_type: default
+                    name: vpc_name
+                    description: vpc description
+                    router_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                    external_network: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                    network_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                    subnets:
+                    - xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                    security_groups:
+                    - xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                    created_at: '2023-04-17T17:31:28Z'
+                    updated: '2023-04-17T17:31:28Z'
+                    is_default: true
         VpcRouteRequest:
             title: VpcRouteRequest
             required:
-                - destination
-                - nexthop
+            - destination
+            - nexthop
             type: object
             properties:
                 destination:
@@ -3689,7 +3662,7 @@ components:
         XVpcCreateRequest:
             title: XVpcCreateRequest
             required:
-                - name
+            - name
             type: object
             properties:
                 name:
@@ -3701,14 +3674,16 @@ components:
                 subnetpool_id:
                     title: Subnetpool Id
                     type: string
-                    description: "ID of SubnetPool from which the VPC will get CIDRs. Can be used instead of 'cidr' field."
+                    description: ID of SubnetPool from which the VPC will get CIDRs.
+                        Can be used instead of 'cidr' field.
                 cidr:
                     title: Cidr
                     type: string
-                    description: "CIDR from which VPC's subnets will get IPs Can be used instead of 'subnetpool_id' field."
-            description: |-
-                XVpcCreateRequest is the equivalent of VpcCreateRequest
-                for XaaS routes.
+                    description: CIDR from which VPC's subnets will get IPs Can be
+                        used instead of 'subnetpool_id' field.
+            description: 'XVpcCreateRequest is the equivalent of VpcCreateRequest
+
+                for XaaS routes.'
             example:
                 name: vpc_name
                 description: vpc description
@@ -3722,53 +3697,43 @@ components:
         OAuth2:
             flows:
                 authorizationCode:
-                    authorizationUrl: "https://idp-maas-sandbox.ipet.sh/auth/realms/master/protocol/openid-connect/auth"
-                    tokenUrl: "https://idp-maas-sandbox.ipet.sh/auth/realms/master/protocol/openid-connect/token"
+                    authorizationUrl: https://idp-maas-sandbox.ipet.sh/auth/realms/master/protocol/openid-connect/auth
+                    tokenUrl: https://idp-maas-sandbox.ipet.sh/auth/realms/master/protocol/openid-connect/token
                     scopes:
-                        network.read: Ler informações de recursos VPC IaaS
-                        network.write: Escrever informações de recursos VPC IaaS
+                        network.read: "Ler informa\xE7\xF5es de recursos VPC IaaS"
+                        network.write: "Escrever informa\xE7\xF5es de recursos VPC\
+                            \ IaaS"
             type: oauth2
-            description: |
-                OAuth2 via IDPA
+            description: 'OAuth2 via IDPA
+
+                '
 tags:
-  - name: vpc
+-   name: vpc
     description: Rotas relacionadas as apis da VPC API Product para Vpcs
-
-  - name: port
+-   name: port
     description: Rotas relacionadas as apis da VPC API Product para Portas
-
-  - name: security_group
+-   name: security_group
     description: Rotas relacionadas as apis da VPC API Product para Security Groups
-
-  - name: rule
+-   name: rule
     description: Rotas relacionadas as apis da VPC API Product para Rules
-
-  - name: public_ip
+-   name: public_ip
     description: Rotas relacionadas as apis da VPC API Product para Public IPs
-
-  - name: subnets
+-   name: subnets
     description: Rotas relacionadas as apis da VPC API Product para Subnets
-
-  - name: healthcheck
-    description: Rotas relacionadas a verificação da saúde da aplicação
-
-  - name: xaas_vpc
+-   name: healthcheck
+    description: "Rotas relacionadas a verifica\xE7\xE3o da sa\xFAde da aplica\xE7\
+        \xE3o"
+-   name: xaas_vpc
     description: Rotas relacionadas as apis utilizadas por outros produtos
-
-  - name: xaas_subnetpools
+-   name: xaas_subnetpools
     description: Rotas relacionadas as apis da VPC API Product para Subnetpools
-
-  - name: xaas_rule
+-   name: xaas_rule
     description: Rotas relacionadas as apis utilizadas por outros produtos
-
-  - name: xaas_security_group
+-   name: xaas_security_group
     description: Rotas relacionadas as apis utilizadas por outros produtos
-    
-  - name: xaas_port
+-   name: xaas_port
     description: Rotas relacionadas as apis utilizadas por outros produtos
-
-  - name: xaas_subnets
+-   name: xaas_subnets
     description: Rotas relacionadas as apis utilizadas por outros produtos
-
-  - name: quotas
+-   name: quotas
     description: Rotas relacionadas as apis da VPC API Product para Quotas
