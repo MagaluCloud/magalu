@@ -1,5 +1,5 @@
 [flake8]
 max-line-length = 88
-extend-ignore = E203, I900
+extend-ignore = E203, I900, RST201,RST203,RST301
 per-file-ignores =
     */__init__.py: F401
