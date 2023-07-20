@@ -23,18 +23,19 @@ repos:
     rev: v1.53.3
     hooks:
     -   id: golangci-lint
-        stages: [pre-commit, pre-push]
+        stages: [pre-commit]
         # Need to specify manually due to this issue:
         # https://github.com/golangci/golangci-lint/issues/2654
-        args: [./libs/functional, ./libs/cli, ./libs/parser]
+        entry: bash -c "go list -f '{{.Dir}}/...' -m | xargs golangci-lint run --fix --new-from-rev HEAD"
 
--   repo: https://github.com/dnephin/pre-commit-golang
-    rev: v0.5.0
+-   repo: https://github.com/golangci/golangci-lint
+    rev: v1.53.3
     hooks:
-    -   id: go-fmt
-        stages: [pre-commit, pre-push]
-    -   id: go-imports
-        stages: [pre-commit, pre-push]
+    -   id: golangci-lint
+        stages: [pre-push]
+        # Need to specify manually due to this issue:
+        # https://github.com/golangci/golangci-lint/issues/2654
+        entry: bash -c "go list -f '{{.Dir}}/...' -m | xargs golangci-lint run --fix"
 
 -   repo: https://github.com/commitizen-tools/commitizen
     rev: v3.5.2
