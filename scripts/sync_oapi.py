@@ -31,8 +31,10 @@ SERVER_URL_MAP = {
     "https://mke.br-ne-1.jaxyendy.com/docs": ("https://api-mke.br-ne-1.jaxyendy.com/"),
 }
 
+OAPISchema = Dict[str, Any]
 
-def sync_request_body(internal_spec: Dict[str, Any], external_spec: Dict[str, Any]):
+
+def sync_request_body(internal_spec: OAPISchema, external_spec: OAPISchema):
     for ext_path in external_spec.get("paths", {}):
         internal_path = internal_spec.get("paths", {}).get(ext_path)
         if not internal_path:
@@ -50,17 +52,17 @@ def sync_request_body(internal_spec: Dict[str, Any], external_spec: Dict[str, An
                 ext_action["requestBody"] = internal_action["requestBody"]
 
 
-def fetch_and_parse(json_oapi_url: str) -> Dict[str, Any]:
+def fetch_and_parse(json_oapi_url: str) -> OAPISchema:
     with urllib.request.urlopen(json_oapi_url, timeout=5) as response:
         return json.loads(response.read())
 
 
-def load_yaml(path: str) -> Dict[str, Any]:
+def load_yaml(path: str) -> OAPISchema:
     with open(path, "r") as fd:
         return yaml.load(fd, Loader=yaml.CLoader)
 
 
-def update_server_urls(spec: Dict[str, Any]):
+def update_server_urls(spec: OAPISchema):
     assert "servers" in spec, "Servers key not present in external YAML"
     for server in spec["servers"]:
         if server["url"] not in SERVER_URL_MAP:
@@ -71,7 +73,7 @@ def update_server_urls(spec: Dict[str, Any]):
             server["url"] = SERVER_URL_MAP[server["url"]]
 
 
-def save_external(spec: Dict[str, Any], path: str):
+def save_external(spec: OAPISchema, path: str):
     with open(path, "w") as fd:
         yaml.dump(spec, fd, sort_keys=False, indent=4)
 
