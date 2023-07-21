@@ -10,7 +10,7 @@ func Transform[T any, U any](source []T, transform func(T) U) []U {
 
 func TransformMap[T comparable, U any, V any](source map[T]U, transform func(key T, value U) V) []V {
 	length := len(source)
-	result := make([]V, length, length)
+	result := make([]V, length)
 
 	i := 0
 	for key, value := range source {

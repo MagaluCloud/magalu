@@ -110,6 +110,9 @@ func AddFlag(cmd *cobra.Command, name string, p mgc_sdk.Parameter) {
 	}
 
 	if p.Required() {
-		cmd.MarkFlagRequired(name)
+		err := cmd.MarkFlagRequired(name)
+		if err != nil {
+			log.Printf("Error marking %s flag as required %s", name, err)
+		}
 	}
 }

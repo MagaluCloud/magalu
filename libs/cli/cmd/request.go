@@ -10,7 +10,6 @@ import (
 
 func GetRequestBody(cmd *cobra.Command, flags []*parser.Param) *strings.Reader {
 	fields := []string{}
-	body := []string{}
 
 	for _, flag := range flags {
 		if cmd.Flags().Changed(flag.Name) {
@@ -19,7 +18,7 @@ func GetRequestBody(cmd *cobra.Command, flags []*parser.Param) *strings.Reader {
 		}
 	}
 
-	body = append([]string{}, "{ ", strings.Join(fields, ""), " }")
+	body := append([]string{}, "{ ", strings.Join(fields, ""), " }")
 
 	return strings.NewReader(strings.Join(body, ""))
 }

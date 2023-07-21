@@ -13,13 +13,13 @@ func getExtension(prefix *string, name string, extensions map[string]any, def an
 }
 
 func getExtensionString(prefix *string, name string, extensions map[string]any, def string) (str string, ok bool) {
-	value, ok := getExtension(prefix, name, extensions, def)
+	value, _ := getExtension(prefix, name, extensions, def)
 	str, ok = value.(string)
 	return
 }
 
 func getExtensionBool(prefix *string, name string, extensions map[string]any, def bool) (b bool, ok bool) {
-	value, ok := getExtension(prefix, name, extensions, def)
+	value, _ := getExtension(prefix, name, extensions, def)
 	b, ok = value.(bool)
 	return
 }

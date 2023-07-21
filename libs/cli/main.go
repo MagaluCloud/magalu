@@ -1,7 +1,14 @@
 package main
 
-import "github.com/profusion/magalu/libs/cli/cmd"
+import (
+	"fmt"
+
+	"github.com/profusion/magalu/libs/cli/cmd"
+)
 
 func main() {
-	cmd.Execute()
+	err := cmd.Execute()
+	if err != nil {
+		fmt.Printf("Error running the CLI: %s\n", err)
+	}
 }

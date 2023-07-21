@@ -217,7 +217,7 @@ func DynamicLoadCommand(cmd *cobra.Command, args []string, loader DynamicArgLoad
 	}
 
 	var childCmdName *string
-	for true {
+	for {
 		// NOTE: this replicates cmd.Traverse(), but returns the command and the args without flags
 		childCmdName, childArgs = getNextUnknownCommand(cmd, childArgs)
 		if childCmdName == nil || *childCmdName != "help" {
