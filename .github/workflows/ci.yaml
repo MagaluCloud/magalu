@@ -15,7 +15,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-    install_deps:
+    build:
         runs-on: ubuntu-latest
         steps:
         - uses: actions/checkout@v3
@@ -23,9 +23,13 @@ jobs:
           with:
             go-version: '>=1.17.0'
         - run: go version
+        - name: Instal CLI Dependencies
+          run: go install ./libs/cli
+        - name: Build CLI
+          run: go build -v ./libs/cli
 
     pre-commit:
-        needs: install_deps
+        needs: build
         runs-on: ubuntu-latest
         steps:
         - uses: actions/checkout@v3
