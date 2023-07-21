@@ -26,7 +26,7 @@ jobs:
         - name: Instal CLI Dependencies
           run: go install ./libs/cli
         - name: Build CLI
-          run: go build -v ./libs/cli
+          run: go build -o /tmp/cli ./libs/cli
 
     pre-commit:
         needs: build
