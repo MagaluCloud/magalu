@@ -39,3 +39,24 @@ python3 sync_oapi.py <url-to-internal-spec> <path-ext-yaml-spec> -o <output-path
 ```
 
 Where url to internal spec is something like: "https://vm-region.proxy.com/openapi.json"
+
+### [remove_tenant_id.py](./remove_tenant_id.py):
+
+Some external OpenAPI specs were shared with endpoints expecting
+`x-tenant-id` parameter in the header. However, this is not what we
+will have in production. Thus, we need to remove this parameter from
+the spec for now.
+
+#### Running
+
+For help:
+
+```shell
+python3 remove_tenant_id.py  --help
+```
+
+For running:
+
+```shell
+python3 remove_tenant_id.py <path-to-openapi-spec>
+```

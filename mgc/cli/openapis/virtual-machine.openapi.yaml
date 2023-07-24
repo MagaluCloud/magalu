@@ -195,15 +195,6 @@ paths:
             summary: List Instances
             description: Returns a list of instances for a provided tenant_id
             operationId: list_instances_v0_instances_get
-            parameters:
-            -   description: x-tenant-id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -226,15 +217,6 @@ paths:
             summary: Instance Create
             description: Create a instance asynchronously
             operationId: instance_create_v0_instances_post
-            parameters:
-            -   description: x-tenant-id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             requestBody:
                 content:
                     application/json:
@@ -273,14 +255,6 @@ paths:
                     format: uuid
                 name: id
                 in: path
-            -   description: x-tenant-id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -312,14 +286,6 @@ paths:
                     format: uuid
                 name: id
                 in: path
-            -   description: x-tenant-id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             responses:
                 '204':
                     description: Successful Response
@@ -347,14 +313,6 @@ paths:
                     format: uuid
                 name: id
                 in: path
-            -   description: x-tenant-id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             requestBody:
                 content:
                     application/json:
@@ -389,14 +347,6 @@ paths:
                     format: uuid
                 name: id
                 in: path
-            -   description: x-tenant-id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -437,14 +387,6 @@ paths:
                     format: uuid
                 name: event_id
                 in: path
-            -   description: x-tenant-id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -468,15 +410,6 @@ paths:
             summary: List Keypairs
             description: Returns a list of keypairs from a provided tenant_id
             operationId: list_keypairs_v0_keypairs_get
-            parameters:
-            -   description: x-tenant-id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -499,15 +432,6 @@ paths:
             summary: Create Keypair
             description: Create a keypair
             operationId: create_keypair_v0_keypairs_post
-            parameters:
-            -   description: x-tenant-id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             requestBody:
                 content:
                     application/json:
@@ -545,14 +469,6 @@ paths:
                     type: string
                 name: keypair_name
                 in: path
-            -   description: x-tenant-id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             responses:
                 '201':
                     description: Successful Response
@@ -583,14 +499,6 @@ paths:
                     type: string
                 name: keypair_name
                 in: path
-            -   description: x-tenant-id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             responses:
                 '204':
                     description: Successful Response
@@ -620,14 +528,6 @@ paths:
                     format: string
                 name: quota_slug
                 in: query
-            -   description: x-tenant-id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -1401,9 +1301,8 @@ components:
                     authorizationUrl: https://idp-maas-sandbox.ipet.sh/auth/realms/master/protocol/openid-connect/auth
                     tokenUrl: https://idp-maas-sandbox.ipet.sh/auth/realms/master/protocol/openid-connect/token
                     scopes:
-                        virtual-machine.read: "Ler informa\xE7\xF5es de recursos IaaS"
-                        virtual-machine.write: "Escrever informa\xE7\xF5es de recursos\
-                            \ IaaS"
+                        virtual-machine.read: Ler informações de recursos IaaS
+                        virtual-machine.write: Escrever informações de recursos IaaS
             type: oauth2
             description: OAuth2 via IDPA
 tags:

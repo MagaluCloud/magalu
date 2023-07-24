@@ -42,14 +42,6 @@ paths:
                     $ref: '#/components/schemas/ProjectType'
                 name: project_type
                 in: query
-            -   description: Tenant Id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -85,14 +77,6 @@ paths:
                     $ref: '#/components/schemas/ProjectType'
                 name: project_type
                 in: query
-            -   description: Tenant Id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             requestBody:
                 content:
                     application/json:
@@ -142,14 +126,6 @@ paths:
                     $ref: '#/components/schemas/ProjectType'
                 name: project_type
                 in: query
-            -   description: Tenant Id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -192,14 +168,6 @@ paths:
                     $ref: '#/components/schemas/ProjectType'
                 name: project_type
                 in: query
-            -   description: Tenant Id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -234,14 +202,6 @@ paths:
                     $ref: '#/components/schemas/ProjectType'
                 name: project_type
                 in: query
-            -   description: Tenant Id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             responses:
                 '204':
                     description: Successful Response
@@ -267,14 +227,6 @@ paths:
                     format: uuid
                 name: vpc_id
                 in: path
-            -   description: Tenant Id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -306,14 +258,6 @@ paths:
                     format: uuid
                 name: vpc_id
                 in: path
-            -   description: Tenant Id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             requestBody:
                 content:
                     application/json:
@@ -352,14 +296,6 @@ paths:
                     format: uuid
                 name: port_id
                 in: path
-            -   description: Tenant Id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -391,14 +327,6 @@ paths:
                     format: uuid
                 name: port_id
                 in: path
-            -   description: Tenant Id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             responses:
                 '204':
                     description: Successful Response
@@ -428,14 +356,6 @@ paths:
                         type: string
                 name: port_id_list
                 in: query
-            -   description: Tenant Id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -462,15 +382,6 @@ paths:
             summary: Delete Port All
             operationId: deleteAllPorts
             description: Delete all port from tenant
-            parameters:
-            -   description: Tenant Id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -511,14 +422,6 @@ paths:
                     format: uuid
                 name: security_group_id
                 in: path
-            -   description: Tenant Id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -558,14 +461,6 @@ paths:
                     format: uuid
                 name: security_group_id
                 in: path
-            -   description: Tenant Id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -597,14 +492,6 @@ paths:
                     format: uuid
                 name: vpc_id
                 in: path
-            -   description: Tenant Id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -636,14 +523,6 @@ paths:
                     format: uuid
                 name: vpc_id
                 in: path
-            -   description: Tenant Id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             requestBody:
                 content:
                     application/json:
@@ -682,14 +561,6 @@ paths:
                     format: uuid
                 name: public_ip_id
                 in: path
-            -   description: Tenant Id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -721,14 +592,6 @@ paths:
                     format: uuid
                 name: public_ip_id
                 in: path
-            -   description: Tenant Id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             responses:
                 '204':
                     description: Successful Response
@@ -765,14 +628,6 @@ paths:
                     format: uuid
                 name: port_id
                 in: path
-            -   description: Tenant Id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -812,14 +667,6 @@ paths:
                     format: uuid
                 name: port_id
                 in: path
-            -   description: Tenant Id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -842,15 +689,6 @@ paths:
             summary: Tenant's public IP list
             description: Return a tenant's public ip list
             operationId: tenantPublicIpList
-            parameters:
-            -   description: Tenant Id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -883,14 +721,6 @@ paths:
                     format: uuid
                 name: security_group_id
                 in: path
-            -   description: Tenant Id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -922,14 +752,6 @@ paths:
                     format: uuid
                 name: security_group_id
                 in: path
-            -   description: Tenant Id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             requestBody:
                 content:
                     application/json:
@@ -968,14 +790,6 @@ paths:
                     format: uuid
                 name: rule_id
                 in: path
-            -   description: Tenant Id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -1007,14 +821,6 @@ paths:
                     format: uuid
                 name: rule_id
                 in: path
-            -   description: Tenant Id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             responses:
                 '204':
                     description: Successful Response
@@ -1049,14 +855,6 @@ paths:
                     $ref: '#/components/schemas/ProjectType'
                 name: project_type
                 in: query
-            -   description: Tenant Id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -1091,14 +889,6 @@ paths:
                     $ref: '#/components/schemas/ProjectType'
                 name: project_type
                 in: query
-            -   description: Tenant Id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             requestBody:
                 content:
                     application/json:
@@ -1140,14 +930,6 @@ paths:
                     $ref: '#/components/schemas/ProjectType'
                 name: project_type
                 in: query
-            -   description: Tenant Id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -1182,14 +964,6 @@ paths:
                     $ref: '#/components/schemas/ProjectType'
                 name: project_type
                 in: query
-            -   description: Tenant Id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             responses:
                 '204':
                     description: Successful Response
@@ -1215,14 +989,6 @@ paths:
                     format: uuid
                 name: vpc_id
                 in: path
-            -   description: Tenant Id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -1254,14 +1020,6 @@ paths:
                     format: uuid
                 name: vpc_id
                 in: path
-            -   description: Tenant Id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             requestBody:
                 content:
                     application/json:
@@ -1300,14 +1058,6 @@ paths:
                     format: uuid
                 name: security_group_id
                 in: path
-            -   description: Tenant Id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -1339,14 +1089,6 @@ paths:
                     format: uuid
                 name: security_group_id
                 in: path
-            -   description: Tenant Id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             responses:
                 '204':
                     description: Successful Response
@@ -1381,14 +1123,6 @@ paths:
                     $ref: '#/components/schemas/ProjectType'
                 name: project_type
                 in: query
-            -   description: Tenant Id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -1423,14 +1157,6 @@ paths:
                     $ref: '#/components/schemas/ProjectType'
                 name: project_type
                 in: query
-            -   description: Tenant Id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             requestBody:
                 content:
                     application/json:
@@ -1472,14 +1198,6 @@ paths:
                     $ref: '#/components/schemas/ProjectType'
                 name: project_type
                 in: query
-            -   description: Tenant Id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -1514,14 +1232,6 @@ paths:
                     $ref: '#/components/schemas/ProjectType'
                 name: project_type
                 in: query
-            -   description: Tenant Id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             responses:
                 '204':
                     description: Successful Response
@@ -1553,14 +1263,6 @@ paths:
                     $ref: '#/components/schemas/ProjectType'
                 name: project_type
                 in: query
-            -   description: Tenant Id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -1595,14 +1297,6 @@ paths:
                     $ref: '#/components/schemas/ProjectType'
                 name: project_type
                 in: query
-            -   description: Tenant Id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             requestBody:
                 content:
                     application/json:
@@ -1636,14 +1330,6 @@ paths:
                     $ref: '#/components/schemas/ProjectType'
                 name: project_type
                 in: query
-            -   description: Tenant Id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -1679,14 +1365,6 @@ paths:
                     $ref: '#/components/schemas/ProjectType'
                 name: project_type
                 in: query
-            -   description: Tenant Id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -1721,14 +1399,6 @@ paths:
                     $ref: '#/components/schemas/ProjectType'
                 name: project_type
                 in: query
-            -   description: Tenant Id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             responses:
                 '204':
                     description: Successful Response
@@ -1754,14 +1424,6 @@ paths:
                     format: uuid
                 name: vpc_id
                 in: path
-            -   description: Tenant Id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -1793,14 +1455,6 @@ paths:
                     format: uuid
                 name: vpc_id
                 in: path
-            -   description: Tenant Id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             requestBody:
                 content:
                     application/json:
@@ -1845,14 +1499,6 @@ paths:
                     $ref: '#/components/schemas/ProjectType'
                 name: project_type
                 in: query
-            -   description: Tenant Id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -1882,14 +1528,6 @@ paths:
                     format: uuid
                 name: subnet_id
                 in: path
-            -   description: Tenant Id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -1921,14 +1559,6 @@ paths:
                     format: uuid
                 name: subnet_id
                 in: path
-            -   description: Tenant Id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             responses:
                 '204':
                     description: Successful Response
@@ -1948,15 +1578,6 @@ paths:
             summary: Create Vpc Default
             operationId: create_vpc_default_v0_vpcs_default_post
             description: Create a default vpc
-            parameters:
-            -   description: Tenant Id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -1977,15 +1598,6 @@ paths:
             summary: List VPC
             description: Returns a list of VPCs for a provided tenant_id
             operationId: listVpcs
-            parameters:
-            -   description: Tenant Id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -2009,15 +1621,6 @@ paths:
             summary: Create VPC
             description: Create a VPC
             operationId: createVpc
-            parameters:
-            -   description: Tenant Id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             requestBody:
                 content:
                     application/json:
@@ -2056,14 +1659,6 @@ paths:
                     format: uuid
                 name: vpc_id
                 in: path
-            -   description: Tenant Id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -2095,14 +1690,6 @@ paths:
                     format: uuid
                 name: vpc_id
                 in: path
-            -   description: Tenant Id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             responses:
                 '204':
                     description: Successful Response
@@ -2121,15 +1708,6 @@ paths:
             - vpc
             summary: Delete Vpc All
             operationId: deleteAllVpcs
-            parameters:
-            -   description: Tenant Id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             description: Delete all vpcs from tenant
             responses:
                 '200':
@@ -2159,14 +1737,6 @@ paths:
                     $ref: '#/components/schemas/ProjectType'
                 name: project_type
                 in: query
-            -   description: Tenant Id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -2195,14 +1765,6 @@ paths:
                     $ref: '#/components/schemas/ProjectType'
                 name: project_type
                 in: query
-            -   description: Tenant Id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -2229,14 +1791,6 @@ paths:
                     $ref: '#/components/schemas/ProjectType'
                 name: project_type
                 in: query
-            -   description: Tenant Id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             requestBody:
                 content:
                     application/json:
@@ -2271,13 +1825,6 @@ paths:
                     $ref: '#/components/schemas/ProjectType'
                 name: project_type
                 in: query
-            -   description: Tenant Id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                name: x-tenant-id
-                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -2313,14 +1860,6 @@ paths:
                     $ref: '#/components/schemas/ProjectType'
                 name: project_type
                 in: query
-            -   description: Tenant Id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             requestBody:
                 content:
                     application/json:
@@ -2361,14 +1900,6 @@ paths:
                     $ref: '#/components/schemas/ProjectType'
                 name: project_type
                 in: query
-            -   description: Tenant Id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             requestBody:
                 content:
                     application/json:
@@ -2406,14 +1937,6 @@ paths:
                     $ref: '#/components/schemas/ProjectType'
                 name: project_type
                 in: query
-            -   description: Tenant Id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             requestBody:
                 content:
                     application/json:
@@ -2463,14 +1986,6 @@ paths:
                     $ref: '#/components/schemas/ProjectType'
                 name: project_type
                 in: query
-            -   description: Tenant Id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             responses:
                 '204':
                     description: Successful Response
@@ -2502,14 +2017,6 @@ paths:
                     $ref: '#/components/schemas/ProjectType'
                 name: project_type
                 in: query
-            -   description: Tenant Id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -2537,14 +2044,6 @@ paths:
                     $ref: '#/components/schemas/QuotaSlug'
                 name: quota_slug
                 in: query
-            -   description: Tenant Id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -3426,10 +2925,8 @@ components:
                 updated: '2023-04-17T17:31:28Z'
                 subnetpool_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                 external_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-                cidr_block: "[ATEN\xC7\xC3O] - Este campo futuramente substituir\xE1\
-                    \ 'cidr'"
-                ip_version: "[ATEN\xC7\xC3O] - Este campo futuramente substituir\xE1\
-                    \ 'ethertype'"
+                cidr_block: '[ATENÇÃO] - Este campo futuramente substituirá ''cidr'''
+                ip_version: '[ATENÇÃO] - Este campo futuramente substituirá ''ethertype'''
         SubnetsResponse:
             title: SubnetsResponse
             type: object
@@ -3472,10 +2969,8 @@ components:
                     updated: '2023-04-17T17:31:28Z'
                     subnetpool_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                     external_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-                    cidr_block: "[ATEN\xC7\xC3O] - Este campo futuramente substituir\xE1\
-                        \ 'cidr'"
-                    ip_version: "[ATEN\xC7\xC3O] - Este campo futuramente substituir\xE1\
-                        \ 'ethertype'"
+                    cidr_block: '[ATENÇÃO] - Este campo futuramente substituirá ''cidr'''
+                    ip_version: '[ATENÇÃO] - Este campo futuramente substituirá ''ethertype'''
         ValidationError:
             title: ValidationError
             required:
@@ -3700,9 +3195,8 @@ components:
                     authorizationUrl: https://idp-maas-sandbox.ipet.sh/auth/realms/master/protocol/openid-connect/auth
                     tokenUrl: https://idp-maas-sandbox.ipet.sh/auth/realms/master/protocol/openid-connect/token
                     scopes:
-                        network.read: "Ler informa\xE7\xF5es de recursos VPC IaaS"
-                        network.write: "Escrever informa\xE7\xF5es de recursos VPC\
-                            \ IaaS"
+                        network.read: Ler informações de recursos VPC IaaS
+                        network.write: Escrever informações de recursos VPC IaaS
             type: oauth2
             description: 'OAuth2 via IDPA
 
@@ -3721,8 +3215,7 @@ tags:
 -   name: subnets
     description: Rotas relacionadas as apis da VPC API Product para Subnets
 -   name: healthcheck
-    description: "Rotas relacionadas a verifica\xE7\xE3o da sa\xFAde da aplica\xE7\
-        \xE3o"
+    description: Rotas relacionadas a verificação da saúde da aplicação
 -   name: xaas_vpc
     description: Rotas relacionadas as apis utilizadas por outros produtos
 -   name: xaas_subnetpools

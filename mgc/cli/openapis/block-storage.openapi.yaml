@@ -103,14 +103,6 @@ paths:
                     format: string
                 name: quota_slug
                 in: query
-            -   description: x-tenant-id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -134,15 +126,6 @@ paths:
             summary: List snapshots
             description: List snapshots
             operationId: list_snapshots_v0_snapshots_get
-            parameters:
-            -   description: x-tenant-id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -165,15 +148,6 @@ paths:
             summary: Create snapshot
             description: Create snapshot
             operationId: create_snapshot_v0_snapshots_post
-            parameters:
-            -   description: x-tenant-id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             requestBody:
                 content:
                     application/json:
@@ -212,14 +186,6 @@ paths:
                     format: uuid
                 name: snapshot_id
                 in: path
-            -   description: x-tenant-id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             requestBody:
                 content:
                     application/json:
@@ -257,14 +223,6 @@ paths:
                     format: uuid
                 name: snapshot_id
                 in: path
-            -   description: x-tenant-id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             responses:
                 '204':
                     description: Successful Response
@@ -284,15 +242,6 @@ paths:
             summary: List Volumes
             description: Returns a list of volumes from the provided tenant_id
             operationId: list_volumes_v0_volumes_get
-            parameters:
-            -   description: x-tenant-id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -315,15 +264,6 @@ paths:
             summary: Create Volume
             description: Create a volume for a provided tenant_id
             operationId: create_volume_v0_volumes_post
-            parameters:
-            -   description: x-tenant-id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             requestBody:
                 content:
                     application/json:
@@ -362,14 +302,6 @@ paths:
                     format: uuid
                 name: id
                 in: path
-            -   description: x-tenant-id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -409,14 +341,6 @@ paths:
                     default: false
                 name: force
                 in: query
-            -   description: x-tenant-id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             responses:
                 '204':
                     description: Successful Response
@@ -444,14 +368,6 @@ paths:
                     format: uuid
                 name: id
                 in: path
-            -   description: x-tenant-id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             requestBody:
                 content:
                     application/json:
@@ -499,14 +415,6 @@ paths:
                     format: uuid
                 name: virtual_machine_id
                 in: path
-            -   description: x-tenant-id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             responses:
                 '200':
                     description: Successful Response
@@ -565,14 +473,6 @@ paths:
                     default: false
                 name: force
                 in: query
-            -   description: x-tenant-id
-                required: true
-                schema:
-                    title: X-Tenant-Id
-                    type: string
-                    format: uuid
-                name: x-tenant-id
-                in: header
             responses:
                 '200':
                     description: Successful Response
