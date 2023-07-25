@@ -11,3 +11,6 @@
 
 # Builds
 mgc/cli/cli
+
+# Go workspace
+go.work.sum
