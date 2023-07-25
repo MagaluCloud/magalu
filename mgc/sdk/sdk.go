@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"time"
 
 	"magalu.cloud/core"
 	"magalu.cloud/sdk/openapi"
@@ -21,8 +22,9 @@ type Schema = core.Schema
 type Value = core.Value
 
 type Sdk struct {
-	group *core.MergeGroup
-	auth  *core.Auth
+	group      *core.MergeGroup
+	auth       *core.Auth
+	httpClient *core.HttpClient
 }
 
 // TODO: Change config with build tags or from environment
@@ -63,6 +65,7 @@ func (o *Sdk) NewContext() context.Context {
 	var ctx = context.Background()
 	ctx = core.NewGrouperContext(ctx, o.Group())
 	ctx = core.NewAuthContext(ctx, o.Auth())
+	ctx = core.NewHttpClientContext(ctx, o.HttpClient())
 	return ctx
 }
 
@@ -104,4 +107,15 @@ func (o *Sdk) Auth() *core.Auth {
 		o.auth = core.NewAuth(config, client)
 	}
 	return o.auth
+}
+
+func (o *Sdk) HttpClient() *core.HttpClient {
+	if o.httpClient == nil {
+		o.httpClient = core.NewHttpClient(&http.Transport{
+			MaxIdleConns:       10,
+			IdleConnTimeout:    30 * time.Second,
+			DisableCompression: true,
+		})
+	}
+	return o.httpClient
 }
