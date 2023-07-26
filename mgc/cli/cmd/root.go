@@ -129,6 +129,14 @@ func loadDataFromFlags(flags *flag.FlagSet, schema *mgcSdk.Schema, dst map[strin
 	return nil
 }
 
+func format(result any) (string, error) {
+	parsedResult, err := json.MarshalIndent(result, "", "  ")
+	if err != nil {
+		return "", fmt.Errorf("Error pretty printing response: %s", err)
+	}
+	return string(parsedResult), nil
+}
+
 func AddAction(
 	sdk *mgcSdk.Sdk,
 	parentCmd *cobra.Command,
@@ -155,7 +163,14 @@ func AddAction(
 
 			ctx := sdk.NewContext()
 			result, err := exec.Execute(ctx, parameters, configs)
-			fmt.Println("RESULT:", result, err)
+			if err != nil {
+				return err
+			}
+			str, err := format(result)
+			if err != nil {
+				return err
+			}
+			fmt.Println(str)
 			return err
 		},
 	}
