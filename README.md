@@ -49,13 +49,10 @@ We provide a Postman collection that handles authentication as well:
 2. Edit the Collection
 3. Go to the `Authorization` Tab
 4. Click on `Get New Access Token`
-5. After performing the OAUTH procedures, copy the access token value
-to `$HOME/.mgc_sdk.yaml`
+5. Copy the access token value and set as a env var:
 
-After these steps `$HOME/.mgc_sdk.yaml` should look like:
-
-```yaml
-access_token: <very-long-token>
+```shell
+export MGC_SDK_ACCESS_TOKEN=long-token
 ```
 
 To ensure it is working, perform a CLI command that requires authentication:
