@@ -6,6 +6,7 @@ import (
 	"errors"
 	"net/http"
 	"net/url"
+	"os"
 	"strings"
 )
 
@@ -57,6 +58,10 @@ func NewAuth(config AuthConfig, client *http.Client) *Auth {
 }
 
 func (o *Auth) AccessToken() string {
+	// TODO: remove GetEnv and read from file
+	if o.accessToken == "" {
+		return os.Getenv("MGC_SDK_ACCESS_TOKEN")
+	}
 	return o.accessToken
 }
 

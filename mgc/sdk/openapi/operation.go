@@ -6,7 +6,6 @@ import (
 	"log"
 	"net/http"
 	"net/url"
-	"os"
 	"regexp"
 	"strings"
 
@@ -195,28 +194,26 @@ func (o *Operation) getServerURL(configs map[string]core.Value) (string, error) 
 }
 
 func replaceInPath(path string, param *openapi3.Parameter, val core.Value) (string, error) {
-	var strValue string
 	// TODO: handle complex conversion using openapi style values
 	// https://spec.openapis.org/oas/latest.html#style-values
-	switch valType := val.(type) {
-	case []core.Value:
-		return "", fmt.Errorf("Can not replace a slice into URL path: %v, param: %v", valType, param.Name)
-	case map[core.Value]core.Value:
-		return "", fmt.Errorf("Can not replace a map into URL path: %v, param: %v", valType, param.Name)
-	default:
-		strValue = fmt.Sprintf("%v", val)
+	if val == nil || fmt.Sprintf("%v", val) == "" {
+		return path, nil
 	}
 	paramTemplate := "{" + param.Name + "}"
-	return strings.ReplaceAll(path, paramTemplate, strValue), nil
+	return strings.ReplaceAll(path, paramTemplate, fmt.Sprintf("%v", val)), nil
 }
 
-func addQueryParam(qValues *url.Values, param *openapi3.Parameter, value core.Value) {
+func addQueryParam(qValues *url.Values, param *openapi3.Parameter, val core.Value) {
 	// TODO: handle complex conversion using openapi style values
 	// https://spec.openapis.org/oas/latest.html#style-values
-	if value == nil || fmt.Sprintf("%v", value) == "" {
+	if val == nil || fmt.Sprintf("%v", val) == "" {
+		if param.Schema != nil && param.Schema.Value != nil && param.Schema.Value.Default != nil {
+			qValues.Set(param.Name, fmt.Sprintf("%v", param.Schema.Value.Default))
+		}
 		return
+	} else {
+		qValues.Set(param.Name, fmt.Sprintf("%v", val))
 	}
-	qValues.Set(param.Name, fmt.Sprintf("%v", value))
 }
 
 func addHeaderParam(req *http.Request, param *openapi3.Parameter, val core.Value) {
@@ -278,19 +275,18 @@ func (o *Operation) buildRequestFromParams(
 	return req, nil
 }
 
-func setSecurityHeader(req *http.Request, secRequirements *openapi3.SecurityRequirements) error {
+func setSecurityHeader(req *http.Request, auth *core.Auth, secRequirements *openapi3.SecurityRequirements) error {
 	if secRequirements == nil {
 		return nil
 	}
 	for _, reqRef := range *secRequirements {
 		for secScheme := range reqRef {
 			if "oauth2" == strings.ToLower(secScheme) {
-				// TODO: get token from config
-				access_token := os.Getenv("MGC_SDK_ACCESS_TOKEN")
-				if access_token == "" {
-					return fmt.Errorf("Could not read acess token from env MGC_SDK_ACCESS_TOKEN")
+				accessToken := auth.AccessToken()
+				if accessToken == "" {
+					return fmt.Errorf("Unauthenticated, run `auth login`")
 				}
-				req.Header.Set("Authorization", "Bearer "+access_token)
+				req.Header.Set("Authorization", "Bearer "+accessToken)
 				return nil
 			}
 		}
@@ -299,7 +295,11 @@ func setSecurityHeader(req *http.Request, secRequirements *openapi3.SecurityRequ
 }
 
 // TODO: refactor this closer to the client that comes from a context
-func (o *Operation) createHttpRequest(paramValues map[string]core.Value, configs map[string]core.Value) (*http.Request, error) {
+func (o *Operation) createHttpRequest(
+	auth *core.Auth,
+	paramValues map[string]core.Value,
+	configs map[string]core.Value,
+) (*http.Request, error) {
 	req, err := o.buildRequestFromParams(paramValues, configs)
 	if err != nil {
 		return nil, err
@@ -310,7 +310,7 @@ func (o *Operation) createHttpRequest(paramValues map[string]core.Value, configs
 	req.Header.Add("Accept-Encoding", "gzip, deflate, br")
 	req.Header.Add("Connection", "keep-alive")
 
-	if err := setSecurityHeader(req, o.operation.Security); err != nil {
+	if err := setSecurityHeader(req, auth, o.operation.Security); err != nil {
 		return nil, err
 	}
 
@@ -331,6 +331,11 @@ func (o *Operation) Execute(
 		return nil, fmt.Errorf("No HTTP client configured")
 	}
 
+	auth := core.AuthFromContext(ctx)
+	if auth == nil {
+		return nil, fmt.Errorf("No Auth configured")
+	}
+
 	if err = parametersSchema.VisitJSON(parameters); err != nil {
 		return nil, err
 	}
@@ -339,7 +344,7 @@ func (o *Operation) Execute(
 		return nil, err
 	}
 
-	req, err := o.createHttpRequest(parameters, configs)
+	req, err := o.createHttpRequest(auth, parameters, configs)
 	if err != nil {
 		return nil, err
 	}
