@@ -1,7 +1,9 @@
 package openapi
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
@@ -229,6 +231,39 @@ func addCookieParam(req *http.Request, param *openapi3.Parameter, val core.Value
 	})
 }
 
+func (o *Operation) createRequestBody(pValues map[string]core.Value) (string, *bytes.Buffer, error) {
+	rbr := o.operation.RequestBody
+	if rbr == nil {
+		return "", bytes.NewBuffer(nil), nil
+	}
+
+	rb := rbr.Value
+	mt := rb.Content.Get("application/json")
+	if mt == nil {
+		// TODO: parse body for multipart and other content types
+		return "", nil, fmt.Errorf("Can not parse body for content type other than application/json")
+	}
+
+	content := mt.Schema.Value
+	if content == nil {
+		return "", nil, fmt.Errorf("Request body with empty schema ref")
+	}
+
+	body := map[string]core.Value{}
+	for pKey, ref := range content.Properties {
+		parameter := ref.Value
+		name := getNameExtension(o.extensionPrefix, parameter.Extensions, pKey)
+		if val, ok := pValues[name]; ok {
+			body[pKey] = val
+		}
+	}
+	bodyBuf := new(bytes.Buffer)
+	if err := json.NewEncoder(bodyBuf).Encode(body); err != nil {
+		return "", nil, fmt.Errorf("Error encoding body content for request: %v", err)
+	}
+	return "application/json", bodyBuf, nil
+}
+
 func (o *Operation) buildRequestFromParams(
 	paramValues map[string]core.Value,
 	configs map[string]core.Value,
@@ -238,10 +273,21 @@ func (o *Operation) buildRequestFromParams(
 		return nil, err
 	}
 
-	req, err := http.NewRequest(strings.ToUpper(o.method), serverURL, nil)
+	httpMethod := strings.ToUpper(o.method)
+	bodyBuf := bytes.NewBuffer(nil)
+	var mimeType string
+	if httpMethod == http.MethodPost || httpMethod == http.MethodPut || httpMethod == http.MethodPatch {
+		mimeType, bodyBuf, err = o.createRequestBody(paramValues)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	req, err := http.NewRequest(httpMethod, serverURL, bodyBuf)
 	if err != nil {
 		return nil, err
 	}
+	req.Header.Set("Content-Type", mimeType)
 
 	queryValues := url.Values{}
 	for _, ref := range o.operation.Parameters {
