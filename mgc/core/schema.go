@@ -19,21 +19,15 @@ func NewObjectSchema(properties map[string]*Schema, required []string) *Schema {
 }
 
 func NewStringSchema() *Schema {
-	return &Schema{
-		Type: "strings",
-	}
+	return (*Schema)(openapi3.NewStringSchema())
 }
 
 func NewNumberSchema() *Schema {
-	return &Schema{
-		Type: "number",
-	}
+	return (*Schema)(openapi3.NewFloat64Schema())
 }
 
 func NewBooleanSchema() *Schema {
-	return &Schema{
-		Type: "boolean",
-	}
+	return (*Schema)(openapi3.NewBoolSchema())
 }
 
 func NewNullSchema() *Schema {
@@ -57,4 +51,14 @@ func SetDefault(schema *Schema, value any) *Schema {
 func SetDescription(schema *Schema, description string) *Schema {
 	schema.Description = description
 	return schema
+}
+
+// UnmarshalJSON sets Schema to a copy of data.
+func (schema *Schema) UnmarshalJSON(data []byte) error {
+	return (*openapi3.Schema)(schema).UnmarshalJSON(data)
+}
+
+// MarshalJSON returns the JSON encoding of Schema.
+func (schema Schema) MarshalJSON() ([]byte, error) {
+	return openapi3.Schema(schema).MarshalJSON()
 }
