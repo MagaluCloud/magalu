@@ -1,0 +1,38 @@
+# This file is to be merged on top of mgc/cli/openapis/vpc.openapi.yaml
+# using yaml_merge.py
+# NOTE: Lists are merged by their indexes, be careful with parameters, tags and such!
+# to keep it sane, keep some list item identifier (ex: "name") and add extra properties,
+# such as "x-cli-name" or "x-cli-description"
+
+paths:
+    /v0/volumes:
+        get:
+            x-cli-description: List all Block Storage volumes
+            x-cli-name: list
+        post:
+            x-cli-description: Create a Block Storage volume
+            x-cli-name: create
+    /v0/volumes/{id}:
+        get:
+            x-cli-description: Get a Block Storage volume details
+            x-cli-name: get
+        delete:
+            x-cli-description: Delete a Block Storage volume
+            x-cli-name: delete
+        patch:
+            x-cli-description: Update a Block Storage volume
+            x-cli-name: update
+
+tags:
+-   name: healthchecks
+    description: healthchecks
+    x-cli-hidden: true
+-   name: usage
+    description: usage
+-   name: snapshots
+    description: snapshots
+-   name: volume-types
+    description: volume types
+-   name: block-storage
+    x-cli-description: Block Storage Volume Resources
+    x-cli-name: volume

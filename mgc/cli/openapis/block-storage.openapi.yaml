@@ -258,6 +258,8 @@ paths:
             security:
             -   OAuth2:
                 - block-storage.read
+            x-cli-description: List all Block Storage volumes
+            x-cli-name: list
         post:
             tags:
             - block-storage
@@ -286,6 +288,8 @@ paths:
             security:
             -   OAuth2:
                 - block-storage.write
+            x-cli-description: Create a Block Storage volume
+            x-cli-name: create
     /v0/volumes/{id}:
         get:
             tags:
@@ -318,6 +322,8 @@ paths:
             security:
             -   OAuth2:
                 - block-storage.read
+            x-cli-description: Get a Block Storage volume details
+            x-cli-name: get
         delete:
             tags:
             - block-storage
@@ -353,6 +359,8 @@ paths:
             security:
             -   OAuth2:
                 - block-storage.write
+            x-cli-description: Delete a Block Storage volume
+            x-cli-name: delete
         patch:
             tags:
             - block-storage
@@ -390,6 +398,8 @@ paths:
             security:
             -   OAuth2:
                 - block-storage.write
+            x-cli-description: Update a Block Storage volume
+            x-cli-name: update
     /v0/volumes/{id}/attach/{virtual_machine_id}:
         post:
             tags:
@@ -1004,6 +1014,7 @@ components:
 tags:
 -   name: healthchecks
     description: healthchecks
+    x-cli-hidden: true
 -   name: usage
     description: usage
 -   name: snapshots
@@ -1012,6 +1023,8 @@ tags:
     description: volume types
 -   name: block-storage
     description: block storage
+    x-cli-description: Block Storage Volume Resources
+    x-cli-name: volume
 servers:
 -   url: https://api-block-storage.{region}.jaxyendy.com
     variables:
@@ -1019,6 +1032,6 @@ servers:
             description: Region to reach the service
             default: br-ne-1
             enum:
-                - br-ne-1
-                - br-ne-2
-                - br-se-1
+            - br-ne-1
+            - br-ne-2
+            - br-se-1
