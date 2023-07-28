@@ -24,13 +24,13 @@ func newList() *core.StaticExecute {
 		"list",
 		"",
 		"list all possible configs",
-		func(ctx context.Context) (result *map[string]any, err error) {
+		func(ctx context.Context) (result map[string]any, err error) {
 			root := core.GrouperFromContext(ctx)
 			if root == nil {
 				return nil, fmt.Errorf("Couldn't get Group from context")
 			}
 
-			configMap := map[string]*core.Schema{}
+			configMap := map[string]any{}
 			_, err = core.VisitAllExecutors(root, []string{}, func(executor core.Executor, path []string) (bool, error) {
 				for name, ref := range executor.ConfigsSchema().Properties {
 					current := (*core.Schema)(ref.Value)
@@ -52,7 +52,7 @@ func newList() *core.StaticExecute {
 				return nil, err
 			}
 
-			return &map[string]any{"config": configMap}, nil
+			return configMap, nil
 		},
 	)
 }
