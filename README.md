@@ -62,6 +62,16 @@ cd mgc/cli
 go run main.go virtual-machine instances get
 ```
 
+## Adding new APIs
+
+To add a new API spec, add the URL and name to `./scripts/add_specs.sh`. Then, run:
+
+```shell
+./scripts/add_specs.sh mgc/cli/openapis
+```
+
+This will fetch the URL, apply modifications and save in the given path `mgc/cli/openapis`.
+
 ## Contributing
 
 ### pre-commit

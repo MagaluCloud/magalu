@@ -85,3 +85,27 @@ python3 scripts/yaml_merge.py \
     mgc/cli/openapis/vpc.openapi.yaml \
     openapi-customizations/vpc.openapi.yaml
 ```
+
+### [add_specs.sh](./add_specs.sh):
+
+Read a list of API URLs, fetch and apply the necessary python scripts on top of it:
+
+1. sync_oapi.py
+2. remove_tenant_id.py
+3. yaml_merge.py
+
+```shell
+./scripts/add_specs.sh mgc/cli/openapis
+```
+
+The final specs are saved to `mgc/cli/openapis` path provided by the user. To add a new
+API, open the `./scripts/add_specs.sh` file and modify the list with the file name + url:
+
+```shell
+API_LIST=(
+    # Add new APIs in this format: key|url
+    "dbaas|https://dbaas.br-ne-1.jaxyendy.com/openapi.json"
+    "mke|https://mke.br-ne-1.jaxyendy.com/docs/openapi-with-snippets.json"
+    "object-storage|https://object-storage.br-ne-1.jaxyendy.com/openapi.json"
+)
+```
