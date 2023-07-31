@@ -35,7 +35,7 @@ python3 sync_oapi.py  --help
 For running:
 
 ```shell
-python3 sync_oapi.py <url-to-internal-spec> <path-ext-yaml-spec> -o <output-path-new-ext>
+python3 sync_oapi.py <url-to-internal-spec> --ext <path-ext-yaml-spec> -o <output-path-new-ext>
 ```
 
 Where url to internal spec is something like: "https://vm-region.proxy.com/openapi.json"

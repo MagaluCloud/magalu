@@ -1,9 +1,13 @@
 from typing import Any, Dict
+from urllib.parse import urlparse
 import yaml
+import logging
 import warnings
 import argparse
 import urllib.request
 import json
+
+logger = logging.getLogger(__name__)
 
 SERVER_VARIABLES = {
     "region": {
@@ -85,14 +89,24 @@ def load_yaml(path: str) -> OAPISchema:
         return yaml.load(fd, Loader=yaml.CLoader)
 
 
+def add_servers(spec: OAPISchema, base_url: str):
+    host = urlparse(base_url).hostname
+    if not host:
+        warnings.warn(f"Could not get host from ${base_url}")
+        return
+
+    spec_name = host.split(".")[0]
+    for url in SERVER_URL_MAP:
+        if spec_name.lower() in url:
+            spec["servers"] = [SERVER_URL_MAP[url]]
+
+
 def update_server_urls(spec: OAPISchema):
     assert "servers" in spec, "Servers key not present in external YAML"
     for server in spec["servers"]:
         url = server["url"]
         repl = SERVER_URL_MAP.get(url)
-        if repl is None:
-            warnings.warn(f"Unrecognized url in external: {url}", category=UserWarning)
-        else:
+        if repl:
             server.update(repl)
 
 
@@ -155,9 +169,10 @@ if __name__ == "__main__":
     )
     # External = Viveiro in MGC context, intermediate between product and Kong
     parser.add_argument(
-        "external_spec_path",
+        "--ext",
         type=str,
-        help="File path to current external OpenAPI spec",
+        help="File path to current external OpenAPI spec. If not provided, downloaded "
+        "internal spec will be used",
     )
     parser.add_argument(
         "-o",
@@ -170,10 +185,13 @@ if __name__ == "__main__":
     # Load json into dict
     internal_spec = fetch_and_parse(args.internal_spec_url)
     # Load yaml into dict
-    external_spec = load_yaml(args.external_spec_path)
+    external_spec = load_yaml(args.ext) if args.ext else internal_spec
 
     # Replace requestBody from external to the internal value if they mismatch
     sync_request_body(internal_spec, external_spec)
+
+    # Add server url if necessary
+    add_servers(external_spec, args.internal_spec_url)
 
     # Replace server url
     update_server_urls(external_spec)
@@ -182,4 +200,8 @@ if __name__ == "__main__":
     change_error_response(external_spec)
 
     # Write external to file
-    save_external(external_spec, args.output or args.external_spec_path)
+    output_path = args.output or args.ext
+    if output_path:
+        save_external(external_spec, output_path)
+    else:
+        logger.info("Not saving final spec to an output file")
