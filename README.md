@@ -62,6 +62,18 @@ cd mgc/cli
 go run main.go virtual-machine instances get
 ```
 
+## Adding new APIs
+
+To add a new API spec, run `./scripts/add_specs.sh` with the following:
+
+```shell
+./scripts/add_specs.sh mke https://mke.br-ne-1.jaxyendy.com/docs/openapi-with-snippets.json
+./scripts/add_specs.sh dbaas https://dbaas.br-ne-1.jaxyendy.com/openapi.json
+./scripts/add_specs.sh object-storage https://object-storage.br-ne-1.jaxyendy.com/openapi.json
+```
+
+This will fetch the URL, apply modifications and save in the given path `mgc/cli/openapis`.
+
 ## Contributing
 
 ### pre-commit

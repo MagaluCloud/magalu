@@ -1,58 +1,8 @@
 from typing import Any, Dict
 import yaml
-import warnings
 import argparse
 import urllib.request
 import json
-
-SERVER_VARIABLES = {
-    "region": {
-        "description": "Region to reach the service",
-        "default": "br-ne-1",
-        "enum": [
-            "br-ne-1",
-            "br-ne-2",
-            "br-se-1",
-        ],
-    }
-}
-
-SERVER_URL_MAP = {
-    # VM
-    "https://virtual-machine.br-ne-1.jaxyendy.com": {
-        "url": "https://api-virtual-machine.{region}.jaxyendy.com",
-        "variables": SERVER_VARIABLES,
-    },
-    "https://virtual-machine.br-ne1-prod.jaxyendy.com": {
-        "url": "https://api-virtual-machine.{region}.jaxyendy.com",
-        "variables": SERVER_VARIABLES,
-    },
-    # Block Storage
-    "https://block-storage.br-ne-1.jaxyendy.com": {
-        "url": "https://api-block-storage.{region}.jaxyendy.com",
-        "variables": SERVER_VARIABLES,
-    },
-    # VPC
-    "https://vpc.br-ne-1.jaxyendy.com": {
-        "url": "https://api-vpc.{region}.jaxyendy.com",
-        "variables": SERVER_VARIABLES,
-    },
-    # Object Storage
-    "https://object-storage.br-ne-1.jaxyendy.com": {
-        "url": "https://api-object-storage.{region}.jaxyendy.com",
-        "variables": SERVER_VARIABLES,
-    },
-    # DBaaS
-    "https://dbaas.br-ne-1.jaxyendy.com": {
-        "url": "https://api-dbaas.{region}.jaxyendy.com",
-        "variables": SERVER_VARIABLES,
-    },
-    # K8S
-    "https://mke.br-ne-1.jaxyendy.com": {
-        "url": "https://api-mke.{region}.jaxyendy.com",
-        "variables": SERVER_VARIABLES,
-    },
-}
 
 OAPISchema = Dict[str, Any]
 
@@ -83,17 +33,6 @@ def fetch_and_parse(json_oapi_url: str) -> OAPISchema:
 def load_yaml(path: str) -> OAPISchema:
     with open(path, "r") as fd:
         return yaml.load(fd, Loader=yaml.CLoader)
-
-
-def update_server_urls(spec: OAPISchema):
-    assert "servers" in spec, "Servers key not present in external YAML"
-    for server in spec["servers"]:
-        url = server["url"]
-        repl = SERVER_URL_MAP.get(url)
-        if repl is None:
-            warnings.warn(f"Unrecognized url in external: {url}", category=UserWarning)
-        else:
-            server.update(repl)
 
 
 def save_external(spec: OAPISchema, path: str):
@@ -155,9 +94,10 @@ if __name__ == "__main__":
     )
     # External = Viveiro in MGC context, intermediate between product and Kong
     parser.add_argument(
-        "external_spec_path",
+        "--ext",
         type=str,
-        help="File path to current external OpenAPI spec",
+        help="File path to current external OpenAPI spec. If not provided, downloaded "
+        "internal spec will be used",
     )
     parser.add_argument(
         "-o",
@@ -170,16 +110,16 @@ if __name__ == "__main__":
     # Load json into dict
     internal_spec = fetch_and_parse(args.internal_spec_url)
     # Load yaml into dict
-    external_spec = load_yaml(args.external_spec_path)
+    external_spec = load_yaml(args.ext) if args.ext else internal_spec
 
     # Replace requestBody from external to the internal value if they mismatch
-    sync_request_body(internal_spec, external_spec)
-
-    # Replace server url
-    update_server_urls(external_spec)
+    if args.ext:
+        sync_request_body(internal_spec, external_spec)
 
     # Replace Error Object
     change_error_response(external_spec)
 
     # Write external to file
-    save_external(external_spec, args.output or args.external_spec_path)
+    output_path = args.output or args.ext
+    if output_path:
+        save_external(external_spec, output_path)

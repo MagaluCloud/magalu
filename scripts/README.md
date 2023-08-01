@@ -11,77 +11,34 @@ python3 <script> -h
 
 ## Scripts
 
-### [sync_oapi.py](./sync_oapi.py):
+### [add_specs.sh](./add_specs.sh)
 
-Sync OpenAPI specs between internal implementation, which is a JSON generated from the
-actual backend implementation (always updated) and the current external OpenAPI being
-served.
-
-Some transformations that need to be done on top of the current external spec:
-
-1. Fix `server.urls` to match the external URLs
-2. Replace any `requestBody` that mismatches from the internal spec, update with the
-internal one
-3. Change the error object since externals have a different Kong formatting for it
-
-#### Running
-
-For help:
+Shell script to add OpenAPI specifications from remote. It will fetch, parse, create
+customizations and leave ready for usage of CLI:
 
 ```shell
-python3 sync_oapi.py  --help
+./scripts/add_specs.sh mke https://mke.br-ne-1.jaxyendy.com/docs/openapi-with-snippets.json
+./scripts/add_specs.sh dbaas https://dbaas.br-ne-1.jaxyendy.com/openapi.json
+./scripts/add_specs.sh object-storage https://object-storage.br-ne-1.jaxyendy.com/openapi.json
 ```
 
-For running:
+This will also create a new customization file if not present with the following content:
 
-```shell
-python3 sync_oapi.py <url-to-internal-spec> <path-ext-yaml-spec> -o <output-path-new-ext>
-```
+```yaml
+# This file is to be merged on top of $OAPI_PATH/$SPEC_FILE
+# using yaml_merge.py
+# NOTE: Lists are merged by their indexes, be careful with parameters, tags and such!
+# to keep it sane, keep some list item identifier (ex: "name") and add extra properties,
+# such as "x-cli-name" or "x-cli-description"
 
-Where url to internal spec is something like: "https://vm-region.proxy.com/openapi.json"
-
-### [remove_tenant_id.py](./remove_tenant_id.py):
-
-Some external OpenAPI specs were shared with endpoints expecting
-`x-tenant-id` parameter in the header. However, this is not what we
-will have in production. Thus, we need to remove this parameter from
-the spec for now.
-
-#### Running
-
-For help:
-
-```shell
-python3 remove_tenant_id.py  --help
-```
-
-For running:
-
-```shell
-python3 remove_tenant_id.py <path-to-openapi-spec>
-```
-
-### [yaml_merge.py](./yaml_merge.py):
-
-Merge some extras/customizations on top of an existing YAML, this is
-useful to add `x-cli-name`, `x-cli-description` and `x-cli-hidden`
-to an OpenAPI specification.
-
-#### Running
-
-For help:
-
-```shell
-python3 yaml_merge.py  --help
-```
-
-For running:
-
-```shell
-
-```shell
-cd ..
-python3 scripts/yaml_merge.py \
-    mgc/cli/openapis/vpc.openapi.yaml \
-    openapi-customizations/vpc.openapi.yaml
+servers:
+-   url: https://api-$API_NAME.{region}.jaxyendy.com
+    variables:
+        region:
+            description: Region to reach the service
+            default: br-ne-1
+            enum:
+            - br-ne-1
+            - br-ne-2
+            - br-se-1
 ```
