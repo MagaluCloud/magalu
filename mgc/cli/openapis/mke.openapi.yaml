@@ -1,0 +1,2690 @@
+openapi: 3.0.1
+info:
+    title: k8s-api-product
+    description: APIs referentes ao produto de kubernetes
+    contact:
+        name: Tribo IAAS Cloud
+        url: https://github.com/luizalabs
+        email: suporte@jaxyendy.com
+    license:
+        name: Apache 2.0
+        url: https://www.apache.org/licenses/LICENSE-2.0.html
+    version: 0.1.0
+servers:
+-   url: https://api-mke.pre-prod.br-ne-1.jaxyendy.com
+    description: NE-1 pre-prod
+-   url: https://api-mke.team-integration.br-ne-1.jaxyendy.com
+    description: NE-1 team-integration
+-   url: https://api-mke.br-ne-1.jaxyendy.com
+    description: NE-1 prod
+-   url: https://api-mke.br-se1-pre-prod.jaxyendy.com
+    description: SE1 pre-prod
+-   url: https://api-mke.br-se1-team-integration.jaxyendy.com
+    description: SE1 team-integration
+-   url: https://api-mke.br-se1-prod.jaxyendy.com
+    description: SE1 prod
+paths:
+    /v0/clusters:
+        post:
+            tags:
+            - cluster
+            summary: Create a cluster
+            description: Criação de um cluster kubernetes
+            operationId: createCluster
+            security:
+            -   BearerAuth:
+                - mke.write
+            -   OAuth2:
+                - mke.write
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/ClusterRequest'
+            responses:
+                '201':
+                    description: Successful operation
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CreateClusterResponse'
+                '400':
+                    description: Bad Request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '401':
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '404':
+                    description: Not Found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '429':
+                    description: Too Many Requests
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '500':
+                    description: Internal Server Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+            x-codeSamples:
+            -   lang: Shell + Curl
+                source: "curl --request POST \\\n  --url https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters\
+                    \ \\\n  --header 'Authorization: Bearer REPLACE_BEARER_TOKEN'\
+                    \ \\\n  --header 'content-type: application/json' \\\n  --header\
+                    \ 'x-tenant-id: SOME_STRING_VALUE' \\\n  --data '{\"name\":\"\
+                    cluster-exemplo\",\"version\":\"v1.24.10\",\"description\":\"\
+                    Esse é um cluster de exemplo\",\"enabled_bastion\":false,\"enabled_server_group\"\
+                    :false,\"node_pools\":[{\"name\":\"nodepool-exemplo\",\"flavor\"\
+                    :\"cloud-k8s.gp1.small\",\"replicas\":3,\"tags\":[\"tag-value1\"\
+                    ],\"taints\":[{\"key\":\"exemplo-key\",\"value\":\"valor1\",\"\
+                    effect\":\"NoSchedule\"}],\"auto_scale\":{\"enabled\":true,\"\
+                    min_replicas\":2,\"max_replicas\":5}}]}'"
+            -   lang: Shell + Httpie
+                source: "echo '{\"name\":\"cluster-exemplo\",\"version\":\"v1.24.10\"\
+                    ,\"description\":\"Esse é um cluster de exemplo\",\"enabled_bastion\"\
+                    :false,\"enabled_server_group\":false,\"node_pools\":[{\"name\"\
+                    :\"nodepool-exemplo\",\"flavor\":\"cloud-k8s.gp1.small\",\"replicas\"\
+                    :3,\"tags\":[\"tag-value1\"],\"taints\":[{\"key\":\"exemplo-key\"\
+                    ,\"value\":\"valor1\",\"effect\":\"NoSchedule\"}],\"auto_scale\"\
+                    :{\"enabled\":true,\"min_replicas\":2,\"max_replicas\":5}}]}'\
+                    \ |  \\\n  http POST https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters\
+                    \ \\\n  Authorization:'Bearer REPLACE_BEARER_TOKEN' \\\n  content-type:application/json\
+                    \ \\\n  x-tenant-id:SOME_STRING_VALUE"
+            -   lang: Go + Native
+                source: "package main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n\t\"\
+                    net/http\"\n\t\"io/ioutil\"\n)\n\nfunc main() {\n\n\turl := \"\
+                    https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters\"\n\n\
+                    \tpayload := strings.NewReader(\"{\\\"name\\\":\\\"cluster-exemplo\\\
+                    \",\\\"version\\\":\\\"v1.24.10\\\",\\\"description\\\":\\\"Esse\
+                    \ é um cluster de exemplo\\\",\\\"enabled_bastion\\\":false,\\\
+                    \"enabled_server_group\\\":false,\\\"node_pools\\\":[{\\\"name\\\
+                    \":\\\"nodepool-exemplo\\\",\\\"flavor\\\":\\\"cloud-k8s.gp1.small\\\
+                    \",\\\"replicas\\\":3,\\\"tags\\\":[\\\"tag-value1\\\"],\\\"taints\\\
+                    \":[{\\\"key\\\":\\\"exemplo-key\\\",\\\"value\\\":\\\"valor1\\\
+                    \",\\\"effect\\\":\\\"NoSchedule\\\"}],\\\"auto_scale\\\":{\\\"\
+                    enabled\\\":true,\\\"min_replicas\\\":2,\\\"max_replicas\\\":5}}]}\"\
+                    )\n\n\treq, _ := http.NewRequest(\"POST\", url, payload)\n\n\t\
+                    req.Header.Add(\"content-type\", \"application/json\")\n\treq.Header.Add(\"\
+                    x-tenant-id\", \"SOME_STRING_VALUE\")\n\treq.Header.Add(\"Authorization\"\
+                    , \"Bearer REPLACE_BEARER_TOKEN\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\
+                    \n\tdefer res.Body.Close()\n\tbody, _ := ioutil.ReadAll(res.Body)\n\
+                    \n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+            -   lang: Python + Python3
+                source: "import http.client\n\nconn = http.client.HTTPSConnection(\"\
+                    api-mke.pre-prod.br-ne-1.jaxyendy.com\")\n\npayload = \"{\\\"\
+                    name\\\":\\\"cluster-exemplo\\\",\\\"version\\\":\\\"v1.24.10\\\
+                    \",\\\"description\\\":\\\"Esse é um cluster de exemplo\\\",\\\
+                    \"enabled_bastion\\\":false,\\\"enabled_server_group\\\":false,\\\
+                    \"node_pools\\\":[{\\\"name\\\":\\\"nodepool-exemplo\\\",\\\"\
+                    flavor\\\":\\\"cloud-k8s.gp1.small\\\",\\\"replicas\\\":3,\\\"\
+                    tags\\\":[\\\"tag-value1\\\"],\\\"taints\\\":[{\\\"key\\\":\\\"\
+                    exemplo-key\\\",\\\"value\\\":\\\"valor1\\\",\\\"effect\\\":\\\
+                    \"NoSchedule\\\"}],\\\"auto_scale\\\":{\\\"enabled\\\":true,\\\
+                    \"min_replicas\\\":2,\\\"max_replicas\\\":5}}]}\"\n\nheaders =\
+                    \ {\n    'content-type': \"application/json\",\n    'x-tenant-id':\
+                    \ \"SOME_STRING_VALUE\",\n    'Authorization': \"Bearer REPLACE_BEARER_TOKEN\"\
+                    \n    }\n\nconn.request(\"POST\", \"/v0/clusters\", payload, headers)\n\
+                    \nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"\
+                    utf-8\"))"
+            -   lang: Node + Native
+                source: "const http = require(\"https\");\n\nconst options = {\n \
+                    \ \"method\": \"POST\",\n  \"hostname\": \"api-mke.pre-prod.br-ne-1.jaxyendy.com\"\
+                    ,\n  \"port\": null,\n  \"path\": \"/v0/clusters\",\n  \"headers\"\
+                    : {\n    \"content-type\": \"application/json\",\n    \"x-tenant-id\"\
+                    : \"SOME_STRING_VALUE\",\n    \"Authorization\": \"Bearer REPLACE_BEARER_TOKEN\"\
+                    \n  }\n};\n\nconst req = http.request(options, function (res)\
+                    \ {\n  const chunks = [];\n\n  res.on(\"data\", function (chunk)\
+                    \ {\n    chunks.push(chunk);\n  });\n\n  res.on(\"end\", function\
+                    \ () {\n    const body = Buffer.concat(chunks);\n    console.log(body.toString());\n\
+                    \  });\n});\n\nreq.write(JSON.stringify({\n  name: 'cluster-exemplo',\n\
+                    \  version: 'v1.24.10',\n  description: 'Esse é um cluster de\
+                    \ exemplo',\n  enabled_bastion: false,\n  enabled_server_group:\
+                    \ false,\n  node_pools: [\n    {\n      name: 'nodepool-exemplo',\n\
+                    \      flavor: 'cloud-k8s.gp1.small',\n      replicas: 3,\n  \
+                    \    tags: ['tag-value1'],\n      taints: [{key: 'exemplo-key',\
+                    \ value: 'valor1', effect: 'NoSchedule'}],\n      auto_scale:\
+                    \ {enabled: true, min_replicas: 2, max_replicas: 5}\n    }\n \
+                    \ ]\n}));\nreq.end();"
+            -   lang: Ruby + Native
+                source: 'require ''uri''
+
+                    require ''net/http''
+
+                    require ''openssl''
+
+
+                    url = URI("https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters")
+
+
+                    http = Net::HTTP.new(url.host, url.port)
+
+                    http.use_ssl = true
+
+                    http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+
+                    request = Net::HTTP::Post.new(url)
+
+                    request["content-type"] = ''application/json''
+
+                    request["x-tenant-id"] = ''SOME_STRING_VALUE''
+
+                    request["Authorization"] = ''Bearer REPLACE_BEARER_TOKEN''
+
+                    request.body = "{\"name\":\"cluster-exemplo\",\"version\":\"v1.24.10\",\"description\":\"Esse
+                    é um cluster de exemplo\",\"enabled_bastion\":false,\"enabled_server_group\":false,\"node_pools\":[{\"name\":\"nodepool-exemplo\",\"flavor\":\"cloud-k8s.gp1.small\",\"replicas\":3,\"tags\":[\"tag-value1\"],\"taints\":[{\"key\":\"exemplo-key\",\"value\":\"valor1\",\"effect\":\"NoSchedule\"}],\"auto_scale\":{\"enabled\":true,\"min_replicas\":2,\"max_replicas\":5}}]}"
+
+
+                    response = http.request(request)
+
+                    puts response.read_body'
+        get:
+            tags:
+            - cluster
+            summary: List all clusters
+            description: Lista todos os clusters de um usuário
+            operationId: getClusters
+            security:
+            -   BearerAuth:
+                - mke.read
+            -   OAuth2:
+                - mke.read
+            responses:
+                '200':
+                    description: Successful operation
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ClustersResponse'
+                '400':
+                    description: Bad Request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '401':
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '404':
+                    description: Not Found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '429':
+                    description: Too Many Requests
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '500':
+                    description: Internal Server Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+            x-codeSamples:
+            -   lang: Shell + Curl
+                source: "curl --request GET \\\n  --url https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters\
+                    \ \\\n  --header 'Authorization: Bearer REPLACE_BEARER_TOKEN'\
+                    \ \\\n  --header 'x-tenant-id: SOME_STRING_VALUE'"
+            -   lang: Shell + Httpie
+                source: "http GET https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters\
+                    \ \\\n  Authorization:'Bearer REPLACE_BEARER_TOKEN' \\\n  x-tenant-id:SOME_STRING_VALUE"
+            -   lang: Go + Native
+                source: "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"\
+                    io/ioutil\"\n)\n\nfunc main() {\n\n\turl := \"https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters\"\
+                    \n\n\treq, _ := http.NewRequest(\"GET\", url, nil)\n\n\treq.Header.Add(\"\
+                    x-tenant-id\", \"SOME_STRING_VALUE\")\n\treq.Header.Add(\"Authorization\"\
+                    , \"Bearer REPLACE_BEARER_TOKEN\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\
+                    \n\tdefer res.Body.Close()\n\tbody, _ := ioutil.ReadAll(res.Body)\n\
+                    \n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+            -   lang: Python + Python3
+                source: "import http.client\n\nconn = http.client.HTTPSConnection(\"\
+                    api-mke.pre-prod.br-ne-1.jaxyendy.com\")\n\nheaders = {\n    'x-tenant-id':\
+                    \ \"SOME_STRING_VALUE\",\n    'Authorization': \"Bearer REPLACE_BEARER_TOKEN\"\
+                    \n    }\n\nconn.request(\"GET\", \"/v0/clusters\", headers=headers)\n\
+                    \nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"\
+                    utf-8\"))"
+            -   lang: Node + Native
+                source: "const http = require(\"https\");\n\nconst options = {\n \
+                    \ \"method\": \"GET\",\n  \"hostname\": \"api-mke.pre-prod.br-ne-1.jaxyendy.com\"\
+                    ,\n  \"port\": null,\n  \"path\": \"/v0/clusters\",\n  \"headers\"\
+                    : {\n    \"x-tenant-id\": \"SOME_STRING_VALUE\",\n    \"Authorization\"\
+                    : \"Bearer REPLACE_BEARER_TOKEN\"\n  }\n};\n\nconst req = http.request(options,\
+                    \ function (res) {\n  const chunks = [];\n\n  res.on(\"data\"\
+                    , function (chunk) {\n    chunks.push(chunk);\n  });\n\n  res.on(\"\
+                    end\", function () {\n    const body = Buffer.concat(chunks);\n\
+                    \    console.log(body.toString());\n  });\n});\n\nreq.end();"
+            -   lang: Ruby + Native
+                source: 'require ''uri''
+
+                    require ''net/http''
+
+                    require ''openssl''
+
+
+                    url = URI("https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters")
+
+
+                    http = Net::HTTP.new(url.host, url.port)
+
+                    http.use_ssl = true
+
+                    http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+
+                    request = Net::HTTP::Get.new(url)
+
+                    request["x-tenant-id"] = ''SOME_STRING_VALUE''
+
+                    request["Authorization"] = ''Bearer REPLACE_BEARER_TOKEN''
+
+
+                    response = http.request(request)
+
+                    puts response.read_body'
+    /v0/clusters/{cluster_id}:
+        get:
+            tags:
+            - cluster
+            summary: List a cluster by id
+            description: Lista as informações de um cluster
+            operationId: getClusterById
+            security:
+            -   BearerAuth:
+                - mke.read
+            -   OAuth2:
+                - mke.read
+            parameters:
+            -   required: true
+                name: cluster_id
+                in: path
+                schema:
+                    type: string
+                    format: uuid
+                description: Identificador no padrão uuid para identificar o cluster
+            responses:
+                '200':
+                    description: Successful operation
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ClusterByIdResponse'
+                '400':
+                    description: Bad Request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '401':
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '404':
+                    description: Not Found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '429':
+                    description: Too Many Requests
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '500':
+                    description: Internal Server Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+            x-codeSamples:
+            -   lang: Shell + Curl
+                source: "curl --request GET \\\n  --url https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters/%7Bcluster_id%7D\
+                    \ \\\n  --header 'Authorization: Bearer REPLACE_BEARER_TOKEN'\
+                    \ \\\n  --header 'x-tenant-id: SOME_STRING_VALUE'"
+            -   lang: Shell + Httpie
+                source: "http GET https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters/%7Bcluster_id%7D\
+                    \ \\\n  Authorization:'Bearer REPLACE_BEARER_TOKEN' \\\n  x-tenant-id:SOME_STRING_VALUE"
+            -   lang: Go + Native
+                source: "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"\
+                    io/ioutil\"\n)\n\nfunc main() {\n\n\turl := \"https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters/%7Bcluster_id%7D\"\
+                    \n\n\treq, _ := http.NewRequest(\"GET\", url, nil)\n\n\treq.Header.Add(\"\
+                    x-tenant-id\", \"SOME_STRING_VALUE\")\n\treq.Header.Add(\"Authorization\"\
+                    , \"Bearer REPLACE_BEARER_TOKEN\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\
+                    \n\tdefer res.Body.Close()\n\tbody, _ := ioutil.ReadAll(res.Body)\n\
+                    \n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+            -   lang: Python + Python3
+                source: "import http.client\n\nconn = http.client.HTTPSConnection(\"\
+                    api-mke.pre-prod.br-ne-1.jaxyendy.com\")\n\nheaders = {\n    'x-tenant-id':\
+                    \ \"SOME_STRING_VALUE\",\n    'Authorization': \"Bearer REPLACE_BEARER_TOKEN\"\
+                    \n    }\n\nconn.request(\"GET\", \"/v0/clusters/%7Bcluster_id%7D\"\
+                    , headers=headers)\n\nres = conn.getresponse()\ndata = res.read()\n\
+                    \nprint(data.decode(\"utf-8\"))"
+            -   lang: Node + Native
+                source: "const http = require(\"https\");\n\nconst options = {\n \
+                    \ \"method\": \"GET\",\n  \"hostname\": \"api-mke.pre-prod.br-ne-1.jaxyendy.com\"\
+                    ,\n  \"port\": null,\n  \"path\": \"/v0/clusters/%7Bcluster_id%7D\"\
+                    ,\n  \"headers\": {\n    \"x-tenant-id\": \"SOME_STRING_VALUE\"\
+                    ,\n    \"Authorization\": \"Bearer REPLACE_BEARER_TOKEN\"\n  }\n\
+                    };\n\nconst req = http.request(options, function (res) {\n  const\
+                    \ chunks = [];\n\n  res.on(\"data\", function (chunk) {\n    chunks.push(chunk);\n\
+                    \  });\n\n  res.on(\"end\", function () {\n    const body = Buffer.concat(chunks);\n\
+                    \    console.log(body.toString());\n  });\n});\n\nreq.end();"
+            -   lang: Ruby + Native
+                source: 'require ''uri''
+
+                    require ''net/http''
+
+                    require ''openssl''
+
+
+                    url = URI("https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters/%7Bcluster_id%7D")
+
+
+                    http = Net::HTTP.new(url.host, url.port)
+
+                    http.use_ssl = true
+
+                    http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+
+                    request = Net::HTTP::Get.new(url)
+
+                    request["x-tenant-id"] = ''SOME_STRING_VALUE''
+
+                    request["Authorization"] = ''Bearer REPLACE_BEARER_TOKEN''
+
+
+                    response = http.request(request)
+
+                    puts response.read_body'
+        delete:
+            tags:
+            - cluster
+            summary: Delete a cluster
+            description: Deleta um cluster
+            operationId: deleteCluster
+            security:
+            -   BearerAuth:
+                - mke.write
+            -   OAuth2:
+                - mke.write
+            parameters:
+            -   required: true
+                name: cluster_id
+                in: path
+                schema:
+                    type: string
+                    format: uuid
+                description: Identificador no padrão uuid para identificar o cluster
+            responses:
+                '204':
+                    description: Successful operation
+                '400':
+                    description: Bad Request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '401':
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '404':
+                    description: Not Found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '409':
+                    description: Conflict
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '429':
+                    description: Too Many Requests
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '500':
+                    description: Internal Server Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+            x-codeSamples:
+            -   lang: Shell + Curl
+                source: "curl --request DELETE \\\n  --url https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters/%7Bcluster_id%7D\
+                    \ \\\n  --header 'Authorization: Bearer REPLACE_BEARER_TOKEN'\
+                    \ \\\n  --header 'x-tenant-id: SOME_STRING_VALUE'"
+            -   lang: Shell + Httpie
+                source: "http DELETE https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters/%7Bcluster_id%7D\
+                    \ \\\n  Authorization:'Bearer REPLACE_BEARER_TOKEN' \\\n  x-tenant-id:SOME_STRING_VALUE"
+            -   lang: Go + Native
+                source: "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"\
+                    io/ioutil\"\n)\n\nfunc main() {\n\n\turl := \"https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters/%7Bcluster_id%7D\"\
+                    \n\n\treq, _ := http.NewRequest(\"DELETE\", url, nil)\n\n\treq.Header.Add(\"\
+                    x-tenant-id\", \"SOME_STRING_VALUE\")\n\treq.Header.Add(\"Authorization\"\
+                    , \"Bearer REPLACE_BEARER_TOKEN\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\
+                    \n\tdefer res.Body.Close()\n\tbody, _ := ioutil.ReadAll(res.Body)\n\
+                    \n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+            -   lang: Python + Python3
+                source: "import http.client\n\nconn = http.client.HTTPSConnection(\"\
+                    api-mke.pre-prod.br-ne-1.jaxyendy.com\")\n\nheaders = {\n    'x-tenant-id':\
+                    \ \"SOME_STRING_VALUE\",\n    'Authorization': \"Bearer REPLACE_BEARER_TOKEN\"\
+                    \n    }\n\nconn.request(\"DELETE\", \"/v0/clusters/%7Bcluster_id%7D\"\
+                    , headers=headers)\n\nres = conn.getresponse()\ndata = res.read()\n\
+                    \nprint(data.decode(\"utf-8\"))"
+            -   lang: Node + Native
+                source: "const http = require(\"https\");\n\nconst options = {\n \
+                    \ \"method\": \"DELETE\",\n  \"hostname\": \"api-mke.pre-prod.br-ne-1.jaxyendy.com\"\
+                    ,\n  \"port\": null,\n  \"path\": \"/v0/clusters/%7Bcluster_id%7D\"\
+                    ,\n  \"headers\": {\n    \"x-tenant-id\": \"SOME_STRING_VALUE\"\
+                    ,\n    \"Authorization\": \"Bearer REPLACE_BEARER_TOKEN\"\n  }\n\
+                    };\n\nconst req = http.request(options, function (res) {\n  const\
+                    \ chunks = [];\n\n  res.on(\"data\", function (chunk) {\n    chunks.push(chunk);\n\
+                    \  });\n\n  res.on(\"end\", function () {\n    const body = Buffer.concat(chunks);\n\
+                    \    console.log(body.toString());\n  });\n});\n\nreq.end();"
+            -   lang: Ruby + Native
+                source: 'require ''uri''
+
+                    require ''net/http''
+
+                    require ''openssl''
+
+
+                    url = URI("https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters/%7Bcluster_id%7D")
+
+
+                    http = Net::HTTP.new(url.host, url.port)
+
+                    http.use_ssl = true
+
+                    http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+
+                    request = Net::HTTP::Delete.new(url)
+
+                    request["x-tenant-id"] = ''SOME_STRING_VALUE''
+
+                    request["Authorization"] = ''Bearer REPLACE_BEARER_TOKEN''
+
+
+                    response = http.request(request)
+
+                    puts response.read_body'
+    /v0/clusters/{cluster_id}/kubeconfig:
+        get:
+            tags:
+            - cluster
+            summary: Get kubeconfig cluster
+            operationId: getKubeConfigCluster
+            description: Obtem o arquivo do kubeconfig do cluster
+            security:
+            -   BearerAuth:
+                - mke.read
+            -   OAuth2:
+                - mke.read
+            parameters:
+            -   required: true
+                name: cluster_id
+                in: path
+                schema:
+                    type: string
+                    format: uuid
+                description: Esquema de obter o arquivo do kubeconfig do cluster
+            responses:
+                '200':
+                    description: Successful operation
+                    content:
+                        application/yaml:
+                            schema:
+                                $ref: '#/components/schemas/ClusterKubeConfigResponse'
+                '400':
+                    description: Bad Request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '401':
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '404':
+                    description: Not Found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '429':
+                    description: Too Many Requests
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '500':
+                    description: Internal Server Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+            x-codeSamples:
+            -   lang: Shell + Curl
+                source: "curl --request GET \\\n  --url https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters/%7Bcluster_id%7D/kubeconfig\
+                    \ \\\n  --header 'Authorization: Bearer REPLACE_BEARER_TOKEN'\
+                    \ \\\n  --header 'x-tenant-id: SOME_STRING_VALUE'"
+            -   lang: Shell + Httpie
+                source: "http GET https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters/%7Bcluster_id%7D/kubeconfig\
+                    \ \\\n  Authorization:'Bearer REPLACE_BEARER_TOKEN' \\\n  x-tenant-id:SOME_STRING_VALUE"
+            -   lang: Go + Native
+                source: "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"\
+                    io/ioutil\"\n)\n\nfunc main() {\n\n\turl := \"https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters/%7Bcluster_id%7D/kubeconfig\"\
+                    \n\n\treq, _ := http.NewRequest(\"GET\", url, nil)\n\n\treq.Header.Add(\"\
+                    x-tenant-id\", \"SOME_STRING_VALUE\")\n\treq.Header.Add(\"Authorization\"\
+                    , \"Bearer REPLACE_BEARER_TOKEN\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\
+                    \n\tdefer res.Body.Close()\n\tbody, _ := ioutil.ReadAll(res.Body)\n\
+                    \n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+            -   lang: Python + Python3
+                source: "import http.client\n\nconn = http.client.HTTPSConnection(\"\
+                    api-mke.pre-prod.br-ne-1.jaxyendy.com\")\n\nheaders = {\n    'x-tenant-id':\
+                    \ \"SOME_STRING_VALUE\",\n    'Authorization': \"Bearer REPLACE_BEARER_TOKEN\"\
+                    \n    }\n\nconn.request(\"GET\", \"/v0/clusters/%7Bcluster_id%7D/kubeconfig\"\
+                    , headers=headers)\n\nres = conn.getresponse()\ndata = res.read()\n\
+                    \nprint(data.decode(\"utf-8\"))"
+            -   lang: Node + Native
+                source: "const http = require(\"https\");\n\nconst options = {\n \
+                    \ \"method\": \"GET\",\n  \"hostname\": \"api-mke.pre-prod.br-ne-1.jaxyendy.com\"\
+                    ,\n  \"port\": null,\n  \"path\": \"/v0/clusters/%7Bcluster_id%7D/kubeconfig\"\
+                    ,\n  \"headers\": {\n    \"x-tenant-id\": \"SOME_STRING_VALUE\"\
+                    ,\n    \"Authorization\": \"Bearer REPLACE_BEARER_TOKEN\"\n  }\n\
+                    };\n\nconst req = http.request(options, function (res) {\n  const\
+                    \ chunks = [];\n\n  res.on(\"data\", function (chunk) {\n    chunks.push(chunk);\n\
+                    \  });\n\n  res.on(\"end\", function () {\n    const body = Buffer.concat(chunks);\n\
+                    \    console.log(body.toString());\n  });\n});\n\nreq.end();"
+            -   lang: Ruby + Native
+                source: 'require ''uri''
+
+                    require ''net/http''
+
+                    require ''openssl''
+
+
+                    url = URI("https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters/%7Bcluster_id%7D/kubeconfig")
+
+
+                    http = Net::HTTP.new(url.host, url.port)
+
+                    http.use_ssl = true
+
+                    http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+
+                    request = Net::HTTP::Get.new(url)
+
+                    request["x-tenant-id"] = ''SOME_STRING_VALUE''
+
+                    request["Authorization"] = ''Bearer REPLACE_BEARER_TOKEN''
+
+
+                    response = http.request(request)
+
+                    puts response.read_body'
+    /v0/clusters/{cluster_id}/node_pools:
+        post:
+            tags:
+            - nodepool
+            summary: Create a node pool
+            description: Cria um node pool em um cluster kubernetes
+            operationId: createNodePool
+            security:
+            -   BearerAuth:
+                - mke.write
+            -   OAuth2:
+                - mke.write
+            parameters:
+            -   required: true
+                name: cluster_id
+                in: path
+                schema:
+                    type: string
+                    format: uuid
+                description: Identificador no padrão uuid para identificar o cluster
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/CreateNodePoolRequest'
+            responses:
+                '201':
+                    description: Successful operation
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/NodePoolsResponse'
+                '400':
+                    description: Bad Request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '401':
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '404':
+                    description: Not Found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '429':
+                    description: Too Many Requests
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '500':
+                    description: Internal Server Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+            x-codeSamples:
+            -   lang: Shell + Curl
+                source: "curl --request POST \\\n  --url https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters/%7Bcluster_id%7D/node_pools\
+                    \ \\\n  --header 'Authorization: Bearer REPLACE_BEARER_TOKEN'\
+                    \ \\\n  --header 'content-type: application/json' \\\n  --header\
+                    \ 'x-tenant-id: SOME_STRING_VALUE' \\\n  --data '{\"name\":\"\
+                    nodepool-exemplo\",\"flavor\":\"cloud-k8s.gp1.small\",\"replicas\"\
+                    :3,\"tags\":[\"tag-value1\"],\"taints\":[{\"key\":\"exemplo-key\"\
+                    ,\"value\":\"valor1\",\"effect\":\"NoSchedule\"}],\"auto_scale\"\
+                    :{\"enabled\":true,\"min_replicas\":2,\"max_replicas\":5}}'"
+            -   lang: Shell + Httpie
+                source: "echo '{\"name\":\"nodepool-exemplo\",\"flavor\":\"cloud-k8s.gp1.small\"\
+                    ,\"replicas\":3,\"tags\":[\"tag-value1\"],\"taints\":[{\"key\"\
+                    :\"exemplo-key\",\"value\":\"valor1\",\"effect\":\"NoSchedule\"\
+                    }],\"auto_scale\":{\"enabled\":true,\"min_replicas\":2,\"max_replicas\"\
+                    :5}}' |  \\\n  http POST https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters/%7Bcluster_id%7D/node_pools\
+                    \ \\\n  Authorization:'Bearer REPLACE_BEARER_TOKEN' \\\n  content-type:application/json\
+                    \ \\\n  x-tenant-id:SOME_STRING_VALUE"
+            -   lang: Go + Native
+                source: "package main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n\t\"\
+                    net/http\"\n\t\"io/ioutil\"\n)\n\nfunc main() {\n\n\turl := \"\
+                    https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters/%7Bcluster_id%7D/node_pools\"\
+                    \n\n\tpayload := strings.NewReader(\"{\\\"name\\\":\\\"nodepool-exemplo\\\
+                    \",\\\"flavor\\\":\\\"cloud-k8s.gp1.small\\\",\\\"replicas\\\"\
+                    :3,\\\"tags\\\":[\\\"tag-value1\\\"],\\\"taints\\\":[{\\\"key\\\
+                    \":\\\"exemplo-key\\\",\\\"value\\\":\\\"valor1\\\",\\\"effect\\\
+                    \":\\\"NoSchedule\\\"}],\\\"auto_scale\\\":{\\\"enabled\\\":true,\\\
+                    \"min_replicas\\\":2,\\\"max_replicas\\\":5}}\")\n\n\treq, _ :=\
+                    \ http.NewRequest(\"POST\", url, payload)\n\n\treq.Header.Add(\"\
+                    content-type\", \"application/json\")\n\treq.Header.Add(\"x-tenant-id\"\
+                    , \"SOME_STRING_VALUE\")\n\treq.Header.Add(\"Authorization\",\
+                    \ \"Bearer REPLACE_BEARER_TOKEN\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\
+                    \n\tdefer res.Body.Close()\n\tbody, _ := ioutil.ReadAll(res.Body)\n\
+                    \n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+            -   lang: Python + Python3
+                source: "import http.client\n\nconn = http.client.HTTPSConnection(\"\
+                    api-mke.pre-prod.br-ne-1.jaxyendy.com\")\n\npayload = \"{\\\"\
+                    name\\\":\\\"nodepool-exemplo\\\",\\\"flavor\\\":\\\"cloud-k8s.gp1.small\\\
+                    \",\\\"replicas\\\":3,\\\"tags\\\":[\\\"tag-value1\\\"],\\\"taints\\\
+                    \":[{\\\"key\\\":\\\"exemplo-key\\\",\\\"value\\\":\\\"valor1\\\
+                    \",\\\"effect\\\":\\\"NoSchedule\\\"}],\\\"auto_scale\\\":{\\\"\
+                    enabled\\\":true,\\\"min_replicas\\\":2,\\\"max_replicas\\\":5}}\"\
+                    \n\nheaders = {\n    'content-type': \"application/json\",\n \
+                    \   'x-tenant-id': \"SOME_STRING_VALUE\",\n    'Authorization':\
+                    \ \"Bearer REPLACE_BEARER_TOKEN\"\n    }\n\nconn.request(\"POST\"\
+                    , \"/v0/clusters/%7Bcluster_id%7D/node_pools\", payload, headers)\n\
+                    \nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"\
+                    utf-8\"))"
+            -   lang: Node + Native
+                source: "const http = require(\"https\");\n\nconst options = {\n \
+                    \ \"method\": \"POST\",\n  \"hostname\": \"api-mke.pre-prod.br-ne-1.jaxyendy.com\"\
+                    ,\n  \"port\": null,\n  \"path\": \"/v0/clusters/%7Bcluster_id%7D/node_pools\"\
+                    ,\n  \"headers\": {\n    \"content-type\": \"application/json\"\
+                    ,\n    \"x-tenant-id\": \"SOME_STRING_VALUE\",\n    \"Authorization\"\
+                    : \"Bearer REPLACE_BEARER_TOKEN\"\n  }\n};\n\nconst req = http.request(options,\
+                    \ function (res) {\n  const chunks = [];\n\n  res.on(\"data\"\
+                    , function (chunk) {\n    chunks.push(chunk);\n  });\n\n  res.on(\"\
+                    end\", function () {\n    const body = Buffer.concat(chunks);\n\
+                    \    console.log(body.toString());\n  });\n});\n\nreq.write(JSON.stringify({\n\
+                    \  name: 'nodepool-exemplo',\n  flavor: 'cloud-k8s.gp1.small',\n\
+                    \  replicas: 3,\n  tags: ['tag-value1'],\n  taints: [{key: 'exemplo-key',\
+                    \ value: 'valor1', effect: 'NoSchedule'}],\n  auto_scale: {enabled:\
+                    \ true, min_replicas: 2, max_replicas: 5}\n}));\nreq.end();"
+            -   lang: Ruby + Native
+                source: 'require ''uri''
+
+                    require ''net/http''
+
+                    require ''openssl''
+
+
+                    url = URI("https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters/%7Bcluster_id%7D/node_pools")
+
+
+                    http = Net::HTTP.new(url.host, url.port)
+
+                    http.use_ssl = true
+
+                    http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+
+                    request = Net::HTTP::Post.new(url)
+
+                    request["content-type"] = ''application/json''
+
+                    request["x-tenant-id"] = ''SOME_STRING_VALUE''
+
+                    request["Authorization"] = ''Bearer REPLACE_BEARER_TOKEN''
+
+                    request.body = "{\"name\":\"nodepool-exemplo\",\"flavor\":\"cloud-k8s.gp1.small\",\"replicas\":3,\"tags\":[\"tag-value1\"],\"taints\":[{\"key\":\"exemplo-key\",\"value\":\"valor1\",\"effect\":\"NoSchedule\"}],\"auto_scale\":{\"enabled\":true,\"min_replicas\":2,\"max_replicas\":5}}"
+
+
+                    response = http.request(request)
+
+                    puts response.read_body'
+        get:
+            tags:
+            - nodepool
+            summary: List node pools by cluster_id
+            description: Obtem um node pool para um cluster Kubernetes
+            operationId: getClusterNodePools
+            security:
+            -   BearerAuth:
+                - mke.read
+            -   OAuth2:
+                - mke.read
+            parameters:
+            -   required: true
+                name: cluster_id
+                in: path
+                schema:
+                    type: string
+                    format: uuid
+                description: Identificador no padrão uuid para identificar o cluster
+            responses:
+                '200':
+                    description: Successful operation
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ClusterNodePoolsResponse'
+                '400':
+                    description: Bad Request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '401':
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '404':
+                    description: Not Found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '429':
+                    description: Too Many Requests
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '500':
+                    description: Internal Server Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+            x-codeSamples:
+            -   lang: Shell + Curl
+                source: "curl --request GET \\\n  --url https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters/%7Bcluster_id%7D/node_pools\
+                    \ \\\n  --header 'Authorization: Bearer REPLACE_BEARER_TOKEN'\
+                    \ \\\n  --header 'x-tenant-id: SOME_STRING_VALUE'"
+            -   lang: Shell + Httpie
+                source: "http GET https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters/%7Bcluster_id%7D/node_pools\
+                    \ \\\n  Authorization:'Bearer REPLACE_BEARER_TOKEN' \\\n  x-tenant-id:SOME_STRING_VALUE"
+            -   lang: Go + Native
+                source: "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"\
+                    io/ioutil\"\n)\n\nfunc main() {\n\n\turl := \"https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters/%7Bcluster_id%7D/node_pools\"\
+                    \n\n\treq, _ := http.NewRequest(\"GET\", url, nil)\n\n\treq.Header.Add(\"\
+                    x-tenant-id\", \"SOME_STRING_VALUE\")\n\treq.Header.Add(\"Authorization\"\
+                    , \"Bearer REPLACE_BEARER_TOKEN\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\
+                    \n\tdefer res.Body.Close()\n\tbody, _ := ioutil.ReadAll(res.Body)\n\
+                    \n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+            -   lang: Python + Python3
+                source: "import http.client\n\nconn = http.client.HTTPSConnection(\"\
+                    api-mke.pre-prod.br-ne-1.jaxyendy.com\")\n\nheaders = {\n    'x-tenant-id':\
+                    \ \"SOME_STRING_VALUE\",\n    'Authorization': \"Bearer REPLACE_BEARER_TOKEN\"\
+                    \n    }\n\nconn.request(\"GET\", \"/v0/clusters/%7Bcluster_id%7D/node_pools\"\
+                    , headers=headers)\n\nres = conn.getresponse()\ndata = res.read()\n\
+                    \nprint(data.decode(\"utf-8\"))"
+            -   lang: Node + Native
+                source: "const http = require(\"https\");\n\nconst options = {\n \
+                    \ \"method\": \"GET\",\n  \"hostname\": \"api-mke.pre-prod.br-ne-1.jaxyendy.com\"\
+                    ,\n  \"port\": null,\n  \"path\": \"/v0/clusters/%7Bcluster_id%7D/node_pools\"\
+                    ,\n  \"headers\": {\n    \"x-tenant-id\": \"SOME_STRING_VALUE\"\
+                    ,\n    \"Authorization\": \"Bearer REPLACE_BEARER_TOKEN\"\n  }\n\
+                    };\n\nconst req = http.request(options, function (res) {\n  const\
+                    \ chunks = [];\n\n  res.on(\"data\", function (chunk) {\n    chunks.push(chunk);\n\
+                    \  });\n\n  res.on(\"end\", function () {\n    const body = Buffer.concat(chunks);\n\
+                    \    console.log(body.toString());\n  });\n});\n\nreq.end();"
+            -   lang: Ruby + Native
+                source: 'require ''uri''
+
+                    require ''net/http''
+
+                    require ''openssl''
+
+
+                    url = URI("https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters/%7Bcluster_id%7D/node_pools")
+
+
+                    http = Net::HTTP.new(url.host, url.port)
+
+                    http.use_ssl = true
+
+                    http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+
+                    request = Net::HTTP::Get.new(url)
+
+                    request["x-tenant-id"] = ''SOME_STRING_VALUE''
+
+                    request["Authorization"] = ''Bearer REPLACE_BEARER_TOKEN''
+
+
+                    response = http.request(request)
+
+                    puts response.read_body'
+    /v0/clusters/{cluster_id}/node_pools/{node_pool_id}:
+        get:
+            tags:
+            - nodepool
+            summary: Get node pool by node_pool_id
+            description: Lista nodes de um node pool
+            operationId: getNodePool
+            security:
+            -   BearerAuth:
+                - mke.read
+            -   OAuth2:
+                - mke.read
+            parameters:
+            -   required: true
+                name: cluster_id
+                in: path
+                schema:
+                    type: string
+                    format: uuid
+                description: Identificador no padrão uuid para identificar o cluster
+            -   required: true
+                name: node_pool_id
+                in: path
+                schema:
+                    type: string
+                    format: uuid
+                description: Identificador no padrão uuid para identificar o nodepool
+            responses:
+                '200':
+                    description: Successful operation
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/NodePoolsResponse'
+                '400':
+                    description: Bad Request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '401':
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '404':
+                    description: Not Found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '429':
+                    description: Too Many Requests
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '500':
+                    description: Internal Server Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+            x-codeSamples:
+            -   lang: Shell + Curl
+                source: "curl --request GET \\\n  --url https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters/%7Bcluster_id%7D/node_pools/%7Bnode_pool_id%7D\
+                    \ \\\n  --header 'Authorization: Bearer REPLACE_BEARER_TOKEN'\
+                    \ \\\n  --header 'x-tenant-id: SOME_STRING_VALUE'"
+            -   lang: Shell + Httpie
+                source: "http GET https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters/%7Bcluster_id%7D/node_pools/%7Bnode_pool_id%7D\
+                    \ \\\n  Authorization:'Bearer REPLACE_BEARER_TOKEN' \\\n  x-tenant-id:SOME_STRING_VALUE"
+            -   lang: Go + Native
+                source: "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"\
+                    io/ioutil\"\n)\n\nfunc main() {\n\n\turl := \"https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters/%7Bcluster_id%7D/node_pools/%7Bnode_pool_id%7D\"\
+                    \n\n\treq, _ := http.NewRequest(\"GET\", url, nil)\n\n\treq.Header.Add(\"\
+                    x-tenant-id\", \"SOME_STRING_VALUE\")\n\treq.Header.Add(\"Authorization\"\
+                    , \"Bearer REPLACE_BEARER_TOKEN\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\
+                    \n\tdefer res.Body.Close()\n\tbody, _ := ioutil.ReadAll(res.Body)\n\
+                    \n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+            -   lang: Python + Python3
+                source: "import http.client\n\nconn = http.client.HTTPSConnection(\"\
+                    api-mke.pre-prod.br-ne-1.jaxyendy.com\")\n\nheaders = {\n    'x-tenant-id':\
+                    \ \"SOME_STRING_VALUE\",\n    'Authorization': \"Bearer REPLACE_BEARER_TOKEN\"\
+                    \n    }\n\nconn.request(\"GET\", \"/v0/clusters/%7Bcluster_id%7D/node_pools/%7Bnode_pool_id%7D\"\
+                    , headers=headers)\n\nres = conn.getresponse()\ndata = res.read()\n\
+                    \nprint(data.decode(\"utf-8\"))"
+            -   lang: Node + Native
+                source: "const http = require(\"https\");\n\nconst options = {\n \
+                    \ \"method\": \"GET\",\n  \"hostname\": \"api-mke.pre-prod.br-ne-1.jaxyendy.com\"\
+                    ,\n  \"port\": null,\n  \"path\": \"/v0/clusters/%7Bcluster_id%7D/node_pools/%7Bnode_pool_id%7D\"\
+                    ,\n  \"headers\": {\n    \"x-tenant-id\": \"SOME_STRING_VALUE\"\
+                    ,\n    \"Authorization\": \"Bearer REPLACE_BEARER_TOKEN\"\n  }\n\
+                    };\n\nconst req = http.request(options, function (res) {\n  const\
+                    \ chunks = [];\n\n  res.on(\"data\", function (chunk) {\n    chunks.push(chunk);\n\
+                    \  });\n\n  res.on(\"end\", function () {\n    const body = Buffer.concat(chunks);\n\
+                    \    console.log(body.toString());\n  });\n});\n\nreq.end();"
+            -   lang: Ruby + Native
+                source: 'require ''uri''
+
+                    require ''net/http''
+
+                    require ''openssl''
+
+
+                    url = URI("https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters/%7Bcluster_id%7D/node_pools/%7Bnode_pool_id%7D")
+
+
+                    http = Net::HTTP.new(url.host, url.port)
+
+                    http.use_ssl = true
+
+                    http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+
+                    request = Net::HTTP::Get.new(url)
+
+                    request["x-tenant-id"] = ''SOME_STRING_VALUE''
+
+                    request["Authorization"] = ''Bearer REPLACE_BEARER_TOKEN''
+
+
+                    response = http.request(request)
+
+                    puts response.read_body'
+        patch:
+            tags:
+            - nodepool
+            summary: Patch node pool replicas by node_pool_id
+            description: Atualiza nodes de um node pool
+            operationId: patchNodePool
+            security:
+            -   BearerAuth:
+                - mke.write
+            -   OAuth2:
+                - mke.write
+            parameters:
+            -   required: true
+                name: cluster_id
+                in: path
+                schema:
+                    type: string
+                    format: uuid
+                description: Identificador no padrão uuid para identificar o cluster
+            -   required: true
+                name: node_pool_id
+                in: path
+                schema:
+                    type: string
+                    format: uuid
+                description: Identificador no padrão uuid para identificar o nodepool
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/PatchNodePoolRequest'
+            responses:
+                '200':
+                    description: Successful operation
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/NodePoolsResponse'
+                '400':
+                    description: Bad Request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '401':
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '404':
+                    description: Not Found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '429':
+                    description: Too Many Requests
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '500':
+                    description: Internal Server Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+            x-codeSamples:
+            -   lang: Shell + Curl
+                source: "curl --request PATCH \\\n  --url https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters/%7Bcluster_id%7D/node_pools/%7Bnode_pool_id%7D\
+                    \ \\\n  --header 'Authorization: Bearer REPLACE_BEARER_TOKEN'\
+                    \ \\\n  --header 'content-type: application/json' \\\n  --header\
+                    \ 'x-tenant-id: SOME_STRING_VALUE' \\\n  --data '{\"replicas\"\
+                    :0,\"auto_scale\":{\"enabled\":true,\"min_replicas\":2,\"max_replicas\"\
+                    :5}}'"
+            -   lang: Shell + Httpie
+                source: "echo '{\"replicas\":0,\"auto_scale\":{\"enabled\":true,\"\
+                    min_replicas\":2,\"max_replicas\":5}}' |  \\\n  http PATCH https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters/%7Bcluster_id%7D/node_pools/%7Bnode_pool_id%7D\
+                    \ \\\n  Authorization:'Bearer REPLACE_BEARER_TOKEN' \\\n  content-type:application/json\
+                    \ \\\n  x-tenant-id:SOME_STRING_VALUE"
+            -   lang: Go + Native
+                source: "package main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n\t\"\
+                    net/http\"\n\t\"io/ioutil\"\n)\n\nfunc main() {\n\n\turl := \"\
+                    https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters/%7Bcluster_id%7D/node_pools/%7Bnode_pool_id%7D\"\
+                    \n\n\tpayload := strings.NewReader(\"{\\\"replicas\\\":0,\\\"\
+                    auto_scale\\\":{\\\"enabled\\\":true,\\\"min_replicas\\\":2,\\\
+                    \"max_replicas\\\":5}}\")\n\n\treq, _ := http.NewRequest(\"PATCH\"\
+                    , url, payload)\n\n\treq.Header.Add(\"content-type\", \"application/json\"\
+                    )\n\treq.Header.Add(\"x-tenant-id\", \"SOME_STRING_VALUE\")\n\t\
+                    req.Header.Add(\"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\"\
+                    )\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\
+                    \tbody, _ := ioutil.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\t\
+                    fmt.Println(string(body))\n\n}"
+            -   lang: Python + Python3
+                source: "import http.client\n\nconn = http.client.HTTPSConnection(\"\
+                    api-mke.pre-prod.br-ne-1.jaxyendy.com\")\n\npayload = \"{\\\"\
+                    replicas\\\":0,\\\"auto_scale\\\":{\\\"enabled\\\":true,\\\"min_replicas\\\
+                    \":2,\\\"max_replicas\\\":5}}\"\n\nheaders = {\n    'content-type':\
+                    \ \"application/json\",\n    'x-tenant-id': \"SOME_STRING_VALUE\"\
+                    ,\n    'Authorization': \"Bearer REPLACE_BEARER_TOKEN\"\n    }\n\
+                    \nconn.request(\"PATCH\", \"/v0/clusters/%7Bcluster_id%7D/node_pools/%7Bnode_pool_id%7D\"\
+                    , payload, headers)\n\nres = conn.getresponse()\ndata = res.read()\n\
+                    \nprint(data.decode(\"utf-8\"))"
+            -   lang: Node + Native
+                source: "const http = require(\"https\");\n\nconst options = {\n \
+                    \ \"method\": \"PATCH\",\n  \"hostname\": \"api-mke.pre-prod.br-ne-1.jaxyendy.com\"\
+                    ,\n  \"port\": null,\n  \"path\": \"/v0/clusters/%7Bcluster_id%7D/node_pools/%7Bnode_pool_id%7D\"\
+                    ,\n  \"headers\": {\n    \"content-type\": \"application/json\"\
+                    ,\n    \"x-tenant-id\": \"SOME_STRING_VALUE\",\n    \"Authorization\"\
+                    : \"Bearer REPLACE_BEARER_TOKEN\"\n  }\n};\n\nconst req = http.request(options,\
+                    \ function (res) {\n  const chunks = [];\n\n  res.on(\"data\"\
+                    , function (chunk) {\n    chunks.push(chunk);\n  });\n\n  res.on(\"\
+                    end\", function () {\n    const body = Buffer.concat(chunks);\n\
+                    \    console.log(body.toString());\n  });\n});\n\nreq.write(JSON.stringify({replicas:\
+                    \ 0, auto_scale: {enabled: true, min_replicas: 2, max_replicas:\
+                    \ 5}}));\nreq.end();"
+            -   lang: Ruby + Native
+                source: 'require ''uri''
+
+                    require ''net/http''
+
+                    require ''openssl''
+
+
+                    url = URI("https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters/%7Bcluster_id%7D/node_pools/%7Bnode_pool_id%7D")
+
+
+                    http = Net::HTTP.new(url.host, url.port)
+
+                    http.use_ssl = true
+
+                    http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+
+                    request = Net::HTTP::Patch.new(url)
+
+                    request["content-type"] = ''application/json''
+
+                    request["x-tenant-id"] = ''SOME_STRING_VALUE''
+
+                    request["Authorization"] = ''Bearer REPLACE_BEARER_TOKEN''
+
+                    request.body = "{\"replicas\":0,\"auto_scale\":{\"enabled\":true,\"min_replicas\":2,\"max_replicas\":5}}"
+
+
+                    response = http.request(request)
+
+                    puts response.read_body'
+        delete:
+            tags:
+            - nodepool
+            summary: Delete node pool by node_pool_id
+            description: Deleta um node pool em um cluster do Kubernetes
+            operationId: deleteNodePool
+            security:
+            -   BearerAuth:
+                - mke.write
+            -   OAuth2:
+                - mke.write
+            parameters:
+            -   required: true
+                name: cluster_id
+                in: path
+                schema:
+                    type: string
+                    format: uuid
+                description: Identificador no padrão uuid para identificar o cluster
+            -   required: true
+                name: node_pool_id
+                in: path
+                schema:
+                    type: string
+                    format: uuid
+                description: Identificador no padrão uuid para identificar o nodepool
+            responses:
+                '204':
+                    description: Successful operation
+                '400':
+                    description: Bad Request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '401':
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '404':
+                    description: Not Found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '429':
+                    description: Too Many Requests
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '500':
+                    description: Internal Server Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+            x-codeSamples:
+            -   lang: Shell + Curl
+                source: "curl --request DELETE \\\n  --url https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters/%7Bcluster_id%7D/node_pools/%7Bnode_pool_id%7D\
+                    \ \\\n  --header 'Authorization: Bearer REPLACE_BEARER_TOKEN'\
+                    \ \\\n  --header 'x-tenant-id: SOME_STRING_VALUE'"
+            -   lang: Shell + Httpie
+                source: "http DELETE https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters/%7Bcluster_id%7D/node_pools/%7Bnode_pool_id%7D\
+                    \ \\\n  Authorization:'Bearer REPLACE_BEARER_TOKEN' \\\n  x-tenant-id:SOME_STRING_VALUE"
+            -   lang: Go + Native
+                source: "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"\
+                    io/ioutil\"\n)\n\nfunc main() {\n\n\turl := \"https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters/%7Bcluster_id%7D/node_pools/%7Bnode_pool_id%7D\"\
+                    \n\n\treq, _ := http.NewRequest(\"DELETE\", url, nil)\n\n\treq.Header.Add(\"\
+                    x-tenant-id\", \"SOME_STRING_VALUE\")\n\treq.Header.Add(\"Authorization\"\
+                    , \"Bearer REPLACE_BEARER_TOKEN\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\
+                    \n\tdefer res.Body.Close()\n\tbody, _ := ioutil.ReadAll(res.Body)\n\
+                    \n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+            -   lang: Python + Python3
+                source: "import http.client\n\nconn = http.client.HTTPSConnection(\"\
+                    api-mke.pre-prod.br-ne-1.jaxyendy.com\")\n\nheaders = {\n    'x-tenant-id':\
+                    \ \"SOME_STRING_VALUE\",\n    'Authorization': \"Bearer REPLACE_BEARER_TOKEN\"\
+                    \n    }\n\nconn.request(\"DELETE\", \"/v0/clusters/%7Bcluster_id%7D/node_pools/%7Bnode_pool_id%7D\"\
+                    , headers=headers)\n\nres = conn.getresponse()\ndata = res.read()\n\
+                    \nprint(data.decode(\"utf-8\"))"
+            -   lang: Node + Native
+                source: "const http = require(\"https\");\n\nconst options = {\n \
+                    \ \"method\": \"DELETE\",\n  \"hostname\": \"api-mke.pre-prod.br-ne-1.jaxyendy.com\"\
+                    ,\n  \"port\": null,\n  \"path\": \"/v0/clusters/%7Bcluster_id%7D/node_pools/%7Bnode_pool_id%7D\"\
+                    ,\n  \"headers\": {\n    \"x-tenant-id\": \"SOME_STRING_VALUE\"\
+                    ,\n    \"Authorization\": \"Bearer REPLACE_BEARER_TOKEN\"\n  }\n\
+                    };\n\nconst req = http.request(options, function (res) {\n  const\
+                    \ chunks = [];\n\n  res.on(\"data\", function (chunk) {\n    chunks.push(chunk);\n\
+                    \  });\n\n  res.on(\"end\", function () {\n    const body = Buffer.concat(chunks);\n\
+                    \    console.log(body.toString());\n  });\n});\n\nreq.end();"
+            -   lang: Ruby + Native
+                source: 'require ''uri''
+
+                    require ''net/http''
+
+                    require ''openssl''
+
+
+                    url = URI("https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters/%7Bcluster_id%7D/node_pools/%7Bnode_pool_id%7D")
+
+
+                    http = Net::HTTP.new(url.host, url.port)
+
+                    http.use_ssl = true
+
+                    http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+
+                    request = Net::HTTP::Delete.new(url)
+
+                    request["x-tenant-id"] = ''SOME_STRING_VALUE''
+
+                    request["Authorization"] = ''Bearer REPLACE_BEARER_TOKEN''
+
+
+                    response = http.request(request)
+
+                    puts response.read_body'
+    /v0/clusters/{cluster_id}/node_pools/{node_pool_id}/nodes:
+        get:
+            tags:
+            - nodepool
+            summary: List nodes from a node pool by node_pool_id
+            description: Lista nodes de um node pool
+            operationId: getNodes
+            security:
+            -   BearerAuth:
+                - mke.read
+            -   OAuth2:
+                - mke.read
+            parameters:
+            -   required: true
+                name: cluster_id
+                in: path
+                schema:
+                    type: string
+                    format: uuid
+                description: Identificador no padrão uuid para identificar o cluster
+            -   required: true
+                name: node_pool_id
+                in: path
+                schema:
+                    type: string
+                    format: uuid
+                description: Identificador no padrão uuid para identificar o nodepool
+            responses:
+                '200':
+                    description: Successful operation
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/NodesResponse'
+                '400':
+                    description: Bad Request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '401':
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '404':
+                    description: Not Found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '429':
+                    description: Too Many Requests
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '500':
+                    description: Internal Server Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+            x-codeSamples:
+            -   lang: Shell + Curl
+                source: "curl --request GET \\\n  --url https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters/%7Bcluster_id%7D/node_pools/%7Bnode_pool_id%7D/nodes\
+                    \ \\\n  --header 'Authorization: Bearer REPLACE_BEARER_TOKEN'\
+                    \ \\\n  --header 'x-tenant-id: SOME_STRING_VALUE'"
+            -   lang: Shell + Httpie
+                source: "http GET https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters/%7Bcluster_id%7D/node_pools/%7Bnode_pool_id%7D/nodes\
+                    \ \\\n  Authorization:'Bearer REPLACE_BEARER_TOKEN' \\\n  x-tenant-id:SOME_STRING_VALUE"
+            -   lang: Go + Native
+                source: "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"\
+                    io/ioutil\"\n)\n\nfunc main() {\n\n\turl := \"https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters/%7Bcluster_id%7D/node_pools/%7Bnode_pool_id%7D/nodes\"\
+                    \n\n\treq, _ := http.NewRequest(\"GET\", url, nil)\n\n\treq.Header.Add(\"\
+                    x-tenant-id\", \"SOME_STRING_VALUE\")\n\treq.Header.Add(\"Authorization\"\
+                    , \"Bearer REPLACE_BEARER_TOKEN\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\
+                    \n\tdefer res.Body.Close()\n\tbody, _ := ioutil.ReadAll(res.Body)\n\
+                    \n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+            -   lang: Python + Python3
+                source: "import http.client\n\nconn = http.client.HTTPSConnection(\"\
+                    api-mke.pre-prod.br-ne-1.jaxyendy.com\")\n\nheaders = {\n    'x-tenant-id':\
+                    \ \"SOME_STRING_VALUE\",\n    'Authorization': \"Bearer REPLACE_BEARER_TOKEN\"\
+                    \n    }\n\nconn.request(\"GET\", \"/v0/clusters/%7Bcluster_id%7D/node_pools/%7Bnode_pool_id%7D/nodes\"\
+                    , headers=headers)\n\nres = conn.getresponse()\ndata = res.read()\n\
+                    \nprint(data.decode(\"utf-8\"))"
+            -   lang: Node + Native
+                source: "const http = require(\"https\");\n\nconst options = {\n \
+                    \ \"method\": \"GET\",\n  \"hostname\": \"api-mke.pre-prod.br-ne-1.jaxyendy.com\"\
+                    ,\n  \"port\": null,\n  \"path\": \"/v0/clusters/%7Bcluster_id%7D/node_pools/%7Bnode_pool_id%7D/nodes\"\
+                    ,\n  \"headers\": {\n    \"x-tenant-id\": \"SOME_STRING_VALUE\"\
+                    ,\n    \"Authorization\": \"Bearer REPLACE_BEARER_TOKEN\"\n  }\n\
+                    };\n\nconst req = http.request(options, function (res) {\n  const\
+                    \ chunks = [];\n\n  res.on(\"data\", function (chunk) {\n    chunks.push(chunk);\n\
+                    \  });\n\n  res.on(\"end\", function () {\n    const body = Buffer.concat(chunks);\n\
+                    \    console.log(body.toString());\n  });\n});\n\nreq.end();"
+            -   lang: Ruby + Native
+                source: 'require ''uri''
+
+                    require ''net/http''
+
+                    require ''openssl''
+
+
+                    url = URI("https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters/%7Bcluster_id%7D/node_pools/%7Bnode_pool_id%7D/nodes")
+
+
+                    http = Net::HTTP.new(url.host, url.port)
+
+                    http.use_ssl = true
+
+                    http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+
+                    request = Net::HTTP::Get.new(url)
+
+                    request["x-tenant-id"] = ''SOME_STRING_VALUE''
+
+                    request["Authorization"] = ''Bearer REPLACE_BEARER_TOKEN''
+
+
+                    response = http.request(request)
+
+                    puts response.read_body'
+    /v0/info/flavors:
+        get:
+            tags:
+            - info
+            summary: Lists all available flavors
+            description: Lista todos os flavors disponiveis
+            operationId: getFlavors
+            security:
+            -   BearerAuth:
+                - mke.read
+            -   OAuth2:
+                - mke.read
+            responses:
+                '200':
+                    description: Successful operation
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/FlavorsResponse'
+                '400':
+                    description: Bad Request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '401':
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '429':
+                    description: Too Many Requests
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '500':
+                    description: Internal Server Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+            x-codeSamples:
+            -   lang: Shell + Curl
+                source: "curl --request GET \\\n  --url https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/info/flavors\
+                    \ \\\n  --header 'Authorization: Bearer REPLACE_BEARER_TOKEN'"
+            -   lang: Shell + Httpie
+                source: "http GET https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/info/flavors\
+                    \ \\\n  Authorization:'Bearer REPLACE_BEARER_TOKEN'"
+            -   lang: Go + Native
+                source: "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"\
+                    io/ioutil\"\n)\n\nfunc main() {\n\n\turl := \"https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/info/flavors\"\
+                    \n\n\treq, _ := http.NewRequest(\"GET\", url, nil)\n\n\treq.Header.Add(\"\
+                    Authorization\", \"Bearer REPLACE_BEARER_TOKEN\")\n\n\tres, _\
+                    \ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\t\
+                    body, _ := ioutil.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\t\
+                    fmt.Println(string(body))\n\n}"
+            -   lang: Python + Python3
+                source: 'import http.client
+
+
+                    conn = http.client.HTTPSConnection("api-mke.pre-prod.br-ne-1.jaxyendy.com")
+
+
+                    headers = { ''Authorization'': "Bearer REPLACE_BEARER_TOKEN" }
+
+
+                    conn.request("GET", "/v0/info/flavors", headers=headers)
+
+
+                    res = conn.getresponse()
+
+                    data = res.read()
+
+
+                    print(data.decode("utf-8"))'
+            -   lang: Node + Native
+                source: "const http = require(\"https\");\n\nconst options = {\n \
+                    \ \"method\": \"GET\",\n  \"hostname\": \"api-mke.pre-prod.br-ne-1.jaxyendy.com\"\
+                    ,\n  \"port\": null,\n  \"path\": \"/v0/info/flavors\",\n  \"\
+                    headers\": {\n    \"Authorization\": \"Bearer REPLACE_BEARER_TOKEN\"\
+                    \n  }\n};\n\nconst req = http.request(options, function (res)\
+                    \ {\n  const chunks = [];\n\n  res.on(\"data\", function (chunk)\
+                    \ {\n    chunks.push(chunk);\n  });\n\n  res.on(\"end\", function\
+                    \ () {\n    const body = Buffer.concat(chunks);\n    console.log(body.toString());\n\
+                    \  });\n});\n\nreq.end();"
+            -   lang: Ruby + Native
+                source: 'require ''uri''
+
+                    require ''net/http''
+
+                    require ''openssl''
+
+
+                    url = URI("https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/info/flavors")
+
+
+                    http = Net::HTTP.new(url.host, url.port)
+
+                    http.use_ssl = true
+
+                    http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+
+                    request = Net::HTTP::Get.new(url)
+
+                    request["Authorization"] = ''Bearer REPLACE_BEARER_TOKEN''
+
+
+                    response = http.request(request)
+
+                    puts response.read_body'
+    /v0/info/versions:
+        get:
+            tags:
+            - info
+            summary: Lists all available versios
+            description: Lista todas as versões de kubernetes disponiveis
+            operationId: getVersions
+            security:
+            -   BearerAuth:
+                - mke.read
+            -   OAuth2:
+                - mke.read
+            responses:
+                '200':
+                    description: Successful operation
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/VersionsResponse'
+                '400':
+                    description: Bad Request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '401':
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '429':
+                    description: Too Many Requests
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '500':
+                    description: Internal Server Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+            x-codeSamples:
+            -   lang: Shell + Curl
+                source: "curl --request GET \\\n  --url https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/info/versions\
+                    \ \\\n  --header 'Authorization: Bearer REPLACE_BEARER_TOKEN'"
+            -   lang: Shell + Httpie
+                source: "http GET https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/info/versions\
+                    \ \\\n  Authorization:'Bearer REPLACE_BEARER_TOKEN'"
+            -   lang: Go + Native
+                source: "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"\
+                    io/ioutil\"\n)\n\nfunc main() {\n\n\turl := \"https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/info/versions\"\
+                    \n\n\treq, _ := http.NewRequest(\"GET\", url, nil)\n\n\treq.Header.Add(\"\
+                    Authorization\", \"Bearer REPLACE_BEARER_TOKEN\")\n\n\tres, _\
+                    \ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\t\
+                    body, _ := ioutil.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\t\
+                    fmt.Println(string(body))\n\n}"
+            -   lang: Python + Python3
+                source: 'import http.client
+
+
+                    conn = http.client.HTTPSConnection("api-mke.pre-prod.br-ne-1.jaxyendy.com")
+
+
+                    headers = { ''Authorization'': "Bearer REPLACE_BEARER_TOKEN" }
+
+
+                    conn.request("GET", "/v0/info/versions", headers=headers)
+
+
+                    res = conn.getresponse()
+
+                    data = res.read()
+
+
+                    print(data.decode("utf-8"))'
+            -   lang: Node + Native
+                source: "const http = require(\"https\");\n\nconst options = {\n \
+                    \ \"method\": \"GET\",\n  \"hostname\": \"api-mke.pre-prod.br-ne-1.jaxyendy.com\"\
+                    ,\n  \"port\": null,\n  \"path\": \"/v0/info/versions\",\n  \"\
+                    headers\": {\n    \"Authorization\": \"Bearer REPLACE_BEARER_TOKEN\"\
+                    \n  }\n};\n\nconst req = http.request(options, function (res)\
+                    \ {\n  const chunks = [];\n\n  res.on(\"data\", function (chunk)\
+                    \ {\n    chunks.push(chunk);\n  });\n\n  res.on(\"end\", function\
+                    \ () {\n    const body = Buffer.concat(chunks);\n    console.log(body.toString());\n\
+                    \  });\n});\n\nreq.end();"
+            -   lang: Ruby + Native
+                source: 'require ''uri''
+
+                    require ''net/http''
+
+                    require ''openssl''
+
+
+                    url = URI("https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/info/versions")
+
+
+                    http = Net::HTTP.new(url.host, url.port)
+
+                    http.use_ssl = true
+
+                    http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+
+                    request = Net::HTTP::Get.new(url)
+
+                    request["Authorization"] = ''Bearer REPLACE_BEARER_TOKEN''
+
+
+                    response = http.request(request)
+
+                    puts response.read_body'
+components:
+    schemas:
+        ClusterRequest:
+            type: object
+            description: Objeto da requisição da request do cluster
+            properties:
+                name:
+                    type: string
+                    description: "Nome do cluster kubernetes. O nome destina-se principalmente\
+                        \ à idempotência, e deve ser exclusivo em um namespace. 0\
+                        \ nome não pode ser alterado.\nO nome deve seguir as seguintes\
+                        \ regras:\n  - deve conter no máximo 63 caracteres\n  - deve\
+                        \ conter apenas caracteres alfanuméricos minúsculos ou '-'\n\
+                        \  - deve começar com um caractere alfabético\n  - deve terminar\
+                        \ com um caractere alfanumérico\n"
+                    example: cluster-exemplo
+                version:
+                    type: string
+                    description: Versão do kubernetes nativa do cluster
+                    example: v1.24.10
+                    enum:
+                    - v1.22.9
+                    - v1.24.10
+                    - v1.26.1
+                    default: v1.24.10
+                description:
+                    type: string
+                    description: Descrição do cluster
+                    example: Esse é um cluster de exemplo
+                    default: ''
+                enabled_bastion:
+                    type: boolean
+                    description: Habilita bastion host
+                    example: false
+                    default: false
+                enabled_server_group:
+                    type: boolean
+                    description: Habilita o uso de server group, com política de anti-affinity,
+                        na criação do cluster e dos node pools
+                    example: false
+                    default: true
+                node_pools:
+                    type: array
+                    description: Conjunto de nodes em um cluster kubernetes
+                    items:
+                        $ref: '#/components/schemas/CreateNodePoolRequest'
+            required:
+            - name
+            - enabled_bastion
+        CreateClusterResponse:
+            type: object
+            description: Objeto da requisição da response do cluster
+            required:
+            - name
+            - id
+            - status
+            properties:
+                name:
+                    type: string
+                    description: Nome do cluster kubernetes
+                    example: cluster-exemplo
+                id:
+                    type: string
+                    description: Identificador no padrão uuid para identificar o cluster
+                        kubernetes
+                    example: 10113826-624a-4801-900f-6a5742433411
+                    format: uuid
+                status:
+                    $ref: '#/components/schemas/SingleStatus'
+        ClustersResponse:
+            type: object
+            description: Objeto da requisição da response dos clusters
+            required:
+            - results
+            properties:
+                results:
+                    type: array
+                    description: Lista dos clusters kubernetes
+                    items:
+                        $ref: '#/components/schemas/ClusterResponse'
+        ClusterResponse:
+            type: object
+            description: Objeto da requisição da response do cluster
+            required:
+            - id
+            - name
+            - project_id
+            properties:
+                id:
+                    type: string
+                    description: Identificador no padrão uuid para identificar o cluster
+                        kubernetes
+                    example: 10113826-624a-4801-900f-6a5742433411
+                name:
+                    type: string
+                    description: Nome do cluster kubernetes
+                    example: cluster-exemplo
+                status:
+                    $ref: '#/components/schemas/SingleStatus'
+                version:
+                    type: string
+                    description: Versão do kubernetes nativa do cluster
+                    example: v1.22.9
+                kube_api_server:
+                    $ref: '#/components/schemas/KubeApiServer'
+                tags:
+                    type: array
+                    description: Lista de tags aplicadas ao cluster kubernetes
+                    items:
+                        type: string
+                        nullable: true
+                        description: Items da lista de tags aplicadas ao cluster kubernetes
+                        example: tag-exemplo
+                description:
+                    type: string
+                    description: Descrição do cluster kubernetes
+                    example: Esse é um cluster de exemplo
+                project_id:
+                    type: string
+                    description: Identificador único do projeto onde o cluster foi
+                        provisionado
+                    example: 0000806e53ec429792a7885e63264411
+                region:
+                    type: string
+                    description: Identificador da região em que o cluster Kubernetes
+                        está localizado.
+                    example: br-ne-1a
+        ClusterKubeConfigResponse:
+            type: object
+            description: Objeto da requisição da response do kubeconfig do cluster
+            properties:
+                fileName:
+                    type: string
+                    description: Objeto do arquivo de resposta do kubeconfig do cluster
+                        kubernetes
+                    format: binary
+                    example: "apiVersion: v1\nclusters:\n- cluster:\n    certificate-authority-data:\
+                        \ <ca-data>\n    server: https://179.190.33.102:6443\n  name:\
+                        \ mke-cluster3\ncontexts:\n- context:\n    cluster: mke-cluster3\n\
+                        \    user: mke-cluster3-admin\n  name: mke-cluster3-admin@mke-cluster3\n\
+                        current-context: mke-cluster3-admin@mke-cluster3\nkind: Config\n\
+                        preferences: {}\nusers:\n- name: mke-cluster3-admin\n  user:\n\
+                        \    client-certificate-data: <certified_data>\n    client-key-data:\
+                        \ <key_data>\n"
+        ClusterByIdResponse:
+            type: object
+            description: Objeto da requisição da response do cluster por id
+            properties:
+                name:
+                    type: string
+                    description: Nome do cluster kubernetes
+                    example: cluster-exemplo
+                id:
+                    type: string
+                    description: Identificador no padrão uuid para identificar o cluster
+                        kubernetes
+                    example: 10113826-624a-4801-900f-6a5742433411
+                status:
+                    $ref: '#/components/schemas/SingleStatus'
+                version:
+                    type: string
+                    description: Versão do kubernetes nativa do cluster
+                    example: v1.22.9
+                tags:
+                    type: array
+                    description: Lista de tags aplicadas ao cluster kubernetes
+                    items:
+                        type: string
+                        description: Items da lista de tags aplicadas ao cluster kubernetes
+                        example: tag-exemplo
+                description:
+                    type: string
+                    description: Descrição do cluster kubernetes
+                    example: Esse é um cluster de exemplo
+                project_id:
+                    type: string
+                    description: Identificador único do projeto onde o cluster foi
+                        provisionado
+                    example: 0000806e53ec429792a7885e63264411
+                region:
+                    type: string
+                    description: Identificador da região em que o cluster kubernetes
+                        está localizado
+                    example: br-ne-1a
+                created_at:
+                    type: string
+                    description: Data de criação do cluster kubernetes
+                    example: '2023-03-01T09:00:00Z'
+                    format: date-time
+                updated_at:
+                    type: string
+                    description: Data da ultima alteração do cluster kubernetes
+                    example: '2023-03-01T09:10:00Z'
+                    format: date-time
+                network:
+                    $ref: '#/components/schemas/NetworkResponse'
+                controlplane:
+                    $ref: '#/components/schemas/NodePoolsResponse'
+                kube_api_server:
+                    $ref: '#/components/schemas/KubeApiServer'
+                node_pools:
+                    type: array
+                    description: Conjunto de nodes em um cluster kubernetes
+                    items:
+                        $ref: '#/components/schemas/NodePoolsResponse'
+                addons:
+                    $ref: '#/components/schemas/Addons'
+            required:
+            - name
+            - id
+            - version
+            - project_id
+            - region
+        CreateNodePoolRequest:
+            type: object
+            description: Objeto da requisição da request do nodepool
+            properties:
+                name:
+                    type: string
+                    description: "Nome do node pool. O nome destina-se principalmente\
+                        \ à idempotência, e deve ser exclusivo em um namespace. 0\
+                        \ nome não pode ser alterado.\nO nome deve seguir as seguintes\
+                        \ regras:\n  - deve conter no máximo 63 caracteres\n  - deve\
+                        \ conter apenas caracteres alfanuméricos minúsculos ou '-'\n\
+                        \  - deve começar com um caractere alfabético\n  - deve terminar\
+                        \ com um caractere alfanumérico\n"
+                    example: nodepool-exemplo
+                flavor:
+                    type: string
+                    description: "Definição da capacidade de CPU, memória RAM e armazenamento\
+                        \ dos nodes\n<table>\n  <tr>\n    <td>Flavor</td>\n    <td>vCPUs</td>\n\
+                        \    <td>RAM(Gb)</td>\n    <td>Root Disk(GB)</td>\n  </tr>\n\
+                        \  <tr>\n    <td>cloud-k8s.gp1.small</td>\n    <td>2</td>\n\
+                        \    <td>4</td>\n    <td>20</td>\n  </tr>\n  <tr>\n    <td>cloud-k8s.gp1.large</td>\n\
+                        \    <td>8</td>\n    <td>16</td>\n    <td>100</td>\n  </tr>\n\
+                        </table>\n"
+                    example: cloud-k8s.gp1.small
+                    enum:
+                    - cloud-k8s.gp1.small
+                    - cloud-k8s.gp1.large
+                replicas:
+                    type: integer
+                    description: Número de réplicas dos nós do nodepool
+                    example: 3
+                    default: 1
+                tags:
+                    type: array
+                    description: Lista de tags aplicadas ao nodepool
+                    items:
+                        type: string
+                        description: Items da lista de tags aplicadas ao nodepool
+                        example: tag-value1
+                taints:
+                    type: array
+                    description: Propriedade de associação de um conjunto se nós
+                    items:
+                        $ref: '#/components/schemas/Taint'
+                auto_scale:
+                    $ref: '#/components/schemas/AutoScale'
+            required:
+            - name
+            - flavor
+            - replicas
+        PatchNodePoolRequest:
+            type: object
+            description: Objeto da requisição da request de alteração do nodepool
+            properties:
+                replicas:
+                    type: integer
+                    description: Quantidade de réplicas dos nós do nodepool
+                auto_scale:
+                    $ref: '#/components/schemas/AutoScale'
+        KubeApiServer:
+            type: object
+            description: Informações sobre o Kubernetes API Server do Cluster
+            properties:
+                disable_api_server_fip:
+                    type: boolean
+                    description: Habilita ou desabilita o uso do Floating IP no API
+                        Server
+                    default: false
+                    example: true
+                fixed_ip:
+                    type: string
+                    description: IP fixo configurado para o Kubernetes API Server
+                    example: 172.100.10.1
+                floating_ip:
+                    type: string
+                    description: Floating IP criado para o Kubernetes API Server
+                    example: 172.100.10.1
+                port:
+                    type: integer
+                    description: Porta utilizada pelo Kubernetes API Server
+                    example: '6443'
+        NodePoolsResponse:
+            type: object
+            description: Objeto da requisição da response do nodepool
+            properties:
+                id:
+                    type: string
+                    description: Identificador no padrão uuid para identificar o nodepool
+                    format: uuid
+                    example: 2cc6f625-7d67-4ed2-8c5e-24e5b40b951b
+                name:
+                    type: string
+                    description: Nome do node pool
+                    example: nodepool-exemplo
+                instance_template:
+                    $ref: '#/components/schemas/InstanceTemplate'
+                replicas:
+                    type: integer
+                    description: Quantidade de réplicas dos nós do nodepool
+                    example: 3
+                zone:
+                    type: array
+                    description: Zona de disponibilidade para criação do cluster kubernetes
+                    items:
+                        type: string
+                        description: Items da lista das zonas de disponibilidade para
+                            criação do cluster kubernetes
+                        example: br-ne-1b
+                tags:
+                    type: array
+                    description: Lista de tags aplicadas ao nodepool
+                    items:
+                        type: string
+                        description: Items da lista de tags aplicadas ao nodepool
+                        example: tag-exemplo
+                labels:
+                    type: object
+                    additionalProperties:
+                        type: string
+                    description: Pares de chave/valor anexados ao objeto e usados
+                        para especificação
+                    example:
+                        key1: valor1
+                taints:
+                    type: array
+                    description: Propriedade de associação de um conjunto se nós
+                    items:
+                        $ref: '#/components/schemas/Taint'
+                securityGroups:
+                    type: array
+                    description: Nome do grupo de segurança para definir regras que
+                        permitem tráfego de rede no node pool de workers
+                    items:
+                        type: string
+                        description: Items dos grupos de segurança que definem regras
+                            que permitem tráfego de rede no node pool de workers
+                        example: security-group-name
+                created_at:
+                    type: string
+                    description: Data de criação do cluster kubernetes
+                    example: '2023-03-01T09:00:00Z'
+                    format: date-time
+                updated_at:
+                    type: string
+                    description: Data da última alteração do cluster kubernetes
+                    example: '2023-03-01T09:10:00Z'
+                    format: date-time
+                auto_scale:
+                    $ref: '#/components/schemas/AutoScale'
+                status:
+                    $ref: '#/components/schemas/Status'
+            required:
+            - id
+            - name
+            - instance_template
+            - replicas
+            - zone
+            - labels
+            - securityGroups
+            - auto_scale
+            - status
+        ClusterNodePoolsResponse:
+            type: object
+            description: Objeto da requisição da response dos nodepools
+            required:
+            - results
+            properties:
+                results:
+                    type: array
+                    description: Lista dos node pools
+                    items:
+                        $ref: '#/components/schemas/NodePoolsResponse'
+        NodesResponse:
+            type: object
+            description: Objeto da requisição da response dos nodes
+            required:
+            - results
+            properties:
+                results:
+                    type: array
+                    description: Lista dos nodes
+                    items:
+                        $ref: '#/components/schemas/NodeResponse'
+        NodeResponse:
+            type: object
+            description: Objeto da requisição da response do node
+            properties:
+                id:
+                    type: string
+                    description: Identificador no padrão uuid para identificar o node
+                    format: uuid
+                    example: 77b3a951-dc2c-4802-a246-63a3c7f7ecac
+                name:
+                    type: string
+                    description: Nome do node
+                    example: node-exemplo
+                namespace:
+                    type: string
+                    description: Namespace do node
+                    example: namespace-exemplo
+                cluster_name:
+                    type: string
+                    description: Nome do cluster ao qual o node pertence
+                    example: cluster-exemplo
+                nodepool_name:
+                    type: string
+                    description: Nome do nodepool ao qual o node pertence
+                    example: nodepool-exemplo
+                created_at:
+                    type: string
+                    description: Data de criação do node
+                    format: date-time
+                    example: '2023-03-01T09:00:00Z'
+                annotations:
+                    type: object
+                    additionalProperties:
+                        type: string
+                    description: Pares de chave/valor anexados ao objeto e usados
+                        para especificação
+                    example:
+                        annoattion-key1: valor1
+                labels:
+                    type: object
+                    additionalProperties:
+                        type: string
+                    description: Pares de chave/valor anexados ao objeto e usados
+                        para especificação
+                    example:
+                        label-key1: valor1
+                taints:
+                    type: array
+                    description: Propriedade de associação de um conjunto de nós
+                    items:
+                        $ref: '#/components/schemas/Taint'
+                addresses:
+                    type: array
+                    description: Lista de endereços acessíveis ao node
+                    items:
+                        $ref: '#/components/schemas/NodeAddress'
+                flavor:
+                    type: string
+                    description: Nome do flavor
+                    example: cloud-k8s.gp1.small
+                node_image:
+                    type: string
+                    description: Imagem do sistema operacional executada pelo node
+                    example: ubuntu-2004-kube-v1.22.9-v1
+                zone:
+                    type: string
+                    description: Identificador da região em que o node está localizado
+                    example: br-ne-1c
+                infrastructure:
+                    $ref: '#/components/schemas/NodeInfrastructure'
+                status:
+                    $ref: '#/components/schemas/SingleStatus'
+            required:
+            - id
+            - name
+            - namespace
+            - cluster_name
+            - nodepool_name
+            - created_at
+            - annotations
+            - labels
+            - taints
+            - addresses
+            - flavor
+            - node_image
+            - zone
+            - infrastructure
+            - status
+        NodeAddress:
+            type: object
+            description: Informações para o endereço do node
+            properties:
+                address:
+                    type: string
+                    description: O endereço do node
+                    example: address-exemplo
+                type:
+                    type: string
+                    description: 'Tipo de endereço do node, um de Hostname, ExternalIP
+                        ou InternalIP.
+
+                        **HostName** - O nome do host relatado pelo kernel do nó.
+                        Pode ser substituído através do parâmetro kubelet --hostname-override.
+
+                        **ExternalIP** - Geralmente, o endereço IP do nó que é roteável
+                        externamente (disponível fora do cluster).
+
+                        **InternalIP** - Geralmente, o endereço IP do nó que é roteável
+                        somente dentro do cluster.
+
+                        '
+                    example: Hostname
+            required:
+            - type
+            - address
+        NodeInfrastructure:
+            type: object
+            description: Informações de infraestrutura do node
+            properties:
+                architecture:
+                    type: string
+                    description: Arquitetura relatada pelo node
+                    example: amd64
+                containerRuntimeVersion:
+                    type: string
+                    description: Versão do ContainerRuntime relatada pelo node por
+                        meio da API remota de tempo de execução
+                    example: containerd://1.6.2
+                kernelVersion:
+                    type: string
+                    description: Versão do kernel relatada pelo node de 'uname -r'
+                    example: 5.4.0-122-generic
+                kubeProxyVersion:
+                    type: string
+                    description: Versão do KubeProxy relatada pelo node
+                    example: v1.22.9
+                kubeletVersion:
+                    type: string
+                    description: Versão do Kubelet relatada pelo node
+                    example: v1.22.9
+                operatingSystem:
+                    type: string
+                    description: Sistema operacional relatado pelo node
+                    example: linux
+                osImage:
+                    type: string
+                    description: Imagem do SO relatada pelo node de /etc/os-release
+                    example: Ubuntu 20.04.4 LTS
+                allocatable:
+                    $ref: '#/components/schemas/NodeResources'
+                capacity:
+                    $ref: '#/components/schemas/NodeResources'
+            required:
+            - architecture
+            - containerRuntimeVersion
+            - kernelVersion
+            - kubeProxyVersion
+            - kubeletVersion
+            - operatingSystem
+            - osImage
+            - allocatable
+            - capacity
+        NodeResources:
+            type: object
+            description: Informações de recursos do node
+            properties:
+                cpu:
+                    type: string
+                    description: Quantidade de CPU
+                    example: '2'
+                ephemeral_storage:
+                    type: string
+                    description: Quantidade de armazenamento efêmero
+                    example: '18859814062'
+                hugepages_1Gi:
+                    type: string
+                    description: Alocação e consumo de páginas
+                hugepages_2Mi:
+                    type: string
+                    description: Alocação e consumo de páginas
+                memory:
+                    type: string
+                    description: Quantidade de mémoria
+                    example: 3923640Ki
+                pods:
+                    type: string
+                    description: Quantidade de pods
+                    example: '110'
+            required:
+            - cpu
+            - ephemeral_storage
+            - hugepages_1Gi
+            - hugepages_2Mi
+            - memory
+            - pods
+        Status:
+            type: object
+            description: Detalhes a respeito do status do node pool ou control plane
+            required:
+            - state
+            - messages
+            properties:
+                state:
+                    type: string
+                    description: "Estado atual do node pool ou control plane.\n<table>\n\
+                        \  <tr>\n    <td>Node pool</td>\n    <td>ScalingUp, ScalingDown,\
+                        \ Running, Failed, Unknown</td>\n  </tr>\n  <tr>\n    <td>Control\
+                        \ Plane</td>\n    <td>ScalingUp, ScalingDown, Running, Failed,\
+                        \ Unknown</td>\n  </tr>\n</table>\n"
+                    example: Pending
+                messages:
+                    type: array
+                    description: Mensagem detalhada sobre o status do node pool ou
+                        control plane
+                    items:
+                        type: string
+                        description: Mensagens retornadas pelos control planes ou
+                            nodepools
+                        example: Ready
+        SingleStatus:
+            type: object
+            description: Detalhes a respeito do status do cluster ou node
+            required:
+            - state
+            - message
+            properties:
+                state:
+                    type: string
+                    description: "Estado atual do cluster ou node.\n<table>\n  <tr>\n\
+                        \    <td>Cluster</td>\n    <td>Pending, Provisioning, Running,\
+                        \ Provisioned, Terminating, Deleting, Failed</td>\n  </tr>\n\
+                        \  <tr>\n    <td>Node</td>\n    <td>Pending, Provisioning,\
+                        \ Provisioned, Running, Deleting, Failed, Unknown</td>\n \
+                        \ </tr>\n</table>\n"
+                    example: Pending
+                message:
+                    type: string
+                    description: Mensagem detalhada sobre o status do cluster ou node
+                    example: Ready
+        Error:
+            type: object
+            required:
+            - id
+            - message
+            description: Detalhes a respeito do erro do cluster e/ou node pool
+            properties:
+                message:
+                    title: Message
+                    type: string
+                slug:
+                    title: Slug
+                    type: string
+            example:
+                message: Unauthorized
+                slug: Unauthorized
+        NetworkResponse:
+            type: object
+            description: Objeto da requisição da response do recurso de rede do cluster
+                kubernetes
+            properties:
+                uuid:
+                    type: string
+                    description: Identificador no padrão uuid para identificar o nodepool
+                    example: 7c24eb01-9423-4f09-a2d2-99ba5df01411
+                cidr:
+                    type: string
+                    description: Endereço de IP disponíveis que serão utilizados para
+                        provisionamento dos nós do cluster
+                    example: 00.0.0.0/00
+                name:
+                    type: string
+                    description: Nome do node pool
+                    example: k8s-clusterapi-cluster-exemplo
+                subnet_id:
+                    type: string
+                    description: Identificador da subnet interna onde o cluster será
+                        provisionado
+                    example: c5f750a0-a032-477e-a23a-bcffab8b0707
+            required:
+            - uuid
+            - cidr
+            - name
+            - subnet_id
+        Addons:
+            type: object
+            description: Objeto dos complementos que estendem a funcionalidade do
+                cluster kubernetes
+            properties:
+                loadbalance:
+                    type: string
+                    description: Flag correspondente se o serviço de load balancer
+                        está habilitado/desabilitado no cluster
+                volume:
+                    type: string
+                    description: Flag correspondente se o serviço de storage class
+                        está configurado por padrão
+                secrets:
+                    type: string
+                    description: Secret nativa do kubernetes a ser incluída ao cluster
+                        durante o provisionamento
+            required:
+            - loadbalance
+            - volume
+            - secrets
+        AutoScale:
+            type: object
+            description: Objeto que define propriedades para atualização de recursos
+                da carga de trabalho do cluster kubernetes
+            properties:
+                enabled:
+                    type: boolean
+                    description: Ativa/Desativa o escalonamento automático
+                    example: true
+                    default: false
+                min_replicas:
+                    type: integer
+                    description: Quantidade mínima  de réplicas, caso a função de
+                        autoscaling esteja habilitada.
+                    example: 2
+                    minimum: 1
+                    default: 1
+                max_replicas:
+                    type: integer
+                    description: Quantidade máxima de réplicas, caso a função de autoscaling
+                        esteja habilitada
+                    example: 5
+                    minimum: 1
+                    default: 1
+            required:
+            - enabled
+            - min_replicas
+            - max_replicas
+        Taint:
+            type: object
+            properties:
+                key:
+                    type: string
+                    description: A chave taint a ser aplicada ao node
+                    example: exemplo-key
+                value:
+                    type: string
+                    description: O valor correspondente a chave taint.
+                    example: valor1
+                effect:
+                    type: string
+                    description: "O efeito do taint em pods que não toleram o taint.\n\
+                        **NoSchedule** - Não permitir que novos pods sejam agendados\
+                        \ no nó, a menos que eles tolerem a taint, mas permitir que\
+                        \ todos os pods já em execução continuem em execução.\n**PreferNoSchedule**\
+                        \ - Parecido com o NoSchedule, mas tenta não agendar novos\
+                        \ pods no nó, em vez de proibir totalmente o agendamento de\
+                        \ novos pods no nó\n**NoExecute** - Remova todos os pods já\
+                        \ em execução que não tolerem o taint.  \n"
+                    example: NoSchedule
+                    enum:
+                    - NoSchedule
+                    - PreferNoSchedule
+                    - NoExecute
+            required:
+            - key
+            - value
+            - effect
+        InstanceTemplate:
+            type: object
+            description: Template do objeto de instância usado para criar instâncias
+                de máquina e grupos gerenciados de instâncias.
+            properties:
+                flavor:
+                    $ref: '#/components/schemas/Flavor'
+                node_image:
+                    type: string
+                    description: Imagem do sistema operacional que é executada em
+                        cada nó
+                    example: ubuntu-2004-kube-v1.22.9-v1
+                disk_size:
+                    type: integer
+                    description: Tamanho do disco anexado a cada nó
+                disk_type:
+                    type: string
+                    description: Tipo de disco anexado a cada nó
+            required:
+            - flavor
+            - node_image
+            - disk_size
+            - disk_type
+        Flavor:
+            type: object
+            description: Definição da capacidade de CPU, memória RAM e armazenamento
+                dos nodes
+            properties:
+                name:
+                    type: string
+                    description: Nome do Flavor.
+                    example: cloud-k8s.gp1.small
+                id:
+                    type: string
+                    description: Identificador exclusivo do Flavor.
+                    example: c777eaa7-d67c-46f4-9e4f-232bc9b67b58
+                    default: ''
+                vcpu:
+                    type: integer
+                    description: Quantidade de vCPUs disponiveis.
+                    example: 2
+                    default: 0
+                ram:
+                    type: integer
+                    description: Quantidade de memória RAM, medida em MB.
+                    example: 4096
+                    default: 0
+                size:
+                    type: integer
+                    description: Quantidade de disco, medido em GB.
+                    example: 20
+                    default: 0
+            required:
+            - name
+            - id
+            - vcpu
+            - ram
+            - size
+        FlavorWithSku:
+            type: object
+            description: Definição da capacidade de CPU, memória RAM e armazenamento
+                dos nodes
+            properties:
+                name:
+                    type: string
+                    description: Nome do Flavor.
+                    example: cloud-k8s.gp1.small
+                id:
+                    type: string
+                    description: Identificador exclusivo do Flavor.
+                    example: c777eaa7-d67c-46f4-9e4f-232bc9b67b58
+                    default: ''
+                vcpu:
+                    type: integer
+                    description: Quantidade de vCPUs disponiveis.
+                    example: 2
+                    default: 0
+                ram:
+                    type: integer
+                    description: Quantidade de memória RAM, medida em MB.
+                    example: 4096
+                    default: 0
+                size:
+                    type: integer
+                    description: Quantidade de disco, medido em GB.
+                    example: 20
+                    default: 0
+                sku:
+                    type: string
+                    description: SKU referente ao flavor
+                    example: sku-1234
+            required:
+            - name
+            - id
+            - vcpu
+            - ram
+            - size
+            - sku
+        FlavorsResponse:
+            type: object
+            description: Objeto de resposta da requisição do flavor
+            required:
+            - results
+            properties:
+                results:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/FlavorsAvailable'
+        FlavorsAvailable:
+            type: object
+            description: Listas de flavors disponibilidas pela aplicação
+            properties:
+                bastion:
+                    type: array
+                    description: Lista de flavors disponiveis para a Bastion
+                    items:
+                        $ref: '#/components/schemas/FlavorWithSku'
+                nodepool:
+                    type: array
+                    description: Lista de flavors disponiveis para os Node Pools
+                    items:
+                        $ref: '#/components/schemas/FlavorWithSku'
+                controlplane:
+                    type: array
+                    description: Lista de flavors disponiveis para o Controlplane
+                    items:
+                        $ref: '#/components/schemas/FlavorWithSku'
+            required:
+            - bastion
+            - nodepool
+            - controlplane
+        VersionsResponse:
+            type: object
+            description: Objeto de resposta da requisição da Versão
+            required:
+            - results
+            properties:
+                results:
+                    type: array
+                    description: Lista de versões para o cluster kubernetes
+                    items:
+                        $ref: '#/components/schemas/Version'
+        Version:
+            type: object
+            description: Objeto da versão kubernetes
+            properties:
+                version:
+                    type: string
+                    description: Versão kubernetes
+                    example: v1.22.9
+                deprecated:
+                    type: boolean
+                    description: Indica se a versão está obsoleta
+                    example: false
+            required:
+            - version
+            - deprecated
+    securitySchemes:
+        BearerAuth:
+            type: http
+            scheme: bearer
+            bearerFormat: JWT
+        OAuth2:
+            flows:
+                authorizationCode:
+                    authorizationUrl: https://idp-maas-sandbox.ipet.sh/auth/realms/master/protocol/openid-connect/auth
+                    tokenUrl: https://idp-maas-sandbox.ipet.sh/auth/realms/master/protocol/openid-connect/token
+                    scopes:
+                        mke.read: Ler informações de recursos IaaS
+                        mke.write: Escrever informações de recursos IaaS
+            type: oauth2
+            description: OAuth2 via IDPA
+tags:
+-   name: cluster
+    description: Rotas relacionadas a api de Cluster.
+-   name: nodepool
+    description: Rotas relacionadas a api de Nodepool dentro da api de Cluster.
+-   name: info
+    description: Rotas relacionadas a informações de configurações do mke-api.

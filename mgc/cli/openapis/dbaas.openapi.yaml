@@ -1,0 +1,1403 @@
+openapi: 3.0.2
+info:
+    title: DBaaS Api Product
+    description: DBaaS Api Product
+    contact:
+        name: Tribo IAAS Cloud
+        url: https://github.com/luizalabs/cloud/dbaas/docs
+        email: joao.ferranti@luizalabs.com
+    version: 1.8.1
+paths:
+    /v1/healthcheck:
+        get:
+            summary: Healthcheck
+            description: Check api status
+            operationId: healthcheck_v1_healthcheck_get
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Healthcheck'
+    /v1/instances/{instance_id}/backups:
+        get:
+            tags:
+            - backups
+            summary: Backups List.
+            description: List all backups.
+            operationId: backups_list_v1_instances__instance_id__backups_get
+            parameters:
+            -   required: true
+                schema:
+                    title: Instance Id
+                    type: string
+                    format: uuid
+                name: instance_id
+                in: path
+            -   required: false
+                schema:
+                    title: ' Offset'
+                    minimum: 0.0
+                    type: integer
+                    default: 0
+                name: _offset
+                in: query
+            -   required: false
+                schema:
+                    title: ' Limit'
+                    maximum: 25.0
+                    minimum: 1.0
+                    type: integer
+                    default: 10
+                name: _limit
+                in: query
+            -   required: false
+                schema:
+                    $ref: '#/components/schemas/BackupType'
+                name: type
+                in: query
+            -   required: false
+                schema:
+                    $ref: '#/components/schemas/BackupMode'
+                name: mode
+                in: query
+            -   required: false
+                schema:
+                    $ref: '#/components/schemas/BackupStatusResponse'
+                name: status
+                in: query
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/BackupsResponse'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+        post:
+            tags:
+            - backups
+            summary: Backup Create.
+            description: Creates a new backup asynchronously.
+            operationId: backup_create_v1_instances__instance_id__backups_post
+            parameters:
+            -   required: true
+                schema:
+                    title: Instance Id
+                    type: string
+                    format: uuid
+                name: instance_id
+                in: path
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/BackupCreateRequest'
+                required: true
+            responses:
+                '202':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/BackupResponse'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+    /v1/instances/{instance_id}/backups/{backup_id}:
+        get:
+            tags:
+            - backups
+            summary: Backup Detail.
+            description: Get a backup detail.
+            operationId: backup_detail_v1_instances__instance_id__backups__backup_id__get
+            parameters:
+            -   required: true
+                schema:
+                    title: Instance Id
+                    type: string
+                    format: uuid
+                name: instance_id
+                in: path
+            -   required: true
+                schema:
+                    title: Backup Id
+                    type: string
+                    format: uuid
+                name: backup_id
+                in: path
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/BackupDetailResponse'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+        delete:
+            tags:
+            - backups
+            summary: Delete Backup.
+            description: Deletes a database backup.
+            operationId: delete_backup_v1_instances__instance_id__backups__backup_id__delete
+            parameters:
+            -   required: true
+                schema:
+                    title: Instance Id
+                    type: string
+                    format: uuid
+                name: instance_id
+                in: path
+            -   required: true
+                schema:
+                    title: Backup Id
+                    type: string
+                    format: uuid
+                name: backup_id
+                in: path
+            responses:
+                '202':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema: {}
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+    /v1/datastores:
+        get:
+            tags:
+            - datastores
+            summary: List available datastores.
+            description: Returns a list of available datastores. A datastore is a
+                combination of engine and version.
+            operationId: datastores_v1_get_all
+            parameters:
+            -   required: false
+                schema:
+                    title: ' Offset'
+                    minimum: 0.0
+                    type: integer
+                    default: 0
+                name: _offset
+                in: query
+            -   required: false
+                schema:
+                    title: ' Limit'
+                    maximum: 25.0
+                    minimum: 1.0
+                    type: integer
+                    default: 10
+                name: _limit
+                in: query
+            -   required: false
+                schema:
+                    $ref: '#/components/schemas/DatastoreStatus'
+                name: status
+                in: query
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/DatastoresResponse'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+    /v1/datastores/{datastore_id}:
+        get:
+            tags:
+            - datastores
+            summary: Datastore detail.
+            description: Returns a datastore detail.
+            operationId: datastores_v1_get_by_id
+            parameters:
+            -   required: true
+                schema:
+                    title: Datastore Id
+                    type: string
+                    format: uuid
+                name: datastore_id
+                in: path
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/DatastoreResponse'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+    /v1/flavors:
+        get:
+            tags:
+            - flavors
+            summary: List available flavors.
+            description: Returns a list of available flavors. A flavor is a hardware
+                template that defines the size of RAM and vcpu.
+            operationId: flavors_v1_get_all
+            parameters:
+            -   required: false
+                schema:
+                    title: ' Offset'
+                    minimum: 0.0
+                    type: integer
+                    default: 0
+                name: _offset
+                in: query
+            -   required: false
+                schema:
+                    title: ' Limit'
+                    maximum: 25.0
+                    minimum: 1.0
+                    type: integer
+                    default: 10
+                name: _limit
+                in: query
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/FlavorsResponse'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+    /v1/flavors/{flavor_id}:
+        get:
+            tags:
+            - flavors
+            summary: Flavor detail.
+            description: Returns a flavor detail.
+            operationId: flavors_v1_get_by_id
+            parameters:
+            -   required: true
+                schema:
+                    title: Flavor Id
+                    type: string
+                    format: uuid
+                name: flavor_id
+                in: path
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/FlavorResponse'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+    /v1/instances:
+        get:
+            tags:
+            - instances
+            summary: List all database instances.
+            description: Returns a list of database instances for a x-tenant-id.
+            operationId: instances_list_v1_instances_get
+            parameters:
+            -   required: false
+                schema:
+                    title: ' Offset'
+                    minimum: 0.0
+                    type: integer
+                    default: 0
+                name: _offset
+                in: query
+            -   required: false
+                schema:
+                    title: ' Limit'
+                    maximum: 25.0
+                    minimum: 1.0
+                    type: integer
+                    default: 10
+                name: _limit
+                in: query
+            -   required: false
+                schema:
+                    title: ' Expand'
+                    type: string
+                    default: ''
+                example: replicas
+                name: _expand
+                in: query
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/InstancesResponse'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+        post:
+            tags:
+            - instances
+            summary: Creates a new database instance.
+            description: Creates a new database instance asynchronously for a tenant.
+            operationId: instances_v1_post
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/InstanceCreateRequest'
+                required: true
+            responses:
+                '202':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/InstanceResponse'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+    /v1/instances/{instance_id}:
+        get:
+            tags:
+            - instances
+            summary: Database instance details.
+            description: Returns a database instance detail.
+            operationId: instances_v1_get_by_id
+            parameters:
+            -   required: true
+                schema:
+                    title: Instance Id
+                    type: string
+                    format: uuid
+                name: instance_id
+                in: path
+            -   required: false
+                schema:
+                    title: ' Expand'
+                    type: string
+                    default: ''
+                example: replicas
+                name: _expand
+                in: query
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/InstanceDetailResponse'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+        delete:
+            tags:
+            - instances
+            summary: Deletes a database instance.
+            description: Deletes a database instance.
+            operationId: instances_v1_delete
+            parameters:
+            -   required: true
+                schema:
+                    title: Instance Id
+                    type: string
+                    format: uuid
+                name: instance_id
+                in: path
+            responses:
+                '202':
+                    description: Successful Response
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+        patch:
+            tags:
+            - instances
+            summary: Database instance update.
+            description: Updates a database instance.
+            operationId: instances_v1_patch
+            parameters:
+            -   required: true
+                schema:
+                    title: Instance Id
+                    type: string
+                    format: uuid
+                name: instance_id
+                in: path
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/InstanceUpdateRequest'
+                required: true
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/InstanceDetailResponse'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+    /v1/instances/{instance_id}/resize:
+        post:
+            tags:
+            - instances
+            summary: Resizes a database instance.
+            description: Resizes a database instance.
+            operationId: instances_v1_resize
+            parameters:
+            -   required: true
+                schema:
+                    title: Instance Id
+                    type: string
+                    format: uuid
+                name: instance_id
+                in: path
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/InstanceResizeRequest'
+                required: true
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/InstanceDetailResponse'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+    /v1/instances/{instance_id}/start:
+        post:
+            tags:
+            - instances
+            summary: Starts a database instance.
+            description: Starts a database instance.
+            operationId: instances_v1_start
+            parameters:
+            -   required: true
+                schema:
+                    title: Instance Id
+                    type: string
+                    format: uuid
+                name: instance_id
+                in: path
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/InstanceDetailResponse'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+    /v1/instances/{instance_id}/stop:
+        post:
+            tags:
+            - instances
+            summary: Stops a database instance.
+            description: Stops a database instance.
+            operationId: instances_v1_stop
+            parameters:
+            -   required: true
+                schema:
+                    title: Instance Id
+                    type: string
+                    format: uuid
+                name: instance_id
+                in: path
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/InstanceDetailResponse'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+    /v1/replicas:
+        get:
+            tags:
+            - replicas
+            summary: Replicas List.
+            description: List all replicas for a given instance.
+            operationId: replicas_list_v1_replicas_get
+            parameters:
+            -   required: false
+                schema:
+                    title: Source Id
+                    type: string
+                    format: uuid
+                name: source_id
+                in: query
+            -   required: false
+                schema:
+                    title: ' Offset'
+                    minimum: 0.0
+                    type: integer
+                    default: 0
+                name: _offset
+                in: query
+            -   required: false
+                schema:
+                    title: ' Limit'
+                    maximum: 25.0
+                    minimum: 1.0
+                    type: integer
+                    default: 10
+                name: _limit
+                in: query
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ReplicasResponse'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+        post:
+            tags:
+            - replicas
+            summary: Replica Create.
+            description: Creates a new replica for an instance asynchronously.
+            operationId: replica_create_v1_replicas_post
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/ReplicaCreateRequest'
+                required: true
+            responses:
+                '202':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ReplicaResponse'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+    /v1/replicas/{replica_id}:
+        get:
+            tags:
+            - replicas
+            summary: Replica Detail.
+            description: Get an instance replica detail.
+            operationId: replica_detail_v1_replicas__replica_id__get
+            parameters:
+            -   required: true
+                schema:
+                    title: Replica Id
+                    type: string
+                    format: uuid
+                name: replica_id
+                in: path
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ReplicaDetailResponse'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+        delete:
+            tags:
+            - replicas
+            summary: Replica Delete.
+            description: Deletes an instance replica.
+            operationId: replica_delete_v1_replicas__replica_id__delete
+            parameters:
+            -   required: true
+                schema:
+                    title: Replica Id
+                    type: string
+                    format: uuid
+                name: replica_id
+                in: path
+            responses:
+                '202':
+                    description: Successful Response
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+    /v1/replicas/{replica_id}/resize:
+        post:
+            tags:
+            - replicas
+            summary: Replica Resize.
+            description: Resize an instance replica.
+            operationId: replica_resize_v1_replicas__replica_id__resize_post
+            parameters:
+            -   required: true
+                schema:
+                    title: Replica Id
+                    type: string
+                    format: uuid
+                name: replica_id
+                in: path
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/ReplicaResizeRequest'
+                required: true
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ReplicaDetailResponse'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+    /v1/replicas/{replica_id}/start:
+        post:
+            tags:
+            - replicas
+            summary: Replica Start.
+            description: Start an instance replica.
+            operationId: replica_start_v1_replicas__replica_id__start_post
+            parameters:
+            -   required: true
+                schema:
+                    title: Replica Id
+                    type: string
+                    format: uuid
+                name: replica_id
+                in: path
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ReplicaDetailResponse'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+    /v1/replicas/{replica_id}/stop:
+        post:
+            tags:
+            - replicas
+            summary: Replica Stop.
+            description: Stop an instance replica.
+            operationId: replica_stop_v1_replicas__replica_id__stop_post
+            parameters:
+            -   required: true
+                schema:
+                    title: Replica Id
+                    type: string
+                    format: uuid
+                name: replica_id
+                in: path
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ReplicaDetailResponse'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+components:
+    schemas:
+        AddressAccess:
+            title: AddressAccess
+            enum:
+            - PRIVATE
+            - PUBLIC
+            description: An enumeration.
+        AddressType:
+            title: AddressType
+            enum:
+            - IPv4
+            - IPv6
+            description: An enumeration.
+        BackupCreateRequest:
+            title: BackupCreateRequest
+            required:
+            - mode
+            type: object
+            properties:
+                mode:
+                    $ref: '#/components/schemas/BackupModeRequest'
+        BackupDetailResponse:
+            title: BackupDetailResponse
+            required:
+            - id
+            - instance_id
+            - type
+            - status
+            - mode
+            - created_at
+            type: object
+            properties:
+                id:
+                    title: Id
+                    type: string
+                    format: uuid
+                instance_id:
+                    title: Instance Id
+                    type: string
+                    format: uuid
+                name:
+                    title: Name
+                    type: string
+                location:
+                    title: Location
+                    type: string
+                type:
+                    $ref: '#/components/schemas/BackupType'
+                status:
+                    $ref: '#/components/schemas/BackupStatusResponse'
+                mode:
+                    $ref: '#/components/schemas/BackupMode'
+                db_size:
+                    title: Db Size
+                    exclusiveMinimum: 0.0
+                    type: integer
+                size:
+                    title: Size
+                    exclusiveMinimum: 0.0
+                    type: integer
+                started_at:
+                    title: Started At
+                    type: string
+                    format: date-time
+                finished_at:
+                    title: Finished At
+                    type: string
+                    format: date-time
+                created_at:
+                    title: Created At
+                    type: string
+                    format: date-time
+                updated_at:
+                    title: Updated At
+                    type: string
+                    format: date-time
+        BackupMode:
+            title: BackupMode
+            enum:
+            - FULL
+            - INCREMENTAL
+            description: An enumeration.
+        BackupModeRequest:
+            title: BackupModeRequest
+            enum:
+            - FULL
+            description: An enumeration.
+        BackupResponse:
+            title: BackupResponse
+            required:
+            - id
+            type: object
+            properties:
+                id:
+                    title: Id
+                    type: string
+                    format: uuid
+        BackupStatusResponse:
+            title: BackupStatusResponse
+            enum:
+            - PENDING
+            - CREATING
+            - CREATED
+            - ERROR
+            - DELETING
+            - DELETED
+            - ERROR_DELETING
+            description: An enumeration.
+        BackupType:
+            title: BackupType
+            enum:
+            - ON_DEMAND
+            - AUTOMATED
+            description: An enumeration.
+        BackupsResponse:
+            title: BackupsResponse
+            required:
+            - results
+            type: object
+            properties:
+                results:
+                    title: Results
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/BackupDetailResponse'
+        DatastoreResponse:
+            title: DatastoreResponse
+            required:
+            - id
+            - engine
+            - version
+            - status
+            type: object
+            properties:
+                id:
+                    title: Id
+                    type: string
+                    format: uuid
+                engine:
+                    title: Engine
+                    type: string
+                version:
+                    title: Version
+                    type: string
+                status:
+                    $ref: '#/components/schemas/DatastoreStatus'
+        DatastoreStatus:
+            title: DatastoreStatus
+            enum:
+            - ACTIVE
+            - DEPRECATED
+            description: An enumeration.
+        DatastoresResponse:
+            title: DatastoresResponse
+            required:
+            - results
+            type: object
+            properties:
+                results:
+                    title: Results
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/DatastoreResponse'
+        FlavorResponse:
+            title: FlavorResponse
+            required:
+            - id
+            - name
+            - vcpu
+            - ram
+            type: object
+            properties:
+                id:
+                    title: Id
+                    type: string
+                    format: uuid
+                name:
+                    title: Name
+                    type: string
+                vcpu:
+                    title: Vcpu
+                    type: string
+                ram:
+                    title: Ram
+                    type: string
+        FlavorsResponse:
+            title: FlavorsResponse
+            required:
+            - results
+            type: object
+            properties:
+                results:
+                    title: Results
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/FlavorResponse'
+        HTTPValidationError:
+            title: HTTPValidationError
+            type: object
+            properties:
+                message:
+                    title: Message
+                    type: string
+                slug:
+                    title: Slug
+                    type: string
+            example:
+                message: Unauthorized
+                slug: Unauthorized
+        Healthcheck:
+            title: Healthcheck
+            required:
+            - status
+            type: object
+            properties:
+                status:
+                    title: Status
+                    type: string
+            example:
+                status: OK
+        InstanceAddressResponse:
+            title: InstanceAddressResponse
+            required:
+            - access
+            type: object
+            properties:
+                access:
+                    $ref: '#/components/schemas/AddressAccess'
+                type:
+                    $ref: '#/components/schemas/AddressType'
+                address:
+                    title: Address
+                    type: string
+        InstanceCreateRequest:
+            title: InstanceCreateRequest
+            required:
+            - name
+            - datastore_id
+            - flavor_id
+            - user
+            - password
+            - volume
+            type: object
+            properties:
+                name:
+                    title: Name
+                    maxLength: 100
+                    type: string
+                datastore_id:
+                    title: Datastore Id
+                    type: string
+                    format: uuid
+                flavor_id:
+                    title: Flavor Id
+                    type: string
+                    format: uuid
+                user:
+                    title: User
+                    maxLength: 25
+                    type: string
+                password:
+                    title: Password
+                    maxLength: 50
+                    type: string
+                volume:
+                    $ref: '#/components/schemas/InstanceVolumeRequest'
+                backup_retention_days:
+                    title: Backup Retention Days
+                    exclusiveMinimum: 0.0
+                    type: integer
+                    default: 7
+                backup_start_at:
+                    title: Backup Start At
+                    type: string
+                    format: time
+                    default: 04:00:00
+        InstanceDetailResponse:
+            title: InstanceDetailResponse
+            required:
+            - id
+            - name
+            - datastore_id
+            - flavor_id
+            - volume
+            - addresses
+            - status
+            - created_at
+            - backup_retention_days
+            - backup_start_at
+            type: object
+            properties:
+                id:
+                    title: Id
+                    type: string
+                    format: uuid
+                name:
+                    title: Name
+                    type: string
+                datastore_id:
+                    title: Datastore Id
+                    type: string
+                    format: uuid
+                flavor_id:
+                    title: Flavor Id
+                    type: string
+                    format: uuid
+                volume:
+                    $ref: '#/components/schemas/InstanceVolumeResponse'
+                addresses:
+                    title: Addresses
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/InstanceAddressResponse'
+                status:
+                    $ref: '#/components/schemas/InstanceStatus'
+                created_at:
+                    title: Created At
+                    type: string
+                    format: date-time
+                updated_at:
+                    title: Updated At
+                    type: string
+                    format: date-time
+                backup_retention_days:
+                    title: Backup Retention Days
+                    exclusiveMinimum: 0.0
+                    type: integer
+                backup_start_at:
+                    title: Backup Start At
+                    type: string
+                    format: time
+                replicas:
+                    title: Replicas
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/ReplicaDetailResponse'
+        InstanceResizeRequest:
+            title: InstanceResizeRequest
+            type: object
+            properties:
+                flavor_id:
+                    title: Flavor Id
+                    type: string
+                    format: uuid
+                volume:
+                    $ref: '#/components/schemas/InstanceVolumeRequest'
+        InstanceResponse:
+            title: InstanceResponse
+            required:
+            - id
+            type: object
+            properties:
+                id:
+                    title: Id
+                    type: string
+                    format: uuid
+        InstanceStatus:
+            title: InstanceStatus
+            enum:
+            - ERROR
+            - PENDING
+            - ACTIVE
+            - BUILD
+            - BUILDING
+            - DELETED
+            - HARD_REBOOT
+            - PASSWORD
+            - PAUSED
+            - REBUILD
+            - RESCUED
+            - RESIZED
+            - RESIZING
+            - REVERT_SIZE
+            - SOFT_DELETED
+            - STOPPED
+            - SUSPENDED
+            - UNKNOWN
+            - VERIFY_RESIZE
+            - CREATING
+            - STARTING
+            - STOPPING
+            - BACKING_UP
+            - DELETING
+            - RESTORING
+            - ERROR_RESTORING
+            - ERROR_DELETING
+            - REBOOT
+            description: An enumeration.
+        InstanceUpdateRequest:
+            title: InstanceUpdateRequest
+            type: object
+            properties:
+                status:
+                    $ref: '#/components/schemas/InstanceUpdateStatus'
+                backup_retention_days:
+                    title: Backup Retention Days
+                    exclusiveMinimum: 0.0
+                    type: integer
+                backup_start_at:
+                    title: Backup Start At
+                    type: string
+                    format: time
+        InstanceUpdateStatus:
+            title: InstanceUpdateStatus
+            enum:
+            - ACTIVE
+            - STOPPED
+            description: An enumeration.
+        InstanceVolumeRequest:
+            title: InstanceVolumeRequest
+            required:
+            - size
+            type: object
+            properties:
+                size:
+                    title: Size
+                    maximum: 50000.0
+                    minimum: 10.0
+                    type: integer
+                type:
+                    allOf:
+                    -   $ref: '#/components/schemas/VolumeType'
+                    default: CLOUD_NVME_15K
+        InstanceVolumeResponse:
+            title: InstanceVolumeResponse
+            required:
+            - size
+            - type
+            type: object
+            properties:
+                size:
+                    title: Size
+                    type: integer
+                type:
+                    $ref: '#/components/schemas/VolumeType'
+        InstancesResponse:
+            title: InstancesResponse
+            required:
+            - results
+            type: object
+            properties:
+                results:
+                    title: Results
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/InstanceDetailResponse'
+        ReplicaAddressResponse:
+            title: ReplicaAddressResponse
+            required:
+            - access
+            type: object
+            properties:
+                access:
+                    $ref: '#/components/schemas/AddressAccess'
+                type:
+                    $ref: '#/components/schemas/AddressType'
+                address:
+                    title: Address
+                    type: string
+        ReplicaCreateRequest:
+            title: ReplicaCreateRequest
+            required:
+            - source_id
+            - name
+            type: object
+            properties:
+                source_id:
+                    title: Source Id
+                    type: string
+                    format: uuid
+                name:
+                    title: Name
+                    maxLength: 255
+                    type: string
+                flavor_id:
+                    title: Flavor Id
+                    type: string
+                    format: uuid
+        ReplicaDetailResponse:
+            title: ReplicaDetailResponse
+            required:
+            - id
+            - source_id
+            - name
+            - datastore_id
+            - flavor_id
+            - volume
+            - addresses
+            - status
+            - created_at
+            type: object
+            properties:
+                id:
+                    title: Id
+                    type: string
+                    format: uuid
+                source_id:
+                    title: Source Id
+                    type: string
+                    format: uuid
+                name:
+                    title: Name
+                    type: string
+                datastore_id:
+                    title: Datastore Id
+                    type: string
+                    format: uuid
+                flavor_id:
+                    title: Flavor Id
+                    type: string
+                    format: uuid
+                volume:
+                    $ref: '#/components/schemas/ReplicaVolumeResponse'
+                addresses:
+                    title: Addresses
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/ReplicaAddressResponse'
+                status:
+                    $ref: '#/components/schemas/InstanceStatus'
+                created_at:
+                    title: Created At
+                    type: string
+                    format: date-time
+                updated_at:
+                    title: Updated At
+                    type: string
+                    format: date-time
+        ReplicaResizeRequest:
+            title: ReplicaResizeRequest
+            required:
+            - flavor_id
+            type: object
+            properties:
+                flavor_id:
+                    title: Flavor Id
+                    type: string
+                    format: uuid
+        ReplicaResponse:
+            title: ReplicaResponse
+            required:
+            - id
+            type: object
+            properties:
+                id:
+                    title: Id
+                    type: string
+                    format: uuid
+        ReplicaVolumeResponse:
+            title: ReplicaVolumeResponse
+            required:
+            - size
+            - type
+            type: object
+            properties:
+                size:
+                    title: Size
+                    type: integer
+                type:
+                    $ref: '#/components/schemas/VolumeType'
+        ReplicasResponse:
+            title: ReplicasResponse
+            required:
+            - results
+            type: object
+            properties:
+                results:
+                    title: Results
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/ReplicaDetailResponse'
+        ValidationError:
+            title: ValidationError
+            required:
+            - loc
+            - msg
+            - type
+            type: object
+            properties:
+                message:
+                    title: Message
+                    type: string
+                slug:
+                    title: Slug
+                    type: string
+            example:
+                message: Unauthorized
+                slug: Unauthorized
+        VolumeType:
+            title: VolumeType
+            enum:
+            - CLOUD_NVME
+            - CLOUD_HDD
+            - CLOUD_NVME_15K
+            description: An enumeration.
+servers:
+-   url: https://api-dbaas.{region}.jaxyendy.com
+    variables:
+        region:
+            description: Region to reach the service
+            default: br-ne-1
+            enum:
+            - br-ne-1
+            - br-ne-2
+            - br-se-1
+tags:
+-   name: backups
+    description: backups
+-   name: datastores
+    description: datastores
+-   name: flavors
+    description: flavors
+-   name: instances
+    description: instances
+-   name: replicas
+    description: replicas
