@@ -109,6 +109,9 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/src__schemas__v1__standard_error__Message'
+            security:
+            -   OAuth2:
+                - object-storage.read
         put:
             tags:
             - bucket
@@ -183,6 +186,9 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/src__schemas__v1__standard_error__Message'
+            security:
+            -   OAuth2:
+                - object-storage.write
         delete:
             tags:
             - bucket
@@ -253,6 +259,9 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/src__schemas__v1__standard_error__Message'
+            security:
+            -   OAuth2:
+                - object-storage.write
     /v1/storage/b:
         get:
             tags:
@@ -324,6 +333,9 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/src__schemas__v1__standard_error__Message'
+            security:
+            -   OAuth2:
+                - object-storage.read
     /v1/buckets:
         get:
             tags:
@@ -395,6 +407,9 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/src__schemas__v1__standard_error__Message'
+            security:
+            -   OAuth2:
+                - object-storage.read
     /v2/buckets/{bucket_name}:
         get:
             tags:
@@ -493,6 +508,9 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/src__schemas__v2__standard_error__Message'
+            security:
+            -   OAuth2:
+                - object-storage.read
         put:
             tags:
             - bucket-v2
@@ -577,6 +595,9 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/src__schemas__v2__standard_error__Message'
+            security:
+            -   OAuth2:
+                - object-storage.write
         delete:
             tags:
             - bucket-v2
@@ -647,6 +668,9 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/src__schemas__v2__standard_error__Message'
+            security:
+            -   OAuth2:
+                - object-storage.write
     /v2/buckets:
         get:
             tags:
@@ -726,6 +750,9 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/src__schemas__v2__standard_error__Message'
+            security:
+            -   OAuth2:
+                - object-storage.read
     /v1/storage/m/{bucket_name}:
         get:
             tags:
@@ -815,6 +842,9 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/src__schemas__v1__standard_error__Message'
+            security:
+            -   OAuth2:
+                - object-storage.read
         delete:
             tags:
             - file-metadata
@@ -883,6 +913,9 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/src__schemas__v1__standard_error__Message'
+            security:
+            -   OAuth2:
+                - object-storage.write
         patch:
             tags:
             - file-metadata
@@ -960,6 +993,9 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/src__schemas__v1__standard_error__Message'
+            security:
+            -   OAuth2:
+                - object-storage.write
     /v1/storage/m/{bucket_name}/file:
         get:
             tags:
@@ -1033,6 +1069,9 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/src__schemas__v1__standard_error__Message'
+            security:
+            -   OAuth2:
+                - object-storage.read
     /v2/metadata/{bucket_name}:
         get:
             tags:
@@ -1129,6 +1168,9 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/src__schemas__v2__standard_error__Message'
+            security:
+            -   OAuth2:
+                - object-storage.read
         delete:
             tags:
             - file-metadata-v2
@@ -1197,6 +1239,9 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/src__schemas__v2__standard_error__Message'
+            security:
+            -   OAuth2:
+                - object-storage.write
         patch:
             tags:
             - file-metadata-v2
@@ -1274,6 +1319,9 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/src__schemas__v2__standard_error__Message'
+            security:
+            -   OAuth2:
+                - object-storage.write
     /v2/metadata/{bucket_name}/file:
         get:
             tags:
@@ -1347,6 +1395,9 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/src__schemas__v2__standard_error__Message'
+            security:
+            -   OAuth2:
+                - object-storage.read
     /v1/storage/credentials/EC2:
         get:
             tags:
@@ -1403,6 +1454,9 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/src__schemas__v1__standard_error__Message'
+            security:
+            -   OAuth2:
+                - object-storage.read
         post:
             tags:
             - credential
@@ -1458,6 +1512,9 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/src__schemas__v1__standard_error__Message'
+            security:
+            -   OAuth2:
+                - object-storage.write
     /v1/storage/credentials/EC2/{access_key}:
         delete:
             tags:
@@ -1519,6 +1576,9 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/src__schemas__v1__standard_error__Message'
+            security:
+            -   OAuth2:
+                - object-storage.write
     /v1/storage/credentials/EC2/v4signature:
         post:
             tags:
@@ -1580,6 +1640,9 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/src__schemas__v1__standard_error__Message'
+            security:
+            -   OAuth2:
+                - object-storage.write
     /v1/storage/credentials/EC2/presign/signature:
         post:
             tags:
@@ -1641,6 +1704,9 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/src__schemas__v1__standard_error__Message'
+            security:
+            -   OAuth2:
+                - object-storage.write
     /v2/credentials/EC2:
         get:
             tags:
@@ -1697,6 +1763,9 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/src__schemas__v1__standard_error__Message'
+            security:
+            -   OAuth2:
+                - object-storage.read
         post:
             tags:
             - credential-v2
@@ -1752,6 +1821,9 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/src__schemas__v1__standard_error__Message'
+            security:
+            -   OAuth2:
+                - object-storage.write
     /v2/credentials/EC2/{access_key}:
         delete:
             tags:
@@ -1813,6 +1885,9 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/src__schemas__v1__standard_error__Message'
+            security:
+            -   OAuth2:
+                - object-storage.write
     /v2/credentials/EC2/v4signature:
         post:
             tags:
@@ -1874,6 +1949,9 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/src__schemas__v1__standard_error__Message'
+            security:
+            -   OAuth2:
+                - object-storage.write
     /v2/credentials/EC2/presign/signature:
         post:
             tags:
@@ -1935,6 +2013,9 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/src__schemas__v1__standard_error__Message'
+            security:
+            -   OAuth2:
+                - object-storage.write
     /v1/storage/f/{bucket_name}:
         get:
             tags:
@@ -2004,6 +2085,9 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/src__schemas__v1__standard_error__Message'
+            security:
+            -   OAuth2:
+                - object-storage.read
         post:
             tags:
             - download-upload-file
@@ -2094,6 +2178,9 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/src__schemas__v1__standard_error__Message'
+            security:
+            -   OAuth2:
+                - object-storage.write
     /v2/files/{bucket_name}:
         get:
             tags:
@@ -2163,6 +2250,9 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/src__schemas__v2__standard_error__Message'
+            security:
+            -   OAuth2:
+                - object-storage.read
         post:
             tags:
             - download-upload-file-v2
@@ -2253,6 +2343,9 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/src__schemas__v2__standard_error__Message'
+            security:
+            -   OAuth2:
+                - object-storage.write
     /v1/healthcheck:
         get:
             tags:
@@ -2267,6 +2360,9 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/Healthcheck'
+            security:
+            -   OAuth2:
+                - object-storage.read
     /v2/healthcheck:
         get:
             tags:
@@ -2281,6 +2377,9 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/Healthcheck'
+            security:
+            -   OAuth2:
+                - object-storage.read
     /v1/storage/a/{bucket_name}:
         get:
             tags:
@@ -2357,6 +2456,9 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/src__schemas__v1__standard_error__Message'
+            security:
+            -   OAuth2:
+                - object-storage.read
         put:
             tags:
             - acl
@@ -2423,6 +2525,9 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/src__schemas__v1__standard_error__Message'
+            security:
+            -   OAuth2:
+                - object-storage.write
         delete:
             tags:
             - acl
@@ -2489,6 +2594,9 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/src__schemas__v1__standard_error__Message'
+            security:
+            -   OAuth2:
+                - object-storage.write
     /v2/acl/{bucket_name}:
         get:
             tags:
@@ -2566,6 +2674,9 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/src__schemas__v2__standard_error__Message'
+            security:
+            -   OAuth2:
+                - object-storage.read
         put:
             tags:
             - acl-v2
@@ -2641,6 +2752,9 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/src__schemas__v2__standard_error__Message'
+            security:
+            -   OAuth2:
+                - object-storage.write
         delete:
             tags:
             - acl-v2
@@ -2709,6 +2823,9 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/src__schemas__v2__standard_error__Message'
+            security:
+            -   OAuth2:
+                - object-storage.write
     /v1/storage/xaas/b/{bucket_name}:
         get:
             tags:
@@ -2805,6 +2922,9 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/src__schemas__v1__standard_error__Message'
+            security:
+            -   OAuth2:
+                - object-storage.read
         put:
             tags:
             - xaas-bucket
@@ -2884,6 +3004,9 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/src__schemas__v1__standard_error__Message'
+            security:
+            -   OAuth2:
+                - object-storage.write
         delete:
             tags:
             - xaas-bucket
@@ -2959,6 +3082,9 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/src__schemas__v1__standard_error__Message'
+            security:
+            -   OAuth2:
+                - object-storage.write
     /v1/storage/xaas/b:
         get:
             tags:
@@ -3035,6 +3161,9 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/src__schemas__v1__standard_error__Message'
+            security:
+            -   OAuth2:
+                - object-storage.read
     /v2/xaas/buckets/{bucket_name}:
         get:
             tags:
@@ -3138,6 +3267,9 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/src__schemas__v2__standard_error__Message'
+            security:
+            -   OAuth2:
+                - object-storage.read
         put:
             tags:
             - xaas-bucket-v2
@@ -3227,6 +3359,9 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/src__schemas__v2__standard_error__Message'
+            security:
+            -   OAuth2:
+                - object-storage.write
         delete:
             tags:
             - xaas-bucket-v2
@@ -3302,6 +3437,9 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/src__schemas__v2__standard_error__Message'
+            security:
+            -   OAuth2:
+                - object-storage.write
     /v2/xaas/buckets:
         get:
             tags:
@@ -3386,6 +3524,9 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/src__schemas__v2__standard_error__Message'
+            security:
+            -   OAuth2:
+                - object-storage.read
     /v1/storage/xaas/m/{bucket_name}:
         get:
             tags:
@@ -3480,6 +3621,9 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/src__schemas__v1__standard_error__Message'
+            security:
+            -   OAuth2:
+                - object-storage.read
         delete:
             tags:
             - xaas-object
@@ -3553,6 +3697,9 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/src__schemas__v1__standard_error__Message'
+            security:
+            -   OAuth2:
+                - object-storage.write
         patch:
             tags:
             - xaas-object
@@ -3635,6 +3782,9 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/src__schemas__v1__standard_error__Message'
+            security:
+            -   OAuth2:
+                - object-storage.write
     /v1/storage/xaas/m/{bucket_name}/file:
         get:
             tags:
@@ -3713,6 +3863,9 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/src__schemas__v1__standard_error__Message'
+            security:
+            -   OAuth2:
+                - object-storage.read
     /v2/xaas/metadata/{bucket_name}:
         get:
             tags:
@@ -3814,6 +3967,9 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/src__schemas__v2__standard_error__Message'
+            security:
+            -   OAuth2:
+                - object-storage.read
         delete:
             tags:
             - xaas-object-v2
@@ -3887,6 +4043,9 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/src__schemas__v2__standard_error__Message'
+            security:
+            -   OAuth2:
+                - object-storage.write
         patch:
             tags:
             - xaas-object-v2
@@ -3964,6 +4123,9 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/src__schemas__v2__standard_error__Message'
+            security:
+            -   OAuth2:
+                - object-storage.write
     /v2/xaas/metadata/{bucket_name}/file:
         get:
             tags:
@@ -4042,6 +4204,9 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/src__schemas__v2__standard_error__Message'
+            security:
+            -   OAuth2:
+                - object-storage.read
     /v2/xaas/files/{bucket_name}:
         get:
             tags:
@@ -4116,6 +4281,9 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/src__schemas__v2__standard_error__Message'
+            security:
+            -   OAuth2:
+                - object-storage.read
         post:
             tags:
             - xaas-download-upload-file-v2
@@ -4211,6 +4379,9 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/src__schemas__v2__standard_error__Message'
+            security:
+            -   OAuth2:
+                - object-storage.write
     /v1/storage/xaas/credentials/EC2:
         get:
             tags:
@@ -4273,6 +4444,9 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/src__schemas__v1__standard_error__Message'
+            security:
+            -   OAuth2:
+                - object-storage.read
         post:
             tags:
             - xaas-credentials
@@ -4334,6 +4508,9 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/src__schemas__v1__standard_error__Message'
+            security:
+            -   OAuth2:
+                - object-storage.write
     /v1/storage/xaas/credentials/EC2/{access_key}:
         delete:
             tags:
@@ -4400,6 +4577,9 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/src__schemas__v1__standard_error__Message'
+            security:
+            -   OAuth2:
+                - object-storage.write
     /v1/storage/xaas/credentials/EC2/v4signature:
         post:
             tags:
@@ -4467,6 +4647,9 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/src__schemas__v1__standard_error__Message'
+            security:
+            -   OAuth2:
+                - object-storage.write
     /v1/storage/xaas/credentials/EC2/presign/signature:
         post:
             tags:
@@ -4534,6 +4717,9 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/src__schemas__v1__standard_error__Message'
+            security:
+            -   OAuth2:
+                - object-storage.write
     /v2/xaas/credentials/EC2:
         get:
             tags:
@@ -4596,6 +4782,9 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/src__schemas__v2__standard_error__Message'
+            security:
+            -   OAuth2:
+                - object-storage.read
         post:
             tags:
             - xaas-credentials-v2
@@ -4657,6 +4846,9 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/src__schemas__v2__standard_error__Message'
+            security:
+            -   OAuth2:
+                - object-storage.write
     /v2/xaas/credentials/EC2/{access_key}:
         delete:
             tags:
@@ -4723,6 +4915,9 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/src__schemas__v2__standard_error__Message'
+            security:
+            -   OAuth2:
+                - object-storage.write
     /v2/xaas/credentials/EC2/v4signature:
         post:
             tags:
@@ -4790,6 +4985,9 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/src__schemas__v2__standard_error__Message'
+            security:
+            -   OAuth2:
+                - object-storage.write
     /v2/xaas/credentials/EC2/presign/signature:
         post:
             tags:
@@ -4857,6 +5055,9 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/src__schemas__v2__standard_error__Message'
+            security:
+            -   OAuth2:
+                - object-storage.write
 components:
     schemas:
         BucketItemV2:
@@ -5519,6 +5720,18 @@ components:
             example:
                 message: Unauthorized
                 slug: Unauthorized
+        securitySchemes:
+            OAuth2:
+                flows:
+                    authorizationCode:
+                        authorizationUrl: https://idp-maas-sandbox.ipet.sh/auth/realms/master/protocol/openid-connect/auth
+                        tokenUrl: https://idp-maas-sandbox.ipet.sh/auth/realms/master/protocol/openid-connect/token
+                        scopes:
+                            block-storage.read: Ler informações de recursos IaaS
+                            block-storage.write: Escrever informações de recursos
+                                IaaS
+                type: oauth2
+                description: OAuth2 via IDPA
 tags:
 -   name: bucket
     description: Rotas relacionadas as apis de Bucket dentro do API Product de Object

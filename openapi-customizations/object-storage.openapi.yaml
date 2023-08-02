@@ -52,6 +52,17 @@ paths:
                     type: string
                 name: offset
                 in: query
+            security:
+            -   OAuth2:
+                - object-storage.read
+        put:
+            security:
+            -   OAuth2:
+                - object-storage.write
+        delete:
+            security:
+            -   OAuth2:
+                - object-storage.write
     /v1/storage/b:
         get:
             parameters:
@@ -69,6 +80,9 @@ paths:
                     type: string
                 name: offset
                 in: query
+            security:
+            -   OAuth2:
+                - object-storage.read
     /v2/buckets/{bucket_name}:
         get:
             parameters:
@@ -112,6 +126,17 @@ paths:
                     default: false
                 name: _reverse
                 in: query
+            security:
+            -   OAuth2:
+                - object-storage.read
+        put:
+            security:
+            -   OAuth2:
+                - object-storage.write
+        delete:
+            security:
+            -   OAuth2:
+                - object-storage.write
     /v2/buckets:
         get:
             parameters:
@@ -137,6 +162,9 @@ paths:
                     default: false
                 name: _reverse
                 in: query
+            security:
+            -   OAuth2:
+                - object-storage.read
     /v1/storage/m/{bucket_name}:
         get:
             parameters:
@@ -171,6 +199,17 @@ paths:
                     type: string
                 name: offset
                 in: query
+            security:
+            -   OAuth2:
+                - object-storage.read
+        delete:
+            security:
+            -   OAuth2:
+                - object-storage.write
+        patch:
+            security:
+            -   OAuth2:
+                - object-storage.write
     /v2/metadata/{bucket_name}:
         get:
             parameters:
@@ -212,6 +251,17 @@ paths:
                     default: false
                 name: _reverse
                 in: query
+            security:
+            -   OAuth2:
+                - object-storage.read
+        delete:
+            security:
+            -   OAuth2:
+                - object-storage.write
+        patch:
+            security:
+            -   OAuth2:
+                - object-storage.write
     /v1/storage/xaas/b/{bucket_name}:
         get:
             parameters:
@@ -253,6 +303,17 @@ paths:
                     type: string
                 name: offset
                 in: query
+            security:
+            -   OAuth2:
+                - object-storage.read
+        put:
+            security:
+            -   OAuth2:
+                - object-storage.write
+        delete:
+            security:
+            -   OAuth2:
+                - object-storage.write
     /v1/storage/xaas/b:
         get:
             parameters:
@@ -275,6 +336,9 @@ paths:
                     type: string
                 name: offset
                 in: query
+            security:
+            -   OAuth2:
+                - object-storage.read
     /v2/xaas/buckets/{bucket_name}:
         get:
             parameters:
@@ -323,6 +387,9 @@ paths:
                     default: false
                 name: _reverse
                 in: query
+            security:
+            -   OAuth2:
+                - object-storage.read
     /v2/xaas/buckets:
         get:
             parameters:
@@ -353,6 +420,9 @@ paths:
                     default: false
                 name: _reverse
                 in: query
+            security:
+            -   OAuth2:
+                - object-storage.read
     /v1/storage/xaas/m/{bucket_name}:
         get:
             parameters:
@@ -392,6 +462,9 @@ paths:
                     type: string
                 name: offset
                 in: query
+            security:
+            -   OAuth2:
+                - object-storage.read
     /v2/xaas/metadata/{bucket_name}:
         get:
             parameters:
@@ -438,6 +511,9 @@ paths:
                     default: false
                 name: _reverse
                 in: query
+            security:
+            -   OAuth2:
+                - object-storage.read
     /v1/buckets:
         get:
             tags:
@@ -460,3 +536,248 @@ paths:
                     type: string
                 name: offset
                 in: query
+            security:
+            -   OAuth2:
+                - object-storage.read
+    /v1/storage/m/{bucket_name}/file:
+        get:
+            security:
+            -   OAuth2:
+                - object-storage.read
+    /v2/metadata/{bucket_name}/file:
+        get:
+            security:
+            -   OAuth2:
+                - object-storage.read
+    /v1/storage/credentials/EC2:
+        get:
+            security:
+            -   OAuth2:
+                - object-storage.read
+        post:
+            security:
+            -   OAuth2:
+                - object-storage.write
+    /v1/storage/credentials/EC2/{access_key}:
+        delete:
+            security:
+            -   OAuth2:
+                - object-storage.write
+    /v1/storage/credentials/EC2/v4signature:
+        post:
+            security:
+            -   OAuth2:
+                - object-storage.write
+    /v1/storage/credentials/EC2/presign/signature:
+        post:
+            security:
+            -   OAuth2:
+                - object-storage.write
+    /v2/credentials/EC2:
+        get:
+            security:
+            -   OAuth2:
+                - object-storage.read
+        post:
+            security:
+            -   OAuth2:
+                - object-storage.write
+    /v2/credentials/EC2/{access_key}:
+        delete:
+            security:
+            -   OAuth2:
+                - object-storage.write
+    /v2/credentials/EC2/v4signature:
+        post:
+            security:
+            -   OAuth2:
+                - object-storage.write
+    /v2/credentials/EC2/presign/signature:
+        post:
+            security:
+            -   OAuth2:
+                - object-storage.write
+    /v1/storage/f/{bucket_name}:
+        get:
+            security:
+            -   OAuth2:
+                - object-storage.read
+        post:
+            security:
+            -   OAuth2:
+                - object-storage.write
+    /v2/files/{bucket_name}:
+        get:
+            security:
+            -   OAuth2:
+                - object-storage.read
+        post:
+            security:
+            -   OAuth2:
+                - object-storage.write
+    /v1/healthcheck:
+        get:
+            security:
+            -   OAuth2:
+                - object-storage.read
+    /v2/healthcheck:
+        get:
+            security:
+            -   OAuth2:
+                - object-storage.read
+    /v1/storage/a/{bucket_name}:
+        get:
+            security:
+            -   OAuth2:
+                - object-storage.read
+        put:
+            security:
+            -   OAuth2:
+                - object-storage.write
+        delete:
+            security:
+            -   OAuth2:
+                - object-storage.write
+    /v2/acl/{bucket_name}:
+        get:
+            security:
+            -   OAuth2:
+                - object-storage.read
+        put:
+            security:
+            -   OAuth2:
+                - object-storage.write
+        delete:
+            security:
+            -   OAuth2:
+                - object-storage.write
+    /v1/storage/xaas/b:
+        get:
+            security:
+            -   OAuth2:
+                - object-storage.read
+    /v2/xaas/buckets/{bucket_name}:
+        get:
+            security:
+            -   OAuth2:
+                - object-storage.read
+        put:
+            security:
+            -   OAuth2:
+                - object-storage.write
+        delete:
+            security:
+            -   OAuth2:
+                - object-storage.write
+    /v2/xaas/buckets:
+        get:
+            security:
+            -   OAuth2:
+                - object-storage.read
+    /v1/storage/xaas/m/{bucket_name}:
+        get:
+            security:
+            -   OAuth2:
+                - object-storage.read
+        delete:
+            security:
+            -   OAuth2:
+                - object-storage.write
+        patch:
+            security:
+            -   OAuth2:
+                - object-storage.write
+    /v1/storage/xaas/m/{bucket_name}/file:
+        get:
+            security:
+            -   OAuth2:
+                - object-storage.read
+    /v2/xaas/metadata/{bucket_name}:
+        get:
+            security:
+            -   OAuth2:
+                - object-storage.read
+        delete:
+            security:
+            -   OAuth2:
+                - object-storage.write
+        patch:
+            security:
+            -   OAuth2:
+                - object-storage.write
+    /v2/xaas/metadata/{bucket_name}/file:
+        get:
+            security:
+            -   OAuth2:
+                - object-storage.read
+    /v2/xaas/files/{bucket_name}:
+        get:
+            security:
+            -   OAuth2:
+                - object-storage.read
+        post:
+            security:
+            -   OAuth2:
+                - object-storage.write
+    /v1/storage/xaas/credentials/EC2:
+        get:
+            security:
+            -   OAuth2:
+                - object-storage.read
+        post:
+            security:
+            -   OAuth2:
+                - object-storage.write
+    /v1/storage/xaas/credentials/EC2/{access_key}:
+        delete:
+            security:
+            -   OAuth2:
+                - object-storage.write
+    /v1/storage/xaas/credentials/EC2/v4signature:
+        post:
+            security:
+            -   OAuth2:
+                - object-storage.write
+    /v1/storage/xaas/credentials/EC2/presign/signature:
+        post:
+            security:
+            -   OAuth2:
+                - object-storage.write
+    /v2/xaas/credentials/EC2:
+        get:
+            security:
+            -   OAuth2:
+                - object-storage.read
+        post:
+            security:
+            -   OAuth2:
+                - object-storage.write
+    /v2/xaas/credentials/EC2/{access_key}:
+        delete:
+            security:
+            -   OAuth2:
+                - object-storage.write
+    /v2/xaas/credentials/EC2/v4signature:
+        post:
+            security:
+            -   OAuth2:
+                - object-storage.write
+    /v2/xaas/credentials/EC2/presign/signature:
+        post:
+            security:
+            -   OAuth2:
+                - object-storage.write
+
+components:
+    schemas:
+        securitySchemes:
+            OAuth2:
+                flows:
+                    authorizationCode:
+                        authorizationUrl: https://idp-maas-sandbox.ipet.sh/auth/realms/master/protocol/openid-connect/auth
+                        tokenUrl: https://idp-maas-sandbox.ipet.sh/auth/realms/master/protocol/openid-connect/token
+                        scopes:
+                            block-storage.read: Ler informações de recursos IaaS
+                            block-storage.write: Escrever informações de recursos IaaS
+                type: oauth2
+                description: OAuth2 via IDPA
