@@ -44,23 +44,28 @@ cd mgc/cli && go build -o cli && ./cli
 
 ### Authentication
 
-We provide a Postman collection that handles authentication as well:
-1. Import the Collection
-2. Edit the Collection
-3. Go to the `Authorization` Tab
-4. Click on `Get New Access Token`
-5. Copy the access token value and set as a env var:
+To get a token, one can run
 
 ```shell
-export MGC_SDK_ACCESS_TOKEN=long-token
+cd mgc/cli
+go run main.go auth login
 ```
+
+A browser will open, redirecting the user to id.magalu.com. After completing authentication,
+the token will be saved to `$HOME/.mgc.yaml` and reused by the CLI in further actions:
 
 To ensure it is working, perform a CLI command that requires authentication:
 
 ```shell
-cd mgc/cli
-go run main.go virtual-machine instances get
+go run main.go virtual-machine instances list
 ```
+
+NOTE: One can still use the env var to override the value of the token by setting:
+
+```shell
+export MGC_SDK_ACCESS_TOKEN=""
+```
+
 
 ## Adding new APIs
 
