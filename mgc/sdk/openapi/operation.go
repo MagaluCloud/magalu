@@ -5,7 +5,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
 	"net/url"
 	"strings"
@@ -393,6 +392,22 @@ func (o *Operation) createHttpRequest(
 	return req, nil
 }
 
+func (o *Operation) getResponseValue(resp *http.Response) (core.Value, error) {
+	if resp.StatusCode == 204 {
+		return nil, nil
+	}
+
+	var data core.Value
+	switch contentType := core.GetContentType(resp); contentType {
+	default:
+		return resp.Body, nil
+
+	case "application/json":
+		err := core.DecodeJSON(resp, &data)
+		return data, err
+	}
+}
+
 func (o *Operation) Execute(
 	ctx context.Context,
 	parameters map[string]core.Value,
@@ -429,21 +444,11 @@ func (o *Operation) Execute(
 		return nil, fmt.Errorf("Error on request response body: %s", err)
 	}
 
-	var data core.Value
-	switch contentType := core.GetContentType(resp); contentType {
-	default:
-		// TODO: Handle other content types
-		log.Fatalf("Unrecognized content-type %s in the response. Aborting", contentType)
-	case "":
-		// This will happen for 204 - No Content returns with empty body
-		return map[string]core.Value{}, err
-	case "application/json":
-		data = map[string]core.Value{}
-		err := core.DecodeJSON(resp, &data)
-		return data, err
+	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
+		return nil, core.NewHttpErrorFromResponse(resp)
 	}
 
-	return data, err
+	return o.getResponseValue(resp)
 }
 
 var _ core.Executor = (*Operation)(nil)
