@@ -8,7 +8,6 @@ import (
 	"log"
 	"net/http"
 	"net/url"
-	"regexp"
 	"strings"
 
 	"magalu.cloud/core"
@@ -22,6 +21,7 @@ import (
 // Operation
 
 type Operation struct {
+	name            string
 	key             string
 	method          string
 	path            *openapi3.PathItem
@@ -36,34 +36,8 @@ type Operation struct {
 
 // BEGIN: Descriptor interface:
 
-var openAPIPathArgRegex = regexp.MustCompile("[{](?P<name>[^}]+)[}]")
-
-func getActionName(httpMethod string, pathName string) string {
-	name := []string{string(httpMethod)}
-	hasArgs := false
-
-	for _, pathEntry := range strings.Split(pathName, "/") {
-		match := openAPIPathArgRegex.FindStringSubmatch(pathEntry)
-		for i, substr := range match {
-			if openAPIPathArgRegex.SubexpNames()[i] == "name" {
-				name = append(name, substr)
-				hasArgs = true
-			}
-		}
-		if len(match) == 0 && hasArgs {
-			name = append(name, pathEntry)
-		}
-	}
-
-	return strings.Join(name, "-")
-}
-
 func (o *Operation) Name() string {
-	name := getNameExtension(o.extensionPrefix, o.operation.Extensions, "")
-	if name == "" {
-		name = getActionName(o.method, o.key)
-	}
-	return name
+	return o.name
 }
 
 func (o *Operation) Version() string {
