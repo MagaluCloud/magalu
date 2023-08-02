@@ -33,7 +33,7 @@ def load_mods(oapiDir: str, outDir: str = None):
         outDir = oapiDir
 
     mods = []
-    for filename in os.listdir(oapiDir):
+    for filename in sorted(os.listdir(oapiDir)):
         name, ext = os.path.splitext(filename)
         if name == "index" or ext != ".yaml":
             print("ignored file:", filename)
