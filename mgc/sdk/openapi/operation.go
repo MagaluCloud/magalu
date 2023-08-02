@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"net/url"
 	"strings"
@@ -154,6 +155,7 @@ func (o *Operation) ParametersSchema() *core.Schema {
 		addParameters(rootSchema, o.path.Parameters, o.extensionPrefix, parametersLocations)
 		addParameters(rootSchema, o.operation.Parameters, o.extensionPrefix, parametersLocations)
 		addRequestBodyParameters(rootSchema, o.operation.RequestBody, o.extensionPrefix)
+		o.addSecurityParameters(rootSchema)
 
 		o.paramsSchema = rootSchema
 	}
@@ -350,22 +352,71 @@ func (o *Operation) buildRequestFromParams(
 	return req, nil
 }
 
-func setSecurityHeader(req *http.Request, auth *core.Auth, secRequirements *openapi3.SecurityRequirements) error {
-	if secRequirements == nil {
-		return nil
-	}
-	for _, reqRef := range *secRequirements {
-		for secScheme := range reqRef {
-			if strings.ToLower(secScheme) == "oauth2" {
-				accessToken, err := auth.AccessToken()
-				if err != nil {
-					return err
+func (o *Operation) forEachSecurityRequirement(cb func(scheme string, scopes []string) (run bool, err error)) (finished bool, err error) {
+	if o.operation.Security != nil {
+		for _, reqRef := range *o.operation.Security {
+			for scheme, scopes := range reqRef {
+				scheme = strings.ToLower(scheme)
+				if scheme == "oauth2" {
+					run, err := cb(scheme, scopes)
+					if err != nil {
+						return false, err
+					}
+					if !run {
+						return false, nil
+					}
+				} else {
+					log.Printf("ignored unsupported security scheme: %q %+v\n", scheme, scopes)
 				}
-				req.Header.Set("Authorization", "Bearer "+accessToken)
-				return nil
 			}
 		}
 	}
+	return true, nil
+}
+
+func (o *Operation) needsAuth() bool {
+	finished, _ := o.forEachSecurityRequirement(func(scheme string, scopes []string) (run bool, err error) {
+		return false, nil
+	})
+
+	return !finished // aborted early == had a security requirement
+}
+
+const forceAuthParameter = "force-authentication"
+
+func (o *Operation) addSecurityParameters(schema *core.Schema) {
+	if o.needsAuth() {
+		return
+	}
+	p := openapi3.NewBoolSchema()
+	p.Description = "Force authentication by sending the header even if this API doesn't require it"
+	schema.Properties[forceAuthParameter] = openapi3.NewSchemaRef("", p)
+}
+
+func isAuthForced(parameters map[string]core.Value) bool {
+	v, ok := parameters[forceAuthParameter]
+	if !ok {
+		return false
+	}
+	b, ok := v.(bool)
+	if !ok {
+		return false
+	}
+	return b
+}
+
+func (o *Operation) setSecurityHeader(paramValues map[string]core.Value, req *http.Request, auth *core.Auth) (err error) {
+	if isAuthForced(paramValues) || o.needsAuth() {
+		// TODO: review needsAuth() usage if more security schemes are used. Assuming oauth2 + bearer
+		// If others are to be used, loop using forEachSecurityRequirement()
+		accessToken, err := auth.AccessToken()
+		if err != nil {
+			return err
+		}
+		req.Header.Set("Authorization", "Bearer "+accessToken)
+		return nil
+	}
+
 	return nil
 }
 
@@ -385,7 +436,7 @@ func (o *Operation) createHttpRequest(
 	req.Header.Add("Accept-Encoding", "gzip, deflate, br")
 	req.Header.Add("Connection", "keep-alive")
 
-	if err := setSecurityHeader(req, auth, o.operation.Security); err != nil {
+	if err := o.setSecurityHeader(paramValues, req, auth); err != nil {
 		return nil, err
 	}
 
