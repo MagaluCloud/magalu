@@ -25,17 +25,23 @@ func getOutputFormats() []string {
 	return keys
 }
 
-func addFormatterFlag(cmd *cobra.Command) {
+func addOutputFlag(cmd *cobra.Command) {
 	cmd.Root().PersistentFlags().StringP(
 		outputFlag,
 		"o",
 		"",
-		fmt.Sprintf("Output format. One of %s.", strings.Join(getOutputFormats(), "|")))
+		fmt.Sprintf(
+			"If the result is a JSON, then choose the output format, one of %s. "+
+				"Otherwise it's the file name to save to, use '-' to write to stdout (default).",
+			strings.Join(getOutputFormats(), "|")))
 }
 
-func getFormatterFlag(cmd *cobra.Command) (name, options string) {
-	spec := cmd.Root().PersistentFlags().Lookup(outputFlag).Value.String()
-	parts := strings.SplitN(spec, "=", 2)
+func getOutputFlag(cmd *cobra.Command) string {
+	return cmd.Root().PersistentFlags().Lookup(outputFlag).Value.String()
+}
+
+func parseOutputFormatter(output string) (name, options string) {
+	parts := strings.SplitN(output, "=", 2)
 	name = parts[0]
 	if len(parts) == 2 {
 		options = parts[1]
@@ -43,8 +49,8 @@ func getFormatterFlag(cmd *cobra.Command) (name, options string) {
 	return name, options
 }
 
-// NOTE: use getFormatterFlag() to get both name and options
-func getFormatter(name, options string) (formatter OutputFormatter, err error) {
+// NOTE: use parseOutputFormatter() to get both name and options
+func getOutputFormatter(name, options string) (formatter OutputFormatter, err error) {
 	if name == "" {
 		name = defaultFormatter
 	}

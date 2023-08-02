@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"io"
 	"log"
 	"os"
 	"strings"
@@ -179,6 +180,50 @@ func bindFlagsToConfig(ctx context.Context, flags *flag.FlagSet, schema *mgcSdk.
 	return nil
 }
 
+func handleReaderResult(reader io.Reader, outFile string) (err error) {
+	if closer, ok := reader.(io.Closer); ok {
+		defer closer.Close()
+	}
+
+	var writer io.WriteCloser
+	if outFile == "" || outFile == "-" {
+		writer = os.Stdout
+	} else {
+		writer, err = os.OpenFile(outFile, os.O_WRONLY|os.O_TRUNC|os.O_CREATE, 0644)
+		if err != nil {
+			return err
+		}
+	}
+
+	n, err := io.Copy(writer, reader)
+	defer writer.Close()
+	if err != nil {
+		return fmt.Errorf("Wrote %d bytes. Error: %s\n", n, err)
+	}
+	return nil
+}
+
+func handleJsonResult(exec mgcSdk.Executor, result core.Value, output string) (err error) {
+	err = exec.ResultSchema().VisitJSON(result)
+	if err != nil {
+		log.Printf("Warning: result validation failed: %v", err)
+	}
+
+	name, options := parseOutputFormatter(output)
+	if name == "" {
+		if formatter, ok := exec.(core.ExecutorResultFormatter); ok {
+			fmt.Println(formatter.DefaultFormatResult(result))
+			return nil
+		}
+	}
+
+	formatter, err := getOutputFormatter(name, options)
+	if err != nil {
+		return err
+	}
+	return formatter.Format(result, options)
+}
+
 func AddAction(
 	sdk *mgcSdk.Sdk,
 	parentCmd *cobra.Command,
@@ -218,24 +263,13 @@ func AddAction(
 				return nil
 			}
 
-			err = exec.ResultSchema().VisitJSON(result)
-			if err != nil {
-				log.Printf("Warning: result validation failed: %v", err)
+			output := getOutputFlag(cmd)
+
+			if reader, ok := result.(io.Reader); ok {
+				return handleReaderResult(reader, output)
 			}
 
-			formatterName, options := getFormatterFlag(cmd)
-			if formatterName == "" {
-				if formatter, ok := exec.(core.ExecutorResultFormatter); ok {
-					fmt.Println(formatter.DefaultFormatResult(result))
-					return nil
-				}
-			}
-
-			formatter, err := getFormatter(formatterName, options)
-			if err != nil {
-				return err
-			}
-			return formatter.Format(result, options)
+			return handleJsonResult(exec, result, output)
 		},
 	}
 
@@ -384,7 +418,7 @@ can generate a command line on-demand for Rest manipulation`,
 	})
 	rootCmd.SetHelpCommandGroupID("other")
 	rootCmd.SetCompletionCommandGroupID("other")
-	addFormatterFlag(rootCmd)
+	addOutputFlag(rootCmd)
 
 	sdk := &mgcSdk.Sdk{}
 
