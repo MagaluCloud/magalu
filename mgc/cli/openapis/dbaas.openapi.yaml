@@ -839,12 +839,14 @@ components:
                     $ref: '#/components/schemas/BackupMode'
                 db_size:
                     title: Db Size
-                    exclusiveMinimum: 0.0
+                    exclusiveMinimum: true
                     type: integer
+                    minimum: 0.0
                 size:
                     title: Size
-                    exclusiveMinimum: 0.0
+                    exclusiveMinimum: true
                     type: integer
+                    minimum: 0.0
                 started_at:
                     title: Started At
                     type: string
@@ -1053,9 +1055,10 @@ components:
                     $ref: '#/components/schemas/InstanceVolumeRequest'
                 backup_retention_days:
                     title: Backup Retention Days
-                    exclusiveMinimum: 0.0
+                    exclusiveMinimum: true
                     type: integer
                     default: 7
+                    minimum: 0.0
                 backup_start_at:
                     title: Backup Start At
                     type: string
@@ -1110,8 +1113,9 @@ components:
                     format: date-time
                 backup_retention_days:
                     title: Backup Retention Days
-                    exclusiveMinimum: 0.0
+                    exclusiveMinimum: true
                     type: integer
+                    minimum: 0.0
                 backup_start_at:
                     title: Backup Start At
                     type: string
@@ -1181,8 +1185,9 @@ components:
                     $ref: '#/components/schemas/InstanceUpdateStatus'
                 backup_retention_days:
                     title: Backup Retention Days
-                    exclusiveMinimum: 0.0
+                    exclusiveMinimum: true
                     type: integer
+                    minimum: 0.0
                 backup_start_at:
                     title: Backup Start At
                     type: string

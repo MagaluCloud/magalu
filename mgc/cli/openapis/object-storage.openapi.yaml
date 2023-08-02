@@ -49,8 +49,9 @@ paths:
             -   required: false
                 schema:
                     title: Limit
-                    exclusiveMinimum: 0.0
+                    exclusiveMinimum: true
                     type: integer
+                    minimum: 0.0
                 name: limit
                 in: query
             -   required: false
@@ -263,8 +264,9 @@ paths:
             -   required: false
                 schema:
                     title: Limit
-                    exclusiveMinimum: 0.0
+                    exclusiveMinimum: true
                     type: integer
+                    minimum: 0.0
                 name: limit
                 in: query
             -   required: false
@@ -333,8 +335,9 @@ paths:
             -   required: false
                 schema:
                     title: Limit
-                    exclusiveMinimum: 0.0
+                    exclusiveMinimum: true
                     type: integer
+                    minimum: 0.0
                 name: limit
                 in: query
             -   required: false
@@ -423,8 +426,9 @@ paths:
             -   required: false
                 schema:
                     title: ' Limit'
-                    exclusiveMinimum: 0.0
+                    exclusiveMinimum: true
                     type: integer
+                    minimum: 0.0
                 name: _limit
                 in: query
             -   required: false
@@ -654,9 +658,10 @@ paths:
             -   required: false
                 schema:
                     title: ' Limit'
-                    exclusiveMinimum: 0.0
+                    exclusiveMinimum: true
                     type: integer
                     default: 10
+                    minimum: 0.0
                 name: _limit
                 in: query
             -   required: false
@@ -750,8 +755,9 @@ paths:
             -   required: false
                 schema:
                     title: Limit
-                    exclusiveMinimum: 0.0
+                    exclusiveMinimum: true
                     type: integer
+                    minimum: 0.0
                 name: limit
                 in: query
             -   required: false
@@ -1056,8 +1062,9 @@ paths:
             -   required: false
                 schema:
                     title: ' Limit'
-                    exclusiveMinimum: 0.0
+                    exclusiveMinimum: true
                     type: integer
+                    minimum: 0.0
                 name: _limit
                 in: query
             -   required: false
@@ -2738,8 +2745,9 @@ paths:
             -   required: false
                 schema:
                     title: Limit
-                    exclusiveMinimum: 0.0
+                    exclusiveMinimum: true
                     type: integer
+                    minimum: 0.0
                 name: limit
                 in: query
             -   required: false
@@ -2967,8 +2975,9 @@ paths:
             -   required: false
                 schema:
                     title: Limit
-                    exclusiveMinimum: 0.0
+                    exclusiveMinimum: true
                     type: integer
+                    minimum: 0.0
                 name: limit
                 in: query
             -   required: false
@@ -3062,8 +3071,9 @@ paths:
             -   required: false
                 schema:
                     title: ' Limit'
-                    exclusiveMinimum: 0.0
+                    exclusiveMinimum: true
                     type: integer
+                    minimum: 0.0
                 name: _limit
                 in: query
             -   required: false
@@ -3308,9 +3318,10 @@ paths:
             -   required: false
                 schema:
                     title: ' Limit'
-                    exclusiveMinimum: 0.0
+                    exclusiveMinimum: true
                     type: integer
                     default: 10
+                    minimum: 0.0
                 name: _limit
                 in: query
             -   required: false
@@ -3409,8 +3420,9 @@ paths:
             -   required: false
                 schema:
                     title: Limit
-                    exclusiveMinimum: 0.0
+                    exclusiveMinimum: true
                     type: integer
+                    minimum: 0.0
                 name: limit
                 in: query
             -   required: false
@@ -3735,8 +3747,9 @@ paths:
             -   required: false
                 schema:
                     title: ' Limit'
-                    exclusiveMinimum: 0.0
+                    exclusiveMinimum: true
                     type: integer
+                    minimum: 0.0
                 name: _limit
                 in: query
             -   required: false
