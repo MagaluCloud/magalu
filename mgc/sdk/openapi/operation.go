@@ -4,10 +4,17 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
+	"io"
 	"log"
+	"mime"
+	"mime/multipart"
 	"net/http"
+	"net/textproto"
 	"net/url"
+	"os"
+	"path"
 	"strings"
 
 	"magalu.cloud/core"
@@ -15,6 +22,9 @@ import (
 	"github.com/getkin/kin-openapi/openapi3"
 	"golang.org/x/exp/slices"
 )
+
+const fileUploadPrefix = "upload-"
+const fileUploadParam = fileUploadPrefix + "file"
 
 // Source -> Module -> Resource -> Operation
 
@@ -59,6 +69,9 @@ func addParameters(schema *core.Schema, parameters openapi3.Parameters, extensio
 		if !slices.Contains(locations, parameter.In) {
 			continue
 		}
+		if parameter.In == openapi3.ParameterInHeader && strings.HasPrefix(strings.ToLower(parameter.Name), "content-") {
+			continue
+		}
 
 		paramSchemaRef := parameter.Schema
 		paramSchema := paramSchemaRef.Value
@@ -89,40 +102,374 @@ func addParameters(schema *core.Schema, parameters openapi3.Parameters, extensio
 	}
 }
 
-func addRequestBodyParameters(schema *core.Schema, rbr *openapi3.RequestBodyRef, extensionPrefix *string) {
+type cbGetName func(internalName string, propSchema *openapi3.Schema) string
+
+type cbForEachSchemaProperty func(
+	// the external (public/visible) name
+	externalName string,
+	// the name in the containerSchema.Properties
+	internalName string,
+	// the property schema, is guaranteed to not be null and have a non-null Value
+	propRef *openapi3.SchemaRef,
+	// The container schema (object definition)
+	containerSchema *openapi3.Schema,
+) (run bool, err error)
+
+// Use this function as base to keep both parameter adding and processing in sync,
+// with the same getExternalName function
+//
+// NOTE: getExternalName is only called if no extension provides the specific name
+func (o *Operation) forEachSchemaProperty(schema *openapi3.Schema, getExternalName cbGetName, cb cbForEachSchemaProperty) (finished bool, err error) {
+	if schema == nil {
+		return false, errors.New("missing schema")
+	}
+
+	if schema.Type != openapi3.TypeObject {
+		return false, errors.New("must provide a schema with type 'object'!")
+	}
+
+	for internalName, propRef := range schema.Properties {
+		if propRef == nil {
+			continue
+		}
+
+		propSchema := propRef.Value
+		if propSchema == nil {
+			continue
+		}
+
+		externalName := getNameExtension(o.extensionPrefix, propSchema.Extensions, "")
+		if externalName == "" {
+			if getExternalName != nil {
+				externalName = getExternalName(internalName, propSchema)
+			} else {
+				externalName = internalName
+			}
+		}
+
+		run, err := cb(externalName, internalName, propRef, schema)
+		if err != nil {
+			return false, err
+		}
+		if !run {
+			return false, nil
+		}
+	}
+
+	return true, nil
+}
+
+func (o *Operation) forEachSchemaRefParameter(schemaRef *openapi3.SchemaRef, getExternalName cbGetName, cb cbForEachSchemaProperty) (finished bool, err error) {
+	if schemaRef == nil {
+		return false, errors.New("missing schemaRef")
+	}
+	return o.forEachSchemaProperty(schemaRef.Value, getExternalName, cb)
+}
+
+func (o *Operation) forEachMediaTypeProperty(mediaType *openapi3.MediaType, getExternalName cbGetName, cb cbForEachSchemaProperty) (finished bool, err error) {
+	return o.forEachSchemaRefParameter(mediaType.Schema, getExternalName, cb)
+}
+
+func (o *Operation) forEachBodyJsonParameter(mediaType *openapi3.MediaType, cb cbForEachSchemaProperty) (finished bool, err error) {
+	names := map[string]bool{}
+	finished, err = o.forEachMediaTypeProperty(mediaType, nil, func(externalName, internalName string, propRef *openapi3.SchemaRef, containerSchema *openapi3.Schema) (run bool, err error) {
+		for {
+			if names[externalName] {
+				externalName = "req-" + externalName
+			} else {
+				break
+			}
+		}
+		names[externalName] = true
+
+		return cb(externalName, internalName, propRef, containerSchema)
+	})
+
+	if err != nil {
+		err = fmt.Errorf("application/json %w", err)
+	}
+	return finished, err
+}
+
+func (o *Operation) addRequestBodyJsonParameters(mediaType *openapi3.MediaType, schema *core.Schema) (err error) {
+	_, err = o.forEachBodyJsonParameter(mediaType, func(externalName, internalName string, propRef *openapi3.SchemaRef, containerSchema *openapi3.Schema) (run bool, err error) {
+		// NOTE: keep this paired with createRequestBodyJson()
+
+		schema.Properties[externalName] = propRef
+
+		if slices.Contains(containerSchema.Required, internalName) && !slices.Contains(schema.Required, externalName) {
+			schema.Required = append(schema.Required, externalName)
+		}
+		return true, nil
+	})
+	return
+}
+
+func (o *Operation) createRequestBodyJson(mediaType *openapi3.MediaType, pValues map[string]core.Value) (mimeType string, size int64, reader io.Reader, err error) {
+	size = -1
+
+	body := map[string]core.Value{}
+	_, err = o.forEachBodyJsonParameter(mediaType, func(externalName, internalName string, propRef *openapi3.SchemaRef, containerSchema *openapi3.Schema) (run bool, err error) {
+		// NOTE: keep this paired with addRequestBodyJsonParameters()
+
+		if val, ok := pValues[externalName]; ok {
+			body[internalName] = val
+		}
+		return true, nil
+	})
+
+	if err != nil {
+		return
+	}
+
+	bodyBuf := new(bytes.Buffer)
+	err = json.NewEncoder(bodyBuf).Encode(body)
+	if err != nil {
+		err = fmt.Errorf("Error encoding body content for request: %w", err)
+		return
+	}
+
+	mimeType = "application/json"
+	size = int64(bodyBuf.Len())
+	reader = bodyBuf
+	return
+}
+
+func getBodyUploadMultipartExternalName(internalName string, propSchema *openapi3.Schema) string {
+	return fileUploadPrefix + internalName
+}
+
+func (o *Operation) forEachBodyUploadMultipartParameter(mediaType *openapi3.MediaType, cb cbForEachSchemaProperty) (finished bool, err error) {
+	finished, err = o.forEachMediaTypeProperty(mediaType, getBodyUploadMultipartExternalName, cb)
+	if err != nil {
+		err = fmt.Errorf("multipart/form-data %w", err)
+	}
+	return finished, err
+}
+
+func (o *Operation) addRequestBodyUploadMultipartParameters(mediaType *openapi3.MediaType, schema *core.Schema) (err error) {
+	_, err = o.forEachBodyUploadMultipartParameter(mediaType, func(externalName, internalName string, propRef *openapi3.SchemaRef, containerSchema *openapi3.Schema) (run bool, err error) {
+		// NOTE: keep this paired with createRequestBodyUploadMultipart()
+
+		// TODO: https://spec.openapis.org/oas/latest.html#special-considerations-for-multipart-content
+
+		schema.Properties[externalName] = propRef
+
+		if slices.Contains(containerSchema.Required, internalName) {
+			schema.Required = append(schema.Required, externalName)
+		}
+
+		return true, nil
+	})
+	return
+}
+
+func (o *Operation) createRequestBodyUploadMultipart(
+	mediaType *openapi3.MediaType,
+	content openapi3.Content,
+	pValues map[string]core.Value,
+) (mimeType string, size int64, reader io.Reader, err error) {
+	size = -1 // always -1 for multipart content
+
+	type uploadEntry struct {
+		name     string
+		filename string
+		mimeType string
+		size     int64
+		file     *os.File
+	}
+	uploads := []*uploadEntry{}
+
+	_, err = o.forEachBodyUploadMultipartParameter(mediaType, func(externalName, internalName string, propRef *openapi3.SchemaRef, containerSchema *openapi3.Schema) (run bool, err error) {
+		// NOTE: keep this paired with addRequestBodyUploadMultipartParameters()
+
+		// TODO: https://spec.openapis.org/oas/latest.html#special-considerations-for-multipart-content
+
+		filename, mime, sz, file, cerr := getFileFromParameter(externalName, pValues)
+		if cerr == nil {
+			e := &uploadEntry{
+				name:     internalName,
+				filename: filename,
+				mimeType: mime,
+				size:     sz,
+				file:     file,
+			}
+			uploads = append(uploads, e)
+		} else if slices.Contains(containerSchema.Required, internalName) {
+			for _, e := range uploads {
+				_ = e.file.Close()
+			}
+			return false, fmt.Errorf("Failed required parameter: %w", cerr)
+		}
+		return true, nil
+	})
+
+	if err != nil {
+		return
+	}
+
+	r, w := io.Pipe()
+	mw := multipart.NewWriter(w)
+	go func() {
+		// This goroutine fills the pipe's write side using multipart.Writer, processing one file at a time
+		// io.Copy() + createFormFile() will block until the pipe's read side is used by the http.Client.Do()
+		// as the read side will be the body reader
+		defer w.Close()
+		defer mw.Close()
+
+		for _, e := range uploads {
+			defer e.file.Close()
+			part, cerr := createFormFile(mw, e.name, e.filename, e.mimeType, e.size)
+			if cerr != nil {
+				return
+			}
+			_, cerr = io.Copy(part, e.file)
+			if cerr != nil {
+				log.Printf("Warning: could not upload file %q: %v\n", e.name, cerr)
+			}
+		}
+	}()
+
+	mimeType = mw.FormDataContentType()
+	reader = r
+	return
+}
+
+func (o *Operation) addRequestBodyUploadFormParameters(mediaType *openapi3.MediaType, schema *core.Schema) (err error) {
+	// NOTE: keep this paired with createRequestBodyUploadForm()
+
+	err = fmt.Errorf("application/x-www-form-urlencoded not implemented")
+	// TODO: https://spec.openapis.org/oas/latest.html#support-for-x-www-form-urlencoded-request-bodies
+
+	return
+}
+
+func (o *Operation) createRequestBodyUploadForm(mediaType *openapi3.MediaType, content openapi3.Content, pValues map[string]core.Value) (mimeType string, size int64, reader io.Reader, err error) {
+	// NOTE: keep this paired with addRequestBodyUploadFormParameters()
+
+	size = -1
+	err = fmt.Errorf("application/x-www-form-urlencoded not implemented")
+	// TODO: https://spec.openapis.org/oas/latest.html#support-for-x-www-form-urlencoded-request-bodies
+	return
+}
+
+func (o *Operation) addRequestBodyUploadSimpleParameters(content openapi3.Content, schema *core.Schema) (err error) {
+	// NOTE: keep this paired with createRequestBodyUploadSimple()
+
+	mimeTypes := make([]string, 0, len(content))
+	for k, mediaType := range content {
+		mimeTypes = append(mimeTypes, k)
+		if mediaType.Schema != nil && mediaType.Schema.Value != nil && mediaType.Schema.Value.Type != "" {
+			// spec gives the following example, that we do not support:
+			//	Binary content transferred with base64 encoding:
+			//		content:
+			//			image/png:
+			//				schema:
+			//					type: string
+			//					contentMediaType: image/png
+			//					contentEncoding: base64
+			log.Printf("content-type %q with schema is not supported: %+v\n", k, mediaType.Schema.Value)
+		}
+	}
+
+	fs := openapi3.NewStringSchema()
+	fs.Description = "File to be uploaded. Supported mime-types: " + strings.Join(mimeTypes, ", ")
+
+	ref := openapi3.NewSchemaRef("", fs)
+
+	name := fileUploadParam
+	schema.Properties[name] = ref
+	schema.Required = append(schema.Required, name)
+
+	return
+}
+
+func (o *Operation) createRequestBodyUploadSimple(content openapi3.Content, pValues map[string]core.Value) (mimeType string, size int64, reader io.Reader, err error) {
+	// NOTE: keep in sync with addRequestBodyUploadSimpleParameters
+	_, mimeType, size, reader, err = getFileFromParameter(fileUploadParam, pValues)
+	return mimeType, size, reader, err
+}
+
+func (o *Operation) hasBody() bool {
+	switch o.method {
+	case http.MethodPost, http.MethodPut, http.MethodPatch:
+		return true
+	default:
+		return false
+	}
+}
+
+func (o *Operation) createRequestBody(pValues map[string]core.Value) (mimeType string, size int64, reader io.Reader, err error) {
+	// NOTE: keep in sync with addRequestBodyParameters()
+
+	size = -1
+
+	if !o.hasBody() {
+		return
+	}
+
+	rbr := o.operation.RequestBody
 	if rbr == nil {
 		return
 	}
 
 	rb := rbr.Value
-	mt := rb.Content.Get("application/json")
-	if mt == nil {
+	if rb == nil {
 		return
 	}
 
-	content := mt.Schema.Value
-	if content == nil {
+	content := rb.Content
+	if len(content) == 0 {
 		return
 	}
 
-	for name, ref := range content.Properties {
-		parameter := ref.Value
-		name = getNameExtension(extensionPrefix, parameter.Extensions, name)
+	if mt := content.Get("application/json"); mt != nil {
+		return o.createRequestBodyJson(mt, pValues)
+	} else if mt := content.Get("multipart/form-data"); mt != nil {
+		return o.createRequestBodyUploadMultipart(mt, content, pValues)
+	} else if mt := content.Get("application/x-www-form-urlencoded"); mt != nil {
+		return o.createRequestBodyUploadForm(mt, content, pValues)
+	} else {
+		return o.createRequestBodyUploadSimple(content, pValues)
+	}
+}
 
-		for {
-			_, exists := schema.Properties[name]
-			if exists {
-				name = "req-" + name
-			} else {
-				break
-			}
-		}
+func (o *Operation) addRequestBodyParameters(schema *core.Schema) {
+	// NOTE: keep in sync with createRequestBody()
 
-		schema.Properties[name] = ref
+	if !o.hasBody() {
+		return
+	}
 
-		if slices.Contains(content.Required, name) && !slices.Contains(schema.Required, name) {
-			schema.Required = append(schema.Required, name)
-		}
+	rbr := o.operation.RequestBody
+	if rbr == nil {
+		return
+	}
+
+	rb := rbr.Value
+	if rb == nil {
+		return
+	}
+
+	content := rb.Content
+	if len(content) == 0 {
+		return
+	}
+
+	var err error
+	if mt := content.Get("application/json"); mt != nil {
+		err = o.addRequestBodyJsonParameters(mt, schema)
+	} else if mt := content.Get("multipart/form-data"); mt != nil {
+		err = o.addRequestBodyUploadMultipartParameters(mt, schema)
+	} else if mt := content.Get("application/x-www-form-urlencoded"); mt != nil {
+		err = o.addRequestBodyUploadFormParameters(mt, schema)
+	} else {
+		err = o.addRequestBodyUploadSimpleParameters(content, schema)
+	}
+
+	if err != nil {
+		// Log, but otherwise ignore the issue
+		log.Printf("%s\n", err.Error())
 	}
 }
 
@@ -137,7 +484,7 @@ func (o *Operation) ParametersSchema() *core.Schema {
 
 		addParameters(rootSchema, o.path.Parameters, o.extensionPrefix, parametersLocations)
 		addParameters(rootSchema, o.operation.Parameters, o.extensionPrefix, parametersLocations)
-		addRequestBodyParameters(rootSchema, o.operation.RequestBody, o.extensionPrefix)
+		o.addRequestBodyParameters(rootSchema)
 		o.addSecurityParameters(rootSchema)
 
 		o.paramsSchema = rootSchema
@@ -291,38 +638,78 @@ func addCookieParam(req *http.Request, param *openapi3.Parameter, val core.Value
 	})
 }
 
-func (o *Operation) createRequestBody(pValues map[string]core.Value) (string, *bytes.Buffer, error) {
-	rbr := o.operation.RequestBody
-	if rbr == nil {
-		return "", bytes.NewBuffer(nil), nil
-	}
+func getFileMimeTypeAndSize(filename string, file *os.File) (mimeType string, size int64) {
+	pos, _ := file.Seek(0, io.SeekCurrent)
 
-	rb := rbr.Value
-	mt := rb.Content.Get("application/json")
-	if mt == nil {
-		// TODO: parse body for multipart and other content types
-		return "", nil, fmt.Errorf("Can not parse body for content type other than application/json")
-	}
+	size, _ = file.Seek(0, io.SeekEnd)
 
-	content := mt.Schema.Value
-	if content == nil {
-		return "", nil, fmt.Errorf("Request body with empty schema ref")
-	}
+	buffer := make([]byte, 512)
+	_, _ = file.Read(buffer)
+	mimeType = http.DetectContentType(buffer)
+	_, _ = file.Seek(pos, io.SeekStart)
 
-	body := map[string]core.Value{}
-	for pKey, ref := range content.Properties {
-		parameter := ref.Value
-		name := getNameExtension(o.extensionPrefix, parameter.Extensions, pKey)
-		if val, ok := pValues[name]; ok {
-			body[pKey] = val
+	if mimeType == "application/octet-stream" {
+		ext := path.Ext(filename)
+		if ext != "" {
+			mimeType = mime.TypeByExtension(ext)
+			if mimeType == "" {
+				mimeType = "application/octet-stream"
+			}
 		}
 	}
-	bodyBuf := new(bytes.Buffer)
-	if err := json.NewEncoder(bodyBuf).Encode(body); err != nil {
-		return "", nil, fmt.Errorf("Error encoding body content for request: %v", err)
-	}
-	return "application/json", bodyBuf, nil
+
+	return mimeType, size
 }
+
+func getFileFromParameter(
+	name string,
+	pValues map[string]core.Value,
+) (filename string, mimeType string, size int64, file *os.File, err error) {
+	size = -1
+
+	v, ok := pValues[name]
+	if !ok {
+		err = fmt.Errorf("Missing parameter %q", name)
+		return
+	}
+
+	filename, ok = v.(string)
+	if !ok {
+		err = fmt.Errorf("Parameter %q: not a string", name)
+		return
+	}
+
+	file, err = os.Open(filename)
+	if err != nil {
+		return
+	}
+
+	filename = path.Base(filename)
+	mimeType, size = getFileMimeTypeAndSize(filename, file)
+	return
+}
+
+// BEGIN: these are like mime/multipart/writer.go, required because they are not exported
+var quoteEscaper = strings.NewReplacer("\\", "\\\\", `"`, "\\\"")
+
+func escapeQuotes(s string) string {
+	return quoteEscaper.Replace(s)
+}
+
+// Variant of multipart.Writer.createFormFile() with mime-type
+func createFormFile(w *multipart.Writer, fieldname, filename, mimeType string, size int64) (io.Writer, error) {
+	h := make(textproto.MIMEHeader)
+	h.Set("Content-Disposition",
+		fmt.Sprintf(`form-data; name="%s"; filename="%s"`,
+			escapeQuotes(fieldname), escapeQuotes(filename)))
+	h.Set("Content-Type", mimeType)
+	if size > 0 {
+		h.Set("Content-Length", fmt.Sprintf("%d", size))
+	}
+	return w.CreatePart(h)
+}
+
+// END: these are like mime/multipart/writer.go, required because they are not exported
 
 func (o *Operation) buildRequestFromParams(
 	paramValues map[string]core.Value,
@@ -333,21 +720,21 @@ func (o *Operation) buildRequestFromParams(
 		return nil, err
 	}
 
-	httpMethod := strings.ToUpper(o.method)
-	bodyBuf := bytes.NewBuffer(nil)
-	var mimeType string
-	if httpMethod == http.MethodPost || httpMethod == http.MethodPut || httpMethod == http.MethodPatch {
-		mimeType, bodyBuf, err = o.createRequestBody(paramValues)
-		if err != nil {
-			return nil, err
-		}
-	}
-
-	req, err := http.NewRequest(httpMethod, serverURL, bodyBuf)
+	mimeType, size, bodyBuf, err := o.createRequestBody(paramValues)
 	if err != nil {
 		return nil, err
 	}
-	req.Header.Set("Content-Type", mimeType)
+
+	req, err := http.NewRequest(o.method, serverURL, bodyBuf)
+	if err != nil {
+		return nil, err
+	}
+	if mimeType != "" {
+		req.Header.Set("Content-Type", mimeType)
+	}
+	if size > 0 {
+		req.ContentLength = size
+	}
 
 	queryValues := url.Values{}
 	for _, ref := range o.operation.Parameters {
@@ -478,11 +865,19 @@ func (o *Operation) getResponseValue(resp *http.Response) (core.Value, error) {
 	}
 
 	var data core.Value
-	switch contentType := core.GetContentType(resp); contentType {
+	contentType, params, _ := mime.ParseMediaType(resp.Header.Get("Content-Type"))
+	switch {
 	default:
 		return resp.Body, nil
 
-	case "application/json":
+	case strings.HasPrefix(contentType, "multipart/"):
+		// TODO: do we have multi-part downloads? or just single?
+		// If multi, then we need to return a multipart reader...
+		// return multipart.NewReader(resp.Body, params["boundary"]), nil
+		r := multipart.NewReader(resp.Body, params["boundary"])
+		return r.NextPart()
+
+	case contentType == "application/json":
 		err := core.DecodeJSON(resp, &data)
 		return data, err
 	}
@@ -519,9 +914,10 @@ func (o *Operation) Execute(
 	if err != nil {
 		return nil, err
 	}
+
 	resp, err := client.Do(req)
 	if err != nil {
-		return nil, fmt.Errorf("Error on request response body: %s", err)
+		return nil, fmt.Errorf("HTTP request error: %s", err)
 	}
 
 	if resp.StatusCode < 200 || resp.StatusCode >= 300 {

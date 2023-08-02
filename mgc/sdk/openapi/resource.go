@@ -244,7 +244,7 @@ func (o *Resource) getOperations() map[string]*Operation {
 			opMap[opName] = &Operation{
 				name:            opName,
 				key:             desc.key,
-				method:          desc.method,
+				method:          strings.ToUpper(desc.method),
 				path:            desc.path,
 				operation:       desc.op,
 				doc:             o.doc,

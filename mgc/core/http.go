@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"io"
 	"log"
+	"mime"
 	"net/http"
-	"strings"
 )
 
 var httpClientKey contextKey = "magalu.cloud/core/Transport"
@@ -42,11 +42,6 @@ func DecodeJSON(resp *http.Response, data any) error {
 	return nil
 }
 
-func GetContentType(resp *http.Response) string {
-	headerVal := resp.Header.Get("Content-Type")
-	return strings.Split(headerVal, ";")[0]
-}
-
 type HttpError struct {
 	Code    int
 	Status  string
@@ -76,7 +71,11 @@ func NewHttpErrorFromResponse(resp *http.Response) error {
 	defer resp.Body.Close()
 	payload, _ := io.ReadAll(resp.Body)
 
-	if contentType := GetContentType(resp); contentType == "application/json" {
+	contentType, _, err := mime.ParseMediaType(resp.Header.Get("Content-Type"))
+	if err != nil {
+		log.Printf("Ignored invalid response Content-Type %q: %s\n", resp.Header.Get("Content-Type"), err.Error())
+	}
+	if contentType == "application/json" {
 		data := BaseApiError{}
 		if err := json.Unmarshal(payload, &data); err == nil {
 			if data.Message != "" {
