@@ -260,7 +260,7 @@ paths:
             -   OAuth2:
                 - network.read
             x-cli-description: List VPC ports
-            x-cli-name: list
+            x-cli-name: list-vpc-ports
         post:
             tags:
             - port

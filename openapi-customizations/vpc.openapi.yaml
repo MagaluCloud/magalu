@@ -25,7 +25,7 @@ paths:
     /v0/vpcs/{vpc_id}/ports:
         get:
             x-cli-description: List VPC ports
-            x-cli-name: list
+            x-cli-name: list-vpc-ports
             parameters:
             - name: vpc_id
               x-cli-name: vpc
