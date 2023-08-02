@@ -259,7 +259,6 @@ paths:
             -   OAuth2:
                 - block-storage.read
             x-cli-description: List all Block Storage volumes
-            x-cli-name: list
         post:
             tags:
             - block-storage
@@ -289,7 +288,6 @@ paths:
             -   OAuth2:
                 - block-storage.write
             x-cli-description: Create a Block Storage volume
-            x-cli-name: create
     /v0/volumes/{id}:
         get:
             tags:
@@ -323,7 +321,6 @@ paths:
             -   OAuth2:
                 - block-storage.read
             x-cli-description: Get a Block Storage volume details
-            x-cli-name: get
         delete:
             tags:
             - block-storage
@@ -360,7 +357,6 @@ paths:
             -   OAuth2:
                 - block-storage.write
             x-cli-description: Delete a Block Storage volume
-            x-cli-name: delete
         patch:
             tags:
             - block-storage
@@ -399,7 +395,6 @@ paths:
             -   OAuth2:
                 - block-storage.write
             x-cli-description: Update a Block Storage volume
-            x-cli-name: update
     /v0/volumes/{id}/attach/{virtual_machine_id}:
         post:
             tags:

@@ -25,20 +25,15 @@ paths:
     /v0/instances:
         get:
             x-cli-description: List Virtual Machine instances
-            x-cli-name: list
         post:
             x-cli-description: Create a Virtual Machine instance
-            x-cli-name: create
     /v0/instances/{id}:
         get:
             x-cli-description: Get a Virtual Machine instance details
-            x-cli-name: get
         delete:
             x-cli-description: Delete a Virtual Machine instance
-            x-cli-name: delete
         patch:
             x-cli-description: Update a Virtual Machine instance
-            x-cli-name: update
 
 tags:
 -   name: instances

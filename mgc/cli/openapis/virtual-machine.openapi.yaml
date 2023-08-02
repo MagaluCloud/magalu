@@ -213,7 +213,6 @@ paths:
             -   OAuth2:
                 - virtual-machine.read
             x-cli-description: List Virtual Machine instances
-            x-cli-name: list
         post:
             tags:
             - instances
@@ -243,10 +242,8 @@ paths:
             -   OAuth2:
                 - virtual-machine.write
             x-cli-description: Create a Virtual Machine instance
-            x-cli-name: create
         delete:
             x-cli-description: Delete a Virtual Machine instance
-            x-cli-name: delete
     /v0/instances/{id}:
         get:
             tags:
@@ -280,7 +277,6 @@ paths:
             -   OAuth2:
                 - virtual-machine.read
             x-cli-description: Get a Virtual Machine instance details
-            x-cli-name: get
         delete:
             tags:
             - instances
@@ -309,7 +305,6 @@ paths:
             -   OAuth2:
                 - virtual-machine.write
             x-cli-description: Delete a Virtual Machine instance
-            x-cli-name: delete
         patch:
             tags:
             - instances
@@ -344,7 +339,6 @@ paths:
             -   OAuth2:
                 - virtual-machine.write
             x-cli-description: Update a Virtual Machine instance
-            x-cli-name: update
     /v0/instances/{id}/events:
         get:
             tags:
