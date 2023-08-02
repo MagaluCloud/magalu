@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"io"
 	"log"
 	"net/http"
 	"strings"
@@ -36,9 +37,19 @@ func DecodeJSON(resp *http.Response, data any) error {
 	defer resp.Body.Close()
 	err := json.NewDecoder(resp.Body).Decode(data)
 	if err != nil {
-		return fmt.Errorf("Error decoding JSON response body: %s", err)
+		return fmt.Errorf("Error decoding JSON response body: %v", err)
 	}
 	return nil
+}
+
+func DecodeOctet(resp *http.Response) (string, error) {
+	defer resp.Body.Close()
+	// TODO: read the bytes, parse content disposition and save to file
+	b, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return "", fmt.Errorf("Error decoding octet stream: %v", err)
+	}
+	return string(b), nil
 }
 
 func GetContentType(resp *http.Response) string {

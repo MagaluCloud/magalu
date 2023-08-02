@@ -463,6 +463,9 @@ func (o *Operation) Execute(
 	case "":
 		// This will happen for 204 - No Content returns with empty body
 		return map[string]core.Value{}, err
+	case "application/octet-stream":
+		// Decode to string
+		return core.DecodeOctet(resp)
 	case "application/json":
 		data = map[string]core.Value{}
 		err := core.DecodeJSON(resp, &data)
