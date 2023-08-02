@@ -1,4 +1,4 @@
-from typing import Any, Dict
+from typing import Any, Dict, Hashable
 import argparse
 import yaml
 
@@ -21,7 +21,11 @@ def merge_item(value: Any, new: Any, override: bool, path: list[str]) -> bool:
 
     value_type = type(value)
     new_type = type(new)
-    if value_type != new_type:
+    hasheable_types = (
+        isinstance(value_type, Hashable),
+        isinstance(new_type, Hashable),
+    )
+    if not all(hasheable_types) and value_type != new_type:
         raise NotImplementedError(
             f"{path}: cannot merge type {value_type!r} with {new_type!r}"
         )
