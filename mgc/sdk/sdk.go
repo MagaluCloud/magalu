@@ -105,9 +105,21 @@ func (o *Sdk) Group() core.Grouper {
 	return o.group
 }
 
+func newHttpTransport() http.RoundTripper {
+	var transport http.RoundTripper = &http.Transport{
+		MaxIdleConns:       10,
+		IdleConnTimeout:    30 * time.Second,
+		DisableCompression: true,
+	}
+	if os.Getenv("MGC_SDK_HTTP_LOG") == "1" {
+		transport = core.NewDefaultHttpClientLogger(transport)
+	}
+	return transport
+}
+
 func (o *Sdk) Auth() *core.Auth {
-	client := &http.Client{}
 	if o.auth == nil {
+		client := &http.Client{Transport: newHttpTransport()}
 		o.auth = core.NewAuth(config, client)
 	}
 	return o.auth
@@ -115,11 +127,8 @@ func (o *Sdk) Auth() *core.Auth {
 
 func (o *Sdk) HttpClient() *core.HttpClient {
 	if o.httpClient == nil {
-		o.httpClient = core.NewHttpClient(&http.Transport{
-			MaxIdleConns:       10,
-			IdleConnTimeout:    30 * time.Second,
-			DisableCompression: true,
-		})
+		transport := newHttpTransport()
+		o.httpClient = core.NewHttpClient(transport)
 	}
 	return o.httpClient
 }

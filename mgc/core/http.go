@@ -15,7 +15,7 @@ type HttpClient struct {
 	http.Client
 }
 
-func NewHttpClient(transport *http.Transport) *HttpClient {
+func NewHttpClient(transport http.RoundTripper) *HttpClient {
 	return &HttpClient{http.Client{Transport: transport}}
 }
 
