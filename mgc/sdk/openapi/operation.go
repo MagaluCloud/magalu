@@ -30,6 +30,11 @@ const fileUploadParam = fileUploadPrefix + "file"
 
 // Operation
 
+type parameterWithName struct {
+	name      string
+	parameter *openapi3.Parameter
+}
+
 type Operation struct {
 	name            string
 	key             string
@@ -42,6 +47,7 @@ type Operation struct {
 	resultSchema    *core.Schema
 	extensionPrefix *string
 	servers         openapi3.Servers
+	parameters      *[]*parameterWithName
 }
 
 // BEGIN: Descriptor interface:
@@ -62,9 +68,65 @@ func (o *Operation) Description() string {
 
 // BEGIN: Executor interface:
 
-func addParameters(schema *core.Schema, parameters openapi3.Parameters, extensionPrefix *string, locations []string) {
+func (o *Operation) collectParameters(byNameAndLocation map[string]map[string]*parameterWithName, parameters openapi3.Parameters) {
 	for _, ref := range parameters {
+		// "A unique parameter is defined by a combination of a name and location."
 		parameter := ref.Value
+
+		byLocation, exists := byNameAndLocation[parameter.Name]
+		if !exists {
+			byLocation = map[string]*parameterWithName{}
+			byNameAndLocation[parameter.Name] = byLocation
+		}
+
+		name := getNameExtension(o.extensionPrefix, parameter.Extensions, "")
+		byLocation[parameter.In] = &parameterWithName{name, parameter}
+	}
+}
+
+func (o *Operation) finalizeParameters(byNameAndLocation map[string]map[string]*parameterWithName) *[]*parameterWithName {
+	parameters := []*parameterWithName{}
+
+	for name, byLocation := range byNameAndLocation {
+		for location, pn := range byLocation {
+			if pn.name == "" {
+				if len(byLocation) == 1 {
+					pn.name = name
+				} else {
+					pn.name = fmt.Sprintf("%s-%s", location, name)
+				}
+			}
+			parameters = append(parameters, pn)
+		}
+	}
+
+	return &parameters
+}
+
+func (o *Operation) getParameters() []*parameterWithName {
+	if o.parameters == nil {
+		// operation parameters take precedence over path:
+		// https://spec.openapis.org/oas/latest.html#fixed-fields-7
+		// "the new definition will override it but can never remove it"
+		// "A unique parameter is defined by a combination of a name and location."
+		m := map[string]map[string]*parameterWithName{}
+		o.collectParameters(m, o.path.Parameters)
+		o.collectParameters(m, o.operation.Parameters)
+		o.parameters = o.finalizeParameters(m)
+	}
+	return *o.parameters
+}
+
+type cbForEachParameter func(externalName string, parameter *openapi3.Parameter) (run bool, err error)
+
+func (o *Operation) forEachParameter(locations []string, cb cbForEachParameter) (finished bool, err error) {
+	for _, pn := range o.getParameters() {
+		name := pn.name
+		parameter := pn.parameter
+
+		if parameter.Schema == nil || parameter.Schema.Value == nil {
+			continue
+		}
 
 		if !slices.Contains(locations, parameter.In) {
 			continue
@@ -73,14 +135,41 @@ func addParameters(schema *core.Schema, parameters openapi3.Parameters, extensio
 			continue
 		}
 
+		run, err := cb(name, parameter)
+		if err != nil {
+			return false, err
+		}
+		if !run {
+			return false, nil
+		}
+	}
+
+	return true, nil
+}
+
+type cbForEachParameterWithValue func(externalName string, parameter *openapi3.Parameter, value any) (run bool, err error)
+
+func (o *Operation) forEachParameterWithValue(values map[string]any, locations []string, cb cbForEachParameterWithValue) (finished bool, err error) {
+	return o.forEachParameter(locations, func(externalName string, parameter *openapi3.Parameter) (run bool, err error) {
+		value, ok := values[externalName]
+		if !ok {
+			value = parameter.Schema.Value.Default
+			if value == nil {
+				return true, nil
+			}
+		}
+		return cb(externalName, parameter, value)
+	})
+}
+
+func (o *Operation) addParameters(schema *core.Schema, locations []string) {
+	_, err := o.forEachParameter(locations, func(externalName string, parameter *openapi3.Parameter) (run bool, err error) {
 		paramSchemaRef := parameter.Schema
 		paramSchema := paramSchemaRef.Value
 
-		name := getNameExtension(extensionPrefix, parameter.Extensions, parameter.Name)
-
-		desc := getDescriptionExtension(extensionPrefix, parameter.Extensions, parameter.Description)
+		desc := getDescriptionExtension(o.extensionPrefix, parameter.Extensions, parameter.Description)
 		if desc == "" {
-			desc = getDescriptionExtension(extensionPrefix, paramSchema.Extensions, paramSchema.Description)
+			desc = getDescriptionExtension(o.extensionPrefix, paramSchema.Extensions, paramSchema.Description)
 		}
 
 		if desc != "" && paramSchema.Description != desc {
@@ -94,11 +183,18 @@ func addParameters(schema *core.Schema, parameters openapi3.Parameters, extensio
 			paramSchemaRef = &newSchemaRef
 		}
 
-		schema.Properties[name] = paramSchemaRef
+		schema.Properties[externalName] = paramSchemaRef
 
-		if parameter.Required && !slices.Contains(schema.Required, name) {
-			schema.Required = append(schema.Required, name)
+		if parameter.Required && !slices.Contains(schema.Required, externalName) {
+			schema.Required = append(schema.Required, externalName)
 		}
+
+		return true, nil
+	})
+
+	if err != nil {
+		// Log, but otherwise ignore the issue
+		log.Printf("%s\n", err.Error())
 	}
 }
 
@@ -482,8 +578,7 @@ func (o *Operation) ParametersSchema() *core.Schema {
 	if o.paramsSchema == nil {
 		rootSchema := core.NewObjectSchema(map[string]*core.Schema{}, []string{})
 
-		addParameters(rootSchema, o.path.Parameters, o.extensionPrefix, parametersLocations)
-		addParameters(rootSchema, o.operation.Parameters, o.extensionPrefix, parametersLocations)
+		o.addParameters(rootSchema, parametersLocations)
 		o.addRequestBodyParameters(rootSchema)
 		o.addSecurityParameters(rootSchema)
 
@@ -496,8 +591,7 @@ func (o *Operation) ConfigsSchema() *core.Schema {
 	if o.configsSchema == nil {
 		rootSchema := core.NewObjectSchema(map[string]*core.Schema{}, []string{})
 
-		addParameters(rootSchema, o.path.Parameters, o.extensionPrefix, configLocations)
-		addParameters(rootSchema, o.operation.Parameters, o.extensionPrefix, configLocations)
+		o.addParameters(rootSchema, configLocations)
 		o.addServerVariables(rootSchema)
 
 		o.configsSchema = rootSchema
@@ -599,7 +693,7 @@ func (o *Operation) getServerURL(configs map[string]core.Value) (string, error) 
 		return "", err
 	}
 
-	return url + o.key, nil
+	return url, nil
 }
 
 func replaceInPath(path string, param *openapi3.Parameter, val core.Value) (string, error) {
@@ -711,22 +805,81 @@ func createFormFile(w *multipart.Writer, fieldname, filename, mimeType string, s
 
 // END: these are like mime/multipart/writer.go, required because they are not exported
 
+func closeIfCloser(reader io.Reader) {
+	if closer, ok := reader.(io.Closer); ok {
+		_ = closer.Close()
+	}
+}
+
+func (o *Operation) getRequestUrl(
+	paramValues map[string]core.Value,
+	configs map[string]core.Value,
+) (string, error) {
+	serverURL, err := o.getServerURL(configs)
+	if err != nil {
+		return "", err
+	}
+
+	queryValues := url.Values{}
+	path := o.key
+	_, err = o.forEachParameterWithValue(paramValues, parametersLocations, func(externalName string, parameter *openapi3.Parameter, value any) (run bool, err error) {
+		switch parameter.In {
+		case openapi3.ParameterInPath:
+			path, err = replaceInPath(path, parameter, value)
+			if err != nil {
+				return false, err
+			}
+		case openapi3.ParameterInQuery:
+			addQueryParam(&queryValues, parameter, value)
+		}
+		return true, nil
+	})
+	if err != nil {
+		return "", err
+	}
+
+	url := serverURL + path
+	if len(queryValues) > 0 {
+		url += "?" + queryValues.Encode()
+	}
+
+	return url, nil
+}
+
+func (o *Operation) configureRequest(
+	req *http.Request,
+	configs map[string]core.Value,
+) (err error) {
+	_, err = o.forEachParameterWithValue(configs, configLocations, func(externalName string, parameter *openapi3.Parameter, value any) (run bool, err error) {
+		switch parameter.In {
+		case openapi3.ParameterInHeader:
+			addHeaderParam(req, parameter, value)
+		case openapi3.ParameterInCookie:
+			addCookieParam(req, parameter, value)
+		}
+		return true, nil
+	})
+	return
+}
+
 func (o *Operation) buildRequestFromParams(
 	paramValues map[string]core.Value,
 	configs map[string]core.Value,
 ) (*http.Request, error) {
-	serverURL, err := o.getServerURL(configs)
+	url, err := o.getRequestUrl(paramValues, configs)
 	if err != nil {
 		return nil, err
 	}
 
-	mimeType, size, bodyBuf, err := o.createRequestBody(paramValues)
+	mimeType, size, body, err := o.createRequestBody(paramValues)
 	if err != nil {
 		return nil, err
 	}
+	// NOTE: from here on, error handling MUST close body!
 
-	req, err := http.NewRequest(o.method, serverURL, bodyBuf)
+	req, err := http.NewRequest(o.method, url, body)
 	if err != nil {
+		closeIfCloser(body)
 		return nil, err
 	}
 	if mimeType != "" {
@@ -736,33 +889,9 @@ func (o *Operation) buildRequestFromParams(
 		req.ContentLength = size
 	}
 
-	queryValues := url.Values{}
-	for _, ref := range o.operation.Parameters {
-		parameter := ref.Value
-		name := getNameExtension(o.extensionPrefix, parameter.Extensions, parameter.Name)
-
-		switch parameter.In {
-		case openapi3.ParameterInPath:
-			serverURL, err = replaceInPath(serverURL, parameter, paramValues[name])
-			if err != nil {
-				return nil, err
-			}
-		case openapi3.ParameterInQuery:
-			addQueryParam(&queryValues, parameter, paramValues[name])
-		case openapi3.ParameterInHeader:
-			addHeaderParam(req, parameter, configs[name])
-		case openapi3.ParameterInCookie:
-			addCookieParam(req, parameter, configs[name])
-		default:
-			fmt.Printf("Unrecognizable param %s location %s", parameter.Name, parameter.In)
-		}
-	}
-	if len(queryValues) > 0 {
-		req.URL, err = url.Parse(serverURL + "?" + queryValues.Encode())
-	} else {
-		req.URL, err = url.Parse(serverURL)
-	}
+	err = o.configureRequest(req, configs)
 	if err != nil {
+		closeIfCloser(body)
 		return nil, err
 	}
 	return req, nil
