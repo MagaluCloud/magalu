@@ -66,6 +66,15 @@ NOTE: One can still use the env var to override the value of the token by settin
 export MGC_SDK_ACCESS_TOKEN=""
 ```
 
+### Examples
+
+Under the folder [examples/](./examples), there are some shell scripts chaining multiple
+CLI requests. For example, to create a VM, create a DISK, and attach both, run:
+
+```shell
+./examples/create-vm-with-disk.sh
+```
+
 
 ## Adding new APIs
 

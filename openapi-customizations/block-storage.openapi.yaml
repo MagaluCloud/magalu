@@ -34,6 +34,13 @@ paths:
             x-cli-description: Delete a Block Storage volume
         patch:
             x-cli-description: Update a Block Storage volume
+    /v0/volumes/{id}/attach/{virtual_machine_id}:
+        post:
+            x-cli-name: attach
+    /v0/volumes/{id}/detach/{virtual_machine_id}:
+        post:
+            x-cli-name: detach
+
 
 tags:
 -   name: healthchecks

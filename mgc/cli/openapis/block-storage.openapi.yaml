@@ -436,6 +436,7 @@ paths:
             security:
             -   OAuth2:
                 - block-storage.write
+            x-cli-name: attach
     /v0/volumes/{id}/detach/{virtual_machine_id}:
         post:
             tags:
@@ -494,6 +495,7 @@ paths:
             security:
             -   OAuth2:
                 - block-storage.write
+            x-cli-name: detach
 components:
     schemas:
         AttachmentResponse:
