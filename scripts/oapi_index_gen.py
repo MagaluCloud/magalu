@@ -4,6 +4,7 @@ import os
 from typing import Dict, Any, List, TypedDict
 import argparse
 import yaml
+import re
 
 OAPISchema = Dict[str, Any]
 
@@ -18,13 +19,17 @@ class IndexModule(TypedDict):
 IndexModules = List[IndexModule]
 
 
+modname_re = re.compile("^(?P<name>[a-z0-9-]+)[.]openapi[.]yaml$")
+index_filename = "index.yaml"
+
+
 def load_yaml(path: str) -> OAPISchema:
     with open(path, "r") as fd:
         return yaml.load(fd, Loader=yaml.CLoader)
 
 
 def save_index(mods: IndexModules, path: str):
-    with open(os.path.join(path, "index.yaml"), "w") as fd:
+    with open(os.path.join(path, index_filename), "w") as fd:
         yaml.dump(mods, fd, indent=4, allow_unicode=True)
 
 
@@ -34,9 +39,10 @@ def load_mods(oapiDir: str, outDir: str = None):
 
     mods = []
     for filename in sorted(os.listdir(oapiDir)):
-        name, ext = os.path.splitext(filename)
-        if name == "index" or ext != ".yaml":
-            print("ignored file:", filename)
+        match = modname_re.match(filename)
+        if not match:
+            if filename != index_filename:
+                print("ignored file:", filename)
             continue
 
         filepath = os.path.join(oapiDir, filename)
@@ -46,7 +52,7 @@ def load_mods(oapiDir: str, outDir: str = None):
         info = data["info"]
         mods.append(
             IndexModule(
-                name=name.split(".")[0],
+                name=match.group("name"),
                 path=relpath,
                 description=info.get("x-cli-description", info.get("description", "")),
                 version=info.get("version", ""),
