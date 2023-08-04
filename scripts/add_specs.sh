@@ -38,4 +38,4 @@ fi
 
 python3 $BASEDIR/sync_oapi.py $API_URL --ext $OAPI_PATH/$SPEC_FILE
 python3 $BASEDIR/remove_tenant_id.py $OAPI_PATH/$SPEC_FILE
-python3 $BASEDIR/yaml_merge.py $OAPI_PATH/$SPEC_FILE $CUSTOM_PATH/$SPEC_FILE
+python3 $BASEDIR/yaml_merge.py --override $OAPI_PATH/$SPEC_FILE $CUSTOM_PATH/$SPEC_FILE

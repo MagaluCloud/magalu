@@ -11,15 +11,17 @@ python3 <script> -h
 
 ## Scripts
 
+### [add_all_specs.sh](./add_all_specs.sh)
+
+Run [add_specs.sh](./add_specs.sh) with all supported specifications.
+
 ### [add_specs.sh](./add_specs.sh)
 
 Shell script to add OpenAPI specifications from remote. It will fetch, parse, create
-customizations and leave ready for usage of CLI:
+customizations and leave ready for usage of CLI. Example:
 
 ```shell
 ./scripts/add_specs.sh mke https://mke.br-ne-1.jaxyendy.com/docs/openapi-with-snippets.json
-./scripts/add_specs.sh dbaas https://dbaas.br-ne-1.jaxyendy.com/openapi.json
-./scripts/add_specs.sh object-storage https://object-storage.br-ne-1.jaxyendy.com/openapi.json
 ```
 
 This will also create a new customization file if not present with the following content:
