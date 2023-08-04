@@ -1,3 +1,5 @@
+# This file is NOT being used, the API is not recommended and we should follow with their S3 compatible API
+
 openapi: 3.0.2
 info:
     title: Object Storage API

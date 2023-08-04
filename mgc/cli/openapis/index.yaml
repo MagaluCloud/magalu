@@ -10,10 +10,6 @@
     name: mke
     path: mke.openapi.yaml
     version: 0.1.0
--   description: APIs referentes ao produto de Object Storage
-    name: object-storage
-    path: object-storage.openapi.yaml
-    version: 1.31.5
 -   description: APIs referentes ao produto de Virtual Machine
     name: virtual-machine
     path: virtual-machine.openapi.yaml
