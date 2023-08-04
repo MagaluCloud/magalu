@@ -19,7 +19,7 @@ def save_external(spec: OAPISchema, path: str):
 def remove_param(spec: OAPISchema, param_name: str):
     for path in spec.get("paths", {}).values():
         for action in path.values():
-            if "parameters" not in action:
+            if not isinstance(action, dict) or "parameters" not in action:
                 continue
 
             filtered_params = [
