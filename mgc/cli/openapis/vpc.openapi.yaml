@@ -14,15 +14,15 @@ servers:
             description: Region to reach the service
             default: br-ne-1
             enum:
-                - br-ne-1
-                - br-ne-2
-                - br-se-1
+            - br-ne-1
+            - br-ne-2
+            - br-se-1
         env:
             description: Environment to use
-            default: ""
+            default: ''
             enum:
-            - ""
-            - ".pre-prod"
+            - ''
+            - .pre-prod
 paths:
     /v0/healthcheck:
         get:

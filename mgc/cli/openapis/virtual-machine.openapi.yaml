@@ -1345,7 +1345,7 @@ servers:
             - br-se-1
         env:
             description: Environment to use
-            default: ""
+            default: ''
             enum:
-            - ""
-            - ".pre-prod"
+            - ''
+            - .pre-prod

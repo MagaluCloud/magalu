@@ -26,7 +26,7 @@ servers:
             default: ''
             enum:
             - ''
-            - ".pre-prod"
+            - .pre-prod
 -   url: https://api-mke.team-integration.br-ne-1.jaxyendy.com
     description: NE-1 team-integration
 -   url: https://api-mke.br-ne-1.jaxyendy.com
