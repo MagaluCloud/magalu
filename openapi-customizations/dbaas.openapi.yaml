@@ -5,7 +5,7 @@
 # such as "x-cli-name" or "x-cli-description"
 
 servers:
--   url: https://api-dbaas.{region}.jaxyendy.com
+-   url: https://api-dbaas{env}.{region}.jaxyendy.com
     variables:
         region:
             description: Region to reach the service
@@ -14,6 +14,12 @@ servers:
             - br-ne-1
             - br-ne-2
             - br-se-1
+        env:
+            description: Environment to use
+            default: ""
+            enum:
+            - ""
+            - ".pre-prod"
 
 # ExclusiveMinimum must be replaced from number to boolean. JSON Schema new draft
 # proposes as a number, but this is only available in OpenAPI 3.1.0. Since kin-openapi

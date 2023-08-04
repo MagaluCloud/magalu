@@ -5,7 +5,7 @@
 # such as "x-cli-name" or "x-cli-description"
 
 servers:
--   url: https://api-object-storage.{region}.jaxyendy.com
+-   url: https://api-object-storage{env}.{region}.jaxyendy.com
     variables:
         region:
             description: Region to reach the service
@@ -14,6 +14,12 @@ servers:
             - br-ne-1
             - br-ne-2
             - br-se-1
+        env:
+            description: Environment to use
+            default: ""
+            enum:
+            - ""
+            - ".pre-prod"
 
 paths:
     /v1/storage/b/{bucket_name}:

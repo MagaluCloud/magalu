@@ -1026,7 +1026,7 @@ tags:
     x-cli-description: Block Storage Volume Resources
     x-cli-name: volume
 servers:
--   url: https://api-block-storage.{region}.jaxyendy.com
+-   url: https://api-block-storage{env}.{region}.jaxyendy.com
     variables:
         region:
             description: Region to reach the service
@@ -1035,3 +1035,9 @@ servers:
             - br-ne-1
             - br-ne-2
             - br-se-1
+        env:
+            description: Environment to use
+            default: ""
+            enum:
+            - ""
+            - ".pre-prod"

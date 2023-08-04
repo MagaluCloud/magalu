@@ -1334,7 +1334,7 @@ tags:
 -   name: usage
     description: usage
 servers:
--   url: https://api-virtual-machine.{region}.jaxyendy.com
+-   url: https://api-virtual-machine{env}.{region}.jaxyendy.com
     variables:
         region:
             description: Region to reach the service
@@ -1343,3 +1343,9 @@ servers:
             - br-ne-1
             - br-ne-2
             - br-se-1
+        env:
+            description: Environment to use
+            default: ""
+            enum:
+            - ""
+            - ".pre-prod"

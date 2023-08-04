@@ -4,6 +4,23 @@
 # to keep it sane, keep some list item identifier (ex: "name") and add extra properties,
 # such as "x-cli-name" or "x-cli-description"
 
+servers:
+-   url: https://api-vpc{env}.{region}.jaxyendy.com
+    variables:
+        region:
+            description: Region to reach the service
+            default: br-ne-1
+            enum:
+                - br-ne-1
+                - br-ne-2
+                - br-se-1
+        env:
+            description: Environment to use
+            default: ""
+            enum:
+            - ""
+            - ".pre-prod"
+
 paths:
     /v0/vpcs/{vpc_id}/ports:
         get:

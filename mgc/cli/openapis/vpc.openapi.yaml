@@ -8,7 +8,7 @@ info:
         url: https://github.com/luizalabs
         email: thullyo.cunha@luizalabs.com
 servers:
--   url: https://api-vpc.{region}.jaxyendy.com
+-   url: https://api-vpc{env}.{region}.jaxyendy.com
     variables:
         region:
             description: Region to reach the service
@@ -17,6 +17,12 @@ servers:
                 - br-ne-1
                 - br-ne-2
                 - br-se-1
+        env:
+            description: Environment to use
+            default: ""
+            enum:
+            - ""
+            - ".pre-prod"
 paths:
     /v0/healthcheck:
         get:

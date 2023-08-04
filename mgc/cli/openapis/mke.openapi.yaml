@@ -11,8 +11,22 @@ info:
         url: https://www.apache.org/licenses/LICENSE-2.0.html
     version: 0.1.0
 servers:
--   url: https://api-mke.pre-prod.br-ne-1.jaxyendy.com
+-   url: https://api-mke{env}.{region}.jaxyendy.com
     description: NE-1 pre-prod
+    variables:
+        region:
+            description: Region to reach the service
+            default: br-ne-1
+            enum:
+            - br-ne-1
+            - br-ne-2
+            - br-se-1
+        env:
+            description: Environment to use
+            default: ''
+            enum:
+            - ''
+            - ".pre-prod"
 -   url: https://api-mke.team-integration.br-ne-1.jaxyendy.com
     description: NE-1 team-integration
 -   url: https://api-mke.br-ne-1.jaxyendy.com

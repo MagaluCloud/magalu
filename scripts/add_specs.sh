@@ -24,7 +24,7 @@ if ! test -f $CUSTOM_PATH/$SPEC_FILE; then
 # such as "x-cli-name" or "x-cli-description"
 
 servers:
--   url: https://api-$API_NAME.{region}.jaxyendy.com
+-   url: https://api-$API_NAME{env}.{region}.jaxyendy.com
     variables:
         region:
             description: Region to reach the service
@@ -33,6 +33,13 @@ servers:
             - br-ne-1
             - br-ne-2
             - br-se-1
+        env:
+            description: Environment to use
+            default: ""
+            enum:
+            - ""
+            - ".pre-prod"
+
 EOF
 fi
 

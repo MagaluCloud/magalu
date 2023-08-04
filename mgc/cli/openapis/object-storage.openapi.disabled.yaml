@@ -10,7 +10,7 @@ info:
         email: thais.lacerda@luizalabs.com
     version: 1.31.5
 servers:
--   url: https://api-object-storage.{region}.jaxyendy.com
+-   url: https://api-object-storage{env}.{region}.jaxyendy.com
     variables:
         region:
             description: Region to reach the service
@@ -19,6 +19,12 @@ servers:
             - br-ne-1
             - br-ne-2
             - br-se-1
+        env:
+            description: Environment to use
+            default: ""
+            enum:
+            - ""
+            - ".pre-prod"
 paths:
     /v1/storage/b/{bucket_name}:
         get:

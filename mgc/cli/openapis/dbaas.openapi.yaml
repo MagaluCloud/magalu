@@ -1386,7 +1386,7 @@ components:
             - CLOUD_NVME_15K
             description: An enumeration.
 servers:
--   url: https://api-dbaas.{region}.jaxyendy.com
+-   url: https://api-dbaas{env}.{region}.jaxyendy.com
     variables:
         region:
             description: Region to reach the service
@@ -1395,6 +1395,12 @@ servers:
             - br-ne-1
             - br-ne-2
             - br-se-1
+        env:
+            description: Environment to use
+            default: ""
+            enum:
+            - ""
+            - ".pre-prod"
 tags:
 -   name: backups
     description: backups
