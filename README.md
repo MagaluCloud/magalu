@@ -75,6 +75,9 @@ CLI requests. For example, to create a VM, create a DISK, and attach both, run:
 ./examples/create-vm-with-disk.sh
 ```
 
+## OpenAPI
+
+See [sdk/openapi/README.md](./mgc/sdk/openapi/README.md)
 
 ## Adding new APIs
 
