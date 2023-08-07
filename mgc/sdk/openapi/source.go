@@ -14,7 +14,13 @@ type IndexModule struct {
 	Description string
 }
 
+type IndexFile struct {
+	Version string
+	Modules []IndexModule
+}
+
 const indexFile = "index.yaml"
+const indexVersion = "1.0.0"
 
 // Source -> Module -> Resource -> Operation
 
@@ -44,18 +50,21 @@ func (o *Source) Description() string {
 // BEGIN: Grouper interface:
 
 func (o *Source) VisitChildren(visitor core.DescriptorVisitor) (finished bool, err error) {
-	index, err := o.Loader.Load(indexFile)
+	data, err := o.Loader.Load(indexFile)
 	if err != nil {
 		return false, err
 	}
 
-	var modules []IndexModule
-	err = yaml.Unmarshal(index, &modules)
+	var index IndexFile
+	err = yaml.Unmarshal(data, &index)
 	if err != nil {
 		return false, err
 	}
+	if index.Version != indexVersion {
+		return false, fmt.Errorf("Unsupported %q version %q, expected %q", indexFile, index.Version, indexVersion)
+	}
 
-	for _, item := range modules {
+	for _, item := range index.Modules {
 		module := &Module{
 			name:            item.Name,
 			path:            item.Path,

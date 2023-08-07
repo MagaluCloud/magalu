@@ -1,3 +1,4 @@
+modules:
 -   description: Block Storage API Product Documentation
     name: block-storage
     path: block-storage.openapi.yaml
@@ -18,3 +19,4 @@
     name: vpc
     path: vpc.openapi.yaml
     version: 1.59.0
+version: 1.0.0
