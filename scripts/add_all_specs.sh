@@ -4,6 +4,7 @@ BASEDIR=$(dirname $0)
 ROOTDIR=$(builtin cd $BASEDIR/..; pwd)
 
 OAPIDIR=${OAPIDIR:-"mgc/cli/openapis"}
+OAPIEMBED=${OAPIEMBED:-"mgc/sdk/openapi/embed_loader.go"}
 OAPI_PATH=$ROOTDIR/$OAPIDIR
 
 set -xe
@@ -21,4 +22,4 @@ $BASEDIR/add_specs.sh virtual-machine https://virtual-machine.br-ne-1.jaxyendy.c
 
 $BASEDIR/add_specs.sh vpc https://vpc.br-ne-1.jaxyendy.com/openapi.json
 
-python3 $BASEDIR/oapi_index_gen.py $OAPI_PATH
+python3 $BASEDIR/oapi_index_gen.py "--embed=$OAPIEMBED" $OAPI_PATH

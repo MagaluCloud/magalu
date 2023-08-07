@@ -1,7 +1,6 @@
 package openapi
 
 import (
-	_ "embed"
 	"fmt"
 	"os"
 	"path"

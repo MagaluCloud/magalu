@@ -72,6 +72,8 @@ func (o *Sdk) NewContext() context.Context {
 }
 
 func (o *Sdk) newOpenApiSource() *openapi.Source {
+	embedLoader := openapi.GetEmbedLoader()
+
 	// TODO: are these going to be fixed? configurable?
 	extensionPrefix := "x-cli"
 	openApiDir := os.Getenv("MGC_SDK_OPENAPI_DIR")
@@ -81,11 +83,20 @@ func (o *Sdk) newOpenApiSource() *openapi.Source {
 			openApiDir = filepath.Join(cwd, "openapis")
 		}
 	}
+	fileLoader := &openapi.FileLoader{
+		Dir: openApiDir,
+	}
+
+	var loader openapi.Loader
+	if embedLoader != nil {
+		// TODO: write combined loader to handle file -> fallback to embed
+		loader = embedLoader
+	} else {
+		loader = fileLoader
+	}
 
 	return &openapi.Source{
-		Loader: openapi.FileLoader{
-			Dir: openApiDir,
-		},
+		Loader:          loader,
 		ExtensionPrefix: &extensionPrefix,
 	}
 }
