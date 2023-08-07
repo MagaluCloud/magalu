@@ -29,6 +29,8 @@ const indexVersion = "1.0.0"
 type Source struct {
 	Loader          Loader
 	ExtensionPrefix *string
+	modules         []*Module
+	byName          map[string]*Module
 }
 
 // BEGIN: Descriptor interface:
@@ -49,22 +51,29 @@ func (o *Source) Description() string {
 
 // BEGIN: Grouper interface:
 
-func (o *Source) VisitChildren(visitor core.DescriptorVisitor) (finished bool, err error) {
+func (o *Source) getModules() (modules []*Module, byName map[string]*Module, err error) {
+	if len(o.modules) > 0 {
+		return o.modules, o.byName, nil
+	}
+
 	data, err := o.Loader.Load(indexFile)
 	if err != nil {
-		return false, err
+		return nil, nil, err
 	}
 
 	var index IndexFile
 	err = yaml.Unmarshal(data, &index)
 	if err != nil {
-		return false, err
+		return nil, nil, err
 	}
 	if index.Version != indexVersion {
-		return false, fmt.Errorf("Unsupported %q version %q, expected %q", indexFile, index.Version, indexVersion)
+		return nil, nil, fmt.Errorf("Unsupported %q version %q, expected %q", indexFile, index.Version, indexVersion)
 	}
 
-	for _, item := range index.Modules {
+	o.modules = make([]*Module, len(index.Modules))
+	o.byName = make(map[string]*Module, len(index.Modules))
+
+	for i, item := range index.Modules {
 		module := &Module{
 			name:            item.Name,
 			path:            item.Path,
@@ -73,7 +82,20 @@ func (o *Source) VisitChildren(visitor core.DescriptorVisitor) (finished bool, e
 			extensionPrefix: o.ExtensionPrefix,
 			loader:          o.Loader,
 		}
+		o.modules[i] = module
+		o.byName[module.Name()] = module
+	}
 
+	return o.modules, o.byName, nil
+}
+
+func (o *Source) VisitChildren(visitor core.DescriptorVisitor) (finished bool, err error) {
+	modules, _, err := o.getModules()
+	if err != nil {
+		return false, err
+	}
+
+	for _, module := range modules {
 		run, err := visitor(module)
 		if err != nil {
 			return false, err
@@ -87,25 +109,16 @@ func (o *Source) VisitChildren(visitor core.DescriptorVisitor) (finished bool, e
 }
 
 func (o *Source) GetChildByName(name string) (child core.Descriptor, err error) {
-	// TODO: write O(1) version that doesn't list
-	var found core.Descriptor
-	finished, err := o.VisitChildren(func(child core.Descriptor) (run bool, err error) {
-		if child.Name() == name {
-			found = child
-			return false, nil
-		}
-		return true, nil
-	})
-
+	_, byName, err := o.getModules()
 	if err != nil {
 		return nil, err
 	}
 
-	if finished {
+	if module, ok := byName[name]; ok {
+		return module, nil
+	} else {
 		return nil, fmt.Errorf("Module not found: %s", name)
 	}
-
-	return found, err
 }
 
 var _ core.Grouper = (*Source)(nil)
