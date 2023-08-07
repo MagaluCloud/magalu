@@ -89,8 +89,7 @@ func (o *Sdk) newOpenApiSource() *openapi.Source {
 
 	var loader openapi.Loader
 	if embedLoader != nil {
-		// TODO: write combined loader to handle file -> fallback to embed
-		loader = embedLoader
+		loader = openapi.NewMergeLoader(fileLoader, embedLoader)
 	} else {
 		loader = fileLoader
 	}
