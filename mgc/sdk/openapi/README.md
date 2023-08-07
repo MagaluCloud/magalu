@@ -97,3 +97,10 @@ tags:
 -   name: hidden-tag
     x-cli-hidden: true # no resources using this tag will be visible
 ```
+
+## Parameters x Config
+
+Server variables, header and cookie parameters are handled as **Config**.
+
+Query and path parameters, as well as request body properties are
+handled as **Parameters**.
