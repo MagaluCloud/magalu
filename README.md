@@ -29,51 +29,7 @@ To install, visit the official website.
 
 ## Running the CLI
 
-The quickest way to run in development is by going into the folder and running as:
-
-```shell
-cd mgc/cli
-go run main.go
-```
-
-Or, build and run:
-
-```shell
-cd mgc/cli && go build -o cli && ./cli
-```
-
-### Authentication
-
-To get a token, one can run
-
-```shell
-cd mgc/cli
-go run main.go auth login
-```
-
-A browser will open, redirecting the user to id.magalu.com. After completing authentication,
-the token will be saved to `$HOME/.mgc.yaml` and reused by the CLI in further actions:
-
-To ensure it is working, perform a CLI command that requires authentication:
-
-```shell
-go run main.go virtual-machine instances list
-```
-
-NOTE: One can still use the env var to override the value of the token by setting:
-
-```shell
-export MGC_SDK_ACCESS_TOKEN=""
-```
-
-### Examples
-
-Under the folder [examples/](./examples), there are some shell scripts chaining multiple
-CLI requests. For example, to create a VM, create a DISK, and attach both, run:
-
-```shell
-./examples/create-vm-with-disk.sh
-```
+See [cli/RUNNING.md](./mgc/cli/RUNNING.md)
 
 ## OpenAPI
 

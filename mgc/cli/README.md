@@ -1,41 +1,23 @@
 MagaLu CLI
 ==========
 
-This project holds Magalu Cloud CLI. It allows users of the Cloud to control
-their resources using a simple command line interface.
+The Magalu Cloud command line interface (CLI), enables users to
+authenticate, configure and control the cloud resource
 
 ## Goals
 
-- [ ] Allow a user to authenticate itself
-- [ ] Save user preferences
-- [ ] Generate commands at runtime (No need for new binaries)
+- Allow the user to authenticate itself
+- Save the configuration
+- Generate commands at runtime (No need for new binaries) by means of OpenAPI schema files
 
 ## Development
 
-### Install
+See [DEVELOPMENT.md](./DEVELOPMENT.md)
 
-Install dependencies using:
+## Running
 
-```sh
-go install
-```
+See [RUNNING.md](./RUNNING.md)
 
-### Build
+## OpenAPI
 
-Build the command line using:
-
-```sh
-go build
-```
-
-### Execute
-
-To see what commands are currently accepted
-
-```sh
-./cli help
-```
-
-## Testing
-
-> TODO
+See [sdk/openapi/README.md](../sdk/openapi/README.md)
