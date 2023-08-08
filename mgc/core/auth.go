@@ -76,31 +76,14 @@ func NewAuth(config AuthConfig, client *http.Client) *Auth {
 
 /*
 Returns the current user access token.
-
-It will first look into the environment variable "MGC_SDK_ACCESS_TOKEN", if
-not set, it will try to read from the auth configuration file.
-
-If the token is set as an empty string in either of those it will be treated
-as an error
+If token is empty, we might still have refresh token, try getting a new one.
+It will either fail with error or return a valid non-empty access token
 */
 func (o *Auth) AccessToken() (string, error) {
-	if o.accessToken != "" {
-		return o.accessToken, nil
+	if o.accessToken == "" {
+		return o.RefreshAccessToken()
 	}
-
-	if token := os.Getenv("MGC_SDK_ACCESS_TOKEN"); token != "" {
-		return token, nil
-	}
-
-	authResult, err := o.readConfigFile()
-	if err != nil {
-		return "", err
-	}
-	if authResult.AccessToken == "" {
-		return "", fmt.Errorf("unable to find an access token, please authenticate yourself first")
-	}
-
-	return authResult.AccessToken, nil
+	return o.accessToken, nil
 }
 
 func (o *Auth) RedirectUri() string {
@@ -204,8 +187,12 @@ func (o *Auth) ValidateAccessToken() error {
 	}
 
 	resp, err := o.httpClient.Do(r)
-	if err != nil || resp.StatusCode != http.StatusOK {
-		return err
+	if err != nil {
+		return fmt.Errorf("Could not validate Access Token: %w", err)
+	}
+
+	if resp.StatusCode != http.StatusOK {
+		return NewHttpErrorFromResponse(resp)
 	}
 
 	var result validationResult
@@ -215,7 +202,9 @@ func (o *Auth) ValidateAccessToken() error {
 	}
 
 	if !result.Active {
-		return o.RefreshAccessToken()
+		if _, err := o.RefreshAccessToken(); err != nil {
+			return err
+		}
 	}
 
 	return nil
@@ -234,26 +223,28 @@ func (o *Auth) newValidateAccessTokenRequest() (*http.Request, error) {
 	return r, err
 }
 
-func (o *Auth) RefreshAccessToken() error {
+func (o *Auth) RefreshAccessToken() (string, error) {
 	r, err := o.newRefreshAccessTokenRequest()
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	resp, err := o.httpClient.Do(r)
 	if err != nil || resp.StatusCode != http.StatusOK {
-		return err
+		return "", err
 	}
 
 	var result loginResult
 	defer resp.Body.Close()
 	if err = json.NewDecoder(resp.Body).Decode(&result); err != nil {
-		return err
+		return "", err
 	}
 
-	o.accessToken = result.AccessToken
-	o.refreshToken = result.RefreshToken
-	return nil
+	if err = o.setToken(&result); err != nil {
+		return "", err
+	}
+
+	return o.accessToken, nil
 }
 
 func (o *Auth) newRefreshAccessTokenRequest() (*http.Request, error) {
@@ -264,7 +255,7 @@ func (o *Auth) newRefreshAccessTokenRequest() (*http.Request, error) {
 	data.Set("refresh_token", o.refreshToken)
 
 	r, err := http.NewRequest(http.MethodPost, config.RefreshUrl, strings.NewReader(data.Encode()))
-	r.Header.Add("Content-Type", "application/x-www-form-urlencoded")
+	r.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 
 	return r, err
 }
