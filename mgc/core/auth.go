@@ -66,12 +66,15 @@ func NewAuth(config AuthConfig, client *http.Client) *Auth {
 		return nil
 	}
 
-	return &Auth{
+	newAuth := Auth{
 		httpClient:   client,
 		config:       config,
 		configFile:   filePath,
 		codeVerifier: nil,
 	}
+	newAuth.InitTokensFromFile()
+
+	return &newAuth
 }
 
 /*
@@ -114,6 +117,18 @@ func (o *Auth) setToken(token *loginResult) error {
 	}
 
 	return nil
+}
+
+func (o *Auth) InitTokensFromFile() {
+	authResult, _ := o.readConfigFile()
+	if authResult != nil {
+		o.accessToken = authResult.AccessToken
+		o.refreshToken = authResult.RefreshToken
+	}
+
+	if envVal := os.Getenv("MGC_SDK_ACCESS_TOKEN"); envVal != "" {
+		o.accessToken = envVal
+	}
 }
 
 func (o *Auth) CodeChallengeToURL() (*url.URL, error) {
