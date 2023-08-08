@@ -14,6 +14,8 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
+const maxRetryCount = 5
+
 type loginResult struct {
 	AccessToken  string `json:"access_token"`
 	RefreshToken string `json:"refresh_token"`
@@ -40,12 +42,13 @@ type AuthConfig struct {
 }
 
 type Auth struct {
-	httpClient   *http.Client
-	config       AuthConfig
-	configFile   string
-	accessToken  string
-	refreshToken string
-	codeVerifier *codeVerifier
+	httpClient             *http.Client
+	config                 AuthConfig
+	configFile             string
+	accessToken            string
+	refreshToken           string
+	codeVerifier           *codeVerifier
+	retryRefreshTokenCount int
 }
 
 var authKey contextKey = "magalu.cloud/core/Authentication"
@@ -67,10 +70,11 @@ func NewAuth(config AuthConfig, client *http.Client) *Auth {
 	}
 
 	newAuth := Auth{
-		httpClient:   client,
-		config:       config,
-		configFile:   filePath,
-		codeVerifier: nil,
+		httpClient:             client,
+		config:                 config,
+		configFile:             filePath,
+		codeVerifier:           nil,
+		retryRefreshTokenCount: maxRetryCount,
 	}
 	newAuth.InitTokensFromFile()
 
@@ -217,9 +221,8 @@ func (o *Auth) ValidateAccessToken() error {
 	}
 
 	if !result.Active {
-		if _, err := o.RefreshAccessToken(); err != nil {
-			return err
-		}
+		_, err := o.RefreshAccessToken()
+		return err
 	}
 
 	return nil
@@ -244,22 +247,30 @@ func (o *Auth) RefreshAccessToken() (string, error) {
 		return "", err
 	}
 
-	resp, err := o.httpClient.Do(r)
-	if err != nil || resp.StatusCode != http.StatusOK {
-		return "", err
+	for i := 0; i < o.retryRefreshTokenCount; i++ {
+		resp, err := o.httpClient.Do(r)
+		if err != nil {
+			fmt.Printf("Refresh token failed with connectivity error, retrying: #%d (max %d)\n", i+1, o.retryRefreshTokenCount)
+			continue
+		}
+
+		if resp.StatusCode != http.StatusOK {
+			return "", NewHttpErrorFromResponse(resp)
+		}
+
+		var result loginResult
+		defer resp.Body.Close()
+		if err = json.NewDecoder(resp.Body).Decode(&result); err != nil {
+			return "", err
+		}
+		if err = o.setToken(&result); err != nil {
+			return "", err
+		} else {
+			return o.accessToken, nil
+		}
 	}
 
-	var result loginResult
-	defer resp.Body.Close()
-	if err = json.NewDecoder(resp.Body).Decode(&result); err != nil {
-		return "", err
-	}
-
-	if err = o.setToken(&result); err != nil {
-		return "", err
-	}
-
-	return o.accessToken, nil
+	return o.accessToken, err
 }
 
 func (o *Auth) newRefreshAccessTokenRequest() (*http.Request, error) {

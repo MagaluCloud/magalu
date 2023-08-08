@@ -25,6 +25,9 @@ func (t *HttpRefreshLogger) RoundTrip(req *http.Request) (*http.Response, error)
 		transport = http.DefaultTransport
 	}
 	resp, err := transport.RoundTrip(req)
+	if req.Header.Get("Authorization") == "" {
+		return resp, err
+	}
 	if resp.StatusCode != http.StatusUnauthorized {
 		return resp, err
 	}

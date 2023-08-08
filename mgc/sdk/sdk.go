@@ -2,7 +2,6 @@ package sdk
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -120,11 +119,7 @@ func newHttpTransport() http.RoundTripper {
 }
 
 func (o *Sdk) addHttpRefreshHandler(t http.RoundTripper) http.RoundTripper {
-	if o.auth == nil {
-		fmt.Println("No Auth configured, not registering refresh interceptor")
-		return t
-	}
-	return core.NewDefaultHttpRefreshLogger(t, o.auth.RefreshAccessToken)
+	return core.NewDefaultHttpRefreshLogger(t, o.Auth().RefreshAccessToken)
 }
 
 func (o *Sdk) Auth() *core.Auth {
