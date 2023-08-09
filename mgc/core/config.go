@@ -58,10 +58,6 @@ func (c *Config) BindPFlag(key string, flag *pflag.Flag) error {
 	return viper.BindPFlag(key, flag)
 }
 
-func (c *Config) IsSet(key string) bool {
-	return viper.IsSet(key)
-}
-
 func (c *Config) Get(key string) any {
 	return viper.Get(key)
 }
@@ -81,6 +77,10 @@ func (c *Config) Set(key string, value interface{}) error {
 
 func (c *Config) Delete(key string) error {
 	configMap := viper.AllSettings()
+	if _, ok := configMap[key]; !ok {
+		return nil
+	}
+
 	delete(configMap, key)
 
 	if err := saveToConfigFile(c, configMap); err != nil {

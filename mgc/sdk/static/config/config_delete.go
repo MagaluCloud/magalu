@@ -21,16 +21,7 @@ func newConfigDelete() *core.StaticExecute {
 			if config == nil {
 				return nil, fmt.Errorf("unable to retrieve system configuration")
 			}
-
-			if ok := config.IsSet(parameter.Key); !ok {
-				return nil, fmt.Errorf("no config %s found", parameter.Key)
-			}
-
-			if err := config.Delete(parameter.Key); err != nil {
-				return nil, err
-			}
-
-			return nil, nil
+			return nil, config.Delete(parameter.Key)
 		},
 	)
 }
