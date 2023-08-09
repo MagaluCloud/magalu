@@ -33,9 +33,10 @@ type validationResult struct {
 }
 
 type AuthConfigResult struct {
-	AccessToken  string `yaml:"access_token"`
-	RefreshToken string `yaml:"refresh_token"`
-	CurrentEnv   string `yaml:"current_environment"` // ignored - used just for compatibility
+	AccessToken     string `yaml:"access_token"`
+	RefreshToken    string `yaml:"refresh_token"`
+	CurrentTenantID string `yaml:"current_tenant_id"`
+	CurrentEnv      string `yaml:"current_environment"` // ignored - used just for compatibility
 }
 
 type AuthConfig struct {
@@ -49,13 +50,14 @@ type AuthConfig struct {
 }
 
 type Auth struct {
-	httpClient   *http.Client
-	config       AuthConfig
-	configFile   string
-	accessToken  string
-	refreshToken string
-	codeVerifier *codeVerifier
-	group        singleflight.Group
+	httpClient      *http.Client
+	config          AuthConfig
+	configFile      string
+	accessToken     string
+	refreshToken    string
+	currentTenantId string
+	codeVerifier    *codeVerifier
+	group           singleflight.Group
 }
 
 var authKey contextKey = "magalu.cloud/core/Authentication"
@@ -105,6 +107,10 @@ func (o *Auth) RedirectUri() string {
 	return o.config.RedirectUri
 }
 
+func (o *Auth) CurrentTenantID() string {
+	return o.currentTenantId
+}
+
 func (o *Auth) SetTokens(token *LoginResult) error {
 	// Always update the tokens, this way the user can assume the Auth object is
 	// up-to-date after this function, even in case of a persistance error
@@ -131,11 +137,25 @@ func (o *Auth) SetTokens(token *LoginResult) error {
 	return nil
 }
 
+func (o *Auth) SetCurrentTenantID(id string) error {
+	o.currentTenantId = id
+	return o.writeCurrentConfig()
+}
+
+func (o *Auth) writeCurrentConfig() error {
+	authResult := &AuthConfigResult{}
+	authResult.AccessToken = o.accessToken
+	authResult.RefreshToken = o.refreshToken
+	authResult.CurrentTenantID = o.currentTenantId
+	return o.writeConfigFile(authResult)
+}
+
 func (o *Auth) InitTokensFromFile() {
 	authResult, _ := o.readConfigFile()
 	if authResult != nil {
 		o.accessToken = authResult.AccessToken
 		o.refreshToken = authResult.RefreshToken
+		o.currentTenantId = authResult.CurrentTenantID
 	}
 
 	if envVal := os.Getenv("MGC_SDK_ACCESS_TOKEN"); envVal != "" {
