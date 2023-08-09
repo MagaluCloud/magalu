@@ -40,13 +40,15 @@ type AuthConfigResult struct {
 }
 
 type AuthConfig struct {
-	ClientId      string
-	RedirectUri   string
-	LoginUrl      string
-	TokenUrl      string
-	ValidationUrl string
-	RefreshUrl    string
-	Scopes        []string
+	ClientId         string
+	RedirectUri      string
+	LoginUrl         string
+	TokenUrl         string
+	ValidationUrl    string
+	RefreshUrl       string
+	TenantsListUrl   string
+	TenantsSelectUrl string
+	Scopes           []string
 }
 
 type Auth struct {
@@ -105,6 +107,14 @@ func (o *Auth) AccessToken() (string, error) {
 
 func (o *Auth) RedirectUri() string {
 	return o.config.RedirectUri
+}
+
+func (o *Auth) TenantsListUrl() string {
+	return o.config.TenantsListUrl
+}
+
+func (o *Auth) TenantsSelectUrl() string {
+	return o.config.TenantsSelectUrl
 }
 
 func (o *Auth) CurrentTenantID() string {

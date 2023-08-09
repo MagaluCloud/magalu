@@ -34,12 +34,14 @@ var ctxWrappedKey contextKey = "magalu.cloud/sdk/SdkWrapped"
 
 // TODO: Change config with build tags or from environment
 var config core.AuthConfig = core.AuthConfig{
-	ClientId:      "cw9qpaUl2nBiC8PVjNFN5jZeb2vTd_1S5cYs1FhEXh0",
-	RedirectUri:   "http://localhost:8095/callback",
-	LoginUrl:      "https://id.magalu.com/login",
-	TokenUrl:      "https://id.magalu.com/oauth/token",
-	ValidationUrl: "https://id.magalu.com/oauth/introspect",
-	RefreshUrl:    "https://id.magalu.com/oauth/token",
+	ClientId:         "cw9qpaUl2nBiC8PVjNFN5jZeb2vTd_1S5cYs1FhEXh0",
+	RedirectUri:      "http://localhost:8095/callback",
+	LoginUrl:         "https://id.magalu.com/login",
+	TokenUrl:         "https://id.magalu.com/oauth/token",
+	ValidationUrl:    "https://id.magalu.com/oauth/introspect",
+	RefreshUrl:       "https://id.magalu.com/oauth/token",
+	TenantsListUrl:   "https://id.magalu.com/account/api/v2/whoami/tenants",
+	TenantsSelectUrl: "https://id.magalu.com/oauth/token/exchange",
 	Scopes: []string{
 		"openid",
 		"mke.read",
