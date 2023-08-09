@@ -16,14 +16,14 @@ func newConfigGet() *core.StaticExecute {
 		"get",
 		"",
 		"Gets a specific config value",
-		func(ctx context.Context, parameter configGetParams, _ struct{}) (result map[string]any, err error) {
+		func(ctx context.Context, parameter configGetParams, _ struct{}) (result core.Value, err error) {
 			config := core.ConfigFromContext(ctx)
 			if config == nil {
 				return nil, fmt.Errorf("unable to retrieve system configuration")
 			}
 
 			value := config.Get(parameter.Key)
-			return map[string]any{parameter.Key: value}, nil
+			return value, nil
 		},
 	)
 }
