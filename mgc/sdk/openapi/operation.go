@@ -1049,7 +1049,7 @@ func (o *Operation) Execute(
 
 	resp, err := client.Do(req)
 	if err != nil {
-		return nil, fmt.Errorf("HTTP request error: %s", err)
+		return nil, fmt.Errorf("HTTP request error: %w", err)
 	}
 
 	if resp.StatusCode < 200 || resp.StatusCode >= 300 {

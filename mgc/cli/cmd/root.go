@@ -198,7 +198,7 @@ func handleReaderResult(reader io.Reader, outFile string) (err error) {
 	n, err := io.Copy(writer, reader)
 	defer writer.Close()
 	if err != nil {
-		return fmt.Errorf("Wrote %d bytes. Error: %s\n", n, err)
+		return fmt.Errorf("Wrote %d bytes. Error: %w\n", n, err)
 	}
 	return nil
 }

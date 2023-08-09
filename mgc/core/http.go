@@ -37,7 +37,7 @@ func DecodeJSON(resp *http.Response, data any) error {
 	defer resp.Body.Close()
 	err := json.NewDecoder(resp.Body).Decode(data)
 	if err != nil {
-		return fmt.Errorf("Error decoding JSON response body: %s", err)
+		return fmt.Errorf("Error decoding JSON response body: %w", err)
 	}
 	return nil
 }

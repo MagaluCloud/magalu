@@ -125,12 +125,12 @@ func NewStaticExecute[ParamsT any, ConfigsT any, ResultT any](
 
 			err := mapstructure.Decode(parameters, &paramsStruct)
 			if err != nil {
-				return nil, fmt.Errorf("error when decoding parameters. Did you forget to set 'mapstructure' struct flags?: %v", err)
+				return nil, fmt.Errorf("error when decoding parameters. Did you forget to set 'mapstructure' struct flags?: %w", err)
 			}
 
 			err = mapstructure.Decode(configs, &configsStruct)
 			if err != nil {
-				return nil, fmt.Errorf("error when decoding configs. Did you forget to set 'mapstructure' struct flags?: %v", err)
+				return nil, fmt.Errorf("error when decoding configs. Did you forget to set 'mapstructure' struct flags?: %w", err)
 			}
 
 			result, err := execute(ctx, paramsStruct, configsStruct)
