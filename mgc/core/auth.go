@@ -12,13 +12,15 @@ import (
 	"strings"
 	"time"
 
+	"golang.org/x/sync/singleflight"
 	"gopkg.in/yaml.v3"
 )
 
 const (
-	minRetryWait  = 1 * time.Second
-	maxRetryWait  = 10 * time.Second
-	maxRetryCount = 5
+	minRetryWait    = 1 * time.Second
+	maxRetryWait    = 10 * time.Second
+	maxRetryCount   = 5
+	refreshGroupKey = "refreshToken"
 )
 
 type loginResult struct {
@@ -53,6 +55,7 @@ type Auth struct {
 	accessToken  string
 	refreshToken string
 	codeVerifier *codeVerifier
+	group        singleflight.Group
 }
 
 var authKey contextKey = "magalu.cloud/core/Authentication"
@@ -91,7 +94,9 @@ It will either fail with error or return a valid non-empty access token
 */
 func (o *Auth) AccessToken() (string, error) {
 	if o.accessToken == "" {
-		return o.RefreshAccessToken()
+		if _, err := o.RefreshAccessToken(); err != nil {
+			return "", err
+		}
 	}
 	return o.accessToken, nil
 }
@@ -245,6 +250,14 @@ func (o *Auth) newValidateAccessTokenRequest() (*http.Request, error) {
 }
 
 func (o *Auth) RefreshAccessToken() (string, error) {
+	_, err, _ := o.group.Do(refreshGroupKey, o.doRefreshAccessToken)
+	if err != nil {
+		return "", err
+	}
+	return o.accessToken, nil
+}
+
+func (o *Auth) doRefreshAccessToken() (Value, error) {
 	r, err := o.newRefreshAccessTokenRequest()
 	if err != nil {
 		return "", err
