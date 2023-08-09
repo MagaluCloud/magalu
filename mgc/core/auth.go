@@ -10,11 +10,16 @@ import (
 	"os"
 	"path"
 	"strings"
+	"time"
 
 	"gopkg.in/yaml.v3"
 )
 
-const maxRetryCount = 5
+const (
+	minRetryWait  = 1 * time.Second
+	maxRetryWait  = 10 * time.Second
+	maxRetryCount = 5
+)
 
 type loginResult struct {
 	AccessToken  string `json:"access_token"`
@@ -42,13 +47,12 @@ type AuthConfig struct {
 }
 
 type Auth struct {
-	httpClient             *http.Client
-	config                 AuthConfig
-	configFile             string
-	accessToken            string
-	refreshToken           string
-	codeVerifier           *codeVerifier
-	retryRefreshTokenCount int
+	httpClient   *http.Client
+	config       AuthConfig
+	configFile   string
+	accessToken  string
+	refreshToken string
+	codeVerifier *codeVerifier
 }
 
 var authKey contextKey = "magalu.cloud/core/Authentication"
@@ -70,11 +74,10 @@ func NewAuth(config AuthConfig, client *http.Client) *Auth {
 	}
 
 	newAuth := Auth{
-		httpClient:             client,
-		config:                 config,
-		configFile:             filePath,
-		codeVerifier:           nil,
-		retryRefreshTokenCount: maxRetryCount,
+		httpClient:   client,
+		config:       config,
+		configFile:   filePath,
+		codeVerifier: nil,
 	}
 	newAuth.InitTokensFromFile()
 
@@ -247,10 +250,12 @@ func (o *Auth) RefreshAccessToken() (string, error) {
 		return "", err
 	}
 
-	for i := 0; i < o.retryRefreshTokenCount; i++ {
+	for i := 0; i < maxRetryCount; i++ {
 		resp, err := o.httpClient.Do(r)
 		if err != nil {
-			fmt.Printf("Refresh token failed with connectivity error, retrying: #%d (max %d)\n", i+1, o.retryRefreshTokenCount)
+			wait := DefaultBackoff(minRetryWait, maxRetryCount, i, resp)
+			fmt.Printf("Refresh access token failed, retrying in %s\n", wait)
+			time.Sleep(wait)
 			continue
 		}
 
