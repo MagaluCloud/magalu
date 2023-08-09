@@ -59,8 +59,17 @@ func convertValue(value Value) (converted Value, err error) {
 			return result, nil
 		}
 		// convert whatever map to []Value
-		result := make([]Value, 0, v.Len())
-		err = mapstructure.Decode(value, &result)
+		count := v.Len()
+		result := make([]Value, count)
+		for i := 0; i < count; i++ {
+			subVal := v.Index(i).Interface()
+			decoded := map[string]any{}
+			err := mapstructure.Decode(subVal, &decoded)
+			if err != nil {
+				return nil, err
+			}
+			result[i] = decoded
+		}
 		return result, err
 
 	case reflect.Map:
@@ -82,6 +91,25 @@ func convertValue(value Value) (converted Value, err error) {
 	}
 }
 
+func schemaFromType[T any]() (*Schema, error) {
+	t := new(T)
+	s, err := toCoreSchema(schemaReflector.Reflect(t))
+	if err != nil {
+		return nil, fmt.Errorf("unable to create JSON Schema for type '%T': %w", t, err)
+	}
+
+	kind := reflect.TypeOf(t).Elem().Kind()
+	isArray := kind == reflect.Array || kind == reflect.Slice
+
+	// schemaReflector seems to lose the fact that it's an array, so we bring that back
+	if isArray && s.Type == "object" {
+		arrSchema := NewArraySchema(s)
+		s = arrSchema
+	}
+
+	return s, nil
+}
+
 // Go Parameter and Config structs
 // Note: we use both 'jsonschema' and 'mapstructure' for this helper. Be careful
 // when using struct tags in your Params and Configs structs, as the tags from those
@@ -95,30 +123,26 @@ func NewStaticExecute[ParamsT any, ConfigsT any, ResultT any](
 	description string,
 	execute func(context context.Context, params ParamsT, configs ConfigsT) (result ResultT, err error),
 ) *StaticExecute {
-	p := new(ParamsT)
-	c := new(ConfigsT)
-	r := new(ResultT)
-
-	corePs, err := toCoreSchema(schemaReflector.Reflect(p))
+	ps, err := schemaFromType[ParamsT]()
 	if err != nil {
-		log.Fatalf("Unable to create JSON Schema for parameter struct '%T': %v", p, err)
+		log.Fatal(err)
 	}
-	coreCs, err := toCoreSchema(schemaReflector.Reflect(c))
+	cs, err := schemaFromType[ConfigsT]()
 	if err != nil {
-		log.Fatalf("Unable to create JSON Schema for config struct '%T': %v", c, err)
+		log.Fatal(err)
 	}
-	coreRs, err := toCoreSchema(schemaReflector.Reflect(r))
+	rs, err := schemaFromType[ResultT]()
 	if err != nil {
-		log.Fatalf("Unable to create JSON Schema for result struct '%T': %v", r, err)
+		log.Fatal(err)
 	}
 
 	return NewRawStaticExecute(
 		name,
 		version,
 		description,
-		corePs,
-		coreCs,
-		coreRs,
+		ps,
+		cs,
+		rs,
 		func(ctx context.Context, parameters, configs map[string]any) (Value, error) {
 			var paramsStruct ParamsT
 			var configsStruct ConfigsT
