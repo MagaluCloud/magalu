@@ -17,6 +17,7 @@ import (
 
 	"github.com/pkg/browser"
 	"magalu.cloud/core"
+	"magalu.cloud/sdk/static/auth/tenant"
 )
 
 type authResult struct {
@@ -70,6 +71,16 @@ func newLogin() *core.StaticExecute {
 			result := <-resultChan
 			if result.err != nil {
 				return nil, result.err
+			}
+
+			tenants, err := tenant.ListTenants(ctx)
+			if err != nil || len(tenants) == 0 {
+				return nil, fmt.Errorf("error when trying to list tenants for selection: %w", err)
+			}
+
+			_, err = tenant.SelectTenant(ctx, tenants[0].UUID)
+			if err != nil {
+				return nil, fmt.Errorf("error when trying to select default tenant: %w", err)
 			}
 
 			fmt.Fprintf(os.Stderr, "Successfully logged in.\n")
