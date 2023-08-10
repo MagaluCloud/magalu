@@ -24,10 +24,8 @@ jobs:
             go-version: '>=1.17.0'
             cache-dependency-path: "**/go.sum"
         - run: go version
-        - name: Instal CLI Dependencies
-          run: go install ./mgc/cli
         - name: Build CLI
-          run: go build -o /tmp/cli ./mgc/cli
+          run: ./scripts/build_release.sh
 
     pre-commit:
         needs: build
