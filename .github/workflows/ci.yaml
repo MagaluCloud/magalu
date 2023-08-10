@@ -2,6 +2,8 @@ name: MGC SDK CI
 
 on:
   push:
+    tags:
+      - "v*.*.*"
     branches: [ main ]
   pull_request:
     types:
@@ -42,3 +44,19 @@ jobs:
       - uses: pre-commit/action@v3.0.0
         with:
           extra_args: --show-diff-on-failure --color=always --hook-stage push --all-files
+
+  release:
+    if: startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+    permissions: write-all
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v4
+        with:
+          go-version: '>=1.17.0'
+          cache-dependency-path: "**/go.sum"
+      - name: Build and Zip Assets
+        run: "bash ./scripts/build_release.sh zip"
+      - uses: softprops/action-gh-release@v1
+        with:
+          files: build/*
