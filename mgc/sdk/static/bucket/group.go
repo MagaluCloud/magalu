@@ -56,6 +56,7 @@ func NewGroup() core.Grouper {
 		[]core.Descriptor{
 			newCreate(), // cmd: "create"
 			newDelete(), // cmd: "delete"
+			newList(),   // cmd: "list"
 		},
 	)
 }
