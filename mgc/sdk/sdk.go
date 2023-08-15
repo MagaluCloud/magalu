@@ -59,6 +59,9 @@ var config core.AuthConfig = core.AuthConfig{
 		"cpo:read",
 		"cpo:write",
 		"api-consulta.read",
+		"pa:allow-lists:read",
+		"pa:clients:create",
+		"pa:payment-methods:read",
 	},
 }
 
