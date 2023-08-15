@@ -20,6 +20,7 @@ type Executor = core.Executor
 type Grouper = core.Grouper
 type Schema = core.Schema
 type Value = core.Value
+type Config = core.Config
 
 type Sdk struct {
 	group      *core.MergeGroup

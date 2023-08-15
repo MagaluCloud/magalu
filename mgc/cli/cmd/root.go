@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -164,12 +163,7 @@ func loadDataFromFlags(flags *flag.FlagSet, schema *mgcSdk.Schema, dst map[strin
 	return nil
 }
 
-func bindFlagsToConfig(ctx context.Context, flags *flag.FlagSet, schema *mgcSdk.Schema) error {
-	config := core.ConfigFromContext(ctx)
-	if config == nil {
-		return fmt.Errorf("Unable to retrieve system configuration")
-	}
-
+func loadDataFromConfig(config *mgcSdk.Config, flags *flag.FlagSet, schema *mgcSdk.Schema, dst map[string]mgcSdk.Value) error {
 	for name := range schema.Properties {
 		flag := flags.Lookup(name)
 		if flag == nil {
@@ -179,7 +173,10 @@ func bindFlagsToConfig(ctx context.Context, flags *flag.FlagSet, schema *mgcSdk.
 		if err := config.BindPFlag(name, flag); err != nil {
 			return err
 		}
+
+		dst[name] = config.Get(name)
 	}
+
 	return nil
 }
 
@@ -247,17 +244,11 @@ func AddAction(
 				return err
 			}
 
-			if err := loadDataFromFlags(cmd.PersistentFlags(), exec.ConfigsSchema(), configs); err != nil {
+			if err := loadDataFromConfig(sdk.Config(), cmd.PersistentFlags(), exec.ConfigsSchema(), configs); err != nil {
 				return err
 			}
 
-			ctx := sdk.NewContext()
-
-			if err := bindFlagsToConfig(ctx, cmd.PersistentFlags(), exec.ConfigsSchema()); err != nil {
-				return err
-			}
-
-			result, err := exec.Execute(ctx, parameters, configs)
+			result, err := exec.Execute(sdk.NewContext(), parameters, configs)
 			if err != nil {
 				return err
 			}
