@@ -160,12 +160,8 @@ func loadDataFromFlags(flags *flag.FlagSet, schema *mgcSdk.Schema, dst map[strin
 		}
 
 		str := flag.Value.String()
-		if str == "" {
-			continue
-		}
 
-		var value any
-
+		var value mgcSdk.Value
 		err := json.Unmarshal([]byte(str), &value)
 		if err != nil {
 			if !strings.HasPrefix(str, "@") {
