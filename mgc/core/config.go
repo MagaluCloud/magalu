@@ -8,7 +8,6 @@ import (
 	"os"
 	"path"
 
-	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 	"gopkg.in/yaml.v3"
 )
@@ -52,10 +51,6 @@ func NewConfig() *Config {
 
 	_ = viper.ReadInConfig()
 	return &Config{path: path, fileName: CONFIG_FILE}
-}
-
-func (c *Config) BindPFlag(key string, flag *pflag.Flag) error {
-	return viper.BindPFlag(key, flag)
 }
 
 func (c *Config) Get(key string) any {

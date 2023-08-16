@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"encoding/json"
 	"fmt"
 	"io"
 	"log"
@@ -100,12 +99,9 @@ func addFlags(flags *flag.FlagSet, schema *mgcSdk.Schema) {
 			def, _ := prop.Default.(bool)
 			flags.Bool(name, def, prop.Description)
 		} else {
-			value := ""
+			var value any
 			if prop.Default != nil {
-				str, err := json.Marshal(prop.Default)
-				if err == nil {
-					value = string(str)
-				}
+				value = prop.Default
 			}
 
 			constraints := fmt.Sprintf("(%s)", schemaValueConstraints((*mgcSdk.Schema)(prop)))
@@ -118,11 +114,12 @@ func addFlags(flags *flag.FlagSet, schema *mgcSdk.Schema) {
 				}
 			}
 
+			f := &AnyFlagValue{value: value, typeName: propType}
 			flags.AddFlag(&flag.Flag{
 				Name:     name,
-				DefValue: value,
+				DefValue: f.String(),
 				Usage:    description,
-				Value:    &AnyFlagValue{marshalledValue: value, typeName: propType},
+				Value:    f,
 			})
 		}
 
@@ -132,20 +129,6 @@ func addFlags(flags *flag.FlagSet, schema *mgcSdk.Schema) {
 			}
 		}
 	}
-}
-
-func loadFromFile(filename string) (value any, err error) {
-	data, err := os.ReadFile(filename)
-	if err != nil {
-		return nil, err
-	}
-
-	// TODO: eventually we want to load raw... could we determine from schema?
-	err = json.Unmarshal(data, &value)
-	if err != nil {
-		value = string(data)
-	}
-	return value, nil
 }
 
 func loadDataFromFlags(flags *flag.FlagSet, schema *mgcSdk.Schema, dst map[string]mgcSdk.Value) error {
@@ -158,20 +141,7 @@ func loadDataFromFlags(flags *flag.FlagSet, schema *mgcSdk.Schema, dst map[strin
 		if flag == nil {
 			continue
 		}
-
-		str := flag.Value.String()
-
-		var value mgcSdk.Value
-		err := json.Unmarshal([]byte(str), &value)
-		if err != nil {
-			if !strings.HasPrefix(str, "@") {
-				value = str
-			} else if value, err = loadFromFile(str[1:]); err != nil {
-				return err
-			}
-		}
-
-		dst[name] = value
+		dst[name] = flag.Value.(*AnyFlagValue).Value()
 	}
 
 	return nil
@@ -184,11 +154,12 @@ func loadDataFromConfig(config *mgcSdk.Config, flags *flag.FlagSet, schema *mgcS
 			continue
 		}
 
-		if err := config.BindPFlag(name, flag); err != nil {
-			return err
+		if flag.Changed {
+			val := flag.Value.(*AnyFlagValue).Value()
+			dst[name] = val
+		} else {
+			dst[name] = config.Get(name)
 		}
-
-		dst[name] = config.Get(name)
 	}
 
 	return nil
