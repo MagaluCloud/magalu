@@ -63,12 +63,12 @@ func (c *Config) Get(key string) any {
 }
 
 func (c *Config) Set(key string, value interface{}) error {
-	if err := os.MkdirAll(c.path, FILE_PERMISSION); err != nil && !errors.Is(err, os.ErrNotExist) {
+	if err := os.MkdirAll(c.path, FILE_PERMISSION); err != nil {
 		return fmt.Errorf("error creating dir at %s: %w", c.path, err)
 	}
 	viper.Set(key, value)
 
-	if err := viper.WriteConfigAs(path.Join(c.path, c.fileName)); err != nil && !errors.Is(err, os.ErrNotExist) {
+	if err := viper.WriteConfigAs(path.Join(c.path, c.fileName)); err != nil {
 		return fmt.Errorf("error writing to config file: %w", err)
 	}
 
@@ -96,7 +96,7 @@ func saveToConfigFile(c *Config, configMap map[string]interface{}) error {
 		return err
 	}
 
-	if err = os.MkdirAll(c.path, FILE_PERMISSION); err != nil && !errors.Is(err, os.ErrNotExist) {
+	if err = os.MkdirAll(c.path, FILE_PERMISSION); err != nil {
 		return fmt.Errorf("error creating dir at %s: %w", c.path, err)
 	}
 
