@@ -8,7 +8,6 @@ import (
 	"net/http"
 	"net/url"
 	"os"
-	"path"
 	"strings"
 	"time"
 
@@ -22,6 +21,7 @@ const (
 	maxRetryWait    = 10 * time.Second
 	maxRetryCount   = 5
 	refreshGroupKey = "refreshToken"
+	authFilename    = "auth.yaml"
 )
 
 type LoginResult struct {
@@ -100,9 +100,7 @@ func AuthFromContext(ctx context.Context) *Auth {
 }
 
 func NewAuth(config AuthConfig, client *http.Client) *Auth {
-	// For now we are following the IDM convention to allow the users to use IDM
-	// when authenticating.
-	filePath, err := authFilePath(".mgc.yaml")
+	filePath, err := buildMGCFilePath(authFilename)
 	if err != nil {
 		authLogger().Warnw("unable to locate auth configuration file", "error", err)
 		return nil
@@ -482,16 +480,4 @@ func (o *Auth) SelectTenant(id string) error {
 	}
 
 	return nil
-}
-
-func authFilePath(fName string) (string, error) {
-	homeDir, err := os.UserHomeDir()
-	if homeDir == "" {
-		homeDir, err = os.Getwd()
-	}
-	if homeDir == "" {
-		return "", err
-	}
-
-	return path.Join(homeDir, fName), nil
 }

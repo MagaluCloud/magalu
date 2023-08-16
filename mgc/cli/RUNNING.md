@@ -11,7 +11,7 @@ To get a token, one can run
 ```
 
 A browser will open, redirecting the user to id.magalu.com. After completing authentication,
-the token will be saved to `$HOME/.mgc.yaml` and reused by the CLI in further actions:
+the token will be saved to `$HOME/.config/mgc/auth.yaml` and reused by the CLI in further actions:
 
 To ensure it is working, perform a CLI command that requires authentication:
 
