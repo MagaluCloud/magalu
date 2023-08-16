@@ -1,6 +1,7 @@
 package core
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -60,6 +61,24 @@ type Auth struct {
 	currentTenantId string
 	codeVerifier    *codeVerifier
 	group           singleflight.Group
+}
+
+type Tenant struct {
+	UUID        string `json:"uuid" mapstructure:"uuid"`
+	Name        string `json:"legal_name" mapstructure:"legal_name"`
+	Email       string `json:"email" mapstructure:"email"`
+	IsManaged   bool   `json:"is_managed" mapstructure:"is_managed"`
+	IsDelegated bool   `json:"is_delegated" mapstructure:"is_delegated"`
+}
+
+type TenantResult struct {
+	AccessToken  string `json:"access_token"`
+	CreatedAt    int    `json:"created_at"`
+	ExpiresIn    int    `json:"expires_in"`
+	IDToken      string `json:"id_token"`
+	RefreshToken string `json:"refresh_token"`
+	Scope        string `json:"scope"`
+	TokenType    string `json:"scope_type"`
 }
 
 var authKey contextKey = "magalu.cloud/core/Authentication"
@@ -377,6 +396,88 @@ func (o *Auth) writeConfigFile(result *AuthConfigResult) error {
 
 	err = os.WriteFile(o.configFile, yamlData, 0600)
 	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (o *Auth) ListTenants() ([]*Tenant, error) {
+	at, err := o.AccessToken()
+	if err != nil {
+		return nil, fmt.Errorf("unable to get current access token. Did you forget to log in?")
+	}
+
+	r, err := http.NewRequest(http.MethodGet, o.config.TenantsListUrl, nil)
+	if err != nil {
+		return nil, err
+	}
+	r.Header.Set("Authorization", "Bearer "+at)
+	r.Header.Set("Content-Type", "application/json")
+
+	resp, err := o.httpClient.Do(r)
+	if err != nil {
+		return nil, err
+	}
+	if resp.StatusCode != http.StatusOK {
+		return nil, NewHttpErrorFromResponse(resp)
+	}
+
+	defer resp.Body.Close()
+	var result []*Tenant
+	if err = json.NewDecoder(resp.Body).Decode(&result); err != nil {
+		return nil, err
+	}
+
+	return result, nil
+}
+
+func (o *Auth) SelectTenant(id string) error {
+	at, err := o.AccessToken()
+	if err != nil {
+		return fmt.Errorf("unable to get current access token. Did you forget to log in?")
+	}
+
+	data := map[string]any{"tenant": id}
+	jsonData, err := json.Marshal(data)
+	if err != nil {
+		return err
+	}
+
+	bodyReader := bytes.NewReader(jsonData)
+	r, err := http.NewRequest(http.MethodPost, o.config.TenantsSelectUrl, bodyReader)
+	r.Header.Set("Authorization", "Bearer "+at)
+	r.Header.Set("Content-Type", "application/json")
+
+	if err != nil {
+		return err
+	}
+
+	resp, err := o.httpClient.Do(r)
+	if err != nil {
+		return err
+	}
+
+	defer r.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return NewHttpErrorFromResponse(resp)
+	}
+
+	payload := &TenantResult{}
+	if err = json.NewDecoder(resp.Body).Decode(payload); err != nil {
+		return err
+	}
+
+	err = o.SetTokens(&LoginResult{
+		AccessToken:  payload.AccessToken,
+		RefreshToken: payload.RefreshToken,
+	})
+	if err != nil {
+		return err
+	}
+
+	if err := o.SetCurrentTenantID(id); err != nil {
 		return err
 	}
 

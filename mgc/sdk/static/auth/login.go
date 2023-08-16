@@ -17,7 +17,6 @@ import (
 	"github.com/pkg/browser"
 	"go.uber.org/zap"
 	"magalu.cloud/core"
-	"magalu.cloud/sdk/static/auth/tenant"
 )
 
 type authResult struct {
@@ -81,12 +80,12 @@ func newLogin() *core.StaticExecute {
 				return nil, result.err
 			}
 
-			tenants, err := tenant.ListTenants(ctx)
+			tenants, err := auth.ListTenants()
 			if err != nil || len(tenants) == 0 {
 				return nil, fmt.Errorf("error when trying to list tenants for selection: %w", err)
 			}
 
-			_, err = tenant.SelectTenant(ctx, tenants[0].UUID)
+			err = auth.SelectTenant(tenants[0].UUID)
 			if err != nil {
 				return nil, fmt.Errorf("error when trying to select default tenant: %w", err)
 			}
