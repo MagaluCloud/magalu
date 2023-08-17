@@ -131,17 +131,35 @@ func addFlags(flags *flag.FlagSet, schema *mgcSdk.Schema) {
 	}
 }
 
+func getFlagValue(flags *flag.FlagSet, name string) (mgcSdk.Value, *pflag.Flag, error) {
+	flag := flags.Lookup(name)
+	if flag == nil {
+		return nil, nil, os.ErrNotExist
+	}
+
+	if f, ok := flag.Value.(*AnyFlagValue); ok {
+		return f.Value(), flag, nil
+	} else if val, err := flags.GetBool(name); err == nil {
+		return val, flag, nil
+	} else {
+		return nil, flag, fmt.Errorf("Could not get flag value %q: %w", name, err)
+	}
+}
+
 func loadDataFromFlags(flags *flag.FlagSet, schema *mgcSdk.Schema, dst map[string]mgcSdk.Value) error {
 	if flags == nil || schema == nil || dst == nil {
 		return fmt.Errorf("invalid command or parameter schema")
 	}
 
 	for name := range schema.Properties {
-		flag := flags.Lookup(name)
+		val, flag, err := getFlagValue(flags, name)
 		if flag == nil {
 			continue
 		}
-		dst[name] = flag.Value.(*AnyFlagValue).Value()
+		if err != nil {
+			return err
+		}
+		dst[name] = val
 	}
 
 	return nil
@@ -149,16 +167,19 @@ func loadDataFromFlags(flags *flag.FlagSet, schema *mgcSdk.Schema, dst map[strin
 
 func loadDataFromConfig(config *mgcSdk.Config, flags *flag.FlagSet, schema *mgcSdk.Schema, dst map[string]mgcSdk.Value) error {
 	for name := range schema.Properties {
-		flag := flags.Lookup(name)
+		val, flag, err := getFlagValue(flags, name)
 		if flag == nil {
 			continue
 		}
 
-		if flag.Changed {
-			val := flag.Value.(*AnyFlagValue).Value()
+		cfgVal := config.Get(name)
+		if flag.Changed || cfgVal == nil {
+			if err != nil {
+				return err
+			}
 			dst[name] = val
 		} else {
-			dst[name] = config.Get(name)
+			dst[name] = cfgVal
 		}
 	}
 
