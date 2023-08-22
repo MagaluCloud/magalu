@@ -2,10 +2,11 @@ package bucket
 
 import (
 	"context"
-	"fmt"
+	"net/http"
+	"net/url"
 
-	"github.com/aws/aws-sdk-go/service/s3"
 	"magalu.cloud/core"
+	"magalu.cloud/sdk/static/s3"
 )
 
 type deleteParams struct {
@@ -21,17 +22,20 @@ func newDelete() core.Executor {
 	)
 }
 
-func delete(ctx context.Context, params deleteParams, config bucketConfig) (*s3.DeleteBucketOutput, error) {
-	svc, err := getS3Client(ctx, config)
+func newDeleteRequest(region, bucket string) (*http.Request, error) {
+	host := s3.BuildHost(region)
+	url, err := url.JoinPath(host, bucket)
 	if err != nil {
 		return nil, err
 	}
-	res, err := svc.DeleteBucket(&s3.DeleteBucketInput{
-		Bucket: &params.Name,
-	})
+	return http.NewRequest(http.MethodDelete, url, nil)
+}
+
+func delete(ctx context.Context, params deleteParams, cfg s3.Config) (core.Value, error) {
+	req, err := newDeleteRequest(cfg.Region, params.Name)
 	if err != nil {
-		return nil, fmt.Errorf("Failed to delete bucket %w", err)
+		return nil, err
 	}
 
-	return res, nil
+	return s3.SendRequest(ctx, req, cfg.AccessKeyID, cfg.SecretKey, nil)
 }

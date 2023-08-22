@@ -2,11 +2,31 @@ package bucket
 
 import (
 	"context"
-	"fmt"
+	"net/http"
 
-	"github.com/aws/aws-sdk-go/service/s3"
 	"magalu.cloud/core"
+	"magalu.cloud/sdk/static/s3"
 )
+
+type BucketResponse struct {
+	CreationDate string `xml:"CreationDate"`
+	Name         string `xml:"Name"`
+}
+
+// Container for the owner's display name and ID.
+type Owner struct {
+	DisplayName *string `xml:"DisplayName"`
+	ID          *string `type:"ID"`
+}
+
+type ListResponse struct {
+	Buckets []*BucketResponse `xml:"Buckets>Bucket"`
+	Owner   *Owner            `xml:"Owner"`
+}
+
+func newListRequest(region string) (*http.Request, error) {
+	return http.NewRequest(http.MethodGet, s3.BuildHost(region), nil)
+}
 
 func newList() core.Executor {
 	return core.NewStaticExecute(
@@ -17,15 +37,11 @@ func newList() core.Executor {
 	)
 }
 
-func list(ctx context.Context, _ struct{}, config bucketConfig) (*s3.ListBucketsOutput, error) {
-	svc, err := getS3Client(ctx, config)
+func list(ctx context.Context, _ struct{}, cfg s3.Config) (core.Value, error) {
+	req, err := newListRequest(cfg.Region)
 	if err != nil {
 		return nil, err
 	}
-	result, err := svc.ListBuckets(&s3.ListBucketsInput{})
-	if err != nil {
-		return nil, fmt.Errorf("Failed to list buckets %w", err)
-	}
 
-	return result, nil
+	return s3.SendRequest(ctx, req, cfg.AccessKeyID, cfg.SecretKey, &ListResponse{})
 }

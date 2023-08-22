@@ -3,31 +3,20 @@ package bucket
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/s3"
 	"magalu.cloud/core"
+	mgcS3 "magalu.cloud/sdk/static/s3"
 )
 
-const (
-	templateUrl = "https://{{region}}.api.magalu.cloud/magaluobjects"
-)
-
-type bucketConfig struct {
-	AccessKeyID string `json:"accessKeyId" jsonschema:"description=Access Key ID for S3 Credentials"`
-	SecretKey   string `json:"secretKey" jsonschema:"description=Secret Key for S3 Credentials"`
-	Token       string `json:"token,omitempty" jsonschema:"description=Token for S3 Credentials"`
-	Region      string `json:"region,omitempty" jsonschema:"description=Region to reach the service,default=br-ne-1,enum=br-ne-1,enum=br-ne-2,enum=br-se-1"`
-}
-
-func getS3Client(ctx context.Context, c bucketConfig) (*s3.S3, error) {
+func getS3Client(ctx context.Context, c mgcS3.Config) (*s3.S3, error) {
 	suffixPath := true
 	// TODO: fix once MGC accepts "br-ne-1"
 	hostedS3Region := "us-east-1"
-	endpoint := strings.ReplaceAll(templateUrl, "{{region}}", c.Region)
+	endpoint := mgcS3.BuildHost(c.Region)
 	cfg := &aws.Config{
 		Credentials:      credentials.NewStaticCredentials(c.AccessKeyID, c.SecretKey, c.Token),
 		Endpoint:         &endpoint,

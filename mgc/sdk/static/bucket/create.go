@@ -2,10 +2,11 @@ package bucket
 
 import (
 	"context"
-	"fmt"
+	"net/http"
+	"net/url"
 
-	"github.com/aws/aws-sdk-go/service/s3"
 	"magalu.cloud/core"
+	"magalu.cloud/sdk/static/s3"
 )
 
 type createParams struct {
@@ -23,33 +24,20 @@ func newCreate() core.Executor {
 	)
 }
 
-// TODO: change `convertValue()` to correctly infer a *string and avoid validation errors
-type BucketOutput struct {
-	_ s3.CreateBucketOutput
-
-	Location string
-}
-
-func create(ctx context.Context, p createParams, c bucketConfig) (*BucketOutput, error) {
-	svc, err := getS3Client(ctx, c)
+func newCreateRequest(region, bucket string) (*http.Request, error) {
+	host := s3.BuildHost(region)
+	url, err := url.JoinPath(host, bucket)
 	if err != nil {
 		return nil, err
 	}
-	input := &s3.CreateBucketInput{Bucket: &p.Name}
-	if p.Location != "" {
-		input.CreateBucketConfiguration = &s3.CreateBucketConfiguration{
-			LocationConstraint: &p.Location,
-		}
-	}
-	if p.ACL != "" {
-		input.ACL = &p.ACL
-	}
-	res, err := svc.CreateBucket(input)
+	return http.NewRequest(http.MethodPut, url, nil)
+}
+
+func create(ctx context.Context, params createParams, cfg s3.Config) (core.Value, error) {
+	req, err := newCreateRequest(cfg.Region, params.Name)
 	if err != nil {
-		return nil, fmt.Errorf("Failed to create bucket %w", err)
+		return nil, err
 	}
 
-	return &BucketOutput{
-		Location: *res.Location,
-	}, nil
+	return s3.SendRequest(ctx, req, cfg.AccessKeyID, cfg.SecretKey, nil)
 }
