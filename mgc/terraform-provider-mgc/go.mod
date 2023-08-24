@@ -13,7 +13,6 @@ require (
 )
 
 require (
-	github.com/aws/aws-sdk-go v1.44.323 // indirect
 	github.com/fatih/color v1.13.0 // indirect
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
 	github.com/getkin/kin-openapi v0.118.0 // indirect
@@ -31,7 +30,6 @@ require (
 	github.com/invopop/jsonschema v0.7.0 // indirect
 	github.com/invopop/yaml v0.1.0 // indirect
 	github.com/jedib0t/go-pretty/v6 v6.4.6 // indirect
-	github.com/jmespath/go-jmespath v0.4.0 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/magiconair/properties v1.8.7 // indirect
 	github.com/mailru/easyjson v0.7.7 // indirect
