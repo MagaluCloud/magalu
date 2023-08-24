@@ -3,11 +3,14 @@ package core
 import (
 	"context"
 	"encoding/json"
+	"encoding/xml"
 	"fmt"
 	"io"
 	"log"
 	"mime"
+	"mime/multipart"
 	"net/http"
+	"strings"
 )
 
 var httpClientKey contextKey = "magalu.cloud/core/Transport"
@@ -33,13 +36,25 @@ func HttpClientFromContext(context context.Context) *HttpClient {
 	return client
 }
 
-func DecodeJSON(resp *http.Response, data any) error {
+func DecodeJSON(resp *http.Response, data Value) error {
 	defer resp.Body.Close()
 	err := json.NewDecoder(resp.Body).Decode(data)
 	if err != nil {
-		return fmt.Errorf("Error decoding JSON response body: %w", err)
+		return fmt.Errorf("error decoding JSON response body: %w", err)
 	}
 	return nil
+}
+
+func DecodeXML(resp *http.Response, data Value) error {
+	defer resp.Body.Close()
+	b, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("error reading XML body: %w", err)
+	}
+	if err = xml.Unmarshal(b, data); err != nil {
+		return fmt.Errorf("error unmarshalling XML body: %w", err)
+	}
+	return err
 }
 
 type HttpError struct {
@@ -94,5 +109,33 @@ func NewHttpErrorFromResponse(resp *http.Response) error {
 		Payload: payload,
 		Message: message,
 		Slug:    slug,
+	}
+}
+
+func UnwrapResponse(resp *http.Response, data Value) (Value, error) {
+	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
+		return nil, NewHttpErrorFromResponse(resp)
+	}
+
+	if resp.StatusCode == 204 {
+		return nil, nil
+	}
+
+	contentType, params, _ := mime.ParseMediaType(resp.Header.Get("Content-Type"))
+	switch {
+	default:
+		return resp.Body, nil
+	case strings.HasPrefix(contentType, "multipart/"):
+		// TODO: do we have multi-part downloads? or just single?
+		// If multi, then we need to return a multipart reader...
+		// return multipart.NewReader(resp.Body, params["boundary"]), nil
+		r := multipart.NewReader(resp.Body, params["boundary"])
+		return r.NextPart()
+	case contentType == "application/json":
+		err := DecodeJSON(resp, data)
+		return data, err
+	case contentType == "application/xml":
+		err := DecodeXML(resp, data)
+		return data, err
 	}
 }

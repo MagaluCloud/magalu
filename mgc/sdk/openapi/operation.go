@@ -990,27 +990,8 @@ func (o *Operation) createHttpRequest(
 }
 
 func (o *Operation) getResponseValue(resp *http.Response) (core.Value, error) {
-	if resp.StatusCode == 204 {
-		return nil, nil
-	}
-
 	var data core.Value
-	contentType, params, _ := mime.ParseMediaType(resp.Header.Get("Content-Type"))
-	switch {
-	default:
-		return resp.Body, nil
-
-	case strings.HasPrefix(contentType, "multipart/"):
-		// TODO: do we have multi-part downloads? or just single?
-		// If multi, then we need to return a multipart reader...
-		// return multipart.NewReader(resp.Body, params["boundary"]), nil
-		r := multipart.NewReader(resp.Body, params["boundary"])
-		return r.NextPart()
-
-	case contentType == "application/json":
-		err := core.DecodeJSON(resp, &data)
-		return data, err
-	}
+	return core.UnwrapResponse(resp, data)
 }
 
 func (o *Operation) Execute(
