@@ -115,7 +115,7 @@ func FromContext(ctx context.Context) *Auth {
 }
 
 func New(config Config, client *http.Client) *Auth {
-	filePath, err := buildMGCFilePath(authFilename)
+	filePath, err := core.BuildMGCFilePath(authFilename)
 	if err != nil {
 		authLogger().Warnw("unable to locate auth configuration file", "error", err)
 		return nil
