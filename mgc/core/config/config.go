@@ -2,12 +2,12 @@ package config
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"log"
 	"os"
 	"path"
 
+	"magalu.cloud/core"
 	"magalu.cloud/core/logger"
 
 	"github.com/spf13/viper"
@@ -24,11 +24,9 @@ type Config struct {
 }
 
 const (
-	CONFIG_NAME     = "cli"
-	CONFIG_TYPE     = "yaml"
-	CONFIG_FOLDER   = ".config/mgc"
-	CONFIG_FILE     = CONFIG_NAME + "." + CONFIG_TYPE
-	FILE_PERMISSION = 0777 // TODO: investigate how to lower permission
+	CONFIG_NAME = "cli"
+	CONFIG_TYPE = "yaml"
+	CONFIG_FILE = CONFIG_NAME + "." + CONFIG_TYPE
 )
 
 var configKey contextKey = "magalu.cloud/core/Config"
@@ -43,7 +41,7 @@ func FromContext(ctx context.Context) *Config {
 }
 
 func New() *Config {
-	path, err := configFilePath()
+	path, err := core.BuildMGCPath()
 	if err != nil {
 		// TODO: when it's done, use logger instead
 		log.Println(err)
@@ -77,7 +75,7 @@ func (c *Config) Get(key string) any {
 }
 
 func (c *Config) Set(key string, value interface{}) error {
-	if err := os.MkdirAll(c.path, FILE_PERMISSION); err != nil {
+	if err := os.MkdirAll(c.path, core.FILE_PERMISSION); err != nil {
 		return fmt.Errorf("error creating dir at %s: %w", c.path, err)
 	}
 	viper.Set(key, value)
@@ -110,11 +108,11 @@ func saveToConfigFile(c *Config, configMap map[string]interface{}) error {
 		return err
 	}
 
-	if err = os.MkdirAll(c.path, FILE_PERMISSION); err != nil {
+	if err = os.MkdirAll(c.path, core.FILE_PERMISSION); err != nil {
 		return fmt.Errorf("error creating dir at %s: %w", c.path, err)
 	}
 
-	if err = os.WriteFile(path.Join(c.path, c.fileName), encodedConfig, FILE_PERMISSION); err != nil {
+	if err = os.WriteFile(path.Join(c.path, c.fileName), encodedConfig, core.FILE_PERMISSION); err != nil {
 		return fmt.Errorf("error writing to config file: %w", err)
 	}
 
@@ -123,17 +121,4 @@ func saveToConfigFile(c *Config, configMap map[string]interface{}) error {
 	}
 
 	return nil
-}
-
-func configFilePath() (string, error) {
-	dir, err := os.UserHomeDir()
-	if err == nil {
-		return path.Join(dir, CONFIG_FOLDER), nil
-	}
-	dir, wdErr := os.Getwd()
-	if dir == "" || wdErr != nil {
-		return "", errors.Join(fmt.Errorf("Error: unable to access home and current working directory"), wdErr, err)
-	}
-
-	return path.Join(dir, CONFIG_FOLDER), nil
 }
