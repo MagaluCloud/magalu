@@ -9,7 +9,7 @@ func NewGroup() *core.StaticGroup {
 	return core.NewStaticGroup(
 		"auth",
 		"",
-		"",
+		"Actions with ID Magalu to login, refresh tokens, change tenants and others",
 		[]core.Descriptor{
 			newLogin(),
 			newAccessToken(),
