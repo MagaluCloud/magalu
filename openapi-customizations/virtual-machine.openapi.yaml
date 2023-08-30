@@ -50,3 +50,30 @@ tags:
     description: images
 -   name: usage
     description: usage
+
+components:
+    schemas:
+        SecurityGroup:
+            properties:
+                id:
+                    nullable: true
+        InstanceResponse:
+            properties:
+                instance_id:
+                    nullable: true
+                vcpus:
+                    nullable: true
+                memory:
+                    nullable: true
+                root_storage:
+                    nullable: true
+                power_state:
+                    nullable: true
+                power_state_label:
+                    nullable: true
+                updated_at:
+                    nullable: true
+                availability_zone:
+                    nullable: true
+                error:
+                    nullable: true

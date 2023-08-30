@@ -786,6 +786,7 @@ components:
                     title: Instance Id
                     type: string
                     format: uuid
+                    nullable: true
                 name:
                     title: Name
                     type: string
@@ -796,18 +797,23 @@ components:
                 vcpus:
                     title: Vcpus
                     type: integer
+                    nullable: true
                 memory:
                     title: Memory
                     type: integer
+                    nullable: true
                 root_storage:
                     title: Root Storage
                     type: integer
+                    nullable: true
                 power_state:
                     title: Power State
                     type: integer
+                    nullable: true
                 power_state_label:
                     title: Power State Label
                     type: string
+                    nullable: true
                 status:
                     title: Status
                     type: string
@@ -817,12 +823,14 @@ components:
                 updated_at:
                     title: Updated At
                     type: string
+                    nullable: true
                 key_name:
                     title: Key Name
                     type: string
                 availability_zone:
                     title: Availability Zone
                     type: string
+                    nullable: true
                 volumes:
                     title: Volumes
                     type: array
@@ -846,6 +854,7 @@ components:
                 error:
                     title: Error
                     type: string
+                    nullable: true
             example:
                 id: 76e3b8c4-407f-422b-a1e9-343a40faf1cd
                 instance_id: 176f2b61-306e-4d6f-977d-b9d5bf916322
@@ -1250,6 +1259,7 @@ components:
                 id:
                     title: Id
                     type: string
+                    nullable: true
                 name:
                     title: Name
                     type: string
