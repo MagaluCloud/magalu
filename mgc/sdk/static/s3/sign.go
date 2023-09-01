@@ -68,7 +68,7 @@ func buildCanonicalHeaders(req *http.Request, ignoredHeaders HeaderMap) (string,
 		req.Header.Set("Host", req.Host)
 	}
 
-	if req.Header.Get("Content-Length") == "" {
+	if req.Body != nil && req.Header.Get("Content-Length") == "" {
 		req.Header.Set("Content-Length", strconv.FormatInt(req.ContentLength, 10))
 	}
 

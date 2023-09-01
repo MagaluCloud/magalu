@@ -18,7 +18,6 @@ var excludedHeaders = HeaderMap{
 	"User-Agent":            nil,
 	"X-Amzn-Trace-Id":       nil,
 	"Expect":                nil,
-	"Content-Length":        nil,
 }
 
 func BuildHost(region string) string {
