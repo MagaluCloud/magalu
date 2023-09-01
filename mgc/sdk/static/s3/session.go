@@ -3,6 +3,7 @@ package s3
 import (
 	"context"
 	"fmt"
+	"io"
 	"net/http"
 	"strings"
 
@@ -30,7 +31,13 @@ func SendRequest(ctx context.Context, req *http.Request, accessKey, secretKey st
 		return nil, fmt.Errorf("couldn't get http client from context")
 	}
 
-	if err := sign(req, accessKey, secretKey, excludedHeaders); err != nil {
+	var unsignedPayload bool
+	switch req.Body.(type) {
+	case io.ReadSeeker:
+		unsignedPayload = true
+	}
+
+	if err := sign(req, accessKey, secretKey, unsignedPayload, excludedHeaders); err != nil {
 		return nil, err
 	}
 

@@ -1,6 +1,8 @@
 package s3
 
 import (
+	"crypto/md5"
+	"encoding/base64"
 	"encoding/hex"
 	"fmt"
 	"io"
@@ -17,14 +19,41 @@ import (
 type HeaderMap = map[string]any
 
 // TODO: refactor into a round tripper
-func setContentHeader(req *http.Request) (payloadHash string, err error) {
-	// TODO: handle signed payloads
+func setContentHeader(req *http.Request, unsigned bool) (payloadHash string, err error) {
+	if unsigned {
+		req.Header.Set(contentSHAKey, unsignedPayloadHeader)
+		return unsignedPayloadHeader, nil
+	}
 	payloadHash, err = getPayloadHash(req)
 	if err != nil {
 		return "", err
 	}
 	req.Header.Set(contentSHAKey, payloadHash)
 	return payloadHash, nil
+}
+
+// CopySeekableBody copies the seekable body to an io.Writer
+// Copied from https://github.com/aws/aws-sdk-go/blob/main/aws/types.go#L244
+func CopySeekableBody(dst io.Writer, src io.ReadSeeker) (int64, error) {
+	curPos, err := src.Seek(0, io.SeekCurrent)
+	if err != nil {
+		return 0, err
+	}
+
+	// copy errors may be assumed to be from the body.
+	n, err := io.Copy(dst, src)
+	if err != nil {
+		return n, err
+	}
+
+	// seek back to the first position after reading to reset
+	// the body for transmission.
+	_, err = src.Seek(curPos, io.SeekStart)
+	if err != nil {
+		return n, err
+	}
+
+	return n, nil
 }
 
 /*
@@ -44,6 +73,52 @@ func getPayloadHash(req *http.Request) (string, error) {
 	}
 
 	return core.SHA256Hex(buf), nil
+}
+
+// setMD5Checksum computes the MD5 of the request payload and sets it to the
+// Content-MD5 header. Returning the MD5 base64 encoded string or error.
+//
+// If the MD5 is already set as the Content-MD5 header, that value will be
+// returned, and nothing else will be done.
+//
+// If the payload is empty, no MD5 will be computed. No error will be returned.
+// Empty payloads do not have an MD5 value.
+//
+// Replaces the smithy-go middleware for httpChecksum trait.
+func setMD5Checksum(req *http.Request) error {
+	if req.Body == nil {
+		return nil
+	}
+
+	if v := req.Header.Get(contentMD5Header); len(v) != 0 {
+		return nil
+	}
+
+	h := md5.New()
+	switch req.Body.(type) {
+	case io.ReadSeeker:
+		length, err := CopySeekableBody(h, req.Body.(io.ReadSeeker))
+		if err != nil {
+			return err
+		}
+		req.ContentLength = length
+	default:
+		// Creates a deep copy of body that is safe to use
+		bodyReader, err := req.GetBody()
+		if err != nil {
+			return err
+		}
+
+		defer bodyReader.Close()
+		buf, err := io.ReadAll(bodyReader)
+		if err != nil {
+			return err
+		}
+		h.Write(buf)
+	}
+	checksum := base64.StdEncoding.EncodeToString(h.Sum(nil))
+	req.Header.Set(contentMD5Header, checksum)
+	return nil
 }
 
 // buildCredentialScope builds the Signature Version 4 (SigV4) signing scope
@@ -178,15 +253,19 @@ func buildAuthorizationHeader(credentialStr, signedHeadersStr, signingSignature 
 	return fmt.Sprintf("%s %s%s, %s%s, %s%s", signingAlgorithm, credential, credentialStr, signedHeaders, signedHeadersStr, signature, signingSignature)
 }
 
-func sign(req *http.Request, accessKey, secretKey string, ignoredHeaders HeaderMap) error {
+func sign(req *http.Request, accessKey, secretKey string, unsignedPayload bool, ignoredHeaders HeaderMap) error {
 	signingTime := time.Now().UTC()
-	payloadHash, err := setContentHeader(req)
+	payloadHash, err := setContentHeader(req, unsignedPayload)
 	if err != nil {
 		return err
 	}
 
 	// Set date header based on the custom key provided
 	req.Header.Set(headerDateKey, signingTime.Format(longTimeFormat))
+
+	if err := setMD5Checksum(req); err != nil {
+		return fmt.Errorf("Unable to compute checksum of the body content: %w", err)
+	}
 
 	// Sort Each Query Key's Values
 	query := req.URL.Query()

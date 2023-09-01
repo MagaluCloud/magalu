@@ -3,6 +3,8 @@ package s3
 const (
 	authorizationHeaderKey = "Authorization"
 
+	contentMD5Header = "Content-Md5"
+
 	// ContentSHAKey is the SHA256 of request body
 	contentSHAKey = "X-Amz-Content-Sha256"
 
@@ -31,4 +33,6 @@ const (
 	shortTimeFormat = "20060102"
 
 	templateUrl = "https://{{region}}.api.magalu.cloud/magaluobjects"
+
+	unsignedPayloadHeader = "UNSIGNED-PAYLOAD"
 )
