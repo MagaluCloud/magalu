@@ -14,17 +14,21 @@ type deleteParams struct {
 }
 
 func newDelete() core.Executor {
-	return core.NewStaticExecute(
+	executor := core.NewStaticExecute(
 		"delete",
 		"",
 		"Delete a bucket",
 		delete,
 	)
+
+	return core.NewExecuteResultOutputOptions(executor, func(exec core.Executor, result core.Value) string {
+		return "template=Deleted bucket {{.name}}\n"
+	})
 }
 
-func newDeleteRequest(ctx context.Context, region, bucket string) (*http.Request, error) {
+func newDeleteRequest(ctx context.Context, region string, pathURIs ...string) (*http.Request, error) {
 	host := s3.BuildHost(region)
-	url, err := url.JoinPath(host, bucket)
+	url, err := url.JoinPath(host, pathURIs...)
 	if err != nil {
 		return nil, err
 	}
@@ -32,10 +36,15 @@ func newDeleteRequest(ctx context.Context, region, bucket string) (*http.Request
 }
 
 func delete(ctx context.Context, params deleteParams, cfg s3.Config) (core.Value, error) {
-	req, err := newDeleteRequest(ctx, cfg.Region, params.Name)
+	req, err := newDeleteRequest(ctx, cfg.Region, params.Bucket)
 	if err != nil {
 		return nil, err
 	}
 
-	return s3.SendRequest(ctx, req, cfg.AccessKeyID, cfg.SecretKey, nil)
+	_, err = s3.SendRequest(ctx, req, cfg.AccessKeyID, cfg.SecretKey, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return params, nil
 }

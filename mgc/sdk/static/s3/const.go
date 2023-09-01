@@ -35,4 +35,6 @@ const (
 	templateUrl = "https://{{region}}.api.magalu.cloud/magaluobjects"
 
 	unsignedPayloadHeader = "UNSIGNED-PAYLOAD"
+
+	URIPrefix = "s3://"
 )

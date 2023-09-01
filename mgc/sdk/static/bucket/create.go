@@ -16,12 +16,16 @@ type createParams struct {
 }
 
 func newCreate() core.Executor {
-	return core.NewStaticExecute(
+	executor := core.NewStaticExecute(
 		"create",
 		"",
 		"Create a bucket",
 		create,
 	)
+
+	return core.NewExecuteResultOutputOptions(executor, func(exec core.Executor, result core.Value) string {
+		return "template=Created bucket {{.name}}\n"
+	})
 }
 
 func newCreateRequest(ctx context.Context, region, bucket string) (*http.Request, error) {
@@ -39,5 +43,10 @@ func create(ctx context.Context, params createParams, cfg s3.Config) (core.Value
 		return nil, err
 	}
 
-	return s3.SendRequest(ctx, req, cfg.AccessKeyID, cfg.SecretKey, nil)
+	_, err = s3.SendRequest(ctx, req, cfg.AccessKeyID, cfg.SecretKey, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return params, nil
 }

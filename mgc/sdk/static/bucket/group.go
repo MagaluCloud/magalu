@@ -12,7 +12,10 @@ func NewGroup() core.Grouper {
 		[]core.Descriptor{
 			newCreate(),
 			newDelete(),
+			newDeleteObject(),
 			newList(),
+			newListObjects(),
+			newUpload(),
 		},
 	)
 }
