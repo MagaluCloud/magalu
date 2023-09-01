@@ -87,8 +87,6 @@ func buildCanonicalHeaders(req *http.Request, ignoredHeaders HeaderMap) (string,
 		signedHeaders = append(signedHeaders, strings.ToLower(k))
 		canonicalHeaders = fmt.Sprintf("%s%s\n", canonicalHeaders, line)
 	}
-	fmt.Println("headers: ", signedHeaders)
-	fmt.Println("canHeaders: ", canonicalHeaders)
 	return strings.Join(signedHeaders, ";"), canonicalHeaders
 }
 
