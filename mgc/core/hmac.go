@@ -4,6 +4,7 @@ import (
 	"crypto/hmac"
 	"crypto/sha256"
 	"encoding/hex"
+	"io"
 )
 
 // HMACSHA256 computes a HMAC-SHA256 of data given the provided key.
@@ -17,8 +18,10 @@ func HMACSHA256String(key []byte, data string) []byte {
 	return HMACSHA256(key, []byte(data))
 }
 
-func SHA256Hex(data []byte) string {
+func SHA256Hex(reader io.Reader) (string, error) {
 	hash := sha256.New()
-	hash.Write(data)
-	return hex.EncodeToString(hash.Sum(nil))
+	if _, err := io.Copy(hash, reader); err != nil {
+		return "", err
+	}
+	return hex.EncodeToString(hash.Sum(nil)), nil
 }

@@ -1,6 +1,7 @@
 package s3
 
 import (
+	"bytes"
 	"crypto/md5"
 	"encoding/base64"
 	"encoding/hex"
@@ -24,6 +25,7 @@ func setContentHeader(req *http.Request, unsigned bool) (payloadHash string, err
 		req.Header.Set(contentSHAKey, unsignedPayloadHeader)
 		return unsignedPayloadHeader, nil
 	}
+	// TODO: if we are able to receive a Seeker interface we must treat differently
 	payloadHash, err = getPayloadHash(req)
 	if err != nil {
 		return "", err
@@ -66,13 +68,13 @@ func getPayloadHash(req *http.Request) (string, error) {
 	if req.Body == nil {
 		return emptyStringSHA256, nil
 	}
-	nr := req.Clone(req.Context())
-	buf, err := io.ReadAll(nr.Body)
+	bodyReader, err := req.GetBody()
 	if err != nil {
-		return "", fmt.Errorf("could not read request body: %w", err)
+		return "", err
 	}
 
-	return core.SHA256Hex(buf), nil
+	defer bodyReader.Close()
+	return core.SHA256Hex(bodyReader)
 }
 
 // setMD5Checksum computes the MD5 of the request payload and sets it to the
@@ -194,13 +196,17 @@ canonical request string plus extra information about the request, such as:
 2. Signing Time
 3. Credentials Scope (region, service name, etc.)
 */
-func buildStringToSign(credScope, canonicalStr, longTime string) string {
+func buildStringToSign(credScope, canonicalStr, longTime string) (string, error) {
+	canonicalSHA, err := core.SHA256Hex(bytes.NewReader([]byte(canonicalStr)))
+	if err != nil {
+		return "", fmt.Errorf("failed to compute SHA from canonical str: %w", err)
+	}
 	return strings.Join([]string{
 		signingAlgorithm,
 		longTime,
 		credScope,
-		core.SHA256Hex([]byte(canonicalStr)),
-	}, "\n")
+		canonicalSHA,
+	}, "\n"), nil
 }
 
 /*
@@ -285,7 +291,10 @@ func sign(req *http.Request, accessKey, secretKey string, unsignedPayload bool, 
 		canonicalHeaderStr,
 		payloadHash,
 	)
-	strToSign := buildStringToSign(credScope, canonicalStr, signingTime.Format(longTimeFormat))
+	strToSign, err := buildStringToSign(credScope, canonicalStr, signingTime.Format(longTimeFormat))
+	if err != nil {
+		return err
+	}
 	signKey := deriveKey(secretPrefix, secretKey, signingTime.Format(shortTimeFormat))
 	signature := hex.EncodeToString(core.HMACSHA256String(signKey, strToSign))
 
