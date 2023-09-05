@@ -1,4 +1,4 @@
-package bucket
+package buckets
 
 import (
 	"context"
@@ -6,7 +6,7 @@ import (
 	"net/url"
 
 	"magalu.cloud/core"
-	"magalu.cloud/sdk/static/s3"
+	"magalu.cloud/sdk/static/object_storage/s3"
 )
 
 type deleteParams struct {
@@ -36,7 +36,7 @@ func newDeleteRequest(ctx context.Context, region string, pathURIs ...string) (*
 }
 
 func delete(ctx context.Context, params deleteParams, cfg s3.Config) (core.Value, error) {
-	req, err := newDeleteRequest(ctx, cfg.Region, params.Bucket)
+	req, err := newDeleteRequest(ctx, cfg.Region, params.Name)
 	if err != nil {
 		return nil, err
 	}

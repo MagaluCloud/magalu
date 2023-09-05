@@ -1,4 +1,4 @@
-package bucket
+package buckets
 
 import (
 	"context"
@@ -6,7 +6,7 @@ import (
 	"net/url"
 
 	"magalu.cloud/core"
-	"magalu.cloud/sdk/static/s3"
+	"magalu.cloud/sdk/static/object_storage/s3"
 )
 
 type createParams struct {

@@ -1,4 +1,4 @@
-package bucket
+package buckets
 
 import (
 	"magalu.cloud/core"
@@ -6,16 +6,13 @@ import (
 
 func NewGroup() core.Grouper {
 	return core.NewStaticGroup(
-		"bucket",
+		"buckets",
 		"",
 		"Bucket operations for Object Storage API",
 		[]core.Descriptor{
-			newCreate(),
-			newDelete(),
-			newDeleteObject(),
-			newList(),
-			newListObjects(),
-			newUpload(),
+			newCreate(), // object-storage buckets create
+			newDelete(), // object-storage buckets delete
+			newList(),   // object-storage buckets list
 		},
 	)
 }

@@ -1,11 +1,11 @@
-package bucket
+package buckets
 
 import (
 	"context"
 	"net/http"
 
 	"magalu.cloud/core"
-	"magalu.cloud/sdk/static/s3"
+	"magalu.cloud/sdk/static/object_storage/s3"
 )
 
 type BucketResponse struct {

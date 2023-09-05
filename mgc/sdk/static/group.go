@@ -3,8 +3,8 @@ package static
 import (
 	"magalu.cloud/core"
 	"magalu.cloud/sdk/static/auth"
-	"magalu.cloud/sdk/static/bucket"
 	"magalu.cloud/sdk/static/config"
+	"magalu.cloud/sdk/static/object_storage"
 )
 
 func NewGroup() *core.StaticGroup {
@@ -13,9 +13,9 @@ func NewGroup() *core.StaticGroup {
 		"",
 		"",
 		[]core.Descriptor{
-			auth.NewGroup(),   // cmd: "auth"
-			config.NewGroup(), // cmd: "config"
-			bucket.NewGroup(), // cmd: "bucket"
+			auth.NewGroup(),           // cmd: "auth"
+			config.NewGroup(),         // cmd: "config"
+			object_storage.NewGroup(), // cmd: "object-storage"
 		},
 	)
 }

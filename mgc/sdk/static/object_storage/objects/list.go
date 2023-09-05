@@ -1,4 +1,4 @@
-package bucket
+package objects
 
 import (
 	"context"
@@ -7,11 +7,11 @@ import (
 	"strings"
 
 	"magalu.cloud/core"
-	"magalu.cloud/sdk/static/s3"
+	"magalu.cloud/sdk/static/object_storage/s3"
 )
 
 type listObjectsParams struct {
-	Bucket string `json:"bucket" jsonschema:"description=Name of the bucket to list objects from"`
+	Destination string `json:"dst" jsonschema:"description=Path of the bucket to list objects from" example:"s3://bucket1/"`
 }
 
 type bucketContent struct {
@@ -25,7 +25,7 @@ type listObjectsResponse struct {
 	Contents []*bucketContent `xml:"Contents"`
 }
 
-func newListObjectsRequest(ctx context.Context, region, bucket string) (*http.Request, error) {
+func newListRequest(ctx context.Context, region, bucket string) (*http.Request, error) {
 	host := s3.BuildHost(region)
 	url, err := url.JoinPath(host, bucket)
 	if err != nil {
@@ -34,18 +34,18 @@ func newListObjectsRequest(ctx context.Context, region, bucket string) (*http.Re
 	return http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
 }
 
-func newListObjects() core.Executor {
+func newList() core.Executor {
 	return core.NewStaticExecute(
-		"list-objects",
+		"list",
 		"",
 		"List all objects from a bucket",
-		listObjects,
+		list,
 	)
 }
 
-func listObjects(ctx context.Context, params listObjectsParams, cfg s3.Config) (core.Value, error) {
-	bucket, _ := strings.CutPrefix(params.Bucket, s3.URIPrefix)
-	req, err := newListObjectsRequest(ctx, cfg.Region, bucket)
+func list(ctx context.Context, params listObjectsParams, cfg s3.Config) (core.Value, error) {
+	bucket, _ := strings.CutPrefix(params.Destination, s3.URIPrefix)
+	req, err := newListRequest(ctx, cfg.Region, bucket)
 	if err != nil {
 		return nil, err
 	}

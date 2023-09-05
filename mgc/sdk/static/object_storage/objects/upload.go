@@ -1,4 +1,4 @@
-package bucket
+package objects
 
 import (
 	"bytes"
@@ -11,7 +11,7 @@ import (
 	"strings"
 
 	"magalu.cloud/core"
-	"magalu.cloud/sdk/static/s3"
+	"magalu.cloud/sdk/static/object_storage/s3"
 )
 
 type uploadParams struct {
