@@ -292,8 +292,5 @@ func sign(req *http.Request, accessKey, secretKey string, unsignedPayload bool, 
 	signedAuthorization := buildAuthorizationHeader(credStr, signedHeadersStr, signature)
 	req.Header.Set(authorizationHeaderKey, signedAuthorization)
 
-	// TODO: log and let the filters decide if shown or not
-	LogSigningInfo(canonicalStr, strToSign)
-
 	return nil
 }
