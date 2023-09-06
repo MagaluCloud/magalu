@@ -88,7 +88,7 @@ func upload(ctx context.Context, params uploadParams, cfg s3.Config) (*uploadTem
 		return nil, err
 	}
 
-	_, err = s3.SendRequest(ctx, req, cfg.AccessKeyID, cfg.SecretKey, nil)
+	_, err = s3.SendRequest(ctx, req, cfg.AccessKeyID, cfg.SecretKey, (*core.Value)(nil))
 	if err != nil {
 		return nil, err
 	}

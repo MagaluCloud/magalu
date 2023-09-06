@@ -39,5 +39,5 @@ func delete(ctx context.Context, params deleteObjectParams, cfg s3.Config) (core
 		return nil, err
 	}
 
-	return s3.SendRequest(ctx, req, cfg.AccessKeyID, cfg.SecretKey, nil)
+	return s3.SendRequest(ctx, req, cfg.AccessKeyID, cfg.SecretKey, (*core.Value)(nil))
 }

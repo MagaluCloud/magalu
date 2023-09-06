@@ -25,10 +25,10 @@ func BuildHost(region string) string {
 	return strings.ReplaceAll(templateUrl, "{{region}}", region)
 }
 
-func SendRequest(ctx context.Context, req *http.Request, accessKey, secretKey string, out core.Value) (core.Value, error) {
+func SendRequest[T core.Value](ctx context.Context, req *http.Request, accessKey, secretKey string, dataPtr *T) (result T, err error) {
 	httpClient := corehttp.ClientFromContext(ctx)
 	if httpClient == nil {
-		return nil, fmt.Errorf("couldn't get http client from context")
+		return result, fmt.Errorf("couldn't get http client from context")
 	}
 
 	var unsignedPayload bool
@@ -38,13 +38,21 @@ func SendRequest(ctx context.Context, req *http.Request, accessKey, secretKey st
 	}
 
 	if err := sign(req, accessKey, secretKey, unsignedPayload, excludedHeaders); err != nil {
-		return nil, err
+		return result, err
 	}
 
 	res, err := httpClient.Do(req)
 	if err != nil {
-		return nil, fmt.Errorf("error to send HTTP request: %w", err)
+		return result, fmt.Errorf("error to send HTTP request: %w", err)
 	}
 
-	return corehttp.UnwrapResponse(res, out)
+	data, err := corehttp.UnwrapResponse(res, dataPtr)
+	if err != nil || data == nil {
+		return result, err
+	}
+	convertedVal, ok := data.(T)
+	if !ok {
+		return result, fmt.Errorf("failed to convert response value from %T to %T", data, result)
+	}
+	return convertedVal, err
 }

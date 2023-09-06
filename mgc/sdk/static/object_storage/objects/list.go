@@ -43,12 +43,12 @@ func newList() core.Executor {
 	)
 }
 
-func list(ctx context.Context, params listObjectsParams, cfg s3.Config) (core.Value, error) {
+func list(ctx context.Context, params listObjectsParams, cfg s3.Config) (result listObjectsResponse, err error) {
 	bucket, _ := strings.CutPrefix(params.Destination, s3.URIPrefix)
 	req, err := newListRequest(ctx, cfg.Region, bucket)
 	if err != nil {
-		return nil, err
+		return result, err
 	}
 
-	return s3.SendRequest(ctx, req, cfg.AccessKeyID, cfg.SecretKey, &listObjectsResponse{})
+	return s3.SendRequest(ctx, req, cfg.AccessKeyID, cfg.SecretKey, &result)
 }
