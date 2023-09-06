@@ -10,7 +10,7 @@ import (
 	"magalu.cloud/sdk/static/object_storage/s3"
 )
 
-type listObjectsParams struct {
+type ListObjectsParams struct {
 	Destination string `json:"dst" jsonschema:"description=Path of the bucket to list objects from" example:"s3://bucket1/"`
 }
 
@@ -20,7 +20,7 @@ type bucketContent struct {
 	Size         int    `xml:"Size"`
 }
 
-type listObjectsResponse struct {
+type ListObjectsResponse struct {
 	Name     string           `xml:"Name"`
 	Contents []*bucketContent `xml:"Contents"`
 }
@@ -39,11 +39,11 @@ func newList() core.Executor {
 		"list",
 		"",
 		"List all objects from a bucket",
-		list,
+		List,
 	)
 }
 
-func list(ctx context.Context, params listObjectsParams, cfg s3.Config) (result listObjectsResponse, err error) {
+func List(ctx context.Context, params ListObjectsParams, cfg s3.Config) (result ListObjectsResponse, err error) {
 	bucket, _ := strings.CutPrefix(params.Destination, s3.URIPrefix)
 	req, err := newListRequest(ctx, cfg.Region, bucket)
 	if err != nil {
