@@ -137,7 +137,7 @@ func getInputChildModifiers(mgcSchema *mgcSdk.Schema, mgcName mgcName) attribute
 	return attributeModifiers{
 		isRequired:                 isRequired,
 		isOptional:                 !isRequired,
-		isComputed:                 !isRequired,
+		isComputed:                 false, // This is being set to false because the parent may already be Computed, no further logic is needed here
 		useStateForUnknown:         true,
 		requiresReplaceWhenChanged: false,
 		getChildModifiers:          getInputChildModifiers,
@@ -147,10 +147,21 @@ func getInputChildModifiers(mgcSchema *mgcSdk.Schema, mgcName mgcName) attribute
 func (r *MgcResource) getCreateParamsModifiers(mgcSchema *mgcSdk.Schema, mgcName mgcName) attributeModifiers {
 	k := string(mgcName)
 	isRequired := slices.Contains(mgcSchema.Required, k)
+	isComputed := !isRequired
+	if isComputed {
+		readSchema := r.read.ResultSchema().Properties[k]
+		if readSchema == nil {
+			isComputed = false
+		} else {
+			// If not required and present in read it can be compute
+			isComputed = checkSimilarJsonSchemas((*core.Schema)(readSchema.Value), (*core.Schema)(mgcSchema.Properties[string(mgcName)].Value))
+		}
+	}
+
 	return attributeModifiers{
 		isRequired:                 isRequired,
 		isOptional:                 !isRequired,
-		isComputed:                 !isRequired && r.read.ResultSchema().Properties[k] != nil, // If not required and present in read it can be compute
+		isComputed:                 isComputed,
 		useStateForUnknown:         false,
 		requiresReplaceWhenChanged: r.update.ParametersSchema().Properties[k] == nil,
 		getChildModifiers:          getInputChildModifiers,
@@ -161,10 +172,12 @@ func (r *MgcResource) getUpdateParamsModifiers(mgcSchema *mgcSdk.Schema, mgcName
 	k := string(mgcName)
 	isCreated := r.create.ResultSchema().Properties[k] != nil
 	required := slices.Contains(mgcSchema.Required, k)
+	isComputed := !required || isCreated
+
 	return attributeModifiers{
 		isRequired:                 required && !isCreated,
 		isOptional:                 !required && !isCreated,
-		isComputed:                 !required || isCreated,
+		isComputed:                 isComputed,
 		useStateForUnknown:         true,
 		requiresReplaceWhenChanged: false,
 		getChildModifiers:          getInputChildModifiers,

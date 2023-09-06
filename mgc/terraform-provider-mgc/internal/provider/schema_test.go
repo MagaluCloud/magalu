@@ -124,7 +124,7 @@ var testCases = []testCase{
 				tfSchema: schema.NumberAttribute{
 					Description:   "count description",
 					Optional:      true,
-					Computed:      true,
+					Computed:      false, // False because read result attr has different schema
 					PlanModifiers: []planmodifier.Number{},
 				},
 			},
@@ -137,14 +137,14 @@ var testCases = []testCase{
 						Attributes: map[string]schema.Attribute{
 							"value": schema.BoolAttribute{
 								Optional: true,
-								Computed: true,
+								Computed: false,
 								PlanModifiers: []planmodifier.Bool{
 									boolplanmodifier.UseStateForUnknown(),
 								},
 							},
 						},
 						Optional: true,
-						Computed: true,
+						Computed: false,
 						PlanModifiers: []planmodifier.Object{
 							objectplanmodifier.UseStateForUnknown(),
 						},
@@ -164,14 +164,14 @@ var testCases = []testCase{
 							Attributes: map[string]schema.Attribute{
 								"value": schema.BoolAttribute{
 									Optional: true,
-									Computed: true,
+									Computed: false,
 									PlanModifiers: []planmodifier.Bool{
 										boolplanmodifier.UseStateForUnknown(),
 									},
 								},
 							},
 							Optional: true,
-							Computed: true,
+							Computed: false,
 							PlanModifiers: []planmodifier.Object{
 								objectplanmodifier.UseStateForUnknown(),
 							},
@@ -183,7 +183,7 @@ var testCases = []testCase{
 								mgcSchema: (*mgc.Schema)(update.ParametersSchema().Properties["extra_field"].Value.Items.Value.Properties["value"].Value),
 								tfSchema: schema.BoolAttribute{
 									Optional: true,
-									Computed: true,
+									Computed: false,
 									PlanModifiers: []planmodifier.Bool{
 										boolplanmodifier.UseStateForUnknown(),
 									},
@@ -245,18 +245,18 @@ var testCases = []testCase{
 					NestedObject: schema.SingleNestedAttribute{
 						Attributes: map[string]schema.Attribute{
 							"value": schema.BoolAttribute{
-								Computed: true,
+								Computed: false,
 								PlanModifiers: []planmodifier.Bool{
 									boolplanmodifier.UseStateForUnknown(),
 								},
 							},
 						},
-						Computed: true,
+						Computed: false,
 						PlanModifiers: []planmodifier.Object{
 							objectplanmodifier.UseStateForUnknown(),
 						},
 					}.GetNestedObject().(schema.NestedAttributeObject),
-					Computed: true,
+					Computed: false,
 					PlanModifiers: []planmodifier.List{
 						listplanmodifier.UseStateForUnknown(),
 					},
@@ -339,7 +339,7 @@ var testCases = []testCase{
 			},
 			"desired_count": schema.NumberAttribute{
 				Optional:      true,
-				Computed:      true,
+				Computed:      false,
 				Description:   "count description",
 				PlanModifiers: []planmodifier.Number{},
 			},
@@ -348,14 +348,14 @@ var testCases = []testCase{
 					Attributes: map[string]schema.Attribute{
 						"value": schema.BoolAttribute{
 							Optional: true,
-							Computed: true,
+							Computed: false,
 							PlanModifiers: []planmodifier.Bool{
 								boolplanmodifier.UseStateForUnknown(),
 							},
 						},
 					},
 					Optional: true,
-					Computed: true,
+					Computed: false,
 					PlanModifiers: []planmodifier.Object{
 						objectplanmodifier.UseStateForUnknown(),
 					},
@@ -396,6 +396,7 @@ func TestGenerateTFAttributes(t *testing.T) {
 	ctx := context.Background()
 	// Use deep.Equal because we might compare two functions, and reflect.DeepEqual always fails on function
 	// comparisons (unless both functions are nil)
+	// TODO: investigate lib reporting false negatives/positives on deep comparisons...
 	for _, testCase := range testCases {
 		testCase.res.readInputAttributes(ctx)
 		if diff := deep.Equal(testCase.res.inputAttr, testCase.expectedInput); diff != nil {
