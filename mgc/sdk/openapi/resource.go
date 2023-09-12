@@ -33,7 +33,8 @@ type Resource struct {
 	doc             *openapi3.T
 	extensionPrefix *string
 	servers         openapi3.Servers
-	operations      *map[string]core.Executor
+	operations      []core.Executor
+	byName          map[string]core.Executor
 	logger          *zap.SugaredLogger
 }
 
@@ -108,10 +109,10 @@ type operationTreePath struct {
 	parent *operationTree
 }
 
-func (t *operationTree) VisitDesc(path []operationTreePath, visitor func(path []operationTreePath, desc *operationDesc) bool) bool {
+func (t *operationTree) VisitDesc(path []operationTreePath, visitor func(path []operationTreePath, desc *operationDesc) (bool, error)) (bool, error) {
 	if t.desc != nil {
-		if !visitor(path, t.desc) {
-			return false
+		if run, err := visitor(path, t.desc); !run || err != nil {
+			return false, err
 		}
 	}
 
@@ -119,14 +120,14 @@ func (t *operationTree) VisitDesc(path []operationTreePath, visitor func(path []
 		oldLen := len(path)
 		path = append(path, operationTreePath{k, t})
 
-		if !childT.VisitDesc(path, visitor) {
-			return false
+		if run, err := childT.VisitDesc(path, visitor); !run || err != nil {
+			return false, err
 		}
 
 		path = path[:oldLen]
 	}
 
-	return true
+	return true, nil
 }
 
 var openAPIPathArgRegex = regexp.MustCompile("[{](?P<name>[^}]+)[}]")
@@ -236,61 +237,79 @@ func (o *Resource) collectOperations() *operationTree {
 	return tree
 }
 
-func (o *Resource) getOperations() map[string]core.Executor {
-	if o.operations == nil {
-		opMap := map[string]core.Executor{}
-		opTree := o.collectOperations()
-		opTree.VisitDesc([]operationTreePath{}, func(path []operationTreePath, desc *operationDesc) bool {
-			opName := getNameExtension(o.extensionPrefix, desc.op.Extensions, "")
-			if opName == "" {
-				opName = strings.Join(getCoalescedPath(path), "-")
-				if _, ok := opMap[opName]; ok {
-					opName = strings.Join(getFullPath(path), "-")
-				}
-			}
-
-			servers := getServers(desc.path, desc.op)
-			if servers == nil {
-				servers = o.servers
-			}
-
-			var operation core.Executor = &Operation{
-				name:            opName,
-				key:             desc.key,
-				method:          strings.ToUpper(desc.method),
-				path:            desc.path,
-				operation:       desc.op,
-				doc:             o.doc,
-				extensionPrefix: o.extensionPrefix,
-				servers:         servers,
-				logger:          o.logger.Named(opName),
-			}
-
-			if wtExt, ok := getExtensionObject(o.extensionPrefix, "wait-termination", desc.op.Extensions, nil); ok && wtExt != nil {
-				if tExec, err := o.wrapInTerminatorExecutor(wtExt, operation); err == nil {
-					operation = tExec
-				}
-			}
-
-			if output, ok := getExtensionString(o.extensionPrefix, "output-flag", desc.op.Extensions, ""); ok && output != "" {
-				operation = core.NewExecuteResultOutputOptions(operation, func(exec core.Executor, result core.Value) string {
-					return output
-				})
-			}
-
-			opMap[opName] = operation
-
-			return true
-		})
-		o.operations = &opMap
+func (o *Resource) getOperations() (operations []core.Executor, byName map[string]core.Executor, err error) {
+	if len(o.operations) == 0 {
+		return o.operations, o.byName, nil
 	}
-	return *o.operations
+
+	o.operations = make([]core.Executor, 0)
+	o.byName = make(map[string]core.Executor)
+
+	opTree := o.collectOperations()
+	_, err = opTree.VisitDesc([]operationTreePath{}, func(path []operationTreePath, desc *operationDesc) (bool, error) {
+		opName := getNameExtension(o.extensionPrefix, desc.op.Extensions, "")
+		if opName == "" {
+			opName = strings.Join(getCoalescedPath(path), "-")
+			if _, ok := o.byName[opName]; ok {
+				opName = strings.Join(getFullPath(path), "-")
+			}
+		}
+
+		servers := getServers(desc.path, desc.op)
+		if servers == nil {
+			servers = o.servers
+		}
+
+		var operation core.Executor = &Operation{
+			name:            opName,
+			key:             desc.key,
+			method:          strings.ToUpper(desc.method),
+			path:            desc.path,
+			operation:       desc.op,
+			doc:             o.doc,
+			extensionPrefix: o.extensionPrefix,
+			servers:         servers,
+			logger:          o.logger.Named(opName),
+		}
+
+		if wtExt, ok := getExtensionObject(o.extensionPrefix, "wait-termination", desc.op.Extensions, nil); ok && wtExt != nil {
+			if tExec, err := o.wrapInTerminatorExecutor(wtExt, operation); err == nil {
+				operation = tExec
+			} else {
+				return false, err
+			}
+		}
+
+		if output, ok := getExtensionString(o.extensionPrefix, "output-flag", desc.op.Extensions, ""); ok && output != "" {
+			operation = core.NewExecuteResultOutputOptions(operation, func(exec core.Executor, result core.Value) string {
+				return output
+			})
+		}
+
+		o.operations = append(o.operations, operation)
+		o.byName[opName] = operation
+
+		return true, nil
+	})
+
+	if err != nil {
+		o.operations = nil
+		o.byName = nil
+		return nil, nil, err
+	}
+
+	slices.SortFunc(o.operations, func(a, b core.Executor) int {
+		return strings.Compare(a.Name(), b.Name())
+	})
+
+	return o.operations, o.byName, nil
 }
 
 func (o *Resource) wrapInTerminatorExecutor(wtExt map[string]any, exec core.Executor) (core.TerminatorExecutor, error) {
 	wt := &defaultWaitTerminaton
 	if err := core.DecodeValue(wtExt, wt); err != nil {
 		o.logger.Warnw("error decoding extension wait-termination", "data", wtExt, "error", err)
+		return nil, err
 	}
 
 	if wt.MaxRetries <= 0 {
@@ -331,7 +350,12 @@ func (o *Resource) wrapInTerminatorExecutor(wtExt map[string]any, exec core.Exec
 }
 
 func (o *Resource) VisitChildren(visitor core.DescriptorVisitor) (finished bool, err error) {
-	for _, op := range o.getOperations() {
+	operations, _, err := o.getOperations()
+	if err != nil {
+		return false, err
+	}
+
+	for _, op := range operations {
 		run, err := visitor(op)
 		if err != nil {
 			return false, err
@@ -344,7 +368,12 @@ func (o *Resource) VisitChildren(visitor core.DescriptorVisitor) (finished bool,
 }
 
 func (o *Resource) GetChildByName(name string) (child core.Descriptor, err error) {
-	op, ok := o.getOperations()[name]
+	_, byName, err := o.getOperations()
+	if err != nil {
+		return nil, err
+	}
+
+	op, ok := byName[name]
 	if !ok {
 		return nil, fmt.Errorf("Action not found: %s", name)
 	}
