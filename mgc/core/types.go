@@ -172,3 +172,30 @@ func NewExecuteResultOutputOptions(
 ) ExecutorResultOutputOptions {
 	return &executeResultOutputOptions{executor, getOutputOptions}
 }
+
+type LinksVisitor func(link Linker) (run bool, err error)
+
+type Linker interface {
+	Name() string
+	// The executor to use to run this link. Prepare it's parameters and config using PrepareLink()
+	LinkTarget() Executor
+	// The link will prepare the parameters and config based on the original executor's parameter/config and result
+	// this will return the new parameters/config to give to LinkTarget()
+	PrepareLink(originalParameters map[string]Value, originalConfigs map[string]Value, originalResult Value) (preparedParameters map[string]Value, preparedConfigs map[string]Value, err error)
+}
+
+type LinkedExecutor interface {
+	Executor
+	VisitLinks(visitor LinksVisitor) (finished bool, err error)
+	GetLinkByName(name string) (child Descriptor, err error)
+}
+
+func ExecuteLink(link Linker, ctx context.Context, originalParameters map[string]Value, originalConfigs map[string]Value, originalResult Value) (result Value, err error) {
+	preparedParameters, preparedConfigs, err := link.PrepareLink(originalParameters, originalConfigs, originalResult)
+	if err != nil {
+		return nil, err
+	}
+
+	exec := link.LinkTarget()
+	return exec.Execute(ctx, preparedParameters, preparedConfigs)
+}
