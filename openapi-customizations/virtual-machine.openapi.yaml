@@ -54,6 +54,12 @@ components:
                 status:
                     x-cli-transforms:
                     -   type: lowercase
+                updated_at:
+                    x-cli-updatable: true
+                status:
+                    x-cli-updatable: true
+                error:
+                    x-cli-updatable: true
 
 tags:
 -   name: instances

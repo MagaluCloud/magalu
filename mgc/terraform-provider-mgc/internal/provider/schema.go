@@ -197,11 +197,20 @@ func (r *MgcResource) getDeleteParamsModifiers(mgcSchema *mgcSdk.Schema, mgcName
 }
 
 func getResultModifiers(mgcSchema *mgcSdk.Schema, mgcName mgcName) attributeModifiers {
+	useStateForUnknown := true // By default we consider all values as non-updatable between reads
+	prop := mgcSchema.Properties[string(mgcName)]
+	if prop == nil {
+		prop = mgcSchema.Items
+	}
+	if prop != nil {
+		useStateForUnknown = !getUpdatableExtension((*mgcSdk.Schema)(prop.Value))
+	}
+
 	return attributeModifiers{
 		isRequired:                 false,
 		isOptional:                 false,
 		isComputed:                 true,
-		useStateForUnknown:         false,
+		useStateForUnknown:         useStateForUnknown,
 		requiresReplaceWhenChanged: false,
 		getChildModifiers:          getResultModifiers,
 	}
@@ -505,4 +514,16 @@ func (n tfName) asDesired() tfName {
 
 func (n tfName) asCurrent() tfName {
 	return "current_" + n
+}
+
+func getUpdatableExtension(schema *mgcSdk.Schema) bool {
+	if schema == nil || schema.Extensions == nil {
+		return false
+	}
+
+	if updatable, ok := schema.Extensions["x-cli-updatable"]; ok {
+		return updatable.(bool)
+	}
+
+	return false
 }

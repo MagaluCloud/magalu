@@ -65,6 +65,7 @@ var read = mgc.NewRawStaticExecute(
 			"image":     mgc.NewStringSchema(),
 			"name":      mgc.NewStringSchema(),
 			"count":     mgc.NewIntegerSchema(),
+			"updatedAt": newUpdatableSchema(),
 			"createdAt": mgc.NewIntegerSchema(),
 			"extra_field": mgc.NewArraySchema(
 				mgc.NewObjectSchema(
@@ -264,6 +265,15 @@ var testCases = []testCase{
 					},
 				},
 			},
+			"updatedAt": {
+				mgcName:   "updatedAt",
+				tfName:    "updated_at",
+				mgcSchema: (*mgc.Schema)(read.ResultSchema().Properties["updatedAt"].Value),
+				tfSchema: schema.StringAttribute{
+					Computed:      true,
+					PlanModifiers: []planmodifier.String{},
+				},
+			},
 			"extra_field": {
 				mgcName:   "extra_field",
 				tfName:    "extra_field",
@@ -359,8 +369,10 @@ var testCases = []testCase{
 		},
 		expectedFinal: map[tfName]schema.Attribute{
 			"current_count": schema.Int64Attribute{
-				Computed:      true,
-				PlanModifiers: []planmodifier.Int64{},
+				Computed: true,
+				PlanModifiers: []planmodifier.Int64{
+					int64planmodifier.UseStateForUnknown(),
+				},
 			},
 			"desired_count": schema.NumberAttribute{
 				Optional:      true,
@@ -392,8 +404,14 @@ var testCases = []testCase{
 				},
 			},
 			"created_at": schema.Int64Attribute{
+				Computed: true,
+				PlanModifiers: []planmodifier.Int64{
+					int64planmodifier.UseStateForUnknown(),
+				},
+			},
+			"updated_at": schema.StringAttribute{
 				Computed:      true,
-				PlanModifiers: []planmodifier.Int64{},
+				PlanModifiers: []planmodifier.String{},
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
@@ -434,4 +452,12 @@ func TestGenerateTFAttributes(t *testing.T) {
 			t.Errorf("MgcResource.generateTFAttributes failed. Diff list: %v", diff)
 		}
 	}
+}
+
+func newUpdatableSchema() *mgc.Schema {
+	schema := mgc.NewStringSchema()
+	schema.Extensions = map[string]any{
+		"x-cli-updatable": true,
+	}
+	return schema
 }

@@ -818,12 +818,14 @@ components:
                     type: string
                     x-cli-transforms:
                     -   type: lowercase
+                    x-cli-updatable: true
                 created_at:
                     title: Created At
                     type: string
                 updated_at:
                     title: Updated At
                     type: string
+                    x-cli-updatable: true
                 key_name:
                     title: Key Name
                     type: string
@@ -853,6 +855,7 @@ components:
                 error:
                     title: Error
                     type: string
+                    x-cli-updatable: true
             example:
                 id: 76e3b8c4-407f-422b-a1e9-343a40faf1cd
                 instance_id: 176f2b61-306e-4d6f-977d-b9d5bf916322
