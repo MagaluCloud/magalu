@@ -6,6 +6,7 @@ require (
 	github.com/PaesslerAG/gval v1.2.2
 	github.com/PaesslerAG/jsonpath v0.1.1
 	github.com/getkin/kin-openapi v0.118.0
+	github.com/go-openapi/jsonpointer v0.19.5
 	github.com/jedib0t/go-pretty/v6 v6.4.6
 	github.com/pkg/browser v0.0.0-20210911075715-681adbf594b8
 	github.com/stoewer/go-strcase v1.3.0
@@ -17,7 +18,6 @@ require (
 
 require (
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
-	github.com/go-openapi/jsonpointer v0.19.5 // indirect
 	github.com/go-openapi/swag v0.19.5 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/iancoleman/orderedmap v0.0.0-20190318233801-ac98e3ecb4b0 // indirect

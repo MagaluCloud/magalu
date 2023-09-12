@@ -36,6 +36,7 @@ type Resource struct {
 	operations      []core.Executor
 	byName          map[string]core.Executor
 	logger          *zap.SugaredLogger
+	execResolver    *executorResolver
 }
 
 // BEGIN: Descriptor interface:
@@ -270,6 +271,7 @@ func (o *Resource) getOperations() (operations []core.Executor, byName map[strin
 			extensionPrefix: o.extensionPrefix,
 			servers:         servers,
 			logger:          o.logger.Named(opName),
+			execResolver:    o.execResolver,
 		}
 
 		if wtExt, ok := getExtensionObject(o.extensionPrefix, "wait-termination", desc.op.Extensions, nil); ok && wtExt != nil {
@@ -284,6 +286,15 @@ func (o *Resource) getOperations() (operations []core.Executor, byName map[strin
 			operation = core.NewExecuteResultOutputOptions(operation, func(exec core.Executor, result core.Value) string {
 				return output
 			})
+		}
+
+		err = o.execResolver.add(
+			desc.op.OperationID,
+			[]string{"paths", desc.key, desc.method},
+			operation,
+		)
+		if err != nil {
+			return false, err
 		}
 
 		o.operations = append(o.operations, operation)

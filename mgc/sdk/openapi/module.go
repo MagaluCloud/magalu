@@ -27,6 +27,7 @@ type Module struct {
 	logger          *zap.SugaredLogger
 	resources       []*Resource
 	byName          map[string]*Resource
+	execResolver    executorResolver
 }
 
 // BEGIN: Descriptor interface:
@@ -90,6 +91,7 @@ func (m *Module) getResources() (resources []*Resource, byName map[string]*Resou
 			extensionPrefix: m.extensionPrefix,
 			servers:         doc.Servers,
 			logger:          m.logger.Named(tag.Name),
+			execResolver:    &m.execResolver,
 		}
 		m.resources = append(m.resources, resource)
 		m.byName[resource.Name()] = resource
