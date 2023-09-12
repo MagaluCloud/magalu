@@ -2,7 +2,9 @@ package openapi
 
 import (
 	"fmt"
+	"strings"
 
+	"golang.org/x/exp/slices"
 	"gopkg.in/yaml.v3"
 	"magalu.cloud/core"
 )
@@ -86,6 +88,10 @@ func (o *Source) getModules() (modules []*Module, byName map[string]*Module, err
 		o.modules[i] = module
 		o.byName[module.Name()] = module
 	}
+
+	slices.SortFunc(o.modules, func(a, b *Module) int {
+		return strings.Compare(a.Name(), b.Name())
+	})
 
 	return o.modules, o.byName, nil
 }
