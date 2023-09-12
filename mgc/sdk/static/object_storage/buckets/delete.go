@@ -85,19 +85,32 @@ func delete(ctx context.Context, params deleteParams, cfg s3.Config) (core.Value
 	}
 
 	objErr := NewDeleteObjectsError()
-	for _, obj := range objs.Contents {
-		objURI := path.Join(params.Name, obj.Key)
-
+	makeRequest := func(uri string, done chan<- core.Value) {
 		_, err := objects.Delete(
 			ctx,
-			objects.DeleteObjectParams{Destination: objURI},
+			objects.DeleteObjectParams{Destination: uri},
 			cfg,
 		)
+
 		if err != nil {
-			objErr.Add(objURI, err)
+			objErr.Add(uri, err)
 		} else {
-			deleteLogger().Infof("Deleted %s%s", s3.URIPrefix, objURI)
+			deleteLogger().Infof("Deleted %s%s", s3.URIPrefix, uri)
 		}
+
+		done <- true
+	}
+
+	done := make(chan core.Value)
+	defer close(done)
+
+	for _, obj := range objs.Contents {
+		objURI := path.Join(params.Name, obj.Key)
+		go makeRequest(objURI, done)
+	}
+
+	for range objs.Contents {
+		<-done
 	}
 
 	if objErr.HasError() {
