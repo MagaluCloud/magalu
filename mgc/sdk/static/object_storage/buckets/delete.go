@@ -85,33 +85,29 @@ func delete(ctx context.Context, params deleteParams, cfg s3.Config) (core.Value
 	}
 
 	objErr := NewDeleteObjectsError()
-	makeRequest := func(uri string, done chan<- core.Value) {
-		_, err := objects.Delete(
-			ctx,
-			objects.DeleteObjectParams{Destination: uri},
-			cfg,
-		)
-
-		if err != nil {
-			objErr.Add(uri, err)
-		} else {
-			deleteLogger().Infof("Deleted %s%s", s3.URIPrefix, uri)
-		}
-
-		done <- true
-	}
-
-	done := make(chan core.Value)
-	defer close(done)
-
+	pool := s3.NewThreadPool(cfg.MaxWorkers, cfg.QueueSize)
 	for _, obj := range objs.Contents {
 		objURI := path.Join(params.Name, obj.Key)
-		go makeRequest(objURI, done)
-	}
+		makeRequest := func() error {
+			_, err := objects.Delete(
+				ctx,
+				objects.DeleteObjectParams{Destination: objURI},
+				cfg,
+			)
 
-	for range objs.Contents {
-		<-done
+			if err != nil {
+				objErr.Add(objURI, err)
+			} else {
+				deleteLogger().Infof("Deleted %s%s", s3.URIPrefix, objURI)
+			}
+
+			return nil
+		}
+		if err := pool.Enqueue(s3.Job{Execute: makeRequest}); err != nil {
+			objErr.Add(objURI, err)
+		}
 	}
+	pool.Wait()
 
 	if objErr.HasError() {
 		return nil, objErr
