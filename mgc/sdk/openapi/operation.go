@@ -777,6 +777,13 @@ func (o *Operation) addServerVariables(schema *core.Schema) {
 }
 
 func (o *Operation) getServerURL(configs core.Configs) (string, error) {
+	if len(o.servers) == 0 {
+		return "", fmt.Errorf("no available servers in spec")
+	}
+	if len(o.servers[0].Variables) == 0 {
+		return o.servers[0].URL, nil
+	}
+
 	url := ""
 	_, err := o.forEachServerVariable(func(externalName, internalName string, spec *openapi3.ServerVariable, server *openapi3.Server) (run bool, err error) {
 		val, ok := configs[externalName]

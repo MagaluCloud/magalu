@@ -149,9 +149,9 @@ func getPathEntry(pathEntry string) (string, bool) {
 func getCoalescedPath(path []operationTreePath) []string {
 	parts := []string{}
 	wasVariable := false
-	for _, p := range path {
+	for i, p := range path {
 		pathEntry, isVariable := getPathEntry(p.key)
-		if len(p.parent.tree) > 1 || wasVariable {
+		if i == 0 || len(p.parent.tree) > 1 || wasVariable {
 			parts = append(parts, pathEntry)
 		}
 		wasVariable = isVariable
