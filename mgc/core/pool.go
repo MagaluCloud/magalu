@@ -64,6 +64,8 @@ func (tp *ThreadPool) Run(j TPJob) {
 func (tp *ThreadPool) Finish() {
 	// Should receive a message for each goroutine that it has finished
 	exitSignal := make(chan bool, tp.workerN)
+	defer close(exitSignal)
+	defer close(tp.messageQueue)
 	// Send "I'm finished" to main thread
 	var exitMessage exitMessage = func() {
 		exitSignal <- true
