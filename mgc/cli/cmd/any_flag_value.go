@@ -20,16 +20,27 @@ func (f *AnyFlagValue) String() string {
 }
 
 func (f *AnyFlagValue) Set(val string) error {
-	err := json.Unmarshal([]byte(val), &f.value)
-	if err != nil {
-		if !strings.HasPrefix(val, "@") {
-			f.value = val
-			return nil
-		} else if f.value, err = loadFromFile(val[1:]); err != nil {
+	var err error
+	switch {
+	case strings.HasPrefix(val, "@"):
+		f.value, err = loadJSONFromFile(val[1:])
+		if err != nil {
 			return err
 		}
+	case strings.HasPrefix(val, "%"):
+		f.value, err = loadFromFile(val[1:])
+		if err != nil {
+			return err
+		}
+	case strings.HasPrefix(val, "#"):
+		f.value = val[1:]
+	default:
+		err := json.Unmarshal([]byte(val), &f.value)
+		if err != nil {
+			f.value = val
+		}
 	}
-	return err
+	return nil
 }
 
 func (f *AnyFlagValue) Type() string {
@@ -40,16 +51,25 @@ func (f *AnyFlagValue) Value() any {
 	return f.value
 }
 
-func loadFromFile(filename string) (value any, err error) {
+func loadJSONFromFile(filename string) (any, error) {
 	data, err := os.ReadFile(filename)
 	if err != nil {
 		return nil, err
 	}
 
-	// TODO: eventually we want to load raw... could we determine from schema?
+	var value any
 	err = json.Unmarshal(data, &value)
 	if err != nil {
-		value = string(data)
+		return nil, err
 	}
 	return value, nil
+}
+
+func loadFromFile(filename string) (string, error) {
+	data, err := os.ReadFile(filename)
+	if err != nil {
+		return "", err
+	}
+
+	return string(data), nil
 }

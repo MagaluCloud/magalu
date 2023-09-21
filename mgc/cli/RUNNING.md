@@ -2,6 +2,42 @@
 
 First download or build the `mgc` cli.
 
+## Input handling with prefixes
+
+When providing flags to a command, we can use one of the following prefixes to get the
+parameter values:
+
+- `@` to load file content as JSON;
+- `%` to load file content as a string;
+- `#` to load value directly as a string;
+- No prefix to load value directly as JSON;
+
+For example, let's say you have this file:
+
+```
+[
+	{
+		"id": "76e3b8c4-407f-422b-a1e9-343a40faf1cd"
+	}
+]
+```
+
+It follows the JSON format, so you should load it using the `@` prefix: `--flag=@filename`.
+
+However, if your file is like this, you may want to load it as a string instead:
+
+```
+keypair_name_here
+```
+
+So use the `%` prefix: `--flag=%filename`.
+
+This is not different from using the `#` prefix with `--flag=#keypair_name_here`, but you
+can use `--flag=#1234` to make sure `1234` is read as a string instead of number.
+
+Lastly, if you use no prefix, the value will be interpreted as JSON first then as a string
+if that fails. You can use this option if you are unsure about the input format.
+
 ## Authentication
 
 To get a token, one can run
