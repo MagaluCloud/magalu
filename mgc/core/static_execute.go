@@ -3,11 +3,12 @@ package core
 import (
 	"context"
 	"fmt"
-	"log"
 	"reflect"
 
 	"github.com/getkin/kin-openapi/openapi3"
 	"github.com/invopop/jsonschema"
+	"go.uber.org/zap"
+	coreLogger "magalu.cloud/core/logger"
 )
 
 type StaticExecute struct {
@@ -19,6 +20,15 @@ type StaticExecute struct {
 	result      *Schema
 	links       map[string]Linker
 	execute     func(ctx context.Context, parameters Parameters, configs Configs) (value Value, err error)
+}
+
+var corePkgLogger *zap.SugaredLogger
+
+func logger() *zap.SugaredLogger {
+	if corePkgLogger == nil {
+		corePkgLogger = coreLogger.New[StaticExecute]()
+	}
+	return corePkgLogger
 }
 
 // Raw Parameter and Config JSON Schemas
@@ -83,15 +93,15 @@ func NewStaticExecuteWithLinks[ParamsT any, ConfigsT any, ResultT any](
 ) *StaticExecute {
 	ps, err := schemaFromType[ParamsT]()
 	if err != nil {
-		log.Fatal(err)
+		logger().Fatal(err)
 	}
 	cs, err := schemaFromType[ConfigsT]()
 	if err != nil {
-		log.Fatal(err)
+		logger().Fatal(err)
 	}
 	rs, err := schemaFromType[ResultT]()
 	if err != nil {
-		log.Fatal(err)
+		logger().Fatal(err)
 	}
 
 	return NewRawStaticExecute(
