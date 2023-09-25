@@ -103,7 +103,6 @@ func addMgcSchemaAttributes(
 		if ca, ok := attributes[mgcName]; ok {
 			if !checkSimilarJsonSchemas(ca.mgcSchema, mgcPropSchema) {
 				// Ignore update value in favor of create value (This is probably a bug with the API)
-				// TODO: Ignore default values when verifying equality
 				tflog.Error(ctx, fmt.Sprintf("[resource] schema for `%s`: ignoring DIFFERENT attribute `%s`:\nOLD=%+v\nNEW=%+v", resourceName, k, ca.mgcSchema, mgcPropSchema))
 				continue
 			}
