@@ -126,10 +126,18 @@ func (r *MgcResource) execute(
 		result, err = exec.Execute(ctx, params, configs)
 	}
 	if err != nil {
-		diag.AddError(
-			fmt.Sprintf("Unable to %s resource", exec.Name()),
-			fmt.Sprintf("Service returned with error: %v", err),
-		)
+		errTitle := fmt.Sprintf("Unable to %s resource", exec.Name())
+		if tError, ok := err.(core.FailedTerminationError); ok {
+			diag.AddError(
+				errTitle,
+				fmt.Sprintf("The resource was modified and is no longer valid, check your infrastructure for inconsistencies. Error: %s", tError.Message),
+			)
+		} else {
+			diag.AddError(
+				errTitle,
+				fmt.Sprintf("Service returned with error: %v", err),
+			)
+		}
 		return nil
 	}
 

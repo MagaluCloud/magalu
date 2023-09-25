@@ -179,7 +179,14 @@ func (r *MgcResource) getCreateParamsModifiers(ctx context.Context, mgcSchema *m
 
 func (r *MgcResource) getUpdateParamsModifiers(ctx context.Context, mgcSchema *mgcSdk.Schema, mgcName mgcName) attributeModifiers {
 	k := string(mgcName)
-	isCreated := r.create.ResultSchema().Properties[k] != nil
+	isCreated := false
+	if r.create.ResultSchema().Properties[k] != nil {
+		isCreated = true
+	} else if uLink := r.create.Links()["update"]; uLink != nil {
+		if uLink.AdditionalParametersSchema().Properties[k] == nil {
+			isCreated = true
+		}
+	}
 	required := slices.Contains(mgcSchema.Required, k)
 
 	return attributeModifiers{

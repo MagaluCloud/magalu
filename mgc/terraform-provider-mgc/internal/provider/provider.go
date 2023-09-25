@@ -170,7 +170,12 @@ func collectGroupResources(
 			case "delete":
 				delete = exec
 			default:
-				tflog.Warn(ctx, fmt.Sprintf("TODO: uncovered action %s", exec.Name()))
+				actionResource := collectActionResource(ctx, sdk, group, exec, path)
+				if len(actionResource) > 0 {
+					resources = append(resources, actionResource...)
+				} else {
+					tflog.Warn(ctx, fmt.Sprintf("TODO: uncovered action %s", exec.Name()))
+				}
 			}
 			return true, nil
 		} else {
@@ -211,6 +216,56 @@ func collectGroupResources(
 	}
 
 	return resources, err
+}
+
+func collectActionResource(ctx context.Context, sdk *mgcSdk.Sdk, group mgcSdk.Grouper, exec mgcSdk.Executor, path []string) (resources [](func() resource.Resource)) {
+	resources = make([]func() resource.Resource, 0)
+
+	// Should handle only actions that perform changes
+	// TODO: Improve naming, the terraform resource name should be more concise and easier to understand
+	path = append(path, exec.Name())
+	name := strings.Join(path, "_")
+	if strings.Contains(name, "get") {
+		tflog.Debug(ctx, fmt.Sprintf("action %s is a non-modifying action, it can't be turned into a resource", name))
+		return
+	}
+
+	var create, read, update, delete mgcSdk.Executor
+	create = exec
+
+	for k, link := range exec.Links() {
+		switch k {
+		case "read":
+			read = link.Target()
+		case "update":
+			update = link.Target()
+		case "delete":
+			delete = link.Target()
+		}
+	}
+
+	if delete == nil {
+		tflog.Warn(ctx, fmt.Sprintf("Action Resource %s miss delete operations", name))
+		return
+	}
+	if read == nil {
+		read = core.NewStaticExecuteSimple("read", "1.0", "read", func(context context.Context) (any, error) { return nil, nil })
+	}
+	if update == nil {
+		update = core.NewStaticExecuteSimple("update", "1.0", "update", func(context context.Context) (any, error) { return nil, nil })
+	}
+
+	res := &MgcResource{
+		sdk:    sdk,
+		name:   name,
+		group:  group,
+		create: create,
+		read:   read,
+		update: update,
+		delete: delete,
+	}
+	resources = append(resources, func() resource.Resource { return res })
+	return
 }
 
 func (p *MgcProvider) DataSources(ctx context.Context) []func() datasource.DataSource {
