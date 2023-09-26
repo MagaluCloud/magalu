@@ -67,23 +67,26 @@ func readContent(path string) (io.Reader, error) {
 	}
 }
 
-func formatURI(bucketURI, filename string) string {
-	if bucketURI[len(bucketURI)-1] == '/' {
-		return bucketURI + filename
+func formatURI(uri string) string {
+	if !strings.Contains(uri, s3.URIPrefix) {
+		return s3.URIPrefix + uri
 	}
-
-	return bucketURI + "/" + filename
+	return uri
 }
 
 func upload(ctx context.Context, params uploadParams, cfg s3.Config) (*uploadTemplateResult, error) {
-	bucketURI, _ := strings.CutPrefix(params.Destination, s3.URIPrefix)
+	dst, _ := strings.CutPrefix(params.Destination, s3.URIPrefix)
 	_, fileName := path.Split(params.Source)
+	if !isFilePath(dst) {
+		// If it isn't a file path, don't rename, just append source with bucket URI
+		dst = path.Join(dst, fileName)
+	}
 
 	reader, err := readContent(params.Source)
 	if err != nil {
 		return nil, fmt.Errorf("error reading object: %w", err)
 	}
-	req, err := newUploadRequest(ctx, cfg.Region, path.Join(bucketURI, fileName), reader)
+	req, err := newUploadRequest(ctx, cfg.Region, dst, reader)
 	if err != nil {
 		return nil, err
 	}
@@ -95,7 +98,7 @@ func upload(ctx context.Context, params uploadParams, cfg s3.Config) (*uploadTem
 
 	return &uploadTemplateResult{
 		// path.Join will remove URI double slash prefix on s3://
-		URI:  formatURI(params.Destination, fileName),
+		URI:  formatURI(dst),
 		File: fileName,
 	}, nil
 }
