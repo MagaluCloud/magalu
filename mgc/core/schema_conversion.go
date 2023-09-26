@@ -35,7 +35,7 @@ func ToCoreSchema(s *jsonschema.Schema) (*Schema, error) {
 		return nil, err
 	}
 
-	uninitializeExtensions(oapiSchema)
+	initializeExtensions(oapiSchema)
 	return (*Schema)(oapiSchema), nil
 }
 
@@ -81,10 +81,11 @@ func lookupDefByPath(defs jsonschema.Definitions, path []string) (*jsonschema.Sc
 	}
 }
 
-func uninitializeExtensions(s *openapi3.Schema) {
-	s.Extensions = nil
+func initializeExtensions(s *openapi3.Schema) {
+	s.Extensions = make(map[string]any)
 	_, _ = visitAllSubRefs(s, func(ref *openapi3.SchemaRef) error {
-		ref.Value.Extensions = nil
+		ref.Value.Extensions = make(map[string]any)
+
 		return nil
 	})
 }
