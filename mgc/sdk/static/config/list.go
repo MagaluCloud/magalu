@@ -53,7 +53,7 @@ func getAllConfigs(ctx context.Context) (map[string]*core.Schema, error) {
 	}
 
 	config := config.FromContext(ctx)
-	if root == nil {
+	if config == nil {
 		return nil, fmt.Errorf("Couldn't get Config from context")
 	}
 
