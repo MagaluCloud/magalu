@@ -38,6 +38,7 @@ type transformSpec struct {
 	Type string `json:"type" yaml:"type"`
 	// See more about the 'remain' directive here: https://pkg.go.dev/github.com/mitchellh/mapstructure#hdr-Remainder_Values
 	Parameters map[string]any `json:",remain"` // nolint
+	Schema     *openapi3.Schema
 }
 
 type transformRegExpSpec struct {
@@ -208,14 +209,19 @@ func getTransformationSpecs(extensions map[string]any, transformationKey string)
 
 // The returned function does NOT and should NOT alter the value that was passed by it
 // (maps, for example, when passed as input, won't be altered, a new copy will be made)
-func createTransform[T any](schema *core.Schema, extensionPrefix *string) func(value T) (T, error) {
+func createTransform[T any](schema *core.Schema, extensionPrefix *string) (func(value T) (T, error), *core.Schema, error) {
 	transformationKey := getTransformKey(extensionPrefix)
 	if transformationKey == "" {
-		return nil
+		return nil, schema, nil
 	}
 
 	if !needsTransformation(schema, transformationKey) {
-		return nil
+		return nil, schema, nil
+	}
+
+	transformedSchema, err := transformSchema(schema, transformationKey)
+	if err != nil {
+		return nil, nil, err
 	}
 
 	return func(value T) (converted T, err error) {
@@ -229,7 +235,7 @@ func createTransform[T any](schema *core.Schema, extensionPrefix *string) func(v
 			return
 		}
 		return
-	}
+	}, transformedSchema, nil
 }
 
 func needsTransformation(schema *core.Schema, transformationKey string) bool {
@@ -356,4 +362,124 @@ func transform(schema *core.Schema, transformationKey string, value any) (any, e
 		}
 		return value, nil
 	}
+}
+
+func transformSchema(schema *core.Schema, transformationKey string) (*core.Schema, error) {
+	specs := getTransformationSpecs(schema.Extensions, transformationKey)
+	transformedSchema, err := doTransformsSchema(specs, schema)
+	if err != nil {
+		return nil, err
+	}
+
+	switch transformedSchema.Type {
+	case "object":
+		for _, ref := range transformedSchema.Properties {
+			propSchema := (*core.Schema)(ref.Value)
+			if propSchema != nil {
+				convertedSchema, err := transformSchema(propSchema, transformationKey)
+				if err != nil {
+					return nil, err
+				}
+				ref.Value = (*openapi3.Schema)(convertedSchema)
+			}
+		}
+
+	case "array":
+		if transformedSchema.Items != nil && transformedSchema.Items.Value != nil {
+			itemSchema := (*core.Schema)(transformedSchema.Items.Value)
+			convertedSchema, err := transformSchema(itemSchema, transformationKey)
+			if err != nil {
+				return nil, err
+			}
+			transformedSchema.Items.Value = (*openapi3.Schema)(convertedSchema)
+		}
+
+	default:
+		sub := []openapi3.SchemaRefs{transformedSchema.AllOf, transformedSchema.AnyOf, transformedSchema.OneOf}
+		for _, refs := range sub {
+			for _, ref := range refs {
+				if ref.Value != nil {
+					subSchema := (*core.Schema)(ref.Value)
+					var err error
+					convertedSchema, err := transformSchema(subSchema, transformationKey)
+					if err != nil {
+						return nil, err
+					}
+					ref.Value = (*openapi3.Schema)(convertedSchema)
+				}
+			}
+		}
+	}
+
+	return transformedSchema, nil
+}
+
+func doTransformsSchema(specs []*transformSpec, schema *core.Schema) (result *core.Schema, err error) {
+	result = schema
+	for _, spec := range specs {
+		result, err = doTransformSchema(spec, result)
+		if err != nil {
+			logger().Debugf("attempted to transform %#v but failed. Transformation type was %s", schema, spec.Type)
+			return
+		}
+	}
+	logger().Debugf("transformed schema %#v into %#v", schema, result)
+	return
+}
+
+func doTransformSchema(spec *transformSpec, schema *core.Schema) (*core.Schema, error) {
+	if spec.Schema != nil {
+		return (*core.Schema)(spec.Schema), nil
+	}
+
+	switch spec.Type {
+	default:
+		return schema, nil
+	case "translate":
+		return transformTranslateSchema(spec.Parameters, schema)
+	}
+}
+
+func reverseTranslate(spec *transformTranslateSpec, value any) (any, error) {
+	for _, item := range spec.Translations {
+		if reflect.DeepEqual(item.To, value) {
+			return item.From, nil
+		}
+	}
+	if spec.AllowMissing {
+		return value, nil
+	}
+	return value, fmt.Errorf("translation not found: %+v", value)
+}
+
+func transformTranslateSchema(params map[string]any, schema *core.Schema) (result *core.Schema, err error) {
+	if schema.Default == nil && len(schema.Enum) == 0 {
+		return schema, nil
+	}
+
+	spec, err := core.DecodeNewValue[transformTranslateSpec](params)
+	if err != nil {
+		return schema, fmt.Errorf("invalid translation parameters: %w", err)
+	}
+	if len(spec.Translations) == 0 {
+		return schema, fmt.Errorf("invalid translation parameters: missing translations")
+	}
+
+	copySchema := *schema
+	copySchema.Enum = make([]interface{}, len(schema.Enum))
+	result = &copySchema
+
+	if schema.Default != nil {
+		copySchema.Default, err = reverseTranslate(spec, schema.Default)
+		if err != nil {
+			return
+		}
+	}
+	for i, value := range schema.Enum {
+		copySchema.Enum[i], err = reverseTranslate(spec, value)
+		if err != nil {
+			return
+		}
+	}
+	return
 }

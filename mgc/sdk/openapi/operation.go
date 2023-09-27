@@ -634,8 +634,11 @@ func (o *Operation) ParametersSchema() *core.Schema {
 		o.addRequestBodyParameters(rootSchema)
 		o.addSecurityParameters(rootSchema)
 
-		o.paramsSchema = rootSchema
-		o.transformParameters = createTransform[map[string]any](rootSchema, o.extensionPrefix)
+		var err error
+		o.transformParameters, o.paramsSchema, err = createTransform[map[string]any](rootSchema, o.extensionPrefix)
+		if err != nil {
+			o.logger.Warnw("error while loading parameters schema", "error", err)
+		}
 	}
 	return o.paramsSchema
 }
@@ -647,8 +650,11 @@ func (o *Operation) ConfigsSchema() *core.Schema {
 		o.addParameters(rootSchema, configLocations)
 		o.addServerVariables(rootSchema)
 
-		o.configsSchema = rootSchema
-		o.transformConfigs = createTransform[map[string]any](rootSchema, o.extensionPrefix)
+		var err error
+		o.transformConfigs, o.configsSchema, err = createTransform[map[string]any](rootSchema, o.extensionPrefix)
+		if err != nil {
+			o.logger.Warnw("error while loading configs schema", "error", err)
+		}
 	}
 	return o.configsSchema
 }
@@ -684,8 +690,11 @@ func (o *Operation) initResultSchema() {
 			rootSchema = (*core.Schema)(rootSchema.AnyOf[0].Value)
 		}
 
-		o.resultSchema = rootSchema
-		o.transformResult = createTransform[any](rootSchema, o.extensionPrefix)
+		var err error
+		o.transformResult, o.resultSchema, err = createTransform[any](rootSchema, o.extensionPrefix)
+		if err != nil {
+			o.logger.Warnw("error while initializing result schema", "error", err)
+		}
 	}
 }
 
