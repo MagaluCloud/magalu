@@ -21,6 +21,7 @@ import (
 	"magalu.cloud/core/auth"
 	"magalu.cloud/core/config"
 	coreHttp "magalu.cloud/core/http"
+	"magalu.cloud/core/schema"
 
 	"github.com/getkin/kin-openapi/openapi3"
 	"golang.org/x/exp/maps"
@@ -629,7 +630,7 @@ func (o *Operation) forEachParameterName(cb cbForEachParameterName) (finished bo
 
 func (o *Operation) ParametersSchema() *core.Schema {
 	if o.paramsSchema == nil {
-		rootSchema := core.NewObjectSchema(map[string]*core.Schema{}, []string{})
+		rootSchema := schema.NewObjectSchema(map[string]*core.Schema{}, []string{})
 
 		// Must match forEachParameterName!
 		o.addParameters(rootSchema, parametersLocations)
@@ -644,7 +645,7 @@ func (o *Operation) ParametersSchema() *core.Schema {
 
 func (o *Operation) ConfigsSchema() *core.Schema {
 	if o.configsSchema == nil {
-		rootSchema := core.NewObjectSchema(map[string]*core.Schema{}, []string{})
+		rootSchema := schema.NewObjectSchema(map[string]*core.Schema{}, []string{})
 
 		o.addParameters(rootSchema, configLocations)
 		o.addServerVariables(rootSchema)
@@ -658,7 +659,7 @@ func (o *Operation) ConfigsSchema() *core.Schema {
 
 func (o *Operation) initResultSchema() {
 	if o.resultSchema == nil {
-		rootSchema := core.NewAnyOfSchema()
+		rootSchema := schema.NewAnyOfSchema()
 		responses := o.operation.Responses
 		o.responseSchemas = make(map[string]*core.Schema)
 
@@ -682,7 +683,7 @@ func (o *Operation) initResultSchema() {
 		switch len(rootSchema.AnyOf) {
 		default:
 		case 0:
-			rootSchema = core.NewNullSchema()
+			rootSchema = schema.NewNullSchema()
 		case 1:
 			rootSchema = (*core.Schema)(rootSchema.AnyOf[0].Value)
 		}

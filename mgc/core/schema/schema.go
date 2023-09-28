@@ -1,6 +1,26 @@
-package core
+package schema
 
-import "github.com/getkin/kin-openapi/openapi3"
+import (
+	"github.com/getkin/kin-openapi/openapi3"
+)
+
+// NOTE: TODO: should we duplicate this, or find a more generic package?
+type Schema openapi3.Schema
+
+func (s *Schema) VisitJSON(value any, opts ...openapi3.SchemaValidationOption) error {
+	opts = append(opts, openapi3.MultiErrors())
+	return (*openapi3.Schema)(s).VisitJSON(value, opts...)
+}
+
+// UnmarshalJSON sets Schema to a copy of data.
+func (schema *Schema) UnmarshalJSON(data []byte) error {
+	return (*openapi3.Schema)(schema).UnmarshalJSON(data)
+}
+
+// MarshalJSON returns the JSON encoding of Schema.
+func (schema Schema) MarshalJSON() ([]byte, error) {
+	return openapi3.Schema(schema).MarshalJSON()
+}
 
 func NewSchemaRef(ref string, schema *Schema) *openapi3.SchemaRef {
 	return openapi3.NewSchemaRef(ref, (*openapi3.Schema)(schema))
@@ -82,16 +102,6 @@ func SetDefault(schema *Schema, value any) *Schema {
 func SetDescription(schema *Schema, description string) *Schema {
 	schema.Description = description
 	return schema
-}
-
-// UnmarshalJSON sets Schema to a copy of data.
-func (schema *Schema) UnmarshalJSON(data []byte) error {
-	return (*openapi3.Schema)(schema).UnmarshalJSON(data)
-}
-
-// MarshalJSON returns the JSON encoding of Schema.
-func (schema Schema) MarshalJSON() ([]byte, error) {
-	return openapi3.Schema(schema).MarshalJSON()
 }
 
 // *Recursively* checks if schema can be nullable. Function supports `nullable`

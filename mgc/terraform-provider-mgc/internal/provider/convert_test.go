@@ -7,7 +7,7 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-go/tftypes"
-	"magalu.cloud/core"
+	core "magalu.cloud/core/schema"
 )
 
 var states = []tftypes.Value{
