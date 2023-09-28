@@ -8,8 +8,6 @@ import (
 
 	"github.com/getkin/kin-openapi/openapi3"
 	"github.com/stoewer/go-strcase"
-	"golang.org/x/exp/maps"
-	"golang.org/x/exp/slices"
 	"magalu.cloud/core"
 	"magalu.cloud/core/utils"
 )
@@ -273,7 +271,7 @@ func transform(schema *core.Schema, transformationKey string, value any) (any, e
 		if !ok {
 			return value, nil
 		}
-		changed := false
+		cm := utils.NewCOWMapFunc(valueMap, utils.IsSameValueOrPointer)
 		for k, ref := range schema.Properties {
 			propSchema := (*core.Schema)(ref.Value)
 			if propSchema != nil {
@@ -282,17 +280,11 @@ func transform(schema *core.Schema, transformationKey string, value any) (any, e
 					if err != nil {
 						return value, err
 					}
-					if !utils.IsSameValueOrPointer(propValue, convertedValue) {
-						if !changed {
-							valueMap = maps.Clone(valueMap)
-							changed = true
-						}
-
-						valueMap[k] = convertedValue
-					}
+					cm.Set(k, convertedValue)
 				}
 			}
 		}
+		valueMap, _ = cm.Release()
 		return valueMap, nil
 
 	case "array":
@@ -300,7 +292,7 @@ func transform(schema *core.Schema, transformationKey string, value any) (any, e
 		if !ok {
 			return value, nil
 		}
-		changed := false
+		cs := utils.NewCOWSliceFunc(valueSlice, utils.IsSameValueOrPointer)
 		if schema.Items != nil && schema.Items.Value != nil {
 			itemSchema := (*core.Schema)(schema.Items.Value)
 			for i, itemValue := range valueSlice {
@@ -308,17 +300,11 @@ func transform(schema *core.Schema, transformationKey string, value any) (any, e
 				if err != nil {
 					return value, err
 				}
-				if !utils.IsSameValueOrPointer(itemValue, convertedValue) {
-					if !changed {
-						valueSlice = slices.Clone(valueSlice)
-						changed = true
-					}
-
-					valueSlice[i] = convertedValue
-				}
+				cs.Set(i, convertedValue)
 			}
 		}
-		return value, nil
+		valueSlice, _ = cs.Release()
+		return valueSlice, nil
 
 	default:
 		sub := []openapi3.SchemaRefs{schema.AllOf, schema.AnyOf, schema.OneOf}
