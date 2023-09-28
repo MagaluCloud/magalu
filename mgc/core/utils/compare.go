@@ -16,8 +16,14 @@ func IsSameValueOrPointer(a, b any) bool {
 	if vA.Type() != vB.Type() {
 		return false
 	}
+
+	if vA.Kind() == reflect.Pointer {
+		vA = vA.Elem()
+		vB = vB.Elem()
+	}
+
 	if vA.Comparable() {
-		return a == b
+		return vA.Interface() == vB.Interface()
 	} else {
 		return vA.UnsafePointer() == vB.UnsafePointer()
 	}
