@@ -11,6 +11,7 @@ import (
 	"golang.org/x/exp/maps"
 	"golang.org/x/exp/slices"
 	"magalu.cloud/core"
+	"magalu.cloud/core/utils"
 )
 
 // Checks if the value is exactly the same, it's basically a "=="
@@ -48,7 +49,7 @@ type transformRegExpSpec struct {
 }
 
 func transformRegExp(params map[string]any, s string) (result string, err error) {
-	spec, err := core.DecodeNewValue[transformRegExpSpec](params)
+	spec, err := utils.DecodeNewValue[transformRegExpSpec](params)
 	if err != nil {
 		return s, fmt.Errorf("invalid regexp parameters: %w", err)
 	}
@@ -78,7 +79,7 @@ type transformTranslateSpec struct {
 }
 
 func transformTranslate(params map[string]any, value any) (result any, err error) {
-	spec, err := core.DecodeNewValue[transformTranslateSpec](params)
+	spec, err := utils.DecodeNewValue[transformTranslateSpec](params)
 	if err != nil {
 		return value, fmt.Errorf("invalid translation parameters: %w", err)
 	}
@@ -164,7 +165,7 @@ func newTransformSpecFromMap(m map[string]any) *transformSpec {
 	if len(m) == 0 {
 		return nil
 	}
-	spec, err := core.DecodeNewValue[transformSpec](m)
+	spec, err := utils.DecodeNewValue[transformSpec](m)
 	if err != nil || len(spec.Type) == 0 {
 		return nil
 	}

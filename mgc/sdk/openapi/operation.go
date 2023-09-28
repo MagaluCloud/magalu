@@ -22,6 +22,7 @@ import (
 	"magalu.cloud/core/config"
 	coreHttp "magalu.cloud/core/http"
 	"magalu.cloud/core/schema"
+	"magalu.cloud/core/utils"
 
 	"github.com/getkin/kin-openapi/openapi3"
 	"golang.org/x/exp/maps"
@@ -784,7 +785,7 @@ func (o *Operation) addNetworkConfig(schema *core.Schema) {
 }
 
 func (o *Operation) getServerURL(configs core.Configs) (string, error) {
-	nc, _ := core.DecodeNewValue[config.NetworkConfig](configs)
+	nc, _ := utils.DecodeNewValue[config.NetworkConfig](configs)
 
 	if nc.ServerUrl != "" {
 		return nc.ServerUrl, nil

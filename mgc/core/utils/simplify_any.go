@@ -1,4 +1,4 @@
-package core
+package utils
 
 import (
 	"fmt"
@@ -9,7 +9,7 @@ import (
 // it into the simplest possible native types. Pointers are converted into their respective underlying
 // value, structs are converted into map[string]any, etc. This operation is recursive and will convert
 // the passed value in its entirety, and not just the first depth level
-func SimplifyAny(value Value) (converted Value, err error) {
+func SimplifyAny(value any) (converted any, err error) {
 	if value == nil {
 		return nil, nil
 	}
@@ -30,7 +30,7 @@ func SimplifyAny(value Value) (converted Value, err error) {
 		reflect.Func,
 		reflect.UnsafePointer,
 		reflect.Interface:
-		return nil, fmt.Errorf("Forbidden value type %s", v)
+		return nil, fmt.Errorf("forbidden value type %s", v)
 
 	case reflect.Pointer:
 		if v.IsNil() {
@@ -43,7 +43,7 @@ func SimplifyAny(value Value) (converted Value, err error) {
 	case reflect.Map:
 		return simplifyMap(v)
 	case reflect.Struct:
-		resultMap := map[string]Value{}
+		resultMap := map[string]any{}
 		err := DecodeValue(value, &resultMap)
 		if err != nil {
 			return nil, err
@@ -51,14 +51,14 @@ func SimplifyAny(value Value) (converted Value, err error) {
 		return simplifyMap(reflect.ValueOf(resultMap))
 
 	default:
-		return nil, fmt.Errorf("Unhandled value type: %s", v)
+		return nil, fmt.Errorf("unhandled value type: %s", v)
 	}
 }
 
-func simplifyArray(v reflect.Value) (Value, error) {
+func simplifyArray(v reflect.Value) ([]any, error) {
 	// convert whatever map to []Value
 	count := v.Len()
-	result := make([]Value, count)
+	result := make([]any, count)
 	for i := 0; i < count; i++ {
 		subVal := v.Index(i)
 		subConverted, err := SimplifyAny(subVal.Interface())
@@ -70,7 +70,7 @@ func simplifyArray(v reflect.Value) (Value, error) {
 	return result, nil
 }
 
-func simplifyMap(v reflect.Value) (Value, error) {
+func simplifyMap(v reflect.Value) (map[string]any, error) {
 	result := make(map[string]any, v.Len())
 	keys := v.MapKeys()
 	for _, key := range keys {
