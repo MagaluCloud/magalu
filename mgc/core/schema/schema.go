@@ -1,6 +1,8 @@
 package schema
 
 import (
+	"reflect"
+
 	"github.com/getkin/kin-openapi/openapi3"
 )
 
@@ -10,6 +12,10 @@ type Schema openapi3.Schema
 func (s *Schema) VisitJSON(value any, opts ...openapi3.SchemaValidationOption) error {
 	opts = append(opts, openapi3.MultiErrors())
 	return (*openapi3.Schema)(s).VisitJSON(value, opts...)
+}
+
+func (s *Schema) Equals(other *Schema) bool {
+	return reflect.DeepEqual(s, other)
 }
 
 // UnmarshalJSON sets Schema to a copy of data.
