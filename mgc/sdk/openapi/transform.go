@@ -6,9 +6,9 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/getkin/kin-openapi/openapi3"
 	"github.com/stoewer/go-strcase"
 	"magalu.cloud/core"
+	schemaPkg "magalu.cloud/core/schema"
 	"magalu.cloud/core/utils"
 )
 
@@ -74,7 +74,7 @@ func transformTranslate(params map[string]any, value any) (result any, err error
 	return value, fmt.Errorf("translation not found: %+v", value)
 }
 
-func doTransform(spec *transformSpec, value any) (any, error) {
+func doTransformValue(spec *transformSpec, value any) (any, error) {
 	switch spec.Type {
 	case "uppercase", "upper-case", "upper":
 		if s, ok := value.(string); ok {
@@ -111,10 +111,10 @@ func doTransform(spec *transformSpec, value any) (any, error) {
 	return value, nil
 }
 
-func doTransforms(specs []*transformSpec, value any) (result any, err error) {
+func doTransformsToValue(specs []*transformSpec, value any) (result any, err error) {
 	result = value
 	for _, spec := range specs {
-		result, err = doTransform(spec, result)
+		result, err = doTransformValue(spec, result)
 		if err != nil {
 			logger().Debugf("attempted to transform %#v but failed. Transformation type was %s", value, spec.Type)
 			return
@@ -192,12 +192,18 @@ func createTransform[T any](schema *core.Schema, extensionPrefix *string) func(v
 		return nil
 	}
 
-	if !needsTransformation(schema, transformationKey) {
+	needs, err := needsTransformation(schema, transformationKey)
+	if err != nil {
+		// TODO: pass error along
+		logger().Errorw("failed to check if needs transformation", "err", err)
+		return nil
+	}
+	if !needs {
 		return nil
 	}
 
 	return func(value T) (converted T, err error) {
-		r, err := transform(schema, transformationKey, value)
+		r, err := transformValue(schema, transformationKey, value)
 		if err != nil {
 			return
 		}
@@ -210,116 +216,159 @@ func createTransform[T any](schema *core.Schema, extensionPrefix *string) func(v
 	}
 }
 
-func needsTransformation(schema *core.Schema, transformationKey string) bool {
-	specs := getTransformationSpecs(schema.Extensions, transformationKey)
-	if specs != nil {
-		return true
-	}
-
-	switch schema.Type {
-	case "string", "number", "integer", "boolean", "null":
-		return false
-
-	case "object":
-		for _, ref := range schema.Properties {
-			propSchema := (*core.Schema)(ref.Value)
-			if propSchema != nil {
-				if needsTransformation(propSchema, transformationKey) {
-					return true
-				}
-			}
-		}
-		return false
-
-	case "array":
-		if schema.Items != nil && schema.Items.Value != nil {
-			itemSchema := (*core.Schema)(schema.Items.Value)
-			if needsTransformation(itemSchema, transformationKey) {
-				return true
-			}
-		}
-		return false
-
-	default:
-		sub := []openapi3.SchemaRefs{schema.AllOf, schema.AnyOf, schema.OneOf}
-		for _, refs := range sub {
-			for _, ref := range refs {
-				if ref.Value != nil {
-					subSchema := (*core.Schema)(ref.Value)
-					if needsTransformation(subSchema, transformationKey) {
-						return true
-					}
-				}
-			}
-		}
-		return false
-	}
+// Common pattern that checks existing specs, if they exist then call transformSpecs(),
+// otherwise process Arrays and Objects.
+//
+// Scalars are passed thru while Constraints() are recursively processed.
+type commonSchemaTransformer[T any] struct {
+	tKey                 string
+	transformSpecs       func(specs []*transformSpec, value T) (T, error)
+	transformArray       func(t schemaPkg.Transformer[T], schema *core.Schema, itemSchema *core.Schema, value T) (T, error)
+	transformObject      func(t schemaPkg.Transformer[T], schema *core.Schema, value T) (T, error)
+	transformConstraints func(t schemaPkg.Transformer[T], kind schemaPkg.ConstraintKind, schemaRefs schemaPkg.SchemaRefs, value T) (T, error)
 }
 
-func transform(schema *core.Schema, transformationKey string, value any) (any, error) {
-	specs := getTransformationSpecs(schema.Extensions, transformationKey)
-	if specs != nil {
-		return doTransforms(specs, value)
+func (t *commonSchemaTransformer[T]) Transform(schema *core.Schema, value T) (T, error) {
+	specs := getTransformationSpecs(schema.Extensions, t.tKey)
+	var err error
+	if len(specs) > 0 {
+		value, err = t.transformSpecs(specs, value)
+		if err == nil {
+			err = schemaPkg.TransformStop
+		}
 	}
+	return value, err
+}
 
-	switch schema.Type {
-	case "string", "number", "integer", "boolean", "null":
-		return value, nil
+func (t *commonSchemaTransformer[T]) Scalar(schema *core.Schema, value T) (T, error) {
+	return value, nil
+}
 
-	case "object":
-		valueMap, ok := value.(map[string]any)
-		if !ok {
-			return value, nil
-		}
-		cm := utils.NewCOWMapFunc(valueMap, utils.IsSameValueOrPointer)
-		for k, ref := range schema.Properties {
-			propSchema := (*core.Schema)(ref.Value)
-			if propSchema != nil {
-				if propValue, ok := valueMap[k]; ok {
-					convertedValue, err := transform(propSchema, transformationKey, propValue)
-					if err != nil {
-						return value, err
-					}
-					cm.Set(k, convertedValue)
-				}
-			}
-		}
-		valueMap, _ = cm.Release()
-		return valueMap, nil
-
-	case "array":
-		valueSlice, ok := value.([]any)
-		if !ok {
-			return value, nil
-		}
-		cs := utils.NewCOWSliceFunc(valueSlice, utils.IsSameValueOrPointer)
-		if schema.Items != nil && schema.Items.Value != nil {
-			itemSchema := (*core.Schema)(schema.Items.Value)
-			for i, itemValue := range valueSlice {
-				convertedValue, err := transform(itemSchema, transformationKey, itemValue)
-				if err != nil {
-					return value, err
-				}
-				cs.Set(i, convertedValue)
-			}
-		}
-		valueSlice, _ = cs.Release()
-		return valueSlice, nil
-
-	default:
-		sub := []openapi3.SchemaRefs{schema.AllOf, schema.AnyOf, schema.OneOf}
-		for _, refs := range sub {
-			for _, ref := range refs {
-				if ref.Value != nil {
-					subSchema := (*core.Schema)(ref.Value)
-					var err error
-					value, err = transform(subSchema, transformationKey, value)
-					if err != nil {
-						return value, err
-					}
-				}
-			}
-		}
+func (t *commonSchemaTransformer[T]) Array(schema *core.Schema, itemSchema *core.Schema, value T) (T, error) {
+	if itemSchema == nil {
 		return value, nil
 	}
+	return t.transformArray(t, schema, itemSchema, value)
+}
+
+func (t *commonSchemaTransformer[T]) Constraints(kind schemaPkg.ConstraintKind, schemaRefs schemaPkg.SchemaRefs, value T) (T, error) {
+	return t.transformConstraints(t, kind, schemaRefs, value)
+}
+
+func (t *commonSchemaTransformer[T]) Object(schema *core.Schema, value T) (T, error) {
+	return t.transformObject(t, schema, value)
+}
+
+var _ schemaPkg.Transformer[any] = (*commonSchemaTransformer[any])(nil)
+
+// Recursively checks whenever the given schema needs transformation
+func needsTransformation(schema *core.Schema, transformationKey string) (bool, error) {
+	t := &commonSchemaTransformer[bool]{
+		tKey:                 transformationKey,
+		transformSpecs:       func(specs []*transformSpec, value bool) (bool, error) { return true, nil },
+		transformArray:       transformArrayNeedsTransformation,
+		transformObject:      transformObjectNeedsTransformation,
+		transformConstraints: transformConstraintsNeedsTransformation,
+	}
+	return schemaPkg.Transform[bool](t, schema, false)
+}
+
+func transformArrayNeedsTransformation(t schemaPkg.Transformer[bool], schema *core.Schema, itemSchema *core.Schema, value bool) (bool, error) {
+	if itemSchema == nil {
+		return value, nil
+	}
+	return schemaPkg.Transform(t, itemSchema, value)
+}
+
+func transformObjectNeedsTransformation(t schemaPkg.Transformer[bool], schema *core.Schema, value bool) (bool, error) {
+	return schemaPkg.TransformObjectProperties(schema, value, func(propName string, propSchema *core.Schema, value bool) (bool, error) {
+		value, err := schemaPkg.Transform(t, propSchema, value)
+		if err != nil {
+			return value, err
+		}
+		if value {
+			return true, schemaPkg.TransformStop
+		}
+		return false, nil
+	})
+}
+
+func transformConstraintsNeedsTransformation(t schemaPkg.Transformer[bool], kind schemaPkg.ConstraintKind, schemaRefs schemaPkg.SchemaRefs, value bool) (bool, error) {
+	value, err := schemaPkg.TransformSchemasArray(t, schemaRefs, value)
+	if err != nil {
+		return value, err
+	}
+	if value {
+		return true, schemaPkg.TransformStop
+	}
+	return false, nil
+
+}
+
+// Recursively transforms the value based on the schema that may contain transformations
+// If the schema doesn't contain any transformation, then the value is unchanged
+func transformValue(schema *core.Schema, transformationKey string, value any) (any, error) {
+	t := &commonSchemaTransformer[any]{
+		tKey:                 transformationKey,
+		transformSpecs:       doTransformsToValue,
+		transformArray:       transformArrayValue,
+		transformObject:      transformObjectValue,
+		transformConstraints: transformConstraintsValue,
+	}
+	return schemaPkg.Transform[any](t, schema, value)
+}
+
+func transformArrayValue(t schemaPkg.Transformer[any], schema *core.Schema, itemSchema *core.Schema, value any) (any, error) {
+	valueSlice, ok := value.([]any)
+	if !ok {
+		return value, fmt.Errorf("expected []any, got %T %#v", value, value)
+	}
+
+	cs := utils.NewCOWSliceFunc(valueSlice, utils.IsSameValueOrPointer)
+	for i, itemValue := range valueSlice {
+		convertedValue, err := schemaPkg.Transform(t, itemSchema, itemValue)
+		if err != nil {
+			return value, err
+		}
+		cs.Set(i, convertedValue)
+	}
+
+	valueSlice, _ = cs.Release()
+	return valueSlice, nil
+}
+
+func transformObjectValue(t schemaPkg.Transformer[any], schema *core.Schema, value any) (any, error) {
+	valueMap, ok := value.(map[string]any)
+	if !ok {
+		return value, fmt.Errorf("expected map[string]any, got %T %#v", value, value)
+	}
+	cm, err := schemaPkg.TransformObjectProperties(
+		schema,
+		utils.NewCOWMapFunc(valueMap, utils.IsSameValueOrPointer),
+		func(propName string, propSchema *core.Schema, cm *utils.COWMap[string, any],
+		) (*utils.COWMap[string, any], error) {
+			propValue, ok := valueMap[propName]
+			if !ok {
+				return cm, nil
+			}
+
+			convertedFieldValue, err := schemaPkg.Transform(t, propSchema, propValue)
+			if err != nil {
+				return cm, err
+			}
+			cm.Set(propName, convertedFieldValue)
+			return cm, nil
+		},
+	)
+	if err != nil {
+		return value, err
+	}
+
+	valueMap, _ = cm.Release()
+	return valueMap, nil
+}
+
+func transformConstraintsValue(t schemaPkg.Transformer[any], kind schemaPkg.ConstraintKind, schemaRefs schemaPkg.SchemaRefs, value any) (any, error) {
+	// TODO: handle kind properly, see https://swagger.io/docs/specification/data-models/oneof-anyof-allof-not/
+	return schemaPkg.TransformSchemasArray(t, schemaRefs, value)
 }
