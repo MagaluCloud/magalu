@@ -10,6 +10,7 @@ import (
 
 	"magalu.cloud/core"
 	mgcLogger "magalu.cloud/core/logger"
+	mgcSchema "magalu.cloud/core/schema"
 	mgcSdk "magalu.cloud/sdk"
 
 	"github.com/jedib0t/go-pretty/v6/table"
@@ -164,7 +165,7 @@ func loadDataFromFlags(flags *flag.FlagSet, schema *mgcSdk.Schema, dst map[strin
 		if err != nil {
 			return err
 		}
-		if val == nil && !core.IsSchemaNullable((*core.Schema)(propSchema)) {
+		if val == nil && !mgcSchema.IsSchemaNullable((*core.Schema)(propSchema)) {
 			continue
 		}
 		dst[name] = val

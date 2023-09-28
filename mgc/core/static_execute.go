@@ -9,6 +9,7 @@ import (
 	"github.com/invopop/jsonschema"
 	"go.uber.org/zap"
 	coreLogger "magalu.cloud/core/logger"
+	"magalu.cloud/core/schema"
 )
 
 type StaticExecute struct {
@@ -61,7 +62,7 @@ func schemaFromType[T any]() (*Schema, error) {
 		return newAnySchema(), nil
 	}
 
-	s, err := ToCoreSchema(schemaReflector.Reflect(t))
+	s, err := schema.ToCoreSchema(schemaReflector.Reflect(t))
 	if err != nil {
 		return nil, fmt.Errorf("unable to create JSON Schema for type '%T': %w", t, err)
 	}
@@ -70,7 +71,7 @@ func schemaFromType[T any]() (*Schema, error) {
 
 	// schemaReflector seems to lose the fact that it's an array, so we bring that back
 	if isArray && s.Type == "object" {
-		arrSchema := NewArraySchema(s)
+		arrSchema := schema.NewArraySchema(s)
 		s = arrSchema
 	}
 

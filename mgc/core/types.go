@@ -5,16 +5,10 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/getkin/kin-openapi/openapi3"
+	"magalu.cloud/core/schema"
 )
 
-// NOTE: TODO: should we duplicate this, or find a more generic package?
-type Schema openapi3.Schema
-
-func (s *Schema) VisitJSON(value any, opts ...openapi3.SchemaValidationOption) error {
-	opts = append(opts, openapi3.MultiErrors())
-	return (*openapi3.Schema)(s).VisitJSON(value, opts...)
-}
+type Schema = schema.Schema
 
 // NOTE: This is so 'jsonschema' doesn't generate a schema with type string and format
 // 'date-time'. We want the raw object schema for later validation

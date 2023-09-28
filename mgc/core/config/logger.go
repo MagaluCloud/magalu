@@ -10,6 +10,7 @@ import (
 	"go.uber.org/zap/zapcore"
 	"magalu.cloud/core"
 	coreLogger "magalu.cloud/core/logger"
+	"magalu.cloud/core/schema"
 )
 
 type pkgSymbol struct{}
@@ -25,7 +26,7 @@ func logger() *zap.SugaredLogger {
 
 func loggerSchema() (*core.Schema, error) {
 	reflector := jsonschema.Reflector{Mapper: zapMapper}
-	s, err := core.ToCoreSchema(reflector.Reflect(zap.Config{}))
+	s, err := schema.ToCoreSchema(reflector.Reflect(zap.Config{}))
 	if err != nil {
 		return nil, fmt.Errorf("unable to create JSON Schema for type '%T': %w", zap.Config{}, err)
 	}

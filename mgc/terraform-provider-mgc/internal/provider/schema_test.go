@@ -24,7 +24,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
-	mgc "magalu.cloud/core"
+	"magalu.cloud/core"
+	mgc "magalu.cloud/core/schema"
 	"magalu.cloud/sdk"
 )
 
@@ -35,7 +36,7 @@ type testCase struct {
 	expectedFinal  map[tfName]schema.Attribute
 }
 
-var create = mgc.NewRawStaticExecute(
+var create = core.NewRawStaticExecute(
 	"mock create",
 	"v1",
 	"",
@@ -56,12 +57,12 @@ var create = mgc.NewRawStaticExecute(
 		[]string{"id"},
 	),
 	nil,
-	func(context context.Context, parameters mgc.Parameters, configs mgc.Configs) (result any, err error) {
+	func(context context.Context, parameters core.Parameters, configs core.Configs) (result any, err error) {
 		return nil, nil
 	},
 )
 
-var read = mgc.NewRawStaticExecute(
+var read = core.NewRawStaticExecute(
 	"mock read",
 	"v1",
 	"",
@@ -91,12 +92,12 @@ var read = mgc.NewRawStaticExecute(
 		[]string{"id", "image", "name", "count", "createdAt", "extra_field"},
 	),
 	nil,
-	func(context context.Context, parameters mgc.Parameters, configs mgc.Configs) (result any, err error) {
+	func(context context.Context, parameters core.Parameters, configs core.Configs) (result any, err error) {
 		return nil, nil
 	},
 )
 
-var update = mgc.NewRawStaticExecute(
+var update = core.NewRawStaticExecute(
 	"mock update",
 	"v1",
 	"",
@@ -124,12 +125,12 @@ var update = mgc.NewRawStaticExecute(
 		[]string{},
 	),
 	nil,
-	func(context context.Context, parameters mgc.Parameters, configs mgc.Configs) (result any, err error) {
+	func(context context.Context, parameters core.Parameters, configs core.Configs) (result any, err error) {
 		return nil, nil
 	},
 )
 
-var delete = mgc.NewRawStaticExecute(
+var delete = core.NewRawStaticExecute(
 	"mock delete",
 	"v1",
 	"",
@@ -142,7 +143,7 @@ var delete = mgc.NewRawStaticExecute(
 	nil,
 	mgc.NewNullSchema(),
 	nil,
-	func(context context.Context, parameters mgc.Parameters, configs mgc.Configs) (result any, err error) {
+	func(context context.Context, parameters core.Parameters, configs core.Configs) (result any, err error) {
 		return nil, nil
 	},
 )
