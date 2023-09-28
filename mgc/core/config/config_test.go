@@ -7,7 +7,7 @@ import (
 	"testing"
 
 	"github.com/spf13/afero"
-	"magalu.cloud/core"
+	"magalu.cloud/core/utils"
 )
 
 type test struct {
@@ -17,7 +17,7 @@ type test struct {
 }
 
 func setupWithoutFile() *Config {
-	path, _ := core.BuildMGCPath()
+	path, _ := utils.BuildMGCPath()
 	c := New()
 	c.init(path, afero.NewMemMapFs())
 
@@ -25,7 +25,7 @@ func setupWithoutFile() *Config {
 }
 
 func setupWithFile(testFileData []byte) (*Config, error) {
-	file, err := core.BuildMGCFilePath(CONFIG_FILE)
+	file, err := utils.BuildMGCFilePath(CONFIG_FILE)
 	if err != nil {
 		return nil, err
 	}

@@ -12,6 +12,7 @@ import (
 
 	"go.uber.org/zap"
 	"magalu.cloud/core"
+	"magalu.cloud/core/utils"
 	"magalu.cloud/sdk/static/object_storage/s3"
 )
 
@@ -116,7 +117,7 @@ func downloadSingleFile(ctx context.Context, cfg s3.Config, src, dst string) err
 	}
 
 	dir, _ := path.Split(dst)
-	if err := os.MkdirAll(dir, core.FILE_PERMISSION); err != nil {
+	if err := os.MkdirAll(dir, utils.FILE_PERMISSION); err != nil {
 		return err
 	}
 
@@ -152,7 +153,7 @@ func downloadMultipleFiles(ctx context.Context, cfg s3.Config, src, dst string) 
 		}
 
 		dir, _ := path.Split(obj.Key)
-		if err := os.MkdirAll(path.Join(dst, dir), core.FILE_PERMISSION); err != nil {
+		if err := os.MkdirAll(path.Join(dst, dir), utils.FILE_PERMISSION); err != nil {
 			objError.Add(objURI, err)
 			continue
 		}

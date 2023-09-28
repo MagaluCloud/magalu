@@ -14,6 +14,7 @@ import (
 	"github.com/spf13/afero"
 	"magalu.cloud/core"
 	coreHttp "magalu.cloud/core/http"
+	"magalu.cloud/core/utils"
 
 	"golang.org/x/sync/singleflight"
 	"gopkg.in/yaml.v3"
@@ -116,7 +117,7 @@ func FromContext(ctx context.Context) *Auth {
 }
 
 func New(config Config, client *http.Client, fs afero.Fs) *Auth {
-	filePath, err := core.BuildMGCFilePath(authFilename)
+	filePath, err := utils.BuildMGCFilePath(authFilename)
 	if err != nil {
 		logger().Warnw("unable to locate auth configuration file", "error", err)
 		return nil

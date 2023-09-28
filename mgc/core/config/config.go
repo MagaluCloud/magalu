@@ -9,6 +9,7 @@ import (
 	"reflect"
 
 	"magalu.cloud/core"
+	"magalu.cloud/core/utils"
 
 	"github.com/spf13/afero"
 	"github.com/spf13/viper"
@@ -45,7 +46,7 @@ func FromContext(ctx context.Context) *Config {
 }
 
 func New() *Config {
-	dirname, err := core.BuildMGCPath()
+	dirname, err := utils.BuildMGCPath()
 	if err != nil {
 		logger().Warnln(err)
 	}
@@ -117,7 +118,7 @@ func stringToMapOrStructHook(f reflect.Value, t reflect.Value) (interface{}, err
 }
 
 func (c *Config) Set(key string, value interface{}) error {
-	if err := os.MkdirAll(path.Dir(c.path), core.DIR_PERMISSION); err != nil {
+	if err := os.MkdirAll(path.Dir(c.path), utils.DIR_PERMISSION); err != nil {
 		return fmt.Errorf("error creating dir at %s: %w", c.path, err)
 	}
 	c.viper.Set(key, value)
@@ -150,11 +151,11 @@ func (c *Config) saveToConfigFile(configMap map[string]interface{}) error {
 		return err
 	}
 
-	if err = os.MkdirAll(path.Dir(c.path), core.DIR_PERMISSION); err != nil {
+	if err = os.MkdirAll(path.Dir(c.path), utils.DIR_PERMISSION); err != nil {
 		return fmt.Errorf("error creating dir at %s: %w", c.path, err)
 	}
 
-	if err = afero.WriteFile(c.fs, c.path, encodedConfig, core.FILE_PERMISSION); err != nil {
+	if err = afero.WriteFile(c.fs, c.path, encodedConfig, utils.FILE_PERMISSION); err != nil {
 		return fmt.Errorf("error writing to config file: %w", err)
 	}
 

@@ -12,6 +12,7 @@ import (
 
 	"github.com/spf13/afero"
 	"magalu.cloud/core"
+	"magalu.cloud/core/utils"
 )
 
 var dummyConfig Config = Config{
@@ -53,7 +54,7 @@ func (o mockTransport) RoundTrip(*http.Request) (*http.Response, error) {
 }
 
 func TestNew(t *testing.T) {
-	filename, err := core.BuildMGCFilePath(authFilename)
+	filename, err := utils.BuildMGCFilePath(authFilename)
 	if err != nil {
 		t.Errorf("expected err == nil, found: %v", err)
 	}
@@ -149,7 +150,7 @@ func TestSetTokens(t *testing.T) {
 }
 
 func TestRequestAuthTokenWithAuthorizationCode(t *testing.T) {
-	filename, err := core.BuildMGCFilePath(authFilename)
+	filename, err := utils.BuildMGCFilePath(authFilename)
 	if err != nil {
 		t.Errorf("expected err == nil, found: %v", err)
 	}
@@ -239,7 +240,7 @@ func TestRequestAuthTokenWithAuthorizationCode(t *testing.T) {
 }
 
 func TestValidateAccessToken(t *testing.T) {
-	filename, err := core.BuildMGCFilePath(authFilename)
+	filename, err := utils.BuildMGCFilePath(authFilename)
 	if err != nil {
 		t.Errorf("expected err == nil, found: %v", err)
 	}
@@ -315,7 +316,7 @@ func TestValidateAccessToken(t *testing.T) {
 }
 
 func TestDoRefreshAccessToken(t *testing.T) {
-	filename, err := core.BuildMGCFilePath(authFilename)
+	filename, err := utils.BuildMGCFilePath(authFilename)
 	if err != nil {
 		t.Errorf("expected err == nil, found: %v", err)
 	}
@@ -389,7 +390,7 @@ func TestDoRefreshAccessToken(t *testing.T) {
 }
 
 func TestListTenants(t *testing.T) {
-	filename, err := core.BuildMGCFilePath(authFilename)
+	filename, err := utils.BuildMGCFilePath(authFilename)
 	if err != nil {
 		t.Errorf("expected err == nil, found: %v", err)
 	}
@@ -486,7 +487,7 @@ func TestListTenants(t *testing.T) {
 }
 
 func TestSelectTenant(t *testing.T) {
-	filename, err := core.BuildMGCFilePath(authFilename)
+	filename, err := utils.BuildMGCFilePath(authFilename)
 	if err != nil {
 		t.Errorf("expected err == nil, found: %v", err)
 	}
