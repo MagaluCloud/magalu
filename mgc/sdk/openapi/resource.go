@@ -10,6 +10,7 @@ import (
 	"go.uber.org/zap"
 	"golang.org/x/exp/slices"
 	"magalu.cloud/core"
+	"magalu.cloud/core/utils"
 
 	"github.com/PaesslerAG/gval"
 	"github.com/PaesslerAG/jsonpath"
@@ -313,7 +314,7 @@ func (o *Resource) getOperations() (operations []core.Executor, byName map[strin
 
 func (o *Resource) wrapInTerminatorExecutor(wtExt map[string]any, exec core.Executor) (core.TerminatorExecutor, error) {
 	wt := &defaultWaitTermination
-	if err := core.DecodeValue(wtExt, wt); err != nil {
+	if err := utils.DecodeValue(wtExt, wt); err != nil {
 		o.logger.Warnw("error decoding extension wait-termination", "data", wtExt, "error", err)
 	}
 

@@ -10,6 +10,7 @@ import (
 	"go.uber.org/zap"
 	coreLogger "magalu.cloud/core/logger"
 	"magalu.cloud/core/schema"
+	"magalu.cloud/core/utils"
 )
 
 type StaticExecute struct {
@@ -114,12 +115,12 @@ func NewStaticExecuteWithLinks[ParamsT any, ConfigsT any, ResultT any](
 		rs,
 		links,
 		func(ctx context.Context, parameters Parameters, configs Configs) (Value, error) {
-			paramsStruct, err := DecodeNewValue[ParamsT](parameters)
+			paramsStruct, err := utils.DecodeNewValue[ParamsT](parameters)
 			if err != nil {
 				return nil, fmt.Errorf("error when decoding parameters. Did you forget to set 'json' struct flags for struct %T?: %w", paramsStruct, err)
 			}
 
-			configsStruct, err := DecodeNewValue[ConfigsT](configs)
+			configsStruct, err := utils.DecodeNewValue[ConfigsT](configs)
 			if err != nil {
 				return nil, fmt.Errorf("error when decoding configs. Did you forget to set 'json' struct flags for struct %T?: %w", paramsStruct, err)
 			}
@@ -129,7 +130,7 @@ func NewStaticExecuteWithLinks[ParamsT any, ConfigsT any, ResultT any](
 				return nil, err
 			}
 
-			return SimplifyAny(value)
+			return utils.SimplifyAny(value)
 		},
 	)
 }
