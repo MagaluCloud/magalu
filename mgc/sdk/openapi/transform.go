@@ -14,27 +14,6 @@ import (
 	"magalu.cloud/core/utils"
 )
 
-// Checks if the value is exactly the same, it's basically a "=="
-// but handles map/slice and other non-comparable types as pointers,
-// that is if their underlying pointer is the same.
-// It DOES NOT check for map/slice similarities, only their addresses.
-func isSameValue(a, b any) bool {
-	if a == nil {
-		return b == nil
-	}
-
-	vA := reflect.ValueOf(a)
-	vB := reflect.ValueOf(b)
-	if vA.Type() != vB.Type() {
-		return false
-	}
-	if vA.Comparable() {
-		return a == b
-	} else {
-		return vA.UnsafePointer() == vB.UnsafePointer()
-	}
-}
-
 type transformSpec struct {
 	Type string `json:"type" yaml:"type"`
 	// See more about the 'remain' directive here: https://pkg.go.dev/github.com/mitchellh/mapstructure#hdr-Remainder_Values
@@ -303,7 +282,7 @@ func transform(schema *core.Schema, transformationKey string, value any) (any, e
 					if err != nil {
 						return value, err
 					}
-					if !isSameValue(propValue, convertedValue) {
+					if !utils.IsSameValueOrPointer(propValue, convertedValue) {
 						if !changed {
 							valueMap = maps.Clone(valueMap)
 							changed = true
@@ -329,7 +308,7 @@ func transform(schema *core.Schema, transformationKey string, value any) (any, e
 				if err != nil {
 					return value, err
 				}
-				if !isSameValue(itemValue, convertedValue) {
+				if !utils.IsSameValueOrPointer(itemValue, convertedValue) {
 					if !changed {
 						valueSlice = slices.Clone(valueSlice)
 						changed = true
