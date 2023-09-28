@@ -8,6 +8,8 @@ import (
 
 // NOTE: TODO: should we duplicate this, or find a more generic package?
 type Schema openapi3.Schema
+type SchemaRef = openapi3.SchemaRef
+type SchemaRefs = openapi3.SchemaRefs
 
 func (s *Schema) VisitJSON(value any, opts ...openapi3.SchemaValidationOption) error {
 	opts = append(opts, openapi3.MultiErrors())
