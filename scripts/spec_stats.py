@@ -1,4 +1,5 @@
 import os
+from collections import defaultdict
 from typing import (
     cast,
     Callable,
@@ -396,6 +397,7 @@ NON_JSON_REQUESTS = "non-json-requests"
 NON_JSON_RESPONSES = "non-json-responses"
 NON_SNAKECASE_VALUES = "non-snakecase-values"
 TAGLESS_OPERATIONS = "tagless-operations"
+UNUSED_COMPONENTS = "unused-components"
 
 
 class Filterer:
@@ -470,7 +472,7 @@ def is_tag_crud(tag: Optional[OAPITagInfo]) -> bool:
 
 
 def single_item_xofs(schema: JSONSchema) -> List[str]:
-    def filterFn(xof: str) -> bool:
+    def filterFn(xof: str) -> int:
         return len(schema.get(xof, []))
 
     return list(filter(filterFn, ["allOf", "anyOf", "oneOf"]))
@@ -481,6 +483,9 @@ def is_snake_case(s: str) -> bool:
         return False
 
     return "-" not in s
+
+
+components_usage = defaultdict(dict)
 
 
 def get(obj_or_ref: Any | OAPIReferenceObject, resolve: Callable[[str], Any]) -> Any:
@@ -870,6 +875,64 @@ def fill_server_stats(
                 ).setdefault("variables", []).append(name)
 
 
+def to_ref_string(*args) -> str:
+    return f"#/components/{'/'.join(args)}"
+
+
+def fill_ref_usages(o: OAPI):
+    # Loop through all keys to find ref usages (DFS)
+    visited = set()
+    # Skip "openapi" key since it will not have a "$ref"
+    visited |= {"openapi"}
+    nodes_to_visit: List[str] = list(o.obj)
+    while nodes_to_visit:
+        node_name = nodes_to_visit.pop()
+        if node_name in visited:
+            continue
+        visited.add(node_name)
+        node: OAPIObject | List[OAPIObject] | str = o.obj
+        for k in node_name.split(":"):
+            if k.isdigit() and isinstance(node, list):
+                node = node[int(k)]  # type: ignore
+            else:
+                node = node[k]  # type: ignore
+            if k == "$ref":
+                components_usage[o.name][node] = True
+                continue
+        if isinstance(node, dict):
+            for k in node:
+                nodes_to_visit.append(f"{node_name}:{k}")
+        elif isinstance(node, list):
+            for idx, el in enumerate(node):
+                if isinstance(el, dict):
+                    for k in el:
+                        nodes_to_visit.append(f"{node_name}:{idx}:{k}")
+
+
+def fill_components_usage(o: OAPI) -> None:
+    # types: schemas, parameters, securitySchemes, etc
+    for type_name, type_spec in o.obj.get("components", {}).items():
+        # TODO: check for all types, but for this we need to loop over
+        # the whole OAPI tree to find the occurrences
+        if type_name != "schemas":
+            continue
+        for comp_name, comp_spec in type_spec.items():  # type: ignore
+            # components.schema.CreateResponse for example
+            qualifiedName = to_ref_string(type_name, comp_name)
+            # May have been found by a ref inside a component, we don't want
+            # to simply overwrite, thus check.
+            if qualifiedName not in components_usage[o.name]:
+                components_usage[o.name][qualifiedName] = False
+            # Loop through component itself to find other components
+            for propSpec in comp_spec.get("properties", {}).values():
+                # Already found through reference, mark as used
+                if refName := propSpec.get("$ref"):
+                    components_usage[o.name][refName] = True
+                if refName := propSpec.get("items", {}).get("$ref"):
+                    components_usage[o.name][refName] = True
+    fill_ref_usages(o)
+
+
 def get_oapi_stats(o: OAPI) -> OAPIStats:
     result: OAPIStats = {}
     resources: Dict[str, OAPIResource] = {}
@@ -885,6 +948,14 @@ def get_oapi_stats(o: OAPI) -> OAPIStats:
 
     for sv in o.obj.get("servers", []):
         fill_server_stats(sv, result, o.resolve)
+
+    if filterer.should_include(UNUSED_COMPONENTS):
+        fill_components_usage(o)
+        for name, being_used in components_usage.get(o.name, {}).items():
+            if not being_used:
+                if UNUSED_COMPONENTS not in result:
+                    result[UNUSED_COMPONENTS] = []
+                result[UNUSED_COMPONENTS].append(name)
 
     # TODO: Add stats for other fields
 

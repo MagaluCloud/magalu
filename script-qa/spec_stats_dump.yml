@@ -72,6 +72,8 @@ block-storage.openapi:
     - usage:
         - post
         - delete
+  unused-components:
+    - '#/components/schemas/ValidationError'
 dbaas.openapi:
   computed-variables:
     - POST /v1/instances:
@@ -357,6 +359,8 @@ virtual-machine.openapi:
     - usage:
         - post
         - delete
+  unused-components:
+    - '#/components/schemas/ValidationError'
 vpc.openapi:
   computed-variables:
     - POST /v0/xaas/vpcs/{vpc_id}/ports:
@@ -496,3 +500,5 @@ vpc.openapi:
     - quotas:
         - post
         - delete
+  unused-components:
+    - '#/components/schemas/ValidationError'
