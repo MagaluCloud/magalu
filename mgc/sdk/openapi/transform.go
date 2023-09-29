@@ -6,6 +6,7 @@ import (
 	"regexp"
 	"strings"
 
+	"github.com/getkin/kin-openapi/openapi3"
 	"github.com/stoewer/go-strcase"
 	"magalu.cloud/core"
 	schemaPkg "magalu.cloud/core/schema"
@@ -16,6 +17,7 @@ type transformSpec struct {
 	Type string `json:"type" yaml:"type"`
 	// See more about the 'remain' directive here: https://pkg.go.dev/github.com/mitchellh/mapstructure#hdr-Remainder_Values
 	Parameters map[string]any `json:",remain"` // nolint
+	Schema     *openapi3.Schema
 }
 
 type transformRegExpSpec struct {
@@ -111,6 +113,15 @@ func doTransformValue(spec *transformSpec, value any) (any, error) {
 	return value, nil
 }
 
+func doTransformSchema(spec *transformSpec, value *schemaPkg.COWSchema) (*schemaPkg.COWSchema, error) {
+	switch spec.Type {
+	default:
+		return value, nil
+	case "translate":
+		return transformTranslateSchema(spec.Parameters, value)
+	}
+}
+
 func doTransformsToValue(specs []*transformSpec, value any) (result any, err error) {
 	result = value
 	for _, spec := range specs {
@@ -121,6 +132,19 @@ func doTransformsToValue(specs []*transformSpec, value any) (result any, err err
 		}
 	}
 	logger().Debugf("transformed %#v into %#v", value, result)
+	return
+}
+
+func doTransformsToSchema(specs []*transformSpec, value *schemaPkg.COWSchema) (result *schemaPkg.COWSchema, err error) {
+	result = value
+	for _, spec := range specs {
+		result, err = doTransformSchema(spec, result)
+		if err != nil {
+			logger().Debugf("attempted to transform %#v but failed. Transformation type was %s", value, spec.Type)
+			return
+		}
+	}
+	logger().Debugf("transformed schema %#v into %#v", value, result)
 	return
 }
 
@@ -186,20 +210,26 @@ func getTransformationSpecs(extensions map[string]any, transformationKey string)
 
 // The returned function does NOT and should NOT alter the value that was passed by it
 // (maps, for example, when passed as input, won't be altered, a new copy will be made)
-func createTransform[T any](schema *core.Schema, extensionPrefix *string) func(value T) (T, error) {
+func createTransform[T any](schema *core.Schema, extensionPrefix *string) (func(value T) (T, error), *core.Schema, error) {
 	transformationKey := getTransformKey(extensionPrefix)
 	if transformationKey == "" {
-		return nil
+		return nil, schema, nil
 	}
 
 	needs, err := needsTransformation(schema, transformationKey)
 	if err != nil {
 		// TODO: pass error along
 		logger().Errorw("failed to check if needs transformation", "err", err)
-		return nil
+		return nil, nil, err
 	}
 	if !needs {
-		return nil
+		return nil, schema, nil
+	}
+
+	cowSchema := schemaPkg.NewCOWSchema(schema)
+	transformedSchema, err := transformSchema(schema, transformationKey, cowSchema)
+	if err != nil {
+		return nil, nil, err
 	}
 
 	return func(value T) (converted T, err error) {
@@ -213,7 +243,7 @@ func createTransform[T any](schema *core.Schema, extensionPrefix *string) func(v
 			return
 		}
 		return
-	}
+	}, transformedSchema, err
 }
 
 // Common pattern that checks existing specs, if they exist then call transformSpecs(),
@@ -371,4 +401,116 @@ func transformObjectValue(t schemaPkg.Transformer[any], schema *core.Schema, val
 func transformConstraintsValue(t schemaPkg.Transformer[any], kind schemaPkg.ConstraintKind, schemaRefs schemaPkg.SchemaRefs, value any) (any, error) {
 	// TODO: handle kind properly, see https://swagger.io/docs/specification/data-models/oneof-anyof-allof-not/
 	return schemaPkg.TransformSchemasArray(t, schemaRefs, value)
+}
+
+func transformSchema(schema *core.Schema, transformationKey string, value *schemaPkg.COWSchema) (any, error) {
+	t := &commonSchemaTransformer[*schemaPkg.COWSchema]{
+		tKey:                 transformationKey,
+		transformSpecs:       doTransformsToSchema,
+		transformArray:       transformArraySchema,
+		transformObject:      transformObjectValue,
+		transformConstraints: transformConstraintsValue,
+	}
+	return schemaPkg.Transform[*schemaPkg.COWSchema](t, schema, value)
+}
+
+func transformArraySchema(t schemaPkg.Transformer[*schemaPkg.COWSchema], schema *core.Schema, itemSchema *core.Schema, value *schemaPkg.COWSchema) (*schemaPkg.COWSchema, error) {
+	itemsCow := schemaPkg.NewCOWSchema((*schemaPkg.Schema)(value.Items().Value))
+
+	convertedSchema, err := schemaPkg.Transform(t, itemSchema, itemsCow)
+	if err != nil {
+		return nil, err
+	}
+
+	itemsRef := schemaPkg.NewSchemaRef(value.Items().Ref, (*schemaPkg.Schema)(convertedSchema.Peek()))
+
+	value.SetItems(itemsRef)
+
+	return value, nil
+}
+
+/*
+Comment to keep track of the parts of the old transformSchema that aren't being implemented yet
+
+func transformSchema(schema *core.Schema, transformationKey string) (*core.Schema, error) {
+
+	switch transformedSchema.Type {
+	case "object":
+		for _, ref := range transformedSchema.Properties {
+			propSchema := (*core.Schema)(ref.Value)
+			if propSchema != nil {
+				convertedSchema, err := transformSchema(propSchema, transformationKey)
+				if err != nil {
+					return nil, err
+				}
+				ref.Value = (*openapi3.Schema)(convertedSchema)
+			}
+		}
+
+	default:
+		sub := []openapi3.SchemaRefs{transformedSchema.AllOf, transformedSchema.AnyOf, transformedSchema.OneOf}
+		for _, refs := range sub {
+			for _, ref := range refs {
+				if ref.Value != nil {
+					subSchema := (*core.Schema)(ref.Value)
+					var err error
+					convertedSchema, err := transformSchema(subSchema, transformationKey)
+					if err != nil {
+						return nil, err
+					}
+					ref.Value = (*openapi3.Schema)(convertedSchema)
+				}
+			}
+		}
+	}
+
+	return transformedSchema, nil
+}
+*/
+
+func reverseTranslate(spec *transformTranslateSpec, value any) (any, error) {
+	for _, item := range spec.Translations {
+		if reflect.DeepEqual(item.To, value) {
+			return item.From, nil
+		}
+	}
+	if spec.AllowMissing {
+		return value, nil
+	}
+	return value, fmt.Errorf("translation not found: %+v", value)
+}
+
+func transformTranslateSchema(params map[string]any, schema *schemaPkg.COWSchema) (result *schemaPkg.COWSchema, err error) {
+	if schema.Default == nil && len(schema.Enum()) == 0 {
+		return schema, nil
+	}
+
+	spec, err := utils.DecodeNewValue[transformTranslateSpec](params)
+	if err != nil {
+		return schema, fmt.Errorf("invalid translation parameters: %w", err)
+	}
+	if len(spec.Translations) == 0 {
+		return schema, fmt.Errorf("invalid translation parameters: missing translations")
+	}
+
+	result = schema
+
+	if schema.Default() != nil {
+		var schemaDefault any
+		schemaDefault, err = reverseTranslate(spec, schema.Default)
+		if err != nil {
+			return
+		}
+		schema.SetDefault(schemaDefault)
+	}
+	originalEnum := schema.Enum()
+	translatedEnum := make([]any, len(originalEnum))
+	for i, value := range originalEnum {
+		translatedEnum[i], err = reverseTranslate(spec, value)
+		if err != nil {
+			return
+		}
+	}
+	schema.SetEnum(translatedEnum)
+	return
 }
