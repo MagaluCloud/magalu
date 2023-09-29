@@ -21,7 +21,7 @@ import (
 	"magalu.cloud/core/auth"
 	"magalu.cloud/core/config"
 	coreHttp "magalu.cloud/core/http"
-	"magalu.cloud/core/schema"
+	schemaPkg "magalu.cloud/core/schema"
 	"magalu.cloud/core/utils"
 
 	"github.com/getkin/kin-openapi/openapi3"
@@ -179,26 +179,19 @@ func (o *Operation) forEachParameterWithValue(values map[string]any, locations [
 
 func (o *Operation) addParameters(schema *core.Schema, locations []string) {
 	_, err := o.forEachParameter(locations, func(externalName string, parameter *openapi3.Parameter) (run bool, err error) {
-		paramSchemaRef := parameter.Schema
-		paramSchema := paramSchemaRef.Value
+		paramSchemaRef := schemaPkg.NewCOWSchemaRef(parameter.Schema)
+		paramSchema := paramSchemaRef.ValueCOW()
 
 		desc := getDescriptionExtension(o.extensionPrefix, parameter.Extensions, parameter.Description)
 		if desc == "" {
-			desc = getDescriptionExtension(o.extensionPrefix, paramSchema.Extensions, paramSchema.Description)
+			desc = getDescriptionExtension(o.extensionPrefix, paramSchema.Extensions(), paramSchema.Description())
 		}
 
-		if desc != "" && paramSchema.Description != desc {
-			// copy, never modify parameter stuff
-			newSchema := *paramSchema
-			newSchema.Description = desc
-			paramSchema = &newSchema
-
-			newSchemaRef := *paramSchemaRef
-			newSchemaRef.Value = paramSchema
-			paramSchemaRef = &newSchemaRef
+		if desc != "" {
+			paramSchema.SetDescription(desc)
 		}
 
-		schema.Properties[externalName] = paramSchemaRef
+		schema.Properties[externalName] = paramSchemaRef.Peek()
 
 		if parameter.Required && !slices.Contains(schema.Required, externalName) {
 			schema.Required = append(schema.Required, externalName)
@@ -629,7 +622,7 @@ func (o *Operation) forEachParameterName(cb cbForEachParameterName) (finished bo
 
 func (o *Operation) ParametersSchema() *core.Schema {
 	if o.paramsSchema == nil {
-		rootSchema := schema.NewObjectSchema(map[string]*core.Schema{}, []string{})
+		rootSchema := schemaPkg.NewObjectSchema(map[string]*core.Schema{}, []string{})
 
 		// Must match forEachParameterName!
 		o.addParameters(rootSchema, parametersLocations)
@@ -644,7 +637,7 @@ func (o *Operation) ParametersSchema() *core.Schema {
 
 func (o *Operation) ConfigsSchema() *core.Schema {
 	if o.configsSchema == nil {
-		rootSchema := schema.NewObjectSchema(map[string]*core.Schema{}, []string{})
+		rootSchema := schemaPkg.NewObjectSchema(map[string]*core.Schema{}, []string{})
 
 		o.addParameters(rootSchema, configLocations)
 		o.addServerVariables(rootSchema)
@@ -658,7 +651,7 @@ func (o *Operation) ConfigsSchema() *core.Schema {
 
 func (o *Operation) initResultSchema() {
 	if o.resultSchema == nil {
-		rootSchema := schema.NewAnyOfSchema()
+		rootSchema := schemaPkg.NewAnyOfSchema()
 		responses := o.operation.Responses
 		o.responseSchemas = make(map[string]*core.Schema)
 
@@ -682,7 +675,7 @@ func (o *Operation) initResultSchema() {
 		switch len(rootSchema.AnyOf) {
 		default:
 		case 0:
-			rootSchema = schema.NewNullSchema()
+			rootSchema = schemaPkg.NewNullSchema()
 		case 1:
 			rootSchema = (*core.Schema)(rootSchema.AnyOf[0].Value)
 		}
