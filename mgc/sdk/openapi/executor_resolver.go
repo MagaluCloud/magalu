@@ -13,7 +13,7 @@ type executorTree struct {
 }
 
 // JSONLookup implements github.com/go-openapi/jsonpointer#JSONPointable
-func (t *executorTree) JSONLookup(token string) (interface{}, error) {
+func (t executorTree) JSONLookup(token string) (interface{}, error) {
 	ref, ok := t.tree[token]
 	if !ok {
 		return nil, fmt.Errorf("object has no field %q", token)
@@ -88,8 +88,8 @@ func (o *executorResolver) resolve(ref string) (core.Executor, error) {
 	if err != nil {
 		return nil, err
 	}
-	if exec, ok := result.(core.Executor); ok {
-		return exec, nil
+	if tree, ok := result.(*executorTree); ok && tree.exec != nil {
+		return tree.exec, nil
 	}
-	return nil, fmt.Errorf("reference %q doesn't resolve to core.Executor but %+v", ref, result)
+	return nil, fmt.Errorf("reference %q doesn't resolve to executorTree with valid executor but %#v", ref, result)
 }
