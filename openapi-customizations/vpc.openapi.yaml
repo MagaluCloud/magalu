@@ -16,10 +16,10 @@ servers:
                 - br-se-1
         env:
             description: Environment to use
-            default: prod
+            default: ''
             enum:
-            - prod
-            - pre-prod
+            - ''
+            - .pre-prod
             x-cli-transforms:
             -   type: translate
                 translations:
