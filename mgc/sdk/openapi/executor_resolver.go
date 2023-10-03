@@ -2,10 +2,52 @@ package openapi
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/go-openapi/jsonpointer"
 	"magalu.cloud/core"
 )
+
+type moduleResolverEntry struct {
+	m      *Module
+	loaded bool
+}
+
+type moduleResolver map[string]*moduleResolverEntry
+
+func newModuleResolver() moduleResolver {
+	return make(moduleResolver)
+}
+
+func (r moduleResolver) add(m *Module) {
+	r[m.path] = &moduleResolverEntry{m, false}
+	m.execResolver.moduleResolver = r
+}
+
+func (r moduleResolver) get(path string) (m *Module, err error) {
+	e, ok := r[path]
+	if !ok {
+		return nil, fmt.Errorf("unknown module %q", path)
+	}
+
+	if !e.loaded {
+		e.loaded = true
+		// Recursively load the whole module to guarantee resolverTree is known
+		var loadRecursive func(child core.Descriptor) (run bool, err error)
+		loadRecursive = func(child core.Descriptor) (run bool, err error) {
+			if group, ok := child.(core.Grouper); ok {
+				return group.VisitChildren(loadRecursive)
+			}
+			return true, nil
+		}
+		_, err = e.m.VisitChildren(loadRecursive)
+		if err != nil {
+			return
+		}
+	}
+
+	return e.m, nil
+}
 
 type executorTree struct {
 	exec core.Executor
@@ -52,8 +94,9 @@ func (t *executorTree) add(key []string, exec core.Executor) error {
 }
 
 type executorResolver struct {
-	byId   map[string]core.Executor
-	byPath executorTree
+	byId           map[string]core.Executor
+	byPath         executorTree
+	moduleResolver moduleResolver
 }
 
 func (o *executorResolver) add(id string, path []string, exec core.Executor) error {
@@ -78,7 +121,20 @@ func (o *executorResolver) get(id string) core.Executor {
 	return nil
 }
 
+func (o *executorResolver) resolveModuleRef(modKey, modRef string) (exec core.Executor, err error) {
+	m, err := o.moduleResolver.get(modKey)
+	if err != nil {
+		return
+	}
+
+	return m.execResolver.resolve(modRef)
+}
+
 func (o *executorResolver) resolve(ref string) (core.Executor, error) {
+	if modKey, modRef, didCut := strings.Cut(ref, "#"); didCut {
+		return o.resolveModuleRef(modKey, modRef)
+	}
+
 	jp, err := jsonpointer.New(ref)
 	if err != nil {
 		return nil, err
