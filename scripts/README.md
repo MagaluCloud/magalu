@@ -49,3 +49,19 @@ python3 ./scripts/sync_oapi.py https://block-storage.br-ne-1.jaxyendy.com/openap
 ```
 
 Sync external OAPI schema with the internal schema by fixing any mismatch of requestBody between external and internal implementation. After that, we change the server URL to Kong and adjust schema of error returns.
+
+### [remove_tenant_id.py](./remove_tenant_id.py)
+
+Usage:
+
+```shell
+python3 ./scripts/remove_tenant_id.py [-h] [-o OUTPUT] <PATH>
+```
+
+Example:
+
+```shell
+python3 ./scripts/remove_tenant_id.py ./mgc/cli/openapis/block-storage.openapi.yaml
+```
+
+Remove `x-tenant-id` param from OpenAPI spec actions.
