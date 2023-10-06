@@ -193,8 +193,8 @@ func collectGroupResources(
 			return resources, nil
 		}
 		if update == nil {
-			tflog.Warn(ctx, fmt.Sprintf("Resource %s misses update", name))
-			return resources, nil
+			update = core.NewStaticExecuteSimple("empty update", "1.0", "empty update", func(context context.Context) (any, error) { return nil, nil })
+			tflog.Warn(ctx, fmt.Sprintf("Resource %s misses update using empty update", name))
 		}
 		if delete == nil {
 			tflog.Warn(ctx, fmt.Sprintf("Resource %s misses delete", name))
