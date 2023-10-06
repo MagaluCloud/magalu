@@ -31,6 +31,8 @@ servers:
 paths:
     /v0/vpcs/{vpc_id}/ports:
         get:
+            tags:
+            - vpc
             x-cli-description: List VPC ports
             x-cli-name: list-vpc-ports
             parameters:
@@ -135,6 +137,22 @@ paths:
                             description: Delete Rule
                             parameters:
                                 rule_id: $request.path.rule_id
+
+components:
+    schemas:
+        PortResponse:
+            properties:
+                description:
+                    nullable: true
+                ip_address:
+                    type: array
+                    items:
+                        type: object
+                        properties:
+                            ip_address:
+                                type: string
+                            subnet_id:
+                                type: string
 
 tags:
 -   name: vpc

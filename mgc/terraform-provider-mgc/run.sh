@@ -3,15 +3,17 @@
 # Build newest provider
 go build || exit
 
+TFLOG=info
+
 case $2 in
     plan)
-        (cd examples/$1 && TF_LOG=debug terraform plan)
+        (cd examples/$1 && terraform plan)
         ;;
     apply)
-        (cd examples/$1 && TF_LOG=debug terraform apply)
+        (cd examples/$1 && terraform apply)
         ;;
     clear)
-        (cd examples/$1 && TF_LOG=info terraform state rm "$3")
+        (cd examples/$1 && terraform state rm "$3")
         ;;
     *)
         echo "Invalid arguments."

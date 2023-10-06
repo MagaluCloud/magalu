@@ -236,7 +236,7 @@ paths:
     /v0/vpcs/{vpc_id}/ports:
         get:
             tags:
-            - port
+            - vpc
             summary: List Ports
             description: Returns a list of ports for a provided vpc
             operationId: listPorts
@@ -2255,6 +2255,7 @@ components:
                 description:
                     title: Description
                     type: string
+                    nullable: true
                 is_admin_state_up:
                     title: Is Admin State Up
                     type: boolean
@@ -2278,7 +2279,14 @@ components:
                     default: []
                 ip_address:
                     title: Ip Address
-                    type: string
+                    type: array
+                    items:
+                        type: object
+                        properties:
+                            ip_address:
+                                type: string
+                            subnet_id:
+                                type: string
                 created_at:
                     title: Created At
                     type: string
