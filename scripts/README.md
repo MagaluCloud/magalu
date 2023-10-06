@@ -24,23 +24,4 @@ customizations and leave ready for usage of CLI. Example:
 ./scripts/add_specs.sh mke https://mke.br-ne-1.jaxyendy.com/docs/openapi-with-snippets.json
 ```
 
-This will also create a new customization file if not present with the following content:
-
-```yaml
-# This file is to be merged on top of $OAPI_PATH/$SPEC_FILE
-# using yaml_merge.py
-# NOTE: Lists are merged by their indexes, be careful with parameters, tags and such!
-# to keep it sane, keep some list item identifier (ex: "name") and add extra properties,
-# such as "x-cli-name" or "x-cli-description"
-
-servers:
--   url: https://api-$API_NAME.{region}.jaxyendy.com
-    variables:
-        region:
-            description: Region to reach the service
-            default: br-ne-1
-            enum:
-            - br-ne-1
-            - br-ne-2
-            - br-se-1
-```
+It also creates a new customization file if it doesn't exist.
