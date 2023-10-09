@@ -99,3 +99,19 @@ python3 ./scripts/yaml_merge.py --override ./mgc/cli/openapis/block-storage.open
 ```
 
 Merge `EXTRA` YAML file on top of `BASE` YAML file.
+
+### [oapi_index_gen.py](./oapi_index_gen.py)
+
+Usage:
+
+```shell
+python3 ./scripts/oapi_index_gen.py [-h] [-o OUTPUT] [--embed EMBED] dir
+```
+
+Example:
+
+```shell
+python3 ./scripts/oapi_index_gen.py "--embed=mgc/sdk/openapi/embed_loader.go" mgc/cli/openapis
+```
+
+Generate index file indexing all OAPI YAML files in `dir`.
