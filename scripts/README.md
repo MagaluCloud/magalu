@@ -115,3 +115,19 @@ python3 ./scripts/oapi_index_gen.py "--embed=mgc/sdk/openapi/embed_loader.go" mg
 ```
 
 Generate index file indexing all OAPI YAML files in `dir`.
+
+### [spec_stats.py](./spec_stats.py)
+
+Usage:
+
+```shell
+python3 ./scripts/spec_stats.py [-h] [--filter FILTER] [--filter-out FILTER_OUT] [-o OUTPUT] [--ignore-disabled IGNORE_DISABLED] dir_or_file
+```
+
+Example:
+
+```shell
+python3 ./scripts/spec_stats.py ./mgc/cli/openapis
+```
+
+It shows general statistics, information that could generate problems with CLI or TF interfaces, or wrong REST definitions. It is good for validating that there are no unwanted interfaces from the endpoints. Missing crud, for example, is a useful statistic for us, it doesn't necessarily mean the API is broken.
