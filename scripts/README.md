@@ -11,6 +11,24 @@ python3 <script> -h
 
 ## Scripts
 
+### [build_release.sh](./build_release.sh)
+
+Usage:
+
+```shell
+VERSION=v0.0.0 ./scripts/build_release.sh
+```
+> **NOTE:**
+>`$VERSION` is used to set the correct version on build, the next version can be found by looking at git tags.
+
+Creates the `build` directory with:
+
+- Binaries for all supported platforms;
+- Markdown documentations;
+- `examples` directory with scripts that serve as examples;
+- `openapis` directory with the required OpenAPI Descriptions;
+- `docs` directory with TF documentation.
+
 ### [add_all_specs.sh](./add_all_specs.sh)
 
 Run [add_specs.sh](./add_specs.sh) with all supported specifications.
