@@ -131,3 +131,13 @@ python3 ./scripts/spec_stats.py ./mgc/cli/openapis
 ```
 
 It shows general statistics, information that could generate problems with CLI or TF interfaces, or wrong REST definitions. It is good for validating that there are no unwanted interfaces from the endpoints. Missing crud, for example, is a useful statistic for us, it doesn't necessarily mean the API is broken.
+
+### [tf_generate_docs.sh](./tf_generate_docs.sh)
+
+Usage:
+
+```shell
+python3 ./scripts/tf_generate_docs.sh
+```
+
+Uses [tfplugindocs](https://github.com/hashicorp/terraform-plugin-docs#terraform-plugin-docs) to generate documentation about Terraform providers and resources.
