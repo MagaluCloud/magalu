@@ -65,3 +65,19 @@ python3 ./scripts/remove_tenant_id.py ./mgc/cli/openapis/block-storage.openapi.y
 ```
 
 Remove `x-tenant-id` param from OpenAPI spec actions.
+
+### [yaml_merge.py](./yaml_merge.py)
+
+Usage:
+
+```shell
+python3 ./scripts/yaml_merge.py [-h] [--override] [-o OUTPUT] <BASE> <EXTRA>
+```
+
+Example:
+
+```shell
+python3 ./scripts/yaml_merge.py --override ./mgc/cli/openapis/block-storage.openapi.yaml ./openapi-customizations/block-storage.openapi.yaml
+```
+
+Merge `EXTRA` YAML file on top of `BASE` YAML file.
