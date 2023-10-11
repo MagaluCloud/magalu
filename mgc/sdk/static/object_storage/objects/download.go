@@ -117,8 +117,10 @@ func downloadSingleFile(ctx context.Context, cfg s3.Config, src, dst string) err
 	}
 
 	dir, _ := path.Split(dst)
-	if err := os.MkdirAll(dir, utils.FILE_PERMISSION); err != nil {
-		return err
+	if len(dir) != 0 {
+		if err := os.MkdirAll(dir, utils.DIR_PERMISSION); err != nil {
+			return err
+		}
 	}
 
 	if err := writeToFile(closer, dst); err != nil {
@@ -153,7 +155,7 @@ func downloadMultipleFiles(ctx context.Context, cfg s3.Config, src, dst string) 
 		}
 
 		dir, _ := path.Split(obj.Key)
-		if err := os.MkdirAll(path.Join(dst, dir), utils.FILE_PERMISSION); err != nil {
+		if err := os.MkdirAll(path.Join(dst, dir), utils.DIR_PERMISSION); err != nil {
 			objError.Add(objURI, err)
 			continue
 		}
