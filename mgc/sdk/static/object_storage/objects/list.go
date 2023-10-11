@@ -2,6 +2,7 @@ package objects
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"net/url"
 	"strings"
@@ -26,12 +27,11 @@ type ListObjectsResponse struct {
 }
 
 func newListRequest(ctx context.Context, cfg s3.Config, bucket string) (*http.Request, error) {
-	host := s3.BuildHost(cfg)
-	url, err := url.JoinPath(host, bucket)
+	parsedUrl, err := parseURL(cfg, bucket)
 	if err != nil {
 		return nil, err
 	}
-	return http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
+	return http.NewRequestWithContext(ctx, http.MethodGet, parsedUrl.String(), nil)
 }
 
 func newList() core.Executor {
@@ -41,6 +41,37 @@ func newList() core.Executor {
 		"List all objects from a bucket",
 		List,
 	)
+}
+
+func parseURL(cfg s3.Config, bucketURI string) (*url.URL, error) {
+	dirs := strings.Split(bucketURI, "/")
+	path, err := url.JoinPath(s3.BuildHost(cfg), dirs[0])
+	if err != nil {
+		return nil, err
+	}
+	u, err := url.Parse(path)
+	if err != nil {
+		return nil, err
+	}
+	if len(dirs) <= 1 {
+		return u, nil
+	}
+	q := u.Query()
+	// Set to v2 list key types
+	q.Set("list-type", "2")
+	prefixQ, delimiter := "", "/"
+	for _, subdir := range dirs[1:] {
+		if prefixQ == "" {
+			prefixQ = subdir + delimiter
+		} else {
+			prefixQ = fmt.Sprintf("%s%s%s", prefixQ, delimiter, subdir)
+		}
+	}
+	q.Set("prefix", prefixQ)
+	q.Set("delimiter", delimiter)
+	q.Set("encoding-type", "url")
+	u.RawQuery = q.Encode()
+	return u, nil
 }
 
 func List(ctx context.Context, params ListObjectsParams, cfg s3.Config) (result ListObjectsResponse, err error) {
