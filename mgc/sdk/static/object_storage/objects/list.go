@@ -2,7 +2,6 @@ package objects
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 	"net/url"
 	"strings"
@@ -21,9 +20,14 @@ type bucketContent struct {
 	Size         int    `xml:"Size"`
 }
 
+type prefix struct {
+	Path string `xml:"Prefix"`
+}
+
 type ListObjectsResponse struct {
-	Name     string           `xml:"Name"`
-	Contents []*bucketContent `xml:"Contents"`
+	Name           string           `xml:"Name"`
+	Contents       []*bucketContent `xml:"Contents"`
+	CommonPrefixes []*prefix        `xml:"CommonPrefixes" json:"SubDirectories"`
 }
 
 func newListRequest(ctx context.Context, cfg s3.Config, bucket string) (*http.Request, error) {
@@ -57,15 +61,11 @@ func parseURL(cfg s3.Config, bucketURI string) (*url.URL, error) {
 		return u, nil
 	}
 	q := u.Query()
-	// Set to v2 list key types
-	q.Set("list-type", "2")
-	prefixQ, delimiter := "", "/"
-	for _, subdir := range dirs[1:] {
-		if prefixQ == "" {
-			prefixQ = subdir + delimiter
-		} else {
-			prefixQ = fmt.Sprintf("%s%s%s", prefixQ, delimiter, subdir)
-		}
+	delimiter := "/"
+	prefixQ := strings.Join(dirs[1:], delimiter)
+	lastChar := string(prefixQ[len(prefixQ)-1])
+	if lastChar != delimiter {
+		prefixQ += delimiter
 	}
 	q.Set("prefix", prefixQ)
 	q.Set("delimiter", delimiter)

@@ -99,9 +99,7 @@ func writeToFile(reader io.ReadCloser, outFile string) (err error) {
 }
 
 func downloadSingleFile(ctx context.Context, cfg s3.Config, src, dst string) error {
-	bucketURI, _ := strings.CutPrefix(src, s3.URIPrefix)
-	downloadLogger().Infof("Downloading %s", bucketURI)
-	req, err := newDownloadRequest(ctx, cfg, bucketURI)
+	req, err := newDownloadRequest(ctx, cfg, src)
 	if err != nil {
 		return err
 	}
@@ -109,11 +107,6 @@ func downloadSingleFile(ctx context.Context, cfg s3.Config, src, dst string) err
 	closer, _, err := s3.SendRequest[io.ReadCloser](ctx, req, cfg.AccessKeyID, cfg.SecretKey)
 	if err != nil {
 		return err
-	}
-
-	if !isFilePath(dst) {
-		_, fname := path.Split(bucketURI)
-		dst = path.Join(dst, fname)
 	}
 
 	dir, _ := path.Split(dst)
@@ -131,16 +124,15 @@ func downloadSingleFile(ctx context.Context, cfg s3.Config, src, dst string) err
 }
 
 func downloadMultipleFiles(ctx context.Context, cfg s3.Config, src, dst string) error {
-	bucketURI, _ := strings.CutPrefix(src, s3.URIPrefix)
-	bucketName := strings.Split(bucketURI, "/")[0]
-	objs, err := List(ctx, ListObjectsParams{Destination: bucketURI}, cfg)
+	bucketRoot := strings.Split(src, "/")[0]
+	objs, err := List(ctx, ListObjectsParams{Destination: src}, cfg)
 	if err != nil {
 		return err
 	}
 
 	objError := NewDownloadObjectsError()
 	for _, obj := range objs.Contents {
-		objURI := path.Join(bucketName, obj.Key)
+		objURI := path.Join(bucketRoot, obj.Key)
 		downloadLogger().Infof("Downloading %s", objURI)
 		req, err := newDownloadRequest(ctx, cfg, objURI)
 		if err != nil {
@@ -173,9 +165,31 @@ func downloadMultipleFiles(ctx context.Context, cfg s3.Config, src, dst string) 
 	return nil
 }
 
-func isFilePath(fpath string) bool {
-	// TODO: find a better way to infer if it's a file - requesting metadata to s3?
-	return path.Ext(fpath) != ""
+func newHeadObjectRequest(ctx context.Context, cfg s3.Config, pathURIs ...string) (*http.Request, error) {
+	host := s3.BuildHost(cfg)
+	url, err := url.JoinPath(host, pathURIs...)
+	if err != nil {
+		return nil, err
+	}
+	return http.NewRequestWithContext(ctx, http.MethodHead, url, nil)
+}
+
+func isObjectPath(ctx context.Context, cfg s3.Config, pathURIs ...string) bool {
+	req, err := newHeadObjectRequest(ctx, cfg, pathURIs...)
+	if err != nil {
+		return false
+	}
+
+	result, _, err := s3.SendRequest[core.Value](ctx, req, cfg.AccessKeyID, cfg.SecretKey)
+	if err != nil {
+		return false
+	}
+
+	return result != nil
+}
+
+func isDirPath(fpath string) bool {
+	return path.Ext(fpath) == ""
 }
 
 func download(ctx context.Context, p downloadObjectParams, cfg s3.Config) (result core.Value, err error) {
@@ -188,15 +202,19 @@ func download(ctx context.Context, p downloadObjectParams, cfg s3.Config) (resul
 		_, fname := path.Split(p.Source)
 		dst = path.Join(dst, fname)
 	}
-	if isFilePath(p.Source) {
+	src, _ := strings.CutPrefix(p.Source, s3.URIPrefix)
+	if isObjectPath(ctx, cfg, src) {
 		// User specified a directory, append the file name to it
-		if !isFilePath(dst) {
-			_, fname := path.Split(p.Source)
+		if isDirPath(dst) {
+			_, fname := path.Split(src)
 			dst = path.Join(dst, fname)
 		}
-		err = downloadSingleFile(ctx, cfg, p.Source, dst)
+		err = downloadSingleFile(ctx, cfg, src, dst)
 	} else {
-		err = downloadMultipleFiles(ctx, cfg, p.Source, dst)
+		if !isDirPath(dst) {
+			return nil, fmt.Errorf("bucket resource %s is a directory but given local path is a file %s", p.Source, p.Destination)
+		}
+		err = downloadMultipleFiles(ctx, cfg, src, dst)
 	}
 
 	if err != nil {

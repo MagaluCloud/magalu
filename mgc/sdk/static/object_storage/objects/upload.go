@@ -42,7 +42,7 @@ func formatURI(uri string) string {
 func upload(ctx context.Context, params uploadParams, cfg s3.Config) (*uploadTemplateResult, error) {
 	dst, _ := strings.CutPrefix(params.Destination, s3.URIPrefix)
 	_, fileName := path.Split(params.Source)
-	if !isFilePath(dst) {
+	if isDirPath(dst) {
 		// If it isn't a file path, don't rename, just append source with bucket URI
 		dst = path.Join(dst, fileName)
 	}
