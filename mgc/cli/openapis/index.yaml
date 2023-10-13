@@ -4,7 +4,7 @@ modules:
     path: block-storage.openapi.yaml
     url: https://block-storage.jaxyendy.com/openapi.json
     version: 1.52.0
--   description: DBaaS Api Product
+-   description: DBaaS API Product.
     name: dbaas
     path: dbaas.openapi.yaml
     url: https://dbaas.jaxyendy.com/openapi.json
