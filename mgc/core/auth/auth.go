@@ -171,24 +171,7 @@ func (o *Auth) SetTokens(token *LoginResult) error {
 	o.accessToken = token.AccessToken
 	o.refreshToken = token.RefreshToken
 
-	authResult, err := o.readConfigFile()
-	// Ignore if config file doesn't exist
-	if err != nil && !os.IsNotExist(err) {
-		return err
-	}
-	if authResult == nil {
-		authResult = &ConfigResult{}
-	}
-
-	authResult.AccessToken = token.AccessToken
-	authResult.RefreshToken = token.RefreshToken
-
-	err = o.writeConfigFile(authResult)
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return o.writeCurrentConfig()
 }
 
 func (o *Auth) SetCurrentTenantID(id string) error {
