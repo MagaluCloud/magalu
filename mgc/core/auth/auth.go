@@ -45,6 +45,8 @@ type ConfigResult struct {
 	AccessToken     string `yaml:"access_token"`
 	RefreshToken    string `yaml:"refresh_token"`
 	CurrentTenantID string `yaml:"current_tenant_id"`
+	AccessKeyId     string `yaml:"access_key_id"`
+	SecretAccessKey string `yaml:"secret_access_key"`
 	CurrentEnv      string `yaml:"current_environment"` // ignored - used just for compatibility
 }
 
@@ -67,6 +69,8 @@ type Auth struct {
 	accessToken     string
 	refreshToken    string
 	currentTenantId string
+	accessKeyId     string
+	secretAccessKey string
 	codeVerifier    *codeVerifier
 	group           singleflight.Group
 	fs              afero.Fs
@@ -174,6 +178,12 @@ func (o *Auth) SetTokens(token *LoginResult) error {
 	return o.writeCurrentConfig()
 }
 
+func (o *Auth) SetAccessKey(id string, key string) error {
+	o.accessKeyId = id
+	o.secretAccessKey = key
+	return o.writeCurrentConfig()
+}
+
 func (o *Auth) SetCurrentTenantID(id string) error {
 	o.currentTenantId = id
 	return o.writeCurrentConfig()
@@ -184,6 +194,8 @@ func (o *Auth) writeCurrentConfig() error {
 	authResult.AccessToken = o.accessToken
 	authResult.RefreshToken = o.refreshToken
 	authResult.CurrentTenantID = o.currentTenantId
+	authResult.AccessKeyId = o.accessKeyId
+	authResult.SecretAccessKey = o.secretAccessKey
 	return o.writeConfigFile(authResult)
 }
 
@@ -193,6 +205,8 @@ func (o *Auth) InitTokensFromFile() {
 		o.accessToken = authResult.AccessToken
 		o.refreshToken = authResult.RefreshToken
 		o.currentTenantId = authResult.CurrentTenantID
+		o.accessKeyId = authResult.AccessKeyId
+		o.secretAccessKey = authResult.SecretAccessKey
 	}
 
 	if envVal := os.Getenv("MGC_SDK_ACCESS_TOKEN"); envVal != "" {
