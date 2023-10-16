@@ -342,24 +342,38 @@ virtual-machine.openapi:
     - '#/components/schemas/ValidationError'
 vpc.openapi:
   computed-variables:
-    - POST /v0/xaas/vpcs/{vpc_id}/ports:
+    - POST /v0/ports:
         - '200':
             computed:
               - id
             non-computed:
               - has_pip
+              - has_sg
               - name
-              - project_type
-              - subnet_id
-              - vpc_id
+              - security_groups_id
+              - subnets
     - POST /v0/vpcs/{vpc_id}/ports:
         - '200':
             computed:
               - id
             non-computed:
               - has_pip
+              - has_sg
               - name
-              - subnet_id
+              - security_groups_id
+              - subnets
+              - vpc_id
+    - POST /v0/xaas/vpcs/{vpc_id}/ports:
+        - '200':
+            computed:
+              - id
+            non-computed:
+              - has_pip
+              - has_sg
+              - name
+              - project_type
+              - security_groups_id
+              - subnets
               - vpc_id
     - POST /v0/vpcs/{vpc_id}/public_ips:
         - '200':
@@ -367,7 +381,18 @@ vpc.openapi:
               - id
             non-computed:
               - description
+              - validate_quota
               - vpc_id
+    - POST /v0/routers/default:
+        - '201':
+            computed:
+              - id
+    - POST /v0/xaas/routers/default:
+        - '201':
+            computed:
+              - id
+            non-computed:
+              - project_type
     - POST /v0/security_groups/{security_group_id}/rules:
         - '200':
             computed:
@@ -381,6 +406,9 @@ vpc.openapi:
               - remote_group_id
               - remote_ip_prefix
               - security_group_id
+              - validate_quota
+              - wait
+              - wait_timeout
     - POST /v0/xaas/security_groups/{security_group_id}/rules:
         - '201':
             computed:
@@ -395,6 +423,20 @@ vpc.openapi:
               - remote_group_id
               - remote_ip_prefix
               - security_group_id
+              - wait
+              - wait_timeout
+    - POST /v0/security_groups/default:
+        - '201':
+            computed:
+              - id
+    - POST /v0/security_groups:
+        - '200':
+            computed:
+              - id
+            non-computed:
+              - description
+              - name
+              - validate_quota
     - POST /v0/vpcs/{vpc_id}/security_groups:
         - '200':
             computed:
@@ -403,6 +445,22 @@ vpc.openapi:
               - description
               - name
               - vpc_id
+              - wait
+              - wait_timeout
+    - POST /v0/xaas/security_groups/default:
+        - '201':
+            computed:
+              - id
+            non-computed:
+              - project_type
+    - POST /v0/xaas/security_groups:
+        - '201':
+            computed:
+              - id
+            non-computed:
+              - description
+              - name
+              - project_type
     - POST /v0/xaas/vpcs/{vpc_id}/security_groups:
         - '201':
             computed:
@@ -412,6 +470,8 @@ vpc.openapi:
               - name
               - project_type
               - vpc_id
+              - wait
+              - wait_timeout
     - POST /v0/xaas/vpcs/{vpc_id}/subnetpools:
         - '201':
             computed:
@@ -435,6 +495,7 @@ vpc.openapi:
             non-computed:
               - cidr_block
               - description
+              - dns_nameservers
               - ip_version
               - name
               - vpc_id
@@ -449,12 +510,6 @@ vpc.openapi:
             non-computed:
               - description
               - name
-    - POST /v0/xaas/vpcs/default:
-        - '200':
-            computed:
-              - id
-            non-computed:
-              - project_type
     - POST /v0/xaas/vpcs:
         - '200':
             computed:
@@ -473,11 +528,19 @@ vpc.openapi:
               - ip_address
             non-computed:
               - nic_vpc_id
+              - openapi_extra
               - project_type
               - vpc_id
   missing-crud:
     - quotas:
         - post
         - delete
+  non-snakecase-values:
+    PATCH /v0/xaas/rules/{rule_id}:
+      parameters:
+        - x-request-id
+    PATCH /v0/xaas/security_groups/{security_group_id}:
+      parameters:
+        - x-request-id
   unused-components:
     - '#/components/schemas/ValidationError'

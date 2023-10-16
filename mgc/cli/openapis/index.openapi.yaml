@@ -23,5 +23,5 @@ modules:
     name: vpc
     path: vpc.openapi.yaml
     url: https://vpc.jaxyendy.com/openapi.json
-    version: 1.59.0
+    version: 1.91.0
 version: 1.0.0
