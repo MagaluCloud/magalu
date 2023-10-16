@@ -14,14 +14,14 @@ modules:
     path: mke.openapi.yaml
     url: https://mke.br-ne-1.com/docs/openapi-with-snippets.json
     version: 0.1.0
+-   description: APIs referentes ao produto de Network
+    name: network
+    path: network.openapi.yaml
+    url: https://vpc.jaxyendy.com/openapi.json
+    version: 1.91.0
 -   description: APIs referentes ao produto de Virtual Machine
     name: virtual-machine
     path: virtual-machine.openapi.yaml
     url: https://virtual-machine.jaxyendy.com/openapi.json
     version: 1.60.0
--   description: APIs referentes ao produto de VPC
-    name: vpc
-    path: vpc.openapi.yaml
-    url: https://vpc.jaxyendy.com/openapi.json
-    version: 1.91.0
 version: 1.0.0

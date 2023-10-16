@@ -293,54 +293,7 @@ mke.openapi:
       responses:
         application/json:
           - .securityGroups
-virtual-machine.openapi:
-  computed-variables:
-    - POST /v0/images:
-        - '201':
-            computed:
-              - name
-              - os_distribution
-              - size
-              - version
-            non-computed:
-              - id
-              - internal
-              - sku
-    - POST /v0/instance_types:
-        - '201':
-            computed:
-              - disk
-              - name
-              - ram
-              - vcpus
-            non-computed:
-              - id
-              - internal
-              - sku
-    - POST /v0/instances:
-        - '200':
-            computed:
-              - id
-            non-computed:
-              - allocate_fip
-              - availability_zone
-              - image
-              - key_name
-              - name
-              - network_interfaces
-              - type
-              - user_data
-    - POST /v0/keypairs/{keypair_name}:
-        - '201':
-            computed:
-              - name
-              - private_key
-              - public_key
-            non-computed:
-              - keypair_name
-  unused-components:
-    - '#/components/schemas/ValidationError'
-vpc.openapi:
+network.openapi:
   computed-variables:
     - POST /v0/ports:
         - '200':
@@ -542,5 +495,52 @@ vpc.openapi:
     PATCH /v0/xaas/security_groups/{security_group_id}:
       parameters:
         - x-request-id
+  unused-components:
+    - '#/components/schemas/ValidationError'
+virtual-machine.openapi:
+  computed-variables:
+    - POST /v0/images:
+        - '201':
+            computed:
+              - name
+              - os_distribution
+              - size
+              - version
+            non-computed:
+              - id
+              - internal
+              - sku
+    - POST /v0/instance_types:
+        - '201':
+            computed:
+              - disk
+              - name
+              - ram
+              - vcpus
+            non-computed:
+              - id
+              - internal
+              - sku
+    - POST /v0/instances:
+        - '200':
+            computed:
+              - id
+            non-computed:
+              - allocate_fip
+              - availability_zone
+              - image
+              - key_name
+              - name
+              - network_interfaces
+              - type
+              - user_data
+    - POST /v0/keypairs/{keypair_name}:
+        - '201':
+            computed:
+              - name
+              - private_key
+              - public_key
+            non-computed:
+              - keypair_name
   unused-components:
     - '#/components/schemas/ValidationError'
