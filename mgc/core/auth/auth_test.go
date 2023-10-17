@@ -149,6 +149,33 @@ func TestSetTokens(t *testing.T) {
 	}
 }
 
+func TestSetAccessKey(t *testing.T) {
+	accessKeyId := "MyAccessKeyIdTest"
+	secretAccessKey := "MySecretAccessKeyTeste"
+	fs := afero.NewMemMapFs()
+	currentAuth := New(dummyConfig, &http.Client{Transport: mockTransport{}}, fs)
+
+	if err := currentAuth.SetAccessKey(accessKeyId, secretAccessKey); err != nil {
+		t.Errorf("expected err == nil, found: %v", err)
+	}
+
+	auths := []*Auth{
+		// Current auth
+		currentAuth,
+		// New auth reading from file
+		New(dummyConfig, &http.Client{Transport: mockTransport{}}, fs),
+	}
+
+	for i, auth := range auths {
+		if auth.accessKeyId != accessKeyId {
+			t.Errorf("authIndex %v expected auth.accessKeyId = %s, found: %v", i, accessKeyId, auth.accessKeyId)
+		}
+		if auth.secretAccessKey != secretAccessKey {
+			t.Errorf("authIndex %v expected auth.secretAccessKey = %s, found: %v", i, secretAccessKey, auth.secretAccessKey)
+		}
+	}
+}
+
 func TestRequestAuthTokenWithAuthorizationCode(t *testing.T) {
 	filename, err := utils.BuildMGCFilePath(authFilename)
 	if err != nil {
