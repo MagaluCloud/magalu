@@ -146,6 +146,8 @@ paths:
     /v0/snapshots/{snapshot_id}:
         post:
             x-cli-name: restore
+    /v0/volume_types_all:
+        x-cli-hidden: true
 
 
 tags:

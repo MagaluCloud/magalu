@@ -87,6 +87,7 @@ paths:
             security:
             -   OAuth2:
                 - block-storage.read
+        x-cli-hidden: true
     /v0/usage:
         get:
             tags:

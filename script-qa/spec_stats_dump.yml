@@ -338,10 +338,6 @@ virtual-machine.openapi:
               - public_key
             non-computed:
               - keypair_name
-  missing-crud:
-    - usage:
-        - post
-        - delete
   unused-components:
     - '#/components/schemas/ValidationError'
 vpc.openapi:

@@ -68,6 +68,7 @@ paths:
                                 id: $request.path.id
     /v0/images:
         post:
+            x-cli-hidden: true
             responses:
                 '201':
                     links:
@@ -76,8 +77,12 @@ paths:
                             description: Delete image in DB
                             parameters:
                                 image_id: $response.body#/id
+    /v0/images/{image_id}:
+        delete:
+            x-cli-hidden: true
     /v0/instance_types:
         post:
+            x-cli-hidden: true
             responses:
                 '201':
                     links:
@@ -86,6 +91,9 @@ paths:
                             description: Delete Instance Type
                             parameters:
                                 instance_type_id: $response.body#/id
+    /v0/instance_types/{instance_type_id}:
+        delete:
+            x-cli-hidden: true
     /v0/keypairs:
         post:
             responses:
@@ -106,6 +114,8 @@ paths:
                             description: Delete keypair
                             parameters:
                                 keypair_name: $response.body#/name
+    /v0/instance_types_all:
+        x-cli-hidden: true
 
 components:
     schemas:
@@ -129,6 +139,7 @@ tags:
     description: images
 -   name: usage
     description: usage
+    x-cli-hidden: true
 
 servers:
 -   url: https://api-virtual-machine{env}.{region}.jaxyendy.com
