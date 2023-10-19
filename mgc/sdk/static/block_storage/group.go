@@ -2,7 +2,7 @@ package block_storage
 
 import (
 	"magalu.cloud/core"
-	"magalu.cloud/sdk/static/block_storage/attachment"
+	attachment "magalu.cloud/sdk/static/block_storage/volume-attach"
 )
 
 func NewGroup() core.Grouper {

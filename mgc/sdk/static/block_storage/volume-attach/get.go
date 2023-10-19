@@ -9,22 +9,22 @@ import (
 	"magalu.cloud/core/utils"
 )
 
-type CreateAttachVolumeParams struct {
-	VolumeID         string `json:"id" jsonschema:"description=Block storage volume ID to be attached"`
-	VirtualMachineID string `json:"virtual_machine_id" jsonschema:"description=ID of the virtual machine instance to attach the volume"`
+type GetAttachVolumeParams struct {
+	VolumeID         string `json:"id" jsonschema:"description=Block storage volume ID"`
+	VirtualMachineID string `json:"virtual_machine_id" jsonschema:"description=Instance ID of the virtual machine to which the volume is attached"`
 }
 
-func newCreate() core.Executor {
+func newGet() core.Executor {
 	return core.NewStaticExecute(
-		"create",
+		"get",
 		"",
-		"Attach a volume to a virtual machine instance",
-		Create,
+		"Check if a volume is attached to a virtual machine instance",
+		get,
 	)
 }
 
-func Create(ctx context.Context, params CreateAttachVolumeParams, cfg core.Configs) (*AttachmentResult, error) {
-	exec, err := retrieveExecutor(ctx, []string{"block-storage", "volume", "attach"})
+func get(ctx context.Context, params GetAttachVolumeParams, cfg core.Configs) (*AttachmentResult, error) {
+	exec, err := retrieveExecutor(ctx, []string{"block-storage", "volume", "get"})
 	if err != nil {
 		return nil, err
 	}
@@ -34,7 +34,12 @@ func Create(ctx context.Context, params CreateAttachVolumeParams, cfg core.Confi
 		return nil, err
 	}
 
-	result, err := exec.Execute(ctx, *paramsMap, cfg)
+	p := map[string]any{}
+	for k := range exec.ParametersSchema().Properties {
+		p[k] = (*paramsMap)[k]
+	}
+
+	result, err := exec.Execute(ctx, p, cfg)
 	if err != nil {
 		return nil, err
 	}
@@ -49,7 +54,7 @@ func Create(ctx context.Context, params CreateAttachVolumeParams, cfg core.Confi
 			return attachment.VirtualMachineId == params.VirtualMachineID
 		})
 		if index == -1 {
-			return nil, fmt.Errorf("unable to attach virtual machine %s to volume %s", params.VirtualMachineID, params.VolumeID)
+			return nil, fmt.Errorf("virtual machine %s not attached to volume %s", params.VirtualMachineID, params.VolumeID)
 		}
 
 		return &AttachmentResult{resp.ID, resp.Attachments[index].VirtualMachineId}, nil

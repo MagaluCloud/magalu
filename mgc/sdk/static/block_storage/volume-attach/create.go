@@ -9,25 +9,22 @@ import (
 	"magalu.cloud/core/utils"
 )
 
-type DeleteAttachVolumeParams struct {
+type CreateAttachVolumeParams struct {
 	VolumeID         string `json:"id" jsonschema:"description=Block storage volume ID to be attached"`
 	VirtualMachineID string `json:"virtual_machine_id" jsonschema:"description=ID of the virtual machine instance to attach the volume"`
 }
 
-func newDelete() core.Executor {
-	exec := core.NewStaticExecute(
-		"delete",
+func newCreate() core.Executor {
+	return core.NewStaticExecute(
+		"create",
 		"",
-		"Detach a volume from a virtual machine instance",
-		Delete,
+		"Attach a volume to a virtual machine instance",
+		create,
 	)
-
-	// TODO: Make Confirmable?
-	return exec
 }
 
-func Delete(ctx context.Context, params DeleteAttachVolumeParams, cfg core.Configs) (core.Result, error) {
-	exec, err := retrieveExecutor(ctx, []string{"block-storage", "volume", "detach"})
+func create(ctx context.Context, params CreateAttachVolumeParams, cfg core.Configs) (*AttachmentResult, error) {
+	exec, err := retrieveExecutor(ctx, []string{"block-storage", "volume", "attach"})
 	if err != nil {
 		return nil, err
 	}
@@ -51,11 +48,11 @@ func Delete(ctx context.Context, params DeleteAttachVolumeParams, cfg core.Confi
 		index := slices.IndexFunc(resp.Attachments, func(attachment VolumeAttachmentResponse) bool {
 			return attachment.VirtualMachineId == params.VirtualMachineID
 		})
-		if index != -1 {
-			return nil, fmt.Errorf("unable to detach virtual machine %s to volume %s", params.VirtualMachineID, params.VolumeID)
+		if index == -1 {
+			return nil, fmt.Errorf("unable to attach virtual machine %s to volume %s", params.VirtualMachineID, params.VolumeID)
 		}
 
-		return nil, nil
+		return &AttachmentResult{resp.ID, resp.Attachments[index].VirtualMachineId}, nil
 	}
 
 	return nil, fmt.Errorf("unable to parse command output. %#v", result)

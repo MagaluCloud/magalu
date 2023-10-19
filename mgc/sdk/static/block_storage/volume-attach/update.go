@@ -16,11 +16,11 @@ func newUpdate() core.Executor {
 		"update",
 		"",
 		"Update a block storage volume attachment",
-		Update,
+		update,
 	)
 }
 
-func Update(ctx context.Context, params UpdateAttachVolumeParams, cfg core.Configs) (core.Result, error) {
+func update(ctx context.Context, params UpdateAttachVolumeParams, cfg core.Configs) (core.Result, error) {
 	// No update available
 	return nil, nil
 }
