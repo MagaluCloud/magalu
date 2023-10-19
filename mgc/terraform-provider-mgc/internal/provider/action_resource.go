@@ -68,7 +68,7 @@ func (s *MgcActionResource) ReadInputAttributes(ctx context.Context) diag.Diagno
 	if len(s.inputAttr) != 0 {
 		return d
 	}
-	tflog.Debug(ctx, fmt.Sprintf("[action-resource] schema for `%s`: reading input attributes", s.name))
+	tflog.Debug(ctx, fmt.Sprintf("[action-resource] schema for %q: reading input attributes", s.name))
 
 	s.inputAttr = mgcAttributes{}
 
@@ -128,7 +128,7 @@ func (r *MgcActionResource) ReadOutputAttributes(ctx context.Context) diag.Diagn
 	if len(r.outputAttr) != 0 {
 		return d
 	}
-	tflog.Debug(ctx, fmt.Sprintf("[action-resource] schema for `%s`: reading output attributes", r.name))
+	tflog.Debug(ctx, fmt.Sprintf("[action-resource] schema for %q: reading output attributes", r.name))
 
 	r.outputAttr = mgcAttributes{}
 	err := addMgcSchemaAttributes(
@@ -203,7 +203,7 @@ func (r *MgcActionResource) Metadata(ctx context.Context, req resource.MetadataR
 
 func (r *MgcActionResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	// TODO: Handle nullable values
-	tflog.Debug(ctx, fmt.Sprintf("[action-resource] generating schema for `%s`", r.name))
+	tflog.Debug(ctx, fmt.Sprintf("[action-resource] generating schema for %q", r.name))
 
 	if r.tfschema == nil {
 		tfs, d := generateTFSchema(r, ctx)

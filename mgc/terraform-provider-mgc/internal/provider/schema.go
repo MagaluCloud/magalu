@@ -125,10 +125,10 @@ func addMgcSchemaAttributes(
 		if ca, ok := attributes[mgcName]; ok {
 			if !checkSimilarJsonSchemas(ca.mgcSchema, mgcPropSchema) {
 				// Ignore update value in favor of create value (This is probably a bug with the API)
-				tflog.Error(ctx, fmt.Sprintf("[resource] schema for `%s`: ignoring DIFFERENT attribute `%s`:\nOLD=%+v\nNEW=%+v", resourceName, k, ca.mgcSchema, mgcPropSchema))
+				tflog.Error(ctx, fmt.Sprintf("[resource] schema for %q: ignoring DIFFERENT attribute %q:\nOLD=%+v\nNEW=%+v", resourceName, k, ca.mgcSchema, mgcPropSchema))
 				continue
 			}
-			tflog.Debug(ctx, fmt.Sprintf("[resource] schema for `%s`: ignoring already computed attribute `%s` ", resourceName, k))
+			tflog.Debug(ctx, fmt.Sprintf("[resource] schema for %q: ignoring already computed attribute %q ", resourceName, k))
 			continue
 		}
 
@@ -207,7 +207,7 @@ func generateTFAttributes(handler tfSchemaHandler, ctx context.Context) (tfa map
 			if !checkSimilarJsonSchemas(oattr.mgcSchema, iattr.mgcSchema) {
 				os, _ := oattr.mgcSchema.MarshalJSON()
 				is, _ := iattr.mgcSchema.MarshalJSON()
-				tflog.Debug(ctx, fmt.Sprintf("[resource] schema for `%s`: attribute `%s` differs between input and output. input: %s - output %s", handler.Name(), name, is, os))
+				tflog.Debug(ctx, fmt.Sprintf("[resource] schema for %q: attribute %q differs between input and output. input: %s - output %s", handler.Name(), name, is, os))
 				iattr.tfName = iattr.tfName.asDesired()
 				oattr.tfName = oattr.tfName.asCurrent()
 

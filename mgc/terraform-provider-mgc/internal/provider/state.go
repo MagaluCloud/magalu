@@ -97,20 +97,20 @@ func applyStateAfter(
 		if !ok {
 			diag.AddError(
 				"Read link failed",
-				fmt.Sprintf("Unable to resolve Read link for applying new state on resource '%s'. Available links: %v", handler.Name(), result.Source().Executor.Links()),
+				fmt.Sprintf("Unable to resolve Read link for applying new state on resource %q. Available links: %v", handler.Name(), result.Source().Executor.Links()),
 			)
 			return
 		}
 
 		additionalParametersSchema := readLink.AdditionalParametersSchema()
 		if len(additionalParametersSchema.Required) > 0 {
-			diag.AddError("Read link failed", fmt.Sprintf("Unable to resolve parameters on Read link for applying new state on resource '%s'", handler.Name()))
+			diag.AddError("Read link failed", fmt.Sprintf("Unable to resolve parameters on Read link for applying new state on resource %q", handler.Name()))
 			return
 		}
 
 		exec, err := readLink.CreateExecutor(result)
 		if err != nil {
-			diag.AddError("Read link failed", fmt.Sprintf("Unable to create Read link executor for applying new state on resource '%s': %s", handler.Name(), err))
+			diag.AddError("Read link failed", fmt.Sprintf("Unable to create Read link executor for applying new state on resource %q: %s", handler.Name(), err))
 			return
 		}
 
