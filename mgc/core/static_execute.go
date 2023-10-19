@@ -8,7 +8,7 @@ import (
 	"github.com/getkin/kin-openapi/openapi3"
 	"github.com/invopop/jsonschema"
 	"go.uber.org/zap"
-	coreLogger "magalu.cloud/core/logger"
+	mgcLoggerPkg "magalu.cloud/core/logger"
 	"magalu.cloud/core/schema"
 	"magalu.cloud/core/utils"
 )
@@ -29,7 +29,7 @@ var corePkgLogger *zap.SugaredLogger
 
 func logger() *zap.SugaredLogger {
 	if corePkgLogger == nil {
-		corePkgLogger = coreLogger.New[StaticExecute]()
+		corePkgLogger = mgcLoggerPkg.New[StaticExecute]()
 	}
 	return corePkgLogger
 }

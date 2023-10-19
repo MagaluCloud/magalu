@@ -9,7 +9,7 @@ import (
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"magalu.cloud/core"
-	coreLogger "magalu.cloud/core/logger"
+	mgcLoggerPkg "magalu.cloud/core/logger"
 	"magalu.cloud/core/schema"
 )
 
@@ -19,7 +19,7 @@ var pkgLogger *zap.SugaredLogger
 
 func logger() *zap.SugaredLogger {
 	if pkgLogger == nil {
-		pkgLogger = coreLogger.New[pkgSymbol]()
+		pkgLogger = mgcLoggerPkg.New[pkgSymbol]()
 	}
 	return pkgLogger
 }

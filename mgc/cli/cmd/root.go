@@ -12,7 +12,7 @@ import (
 	"magalu.cloud/cli/ui"
 	"magalu.cloud/core"
 	mgcHttp "magalu.cloud/core/http"
-	mgcLogger "magalu.cloud/core/logger"
+	mgcLoggerPkg "magalu.cloud/core/logger"
 	mgcSchema "magalu.cloud/core/schema"
 	mgcSdk "magalu.cloud/sdk"
 
@@ -712,7 +712,7 @@ can generate a command line on-demand for Rest manipulation`,
 	}
 
 	defer func() {
-		_ = mgcLogger.Root().Sync()
+		_ = mgcLoggerPkg.Root().Sync()
 	}()
 
 	rootCmd.SetArgs(mainArgs)

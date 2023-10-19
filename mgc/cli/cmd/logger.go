@@ -5,7 +5,7 @@ import (
 
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
-	coreLogger "magalu.cloud/core/logger"
+	mgcLoggerPkg "magalu.cloud/core/logger"
 	mgcSdk "magalu.cloud/sdk"
 	"moul.io/zapfilter"
 )
@@ -16,7 +16,7 @@ var loggerInstance *zap.SugaredLogger
 
 func logger() *zap.SugaredLogger {
 	if loggerInstance == nil {
-		loggerInstance = coreLogger.New[pkgSymbol]()
+		loggerInstance = mgcLoggerPkg.New[pkgSymbol]()
 	}
 	return loggerInstance
 }
@@ -53,7 +53,7 @@ func initLogger(sdk *mgcSdk.Sdk, filterRules string) error {
 	})
 
 	logger = logger.WithOptions(filterOpt)
-	coreLogger.SetRoot(logger.Sugar())
+	mgcLoggerPkg.SetRoot(logger.Sugar())
 
 	return nil
 }
