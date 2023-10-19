@@ -10,7 +10,7 @@ import (
 	"github.com/stoewer/go-strcase"
 	"go.uber.org/zap"
 	"magalu.cloud/core"
-	schemaPkg "magalu.cloud/core/schema"
+	mgcSchemaPkg "magalu.cloud/core/schema"
 	"magalu.cloud/core/utils"
 )
 
@@ -114,9 +114,9 @@ func doTransformValue(spec *transformSpec, value any) (any, error) {
 	return value, nil
 }
 
-func doTransformSchema(spec *transformSpec, value *schemaPkg.COWSchema) (*schemaPkg.COWSchema, error) {
+func doTransformSchema(spec *transformSpec, value *mgcSchemaPkg.COWSchema) (*mgcSchemaPkg.COWSchema, error) {
 	if spec.Schema != nil {
-		value.Replace((*schemaPkg.Schema)(spec.Schema))
+		value.Replace((*mgcSchemaPkg.Schema)(spec.Schema))
 		return value, nil
 	}
 	switch spec.Type {
@@ -140,7 +140,7 @@ func doTransformsToValue(logger *zap.SugaredLogger, specs []*transformSpec, valu
 	return
 }
 
-func doTransformsToSchema(logger *zap.SugaredLogger, specs []*transformSpec, value *schemaPkg.COWSchema) (result *schemaPkg.COWSchema, err error) {
+func doTransformsToSchema(logger *zap.SugaredLogger, specs []*transformSpec, value *mgcSchemaPkg.COWSchema) (result *mgcSchemaPkg.COWSchema, err error) {
 	result = value
 	for _, spec := range specs {
 		result, err = doTransformSchema(spec, result)
@@ -255,9 +255,9 @@ func createTransform[T any](logger *zap.SugaredLogger, schema *core.Schema, exte
 type commonSchemaTransformer[T any] struct {
 	tKey                 string
 	transformSpecs       func(specs []*transformSpec, value T) (T, error)
-	transformArray       func(t schemaPkg.Transformer[T], schema *core.Schema, itemSchema *core.Schema, value T) (T, error)
-	transformObject      func(t schemaPkg.Transformer[T], schema *core.Schema, value T) (T, error)
-	transformConstraints func(t schemaPkg.Transformer[T], kind schemaPkg.ConstraintKind, schemaRefs schemaPkg.SchemaRefs, value T) (T, error)
+	transformArray       func(t mgcSchemaPkg.Transformer[T], schema *core.Schema, itemSchema *core.Schema, value T) (T, error)
+	transformObject      func(t mgcSchemaPkg.Transformer[T], schema *core.Schema, value T) (T, error)
+	transformConstraints func(t mgcSchemaPkg.Transformer[T], kind mgcSchemaPkg.ConstraintKind, schemaRefs mgcSchemaPkg.SchemaRefs, value T) (T, error)
 }
 
 func (t *commonSchemaTransformer[T]) Transform(schema *core.Schema, value T) (T, error) {
@@ -266,7 +266,7 @@ func (t *commonSchemaTransformer[T]) Transform(schema *core.Schema, value T) (T,
 	if len(specs) > 0 {
 		value, err = t.transformSpecs(specs, value)
 		if err == nil {
-			err = schemaPkg.TransformStop
+			err = mgcSchemaPkg.TransformStop
 		}
 	}
 	return value, err
@@ -283,7 +283,7 @@ func (t *commonSchemaTransformer[T]) Array(schema *core.Schema, itemSchema *core
 	return t.transformArray(t, schema, itemSchema, value)
 }
 
-func (t *commonSchemaTransformer[T]) Constraints(kind schemaPkg.ConstraintKind, schemaRefs schemaPkg.SchemaRefs, value T) (T, error) {
+func (t *commonSchemaTransformer[T]) Constraints(kind mgcSchemaPkg.ConstraintKind, schemaRefs mgcSchemaPkg.SchemaRefs, value T) (T, error) {
 	return t.transformConstraints(t, kind, schemaRefs, value)
 }
 
@@ -291,7 +291,7 @@ func (t *commonSchemaTransformer[T]) Object(schema *core.Schema, value T) (T, er
 	return t.transformObject(t, schema, value)
 }
 
-var _ schemaPkg.Transformer[any] = (*commonSchemaTransformer[any])(nil)
+var _ mgcSchemaPkg.Transformer[any] = (*commonSchemaTransformer[any])(nil)
 
 // Recursively checks whenever the given schema needs transformation
 func needsTransformation(schema *core.Schema, transformationKey string) (bool, error) {
@@ -302,36 +302,36 @@ func needsTransformation(schema *core.Schema, transformationKey string) (bool, e
 		transformObject:      transformObjectNeedsTransformation,
 		transformConstraints: transformConstraintsNeedsTransformation,
 	}
-	return schemaPkg.Transform[bool](t, schema, false)
+	return mgcSchemaPkg.Transform[bool](t, schema, false)
 }
 
-func transformArrayNeedsTransformation(t schemaPkg.Transformer[bool], schema *core.Schema, itemSchema *core.Schema, value bool) (bool, error) {
+func transformArrayNeedsTransformation(t mgcSchemaPkg.Transformer[bool], schema *core.Schema, itemSchema *core.Schema, value bool) (bool, error) {
 	if itemSchema == nil {
 		return value, nil
 	}
-	return schemaPkg.Transform(t, itemSchema, value)
+	return mgcSchemaPkg.Transform(t, itemSchema, value)
 }
 
-func transformObjectNeedsTransformation(t schemaPkg.Transformer[bool], schema *core.Schema, value bool) (bool, error) {
-	return schemaPkg.TransformObjectProperties(schema, value, func(propName string, propSchema *core.Schema, value bool) (bool, error) {
-		value, err := schemaPkg.Transform(t, propSchema, value)
+func transformObjectNeedsTransformation(t mgcSchemaPkg.Transformer[bool], schema *core.Schema, value bool) (bool, error) {
+	return mgcSchemaPkg.TransformObjectProperties(schema, value, func(propName string, propSchema *core.Schema, value bool) (bool, error) {
+		value, err := mgcSchemaPkg.Transform(t, propSchema, value)
 		if err != nil {
 			return value, err
 		}
 		if value {
-			return true, schemaPkg.TransformStop
+			return true, mgcSchemaPkg.TransformStop
 		}
 		return false, nil
 	})
 }
 
-func transformConstraintsNeedsTransformation(t schemaPkg.Transformer[bool], kind schemaPkg.ConstraintKind, schemaRefs schemaPkg.SchemaRefs, value bool) (bool, error) {
-	value, err := schemaPkg.TransformSchemasArray(t, schemaRefs, value)
+func transformConstraintsNeedsTransformation(t mgcSchemaPkg.Transformer[bool], kind mgcSchemaPkg.ConstraintKind, schemaRefs mgcSchemaPkg.SchemaRefs, value bool) (bool, error) {
+	value, err := mgcSchemaPkg.TransformSchemasArray(t, schemaRefs, value)
 	if err != nil {
 		return value, err
 	}
 	if value {
-		return true, schemaPkg.TransformStop
+		return true, mgcSchemaPkg.TransformStop
 	}
 	return false, nil
 
@@ -347,10 +347,10 @@ func transformValue(logger *zap.SugaredLogger, schema *core.Schema, transformati
 		transformObject:      transformObjectValue,
 		transformConstraints: transformConstraintsValue,
 	}
-	return schemaPkg.Transform[any](t, schema, value)
+	return mgcSchemaPkg.Transform[any](t, schema, value)
 }
 
-func transformArrayValue(t schemaPkg.Transformer[any], schema *core.Schema, itemSchema *core.Schema, value any) (any, error) {
+func transformArrayValue(t mgcSchemaPkg.Transformer[any], schema *core.Schema, itemSchema *core.Schema, value any) (any, error) {
 	valueSlice, ok := value.([]any)
 	if !ok {
 		return value, fmt.Errorf("expected []any, got %T %#v", value, value)
@@ -358,7 +358,7 @@ func transformArrayValue(t schemaPkg.Transformer[any], schema *core.Schema, item
 
 	cs := utils.NewCOWSliceFunc(valueSlice, utils.IsSameValueOrPointer)
 	for i, itemValue := range valueSlice {
-		convertedValue, err := schemaPkg.Transform(t, itemSchema, itemValue)
+		convertedValue, err := mgcSchemaPkg.Transform(t, itemSchema, itemValue)
 		if err != nil {
 			return value, err
 		}
@@ -369,12 +369,12 @@ func transformArrayValue(t schemaPkg.Transformer[any], schema *core.Schema, item
 	return valueSlice, nil
 }
 
-func transformObjectValue(t schemaPkg.Transformer[any], schema *core.Schema, value any) (any, error) {
+func transformObjectValue(t mgcSchemaPkg.Transformer[any], schema *core.Schema, value any) (any, error) {
 	valueMap, ok := value.(map[string]any)
 	if !ok {
 		return value, fmt.Errorf("expected map[string]any, got %T %#v", value, value)
 	}
-	cm, err := schemaPkg.TransformObjectProperties(
+	cm, err := mgcSchemaPkg.TransformObjectProperties(
 		schema,
 		utils.NewCOWMapFunc(valueMap, utils.IsSameValueOrPointer),
 		func(propName string, propSchema *core.Schema, cm *utils.COWMap[string, any],
@@ -384,7 +384,7 @@ func transformObjectValue(t schemaPkg.Transformer[any], schema *core.Schema, val
 				return cm, nil
 			}
 
-			convertedFieldValue, err := schemaPkg.Transform(t, propSchema, propValue)
+			convertedFieldValue, err := mgcSchemaPkg.Transform(t, propSchema, propValue)
 			if err != nil {
 				return cm, err
 			}
@@ -400,32 +400,32 @@ func transformObjectValue(t schemaPkg.Transformer[any], schema *core.Schema, val
 	return valueMap, nil
 }
 
-func transformConstraintsValue(t schemaPkg.Transformer[any], kind schemaPkg.ConstraintKind, schemaRefs schemaPkg.SchemaRefs, value any) (any, error) {
+func transformConstraintsValue(t mgcSchemaPkg.Transformer[any], kind mgcSchemaPkg.ConstraintKind, schemaRefs mgcSchemaPkg.SchemaRefs, value any) (any, error) {
 	// TODO: handle kind properly, see https://swagger.io/docs/specification/data-models/oneof-anyof-allof-not/
-	return schemaPkg.TransformSchemasArray(t, schemaRefs, value)
+	return mgcSchemaPkg.TransformSchemasArray(t, schemaRefs, value)
 }
 
 func transformSchema(logger *zap.SugaredLogger, schema *core.Schema, transformationKey string, value *core.Schema) (*core.Schema, error) {
-	t := &commonSchemaTransformer[*schemaPkg.COWSchema]{
+	t := &commonSchemaTransformer[*mgcSchemaPkg.COWSchema]{
 		tKey: transformationKey,
-		transformSpecs: func(specs []*transformSpec, value *schemaPkg.COWSchema) (*schemaPkg.COWSchema, error) {
+		transformSpecs: func(specs []*transformSpec, value *mgcSchemaPkg.COWSchema) (*mgcSchemaPkg.COWSchema, error) {
 			return doTransformsToSchema(logger, specs, value)
 		},
 		transformArray:       transformArraySchema,
 		transformObject:      transformObjectSchema,
 		transformConstraints: transformConstraintsSchema,
 	}
-	cowSchema := schemaPkg.NewCOWSchema(value)
-	cowSchema, err := schemaPkg.Transform[*schemaPkg.COWSchema](t, schema, cowSchema)
+	cowSchema := mgcSchemaPkg.NewCOWSchema(value)
+	cowSchema, err := mgcSchemaPkg.Transform[*mgcSchemaPkg.COWSchema](t, schema, cowSchema)
 	if err != nil {
 		return value, err
 	}
 	return cowSchema.Peek(), nil
 }
 
-func transformArraySchema(t schemaPkg.Transformer[*schemaPkg.COWSchema], schema *core.Schema, itemSchema *core.Schema, value *schemaPkg.COWSchema) (*schemaPkg.COWSchema, error) {
+func transformArraySchema(t mgcSchemaPkg.Transformer[*mgcSchemaPkg.COWSchema], schema *core.Schema, itemSchema *core.Schema, value *mgcSchemaPkg.COWSchema) (*mgcSchemaPkg.COWSchema, error) {
 	itemsCow := value.ItemsCOW().ValueCOW()
-	_, err := schemaPkg.Transform(t, itemSchema, itemsCow)
+	_, err := mgcSchemaPkg.Transform(t, itemSchema, itemsCow)
 	if err != nil {
 		return nil, err
 	}
@@ -433,18 +433,18 @@ func transformArraySchema(t schemaPkg.Transformer[*schemaPkg.COWSchema], schema 
 	return value, nil
 }
 
-func transformObjectSchema(t schemaPkg.Transformer[*schemaPkg.COWSchema], schema *core.Schema, value *schemaPkg.COWSchema) (*schemaPkg.COWSchema, error) {
-	_, err := schemaPkg.TransformObjectProperties(
+func transformObjectSchema(t mgcSchemaPkg.Transformer[*mgcSchemaPkg.COWSchema], schema *core.Schema, value *mgcSchemaPkg.COWSchema) (*mgcSchemaPkg.COWSchema, error) {
+	_, err := mgcSchemaPkg.TransformObjectProperties(
 		schema,
 		value.PropertiesCOW(),
-		func(propName string, propSchema *core.Schema, propertiesCow *utils.COWMapOfCOW[string, *schemaPkg.SchemaRef, *schemaPkg.COWSchemaRef],
-		) (*utils.COWMapOfCOW[string, *schemaPkg.SchemaRef, *schemaPkg.COWSchemaRef], error) {
+		func(propName string, propSchema *core.Schema, propertiesCow *utils.COWMapOfCOW[string, *mgcSchemaPkg.SchemaRef, *mgcSchemaPkg.COWSchemaRef],
+		) (*utils.COWMapOfCOW[string, *mgcSchemaPkg.SchemaRef, *mgcSchemaPkg.COWSchemaRef], error) {
 			propSchemaCow, ok := propertiesCow.GetCOW(propName)
 			if !ok {
 				return nil, fmt.Errorf("schema missing property %q", propName) // this should never happen
 			}
 
-			_, err := schemaPkg.Transform(t, propSchema, propSchemaCow.ValueCOW())
+			_, err := mgcSchemaPkg.Transform(t, propSchema, propSchemaCow.ValueCOW())
 			if err != nil {
 				return nil, err
 			}
@@ -457,33 +457,33 @@ func transformObjectSchema(t schemaPkg.Transformer[*schemaPkg.COWSchema], schema
 	return value, nil
 }
 
-func transformConstraintsSchema(t schemaPkg.Transformer[*schemaPkg.COWSchema], kind schemaPkg.ConstraintKind, schemaRefs schemaPkg.SchemaRefs, value *schemaPkg.COWSchema) (result *schemaPkg.COWSchema, err error) {
+func transformConstraintsSchema(t mgcSchemaPkg.Transformer[*mgcSchemaPkg.COWSchema], kind mgcSchemaPkg.ConstraintKind, schemaRefs mgcSchemaPkg.SchemaRefs, value *mgcSchemaPkg.COWSchema) (result *mgcSchemaPkg.COWSchema, err error) {
 	result = value
 
-	if kind == schemaPkg.ConstraintNot {
-		_, err = schemaPkg.Transform(t, (*schemaPkg.Schema)(schemaRefs[0].Value), value.NotCOW().ValueCOW())
+	if kind == mgcSchemaPkg.ConstraintNot {
+		_, err = mgcSchemaPkg.Transform(t, (*mgcSchemaPkg.Schema)(schemaRefs[0].Value), value.NotCOW().ValueCOW())
 		return
 	}
 
-	var constraintCow *utils.COWSliceOfCOW[*schemaPkg.SchemaRef, *schemaPkg.COWSchemaRef]
+	var constraintCow *utils.COWSliceOfCOW[*mgcSchemaPkg.SchemaRef, *mgcSchemaPkg.COWSchemaRef]
 	switch kind {
-	case schemaPkg.ConstraintAllOf:
+	case mgcSchemaPkg.ConstraintAllOf:
 		constraintCow = value.AllOfCOW()
-	case schemaPkg.ConstraintAnyOf:
+	case mgcSchemaPkg.ConstraintAnyOf:
 		constraintCow = value.AnyOfCOW()
-	case schemaPkg.ConstraintOneOf:
+	case mgcSchemaPkg.ConstraintOneOf:
 		constraintCow = value.OneOfCOW()
 	default:
 		return value, fmt.Errorf("unknown constraint kind: %q", kind)
 	}
 
-	constraintCow.ForEachCOW(func(i int, cowRef *schemaPkg.COWSchemaRef) (run bool) {
+	constraintCow.ForEachCOW(func(i int, cowRef *mgcSchemaPkg.COWSchemaRef) (run bool) {
 		itemSchema := cowRef.Peek()
 		if itemSchema == nil {
 			return true
 		}
 
-		_, err = schemaPkg.Transform(t, (*schemaPkg.Schema)(itemSchema.Value), cowRef.ValueCOW())
+		_, err = mgcSchemaPkg.Transform(t, (*mgcSchemaPkg.Schema)(itemSchema.Value), cowRef.ValueCOW())
 		return err == nil
 	})
 
@@ -502,7 +502,7 @@ func reverseTranslate(spec *transformTranslateSpec, value any) (any, error) {
 	return value, fmt.Errorf("translation not found: %#v", value)
 }
 
-func transformTranslateSchema(params map[string]any, schema *schemaPkg.COWSchema) (result *schemaPkg.COWSchema, err error) {
+func transformTranslateSchema(params map[string]any, schema *mgcSchemaPkg.COWSchema) (result *mgcSchemaPkg.COWSchema, err error) {
 	if schema.Default() == nil && len(schema.Enum()) == 0 {
 		return schema, nil
 	}

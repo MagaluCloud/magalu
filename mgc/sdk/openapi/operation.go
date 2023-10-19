@@ -21,7 +21,7 @@ import (
 	"magalu.cloud/core/auth"
 	"magalu.cloud/core/config"
 	coreHttp "magalu.cloud/core/http"
-	schemaPkg "magalu.cloud/core/schema"
+	mgcSchemaPkg "magalu.cloud/core/schema"
 	"magalu.cloud/core/utils"
 
 	"github.com/getkin/kin-openapi/openapi3"
@@ -204,7 +204,7 @@ func (o *operation) forEachParameterWithValue(values map[string]any, locations [
 
 func (o *operation) addParameters(schema *core.Schema, locations []string) {
 	_, err := o.forEachParameter(locations, func(externalName string, parameter *openapi3.Parameter) (run bool, err error) {
-		paramSchemaRef := schemaPkg.NewCOWSchemaRef(parameter.Schema)
+		paramSchemaRef := mgcSchemaPkg.NewCOWSchemaRef(parameter.Schema)
 		paramSchema := paramSchemaRef.ValueCOW()
 
 		desc := getDescriptionExtension(o.extensionPrefix, parameter.Extensions, parameter.Description)
@@ -647,7 +647,7 @@ func (o *operation) forEachParameterName(cb cbForEachParameterName) (finished bo
 
 func (o *operation) ParametersSchema() *core.Schema {
 	if o.paramsSchema == nil {
-		rootSchema := schemaPkg.NewObjectSchema(map[string]*core.Schema{}, []string{})
+		rootSchema := mgcSchemaPkg.NewObjectSchema(map[string]*core.Schema{}, []string{})
 
 		// Must match forEachParameterName!
 		o.addParameters(rootSchema, parametersLocations)
@@ -665,7 +665,7 @@ func (o *operation) ParametersSchema() *core.Schema {
 
 func (o *operation) ConfigsSchema() *core.Schema {
 	if o.configsSchema == nil {
-		rootSchema := schemaPkg.NewObjectSchema(map[string]*core.Schema{}, []string{})
+		rootSchema := mgcSchemaPkg.NewObjectSchema(map[string]*core.Schema{}, []string{})
 
 		o.addParameters(rootSchema, configLocations)
 		o.addServerVariables(rootSchema)
@@ -682,7 +682,7 @@ func (o *operation) ConfigsSchema() *core.Schema {
 
 func (o *operation) initResultSchema() {
 	if o.resultSchema == nil {
-		rootSchema := schemaPkg.NewAnyOfSchema()
+		rootSchema := mgcSchemaPkg.NewAnyOfSchema()
 		responses := o.operation.Responses
 		o.responseSchemas = make(map[string]*core.Schema)
 
@@ -706,7 +706,7 @@ func (o *operation) initResultSchema() {
 		switch len(rootSchema.AnyOf) {
 		default:
 		case 0:
-			rootSchema = schemaPkg.NewNullSchema()
+			rootSchema = mgcSchemaPkg.NewNullSchema()
 		case 1:
 			rootSchema = (*core.Schema)(rootSchema.AnyOf[0].Value)
 		}

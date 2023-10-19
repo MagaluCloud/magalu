@@ -25,7 +25,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
 	"magalu.cloud/core"
-	mgc "magalu.cloud/core/schema"
+	mgcSchemaPkg "magalu.cloud/core/schema"
 	"magalu.cloud/sdk"
 )
 
@@ -40,10 +40,10 @@ var create = core.NewRawStaticExecute(
 	"mock create",
 	"v1",
 	"",
-	mgc.NewObjectSchema(
-		map[string]*mgc.Schema{
-			"image": mgc.NewStringSchema(),
-			"name":  mgc.NewStringSchema(),
+	mgcSchemaPkg.NewObjectSchema(
+		map[string]*mgcSchemaPkg.Schema{
+			"image": mgcSchemaPkg.NewStringSchema(),
+			"name":  mgcSchemaPkg.NewStringSchema(),
 			"count": {
 				Type:        "number",
 				Description: "count description",
@@ -52,8 +52,8 @@ var create = core.NewRawStaticExecute(
 		[]string{"name", "image"},
 	),
 	nil,
-	mgc.NewObjectSchema(
-		map[string]*mgc.Schema{"id": mgc.NewStringSchema()},
+	mgcSchemaPkg.NewObjectSchema(
+		map[string]*mgcSchemaPkg.Schema{"id": mgcSchemaPkg.NewStringSchema()},
 		[]string{"id"},
 	),
 	nil,
@@ -67,24 +67,24 @@ var read = core.NewRawStaticExecute(
 	"mock read",
 	"v1",
 	"",
-	mgc.NewObjectSchema(
-		map[string]*mgc.Schema{
-			"id": mgc.NewStringSchema(),
+	mgcSchemaPkg.NewObjectSchema(
+		map[string]*mgcSchemaPkg.Schema{
+			"id": mgcSchemaPkg.NewStringSchema(),
 		},
 		[]string{"id"},
 	),
 	nil,
-	mgc.NewObjectSchema(
-		map[string]*mgc.Schema{
-			"id":        mgc.NewStringSchema(),
-			"image":     mgc.NewStringSchema(),
-			"name":      mgc.NewStringSchema(),
-			"count":     mgc.NewIntegerSchema(),
-			"createdAt": mgc.NewIntegerSchema(),
-			"extra_field": mgc.NewArraySchema(
-				mgc.NewObjectSchema(
-					map[string]*mgc.Schema{
-						"value": mgc.NewBooleanSchema(),
+	mgcSchemaPkg.NewObjectSchema(
+		map[string]*mgcSchemaPkg.Schema{
+			"id":        mgcSchemaPkg.NewStringSchema(),
+			"image":     mgcSchemaPkg.NewStringSchema(),
+			"name":      mgcSchemaPkg.NewStringSchema(),
+			"count":     mgcSchemaPkg.NewIntegerSchema(),
+			"createdAt": mgcSchemaPkg.NewIntegerSchema(),
+			"extra_field": mgcSchemaPkg.NewArraySchema(
+				mgcSchemaPkg.NewObjectSchema(
+					map[string]*mgcSchemaPkg.Schema{
+						"value": mgcSchemaPkg.NewBooleanSchema(),
 					},
 					[]string{},
 				),
@@ -103,15 +103,15 @@ var update = core.NewRawStaticExecute(
 	"mock update",
 	"v1",
 	"",
-	mgc.NewObjectSchema(
-		map[string]*mgc.Schema{
-			"id":    mgc.NewStringSchema(),
-			"name":  mgc.NewStringSchema(),
-			"count": mgc.NewNumberSchema(),
-			"extra_field": mgc.NewArraySchema(
-				mgc.NewObjectSchema(
-					map[string]*mgc.Schema{
-						"value": mgc.NewBooleanSchema(),
+	mgcSchemaPkg.NewObjectSchema(
+		map[string]*mgcSchemaPkg.Schema{
+			"id":    mgcSchemaPkg.NewStringSchema(),
+			"name":  mgcSchemaPkg.NewStringSchema(),
+			"count": mgcSchemaPkg.NewNumberSchema(),
+			"extra_field": mgcSchemaPkg.NewArraySchema(
+				mgcSchemaPkg.NewObjectSchema(
+					map[string]*mgcSchemaPkg.Schema{
+						"value": mgcSchemaPkg.NewBooleanSchema(),
 					},
 					[]string{},
 				),
@@ -120,9 +120,9 @@ var update = core.NewRawStaticExecute(
 		[]string{"id"},
 	),
 	nil,
-	mgc.NewObjectSchema(
-		map[string]*mgc.Schema{
-			"id": mgc.NewStringSchema(),
+	mgcSchemaPkg.NewObjectSchema(
+		map[string]*mgcSchemaPkg.Schema{
+			"id": mgcSchemaPkg.NewStringSchema(),
 		},
 		[]string{},
 	),
@@ -137,14 +137,14 @@ var delete = core.NewRawStaticExecute(
 	"mock delete",
 	"v1",
 	"",
-	mgc.NewObjectSchema(
-		map[string]*mgc.Schema{
-			"id": mgc.NewStringSchema(),
+	mgcSchemaPkg.NewObjectSchema(
+		map[string]*mgcSchemaPkg.Schema{
+			"id": mgcSchemaPkg.NewStringSchema(),
 		},
 		[]string{"id"},
 	),
 	nil,
-	mgc.NewNullSchema(),
+	mgcSchemaPkg.NewNullSchema(),
 	nil,
 	nil,
 	func(context context.Context, parameters core.Parameters, configs core.Configs) (result any, err error) {
@@ -159,7 +159,7 @@ var testCases = []testCase{
 			"count": {
 				mgcName:   "count",
 				tfName:    "count", // will be renamed to 'desired_count' for final
-				mgcSchema: (*mgc.Schema)(create.ParametersSchema().Properties["count"].Value),
+				mgcSchema: (*mgcSchemaPkg.Schema)(create.ParametersSchema().Properties["count"].Value),
 				tfSchema: schema.NumberAttribute{
 					Description:   "count description",
 					Optional:      true,
@@ -170,7 +170,7 @@ var testCases = []testCase{
 			"extra_field": {
 				tfName:    "extra_field",
 				mgcName:   "extra_field",
-				mgcSchema: (*mgc.Schema)(update.ParametersSchema().Properties["extra_field"].Value),
+				mgcSchema: (*mgcSchemaPkg.Schema)(update.ParametersSchema().Properties["extra_field"].Value),
 				tfSchema: schema.ListNestedAttribute{
 					NestedObject: schema.SingleNestedAttribute{
 						Attributes: map[string]schema.Attribute{
@@ -198,7 +198,7 @@ var testCases = []testCase{
 					"0": {
 						tfName:    "0",
 						mgcName:   "0",
-						mgcSchema: (*mgc.Schema)(update.ParametersSchema().Properties["extra_field"].Value.Items.Value),
+						mgcSchema: (*mgcSchemaPkg.Schema)(update.ParametersSchema().Properties["extra_field"].Value.Items.Value),
 						tfSchema: schema.SingleNestedAttribute{
 							Attributes: map[string]schema.Attribute{
 								"value": schema.BoolAttribute{
@@ -219,7 +219,7 @@ var testCases = []testCase{
 							"value": {
 								tfName:    "value",
 								mgcName:   "value",
-								mgcSchema: (*mgc.Schema)(update.ParametersSchema().Properties["extra_field"].Value.Items.Value.Properties["value"].Value),
+								mgcSchema: (*mgcSchemaPkg.Schema)(update.ParametersSchema().Properties["extra_field"].Value.Items.Value.Properties["value"].Value),
 								tfSchema: schema.BoolAttribute{
 									Optional: true,
 									Computed: false,
@@ -235,7 +235,7 @@ var testCases = []testCase{
 			"image": {
 				mgcName:   "image",
 				tfName:    "image",
-				mgcSchema: (*mgc.Schema)(create.ParametersSchema().Properties["image"].Value),
+				mgcSchema: (*mgcSchemaPkg.Schema)(create.ParametersSchema().Properties["image"].Value),
 				tfSchema: schema.StringAttribute{
 					Required: true,
 					PlanModifiers: []planmodifier.String{
@@ -246,7 +246,7 @@ var testCases = []testCase{
 			"name": {
 				mgcName:   "name",
 				tfName:    "name",
-				mgcSchema: (*mgc.Schema)(create.ParametersSchema().Properties["name"].Value),
+				mgcSchema: (*mgcSchemaPkg.Schema)(create.ParametersSchema().Properties["name"].Value),
 				tfSchema: schema.StringAttribute{
 					Required:      true,
 					PlanModifiers: []planmodifier.String{},
@@ -255,7 +255,7 @@ var testCases = []testCase{
 			"id": {
 				mgcName:   "id",
 				tfName:    "id",
-				mgcSchema: (*mgc.Schema)(create.ParametersSchema().Properties["name"].Value),
+				mgcSchema: (*mgcSchemaPkg.Schema)(create.ParametersSchema().Properties["name"].Value),
 				tfSchema: schema.StringAttribute{
 					Computed:      true,
 					PlanModifiers: []planmodifier.String{},
@@ -266,7 +266,7 @@ var testCases = []testCase{
 			"count": {
 				mgcName:   "count",
 				tfName:    "count", // will be renamed to 'current_count' for final
-				mgcSchema: (*mgc.Schema)(read.ResultSchema().Properties["count"].Value),
+				mgcSchema: (*mgcSchemaPkg.Schema)(read.ResultSchema().Properties["count"].Value),
 				tfSchema: schema.Int64Attribute{
 					Computed: true,
 					PlanModifiers: []planmodifier.Int64{
@@ -277,7 +277,7 @@ var testCases = []testCase{
 			"createdAt": {
 				mgcName:   "createdAt",
 				tfName:    "created_at",
-				mgcSchema: (*mgc.Schema)(read.ResultSchema().Properties["createdAt"].Value),
+				mgcSchema: (*mgcSchemaPkg.Schema)(read.ResultSchema().Properties["createdAt"].Value),
 				tfSchema: schema.Int64Attribute{
 					Computed: true,
 					PlanModifiers: []planmodifier.Int64{
@@ -288,7 +288,7 @@ var testCases = []testCase{
 			"extra_field": {
 				mgcName:   "extra_field",
 				tfName:    "extra_field",
-				mgcSchema: (*mgc.Schema)(read.ResultSchema().Properties["extra_field"].Value),
+				mgcSchema: (*mgcSchemaPkg.Schema)(read.ResultSchema().Properties["extra_field"].Value),
 				tfSchema: schema.ListNestedAttribute{
 					NestedObject: schema.SingleNestedAttribute{
 						Attributes: map[string]schema.Attribute{
@@ -313,7 +313,7 @@ var testCases = []testCase{
 					"0": {
 						tfName:    "0",
 						mgcName:   "0",
-						mgcSchema: (*mgc.Schema)(read.ResultSchema().Properties["extra_field"].Value.Items.Value),
+						mgcSchema: (*mgcSchemaPkg.Schema)(read.ResultSchema().Properties["extra_field"].Value.Items.Value),
 						tfSchema: schema.SingleNestedAttribute{
 							Attributes: map[string]schema.Attribute{
 								"value": schema.BoolAttribute{
@@ -332,7 +332,7 @@ var testCases = []testCase{
 							"value": {
 								tfName:    "value",
 								mgcName:   "value",
-								mgcSchema: (*mgc.Schema)(update.ParametersSchema().Properties["extra_field"].Value.Items.Value.Properties["value"].Value),
+								mgcSchema: (*mgcSchemaPkg.Schema)(update.ParametersSchema().Properties["extra_field"].Value.Items.Value.Properties["value"].Value),
 								tfSchema: schema.BoolAttribute{
 									Computed: true,
 									PlanModifiers: []planmodifier.Bool{
@@ -347,7 +347,7 @@ var testCases = []testCase{
 			"id": {
 				mgcName:   "id",
 				tfName:    "id",
-				mgcSchema: (*mgc.Schema)(create.ResultSchema().Properties["id"].Value),
+				mgcSchema: (*mgcSchemaPkg.Schema)(create.ResultSchema().Properties["id"].Value),
 				tfSchema: schema.StringAttribute{
 					Computed: true,
 					PlanModifiers: []planmodifier.String{
@@ -358,7 +358,7 @@ var testCases = []testCase{
 			"image": {
 				mgcName:   "image",
 				tfName:    "image",
-				mgcSchema: (*mgc.Schema)(read.ResultSchema().Properties["image"].Value),
+				mgcSchema: (*mgcSchemaPkg.Schema)(read.ResultSchema().Properties["image"].Value),
 				tfSchema: schema.StringAttribute{
 					Computed: true,
 					PlanModifiers: []planmodifier.String{
@@ -369,7 +369,7 @@ var testCases = []testCase{
 			"name": {
 				mgcName:   "name",
 				tfName:    "name",
-				mgcSchema: (*mgc.Schema)(read.ResultSchema().Properties["name"].Value),
+				mgcSchema: (*mgcSchemaPkg.Schema)(read.ResultSchema().Properties["name"].Value),
 				tfSchema: schema.StringAttribute{
 					Computed: true,
 					PlanModifiers: []planmodifier.String{
@@ -459,7 +459,7 @@ func TestGenerateTFAttributes(t *testing.T) {
 
 func TestMgcToTfSchemaDefaultValues(t *testing.T) {
 	t.Run("non computed attriubte", func(t *testing.T) {
-		s := mgc.NewStringSchema()
+		s := mgcSchemaPkg.NewStringSchema()
 		s.Default = "default"
 		m := attributeModifiers{}
 		ctx := context.Background()
@@ -476,7 +476,7 @@ func TestMgcToTfSchemaDefaultValues(t *testing.T) {
 	})
 
 	t.Run("no default", func(t *testing.T) {
-		s := mgc.NewStringSchema()
+		s := mgcSchemaPkg.NewStringSchema()
 		m := attributeModifiers{}
 		ctx := context.Background()
 
@@ -494,7 +494,7 @@ func TestMgcToTfSchemaDefaultValues(t *testing.T) {
 	t.Run("string", func(t *testing.T) {
 		def := "foo"
 
-		s := mgc.NewStringSchema()
+		s := mgcSchemaPkg.NewStringSchema()
 		s.Default = def
 		m := attributeModifiers{isComputed: true}
 		ctx := context.Background()
@@ -513,7 +513,7 @@ func TestMgcToTfSchemaDefaultValues(t *testing.T) {
 	t.Run("number", func(t *testing.T) {
 		def := float64(3.14)
 
-		s := mgc.NewNumberSchema()
+		s := mgcSchemaPkg.NewNumberSchema()
 		s.Default = def
 		m := attributeModifiers{isComputed: true}
 		ctx := context.Background()
@@ -532,7 +532,7 @@ func TestMgcToTfSchemaDefaultValues(t *testing.T) {
 	t.Run("integer", func(t *testing.T) {
 		def := int64(0)
 
-		s := mgc.NewIntegerSchema()
+		s := mgcSchemaPkg.NewIntegerSchema()
 		s.Default = def
 		m := attributeModifiers{isComputed: true}
 		ctx := context.Background()
@@ -551,7 +551,7 @@ func TestMgcToTfSchemaDefaultValues(t *testing.T) {
 	t.Run("boolean", func(t *testing.T) {
 		def := false
 
-		s := mgc.NewBooleanSchema()
+		s := mgcSchemaPkg.NewBooleanSchema()
 		s.Default = def
 		m := attributeModifiers{isComputed: true}
 		ctx := context.Background()
@@ -568,15 +568,15 @@ func TestMgcToTfSchemaDefaultValues(t *testing.T) {
 	})
 
 	t.Run("object", func(t *testing.T) {
-		nameSchema := mgc.NewStringSchema()
+		nameSchema := mgcSchemaPkg.NewStringSchema()
 		nameSchema.Default = "pedro"
 
-		p := map[string]*mgc.Schema{
+		p := map[string]*mgcSchemaPkg.Schema{
 			"name": nameSchema,
-			"age":  mgc.NewIntegerSchema(),
+			"age":  mgcSchemaPkg.NewIntegerSchema(),
 		}
 
-		s := mgc.NewObjectSchema(p, []string{})
+		s := mgcSchemaPkg.NewObjectSchema(p, []string{})
 		s.Default = map[string]any{
 			"name": "pedro",
 			"age":  int64(10),
@@ -612,7 +612,7 @@ func TestMgcToTfSchemaDefaultValues(t *testing.T) {
 	})
 
 	t.Run("list", func(t *testing.T) {
-		s := mgc.NewArraySchema(mgc.NewStringSchema())
+		s := mgcSchemaPkg.NewArraySchema(mgcSchemaPkg.NewStringSchema())
 		s.Default = []any{"hello", "world"}
 
 		ctx := context.Background()
@@ -640,7 +640,7 @@ func TestMgcToTfSchemaDefaultValues(t *testing.T) {
 	})
 
 	t.Run("list empty", func(t *testing.T) {
-		s := mgc.NewArraySchema(mgc.NewStringSchema())
+		s := mgcSchemaPkg.NewArraySchema(mgcSchemaPkg.NewStringSchema())
 		s.Default = []any{}
 
 		ctx := context.Background()
@@ -668,10 +668,10 @@ func TestMgcToTfSchemaDefaultValues(t *testing.T) {
 	})
 
 	t.Run("list nested", func(t *testing.T) {
-		s := mgc.NewArraySchema(
-			mgc.NewObjectSchema(
-				map[string]*mgc.Schema{
-					"key": mgc.NewStringSchema(),
+		s := mgcSchemaPkg.NewArraySchema(
+			mgcSchemaPkg.NewObjectSchema(
+				map[string]*mgcSchemaPkg.Schema{
+					"key": mgcSchemaPkg.NewStringSchema(),
 				},
 				[]string{},
 			),
