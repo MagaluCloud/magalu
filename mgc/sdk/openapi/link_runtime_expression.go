@@ -9,7 +9,7 @@ import (
 	"github.com/getkin/kin-openapi/openapi3"
 	"github.com/go-openapi/jsonpointer"
 	"magalu.cloud/core"
-	corehttp "magalu.cloud/core/http"
+	mgcHttpPkg "magalu.cloud/core/http"
 )
 
 func getRemainder(s *scanner.Scanner) string {
@@ -26,7 +26,7 @@ type linkRtExpResolver interface {
 
 type linkRtExpression struct {
 	str                string
-	httpResult         corehttp.HttpResult
+	httpResult         mgcHttpPkg.HttpResult
 	findParameterValue func(location, name string) (any, bool)
 }
 

@@ -2,11 +2,11 @@ package openapi
 
 import (
 	"magalu.cloud/core"
-	corehttp "magalu.cloud/core/http"
+	mgcHttpPkg "magalu.cloud/core/http"
 )
 
 type linkSpecResolver struct {
-	httpResult         corehttp.HttpResult
+	httpResult         mgcHttpPkg.HttpResult
 	findParameterValue func(location, name string) (core.Value, bool)
 }
 

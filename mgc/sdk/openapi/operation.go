@@ -20,7 +20,7 @@ import (
 	"magalu.cloud/core"
 	"magalu.cloud/core/auth"
 	"magalu.cloud/core/config"
-	coreHttp "magalu.cloud/core/http"
+	mgcHttpPkg "magalu.cloud/core/http"
 	mgcSchemaPkg "magalu.cloud/core/schema"
 	"magalu.cloud/core/utils"
 
@@ -1241,7 +1241,7 @@ func (o *operation) Execute(
 	parametersSchema := o.ParametersSchema()
 	configsSchema := o.ConfigsSchema()
 
-	client := coreHttp.ClientFromContext(ctx)
+	client := mgcHttpPkg.ClientFromContext(ctx)
 	if client == nil {
 		return nil, fmt.Errorf("no HTTP client configured")
 	}
@@ -1296,11 +1296,11 @@ func (o *operation) Execute(
 	}
 
 	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
-		return nil, coreHttp.NewHttpErrorFromResponse(resp)
+		return nil, mgcHttpPkg.NewHttpErrorFromResponse(resp)
 	}
 
 	schema := o.getResponseSchema(resp)
-	result, err = coreHttp.NewHttpResult(source, schema, req, requestBody, resp, o.getValueFromResponseBody)
+	result, err = mgcHttpPkg.NewHttpResult(source, schema, req, requestBody, resp, o.getValueFromResponseBody)
 	if err != nil {
 		return nil, err
 	}

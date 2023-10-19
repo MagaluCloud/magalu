@@ -12,7 +12,7 @@ import (
 	"magalu.cloud/core/auth"
 	"magalu.cloud/core/config"
 	"magalu.cloud/core/dataloader"
-	coreHttp "magalu.cloud/core/http"
+	mgcHttpPkg "magalu.cloud/core/http"
 	"magalu.cloud/sdk/openapi"
 	"magalu.cloud/sdk/static"
 )
@@ -32,7 +32,7 @@ type Config = config.Config
 type Sdk struct {
 	group      *core.MergeGroup
 	auth       *auth.Auth
-	httpClient *coreHttp.Client
+	httpClient *mgcHttpPkg.Client
 	config     *config.Config
 }
 
@@ -96,7 +96,7 @@ func (o *Sdk) WrapContext(ctx context.Context) context.Context {
 	ctx = core.NewGrouperContext(ctx, o.Group())
 	ctx = auth.NewContext(ctx, o.Auth())
 	// Needs to be called after Auth, because we need the refresh token callback for the interceptor
-	ctx = coreHttp.NewClientContext(ctx, o.HttpClient())
+	ctx = mgcHttpPkg.NewClientContext(ctx, o.HttpClient())
 	ctx = config.NewContext(ctx, o.Config())
 
 	ctx = context.WithValue(ctx, ctxWrappedKey, true)
@@ -150,14 +150,14 @@ func newHttpTransport() http.RoundTripper {
 		IdleConnTimeout:    30 * time.Second,
 		DisableCompression: true,
 	}
-	transport = coreHttp.NewDefaultClientLogger(transport)
+	transport = mgcHttpPkg.NewDefaultClientLogger(transport)
 	userAgent := "MgcCLI/" + Version
 	transport = newDefaultSdkTransport(transport, userAgent)
 	return transport
 }
 
 func (o *Sdk) addHttpRefreshHandler(t http.RoundTripper) http.RoundTripper {
-	return coreHttp.NewDefaultRefreshLogger(t, o.Auth().RefreshAccessToken)
+	return mgcHttpPkg.NewDefaultRefreshLogger(t, o.Auth().RefreshAccessToken)
 }
 
 func (o *Sdk) Auth() *auth.Auth {
@@ -168,10 +168,10 @@ func (o *Sdk) Auth() *auth.Auth {
 	return o.auth
 }
 
-func (o *Sdk) HttpClient() *coreHttp.Client {
+func (o *Sdk) HttpClient() *mgcHttpPkg.Client {
 	if o.httpClient == nil {
 		transport := o.addHttpRefreshHandler(newHttpTransport())
-		o.httpClient = coreHttp.NewClient(transport)
+		o.httpClient = mgcHttpPkg.NewClient(transport)
 	}
 	return o.httpClient
 }

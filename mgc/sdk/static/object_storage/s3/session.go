@@ -8,7 +8,7 @@ import (
 
 	"magalu.cloud/core"
 	"magalu.cloud/core/auth"
-	corehttp "magalu.cloud/core/http"
+	mgcHttpPkg "magalu.cloud/core/http"
 )
 
 var excludedHeaders = HeaderMap{
@@ -30,7 +30,7 @@ func BuildHost(cfg Config) string {
 }
 
 func SendRequest[T core.Value](ctx context.Context, req *http.Request) (result T, res *http.Response, err error) {
-	httpClient := corehttp.ClientFromContext(ctx)
+	httpClient := mgcHttpPkg.ClientFromContext(ctx)
 	if httpClient == nil {
 		err = fmt.Errorf("couldn't get http client from context")
 		return
@@ -57,6 +57,6 @@ func SendRequest[T core.Value](ctx context.Context, req *http.Request) (result T
 		return
 	}
 
-	result, err = corehttp.UnwrapResponse[T](res)
+	result, err = mgcHttpPkg.UnwrapResponse[T](res)
 	return
 }

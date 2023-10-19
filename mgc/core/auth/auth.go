@@ -13,7 +13,7 @@ import (
 
 	"github.com/spf13/afero"
 	"magalu.cloud/core"
-	coreHttp "magalu.cloud/core/http"
+	mgcHttpPkg "magalu.cloud/core/http"
 	"magalu.cloud/core/utils"
 
 	"golang.org/x/sync/singleflight"
@@ -297,7 +297,7 @@ func (o *Auth) ValidateAccessToken(ctx context.Context) error {
 	}
 
 	if resp.StatusCode != http.StatusOK {
-		return coreHttp.NewHttpErrorFromResponse(resp)
+		return mgcHttpPkg.NewHttpErrorFromResponse(resp)
 	}
 
 	var result validationResult
@@ -349,14 +349,14 @@ func (o *Auth) doRefreshAccessToken(ctx context.Context) (core.Value, error) {
 	for i := 0; i < maxRetryCount; i++ {
 		resp, err = o.httpClient.Do(r)
 		if err != nil {
-			wait := coreHttp.DefaultBackoff(minRetryWait, maxRetryCount, i, resp)
+			wait := mgcHttpPkg.DefaultBackoff(minRetryWait, maxRetryCount, i, resp)
 			fmt.Printf("Refresh access token failed, retrying in %s\n", wait)
 			time.Sleep(wait)
 			continue
 		}
 
 		if resp.StatusCode != http.StatusOK {
-			return "", coreHttp.NewHttpErrorFromResponse(resp)
+			return "", mgcHttpPkg.NewHttpErrorFromResponse(resp)
 		}
 
 		var result LoginResult
@@ -442,7 +442,7 @@ func (o *Auth) ListTenants(ctx context.Context) ([]*Tenant, error) {
 		return nil, err
 	}
 	if resp.StatusCode != http.StatusOK {
-		return nil, coreHttp.NewHttpErrorFromResponse(resp)
+		return nil, mgcHttpPkg.NewHttpErrorFromResponse(resp)
 	}
 
 	defer resp.Body.Close()
@@ -483,7 +483,7 @@ func (o *Auth) SelectTenant(ctx context.Context, id string) (*TenantAuth, error)
 	defer r.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		return nil, coreHttp.NewHttpErrorFromResponse(resp)
+		return nil, mgcHttpPkg.NewHttpErrorFromResponse(resp)
 	}
 
 	payload := &tenantResult{}

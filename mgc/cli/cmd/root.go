@@ -11,7 +11,7 @@ import (
 
 	"magalu.cloud/cli/ui"
 	"magalu.cloud/core"
-	mgcHttp "magalu.cloud/core/http"
+	mgcHttpPkg "magalu.cloud/core/http"
 	mgcLoggerPkg "magalu.cloud/core/logger"
 	mgcSchemaPkg "magalu.cloud/core/schema"
 	mgcSdk "magalu.cloud/sdk"
@@ -642,7 +642,7 @@ func showHelpForError(cmd *cobra.Command, args []string, err error) {
 	case err == nil:
 		break
 
-	case errors.As(err, new(*mgcHttp.HttpError)),
+	case errors.As(err, new(*mgcHttpPkg.HttpError)),
 		errors.As(err, new(*url.Error)),
 		errors.As(err, new(core.FailedTerminationError)),
 		errors.As(err, new(core.UserDeniedConfirmationError)),
