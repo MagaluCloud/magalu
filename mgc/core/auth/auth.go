@@ -169,6 +169,10 @@ func (o *Auth) CurrentTenantID() string {
 	return o.currentTenantId
 }
 
+func (o *Auth) AccessKeyPair() (accessKeyId, secretAccessKey string) {
+	return o.accessKeyId, o.secretAccessKey
+}
+
 func (o *Auth) SetTokens(token *LoginResult) error {
 	// Always update the tokens, this way the user can assume the Auth object is
 	// up-to-date after this function, even in case of a persistance error
