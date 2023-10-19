@@ -8,7 +8,7 @@ import (
 	"golang.org/x/exp/slices"
 	"magalu.cloud/core"
 	"magalu.cloud/core/http"
-	"magalu.cloud/core/schema"
+	mgcSchemaPkg "magalu.cloud/core/schema"
 	"magalu.cloud/core/utils"
 )
 
@@ -231,7 +231,7 @@ func (l *openapiLinker) AdditionalParametersSchema() *core.Schema {
 		target := l.Target()
 		op, ok := core.ExecutorAs[*operation](target)
 		if !ok {
-			l.additionalParameters = schema.NewObjectSchema(nil, nil)
+			l.additionalParameters = mgcSchemaPkg.NewObjectSchema(nil, nil)
 			return l.additionalParameters
 		}
 
@@ -278,7 +278,7 @@ func (l *openapiLinker) AdditionalParametersSchema() *core.Schema {
 
 		l.addExtraParametersExtension(props, &required)
 
-		l.additionalParameters = schema.NewObjectSchema(props, required)
+		l.additionalParameters = mgcSchemaPkg.NewObjectSchema(props, required)
 	}
 	return l.additionalParameters
 }
@@ -301,7 +301,7 @@ func (l *openapiLinker) AdditionalConfigsSchema() *core.Schema {
 			}
 		}
 
-		l.additionalConfigs = schema.NewObjectSchema(props, required)
+		l.additionalConfigs = mgcSchemaPkg.NewObjectSchema(props, required)
 	}
 	return l.additionalConfigs
 }
