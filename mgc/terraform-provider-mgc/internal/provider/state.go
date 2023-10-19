@@ -88,7 +88,7 @@ func applyStateAfter(
 	var resultMap map[string]any
 	resultSchema := result.Schema()
 
-	if checkSimilarJsonSchemas(resultSchema, handler.ReadResultSchema()) {
+	if checkSimilarJsonSchemas(ctx, resultSchema, handler.ReadResultSchema()) {
 		if resultMap = castToMap(result, diag); diag.HasError() {
 			return
 		}

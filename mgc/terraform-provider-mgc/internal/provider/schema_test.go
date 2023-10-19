@@ -466,7 +466,7 @@ func TestMgcToTfSchemaDefaultValues(t *testing.T) {
 
 		var expected defaults.String = nil
 
-		sAtt, _, _ := mgcToTFSchema(s, m, "test", ctx)
+		sAtt, _, _ := mgcToTFSchema(s, m, ctx)
 
 		found := sAtt.(schema.StringAttribute).Default
 
@@ -482,7 +482,7 @@ func TestMgcToTfSchemaDefaultValues(t *testing.T) {
 
 		var expected defaults.String = nil
 
-		sAtt, _, _ := mgcToTFSchema(s, m, "test", ctx)
+		sAtt, _, _ := mgcToTFSchema(s, m, ctx)
 
 		found := sAtt.(schema.StringAttribute).Default
 
@@ -501,7 +501,7 @@ func TestMgcToTfSchemaDefaultValues(t *testing.T) {
 
 		expected := stringdefault.StaticString(def)
 
-		sAtt, _, _ := mgcToTFSchema(s, m, "test", ctx)
+		sAtt, _, _ := mgcToTFSchema(s, m, ctx)
 
 		found := sAtt.(schema.StringAttribute).Default
 
@@ -520,7 +520,7 @@ func TestMgcToTfSchemaDefaultValues(t *testing.T) {
 
 		expected := numberdefault.StaticBigFloat(big.NewFloat(def))
 
-		sAtt, _, _ := mgcToTFSchema(s, m, "test", ctx)
+		sAtt, _, _ := mgcToTFSchema(s, m, ctx)
 
 		found := sAtt.(schema.NumberAttribute).Default
 
@@ -539,7 +539,7 @@ func TestMgcToTfSchemaDefaultValues(t *testing.T) {
 
 		expected := int64default.StaticInt64(def)
 
-		sAtt, _, _ := mgcToTFSchema(s, m, "test", ctx)
+		sAtt, _, _ := mgcToTFSchema(s, m, ctx)
 
 		found := sAtt.(schema.Int64Attribute).Default
 
@@ -558,7 +558,7 @@ func TestMgcToTfSchemaDefaultValues(t *testing.T) {
 
 		expected := booldefault.StaticBool(def)
 
-		sAtt, _, _ := mgcToTFSchema(s, m, "test", ctx)
+		sAtt, _, _ := mgcToTFSchema(s, m, ctx)
 
 		found := sAtt.(schema.BoolAttribute).Default
 
@@ -591,7 +591,7 @@ func TestMgcToTfSchemaDefaultValues(t *testing.T) {
 
 		ctx := context.Background()
 
-		sAtt, _, _ := mgcToTFSchema(s, m, "test", ctx)
+		sAtt, _, _ := mgcToTFSchema(s, m, ctx)
 		found := sAtt.(schema.SingleNestedAttribute).Default
 
 		obj, _ := types.ObjectValue(
@@ -624,7 +624,7 @@ func TestMgcToTfSchemaDefaultValues(t *testing.T) {
 			},
 		}
 
-		sAtt, _, _ := mgcToTFSchema(s, m, "test", ctx)
+		sAtt, _, _ := mgcToTFSchema(s, m, ctx)
 		found := sAtt.(schema.ListAttribute).Default
 
 		lst, _ := types.ListValue(
@@ -652,7 +652,7 @@ func TestMgcToTfSchemaDefaultValues(t *testing.T) {
 			},
 		}
 
-		sAtt, _, _ := mgcToTFSchema(s, m, "test", ctx)
+		sAtt, _, _ := mgcToTFSchema(s, m, ctx)
 		found := sAtt.(schema.ListAttribute).Default
 
 		lst, _ := types.ListValue(
@@ -700,7 +700,7 @@ func TestMgcToTfSchemaDefaultValues(t *testing.T) {
 
 		ctx := context.Background()
 
-		sAtt, _, _ := mgcToTFSchema(s, m, "test", ctx)
+		sAtt, _, _ := mgcToTFSchema(s, m, ctx)
 		found := sAtt.(schema.ListNestedAttribute).Default
 
 		hello, _ := types.ObjectValue(
