@@ -129,7 +129,7 @@ func delete(ctx context.Context, params deleteParams, cfg s3.Config) (core.Value
 		return nil, err
 	}
 
-	_, _, err = s3.SendRequest[core.Value](ctx, req, cfg.AccessKeyID, cfg.SecretKey)
+	_, _, err = s3.SendRequest[core.Value](ctx, req)
 	if err != nil {
 		return nil, err
 	}

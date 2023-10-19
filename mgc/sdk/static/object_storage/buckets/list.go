@@ -43,6 +43,6 @@ func list(ctx context.Context, _ struct{}, cfg s3.Config) (result ListResponse, 
 		return
 	}
 
-	result, _, err = s3.SendRequest[ListResponse](ctx, req, cfg.AccessKeyID, cfg.SecretKey)
+	result, _, err = s3.SendRequest[ListResponse](ctx, req)
 	return
 }

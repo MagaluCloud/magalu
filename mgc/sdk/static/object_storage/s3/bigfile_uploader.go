@@ -85,7 +85,7 @@ func (u *bigFileUploader) getUploadId(ctx context.Context) (string, error) {
 			return "", err
 		}
 
-		response, _, err := SendRequest[preparationResponse](ctx, req, u.cfg.AccessKeyID, u.cfg.SecretKey)
+		response, _, err := SendRequest[preparationResponse](ctx, req)
 		if err != nil {
 			return "", err
 		}
@@ -145,7 +145,7 @@ func (u *bigFileUploader) sendCompletionRequest(ctx context.Context, parts []com
 		delete(excludedHeaders, "Content-MD5")
 	}()
 
-	_, _, err = SendRequest[any](ctx, req, u.cfg.AccessKeyID, u.cfg.SecretKey)
+	_, _, err = SendRequest[any](ctx, req)
 	if err != nil {
 		return err
 	}
@@ -163,7 +163,7 @@ func (u *bigFileUploader) createPartSenderProcessor(cancel context.CancelCauseFu
 		}
 
 		bigfileUploaderLogger().Debugw("Sending part", "part", partNumber, "total", totalParts)
-		_, res, err := SendRequest[any](ctx, req, u.cfg.AccessKeyID, u.cfg.SecretKey)
+		_, res, err := SendRequest[any](ctx, req)
 		if err != nil {
 			cancel(err)
 			return part, pipeline.ProcessAbort

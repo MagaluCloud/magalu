@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"magalu.cloud/core"
+	"magalu.cloud/core/auth"
 	corehttp "magalu.cloud/core/http"
 )
 
@@ -28,7 +29,7 @@ func BuildHost(cfg Config) string {
 	return strings.ReplaceAll(templateUrl, "{{region}}", cfg.Region)
 }
 
-func SendRequest[T core.Value](ctx context.Context, req *http.Request, accessKey, secretKey string) (result T, res *http.Response, err error) {
+func SendRequest[T core.Value](ctx context.Context, req *http.Request) (result T, res *http.Response, err error) {
 	httpClient := corehttp.ClientFromContext(ctx)
 	if httpClient == nil {
 		err = fmt.Errorf("couldn't get http client from context")
@@ -40,7 +41,13 @@ func SendRequest[T core.Value](ctx context.Context, req *http.Request, accessKey
 		unsignedPayload = true
 	}
 
-	if err = sign(req, accessKey, secretKey, unsignedPayload, excludedHeaders); err != nil {
+	accesskeyId, accessSecretKey := auth.FromContext(ctx).AccessKeyPair()
+	if accesskeyId == "" || accessSecretKey == "" {
+		err = fmt.Errorf("access key not set, see how to set it with \"auth set -h\"")
+		return
+	}
+
+	if err = sign(req, accesskeyId, accessSecretKey, unsignedPayload, excludedHeaders); err != nil {
 		return
 	}
 

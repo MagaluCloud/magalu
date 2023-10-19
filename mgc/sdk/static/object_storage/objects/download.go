@@ -104,7 +104,7 @@ func downloadSingleFile(ctx context.Context, cfg s3.Config, src, dst string) err
 		return err
 	}
 
-	closer, _, err := s3.SendRequest[io.ReadCloser](ctx, req, cfg.AccessKeyID, cfg.SecretKey)
+	closer, _, err := s3.SendRequest[io.ReadCloser](ctx, req)
 	if err != nil {
 		return err
 	}
@@ -140,7 +140,7 @@ func downloadMultipleFiles(ctx context.Context, cfg s3.Config, src, dst string) 
 			continue
 		}
 
-		closer, _, err := s3.SendRequest[io.ReadCloser](ctx, req, cfg.AccessKeyID, cfg.SecretKey)
+		closer, _, err := s3.SendRequest[io.ReadCloser](ctx, req)
 		if err != nil || closer == nil {
 			objError.Add(objURI, err)
 			continue
@@ -180,7 +180,7 @@ func isObjectPath(ctx context.Context, cfg s3.Config, pathURIs ...string) bool {
 		return false
 	}
 
-	result, _, err := s3.SendRequest[core.Value](ctx, req, cfg.AccessKeyID, cfg.SecretKey)
+	result, _, err := s3.SendRequest[core.Value](ctx, req)
 	if err != nil {
 		return false
 	}

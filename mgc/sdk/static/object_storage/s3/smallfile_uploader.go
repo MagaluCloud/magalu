@@ -22,7 +22,7 @@ func (u *smallFileUploader) Upload(ctx context.Context) error {
 
 	req.Header.Set("Content-Type", u.mimeType)
 
-	_, _, err = SendRequest[any](ctx, req, u.cfg.AccessKeyID, u.cfg.SecretKey)
+	_, _, err = SendRequest[any](ctx, req)
 	if err != nil {
 		return err
 	}
