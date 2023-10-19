@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	"magalu.cloud/core"
-	"magalu.cloud/core/auth"
+	mgcAuthPkg "magalu.cloud/core/auth"
 )
 
 type tenantCurrentResult struct {
@@ -18,7 +18,7 @@ func newCurrent() core.Executor {
 		"",
 		"Get the currently active Tenant",
 		func(ctx context.Context) (*tenantCurrentResult, error) {
-			auth := auth.FromContext(ctx)
+			auth := mgcAuthPkg.FromContext(ctx)
 			if auth == nil {
 				return nil, fmt.Errorf("unable to get auth from context")
 			}

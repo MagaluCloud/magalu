@@ -18,7 +18,7 @@ import (
 
 	"go.uber.org/zap"
 	"magalu.cloud/core"
-	"magalu.cloud/core/auth"
+	mgcAuthPkg "magalu.cloud/core/auth"
 	"magalu.cloud/core/config"
 	mgcHttpPkg "magalu.cloud/core/http"
 	mgcSchemaPkg "magalu.cloud/core/schema"
@@ -1138,7 +1138,7 @@ func isAuthForced(parameters core.Parameters) bool {
 	return b
 }
 
-func (o *operation) setSecurityHeader(ctx context.Context, paramValues core.Parameters, req *http.Request, auth *auth.Auth) (err error) {
+func (o *operation) setSecurityHeader(ctx context.Context, paramValues core.Parameters, req *http.Request, auth *mgcAuthPkg.Auth) (err error) {
 	if isAuthForced(paramValues) || o.needsAuth() {
 		// TODO: review needsAuth() usage if more security schemes are used. Assuming oauth2 + bearer
 		// If others are to be used, loop using forEachSecurityRequirement()
@@ -1156,7 +1156,7 @@ func (o *operation) setSecurityHeader(ctx context.Context, paramValues core.Para
 // TODO: refactor this closer to the client that comes from a context
 func (o *operation) createHttpRequest(
 	ctx context.Context,
-	auth *auth.Auth,
+	auth *mgcAuthPkg.Auth,
 	paramValues core.Parameters,
 	configs core.Configs,
 ) (req *http.Request, requestBody core.Value, err error) {
@@ -1246,7 +1246,7 @@ func (o *operation) Execute(
 		return nil, fmt.Errorf("no HTTP client configured")
 	}
 
-	auth := auth.FromContext(ctx)
+	auth := mgcAuthPkg.FromContext(ctx)
 	if auth == nil {
 		return nil, fmt.Errorf("no Auth configured")
 	}

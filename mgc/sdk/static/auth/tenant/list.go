@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	"magalu.cloud/core"
-	"magalu.cloud/core/auth"
+	mgcAuthPkg "magalu.cloud/core/auth"
 )
 
 func newList() core.Executor {
@@ -17,8 +17,8 @@ func newList() core.Executor {
 	)
 }
 
-func ListTenants(ctx context.Context) ([]*auth.Tenant, error) {
-	auth := auth.FromContext(ctx)
+func ListTenants(ctx context.Context) ([]*mgcAuthPkg.Tenant, error) {
+	auth := mgcAuthPkg.FromContext(ctx)
 	if auth == nil {
 		return nil, fmt.Errorf("unable to get auth from context")
 	}

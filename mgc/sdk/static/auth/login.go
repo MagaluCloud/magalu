@@ -18,6 +18,7 @@ import (
 	"go.uber.org/zap"
 	"magalu.cloud/core"
 	"magalu.cloud/core/auth"
+	mgcAuthPkg "magalu.cloud/core/auth"
 )
 
 type authResult struct {
@@ -54,7 +55,7 @@ func newLogin() *core.StaticExecute {
 		"",
 		"authenticate with magalu cloud",
 		func(ctx context.Context, parameters loginParameters, _ struct{}) (output *loginResult, err error) {
-			auth := auth.FromContext(ctx)
+			auth := mgcAuthPkg.FromContext(ctx)
 			if auth == nil {
 				return nil, fmt.Errorf("unable to retrieve authentication configuration")
 			}
@@ -202,7 +203,7 @@ func startCallbackServer(ctx context.Context, auth *auth.Auth) (resultChan chan 
 }
 
 type callbackHandler struct {
-	auth *auth.Auth
+	auth *mgcAuthPkg.Auth
 	path string
 	done chan *authResult
 	ctx  context.Context

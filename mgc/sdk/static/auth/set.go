@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"magalu.cloud/core/auth"
+	mgcAuthPkg "magalu.cloud/core/auth"
 
 	"magalu.cloud/core"
 )
@@ -15,7 +15,7 @@ type authSetParams struct {
 }
 
 func set(ctx context.Context, parameter authSetParams, _ struct{}) (*authSetParams, error) {
-	auth := auth.FromContext(ctx)
+	auth := mgcAuthPkg.FromContext(ctx)
 	if auth == nil {
 		return nil, fmt.Errorf("unable to retrieve authentication configuration")
 	}
