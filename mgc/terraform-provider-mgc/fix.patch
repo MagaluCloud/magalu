@@ -1,0 +1,23 @@
+diff --git a/mgc/terraform-provider-mgc/run.sh b/mgc/terraform-provider-mgc/run.sh
+index 9138bef..b6b68b4 100755
+--- a/mgc/terraform-provider-mgc/run.sh
++++ b/mgc/terraform-provider-mgc/run.sh
+@@ -3,7 +3,8 @@
+ # Build newest provider
+ go build || exit
+ 
+-TF_LOG=info
++TF_LOG="${TF_LOG:-info}"
++export TF_LOG=$TF_LOG
+ 
+ tf_exec=terraform
+ tf_args="${@:2}"
+@@ -21,5 +22,7 @@ if [ -z $tf_args ]; then
+     echo -e "plan:\tExecutes \`$tf_exec plan\`"
+     echo -e "clear:\tExecutes \`$tf_exec clear <module>\`"
+ else
+-    (cd examples/$1 && $tf_exec "$tf_args")
++    cd examples/$1
++    $tf_exec "$tf_args"
++    cd -
+ fi

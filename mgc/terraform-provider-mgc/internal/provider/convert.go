@@ -12,6 +12,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/tfsdk"
 	"github.com/hashicorp/terraform-plugin-go/tftypes"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
+	"golang.org/x/exp/maps"
 	"golang.org/x/exp/slices"
 	mgcSchemaPkg "magalu.cloud/core/schema"
 	mgcSdk "magalu.cloud/sdk"
@@ -29,6 +30,83 @@ func newTFStateConverter(ctx context.Context, diag *diag.Diagnostics, tfSchema *
 		diag:     diag,
 		tfSchema: tfSchema,
 	}
+}
+
+func areObjectsSubsets(ctx context.Context, objA *mgcSdk.Schema, objB *mgcSdk.Schema) (bool, error) {
+	superset := objB
+	subset := objA
+	if len(objA.Properties) > len(objB.Properties) {
+		superset = objA
+		subset = objB
+	}
+
+	for propKey, subsetPropRef := range subset.Properties {
+		if prop, ok := superset.Properties[propKey]; !ok {
+			return false, nil
+		} else {
+			if slices.Contains(superset.Required, propKey) != slices.Contains(subset.Required, propKey) {
+				return false, nil
+			}
+
+			if !checkSimilarJsonSchemas(ctx, (*mgcSchemaPkg.Schema)(subsetPropRef.Value), (*mgcSchemaPkg.Schema)(prop.Value)) {
+				return false, nil
+			}
+		}
+
+	}
+	return true, nil
+}
+
+func isAnyOfElementsSubsets(ctx context.Context, v *mgcSdk.Schema) (string, *mgcSdk.Schema, error) {
+	types := map[string]struct{}{}
+	maxPropsQty := 0
+	var biggestObject *mgcSdk.Schema = nil
+
+	if len(v.AnyOf) == 0 {
+		return "", nil, fmt.Errorf("schema doesn't contain anyOf values")
+	}
+
+	for _, ref := range v.AnyOf {
+		c := (*mgcSdk.Schema)(ref.Value)
+		t, err := getJsonType(c)
+		if err != nil {
+			return "", nil, fmt.Errorf("anyOf element type %q cannot be identified. %w", t, err)
+		}
+
+		types[t] = struct{}{}
+		if len(types) > 1 {
+			// Different types cannot be subsets
+			return "", nil, fmt.Errorf("anyOf element of different types cannot be subsets. types: %#v", maps.Keys(types))
+		}
+
+		// IS THIS ANOTHER FUNCTION?
+		if _, ok := types["object"]; ok {
+			if biggestObject == nil {
+				biggestObject = c
+				maxPropsQty = len(c.Properties)
+				continue
+			}
+
+			propsQty := len(c.Properties)
+			if check, err := areObjectsSubsets(ctx, biggestObject, c); err != nil {
+				return "", nil, err
+			} else if !check {
+				return "", nil, fmt.Errorf("anyOf elements are not subsets")
+			}
+			if propsQty > maxPropsQty {
+				maxPropsQty = propsQty
+				biggestObject = c
+			}
+		}
+	}
+
+	if biggestObject != nil {
+		// TODO: Handle anyOfs nested in anyOfs? Maybe a weird case of single element anyOf with anyOfs?
+		t, err := getJsonType(biggestObject)
+		return t, biggestObject, err
+	}
+
+	return maps.Keys(types)[0], (*mgcSdk.Schema)(v.AnyOf[0].Value), nil
 }
 
 func getJsonEnumType(v *mgcSdk.Schema) (string, error) {
@@ -62,6 +140,18 @@ func getJsonType(v *mgcSdk.Schema) (string, error) {
 	if v.Type == "" {
 		if len(v.Enum) != 0 {
 			return getJsonEnumType(v)
+		}
+
+		if len(v.AnyOf) != 0 {
+			// SHOULD HANDLE SUBSET IN OTHER PLACES? JUST RETURN ANYOF HERE AND DEAL WITH TYPE ELSEWHERE?
+			return "anyOf", nil
+			// return isAnyOfElementsSubsets(v)
+
+			// if value, err := isAnyOfElementsSubsets(v); err != nil {
+			// 	return "", fmt.Errorf("anyOf types are not subsets, they can't be handled. Error: %w", err)
+			// } else if value != "" {
+			// 	return value, nil
+			// }
 		}
 
 		return "", fmt.Errorf("unable to find schema %+v type", v)

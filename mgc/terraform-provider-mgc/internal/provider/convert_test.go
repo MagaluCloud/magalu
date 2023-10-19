@@ -359,3 +359,55 @@ func TestToMgcSchemaValue(t *testing.T) {
 		}
 	}
 }
+
+func TestAnyOfSubset(t *testing.T) {
+	ctx := context.Background()
+	obj := core.NewObjectSchema(map[string]*core.Schema{
+		"prop1": core.NewStringSchema(),
+	}, []string{"prop1"})
+	expandedObj := core.NewObjectSchema(map[string]*core.Schema{
+		"prop1": core.NewStringSchema(),
+		"prop2": core.NewIntegerSchema(),
+	}, []string{"prop1"})
+
+	v, ss, _ := isAnyOfElementsSubsets(ctx, core.NewAnyOfSchema(obj, expandedObj))
+	if v != "object" || ss != expandedObj {
+		t.Errorf("anyOf element should be subset. Expected: 'object', Received: %s", v)
+	}
+	v, ss, _ = isAnyOfElementsSubsets(ctx, core.NewAnyOfSchema(expandedObj, obj))
+	if v != "object" || ss != expandedObj {
+		t.Errorf("anyOf elements should be subsets independent of their order. Expected: 'object', Received: %s", v)
+	}
+
+	v, ss, _ = isAnyOfElementsSubsets(ctx, core.NewAnyOfSchema(expandedObj, expandedObj))
+	if v != "object" || ss != expandedObj {
+		t.Errorf("anyOf same element should be subset of themselves. Expected: 'object', Received: %s", v)
+	}
+
+	diffTypeSubset := core.NewObjectSchema(map[string]*core.Schema{
+		"prop1": core.NewStringSchema(),
+		"prop2": core.NewStringSchema(),
+	}, []string{"prop1"})
+	v, ss, _ = isAnyOfElementsSubsets(ctx, core.NewAnyOfSchema(expandedObj, diffTypeSubset))
+	if v != "" || ss != nil {
+		t.Errorf("anyOf elements with different property types are not subsets. Expected: '', Received: %s", v)
+	}
+
+	diffRequiredSubset := core.NewObjectSchema(map[string]*core.Schema{
+		"prop1": core.NewStringSchema(),
+		"prop2": core.NewIntegerSchema(),
+	}, []string{"prop2"})
+	v, ss, _ = isAnyOfElementsSubsets(ctx, core.NewAnyOfSchema(expandedObj, diffRequiredSubset))
+	if v != "" || ss != nil {
+		t.Errorf("anyOf elements with different required props are not subsets. Expected: '', Received: %s", v)
+	}
+
+	v, ss, _ = isAnyOfElementsSubsets(ctx, core.NewAnyOfSchema(core.NewStringSchema(), core.NewStringSchema()))
+	if v != "string" || ss.Type != "string" {
+		t.Errorf("anyOf elements with same types are subsets. Expected: 'string', Received: %s", v)
+	}
+	v, ss, _ = isAnyOfElementsSubsets(ctx, core.NewAnyOfSchema(core.NewStringSchema(), core.NewIntegerSchema()))
+	if v != "" || ss != nil {
+		t.Errorf("anyOf elements of different types are not subsets. Expected: '', Received: %s", v)
+	}
+}

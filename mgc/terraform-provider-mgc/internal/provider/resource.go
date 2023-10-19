@@ -74,6 +74,7 @@ func (r *MgcResource) getUpdateParamsModifiers(ctx context.Context, mgcSchema *m
 	isCreated := r.create.ResultSchema().Properties[k] != nil
 	required := slices.Contains(mgcSchema.Required, k)
 
+	tflog.SubsystemTrace(ctx, string(schemaGenSubsystem), fmt.Sprintf("attribute %q - isCreated: %t - ", mgcName, isCreated))
 	return attributeModifiers{
 		isRequired:                 required && !isCreated,
 		isOptional:                 !required && !isCreated,

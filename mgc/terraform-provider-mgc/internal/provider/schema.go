@@ -87,6 +87,12 @@ func checkSimilarJsonSchemas(ctx context.Context, a, b *mgcSdk.Schema) bool {
 		return checkSimilarJsonSchemas(ctx, (*mgcSdk.Schema)(a.Items.Value), (*mgcSdk.Schema)(b.Items.Value))
 	case "object":
 		// TODO: should we compare Required? I don't think so, but it may be a problem
+		// CLOSES #301
+		// if len(a.Required) != len(b.Required) {
+		// 	tflog.SubsystemTrace(ctx, string(schemaGenSubsystem), fmt.Sprintf("object attribute has different required values in schema(%#v) and schema(%#v)", a.Required, b.Required))
+		// 	return false
+		// }
+
 		if len(a.Properties) != len(b.Properties) {
 			tflog.SubsystemTrace(ctx, string(schemaGenSubsystem), fmt.Sprintf("object attribute has different number of properties in schema(%#v) and schema(%#v) - checking if their are subset", a, b))
 			return false
@@ -124,10 +130,15 @@ func addMgcSchemaAttributes(
 		tflog.SubsystemDebug(ctx, string(schemaGenSubsystem), fmt.Sprintf("adding attribute %q", k))
 		mgcName := mgcName(k)
 		mgcPropSchema := (*mgcSdk.Schema)(ref.Value)
+		// IN THE INPUT THERE WILL BE NO MISMATCH IN ATTRIBUTES I WILL
+		// RECEIVE AN OBJECT WITH ID
+
+		// TODO: HANDLE ANYOF PROPERTIES?
 		if ca, ok := attributes[mgcName]; ok {
 			if !checkSimilarJsonSchemas(ctx, ca.mgcSchema, mgcPropSchema) {
 				// Ignore update value in favor of create value (This is probably a bug with the API)
 
+				// CHECK FOR SUBSET HERE
 				tflog.SubsystemError(ctx, string(schemaGenSubsystem), fmt.Sprintf("ignoring DIFFERENT attribute %q:\nOLD=%+v\nNEW=%+v", k, ca.mgcSchema, mgcPropSchema))
 				continue
 			} else {
@@ -136,6 +147,7 @@ func addMgcSchemaAttributes(
 			}
 		}
 
+		// PROP SCHEMA WILL BE AN OBJECT WITH ID AND REQUIRED!
 		tfSchema, childAttributes, err := mgcToTFSchema(mgcPropSchema, getModifiers(ctx, mgcSchema, mgcName), ctx)
 		tflog.SubsystemDebug(ctx, string(schemaGenSubsystem), fmt.Sprintf("attribute %q generated tfSchema %#v", k, tfSchema))
 		if err != nil {
@@ -183,6 +195,7 @@ func getResultModifiers(ctx context.Context, mgcSchema *mgcSdk.Schema, mgcName m
 
 func generateTFSchema(handler tfSchemaHandler, ctx context.Context) (tfSchema schema.Schema, d diag.Diagnostics) {
 	ctx = tflog.NewSubsystem(ctx, string(schemaGenSubsystem))
+
 	var tfsa map[tfName]schema.Attribute
 	tfsa, d = generateTFAttributes(handler, ctx)
 	if d.HasError() {
@@ -213,7 +226,98 @@ func generateTFAttributes(handler tfSchemaHandler, ctx context.Context) (tfa map
 	for name, iattr := range handler.InputAttributes() {
 		// Split attributes that differ between input/output
 		if oattr := handler.OutputAttributes()[name]; oattr != nil {
-			if !checkSimilarJsonSchemas(oattr.mgcSchema, iattr.mgcSchema) {
+			inputType, err := getJsonType(iattr.mgcSchema)
+			// TODO: Should we handle anyOf inputs that are subsets between
+			// themselves? Probably not, we are handling cases where inputs
+			// match an output anyOf schema and the anyOf schemas are subsets
+			// between themselves
+			if err != nil || inputType == "anyOf" {
+				d.AddError("Generating TF Attributes", fmt.Sprintf("invalid schema type %q for input attribute %q", inputType, string(iattr.mgcName)))
+				return
+			}
+			outputType, err := getJsonType(oattr.mgcSchema)
+			if err != nil {
+				d.AddError("Generating TF Attributes", fmt.Sprintf("invalid schema type %q for output attribute %q", outputType, string(oattr.mgcName)))
+				return
+			}
+
+			// TODO: Maybe handle arrays? For now we didn't find any reason to
+			// allow an array of object elements that are subset between
+			// themselves.  Need to check network/virtual-machine API to see if
+			// we will have this case.
+			if outputType == "anyOf" && inputType == "object" {
+				outputType, oSuperSet, err := isAnyOfElementsSubsets(ctx, oattr.mgcSchema)
+				if err != nil {
+					tflog.SubsystemDebug(ctx, string(schemaGenSubsystem), fmt.Sprintf("unable to generate a tfschema attribute, due to anyOf type(%q) or elements not being subset between themselves", outputType))
+					continue
+				}
+
+				if inputType != outputType {
+					tflog.SubsystemDebug(ctx, string(schemaGenSubsystem), fmt.Sprintf("unable to generate a tfschema attribute, due to input type(%q) != output anyOf type(%q)", inputType, outputType))
+					continue
+				}
+
+				inputSet := iattr.mgcSchema
+				var hasInputMatch *mgcSdk.Schema = nil
+				for _, ref := range oattr.mgcSchema.AnyOf {
+					anySchema := (*mgcSdk.Schema)(ref.Value)
+					if checkSimilarJsonSchemas(ctx, inputSet, anySchema) {
+						hasInputMatch = anySchema
+						break
+					}
+				}
+
+				if hasInputMatch == nil {
+					tflog.SubsystemDebug(ctx, string(schemaGenSubsystem), "unable to generate a tfschema attribute, due to input schema not matching one of the anyOf schemas in the output")
+					continue
+				}
+
+				getMergedParamsModifiers := func(ctx context.Context, mgcSchema *mgcSdk.Schema, mgcName mgcName) attributeModifiers {
+					k := string(mgcName)
+					existsInput := inputSet.Properties[k] != nil
+					if existsInput {
+						isRequired := iattr.attributes[mgcName].tfSchema.IsRequired()
+						isComputed := iattr.attributes[mgcName].tfSchema.IsComputed()
+
+						return attributeModifiers{
+							isRequired:                 isRequired,
+							isOptional:                 !isRequired,
+							isComputed:                 isComputed,
+							useStateForUnknown:         false,
+							requiresReplaceWhenChanged: true, // TODO: Need to check if attribute is from update or not. How?
+							getChildModifiers:          getInputChildModifiers,
+						}
+					} else {
+						return attributeModifiers{
+							isRequired:                 false,
+							isOptional:                 false,
+							isComputed:                 true,
+							useStateForUnknown:         false,
+							requiresReplaceWhenChanged: false,
+							getChildModifiers:          getResultModifiers,
+						}
+					}
+				}
+
+				attrs := attributeModifiers{
+					isRequired:                 iattr.tfSchema.IsRequired(),
+					isOptional:                 iattr.tfSchema.IsOptional(),
+					isComputed:                 iattr.tfSchema.IsComputed(),
+					useStateForUnknown:         false,
+					requiresReplaceWhenChanged: true,
+					getChildModifiers:          getMergedParamsModifiers,
+				}
+
+				newTfSchema, newAttributes, err := mgcToTFSchema(oSuperSet, attrs, ctx)
+				if err != nil {
+					tflog.SubsystemDebug(ctx, string(schemaGenSubsystem), fmt.Sprintf("unable to generate a tfschema. Error: %s", err.Error()))
+					continue
+				}
+				iattr.mgcSchema = oSuperSet
+				iattr.tfSchema = newTfSchema
+				iattr.attributes = newAttributes
+
+			} else if !checkSimilarJsonSchemas(ctx, oattr.mgcSchema, iattr.mgcSchema) {
 				os, _ := oattr.mgcSchema.MarshalJSON()
 				is, _ := iattr.mgcSchema.MarshalJSON()
 				tflog.SubsystemDebug(ctx, string(schemaGenSubsystem), fmt.Sprintf("[resource] schema for %q: attribute %q differs between input and output. input: %s - output %s", handler.Name(), name, is, os))
@@ -445,6 +549,13 @@ func mgcToTFSchema(mgcSchema *mgcSdk.Schema, m attributeModifiers, ctx context.C
 			PlanModifiers: mod,
 			Default:       d,
 		}, mgcAttributes, nil
+	case "anyOf":
+		tflog.SubsystemDebug(ctx, string(schemaGenSubsystem), "attribute type 'anyOf' found checking elements are subset")
+		if isSubset, superset, err := isAnyOfElementsSubsets(ctx, mgcSchema); err == nil && isSubset != "" {
+			tflog.SubsystemDebug(ctx, string(schemaGenSubsystem), fmt.Sprintf("attribute type 'anyOf' elements are subset generating superset for schema %#v", superset))
+			return mgcToTFSchema(superset, m, ctx)
+		}
+		return nil, nil, fmt.Errorf("type %q needs implementation", t)
 	default:
 		return nil, nil, fmt.Errorf("type %q not supported", t)
 	}
