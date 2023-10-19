@@ -29,112 +29,296 @@ servers:
                     to: .pre-prod
 
 paths:
-    /v0/vpcs/{vpc_id}/ports:
-        get:
-            x-cli-description: List VPC ports
-            x-cli-name: list-vpc-ports
-            parameters:
-            - name: vpc_id
-              x-cli-name: vpc
-        post:
-            responses:
-                '200':
-                    links:
-                        read:
-                            operationId: portDetails
-                            description: Read Port
-                            parameters:
-                                port_id: $response.body#/id
-                        delete:
-                            operationId: deletePort
-                            description: Delete Port
-                            parameters:
-                                port_id: $response.body#/id
-    /v0/ports/{port_id}:
-        get:
-            responses:
-                '200':
-                    links:
-                        delete:
-                            operationId: deletePort
-                            description: Delete Port
-                            parameters:
-                                port_id: $request.path.port_id
-    /v0/vpcs/{vpc_id}/public_ips:
-        post:
-            responses:
-                '200':
-                    links:
-                        read:
-                            operationId: publicIpDetails
-                            description: Read Public IP
-                            parameters:
-                                public_ip_id: $response.body#/id
-                        delete:
-                            operationId: deletePublicIp
-                            description: Delete Public IP
-                            parameters:
-                                public_ip_id: $response.body#/id
-    /v0/public_ips/{public_ip_id}:
-        get:
-            responses:
-                '200':
-                    links:
-                        delete:
-                            operationId: deletePublicIp
-                            description: Delete Public IP
-                            parameters:
-                                public_ip_id: $request.path.public_ip_id
-    /v0/vpcs/{vpc_id}/security_groups:
-        post:
-            responses:
-                '200':
-                    links:
-                        read:
-                            operationId: securityGroupDetails
-                            description: Read Security Group
-                            parameters:
-                                security_group_id: $response.body#/id
-                        delete:
-                            operationId: deleteSecurityGroup
-                            description: Delete Security Group
-                            parameters:
-                                security_group_id: $response.body#/id
-    /v0/security_groups/{security_group_id}:
-        get:
-            responses:
-                '200':
-                    links:
-                        delete:
-                            operationId: deleteSecurityGroup
-                            description: Delete Security Group
-                            parameters:
-                                security_group_id: $request.path.security_group_id
-    /v0/security_groups/{security_group_id}/rules:
-        post:
-            responses:
-                '200':
-                    links:
-                        read:
-                            operationId: ruleDetails
-                            description: Read Rule
-                            parameters:
-                                rule_id: $response.body#/id
-                        delete:
-                            operationId: deleteRule
-                            description: Delete Rule
-                            parameters:
-                                rule_id: $response.body#/id
-    /v0/rules/{rule_id}:
-        get:
-            responses:
-                '200':
-                    links:
-                        delete:
-                            operationId: deleteRule
-                            description: Delete Rule
-                            parameters:
-                                rule_id: $request.path.rule_id
+  /v0/vpcs/{vpc_id}/ports:
+    get:
+      x-cli-description: List VPC ports
+      x-cli-name: list-vpc-ports
+      parameters:
+        - name: vpc_id
+          x-cli-name: vpc
+      security:
+        - OAuth2:
+            - network.read
+    post:
+      responses:
+        '200':
+          links:
+            read:
+              operationId: portDetails
+              description: Read Port
+              parameters:
+                port_id: $response.body#/id
+            delete:
+              operationId: deletePort
+              description: Delete Port
+              parameters:
+                port_id: $response.body#/id
+      security:
+        - OAuth2:
+            - network.write
+  /v0/ports/{port_id}:
+    get:
+      responses:
+        '200':
+          links:
+            delete:
+              operationId: deletePort
+              description: Delete Port
+              parameters:
+                port_id: $request.path.port_id
+      security:
+        - OAuth2:
+            - network.read
+    delete:
+      security:
+        - OAuth2:
+            - network.write
+  /v0/vpcs/{vpc_id}/public_ips:
+    post:
+      responses:
+        '200':
+          links:
+            read:
+              operationId: publicIpDetails
+              description: Read Public IP
+              parameters:
+                public_ip_id: $response.body#/id
+            delete:
+              operationId: deletePublicIp
+              description: Delete Public IP
+              parameters:
+                public_ip_id: $response.body#/id
+      security:
+        - OAuth2:
+            - network.write
+    get:
+      security:
+        - OAuth2:
+            - network.read
+  /v0/public_ips/{public_ip_id}:
+    get:
+      responses:
+        '200':
+          links:
+            delete:
+              operationId: deletePublicIp
+              description: Delete Public IP
+              parameters:
+                public_ip_id: $request.path.public_ip_id
+      security:
+        - OAuth2:
+            - network.read
+    delete:
+      security:
+        - OAuth2:
+            - network.write
+  /v0/vpcs/{vpc_id}/security_groups:
+    post:
+      responses:
+        '200':
+          links:
+            read:
+              operationId: securityGroupDetails
+              description: Read Security Group
+              parameters:
+                security_group_id: $response.body#/id
+            delete:
+              operationId: deleteSecurityGroup
+              description: Delete Security Group
+              parameters:
+                security_group_id: $response.body#/id
+      security:
+        - OAuth2:
+            - network.write
+    get:
+      security:
+        - OAuth2:
+            - network.read
+  /v0/security_groups/{security_group_id}:
+    get:
+      responses:
+        '200':
+          links:
+            delete:
+              operationId: deleteSecurityGroup
+              description: Delete Security Group
+              parameters:
+                security_group_id: $request.path.security_group_id
+      security:
+        - OAuth2:
+            - network.read
+    delete:
+      security:
+        - OAuth2:
+            - network.write
+  /v0/security_groups/{security_group_id}/rules:
+    post:
+      responses:
+        '200':
+          links:
+            read:
+              operationId: ruleDetails
+              description: Read Rule
+              parameters:
+                rule_id: $response.body#/id
+            delete:
+              operationId: deleteRule
+              description: Delete Rule
+              parameters:
+                rule_id: $response.body#/id
+      security:
+        - OAuth2:
+            - network.write
+    get:
+      security:
+        - OAuth2:
+            - network.read
+  /v0/rules/{rule_id}:
+    get:
+      responses:
+        '200':
+          links:
+            delete:
+              operationId: deleteRule
+              description: Delete Rule
+              parameters:
+                rule_id: $request.path.rule_id
+      security:
+        - OAuth2:
+            - network.read
+    delete:
+      security:
+        - OAuth2:
+            - network.write
+
+  /v0/healthcheck:
+    get:
+      security:
+        - OAuth2:
+            - network.read
+  /v0/ports:
+    get:
+      security:
+        - OAuth2:
+            - network.read
+    post:
+      security:
+        - OAuth2:
+            - network.write
+  /v0/ports/all:
+    delete:
+      security:
+        - OAuth2:
+            - network.write
+  /v0/ports/{port_id}/attach/{security_group_id}:
+    post:
+      security:
+        - OAuth2:
+            - network.write
+  /v0/ports/{port_id}/detach/{security_group_id}:
+    post:
+      security:
+        - OAuth2:
+            - network.write
+  /v0/public_ips/{public_ip_id}/attach/{port_id}:
+    post:
+      security:
+        - OAuth2:
+            - network.write
+  /v0/public_ips/{public_ip_id}/detach/{port_id}:
+    post:
+      security:
+        - OAuth2:
+            - network.write
+  /v0/public_ips:
+    get:
+      security:
+        - OAuth2:
+            - network.read
+  /v0/usage:
+    get:
+      security:
+        - OAuth2:
+            - network.read
+  /v0/routers/default:
+    post:
+      security:
+        - OAuth2:
+            - network.write
+  /v0/routers:
+    get:
+      security:
+        - OAuth2:
+            - network.read
+  /v0/security_groups/default:
+    post:
+      security:
+        - OAuth2:
+            - network.write
+  /v0/security_groups:
+    get:
+      security:
+        - OAuth2:
+            - network.read
+    post:
+      security:
+        - OAuth2:
+            - network.write
+  /v0/security_groups_all:
+    delete:
+      security:
+        - OAuth2:
+            - network.write
+  /v0/vpcs/{vpc_id}/subnets:
+    get:
+      security:
+        - OAuth2:
+            - network.read
+    post:
+      security:
+        - OAuth2:
+            - network.write
+  /v0/subnets/{subnet_id}:
+    get:
+      security:
+        - OAuth2:
+            - network.read
+    delete:
+      security:
+        - OAuth2:
+            - network.write
+    patch:
+      security:
+        - OAuth2:
+            - network.write
+  /v0/vpcs/default:
+    post:
+      security:
+        - OAuth2:
+            - network.write
+  /v0/vpcs:
+    get:
+      security:
+        - OAuth2:
+            - network.read
+    post:
+      security:
+        - OAuth2:
+            - network.write
+  /v0/vpcs/{vpc_id}:
+    get:
+      security:
+        - OAuth2:
+            - network.read
+    delete:
+      security:
+        - OAuth2:
+            - network.write
+  /v0/vpcs/all:
+    delete:
+      security:
+        - OAuth2:
+            - network.write
 
 tags:
 -   name: vpc

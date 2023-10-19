@@ -22,6 +22,9 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/Healthcheck'
+            security:
+            -   OAuth2:
+                - network.read
     /v0/ports:
         post:
             tags:
@@ -49,6 +52,9 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             viveiro: true
+            security:
+            -   OAuth2:
+                - network.write
         get:
             tags:
             - port
@@ -83,6 +89,9 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             viveiro: true
+            security:
+            -   OAuth2:
+                - network.read
     /v0/vpcs/{vpc_id}/ports:
         post:
             tags:
@@ -127,6 +136,9 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             viveiro: true
+            security:
+            -   OAuth2:
+                - network.write
         get:
             tags:
             - port
@@ -190,6 +202,9 @@ paths:
             viveiro: true
             x-cli-description: List VPC ports
             x-cli-name: list-vpc-ports
+            security:
+            -   OAuth2:
+                - network.read
     /v0/ports/{port_id}:
         get:
             tags:
@@ -223,6 +238,9 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             viveiro: true
+            security:
+            -   OAuth2:
+                - network.read
         delete:
             tags:
             - port
@@ -245,6 +263,9 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             viveiro: true
+            security:
+            -   OAuth2:
+                - network.write
     /v0/ports/all:
         delete:
             tags:
@@ -265,6 +286,9 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             viveiro: false
+            security:
+            -   OAuth2:
+                - network.write
     /v0/ports/{port_id}/attach/{security_group_id}:
         post:
             tags:
@@ -296,6 +320,9 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             viveiro: true
+            security:
+            -   OAuth2:
+                - network.write
     /v0/ports/{port_id}/detach/{security_group_id}:
         post:
             tags:
@@ -327,6 +354,9 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             viveiro: true
+            security:
+            -   OAuth2:
+                - network.write
     /v0/xaas/ports/all:
         delete:
             tags:
@@ -576,6 +606,9 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             viveiro: true
+            security:
+            -   OAuth2:
+                - network.write
         get:
             tags:
             - public_ip
@@ -602,6 +635,9 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             viveiro: true
+            security:
+            -   OAuth2:
+                - network.read
     /v0/public_ips/{public_ip_id}:
         get:
             tags:
@@ -635,6 +671,9 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             viveiro: true
+            security:
+            -   OAuth2:
+                - network.read
         delete:
             tags:
             - public_ip
@@ -657,6 +696,9 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             viveiro: true
+            security:
+            -   OAuth2:
+                - network.write
     /v0/public_ips/{public_ip_id}/attach/{port_id}:
         post:
             tags:
@@ -688,6 +730,9 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             viveiro: true
+            security:
+            -   OAuth2:
+                - network.write
     /v0/public_ips/{public_ip_id}/detach/{port_id}:
         post:
             tags:
@@ -719,6 +764,9 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             viveiro: true
+            security:
+            -   OAuth2:
+                - network.write
     /v0/public_ips:
         get:
             tags:
@@ -740,6 +788,9 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             viveiro: true
+            security:
+            -   OAuth2:
+                - network.read
     /v0/usage:
         get:
             tags:
@@ -767,6 +818,9 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             viveiro: false
+            security:
+            -   OAuth2:
+                - network.read
     /v0/routers/default:
         post:
             tags:
@@ -788,6 +842,9 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             viveiro: false
+            security:
+            -   OAuth2:
+                - network.write
     /v0/routers:
         get:
             tags:
@@ -808,6 +865,9 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             viveiro: true
+            security:
+            -   OAuth2:
+                - network.read
     /v0/xaas/routers/default:
         post:
             tags:
@@ -929,6 +989,9 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             viveiro: true
+            security:
+            -   OAuth2:
+                - network.write
         get:
             tags:
             - rule
@@ -955,6 +1018,9 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             viveiro: true
+            security:
+            -   OAuth2:
+                - network.read
     /v0/rules/{rule_id}:
         get:
             tags:
@@ -988,6 +1054,9 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             viveiro: true
+            security:
+            -   OAuth2:
+                - network.read
         delete:
             tags:
             - rule
@@ -1010,6 +1079,9 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             viveiro: true
+            security:
+            -   OAuth2:
+                - network.write
     /v0/xaas/security_groups/{security_group_id}/rules:
         post:
             tags:
@@ -1220,6 +1292,9 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             viveiro: false
+            security:
+            -   OAuth2:
+                - network.write
     /v0/security_groups:
         get:
             tags:
@@ -1241,6 +1316,9 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             viveiro: true
+            security:
+            -   OAuth2:
+                - network.read
         post:
             tags:
             - security_group
@@ -1275,6 +1353,9 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             viveiro: true
+            security:
+            -   OAuth2:
+                - network.write
     /v0/vpcs/{vpc_id}/security_groups:
         post:
             tags:
@@ -1353,6 +1434,9 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             viveiro: true
+            security:
+            -   OAuth2:
+                - network.write
         get:
             tags:
             - security_group
@@ -1379,6 +1463,9 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             viveiro: true
+            security:
+            -   OAuth2:
+                - network.read
     /v0/security_groups/{security_group_id}:
         get:
             tags:
@@ -1412,6 +1499,9 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             viveiro: true
+            security:
+            -   OAuth2:
+                - network.read
         delete:
             tags:
             - security_group
@@ -1434,6 +1524,9 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             viveiro: true
+            security:
+            -   OAuth2:
+                - network.write
     /v0/security_groups_all:
         delete:
             tags:
@@ -1455,6 +1548,9 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             viveiro: false
+            security:
+            -   OAuth2:
+                - network.write
     /v0/xaas/security_groups/default:
         post:
             tags:
@@ -1950,6 +2046,9 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             viveiro: true
+            security:
+            -   OAuth2:
+                - network.read
         post:
             tags:
             - subnets
@@ -1983,6 +2082,9 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             viveiro: true
+            security:
+            -   OAuth2:
+                - network.write
     /v0/subnets/{subnet_id}:
         delete:
             tags:
@@ -2007,6 +2109,9 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             viveiro: true
+            security:
+            -   OAuth2:
+                - network.write
         get:
             tags:
             - subnets
@@ -2034,6 +2139,9 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             viveiro: true
+            security:
+            -   OAuth2:
+                - network.read
         patch:
             tags:
             - subnets
@@ -2067,6 +2175,9 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             viveiro: true
+            security:
+            -   OAuth2:
+                - network.write
     /v0/xaas/vpcs/{vpc_id}/subnets:
         get:
             tags:
@@ -2120,6 +2231,9 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             viveiro: false
+            security:
+            -   OAuth2:
+                - network.write
     /v0/vpcs:
         post:
             tags:
@@ -2147,6 +2261,9 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             viveiro: true
+            security:
+            -   OAuth2:
+                - network.write
         get:
             tags:
             - vpc
@@ -2167,6 +2284,9 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             viveiro: true
+            security:
+            -   OAuth2:
+                - network.read
     /v0/vpcs/{vpc_id}:
         get:
             tags:
@@ -2194,6 +2314,9 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             viveiro: true
+            security:
+            -   OAuth2:
+                - network.read
         delete:
             tags:
             - vpc
@@ -2216,6 +2339,9 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             viveiro: true
+            security:
+            -   OAuth2:
+                - network.write
     /v0/vpcs/all:
         delete:
             tags:
@@ -2236,6 +2362,9 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             viveiro: false
+            security:
+            -   OAuth2:
+                - network.write
     /v0/xaas/vpcs:
         post:
             tags:
