@@ -8,7 +8,7 @@ import (
 	"github.com/jedib0t/go-pretty/v6/table"
 	"go.uber.org/zap"
 	"magalu.cloud/core"
-	"magalu.cloud/core/config"
+	mgcConfigPkg "magalu.cloud/core/config"
 )
 
 var listLoggerInstance *zap.SugaredLogger
@@ -52,7 +52,7 @@ func getAllConfigs(ctx context.Context) (map[string]*core.Schema, error) {
 		return nil, fmt.Errorf("Couldn't get Group from context")
 	}
 
-	config := config.FromContext(ctx)
+	config := mgcConfigPkg.FromContext(ctx)
 	if config == nil {
 		return nil, fmt.Errorf("Couldn't get Config from context")
 	}

@@ -6,7 +6,7 @@ import (
 
 	"github.com/getkin/kin-openapi/openapi3"
 	"magalu.cloud/core"
-	"magalu.cloud/core/config"
+	mgcConfigPkg "magalu.cloud/core/config"
 )
 
 type configSetParams struct {
@@ -20,7 +20,7 @@ func newSet() *core.StaticExecute {
 		"",
 		"Sets a specific config value",
 		func(ctx context.Context, parameter configSetParams, _ struct{}) (core.Value, error) {
-			config := config.FromContext(ctx)
+			config := mgcConfigPkg.FromContext(ctx)
 			if config == nil {
 				return nil, fmt.Errorf("unable to retrieve system configuration")
 			}
