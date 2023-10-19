@@ -1,0 +1,265 @@
+openapi: 3.1.0
+info:
+    title: FastAPI
+    version: 0.1.0
+servers:
+-   url: http://127.0.0.1:8000
+    variables:
+        region:
+            description: Region to reach the service
+            default: br-ne-1
+            enum:
+            - br-ne-1
+            - br-ne-2
+            - br-se-1
+        env:
+            description: Environment to use
+            default: ''
+            enum:
+            - ''
+            - .pre-prod
+            x-cli-transforms:
+            -   type: translate
+                translations:
+                -   from: prod
+                    to: ''
+                -   from: pre-prod
+                    to: .pre-prod
+paths:
+    /items:
+        get:
+            tags:
+            - items
+            summary: Read Items
+            operationId: read_items_items_get
+            parameters:
+            -   name: expand
+                in: query
+                required: false
+                schema:
+                    nullable: true
+                    type: string
+                    title: Expand
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/Resource'
+                                title: Response Read Items Items Get
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+        post:
+            tags:
+            - items
+            summary: Create Item
+            operationId: create_item_items_post
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/CreateResource'
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Resource'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+    /items/{id}:
+        patch:
+            tags:
+            - items
+            summary: Update Item
+            operationId: update_item_items__id__patch
+            parameters:
+            -   name: id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+                    title: Id
+            -   name: name
+                in: query
+                required: true
+                schema:
+                    type: string
+                    title: Name
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Resource'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+        delete:
+            tags:
+            - items
+            summary: Delete Item
+            operationId: delete_item_items__id__delete
+            parameters:
+            -   name: id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+                    title: Id
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema: {}
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+        get:
+            tags:
+            - items
+            summary: Read Item
+            operationId: read_item_items__id__get
+            parameters:
+            -   name: id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+                    title: Id
+            -   name: expand
+                in: query
+                required: false
+                schema:
+                    nullable: true
+                    type: string
+                    title: Expand
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Resource'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+components:
+    schemas:
+        CreateResource:
+            properties:
+                name:
+                    type: string
+                    title: Name
+                nested:
+                    $ref: '#/components/schemas/ResourceIdentifier'
+            type: object
+            required:
+            - name
+            - nested
+            title: CreateResource
+        HTTPValidationError:
+            properties:
+                message:
+                    title: Message
+                    type: string
+                slug:
+                    title: Slug
+                    type: string
+            type: object
+            title: HTTPValidationError
+            example:
+                message: Unauthorized
+                slug: Unauthorized
+        NestedResource:
+            properties:
+                id:
+                    type: string
+                    format: uuid
+                    title: Id
+                nested_name:
+                    type: string
+                    title: Nested Name
+            type: object
+            required:
+            - id
+            - nested_name
+            title: NestedResource
+        Resource:
+            properties:
+                id:
+                    type: string
+                    format: uuid
+                    title: Id
+                name:
+                    type: string
+                    title: Name
+                nested:
+                    anyOf:
+                    -   $ref: '#/components/schemas/ResourceIdentifier'
+                    -   $ref: '#/components/schemas/NestedResource'
+                    title: Nested
+            type: object
+            required:
+            - id
+            - name
+            - nested
+            title: Resource
+        ResourceIdentifier:
+            properties:
+                id:
+                    type: string
+                    format: uuid
+                    title: Id
+            type: object
+            required:
+            - id
+            title: ResourceIdentifier
+        ValidationError:
+            properties:
+                message:
+                    title: Message
+                    type: string
+                slug:
+                    title: Slug
+                    type: string
+            type: object
+            required:
+            - loc
+            - msg
+            - type
+            title: ValidationError
+            example:
+                message: Unauthorized
+                slug: Unauthorized
+tags:
+-   name: items
+    description: Items Operations
+$id: fast.com

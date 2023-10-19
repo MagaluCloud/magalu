@@ -9,6 +9,11 @@ modules:
     path: dbaas.openapi.yaml
     url: https://dbaas.jaxyendy.com/openapi.json
     version: 1.10.1
+-   description: ''
+    name: fast
+    path: fast.openapi.yaml
+    url: fast.com
+    version: 0.1.0
 -   description: APIs referentes ao produto de kubernetes
     name: mke
     path: mke.openapi.yaml
