@@ -63,20 +63,21 @@ func (r *MgcActionResource) getDeleteParamsModifiers(ctx context.Context, mgcSch
 	}
 }
 
-func (s *MgcActionResource) ReadInputAttributes(ctx context.Context) diag.Diagnostics {
+func (r *MgcActionResource) ReadInputAttributes(ctx context.Context) diag.Diagnostics {
+	ctx = tflog.SubsystemSetField(ctx, string(schemaGenSubsystem), string(actionResourceNameField), r.name)
 	d := diag.Diagnostics{}
-	if len(s.inputAttr) != 0 {
+	if len(r.inputAttr) != 0 {
 		return d
 	}
-	tflog.Debug(ctx, fmt.Sprintf("[action-resource] schema for %q: reading input attributes", s.name))
+	tflog.SubsystemDebug(ctx, string(schemaGenSubsystem), fmt.Sprintf("[action-resource] schema for %q: reading input attributes", r.name))
 
-	s.inputAttr = mgcAttributes{}
+	r.inputAttr = mgcAttributes{}
 
 	err := addMgcSchemaAttributes(
-		s.inputAttr,
-		s.create.AdditionalParametersSchema(),
-		s.getReadParamsModifiers,
-		s.name,
+		r.inputAttr,
+		r.create.AdditionalParametersSchema(),
+		r.getReadParamsModifiers,
+		r.name,
 		ctx,
 	)
 	if err != nil {
@@ -85,10 +86,10 @@ func (s *MgcActionResource) ReadInputAttributes(ctx context.Context) diag.Diagno
 	}
 
 	err = addMgcSchemaAttributes(
-		s.inputAttr,
-		s.readOwner.ParametersSchema(),
-		s.getReadParamsModifiers,
-		s.name,
+		r.inputAttr,
+		r.readOwner.ParametersSchema(),
+		r.getReadParamsModifiers,
+		r.name,
 		ctx,
 	)
 	if err != nil {
@@ -97,10 +98,10 @@ func (s *MgcActionResource) ReadInputAttributes(ctx context.Context) diag.Diagno
 	}
 
 	err = addMgcSchemaAttributes(
-		s.inputAttr,
-		s.read.AdditionalParametersSchema(),
-		s.getReadParamsModifiers,
-		s.name,
+		r.inputAttr,
+		r.read.AdditionalParametersSchema(),
+		r.getReadParamsModifiers,
+		r.name,
 		ctx,
 	)
 	if err != nil {
@@ -109,10 +110,10 @@ func (s *MgcActionResource) ReadInputAttributes(ctx context.Context) diag.Diagno
 	}
 
 	err = addMgcSchemaAttributes(
-		s.inputAttr,
-		s.delete.AdditionalParametersSchema(),
-		s.getDeleteParamsModifiers,
-		s.name,
+		r.inputAttr,
+		r.delete.AdditionalParametersSchema(),
+		r.getDeleteParamsModifiers,
+		r.name,
 		ctx,
 	)
 	if err != nil {
@@ -124,11 +125,12 @@ func (s *MgcActionResource) ReadInputAttributes(ctx context.Context) diag.Diagno
 }
 
 func (r *MgcActionResource) ReadOutputAttributes(ctx context.Context) diag.Diagnostics {
+	ctx = tflog.SubsystemSetField(ctx, string(schemaGenSubsystem), string(actionResourceNameField), r.name)
 	d := diag.Diagnostics{}
 	if len(r.outputAttr) != 0 {
 		return d
 	}
-	tflog.Debug(ctx, fmt.Sprintf("[action-resource] schema for %q: reading output attributes", r.name))
+	tflog.SubsystemDebug(ctx, string(schemaGenSubsystem), "reading output attributes")
 
 	r.outputAttr = mgcAttributes{}
 	err := addMgcSchemaAttributes(
@@ -266,7 +268,7 @@ func (r *MgcActionResource) Create(ctx context.Context, req resource.CreateReque
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	tflog.Info(ctx, fmt.Sprintf("[resource] created a %s resource", r.name))
+	tflog.Info(ctx, fmt.Sprintf("[resource] created a %q resource", r.name))
 }
 
 func (r *MgcActionResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
@@ -276,7 +278,7 @@ func (r *MgcActionResource) Read(ctx context.Context, req resource.ReadRequest, 
 		resp.Diagnostics.AddError("reading the resource failed", "was the resource altered outside of terraform?")
 		return
 	}
-	tflog.Info(ctx, fmt.Sprintf("[resource] read a %s resource", r.name))
+	tflog.Info(ctx, fmt.Sprintf("[resource] read a %q resource", r.name))
 }
 
 // Update will most likely never be called, as we always require replace when changed
@@ -292,7 +294,7 @@ func (r *MgcActionResource) Update(ctx context.Context, req resource.UpdateReque
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	tflog.Info(ctx, fmt.Sprintf("[resource] updated a %s resource", r.name))
+	tflog.Info(ctx, fmt.Sprintf("[resource] updated a %q resource", r.name))
 }
 
 func (r *MgcActionResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
@@ -300,7 +302,7 @@ func (r *MgcActionResource) Delete(ctx context.Context, req resource.DeleteReque
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	tflog.Info(ctx, fmt.Sprintf("[resource] deleted a %s resource", r.name))
+	tflog.Info(ctx, fmt.Sprintf("[resource] deleted a %q resource", r.name))
 }
 
 func (r *MgcActionResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {

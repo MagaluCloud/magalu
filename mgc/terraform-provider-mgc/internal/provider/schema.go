@@ -125,16 +125,16 @@ func addMgcSchemaAttributes(
 		if ca, ok := attributes[mgcName]; ok {
 			if !checkSimilarJsonSchemas(ca.mgcSchema, mgcPropSchema) {
 				// Ignore update value in favor of create value (This is probably a bug with the API)
-				tflog.Error(ctx, fmt.Sprintf("[resource] schema for %q: ignoring DIFFERENT attribute %q:\nOLD=%+v\nNEW=%+v", resourceName, k, ca.mgcSchema, mgcPropSchema))
+				tflog.SubsystemError(ctx, string(schemaGenSubsystem), fmt.Sprintf("[resource] schema for %q: ignoring DIFFERENT attribute %q:\nOLD=%+v\nNEW=%+v", resourceName, k, ca.mgcSchema, mgcPropSchema))
 				continue
 			}
-			tflog.Debug(ctx, fmt.Sprintf("[resource] schema for %q: ignoring already computed attribute %q ", resourceName, k))
+			tflog.SubsystemDebug(ctx, string(schemaGenSubsystem), fmt.Sprintf("[resource] schema for %q: ignoring already computed attribute %q ", resourceName, k))
 			continue
 		}
 
 		tfSchema, childAttributes, err := mgcToTFSchema(mgcPropSchema, getModifiers(ctx, mgcSchema, mgcName), resourceName, ctx)
 		if err != nil {
-			tflog.Error(ctx, fmt.Sprintf("[resource] schema for %q attribute %q schema: %+v; error: %s", resourceName, k, mgcPropSchema, err))
+			tflog.SubsystemError(ctx, string(schemaGenSubsystem), fmt.Sprintf("[resource] schema for %q attribute %q schema: %+v; error: %s", resourceName, k, mgcPropSchema, err))
 			return fmt.Errorf("attribute %q, error=%s", k, err)
 		}
 
@@ -146,7 +146,7 @@ func addMgcSchemaAttributes(
 			attributes: childAttributes,
 		}
 		attributes[mgcName] = attr
-		tflog.Debug(ctx, fmt.Sprintf("[resource] schema for %q attribute %q: %+v", resourceName, k, attr))
+		tflog.SubsystemDebug(ctx, string(schemaGenSubsystem), fmt.Sprintf("[resource] schema for %q attribute %q: %+v", resourceName, k, attr))
 	}
 
 	return nil
@@ -177,6 +177,7 @@ func getResultModifiers(ctx context.Context, mgcSchema *mgcSdk.Schema, mgcName m
 }
 
 func generateTFSchema(handler tfSchemaHandler, ctx context.Context) (tfSchema schema.Schema, d diag.Diagnostics) {
+	ctx = tflog.NewSubsystem(ctx, string(schemaGenSubsystem))
 	var tfsa map[tfName]schema.Attribute
 	tfsa, d = generateTFAttributes(handler, ctx)
 	if d.HasError() {

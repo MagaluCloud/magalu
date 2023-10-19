@@ -98,11 +98,12 @@ func (r *MgcResource) getDeleteParamsModifiers(ctx context.Context, mgcSchema *m
 }
 
 func (r *MgcResource) ReadInputAttributes(ctx context.Context) diag.Diagnostics {
+	ctx = tflog.SubsystemSetField(ctx, string(schemaGenSubsystem), string(resourceNameField), r.name)
 	d := diag.Diagnostics{}
 	if len(r.inputAttr) != 0 {
 		return d
 	}
-	tflog.Debug(ctx, fmt.Sprintf("[resource] schema for %q: reading input attributes", r.name))
+	tflog.SubsystemDebug(ctx, string(schemaGenSubsystem), fmt.Sprintf("[resource] schema for %q: reading input attributes", r.name))
 
 	input := mgcAttributes{}
 	err := addMgcSchemaAttributes(
@@ -146,11 +147,12 @@ func (r *MgcResource) ReadInputAttributes(ctx context.Context) diag.Diagnostics 
 }
 
 func (r *MgcResource) ReadOutputAttributes(ctx context.Context) diag.Diagnostics {
+	ctx = tflog.SubsystemSetField(ctx, string(schemaGenSubsystem), string(resourceNameField), r.name)
 	d := diag.Diagnostics{}
 	if len(r.outputAttr) != 0 {
 		return d
 	}
-	tflog.Debug(ctx, fmt.Sprintf("[resource] schema for %q: reading output attributes", r.name))
+	tflog.SubsystemDebug(ctx, string(schemaGenSubsystem), fmt.Sprintf("[resource] schema for %q: reading output attributes", r.name))
 
 	output := mgcAttributes{}
 	err := addMgcSchemaAttributes(
@@ -161,7 +163,7 @@ func (r *MgcResource) ReadOutputAttributes(ctx context.Context) diag.Diagnostics
 		ctx,
 	)
 	if err != nil {
-		d.AddError("could not create TF output attributes", err.Error())
+		d.AddError("could not create TF output attributes from create request", err.Error())
 		return d
 	}
 	err = addMgcSchemaAttributes(
@@ -172,7 +174,7 @@ func (r *MgcResource) ReadOutputAttributes(ctx context.Context) diag.Diagnostics
 		ctx,
 	)
 	if err != nil {
-		d.AddError("could not create TF output attributes", err.Error())
+		d.AddError("could not create TF output attributes from read request", err.Error())
 		return d
 	}
 
@@ -225,6 +227,7 @@ func (r *MgcResource) Metadata(ctx context.Context, req resource.MetadataRequest
 
 func (r *MgcResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	// TODO: Handle nullable values
+	ctx = tflog.SetField(ctx, string(rpcField), "schema")
 	tflog.Debug(ctx, fmt.Sprintf("[resource] generating schema for %q", r.name))
 
 	if r.tfschema == nil {
@@ -259,6 +262,7 @@ func (r *MgcResource) performOperation(ctx context.Context, exec core.Executor, 
 }
 
 func (r *MgcResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	ctx = tflog.SetField(ctx, string(rpcField), "create")
 	r.performOperation(ctx, r.create, tfsdk.State(req.Plan), &resp.State, &resp.Diagnostics)
 	if resp.Diagnostics.HasError() {
 		return
@@ -267,6 +271,7 @@ func (r *MgcResource) Create(ctx context.Context, req resource.CreateRequest, re
 }
 
 func (r *MgcResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	ctx = tflog.SetField(ctx, string(rpcField), "read")
 	r.performOperation(ctx, r.read, req.State, &resp.State, &resp.Diagnostics)
 	if resp.Diagnostics.HasError() {
 		return
@@ -275,6 +280,7 @@ func (r *MgcResource) Read(ctx context.Context, req resource.ReadRequest, resp *
 }
 
 func (r *MgcResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	ctx = tflog.SetField(ctx, string(rpcField), "update")
 	r.performOperation(ctx, r.update, tfsdk.State(req.Plan), &resp.State, &resp.Diagnostics)
 	if resp.Diagnostics.HasError() {
 		return
@@ -283,6 +289,7 @@ func (r *MgcResource) Update(ctx context.Context, req resource.UpdateRequest, re
 }
 
 func (r *MgcResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	ctx = tflog.SetField(ctx, string(rpcField), "delete")
 	r.performOperation(ctx, r.delete, req.State, &resp.State, &resp.Diagnostics)
 	if resp.Diagnostics.HasError() {
 		return
@@ -291,6 +298,7 @@ func (r *MgcResource) Delete(ctx context.Context, req resource.DeleteRequest, re
 }
 
 func (r *MgcResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+	ctx = tflog.SetField(ctx, string(rpcField), "import-state")
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
 }
 
