@@ -88,8 +88,9 @@ func zapMapper(t reflect.Type) *jsonschema.Schema {
 				"capital",
 				"color",
 				"capitalColor",
-				"default",
-			}}
+				"lowercase",
+			},
+		}
 	case reflect.TypeOf(zapcore.TimeEncoder(timeEncoder)):
 		return &jsonschema.Schema{
 			Type: "string",
@@ -99,7 +100,7 @@ func zapMapper(t reflect.Type) *jsonschema.Schema {
 				"iso8601", "ISO8601",
 				"millis",
 				"nanos",
-				"default",
+				"epoch",
 			}}
 	case reflect.TypeOf(zapcore.DurationEncoder(durationEncoder)):
 		return &jsonschema.Schema{
@@ -108,15 +109,15 @@ func zapMapper(t reflect.Type) *jsonschema.Schema {
 				"string",
 				"nanos",
 				"ms",
-				"default",
+				"s",
 			},
 		}
 	case reflect.TypeOf(zapcore.CallerEncoder(callerEncoder)):
 		return &jsonschema.Schema{
 			Type: "string",
 			Enum: []any{
-				"string",
-				"default",
+				"full",
+				"short",
 			},
 		}
 	case reflect.TypeOf(zapcore.NameEncoder(nameEncoder)):
@@ -124,7 +125,6 @@ func zapMapper(t reflect.Type) *jsonschema.Schema {
 			Type: "string",
 			Enum: []any{
 				"full",
-				"default",
 			},
 		}
 	default:
