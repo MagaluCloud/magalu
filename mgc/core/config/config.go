@@ -97,38 +97,80 @@ func (c *Config) Get(key string, out any) error {
 		return fmt.Errorf("result should not be nil pointer")
 	}
 
-	return c.viper.UnmarshalKey(key, out, viper.DecodeHook(stringToMapOrStructHook))
+	return c.viper.UnmarshalKey(key, out, viper.DecodeHook(stringUnmarshalHook))
 }
 
-func stringToMapOrStructHook(f reflect.Value, t reflect.Value) (interface{}, error) {
+func stringUnmarshalHook(f reflect.Value, t reflect.Value) (interface{}, error) {
 	str, ok := f.Interface().(string)
 	if !ok {
 		return f.Interface(), nil
 	}
 
 	kind := t.Kind()
-	target := t.Type()
 
-	if kind == reflect.Pointer {
-		target = target.Elem()
-		kind = target.Kind()
+	for kind == reflect.Pointer || kind == reflect.Interface {
+		t = t.Elem()
+		kind = t.Kind()
 	}
 
-	if kind != reflect.Struct && kind != reflect.Map {
-		return f.Interface(), nil
+	switch kind {
+	case reflect.Map, reflect.Struct, reflect.Array, reflect.Slice:
+		target := t.Type()
+		o := reflect.New(target).Interface()
+		err := yaml.Unmarshal([]byte(str), o)
+
+		return o, err
+	case reflect.Invalid:
+		// Try to decode string to any, it may work. If not, just return the value as-is
+		var result any
+		err := yaml.Unmarshal([]byte(str), &result)
+		if err != nil {
+			return str, nil
+		} else {
+			return result, nil
+		}
+	default:
+		return str, nil
 	}
 
-	o := reflect.New(target).Interface()
-	err := yaml.Unmarshal([]byte(str), o)
+}
 
-	return o, err
+func marshalValueIfNeeded(value any) (any, error) {
+	if value == nil {
+		return value, nil
+	}
+
+	v := reflect.ValueOf(value)
+	kind := v.Type().Kind()
+
+	for kind == reflect.Pointer || kind == reflect.Interface {
+		v = v.Elem()
+		kind = v.Kind()
+	}
+
+	switch kind {
+	case reflect.Map, reflect.Struct, reflect.Array, reflect.Slice:
+		b, err := yaml.Marshal(v.Interface())
+		if err != nil {
+			return nil, err
+		}
+		return string(b), nil
+	default:
+		return value, nil
+	}
 }
 
 func (c *Config) Set(key string, value interface{}) error {
 	if err := os.MkdirAll(path.Dir(c.path), utils.DIR_PERMISSION); err != nil {
 		return fmt.Errorf("error creating dir at %s: %w", c.path, err)
 	}
-	c.viper.Set(key, value)
+
+	marshaled, err := marshalValueIfNeeded(value)
+	if err != nil {
+		return fmt.Errorf("unable to marshal config %s: %w", key, err)
+	}
+
+	c.viper.Set(key, marshaled)
 
 	if err := c.viper.WriteConfigAs(c.path); err != nil {
 		return fmt.Errorf("error writing to config file: %w", err)

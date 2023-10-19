@@ -86,8 +86,9 @@ func TestGetWithFile(t *testing.T) {
 
 func TestGet(t *testing.T) {
 	type person struct {
-		Name string `json:"name"`
-		Age  int    `json:"age"`
+		Name          string `json:"name"`
+		Age           int    `json:"age"`
+		CaseSensitive string `json:"caseSensitive"`
 	}
 
 	t.Run("decode to no pointer", func(t *testing.T) {
@@ -124,10 +125,11 @@ func TestGet(t *testing.T) {
 		data := `{
 			"foo": {
 				"name": "jon",
-				"age": 5
+				"age": 5,
+				"caseSensitive": "some"
 			}
 		}`
-		expected := person{Name: "jon", Age: 5}
+		expected := person{Name: "jon", Age: 5, CaseSensitive: "some"}
 
 		c, err := setupWithFile([]byte(data))
 
@@ -151,6 +153,8 @@ func TestGet(t *testing.T) {
 			"name": "jon",
 			"age": 5
 		}`
+		// TODO: The data above should have `"caseSensitive": "some"`, but we currently
+		// don't have support for case sensitive env vars...
 		var expected person
 		_ = json.Unmarshal([]byte(data), &expected)
 
@@ -165,7 +169,7 @@ func TestGet(t *testing.T) {
 			t.Errorf("expected err == nil, found: %v", err)
 		}
 		if !reflect.DeepEqual(*p, expected) {
-			t.Errorf("expected p == %v, found: %v", expected, p)
+			t.Errorf("expected p == %v, found: %v", expected, *p)
 		}
 	})
 
@@ -210,10 +214,11 @@ func TestGet(t *testing.T) {
 		data := `{
 			"foo": {
 				"name": "jon",
-				"age": 5
+				"age": 5,
+				"caseSensitive": "some"
 			}
 		}`
-		expected := person{Name: "jon", Age: 5}
+		expected := person{Name: "jon", Age: 5, CaseSensitive: "some"}
 
 		c, err := setupWithFile([]byte(data))
 
@@ -237,6 +242,8 @@ func TestGet(t *testing.T) {
 			"name": "jon",
 			"age": 5
 		}`
+		// TODO: The data above should have `"caseSensitive": "some"`, but we currently
+		// don't have support for case sensitive env vars...
 		var expected person
 		_ = json.Unmarshal([]byte(data), &expected)
 
@@ -276,16 +283,15 @@ func TestGet(t *testing.T) {
 	})
 
 	t.Run("decode object in config file to any", func(t *testing.T) {
+		// We save objects in Config File as strings...
 		data := `{
-			"foo": {
-				"name": "jon",
-				"age": 5
-			}
+			"foo": "{\"name\":\"jon\",\"age\":5,\"caseSensitive\":\"some\"}"
 		}`
 
 		expected := map[string]any{
-			"name": "jon",
-			"age":  5,
+			"name":          "jon",
+			"age":           5,
+			"caseSensitive": "some",
 		}
 
 		c, err := setupWithFile([]byte(data))
@@ -324,12 +330,19 @@ func TestGet(t *testing.T) {
 	})
 
 	t.Run("decode object in env var to any", func(t *testing.T) {
-		expected := `{
+		data := `{
 			"name": "jon",
-			"age": 5
+			"age": 5,
+			"caseSensitive": "some"
 		}`
 
-		t.Setenv("MGC_FOO", expected)
+		t.Setenv("MGC_FOO", data)
+
+		expected := map[string]any{
+			"name":          "jon",
+			"age":           5,
+			"caseSensitive": "some",
+		}
 
 		c := setupWithoutFile()
 
