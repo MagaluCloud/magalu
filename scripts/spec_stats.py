@@ -910,6 +910,12 @@ def fill_ref_usages(o: OAPI):
                         nodes_to_visit.append(f"{node_name}:{idx}:{k}")
 
 
+def fill_parameters_usage(o: OAPI, parameters: Dict[str, Any]):
+    for name in parameters.keys():
+        ref = to_ref_string("parameters", name)
+        components_usage[o.name].setdefault(ref, False)
+
+
 def fill_schemas_usage(o: OAPI, schema: Dict[str, Any]):
     for name, spec in schema.items():  # type: ignore
         # components.schema.CreateResponse for example
@@ -930,9 +936,11 @@ def fill_components_usage(o: OAPI) -> None:
     for type_name, type_spec in o.obj.get("components", {}).items():
         # TODO: check for all types, but for this we need to loop over
         # the whole OAPI tree to find the occurrences
-        if type_name != "schemas":
+        if type_name == "parameters":
+            fill_parameters_usage(o, type_spec)
+        elif type_name == "schemas":
+            fill_schemas_usage(o, type_spec)
             continue
-        fill_schemas_usage(o, type_spec)
 
     fill_ref_usages(o)
 
