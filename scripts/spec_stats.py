@@ -910,6 +910,21 @@ def fill_ref_usages(o: OAPI):
                         nodes_to_visit.append(f"{node_name}:{idx}:{k}")
 
 
+def fill_schemas_usage(o: OAPI, schema: Dict[str, Any]):
+    for name, spec in schema.items():  # type: ignore
+        # components.schema.CreateResponse for example
+        ref = to_ref_string("schemas", name)
+        # May have been found by a ref inside a component, we don't want
+        # to simply overwrite, thus check.
+        if ref not in components_usage[o.name]:
+            components_usage[o.name][ref] = False
+        # Loop through component itself to find other components
+        for prop in spec.get("properties", {}).values():
+            # Already found through reference, mark as used
+            if prop_ref := prop.get("$ref") or prop.get("items", {}).get("$ref"):
+                components_usage[o.name][prop_ref] = True
+
+
 def fill_components_usage(o: OAPI) -> None:
     # types: schemas, parameters, securitySchemes, etc
     for type_name, type_spec in o.obj.get("components", {}).items():
@@ -917,20 +932,8 @@ def fill_components_usage(o: OAPI) -> None:
         # the whole OAPI tree to find the occurrences
         if type_name != "schemas":
             continue
-        for comp_name, comp_spec in type_spec.items():  # type: ignore
-            # components.schema.CreateResponse for example
-            qualifiedName = to_ref_string(type_name, comp_name)
-            # May have been found by a ref inside a component, we don't want
-            # to simply overwrite, thus check.
-            if qualifiedName not in components_usage[o.name]:
-                components_usage[o.name][qualifiedName] = False
-            # Loop through component itself to find other components
-            for propSpec in comp_spec.get("properties", {}).values():
-                # Already found through reference, mark as used
-                if refName := propSpec.get("$ref"):
-                    components_usage[o.name][refName] = True
-                if refName := propSpec.get("items", {}).get("$ref"):
-                    components_usage[o.name][refName] = True
+        fill_schemas_usage(o, type_spec)
+
     fill_ref_usages(o)
 
 
