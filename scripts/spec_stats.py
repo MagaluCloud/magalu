@@ -488,8 +488,12 @@ def is_snake_case(s: str) -> bool:
 components_usage: dict = defaultdict(dict)
 
 
+def is_ref(obj_or_ref):
+    return "$ref" in obj_or_ref
+
+
 def get(obj_or_ref: Any | OAPIReferenceObject, resolve: Callable[[str], Any]) -> Any:
-    if "$ref" in obj_or_ref:
+    if is_ref(obj_or_ref):
         return resolve(obj_or_ref["$ref"])
     else:
         return obj_or_ref
@@ -518,31 +522,29 @@ def get_schema_field_names(
 
 def traverse_all_subschemas(
     path: str,
-    schema: JSONSchema,
-    resolve: Callable[[str], Any],
+    schema_or_ref: JSONSchema | OAPIReferenceObject,
     visit: Callable[[str, JSONSchema], None],
+    resolve: Callable[[str], Any] | None = None,
 ):
-    visit(path, get(schema, resolve))
+    if not is_ref(schema_or_ref):
+        schema: JSONSchema = schema_or_ref
+    elif resolve:  # if not resolve do not follow ref
+        schema = get(schema_or_ref, resolve)
+    else:
+        return
+
+    visit(path, schema)
 
     for pn, p_or_ref in schema.get("properties", {}).items():
-        p: JSONSchema = get(p_or_ref, resolve)
-        traverse_all_subschemas(path + "." + pn, p, resolve, visit)
+        traverse_all_subschemas(path + "." + pn, p_or_ref, visit, resolve)
 
     if schema.get("additionalProperties"):
-        s: JSONSchema = get(schema["additionalProperties"], resolve)
-        traverse_all_subschemas(path + "|additional_properties|", s, resolve, visit)
+        s = schema["additionalProperties"]
+        traverse_all_subschemas(path + "|additional_properties|", s, visit, resolve)
 
-    for s_or_ref in schema.get("oneOf", []):
-        s = get(s_or_ref, resolve)
-        traverse_all_subschemas(path, s, resolve, visit)
-
-    for s_or_ref in schema.get("anyOf", []):
-        s = get(s_or_ref, resolve)
-        traverse_all_subschemas(path, s, resolve, visit)
-
-    for s_or_ref in schema.get("allOf", []):
-        s = get(s_or_ref, resolve)
-        traverse_all_subschemas(path, s, resolve, visit)
+    xOfs = schema.get("oneOf", []) + schema.get("anyOf", []) + schema.get("allOf", [])
+    for s_or_ref in xOfs:
+        traverse_all_subschemas(path, s_or_ref, visit, resolve)
 
 
 def get_schema_mixed_enums(
@@ -565,7 +567,7 @@ def get_schema_mixed_enums(
                 result[path] = enum
                 break
 
-    traverse_all_subschemas(name, schema, resolve, visit)
+    traverse_all_subschemas(name, schema, visit, resolve)
     return result
 
 
@@ -676,7 +678,7 @@ def fill_responses_stats(
                             op.key(), {}
                         ).setdefault("response", {}).setdefault(code, []).extend(keys)
 
-            traverse_all_subschemas("", s, resolve, visit_schema)
+            traverse_all_subschemas("", s, visit_schema, resolve)
 
             if filterer.should_include(MIXED_ENUMS):
                 if s:
@@ -720,7 +722,7 @@ def fill_req_body_stats(
                             op.key(), {}
                         ).setdefault("request", []).extend(which)
 
-            traverse_all_subschemas("", s, resolve, visit_schema)
+            traverse_all_subschemas("", s, visit_schema, resolve)
 
             if filterer.should_include(MIXED_ENUMS):
                 if s:
@@ -763,7 +765,7 @@ def fill_parameters_stats(
                             op.key(), {}
                         ).setdefault("parameters", []).append(path)
 
-                traverse_all_subschemas("", s, resolve, visit_schema)
+                traverse_all_subschemas("", s, visit_schema, resolve)
 
 
 def fill_operation_stats(
