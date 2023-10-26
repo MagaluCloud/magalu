@@ -2,23 +2,22 @@ package objects
 
 import (
 	"context"
+	"io/fs"
 	"net/http"
 	"net/url"
+	"path"
 	"strings"
+	"time"
 
+	"go.uber.org/zap"
 	"magalu.cloud/core"
+	"magalu.cloud/core/pipeline"
 	"magalu.cloud/core/utils"
 	"magalu.cloud/sdk/static/object_storage/common"
 )
 
 type ListObjectsParams struct {
 	Destination string `json:"dst" jsonschema:"description=Path of the bucket to list objects from" example:"s3://bucket1/"`
-}
-
-type BucketContent struct {
-	Key          string `xml:"Key"`
-	LastModified string `xml:"LastModified"`
-	Size         int    `xml:"Size"`
 }
 
 type prefix struct {
@@ -30,6 +29,56 @@ type ListObjectsResponse struct {
 	Contents       []*BucketContent `xml:"Contents"`
 	CommonPrefixes []*prefix        `xml:"CommonPrefixes" json:"SubDirectories"`
 }
+
+type BucketContent struct {
+	Key          string `xml:"Key"`
+	LastModified string `xml:"LastModified"`
+	ContentSize  int    `xml:"Size"`
+}
+
+func (b *BucketContent) ModTime() time.Time {
+	modTime, err := time.Parse(time.RFC3339, b.LastModified)
+	if err != nil {
+		listObjectsLogger().Errorw("Failed to parse time", "err", err)
+		modTime = time.Time{}
+	}
+	return modTime
+}
+
+func (b *BucketContent) Mode() fs.FileMode {
+	return utils.FILE_PERMISSION
+}
+
+func (b *BucketContent) Size() int64 {
+	return int64(b.ContentSize)
+}
+
+func (b *BucketContent) Sys() any {
+	return nil
+}
+
+func (b *BucketContent) Info() (fs.FileInfo, error) {
+	return b, nil
+}
+
+func (b *BucketContent) IsDir() bool {
+	return false
+}
+
+func (b *BucketContent) Name() string {
+	return b.Key
+}
+
+func (b *BucketContent) Type() fs.FileMode {
+	return utils.FILE_PERMISSION
+}
+
+var _ fs.DirEntry = (*BucketContent)(nil)
+var _ fs.FileInfo = (*BucketContent)(nil)
+
+var listObjectsLogger = utils.NewLazyLoader(func() *zap.SugaredLogger {
+	return logger().Named("list")
+})
 
 func newListRequest(ctx context.Context, cfg common.Config, bucket string) (*http.Request, error) {
 	parsedUrl, err := parseURL(cfg, bucket)
@@ -82,12 +131,75 @@ func parseURL(cfg common.Config, bucketURI string) (*url.URL, error) {
 }
 
 func List(ctx context.Context, params ListObjectsParams, cfg common.Config) (result ListObjectsResponse, err error) {
-	bucket, _ := strings.CutPrefix(params.Destination, common.URIPrefix)
-	req, err := newListRequest(ctx, cfg, bucket)
+	objChan := ListGenerator(ctx, params, cfg)
+
+	entries, err := pipeline.SliceItemConsumer[[]pipeline.WalkDirEntry](ctx, objChan)
 	if err != nil {
-		return
+		return result, err
 	}
 
-	result, _, err = common.SendRequest[ListObjectsResponse](ctx, req)
+	var contents []*BucketContent
+	for _, entry := range entries {
+		content, ok := entry.DirEntry.(*BucketContent)
+		if !ok {
+			continue
+		}
+		contents = append(contents, content)
+
+		if entry.Err != nil {
+			return result, entry.Err
+		}
+	}
+
+	result = ListObjectsResponse{
+		Contents: contents,
+	}
+	return result, nil
+}
+
+func ListGenerator(ctx context.Context, params ListObjectsParams, cfg common.Config) (outputChan <-chan pipeline.WalkDirEntry) {
+	ch := make(chan pipeline.WalkDirEntry)
+	outputChan = ch
+
+	generator := func() {
+		defer func() {
+			listObjectsLogger().Info("closing output channel")
+			close(ch)
+		}()
+
+		bucket, _ := strings.CutPrefix(params.Destination, common.URIPrefix)
+		req, err := newListRequest(ctx, cfg, bucket)
+		if err != nil {
+			listObjectsLogger().Errorw("newListRequest() failed", "err", err)
+			ch <- pipeline.WalkDirEntry{Err: err}
+			return
+		}
+
+		result, _, err := common.SendRequest[ListObjectsResponse](ctx, req)
+		if err != nil {
+			listObjectsLogger().Errorw("s3.SendRequest() failed", "err", err)
+			ch <- pipeline.WalkDirEntry{Err: err}
+			return
+		}
+
+		for _, content := range result.Contents {
+			dirEntry := pipeline.WalkDirEntry{
+				Path:     path.Join(params.Destination, content.Key),
+				DirEntry: content,
+				Err:      err,
+			}
+
+			select {
+			case <-ctx.Done():
+				listObjectsLogger().Debugw("context.Done()", "err", ctx.Err())
+				return
+			case ch <- dirEntry:
+			}
+		}
+		listObjectsLogger().Info("finished reading contents")
+	}
+
+	listObjectsLogger().Info("list generation start")
+	go generator()
 	return
 }
