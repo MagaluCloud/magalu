@@ -7,6 +7,7 @@ import (
 	"io"
 	"net/url"
 	"os"
+	"path/filepath"
 	"strings"
 
 	"magalu.cloud/cli/ui"
@@ -642,9 +643,10 @@ func getLogFilterConfig(sdk *mgcSdk.Sdk) string {
 
 func Execute() (err error) {
 	sdk := &mgcSdk.Sdk{}
+	executableName := filepath.Base(os.Args[0])
 
 	rootCmd := &cobra.Command{
-		Use:     os.Args[0],
+		Use:     executableName,
 		Version: mgcSdk.Version,
 		Short:   "CLI tool for OpenAPI integration",
 		Long: `This CLI is a dynamic processor of OpenAPI files that
