@@ -485,7 +485,7 @@ def is_snake_case(s: str) -> bool:
     return "-" not in s
 
 
-components_usage = defaultdict(dict)
+components_usage: dict = defaultdict(dict)
 
 
 def get(obj_or_ref: Any | OAPIReferenceObject, resolve: Callable[[str], Any]) -> Any:
@@ -910,14 +910,16 @@ def fill_ref_usages(o: OAPI):
                         nodes_to_visit.append(f"{node_name}:{idx}:{k}")
 
 
-def fill_parameters_usage(o: OAPI, parameters: Dict[str, Any]):
+def fill_parameters_usage(
+    o: OAPI, parameters: Mapping[str, OAPIParameterObject | OAPIReferenceObject]
+):
     for name in parameters.keys():
         ref = to_ref_string("parameters", name)
         components_usage[o.name].setdefault(ref, False)
 
 
-def fill_schemas_usage(o: OAPI, schema: Dict[str, Any]):
-    for name, spec in schema.items():  # type: ignore
+def fill_schemas_usage(o: OAPI, schemas: Mapping[str, JSONSchema]):
+    for name, spec in schemas.items():  # type: ignore
         # components.schema.CreateResponse for example
         ref = to_ref_string("schemas", name)
         # May have been found by a ref inside a component, we don't want
@@ -932,16 +934,13 @@ def fill_schemas_usage(o: OAPI, schema: Dict[str, Any]):
 
 
 def fill_components_usage(o: OAPI) -> None:
-    # types: schemas, parameters, securitySchemes, etc
-    for type_name, type_spec in o.obj.get("components", {}).items():
+    if components := o.obj.get("components"):
+        if parameters := components.get("parameters"):
+            fill_parameters_usage(o, parameters)
+        if schemas := components.get("schemas"):
+            fill_schemas_usage(o, schemas)
         # TODO: check for all types, but for this we need to loop over
         # the whole OAPI tree to find the occurrences
-        if type_name == "parameters":
-            fill_parameters_usage(o, type_spec)
-        elif type_name == "schemas":
-            fill_schemas_usage(o, type_spec)
-            continue
-
     fill_ref_usages(o)
 
 
