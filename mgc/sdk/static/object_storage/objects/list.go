@@ -76,6 +76,8 @@ func (b *BucketContent) Type() fs.FileMode {
 var _ fs.DirEntry = (*BucketContent)(nil)
 var _ fs.FileInfo = (*BucketContent)(nil)
 
+type BucketContentDirEntry = *pipeline.SimpleWalkDirEntry[*BucketContent]
+
 var listObjectsLogger = utils.NewLazyLoader(func() *zap.SugaredLogger {
 	return logger().Named("list")
 })
@@ -133,22 +135,18 @@ func parseURL(cfg common.Config, bucketURI string) (*url.URL, error) {
 func List(ctx context.Context, params ListObjectsParams, cfg common.Config) (result ListObjectsResponse, err error) {
 	objChan := ListGenerator(ctx, params, cfg)
 
-	entries, err := pipeline.SliceItemConsumer[[]pipeline.WalkDirEntry](ctx, objChan)
+	entries, err := pipeline.SliceItemConsumer[[]BucketContentDirEntry](ctx, objChan)
 	if err != nil {
 		return result, err
 	}
 
 	var contents []*BucketContent
 	for _, entry := range entries {
-		content, ok := entry.DirEntry.(*BucketContent)
-		if !ok {
-			continue
+		if entry.Err() != nil {
+			return result, entry.Err()
 		}
-		contents = append(contents, content)
 
-		if entry.Err != nil {
-			return result, entry.Err
-		}
+		contents = append(contents, entry.Object)
 	}
 
 	result = ListObjectsResponse{
@@ -157,8 +155,8 @@ func List(ctx context.Context, params ListObjectsParams, cfg common.Config) (res
 	return result, nil
 }
 
-func ListGenerator(ctx context.Context, params ListObjectsParams, cfg common.Config) (outputChan <-chan pipeline.WalkDirEntry) {
-	ch := make(chan pipeline.WalkDirEntry)
+func ListGenerator(ctx context.Context, params ListObjectsParams, cfg common.Config) (outputChan <-chan BucketContentDirEntry) {
+	ch := make(chan BucketContentDirEntry)
 	outputChan = ch
 
 	generator := func() {
@@ -171,23 +169,23 @@ func ListGenerator(ctx context.Context, params ListObjectsParams, cfg common.Con
 		req, err := newListRequest(ctx, cfg, bucket)
 		if err != nil {
 			listObjectsLogger().Errorw("newListRequest() failed", "err", err)
-			ch <- pipeline.WalkDirEntry{Err: err}
+			ch <- pipeline.NewSimpleWalkDirEntry[*BucketContent]("", nil, err)
 			return
 		}
 
 		result, _, err := common.SendRequest[ListObjectsResponse](ctx, req)
 		if err != nil {
 			listObjectsLogger().Errorw("s3.SendRequest() failed", "err", err)
-			ch <- pipeline.WalkDirEntry{Err: err}
+			ch <- pipeline.NewSimpleWalkDirEntry[*BucketContent]("", nil, err)
 			return
 		}
 
 		for _, content := range result.Contents {
-			dirEntry := pipeline.WalkDirEntry{
-				Path:     path.Join(params.Destination, content.Key),
-				DirEntry: content,
-				Err:      err,
-			}
+			dirEntry := pipeline.NewSimpleWalkDirEntry(
+				path.Join(params.Destination, content.Key),
+				content,
+				err,
+			)
 
 			select {
 			case <-ctx.Done():

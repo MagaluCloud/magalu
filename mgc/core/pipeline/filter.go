@@ -196,7 +196,7 @@ func Filter[T any](
 type filterWalkDirEntryIncludeFile struct{}
 
 func (r filterWalkDirEntryIncludeFile) Filter(ctx context.Context, entry WalkDirEntry) FilterStatus {
-	if entry.DirEntry.Type().IsRegular() {
+	if entry.DirEntry().Type().IsRegular() {
 		return FilterInclude
 	}
 	return FilterUnknown
@@ -218,7 +218,7 @@ var FilterWalkDirEntryExcludeFile = &FilterRuleNot[WalkDirEntry]{FilterWalkDirEn
 type filterWalkDirEntryIncludeDir struct{}
 
 func (r filterWalkDirEntryIncludeDir) Filter(ctx context.Context, entry WalkDirEntry) FilterStatus {
-	if entry.DirEntry.IsDir() {
+	if entry.DirEntry().IsDir() {
 		return FilterInclude
 	}
 	return FilterUnknown
@@ -248,7 +248,7 @@ type FilterWalkDirEntryIncludeRegExp struct {
 }
 
 func (r FilterWalkDirEntryIncludeRegExp) Filter(ctx context.Context, entry WalkDirEntry) FilterStatus {
-	if r.Regexp.MatchString(entry.DirEntry.Name()) {
+	if r.Regexp.MatchString(entry.DirEntry().Name()) {
 		return FilterInclude
 	}
 	return FilterUnknown
@@ -272,7 +272,7 @@ type FilterWalkDirEntryIncludeGlobMatch struct {
 }
 
 func (r FilterWalkDirEntryIncludeGlobMatch) Filter(ctx context.Context, entry WalkDirEntry) FilterStatus {
-	match, _ := filepath.Match(r.Pattern, entry.DirEntry.Name())
+	match, _ := filepath.Match(r.Pattern, entry.DirEntry().Name())
 	if match {
 		return FilterInclude
 	}

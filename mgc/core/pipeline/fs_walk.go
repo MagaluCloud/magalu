@@ -10,10 +10,32 @@ import (
 
 // WalkDirEntries -> FilterWalkDirEntries
 // See fs.WalkDirFunc documentation
-type WalkDirEntry struct {
-	Path     string
-	DirEntry fs.DirEntry
-	Err      error
+type WalkDirEntry interface {
+	Path() string
+	DirEntry() fs.DirEntry
+	Err() error
+}
+
+type SimpleWalkDirEntry[T fs.DirEntry] struct {
+	path   string
+	Object T
+	err    error
+}
+
+func (e *SimpleWalkDirEntry[T]) Path() string {
+	return e.path
+}
+
+func (e *SimpleWalkDirEntry[T]) DirEntry() fs.DirEntry {
+	return e.Object
+}
+
+func (e *SimpleWalkDirEntry[T]) Err() error {
+	return e.err
+}
+
+func NewSimpleWalkDirEntry[T fs.DirEntry](path string, dirEntry T, err error) *SimpleWalkDirEntry[T] {
+	return &SimpleWalkDirEntry[T]{path, dirEntry, err}
 }
 
 // Do not process any entry that name stars with "."
@@ -74,12 +96,13 @@ func WalkDirEntries(
 					return e
 				}
 			}
+			dir := NewSimpleWalkDirEntry(path, d, err)
 			select {
 			case <-ctx.Done():
 				logger.Debugw("context.Done()", "err", ctx.Err())
 				return filepath.SkipAll
 
-			case ch <- WalkDirEntry{path, d, err}:
+			case ch <- dir:
 				logger.Debugw("entry", "err", err, "path", path, "dirEntry", d)
 				return nil
 			}
