@@ -398,6 +398,7 @@ NON_JSON_RESPONSES = "non-json-responses"
 NON_SNAKECASE_VALUES = "non-snakecase-values"
 TAGLESS_OPERATIONS = "tagless-operations"
 UNUSED_COMPONENTS = "unused-components"
+TYPELESS_SCHEMAS = "typeless-schemas"
 
 
 class OAPIWalk:
@@ -437,6 +438,33 @@ class OAPIWalk:
             if type(name) is str:
                 return name
         return ""
+
+
+class SchemaHandler:
+    def __init__(self, dst: Dict[str, Any]) -> None:
+        self.dst = dst
+
+    def typeless_handler(self, path: str, field: Any) -> None:
+        if not self.is_schema(path):
+            return
+        traverse_all_subschemas(path, field, self._check_typeless_schema)
+
+    def _check_typeless_schema(self, path, schema: JSONSchema) -> None:
+        for field_name in schema.keys():
+            if field_name in ["type", "enum", "oneOf", "anyOf", "allOf"]:
+                return
+
+        self.dst.setdefault(TYPELESS_SCHEMAS, []).append(path)
+
+    def is_schema(self, path: str) -> bool:
+        path_terms = path.split(".")
+        field_key = path_terms[-1]
+
+        if field_key == "schema" or (
+            len(path_terms) > 2 and path_terms[-2] == "schemas"
+        ):
+            return True
+        return False
 
 
 class Filterer:
