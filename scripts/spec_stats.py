@@ -400,6 +400,45 @@ TAGLESS_OPERATIONS = "tagless-operations"
 UNUSED_COMPONENTS = "unused-components"
 
 
+class OAPIWalk:
+    def __init__(self, oapi: OAPI):
+        self.oapi = oapi
+        self.handlers: List[Callable[[str, Any], None]] = []
+
+    def add_handler(self, handler: Callable[[str, Any], None]) -> None:
+        self.handlers.append(handler)
+
+    def dfs(self) -> None:
+        if len(self.handlers) > 0:
+            self._dfs("", self.oapi.obj)
+
+    def _dfs(self, path: str, field: Any) -> None:
+        for handler in self.handlers:
+            handler(path, field)
+
+        if type(field) is dict:
+            for field_key, field_value in field.items():
+                field_name = self.get_field_name(field_value)
+                self._dfs(self.get_path(path, field_key, field_name), field_value)
+
+        if type(field) is list:
+            for item in field:
+                field_name = self.get_field_name(item)
+                self._dfs(self.get_path(path, field_name), item)
+
+    def get_path(self, *args: str) -> str:
+        keys = filter(lambda arg: arg != "", args)
+        path = ".".join(keys)
+        return path
+
+    def get_field_name(self, field: Any) -> str:
+        if type(field) is dict:
+            name = field.get("name")
+            if type(name) is str:
+                return name
+        return ""
+
+
 class Filterer:
     filters: List[str]
     filter_out: List[str]
