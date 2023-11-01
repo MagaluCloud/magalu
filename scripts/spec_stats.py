@@ -1014,6 +1014,7 @@ def fill_components_usage(o: OAPI) -> None:
 
 
 def get_oapi_stats(o: OAPI) -> OAPIStats:
+    oapi_walker = OAPIWalk(o)
     result: OAPIStats = {}
     resources: Dict[str, OAPIResource] = {}
     tagless_ops = fill_resources(o, resources)
@@ -1037,8 +1038,13 @@ def get_oapi_stats(o: OAPI) -> OAPIStats:
                     result[UNUSED_COMPONENTS] = []
                 result[UNUSED_COMPONENTS].append(name)
 
-    # TODO: Add stats for other fields
+    if filterer.should_include(TYPELESS_SCHEMAS):
+        schema_handler = SchemaHandler(result)
+        oapi_walker.add_handler(schema_handler.typeless_handler)
 
+    oapi_walker.dfs()
+
+    # TODO: Add stats for other fields
     return result
 
 
