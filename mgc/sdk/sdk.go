@@ -140,7 +140,7 @@ func (o *Sdk) Group() core.Grouper {
 		o.group = core.NewMergeGroup(
 			core.DescriptorSpec{
 				Name:        "products",
-				Version:     "1.0",
+				Version:     Version,
 				Description: "All MagaLu Groups & Executors",
 			},
 			func() []core.Grouper {
