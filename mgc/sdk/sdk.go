@@ -139,7 +139,7 @@ func (o *Sdk) Group() core.Grouper {
 	if o.group == nil {
 		o.group = core.NewMergeGroup(
 			core.DescriptorSpec{
-				Name:        "MagaLu Cloud",
+				Name:        "products",
 				Version:     "1.0",
 				Description: "All MagaLu Groups & Executors",
 			},
