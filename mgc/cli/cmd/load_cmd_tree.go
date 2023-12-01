@@ -112,6 +112,25 @@ func isExistingCommand(cmd *cobra.Command, name string) bool {
 	return false
 }
 
+// these are not added before the SDK loads, but will be added afterwards and we must ignore:
+var builtInCommands = []string{
+	"completion", // added by cobra.Command.InitDefaultCompletionCmd() only if there are sub-commands
+}
+
+var keepLoadingCommands = []string{
+	"help",
+	"__complete", // actual command that does the completions
+}
+
+func loadSdkCommandTree(sdk *mgcSdk.Sdk, cmd *cobra.Command, args []string) error {
+	root := sdk.Group()
+	if len(args) > 0 && slices.Contains(builtInCommands, args[0]) {
+		return loadAllChildren(sdk, cmd, root)
+	}
+
+	return loadCommandTree(sdk, cmd, root, args)
+}
+
 func loadCommandTree(sdk *mgcSdk.Sdk, cmd *cobra.Command, cmdDesc core.Descriptor, args []string) error {
 	if cmd == nil {
 		return nil
@@ -119,9 +138,13 @@ func loadCommandTree(sdk *mgcSdk.Sdk, cmd *cobra.Command, cmdDesc core.Descripto
 
 	var childName *string
 	var childArgs = args
+	keepLoadingChildren := false
 	for {
 		childName, childArgs = getNextUnknownCommand(cmd, childArgs)
-		if childName == nil || *childName != "help" {
+		if childName == nil {
+			break
+		} else if !slices.Contains(keepLoadingCommands, *childName) {
+			keepLoadingChildren = true
 			break
 		}
 	}
@@ -138,6 +161,10 @@ func loadCommandTree(sdk *mgcSdk.Sdk, cmd *cobra.Command, cmdDesc core.Descripto
 		// as all available child commands
 		if loadAllErr := loadAllChildren(sdk, cmd, cmdDesc); loadAllErr != nil {
 			return loadAllErr
+		}
+
+		if keepLoadingChildren {
+			return nil
 		}
 
 		if _, ok := cmdDesc.(core.Executor); !ok {

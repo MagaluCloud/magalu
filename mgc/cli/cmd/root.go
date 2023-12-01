@@ -81,9 +81,8 @@ can generate a command line on-demand for Rest manipulation`,
 	rootCmd.AddCommand(newDumpTreeCmd(sdk))
 
 	mainArgs := argParser.MainArgs()
-	rootDesc := sdk.Group()
 
-	err = loadCommandTree(sdk, rootCmd, rootDesc, mainArgs)
+	err = loadSdkCommandTree(sdk, rootCmd, mainArgs)
 	if err != nil {
 		rootCmd.PrintErrln("Warning: loading dynamic arguments:", err)
 	}
