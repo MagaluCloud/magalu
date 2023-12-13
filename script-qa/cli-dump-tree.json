@@ -9765,31 +9765,24 @@
           "description": "Objeto da requisição da request do nodepool",
           "properties": {
            "auto_scale": {
-            "description": "Objeto que define propriedades para atualização de recursos da carga de trabalho do cluster kubernetes",
+            "description": "Objeto que especifica as propriedades para atualização de recursos de carga de trabalho no cluster Kubernetes.",
             "properties": {
-             "enabled": {
-              "default": false,
-              "description": "Ativa/Desativa o escalonamento automático",
-              "example": true,
-              "type": "boolean"
-             },
              "max_replicas": {
               "default": 1,
-              "description": "Quantidade máxima de réplicas, caso a função de autoscaling esteja habilitada",
+              "description": "Quantidade máxima de réplicas para o autoscaling. Se não for informado um valor, ou se for igual ou menor que zero, o valor do autoscaler será assumido com base no campo \"réplicas\".",
               "example": 5,
               "minimum": 1,
               "type": "integer"
              },
              "min_replicas": {
               "default": 1,
-              "description": "Quantidade mínima  de réplicas, caso a função de autoscaling esteja habilitada.",
+              "description": "Quantidade mínima de réplicas para o autoscaling. Se não for informado um valor, ou se for igual ou menor que zero, o valor do autoscaler será assumido com base no campo \"réplicas\".",
               "example": 2,
               "minimum": 1,
               "type": "integer"
              }
             },
             "required": [
-             "enabled",
              "min_replicas",
              "max_replicas"
             ],
@@ -9869,22 +9862,19 @@
          "type": "array"
         },
         "version": {
-         "default": "v1.28.2",
+         "default": "v1.26.9",
          "description": "Versão do kubernetes nativa do cluster",
          "enum": [
-          "v1.22.9",
-          "v1.24.10",
-          "v1.26.1",
+          "v1.26.9",
           "v1.28.2"
          ],
-         "example": "v1.24.10",
+         "example": "v1.26.9",
          "type": "string"
         }
        },
        "required": [
         "enabled_bastion",
-        "name",
-        "node_pools"
+        "name"
        ],
        "type": "object"
       },
@@ -10062,31 +10052,24 @@
          "description": "Objeto da requisição da response do nodepool",
          "properties": {
           "auto_scale": {
-           "description": "Objeto que define propriedades para atualização de recursos da carga de trabalho do cluster kubernetes",
+           "description": "Objeto que especifica as propriedades para atualização de recursos de carga de trabalho no cluster Kubernetes.",
            "properties": {
-            "enabled": {
-             "default": false,
-             "description": "Ativa/Desativa o escalonamento automático",
-             "example": true,
-             "type": "boolean"
-            },
             "max_replicas": {
              "default": 1,
-             "description": "Quantidade máxima de réplicas, caso a função de autoscaling esteja habilitada",
+             "description": "Quantidade máxima de réplicas para o autoscaling. Se não for informado um valor, ou se for igual ou menor que zero, o valor do autoscaler será assumido com base no campo \"réplicas\".",
              "example": 5,
              "minimum": 1,
              "type": "integer"
             },
             "min_replicas": {
              "default": 1,
-             "description": "Quantidade mínima  de réplicas, caso a função de autoscaling esteja habilitada.",
+             "description": "Quantidade mínima de réplicas para o autoscaling. Se não for informado um valor, ou se for igual ou menor que zero, o valor do autoscaler será assumido com base no campo \"réplicas\".",
              "example": 2,
              "minimum": 1,
              "type": "integer"
             }
            },
            "required": [
-            "enabled",
             "min_replicas",
             "max_replicas"
            ],
@@ -10333,7 +10316,7 @@
           },
           "port": {
            "description": "Porta utilizada pelo Kubernetes API Server",
-           "example": "6443",
+           "example": 6443,
            "type": "integer"
           }
          },
@@ -10382,31 +10365,24 @@
           "description": "Objeto da requisição da response do nodepool",
           "properties": {
            "auto_scale": {
-            "description": "Objeto que define propriedades para atualização de recursos da carga de trabalho do cluster kubernetes",
+            "description": "Objeto que especifica as propriedades para atualização de recursos de carga de trabalho no cluster Kubernetes.",
             "properties": {
-             "enabled": {
-              "default": false,
-              "description": "Ativa/Desativa o escalonamento automático",
-              "example": true,
-              "type": "boolean"
-             },
              "max_replicas": {
               "default": 1,
-              "description": "Quantidade máxima de réplicas, caso a função de autoscaling esteja habilitada",
+              "description": "Quantidade máxima de réplicas para o autoscaling. Se não for informado um valor, ou se for igual ou menor que zero, o valor do autoscaler será assumido com base no campo \"réplicas\".",
               "example": 5,
               "minimum": 1,
               "type": "integer"
              },
              "min_replicas": {
               "default": 1,
-              "description": "Quantidade mínima  de réplicas, caso a função de autoscaling esteja habilitada.",
+              "description": "Quantidade mínima de réplicas para o autoscaling. Se não for informado um valor, ou se for igual ou menor que zero, o valor do autoscaler será assumido com base no campo \"réplicas\".",
               "example": 2,
               "minimum": 1,
               "type": "integer"
              }
             },
             "required": [
-             "enabled",
              "min_replicas",
              "max_replicas"
             ],
@@ -10809,7 +10785,7 @@
              },
              "port": {
               "description": "Porta utilizada pelo Kubernetes API Server",
-              "example": "6443",
+              "example": 6443,
               "type": "integer"
              }
             },
@@ -10884,9 +10860,235 @@
       "version": "0.1.0"
      }
     ],
-    "description": "Rotas relacionadas a api de Cluster.",
+    "description": "Rotas relacionadas a api de cluster.",
     "isInternal": false,
     "name": "cluster",
+    "version": "0.1.0"
+   },
+   {
+    "children": [
+     {
+      "configs": {
+       "additionalProperties": false,
+       "properties": {
+        "env": {
+         "default": "prod",
+         "description": "Environment to use",
+         "enum": [
+          "prod",
+          "pre-prod"
+         ],
+         "type": "string"
+        },
+        "region": {
+         "default": "br-ne-1",
+         "description": "Region to reach the service",
+         "enum": [
+          "br-ne-1",
+          "br-se-1"
+         ],
+         "type": "string"
+        },
+        "serverUrl": {
+         "description": "Manually specify the server to use",
+         "format": "uri",
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
+      "description": "Lista todos os flavors disponiveis",
+      "isInternal": false,
+      "name": "list",
+      "parameters": {
+       "additionalProperties": false,
+       "type": "object"
+      },
+      "result": {
+       "description": "Objeto de resposta da requisição do flavor",
+       "properties": {
+        "results": {
+         "items": {
+          "description": "Listas de flavors disponibilidas pela aplicação",
+          "properties": {
+           "bastion": {
+            "description": "Lista de flavors disponiveis para a Bastion",
+            "items": {
+             "description": "Definição da capacidade de CPU, memória RAM e armazenamento dos nodes",
+             "properties": {
+              "id": {
+               "default": "",
+               "description": "Identificador exclusivo do Flavor.",
+               "example": "c777eaa7-d67c-46f4-9e4f-232bc9b67b58",
+               "type": "string"
+              },
+              "name": {
+               "description": "Nome do Flavor.",
+               "example": "cloud-k8s.gp1.small",
+               "type": "string"
+              },
+              "ram": {
+               "default": 0,
+               "description": "Quantidade de memória RAM, medida em MB.",
+               "example": 4096,
+               "type": "integer"
+              },
+              "size": {
+               "default": 0,
+               "description": "Quantidade de disco, medido em GB.",
+               "example": 20,
+               "type": "integer"
+              },
+              "sku": {
+               "description": "SKU referente ao flavor",
+               "example": "sku-1234",
+               "type": "string"
+              },
+              "vcpu": {
+               "default": 0,
+               "description": "Quantidade de vCPUs disponiveis.",
+               "example": 2,
+               "type": "integer"
+              }
+             },
+             "required": [
+              "name",
+              "id",
+              "vcpu",
+              "ram",
+              "size",
+              "sku"
+             ],
+             "type": "object"
+            },
+            "type": "array"
+           },
+           "controlplane": {
+            "description": "Lista de flavors disponiveis para o Controlplane",
+            "items": {
+             "description": "Definição da capacidade de CPU, memória RAM e armazenamento dos nodes",
+             "properties": {
+              "id": {
+               "default": "",
+               "description": "Identificador exclusivo do Flavor.",
+               "example": "c777eaa7-d67c-46f4-9e4f-232bc9b67b58",
+               "type": "string"
+              },
+              "name": {
+               "description": "Nome do Flavor.",
+               "example": "cloud-k8s.gp1.small",
+               "type": "string"
+              },
+              "ram": {
+               "default": 0,
+               "description": "Quantidade de memória RAM, medida em MB.",
+               "example": 4096,
+               "type": "integer"
+              },
+              "size": {
+               "default": 0,
+               "description": "Quantidade de disco, medido em GB.",
+               "example": 20,
+               "type": "integer"
+              },
+              "sku": {
+               "description": "SKU referente ao flavor",
+               "example": "sku-1234",
+               "type": "string"
+              },
+              "vcpu": {
+               "default": 0,
+               "description": "Quantidade de vCPUs disponiveis.",
+               "example": 2,
+               "type": "integer"
+              }
+             },
+             "required": [
+              "name",
+              "id",
+              "vcpu",
+              "ram",
+              "size",
+              "sku"
+             ],
+             "type": "object"
+            },
+            "type": "array"
+           },
+           "nodepool": {
+            "description": "Lista de flavors disponiveis para os Node Pools",
+            "items": {
+             "description": "Definição da capacidade de CPU, memória RAM e armazenamento dos nodes",
+             "properties": {
+              "id": {
+               "default": "",
+               "description": "Identificador exclusivo do Flavor.",
+               "example": "c777eaa7-d67c-46f4-9e4f-232bc9b67b58",
+               "type": "string"
+              },
+              "name": {
+               "description": "Nome do Flavor.",
+               "example": "cloud-k8s.gp1.small",
+               "type": "string"
+              },
+              "ram": {
+               "default": 0,
+               "description": "Quantidade de memória RAM, medida em MB.",
+               "example": 4096,
+               "type": "integer"
+              },
+              "size": {
+               "default": 0,
+               "description": "Quantidade de disco, medido em GB.",
+               "example": 20,
+               "type": "integer"
+              },
+              "sku": {
+               "description": "SKU referente ao flavor",
+               "example": "sku-1234",
+               "type": "string"
+              },
+              "vcpu": {
+               "default": 0,
+               "description": "Quantidade de vCPUs disponiveis.",
+               "example": 2,
+               "type": "integer"
+              }
+             },
+             "required": [
+              "name",
+              "id",
+              "vcpu",
+              "ram",
+              "size",
+              "sku"
+             ],
+             "type": "object"
+            },
+            "type": "array"
+           }
+          },
+          "required": [
+           "bastion",
+           "nodepool",
+           "controlplane"
+          ],
+          "type": "object"
+         },
+         "type": "array"
+        }
+       },
+       "required": [
+        "results"
+       ],
+       "type": "object"
+      },
+      "version": "0.1.0"
+     }
+    ],
+    "description": "Rotas relacionadas a informações de configurações dos flavors do openstack.",
+    "isInternal": false,
+    "name": "flavor",
     "version": "0.1.0"
    },
    {
@@ -11226,31 +11428,24 @@
        "additionalProperties": false,
        "properties": {
         "auto_scale": {
-         "description": "Objeto que define propriedades para atualização de recursos da carga de trabalho do cluster kubernetes",
+         "description": "Objeto que especifica as propriedades para atualização de recursos de carga de trabalho no cluster Kubernetes.",
          "properties": {
-          "enabled": {
-           "default": false,
-           "description": "Ativa/Desativa o escalonamento automático",
-           "example": true,
-           "type": "boolean"
-          },
           "max_replicas": {
            "default": 1,
-           "description": "Quantidade máxima de réplicas, caso a função de autoscaling esteja habilitada",
+           "description": "Quantidade máxima de réplicas para o autoscaling. Se não for informado um valor, ou se for igual ou menor que zero, o valor do autoscaler será assumido com base no campo \"réplicas\".",
            "example": 5,
            "minimum": 1,
            "type": "integer"
           },
           "min_replicas": {
            "default": 1,
-           "description": "Quantidade mínima  de réplicas, caso a função de autoscaling esteja habilitada.",
+           "description": "Quantidade mínima de réplicas para o autoscaling. Se não for informado um valor, ou se for igual ou menor que zero, o valor do autoscaler será assumido com base no campo \"réplicas\".",
            "example": 2,
            "minimum": 1,
            "type": "integer"
           }
          },
          "required": [
-          "enabled",
           "min_replicas",
           "max_replicas"
          ],
@@ -11337,31 +11532,24 @@
        "description": "Objeto da requisição da response do nodepool",
        "properties": {
         "auto_scale": {
-         "description": "Objeto que define propriedades para atualização de recursos da carga de trabalho do cluster kubernetes",
+         "description": "Objeto que especifica as propriedades para atualização de recursos de carga de trabalho no cluster Kubernetes.",
          "properties": {
-          "enabled": {
-           "default": false,
-           "description": "Ativa/Desativa o escalonamento automático",
-           "example": true,
-           "type": "boolean"
-          },
           "max_replicas": {
            "default": 1,
-           "description": "Quantidade máxima de réplicas, caso a função de autoscaling esteja habilitada",
+           "description": "Quantidade máxima de réplicas para o autoscaling. Se não for informado um valor, ou se for igual ou menor que zero, o valor do autoscaler será assumido com base no campo \"réplicas\".",
            "example": 5,
            "minimum": 1,
            "type": "integer"
           },
           "min_replicas": {
            "default": 1,
-           "description": "Quantidade mínima  de réplicas, caso a função de autoscaling esteja habilitada.",
+           "description": "Quantidade mínima de réplicas para o autoscaling. Se não for informado um valor, ou se for igual ou menor que zero, o valor do autoscaler será assumido com base no campo \"réplicas\".",
            "example": 2,
            "minimum": 1,
            "type": "integer"
           }
          },
          "required": [
-          "enabled",
           "min_replicas",
           "max_replicas"
          ],
@@ -11689,31 +11877,24 @@
        "description": "Objeto da requisição da response do nodepool",
        "properties": {
         "auto_scale": {
-         "description": "Objeto que define propriedades para atualização de recursos da carga de trabalho do cluster kubernetes",
+         "description": "Objeto que especifica as propriedades para atualização de recursos de carga de trabalho no cluster Kubernetes.",
          "properties": {
-          "enabled": {
-           "default": false,
-           "description": "Ativa/Desativa o escalonamento automático",
-           "example": true,
-           "type": "boolean"
-          },
           "max_replicas": {
            "default": 1,
-           "description": "Quantidade máxima de réplicas, caso a função de autoscaling esteja habilitada",
+           "description": "Quantidade máxima de réplicas para o autoscaling. Se não for informado um valor, ou se for igual ou menor que zero, o valor do autoscaler será assumido com base no campo \"réplicas\".",
            "example": 5,
            "minimum": 1,
            "type": "integer"
           },
           "min_replicas": {
            "default": 1,
-           "description": "Quantidade mínima  de réplicas, caso a função de autoscaling esteja habilitada.",
+           "description": "Quantidade mínima de réplicas para o autoscaling. Se não for informado um valor, ou se for igual ou menor que zero, o valor do autoscaler será assumido com base no campo \"réplicas\".",
            "example": 2,
            "minimum": 1,
            "type": "integer"
           }
          },
          "required": [
-          "enabled",
           "min_replicas",
           "max_replicas"
          ],
@@ -11981,31 +12162,24 @@
           "description": "Objeto da requisição da response do nodepool",
           "properties": {
            "auto_scale": {
-            "description": "Objeto que define propriedades para atualização de recursos da carga de trabalho do cluster kubernetes",
+            "description": "Objeto que especifica as propriedades para atualização de recursos de carga de trabalho no cluster Kubernetes.",
             "properties": {
-             "enabled": {
-              "default": false,
-              "description": "Ativa/Desativa o escalonamento automático",
-              "example": true,
-              "type": "boolean"
-             },
              "max_replicas": {
               "default": 1,
-              "description": "Quantidade máxima de réplicas, caso a função de autoscaling esteja habilitada",
+              "description": "Quantidade máxima de réplicas para o autoscaling. Se não for informado um valor, ou se for igual ou menor que zero, o valor do autoscaler será assumido com base no campo \"réplicas\".",
               "example": 5,
               "minimum": 1,
               "type": "integer"
              },
              "min_replicas": {
               "default": 1,
-              "description": "Quantidade mínima  de réplicas, caso a função de autoscaling esteja habilitada.",
+              "description": "Quantidade mínima de réplicas para o autoscaling. Se não for informado um valor, ou se for igual ou menor que zero, o valor do autoscaler será assumido com base no campo \"réplicas\".",
               "example": 2,
               "minimum": 1,
               "type": "integer"
              }
             },
             "required": [
-             "enabled",
              "min_replicas",
              "max_replicas"
             ],
@@ -12634,31 +12808,24 @@
        "additionalProperties": false,
        "properties": {
         "auto_scale": {
-         "description": "Objeto que define propriedades para atualização de recursos da carga de trabalho do cluster kubernetes",
+         "description": "Objeto que especifica as propriedades para atualização de recursos de carga de trabalho no cluster Kubernetes.",
          "properties": {
-          "enabled": {
-           "default": false,
-           "description": "Ativa/Desativa o escalonamento automático",
-           "example": true,
-           "type": "boolean"
-          },
           "max_replicas": {
            "default": 1,
-           "description": "Quantidade máxima de réplicas, caso a função de autoscaling esteja habilitada",
+           "description": "Quantidade máxima de réplicas para o autoscaling. Se não for informado um valor, ou se for igual ou menor que zero, o valor do autoscaler será assumido com base no campo \"réplicas\".",
            "example": 5,
            "minimum": 1,
            "type": "integer"
           },
           "min_replicas": {
            "default": 1,
-           "description": "Quantidade mínima  de réplicas, caso a função de autoscaling esteja habilitada.",
+           "description": "Quantidade mínima de réplicas para o autoscaling. Se não for informado um valor, ou se for igual ou menor que zero, o valor do autoscaler será assumido com base no campo \"réplicas\".",
            "example": 2,
            "minimum": 1,
            "type": "integer"
           }
          },
          "required": [
-          "enabled",
           "min_replicas",
           "max_replicas"
          ],
@@ -12689,31 +12856,24 @@
        "description": "Objeto da requisição da response do nodepool",
        "properties": {
         "auto_scale": {
-         "description": "Objeto que define propriedades para atualização de recursos da carga de trabalho do cluster kubernetes",
+         "description": "Objeto que especifica as propriedades para atualização de recursos de carga de trabalho no cluster Kubernetes.",
          "properties": {
-          "enabled": {
-           "default": false,
-           "description": "Ativa/Desativa o escalonamento automático",
-           "example": true,
-           "type": "boolean"
-          },
           "max_replicas": {
            "default": 1,
-           "description": "Quantidade máxima de réplicas, caso a função de autoscaling esteja habilitada",
+           "description": "Quantidade máxima de réplicas para o autoscaling. Se não for informado um valor, ou se for igual ou menor que zero, o valor do autoscaler será assumido com base no campo \"réplicas\".",
            "example": 5,
            "minimum": 1,
            "type": "integer"
           },
           "min_replicas": {
            "default": 1,
-           "description": "Quantidade mínima  de réplicas, caso a função de autoscaling esteja habilitada.",
+           "description": "Quantidade mínima de réplicas para o autoscaling. Se não for informado um valor, ou se for igual ou menor que zero, o valor do autoscaler será assumido com base no campo \"réplicas\".",
            "example": 2,
            "minimum": 1,
            "type": "integer"
           }
          },
          "required": [
-          "enabled",
           "min_replicas",
           "max_replicas"
          ],
@@ -12926,9 +13086,89 @@
       "version": "0.1.0"
      }
     ],
-    "description": "Rotas relacionadas a api de Nodepool dentro da api de Cluster.",
+    "description": "Rotas relacionadas a api de Nodepool dentro da api de cluster.",
     "isInternal": false,
     "name": "nodepool",
+    "version": "0.1.0"
+   },
+   {
+    "children": [
+     {
+      "configs": {
+       "additionalProperties": false,
+       "properties": {
+        "env": {
+         "default": "prod",
+         "description": "Environment to use",
+         "enum": [
+          "prod",
+          "pre-prod"
+         ],
+         "type": "string"
+        },
+        "region": {
+         "default": "br-ne-1",
+         "description": "Region to reach the service",
+         "enum": [
+          "br-ne-1",
+          "br-se-1"
+         ],
+         "type": "string"
+        },
+        "serverUrl": {
+         "description": "Manually specify the server to use",
+         "format": "uri",
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
+      "description": "Lista todas as versões de kubernetes disponiveis",
+      "isInternal": false,
+      "name": "list",
+      "parameters": {
+       "additionalProperties": false,
+       "type": "object"
+      },
+      "result": {
+       "description": "Objeto de resposta da requisição da Versão",
+       "properties": {
+        "results": {
+         "description": "Lista de versões para o cluster kubernetes",
+         "items": {
+          "description": "Objeto da versão kubernetes",
+          "properties": {
+           "deprecated": {
+            "description": "Indica se a versão está obsoleta",
+            "example": false,
+            "type": "boolean"
+           },
+           "version": {
+            "description": "Versão kubernetes",
+            "example": "v1.22.9",
+            "type": "string"
+           }
+          },
+          "required": [
+           "version",
+           "deprecated"
+          ],
+          "type": "object"
+         },
+         "type": "array"
+        }
+       },
+       "required": [
+        "results"
+       ],
+       "type": "object"
+      },
+      "version": "0.1.0"
+     }
+    ],
+    "description": "Rotas relacionadas a informações de configurações das versões de kubernetes.",
+    "isInternal": false,
+    "name": "version",
     "version": "0.1.0"
    }
   ],

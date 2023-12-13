@@ -121,58 +121,58 @@ paths:
                     \ \\\n  --header 'Authorization: Bearer REPLACE_BEARER_TOKEN'\
                     \ \\\n  --header 'content-type: application/json' \\\n  --header\
                     \ 'x-tenant-id: SOME_STRING_VALUE' \\\n  --data '{\"name\":\"\
-                    cluster-exemplo\",\"version\":\"v1.24.10\",\"description\":\"\
-                    Esse é um cluster de exemplo\",\"enabled_bastion\":false,\"enabled_server_group\"\
+                    cluster-exemplo\",\"version\":\"v1.26.9\",\"description\":\"Esse\
+                    \ é um cluster de exemplo\",\"enabled_bastion\":false,\"enabled_server_group\"\
                     :false,\"node_pools\":[{\"name\":\"nodepool-exemplo\",\"flavor\"\
                     :\"cloud-k8s.gp1.small\",\"replicas\":3,\"tags\":[\"tag-value1\"\
                     ],\"taints\":[{\"key\":\"exemplo-key\",\"value\":\"valor1\",\"\
-                    effect\":\"NoSchedule\"}],\"auto_scale\":{\"enabled\":true,\"\
-                    min_replicas\":2,\"max_replicas\":5}}]}'"
+                    effect\":\"NoSchedule\"}],\"auto_scale\":{\"min_replicas\":2,\"\
+                    max_replicas\":5}}]}'"
             -   lang: Shell + Httpie
-                source: "echo '{\"name\":\"cluster-exemplo\",\"version\":\"v1.24.10\"\
+                source: "echo '{\"name\":\"cluster-exemplo\",\"version\":\"v1.26.9\"\
                     ,\"description\":\"Esse é um cluster de exemplo\",\"enabled_bastion\"\
                     :false,\"enabled_server_group\":false,\"node_pools\":[{\"name\"\
                     :\"nodepool-exemplo\",\"flavor\":\"cloud-k8s.gp1.small\",\"replicas\"\
                     :3,\"tags\":[\"tag-value1\"],\"taints\":[{\"key\":\"exemplo-key\"\
                     ,\"value\":\"valor1\",\"effect\":\"NoSchedule\"}],\"auto_scale\"\
-                    :{\"enabled\":true,\"min_replicas\":2,\"max_replicas\":5}}]}'\
-                    \ |  \\\n  http POST https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters\
-                    \ \\\n  Authorization:'Bearer REPLACE_BEARER_TOKEN' \\\n  content-type:application/json\
+                    :{\"min_replicas\":2,\"max_replicas\":5}}]}' |  \\\n  http POST\
+                    \ https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters \\\
+                    \n  Authorization:'Bearer REPLACE_BEARER_TOKEN' \\\n  content-type:application/json\
                     \ \\\n  x-tenant-id:SOME_STRING_VALUE"
             -   lang: Go + Native
                 source: "package main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n\t\"\
                     net/http\"\n\t\"io/ioutil\"\n)\n\nfunc main() {\n\n\turl := \"\
                     https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters\"\n\n\
                     \tpayload := strings.NewReader(\"{\\\"name\\\":\\\"cluster-exemplo\\\
-                    \",\\\"version\\\":\\\"v1.24.10\\\",\\\"description\\\":\\\"Esse\
+                    \",\\\"version\\\":\\\"v1.26.9\\\",\\\"description\\\":\\\"Esse\
                     \ é um cluster de exemplo\\\",\\\"enabled_bastion\\\":false,\\\
                     \"enabled_server_group\\\":false,\\\"node_pools\\\":[{\\\"name\\\
                     \":\\\"nodepool-exemplo\\\",\\\"flavor\\\":\\\"cloud-k8s.gp1.small\\\
                     \",\\\"replicas\\\":3,\\\"tags\\\":[\\\"tag-value1\\\"],\\\"taints\\\
                     \":[{\\\"key\\\":\\\"exemplo-key\\\",\\\"value\\\":\\\"valor1\\\
                     \",\\\"effect\\\":\\\"NoSchedule\\\"}],\\\"auto_scale\\\":{\\\"\
-                    enabled\\\":true,\\\"min_replicas\\\":2,\\\"max_replicas\\\":5}}]}\"\
-                    )\n\n\treq, _ := http.NewRequest(\"POST\", url, payload)\n\n\t\
-                    req.Header.Add(\"content-type\", \"application/json\")\n\treq.Header.Add(\"\
-                    x-tenant-id\", \"SOME_STRING_VALUE\")\n\treq.Header.Add(\"Authorization\"\
-                    , \"Bearer REPLACE_BEARER_TOKEN\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\
+                    min_replicas\\\":2,\\\"max_replicas\\\":5}}]}\")\n\n\treq, _ :=\
+                    \ http.NewRequest(\"POST\", url, payload)\n\n\treq.Header.Add(\"\
+                    content-type\", \"application/json\")\n\treq.Header.Add(\"x-tenant-id\"\
+                    , \"SOME_STRING_VALUE\")\n\treq.Header.Add(\"Authorization\",\
+                    \ \"Bearer REPLACE_BEARER_TOKEN\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\
                     \n\tdefer res.Body.Close()\n\tbody, _ := ioutil.ReadAll(res.Body)\n\
                     \n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
             -   lang: Python + Python3
                 source: "import http.client\n\nconn = http.client.HTTPSConnection(\"\
                     api-mke.pre-prod.br-ne-1.jaxyendy.com\")\n\npayload = \"{\\\"\
-                    name\\\":\\\"cluster-exemplo\\\",\\\"version\\\":\\\"v1.24.10\\\
+                    name\\\":\\\"cluster-exemplo\\\",\\\"version\\\":\\\"v1.26.9\\\
                     \",\\\"description\\\":\\\"Esse é um cluster de exemplo\\\",\\\
                     \"enabled_bastion\\\":false,\\\"enabled_server_group\\\":false,\\\
                     \"node_pools\\\":[{\\\"name\\\":\\\"nodepool-exemplo\\\",\\\"\
                     flavor\\\":\\\"cloud-k8s.gp1.small\\\",\\\"replicas\\\":3,\\\"\
                     tags\\\":[\\\"tag-value1\\\"],\\\"taints\\\":[{\\\"key\\\":\\\"\
                     exemplo-key\\\",\\\"value\\\":\\\"valor1\\\",\\\"effect\\\":\\\
-                    \"NoSchedule\\\"}],\\\"auto_scale\\\":{\\\"enabled\\\":true,\\\
-                    \"min_replicas\\\":2,\\\"max_replicas\\\":5}}]}\"\n\nheaders =\
-                    \ {\n    'content-type': \"application/json\",\n    'x-tenant-id':\
-                    \ \"SOME_STRING_VALUE\",\n    'Authorization': \"Bearer REPLACE_BEARER_TOKEN\"\
-                    \n    }\n\nconn.request(\"POST\", \"/v0/clusters\", payload, headers)\n\
+                    \"NoSchedule\\\"}],\\\"auto_scale\\\":{\\\"min_replicas\\\":2,\\\
+                    \"max_replicas\\\":5}}]}\"\n\nheaders = {\n    'content-type':\
+                    \ \"application/json\",\n    'x-tenant-id': \"SOME_STRING_VALUE\"\
+                    ,\n    'Authorization': \"Bearer REPLACE_BEARER_TOKEN\"\n    }\n\
+                    \nconn.request(\"POST\", \"/v0/clusters\", payload, headers)\n\
                     \nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"\
                     utf-8\"))"
             -   lang: Node + Native
@@ -186,14 +186,13 @@ paths:
                     \ {\n    chunks.push(chunk);\n  });\n\n  res.on(\"end\", function\
                     \ () {\n    const body = Buffer.concat(chunks);\n    console.log(body.toString());\n\
                     \  });\n});\n\nreq.write(JSON.stringify({\n  name: 'cluster-exemplo',\n\
-                    \  version: 'v1.24.10',\n  description: 'Esse é um cluster de\
-                    \ exemplo',\n  enabled_bastion: false,\n  enabled_server_group:\
-                    \ false,\n  node_pools: [\n    {\n      name: 'nodepool-exemplo',\n\
-                    \      flavor: 'cloud-k8s.gp1.small',\n      replicas: 3,\n  \
-                    \    tags: ['tag-value1'],\n      taints: [{key: 'exemplo-key',\
-                    \ value: 'valor1', effect: 'NoSchedule'}],\n      auto_scale:\
-                    \ {enabled: true, min_replicas: 2, max_replicas: 5}\n    }\n \
-                    \ ]\n}));\nreq.end();"
+                    \  version: 'v1.26.9',\n  description: 'Esse é um cluster de exemplo',\n\
+                    \  enabled_bastion: false,\n  enabled_server_group: false,\n \
+                    \ node_pools: [\n    {\n      name: 'nodepool-exemplo',\n    \
+                    \  flavor: 'cloud-k8s.gp1.small',\n      replicas: 3,\n      tags:\
+                    \ ['tag-value1'],\n      taints: [{key: 'exemplo-key', value:\
+                    \ 'valor1', effect: 'NoSchedule'}],\n      auto_scale: {min_replicas:\
+                    \ 2, max_replicas: 5}\n    }\n  ]\n}));\nreq.end();"
             -   lang: Ruby + Native
                 source: 'require ''uri''
 
@@ -220,8 +219,8 @@ paths:
 
                     request["Authorization"] = ''Bearer REPLACE_BEARER_TOKEN''
 
-                    request.body = "{\"name\":\"cluster-exemplo\",\"version\":\"v1.24.10\",\"description\":\"Esse
-                    é um cluster de exemplo\",\"enabled_bastion\":false,\"enabled_server_group\":false,\"node_pools\":[{\"name\":\"nodepool-exemplo\",\"flavor\":\"cloud-k8s.gp1.small\",\"replicas\":3,\"tags\":[\"tag-value1\"],\"taints\":[{\"key\":\"exemplo-key\",\"value\":\"valor1\",\"effect\":\"NoSchedule\"}],\"auto_scale\":{\"enabled\":true,\"min_replicas\":2,\"max_replicas\":5}}]}"
+                    request.body = "{\"name\":\"cluster-exemplo\",\"version\":\"v1.26.9\",\"description\":\"Esse
+                    é um cluster de exemplo\",\"enabled_bastion\":false,\"enabled_server_group\":false,\"node_pools\":[{\"name\":\"nodepool-exemplo\",\"flavor\":\"cloud-k8s.gp1.small\",\"replicas\":3,\"tags\":[\"tag-value1\"],\"taints\":[{\"key\":\"exemplo-key\",\"value\":\"valor1\",\"effect\":\"NoSchedule\"}],\"auto_scale\":{\"min_replicas\":2,\"max_replicas\":5}}]}"
 
 
                     response = http.request(request)
@@ -820,13 +819,13 @@ paths:
                     nodepool-exemplo\",\"flavor\":\"cloud-k8s.gp1.small\",\"replicas\"\
                     :3,\"tags\":[\"tag-value1\"],\"taints\":[{\"key\":\"exemplo-key\"\
                     ,\"value\":\"valor1\",\"effect\":\"NoSchedule\"}],\"auto_scale\"\
-                    :{\"enabled\":true,\"min_replicas\":2,\"max_replicas\":5}}'"
+                    :{\"min_replicas\":2,\"max_replicas\":5}}'"
             -   lang: Shell + Httpie
                 source: "echo '{\"name\":\"nodepool-exemplo\",\"flavor\":\"cloud-k8s.gp1.small\"\
                     ,\"replicas\":3,\"tags\":[\"tag-value1\"],\"taints\":[{\"key\"\
                     :\"exemplo-key\",\"value\":\"valor1\",\"effect\":\"NoSchedule\"\
-                    }],\"auto_scale\":{\"enabled\":true,\"min_replicas\":2,\"max_replicas\"\
-                    :5}}' |  \\\n  http POST https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters/%7Bcluster_id%7D/node_pools\
+                    }],\"auto_scale\":{\"min_replicas\":2,\"max_replicas\":5}}' |\
+                    \  \\\n  http POST https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters/%7Bcluster_id%7D/node_pools\
                     \ \\\n  Authorization:'Bearer REPLACE_BEARER_TOKEN' \\\n  content-type:application/json\
                     \ \\\n  x-tenant-id:SOME_STRING_VALUE"
             -   lang: Go + Native
@@ -837,14 +836,14 @@ paths:
                     \",\\\"flavor\\\":\\\"cloud-k8s.gp1.small\\\",\\\"replicas\\\"\
                     :3,\\\"tags\\\":[\\\"tag-value1\\\"],\\\"taints\\\":[{\\\"key\\\
                     \":\\\"exemplo-key\\\",\\\"value\\\":\\\"valor1\\\",\\\"effect\\\
-                    \":\\\"NoSchedule\\\"}],\\\"auto_scale\\\":{\\\"enabled\\\":true,\\\
-                    \"min_replicas\\\":2,\\\"max_replicas\\\":5}}\")\n\n\treq, _ :=\
-                    \ http.NewRequest(\"POST\", url, payload)\n\n\treq.Header.Add(\"\
-                    content-type\", \"application/json\")\n\treq.Header.Add(\"x-tenant-id\"\
-                    , \"SOME_STRING_VALUE\")\n\treq.Header.Add(\"Authorization\",\
-                    \ \"Bearer REPLACE_BEARER_TOKEN\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\
-                    \n\tdefer res.Body.Close()\n\tbody, _ := ioutil.ReadAll(res.Body)\n\
-                    \n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+                    \":\\\"NoSchedule\\\"}],\\\"auto_scale\\\":{\\\"min_replicas\\\
+                    \":2,\\\"max_replicas\\\":5}}\")\n\n\treq, _ := http.NewRequest(\"\
+                    POST\", url, payload)\n\n\treq.Header.Add(\"content-type\", \"\
+                    application/json\")\n\treq.Header.Add(\"x-tenant-id\", \"SOME_STRING_VALUE\"\
+                    )\n\treq.Header.Add(\"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\"\
+                    )\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\
+                    \tbody, _ := ioutil.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\t\
+                    fmt.Println(string(body))\n\n}"
             -   lang: Python + Python3
                 source: "import http.client\n\nconn = http.client.HTTPSConnection(\"\
                     api-mke.pre-prod.br-ne-1.jaxyendy.com\")\n\npayload = \"{\\\"\
@@ -852,13 +851,12 @@ paths:
                     \",\\\"replicas\\\":3,\\\"tags\\\":[\\\"tag-value1\\\"],\\\"taints\\\
                     \":[{\\\"key\\\":\\\"exemplo-key\\\",\\\"value\\\":\\\"valor1\\\
                     \",\\\"effect\\\":\\\"NoSchedule\\\"}],\\\"auto_scale\\\":{\\\"\
-                    enabled\\\":true,\\\"min_replicas\\\":2,\\\"max_replicas\\\":5}}\"\
-                    \n\nheaders = {\n    'content-type': \"application/json\",\n \
-                    \   'x-tenant-id': \"SOME_STRING_VALUE\",\n    'Authorization':\
-                    \ \"Bearer REPLACE_BEARER_TOKEN\"\n    }\n\nconn.request(\"POST\"\
-                    , \"/v0/clusters/%7Bcluster_id%7D/node_pools\", payload, headers)\n\
-                    \nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"\
-                    utf-8\"))"
+                    min_replicas\\\":2,\\\"max_replicas\\\":5}}\"\n\nheaders = {\n\
+                    \    'content-type': \"application/json\",\n    'x-tenant-id':\
+                    \ \"SOME_STRING_VALUE\",\n    'Authorization': \"Bearer REPLACE_BEARER_TOKEN\"\
+                    \n    }\n\nconn.request(\"POST\", \"/v0/clusters/%7Bcluster_id%7D/node_pools\"\
+                    , payload, headers)\n\nres = conn.getresponse()\ndata = res.read()\n\
+                    \nprint(data.decode(\"utf-8\"))"
             -   lang: Node + Native
                 source: "const http = require(\"https\");\n\nconst options = {\n \
                     \ \"method\": \"POST\",\n  \"hostname\": \"api-mke.pre-prod.br-ne-1.jaxyendy.com\"\
@@ -872,8 +870,8 @@ paths:
                     \    console.log(body.toString());\n  });\n});\n\nreq.write(JSON.stringify({\n\
                     \  name: 'nodepool-exemplo',\n  flavor: 'cloud-k8s.gp1.small',\n\
                     \  replicas: 3,\n  tags: ['tag-value1'],\n  taints: [{key: 'exemplo-key',\
-                    \ value: 'valor1', effect: 'NoSchedule'}],\n  auto_scale: {enabled:\
-                    \ true, min_replicas: 2, max_replicas: 5}\n}));\nreq.end();"
+                    \ value: 'valor1', effect: 'NoSchedule'}],\n  auto_scale: {min_replicas:\
+                    \ 2, max_replicas: 5}\n}));\nreq.end();"
             -   lang: Ruby + Native
                 source: 'require ''uri''
 
@@ -900,7 +898,7 @@ paths:
 
                     request["Authorization"] = ''Bearer REPLACE_BEARER_TOKEN''
 
-                    request.body = "{\"name\":\"nodepool-exemplo\",\"flavor\":\"cloud-k8s.gp1.small\",\"replicas\":3,\"tags\":[\"tag-value1\"],\"taints\":[{\"key\":\"exemplo-key\",\"value\":\"valor1\",\"effect\":\"NoSchedule\"}],\"auto_scale\":{\"enabled\":true,\"min_replicas\":2,\"max_replicas\":5}}"
+                    request.body = "{\"name\":\"nodepool-exemplo\",\"flavor\":\"cloud-k8s.gp1.small\",\"replicas\":3,\"tags\":[\"tag-value1\"],\"taints\":[{\"key\":\"exemplo-key\",\"value\":\"valor1\",\"effect\":\"NoSchedule\"}],\"auto_scale\":{\"min_replicas\":2,\"max_replicas\":5}}"
 
 
                     response = http.request(request)
@@ -1268,11 +1266,10 @@ paths:
                     \ \\\n  --header 'Authorization: Bearer REPLACE_BEARER_TOKEN'\
                     \ \\\n  --header 'content-type: application/json' \\\n  --header\
                     \ 'x-tenant-id: SOME_STRING_VALUE' \\\n  --data '{\"replicas\"\
-                    :0,\"auto_scale\":{\"enabled\":true,\"min_replicas\":2,\"max_replicas\"\
-                    :5}}'"
+                    :0,\"auto_scale\":{\"min_replicas\":2,\"max_replicas\":5}}'"
             -   lang: Shell + Httpie
-                source: "echo '{\"replicas\":0,\"auto_scale\":{\"enabled\":true,\"\
-                    min_replicas\":2,\"max_replicas\":5}}' |  \\\n  http PATCH https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters/%7Bcluster_id%7D/node_pools/%7Bnode_pool_id%7D\
+                source: "echo '{\"replicas\":0,\"auto_scale\":{\"min_replicas\":2,\"\
+                    max_replicas\":5}}' |  \\\n  http PATCH https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters/%7Bcluster_id%7D/node_pools/%7Bnode_pool_id%7D\
                     \ \\\n  Authorization:'Bearer REPLACE_BEARER_TOKEN' \\\n  content-type:application/json\
                     \ \\\n  x-tenant-id:SOME_STRING_VALUE"
             -   lang: Go + Native
@@ -1280,20 +1277,19 @@ paths:
                     net/http\"\n\t\"io/ioutil\"\n)\n\nfunc main() {\n\n\turl := \"\
                     https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters/%7Bcluster_id%7D/node_pools/%7Bnode_pool_id%7D\"\
                     \n\n\tpayload := strings.NewReader(\"{\\\"replicas\\\":0,\\\"\
-                    auto_scale\\\":{\\\"enabled\\\":true,\\\"min_replicas\\\":2,\\\
-                    \"max_replicas\\\":5}}\")\n\n\treq, _ := http.NewRequest(\"PATCH\"\
-                    , url, payload)\n\n\treq.Header.Add(\"content-type\", \"application/json\"\
-                    )\n\treq.Header.Add(\"x-tenant-id\", \"SOME_STRING_VALUE\")\n\t\
-                    req.Header.Add(\"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\"\
-                    )\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\
-                    \tbody, _ := ioutil.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\t\
-                    fmt.Println(string(body))\n\n}"
+                    auto_scale\\\":{\\\"min_replicas\\\":2,\\\"max_replicas\\\":5}}\"\
+                    )\n\n\treq, _ := http.NewRequest(\"PATCH\", url, payload)\n\n\t\
+                    req.Header.Add(\"content-type\", \"application/json\")\n\treq.Header.Add(\"\
+                    x-tenant-id\", \"SOME_STRING_VALUE\")\n\treq.Header.Add(\"Authorization\"\
+                    , \"Bearer REPLACE_BEARER_TOKEN\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\
+                    \n\tdefer res.Body.Close()\n\tbody, _ := ioutil.ReadAll(res.Body)\n\
+                    \n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
             -   lang: Python + Python3
                 source: "import http.client\n\nconn = http.client.HTTPSConnection(\"\
                     api-mke.pre-prod.br-ne-1.jaxyendy.com\")\n\npayload = \"{\\\"\
-                    replicas\\\":0,\\\"auto_scale\\\":{\\\"enabled\\\":true,\\\"min_replicas\\\
-                    \":2,\\\"max_replicas\\\":5}}\"\n\nheaders = {\n    'content-type':\
-                    \ \"application/json\",\n    'x-tenant-id': \"SOME_STRING_VALUE\"\
+                    replicas\\\":0,\\\"auto_scale\\\":{\\\"min_replicas\\\":2,\\\"\
+                    max_replicas\\\":5}}\"\n\nheaders = {\n    'content-type': \"\
+                    application/json\",\n    'x-tenant-id': \"SOME_STRING_VALUE\"\
                     ,\n    'Authorization': \"Bearer REPLACE_BEARER_TOKEN\"\n    }\n\
                     \nconn.request(\"PATCH\", \"/v0/clusters/%7Bcluster_id%7D/node_pools/%7Bnode_pool_id%7D\"\
                     , payload, headers)\n\nres = conn.getresponse()\ndata = res.read()\n\
@@ -1309,8 +1305,7 @@ paths:
                     , function (chunk) {\n    chunks.push(chunk);\n  });\n\n  res.on(\"\
                     end\", function () {\n    const body = Buffer.concat(chunks);\n\
                     \    console.log(body.toString());\n  });\n});\n\nreq.write(JSON.stringify({replicas:\
-                    \ 0, auto_scale: {enabled: true, min_replicas: 2, max_replicas:\
-                    \ 5}}));\nreq.end();"
+                    \ 0, auto_scale: {min_replicas: 2, max_replicas: 5}}));\nreq.end();"
             -   lang: Ruby + Native
                 source: 'require ''uri''
 
@@ -1337,7 +1332,7 @@ paths:
 
                     request["Authorization"] = ''Bearer REPLACE_BEARER_TOKEN''
 
-                    request.body = "{\"replicas\":0,\"auto_scale\":{\"enabled\":true,\"min_replicas\":2,\"max_replicas\":5}}"
+                    request.body = "{\"replicas\":0,\"auto_scale\":{\"min_replicas\":2,\"max_replicas\":5}}"
 
 
                     response = http.request(request)
@@ -1839,6 +1834,244 @@ paths:
                     response = http.request(request)
 
                     puts response.read_body'
+    /v1/flavors:
+        get:
+            tags:
+            - flavor
+            summary: Lists all available flavors
+            description: Lista todos os flavors disponiveis
+            operationId: getFlavorsV1
+            security:
+            -   BearerAuth:
+                - mke.read
+            -   OAuth2:
+                - mke.read
+            responses:
+                '200':
+                    description: Successful operation
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/FlavorsResponse'
+                '400':
+                    description: Bad Request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '401':
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '429':
+                    description: Too Many Requests
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '500':
+                    description: Internal Server Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+            x-codeSamples:
+            -   lang: Shell + Curl
+                source: "curl --request GET \\\n  --url https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v1/flavors\
+                    \ \\\n  --header 'Authorization: Bearer REPLACE_BEARER_TOKEN'"
+            -   lang: Shell + Httpie
+                source: "http GET https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v1/flavors\
+                    \ \\\n  Authorization:'Bearer REPLACE_BEARER_TOKEN'"
+            -   lang: Go + Native
+                source: "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"\
+                    io/ioutil\"\n)\n\nfunc main() {\n\n\turl := \"https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v1/flavors\"\
+                    \n\n\treq, _ := http.NewRequest(\"GET\", url, nil)\n\n\treq.Header.Add(\"\
+                    Authorization\", \"Bearer REPLACE_BEARER_TOKEN\")\n\n\tres, _\
+                    \ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\t\
+                    body, _ := ioutil.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\t\
+                    fmt.Println(string(body))\n\n}"
+            -   lang: Python + Python3
+                source: 'import http.client
+
+
+                    conn = http.client.HTTPSConnection("api-mke.pre-prod.br-ne-1.jaxyendy.com")
+
+
+                    headers = { ''Authorization'': "Bearer REPLACE_BEARER_TOKEN" }
+
+
+                    conn.request("GET", "/v1/flavors", headers=headers)
+
+
+                    res = conn.getresponse()
+
+                    data = res.read()
+
+
+                    print(data.decode("utf-8"))'
+            -   lang: Node + Native
+                source: "const http = require(\"https\");\n\nconst options = {\n \
+                    \ \"method\": \"GET\",\n  \"hostname\": \"api-mke.pre-prod.br-ne-1.jaxyendy.com\"\
+                    ,\n  \"port\": null,\n  \"path\": \"/v1/flavors\",\n  \"headers\"\
+                    : {\n    \"Authorization\": \"Bearer REPLACE_BEARER_TOKEN\"\n\
+                    \  }\n};\n\nconst req = http.request(options, function (res) {\n\
+                    \  const chunks = [];\n\n  res.on(\"data\", function (chunk) {\n\
+                    \    chunks.push(chunk);\n  });\n\n  res.on(\"end\", function\
+                    \ () {\n    const body = Buffer.concat(chunks);\n    console.log(body.toString());\n\
+                    \  });\n});\n\nreq.end();"
+            -   lang: Ruby + Native
+                source: 'require ''uri''
+
+                    require ''net/http''
+
+                    require ''openssl''
+
+
+                    url = URI("https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v1/flavors")
+
+
+                    http = Net::HTTP.new(url.host, url.port)
+
+                    http.use_ssl = true
+
+                    http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+
+                    request = Net::HTTP::Get.new(url)
+
+                    request["Authorization"] = ''Bearer REPLACE_BEARER_TOKEN''
+
+
+                    response = http.request(request)
+
+                    puts response.read_body'
+    /v1/versions:
+        get:
+            tags:
+            - version
+            summary: Lists all available versios
+            description: Lista todas as versões de kubernetes disponiveis
+            operationId: getVersionsV1
+            security:
+            -   BearerAuth:
+                - mke.read
+            -   OAuth2:
+                - mke.read
+            responses:
+                '200':
+                    description: Successful operation
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/VersionsResponse'
+                '400':
+                    description: Bad Request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '401':
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '429':
+                    description: Too Many Requests
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '500':
+                    description: Internal Server Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+            x-codeSamples:
+            -   lang: Shell + Curl
+                source: "curl --request GET \\\n  --url https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v1/versions\
+                    \ \\\n  --header 'Authorization: Bearer REPLACE_BEARER_TOKEN'"
+            -   lang: Shell + Httpie
+                source: "http GET https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v1/versions\
+                    \ \\\n  Authorization:'Bearer REPLACE_BEARER_TOKEN'"
+            -   lang: Go + Native
+                source: "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"\
+                    io/ioutil\"\n)\n\nfunc main() {\n\n\turl := \"https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v1/versions\"\
+                    \n\n\treq, _ := http.NewRequest(\"GET\", url, nil)\n\n\treq.Header.Add(\"\
+                    Authorization\", \"Bearer REPLACE_BEARER_TOKEN\")\n\n\tres, _\
+                    \ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\t\
+                    body, _ := ioutil.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\t\
+                    fmt.Println(string(body))\n\n}"
+            -   lang: Python + Python3
+                source: 'import http.client
+
+
+                    conn = http.client.HTTPSConnection("api-mke.pre-prod.br-ne-1.jaxyendy.com")
+
+
+                    headers = { ''Authorization'': "Bearer REPLACE_BEARER_TOKEN" }
+
+
+                    conn.request("GET", "/v1/versions", headers=headers)
+
+
+                    res = conn.getresponse()
+
+                    data = res.read()
+
+
+                    print(data.decode("utf-8"))'
+            -   lang: Node + Native
+                source: "const http = require(\"https\");\n\nconst options = {\n \
+                    \ \"method\": \"GET\",\n  \"hostname\": \"api-mke.pre-prod.br-ne-1.jaxyendy.com\"\
+                    ,\n  \"port\": null,\n  \"path\": \"/v1/versions\",\n  \"headers\"\
+                    : {\n    \"Authorization\": \"Bearer REPLACE_BEARER_TOKEN\"\n\
+                    \  }\n};\n\nconst req = http.request(options, function (res) {\n\
+                    \  const chunks = [];\n\n  res.on(\"data\", function (chunk) {\n\
+                    \    chunks.push(chunk);\n  });\n\n  res.on(\"end\", function\
+                    \ () {\n    const body = Buffer.concat(chunks);\n    console.log(body.toString());\n\
+                    \  });\n});\n\nreq.end();"
+            -   lang: Ruby + Native
+                source: 'require ''uri''
+
+                    require ''net/http''
+
+                    require ''openssl''
+
+
+                    url = URI("https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v1/versions")
+
+
+                    http = Net::HTTP.new(url.host, url.port)
+
+                    http.use_ssl = true
+
+                    http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+
+                    request = Net::HTTP::Get.new(url)
+
+                    request["Authorization"] = ''Bearer REPLACE_BEARER_TOKEN''
+
+
+                    response = http.request(request)
+
+                    puts response.read_body'
 components:
     schemas:
         ClusterRequest:
@@ -1858,13 +2091,11 @@ components:
                 version:
                     type: string
                     description: Versão do kubernetes nativa do cluster
-                    example: v1.24.10
+                    example: v1.26.9
                     enum:
-                    - v1.22.9
-                    - v1.24.10
-                    - v1.26.1
+                    - v1.26.9
                     - v1.28.2
-                    default: v1.28.2
+                    default: v1.26.9
                 description:
                     type: string
                     description: Descrição do cluster
@@ -1889,7 +2120,6 @@ components:
             required:
             - name
             - enabled_bastion
-            - node_pools
         CreateClusterResponse:
             type: object
             description: Objeto da requisição da response do cluster
@@ -2134,7 +2364,7 @@ components:
                 port:
                     type: integer
                     description: Porta utilizada pelo Kubernetes API Server
-                    example: '6443'
+                    example: 6443
         NodePoolsResponse:
             type: object
             description: Objeto da requisição da response do nodepool
@@ -2543,30 +2773,28 @@ components:
             - secrets
         AutoScale:
             type: object
-            description: Objeto que define propriedades para atualização de recursos
-                da carga de trabalho do cluster kubernetes
+            description: Objeto que especifica as propriedades para atualização de
+                recursos de carga de trabalho no cluster Kubernetes.
             properties:
-                enabled:
-                    type: boolean
-                    description: Ativa/Desativa o escalonamento automático
-                    example: true
-                    default: false
                 min_replicas:
                     type: integer
-                    description: Quantidade mínima  de réplicas, caso a função de
-                        autoscaling esteja habilitada.
+                    description: Quantidade mínima de réplicas para o autoscaling.
+                        Se não for informado um valor, ou se for igual ou menor que
+                        zero, o valor do autoscaler será assumido com base no campo
+                        "réplicas".
                     example: 2
                     minimum: 1
                     default: 1
                 max_replicas:
                     type: integer
-                    description: Quantidade máxima de réplicas, caso a função de autoscaling
-                        esteja habilitada
+                    description: Quantidade máxima de réplicas para o autoscaling.
+                        Se não for informado um valor, ou se for igual ou menor que
+                        zero, o valor do autoscaler será assumido com base no campo
+                        "réplicas".
                     example: 5
                     minimum: 1
                     default: 1
             required:
-            - enabled
             - min_replicas
             - max_replicas
         Taint:
@@ -2773,9 +3001,15 @@ components:
             description: OAuth2 via IDPA
 tags:
 -   name: cluster
-    description: Rotas relacionadas a api de Cluster.
+    description: Rotas relacionadas a api de cluster.
 -   name: nodepool
-    description: Rotas relacionadas a api de Nodepool dentro da api de Cluster.
+    description: Rotas relacionadas a api de Nodepool dentro da api de cluster.
 -   name: info
     description: Rotas relacionadas a informações de configurações do mke-api.
+-   name: flavor
+    description: Rotas relacionadas a informações de configurações dos flavors do
+        openstack.
+-   name: version
+    description: Rotas relacionadas a informações de configurações das versões de
+        kubernetes.
 $id: https://mke.br-ne-1.com/docs/openapi-with-snippets.json

@@ -1,0 +1,18 @@
+Rotas relacionadas a informações de configurações das versões de kubernetes.
+
+Usage:
+  ./cli mke version [flags]
+  ./cli mke version [command]
+
+Commands:
+  list        Lists all available versios
+
+Flags:
+  -h, --help      help for version
+  -v, --version   version for version
+
+Global Flags:
+      --cli.show-cli-globals   Show all CLI global flags on usage text
+
+Use "./cli mke version [command] --help" for more information about a command.
+

@@ -1,0 +1,15 @@
+Lista todos os flavors disponiveis
+
+Usage:
+  ./cli mke flavor list [flags]
+
+Flags:
+  -h, --help      help for list
+  -v, --version   version for list
+
+Global Flags:
+      --cli.show-cli-globals   Show all CLI global flags on usage text
+      --env enum               Environment to use (one of "pre-prod" or "prod") (default "prod")
+      --region enum            Region to reach the service (one of "br-ne-1" or "br-se-1") (default "br-ne-1")
+      --server-url uri         Manually specify the server to use
+

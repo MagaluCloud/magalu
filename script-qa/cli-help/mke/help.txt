@@ -5,9 +5,11 @@ Usage:
   ./cli mke [command]
 
 Commands:
-  cluster     Rotas relacionadas a api de Cluster.
+  cluster     Rotas relacionadas a api de cluster.
+  flavor      Rotas relacionadas a informações de configurações dos flavors do openstack.
   info        Rotas relacionadas a informações de configurações do mke-api.
-  nodepool    Rotas relacionadas a api de Nodepool dentro da api de Cluster.
+  nodepool    Rotas relacionadas a api de Nodepool dentro da api de cluster.
+  version     Rotas relacionadas a informações de configurações das versões de kubernetes.
 
 Flags:
   -h, --help      help for mke

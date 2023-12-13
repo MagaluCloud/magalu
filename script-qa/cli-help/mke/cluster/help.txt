@@ -1,4 +1,4 @@
-Rotas relacionadas a api de Cluster.
+Rotas relacionadas a api de cluster.
 
 Usage:
   ./cli mke cluster [flags]

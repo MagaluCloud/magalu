@@ -4,16 +4,14 @@ Usage:
   ./cli mke nodepool create [cluster-id] [flags]
 
 Examples:
-  ./cli mke nodepool create --auto-scale.enabled=true --auto-scale.max-replicas=5 --auto-scale.min-replicas=2 --flavor="cloud-k8s.gp1.small" --name="nodepool-exemplo" --replicas=3 --tags='["tag-value1"]'
+  ./cli mke nodepool create --auto-scale.max-replicas=5 --auto-scale.min-replicas=2 --flavor="cloud-k8s.gp1.small" --name="nodepool-exemplo" --replicas=3 --tags='["tag-value1"]'
 
 Flags:
-      --auto-scale object                 Objeto que define propriedades para atualização de recursos da carga de trabalho do cluster kubernetes (properties: enabled, max_replicas and min_replicas)
+      --auto-scale object                 Objeto que especifica as propriedades para atualização de recursos de carga de trabalho no cluster Kubernetes. (properties: max_replicas and min_replicas)
                                           Use --auto-scale=help for more details
-      --auto-scale.enabled boolean        Objeto que define propriedades para atualização de recursos da carga de trabalho do cluster kubernetes: Ativa/Desativa o escalonamento automático
-                                          This is the same as '--auto-scale=enabled:boolean'.
-      --auto-scale.max-replicas integer   Objeto que define propriedades para atualização de recursos da carga de trabalho do cluster kubernetes: Quantidade máxima de réplicas, caso a função de autoscaling esteja habilitada (min: 1)
+      --auto-scale.max-replicas integer   Objeto que especifica as propriedades para atualização de recursos de carga de trabalho no cluster Kubernetes: Quantidade máxima de réplicas para o autoscaling. Se não for informado um valor, ou se for igual ou menor que zero, o valor do autoscaler será assumido com base no campo "réplicas". (min: 1)
                                           This is the same as '--auto-scale=max_replicas:integer'. (default 1)
-      --auto-scale.min-replicas integer   Objeto que define propriedades para atualização de recursos da carga de trabalho do cluster kubernetes: Quantidade mínima  de réplicas, caso a função de autoscaling esteja habilitada. (min: 1)
+      --auto-scale.min-replicas integer   Objeto que especifica as propriedades para atualização de recursos de carga de trabalho no cluster Kubernetes: Quantidade mínima de réplicas para o autoscaling. Se não for informado um valor, ou se for igual ou menor que zero, o valor do autoscaler será assumido com base no campo "réplicas". (min: 1)
                                           This is the same as '--auto-scale=min_replicas:integer'. (default 1)
       --cli.list-links enum[=table]       List all available links for this command (one of "json", "table" or "yaml")
       --cluster-id uuid                   Identificador no padrão uuid para identificar o cluster
