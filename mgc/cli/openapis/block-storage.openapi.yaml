@@ -3,25 +3,194 @@ info:
     title: Block Storage API Product
     description: Block Storage API Product Documentation
     contact:
-        name: Tribo IAAS Cloud
+        name: IaaS Products
         url: https://github.com/luizalabs
-        email: lia.furtado@luizalabs.com
-    version: 1.52.0
+        email: kassio.junqueira@luizalabs.com
+    version: 1.80.0
 paths:
-    /v0/healthcheck:
+    /v0/snapshots:
         get:
             tags:
-            - healthchecks
-            summary: Healthcheck
-            description: Check api status
-            operationId: healthcheck_v0_healthcheck_get
+            - snapshots
+            summary: List Snapshots
+            description: List snapshots
+            operationId: list_snapshots_v0_snapshots_get
+            parameters:
+            -   name: _sort
+                in: query
+                required: false
+                schema:
+                    allOf:
+                    -   $ref: '#/components/schemas/SortSnapshot'
+                    default: created_at:desc
+                    title: ' Sort'
+                    type: string
+            -   name: _limit
+                in: query
+                required: false
+                schema:
+                    type: integer
+                    default: 50
+                    title: ' Limit'
+            -   name: _offset
+                in: query
+                required: false
+                schema:
+                    type: integer
+                    default: 0
+                    title: ' Offset'
             responses:
                 '200':
                     description: Successful Response
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/Healthcheck'
+                                $ref: '#/components/schemas/ListSnapshotResponse'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            security:
+            -   OAuth2:
+                - block-storage.read
+        post:
+            tags:
+            - snapshots
+            summary: Create Snapshot
+            description: Create a snapshot
+            operationId: create_snapshot_v0_snapshots_post
+            parameters:
+            -   name: force
+                in: query
+                required: false
+                schema:
+                    type: boolean
+                    default: false
+                    title: Force
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/SnapshotCreateRequest'
+            responses:
+                '202':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/IdResponse'
+                    links:
+                        delete:
+                            operationId: delete_snapshot_v0_snapshots__snapshot_id__delete
+                            description: Delete snapshot
+                            parameters:
+                                snapshot_id: $response.body#/id
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            security:
+            -   OAuth2:
+                - block-storage.write
+    /v0/snapshots/{snapshot_id}:
+        delete:
+            tags:
+            - snapshots
+            summary: Delete Snapshot
+            description: Delete a Snapshot
+            operationId: delete_snapshot_v0_snapshots__snapshot_id__delete
+            parameters:
+            -   name: snapshot_id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+                    title: Snapshot Id
+                x-mgc-name: id
+            responses:
+                '204':
+                    description: Successful Response
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            security:
+            -   OAuth2:
+                - block-storage.write
+        post:
+            tags:
+            - snapshots
+            summary: Restore Snapshot
+            description: Restore a snapshot
+            operationId: restore_snapshot_v0_snapshots__snapshot_id__post
+            parameters:
+            -   name: snapshot_id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+                    title: Snapshot Id
+                x-mgc-name: id
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/SnapshotRestoreRequest'
+            responses:
+                '202':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/IdResponse'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            security:
+            -   OAuth2:
+                - block-storage.write
+            x-mgc-name: restore
+    /v0/usage:
+        get:
+            tags:
+            - usage
+            summary: Get Usage
+            description: Retrieve usage for specific quota_slug (disk & volumes)
+            operationId: get_usage_v0_usage_get
+            parameters:
+            -   name: quota_slug
+                in: query
+                required: false
+                schema:
+                    title: Quota Slug
+                    nullable: true
+                    type: string
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ListResourceUsage'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
             security:
             -   OAuth2:
                 - block-storage.read
@@ -39,6 +208,18 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/VolumeTypeList'
+                    links:
+                        delete:
+                            operationRef: '#/paths/~1v0~1snapshots~1{snapshot_id}/delete'
+                            description: Delete snapshot
+                            parameters:
+                                snapshot_id: $response.body#/id
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
             security:
             -   OAuth2:
                 - block-storage.read
@@ -46,7 +227,7 @@ paths:
             tags:
             - volume-types
             summary: Create Volume Type
-            description: Create volume type only in DB
+            description: Create volume type
             operationId: create_volume_type_v0_volume_types_post
             requestBody:
                 content:
@@ -88,163 +269,6 @@ paths:
             -   OAuth2:
                 - block-storage.read
             x-mgc-hidden: true
-    /v0/usage:
-        get:
-            tags:
-            - usage
-            summary: Get Usage
-            description: Retrieve usage for specific quota_slug (disk & volumes)
-            operationId: get_usage_v0_usage_get
-            parameters:
-            -   description: quota_slug
-                required: false
-                schema:
-                    title: Quota Slug
-                    type: string
-                    format: string
-                name: quota_slug
-                in: query
-            responses:
-                '200':
-                    description: Successful Response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ListUsageResponse'
-                '422':
-                    description: Validation Error
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/HTTPValidationError'
-            security:
-            -   OAuth2:
-                - block-storage.read
-    /v0/snapshots:
-        get:
-            tags:
-            - snapshots
-            summary: List snapshots
-            description: List snapshots
-            operationId: list_snapshots_v0_snapshots_get
-            responses:
-                '200':
-                    description: Successful Response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ListSnapshotResponse'
-                '422':
-                    description: Validation Error
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/HTTPValidationError'
-            security:
-            -   OAuth2:
-                - block-storage.read
-        post:
-            tags:
-            - snapshots
-            summary: Create snapshot
-            description: Create snapshot
-            operationId: create_snapshot_v0_snapshots_post
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/SnapshotCreateRequest'
-                required: true
-            responses:
-                '202':
-                    description: Successful Response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/VolumeCreateResponse'
-                    links:
-                        delete:
-                            operationRef: '#/paths/~1v0~1snapshots~1{snapshot_id}/delete'
-                            description: Delete snapshot
-                            parameters:
-                                snapshot_id: $response.body#/id
-                '422':
-                    description: Validation Error
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/HTTPValidationError'
-            security:
-            -   OAuth2:
-                - block-storage.write
-    /v0/snapshots/{snapshot_id}:
-        post:
-            tags:
-            - snapshots
-            summary: Restore Snapshot
-            description: Restore a snapshot
-            operationId: restore_snapshot_v0_snapshots__snapshot_id__post
-            parameters:
-            -   description: snapshot_id
-                required: true
-                schema:
-                    title: Snapshot Id
-                    type: string
-                    format: uuid
-                name: snapshot_id
-                in: path
-                x-mgc-name: id
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/RestoreSnapshotRequest'
-                required: true
-            responses:
-                '202':
-                    description: Successful Response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/VolumeCreateResponse'
-                '422':
-                    description: Validation Error
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/HTTPValidationError'
-            security:
-            -   OAuth2:
-                - block-storage.write
-            x-mgc-name: restore
-        delete:
-            tags:
-            - snapshots
-            summary: Delete Snapshot
-            description: Delete a snapshot from the provided tenant_id
-            operationId: delete_snapshot_v0_snapshots__snapshot_id__delete
-            parameters:
-            -   description: snapshot_id
-                required: true
-                schema:
-                    title: Snapshot Id
-                    type: string
-                    format: uuid
-                name: snapshot_id
-                in: path
-                x-mgc-name: id
-            responses:
-                '204':
-                    description: Successful Response
-                '422':
-                    description: Validation Error
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/HTTPValidationError'
-            security:
-            -   OAuth2:
-                - block-storage.write
     /v0/volumes:
         get:
             tags:
@@ -252,6 +276,28 @@ paths:
             summary: List Volumes
             description: Returns a list of volumes from the provided tenant_id
             operationId: list_volumes_v0_volumes_get
+            parameters:
+            -   name: _limit
+                in: query
+                required: false
+                schema:
+                    type: integer
+                    default: 50
+                    title: ' Limit'
+            -   name: _offset
+                in: query
+                required: false
+                schema:
+                    type: integer
+                    default: 0
+                    title: ' Offset'
+            -   name: _sort
+                in: query
+                required: false
+                schema:
+                    type: string
+                    default: created_at:desc
+                    title: ' Sort'
             responses:
                 '200':
                     description: Successful Response
@@ -276,13 +322,13 @@ paths:
             description: Create a volume for a provided tenant_id
             operationId: create_volume_v0_volumes_post
             requestBody:
+                required: true
                 content:
                     application/json:
                         schema:
                             $ref: '#/components/schemas/VolumeCreateRequest'
-                required: true
             responses:
-                '201':
+                '202':
                     description: Successful Response
                     content:
                         application/json:
@@ -315,6 +361,39 @@ paths:
                 - block-storage.write
             x-mgc-description: Create a Block Storage volume
     /v0/volumes/{id}:
+        delete:
+            tags:
+            - block-storage
+            summary: Delete Volume
+            description: Delete a volume from the provided tenant_id
+            operationId: delete_volume_v0_volumes__id__delete
+            parameters:
+            -   name: id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Id
+            -   name: force
+                in: query
+                required: false
+                schema:
+                    type: boolean
+                    default: false
+                    title: Force
+            responses:
+                '204':
+                    description: Successful Response
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            security:
+            -   OAuth2:
+                - block-storage.write
+            x-mgc-description: Delete a Block Storage volume
         get:
             tags:
             - block-storage
@@ -322,14 +401,12 @@ paths:
             description: Returns a volume details from the provided tenant_id
             operationId: volume_details_v0_volumes__id__get
             parameters:
-            -   description: id
+            -   name: id
+                in: path
                 required: true
                 schema:
-                    title: Volume Id
                     type: string
-                    format: uuid
-                name: id
-                in: path
+                    title: Id
             responses:
                 '200':
                     description: Successful Response
@@ -385,42 +462,6 @@ paths:
             -   OAuth2:
                 - block-storage.read
             x-mgc-description: Get a Block Storage volume details
-        delete:
-            tags:
-            - block-storage
-            summary: Delete Volume
-            description: Delete a volume from the provided tenant_id
-            operationId: delete_volume_v0_volumes__id__delete
-            parameters:
-            -   description: id
-                required: true
-                schema:
-                    title: Volume Id
-                    type: string
-                    format: uuid
-                name: id
-                in: path
-            -   description: force
-                required: false
-                schema:
-                    title: Force
-                    type: boolean
-                    default: false
-                name: force
-                in: query
-            responses:
-                '204':
-                    description: Successful Response
-                '422':
-                    description: Validation Error
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/HTTPValidationError'
-            security:
-            -   OAuth2:
-                - block-storage.write
-            x-mgc-description: Delete a Block Storage volume
         patch:
             tags:
             - block-storage
@@ -428,20 +469,18 @@ paths:
             description: Update a volume's name from the provided tenant_id
             operationId: update_volume_v0_volumes__id__patch
             parameters:
-            -   description: id
+            -   name: id
+                in: path
                 required: true
                 schema:
-                    title: Volume Id
                     type: string
-                    format: uuid
-                name: id
-                in: path
+                    title: Id
             requestBody:
+                required: true
                 content:
                     application/json:
                         schema:
                             $ref: '#/components/schemas/VolumeUpdateRequest'
-                required: true
             responses:
                 '200':
                     description: Successful Response
@@ -479,22 +518,18 @@ paths:
                 tenant_id
             operationId: attach_volume_v0_volumes__id__attach__virtual_machine_id__post
             parameters:
-            -   description: id
-                required: true
-                schema:
-                    title: Volume Id
-                    type: string
-                    format: uuid
-                name: id
+            -   name: id
                 in: path
-            -   description: virtual_machine_id
                 required: true
                 schema:
+                    type: string
+                    title: Id
+            -   name: virtual_machine_id
+                in: path
+                required: true
+                schema:
+                    type: string
                     title: Virtual Machine Id
-                    type: string
-                    format: uuid
-                name: virtual_machine_id
-                in: path
             responses:
                 '200':
                     description: Successful Response
@@ -547,30 +582,25 @@ paths:
                 force detachment, reboot the instance, or all three.'
             operationId: detach_volume_v0_volumes__id__detach__virtual_machine_id__post
             parameters:
-            -   description: id
-                required: true
-                schema:
-                    title: Volume Id
-                    type: string
-                    format: uuid
-                name: id
+            -   name: id
                 in: path
-            -   description: virtual_machine_id
                 required: true
                 schema:
+                    type: string
+                    title: Id
+            -   name: virtual_machine_id
+                in: path
+                required: true
+                schema:
+                    type: string
                     title: Virtual Machine Id
-                    type: string
-                    format: uuid
-                name: virtual_machine_id
-                in: path
-            -   description: force
+            -   name: force
+                in: query
                 required: false
                 schema:
-                    title: Force
                     type: boolean
                     default: false
-                name: force
-                in: query
+                    title: Force
             responses:
                 '200':
                     description: Successful Response
@@ -588,23 +618,633 @@ paths:
             -   OAuth2:
                 - block-storage.write
             x-mgc-name: detach
+    /v1/volume_types:
+        get:
+            tags:
+            - volume-types-v1
+            summary: List Volume Types V1
+            description: Returns a list of volume types
+            operationId: list_volume_types_v1_v1_volume_types_get
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/GenericVolumeTypeList_VolumeTypeResponse_'
+            security:
+            -   OAuth2:
+                - block-storage.read
+    /v1/volumes:
+        post:
+            tags:
+            - block-storage-v1
+            summary: Create a volume asynchronously.
+            description: "Creates a Volume in the current tenant which is logged in.\n\
+                \n    A volume is ready for you to use when it's in the available\
+                \ state and the\n    completed status.\n\n    #### Notes\n    - For\
+                \ the volume type data, you can use the block-storage volume-types\
+                \ list\n        command to list all available volume types.\n    -\
+                \ You can verify the state of your volume using the block-storage\
+                \ volume\n        get --id [uuid] command."
+            operationId: create_volume_v1_v1_volumes_post
+            parameters:
+            -   name: project_type
+                in: query
+                required: false
+                schema:
+                    allOf:
+                    -   $ref: '#/components/schemas/ProjectTypeAll'
+                    default: default
+                    title: Project Type
+                    type: string
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/VolumeCreateRequestV1'
+            responses:
+                '202':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/IdResponse'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: true
+            security:
+            -   OAuth2:
+                - block-storage.write
+    /v1/volumes/{id}:
+        delete:
+            tags:
+            - block-storage-v1
+            summary: Delete Volume V1
+            description: Delete a volume from the provided tenant_id
+            operationId: delete_volume_v1_v1_volumes__id__delete
+            parameters:
+            -   name: id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+                    title: Id
+            -   name: project_type
+                in: query
+                required: false
+                schema:
+                    allOf:
+                    -   $ref: '#/components/schemas/ProjectTypeAll'
+                    default: default
+                    title: Project Type
+                    type: string
+            responses:
+                '204':
+                    description: Successful Response
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: true
+            security:
+            -   OAuth2:
+                - block-storage.write
+    /v1/volumes/{id}/attach/{virtual_machine_id}:
+        post:
+            tags:
+            - block-storage-v1
+            summary: Attach Volume V1
+            description: Attach a volume into an instance, both from the provided
+                tenant_id
+            operationId: attach_volume_v1_v1_volumes__id__attach__virtual_machine_id__post
+            parameters:
+            -   name: id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+                    title: Id
+            -   name: virtual_machine_id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+                    title: Virtual Machine Id
+            -   name: project_type
+                in: query
+                required: false
+                schema:
+                    allOf:
+                    -   $ref: '#/components/schemas/ProjectTypeAll'
+                    default: default
+                    title: Project Type
+                    type: string
+            responses:
+                '204':
+                    description: Successful Response
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: true
+            security:
+            -   OAuth2:
+                - block-storage.write
+    /v1/volumes/{id}/detach/{virtual_machine_id}:
+        post:
+            tags:
+            - block-storage-v1
+            summary: Detach Volume V1
+            description: 'Detaches a volume from an instance. Make sure to unmount
+
+                any file systems on the device within your operating system before
+
+                detaching the volume. Failure to do so can result in the volume
+
+                becoming stuck in the busy state while detaching. If this happens,
+
+                detachment can be delayed indefinitely until you unmount the volume,
+
+                force detachment, reboot the instance, or all three.'
+            operationId: detach_volume_v1_v1_volumes__id__detach__virtual_machine_id__post
+            parameters:
+            -   name: id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+                    title: Id
+            -   name: virtual_machine_id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+                    title: Virtual Machine Id
+            -   name: project_type
+                in: query
+                required: false
+                schema:
+                    allOf:
+                    -   $ref: '#/components/schemas/ProjectTypeAll'
+                    default: default
+                    title: Project Type
+                    type: string
+            responses:
+                '204':
+                    description: Successful Response
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: true
+            security:
+            -   OAuth2:
+                - block-storage.write
+    /v1/volumes/{id}/extend:
+        post:
+            tags:
+            - volumes-v1
+            summary: Extend Volume
+            description: Increase selected volume size
+            operationId: extend_volume_v1_volumes__id__extend_post
+            parameters:
+            -   name: id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+                    title: Id
+            -   name: project_type
+                in: query
+                required: false
+                schema:
+                    allOf:
+                    -   $ref: '#/components/schemas/ProjectTypeAll'
+                    default: default
+                    title: Project Type
+                    type: string
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/VolumeExtendRequest'
+            responses:
+                '204':
+                    description: Successful Response
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: true
+            security:
+            -   OAuth2:
+                - block-storage.write
+    /v1/volumes/{id}/retype:
+        post:
+            tags:
+            - volumes-v1
+            summary: Retype Volume
+            description: Change the volume type from a volume
+            operationId: retype_volume_v1_volumes__id__retype_post
+            parameters:
+            -   name: id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+                    title: Id
+            -   name: project_type
+                in: query
+                required: false
+                schema:
+                    allOf:
+                    -   $ref: '#/components/schemas/ProjectTypeAll'
+                    default: default
+                    title: Project Type
+                    type: string
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/VolumeRetypeRequest'
+            responses:
+                '204':
+                    description: Successful Response
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: true
+            security:
+            -   OAuth2:
+                - block-storage.write
+    /latest/volume_types:
+        get:
+            tags:
+            - volume-types-latest
+            summary: List Volume Types V1
+            description: Returns a list of volume types
+            operationId: list_volume_types_v1_latest_volume_types_get
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/GenericVolumeTypeList_VolumeTypeResponse_'
+            security:
+            -   OAuth2:
+                - block-storage.read
+    /latest/volumes:
+        post:
+            tags:
+            - block-storage-latest
+            summary: Create a volume asynchronously.
+            description: "Creates a Volume in the current tenant which is logged in.\n\
+                \n    A volume is ready for you to use when it's in the available\
+                \ state and the\n    completed status.\n\n    #### Notes\n    - For\
+                \ the volume type data, you can use the block-storage volume-types\
+                \ list\n        command to list all available volume types.\n    -\
+                \ You can verify the state of your volume using the block-storage\
+                \ volume\n        get --id [uuid] command."
+            operationId: create_volume_v1_latest_volumes_post
+            parameters:
+            -   name: project_type
+                in: query
+                required: false
+                schema:
+                    allOf:
+                    -   $ref: '#/components/schemas/ProjectTypeAll'
+                    default: default
+                    title: Project Type
+                    type: string
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/VolumeCreateRequestV1'
+            responses:
+                '202':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/IdResponse'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: true
+            security:
+            -   OAuth2:
+                - block-storage.write
+    /latest/volumes/{id}:
+        delete:
+            tags:
+            - block-storage-latest
+            summary: Delete Volume V1
+            description: Delete a volume from the provided tenant_id
+            operationId: delete_volume_v1_latest_volumes__id__delete
+            parameters:
+            -   name: id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+                    title: Id
+            -   name: project_type
+                in: query
+                required: false
+                schema:
+                    allOf:
+                    -   $ref: '#/components/schemas/ProjectTypeAll'
+                    default: default
+                    title: Project Type
+                    type: string
+            responses:
+                '204':
+                    description: Successful Response
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: true
+            security:
+            -   OAuth2:
+                - block-storage.write
+    /latest/volumes/{id}/attach/{virtual_machine_id}:
+        post:
+            tags:
+            - block-storage-latest
+            summary: Attach Volume V1
+            description: Attach a volume into an instance, both from the provided
+                tenant_id
+            operationId: attach_volume_v1_latest_volumes__id__attach__virtual_machine_id__post
+            parameters:
+            -   name: id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+                    title: Id
+            -   name: virtual_machine_id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+                    title: Virtual Machine Id
+            -   name: project_type
+                in: query
+                required: false
+                schema:
+                    allOf:
+                    -   $ref: '#/components/schemas/ProjectTypeAll'
+                    default: default
+                    title: Project Type
+                    type: string
+            responses:
+                '204':
+                    description: Successful Response
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: true
+            security:
+            -   OAuth2:
+                - block-storage.write
+    /latest/volumes/{id}/detach/{virtual_machine_id}:
+        post:
+            tags:
+            - block-storage-latest
+            summary: Detach Volume V1
+            description: 'Detaches a volume from an instance. Make sure to unmount
+
+                any file systems on the device within your operating system before
+
+                detaching the volume. Failure to do so can result in the volume
+
+                becoming stuck in the busy state while detaching. If this happens,
+
+                detachment can be delayed indefinitely until you unmount the volume,
+
+                force detachment, reboot the instance, or all three.'
+            operationId: detach_volume_v1_latest_volumes__id__detach__virtual_machine_id__post
+            parameters:
+            -   name: id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+                    title: Id
+            -   name: virtual_machine_id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+                    title: Virtual Machine Id
+            -   name: project_type
+                in: query
+                required: false
+                schema:
+                    allOf:
+                    -   $ref: '#/components/schemas/ProjectTypeAll'
+                    default: default
+                    title: Project Type
+                    type: string
+            responses:
+                '204':
+                    description: Successful Response
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: true
+            security:
+            -   OAuth2:
+                - block-storage.write
+    /latest/volumes/{id}/extend:
+        post:
+            tags:
+            - volumes-latest
+            summary: Extend Volume
+            description: Increase selected volume size
+            operationId: extend_volume_latest_volumes__id__extend_post
+            parameters:
+            -   name: id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+                    title: Id
+            -   name: project_type
+                in: query
+                required: false
+                schema:
+                    allOf:
+                    -   $ref: '#/components/schemas/ProjectTypeAll'
+                    default: default
+                    title: Project Type
+                    type: string
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/VolumeExtendRequest'
+            responses:
+                '204':
+                    description: Successful Response
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: true
+            security:
+            -   OAuth2:
+                - block-storage.write
+    /latest/volumes/{id}/retype:
+        post:
+            tags:
+            - volumes-latest
+            summary: Retype Volume
+            description: Change the volume type from a volume
+            operationId: retype_volume_latest_volumes__id__retype_post
+            parameters:
+            -   name: id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+                    title: Id
+            -   name: project_type
+                in: query
+                required: false
+                schema:
+                    allOf:
+                    -   $ref: '#/components/schemas/ProjectTypeAll'
+                    default: default
+                    title: Project Type
+                    type: string
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/VolumeRetypeRequest'
+            responses:
+                '204':
+                    description: Successful Response
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: true
+            security:
+            -   OAuth2:
+                - block-storage.write
+    /healthcheck:
+        get:
+            tags:
+            - healthchecks
+            summary: Health Check
+            description: Check api status
+            operationId: health_check_healthcheck_get
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HealthCheck'
+            security:
+            -   OAuth2:
+                - block-storage.read
 components:
     schemas:
         AttachmentResponse:
-            title: AttachmentResponse
-            required:
-            - virtual_machine_id
-            type: object
             properties:
                 virtual_machine_id:
-                    title: Virtual Machine Id
                     type: string
-                    format: uuid
-            example:
-                virtual_machine_id: 9f1732cc-a2c9-4471-af68-479adf91e49b
-        HTTPValidationError:
-            title: HTTPValidationError
+                    title: Virtual Machine Id
             type: object
+            required:
+            - virtual_machine_id
+            title: AttachmentResponse
+            example:
+                virtual_machine_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        DiskType:
+            type: string
+            enum:
+            - nvme
+            - hdd
+            title: DiskType
+        GenericVolumeTypeList_VolumeTypeResponse_:
+            properties:
+                types:
+                    items:
+                        $ref: '#/components/schemas/block_storage_api_product__volume__models__volume_type_v1__VolumeTypeResponse'
+                    type: array
+                    title: Types
+            type: object
+            required:
+            - types
+            title: GenericVolumeTypeList[VolumeTypeResponse]
+            example:
+                types:
+                -   disk_type: nvme
+                    id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                    iops:
+                        read: 1000
+                        write: 1000
+                    name: my_volume_type
+                    status: active
+        HTTPValidationError:
             properties:
                 message:
                     title: Message
@@ -612,508 +1252,693 @@ components:
                 slug:
                     title: Slug
                     type: string
+            type: object
+            title: HTTPValidationError
             example:
                 message: Unauthorized
                 slug: Unauthorized
-        Healthcheck:
-            title: Healthcheck
-            required:
-            - status
-            type: object
+        HealthCheck:
             properties:
                 status:
-                    title: Status
                     type: string
+                    title: Status
+            type: object
+            required:
+            - status
+            title: HealthCheck
             example:
                 status: OK
+        IdRequest:
+            properties:
+                id:
+                    type: string
+                    minLength: 1
+                    title: Id
+            type: object
+            required:
+            - id
+            title: IdRequest
+            example:
+                id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
         IdResponse:
+            properties:
+                id:
+                    type: string
+                    minLength: 1
+                    title: Id
+            type: object
+            required:
+            - id
             title: IdResponse
-            required:
-            - id
-            type: object
-            properties:
-                id:
-                    title: Id
-                    type: string
-                    format: uuid
             example:
-                id: 9f1732cc-a2c9-4471-af68-479adf91e49b
-        QosSpecs:
-            title: QosSpecs
-            required:
-            - name
-            - consumer
-            type: object
+                id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        ListResourceUsage:
             properties:
-                name:
-                    title: Name
-                    type: string
-                consumer:
-                    title: Consumer
-                    type: string
-                specs:
-                    title: Specs
-        ValidationError:
-            title: ValidationError
-            required:
-            - loc
-            - msg
-            - type
-            type: object
-            properties:
-                message:
-                    title: Message
-                    type: string
-                slug:
-                    title: Slug
-                    type: string
-            example:
-                message: Unauthorized
-                slug: Unauthorized
-        VolumeCreateRequest:
-            title: VolumeCreateRequest
-            required:
-            - name
-            - size
-            - volume_type
-            - description
-            type: object
-            properties:
-                name:
-                    title: Name
-                    type: string
-                size:
-                    title: Size
-                    type: integer
-                    description: Gibibytes (GiB)
-                volume_type:
-                    title: Volume Type
-                    type: string
-                description:
-                    title: Description
-                    type: string
-            example:
-                name: volume name
-                size: 10
-                volume_type: rbd
-                description: volume description
-        VolumeCreateResponse:
-            title: VolumeCreateResponse
-            required:
-            - id
-            type: object
-            properties:
-                id:
-                    title: Id
-                    type: string
-                    format: uuid
-            example:
-                id: 9f1732cc-a2c9-4471-af68-479adf91e49b
-        VolumeListResponse:
-            title: VolumeListResponse
-            required:
-            - volumes
-            type: object
-            properties:
-                volumes:
-                    title: Volumes
-                    type: array
+                results:
                     items:
-                        $ref: '#/components/schemas/VolumeResponse'
-            example:
-                volumes:
-                -   id: 9f1732cc-a2c9-4471-af68-479adf91e49b
-                    volume_id: 9f2310ac-1944-41e8-85ff-b5671b00c820
-                    status: in-use
-                    error: some error description or null
-                    size: 10
-                    name: volume name
-                    volume_type:
-                        name: rbd
-                        sku: sku1234
-                    description: volume description
-                    attachments:
-                    -   virtual_machine_id: 9f1732cc-a2c9-4471-af68-479adf91e49b
-                    created_at: '2022-01-01T00:00:00Z'
-                    updated_at: '2022-01-01T00:00:00Z'
-        VolumeResponse:
-            title: VolumeResponse
-            required:
-            - id
-            - volume_id
-            - status
-            - error
-            - size
-            - name
-            - volume_type
-            - description
-            - created_at
-            - updated_at
-            type: object
-            properties:
-                id:
-                    title: Id
-                    type: string
-                    format: uuid
-                volume_id:
-                    title: Id
-                    type: string
-                    format: uuid
-                status:
-                    title: Status
-                    type: string
-                error:
-                    title: Error
-                    type: string
-                size:
-                    title: Size
-                    type: integer
-                    description: Gibibytes (GiB)
-                name:
-                    title: Name
-                    type: string
-                volume_type:
-                    $ref: '#/components/schemas/VolumeTypeResponseForVolume'
-                description:
-                    title: Description
-                    type: string
-                attachments:
-                    title: Attachments
+                        $ref: '#/components/schemas/ResourceUsageResponse'
                     type: array
-                    items:
-                        $ref: '#/components/schemas/AttachmentResponse'
-                created_at:
-                    title: Created At
-                    type: string
-                    format: date-time
-                updated_at:
-                    title: Updated At
-                    type: string
-                    format: date-time
-            example:
-                id: 9f1732cc-a2c9-4471-af68-479adf91e49b
-                volume_id: 9f2310ac-1944-41e8-85ff-b5671b00c820
-                status: in-use
-                error: some error description or null
-                size: 10
-                name: volume name
-                volume_type:
-                    name: rbd
-                    sku: sku1234
-                description: volume description
-                attachments:
-                -   virtual_machine_id: 9f1732cc-a2c9-4471-af68-479adf91e49b
-                created_at: '2022-01-01T00:00:00Z'
-                updated_at: '2022-01-01T00:00:00Z'
-        VolumeTypeDbListResponse:
-            title: VolumeTypeDbListResponse
-            required:
-            - types
+                    title: Results
             type: object
-            properties:
-                types:
-                    title: Types
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/VolumeTypeDbResponse'
-            example:
-                types:
-                -   id: 9f1732cc-a2c9-4471-af68-479adf91e49b
-                    sku: sku1234
-                    name: some_name
-                    internal: true
-        VolumeTypeDbResponse:
-            title: VolumeTypeDbResponse
-            required:
-            - id
-            - name
-            - sku
-            - internal
-            type: object
-            properties:
-                id:
-                    title: Id
-                    type: string
-                    format: uuid
-                name:
-                    title: Name
-                    type: string
-                sku:
-                    title: Sku
-                    type: string
-                internal:
-                    title: Internal
-                    type: boolean
-        VolumeTypeList:
-            title: VolumeTypeList
-            required:
-            - types
-            type: object
-            properties:
-                types:
-                    title: Types
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/VolumeTypeResponse'
-            example:
-                types:
-                -   id: 9f1732cc-a2c9-4471-af68-479adf91e49b
-                    name: rbd
-                    description: volume type description
-                    sku: sku1234
-                    qos_specs:
-                        name: teste-qos-high-iops
-                        consumer: front-end
-                        specs:
-                            total_iops_sec: '1000'
-        VolumeTypeRequest:
-            title: VolumeTypeRequest
-            required:
-            - name
-            - sku
-            - internal
-            type: object
-            properties:
-                name:
-                    title: Name
-                    type: string
-                sku:
-                    title: Sku
-                    type: string
-                internal:
-                    title: Internal
-                    type: boolean
-            example:
-                name: rbd
-                sku: sku1234
-                internal: true
-        VolumeTypeResponse:
-            title: VolumeTypeResponse
-            required:
-            - id
-            - name
-            - sku
-            type: object
-            properties:
-                id:
-                    title: Id
-                    type: string
-                    format: uuid
-                name:
-                    title: Name
-                    type: string
-                description:
-                    title: Description
-                    type: string
-                sku:
-                    title: Sku
-                    type: string
-                qos_specs:
-                    $ref: '#/components/schemas/QosSpecs'
-            example:
-                id: 9f1732cc-a2c9-4471-af68-479adf91e49b
-                name: rbd
-                description: volume type description
-                sku: sku1234
-                qos_specs:
-                    name: teste-qos-high-iops
-                    consumer: front-end
-                    specs:
-                        total_iops_sec: '1000'
-        VolumeTypeResponseForVolume:
-            title: VolumeTypeResponseForVolume
-            required:
-            - name
-            - sku
-            type: object
-            properties:
-                name:
-                    title: Name
-                    type: string
-                sku:
-                    title: Sku
-                    type: string
-            example:
-                name: rbd
-                description: volume type description
-                sku: sku1234
-        VolumeUpdateRequest:
-            title: VolumeUpdateRequest
-            required:
-            - name
-            type: object
-            properties:
-                name:
-                    title: Name
-                    type: string
-            example:
-                name: new volume name
-        SnapshotResponse:
-            title: SnapshotResponse
-            required:
-            - id
-            - created_at
-            - name
-            - description
-            - volume_id
-            - status
-            - size
-            - progress
-            type: object
-            properties:
-                id:
-                    title: Id
-                    type: string
-                    format: uuid
-                created_at:
-                    title: Created At
-                    type: string
-                    format: date-time
-                name:
-                    title: Name
-                    type: string
-                description:
-                    title: Description
-                    type: string
-                volume_id:
-                    title: Id
-                    type: string
-                    format: uuid
-                status:
-                    title: Status
-                    type: string
-                size:
-                    title: Size
-                    type: integer
-                    description: Gibibytes (GiB)
-                progress:
-                    title: Progress
-                    type: string
-                    description: Porcentagem
-            example:
-                id: 9f1732cc-a2c9-4471-af68-479adf91e49b
-                created_at: '2022-01-01T00:00:00Z'
-                name: some_name
-                description: some_description
-                volume_id: 00000000-0000-0000-0000-000000000000
-                status: available
-                size: 10
-                progress: 100%
-        ListSnapshotResponse:
-            title: ListSnapshotResponse
             required:
             - results
-            type: object
-            properties:
-                results:
-                    title: snapshots
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/SnapshotResponse'
-            example:
-                results:
-                -   id: 9f1732cc-a2c9-4471-af68-479adf91e49b
-                    created_at: '2022-01-01T00:00:00Z'
-                    name: some_name
-                    description: some_description
-                    volume_id: 00000000-0000-0000-0000-000000000000
-                    status: available
-                    size: 10
-                    progress: 100%
-        SnapshotCreateRequest:
-            title: SnapshotCreateRequest
-            required:
-            - volume_id
-            - name
-            - description
-            type: object
-            properties:
-                volume_id:
-                    title: Id
-                    type: string
-                    format: uuid
-                name:
-                    title: Name
-                    type: string
-                description:
-                    title: Description
-                    type: string
-            example:
-                volume_id: 00000000-0000-0000-0000-000000000000
-                name: snapshot name
-                description: snapshot description
-        RestoreSnapshotRequest:
-            title: RestoreSnapshotRequest
-            required:
-            - name
-            - description
-            type: object
-            properties:
-                name:
-                    title: Name
-                    type: string
-                description:
-                    title: Description
-                    type: string
-            example:
-                name: snapshot name
-                description: snapshot description
-        GetUsageResponse:
-            title: RestoreSnapshotRequest
-            required:
-            - quota_slug
-            - used
-            type: object
-            properties:
-                quota_slug:
-                    title: Quota Slug
-                    type: string
-                used:
-                    title: Used
-                    type: integer
-            example:
-                quota_slug: disk
-                used: 10
-        ListUsageResponse:
-            title: ListUsageResponse
-            required:
-            - results
-            type: object
-            properties:
-                results:
-                    title: results
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/GetUsageResponse'
+            title: ListResourceUsage
             example:
                 results:
                 -   quota_slug: disk
                     used: 10
-    securitySchemes:
-        OAuth2:
-            flows:
-                authorizationCode:
-                    authorizationUrl: https://idp-maas-sandbox.ipet.sh/auth/realms/master/protocol/openid-connect/auth
-                    tokenUrl: https://idp-maas-sandbox.ipet.sh/auth/realms/master/protocol/openid-connect/token
-                    scopes:
-                        block-storage.read: Ler informações de recursos IaaS
-                        block-storage.write: Escrever informações de recursos IaaS
-            type: oauth2
-            description: OAuth2 via IDPA
-tags:
--   name: healthchecks
-    description: healthchecks
-    x-mgc-hidden: true
--   name: usage
-    description: usage
--   name: snapshots
-    description: snapshots
--   name: volume-types
-    description: volume types
--   name: block-storage
-    description: block storage
-    x-mgc-description: Block Storage Volume Resources
-    x-mgc-name: volume
+        ListSnapshotResponse:
+            properties:
+                results:
+                    items:
+                        $ref: '#/components/schemas/SnapshotResponse'
+                    type: array
+                    title: Results
+            type: object
+            required:
+            - results
+            title: ListSnapshotResponse
+            example:
+                results:
+                -   created_at: '2023-05-26T11:20:57Z'
+                    id: some_id
+                    name: some_name
+                    size: 10
+                    status: created
+                    updated_at: '2023-05-26T12:20:57Z'
+                    volume_id: 00000000-0000-0000-0000-000000000000
+                    volume_type_id: 00000000-0000-0000-0000-000000000000
+        ProjectType:
+            type: string
+            enum:
+            - dbaas
+            - iamaas
+            - k8saas
+            - mngsvc
+            title: ProjectType
+        ProjectTypeAll:
+            type: string
+            enum:
+            - dbaas
+            - iamaas
+            - k8saas
+            - mngsvc
+            - default
+            title: ProjectTypeAll
+        ResourceUsageResponse:
+            properties:
+                quota_slug:
+                    type: string
+                    title: Quota Slug
+                used:
+                    type: integer
+                    title: Used
+            type: object
+            required:
+            - quota_slug
+            - used
+            title: ResourceUsageResponse
+            example:
+                quota_slug: disk
+                used: 10
+        SnapshotCreateRequest:
+            properties:
+                volume_id:
+                    type: string
+                    title: Volume Id
+                name:
+                    type: string
+                    title: Name
+            type: object
+            required:
+            - volume_id
+            - name
+            title: SnapshotCreateRequest
+            example:
+                name: snapshot name
+                volume_id: 00000000-0000-0000-0000-000000000000
+        SnapshotResponse:
+            properties:
+                id:
+                    type: string
+                    title: Id
+                created_at:
+                    type: string
+                    title: Created At
+                    example: '2022-01-01T00:00:10Z'
+                updated_at:
+                    title: Updated At
+                    nullable: true
+                    type: string
+                    example: '2022-01-01T00:00:10Z'
+                name:
+                    title: Name
+                    nullable: true
+                    type: string
+                volume_id:
+                    title: Volume Id
+                    nullable: true
+                    type: string
+                volume_type_id:
+                    type: string
+                    title: Volume Type Id
+                status:
+                    type: string
+                    title: Status
+                size:
+                    type: integer
+                    title: Size
+            type: object
+            required:
+            - id
+            - created_at
+            - volume_type_id
+            - status
+            - size
+            title: SnapshotResponse
+            example:
+                created_at: '2023-05-26T11:20:57Z'
+                id: some_id
+                name: some_name
+                size: 10
+                status: created
+                updated_at: '2023-05-26T12:20:57Z'
+                volume_id: 00000000-0000-0000-0000-000000000000
+                volume_type_id: 00000000-0000-0000-0000-000000000000
+        SnapshotRestoreRequest:
+            properties:
+                name:
+                    type: string
+                    title: Name
+                description:
+                    title: Description
+                    nullable: true
+                    type: string
+            type: object
+            required:
+            - name
+            title: SnapshotRestoreRequest
+            example:
+                description: volume description
+                name: volume name
+        SortSnapshot:
+            type: string
+            enum:
+            - created_at:asc
+            - updated_at:asc
+            - status:asc
+            - id:asc
+            - created_at:desc
+            - updated_at:desc
+            - status:desc
+            - id:desc
+            title: SortSnapshot
+        Specs:
+            properties:
+                total_iops_sec:
+                    type: integer
+                    title: Total Iops Sec
+            type: object
+            required:
+            - total_iops_sec
+            title: Specs
+        ValidationError:
+            properties:
+                message:
+                    title: Message
+                    type: string
+                slug:
+                    title: Slug
+                    type: string
+            type: object
+            required:
+            - loc
+            - msg
+            - type
+            title: ValidationError
+            example:
+                message: Unauthorized
+                slug: Unauthorized
+        VolumeCreateRequest:
+            properties:
+                name:
+                    type: string
+                    maxLength: 255
+                    minLength: 1
+                    title: Name
+                size:
+                    type: integer
+                    exclusiveMaximum: true
+                    exclusiveMinimum: true
+                    title: Size
+                    description: Gibibytes (GiB)
+                    maximum: 2147483646
+                    minimum: 0
+                volume_type_id:
+                    title: Volume Type Id
+                    nullable: true
+                    type: string
+                volume_type:
+                    title: Volume Type
+                    nullable: true
+                    type: string
+                description:
+                    title: Description
+                    nullable: true
+                    type: string
+            type: object
+            required:
+            - name
+            - size
+            title: VolumeCreateRequest
+            example:
+                description: volume description
+                name: volume name
+                size: 10
+                volume_type: rbd
+                volume_type_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        VolumeCreateRequestV1:
+            properties:
+                name:
+                    type: string
+                    maxLength: 255
+                    minLength: 1
+                    title: Name
+                size:
+                    type: integer
+                    maximum: 2147483648
+                    minimum: 1
+                    title: Size
+                    description: Gibibytes (GiB)
+                type:
+                    anyOf:
+                    -   $ref: '#/components/schemas/IdRequest'
+                    -   $ref: '#/components/schemas/VolumeName'
+                    title: Type
+                availability_zone:
+                    title: Availability Zone
+                    nullable: true
+                    type: string
+            type: object
+            required:
+            - name
+            - size
+            - type
+            title: VolumeCreateRequestV1
+            example:
+                availability_zone: some_az
+                name: volume name
+                size: 10
+                type:
+                    id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        VolumeCreateResponse:
+            properties:
+                id:
+                    type: string
+                    title: Id
+            type: object
+            required:
+            - id
+            title: VolumeCreateResponse
+            example:
+                id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        VolumeExtendRequest:
+            properties:
+                new_volume_size:
+                    type: integer
+                    exclusiveMinimum: true
+                    title: New Volume Size
+                    description: New volume size in GB
+                    minimum: 0
+            type: object
+            required:
+            - new_volume_size
+            title: VolumeExtendRequest
+            example:
+                new_volume_size: 20
+        VolumeListResponse:
+            properties:
+                volumes:
+                    items:
+                        $ref: '#/components/schemas/VolumeResponse'
+                    type: array
+                    title: Volumes
+            type: object
+            required:
+            - volumes
+            title: VolumeListResponse
+            example:
+                volumes:
+                -   attachments:
+                    -   virtual_machine_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                    created_at: '2022-01-01T00:00:10Z'
+                    description: volume description
+                    error: description if status error
+                    id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                    name: volume name
+                    size: 10
+                    status: available
+                    updated_at: '2022-01-01T00:00:10Z'
+                    volume_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                    volume_type:
+                        id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                        name: rbd
+                        sku: deprecated
+        VolumeName:
+            properties:
+                name:
+                    type: string
+                    maxLength: 255
+                    minLength: 1
+                    title: Name
+            type: object
+            required:
+            - name
+            title: VolumeName
+            example:
+                name: some_resource_name
+        VolumeResponse:
+            properties:
+                id:
+                    type: string
+                    title: Id
+                volume_id:
+                    title: Volume Id
+                    nullable: true
+                    type: string
+                status:
+                    type: string
+                    title: Status
+                error:
+                    title: Error
+                    nullable: true
+                    type: string
+                size:
+                    type: integer
+                    title: Size
+                    description: Gibibytes (GiB)
+                name:
+                    type: string
+                    title: Name
+                volume_type:
+                    $ref: '#/components/schemas/VolumeTypeResponseForVolume'
+                description:
+                    title: Description
+                    nullable: true
+                    type: string
+                attachments:
+                    title: Attachments
+                    nullable: true
+                    items:
+                        $ref: '#/components/schemas/AttachmentResponse'
+                    type: array
+                created_at:
+                    title: Created At
+                    nullable: true
+                    type: string
+                    example: '2022-01-01T00:00:10Z'
+                updated_at:
+                    title: Updated At
+                    nullable: true
+                    type: string
+                    example: '2022-01-01T00:00:10Z'
+            type: object
+            required:
+            - id
+            - status
+            - size
+            - name
+            - volume_type
+            title: VolumeResponse
+            example:
+                attachments:
+                -   virtual_machine_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                created_at: '2022-01-01T00:00:10Z'
+                description: volume description
+                error: description if status error
+                id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                name: volume name
+                size: 10
+                status: available
+                updated_at: '2022-01-01T00:00:10Z'
+                volume_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                volume_type:
+                    id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                    name: rbd
+                    sku: deprecated
+        VolumeRetypeRequest:
+            properties:
+                volume_type_id:
+                    type: string
+                    title: Volume Type Id
+            type: object
+            required:
+            - volume_type_id
+            title: VolumeRetypeRequest
+            example:
+                volume_type_id: 00000000-0000-0000-0000-000000000000
+        VolumeTypeDbListResponse:
+            properties:
+                types:
+                    items:
+                        $ref: '#/components/schemas/VolumeTypeDbResponse'
+                    type: array
+                    title: Types
+            type: object
+            required:
+            - types
+            title: VolumeTypeDbListResponse
+            example:
+                types:
+                -   created_at: '2022-01-01 00:00:00'
+                    id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                    internal: true
+                    name: cloud_nvme
+                    sku: sku1234
+                    status: active
+                    total_iops_sec: 1000
+                    type: nvme
+                    updated_at: '2022-01-01 00:00:00'
+        VolumeTypeDbResponse:
+            properties:
+                id:
+                    type: string
+                    title: Id
+                name:
+                    type: string
+                    title: Name
+                sku:
+                    type: string
+                    title: Sku
+                internal:
+                    type: boolean
+                    title: Internal
+                total_iops_sec:
+                    type: integer
+                    title: Total Iops Sec
+                type:
+                    type: string
+                    title: Type
+                status:
+                    type: string
+                    title: Status
+                created_at:
+                    title: Created At
+                    nullable: true
+                    type: string
+                    format: date-time
+                updated_at:
+                    title: Updated At
+                    nullable: true
+                    type: string
+                    format: date-time
+            type: object
+            required:
+            - id
+            - name
+            - sku
+            - internal
+            - total_iops_sec
+            - type
+            - status
+            title: VolumeTypeDbResponse
+            example:
+                created_at: '2022-01-01 00:00:00'
+                id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                internal: true
+                name: cloud_nvme
+                sku: sku1234
+                status: active
+                total_iops_sec: 1000
+                type: nvme
+                updated_at: '2022-01-01 00:00:00'
+        VolumeTypeList:
+            properties:
+                types:
+                    items:
+                        $ref: '#/components/schemas/block_storage_api_product__volume__models__volume_type__VolumeTypeResponse'
+                    type: array
+                    title: Types
+            type: object
+            required:
+            - types
+            title: VolumeTypeList
+            example:
+                types:
+                -   id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                    name: cloud_nvme
+                    sku: sku1234
+                    specs:
+                        total_iops_sec: 1000
+                    status: active
+                    type: nvme
+        VolumeTypeRequest:
+            properties:
+                name:
+                    type: string
+                    title: Name
+                sku:
+                    type: string
+                    title: Sku
+                internal:
+                    type: boolean
+                    title: Internal
+                type:
+                    type: string
+                    title: Type
+            type: object
+            required:
+            - name
+            - sku
+            - internal
+            - type
+            title: VolumeTypeRequest
+            example:
+                internal: true
+                name: cloud_nvme
+                sku: sku1234
+                type: nvme
+        VolumeTypeResponseForVolume:
+            properties:
+                id:
+                    type: string
+                    title: Id
+                name:
+                    type: string
+                    title: Name
+                sku:
+                    type: string
+                    title: Sku
+                    default: deprecated
+            type: object
+            required:
+            - id
+            - name
+            title: VolumeTypeResponseForVolume
+            example:
+                id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                name: cloud_nvme
+                sku: deprecated
+        VolumeTypeSpec:
+            properties:
+                read:
+                    type: integer
+                    title: Read
+                write:
+                    type: integer
+                    title: Write
+            type: object
+            required:
+            - read
+            - write
+            title: VolumeTypeSpec
+        VolumeTypeStatus:
+            type: string
+            enum:
+            - active
+            - deprecated
+            - deleted
+            title: VolumeTypeStatus
+        VolumeUpdateRequest:
+            properties:
+                name:
+                    type: string
+                    maxLength: 255
+                    minLength: 1
+                    title: Name
+            type: object
+            required:
+            - name
+            title: VolumeUpdateRequest
+            example:
+                name: new volume name
+        block_storage_api_product__volume__models__volume_type__VolumeTypeResponse:
+            properties:
+                id:
+                    type: string
+                    title: Id
+                name:
+                    type: string
+                    title: Name
+                type:
+                    type: string
+                    title: Type
+                sku:
+                    type: string
+                    title: Sku
+                status:
+                    title: Status
+                    nullable: true
+                    type: string
+                specs:
+                    nullable: true
+                    $ref: '#/components/schemas/Specs'
+            type: object
+            required:
+            - id
+            - name
+            - type
+            - sku
+            title: VolumeTypeResponse
+            example:
+                id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                name: cloud_nvme
+                sku: sku1234
+                specs:
+                    total_iops_sec: 1000
+                status: active
+                type: nvme
+        block_storage_api_product__volume__models__volume_type_v1__VolumeTypeResponse:
+            properties:
+                iops:
+                    $ref: '#/components/schemas/VolumeTypeSpec'
+                id:
+                    type: string
+                    title: Id
+                name:
+                    type: string
+                    title: Name
+                disk_type:
+                    $ref: '#/components/schemas/DiskType'
+                status:
+                    $ref: '#/components/schemas/VolumeTypeStatus'
+            type: object
+            required:
+            - iops
+            - id
+            - name
+            - disk_type
+            - status
+            title: VolumeTypeResponse
+            example:
+                disk_type: nvme
+                id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                iops:
+                    read: 1000
+                    write: 1000
+                name: my_volume_type
+                status: active
+$id: https://block-storage.jaxyendy.com/openapi.json
 servers:
 -   url: https://{env}/{region}/volume
     variables:
@@ -1136,4 +1961,28 @@ servers:
                     to: api2.magalu.cloud
                 -   from: pre-prod
                     to: api.pre-prod.jaxyendy.com
-$id: https://block-storage.jaxyendy.com/openapi.json
+tags:
+-   name: healthchecks
+    description: healthchecks
+    x-mgc-hidden: true
+-   name: usage
+    description: Usage
+-   name: snapshots
+    description: Snapshots
+-   name: volume-types
+    description: Volume types
+-   name: block-storage
+    x-mgc-description: Block Storage Volume Resources
+    x-mgc-name: volume
+-   name: block-storage-v1
+    x-mgc-description: Block Storage Volume Resources V1
+    x-mgc-name: volume-v1
+-   name: block-storage-latest
+    x-mgc-description: Block Storage Volume Resources Latest
+    x-mgc-name: volume-latest
+-   name: volume-types-v1
+    description: Volume types V1
+    x-mgc-name: volume-types-v1
+-   name: volume-types-latest
+    description: Volume types Latest
+    x-mgc-name: volume-types-latest

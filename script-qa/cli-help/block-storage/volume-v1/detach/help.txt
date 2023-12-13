@@ -6,14 +6,14 @@ detachment can be delayed indefinitely until you unmount the volume,
 force detachment, reboot the instance, or all three.
 
 Usage:
-  ./cli block-storage volume detach [id] [virtual-machine-id] [flags]
+  ./cli block-storage volume-v1 detach [id] [virtual-machine-id] [flags]
 
 Flags:
-      --force                       Force
-  -h, --help                        help for detach
-      --id string                   Id
-  -v, --version                     version for detach
-      --virtual-machine-id string   Virtual Machine Id
+  -h, --help                      help for detach
+      --id uuid                   Id
+      --project-type enum         Project Type (one of "dbaas", "default", "iamaas", "k8saas" or "mngsvc") (default "default")
+  -v, --version                   version for detach
+      --virtual-machine-id uuid   Virtual Machine Id
 
 Global Flags:
       --cli.show-cli-globals   Show all CLI global flags on usage text

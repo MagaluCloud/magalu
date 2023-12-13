@@ -1,4 +1,4 @@
-Create volume type only in DB
+Create volume type
 
 Usage:
   ./cli block-storage volume-types create [flags]
@@ -8,6 +8,7 @@ Flags:
       --internal      Internal
       --name string   Name
       --sku string    Sku
+      --type string   Type
   -v, --version       version for create
 
 Global Flags:

@@ -1,0 +1,37 @@
+Creates a Volume in the current tenant which is logged in.
+
+    A volume is ready for you to use when it's in the available state and the
+    completed status.
+
+    #### Notes
+    - For the volume type data, you can use the block-storage volume-types list
+        command to list all available volume types.
+    - You can verify the state of your volume using the block-storage volume
+        get --id [uuid] command.
+
+Usage:
+  ./cli block-storage volume-latest create [flags]
+
+Examples:
+  ./cli block-storage volume-latest create --type.id="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" --type.name="some_resource_name"
+
+Flags:
+      --availability-zone string   Availability Zone
+  -h, --help                       help for create
+      --name string                Name (between 1 and 255 characters)
+      --project-type enum          Project Type (one of "dbaas", "default", "iamaas", "k8saas" or "mngsvc") (default "default")
+      --size integer               Size: Gibibytes (GiB) (range: 1 - 2147483648)
+      --type object                Type (at least one of: single property: id or single property: name)
+                                   Use --type=help for more details
+      --type.id string             Type: Id (min character count: 1)
+                                   This is the same as '--type=id:string'.
+      --type.name string           Type: Name (between 1 and 255 characters)
+                                   This is the same as '--type=name:string'.
+  -v, --version                    version for create
+
+Global Flags:
+      --cli.show-cli-globals   Show all CLI global flags on usage text
+      --env enum               Environment to use (one of "pre-prod" or "prod") (default "prod")
+      --region enum            Region to reach the service (one of "br-ne-1" or "br-se-1") (default "br-ne-1")
+      --server-url uri         Manually specify the server to use
+

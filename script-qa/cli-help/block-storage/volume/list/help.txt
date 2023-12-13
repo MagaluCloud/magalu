@@ -4,8 +4,11 @@ Usage:
   ./cli block-storage volume list [flags]
 
 Flags:
-  -h, --help      help for list
-  -v, --version   version for list
+      --control.limit integer     Limit (default 50)
+      --control.offset integer    Offset
+      --control.sort string       Sort (default "created_at:desc")
+  -h, --help                     help for list
+  -v, --version                  version for list
 
 Global Flags:
       --cli.show-cli-globals   Show all CLI global flags on usage text

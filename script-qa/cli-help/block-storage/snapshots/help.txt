@@ -1,13 +1,13 @@
-snapshots
+Snapshots
 
 Usage:
   ./cli block-storage snapshots [flags]
   ./cli block-storage snapshots [command]
 
 Commands:
-  create      Create snapshot
+  create      Create Snapshot
   delete      Delete Snapshot
-  list        List snapshots
+  list        List Snapshots
   restore     Restore Snapshot
 
 Flags:

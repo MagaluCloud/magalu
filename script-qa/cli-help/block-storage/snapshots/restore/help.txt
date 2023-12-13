@@ -6,7 +6,7 @@ Usage:
 Flags:
       --description string   Description
   -h, --help                 help for restore
-      --id uuid              Snapshot Id: snapshot_id
+      --id uuid              Snapshot Id
       --name string          Name
   -v, --version              version for restore
 

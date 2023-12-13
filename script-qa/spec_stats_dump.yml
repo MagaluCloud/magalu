@@ -1,19 +1,11 @@
 block-storage.openapi:
   computed-variables:
-    - POST /v0/volume_types:
-        - '201':
-            computed:
-              - id
-            non-computed:
-              - internal
-              - name
-              - sku
     - POST /v0/snapshots:
         - '202':
             computed:
               - id
             non-computed:
-              - description
+              - force
               - name
               - volume_id
     - POST /v0/snapshots/{snapshot_id}:
@@ -24,8 +16,17 @@ block-storage.openapi:
               - description
               - name
               - snapshot_id
-    - POST /v0/volumes:
+    - POST /v0/volume_types:
         - '201':
+            computed:
+              - id
+            non-computed:
+              - internal
+              - name
+              - sku
+              - type
+    - POST /v0/volumes:
+        - '202':
             computed:
               - id
             non-computed:
@@ -33,6 +34,7 @@ block-storage.openapi:
               - name
               - size
               - volume_type
+              - volume_type_id
     - POST /v0/volumes/{id}/attach/{virtual_machine_id}:
         - '200':
             computed:
@@ -66,16 +68,68 @@ block-storage.openapi:
               - force
               - id
               - virtual_machine_id
+    - POST /v1/volumes:
+        - '202':
+            computed:
+              - id
+            non-computed:
+              - availability_zone
+              - name
+              - project_type
+              - size
+              - type
+    - POST /latest/volumes:
+        - '202':
+            computed:
+              - id
+            non-computed:
+              - availability_zone
+              - name
+              - project_type
+              - size
+              - type
   missing-crud:
-    - volume-types:
-        - delete
     - usage:
         - post
         - delete
-  typeless-schemas:
-    - components.schemas.QosSpecs.specs
+    - volume-types:
+        - delete
+    - volume-types-v1:
+        - post
+        - delete
+    - block-storage-v1:
+        - get
+    - volume-types-latest:
+        - post
+        - delete
+    - block-storage-latest:
+        - get
+  uneven-resources:
+    volumes-latest:
+      POST:
+        - /latest/volumes/{id}/extend
+        - /latest/volumes/{id}/retype
+    volumes-v1:
+      POST:
+        - /v1/volumes/{id}/extend
+        - /v1/volumes/{id}/retype
   unused-components:
+    - '#/components/schemas/ProjectType'
     - '#/components/schemas/ValidationError'
+  xof-single-item:
+    - paths./v0/snapshots.get.parameters._sort.schema
+    - paths./v1/volumes.post.parameters.project_type.schema
+    - paths./v1/volumes/{id}.delete.parameters.project_type.schema
+    - paths./v1/volumes/{id}/attach/{virtual_machine_id}.post.parameters.project_type.schema
+    - paths./v1/volumes/{id}/detach/{virtual_machine_id}.post.parameters.project_type.schema
+    - paths./v1/volumes/{id}/extend.post.parameters.project_type.schema
+    - paths./v1/volumes/{id}/retype.post.parameters.project_type.schema
+    - paths./latest/volumes.post.parameters.project_type.schema
+    - paths./latest/volumes/{id}.delete.parameters.project_type.schema
+    - paths./latest/volumes/{id}/attach/{virtual_machine_id}.post.parameters.project_type.schema
+    - paths./latest/volumes/{id}/detach/{virtual_machine_id}.post.parameters.project_type.schema
+    - paths./latest/volumes/{id}/extend.post.parameters.project_type.schema
+    - paths./latest/volumes/{id}/retype.post.parameters.project_type.schema
 dbaas.openapi:
   computed-variables:
     - POST /v1/instances:

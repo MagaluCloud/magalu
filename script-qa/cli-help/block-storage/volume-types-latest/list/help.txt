@@ -1,12 +1,11 @@
-Retrieve usage for specific quota_slug (disk & volumes)
+Returns a list of volume types
 
 Usage:
-  ./cli block-storage usage list [flags]
+  ./cli block-storage volume-types-latest list [flags]
 
 Flags:
-  -h, --help                help for list
-      --quota-slug string   Quota Slug
-  -v, --version             version for list
+  -h, --help      help for list
+  -v, --version   version for list
 
 Global Flags:
       --cli.show-cli-globals   Show all CLI global flags on usage text

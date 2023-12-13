@@ -4,8 +4,11 @@ Usage:
   ./cli block-storage snapshots list [flags]
 
 Flags:
-  -h, --help      help for list
-  -v, --version   version for list
+      --control.limit integer     Limit (default 50)
+      --control.offset integer    Offset
+      --control.sort enum         Sort (one of "created_at:asc", "created_at:desc", "id:asc", "id:desc", "status:asc", "status:desc", "updated_at:asc" or "updated_at:desc") (default "created_at:desc")
+  -h, --help                     help for list
+  -v, --version                  version for list
 
 Global Flags:
       --cli.show-cli-globals   Show all CLI global flags on usage text

@@ -1,12 +1,13 @@
-Retrieve usage for specific quota_slug (disk & volumes)
+Delete a volume from the provided tenant_id
 
 Usage:
-  ./cli block-storage usage list [flags]
+  ./cli block-storage volume-v1 delete [id] [flags]
 
 Flags:
-  -h, --help                help for list
-      --quota-slug string   Quota Slug
-  -v, --version             version for list
+  -h, --help                help for delete
+      --id uuid             Id
+      --project-type enum   Project Type (one of "dbaas", "default", "iamaas", "k8saas" or "mngsvc") (default "default")
+  -v, --version             version for delete
 
 Global Flags:
       --cli.show-cli-globals   Show all CLI global flags on usage text

@@ -1,11 +1,11 @@
-Delete a snapshot from the provided tenant_id
+Delete a Snapshot
 
 Usage:
   ./cli block-storage snapshots delete [id] [flags]
 
 Flags:
   -h, --help      help for delete
-      --id uuid   Snapshot Id: snapshot_id
+      --id uuid   Snapshot Id
   -v, --version   version for delete
 
 Global Flags:

@@ -5,7 +5,7 @@ Usage:
   ./cli block-storage healthchecks [command]
 
 Commands:
-  list        Healthcheck
+  list        Health Check
 
 Flags:
   -h, --help      help for healthchecks

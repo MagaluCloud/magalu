@@ -1,15 +1,15 @@
-Create snapshot
+Create a snapshot
 
 Usage:
   ./cli block-storage snapshots create [flags]
 
 Flags:
       --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-      --description string            Description
+      --force                         Force
   -h, --help                          help for create
       --name string                   Name
   -v, --version                       version for create
-      --volume-id uuid                Id
+      --volume-id string              Volume Id
 
 Global Flags:
       --cli.show-cli-globals   Show all CLI global flags on usage text

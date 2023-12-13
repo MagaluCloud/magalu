@@ -4,10 +4,10 @@ Usage:
   ./cli block-storage volume delete [id] [flags]
 
 Flags:
-      --force     Force
-  -h, --help      help for delete
-      --id uuid   Volume Id
-  -v, --version   version for delete
+      --force       Force
+  -h, --help        help for delete
+      --id string   Id
+  -v, --version     version for delete
 
 Global Flags:
       --cli.show-cli-globals   Show all CLI global flags on usage text

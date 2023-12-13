@@ -4,9 +4,9 @@ Usage:
   ./cli block-storage volume-attach-blueprint delete [flags]
 
 Flags:
-      --block-storage-id uuid     Volume Id
-  -h, --help                      help for delete
-      --virtual-machine-id uuid   Virtual Machine Id
+      --block-storage-id string     Id
+  -h, --help                        help for delete
+      --virtual-machine-id string   Virtual Machine Id
 
 Global Flags:
       --cli.show-cli-globals   Show all CLI global flags on usage text

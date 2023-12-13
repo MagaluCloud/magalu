@@ -34,7 +34,7 @@ paths:
         post:
             x-mgc-description: Create a Block Storage volume
             responses:
-                '201':
+                '202':
                     links:
                         read:
                             operationRef: '#/paths/~1v0~1volumes~1{id}/get'

@@ -1,14 +1,14 @@
 Attach a volume into an instance, both from the provided tenant_id
 
 Usage:
-  ./cli block-storage volume attach [id] [virtual-machine-id] [flags]
+  ./cli block-storage volume-latest attach [id] [virtual-machine-id] [flags]
 
 Flags:
-      --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-  -h, --help                          help for attach
-      --id string                     Id
-  -v, --version                       version for attach
-      --virtual-machine-id string     Virtual Machine Id
+  -h, --help                      help for attach
+      --id uuid                   Id
+      --project-type enum         Project Type (one of "dbaas", "default", "iamaas", "k8saas" or "mngsvc") (default "default")
+  -v, --version                   version for attach
+      --virtual-machine-id uuid   Virtual Machine Id
 
 Global Flags:
       --cli.show-cli-globals   Show all CLI global flags on usage text

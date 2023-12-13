@@ -1,4 +1,4 @@
-usage
+Usage
 
 Usage:
   ./cli block-storage usage [flags]

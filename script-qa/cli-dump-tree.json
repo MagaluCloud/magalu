@@ -290,16 +290,16 @@
        "required": [
         "status"
        ],
-       "title": "Healthcheck",
+       "title": "HealthCheck",
        "type": "object"
       },
-      "version": "1.52.0"
+      "version": "1.80.0"
      }
     ],
     "description": "healthchecks",
     "isInternal": true,
     "name": "healthchecks",
-    "version": "1.52.0"
+    "version": "1.80.0"
    },
    {
     "children": [
@@ -333,28 +333,27 @@
        },
        "type": "object"
       },
-      "description": "Create snapshot",
+      "description": "Create a snapshot",
       "isInternal": false,
       "name": "create",
       "parameters": {
        "additionalProperties": false,
        "properties": {
-        "description": {
-         "title": "Description",
-         "type": "string"
+        "force": {
+         "default": false,
+         "title": "Force",
+         "type": "boolean"
         },
         "name": {
          "title": "Name",
          "type": "string"
         },
         "volume_id": {
-         "format": "uuid",
-         "title": "Id",
+         "title": "Volume Id",
          "type": "string"
         }
        },
        "required": [
-        "description",
         "name",
         "volume_id"
        ],
@@ -362,11 +361,11 @@
       },
       "result": {
        "example": {
-        "id": "9f1732cc-a2c9-4471-af68-479adf91e49b"
+        "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
        },
        "properties": {
         "id": {
-         "format": "uuid",
+         "minLength": 1,
          "title": "Id",
          "type": "string"
         }
@@ -374,10 +373,10 @@
        "required": [
         "id"
        ],
-       "title": "VolumeCreateResponse",
+       "title": "IdResponse",
        "type": "object"
       },
-      "version": "1.52.0"
+      "version": "1.80.0"
      },
      {
       "configs": {
@@ -409,14 +408,13 @@
        },
        "type": "object"
       },
-      "description": "Delete a snapshot from the provided tenant_id",
+      "description": "Delete a Snapshot",
       "isInternal": false,
       "name": "delete",
       "parameters": {
        "additionalProperties": false,
        "properties": {
         "id": {
-         "description": "snapshot_id",
          "format": "uuid",
          "title": "Snapshot Id",
          "type": "string"
@@ -431,7 +429,7 @@
        "nullable": true,
        "type": "null"
       },
-      "version": "1.52.0"
+      "version": "1.80.0"
      },
      {
       "configs": {
@@ -468,20 +466,47 @@
       "name": "list",
       "parameters": {
        "additionalProperties": false,
+       "properties": {
+        "_limit": {
+         "default": 50,
+         "title": " Limit",
+         "type": "integer"
+        },
+        "_offset": {
+         "default": 0,
+         "title": " Offset",
+         "type": "integer"
+        },
+        "_sort": {
+         "default": "created_at:desc",
+         "enum": [
+          "created_at:asc",
+          "updated_at:asc",
+          "status:asc",
+          "id:asc",
+          "created_at:desc",
+          "updated_at:desc",
+          "status:desc",
+          "id:desc"
+         ],
+         "title": " Sort",
+         "type": "string"
+        }
+       },
        "type": "object"
       },
       "result": {
        "example": {
         "results": [
          {
-          "created_at": "2022-01-01T00:00:00Z",
-          "description": "some_description",
-          "id": "9f1732cc-a2c9-4471-af68-479adf91e49b",
+          "created_at": "2023-05-26T11:20:57Z",
+          "id": "some_id",
           "name": "some_name",
-          "progress": "100%",
           "size": 10,
-          "status": "available",
-          "volume_id": "00000000-0000-0000-0000-000000000000"
+          "status": "created",
+          "updated_at": "2023-05-26T12:20:57Z",
+          "volume_id": "00000000-0000-0000-0000-000000000000",
+          "volume_type_id": "00000000-0000-0000-0000-000000000000"
          }
         ]
        },
@@ -489,41 +514,31 @@
         "results": {
          "items": {
           "example": {
-           "created_at": "2022-01-01T00:00:00Z",
-           "description": "some_description",
-           "id": "9f1732cc-a2c9-4471-af68-479adf91e49b",
+           "created_at": "2023-05-26T11:20:57Z",
+           "id": "some_id",
            "name": "some_name",
-           "progress": "100%",
            "size": 10,
-           "status": "available",
-           "volume_id": "00000000-0000-0000-0000-000000000000"
+           "status": "created",
+           "updated_at": "2023-05-26T12:20:57Z",
+           "volume_id": "00000000-0000-0000-0000-000000000000",
+           "volume_type_id": "00000000-0000-0000-0000-000000000000"
           },
           "properties": {
            "created_at": {
-            "format": "date-time",
+            "example": "2022-01-01T00:00:10Z",
             "title": "Created At",
             "type": "string"
            },
-           "description": {
-            "title": "Description",
-            "type": "string"
-           },
            "id": {
-            "format": "uuid",
             "title": "Id",
             "type": "string"
            },
            "name": {
+            "nullable": true,
             "title": "Name",
             "type": "string"
            },
-           "progress": {
-            "description": "Porcentagem",
-            "title": "Progress",
-            "type": "string"
-           },
            "size": {
-            "description": "Gibibytes (GiB)",
             "title": "Size",
             "type": "integer"
            },
@@ -531,26 +546,33 @@
             "title": "Status",
             "type": "string"
            },
+           "updated_at": {
+            "example": "2022-01-01T00:00:10Z",
+            "nullable": true,
+            "title": "Updated At",
+            "type": "string"
+           },
            "volume_id": {
-            "format": "uuid",
-            "title": "Id",
+            "nullable": true,
+            "title": "Volume Id",
+            "type": "string"
+           },
+           "volume_type_id": {
+            "title": "Volume Type Id",
             "type": "string"
            }
           },
           "required": [
            "id",
            "created_at",
-           "name",
-           "description",
-           "volume_id",
+           "volume_type_id",
            "status",
-           "size",
-           "progress"
+           "size"
           ],
           "title": "SnapshotResponse",
           "type": "object"
          },
-         "title": "snapshots",
+         "title": "Results",
          "type": "array"
         }
        },
@@ -560,7 +582,7 @@
        "title": "ListSnapshotResponse",
        "type": "object"
       },
-      "version": "1.52.0"
+      "version": "1.80.0"
      },
      {
       "configs": {
@@ -599,11 +621,11 @@
        "additionalProperties": false,
        "properties": {
         "description": {
+         "nullable": true,
          "title": "Description",
          "type": "string"
         },
         "id": {
-         "description": "snapshot_id",
          "format": "uuid",
          "title": "Snapshot Id",
          "type": "string"
@@ -614,7 +636,6 @@
         }
        },
        "required": [
-        "description",
         "id",
         "name"
        ],
@@ -622,11 +643,11 @@
       },
       "result": {
        "example": {
-        "id": "9f1732cc-a2c9-4471-af68-479adf91e49b"
+        "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
        },
        "properties": {
         "id": {
-         "format": "uuid",
+         "minLength": 1,
          "title": "Id",
          "type": "string"
         }
@@ -634,16 +655,16 @@
        "required": [
         "id"
        ],
-       "title": "VolumeCreateResponse",
+       "title": "IdResponse",
        "type": "object"
       },
-      "version": "1.52.0"
+      "version": "1.80.0"
      }
     ],
-    "description": "snapshots",
+    "description": "Snapshots",
     "isInternal": false,
     "name": "snapshots",
-    "version": "1.52.0"
+    "version": "1.80.0"
    },
    {
     "children": [
@@ -684,8 +705,7 @@
        "additionalProperties": false,
        "properties": {
         "quota_slug": {
-         "description": "quota_slug",
-         "format": "string",
+         "nullable": true,
          "title": "Quota Slug",
          "type": "string"
         }
@@ -722,26 +742,26 @@
            "quota_slug",
            "used"
           ],
-          "title": "RestoreSnapshotRequest",
+          "title": "ResourceUsageResponse",
           "type": "object"
          },
-         "title": "results",
+         "title": "Results",
          "type": "array"
         }
        },
        "required": [
         "results"
        ],
-       "title": "ListUsageResponse",
+       "title": "ListResourceUsage",
        "type": "object"
       },
-      "version": "1.52.0"
+      "version": "1.80.0"
      }
     ],
-    "description": "usage",
+    "description": "Usage",
     "isInternal": false,
     "name": "usage",
-    "version": "1.52.0"
+    "version": "1.80.0"
    },
    {
     "children": [
@@ -782,14 +802,10 @@
        "additionalProperties": false,
        "properties": {
         "id": {
-         "description": "id",
-         "format": "uuid",
-         "title": "Volume Id",
+         "title": "Id",
          "type": "string"
         },
         "virtual_machine_id": {
-         "description": "virtual_machine_id",
-         "format": "uuid",
          "title": "Virtual Machine Id",
          "type": "string"
         }
@@ -804,32 +820,32 @@
        "example": {
         "attachments": [
          {
-          "virtual_machine_id": "9f1732cc-a2c9-4471-af68-479adf91e49b"
+          "virtual_machine_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
          }
         ],
-        "created_at": "2022-01-01T00:00:00Z",
+        "created_at": "2022-01-01T00:00:10Z",
         "description": "volume description",
-        "error": "some error description or null",
-        "id": "9f1732cc-a2c9-4471-af68-479adf91e49b",
+        "error": "description if status error",
+        "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
         "name": "volume name",
         "size": 10,
-        "status": "in-use",
-        "updated_at": "2022-01-01T00:00:00Z",
-        "volume_id": "9f2310ac-1944-41e8-85ff-b5671b00c820",
+        "status": "available",
+        "updated_at": "2022-01-01T00:00:10Z",
+        "volume_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
         "volume_type": {
+         "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
          "name": "rbd",
-         "sku": "sku1234"
+         "sku": "deprecated"
         }
        },
        "properties": {
         "attachments": {
          "items": {
           "example": {
-           "virtual_machine_id": "9f1732cc-a2c9-4471-af68-479adf91e49b"
+           "virtual_machine_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
           },
           "properties": {
            "virtual_machine_id": {
-            "format": "uuid",
             "magalu.cloud/core/resolved": "true",
             "title": "Virtual Machine Id",
             "type": "string"
@@ -841,24 +857,27 @@
           "title": "AttachmentResponse",
           "type": "object"
          },
+         "nullable": true,
          "title": "Attachments",
          "type": "array"
         },
         "created_at": {
-         "format": "date-time",
+         "example": "2022-01-01T00:00:10Z",
+         "nullable": true,
          "title": "Created At",
          "type": "string"
         },
         "description": {
+         "nullable": true,
          "title": "Description",
          "type": "string"
         },
         "error": {
+         "nullable": true,
          "title": "Error",
          "type": "string"
         },
         "id": {
-         "format": "uuid",
          "title": "Id",
          "type": "string"
         },
@@ -876,34 +895,40 @@
          "type": "string"
         },
         "updated_at": {
-         "format": "date-time",
+         "example": "2022-01-01T00:00:10Z",
+         "nullable": true,
          "title": "Updated At",
          "type": "string"
         },
         "volume_id": {
-         "format": "uuid",
-         "title": "Id",
+         "nullable": true,
+         "title": "Volume Id",
          "type": "string"
         },
         "volume_type": {
          "example": {
-          "description": "volume type description",
-          "name": "rbd",
-          "sku": "sku1234"
+          "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+          "name": "cloud_nvme",
+          "sku": "deprecated"
          },
          "properties": {
+          "id": {
+           "title": "Id",
+           "type": "string"
+          },
           "name": {
            "title": "Name",
            "type": "string"
           },
           "sku": {
+           "default": "deprecated",
            "title": "Sku",
            "type": "string"
           }
          },
          "required": [
-          "name",
-          "sku"
+          "id",
+          "name"
          ],
          "title": "VolumeTypeResponseForVolume",
          "type": "object"
@@ -911,20 +936,15 @@
        },
        "required": [
         "id",
-        "volume_id",
         "status",
-        "error",
         "size",
         "name",
-        "volume_type",
-        "description",
-        "created_at",
-        "updated_at"
+        "volume_type"
        ],
        "title": "VolumeResponse",
        "type": "object"
       },
-      "version": "1.52.0"
+      "version": "1.80.0"
      },
      {
       "configs": {
@@ -963,38 +983,48 @@
        "additionalProperties": false,
        "properties": {
         "description": {
+         "nullable": true,
          "title": "Description",
          "type": "string"
         },
         "name": {
+         "maxLength": 255,
+         "minLength": 1,
          "title": "Name",
          "type": "string"
         },
         "size": {
          "description": "Gibibytes (GiB)",
+         "exclusiveMaximum": true,
+         "exclusiveMinimum": true,
+         "maximum": 2147483646,
+         "minimum": 0,
          "title": "Size",
          "type": "integer"
         },
         "volume_type": {
+         "nullable": true,
          "title": "Volume Type",
+         "type": "string"
+        },
+        "volume_type_id": {
+         "nullable": true,
+         "title": "Volume Type Id",
          "type": "string"
         }
        },
        "required": [
-        "description",
         "name",
-        "size",
-        "volume_type"
+        "size"
        ],
        "type": "object"
       },
       "result": {
        "example": {
-        "id": "9f1732cc-a2c9-4471-af68-479adf91e49b"
+        "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
        },
        "properties": {
         "id": {
-         "format": "uuid",
          "title": "Id",
          "type": "string"
         }
@@ -1005,7 +1035,7 @@
        "title": "VolumeCreateResponse",
        "type": "object"
       },
-      "version": "1.52.0"
+      "version": "1.80.0"
      },
      {
       "configs": {
@@ -1045,14 +1075,11 @@
        "properties": {
         "force": {
          "default": false,
-         "description": "force",
          "title": "Force",
          "type": "boolean"
         },
         "id": {
-         "description": "id",
-         "format": "uuid",
-         "title": "Volume Id",
+         "title": "Id",
          "type": "string"
         }
        },
@@ -1065,7 +1092,7 @@
        "nullable": true,
        "type": "null"
       },
-      "version": "1.52.0"
+      "version": "1.80.0"
      },
      {
       "configs": {
@@ -1105,19 +1132,14 @@
        "properties": {
         "force": {
          "default": false,
-         "description": "force",
          "title": "Force",
          "type": "boolean"
         },
         "id": {
-         "description": "id",
-         "format": "uuid",
-         "title": "Volume Id",
+         "title": "Id",
          "type": "string"
         },
         "virtual_machine_id": {
-         "description": "virtual_machine_id",
-         "format": "uuid",
          "title": "Virtual Machine Id",
          "type": "string"
         }
@@ -1132,32 +1154,32 @@
        "example": {
         "attachments": [
          {
-          "virtual_machine_id": "9f1732cc-a2c9-4471-af68-479adf91e49b"
+          "virtual_machine_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
          }
         ],
-        "created_at": "2022-01-01T00:00:00Z",
+        "created_at": "2022-01-01T00:00:10Z",
         "description": "volume description",
-        "error": "some error description or null",
-        "id": "9f1732cc-a2c9-4471-af68-479adf91e49b",
+        "error": "description if status error",
+        "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
         "name": "volume name",
         "size": 10,
-        "status": "in-use",
-        "updated_at": "2022-01-01T00:00:00Z",
-        "volume_id": "9f2310ac-1944-41e8-85ff-b5671b00c820",
+        "status": "available",
+        "updated_at": "2022-01-01T00:00:10Z",
+        "volume_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
         "volume_type": {
+         "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
          "name": "rbd",
-         "sku": "sku1234"
+         "sku": "deprecated"
         }
        },
        "properties": {
         "attachments": {
          "items": {
           "example": {
-           "virtual_machine_id": "9f1732cc-a2c9-4471-af68-479adf91e49b"
+           "virtual_machine_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
           },
           "properties": {
            "virtual_machine_id": {
-            "format": "uuid",
             "magalu.cloud/core/resolved": "true",
             "title": "Virtual Machine Id",
             "type": "string"
@@ -1169,24 +1191,27 @@
           "title": "AttachmentResponse",
           "type": "object"
          },
+         "nullable": true,
          "title": "Attachments",
          "type": "array"
         },
         "created_at": {
-         "format": "date-time",
+         "example": "2022-01-01T00:00:10Z",
+         "nullable": true,
          "title": "Created At",
          "type": "string"
         },
         "description": {
+         "nullable": true,
          "title": "Description",
          "type": "string"
         },
         "error": {
+         "nullable": true,
          "title": "Error",
          "type": "string"
         },
         "id": {
-         "format": "uuid",
          "title": "Id",
          "type": "string"
         },
@@ -1204,34 +1229,40 @@
          "type": "string"
         },
         "updated_at": {
-         "format": "date-time",
+         "example": "2022-01-01T00:00:10Z",
+         "nullable": true,
          "title": "Updated At",
          "type": "string"
         },
         "volume_id": {
-         "format": "uuid",
-         "title": "Id",
+         "nullable": true,
+         "title": "Volume Id",
          "type": "string"
         },
         "volume_type": {
          "example": {
-          "description": "volume type description",
-          "name": "rbd",
-          "sku": "sku1234"
+          "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+          "name": "cloud_nvme",
+          "sku": "deprecated"
          },
          "properties": {
+          "id": {
+           "title": "Id",
+           "type": "string"
+          },
           "name": {
            "title": "Name",
            "type": "string"
           },
           "sku": {
+           "default": "deprecated",
            "title": "Sku",
            "type": "string"
           }
          },
          "required": [
-          "name",
-          "sku"
+          "id",
+          "name"
          ],
          "title": "VolumeTypeResponseForVolume",
          "type": "object"
@@ -1239,20 +1270,15 @@
        },
        "required": [
         "id",
-        "volume_id",
         "status",
-        "error",
         "size",
         "name",
-        "volume_type",
-        "description",
-        "created_at",
-        "updated_at"
+        "volume_type"
        ],
        "title": "VolumeResponse",
        "type": "object"
       },
-      "version": "1.52.0"
+      "version": "1.80.0"
      },
      {
       "configs": {
@@ -1292,10 +1318,8 @@
        "additionalProperties": false,
        "properties": {
         "id": {
-         "description": "id",
-         "format": "uuid",
          "magalu.cloud/core/resolved": "true",
-         "title": "Volume Id",
+         "title": "Id",
          "type": "string"
         }
        },
@@ -1308,32 +1332,32 @@
        "example": {
         "attachments": [
          {
-          "virtual_machine_id": "9f1732cc-a2c9-4471-af68-479adf91e49b"
+          "virtual_machine_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
          }
         ],
-        "created_at": "2022-01-01T00:00:00Z",
+        "created_at": "2022-01-01T00:00:10Z",
         "description": "volume description",
-        "error": "some error description or null",
-        "id": "9f1732cc-a2c9-4471-af68-479adf91e49b",
+        "error": "description if status error",
+        "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
         "name": "volume name",
         "size": 10,
-        "status": "in-use",
-        "updated_at": "2022-01-01T00:00:00Z",
-        "volume_id": "9f2310ac-1944-41e8-85ff-b5671b00c820",
+        "status": "available",
+        "updated_at": "2022-01-01T00:00:10Z",
+        "volume_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
         "volume_type": {
+         "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
          "name": "rbd",
-         "sku": "sku1234"
+         "sku": "deprecated"
         }
        },
        "properties": {
         "attachments": {
          "items": {
           "example": {
-           "virtual_machine_id": "9f1732cc-a2c9-4471-af68-479adf91e49b"
+           "virtual_machine_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
           },
           "properties": {
            "virtual_machine_id": {
-            "format": "uuid",
             "magalu.cloud/core/resolved": "true",
             "title": "Virtual Machine Id",
             "type": "string"
@@ -1345,24 +1369,27 @@
           "title": "AttachmentResponse",
           "type": "object"
          },
+         "nullable": true,
          "title": "Attachments",
          "type": "array"
         },
         "created_at": {
-         "format": "date-time",
+         "example": "2022-01-01T00:00:10Z",
+         "nullable": true,
          "title": "Created At",
          "type": "string"
         },
         "description": {
+         "nullable": true,
          "title": "Description",
          "type": "string"
         },
         "error": {
+         "nullable": true,
          "title": "Error",
          "type": "string"
         },
         "id": {
-         "format": "uuid",
          "title": "Id",
          "type": "string"
         },
@@ -1380,34 +1407,40 @@
          "type": "string"
         },
         "updated_at": {
-         "format": "date-time",
+         "example": "2022-01-01T00:00:10Z",
+         "nullable": true,
          "title": "Updated At",
          "type": "string"
         },
         "volume_id": {
-         "format": "uuid",
-         "title": "Id",
+         "nullable": true,
+         "title": "Volume Id",
          "type": "string"
         },
         "volume_type": {
          "example": {
-          "description": "volume type description",
-          "name": "rbd",
-          "sku": "sku1234"
+          "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+          "name": "cloud_nvme",
+          "sku": "deprecated"
          },
          "properties": {
+          "id": {
+           "title": "Id",
+           "type": "string"
+          },
           "name": {
            "title": "Name",
            "type": "string"
           },
           "sku": {
+           "default": "deprecated",
            "title": "Sku",
            "type": "string"
           }
          },
          "required": [
-          "name",
-          "sku"
+          "id",
+          "name"
          ],
          "title": "VolumeTypeResponseForVolume",
          "type": "object"
@@ -1415,20 +1448,15 @@
        },
        "required": [
         "id",
-        "volume_id",
         "status",
-        "error",
         "size",
         "name",
-        "volume_type",
-        "description",
-        "created_at",
-        "updated_at"
+        "volume_type"
        ],
        "title": "VolumeResponse",
        "type": "object"
       },
-      "version": "1.52.0"
+      "version": "1.80.0"
      },
      {
       "configs": {
@@ -1465,6 +1493,23 @@
       "name": "list",
       "parameters": {
        "additionalProperties": false,
+       "properties": {
+        "_limit": {
+         "default": 50,
+         "title": " Limit",
+         "type": "integer"
+        },
+        "_offset": {
+         "default": 0,
+         "title": " Offset",
+         "type": "integer"
+        },
+        "_sort": {
+         "default": "created_at:desc",
+         "title": " Sort",
+         "type": "string"
+        }
+       },
        "type": "object"
       },
       "result": {
@@ -1473,21 +1518,22 @@
          {
           "attachments": [
            {
-            "virtual_machine_id": "9f1732cc-a2c9-4471-af68-479adf91e49b"
+            "virtual_machine_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
            }
           ],
-          "created_at": "2022-01-01T00:00:00Z",
+          "created_at": "2022-01-01T00:00:10Z",
           "description": "volume description",
-          "error": "some error description or null",
-          "id": "9f1732cc-a2c9-4471-af68-479adf91e49b",
+          "error": "description if status error",
+          "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
           "name": "volume name",
           "size": 10,
-          "status": "in-use",
-          "updated_at": "2022-01-01T00:00:00Z",
-          "volume_id": "9f2310ac-1944-41e8-85ff-b5671b00c820",
+          "status": "available",
+          "updated_at": "2022-01-01T00:00:10Z",
+          "volume_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
           "volume_type": {
+           "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
            "name": "rbd",
-           "sku": "sku1234"
+           "sku": "deprecated"
           }
          }
         ]
@@ -1498,32 +1544,32 @@
           "example": {
            "attachments": [
             {
-             "virtual_machine_id": "9f1732cc-a2c9-4471-af68-479adf91e49b"
+             "virtual_machine_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
             }
            ],
-           "created_at": "2022-01-01T00:00:00Z",
+           "created_at": "2022-01-01T00:00:10Z",
            "description": "volume description",
-           "error": "some error description or null",
-           "id": "9f1732cc-a2c9-4471-af68-479adf91e49b",
+           "error": "description if status error",
+           "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
            "name": "volume name",
            "size": 10,
-           "status": "in-use",
-           "updated_at": "2022-01-01T00:00:00Z",
-           "volume_id": "9f2310ac-1944-41e8-85ff-b5671b00c820",
+           "status": "available",
+           "updated_at": "2022-01-01T00:00:10Z",
+           "volume_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
            "volume_type": {
+            "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
             "name": "rbd",
-            "sku": "sku1234"
+            "sku": "deprecated"
            }
           },
           "properties": {
            "attachments": {
             "items": {
              "example": {
-              "virtual_machine_id": "9f1732cc-a2c9-4471-af68-479adf91e49b"
+              "virtual_machine_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
              },
              "properties": {
               "virtual_machine_id": {
-               "format": "uuid",
                "magalu.cloud/core/resolved": "true",
                "title": "Virtual Machine Id",
                "type": "string"
@@ -1535,24 +1581,27 @@
              "title": "AttachmentResponse",
              "type": "object"
             },
+            "nullable": true,
             "title": "Attachments",
             "type": "array"
            },
            "created_at": {
-            "format": "date-time",
+            "example": "2022-01-01T00:00:10Z",
+            "nullable": true,
             "title": "Created At",
             "type": "string"
            },
            "description": {
+            "nullable": true,
             "title": "Description",
             "type": "string"
            },
            "error": {
+            "nullable": true,
             "title": "Error",
             "type": "string"
            },
            "id": {
-            "format": "uuid",
             "title": "Id",
             "type": "string"
            },
@@ -1570,34 +1619,40 @@
             "type": "string"
            },
            "updated_at": {
-            "format": "date-time",
+            "example": "2022-01-01T00:00:10Z",
+            "nullable": true,
             "title": "Updated At",
             "type": "string"
            },
            "volume_id": {
-            "format": "uuid",
-            "title": "Id",
+            "nullable": true,
+            "title": "Volume Id",
             "type": "string"
            },
            "volume_type": {
             "example": {
-             "description": "volume type description",
-             "name": "rbd",
-             "sku": "sku1234"
+             "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+             "name": "cloud_nvme",
+             "sku": "deprecated"
             },
             "properties": {
+             "id": {
+              "title": "Id",
+              "type": "string"
+             },
              "name": {
               "title": "Name",
               "type": "string"
              },
              "sku": {
+              "default": "deprecated",
               "title": "Sku",
               "type": "string"
              }
             },
             "required": [
-             "name",
-             "sku"
+             "id",
+             "name"
             ],
             "title": "VolumeTypeResponseForVolume",
             "type": "object"
@@ -1605,15 +1660,10 @@
           },
           "required": [
            "id",
-           "volume_id",
            "status",
-           "error",
            "size",
            "name",
-           "volume_type",
-           "description",
-           "created_at",
-           "updated_at"
+           "volume_type"
           ],
           "title": "VolumeResponse",
           "type": "object"
@@ -1628,7 +1678,7 @@
        "title": "VolumeListResponse",
        "type": "object"
       },
-      "version": "1.52.0"
+      "version": "1.80.0"
      },
      {
       "configs": {
@@ -1667,12 +1717,12 @@
        "additionalProperties": false,
        "properties": {
         "id": {
-         "description": "id",
-         "format": "uuid",
-         "title": "Volume Id",
+         "title": "Id",
          "type": "string"
         },
         "name": {
+         "maxLength": 255,
+         "minLength": 1,
          "title": "Name",
          "type": "string"
         }
@@ -1687,32 +1737,32 @@
        "example": {
         "attachments": [
          {
-          "virtual_machine_id": "9f1732cc-a2c9-4471-af68-479adf91e49b"
+          "virtual_machine_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
          }
         ],
-        "created_at": "2022-01-01T00:00:00Z",
+        "created_at": "2022-01-01T00:00:10Z",
         "description": "volume description",
-        "error": "some error description or null",
-        "id": "9f1732cc-a2c9-4471-af68-479adf91e49b",
+        "error": "description if status error",
+        "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
         "name": "volume name",
         "size": 10,
-        "status": "in-use",
-        "updated_at": "2022-01-01T00:00:00Z",
-        "volume_id": "9f2310ac-1944-41e8-85ff-b5671b00c820",
+        "status": "available",
+        "updated_at": "2022-01-01T00:00:10Z",
+        "volume_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
         "volume_type": {
+         "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
          "name": "rbd",
-         "sku": "sku1234"
+         "sku": "deprecated"
         }
        },
        "properties": {
         "attachments": {
          "items": {
           "example": {
-           "virtual_machine_id": "9f1732cc-a2c9-4471-af68-479adf91e49b"
+           "virtual_machine_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
           },
           "properties": {
            "virtual_machine_id": {
-            "format": "uuid",
             "magalu.cloud/core/resolved": "true",
             "title": "Virtual Machine Id",
             "type": "string"
@@ -1724,24 +1774,27 @@
           "title": "AttachmentResponse",
           "type": "object"
          },
+         "nullable": true,
          "title": "Attachments",
          "type": "array"
         },
         "created_at": {
-         "format": "date-time",
+         "example": "2022-01-01T00:00:10Z",
+         "nullable": true,
          "title": "Created At",
          "type": "string"
         },
         "description": {
+         "nullable": true,
          "title": "Description",
          "type": "string"
         },
         "error": {
+         "nullable": true,
          "title": "Error",
          "type": "string"
         },
         "id": {
-         "format": "uuid",
          "title": "Id",
          "type": "string"
         },
@@ -1759,34 +1812,40 @@
          "type": "string"
         },
         "updated_at": {
-         "format": "date-time",
+         "example": "2022-01-01T00:00:10Z",
+         "nullable": true,
          "title": "Updated At",
          "type": "string"
         },
         "volume_id": {
-         "format": "uuid",
-         "title": "Id",
+         "nullable": true,
+         "title": "Volume Id",
          "type": "string"
         },
         "volume_type": {
          "example": {
-          "description": "volume type description",
-          "name": "rbd",
-          "sku": "sku1234"
+          "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+          "name": "cloud_nvme",
+          "sku": "deprecated"
          },
          "properties": {
+          "id": {
+           "title": "Id",
+           "type": "string"
+          },
           "name": {
            "title": "Name",
            "type": "string"
           },
           "sku": {
+           "default": "deprecated",
            "title": "Sku",
            "type": "string"
           }
          },
          "required": [
-          "name",
-          "sku"
+          "id",
+          "name"
          ],
          "title": "VolumeTypeResponseForVolume",
          "type": "object"
@@ -1794,26 +1853,21 @@
        },
        "required": [
         "id",
-        "volume_id",
         "status",
-        "error",
         "size",
         "name",
-        "volume_type",
-        "description",
-        "created_at",
-        "updated_at"
+        "volume_type"
        ],
        "title": "VolumeResponse",
        "type": "object"
       },
-      "version": "1.52.0"
+      "version": "1.80.0"
      }
     ],
     "description": "Block Storage Volume Resources",
     "isInternal": false,
     "name": "volume",
-    "version": "1.52.0"
+    "version": "1.80.0"
    },
    {
     "children": [
@@ -1855,14 +1909,11 @@
        "magalu.cloud/core/resolved": "true",
        "properties": {
         "block_storage_id": {
-         "description": "id",
-         "format": "uuid",
          "magalu.cloud/core/resolved": "true",
-         "title": "Volume Id",
+         "title": "Id",
          "type": "string"
         },
         "virtual_machine_id": {
-         "format": "uuid",
          "magalu.cloud/core/resolved": "true",
          "title": "Virtual Machine Id",
          "type": "string"
@@ -1874,14 +1925,11 @@
        "magalu.cloud/core/resolved": "true",
        "properties": {
         "block_storage_id": {
-         "description": "id",
-         "format": "uuid",
          "magalu.cloud/core/resolved": "true",
-         "title": "Volume Id",
+         "title": "Id",
          "type": "string"
         },
         "virtual_machine_id": {
-         "format": "uuid",
          "magalu.cloud/core/resolved": "true",
          "title": "Virtual Machine Id",
          "type": "string"
@@ -1929,14 +1977,11 @@
        "magalu.cloud/core/resolved": "true",
        "properties": {
         "block_storage_id": {
-         "description": "id",
-         "format": "uuid",
          "magalu.cloud/core/resolved": "true",
-         "title": "Volume Id",
+         "title": "Id",
          "type": "string"
         },
         "virtual_machine_id": {
-         "format": "uuid",
          "magalu.cloud/core/resolved": "true",
          "title": "Virtual Machine Id",
          "type": "string"
@@ -1948,14 +1993,11 @@
        "magalu.cloud/core/resolved": "true",
        "properties": {
         "block_storage_id": {
-         "description": "id",
-         "format": "uuid",
          "magalu.cloud/core/resolved": "true",
-         "title": "Volume Id",
+         "title": "Id",
          "type": "string"
         },
         "virtual_machine_id": {
-         "format": "uuid",
          "magalu.cloud/core/resolved": "true",
          "title": "Virtual Machine Id",
          "type": "string"
@@ -2003,14 +2045,11 @@
        "magalu.cloud/core/resolved": "true",
        "properties": {
         "block_storage_id": {
-         "description": "id",
-         "format": "uuid",
          "magalu.cloud/core/resolved": "true",
-         "title": "Volume Id",
+         "title": "Id",
          "type": "string"
         },
         "virtual_machine_id": {
-         "format": "uuid",
          "magalu.cloud/core/resolved": "true",
          "title": "Virtual Machine Id",
          "type": "string"
@@ -2022,14 +2061,11 @@
        "magalu.cloud/core/resolved": "true",
        "properties": {
         "block_storage_id": {
-         "description": "id",
-         "format": "uuid",
          "magalu.cloud/core/resolved": "true",
-         "title": "Volume Id",
+         "title": "Id",
          "type": "string"
         },
         "virtual_machine_id": {
-         "format": "uuid",
          "magalu.cloud/core/resolved": "true",
          "title": "Virtual Machine Id",
          "type": "string"
@@ -2077,14 +2113,11 @@
        "magalu.cloud/core/resolved": "true",
        "properties": {
         "block_storage_id": {
-         "description": "id",
-         "format": "uuid",
          "magalu.cloud/core/resolved": "true",
-         "title": "Volume Id",
+         "title": "Id",
          "type": "string"
         },
         "virtual_machine_id": {
-         "format": "uuid",
          "magalu.cloud/core/resolved": "true",
          "title": "Virtual Machine Id",
          "type": "string"
@@ -2096,14 +2129,11 @@
        "magalu.cloud/core/resolved": "true",
        "properties": {
         "block_storage_id": {
-         "description": "id",
-         "format": "uuid",
          "magalu.cloud/core/resolved": "true",
-         "title": "Volume Id",
+         "title": "Id",
          "type": "string"
         },
         "virtual_machine_id": {
-         "format": "uuid",
          "magalu.cloud/core/resolved": "true",
          "title": "Virtual Machine Id",
          "type": "string"
@@ -2295,7 +2325,356 @@
        },
        "type": "object"
       },
-      "description": "Create volume type only in DB",
+      "description": "Attach a volume into an instance, both from the provided tenant_id",
+      "isInternal": false,
+      "name": "attach",
+      "parameters": {
+       "additionalProperties": false,
+       "properties": {
+        "id": {
+         "format": "uuid",
+         "title": "Id",
+         "type": "string"
+        },
+        "project_type": {
+         "default": "default",
+         "enum": [
+          "dbaas",
+          "iamaas",
+          "k8saas",
+          "mngsvc",
+          "default"
+         ],
+         "title": "Project Type",
+         "type": "string"
+        },
+        "virtual_machine_id": {
+         "format": "uuid",
+         "title": "Virtual Machine Id",
+         "type": "string"
+        }
+       },
+       "required": [
+        "id",
+        "virtual_machine_id"
+       ],
+       "type": "object"
+      },
+      "result": {
+       "nullable": true,
+       "type": "null"
+      },
+      "version": "1.80.0"
+     },
+     {
+      "configs": {
+       "additionalProperties": false,
+       "properties": {
+        "env": {
+         "default": "prod",
+         "description": "Environment to use",
+         "enum": [
+          "prod",
+          "pre-prod"
+         ],
+         "type": "string"
+        },
+        "region": {
+         "default": "br-ne-1",
+         "description": "Region to reach the service",
+         "enum": [
+          "br-ne-1",
+          "br-se-1"
+         ],
+         "type": "string"
+        },
+        "serverUrl": {
+         "description": "Manually specify the server to use",
+         "format": "uri",
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
+      "description": "Creates a Volume in the current tenant which is logged in.\n\n    A volume is ready for you to use when it's in the available state and the\n    completed status.\n\n    #### Notes\n    - For the volume type data, you can use the block-storage volume-types list\n        command to list all available volume types.\n    - You can verify the state of your volume using the block-storage volume\n        get --id [uuid] command.",
+      "isInternal": false,
+      "name": "create",
+      "parameters": {
+       "additionalProperties": false,
+       "properties": {
+        "availability_zone": {
+         "nullable": true,
+         "title": "Availability Zone",
+         "type": "string"
+        },
+        "name": {
+         "maxLength": 255,
+         "minLength": 1,
+         "title": "Name",
+         "type": "string"
+        },
+        "project_type": {
+         "default": "default",
+         "enum": [
+          "dbaas",
+          "iamaas",
+          "k8saas",
+          "mngsvc",
+          "default"
+         ],
+         "title": "Project Type",
+         "type": "string"
+        },
+        "size": {
+         "description": "Gibibytes (GiB)",
+         "maximum": 2147483648,
+         "minimum": 1,
+         "title": "Size",
+         "type": "integer"
+        },
+        "type": {
+         "anyOf": [
+          {
+           "example": {
+            "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+           },
+           "properties": {
+            "id": {
+             "minLength": 1,
+             "title": "Id",
+             "type": "string"
+            }
+           },
+           "required": [
+            "id"
+           ],
+           "title": "IdRequest",
+           "type": "object"
+          },
+          {
+           "example": {
+            "name": "some_resource_name"
+           },
+           "properties": {
+            "name": {
+             "maxLength": 255,
+             "minLength": 1,
+             "title": "Name",
+             "type": "string"
+            }
+           },
+           "required": [
+            "name"
+           ],
+           "title": "VolumeName",
+           "type": "object"
+          }
+         ],
+         "title": "Type",
+         "type": "object"
+        }
+       },
+       "required": [
+        "name",
+        "size",
+        "type"
+       ],
+       "type": "object"
+      },
+      "result": {
+       "example": {
+        "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+       },
+       "properties": {
+        "id": {
+         "minLength": 1,
+         "title": "Id",
+         "type": "string"
+        }
+       },
+       "required": [
+        "id"
+       ],
+       "title": "IdResponse",
+       "type": "object"
+      },
+      "version": "1.80.0"
+     },
+     {
+      "configs": {
+       "additionalProperties": false,
+       "properties": {
+        "env": {
+         "default": "prod",
+         "description": "Environment to use",
+         "enum": [
+          "prod",
+          "pre-prod"
+         ],
+         "type": "string"
+        },
+        "region": {
+         "default": "br-ne-1",
+         "description": "Region to reach the service",
+         "enum": [
+          "br-ne-1",
+          "br-se-1"
+         ],
+         "type": "string"
+        },
+        "serverUrl": {
+         "description": "Manually specify the server to use",
+         "format": "uri",
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
+      "description": "Delete a volume from the provided tenant_id",
+      "isInternal": false,
+      "name": "delete",
+      "parameters": {
+       "additionalProperties": false,
+       "properties": {
+        "id": {
+         "format": "uuid",
+         "title": "Id",
+         "type": "string"
+        },
+        "project_type": {
+         "default": "default",
+         "enum": [
+          "dbaas",
+          "iamaas",
+          "k8saas",
+          "mngsvc",
+          "default"
+         ],
+         "title": "Project Type",
+         "type": "string"
+        }
+       },
+       "required": [
+        "id"
+       ],
+       "type": "object"
+      },
+      "result": {
+       "nullable": true,
+       "type": "null"
+      },
+      "version": "1.80.0"
+     },
+     {
+      "configs": {
+       "additionalProperties": false,
+       "properties": {
+        "env": {
+         "default": "prod",
+         "description": "Environment to use",
+         "enum": [
+          "prod",
+          "pre-prod"
+         ],
+         "type": "string"
+        },
+        "region": {
+         "default": "br-ne-1",
+         "description": "Region to reach the service",
+         "enum": [
+          "br-ne-1",
+          "br-se-1"
+         ],
+         "type": "string"
+        },
+        "serverUrl": {
+         "description": "Manually specify the server to use",
+         "format": "uri",
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
+      "description": "Detaches a volume from an instance. Make sure to unmount\nany file systems on the device within your operating system before\ndetaching the volume. Failure to do so can result in the volume\nbecoming stuck in the busy state while detaching. If this happens,\ndetachment can be delayed indefinitely until you unmount the volume,\nforce detachment, reboot the instance, or all three.",
+      "isInternal": false,
+      "name": "detach",
+      "parameters": {
+       "additionalProperties": false,
+       "properties": {
+        "id": {
+         "format": "uuid",
+         "title": "Id",
+         "type": "string"
+        },
+        "project_type": {
+         "default": "default",
+         "enum": [
+          "dbaas",
+          "iamaas",
+          "k8saas",
+          "mngsvc",
+          "default"
+         ],
+         "title": "Project Type",
+         "type": "string"
+        },
+        "virtual_machine_id": {
+         "format": "uuid",
+         "title": "Virtual Machine Id",
+         "type": "string"
+        }
+       },
+       "required": [
+        "id",
+        "virtual_machine_id"
+       ],
+       "type": "object"
+      },
+      "result": {
+       "nullable": true,
+       "type": "null"
+      },
+      "version": "1.80.0"
+     }
+    ],
+    "description": "Block Storage Volume Resources Latest",
+    "isInternal": false,
+    "name": "volume-latest",
+    "version": "1.80.0"
+   },
+   {
+    "children": [
+     {
+      "configs": {
+       "additionalProperties": false,
+       "properties": {
+        "env": {
+         "default": "prod",
+         "description": "Environment to use",
+         "enum": [
+          "prod",
+          "pre-prod"
+         ],
+         "type": "string"
+        },
+        "region": {
+         "default": "br-ne-1",
+         "description": "Region to reach the service",
+         "enum": [
+          "br-ne-1",
+          "br-se-1"
+         ],
+         "type": "string"
+        },
+        "serverUrl": {
+         "description": "Manually specify the server to use",
+         "format": "uri",
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
+      "description": "Create volume type",
       "isInternal": false,
       "name": "create",
       "parameters": {
@@ -2312,22 +2691,27 @@
         "sku": {
          "title": "Sku",
          "type": "string"
+        },
+        "type": {
+         "title": "Type",
+         "type": "string"
         }
        },
        "required": [
         "internal",
         "name",
-        "sku"
+        "sku",
+        "type"
        ],
        "type": "object"
       },
       "result": {
        "example": {
-        "id": "9f1732cc-a2c9-4471-af68-479adf91e49b"
+        "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
        },
        "properties": {
         "id": {
-         "format": "uuid",
+         "minLength": 1,
          "title": "Id",
          "type": "string"
         }
@@ -2338,7 +2722,7 @@
        "title": "IdResponse",
        "type": "object"
       },
-      "version": "1.52.0"
+      "version": "1.80.0"
      },
      {
       "configs": {
@@ -2381,17 +2765,14 @@
        "example": {
         "types": [
          {
-          "description": "volume type description",
-          "id": "9f1732cc-a2c9-4471-af68-479adf91e49b",
-          "name": "rbd",
-          "qos_specs": {
-           "consumer": "front-end",
-           "name": "teste-qos-high-iops",
-           "specs": {
-            "total_iops_sec": "1000"
-           }
+          "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+          "name": "cloud_nvme",
+          "sku": "sku1234",
+          "specs": {
+           "total_iops_sec": 1000
           },
-          "sku": "sku1234"
+          "status": "active",
+          "type": "nvme"
          }
         ]
        },
@@ -2399,25 +2780,17 @@
         "types": {
          "items": {
           "example": {
-           "description": "volume type description",
-           "id": "9f1732cc-a2c9-4471-af68-479adf91e49b",
-           "name": "rbd",
-           "qos_specs": {
-            "consumer": "front-end",
-            "name": "teste-qos-high-iops",
-            "specs": {
-             "total_iops_sec": "1000"
-            }
+           "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+           "name": "cloud_nvme",
+           "sku": "sku1234",
+           "specs": {
+            "total_iops_sec": 1000
            },
-           "sku": "sku1234"
+           "status": "active",
+           "type": "nvme"
           },
           "properties": {
-           "description": {
-            "title": "Description",
-            "type": "string"
-           },
            "id": {
-            "format": "uuid",
             "title": "Id",
             "type": "string"
            },
@@ -2425,35 +2798,37 @@
             "title": "Name",
             "type": "string"
            },
-           "qos_specs": {
+           "sku": {
+            "title": "Sku",
+            "type": "string"
+           },
+           "specs": {
             "properties": {
-             "consumer": {
-              "title": "Consumer",
-              "type": "string"
-             },
-             "name": {
-              "title": "Name",
-              "type": "string"
-             },
-             "specs": {
-              "title": "Specs"
+             "total_iops_sec": {
+              "title": "Total Iops Sec",
+              "type": "integer"
              }
             },
             "required": [
-             "name",
-             "consumer"
+             "total_iops_sec"
             ],
-            "title": "QosSpecs",
+            "title": "Specs",
             "type": "object"
            },
-           "sku": {
-            "title": "Sku",
+           "status": {
+            "nullable": true,
+            "title": "Status",
+            "type": "string"
+           },
+           "type": {
+            "title": "Type",
             "type": "string"
            }
           },
           "required": [
            "id",
            "name",
+           "type",
            "sku"
           ],
           "title": "VolumeTypeResponse",
@@ -2469,7 +2844,7 @@
        "title": "VolumeTypeList",
        "type": "object"
       },
-      "version": "1.52.0"
+      "version": "1.80.0"
      },
      {
       "configs": {
@@ -2512,19 +2887,40 @@
        "example": {
         "types": [
          {
-          "id": "9f1732cc-a2c9-4471-af68-479adf91e49b",
+          "created_at": "2022-01-01 00:00:00",
+          "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
           "internal": true,
-          "name": "some_name",
-          "sku": "sku1234"
+          "name": "cloud_nvme",
+          "sku": "sku1234",
+          "status": "active",
+          "total_iops_sec": 1000,
+          "type": "nvme",
+          "updated_at": "2022-01-01 00:00:00"
          }
         ]
        },
        "properties": {
         "types": {
          "items": {
+          "example": {
+           "created_at": "2022-01-01 00:00:00",
+           "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+           "internal": true,
+           "name": "cloud_nvme",
+           "sku": "sku1234",
+           "status": "active",
+           "total_iops_sec": 1000,
+           "type": "nvme",
+           "updated_at": "2022-01-01 00:00:00"
+          },
           "properties": {
+           "created_at": {
+            "format": "date-time",
+            "nullable": true,
+            "title": "Created At",
+            "type": "string"
+           },
            "id": {
-            "format": "uuid",
             "title": "Id",
             "type": "string"
            },
@@ -2539,13 +2935,34 @@
            "sku": {
             "title": "Sku",
             "type": "string"
+           },
+           "status": {
+            "title": "Status",
+            "type": "string"
+           },
+           "total_iops_sec": {
+            "title": "Total Iops Sec",
+            "type": "integer"
+           },
+           "type": {
+            "title": "Type",
+            "type": "string"
+           },
+           "updated_at": {
+            "format": "date-time",
+            "nullable": true,
+            "title": "Updated At",
+            "type": "string"
            }
           },
           "required": [
            "id",
            "name",
            "sku",
-           "internal"
+           "internal",
+           "total_iops_sec",
+           "type",
+           "status"
           ],
           "title": "VolumeTypeDbResponse",
           "type": "object"
@@ -2560,13 +2977,642 @@
        "title": "VolumeTypeDbListResponse",
        "type": "object"
       },
-      "version": "1.52.0"
+      "version": "1.80.0"
      }
     ],
-    "description": "volume types",
+    "description": "Volume types",
     "isInternal": false,
     "name": "volume-types",
-    "version": "1.52.0"
+    "version": "1.80.0"
+   },
+   {
+    "children": [
+     {
+      "configs": {
+       "additionalProperties": false,
+       "properties": {
+        "env": {
+         "default": "prod",
+         "description": "Environment to use",
+         "enum": [
+          "prod",
+          "pre-prod"
+         ],
+         "type": "string"
+        },
+        "region": {
+         "default": "br-ne-1",
+         "description": "Region to reach the service",
+         "enum": [
+          "br-ne-1",
+          "br-se-1"
+         ],
+         "type": "string"
+        },
+        "serverUrl": {
+         "description": "Manually specify the server to use",
+         "format": "uri",
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
+      "description": "Returns a list of volume types",
+      "isInternal": false,
+      "name": "list",
+      "parameters": {
+       "additionalProperties": false,
+       "type": "object"
+      },
+      "result": {
+       "example": {
+        "types": [
+         {
+          "disk_type": "nvme",
+          "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+          "iops": {
+           "read": 1000,
+           "write": 1000
+          },
+          "name": "my_volume_type",
+          "status": "active"
+         }
+        ]
+       },
+       "properties": {
+        "types": {
+         "items": {
+          "example": {
+           "disk_type": "nvme",
+           "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+           "iops": {
+            "read": 1000,
+            "write": 1000
+           },
+           "name": "my_volume_type",
+           "status": "active"
+          },
+          "properties": {
+           "disk_type": {
+            "enum": [
+             "nvme",
+             "hdd"
+            ],
+            "title": "DiskType",
+            "type": "string"
+           },
+           "id": {
+            "title": "Id",
+            "type": "string"
+           },
+           "iops": {
+            "properties": {
+             "read": {
+              "title": "Read",
+              "type": "integer"
+             },
+             "write": {
+              "title": "Write",
+              "type": "integer"
+             }
+            },
+            "required": [
+             "read",
+             "write"
+            ],
+            "title": "VolumeTypeSpec",
+            "type": "object"
+           },
+           "name": {
+            "title": "Name",
+            "type": "string"
+           },
+           "status": {
+            "enum": [
+             "active",
+             "deprecated",
+             "deleted"
+            ],
+            "title": "VolumeTypeStatus",
+            "type": "string"
+           }
+          },
+          "required": [
+           "iops",
+           "id",
+           "name",
+           "disk_type",
+           "status"
+          ],
+          "title": "VolumeTypeResponse",
+          "type": "object"
+         },
+         "title": "Types",
+         "type": "array"
+        }
+       },
+       "required": [
+        "types"
+       ],
+       "title": "GenericVolumeTypeList[VolumeTypeResponse]",
+       "type": "object"
+      },
+      "version": "1.80.0"
+     }
+    ],
+    "description": "Volume types Latest",
+    "isInternal": false,
+    "name": "volume-types-latest",
+    "version": "1.80.0"
+   },
+   {
+    "children": [
+     {
+      "configs": {
+       "additionalProperties": false,
+       "properties": {
+        "env": {
+         "default": "prod",
+         "description": "Environment to use",
+         "enum": [
+          "prod",
+          "pre-prod"
+         ],
+         "type": "string"
+        },
+        "region": {
+         "default": "br-ne-1",
+         "description": "Region to reach the service",
+         "enum": [
+          "br-ne-1",
+          "br-se-1"
+         ],
+         "type": "string"
+        },
+        "serverUrl": {
+         "description": "Manually specify the server to use",
+         "format": "uri",
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
+      "description": "Returns a list of volume types",
+      "isInternal": false,
+      "name": "list",
+      "parameters": {
+       "additionalProperties": false,
+       "type": "object"
+      },
+      "result": {
+       "example": {
+        "types": [
+         {
+          "disk_type": "nvme",
+          "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+          "iops": {
+           "read": 1000,
+           "write": 1000
+          },
+          "name": "my_volume_type",
+          "status": "active"
+         }
+        ]
+       },
+       "properties": {
+        "types": {
+         "items": {
+          "example": {
+           "disk_type": "nvme",
+           "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+           "iops": {
+            "read": 1000,
+            "write": 1000
+           },
+           "name": "my_volume_type",
+           "status": "active"
+          },
+          "properties": {
+           "disk_type": {
+            "enum": [
+             "nvme",
+             "hdd"
+            ],
+            "title": "DiskType",
+            "type": "string"
+           },
+           "id": {
+            "title": "Id",
+            "type": "string"
+           },
+           "iops": {
+            "properties": {
+             "read": {
+              "title": "Read",
+              "type": "integer"
+             },
+             "write": {
+              "title": "Write",
+              "type": "integer"
+             }
+            },
+            "required": [
+             "read",
+             "write"
+            ],
+            "title": "VolumeTypeSpec",
+            "type": "object"
+           },
+           "name": {
+            "title": "Name",
+            "type": "string"
+           },
+           "status": {
+            "enum": [
+             "active",
+             "deprecated",
+             "deleted"
+            ],
+            "title": "VolumeTypeStatus",
+            "type": "string"
+           }
+          },
+          "required": [
+           "iops",
+           "id",
+           "name",
+           "disk_type",
+           "status"
+          ],
+          "title": "VolumeTypeResponse",
+          "type": "object"
+         },
+         "title": "Types",
+         "type": "array"
+        }
+       },
+       "required": [
+        "types"
+       ],
+       "title": "GenericVolumeTypeList[VolumeTypeResponse]",
+       "type": "object"
+      },
+      "version": "1.80.0"
+     }
+    ],
+    "description": "Volume types V1",
+    "isInternal": false,
+    "name": "volume-types-v1",
+    "version": "1.80.0"
+   },
+   {
+    "children": [
+     {
+      "configs": {
+       "additionalProperties": false,
+       "properties": {
+        "env": {
+         "default": "prod",
+         "description": "Environment to use",
+         "enum": [
+          "prod",
+          "pre-prod"
+         ],
+         "type": "string"
+        },
+        "region": {
+         "default": "br-ne-1",
+         "description": "Region to reach the service",
+         "enum": [
+          "br-ne-1",
+          "br-se-1"
+         ],
+         "type": "string"
+        },
+        "serverUrl": {
+         "description": "Manually specify the server to use",
+         "format": "uri",
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
+      "description": "Attach a volume into an instance, both from the provided tenant_id",
+      "isInternal": false,
+      "name": "attach",
+      "parameters": {
+       "additionalProperties": false,
+       "properties": {
+        "id": {
+         "format": "uuid",
+         "title": "Id",
+         "type": "string"
+        },
+        "project_type": {
+         "default": "default",
+         "enum": [
+          "dbaas",
+          "iamaas",
+          "k8saas",
+          "mngsvc",
+          "default"
+         ],
+         "title": "Project Type",
+         "type": "string"
+        },
+        "virtual_machine_id": {
+         "format": "uuid",
+         "title": "Virtual Machine Id",
+         "type": "string"
+        }
+       },
+       "required": [
+        "id",
+        "virtual_machine_id"
+       ],
+       "type": "object"
+      },
+      "result": {
+       "nullable": true,
+       "type": "null"
+      },
+      "version": "1.80.0"
+     },
+     {
+      "configs": {
+       "additionalProperties": false,
+       "properties": {
+        "env": {
+         "default": "prod",
+         "description": "Environment to use",
+         "enum": [
+          "prod",
+          "pre-prod"
+         ],
+         "type": "string"
+        },
+        "region": {
+         "default": "br-ne-1",
+         "description": "Region to reach the service",
+         "enum": [
+          "br-ne-1",
+          "br-se-1"
+         ],
+         "type": "string"
+        },
+        "serverUrl": {
+         "description": "Manually specify the server to use",
+         "format": "uri",
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
+      "description": "Creates a Volume in the current tenant which is logged in.\n\n    A volume is ready for you to use when it's in the available state and the\n    completed status.\n\n    #### Notes\n    - For the volume type data, you can use the block-storage volume-types list\n        command to list all available volume types.\n    - You can verify the state of your volume using the block-storage volume\n        get --id [uuid] command.",
+      "isInternal": false,
+      "name": "create",
+      "parameters": {
+       "additionalProperties": false,
+       "properties": {
+        "availability_zone": {
+         "nullable": true,
+         "title": "Availability Zone",
+         "type": "string"
+        },
+        "name": {
+         "maxLength": 255,
+         "minLength": 1,
+         "title": "Name",
+         "type": "string"
+        },
+        "project_type": {
+         "default": "default",
+         "enum": [
+          "dbaas",
+          "iamaas",
+          "k8saas",
+          "mngsvc",
+          "default"
+         ],
+         "title": "Project Type",
+         "type": "string"
+        },
+        "size": {
+         "description": "Gibibytes (GiB)",
+         "maximum": 2147483648,
+         "minimum": 1,
+         "title": "Size",
+         "type": "integer"
+        },
+        "type": {
+         "anyOf": [
+          {
+           "example": {
+            "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+           },
+           "properties": {
+            "id": {
+             "minLength": 1,
+             "title": "Id",
+             "type": "string"
+            }
+           },
+           "required": [
+            "id"
+           ],
+           "title": "IdRequest",
+           "type": "object"
+          },
+          {
+           "example": {
+            "name": "some_resource_name"
+           },
+           "properties": {
+            "name": {
+             "maxLength": 255,
+             "minLength": 1,
+             "title": "Name",
+             "type": "string"
+            }
+           },
+           "required": [
+            "name"
+           ],
+           "title": "VolumeName",
+           "type": "object"
+          }
+         ],
+         "title": "Type",
+         "type": "object"
+        }
+       },
+       "required": [
+        "name",
+        "size",
+        "type"
+       ],
+       "type": "object"
+      },
+      "result": {
+       "example": {
+        "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+       },
+       "properties": {
+        "id": {
+         "minLength": 1,
+         "title": "Id",
+         "type": "string"
+        }
+       },
+       "required": [
+        "id"
+       ],
+       "title": "IdResponse",
+       "type": "object"
+      },
+      "version": "1.80.0"
+     },
+     {
+      "configs": {
+       "additionalProperties": false,
+       "properties": {
+        "env": {
+         "default": "prod",
+         "description": "Environment to use",
+         "enum": [
+          "prod",
+          "pre-prod"
+         ],
+         "type": "string"
+        },
+        "region": {
+         "default": "br-ne-1",
+         "description": "Region to reach the service",
+         "enum": [
+          "br-ne-1",
+          "br-se-1"
+         ],
+         "type": "string"
+        },
+        "serverUrl": {
+         "description": "Manually specify the server to use",
+         "format": "uri",
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
+      "description": "Delete a volume from the provided tenant_id",
+      "isInternal": false,
+      "name": "delete",
+      "parameters": {
+       "additionalProperties": false,
+       "properties": {
+        "id": {
+         "format": "uuid",
+         "title": "Id",
+         "type": "string"
+        },
+        "project_type": {
+         "default": "default",
+         "enum": [
+          "dbaas",
+          "iamaas",
+          "k8saas",
+          "mngsvc",
+          "default"
+         ],
+         "title": "Project Type",
+         "type": "string"
+        }
+       },
+       "required": [
+        "id"
+       ],
+       "type": "object"
+      },
+      "result": {
+       "nullable": true,
+       "type": "null"
+      },
+      "version": "1.80.0"
+     },
+     {
+      "configs": {
+       "additionalProperties": false,
+       "properties": {
+        "env": {
+         "default": "prod",
+         "description": "Environment to use",
+         "enum": [
+          "prod",
+          "pre-prod"
+         ],
+         "type": "string"
+        },
+        "region": {
+         "default": "br-ne-1",
+         "description": "Region to reach the service",
+         "enum": [
+          "br-ne-1",
+          "br-se-1"
+         ],
+         "type": "string"
+        },
+        "serverUrl": {
+         "description": "Manually specify the server to use",
+         "format": "uri",
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
+      "description": "Detaches a volume from an instance. Make sure to unmount\nany file systems on the device within your operating system before\ndetaching the volume. Failure to do so can result in the volume\nbecoming stuck in the busy state while detaching. If this happens,\ndetachment can be delayed indefinitely until you unmount the volume,\nforce detachment, reboot the instance, or all three.",
+      "isInternal": false,
+      "name": "detach",
+      "parameters": {
+       "additionalProperties": false,
+       "properties": {
+        "id": {
+         "format": "uuid",
+         "title": "Id",
+         "type": "string"
+        },
+        "project_type": {
+         "default": "default",
+         "enum": [
+          "dbaas",
+          "iamaas",
+          "k8saas",
+          "mngsvc",
+          "default"
+         ],
+         "title": "Project Type",
+         "type": "string"
+        },
+        "virtual_machine_id": {
+         "format": "uuid",
+         "title": "Virtual Machine Id",
+         "type": "string"
+        }
+       },
+       "required": [
+        "id",
+        "virtual_machine_id"
+       ],
+       "type": "object"
+      },
+      "result": {
+       "nullable": true,
+       "type": "null"
+      },
+      "version": "1.80.0"
+     }
+    ],
+    "description": "Block Storage Volume Resources V1",
+    "isInternal": false,
+    "name": "volume-v1",
+    "version": "1.80.0"
    }
   ],
   "description": "Create and manage Volumes via the Block Storage API",

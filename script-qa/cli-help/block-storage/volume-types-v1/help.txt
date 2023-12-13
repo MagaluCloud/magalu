@@ -1,0 +1,18 @@
+Volume types V1
+
+Usage:
+  ./cli block-storage volume-types-v1 [flags]
+  ./cli block-storage volume-types-v1 [command]
+
+Commands:
+  list        List Volume Types V1
+
+Flags:
+  -h, --help      help for volume-types-v1
+  -v, --version   version for volume-types-v1
+
+Global Flags:
+      --cli.show-cli-globals   Show all CLI global flags on usage text
+
+Use "./cli block-storage volume-types-v1 [command] --help" for more information about a command.
+

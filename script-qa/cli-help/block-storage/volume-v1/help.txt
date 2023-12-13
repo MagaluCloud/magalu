@@ -1,0 +1,21 @@
+Block Storage Volume Resources V1
+
+Usage:
+  ./cli block-storage volume-v1 [flags]
+  ./cli block-storage volume-v1 [command]
+
+Commands:
+  attach      Attach Volume V1
+  create      Create a volume asynchronously.
+  delete      Delete Volume V1
+  detach      Detach Volume V1
+
+Flags:
+  -h, --help      help for volume-v1
+  -v, --version   version for volume-v1
+
+Global Flags:
+      --cli.show-cli-globals   Show all CLI global flags on usage text
+
+Use "./cli block-storage volume-v1 [command] --help" for more information about a command.
+

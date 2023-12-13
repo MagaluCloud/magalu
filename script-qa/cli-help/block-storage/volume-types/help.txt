@@ -1,4 +1,4 @@
-volume types
+Volume types
 
 Usage:
   ./cli block-storage volume-types [flags]
