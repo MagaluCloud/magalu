@@ -155,6 +155,7 @@ dbaas.openapi:
               - created_at
               - datastore_id
               - finished_at
+              - id
               - name
               - password
               - replicas
@@ -165,7 +166,7 @@ dbaas.openapi:
               - user
             non-computed:
               - flavor_id
-              - id
+              - instance_id
               - size
     - POST /v1/instances/{id}/start:
         - '200':
@@ -177,6 +178,7 @@ dbaas.openapi:
               - datastore_id
               - finished_at
               - flavor_id
+              - id
               - name
               - password
               - replicas
@@ -187,7 +189,7 @@ dbaas.openapi:
               - updated_at
               - user
             non-computed:
-              - id
+              - instance_id
     - POST /v1/instances/{id}/stop:
         - '200':
             computed:
@@ -198,6 +200,7 @@ dbaas.openapi:
               - datastore_id
               - finished_at
               - flavor_id
+              - id
               - name
               - password
               - replicas
@@ -208,7 +211,21 @@ dbaas.openapi:
               - updated_at
               - user
             non-computed:
+              - instance_id
+    - POST /v1/instances/{id}/backups:
+        - '202':
+            computed:
               - id
+            non-computed:
+              - instance_id
+              - mode
+    - POST /v1/instances/{id}/restores:
+        - '202':
+            computed:
+              - id
+            non-computed:
+              - backup_id
+              - instance_id
     - POST /v1/replicas:
         - '202':
             computed:

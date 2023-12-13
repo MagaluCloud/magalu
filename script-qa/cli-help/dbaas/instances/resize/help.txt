@@ -1,7 +1,7 @@
 Resizes a database instance.
 
 Usage:
-  ./cli dbaas instances resize [id] [flags]
+  ./cli dbaas instances resize [instance-id] [flags]
 
 Examples:
   ./cli dbaas instances resize --volume.size=30
@@ -9,7 +9,7 @@ Examples:
 Flags:
       --flavor-id uuid       Flavor Id
   -h, --help                 help for resize
-      --id uuid              Database Instance Id: Database Instance Unique Id.
+      --instance-id uuid     Database Instance Id: Database Instance Unique Id.
   -v, --version              version for resize
       --volume object        Instance Volume Request (single property: size)
                              Use --volume=help for more details

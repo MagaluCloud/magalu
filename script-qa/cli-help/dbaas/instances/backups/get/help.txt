@@ -1,13 +1,13 @@
 Get a backup detail.
 
 Usage:
-  ./cli dbaas instances backups get [id] [backup-id] [flags]
+  ./cli dbaas instances backups get [instance-id] [backup-id] [flags]
 
 Flags:
       --backup-id uuid                Value referring to backup Id.
       --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
   -h, --help                          help for get
-      --id uuid                       Value referring to instance Id.
+      --instance-id uuid              Value referring to instance Id.
   -v, --version                       version for get
 
 Global Flags:

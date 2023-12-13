@@ -7,12 +7,12 @@ Examples:
   ./cli dbaas instances list --status="ACTIVE"
 
 Flags:
-      --control.expand enum      Instance extra attributes or relations to show with the main query. When available, more than one value can be informed using commas. e.g: '--control.expand="replicas"' (must be "replicas")
-      --control.limit integer    limit (range: 1 - 25) (default 10)
-      --control.offset integer   offset (min: 0)
-  -h, --help                     help for list
-      --status enum              Value referring to instace status. (one of "ACTIVE", "BACKING_UP", "CREATING", "DELETED", "DELETING", "ERROR", "ERROR_DELETING", "PENDING", "REBOOT", "RESIZING", "RESTORING", "STARTING", "STOPPED" or "STOPPING")
-  -v, --version                  version for list
+      --expand enum      Instance extra attributes or relations to show with the main query. When available, more than one value can be informed using commas. e.g: '_expand=value1,value2' (must be "replicas")
+  -h, --help             help for list
+      --limit integer    limit (range: 1 - 25) (default 10)
+      --offset integer   offset (min: 0)
+      --status enum      Value referring to instace status. (one of "ACTIVE", "BACKING_UP", "CREATING", "DELETED", "DELETING", "ERROR", "ERROR_DELETING", "PENDING", "REBOOT", "RESIZING", "RESTORING", "STARTING", "STOPPED" or "STOPPING")
+  -v, --version          version for list
 
 Global Flags:
       --cli.show-cli-globals   Show all CLI global flags on usage text

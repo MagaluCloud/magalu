@@ -1,12 +1,12 @@
 Stops a database instance.
 
 Usage:
-  ./cli dbaas instances stop [id] [flags]
+  ./cli dbaas instances stop [instance-id] [flags]
 
 Flags:
-  -h, --help      help for stop
-      --id uuid   Database Instance Id: Database Instance Unique Id.
-  -v, --version   version for stop
+  -h, --help               help for stop
+      --instance-id uuid   Database Instance Id: Database Instance Unique Id.
+  -v, --version            version for stop
 
 Global Flags:
       --cli.show-cli-globals   Show all CLI global flags on usage text

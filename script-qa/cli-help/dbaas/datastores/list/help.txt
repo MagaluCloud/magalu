@@ -4,11 +4,11 @@ Usage:
   ./cli dbaas datastores list [flags]
 
 Flags:
-      --control.limit integer    limit (range: 1 - 25) (default 10)
-      --control.offset integer   offset (min: 0)
-  -h, --help                     help for list
-      --status enum              Value referring to datastore status. (one of "ACTIVE" or "DEPRECATED")
-  -v, --version                  version for list
+  -h, --help             help for list
+      --limit integer    limit (range: 1 - 25) (default 10)
+      --offset integer   offset (min: 0)
+      --status enum      Value referring to datastore status. (one of "ACTIVE" or "DEPRECATED")
+  -v, --version          version for list
 
 Global Flags:
       --cli.show-cli-globals   Show all CLI global flags on usage text

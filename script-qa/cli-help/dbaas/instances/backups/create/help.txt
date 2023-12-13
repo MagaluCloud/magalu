@@ -1,12 +1,12 @@
 Creates a new backup asynchronously.
 
 Usage:
-  ./cli dbaas instances backups create [id] [flags]
+  ./cli dbaas instances backups create [instance-id] [flags]
 
 Flags:
       --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
   -h, --help                          help for create
-      --id uuid                       Value referring to instance Id.
+      --instance-id uuid              Value referring to instance Id.
       --mode enum                     Backup Mode Request: An enumeration. (must be "FULL")
   -v, --version                       version for create
 

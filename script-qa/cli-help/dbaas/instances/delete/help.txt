@@ -1,12 +1,12 @@
 Deletes a database instance.
 
 Usage:
-  ./cli dbaas instances delete [id] [flags]
+  ./cli dbaas instances delete [instance-id] [flags]
 
 Flags:
-  -h, --help      help for delete
-      --id uuid   Database Instance Id: Database Instance Unique Id.
-  -v, --version   version for delete
+  -h, --help               help for delete
+      --instance-id uuid   Database Instance Id: Database Instance Unique Id.
+  -v, --version            version for delete
 
 Global Flags:
       --cli.show-cli-globals   Show all CLI global flags on usage text

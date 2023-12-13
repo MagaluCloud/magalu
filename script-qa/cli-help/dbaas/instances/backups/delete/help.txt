@@ -1,13 +1,13 @@
 Deletes a database backup.
 
 Usage:
-  ./cli dbaas instances backups delete [id] [backup-id] [flags]
+  ./cli dbaas instances backups delete [instance-id] [backup-id] [flags]
 
 Flags:
-      --backup-id uuid   Value referring to backup Id.
-  -h, --help             help for delete
-      --id uuid          Value referring to instance Id.
-  -v, --version          version for delete
+      --backup-id uuid     Value referring to backup Id.
+  -h, --help               help for delete
+      --instance-id uuid   Value referring to instance Id.
+  -v, --version            version for delete
 
 Global Flags:
       --cli.show-cli-globals   Show all CLI global flags on usage text

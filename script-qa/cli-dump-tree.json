@@ -4036,17 +4036,11 @@
       "parameters": {
        "additionalProperties": false,
        "properties": {
-        "_limit": {
+        "limit": {
          "default": 10,
          "description": "limit",
          "maximum": 25,
          "minimum": 1,
-         "type": "integer"
-        },
-        "_offset": {
-         "default": 0,
-         "description": "offset",
-         "minimum": 0,
          "type": "integer"
         },
         "mode": {
@@ -4057,6 +4051,12 @@
          ],
          "title": "Backup Mode",
          "type": "string"
+        },
+        "offset": {
+         "default": 0,
+         "description": "offset",
+         "minimum": 0,
+         "type": "integer"
         },
         "status": {
          "description": "Value referring to backup status.",
@@ -4327,14 +4327,14 @@
       "parameters": {
        "additionalProperties": false,
        "properties": {
-        "_limit": {
+        "limit": {
          "default": 10,
          "description": "limit",
          "maximum": 25,
          "minimum": 1,
          "type": "integer"
         },
-        "_offset": {
+        "offset": {
          "default": 0,
          "description": "offset",
          "minimum": 0,
@@ -4566,14 +4566,14 @@
       "parameters": {
        "additionalProperties": false,
        "properties": {
-        "_limit": {
+        "limit": {
          "default": 10,
          "description": "limit",
          "maximum": 25,
          "minimum": 1,
          "type": "integer"
         },
-        "_offset": {
+        "offset": {
          "default": 0,
          "description": "offset",
          "minimum": 0,
@@ -4720,7 +4720,7 @@
         "parameters": {
          "additionalProperties": false,
          "properties": {
-          "id": {
+          "instance_id": {
            "description": "Value referring to instance Id.",
            "format": "uuid",
            "title": "Instance Id",
@@ -4736,7 +4736,7 @@
           }
          },
          "required": [
-          "id",
+          "instance_id",
           "mode"
          ],
          "type": "object"
@@ -4799,7 +4799,7 @@
            "title": "Backup Id",
            "type": "string"
           },
-          "id": {
+          "instance_id": {
            "description": "Value referring to instance Id.",
            "format": "uuid",
            "title": "Instance Id",
@@ -4808,7 +4808,7 @@
          },
          "required": [
           "backup_id",
-          "id"
+          "instance_id"
          ],
          "type": "object"
         },
@@ -4860,7 +4860,7 @@
            "title": "Backup Id",
            "type": "string"
           },
-          "id": {
+          "instance_id": {
            "description": "Value referring to instance Id.",
            "format": "uuid",
            "title": "Instance Id",
@@ -4869,7 +4869,7 @@
          },
          "required": [
           "backup_id",
-          "id"
+          "instance_id"
          ],
          "type": "object"
         },
@@ -5008,24 +5008,18 @@
         "parameters": {
          "additionalProperties": false,
          "properties": {
-          "_limit": {
+          "instance_id": {
+           "description": "Value referring to instance Id.",
+           "format": "uuid",
+           "title": "Instance Id",
+           "type": "string"
+          },
+          "limit": {
            "default": 10,
            "description": "limit",
            "maximum": 25,
            "minimum": 1,
            "type": "integer"
-          },
-          "_offset": {
-           "default": 0,
-           "description": "offset",
-           "minimum": 0,
-           "type": "integer"
-          },
-          "id": {
-           "description": "Value referring to instance Id.",
-           "format": "uuid",
-           "title": "Instance Id",
-           "type": "string"
           },
           "mode": {
            "description": "Value referring to backup mode.",
@@ -5035,6 +5029,12 @@
            ],
            "title": "Backup Mode",
            "type": "string"
+          },
+          "offset": {
+           "default": 0,
+           "description": "offset",
+           "minimum": 0,
+           "type": "integer"
           },
           "status": {
            "description": "Value referring to backup status.",
@@ -5060,7 +5060,7 @@
           }
          },
          "required": [
-          "id"
+          "instance_id"
          ],
          "type": "object"
         },
@@ -5348,7 +5348,7 @@
       "parameters": {
        "additionalProperties": false,
        "properties": {
-        "id": {
+        "instance_id": {
          "description": "Database Instance Unique Id.",
          "format": "uuid",
          "title": "Database Instance Id",
@@ -5356,7 +5356,7 @@
         }
        },
        "required": [
-        "id"
+        "instance_id"
        ],
        "type": "object"
       },
@@ -5402,14 +5402,14 @@
       "parameters": {
        "additionalProperties": false,
        "properties": {
-        "_expand": {
+        "expand": {
          "description": "Instance extra attributes or relations to show with the main query. When available, more than one value can be informed using commas. e.g: `_expand=value1,value2`",
          "enum": [
           "replicas"
          ],
          "type": "string"
         },
-        "id": {
+        "instance_id": {
          "description": "Database Instance Unique Id.",
          "format": "uuid",
          "title": "Database Instance Id",
@@ -5417,7 +5417,7 @@
         }
        },
        "required": [
-        "id"
+        "instance_id"
        ],
        "type": "object"
       },
@@ -5790,21 +5790,21 @@
       "parameters": {
        "additionalProperties": false,
        "properties": {
-        "_expand": {
+        "expand": {
          "description": "Instance extra attributes or relations to show with the main query. When available, more than one value can be informed using commas. e.g: `_expand=value1,value2`",
          "enum": [
           "replicas"
          ],
          "type": "string"
         },
-        "_limit": {
+        "limit": {
          "default": 10,
          "description": "limit",
          "maximum": 25,
          "minimum": 1,
          "type": "integer"
         },
-        "_offset": {
+        "offset": {
          "default": 0,
          "description": "offset",
          "minimum": 0,
@@ -6222,7 +6222,7 @@
          "title": "Flavor Id",
          "type": "string"
         },
-        "id": {
+        "instance_id": {
          "description": "Database Instance Unique Id.",
          "format": "uuid",
          "title": "Database Instance Id",
@@ -6246,7 +6246,7 @@
         }
        },
        "required": [
-        "id"
+        "instance_id"
        ],
        "type": "object"
       },
@@ -6615,7 +6615,7 @@
       },
       "description": "Restores a backup for an instance asynchronously.",
       "isInternal": false,
-      "name": "restores",
+      "name": "restore",
       "parameters": {
        "additionalProperties": false,
        "properties": {
@@ -6624,7 +6624,7 @@
          "title": "Backup Id",
          "type": "string"
         },
-        "id": {
+        "instance_id": {
          "description": "Value referring to instance Id.",
          "format": "uuid",
          "title": "Instance Id",
@@ -6633,7 +6633,7 @@
        },
        "required": [
         "backup_id",
-        "id"
+        "instance_id"
        ],
        "type": "object"
       },
@@ -6689,7 +6689,7 @@
       "parameters": {
        "additionalProperties": false,
        "properties": {
-        "id": {
+        "instance_id": {
          "description": "Database Instance Unique Id.",
          "format": "uuid",
          "title": "Database Instance Id",
@@ -6697,7 +6697,7 @@
         }
        },
        "required": [
-        "id"
+        "instance_id"
        ],
        "type": "object"
       },
@@ -7070,7 +7070,7 @@
       "parameters": {
        "additionalProperties": false,
        "properties": {
-        "id": {
+        "instance_id": {
          "description": "Database Instance Unique Id.",
          "format": "uuid",
          "title": "Database Instance Id",
@@ -7078,7 +7078,7 @@
         }
        },
        "required": [
-        "id"
+        "instance_id"
        ],
        "type": "object"
       },
@@ -7468,7 +7468,7 @@
          "title": "Backup Start At",
          "type": "string"
         },
-        "id": {
+        "instance_id": {
          "description": "Database Instance Unique Id.",
          "format": "uuid",
          "title": "Database Instance Id",
@@ -7484,7 +7484,7 @@
         }
        },
        "required": [
-        "id"
+        "instance_id"
        ],
        "type": "object"
       },
@@ -8188,14 +8188,14 @@
       "parameters": {
        "additionalProperties": false,
        "properties": {
-        "_limit": {
+        "limit": {
          "default": 10,
          "description": "limit",
          "maximum": 25,
          "minimum": 1,
          "type": "integer"
         },
-        "_offset": {
+        "offset": {
          "default": 0,
          "description": "offset",
          "minimum": 0,

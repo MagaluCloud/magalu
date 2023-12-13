@@ -1,13 +1,13 @@
 Restores a backup for an instance asynchronously.
 
 Usage:
-  ./cli dbaas instances restores [id] [flags]
+  ./cli dbaas instances restore [instance-id] [flags]
 
 Flags:
-      --backup-id uuid   Backup Id
-  -h, --help             help for restores
-      --id uuid          Value referring to instance Id.
-  -v, --version          version for restores
+      --backup-id uuid     Backup Id
+  -h, --help               help for restore
+      --instance-id uuid   Value referring to instance Id.
+  -v, --version            version for restore
 
 Global Flags:
       --cli.show-cli-globals   Show all CLI global flags on usage text

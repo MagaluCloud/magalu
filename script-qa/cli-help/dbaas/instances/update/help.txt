@@ -1,7 +1,7 @@
 Updates a database instance.
 
 Usage:
-  ./cli dbaas instances update [id] [flags]
+  ./cli dbaas instances update [instance-id] [flags]
 
 Examples:
   ./cli dbaas instances update --backup-retention-days=7 --backup-start-at="03:00:00" --status="ACTIVE"
@@ -11,7 +11,7 @@ Flags:
       --backup-start-at time            Backup Start At: Start time which is allowed to start the automated backup process. (default "01:00:00")
       --cli.list-links enum[=table]     List all available links for this command (one of "json", "table" or "yaml")
   -h, --help                            help for update
-      --id uuid                         Database Instance Id: Database Instance Unique Id.
+      --instance-id uuid                Database Instance Id: Database Instance Unique Id.
       --status enum                     (one of "ACTIVE" or "STOPPED")
   -v, --version                         version for update
 

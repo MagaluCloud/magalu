@@ -1,12 +1,12 @@
 Starts a database instance.
 
 Usage:
-  ./cli dbaas instances start [id] [flags]
+  ./cli dbaas instances start [instance-id] [flags]
 
 Flags:
-  -h, --help      help for start
-      --id uuid   Database Instance Id: Database Instance Unique Id.
-  -v, --version   version for start
+  -h, --help               help for start
+      --instance-id uuid   Database Instance Id: Database Instance Unique Id.
+  -v, --version            version for start
 
 Global Flags:
       --cli.show-cli-globals   Show all CLI global flags on usage text

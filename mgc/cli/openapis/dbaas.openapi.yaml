@@ -245,7 +245,7 @@ paths:
                     title: Database Instance Id
                     type: string
                     format: uuid
-                name: id
+                name: instance_id
                 in: path
                 description: Database Instance Unique Id.
             -   $ref: '#/components/parameters/instance_expand'
@@ -298,7 +298,7 @@ paths:
                     title: Database Instance Id
                     type: string
                     format: uuid
-                name: id
+                name: instance_id
                 in: path
                 description: Database Instance Unique Id.
             requestBody:
@@ -352,7 +352,7 @@ paths:
                     title: Database Instance Id
                     type: string
                     format: uuid
-                name: id
+                name: instance_id
                 in: path
                 description: Database Instance Unique Id.
             responses:
@@ -386,7 +386,7 @@ paths:
                     title: Database Instance Id
                     type: string
                     format: uuid
-                name: id
+                name: instance_id
                 in: path
                 description: Database Instance Unique Id.
             requestBody:
@@ -417,6 +417,7 @@ paths:
             security:
             -   OAuth2:
                 - dbaas.write
+            x-mgc-name: resize
     /v1/instances/{id}/start:
         post:
             tags:
@@ -430,7 +431,7 @@ paths:
                     title: Database Instance Id
                     type: string
                     format: uuid
-                name: id
+                name: instance_id
                 in: path
                 description: Database Instance Unique Id.
             responses:
@@ -455,6 +456,7 @@ paths:
             security:
             -   OAuth2:
                 - dbaas.write
+            x-mgc-name: start
     /v1/instances/{id}/stop:
         post:
             tags:
@@ -468,7 +470,7 @@ paths:
                     title: Database Instance Id
                     type: string
                     format: uuid
-                name: id
+                name: instance_id
                 in: path
                 description: Database Instance Unique Id.
             responses:
@@ -493,6 +495,7 @@ paths:
             security:
             -   OAuth2:
                 - dbaas.write
+            x-mgc-name: stop
     /v1/instances/{id}/backups:
         get:
             tags:
@@ -501,7 +504,7 @@ paths:
             description: List all backups.
             operationId: backups_list_v1_instances__instance_id__backups_get
             parameters:
-            -   $ref: '#/components/parameters/id'
+            -   $ref: '#/components/parameters/instance_id'
             -   $ref: '#/components/parameters/offset'
             -   $ref: '#/components/parameters/limit'
             -   $ref: '#/components/parameters/backup_type'
@@ -534,7 +537,7 @@ paths:
             description: Creates a new backup asynchronously.
             operationId: backup_create_v1_instances__instance_id__backups_post
             parameters:
-            -   $ref: '#/components/parameters/id'
+            -   $ref: '#/components/parameters/instance_id'
             requestBody:
                 content:
                     application/json:
@@ -584,7 +587,7 @@ paths:
             description: Get a backup detail.
             operationId: backup_detail_v1_instances__instance_id__backups__backup_id__get
             parameters:
-            -   $ref: '#/components/parameters/id'
+            -   $ref: '#/components/parameters/instance_id'
             -   $ref: '#/components/parameters/backup_id'
             responses:
                 '200':
@@ -622,7 +625,7 @@ paths:
             description: Deletes a database backup.
             operationId: delete_backup_v1_instances__instance_id__backups__backup_id__delete
             parameters:
-            -   $ref: '#/components/parameters/id'
+            -   $ref: '#/components/parameters/instance_id'
             -   $ref: '#/components/parameters/backup_id'
             responses:
                 '202':
@@ -675,6 +678,7 @@ paths:
             security:
             -   OAuth2:
                 - dbaas.read
+            x-mgc-name: list
     /v1/backups/{backup_id}:
         get:
             tags:
@@ -917,6 +921,7 @@ paths:
             security:
             -   OAuth2:
                 - dbaas.write
+            x-mgc-name: resize
     /v1/replicas/{replica_id}/start:
         post:
             tags:
@@ -948,6 +953,7 @@ paths:
             security:
             -   OAuth2:
                 - dbaas.write
+            x-mgc-name: start
     /v1/replicas/{replica_id}/stop:
         post:
             tags:
@@ -979,6 +985,7 @@ paths:
             security:
             -   OAuth2:
                 - dbaas.write
+            x-mgc-name: stop
     /v1/instances/{id}/restores:
         post:
             tags:
@@ -987,7 +994,7 @@ paths:
             description: Restores a backup for an instance asynchronously.
             operationId: instances_v1_restore
             parameters:
-            -   $ref: '#/components/parameters/id'
+            -   $ref: '#/components/parameters/instance_id'
             requestBody:
                 content:
                     application/json:
@@ -1016,6 +1023,7 @@ paths:
             security:
             -   OAuth2:
                 - dbaas.write
+            x-mgc-name: restore
 components:
     parameters:
         replica_id:
@@ -1054,8 +1062,8 @@ components:
                 format: uuid
             example: 1b65c0e4-94a1-4385-aedb-c1b34f6e8935
             description: Value referring to backup Id.
-        id:
-            name: id
+        instance_id:
+            name: instance_id
             in: path
             required: true
             style: simple
@@ -1087,6 +1095,7 @@ components:
             description: 'Instance extra attributes or relations to show with the
                 main query. When available, more than one value can be informed using
                 commas. e.g: `_expand=value1,value2`'
+            x-mgc-name: expand
         offset:
             name: _offset
             in: query
@@ -1096,6 +1105,7 @@ components:
                 minimum: 0
                 default: 0
             description: offset
+            x-mgc-name: offset
         limit:
             name: _limit
             in: query
@@ -1106,6 +1116,7 @@ components:
                 maximum: 25
                 default: 10
             description: limit
+            x-mgc-name: limit
         datastore_status:
             name: status
             in: query
