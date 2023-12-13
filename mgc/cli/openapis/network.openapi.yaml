@@ -6,7 +6,7 @@ info:
         name: Tribo IAAS Cloud
         url: https://github.com/luizalabs
         email: thullyo.cunha@luizalabs.com
-    version: 1.91.0
+    version: 1.97.2
 paths:
     /v0/healthcheck:
         get:
@@ -202,10 +202,10 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
-            x-mgc-description: List VPC ports
             security:
             -   OAuth2:
                 - network.read
+            x-mgc-description: List VPC ports
     /v0/ports/{port_id}:
         get:
             tags:
@@ -313,7 +313,6 @@ paths:
             security:
             -   OAuth2:
                 - network.write
-            x-mgc-hidden: true
     /v0/ports/{port_id}/attach/{security_group_id}:
         post:
             tags:
@@ -425,6 +424,26 @@ paths:
                     type: boolean
                     title: validateQuota
                     default: true
+            -   name: wait
+                in: query
+                required: false
+                schema:
+                    type: boolean
+                    title: wait
+                    default: true
+            -   name: wait_timeout
+                in: query
+                required: false
+                schema:
+                    title: waitTimeout
+                    description: the approximate time in seconds you want to wait
+                        when simulating the request as synchronous (only works with
+                        wait=true)
+                    default: 120
+                    nullable: true
+                    type: integer
+                description: the approximate time in seconds you want to wait when
+                    simulating the request as synchronous (only works with wait=true)
             requestBody:
                 required: true
                 content:
@@ -675,53 +694,6 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: false
-            security:
-            -   OAuth2:
-                - network.read
-    /v0/routers/default:
-        post:
-            tags:
-            - router
-            summary: Create Router Default
-            description: Create a Router Default
-            operationId: createRouterDefault
-            responses:
-                '201':
-                    description: Successful Response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/RouterCreateResponse'
-                '422':
-                    description: Validation Error
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/HTTPValidationError'
-            x-viveiro: false
-            security:
-            -   OAuth2:
-                - network.write
-    /v0/routers:
-        get:
-            tags:
-            - router
-            summary: List Routers by Tenant
-            description: Returns a list of routers for a provided tenant_id
-            operationId: listRoutersByTenant
-            responses:
-                '200':
-                    description: Successful Response
-                    content:
-                        application/json:
-                            schema: {}
-                '422':
-                    description: Validation Error
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/HTTPValidationError'
-            x-viveiro: true
             security:
             -   OAuth2:
                 - network.read
@@ -1494,6 +1466,43 @@ paths:
             security:
             -   OAuth2:
                 - network.write
+    /v0/worker/public_ips/{public_ip_id}:
+        patch:
+            tags:
+            - worker_public_ips
+            summary: Update Public Ip
+            description: Update a public ip from the provided tenant_id
+            operationId: updatePublicIpWorker
+            parameters:
+            -   name: public_ip_id
+                in: path
+                required: true
+                schema:
+                    title: Public Ip Id
+                    type: string
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/PublicIpUpdateRequest'
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/PublicIpResponseId'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: false
+            security:
+            -   OAuth2:
+                - network.write
 components:
     schemas:
         AddInterfaceRequest:
@@ -1782,6 +1791,7 @@ components:
             - iamaas
             - k8saas
             - default
+            - mngsvc
             title: ProjectType
         PublicIpCreateRequest:
             properties:
@@ -1810,6 +1820,10 @@ components:
                     title: Id
                     nullable: true
                     type: string
+                external_id:
+                    title: External Id
+                    nullable: true
+                    type: string
                 vpc_id:
                     title: Vpc Id
                     nullable: true
@@ -1836,16 +1850,38 @@ components:
                     nullable: true
                     type: string
                     format: date-time
+                status:
+                    title: Status
+                    nullable: true
+                    type: string
+                error:
+                    title: Error
+                    nullable: true
+                    type: string
             type: object
             title: PublicIpDb
             example:
                 created_at: '2022-01-01 00:00:00'
                 description: port description
+                error: error
+                external_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                 id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                 port_ip: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                 public_ip: 100.94.5.31
+                status: created
                 updated: '2022-01-01 00:00:00'
                 vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        PublicIpResponseId:
+            properties:
+                id:
+                    type: string
+                    title: Id
+            type: object
+            required:
+            - id
+            title: PublicIpResponseId
+            example:
+                id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
         PublicIpResponsePort:
             properties:
                 public_ip_id:
@@ -1861,6 +1897,38 @@ components:
             example:
                 public_ip: 100.94.5.31
                 public_ip_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        PublicIpStatus:
+            type: string
+            enum:
+            - created
+            - pending
+            - error
+            title: PublicIpStatus
+        PublicIpUpdateRequest:
+            properties:
+                status:
+                    $ref: '#/components/schemas/PublicIpStatus'
+                public_ip:
+                    title: Public Ip
+                    nullable: true
+                    type: string
+                external_id:
+                    title: External Id
+                    nullable: true
+                    type: string
+                error:
+                    title: Error
+                    nullable: true
+                    type: string
+            type: object
+            required:
+            - status
+            title: PublicIpUpdateRequest
+            example:
+                error: error
+                external_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                public_ip: 100.94.5.31
+                status: created
         PublicIpsList:
             properties:
                 public_ips:
@@ -1876,9 +1944,11 @@ components:
                 public_ips:
                 -   created_at: '2022-01-01 00:00:00'
                     description: port description
+                    error: error
                     id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                     port_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                     public_ip: 100.94.5.31
+                    status: created
                     updated: '2022-01-01 00:00:00'
                     vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
         QuotaModel:
@@ -1912,16 +1982,22 @@ components:
                 results:
                 -   quota_slug: public_ips
                     used: 10
-        RouterCreateResponse:
+        RouteRequest:
             properties:
-                id:
-                    title: Id
-                    nullable: true
+                destination:
                     type: string
+                    title: Destination
+                nexthop:
+                    type: string
+                    title: Nexthop
             type: object
-            title: RouterCreateResponse
+            required:
+            - destination
+            - nexthop
+            title: RouteRequest
             example:
-                id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                destination: 10.20.30.0/24
+                nexthop: 172.20.0.2
         RouterInterfaceResponse:
             properties:
                 id:
@@ -1930,6 +2006,10 @@ components:
                     type: string
                 vpc_id:
                     title: Vpc Id
+                    nullable: true
+                    type: string
+                router_id:
+                    title: Router Id
                     nullable: true
                     type: string
                 ip_address:
@@ -1952,7 +2032,7 @@ components:
                 id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                 ip_address: 172.20.0.2
                 nic_vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-                vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                router_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
         RouterInterfaceResponseList:
             properties:
                 router_interfaces:
@@ -1970,7 +2050,7 @@ components:
                     id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                     ip_address: 172.20.0.2
                     nic_vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-                    vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                    router_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
         RuleCreateRequest:
             properties:
                 direction:
@@ -3015,22 +3095,6 @@ components:
                     - xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                     tenant_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                     updated: '2022-01-01 00:00:00'
-        VpcRouteRequest:
-            properties:
-                destination:
-                    type: string
-                    title: Destination
-                nexthop:
-                    type: string
-                    title: Nexthop
-            type: object
-            required:
-            - destination
-            - nexthop
-            title: VpcRouteRequest
-            example:
-                destination: 10.20.30.0/24
-                nexthop: 172.20.0.2
         XVpcCreateRequest:
             properties:
                 name:

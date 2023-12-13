@@ -13234,13 +13234,13 @@
        "title": "Healthcheck",
        "type": "object"
       },
-      "version": "1.91.0"
+      "version": "1.97.2"
      }
     ],
     "description": "",
     "isInternal": true,
     "name": "healthcheck",
-    "version": "1.91.0"
+    "version": "1.97.2"
    },
    {
     "children": [
@@ -13298,7 +13298,7 @@
          "type": "object"
         },
         "result": {},
-        "version": "1.91.0"
+        "version": "1.97.2"
        },
        {
         "configs": {
@@ -13394,7 +13394,7 @@
          "title": "PortCreateResponse",
          "type": "object"
         },
-        "version": "1.91.0"
+        "version": "1.97.2"
        },
        {
         "configs": {
@@ -13446,7 +13446,7 @@
          "nullable": true,
          "type": "null"
         },
-        "version": "1.91.0"
+        "version": "1.97.2"
        },
        {
         "configs": {
@@ -13479,7 +13479,7 @@
          "type": "object"
         },
         "description": "",
-        "isInternal": true,
+        "isInternal": false,
         "name": "delete-all",
         "parameters": {
          "additionalProperties": false,
@@ -13523,7 +13523,7 @@
          "title": "PortDeletedAllResponse",
          "type": "object"
         },
-        "version": "1.91.0"
+        "version": "1.97.2"
        },
        {
         "configs": {
@@ -13577,7 +13577,7 @@
          "type": "object"
         },
         "result": {},
-        "version": "1.91.0"
+        "version": "1.97.2"
        },
        {
         "configs": {
@@ -13759,7 +13759,7 @@
          "title": "PortResponse",
          "type": "object"
         },
-        "version": "1.91.0"
+        "version": "1.97.2"
        },
        {
         "configs": {
@@ -13946,13 +13946,13 @@
          "title": "Response Portsdetailedlist",
          "type": "array"
         },
-        "version": "1.91.0"
+        "version": "1.97.2"
        }
       ],
       "description": "VPC Port | ports",
       "isInternal": false,
       "name": "ports",
-      "version": "1.91.0"
+      "version": "1.97.2"
      },
      {
       "children": [
@@ -14055,7 +14055,7 @@
          "title": "PortCreateResponse",
          "type": "object"
         },
-        "version": "1.91.0"
+        "version": "1.97.2"
        },
        {
         "configs": {
@@ -14382,19 +14382,19 @@
          "title": "Response Listports",
          "type": "object"
         },
-        "version": "1.91.0"
+        "version": "1.97.2"
        }
       ],
       "description": "VPC Port | vpcs-ports",
       "isInternal": false,
       "name": "vpcs-ports",
-      "version": "1.91.0"
+      "version": "1.97.2"
      }
     ],
     "description": "VPC Port",
     "isInternal": false,
     "name": "port",
-    "version": "1.91.0"
+    "version": "1.97.2"
    },
    {
     "children": [
@@ -14452,7 +14452,7 @@
          "type": "object"
         },
         "result": {},
-        "version": "1.91.0"
+        "version": "1.97.2"
        },
        {
         "configs": {
@@ -14504,7 +14504,7 @@
          "nullable": true,
          "type": "null"
         },
-        "version": "1.91.0"
+        "version": "1.97.2"
        },
        {
         "configs": {
@@ -14558,7 +14558,7 @@
          "type": "object"
         },
         "result": {},
-        "version": "1.91.0"
+        "version": "1.97.2"
        },
        {
         "configs": {
@@ -14610,9 +14610,12 @@
          "example": {
           "created_at": "2022-01-01 00:00:00",
           "description": "port description",
+          "error": "error",
+          "external_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
           "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
           "port_ip": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
           "public_ip": "100.94.5.31",
+          "status": "created",
           "updated": "2022-01-01 00:00:00",
           "vpc_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
          },
@@ -14626,6 +14629,16 @@
           "description": {
            "nullable": true,
            "title": "Description",
+           "type": "string"
+          },
+          "error": {
+           "nullable": true,
+           "title": "Error",
+           "type": "string"
+          },
+          "external_id": {
+           "nullable": true,
+           "title": "External Id",
            "type": "string"
           },
           "id": {
@@ -14643,6 +14656,11 @@
            "title": "Public Ip",
            "type": "string"
           },
+          "status": {
+           "nullable": true,
+           "title": "Status",
+           "type": "string"
+          },
           "updated": {
            "format": "date-time",
            "nullable": true,
@@ -14658,7 +14676,7 @@
          "title": "PublicIpDb",
          "type": "object"
         },
-        "version": "1.91.0"
+        "version": "1.97.2"
        },
        {
         "configs": {
@@ -14703,9 +14721,11 @@
            {
             "created_at": "2022-01-01 00:00:00",
             "description": "port description",
+            "error": "error",
             "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
             "port_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
             "public_ip": "100.94.5.31",
+            "status": "created",
             "updated": "2022-01-01 00:00:00",
             "vpc_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
            }
@@ -14717,9 +14737,12 @@
             "example": {
              "created_at": "2022-01-01 00:00:00",
              "description": "port description",
+             "error": "error",
+             "external_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
              "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
              "port_ip": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
              "public_ip": "100.94.5.31",
+             "status": "created",
              "updated": "2022-01-01 00:00:00",
              "vpc_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
             },
@@ -14735,6 +14758,16 @@
               "title": "Description",
               "type": "string"
              },
+             "error": {
+              "nullable": true,
+              "title": "Error",
+              "type": "string"
+             },
+             "external_id": {
+              "nullable": true,
+              "title": "External Id",
+              "type": "string"
+             },
              "id": {
               "nullable": true,
               "title": "Id",
@@ -14748,6 +14781,11 @@
              "public_ip": {
               "nullable": true,
               "title": "Public Ip",
+              "type": "string"
+             },
+             "status": {
+              "nullable": true,
+              "title": "Status",
               "type": "string"
              },
              "updated": {
@@ -14775,13 +14813,13 @@
          "title": "PublicIpsList",
          "type": "object"
         },
-        "version": "1.91.0"
+        "version": "1.97.2"
        }
       ],
       "description": "VPC Public IPs | public-ips",
       "isInternal": false,
       "name": "public-ips",
-      "version": "1.91.0"
+      "version": "1.97.2"
      },
      {
       "children": [
@@ -14834,6 +14872,18 @@
           "vpc_id": {
            "title": "Vpc Id",
            "type": "string"
+          },
+          "wait": {
+           "default": true,
+           "title": "wait",
+           "type": "boolean"
+          },
+          "wait_timeout": {
+           "default": 120,
+           "description": "the approximate time in seconds you want to wait when simulating the request as synchronous (only works with wait=true)",
+           "nullable": true,
+           "title": "waitTimeout",
+           "type": "integer"
           }
          },
          "required": [
@@ -14857,7 +14907,7 @@
          "title": "PublicIpCreateResponse",
          "type": "object"
         },
-        "version": "1.91.0"
+        "version": "1.97.2"
        },
        {
         "configs": {
@@ -14911,9 +14961,11 @@
            {
             "created_at": "2022-01-01 00:00:00",
             "description": "port description",
+            "error": "error",
             "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
             "port_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
             "public_ip": "100.94.5.31",
+            "status": "created",
             "updated": "2022-01-01 00:00:00",
             "vpc_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
            }
@@ -14925,9 +14977,12 @@
             "example": {
              "created_at": "2022-01-01 00:00:00",
              "description": "port description",
+             "error": "error",
+             "external_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
              "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
              "port_ip": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
              "public_ip": "100.94.5.31",
+             "status": "created",
              "updated": "2022-01-01 00:00:00",
              "vpc_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
             },
@@ -14943,6 +14998,16 @@
               "title": "Description",
               "type": "string"
              },
+             "error": {
+              "nullable": true,
+              "title": "Error",
+              "type": "string"
+             },
+             "external_id": {
+              "nullable": true,
+              "title": "External Id",
+              "type": "string"
+             },
              "id": {
               "nullable": true,
               "title": "Id",
@@ -14956,6 +15021,11 @@
              "public_ip": {
               "nullable": true,
               "title": "Public Ip",
+              "type": "string"
+             },
+             "status": {
+              "nullable": true,
+              "title": "Status",
               "type": "string"
              },
              "updated": {
@@ -14983,19 +15053,19 @@
          "title": "PublicIpsList",
          "type": "object"
         },
-        "version": "1.91.0"
+        "version": "1.97.2"
        }
       ],
       "description": "VPC Public IPs | vpcs-public-ips",
       "isInternal": false,
       "name": "vpcs-public-ips",
-      "version": "1.91.0"
+      "version": "1.97.2"
      }
     ],
     "description": "VPC Public IPs",
     "isInternal": false,
     "name": "public_ip",
-    "version": "1.91.0"
+    "version": "1.97.2"
    },
    {
     "children": [
@@ -15097,13 +15167,13 @@
        "title": "QuotaResult",
        "type": "object"
       },
-      "version": "1.91.0"
+      "version": "1.97.2"
      }
     ],
     "description": "VPC Quotas",
     "isInternal": false,
     "name": "quotas",
-    "version": "1.91.0"
+    "version": "1.97.2"
    },
    {
     "children": [
@@ -15159,7 +15229,7 @@
          "nullable": true,
          "type": "null"
         },
-        "version": "1.91.0"
+        "version": "1.97.2"
        },
        {
         "configs": {
@@ -15294,13 +15364,13 @@
          "title": "RuleResponse",
          "type": "object"
         },
-        "version": "1.91.0"
+        "version": "1.97.2"
        }
       ],
       "description": "VPC Rules | rules",
       "isInternal": false,
       "name": "rules",
-      "version": "1.91.0"
+      "version": "1.97.2"
      },
      {
       "children": [
@@ -15419,7 +15489,7 @@
          "title": "RuleCreateResponse",
          "type": "object"
         },
-        "version": "1.91.0"
+        "version": "1.97.2"
        },
        {
         "configs": {
@@ -15583,19 +15653,19 @@
          "title": "RulesList",
          "type": "object"
         },
-        "version": "1.91.0"
+        "version": "1.97.2"
        }
       ],
       "description": "VPC Rules | security-groups-rules",
       "isInternal": false,
       "name": "security-groups-rules",
-      "version": "1.91.0"
+      "version": "1.97.2"
      }
     ],
     "description": "VPC Rules",
     "isInternal": false,
     "name": "rule",
-    "version": "1.91.0"
+    "version": "1.97.2"
    },
    {
     "children": [
@@ -15676,7 +15746,7 @@
          "title": "SecurityGroupCreateResponse",
          "type": "object"
         },
-        "version": "1.91.0"
+        "version": "1.97.2"
        },
        {
         "configs": {
@@ -15731,7 +15801,7 @@
          "title": "SecurityGroupCreateResponse",
          "type": "object"
         },
-        "version": "1.91.0"
+        "version": "1.97.2"
        },
        {
         "configs": {
@@ -15783,7 +15853,7 @@
          "nullable": true,
          "type": "null"
         },
-        "version": "1.91.0"
+        "version": "1.97.2"
        },
        {
         "configs": {
@@ -15845,7 +15915,7 @@
          "title": "SecurityGroupDeletedAllResponse",
          "type": "object"
         },
-        "version": "1.91.0"
+        "version": "1.97.2"
        },
        {
         "configs": {
@@ -16085,7 +16155,7 @@
          "title": "SecurityGroupDetailEvent",
          "type": "object"
         },
-        "version": "1.91.0"
+        "version": "1.97.2"
        },
        {
         "configs": {
@@ -16234,13 +16304,13 @@
          "title": "SecurityGroupListEvent",
          "type": "object"
         },
-        "version": "1.91.0"
+        "version": "1.97.2"
        }
       ],
       "description": "VPC Security Groups | security-groups",
       "isInternal": false,
       "name": "security-groups",
-      "version": "1.91.0"
+      "version": "1.97.2"
      },
      {
       "children": [
@@ -16334,7 +16404,7 @@
          "title": "SecurityGroupCreateResponse",
          "type": "object"
         },
-        "version": "1.91.0"
+        "version": "1.97.2"
        },
        {
         "configs": {
@@ -16492,19 +16562,19 @@
          "title": "SecurityGroupListEvent",
          "type": "object"
         },
-        "version": "1.91.0"
+        "version": "1.97.2"
        }
       ],
       "description": "VPC Security Groups | vpcs-security-groups",
       "isInternal": false,
       "name": "vpcs-security-groups",
-      "version": "1.91.0"
+      "version": "1.97.2"
      }
     ],
     "description": "VPC Security Groups",
     "isInternal": false,
     "name": "security_group",
-    "version": "1.91.0"
+    "version": "1.97.2"
    },
    {
     "children": [
@@ -16560,7 +16630,7 @@
          "nullable": true,
          "type": "null"
         },
-        "version": "1.91.0"
+        "version": "1.97.2"
        },
        {
         "configs": {
@@ -16714,7 +16784,7 @@
          "title": "SubnetResponseDetail",
          "type": "object"
         },
-        "version": "1.91.0"
+        "version": "1.97.2"
        },
        {
         "configs": {
@@ -16787,13 +16857,13 @@
          "title": "SubnetResponseId",
          "type": "object"
         },
-        "version": "1.91.0"
+        "version": "1.97.2"
        }
       ],
       "description": "VPC Subnets | subnets",
       "isInternal": false,
       "name": "subnets",
-      "version": "1.91.0"
+      "version": "1.97.2"
      },
      {
       "children": [
@@ -16888,7 +16958,7 @@
          "title": "SubnetCreateResponse",
          "type": "object"
         },
-        "version": "1.91.0"
+        "version": "1.97.2"
        },
        {
         "configs": {
@@ -17021,19 +17091,19 @@
          "title": "SubnetsResponse",
          "type": "object"
         },
-        "version": "1.91.0"
+        "version": "1.97.2"
        }
       ],
       "description": "VPC Subnets | vpcs-subnets",
       "isInternal": false,
       "name": "vpcs-subnets",
-      "version": "1.91.0"
+      "version": "1.97.2"
      }
     ],
     "description": "VPC Subnets",
     "isInternal": false,
     "name": "subnets",
-    "version": "1.91.0"
+    "version": "1.97.2"
    },
    {
     "children": [
@@ -17102,7 +17172,7 @@
        "title": "VpcCreateResponse",
        "type": "object"
       },
-      "version": "1.91.0"
+      "version": "1.97.2"
      },
      {
       "configs": {
@@ -17155,7 +17225,7 @@
        "title": "VpcCreateResponse",
        "type": "object"
       },
-      "version": "1.91.0"
+      "version": "1.97.2"
      },
      {
       "configs": {
@@ -17207,7 +17277,7 @@
        "nullable": true,
        "type": "null"
       },
-      "version": "1.91.0"
+      "version": "1.97.2"
      },
      {
       "configs": {
@@ -17329,7 +17399,7 @@
        "title": "VpcDeletedAllResponse",
        "type": "object"
       },
-      "version": "1.91.0"
+      "version": "1.97.2"
      },
      {
       "configs": {
@@ -17471,7 +17541,7 @@
        "title": "VpcResponse",
        "type": "object"
       },
-      "version": "1.91.0"
+      "version": "1.97.2"
      },
      {
       "configs": {
@@ -17639,61 +17709,61 @@
        "title": "VpcResponseList",
        "type": "object"
       },
-      "version": "1.91.0"
+      "version": "1.97.2"
      }
     ],
     "description": "Virtual Private Cloud (VPC)",
     "isInternal": false,
     "name": "vpc",
-    "version": "1.91.0"
+    "version": "1.97.2"
    },
    {
     "children": [],
     "description": "",
     "isInternal": true,
     "name": "xaas_port",
-    "version": "1.91.0"
+    "version": "1.97.2"
    },
    {
     "children": [],
     "description": "",
     "isInternal": true,
     "name": "xaas_rule",
-    "version": "1.91.0"
+    "version": "1.97.2"
    },
    {
     "children": [],
     "description": "",
     "isInternal": true,
     "name": "xaas_security_group",
-    "version": "1.91.0"
+    "version": "1.97.2"
    },
    {
     "children": [],
     "description": "",
     "isInternal": true,
     "name": "xaas_subnetpools",
-    "version": "1.91.0"
+    "version": "1.97.2"
    },
    {
     "children": [],
     "description": "",
     "isInternal": true,
     "name": "xaas_subnets",
-    "version": "1.91.0"
+    "version": "1.97.2"
    },
    {
     "children": [],
     "description": "",
     "isInternal": true,
     "name": "xaas_vpc",
-    "version": "1.91.0"
+    "version": "1.97.2"
    }
   ],
   "description": "APIs referentes ao produto de Network",
   "isInternal": false,
   "name": "network",
-  "version": "1.91.0"
+  "version": "1.97.2"
  },
  {
   "children": [

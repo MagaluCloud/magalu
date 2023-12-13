@@ -10,6 +10,8 @@ Flags:
       --validate-quota                validateQuota (default true)
   -v, --version                       version for create
       --vpc-id string                 Vpc Id
+      --wait                          wait (default true)
+      --wait-timeout integer          waitTimeout: the approximate time in seconds you want to wait when simulating the request as synchronous (only works with wait=true) (default 120)
 
 Global Flags:
       --cli.show-cli-globals   Show all CLI global flags on usage text

@@ -407,10 +407,8 @@ network.openapi:
               - description
               - validate_quota
               - vpc_id
-    - POST /v0/routers/default:
-        - '201':
-            computed:
-              - id
+              - wait
+              - wait_timeout
     - POST /v0/security_groups/{security_group_id}/rules:
         - '200':
             computed:
@@ -480,7 +478,6 @@ network.openapi:
     - paths./v0/ports/{port_id}/detach/{security_group_id}.post.responses.200.content.application/json.schema
     - paths./v0/public_ips/{public_ip_id}/attach/{port_id}.post.responses.200.content.application/json.schema
     - paths./v0/public_ips/{public_ip_id}/detach/{port_id}.post.responses.200.content.application/json.schema
-    - paths./v0/routers.get.responses.200.content.application/json.schema
   uneven-resources:
     port:
       DELETE:
@@ -530,13 +527,13 @@ network.openapi:
   unused-components:
     - '#/components/schemas/AddInterfaceRequest'
     - '#/components/schemas/ProjectType'
+    - '#/components/schemas/RouteRequest'
     - '#/components/schemas/RouterInterfaceResponseList'
     - '#/components/schemas/SecurityGroupStatusEvent'
     - '#/components/schemas/SubnetPoolDetailsResponse'
     - '#/components/schemas/SubnetPoolRequest'
     - '#/components/schemas/SubnetPoolsResponse'
     - '#/components/schemas/ValidationError'
-    - '#/components/schemas/VpcRouteRequest'
     - '#/components/schemas/XVpcCreateRequest'
     - '#/components/schemas/vpc_api_product__vpc__models__rule__RuleDefaultStatusEvent'
 virtual-machine.openapi:

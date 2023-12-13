@@ -8,6 +8,7 @@ Commands:
   attach      Attach Security Group
   create      Create Port VPC Default
   delete      Delete Port
+  delete-all  Delete Port All
   detach      Detach Security Group
   get         Port Details
   list        Details of a Port list

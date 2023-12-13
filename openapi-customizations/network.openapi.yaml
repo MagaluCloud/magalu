@@ -5,27 +5,27 @@
 # such as "x-mgc-name" or "x-mgc-description"
 
 servers:
--   url: https://{env}/{region}/network
+  - url: https://{env}/{region}/network
     variables:
-        region:
-            description: Region to reach the service
-            default: br-ne-1
-            enum:
-            - br-ne-1
-            - br-se-1
-        env:
-            description: Environment to use
-            default: api2.magalu.cloud
-            enum:
-            - api2.magalu.cloud
-            - api.pre-prod.jaxyendy.com
-            x-mgc-transforms:
-            -   type: translate
-                translations:
-                -   from: prod
-                    to: api2.magalu.cloud
-                -   from: pre-prod
-                    to: api.pre-prod.jaxyendy.com
+      region:
+        description: Region to reach the service
+        default: br-ne-1
+        enum:
+          - br-ne-1
+          - br-se-1
+      env:
+        description: Environment to use
+        default: api2.magalu.cloud
+        enum:
+          - api2.magalu.cloud
+          - api.pre-prod.jaxyendy.com
+        x-mgc-transforms:
+          - type: translate
+            translations:
+              - from: prod
+                to: api2.magalu.cloud
+              - from: pre-prod
+                to: api.pre-prod.jaxyendy.com
 
 paths:
   /v0/vpcs/{vpc_id}/ports:
@@ -76,22 +76,22 @@ paths:
               parameters:
                 port_id: $request.path.port_id
             create/attach-security-group:
-                description: Attach a Security Group to this Port
-                operationId: attachSecurityGroup
-                parameters:
-                    port_id: $request.path.port_id
+              description: Attach a Security Group to this Port
+              operationId: attachSecurityGroup
+              parameters:
+                port_id: $request.path.port_id
             delete/attach-security-group:
-                description: Detach this BS Volume to a VM instance
-                operationId: detachSecurityGroup
-                parameters:
-                    port_id: $request.path.port_id
+              description: Detach this BS Volume to a VM instance
+              operationId: detachSecurityGroup
+              parameters:
+                port_id: $request.path.port_id
             read/attach-security-group:
-                description: Check if a Security Group is attached to this Port
-                operationId: securityGroupDetails
-                x-mgc-wait-termination:
-                    maxRetries: 2
-                    interval: 5s
-                    jsonPathQuery: $.owner.result.security_groups[?(@ == $.parameters.security_group_id)]
+              description: Check if a Security Group is attached to this Port
+              operationId: securityGroupDetails
+              x-mgc-wait-termination:
+                maxRetries: 2
+                interval: 5s
+                jsonPathQuery: $.owner.result.security_groups[?(@ == $.parameters.security_group_id)]
       security:
         - OAuth2:
             - network.read
@@ -284,15 +284,15 @@ paths:
               description: Check if a Security Group is attached to this Port
               operationId: securityGroupDetails
               x-mgc-wait-termination:
-                  maxRetries: 2
-                  interval: 5s
-                  jsonPathQuery: $.owner.result.security_groups[?(@ == $.parameters.security_group_id)]
+                maxRetries: 2
+                interval: 5s
+                jsonPathQuery: $.owner.result.security_groups[?(@ == $.parameters.security_group_id)]
             delete:
-                description: Detach this BS Volume to a VM instance
-                operationId: detachSecurityGroup
-                parameters:
-                    port_id: $request.path.port_id
-                    security_group_i: $request.path.security_group_id
+              description: Detach this BS Volume to a VM instance
+              operationId: detachSecurityGroup
+              parameters:
+                port_id: $request.path.port_id
+                security_group_i: $request.path.security_group_id
       security:
         - OAuth2:
             - network.write
@@ -339,16 +339,6 @@ paths:
         - OAuth2:
             - network.read
   /v0/usage:
-    get:
-      security:
-        - OAuth2:
-            - network.read
-  /v0/routers/default:
-    post:
-      security:
-        - OAuth2:
-            - network.write
-  /v0/routers:
     get:
       security:
         - OAuth2:
@@ -442,31 +432,31 @@ paths:
             - network.write
 
 tags:
--   name: vpc
+  - name: vpc
     x-mgc-description: Virtual Private Cloud (VPC)
--   name: port
+  - name: port
     x-mgc-description: VPC Port
--   name: security_group
+  - name: security_group
     x-mgc-description: VPC Security Groups
--   name: rule
+  - name: rule
     x-mgc-description: VPC Rules
--   name: public_ip
+  - name: public_ip
     x-mgc-description: VPC Public IPs
--   name: subnets
+  - name: subnets
     x-mgc-description: VPC Subnets
--   name: healthcheck
+  - name: healthcheck
     x-mgc-hidden: true
--   name: xaas_vpc
+  - name: xaas_vpc
     x-mgc-hidden: true
--   name: xaas_subnetpools
+  - name: xaas_subnetpools
     x-mgc-hidden: true
--   name: xaas_rule
+  - name: xaas_rule
     x-mgc-hidden: true
--   name: xaas_security_group
+  - name: xaas_security_group
     x-mgc-hidden: true
--   name: xaas_port
+  - name: xaas_port
     x-mgc-hidden: true
--   name: xaas_subnets
+  - name: xaas_subnets
     x-mgc-hidden: true
--   name: quotas
+  - name: quotas
     x-mgc-description: VPC Quotas
