@@ -1458,7 +1458,6 @@ components:
             - created_at
             - backup_start_at
             - backup_retention_days
-            - replicas
             type: object
             properties:
                 id:
