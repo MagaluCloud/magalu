@@ -3,6 +3,7 @@ package provider
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"slices"
 
@@ -543,7 +544,60 @@ func (r *MgcResource) Update(ctx context.Context, req resource.UpdateRequest, re
 	ctx = tflog.SetField(ctx, resourceNameField, r.resTfName)
 	ctx = r.sdk.WrapContext(ctx)
 
-	updateResult := r.performOperation(ctx, r.update, tfsdk.State(req.Plan), &resp.Diagnostics)
+	params := map[string]any{}
+	configs := getConfigs(ctx, r.update.ConfigsSchema())
+	required := r.update.ParametersSchema().Required
+
+	planned := readMgcMapSchemaFromTFState(r, r.update.ParametersSchema(), ctx, tfsdk.State(req.Plan), &resp.Diagnostics)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	state := readMgcMapSchemaFromTFState(r, r.update.ParametersSchema(), ctx, tfsdk.State(req.State), &resp.Diagnostics)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	idParamCount := 0
+	for prop := range r.update.ParametersSchema().Properties {
+		if _, ok := planned[prop]; !ok {
+			continue
+		}
+
+		if _, ok := r.read.ParametersSchema().Properties[prop]; ok || planned[prop] != state[prop] {
+			params[prop] = planned[prop]
+			if prop == "id" || strings.HasSuffix(prop, "_id") {
+				idParamCount += 1
+			}
+			continue
+		}
+
+		if !slices.Contains(required, prop) {
+			continue
+		}
+
+		tflog.Warn(
+			ctx,
+			"update request has unchanged parameters values from current state. This may cause an error",
+			map[string]any{
+				"parameter": prop,
+				"value":     planned[prop],
+			},
+		)
+
+		params[prop] = planned[prop]
+		if prop == "id" || strings.HasSuffix(prop, "_id") {
+			idParamCount += 1
+		}
+	}
+
+	var updateResult core.ResultWithValue
+	if len(params) <= idParamCount {
+		updateResult = execute(r.resTfName, ctx, r.update, params, configs, &resp.Diagnostics)
+	} else {
+		updateResult = r.performOperation(ctx, r.read, tfsdk.State(resp.State), &resp.Diagnostics)
+	}
+
 	if resp.Diagnostics.HasError() {
 		return
 	}
