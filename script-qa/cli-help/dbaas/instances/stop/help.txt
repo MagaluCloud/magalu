@@ -4,10 +4,11 @@ Usage:
   ./cli dbaas instances stop [instance-id] [flags]
 
 Flags:
-      --exchange string    Exchange (default "dbaas-internal")
-  -h, --help               help for stop
-      --instance-id uuid   Instance Id (required)
-  -v, --version            version for stop
+      --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
+      --exchange string               Exchange (default "dbaas-internal")
+  -h, --help                          help for stop
+      --instance-id uuid              Instance Id (required)
+  -v, --version                       version for stop
 
 Global Flags:
       --cli.show-cli-globals   Show all CLI global flags on usage text

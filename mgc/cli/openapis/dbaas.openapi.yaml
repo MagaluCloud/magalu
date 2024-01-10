@@ -823,7 +823,7 @@ paths:
             x-mgc-wait-termination:
                 maxRetries: 100
                 interval: 20s
-                jsonPathQuery: $.result.status == "ACTIVE" || $.result.status == "ERROR"
+                jsonPathQuery: $.result.status != "CREATING"
         delete:
             tags:
             - instances
@@ -897,6 +897,12 @@ paths:
                             description: Read Database instance
                             parameters:
                                 id: $request.path.id
+                            x-mgc-wait-termination:
+                                maxRetries: 20
+                                interval: 10s
+                                jsonPathQuery: ($.owner.parameters.status != null
+                                    && $.result.status == $.owner.parameters.status)
+                                    || $.result.status != "CREATING"
                         delete:
                             operationId: instances_v1_delete
                             description: Delete Database instance
@@ -984,6 +990,16 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/InstanceDetailResponse'
+                    links:
+                        read:
+                            operationId: instances_v1_get_by_id
+                            description: Read Database instance
+                            parameters:
+                                id: $request.path.id
+                            x-mgc-wait-termination:
+                                maxRetries: 20
+                                interval: 10s
+                                jsonPathQuery: $.result.status == "ACTIVE
                 '422':
                     description: Validation Error
                     content:
@@ -1022,6 +1038,16 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/InstanceDetailResponse'
+                    links:
+                        read:
+                            operationId: instances_v1_get_by_id
+                            description: Read Database instance
+                            parameters:
+                                id: $request.path.id
+                            x-mgc-wait-termination:
+                                maxRetries: 20
+                                interval: 10s
+                                jsonPathQuery: $.result.status == "STOPPED"
                 '422':
                     description: Validation Error
                     content:
