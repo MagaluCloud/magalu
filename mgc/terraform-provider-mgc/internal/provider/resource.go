@@ -3,6 +3,7 @@ package provider
 import (
 	"context"
 	"fmt"
+	"reflect"
 	"strings"
 
 	"slices"
@@ -16,7 +17,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	"magalu.cloud/core"
 	mgcSchemaPkg "magalu.cloud/core/schema"
-	"magalu.cloud/core/utils"
 	mgcSdk "magalu.cloud/sdk"
 )
 
@@ -391,17 +391,26 @@ func (r *MgcResource) callPostOpPropertySetters(
 
 		convDiag := diag.Diagnostics{}
 		conv := newTFStateLoader(ctx, &convDiag)
-		targetVal, ok := conv.loadMgcSchemaValue(attr, stateVal, false, false)
-		if convDiag.HasError() || !ok {
+		targetVal, wasSpecified := conv.loadMgcSchemaValue(attr, stateVal, false, false)
+		if convDiag.HasError() {
 			tflog.Debug(
 				ctx,
 				"[resource] unable to convert TF value to MGC value to update prop, ignoring set",
+				map[string]any{"resource": r.Name(), "propTFName": attr.tfName, "tfValue": stateVal, "convErrors": convDiag.Errors()},
+			)
+			continue
+		}
+
+		if !wasSpecified {
+			tflog.Debug(
+				ctx,
+				"[resource] value was not specified, will not call property setter",
 				map[string]any{"resource": r.Name(), "propTFName": attr.tfName, "tfValue": stateVal},
 			)
 			continue
 		}
 
-		if utils.IsSameValueOrPointer(currentVal, targetVal) {
+		if reflect.DeepEqual(currentVal, targetVal) {
 			tflog.Debug(
 				ctx,
 				"[resource] no need, current state matches desired state",
