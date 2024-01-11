@@ -429,8 +429,8 @@ func (r *MgcResource) callPostOpPropertySetters(
 			continue
 		}
 
-		setterExec := r.callPropertySetter(ctx, inState, outState, attr.tfName, setter, calledSetterExecs, currentVal, targetVal, readResult, d)
-		if d.HasError() {
+		setterExec, run := r.callPropertySetter(ctx, inState, outState, attr.tfName, setter, calledSetterExecs, currentVal, targetVal, readResult, d)
+		if d.HasError() || !run {
 			return
 		}
 
@@ -450,7 +450,7 @@ func (r *MgcResource) callPropertySetter(
 	currentVal, targetVal core.Value,
 	readResult core.ResultWithValue,
 	d *diag.Diagnostics,
-) core.Executor {
+) (exec core.Executor, run bool) {
 	tflog.Debug(
 		ctx,
 		fmt.Sprintf("[resource] will update param %q with property setter", propTFName),
@@ -462,7 +462,7 @@ func (r *MgcResource) callPropertySetter(
 			"[resource] property setter fail",
 			fmt.Sprintf("unable to call property setter to update parameter %q: %v", propTFName, err),
 		)
-		return nil
+		return nil, false
 	}
 
 	setterExec, err := target.CreateExecutor(readResult)
@@ -471,7 +471,7 @@ func (r *MgcResource) callPropertySetter(
 			"[resource] property setter fail",
 			fmt.Sprintf("unable to call property setter to update parameter %q: %v", propTFName, err),
 		)
-		return nil
+		return nil, false
 	}
 
 	// Here, we compare each entry manually (check the name, parameter and result equality) to know if
@@ -496,21 +496,30 @@ func (r *MgcResource) callPropertySetter(
 			fmt.Sprintf("[resource] skipping %q property setter because it has already been called by another prop", propTFName),
 			map[string]any{"resource": r.Name()},
 		)
-		return nil
+		return nil, true
 	}
 
-	propSetResult := r.performOperation(ctx, setterExec, inState, d)
-	if d.HasError() {
+	propSetDiag := &diag.Diagnostics{}
+	propSetResult := r.performOperation(ctx, setterExec, inState, propSetDiag)
+	if propSetDiag.HasError() {
 		tflog.Debug(
 			ctx,
 			"[resource] property setter fail",
 			map[string]any{"resource": r.Name(), "prop": propTFName, "error": d.Errors()},
 		)
-		return nil
+		d.AddWarning(
+			fmt.Sprintf("Error while updating property %q", propTFName),
+			fmt.Sprintf(
+				"Error while updating property %q: %v. If there were previous updates to other properties, they will be saved, but further updates will be aborted",
+				propSetDiag.Errors(),
+				propTFName,
+			),
+		)
+		return nil, false
 	}
 
 	applyStateAfter(r, propSetResult, r.read, ctx, outState, d)
-	return setterExec
+	return setterExec, true
 }
 
 func (r *MgcResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
