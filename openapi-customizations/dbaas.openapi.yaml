@@ -111,12 +111,6 @@ paths:
                           parameters:
                               id: $request.path.id
                           x-mgc-hidden: true
-                      update/volume:
-                          operationId: instances_v1_resize
-                          description: Resizes a database instance.
-                          parameters:
-                              id: $request.path.id
-                          x-mgc-hidden: true
                       update/status/ACTIVE:
                           operationId: instances_v1_start
                           description: Starts a database instance.
@@ -163,6 +157,18 @@ paths:
                 - dbaas.write
     /v1/instances/{instance_id}/resize:
         post:
+            responses:
+              '200':
+                  links:
+                      read:
+                          operationId: instances_v1_get_by_id
+                          description: Read Database instance
+                          parameters:
+                              id: $request.path.id
+                          x-mgc-wait-termination:
+                              maxRetries: 20
+                              interval: 10s
+                              jsonPathQuery: $.result.flavor_id == $.owner.parameters.flavor_id
             security:
             -   OAuth2:
                 - dbaas.write
