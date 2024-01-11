@@ -179,7 +179,7 @@ paths:
                           x-mgc-wait-termination:
                               maxRetries: 20
                               interval: 10s
-                              jsonPathQuery: $.result.status == "ACTIVE
+                              jsonPathQuery: $.result.status == "ACTIVE"
             security:
             -   OAuth2:
                 - dbaas.write
