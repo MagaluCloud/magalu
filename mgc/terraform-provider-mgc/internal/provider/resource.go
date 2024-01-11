@@ -454,12 +454,12 @@ func (r *MgcResource) callPropertySetter(
 	tflog.Debug(
 		ctx,
 		fmt.Sprintf("[resource] will update param %q with property setter", propTFName),
-		map[string]any{"resource": r.Name()},
+		map[string]any{"resource": r.Name(), "currentValue": currentVal, "targetValue": targetVal},
 	)
 	target, err := setter.getTarget(currentVal, targetVal)
 	if err != nil {
 		d.AddError(
-			"property setter fail",
+			"[resource] property setter fail",
 			fmt.Sprintf("unable to call property setter to update parameter %q: %v", propTFName, err),
 		)
 		return nil
@@ -468,7 +468,7 @@ func (r *MgcResource) callPropertySetter(
 	setterExec, err := target.CreateExecutor(readResult)
 	if err != nil {
 		d.AddError(
-			"property setter fail",
+			"[resource] property setter fail",
 			fmt.Sprintf("unable to call property setter to update parameter %q: %v", propTFName, err),
 		)
 		return nil
@@ -501,8 +501,14 @@ func (r *MgcResource) callPropertySetter(
 
 	propSetResult := r.performOperation(ctx, setterExec, inState, d)
 	if d.HasError() {
+		tflog.Debug(
+			ctx,
+			"[resource] property setter fail",
+			map[string]any{"resource": r.Name(), "prop": propTFName, "error": d.Errors()},
+		)
 		return nil
 	}
+
 	applyStateAfter(r, propSetResult, r.read, ctx, outState, d)
 	return setterExec
 }
