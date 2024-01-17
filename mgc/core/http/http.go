@@ -96,6 +96,11 @@ type BaseApiError struct {
 	Slug    string `json:"slug"`
 }
 
+type ObjectStorageXMLError struct {
+	Message string `xml:"Message"`
+	Code    string `xml:"Code"`
+}
+
 func (e *HttpError) Error() string {
 	return e.Message
 }
@@ -115,16 +120,33 @@ func NewHttpErrorFromResponse(resp *http.Response) *HttpError {
 	if err != nil {
 		logger().Debugw("ignored invalid response", "Content-Type", resp.Header.Get("Content-Type"), "error", err.Error())
 	}
+	// if contentType == "application/json" {
+	// 	fmt.Println("decoding as json")
+	// 	data := BaseApiError{}
+	// 	if err := json.Unmarshal(payload, &data); err == nil {
+	// 		if data.Message != "" {
+	// 			message = data.Message
+	// 		}
+	// 		if data.Slug != "" {
+	// 			slug = data.Slug
+	// 		}
+	// 	}
 	if contentType == "application/json" {
-		data := BaseApiError{}
-		if err := json.Unmarshal(payload, &data); err == nil {
+		fmt.Println("decoding as xml")
+		data := ObjectStorageXMLError{}
+		decoder := xml.NewDecoder(bytes.NewBuffer(payload))
+		if err := decoder.Decode(&data); err == nil {
 			if data.Message != "" {
 				message = data.Message
 			}
-			if data.Slug != "" {
-				slug = data.Slug
+			if data.Code != "" {
+				slug = data.Code
 			}
+		} else {
+			fmt.Println(err)
 		}
+	} else {
+		fmt.Println("wtf is this content type?", contentType)
 	}
 
 	return &HttpError{

@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"magalu.cloud/core"
+	mgcHttpPkg "magalu.cloud/core/http"
 	"magalu.cloud/core/utils"
 	"magalu.cloud/sdk/static/object_storage/common"
 )
@@ -52,10 +53,10 @@ func create(ctx context.Context, params createParams, cfg common.Config) (core.V
 		return nil, err
 	}
 
-	_, err = common.SendRequest(ctx, req)
+	res, err := common.SendRequest(ctx, req)
 	if err != nil {
 		return nil, err
 	}
 
-	return params, nil
+	return mgcHttpPkg.UnwrapResponse[any](res)
 }
