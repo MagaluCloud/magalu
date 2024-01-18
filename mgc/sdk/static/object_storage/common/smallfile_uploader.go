@@ -5,6 +5,7 @@ import (
 	"io"
 	"io/fs"
 
+	"magalu.cloud/core/http"
 	"magalu.cloud/core/progress_report"
 	mgcSchemaPkg "magalu.cloud/core/schema"
 )
@@ -31,7 +32,8 @@ func (u *smallFileUploader) createProgressReporter(ctx context.Context) progress
 }
 
 func (u *smallFileUploader) Upload(ctx context.Context) error {
-	wrappedReader := progress_report.NewReporterReader(u.reader, u.createProgressReporter(ctx))
+	progressReporter := u.createProgressReporter(ctx)
+	wrappedReader := progress_report.NewReporterReader(u.reader, progressReporter)
 	req, err := newUploadRequest(ctx, u.cfg, u.dst, wrappedReader)
 	if err != nil {
 		return err
@@ -39,6 +41,14 @@ func (u *smallFileUploader) Upload(ctx context.Context) error {
 
 	req.Header.Set("Content-Type", u.mimeType)
 
-	_, err = SendRequest(ctx, req)
+	defer func() {
+		progressReporter(int(u.fileInfo.Size()), err)
+	}()
+
+	res, err := SendRequest(ctx, req)
+	if err != nil {
+		return err
+	}
+	_, err = http.UnwrapResponse[any](res)
 	return err
 }
