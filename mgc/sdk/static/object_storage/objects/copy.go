@@ -2,7 +2,9 @@ package objects
 
 import (
 	"context"
+	"fmt"
 	"net/http"
+	"net/url"
 
 	"magalu.cloud/core"
 	"magalu.cloud/core/progress_report"
@@ -44,7 +46,12 @@ func copySingleFile(ctx context.Context, cfg common.Config, src mgcSchemaPkg.URI
 		return err
 	}
 
-	req.Header.Set("x-amz-copy-source", src.String())
+	copySource, err := url.JoinPath(src.Hostname(), src.Path())
+	if err != nil {
+		return core.UsageError{Err: fmt.Errorf("badly specified source URI: %w", err)}
+	}
+
+	req.Header.Set("x-amz-copy-source", copySource)
 
 	_, err = common.SendRequest(ctx, req)
 	if err != nil {
