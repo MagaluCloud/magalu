@@ -107,9 +107,5 @@ func SendRequest(ctx context.Context, req *http.Request) (res *http.Response, er
 		return
 	}
 
-	if res.StatusCode < 200 || res.StatusCode >= 300 {
-		return nil, fmt.Errorf("HTTP Request failed with status code: %d", res.StatusCode)
-	}
-
 	return
 }
