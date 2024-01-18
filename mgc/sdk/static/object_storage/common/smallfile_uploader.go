@@ -26,19 +26,24 @@ func (u *smallFileUploader) createProgressReporter(ctx context.Context) progress
 	sentBytes := uint64(0)
 	return func(n int, err error) {
 		sentBytes += uint64(n)
-		reportProgress(fileName, sentBytes, total, progress_report.UnitsBytes, err)
+		reportProgress(fileName, max(0, sentBytes-1), total, progress_report.UnitsBytes, err)
 	}
 }
 
 func (u *smallFileUploader) Upload(ctx context.Context) error {
-	wrappedReader := progress_report.NewReporterReader(u.reader, u.createProgressReporter(ctx))
+	progressReporter := u.createProgressReporter(ctx)
+	wrappedReader := progress_report.NewReporterReader(u.reader, progressReporter)
 	req, err := newUploadRequest(ctx, u.cfg, u.dst, wrappedReader)
 	if err != nil {
 		return err
 	}
-
 	req.Header.Set("Content-Type", u.mimeType)
 
 	_, err = SendRequest(ctx, req)
-	return err
+	if err != nil {
+		progressReporter(0, err)
+		return err
+	}
+	progressReporter(1, nil)
+	return nil
 }
