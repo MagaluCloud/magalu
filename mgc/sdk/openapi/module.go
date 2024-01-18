@@ -107,19 +107,31 @@ func newModule(
 			}
 
 			boundRefResolver := core.NewBoundRefResolver(indexModule.Url, refResolver)
-			resources = make([]core.Grouper, 0, len(doc.Tags))
-
-			for _, tag := range doc.Tags {
-				resource := newResource(
-					tag,
+			opTable := collectOperationsv2(indexModule.Name, doc, extensionPrefix, logger)
+			resources = make([]core.Grouper, 0)
+			for _, subTable := range opTable.childTables {
+				resource := newResourcev2(
+					subTable,
 					doc,
 					extensionPrefix,
 					logger,
 					boundRefResolver,
 				)
-
 				resources = append(resources, resource)
 			}
+			// resources = make([]core.Grouper, 0, len(doc.Tags))
+
+			// for _, tag := range doc.Tags {
+			// 	resource := newResource(
+			// 		tag,
+			// 		doc,
+			// 		extensionPrefix,
+			// 		logger,
+			// 		boundRefResolver,
+			// 	)
+
+			// 	resources = append(resources, resource)
+			// }
 
 			return resources, nil
 		})

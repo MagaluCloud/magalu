@@ -33,6 +33,34 @@ func getServers(p *openapi3.PathItem, op *openapi3.Operation) openapi3.Servers {
 	return servers
 }
 
+func collectOperationsv2(
+	name string,
+	doc *openapi3.T,
+	extensionPrefix *string,
+	logger *zap.SugaredLogger,
+) *operationTable {
+	descs := make([]*operationDesc, 0)
+	for key, path := range doc.Paths {
+		pathOps := map[string]*openapi3.Operation{
+			"get":    path.Get,
+			"post":   path.Post,
+			"put":    path.Put,
+			"patch":  path.Patch,
+			"delete": path.Delete,
+		}
+
+		for method, op := range pathOps {
+			if op == nil {
+				continue
+			}
+
+			descs = append(descs, &operationDesc{path, op, method, key})
+		}
+	}
+
+	return newOperationTable(name, descs)
+}
+
 func collectOperations(
 	tag *openapi3.Tag,
 	doc *openapi3.T,
@@ -138,6 +166,34 @@ func collectResourceChildren(
 	}
 
 	return children, nil
+}
+
+func newResourcev2(
+	table *operationTable,
+	doc *openapi3.T,
+	extensionPrefix *string,
+	logger *zap.SugaredLogger,
+	refResolver *core.BoundRefPathResolver,
+) *core.SimpleGrouper[core.Descriptor] {
+	logger = logger.Named(table.name)
+	description := table.name
+	for _, tag := range doc.Tags {
+		if tag.Name == table.name {
+			description = getDescriptionExtension(extensionPrefix, tag.Extensions, tag.Description)
+			break
+		}
+	}
+	return core.NewSimpleGrouper[core.Descriptor](
+		core.DescriptorSpec{
+			Name:        table.name,
+			Description: description,
+			Version:     doc.Info.Version,
+			IsInternal:  false,
+		},
+		func() ([]core.Descriptor, error) {
+			return collectResourceChildren(description, table, doc, extensionPrefix, logger, refResolver)
+		},
+	)
 }
 
 func newResource(
