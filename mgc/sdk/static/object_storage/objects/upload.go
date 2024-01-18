@@ -46,6 +46,9 @@ func upload(ctx context.Context, params uploadParams, cfg common.Config) (*uploa
 		// If it isn't a file path, don't rename, just append source with bucket URI
 		fullDstPath = fullDstPath.JoinPath(fileName)
 	}
+	if params.Destination.String() == "s3://"+params.Destination.Hostname() {
+		fullDstPath = fullDstPath.JoinPath(fileName)
+	}
 
 	uploader, err := common.NewUploader(cfg, params.Source, fullDstPath)
 	if err != nil {
