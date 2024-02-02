@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"context"
 	"encoding/xml"
-	"errors"
 	"fmt"
 	"io"
 	"io/fs"
@@ -16,6 +15,7 @@ import (
 	"magalu.cloud/core/pipeline"
 	"magalu.cloud/core/progress_report"
 	mgcSchemaPkg "magalu.cloud/core/schema"
+	"magalu.cloud/core/utils"
 )
 
 type progressReport struct {
@@ -179,7 +179,7 @@ func (u *bigFileUploader) sendCompletionRequest(ctx context.Context, parts []com
 func (u *bigFileUploader) createPartSenderProcessor(cancel context.CancelCauseFunc, totalParts int, uploadId string) pipeline.Processor[pipeline.ReadableChunk, completionPart] {
 	return func(ctx context.Context, chunk pipeline.ReadableChunk) (part completionPart, status pipeline.ProcessStatus) {
 		var err error
-		defer func() { u.reportProgress(0, err) }()
+		defer func() { u.reportProgress(1, err) }()
 
 		partNumber := int(chunk.StartOffset/CHUNK_SIZE) + 1
 		reader := progress_report.NewReporterReader(chunk.Reader, u.reportProgress)
@@ -187,11 +187,6 @@ func (u *bigFileUploader) createPartSenderProcessor(cancel context.CancelCauseFu
 		if err != nil {
 			cancel(err)
 			return part, pipeline.ProcessAbort
-		}
-
-		// This is used while retrying requests
-		req.GetBody = func() (io.ReadCloser, error) {
-			return progress_report.NewReporterReader(io.NewSectionReader(chunk.Reader, 0, CHUNK_SIZE), u.reportProgress), nil
 		}
 
 		bigfileUploaderLogger().Debugw("Sending part", "part", partNumber, "total", totalParts)
@@ -218,7 +213,10 @@ func (u *bigFileUploader) Upload(ctx context.Context) error {
 	u.reportChan = make(chan progressReport)
 	defer close(u.reportChan)
 
-	go progressReportSubroutine(reportProgress, u.reportChan, u.fileInfo)
+	totalParts := int(math.Ceil(float64(u.fileInfo.Size()) / float64(CHUNK_SIZE)))
+	chunkChan := pipeline.ReadChunks(ctx, u.reader, u.fileInfo.Size(), CHUNK_SIZE)
+
+	go progressReportSubroutine(reportProgress, totalParts, u.reportChan, u.fileInfo)
 
 	ctx, cancel := context.WithCancelCause(ctx)
 	defer cancel(nil)
@@ -227,9 +225,6 @@ func (u *bigFileUploader) Upload(ctx context.Context) error {
 	if err != nil {
 		return err
 	}
-
-	totalParts := int(math.Ceil(float64(u.fileInfo.Size()) / float64(CHUNK_SIZE)))
-	chunkChan := pipeline.ReadChunks(ctx, u.reader, u.fileInfo.Size(), CHUNK_SIZE)
 
 	partChan := pipeline.ParallelProcess(ctx, u.workerN, chunkChan, u.createPartSenderProcessor(cancel, totalParts, uploadId), nil)
 
@@ -251,30 +246,33 @@ func (u *bigFileUploader) reportProgress(n int, err error) {
 
 func progressReportSubroutine(
 	reportProgress progress_report.ReportProgress,
+	totalParts int,
 	reportChan <-chan progressReport,
 	fileInfo fs.FileInfo,
 ) {
-	// TODO as some parts may retry, progress maybe overreported
-	name := "Upload " + fileInfo.Name()
-	total := uint64(fileInfo.Size())
-	bytesDone := uint64(0)
+	reportMsg := "Upload " + fileInfo.Name()
+	total := uint64(totalParts)
+	progress := uint64(0)
 
-	// Report we're starting progress
-	reportProgress(name, bytesDone, total, progress_report.UnitsBytes, nil)
+	// total here must be reported as one, otherwise the progress-bar shows
+	// an animation we do not wish the user to see
+	reportProgress(reportMsg, progress, total, progress_report.UnitsNone, nil)
 
-	var err error
-
+	var errors utils.MultiError
 	for report := range reportChan {
-		bytesDone += report.bytes
-		if report.err != nil && !errors.Is(report.err, io.EOF) {
-			err = report.err
+		progress += report.bytes
+
+		if report.err != nil {
+			errors = append(errors, report.err)
 		}
-		reportProgress(name, bytesDone, total, progress_report.UnitsBytes, nil)
-	}
-	// Set DONE flag
-	if err == nil {
-		err = progress_report.ErrorProgressDone
+
+		reportProgress(reportMsg, progress, total, progress_report.UnitsNone, nil)
 	}
 
-	reportProgress(name, bytesDone, total, progress_report.UnitsBytes, err)
+	if len(errors) > 0 {
+		reportProgress(reportMsg, progress, total, progress_report.UnitsNone, errors)
+		return
+	}
+
+	reportProgress(reportMsg, total, total, progress_report.UnitsNone, progress_report.ErrorProgressDone)
 }
