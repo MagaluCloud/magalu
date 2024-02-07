@@ -60,6 +60,7 @@ type Config struct {
 	RefreshUrl       string
 	TenantsListUrl   string
 	TokenExchangeUrl string
+	ApiKeys          string
 }
 
 type Auth struct {
@@ -99,6 +100,37 @@ type TokenExchangeResult struct {
 	AccessToken  string    `json:"access_token"`
 	RefreshToken string    `json:"refresh_token"`
 	Scope        []string  `json:"scope"`
+}
+
+type ApiKeysResult struct {
+	UUID          string  `json:"uuid"`
+	Name          string  `json:"name"`
+	Description   string  `json:"description"`
+	KeyPairID     string  `json:"key_pair_id"`
+	KeyPairSecret string  `json:"key_pair_secret"`
+	StartValidity string  `json:"start_validity"`
+	EndValidity   *string `json:"end_validity,omitempty"`
+	RevokedAt     *string `json:"revoked_at,omitempty"`
+	TenantName    *string `json:"tenant_name,omitempty"`
+}
+type apiKeys struct {
+	ApiKeysResult
+	Tenant struct {
+		UUID      string `json:"uuid"`
+		LegalName string `json:"legal_name"`
+	} `json:"tenant"`
+	Scopes []struct {
+		UUID        string `json:"uuid"`
+		Name        string `json:"name"`
+		Title       string `json:"title"`
+		ConsentText string `json:"consent_text"`
+		Icon        string `json:"icon"`
+		APIProduct  struct {
+			UUID string `json:"uuid"`
+			Name string `json:"name"`
+			Icon string `json:"icon"`
+		} `json:"api_product"`
+	} `json:"scopes"`
 }
 
 type Scope string
@@ -659,4 +691,65 @@ func (o *Auth) runTokenExchange(ctx context.Context, currentAt string, tenantId 
 		RefreshToken: payload.RefreshToken,
 		Scope:        strings.Split(payload.Scope, " "),
 	}, nil
+}
+
+func (o *Auth) ListApiKeys(ctx context.Context) ([]*ApiKeysResult, error) {
+	// at, err := o.AccessToken(ctx)
+	// if err != nil {
+	// 	return nil, fmt.Errorf("unable to get current access token. Did you forget to log in?")
+	// }
+
+	// MOCKED - TEMP
+	at := os.Getenv("TOKEN_MOCKED_IDMGLU")
+	// END MOCKED - TEMP
+
+	r, err := http.NewRequestWithContext(ctx, http.MethodGet, o.getConfig().ApiKeys, nil)
+	if err != nil {
+		return nil, err
+	}
+	r.Header.Set("Authorization", "Bearer "+at)
+	r.Header.Set("Content-Type", "application/json")
+
+	resp, err := o.httpClient.Do(r)
+	if err != nil {
+		return nil, err
+	}
+	if resp.StatusCode != http.StatusOK {
+		return nil, mgcHttpPkg.NewHttpErrorFromResponse(resp, r)
+	}
+
+	defer resp.Body.Close()
+	var result []*apiKeys
+	if err = json.NewDecoder(resp.Body).Decode(&result); err != nil {
+		return nil, err
+	}
+
+	var finallyResult []*ApiKeysResult
+
+	for _, y := range result {
+		if y.EndValidity != nil {
+			expDate, _ := time.Parse(*y.EndValidity, "2006-01-02T15:04:05Z")
+			if expDate.After(time.Now()) {
+				continue
+			}
+		}
+
+		xProductId := []string{"65f5db30-6273-4646-9784-c434286c35f9", "a4d463b6-e2fd-48d4-8e4c-257b262b6583"}
+
+		if y.RevokedAt == nil {
+			for i := 0; i < len(y.Scopes); i++ {
+				// compare uuid from another place?
+				if y.Scopes[i].Name == "*" || slices.Contains(xProductId, y.Scopes[i].APIProduct.UUID) {
+					tenantName := new(string)
+					*tenantName = y.Tenant.LegalName
+					y.ApiKeysResult.TenantName = tenantName
+
+					finallyResult = append(finallyResult, &y.ApiKeysResult)
+					i = len(y.Scopes)
+				}
+			}
+		}
+	}
+	return finallyResult, nil
+
 }

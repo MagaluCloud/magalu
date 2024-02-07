@@ -3,6 +3,7 @@ package objectstorage
 import (
 	"magalu.cloud/core"
 	"magalu.cloud/core/utils"
+	"magalu.cloud/sdk/static/auth/objectstorage/keys"
 )
 
 var GetGroup = utils.NewLazyLoader(func() core.Grouper {
@@ -19,6 +20,7 @@ here: https://id.magalu.com/api-keys`,
 			return []core.Descriptor{
 				getSet(),
 				getGet(),
+				keys.GetGroup(),
 			}
 		},
 	)
