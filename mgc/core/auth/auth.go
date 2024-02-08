@@ -133,6 +133,18 @@ type apiKeys struct {
 	} `json:"scopes"`
 }
 
+type CreateApiKey struct {
+	Name          string   `json:"name"`
+	Description   string   `json:"description"`
+	TenantID      string   `json:"tenant_id"`
+	ScopeIds      []string `json:"scope_ids"`
+	StartValidity string   `json:"start_validity"`
+	EndValidity   string   `json:"end_validity"`
+}
+type CreateApiKeyResult struct {
+	UUID string `json:"uuid,omitempty"`
+}
+
 type Scope string
 type Scopes []Scope
 type ScopesString string
@@ -751,5 +763,60 @@ func (o *Auth) ListApiKeys(ctx context.Context) ([]*ApiKeysResult, error) {
 		}
 	}
 	return finallyResult, nil
+
+}
+
+func (o *Auth) CreateApiKey(ctx context.Context, name string) (*CreateApiKeyResult, error) {
+	// at, err := o.AccessToken(ctx)
+	// if err != nil {
+	// 	return nil, fmt.Errorf("unable to get current access token. Did you forget to log in?")
+	// }
+
+	// MOCKED - TEMP
+	at := os.Getenv("TOKEN_MOCKED_IDMGLU")
+	// END MOCKED - TEMP
+
+	currentTenantID, err := o.CurrentTenantID()
+	if err != nil {
+		return nil, err
+	}
+
+	newApi := &CreateApiKey{
+		Name:          name,
+		Description:   "created from CLI",
+		TenantID:      currentTenantID,
+		ScopeIds:      []string{"b6afac7e-0afd-42de-b4aa-1bc82a27e307", "5ea6d1f7-20eb-4e80-9a9c-c7923636a4bd"},
+		StartValidity: time.Now().Format("2006-01-02"),
+		EndValidity:   "",
+	}
+
+	var buf bytes.Buffer
+	err = json.NewEncoder(&buf).Encode(newApi)
+	if err != nil {
+		return nil, err
+	}
+
+	r, err := http.NewRequestWithContext(ctx, http.MethodPost, o.getConfig().ApiKeys, &buf)
+	if err != nil {
+		return nil, err
+	}
+	r.Header.Set("Authorization", "Bearer "+at)
+	r.Header.Set("Content-Type", "application/json")
+
+	resp, err := o.httpClient.Do(r)
+	if err != nil {
+		return nil, err
+	}
+	if resp.StatusCode != http.StatusCreated {
+		return nil, mgcHttpPkg.NewHttpErrorFromResponse(resp, r)
+	}
+
+	defer resp.Body.Close()
+	var result CreateApiKeyResult
+	if err = json.NewDecoder(resp.Body).Decode(&result); err != nil {
+		return nil, err
+	}
+
+	return &result, nil
 
 }
