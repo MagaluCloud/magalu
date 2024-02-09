@@ -10,9 +10,9 @@ import (
 	"magalu.cloud/core"
 )
 
-var getKeys = utils.NewLazyLoader[core.Executor](newKeys)
+var getKeys = utils.NewLazyLoader[core.Executor](newList)
 
-func newKeys() core.Executor {
+func newList() core.Executor {
 	return core.NewStaticExecuteSimple(
 		core.DescriptorSpec{
 			Name:        "list",

@@ -30,7 +30,7 @@ func newCreate() core.Executor {
 	})
 }
 
-func create(ctx context.Context, parameter createParams, _ struct{}) (*mgcAuthPkg.CreateApiKeyResult, error) {
+func create(ctx context.Context, parameter createParams, _ struct{}) (*mgcAuthPkg.ApiKeyResult, error) {
 	auth := mgcAuthPkg.FromContext(ctx)
 
 	if auth == nil {

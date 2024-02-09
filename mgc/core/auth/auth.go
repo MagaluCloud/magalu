@@ -141,7 +141,7 @@ type CreateApiKey struct {
 	StartValidity string   `json:"start_validity"`
 	EndValidity   string   `json:"end_validity"`
 }
-type CreateApiKeyResult struct {
+type ApiKeyResult struct {
 	UUID string `json:"uuid,omitempty"`
 }
 
@@ -706,14 +706,10 @@ func (o *Auth) runTokenExchange(ctx context.Context, currentAt string, tenantId 
 }
 
 func (o *Auth) ListApiKeys(ctx context.Context) ([]*ApiKeysResult, error) {
-	// at, err := o.AccessToken(ctx)
-	// if err != nil {
-	// 	return nil, fmt.Errorf("unable to get current access token. Did you forget to log in?")
-	// }
-
-	// MOCKED - TEMP
-	at := os.Getenv("TOKEN_MOCKED_IDMGLU")
-	// END MOCKED - TEMP
+	at, err := o.AccessToken(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("unable to get current access token. Did you forget to log in?")
+	}
 
 	r, err := http.NewRequestWithContext(ctx, http.MethodGet, o.getConfig().ApiKeys, nil)
 	if err != nil {
@@ -766,15 +762,11 @@ func (o *Auth) ListApiKeys(ctx context.Context) ([]*ApiKeysResult, error) {
 
 }
 
-func (o *Auth) CreateApiKey(ctx context.Context, name string) (*CreateApiKeyResult, error) {
-	// at, err := o.AccessToken(ctx)
-	// if err != nil {
-	// 	return nil, fmt.Errorf("unable to get current access token. Did you forget to log in?")
-	// }
-
-	// MOCKED - TEMP
-	at := os.Getenv("TOKEN_MOCKED_IDMGLU")
-	// END MOCKED - TEMP
+func (o *Auth) CreateApiKey(ctx context.Context, name string) (*ApiKeyResult, error) {
+	at, err := o.AccessToken(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("unable to get current access token. Did you forget to log in?")
+	}
 
 	currentTenantID, err := o.CurrentTenantID()
 	if err != nil {
@@ -812,7 +804,7 @@ func (o *Auth) CreateApiKey(ctx context.Context, name string) (*CreateApiKeyResu
 	}
 
 	defer resp.Body.Close()
-	var result CreateApiKeyResult
+	var result ApiKeyResult
 	if err = json.NewDecoder(resp.Body).Decode(&result); err != nil {
 		return nil, err
 	}
@@ -822,15 +814,10 @@ func (o *Auth) CreateApiKey(ctx context.Context, name string) (*CreateApiKeyResu
 }
 
 func (o *Auth) RevokeApiKey(ctx context.Context, uuid string) error {
-	// at, err := o.AccessToken(ctx)
-	// if err != nil {
-	// 	return nil, fmt.Errorf("unable to get current access token. Did you forget to log in?")
-	// }
-
-	// MOCKED - TEMP
-	at := os.Getenv("TOKEN_MOCKED_IDMGLU")
-
-	// END MOCKED - TEMP
+	at, err := o.AccessToken(ctx)
+	if err != nil {
+		return fmt.Errorf("unable to get current access token. Did you forget to log in?")
+	}
 
 	url := fmt.Sprintf("%s/%s/revoke", o.getConfig().ApiKeys, uuid)
 	r, err := http.NewRequestWithContext(ctx, http.MethodPost, url, nil)
@@ -849,4 +836,21 @@ func (o *Auth) RevokeApiKey(ctx context.Context, uuid string) error {
 	}
 
 	return nil
+}
+
+func (o *Auth) SelectApiKey(ctx context.Context, uuid string) (*ApiKeysResult, error) {
+	apiList, err := o.ListApiKeys(ctx)
+	if err != nil {
+		return nil, err
+	}
+	for _, v := range apiList {
+		if v.UUID == uuid {
+			if err = o.SetAccessKey(v.KeyPairID, v.KeyPairSecret); err != nil {
+				return nil, err
+			}
+			return v, nil
+		}
+	}
+
+	return nil, fmt.Errorf("the  API key (%s) is no longer valid", uuid)
 }
