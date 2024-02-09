@@ -820,3 +820,33 @@ func (o *Auth) CreateApiKey(ctx context.Context, name string) (*CreateApiKeyResu
 	return &result, nil
 
 }
+
+func (o *Auth) RevokeApiKey(ctx context.Context, uuid string) error {
+	// at, err := o.AccessToken(ctx)
+	// if err != nil {
+	// 	return nil, fmt.Errorf("unable to get current access token. Did you forget to log in?")
+	// }
+
+	// MOCKED - TEMP
+	at := os.Getenv("TOKEN_MOCKED_IDMGLU")
+
+	// END MOCKED - TEMP
+
+	url := fmt.Sprintf("%s/%s/revoke", o.getConfig().ApiKeys, uuid)
+	r, err := http.NewRequestWithContext(ctx, http.MethodPost, url, nil)
+	if err != nil {
+		return err
+	}
+	r.Header.Set("Authorization", "Bearer "+at)
+	r.Header.Set("Content-Type", "application/json")
+
+	resp, err := o.httpClient.Do(r)
+	if err != nil {
+		return err
+	}
+	if resp.StatusCode != http.StatusOK {
+		return mgcHttpPkg.NewHttpErrorFromResponse(resp, r)
+	}
+
+	return nil
+}

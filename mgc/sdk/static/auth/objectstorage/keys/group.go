@@ -15,6 +15,7 @@ var GetGroup = utils.NewLazyLoader(func() core.Grouper {
 			return []core.Descriptor{
 				getKeys(),
 				getCreate(),
+				getRevoke(),
 			}
 		},
 	)

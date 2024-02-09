@@ -10,7 +10,7 @@ import (
 	"magalu.cloud/core"
 )
 
-type authSetParams struct {
+type createParams struct {
 	NameApiKey string `json:"name" jsonschema_description:"Name of new api key" mgc:"positional"`
 }
 
@@ -26,11 +26,11 @@ func newCreate() core.Executor {
 	)
 
 	return core.NewExecuteResultOutputOptions(executor, func(exec core.Executor, result core.Result) string {
-		return "template=Key created successfully\nUuid={{.uuid}}"
+		return "template=Key created successfully\nUuid={{.uuid}}\n"
 	})
 }
 
-func create(ctx context.Context, parameter authSetParams, _ struct{}) (*mgcAuthPkg.CreateApiKeyResult, error) {
+func create(ctx context.Context, parameter createParams, _ struct{}) (*mgcAuthPkg.CreateApiKeyResult, error) {
 	auth := mgcAuthPkg.FromContext(ctx)
 
 	if auth == nil {

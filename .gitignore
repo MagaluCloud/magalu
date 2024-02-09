@@ -25,3 +25,4 @@ mgc/terraform-provider-mgc/terraform-provider-mgc
 
 # Go workspace
 go.work.sum
+mgc/cli/idm
