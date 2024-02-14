@@ -15,7 +15,19 @@ type authSetParams struct {
 	SecretAccessKey string `json:"secret_access_key" jsonschema_description:"Secret access key value" mgc:"positional"`
 }
 
-var getSet = utils.NewLazyLoader[core.Executor](newSet)
+var getSet = utils.NewLazyLoader[core.Executor](func() core.Executor {
+	executor := core.NewStaticExecute(
+		core.DescriptorSpec{
+			Name:        "set",
+			Description: "Set the credentials values used for Object Storage requests",
+		},
+		set,
+	)
+
+	return core.NewExecuteResultOutputOptions(executor, func(exec core.Executor, result core.Result) string {
+		return "template=Keys saved successfully\nAccessKeyId={{.access_key_id}}\nSecretAccessKey={{.secret_access_key}}\n"
+	})
+})
 
 func set(ctx context.Context, parameter authSetParams, _ struct{}) (*authSetParams, error) {
 	auth := mgcAuthPkg.FromContext(ctx)
@@ -28,18 +40,4 @@ func set(ctx context.Context, parameter authSetParams, _ struct{}) (*authSetPara
 	}
 
 	return &parameter, nil
-}
-
-func newSet() core.Executor {
-	executor := core.NewStaticExecute(
-		core.DescriptorSpec{
-			Name:        "set",
-			Description: "Set the credentials values used for Object Storage requests",
-		},
-		set,
-	)
-
-	return core.NewExecuteResultOutputOptions(executor, func(exec core.Executor, result core.Result) string {
-		return "template=Keys saved successfully\nAccessKeyId={{.access_key_id}}\nSecretAccessKey={{.secret_access_key}}\n"
-	})
 }

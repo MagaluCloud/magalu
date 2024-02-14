@@ -14,9 +14,7 @@ type selectParams struct {
 	UUID string `json:"uuid" jsonschema_description:"UUID of api key to select" mgc:"positional"`
 }
 
-var getSelect = utils.NewLazyLoader[core.Executor](newSelect)
-
-func newSelect() core.Executor {
+var getSelect = utils.NewLazyLoader[core.Executor](func() core.Executor {
 	executor := core.NewStaticExecute(
 		core.DescriptorSpec{
 			Name:        "select",
@@ -28,12 +26,12 @@ func newSelect() core.Executor {
 	return core.NewExecuteResultOutputOptions(executor, func(exec core.Executor, result core.Result) string {
 		return "template=Keys changed successfully\nTenant={{.tenant_name}}\nApiKey Name={{.name}}\nDescription={{.description}}\n"
 	})
-}
+})
 
 func selectKey(ctx context.Context, parameter selectParams, _ struct{}) (*mgcAuthPkg.ApiKeysResult, error) {
 	auth := mgcAuthPkg.FromContext(ctx)
 	if auth == nil {
-		return nil, fmt.Errorf("unable to retrieve authentication configuration")
+		return nil, fmt.Errorf("unable to get auth from context")
 	}
 
 	result, err := auth.SelectApiKey(ctx, parameter.UUID)

@@ -17,9 +17,7 @@ type accessTokenResult struct {
 	AccessToken string `json:"access_token,omitempty"`
 }
 
-var getAccessToken = utils.NewLazyLoader[core.Executor](newAccessToken)
-
-func newAccessToken() core.Executor {
+var getAccessToken = utils.NewLazyLoader[core.Executor](func() core.Executor {
 	return core.NewStaticExecute(
 		core.DescriptorSpec{
 			Name:        "access_token",
@@ -46,4 +44,4 @@ func newAccessToken() core.Executor {
 			return &accessTokenResult{AccessToken: token}, nil
 		},
 	)
-}
+})

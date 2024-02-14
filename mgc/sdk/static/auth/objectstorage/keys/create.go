@@ -11,12 +11,11 @@ import (
 )
 
 type createParams struct {
-	NameApiKey string `json:"name" jsonschema_description:"Name of new api key" mgc:"positional"`
+	ApiKeyName        string  `json:"name" jsonschema:"description=Name of new api key" mgc:"positional"`
+	ApiKeyDescription *string `json:"description" jsonschema:"description=Description of new api key" mgc:"positional"`
 }
 
-var getCreate = utils.NewLazyLoader[core.Executor](newCreate)
-
-func newCreate() core.Executor {
+var getCreate = utils.NewLazyLoader[core.Executor](func() core.Executor {
 	executor := core.NewStaticExecute(
 		core.DescriptorSpec{
 			Name:        "create",
@@ -28,16 +27,16 @@ func newCreate() core.Executor {
 	return core.NewExecuteResultOutputOptions(executor, func(exec core.Executor, result core.Result) string {
 		return "template=Key created successfully\nUuid={{.uuid}}\n"
 	})
-}
+})
 
 func create(ctx context.Context, parameter createParams, _ struct{}) (*mgcAuthPkg.ApiKeyResult, error) {
 	auth := mgcAuthPkg.FromContext(ctx)
 
 	if auth == nil {
-		return nil, fmt.Errorf("unable to retrieve authentication configuration")
+		return nil, fmt.Errorf("unable to get auth from context")
 	}
 
-	result, err := auth.CreateApiKey(ctx, parameter.NameApiKey)
+	result, err := auth.CreateApiKey(ctx, parameter.ApiKeyName, parameter.ApiKeyDescription)
 	if err != nil {
 		return nil, err
 	}

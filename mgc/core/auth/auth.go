@@ -52,15 +52,16 @@ type ConfigResult struct {
 }
 
 type Config struct {
-	ClientId         string
-	RedirectUri      string
-	LoginUrl         string
-	TokenUrl         string
-	ValidationUrl    string
-	RefreshUrl       string
-	TenantsListUrl   string
-	TokenExchangeUrl string
-	ApiKeys          string
+	ClientId             string
+	ObjectStoreProductID string
+	RedirectUri          string
+	LoginUrl             string
+	TokenUrl             string
+	ValidationUrl        string
+	RefreshUrl           string
+	TenantsListUrl       string
+	TokenExchangeUrl     string
+	ApiKeys              string
 }
 
 type Auth struct {
@@ -735,6 +736,11 @@ func (o *Auth) ListApiKeys(ctx context.Context) ([]*ApiKeysResult, error) {
 	var finallyResult []*ApiKeysResult
 
 	for _, y := range result {
+
+		if y.RevokedAt != nil {
+			continue
+		}
+
 		if y.EndValidity != nil {
 			expDate, _ := time.Parse(*y.EndValidity, "2006-01-02T15:04:05Z")
 			if expDate.After(time.Now()) {
@@ -742,27 +748,22 @@ func (o *Auth) ListApiKeys(ctx context.Context) ([]*ApiKeysResult, error) {
 			}
 		}
 
-		xProductId := []string{"65f5db30-6273-4646-9784-c434286c35f9", "a4d463b6-e2fd-48d4-8e4c-257b262b6583"}
-
-		if y.RevokedAt == nil {
-			for i := 0; i < len(y.Scopes); i++ {
-				// compare uuid from another place?
-				if y.Scopes[i].Name == "*" || slices.Contains(xProductId, y.Scopes[i].APIProduct.UUID) {
-					tenantName := new(string)
-					*tenantName = y.Tenant.LegalName
-					y.ApiKeysResult.TenantName = tenantName
-
-					finallyResult = append(finallyResult, &y.ApiKeysResult)
-					i = len(y.Scopes)
-				}
+		for _, s := range y.Scopes {
+			if s.Name != "*" && o.getConfig().ObjectStoreProductID != s.APIProduct.UUID {
+				continue
 			}
+
+			tenantName := y.Tenant.LegalName
+			y.ApiKeysResult.TenantName = &tenantName
+			finallyResult = append(finallyResult, &y.ApiKeysResult)
+			break
 		}
 	}
 	return finallyResult, nil
 
 }
 
-func (o *Auth) CreateApiKey(ctx context.Context, name string) (*ApiKeyResult, error) {
+func (o *Auth) CreateApiKey(ctx context.Context, name string, description *string) (*ApiKeyResult, error) {
 	at, err := o.AccessToken(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("unable to get current access token. Did you forget to log in?")
@@ -773,9 +774,14 @@ func (o *Auth) CreateApiKey(ctx context.Context, name string) (*ApiKeyResult, er
 		return nil, err
 	}
 
+	if description == nil {
+		description = new(string)
+		*description = "created from CLI"
+	}
+
 	newApi := &CreateApiKey{
 		Name:          name,
-		Description:   "created from CLI",
+		Description:   *description,
 		TenantID:      currentTenantID,
 		ScopeIds:      []string{"b6afac7e-0afd-42de-b4aa-1bc82a27e307", "5ea6d1f7-20eb-4e80-9a9c-c7923636a4bd"},
 		StartValidity: time.Now().Format("2006-01-02"),

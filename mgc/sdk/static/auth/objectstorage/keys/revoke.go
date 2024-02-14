@@ -14,9 +14,7 @@ type revokeParams struct {
 	UUID string `json:"uuid" jsonschema_description:"UUID of api key to revoke" mgc:"positional"`
 }
 
-var getRevoke = utils.NewLazyLoader[core.Executor](newRevoke)
-
-func newRevoke() core.Executor {
+var getRevoke = utils.NewLazyLoader[core.Executor](func() core.Executor {
 	executor := core.NewStaticExecute(
 		core.DescriptorSpec{
 			Name:        "revoke",
@@ -28,13 +26,13 @@ func newRevoke() core.Executor {
 	return core.NewExecuteResultOutputOptions(executor, func(exec core.Executor, result core.Result) string {
 		return "template=API Key revoked successfully\n"
 	})
-}
+})
 
 func revoke(ctx context.Context, parameter revokeParams, _ struct{}) (bool, error) {
 	auth := mgcAuthPkg.FromContext(ctx)
 
 	if auth == nil {
-		return false, fmt.Errorf("unable to retrieve authentication configuration")
+		return false, fmt.Errorf("unable to get auth from context")
 	}
 
 	if err := auth.RevokeApiKey(ctx, parameter.UUID); err != nil {

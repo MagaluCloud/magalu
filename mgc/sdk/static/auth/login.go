@@ -50,8 +50,6 @@ var (
 	loginLoggerInstance *zap.SugaredLogger
 )
 
-var getLogin = utils.NewLazyLoader[core.Executor](newLogin)
-
 func loginLogger() *zap.SugaredLogger {
 	if loginLoggerInstance == nil {
 		loginLoggerInstance = logger().Named("login")
@@ -59,7 +57,7 @@ func loginLogger() *zap.SugaredLogger {
 	return loginLoggerInstance
 }
 
-func newLogin() core.Executor {
+var getLogin = utils.NewLazyLoader[core.Executor](func() core.Executor {
 	executor := core.NewStaticExecute(
 		core.DescriptorSpec{
 			Name:    "login",
@@ -142,7 +140,7 @@ Selected Tenant ID: {{.selected_tenant.uuid}}
 Run '%s auth tenant list' to list all available Tenants for current login.
 `, appName)
 	})
-}
+})
 
 func startCallbackServer(ctx context.Context, auth *auth.Auth) (resultChan chan *authResult, cancel func(), err error) {
 	callbackUrl, err := url.Parse(auth.RedirectUri())

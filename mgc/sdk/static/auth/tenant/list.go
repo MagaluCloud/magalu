@@ -9,9 +9,7 @@ import (
 	"magalu.cloud/core/utils"
 )
 
-var getList = utils.NewLazyLoader[core.Executor](newList)
-
-func newList() core.Executor {
+var getList = utils.NewLazyLoader[core.Executor](func() core.Executor {
 	return core.NewStaticExecuteSimple(
 		core.DescriptorSpec{
 			Name:        "list",
@@ -19,7 +17,7 @@ func newList() core.Executor {
 		},
 		listTenants,
 	)
-}
+})
 
 func listTenants(ctx context.Context) ([]*mgcAuthPkg.Tenant, error) {
 	auth := mgcAuthPkg.FromContext(ctx)
