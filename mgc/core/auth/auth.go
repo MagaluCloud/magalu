@@ -54,6 +54,7 @@ type ConfigResult struct {
 type Config struct {
 	ClientId             string
 	ObjectStoreProductID string
+	ObjectStoreScopeIDs  []string
 	RedirectUri          string
 	LoginUrl             string
 	TokenUrl             string
@@ -783,7 +784,7 @@ func (o *Auth) CreateApiKey(ctx context.Context, name string, description *strin
 		Name:          name,
 		Description:   *description,
 		TenantID:      currentTenantID,
-		ScopeIds:      []string{"b6afac7e-0afd-42de-b4aa-1bc82a27e307", "5ea6d1f7-20eb-4e80-9a9c-c7923636a4bd"},
+		ScopeIds:      o.getConfig().ObjectStoreScopeIDs,
 		StartValidity: time.Now().Format("2006-01-02"),
 		EndValidity:   "",
 	}

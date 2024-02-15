@@ -208,6 +208,7 @@ func init() {
 		"prod": {
 			ClientId:             "cw9qpaUl2nBiC8PVjNFN5jZeb2vTd_1S5cYs1FhEXh0",
 			ObjectStoreProductID: "65f5db30-6273-4646-9784-c434286c35f9",
+			ObjectStoreScopeIDs:  []string{"b6afac7e-0afd-42de-b4aa-1bc82a27e307", "5ea6d1f7-20eb-4e80-9a9c-c7923636a4bd"},
 			RedirectUri:          "http://localhost:8095/callback",
 			LoginUrl:             "https://id.magalu.com/login",
 			TokenUrl:             "https://id.magalu.com/oauth/token",
@@ -220,6 +221,7 @@ func init() {
 		"pre-prod": { // TODO update this links to the correct ones
 			ClientId:             "cw9qpaUl2nBiC8PVjNFN5jZeb2vTd_1S5cYs1FhEXh0",
 			ObjectStoreProductID: "a4d463b6-e2fd-48d4-8e4c-257b262b6583",
+			ObjectStoreScopeIDs:  []string{"b6afac7e-0afd-42de-b4aa-1bc82a27e307", "5ea6d1f7-20eb-4e80-9a9c-c7923636a4bd"},
 			RedirectUri:          "http://localhost:8095/callback",
 			LoginUrl:             "https://idmagalu-preprod.luizalabs.com/login",
 			TokenUrl:             "https://idpa-api-preprod.luizalabs.com/oauth/token",
