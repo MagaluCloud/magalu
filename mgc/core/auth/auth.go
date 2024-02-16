@@ -743,7 +743,7 @@ func (o *Auth) ListApiKeys(ctx context.Context) ([]*ApiKeysResult, error) {
 		}
 
 		if y.EndValidity != nil {
-			expDate, _ := time.Parse(*y.EndValidity, "2006-01-02T15:04:05Z")
+			expDate, _ := time.Parse(time.RFC3339, *y.EndValidity)
 			if expDate.After(time.Now()) {
 				continue
 			}
@@ -765,10 +765,7 @@ func (o *Auth) ListApiKeys(ctx context.Context) ([]*ApiKeysResult, error) {
 }
 
 func (o *Auth) CreateApiKey(ctx context.Context, name string, description *string) (*ApiKeyResult, error) {
-	at, err := o.AccessToken(ctx)
-	if err != nil {
-		return nil, fmt.Errorf("unable to get current access token. Did you forget to log in?")
-	}
+	httpClient := mgcHttpPkg.ClientFromContext(ctx)
 
 	currentTenantID, err := o.CurrentTenantID()
 	if err != nil {
@@ -785,7 +782,7 @@ func (o *Auth) CreateApiKey(ctx context.Context, name string, description *strin
 		Description:   *description,
 		TenantID:      currentTenantID,
 		ScopeIds:      o.getConfig().ObjectStoreScopeIDs,
-		StartValidity: time.Now().Format("2006-01-02"),
+		StartValidity: time.Now().Format(time.DateOnly),
 		EndValidity:   "",
 	}
 
@@ -799,10 +796,9 @@ func (o *Auth) CreateApiKey(ctx context.Context, name string, description *strin
 	if err != nil {
 		return nil, err
 	}
-	r.Header.Set("Authorization", "Bearer "+at)
 	r.Header.Set("Content-Type", "application/json")
 
-	resp, err := o.httpClient.Do(r)
+	resp, err := httpClient.Do(r)
 	if err != nil {
 		return nil, err
 	}
