@@ -25,31 +25,31 @@ type ApiKeysResult struct {
 }
 type apiKeys struct {
 	ApiKeysResult
-	tenant struct {
-		uuid      string `json:"uuid"`
-		legalName string `json:"legal_name"`
+	Tenant struct {
+		UUID      string `json:"uuid"`
+		LegalName string `json:"legal_name"`
 	} `json:"tenant"`
-	scopes []struct {
-		uUID        string `json:"uuid"`
-		name        string `json:"name"`
-		title       string `json:"title"`
-		consentText string `json:"consent_text"`
-		icon        string `json:"icon"`
-		apiProduct  struct {
-			uuid string `json:"uuid"`
-			name string `json:"name"`
-			icon string `json:"icon"`
+	Scopes []struct {
+		UUID        string `json:"uuid"`
+		Name        string `json:"name"`
+		Title       string `json:"title"`
+		ConsentText string `json:"consent_text"`
+		Icon        string `json:"icon"`
+		APIProduct  struct {
+			UUID string `json:"uuid"`
+			Name string `json:"name"`
+			Icon string `json:"icon"`
 		} `json:"api_product"`
 	} `json:"scopes"`
 }
 
 type createApiKey struct {
-	name          string   `json:"name"`
-	description   string   `json:"description"`
-	tenantID      string   `json:"tenant_id"`
-	scopeIds      []string `json:"scope_ids"`
-	startValidity string   `json:"start_validity"`
-	endValidity   string   `json:"end_validity"`
+	Name          string   `json:"name"`
+	Description   string   `json:"description"`
+	TenantID      string   `json:"tenant_id"`
+	ScopeIds      []string `json:"scope_ids"`
+	StartValidity string   `json:"start_validity"`
+	EndValidity   string   `json:"end_validity"`
 }
 type ApiKeyResult struct {
 	UUID string `json:"uuid,omitempty"`
@@ -99,11 +99,11 @@ func ListApiKeys(ctx context.Context) ([]*ApiKeysResult, error) {
 			}
 		}
 
-		for _, s := range y.scopes {
-			if s.name != "*" && auth.FromContext(ctx).GetConfig().ObjectStoreProductID != s.apiProduct.uuid {
+		for _, s := range y.Scopes {
+			if s.Name != "*" && auth.FromContext(ctx).GetConfig().ObjectStoreProductID != s.APIProduct.UUID {
 				continue
 			}
-			tenantName := y.tenant.legalName
+			tenantName := y.Tenant.LegalName
 			y.ApiKeysResult.TenantName = &tenantName
 			finallyResult = append(finallyResult, &y.ApiKeysResult)
 			break
@@ -161,12 +161,12 @@ func NewApiKey(ctx context.Context, name string, description *string, expiration
 	}
 
 	newApi := &createApiKey{
-		name:          name,
-		description:   *description,
-		tenantID:      currentTenantID,
-		scopeIds:      config.ObjectStoreScopeIDs,
-		startValidity: time.Now().Format(time.DateOnly),
-		endValidity:   *expirationDate,
+		Name:          name,
+		Description:   *description,
+		TenantID:      currentTenantID,
+		ScopeIds:      config.ObjectStoreScopeIDs,
+		StartValidity: time.Now().Format(time.DateOnly),
+		EndValidity:   *expirationDate,
 	}
 
 	var buf bytes.Buffer
