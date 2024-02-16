@@ -26,30 +26,30 @@ type ApiKeysResult struct {
 type apiKeys struct {
 	ApiKeysResult
 	tenant struct {
-		UUID      string
-		LegalName string
-	}
+		uuid      string `json:"uuid"`
+		legalName string `json:"legal_name"`
+	} `json:"tenant"`
 	scopes []struct {
-		UUID        string
-		Name        string
-		Title       string
-		ConsentText string
-		Icon        string
-		APIProduct  struct {
-			UUID string
-			Name string
-			Icon string
-		}
-	}
+		uUID        string `json:"uuid"`
+		name        string `json:"name"`
+		title       string `json:"title"`
+		consentText string `json:"consent_text"`
+		icon        string `json:"icon"`
+		apiProduct  struct {
+			uuid string `json:"uuid"`
+			name string `json:"name"`
+			icon string `json:"icon"`
+		} `json:"api_product"`
+	} `json:"scopes"`
 }
 
 type createApiKey struct {
-	name          string
-	description   string
-	tenantID      string
-	scopeIds      []string
-	startValidity string
-	endValidity   string
+	name          string   `json:"name"`
+	description   string   `json:"description"`
+	tenantID      string   `json:"tenant_id"`
+	scopeIds      []string `json:"scope_ids"`
+	startValidity string   `json:"start_validity"`
+	endValidity   string   `json:"end_validity"`
 }
 type ApiKeyResult struct {
 	UUID string `json:"uuid,omitempty"`
@@ -100,10 +100,10 @@ func ListApiKeys(ctx context.Context) ([]*ApiKeysResult, error) {
 		}
 
 		for _, s := range y.scopes {
-			if s.Name != "*" && auth.FromContext(ctx).GetConfig().ObjectStoreProductID != s.APIProduct.UUID {
+			if s.name != "*" && auth.FromContext(ctx).GetConfig().ObjectStoreProductID != s.apiProduct.uuid {
 				continue
 			}
-			tenantName := y.tenant.LegalName
+			tenantName := y.tenant.legalName
 			y.ApiKeysResult.TenantName = &tenantName
 			finallyResult = append(finallyResult, &y.ApiKeysResult)
 			break
