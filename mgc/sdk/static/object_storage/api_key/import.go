@@ -1,10 +1,8 @@
-package keys
+package api_key
 
 import (
 	"context"
-	"fmt"
 
-	mgcAuthPkg "magalu.cloud/core/auth"
 	"magalu.cloud/core/utils"
 
 	"magalu.cloud/core"
@@ -17,7 +15,7 @@ type selectParams struct {
 var getSelect = utils.NewLazyLoader[core.Executor](func() core.Executor {
 	executor := core.NewStaticExecute(
 		core.DescriptorSpec{
-			Name:        "select",
+			Name:        "import",
 			Description: "Change current Object Storage credential to selected",
 		},
 		selectKey,
@@ -28,13 +26,8 @@ var getSelect = utils.NewLazyLoader[core.Executor](func() core.Executor {
 	})
 })
 
-func selectKey(ctx context.Context, parameter selectParams, _ struct{}) (*mgcAuthPkg.ApiKeysResult, error) {
-	auth := mgcAuthPkg.FromContext(ctx)
-	if auth == nil {
-		return nil, fmt.Errorf("unable to get auth from context")
-	}
-
-	result, err := auth.SelectApiKey(ctx, parameter.UUID)
+func selectKey(ctx context.Context, parameter selectParams, _ struct{}) (*ApiKeysResult, error) {
+	result, err := SelectApiKey(ctx, parameter.UUID)
 	if err != nil {
 		return nil, err
 	}

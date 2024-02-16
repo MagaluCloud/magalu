@@ -1,10 +1,8 @@
-package keys
+package api_key
 
 import (
 	"context"
-	"fmt"
 
-	mgcAuthPkg "magalu.cloud/core/auth"
 	"magalu.cloud/core/utils"
 
 	"magalu.cloud/core"
@@ -29,13 +27,8 @@ var getRevoke = utils.NewLazyLoader[core.Executor](func() core.Executor {
 })
 
 func revoke(ctx context.Context, parameter revokeParams, _ struct{}) (bool, error) {
-	auth := mgcAuthPkg.FromContext(ctx)
 
-	if auth == nil {
-		return false, fmt.Errorf("unable to get auth from context")
-	}
-
-	if err := auth.RevokeApiKey(ctx, parameter.UUID); err != nil {
+	if err := RevokeApiKey(ctx, parameter.UUID); err != nil {
 		return false, err
 	}
 

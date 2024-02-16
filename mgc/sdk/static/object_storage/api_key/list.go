@@ -1,10 +1,8 @@
-package keys
+package api_key
 
 import (
 	"context"
-	"fmt"
 
-	mgcAuthPkg "magalu.cloud/core/auth"
 	"magalu.cloud/core/utils"
 
 	"magalu.cloud/core"
@@ -20,11 +18,6 @@ var getKeys = utils.NewLazyLoader[core.Executor](func() core.Executor {
 	)
 })
 
-func list(ctx context.Context) ([]*mgcAuthPkg.ApiKeysResult, error) {
-	auth := mgcAuthPkg.FromContext(ctx)
-	if auth == nil {
-		return nil, fmt.Errorf("unable to get auth from context")
-	}
-
-	return auth.ListApiKeys(ctx)
+func list(ctx context.Context) ([]*ApiKeysResult, error) {
+	return ListApiKeys(ctx)
 }

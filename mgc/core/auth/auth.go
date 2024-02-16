@@ -104,49 +104,6 @@ type TokenExchangeResult struct {
 	Scope        []string  `json:"scope"`
 }
 
-type ApiKeysResult struct {
-	UUID          string  `json:"uuid"`
-	Name          string  `json:"name"`
-	Description   string  `json:"description"`
-	KeyPairID     string  `json:"key_pair_id"`
-	KeyPairSecret string  `json:"key_pair_secret"`
-	StartValidity string  `json:"start_validity"`
-	EndValidity   *string `json:"end_validity,omitempty"`
-	RevokedAt     *string `json:"revoked_at,omitempty"`
-	TenantName    *string `json:"tenant_name,omitempty"`
-}
-type apiKeys struct {
-	ApiKeysResult
-	Tenant struct {
-		UUID      string `json:"uuid"`
-		LegalName string `json:"legal_name"`
-	} `json:"tenant"`
-	Scopes []struct {
-		UUID        string `json:"uuid"`
-		Name        string `json:"name"`
-		Title       string `json:"title"`
-		ConsentText string `json:"consent_text"`
-		Icon        string `json:"icon"`
-		APIProduct  struct {
-			UUID string `json:"uuid"`
-			Name string `json:"name"`
-			Icon string `json:"icon"`
-		} `json:"api_product"`
-	} `json:"scopes"`
-}
-
-type CreateApiKey struct {
-	Name          string   `json:"name"`
-	Description   string   `json:"description"`
-	TenantID      string   `json:"tenant_id"`
-	ScopeIds      []string `json:"scope_ids"`
-	StartValidity string   `json:"start_validity"`
-	EndValidity   string   `json:"end_validity"`
-}
-type ApiKeyResult struct {
-	UUID string `json:"uuid,omitempty"`
-}
-
 type Scope string
 type Scopes []Scope
 type ScopesString string
@@ -235,7 +192,7 @@ func New(configMap map[string]Config, client *http.Client, profileManager *profi
 	return &newAuth
 }
 
-func (a *Auth) getConfig() Config {
+func (a *Auth) GetConfig() Config {
 	var env string
 	err := a.mgcConfig.Get("env", &env)
 	if err != nil {
@@ -278,15 +235,15 @@ func (o *Auth) BuiltInScopes() Scopes {
 }
 
 func (o *Auth) RedirectUri() string {
-	return o.getConfig().RedirectUri
+	return o.GetConfig().RedirectUri
 }
 
 func (o *Auth) TenantsListUrl() string {
-	return o.getConfig().TenantsListUrl
+	return o.GetConfig().TenantsListUrl
 }
 
 func (o *Auth) TokenExchangeUrl() string {
-	return o.getConfig().TokenExchangeUrl
+	return o.GetConfig().TokenExchangeUrl
 }
 
 func (o *Auth) currentAccessTokenClaims() (*accessTokenClaims, error) {
@@ -396,7 +353,7 @@ func (o *Auth) InitTokensFromFile() {
 }
 
 func (o *Auth) CodeChallengeToURL(scopes Scopes) (*url.URL, error) {
-	config := o.getConfig()
+	config := o.GetConfig()
 	loginUrl, err := url.Parse(config.LoginUrl)
 	if err != nil {
 		return nil, err
@@ -429,7 +386,7 @@ func (o *Auth) RequestAuthTokenWithAuthorizationCode(ctx context.Context, authCo
 		logger().Errorw("no code verification provided")
 		return fmt.Errorf("no code verification provided, first execute a code challenge request")
 	}
-	config := o.getConfig()
+	config := o.GetConfig()
 	data := url.Values{}
 	data.Set("client_id", config.ClientId)
 	data.Set("redirect_uri", config.RedirectUri)
@@ -492,7 +449,7 @@ func (o *Auth) ValidateAccessToken(ctx context.Context) error {
 }
 
 func (o *Auth) newValidateAccessTokenRequest(ctx context.Context) (*http.Request, error) {
-	config := o.getConfig()
+	config := o.GetConfig()
 	data := url.Values{}
 	data.Set("client_id", config.ClientId)
 	data.Set("token_hint", "access_token")
@@ -557,7 +514,7 @@ func (o *Auth) newRefreshAccessTokenRequest(ctx context.Context) (*http.Request,
 		return nil, fmt.Errorf("RefreshToken is not set")
 	}
 
-	config := o.getConfig()
+	config := o.GetConfig()
 	data := url.Values{}
 	data.Set("client_id", config.ClientId)
 	data.Set("grant_type", "refresh_token")
@@ -602,7 +559,7 @@ func (o *Auth) ListTenants(ctx context.Context) ([]*Tenant, error) {
 		return nil, fmt.Errorf("unable to get current access token. Did you forget to log in?")
 	}
 
-	r, err := http.NewRequestWithContext(ctx, http.MethodGet, o.getConfig().TenantsListUrl, nil)
+	r, err := http.NewRequestWithContext(ctx, http.MethodGet, o.GetConfig().TenantsListUrl, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -705,155 +662,4 @@ func (o *Auth) runTokenExchange(ctx context.Context, currentAt string, tenantId 
 		RefreshToken: payload.RefreshToken,
 		Scope:        strings.Split(payload.Scope, " "),
 	}, nil
-}
-
-func (o *Auth) ListApiKeys(ctx context.Context) ([]*ApiKeysResult, error) {
-	at, err := o.AccessToken(ctx)
-	if err != nil {
-		return nil, fmt.Errorf("unable to get current access token. Did you forget to log in?")
-	}
-
-	r, err := http.NewRequestWithContext(ctx, http.MethodGet, o.getConfig().ApiKeys, nil)
-	if err != nil {
-		return nil, err
-	}
-	r.Header.Set("Authorization", "Bearer "+at)
-	r.Header.Set("Content-Type", "application/json")
-
-	resp, err := o.httpClient.Do(r)
-	if err != nil {
-		return nil, err
-	}
-	if resp.StatusCode != http.StatusOK {
-		return nil, mgcHttpPkg.NewHttpErrorFromResponse(resp, r)
-	}
-
-	defer resp.Body.Close()
-	var result []*apiKeys
-	if err = json.NewDecoder(resp.Body).Decode(&result); err != nil {
-		return nil, err
-	}
-
-	var finallyResult []*ApiKeysResult
-
-	for _, y := range result {
-
-		if y.RevokedAt != nil {
-			continue
-		}
-
-		if y.EndValidity != nil {
-			expDate, _ := time.Parse(time.RFC3339, *y.EndValidity)
-			if expDate.After(time.Now()) {
-				continue
-			}
-		}
-
-		for _, s := range y.Scopes {
-			if s.Name != "*" && o.getConfig().ObjectStoreProductID != s.APIProduct.UUID {
-				continue
-			}
-
-			tenantName := y.Tenant.LegalName
-			y.ApiKeysResult.TenantName = &tenantName
-			finallyResult = append(finallyResult, &y.ApiKeysResult)
-			break
-		}
-	}
-	return finallyResult, nil
-
-}
-
-func (o *Auth) CreateApiKey(ctx context.Context, name string, description *string) (*ApiKeyResult, error) {
-	httpClient := mgcHttpPkg.ClientFromContext(ctx)
-
-	currentTenantID, err := o.CurrentTenantID()
-	if err != nil {
-		return nil, err
-	}
-
-	if description == nil {
-		description = new(string)
-		*description = "created from CLI"
-	}
-
-	newApi := &CreateApiKey{
-		Name:          name,
-		Description:   *description,
-		TenantID:      currentTenantID,
-		ScopeIds:      o.getConfig().ObjectStoreScopeIDs,
-		StartValidity: time.Now().Format(time.DateOnly),
-		EndValidity:   "",
-	}
-
-	var buf bytes.Buffer
-	err = json.NewEncoder(&buf).Encode(newApi)
-	if err != nil {
-		return nil, err
-	}
-
-	r, err := http.NewRequestWithContext(ctx, http.MethodPost, o.getConfig().ApiKeys, &buf)
-	if err != nil {
-		return nil, err
-	}
-	r.Header.Set("Content-Type", "application/json")
-
-	resp, err := httpClient.Do(r)
-	if err != nil {
-		return nil, err
-	}
-	if resp.StatusCode != http.StatusCreated {
-		return nil, mgcHttpPkg.NewHttpErrorFromResponse(resp, r)
-	}
-
-	defer resp.Body.Close()
-	var result ApiKeyResult
-	if err = json.NewDecoder(resp.Body).Decode(&result); err != nil {
-		return nil, err
-	}
-
-	return &result, nil
-
-}
-
-func (o *Auth) RevokeApiKey(ctx context.Context, uuid string) error {
-	at, err := o.AccessToken(ctx)
-	if err != nil {
-		return fmt.Errorf("unable to get current access token. Did you forget to log in?")
-	}
-
-	url := fmt.Sprintf("%s/%s/revoke", o.getConfig().ApiKeys, uuid)
-	r, err := http.NewRequestWithContext(ctx, http.MethodPost, url, nil)
-	if err != nil {
-		return err
-	}
-	r.Header.Set("Authorization", "Bearer "+at)
-	r.Header.Set("Content-Type", "application/json")
-
-	resp, err := o.httpClient.Do(r)
-	if err != nil {
-		return err
-	}
-	if resp.StatusCode != http.StatusOK {
-		return mgcHttpPkg.NewHttpErrorFromResponse(resp, r)
-	}
-
-	return nil
-}
-
-func (o *Auth) SelectApiKey(ctx context.Context, uuid string) (*ApiKeysResult, error) {
-	apiList, err := o.ListApiKeys(ctx)
-	if err != nil {
-		return nil, err
-	}
-	for _, v := range apiList {
-		if v.UUID == uuid {
-			if err = o.SetAccessKey(v.KeyPairID, v.KeyPairSecret); err != nil {
-				return nil, err
-			}
-			return v, nil
-		}
-	}
-
-	return nil, fmt.Errorf("the  API key (%s) is no longer valid", uuid)
 }

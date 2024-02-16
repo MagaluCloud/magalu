@@ -1,4 +1,4 @@
-package keys
+package api_key
 
 import (
 	"magalu.cloud/core"

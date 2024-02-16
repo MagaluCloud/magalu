@@ -1,10 +1,8 @@
-package keys
+package api_key
 
 import (
 	"context"
-	"fmt"
 
-	mgcAuthPkg "magalu.cloud/core/auth"
 	"magalu.cloud/core/utils"
 
 	"magalu.cloud/core"
@@ -12,7 +10,8 @@ import (
 
 type createParams struct {
 	ApiKeyName        string  `json:"name" jsonschema:"description=Name of new api key" mgc:"positional"`
-	ApiKeyDescription *string `json:"description" jsonschema:"description=Description of new api key" mgc:"positional"`
+	ApiKeyDescription *string `json:"description,omitempty" jsonschema:"description=Description of new api key" mgc:"positional"`
+	ApiKeyExpiration  *string `json:"expiration,omitempty" jsonschema:"description=Date to expire new api,example=2024/11/07" mgc:"positional"`
 }
 
 var getCreate = utils.NewLazyLoader[core.Executor](func() core.Executor {
@@ -29,14 +28,8 @@ var getCreate = utils.NewLazyLoader[core.Executor](func() core.Executor {
 	})
 })
 
-func create(ctx context.Context, parameter createParams, _ struct{}) (*mgcAuthPkg.ApiKeyResult, error) {
-	auth := mgcAuthPkg.FromContext(ctx)
-
-	if auth == nil {
-		return nil, fmt.Errorf("unable to get auth from context")
-	}
-
-	result, err := auth.CreateApiKey(ctx, parameter.ApiKeyName, parameter.ApiKeyDescription)
+func create(ctx context.Context, parameter createParams, _ struct{}) (*ApiKeyResult, error) {
+	result, err := NewApiKey(ctx, parameter.ApiKeyName, parameter.ApiKeyDescription, parameter.ApiKeyExpiration)
 	if err != nil {
 		return nil, err
 	}
