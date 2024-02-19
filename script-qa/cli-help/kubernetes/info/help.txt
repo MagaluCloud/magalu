@@ -1,4 +1,4 @@
-Rotas relacionadas a informações de configurações do mke-api.
+Endpoints related to configuration information for the MKE API.
 
 Usage:
   ./cli kubernetes info [flags]
@@ -6,7 +6,7 @@ Usage:
 
 Commands:
   flavors     Lists all available flavors
-  versions    Lists all available versios
+  versions    Lists all available versions
 
 Flags:
   -h, --help      help for info

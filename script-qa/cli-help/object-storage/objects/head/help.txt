@@ -4,7 +4,7 @@ Usage:
   ./cli object-storage objects head [dst] [flags]
 
 Examples:
-  ./cli object-storage objects head --dst="s3://bucket1/file.txt"
+  ./cli object-storage objects head --dst="bucket1/file.txt"
 
 Flags:
       --dst uri   Path of the object to be get metadata from (required)

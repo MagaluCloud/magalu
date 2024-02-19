@@ -4,7 +4,7 @@ Usage:
   ./cli object-storage objects delete [dst] [flags]
 
 Examples:
-  ./cli object-storage objects delete --dst="s3://bucket1/file.txt"
+  ./cli object-storage objects delete --dst="bucket1/file.txt"
 
 Flags:
       --dst uri   Path of the object to be deleted (required)

@@ -10,6 +10,10 @@ import (
 
 type propertySetter interface {
 	propertyName() mgcName
+
+	allParametersSchemas() []*core.Schema
+	allResultSchemas() []*core.Schema
+
 	getTarget(currentValue, targetValue core.Value) (core.Linker, error)
 }
 
@@ -25,6 +29,14 @@ func newDefaultPropertySetter(propName mgcName, target core.Linker) *defaultProp
 
 func (o *defaultPropertySetter) propertyName() mgcName {
 	return o.propName
+}
+
+func (o *defaultPropertySetter) allParametersSchemas() []*core.Schema {
+	return []*core.Schema{o.target.AdditionalParametersSchema()}
+}
+
+func (o *defaultPropertySetter) allResultSchemas() []*core.Schema {
+	return []*core.Schema{o.target.ResultSchema()}
 }
 
 func (a *defaultPropertySetter) getTarget(currentValue, targetValue core.Value) (core.Linker, error) {
@@ -53,6 +65,22 @@ func newEnumPropertySetter(propName mgcName, containerEntries []*propertySetterC
 
 func (o *enumPropertySetter) propertyName() mgcName {
 	return o.propName
+}
+
+func (o *enumPropertySetter) allParametersSchemas() []*core.Schema {
+	result := make([]*core.Schema, 0, len(o.targetByValue))
+	for _, target := range o.targetByValue {
+		result = append(result, target.AdditionalParametersSchema())
+	}
+	return result
+}
+
+func (o *enumPropertySetter) allResultSchemas() []*core.Schema {
+	result := make([]*core.Schema, 0, len(o.targetByValue))
+	for _, target := range o.targetByValue {
+		result = append(result, target.ResultSchema())
+	}
+	return result
 }
 
 func (a *enumPropertySetter) getTarget(currentValue, targetValue core.Value) (core.Linker, error) {
@@ -100,6 +128,22 @@ func newStrTransitionPropertySetter(propName mgcName, containerEntries []*proper
 
 func (o *strTransitionPropertySetter) propertyName() mgcName {
 	return o.propName
+}
+
+func (o *strTransitionPropertySetter) allParametersSchemas() []*core.Schema {
+	result := make([]*core.Schema, 0, len(o.targetsByTransition))
+	for _, target := range o.targetsByTransition {
+		result = append(result, target.AdditionalParametersSchema())
+	}
+	return result
+}
+
+func (o *strTransitionPropertySetter) allResultSchemas() []*core.Schema {
+	result := make([]*core.Schema, 0, len(o.targetsByTransition))
+	for _, target := range o.targetsByTransition {
+		result = append(result, target.ResultSchema())
+	}
+	return result
 }
 
 func (a *strTransitionPropertySetter) getTarget(currentValue, targetValue core.Value) (core.Linker, error) {

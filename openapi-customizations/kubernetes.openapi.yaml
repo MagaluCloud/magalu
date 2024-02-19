@@ -42,12 +42,12 @@ paths:
                     links:
                         get:
                             operationId: getClusterById
-                            description: Lista as informações de um cluster
+                            description: Lists detailed cluster information by cluster_uuid.
                             parameters:
                                 id: $response.body#/id
                         delete:
                             operationId: deleteCluster
-                            description: Deleta um cluster
+                            description: Deletes a cluster by cluster_uuid.
                             parameters:
                                 id: $response.body#/id
     /v0/clusters/{cluster_id}:
@@ -60,7 +60,7 @@ paths:
                     links:
                         delete:
                             operationId: deleteCluster
-                            description: Deleta um cluster
+                            description: Deletes a cluster by cluster_uuid.
                             parameters:
                                 cluster_id: $request.path.cluster_id
         delete:
@@ -79,19 +79,19 @@ paths:
                     links:
                         get:
                             operationId: getNodePool
-                            description: Lista nodes de um node pool
+                            description: Gets nodes in a node pool by nodepool_uuid.
                             parameters:
                                 cluster_id: $request.path.cluster_id
                                 node_pool_id: $response.body#/id
                         update:
                             operationId: patchNodePool
-                            description: Atualiza nodes de um node pool
+                            description: Updates nodes from a node pool by nodepool_uuid.
                             parameters:
                                 cluster_id: $request.path.cluster_id
                                 node_pool_id: $response.body#/id
                         delete:
                             operationId: deleteNodePool
-                            description: Deleta um node pool em um cluster do Kubernetes
+                            description: Deletes a node pool in a Kubernetes cluster by nodepool_uuid.
                             parameters:
                                 cluster_id: $request.path.cluster_id
                                 node_pool_id: $response.body#/id
@@ -106,13 +106,13 @@ paths:
                     links:
                         update:
                             operationId: patchNodePool
-                            description: Atualiza nodes de um node pool
+                            description: Updates nodes from a node pool by nodepool_uuid.
                             parameters:
                                 cluster_id: $request.path.cluster_id
                                 node_pool_id: $request.path.node_pool_id
                         delete:
                             operationId: deleteNodePool
-                            description: Deleta um node pool em um cluster do Kubernetes
+                            description: Deletes a node pool in a Kubernetes cluster by nodepool_uuid.
                             parameters:
                                 cluster_id: $request.path.cluster_id
                                 node_pool_id: $request.path.node_pool_id
@@ -126,13 +126,13 @@ paths:
                     links:
                         get:
                             operationId: getNodePool
-                            description: Lista nodes de um node pool
+                            description: Gets nodes in a node pool by nodepool_uuid.
                             parameters:
                                 cluster_id: $request.path.cluster_id
                                 node_pool_id: $request.path.node_pool_id
                         delete:
                             operationId: deleteNodePool
-                            description: Deleta um node pool em um cluster do Kubernetes
+                            description: Deletes a node pool in a Kubernetes cluster by nodepool_uuid.
                             parameters:
                                 cluster_id: $request.path.cluster_id
                                 node_pool_id: $request.path.node_pool_id

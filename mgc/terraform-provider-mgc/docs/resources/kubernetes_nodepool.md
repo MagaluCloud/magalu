@@ -3,12 +3,12 @@
 page_title: "mgc_kubernetes_nodepool Resource - terraform-provider-mgc"
 subcategory: ""
 description: |-
-  Rotas relacionadas a api de Nodepool dentro da api de cluster.
+  Endpoints related to the Nodepool API within the Cluster API.
 ---
 
 # mgc_kubernetes_nodepool (Resource)
 
-Rotas relacionadas a api de Nodepool dentro da api de cluster.
+Endpoints related to the Nodepool API within the Cluster API.
 
 
 
@@ -17,60 +17,49 @@ Rotas relacionadas a api de Nodepool dentro da api de cluster.
 
 ### Required
 
-- `cluster_id` (String) Identificador no padrão uuid para identificar o cluster
-- `flavor` (String) Definição da capacidade de CPU, memória RAM e armazenamento dos nodes
-<table>
-  <tr>
-    <td>Flavor</td>
-    <td>vCPUs</td>
-    <td>RAM(Gb)</td>
-    <td>Root Disk(GB)</td>
-  </tr>
-  <tr>
-    <td>cloud-k8s.gp1.small</td>
-    <td>2</td>
-    <td>4</td>
-    <td>20</td>
-  </tr>
-  <tr>
-    <td>cloud-k8s.gp1.large</td>
-    <td>8</td>
-    <td>16</td>
-    <td>100</td>
-  </tr>
-</table>
-- `name` (String) Nome do node pool. O nome destina-se principalmente à idempotência, e deve ser exclusivo em um namespace. 0 nome não pode ser alterado.
-O nome deve seguir as seguintes regras:
-  - deve conter no máximo 63 caracteres
-  - deve conter apenas caracteres alfanuméricos minúsculos ou '-'
-  - deve começar com um caractere alfabético
-  - deve terminar com um caractere alfanumérico
-- `replicas` (Number) Número de réplicas dos nós do nodepool
+- `cluster_id` (String) Cluster's UUID.
+- `flavor` (String) Definition of the CPU, RAM, and storage capacity of the nodes.
+
+| Flavor                  | vCPUs | RAM (GB) | Root Disk (GB) |
+|-------------------------|-------|----------|----------------|
+| cloud-k8s.gp1.small     | 2     | 4        | 20             |
+| cloud-k8s.gp1.medium    | 4     | 8        | 50             |
+| cloud-k8s.gp1.large     | 8     | 16       | 100            |
+| cloud-k8s.gp2.small     | 2     | 4        | 300            |
+| cloud-k8s.gp2.large     | 8     | 32       | 300            |
+| cloud-k8s.hm1.medium    | 4     | 16       | 50             |
+- `name` (String) Name of the node pool. The name is primarily for idempotence and must be unique within a namespace. The name cannot be changed.
+The name must follow the following rules:
+  - Must contain a maximum of 63 characters
+  - Must contain only lowercase alphanumeric characters or '-'
+  - Must start with an alphabetic character
+  - Must end with an alphanumeric character
+- `replicas` (Number) Number of replicas of the nodes in the node pool.
 
 ### Optional
 
-- `auto_scale` (Attributes) Objeto que especifica as propriedades para atualização de recursos de carga de trabalho no cluster Kubernetes. (see [below for nested schema](#nestedatt--auto_scale))
-- `tags` (List of String) Lista de tags aplicadas ao nodepool
-- `taints` (Attributes List) Propriedade de associação de um conjunto se nós (see [below for nested schema](#nestedatt--taints))
+- `auto_scale` (Attributes) Object specifying properties for updating workload resources in the Kubernetes cluster. (see [below for nested schema](#nestedatt--auto_scale))
+- `tags` (List of String) List of tags applied to the node pool.
+- `taints` (Attributes List) Property associating a set of nodes. (see [below for nested schema](#nestedatt--taints))
 
 ### Read-Only
 
-- `created_at` (String) Data de criação do cluster kubernetes
-- `id` (String) Identificador no padrão uuid para identificar o nodepool
-- `instance_template` (Attributes) Template do objeto de instância usado para criar instâncias de máquina e grupos gerenciados de instâncias. (see [below for nested schema](#nestedatt--instance_template))
-- `labels` (Map of String) Pares de chave/valor anexados ao objeto e usados para especificação
-- `security_groups` (List of String) Nome do grupo de segurança para definir regras que permitem tráfego de rede no node pool de workers
-- `status` (Attributes) Detalhes a respeito do status do node pool ou control plane (see [below for nested schema](#nestedatt--status))
-- `updated_at` (String) Data da última alteração do cluster kubernetes
-- `zone` (List of String) Zona de disponibilidade para criação do cluster kubernetes
+- `created_at` (String) Date of creation of the Kubernetes cluster.
+- `id` (String) Nodepool's UUID.
+- `instance_template` (Attributes) Template for the instance object used to create machine instances and managed instance groups. (see [below for nested schema](#nestedatt--instance_template))
+- `labels` (Map of String) Key/value pairs attached to the object and used for specification.
+- `security_groups` (List of String) Name of the security group to define rules allowing network traffic in the worker node pool.
+- `status` (Attributes) Details about the status of the node pool or control plane. (see [below for nested schema](#nestedatt--status))
+- `updated_at` (String) Date of the last change to the Kubernetes cluster.
+- `zone` (List of String) Availability zone for creating the Kubernetes cluster.
 
 <a id="nestedatt--auto_scale"></a>
 ### Nested Schema for `auto_scale`
 
 Required:
 
-- `max_replicas` (Number) Quantidade máxima de réplicas para o autoscaling. Se não for informado um valor, ou se for igual ou menor que zero, o valor do autoscaler será assumido com base no campo "réplicas".
-- `min_replicas` (Number) Quantidade mínima de réplicas para o autoscaling. Se não for informado um valor, ou se for igual ou menor que zero, o valor do autoscaler será assumido com base no campo "réplicas".
+- `max_replicas` (Number) Maximum number of replicas for autoscaling. If not provided, or if the value is equal to or less than zero, the autoscaler value will be assumed based on the "replicas" field.
+- `min_replicas` (Number) Minimum number of replicas for autoscaling. If not provided, or if the value is equal to or less than zero, the autoscaler value will be assumed based on the "replicas" field.
 
 
 <a id="nestedatt--taints"></a>
@@ -78,12 +67,12 @@ Required:
 
 Required:
 
-- `effect` (String) O efeito do taint em pods que não toleram o taint.
-**NoSchedule** - Não permitir que novos pods sejam agendados no nó, a menos que eles tolerem a taint, mas permitir que todos os pods já em execução continuem em execução.
-**PreferNoSchedule** - Parecido com o NoSchedule, mas tenta não agendar novos pods no nó, em vez de proibir totalmente o agendamento de novos pods no nó
-**NoExecute** - Remova todos os pods já em execução que não tolerem o taint.
-- `key` (String) A chave taint a ser aplicada ao node
-- `value` (String) O valor correspondente a chave taint.
+- `effect` (String) The effect of the taint on pods that do not tolerate the taint.
+- **NoSchedule**: Prevents new pods from being scheduled on the node, unless they tolerate the taint. Allows all existing pods to continue running.
+- **PreferNoSchedule**: Similar to NoSchedule, but attempts not to schedule new pods on the node, rather than completely prohibiting new pod scheduling on the node.
+- **NoExecute**: Removes all already running pods that do not tolerate the taint.
+- `key` (String) Key of the taint to be applied to the node.
+- `value` (String) Value corresponding to the taint key.
 
 
 <a id="nestedatt--instance_template"></a>
@@ -91,21 +80,21 @@ Required:
 
 Read-Only:
 
-- `disk_size` (Number) Tamanho do disco anexado a cada nó
-- `disk_type` (String) Tipo de disco anexado a cada nó
-- `flavor` (Attributes) Definição da capacidade de CPU, memória RAM e armazenamento dos nodes (see [below for nested schema](#nestedatt--instance_template--flavor))
-- `node_image` (String) Imagem do sistema operacional que é executada em cada nó
+- `disk_size` (Number) Size of the disk attached to each node.
+- `disk_type` (String) Type of disk attached to each node.
+- `flavor` (Attributes) Definition of CPU capacity, RAM, and storage for nodes. (see [below for nested schema](#nestedatt--instance_template--flavor))
+- `node_image` (String) Operating system image running on each node.
 
 <a id="nestedatt--instance_template--flavor"></a>
 ### Nested Schema for `instance_template.flavor`
 
 Read-Only:
 
-- `id` (String) Identificador exclusivo do Flavor.
-- `name` (String) Nome do Flavor.
-- `ram` (Number) Quantidade de memória RAM, medida em MB.
-- `size` (Number) Quantidade de disco, medido em GB.
-- `vcpu` (Number) Quantidade de vCPUs disponiveis.
+- `id` (String) Unique identifier for the Flavor.
+- `name` (String) Name of the Flavor.
+- `ram` (Number) Amount of RAM, measured in MB.
+- `size` (Number) Amount of disk space, measured in GB.
+- `vcpu` (Number) Number of available vCPUs.
 
 
 
@@ -114,15 +103,10 @@ Read-Only:
 
 Read-Only:
 
-- `messages` (List of String) Mensagem detalhada sobre o status do node pool ou control plane
-- `state` (String) Estado atual do node pool ou control plane.
-<table>
-  <tr>
-    <td>Node pool</td>
-    <td>ScalingUp, ScalingDown, Running, Failed, Unknown</td>
-  </tr>
-  <tr>
-    <td>Control Plane</td>
-    <td>ScalingUp, ScalingDown, Running, Failed, Unknown</td>
-  </tr>
-</table>
+- `messages` (List of String) Detailed message about the status of the node pool or control plane.
+- `state` (String) Current state of the node pool or control plane.
+
+| Component      | Possible States                     |
+|-----------------|-------------------------------------|
+| Node pool       | ScalingUp, ScalingDown, Running, Failed, Unknown |
+| Control Plane   | ScalingUp, ScalingDown, Running, Failed, Unknown |

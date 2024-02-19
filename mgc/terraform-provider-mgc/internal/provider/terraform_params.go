@@ -33,7 +33,7 @@ func tfStateToParams(state tfsdk.State) (TerraformParams, error) {
 func loadMgcParamsFromState(
 	ctx context.Context,
 	paramsSchema *mgcSchemaPkg.Schema,
-	attrTree resAttrInfoTree,
+	attrMap resAttrInfoMap,
 	state TerraformParams,
 ) (core.Parameters, Diagnostics) {
 	params := core.Parameters{}
@@ -53,7 +53,7 @@ func loadMgcParamsFromState(
 	for paramName := range paramsSchema.Properties {
 		required := slices.Contains(paramsSchema.Required, paramName)
 
-		attr, ok := attrTree.input[mgcName(paramName)]
+		attr, ok := attrMap[mgcName(paramName)]
 		if !ok {
 			if !required {
 				continue

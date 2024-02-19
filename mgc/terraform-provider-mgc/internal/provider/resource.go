@@ -3,6 +3,7 @@ package provider
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"slices"
 
@@ -104,16 +105,28 @@ func newMgcResource(
 		propertySetters: propertySetters,
 	}
 
-	attrTree, err := generateResAttrInfoTree(ctx, r.resTfName,
-		[]resAttrInfoGenMetadata{
-			{r.create.ParametersSchema(), r.getCreateParamsModifiers},
-			{r.update.ParametersSchema(), r.getUpdateParamsModifiers},
-			{r.delete.ParametersSchema(), r.getDeleteParamsModifiers},
-		}, []resAttrInfoGenMetadata{
-			{r.create.ResultSchema(), r.getResultModifiers},
-			{r.read.ResultSchema(), r.getResultModifiers},
-		},
-	)
+	propertySetterInputs := make(map[mgcName][]resAttrInfoGenMetadata, len(propertySetters))
+	propertySetterOutputs := make(map[mgcName][]resAttrInfoGenMetadata, len(propertySetters))
+	for propName, propSetter := range propertySetters {
+		for _, paramsSchemas := range propSetter.allParametersSchemas() {
+			propertySetterInputs[propName] = append(propertySetterInputs[propName], resAttrInfoGenMetadata{paramsSchemas, r.getUpdateParamsModifiers})
+		}
+		for _, resultSchemas := range propSetter.allResultSchemas() {
+			propertySetterOutputs[propName] = append(propertySetterOutputs[propName], resAttrInfoGenMetadata{resultSchemas, r.getResultModifiers})
+		}
+	}
+
+	attrTree, err := generateResAttrInfoTree(ctx, r.resTfName, resAttrInfoTreeGenMetadata{
+		createInput: resAttrInfoGenMetadata{r.create.ParametersSchema(), r.getCreateParamsModifiers},
+		updateInput: resAttrInfoGenMetadata{r.update.ParametersSchema(), r.getUpdateParamsModifiers},
+		deleteInput: resAttrInfoGenMetadata{r.delete.ParametersSchema(), r.getDeleteParamsModifiers},
+
+		createOutput: resAttrInfoGenMetadata{r.create.ResultSchema(), r.getResultModifiers},
+		readOutput:   resAttrInfoGenMetadata{r.read.ResultSchema(), r.getResultModifiers},
+
+		propertySetterInputs:  propertySetterInputs,
+		propertySetterOutputs: propertySetterOutputs,
+	})
 	if err != nil {
 		return nil, err
 	}
@@ -129,15 +142,11 @@ func (r *MgcResource) doesPropHaveSetter(name mgcName) bool {
 
 func (r *MgcResource) getCreateParamsModifiers(ctx context.Context, mgcSchema *mgcSdk.Schema, mgcName mgcName) attributeModifiers {
 	var k = string(mgcName)
-	var nameOverride = mgcName.tfNameOverride(r, mgcSchema)
-
-	if nameOverride != "" {
-		k = string(nameOverride)
-	}
 
 	propSchema := (*core.Schema)(mgcSchema.Properties[k].Value)
 	isRequired := slices.Contains(mgcSchema.Required, k)
 	isComputed := !isRequired
+
 	if isComputed {
 		readSchema := r.read.ResultSchema().Properties[k]
 		if readSchema == nil {
@@ -155,7 +164,6 @@ func (r *MgcResource) getCreateParamsModifiers(ctx context.Context, mgcSchema *m
 		isOptional:                 !isRequired,
 		isComputed:                 isComputed,
 		useStateForUnknown:         true,
-		nameOverride:               nameOverride,
 		requiresReplaceWhenChanged: requiresReplace,
 		getChildModifiers:          getInputChildModifiers,
 	}
@@ -163,14 +171,17 @@ func (r *MgcResource) getCreateParamsModifiers(ctx context.Context, mgcSchema *m
 
 func (r *MgcResource) getUpdateParamsModifiers(ctx context.Context, mgcSchema *mgcSdk.Schema, mgcName mgcName) attributeModifiers {
 	var k = string(mgcName)
-	var nameOverride = mgcName.tfNameOverride(r, mgcSchema)
-
-	if nameOverride != "" {
-		k = string(nameOverride)
-	}
 
 	isComputed := r.create.ResultSchema().Properties[k] != nil
 	required := slices.Contains(mgcSchema.Required, k)
+
+	var nameOverride tfName
+	if withoutResPrefix, hasResPrefix := strings.CutPrefix(k, string(r.resMgcName.singular()+"_")); hasResPrefix && r.create.ResultSchema().Properties[withoutResPrefix] != nil {
+		nameOverride = tfName(withoutResPrefix)
+		isComputed = true
+	} else if withoutNewPrefix, hasNewPrefix := strings.CutPrefix(k, "new_"); hasNewPrefix && r.read.ResultSchema().Properties[withoutNewPrefix] != nil {
+		nameOverride = tfName(withoutNewPrefix)
+	}
 
 	return attributeModifiers{
 		isRequired:                 required && !isComputed,
@@ -184,15 +195,22 @@ func (r *MgcResource) getUpdateParamsModifiers(ctx context.Context, mgcSchema *m
 }
 
 func (r *MgcResource) getDeleteParamsModifiers(ctx context.Context, mgcSchema *mgcSdk.Schema, mgcName mgcName) attributeModifiers {
-	if _, isInRead := r.read.ParametersSchema().Properties[string(mgcName)]; isInRead {
+	k := string(mgcName)
+	if _, isInRead := r.read.ParametersSchema().Properties[k]; isInRead {
 		return r.getUpdateParamsModifiers(ctx, mgcSchema, mgcName)
 	}
 
-	if _, isInUpdate := r.update.ParametersSchema().Properties[string(mgcName)]; isInUpdate {
+	if _, isInUpdate := r.update.ParametersSchema().Properties[k]; isInUpdate {
 		return r.getUpdateParamsModifiers(ctx, mgcSchema, mgcName)
 	}
 
-	isComputed := r.create.ResultSchema().Properties[string(mgcName)] != nil
+	isComputed := r.create.ResultSchema().Properties[k] != nil
+
+	var nameOverride tfName
+	if withoutResPrefix, hasResPrefix := strings.CutPrefix(k, string(r.resMgcName.singular()+"_")); hasResPrefix && r.create.ResultSchema().Properties[withoutResPrefix] != nil {
+		nameOverride = tfName(withoutResPrefix)
+		isComputed = true
+	}
 
 	// All Delete parameters need to be optional, since they're not returned by the server when creating the resources,
 	// and thus would produce "inconsistent results" in Terraform. Since we calculate the 'Update' parameters first,
@@ -203,7 +221,7 @@ func (r *MgcResource) getDeleteParamsModifiers(ctx context.Context, mgcSchema *m
 		isOptional:                 true,
 		isComputed:                 isComputed,
 		useStateForUnknown:         true,
-		nameOverride:               mgcName.tfNameOverride(r, mgcSchema),
+		nameOverride:               nameOverride,
 		requiresReplaceWhenChanged: false,
 		getChildModifiers:          getInputChildModifiers,
 	}
@@ -274,8 +292,7 @@ func (r *MgcResource) Create(ctx context.Context, req resource.CreateRequest, re
 	}()
 
 	createOp := newMgcResourceCreate(r.resTfName, r.attrTree, r.create, r.read, r.propertySetters)
-	readOp := newMgcResourceRead(r.resTfName, r.attrTree, r.read)
-	operationRunner := newMgcOperationRunner(r.sdk, createOp, readOp, tfsdk.State(req.Plan), req.Plan, &resp.State)
+	operationRunner := newMgcOperationRunner(r.sdk, createOp, tfsdk.State(req.Plan), req.Plan, &resp.State)
 	diagnostics = operationRunner.Run(ctx)
 }
 
@@ -286,7 +303,7 @@ func (r *MgcResource) Read(ctx context.Context, req resource.ReadRequest, resp *
 	}()
 
 	operation := newMgcResourceRead(r.resTfName, r.attrTree, r.read)
-	runner := newMgcOperationRunner(r.sdk, operation, operation, req.State, tfsdk.Plan(req.State), &resp.State)
+	runner := newMgcOperationRunner(r.sdk, operation, req.State, tfsdk.Plan(req.State), &resp.State)
 	diagnostics = runner.Run(ctx)
 }
 
@@ -297,8 +314,7 @@ func (r *MgcResource) Update(ctx context.Context, req resource.UpdateRequest, re
 	}()
 
 	operation := newMgcResourceUpdate(r.resTfName, r.attrTree, r.update, r.read, r.propertySetters)
-	readOp := newMgcResourceRead(r.resTfName, r.attrTree, r.read)
-	runner := newMgcOperationRunner(r.sdk, operation, readOp, req.State, req.Plan, &resp.State)
+	runner := newMgcOperationRunner(r.sdk, operation, req.State, req.Plan, &resp.State)
 	diagnostics = runner.Run(ctx)
 }
 
@@ -309,7 +325,7 @@ func (r *MgcResource) Delete(ctx context.Context, req resource.DeleteRequest, re
 	}()
 
 	deleteOp := newMgcResourceDelete(r.resTfName, r.attrTree, r.delete)
-	runner := newMgcOperationRunner(r.sdk, deleteOp, nil, req.State, tfsdk.Plan(req.State), &resp.State)
+	runner := newMgcOperationRunner(r.sdk, deleteOp, req.State, tfsdk.Plan(req.State), &resp.State)
 	diagnostics = runner.Run(ctx)
 }
 

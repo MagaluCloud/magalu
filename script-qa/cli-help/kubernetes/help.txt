@@ -1,15 +1,15 @@
-APIs referentes ao produto de kubernetes
+APIs related to the Kubernetes product.
 
 Usage:
   ./cli kubernetes [flags]
   ./cli kubernetes [command]
 
 Commands:
-  cluster     Rotas relacionadas a api de cluster.
-  flavor      Rotas relacionadas a informações de configurações dos flavors do openstack.
-  info        Rotas relacionadas a informações de configurações do mke-api.
-  nodepool    Rotas relacionadas a api de Nodepool dentro da api de cluster.
-  version     Rotas relacionadas a informações de configurações das versões de kubernetes.
+  cluster     Endpoints related to the Cluster API.
+  flavor      Endpoints related to configuration information for OpenStack flavors.
+  info        Endpoints related to configuration information for the MKE API.
+  nodepool    Endpoints related to the Nodepool API within the Cluster API.
+  version     Endpoints related to configuration information for Kubernetes versions.
 
 Flags:
   -h, --help      help for kubernetes

@@ -239,11 +239,9 @@ func addAction(
 	name, aliases := getCommandNameAndAliases(exec.Name())
 	cmdPath := fmt.Sprintf("%s %s", parentCmd.CommandPath(), name)
 
-	// First chained args structure is MainArgs
-	linkChainedArgs := argParser.ChainedArgs()[1:]
-	links := newCmdLinks(sdk, exec.Links(), cmdPath, linkChainedArgs)
+	links := newCmdLinks(sdk, exec.Links(), cmdPath)
 	if links != nil {
-		flags.addExtraFlag(links.flag)
+		flags.addExtraFlag(links.listLinksFlag)
 	}
 
 	actionCmd = &cobra.Command{
@@ -258,7 +256,13 @@ func addAction(
 		GroupID:           "catalog",
 
 		RunE: func(cmd *cobra.Command, args []string) error {
-			if err := links.resolve(); err != nil {
+			// First chained args structure is MainArgs
+			linkChainedArgs := argParser.ChainedArgs()[1:]
+			if getWatchFlag(cmd) {
+				linkChainedArgs = append([][]string{{"get", "-w"}}, linkChainedArgs...)
+			}
+
+			if err := links.resolve(linkChainedArgs); err != nil {
 				return err
 			}
 
@@ -276,6 +280,10 @@ func addAction(
 
 			return links.handle(result, getOutputFlag(cmd))
 		},
+	}
+
+	if getLink, ok := exec.Links()["get"]; ok && getLink.IsTargetTerminatorExecutor() {
+		addWatchFlag(actionCmd)
 	}
 
 	parentCmd.AddCommand(actionCmd)

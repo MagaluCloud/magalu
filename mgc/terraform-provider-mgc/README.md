@@ -29,18 +29,19 @@ resources. The SDK has an internal representation of operations that a user can
 execute in the MGC APIs, and the provider clusters related operations together
 to create a resource.
 
-To make use of resources auto-generated from the SDK through OpenAPI specs, we
-must tell the SDK in which folder those specs are defined.
+To make use of resources auto-generated from the SDK through OpenAPI and Blueprint
+specs, we must tell the SDK in which folder those specs are defined.
 
-#### OpenAPIs
+#### OpenAPIs And Blueprints
 
-To use the OAPI files with the terraform examples it's necessary to set where
-the OAPI files are, we recommend using absolute paths, but if you want to use
+To use the OAPI and Blueprint files with the terraform examples it's necessary to set
+where the files are. We recommend using absolute paths, but if you want to use
 relative paths, make sure they are defined in relationship to the `*.tf` file
 you are using:
 
 ```sh
 export MGC_SDK_OPENAPI_DIR=~/<repo_root_folder>/mgc/cli/openapis
+export MGC_SDK_BLUEPRINTS_DIR=~/<repo_root_folder>/mgc/cli/blueprints
 ```
 
 >For now, the specs are defined in a specific folder, we probably will move it

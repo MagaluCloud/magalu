@@ -17,15 +17,15 @@ var getDeleteAll = utils.NewLazyLoader[core.Executor](func() core.Executor {
 		deleteAll,
 	)
 
-	msg := "This command will delete all objects at {{.parameters.bucket}}, and its result is NOT reversible."
+	msg := "This command will delete all objects at {{.confirmationValue}}, and its result is NOT reversible. Please confirm by retyping: {{.confirmationValue}}"
 
-	return core.NewConfirmableExecutor(
+	return core.NewPromptInputExecutor(
 		exec,
-		core.ConfirmPromptWithTemplate(msg),
+		core.NewPromptInput(msg, "{{.parameters.bucket}}"),
 	)
 })
 
-func deleteAll(ctx context.Context, params common.DeleteAllObjectsParams, cfg common.Config) (result core.Value, err error) {
-	err = common.DeleteAllObjects(ctx, params, cfg)
+func deleteAll(ctx context.Context, params common.DeleteAllObjectsInBucketParams, cfg common.Config) (result core.Value, err error) {
+	err = common.DeleteAllObjectsInBucket(ctx, params, cfg)
 	return
 }

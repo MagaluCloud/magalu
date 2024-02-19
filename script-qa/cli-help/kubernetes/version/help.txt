@@ -1,11 +1,11 @@
-Rotas relacionadas a informações de configurações das versões de kubernetes.
+Endpoints related to configuration information for Kubernetes versions.
 
 Usage:
   ./cli kubernetes version [flags]
   ./cli kubernetes version [command]
 
 Commands:
-  list        Lists all available versios
+  list        Lists all available versions
 
 Flags:
   -h, --help      help for version

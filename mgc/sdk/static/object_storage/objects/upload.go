@@ -13,7 +13,7 @@ import (
 
 type uploadParams struct {
 	Source      mgcSchemaPkg.FilePath `json:"src" jsonschema:"description=Source file path to be uploaded,example=./file.txt" mgc:"positional"`
-	Destination mgcSchemaPkg.URI      `json:"dst" jsonschema:"description=Full destination path in the bucket with desired filename,example=s3://my-bucket/dir/file.txt" mgc:"positional"`
+	Destination mgcSchemaPkg.URI      `json:"dst" jsonschema:"description=Full destination path in the bucket with desired filename,example=my-bucket/dir/file.txt" mgc:"positional"`
 }
 
 type uploadTemplateResult struct {
@@ -41,12 +41,8 @@ func upload(ctx context.Context, params uploadParams, cfg common.Config) (*uploa
 		return nil, core.UsageError{Err: fmt.Errorf("destination cannot be empty")}
 	}
 
-	fileName := params.Source.String()
-	if strings.HasSuffix(fullDstPath.String(), "/") {
-		// If it isn't a file path, don't rename, just append source with bucket URI
-		fullDstPath = fullDstPath.JoinPath(fileName)
-	}
-	if params.Destination.IsRoot() {
+	fileName := params.Source.AsURI().Filename()
+	if params.Destination.IsRoot() || strings.HasSuffix(fullDstPath.String(), "/") {
 		fullDstPath = fullDstPath.JoinPath(fileName)
 	}
 

@@ -11,10 +11,10 @@ modules:
     summary: DBaaS API Product.
     url: https://dbaas.jaxyendy.com/openapi.json
     version: 1.10.1
--   description: APIs referentes ao produto de kubernetes
+-   description: APIs related to the Kubernetes product.
     name: kubernetes
     path: kubernetes.openapi.yaml
-    summary: APIs referentes ao produto de kubernetes
+    summary: APIs related to the Kubernetes product.
     url: https://mke.br-ne-1.com/docs/openapi-with-snippets.json
     version: 0.1.0
 -   description: APIs referentes ao produto de Network

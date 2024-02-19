@@ -33,7 +33,7 @@ func (o *MgcConnectionDelete) WrapConext(ctx context.Context) context.Context {
 }
 
 func (o *MgcConnectionDelete) CollectParameters(ctx context.Context, _, plan TerraformParams) (core.Parameters, Diagnostics) {
-	return loadMgcParamsFromState(ctx, o.deleteConnection.ParametersSchema(), o.attrTree, plan)
+	return loadMgcParamsFromState(ctx, o.deleteConnection.ParametersSchema(), o.attrTree.deleteInput, plan)
 }
 
 func (o *MgcConnectionDelete) CollectConfigs(ctx context.Context, _, _ TerraformParams) (core.Configs, Diagnostics) {
@@ -48,12 +48,12 @@ func (o *MgcConnectionDelete) Run(ctx context.Context, params core.Parameters, c
 	return execute(ctx, o.resourceName, o.deleteConnection, params, configs)
 }
 
-func (o *MgcConnectionDelete) PostRun(ctx context.Context, deleteResult core.ResultWithValue, state, plan TerraformParams, targetState *tfsdk.State) (core.ResultWithValue, bool, Diagnostics) {
+func (o *MgcConnectionDelete) PostRun(ctx context.Context, _ core.ResultWithValue, _, _ TerraformParams, _ *tfsdk.State) (runChain bool, diagnostics Diagnostics) {
 	tflog.Info(ctx, "connection deleted")
-	return deleteResult, false, nil
+	return false, nil
 }
 
-func (o *MgcConnectionDelete) ChainOperations(ctx context.Context, _ core.ResultWithValue, readResult ReadResult, state, plan TerraformParams) ([]MgcOperation, bool, Diagnostics) {
+func (o *MgcConnectionDelete) ChainOperations(_ context.Context, _ core.ResultWithValue, _, _ TerraformParams) ([]MgcOperation, bool, Diagnostics) {
 	return nil, false, nil
 }
 

@@ -1,4 +1,4 @@
-Rotas relacionadas a api de cluster.
+Endpoints related to the Cluster API.
 
 Usage:
   ./cli kubernetes cluster [flags]
@@ -7,7 +7,7 @@ Usage:
 Commands:
   create      Create a cluster
   delete      Delete a cluster
-  get         List a cluster by id
+  get         List a cluster by uuid
   kubeconfig  Get kubeconfig cluster
   list        List all clusters
 

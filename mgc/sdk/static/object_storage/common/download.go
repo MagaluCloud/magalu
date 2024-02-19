@@ -10,14 +10,13 @@ import (
 	"path"
 
 	"magalu.cloud/core"
-	"magalu.cloud/core/progress_report"
 	mgcSchemaPkg "magalu.cloud/core/schema"
 	"magalu.cloud/core/utils"
 )
 
 type DownloadObjectParams struct {
-	Source      mgcSchemaPkg.URI      `json:"src" jsonschema:"description=Path of the object to be downloaded,example=s3://bucket1/file.txt" mgc:"positional"`
-	Destination mgcSchemaPkg.FilePath `json:"dst,omitempty" jsonschema:"description=Name of the file to be saved,example=file.txt" mgc:"positional"`
+	Source      mgcSchemaPkg.URI      `json:"src" jsonschema:"description=Path of the object to be downloaded,example=bucket1/file.txt" mgc:"positional"`
+	Destination mgcSchemaPkg.FilePath `json:"dst,omitempty" jsonschema:"description=Path and file name to be saved (relative or absolute).If not specified it defaults to the current working directory,example=file.txt" mgc:"positional"`
 }
 
 type downloader interface {
@@ -40,14 +39,7 @@ func WriteToFile(ctx context.Context, reader io.ReadCloser, fileSize int64, outF
 		return err
 	}
 
-	reportProgress := progress_report.FromContext(ctx)
-	downloadedBytes := uint64(0)
-	progressReader := progress_report.NewReporterReader(reader, func(n int, err error) {
-		downloadedBytes += uint64(n)
-		reportProgress(outFile.String(), downloadedBytes, uint64(fileSize), progress_report.UnitsBytes, err)
-	})
-
-	n, err := io.Copy(writer, progressReader)
+	n, err := io.Copy(writer, reader)
 	defer writer.Close()
 	if err != nil {
 		return fmt.Errorf("error writing to file (wrote %d bytes): %w", n, err)

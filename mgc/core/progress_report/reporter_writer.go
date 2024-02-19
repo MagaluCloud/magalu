@@ -4,7 +4,7 @@ import (
 	"io"
 )
 
-type ReportWrite func(n int, err error)
+type ReportWrite func(n uint64, err error)
 
 type reporterWriter struct {
 	parent         io.Writer
@@ -24,7 +24,7 @@ func (rw *reporterWriter) Unwrap() io.Writer {
 
 func (rw *reporterWriter) Write(p []byte) (n int, err error) {
 	n, err = rw.parent.Write(p)
-	rw.reportProgress(n, err)
+	rw.reportProgress(uint64(n), err)
 	return
 }
 

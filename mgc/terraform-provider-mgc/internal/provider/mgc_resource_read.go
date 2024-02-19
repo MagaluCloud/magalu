@@ -26,7 +26,7 @@ func (o *MgcResourceRead) WrapConext(ctx context.Context) context.Context {
 }
 
 func (o *MgcResourceRead) CollectParameters(ctx context.Context, state, _ TerraformParams) (core.Parameters, Diagnostics) {
-	return loadMgcParamsFromState(ctx, o.operation.ParametersSchema(), o.attrTree, state)
+	return loadMgcParamsFromState(ctx, o.operation.ParametersSchema(), o.attrTree.input, state)
 }
 
 func (o *MgcResourceRead) CollectConfigs(ctx context.Context, _, _ TerraformParams) (core.Configs, Diagnostics) {
@@ -41,17 +41,23 @@ func (o *MgcResourceRead) Run(ctx context.Context, params core.Parameters, confi
 	return execute(ctx, o.resourceName, o.operation, params, configs)
 }
 
-func (o *MgcResourceRead) PostRun(ctx context.Context, result core.ResultWithValue, state, plan TerraformParams, targetState *tfsdk.State) (core.ResultWithValue, bool, Diagnostics) {
+func (o *MgcResourceRead) PostRun(ctx context.Context, result core.ResultWithValue, state, plan TerraformParams, targetState *tfsdk.State) (runChain bool, diagnostics Diagnostics) {
 	tflog.Info(ctx, "resource read")
-	result, _, d := applyStateAfter(ctx, o.resourceName, o.attrTree, result, o.operation, targetState)
-	return result, true, d
+	diagnostics = Diagnostics{}
+
+	d := applyStateAfter(ctx, o.resourceName, o.attrTree, result, targetState)
+	if diagnostics.AppendCheckError(d...) {
+		return false, diagnostics
+	}
+
+	return true, diagnostics
 }
 
 func (o *MgcResourceRead) ReadResultSchema() *mgcSchemaPkg.Schema {
 	return o.operation.ResultSchema()
 }
 
-func (o *MgcResourceRead) ChainOperations(_ context.Context, _ core.ResultWithValue, readResult ReadResult, _, _ TerraformParams) ([]MgcOperation, bool, Diagnostics) {
+func (o *MgcResourceRead) ChainOperations(_ context.Context, readResult core.ResultWithValue, _, _ TerraformParams) ([]MgcOperation, bool, Diagnostics) {
 	readResultKeys := []tfName{}
 	if readMap, ok := readResult.Value().(map[string]any); ok {
 		for k := range readMap {

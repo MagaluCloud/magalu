@@ -4,7 +4,7 @@ Usage:
   ./cli object-storage objects download-all [src] [dst] [flags]
 
 Examples:
-  ./cli object-storage objects download-all --dst="path/to/folder" --src="s3://mybucket"
+  ./cli object-storage objects download-all --dst="path/to/folder" --src="mybucket"
 
 Flags:
       --dst file               Path to save files

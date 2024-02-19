@@ -211,7 +211,7 @@ func listTenants(name string, transport mockTransport, expectedTenants []*Tenant
 		providedFs: provided,
 		expectedFs: expected,
 		run: func(auth *Auth) error {
-			tLst, err := auth.ListTenants(context.Background())
+			tLst, err := auth.ListTenants(context.Background(), &http.Client{Transport: transport})
 			hasErr := err != nil
 
 			if hasErr != expectedErr {

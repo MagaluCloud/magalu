@@ -12,7 +12,7 @@ var getCopyAll = utils.NewLazyLoader[core.Executor](func() core.Executor {
 	executor := core.NewStaticExecute(
 		core.DescriptorSpec{
 			Name:        "copy-all",
-			Description: "Copy all objects from a bucket",
+			Description: "Copy all objects from a bucket to another bucket",
 		},
 		copyAll,
 	)

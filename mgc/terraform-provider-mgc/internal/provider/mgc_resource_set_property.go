@@ -21,7 +21,7 @@ type MgcResourceWithPropSetterChain struct {
 
 func (o *MgcResourceWithPropSetterChain) collectChainSetPropertyOperation(
 	ctx context.Context,
-	result core.ResultWithValue,
+	readResult core.ResultWithValue,
 	state, plan TerraformParams,
 ) (MgcOperation, bool, Diagnostics) {
 	diagnostics := Diagnostics{}
@@ -92,7 +92,7 @@ func (o *MgcResourceWithPropSetterChain) collectChainSetPropertyOperation(
 		operation, d := newMgcResourceSetProperty(
 			o.resourceName,
 			o.attrTree,
-			result,
+			readResult,
 			propertySetter,
 			currentVal, plannedVal,
 			o.readResource,
@@ -105,15 +105,6 @@ func (o *MgcResourceWithPropSetterChain) collectChainSetPropertyOperation(
 		return operation, true, diagnostics
 	}
 	return nil, false, diagnostics
-}
-
-func (o *MgcResourceWithPropSetterChain) ChainOperations(ctx context.Context, _ core.ResultWithValue, readResult ReadResult, state, plan TerraformParams) ([]MgcOperation, bool, Diagnostics) {
-	setPropOp, ok, d := o.collectChainSetPropertyOperation(ctx, readResult, state, plan)
-	if d.HasError() || !ok {
-		return nil, false, d
-	}
-
-	return []MgcOperation{setPropOp}, true, d
 }
 
 type MgcResourceSetProperty struct {
@@ -159,7 +150,17 @@ func (o *MgcResourceSetProperty) WrapConext(ctx context.Context) context.Context
 }
 
 func (o *MgcResourceSetProperty) CollectParameters(ctx context.Context, _, plan TerraformParams) (core.Parameters, Diagnostics) {
-	return loadMgcParamsFromState(ctx, o.operationLink.AdditionalParametersSchema(), o.attrTree, plan)
+	propAttrMaps, ok := o.attrTree.propertySetterInputs[o.setter.propertyName()]
+	if !ok {
+		return nil, nil
+	}
+
+	attrMap, ok := propAttrMaps[o.operationLink.AdditionalParametersSchema()]
+	if !ok {
+		return nil, nil
+	}
+
+	return loadMgcParamsFromState(ctx, o.operationLink.AdditionalParametersSchema(), attrMap, plan)
 }
 
 func (o *MgcResourceSetProperty) CollectConfigs(ctx context.Context, _, _ TerraformParams) (core.Configs, Diagnostics) {
@@ -179,12 +180,12 @@ func (o *MgcResourceSetProperty) Run(ctx context.Context, params core.Parameters
 	return execute(ctx, o.resourceName, operation, params, configs)
 }
 
-func (o *MgcResourceSetProperty) PostRun(ctx context.Context, result core.ResultWithValue, state, plan TerraformParams, targetState *tfsdk.State) (core.ResultWithValue, bool, Diagnostics) {
-	diagnostics := Diagnostics{}
+func (o *MgcResourceSetProperty) PostRun(ctx context.Context, result core.ResultWithValue, state, plan TerraformParams, targetState *tfsdk.State) (runChain bool, diagnostics Diagnostics) {
+	diagnostics = Diagnostics{}
 
-	result, _, d := applyStateAfter(ctx, o.resourceName, o.attrTree, result, o.readResource, targetState)
+	d := applyStateAfter(ctx, o.resourceName, o.attrTree, result, targetState)
 	if diagnostics.AppendCheckError(d...) {
-		return result, false, diagnostics
+		return false, diagnostics
 	}
 
 	// If prop has a current counterpart (was split due to different schemas), 'applyStateAfter'
@@ -196,18 +197,40 @@ func (o *MgcResourceSetProperty) PostRun(ctx context.Context, result core.Result
 	if prop, ok := o.attrTree.input[o.setter.propertyName()]; ok && prop.currentCounterpart != nil {
 		propVal, isKnown, d := loadMgcSchemaValue(ctx, prop, plan[prop.tfName], false, false)
 		if diagnostics.AppendCheckError(d...) {
-			return result, false, diagnostics
+			return false, diagnostics
 		}
 
 		if isKnown {
 			d := applyValueToState(ctx, propVal, prop, targetState, path.Empty().AtName(string(o.setter.propertyName())))
 			if diagnostics.AppendCheckError(d...) {
-				return result, false, diagnostics
+				return false, diagnostics
 			}
 		}
 	}
 
-	return result, true, diagnostics
+	return true, diagnostics
+}
+
+func (o *MgcResourceWithPropSetterChain) ChainOperations(ctx context.Context, propSetResult core.ResultWithValue, state, plan TerraformParams) ([]MgcOperation, bool, Diagnostics) {
+	readAfter := newMgcResourceReadAfterWithLinkOrFallback(
+		o.resourceName,
+		o.attrTree,
+		propSetResult,
+		"get",
+		o.readResource,
+		func(ctx context.Context, readResult core.ResultWithValue, state, plan TerraformParams) ([]MgcOperation, bool, Diagnostics) {
+			diagnostics := Diagnostics{}
+
+			setPropOp, ok, d := o.collectChainSetPropertyOperation(ctx, readResult, state, plan)
+			if diagnostics.AppendCheckError(d...) || !ok {
+				return nil, false, diagnostics
+			}
+
+			return []MgcOperation{setPropOp}, true, diagnostics
+		},
+	)
+
+	return []MgcOperation{readAfter}, true, nil
 }
 
 var _ MgcOperation = (*MgcResourceSetProperty)(nil)

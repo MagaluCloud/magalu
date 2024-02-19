@@ -5,10 +5,8 @@ import (
 	"fmt"
 	"math/big"
 
-	"github.com/hashicorp/terraform-plugin-framework/tfsdk"
 	"github.com/hashicorp/terraform-plugin-go/tftypes"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
-	mgcSdk "magalu.cloud/sdk"
 )
 
 func loadMgcSchemaValue(ctx context.Context, atinfo *resAttrInfo, tfValue tftypes.Value, ignoreUnknown bool, filterUnset bool) (mgcValue any, isKnown bool, d Diagnostics) {
@@ -394,22 +392,4 @@ func loadMgcSchemaMap(ctx context.Context, atinfo *resAttrInfo, tfValue tftypes.
 	}
 
 	return mgcMap, isKnown, diagnostics
-}
-
-// Read values from tfValue into a map suitable to MGC
-func readMgcObject(ctx context.Context, mgcSchema *mgcSdk.Schema, attributes resAttrInfoMap, tfState tfsdk.State) (map[string]any, Diagnostics) {
-	attr := &resAttrInfo{
-		tfName:          "inputSchemasInfo",
-		mgcName:         "inputSchemasInfo",
-		mgcSchema:       mgcSchema,
-		childAttributes: attributes,
-	}
-
-	diagnostics := Diagnostics{}
-	m, _, d := loadMgcSchemaObject(ctx, attr, tfState.Raw, true, true)
-	if diagnostics.AppendCheckError(d...) {
-		return nil, diagnostics
-	}
-
-	return m.(map[string]any), diagnostics
 }

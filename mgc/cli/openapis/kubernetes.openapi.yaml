@@ -1,9 +1,9 @@
 openapi: 3.0.3
 info:
     title: k8s-api-product
-    description: APIs referentes ao produto de kubernetes
+    description: APIs related to the Kubernetes product.
     contact:
-        name: Tribo IAAS Cloud
+        name: IAAS Cloud Tribe
         url: https://github.com/luizalabs
         email: suporte@jaxyendy.com
     license:
@@ -56,7 +56,7 @@ paths:
             tags:
             - cluster
             summary: Create a cluster
-            description: Criação de um cluster kubernetes
+            description: Creates a Kubernetes cluster in Magalu Cloud.
             operationId: createCluster
             security:
             -   BearerAuth:
@@ -78,12 +78,12 @@ paths:
                     links:
                         get:
                             operationId: getClusterById
-                            description: Lista as informações de um cluster
+                            description: Lists detailed cluster information by cluster_uuid.
                             parameters:
                                 id: $response.body#/id
                         delete:
                             operationId: deleteCluster
-                            description: Deleta um cluster
+                            description: Deletes a cluster by cluster_uuid.
                             parameters:
                                 id: $response.body#/id
                 '400':
@@ -128,19 +128,19 @@ paths:
                     \ \\\n  --header 'Authorization: Bearer REPLACE_BEARER_TOKEN'\
                     \ \\\n  --header 'content-type: application/json' \\\n  --header\
                     \ 'x-tenant-id: SOME_STRING_VALUE' \\\n  --data '{\"name\":\"\
-                    cluster-exemplo\",\"version\":\"v1.28.5\",\"description\":\"Esse\
-                    \ é um cluster de exemplo\",\"enabled_bastion\":false,\"enabled_server_group\"\
-                    :false,\"node_pools\":[{\"name\":\"nodepool-exemplo\",\"flavor\"\
+                    cluster-example\",\"version\":\"v1.28.5\",\"description\":\"This\
+                    \ is an example cluster.\",\"enabled_bastion\":false,\"enabled_server_group\"\
+                    :false,\"node_pools\":[{\"name\":\"nodepool-example\",\"flavor\"\
                     :\"cloud-k8s.gp1.small\",\"replicas\":3,\"tags\":[\"tag-value1\"\
-                    ],\"taints\":[{\"key\":\"exemplo-key\",\"value\":\"valor1\",\"\
+                    ],\"taints\":[{\"key\":\"example-key\",\"value\":\"valor1\",\"\
                     effect\":\"NoSchedule\"}],\"auto_scale\":{\"min_replicas\":2,\"\
                     max_replicas\":5}}]}'"
             -   lang: Shell + Httpie
-                source: "echo '{\"name\":\"cluster-exemplo\",\"version\":\"v1.28.5\"\
-                    ,\"description\":\"Esse é um cluster de exemplo\",\"enabled_bastion\"\
+                source: "echo '{\"name\":\"cluster-example\",\"version\":\"v1.28.5\"\
+                    ,\"description\":\"This is an example cluster.\",\"enabled_bastion\"\
                     :false,\"enabled_server_group\":false,\"node_pools\":[{\"name\"\
-                    :\"nodepool-exemplo\",\"flavor\":\"cloud-k8s.gp1.small\",\"replicas\"\
-                    :3,\"tags\":[\"tag-value1\"],\"taints\":[{\"key\":\"exemplo-key\"\
+                    :\"nodepool-example\",\"flavor\":\"cloud-k8s.gp1.small\",\"replicas\"\
+                    :3,\"tags\":[\"tag-value1\"],\"taints\":[{\"key\":\"example-key\"\
                     ,\"value\":\"valor1\",\"effect\":\"NoSchedule\"}],\"auto_scale\"\
                     :{\"min_replicas\":2,\"max_replicas\":5}}]}' |  \\\n  http POST\
                     \ https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters \\\
@@ -150,13 +150,13 @@ paths:
                 source: "package main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n\t\"\
                     net/http\"\n\t\"io/ioutil\"\n)\n\nfunc main() {\n\n\turl := \"\
                     https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters\"\n\n\
-                    \tpayload := strings.NewReader(\"{\\\"name\\\":\\\"cluster-exemplo\\\
-                    \",\\\"version\\\":\\\"v1.28.5\\\",\\\"description\\\":\\\"Esse\
-                    \ é um cluster de exemplo\\\",\\\"enabled_bastion\\\":false,\\\
-                    \"enabled_server_group\\\":false,\\\"node_pools\\\":[{\\\"name\\\
-                    \":\\\"nodepool-exemplo\\\",\\\"flavor\\\":\\\"cloud-k8s.gp1.small\\\
+                    \tpayload := strings.NewReader(\"{\\\"name\\\":\\\"cluster-example\\\
+                    \",\\\"version\\\":\\\"v1.28.5\\\",\\\"description\\\":\\\"This\
+                    \ is an example cluster.\\\",\\\"enabled_bastion\\\":false,\\\"\
+                    enabled_server_group\\\":false,\\\"node_pools\\\":[{\\\"name\\\
+                    \":\\\"nodepool-example\\\",\\\"flavor\\\":\\\"cloud-k8s.gp1.small\\\
                     \",\\\"replicas\\\":3,\\\"tags\\\":[\\\"tag-value1\\\"],\\\"taints\\\
-                    \":[{\\\"key\\\":\\\"exemplo-key\\\",\\\"value\\\":\\\"valor1\\\
+                    \":[{\\\"key\\\":\\\"example-key\\\",\\\"value\\\":\\\"valor1\\\
                     \",\\\"effect\\\":\\\"NoSchedule\\\"}],\\\"auto_scale\\\":{\\\"\
                     min_replicas\\\":2,\\\"max_replicas\\\":5}}]}\")\n\n\treq, _ :=\
                     \ http.NewRequest(\"POST\", url, payload)\n\n\treq.Header.Add(\"\
@@ -168,13 +168,13 @@ paths:
             -   lang: Python + Python3
                 source: "import http.client\n\nconn = http.client.HTTPSConnection(\"\
                     api-mke.pre-prod.br-ne-1.jaxyendy.com\")\n\npayload = \"{\\\"\
-                    name\\\":\\\"cluster-exemplo\\\",\\\"version\\\":\\\"v1.28.5\\\
-                    \",\\\"description\\\":\\\"Esse é um cluster de exemplo\\\",\\\
-                    \"enabled_bastion\\\":false,\\\"enabled_server_group\\\":false,\\\
-                    \"node_pools\\\":[{\\\"name\\\":\\\"nodepool-exemplo\\\",\\\"\
+                    name\\\":\\\"cluster-example\\\",\\\"version\\\":\\\"v1.28.5\\\
+                    \",\\\"description\\\":\\\"This is an example cluster.\\\",\\\"\
+                    enabled_bastion\\\":false,\\\"enabled_server_group\\\":false,\\\
+                    \"node_pools\\\":[{\\\"name\\\":\\\"nodepool-example\\\",\\\"\
                     flavor\\\":\\\"cloud-k8s.gp1.small\\\",\\\"replicas\\\":3,\\\"\
                     tags\\\":[\\\"tag-value1\\\"],\\\"taints\\\":[{\\\"key\\\":\\\"\
-                    exemplo-key\\\",\\\"value\\\":\\\"valor1\\\",\\\"effect\\\":\\\
+                    example-key\\\",\\\"value\\\":\\\"valor1\\\",\\\"effect\\\":\\\
                     \"NoSchedule\\\"}],\\\"auto_scale\\\":{\\\"min_replicas\\\":2,\\\
                     \"max_replicas\\\":5}}]}\"\n\nheaders = {\n    'content-type':\
                     \ \"application/json\",\n    'x-tenant-id': \"SOME_STRING_VALUE\"\
@@ -192,12 +192,12 @@ paths:
                     \ {\n  const chunks = [];\n\n  res.on(\"data\", function (chunk)\
                     \ {\n    chunks.push(chunk);\n  });\n\n  res.on(\"end\", function\
                     \ () {\n    const body = Buffer.concat(chunks);\n    console.log(body.toString());\n\
-                    \  });\n});\n\nreq.write(JSON.stringify({\n  name: 'cluster-exemplo',\n\
-                    \  version: 'v1.28.5',\n  description: 'Esse é um cluster de exemplo',\n\
+                    \  });\n});\n\nreq.write(JSON.stringify({\n  name: 'cluster-example',\n\
+                    \  version: 'v1.28.5',\n  description: 'This is an example cluster.',\n\
                     \  enabled_bastion: false,\n  enabled_server_group: false,\n \
-                    \ node_pools: [\n    {\n      name: 'nodepool-exemplo',\n    \
+                    \ node_pools: [\n    {\n      name: 'nodepool-example',\n    \
                     \  flavor: 'cloud-k8s.gp1.small',\n      replicas: 3,\n      tags:\
-                    \ ['tag-value1'],\n      taints: [{key: 'exemplo-key', value:\
+                    \ ['tag-value1'],\n      taints: [{key: 'example-key', value:\
                     \ 'valor1', effect: 'NoSchedule'}],\n      auto_scale: {min_replicas:\
                     \ 2, max_replicas: 5}\n    }\n  ]\n}));\nreq.end();"
             -   lang: Ruby + Native
@@ -226,8 +226,8 @@ paths:
 
                     request["Authorization"] = ''Bearer REPLACE_BEARER_TOKEN''
 
-                    request.body = "{\"name\":\"cluster-exemplo\",\"version\":\"v1.28.5\",\"description\":\"Esse
-                    é um cluster de exemplo\",\"enabled_bastion\":false,\"enabled_server_group\":false,\"node_pools\":[{\"name\":\"nodepool-exemplo\",\"flavor\":\"cloud-k8s.gp1.small\",\"replicas\":3,\"tags\":[\"tag-value1\"],\"taints\":[{\"key\":\"exemplo-key\",\"value\":\"valor1\",\"effect\":\"NoSchedule\"}],\"auto_scale\":{\"min_replicas\":2,\"max_replicas\":5}}]}"
+                    request.body = "{\"name\":\"cluster-example\",\"version\":\"v1.28.5\",\"description\":\"This
+                    is an example cluster.\",\"enabled_bastion\":false,\"enabled_server_group\":false,\"node_pools\":[{\"name\":\"nodepool-example\",\"flavor\":\"cloud-k8s.gp1.small\",\"replicas\":3,\"tags\":[\"tag-value1\"],\"taints\":[{\"key\":\"example-key\",\"value\":\"valor1\",\"effect\":\"NoSchedule\"}],\"auto_scale\":{\"min_replicas\":2,\"max_replicas\":5}}]}"
 
 
                     response = http.request(request)
@@ -237,7 +237,7 @@ paths:
             tags:
             - cluster
             summary: List all clusters
-            description: Lista todos os clusters de um usuário
+            description: Lists all clusters for a user.
             operationId: getClusters
             security:
             -   BearerAuth:
@@ -352,8 +352,8 @@ paths:
         get:
             tags:
             - cluster
-            summary: List a cluster by id
-            description: Lista as informações de um cluster
+            summary: List a cluster by uuid
+            description: Lists detailed cluster information by cluster_uuid.
             operationId: getClusterById
             security:
             -   BearerAuth:
@@ -367,7 +367,7 @@ paths:
                 schema:
                     type: string
                     format: uuid
-                description: Identificador no padrão uuid para identificar o cluster
+                description: Cluster's UUID.
                 x-mgc-name: id
             responses:
                 '200':
@@ -379,7 +379,7 @@ paths:
                     links:
                         delete:
                             operationId: deleteCluster
-                            description: Deleta um cluster
+                            description: Deletes a cluster by cluster_uuid.
                             parameters:
                                 cluster_id: $request.path.cluster_id
                 '400':
@@ -483,7 +483,7 @@ paths:
             tags:
             - cluster
             summary: Delete a cluster
-            description: Deleta um cluster
+            description: Deletes a cluster by cluster_uuid.
             operationId: deleteCluster
             security:
             -   BearerAuth:
@@ -497,7 +497,7 @@ paths:
                 schema:
                     type: string
                     format: uuid
-                description: Identificador no padrão uuid para identificar o cluster
+                description: Cluster's UUID.
                 x-mgc-name: id
             responses:
                 '204':
@@ -611,7 +611,7 @@ paths:
             - cluster
             summary: Get kubeconfig cluster
             operationId: getKubeConfigCluster
-            description: Obtem o arquivo do kubeconfig do cluster
+            description: Retrieves the kubeconfig of a Kubernetes cluster by cluster_uuid.
             security:
             -   BearerAuth:
                 - mke.read
@@ -624,7 +624,7 @@ paths:
                 schema:
                     type: string
                     format: uuid
-                description: Esquema de obter o arquivo do kubeconfig do cluster
+                description: Schema to get the cluster's kubeconfig file.
                 x-mgc-name: id
             responses:
                 '200':
@@ -633,17 +633,6 @@ paths:
                         application/yaml:
                             schema:
                                 $ref: '#/components/schemas/ClusterKubeConfigResponse'
-                    links:
-                        get:
-                            operationId: getClusterNodePools
-                            description: Obtem um node pool para um cluster Kubernetes
-                            parameters:
-                                cluster_id: $request.path.cluster_id
-                        create:
-                            operationId: createNodePool
-                            description: Cria um node pool em um cluster kubernetes
-                            parameters:
-                                cluster_id: $request.path.cluster_id
                 '400':
                     description: Bad Request
                     content:
@@ -746,7 +735,7 @@ paths:
             tags:
             - nodepool
             summary: Create a node pool
-            description: Cria um node pool em um cluster kubernetes
+            description: Creates a node pool in a Kubernetes cluster.
             operationId: createNodePool
             security:
             -   BearerAuth:
@@ -760,7 +749,7 @@ paths:
                 schema:
                     type: string
                     format: uuid
-                description: Identificador no padrão uuid para identificar o cluster
+                description: Cluster's UUID.
             requestBody:
                 content:
                     application/json:
@@ -776,19 +765,20 @@ paths:
                     links:
                         get:
                             operationId: getNodePool
-                            description: Lista nodes de um node pool
+                            description: Gets nodes in a node pool by nodepool_uuid.
                             parameters:
                                 cluster_id: $request.path.cluster_id
                                 node_pool_id: $response.body#/id
                         update:
                             operationId: patchNodePool
-                            description: Atualiza nodes de um node pool
+                            description: Updates nodes from a node pool by nodepool_uuid.
                             parameters:
                                 cluster_id: $request.path.cluster_id
                                 node_pool_id: $response.body#/id
                         delete:
                             operationId: deleteNodePool
-                            description: Deleta um node pool em um cluster do Kubernetes
+                            description: Deletes a node pool in a Kubernetes cluster
+                                by nodepool_uuid.
                             parameters:
                                 cluster_id: $request.path.cluster_id
                                 node_pool_id: $response.body#/id
@@ -834,14 +824,14 @@ paths:
                     \ \\\n  --header 'Authorization: Bearer REPLACE_BEARER_TOKEN'\
                     \ \\\n  --header 'content-type: application/json' \\\n  --header\
                     \ 'x-tenant-id: SOME_STRING_VALUE' \\\n  --data '{\"name\":\"\
-                    nodepool-exemplo\",\"flavor\":\"cloud-k8s.gp1.small\",\"replicas\"\
-                    :3,\"tags\":[\"tag-value1\"],\"taints\":[{\"key\":\"exemplo-key\"\
-                    ,\"value\":\"valor1\",\"effect\":\"NoSchedule\"}],\"auto_scale\"\
+                    nodepool-example\",\"flavor\":\"cloud-k8s.gp1.small\",\"replicas\"\
+                    :3,\"tags\":[\"tag-value1\"],\"taints\":[{\"key\":\"example-key\"\
+                    ,\"value\":\"value1\",\"effect\":\"NoSchedule\"}],\"auto_scale\"\
                     :{\"min_replicas\":2,\"max_replicas\":5}}'"
             -   lang: Shell + Httpie
-                source: "echo '{\"name\":\"nodepool-exemplo\",\"flavor\":\"cloud-k8s.gp1.small\"\
+                source: "echo '{\"name\":\"nodepool-example\",\"flavor\":\"cloud-k8s.gp1.small\"\
                     ,\"replicas\":3,\"tags\":[\"tag-value1\"],\"taints\":[{\"key\"\
-                    :\"exemplo-key\",\"value\":\"valor1\",\"effect\":\"NoSchedule\"\
+                    :\"example-key\",\"value\":\"value1\",\"effect\":\"NoSchedule\"\
                     }],\"auto_scale\":{\"min_replicas\":2,\"max_replicas\":5}}' |\
                     \  \\\n  http POST https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters/%7Bcluster_id%7D/node_pools\
                     \ \\\n  Authorization:'Bearer REPLACE_BEARER_TOKEN' \\\n  content-type:application/json\
@@ -850,10 +840,10 @@ paths:
                 source: "package main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n\t\"\
                     net/http\"\n\t\"io/ioutil\"\n)\n\nfunc main() {\n\n\turl := \"\
                     https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters/%7Bcluster_id%7D/node_pools\"\
-                    \n\n\tpayload := strings.NewReader(\"{\\\"name\\\":\\\"nodepool-exemplo\\\
+                    \n\n\tpayload := strings.NewReader(\"{\\\"name\\\":\\\"nodepool-example\\\
                     \",\\\"flavor\\\":\\\"cloud-k8s.gp1.small\\\",\\\"replicas\\\"\
                     :3,\\\"tags\\\":[\\\"tag-value1\\\"],\\\"taints\\\":[{\\\"key\\\
-                    \":\\\"exemplo-key\\\",\\\"value\\\":\\\"valor1\\\",\\\"effect\\\
+                    \":\\\"example-key\\\",\\\"value\\\":\\\"value1\\\",\\\"effect\\\
                     \":\\\"NoSchedule\\\"}],\\\"auto_scale\\\":{\\\"min_replicas\\\
                     \":2,\\\"max_replicas\\\":5}}\")\n\n\treq, _ := http.NewRequest(\"\
                     POST\", url, payload)\n\n\treq.Header.Add(\"content-type\", \"\
@@ -865,9 +855,9 @@ paths:
             -   lang: Python + Python3
                 source: "import http.client\n\nconn = http.client.HTTPSConnection(\"\
                     api-mke.pre-prod.br-ne-1.jaxyendy.com\")\n\npayload = \"{\\\"\
-                    name\\\":\\\"nodepool-exemplo\\\",\\\"flavor\\\":\\\"cloud-k8s.gp1.small\\\
+                    name\\\":\\\"nodepool-example\\\",\\\"flavor\\\":\\\"cloud-k8s.gp1.small\\\
                     \",\\\"replicas\\\":3,\\\"tags\\\":[\\\"tag-value1\\\"],\\\"taints\\\
-                    \":[{\\\"key\\\":\\\"exemplo-key\\\",\\\"value\\\":\\\"valor1\\\
+                    \":[{\\\"key\\\":\\\"example-key\\\",\\\"value\\\":\\\"value1\\\
                     \",\\\"effect\\\":\\\"NoSchedule\\\"}],\\\"auto_scale\\\":{\\\"\
                     min_replicas\\\":2,\\\"max_replicas\\\":5}}\"\n\nheaders = {\n\
                     \    'content-type': \"application/json\",\n    'x-tenant-id':\
@@ -886,9 +876,9 @@ paths:
                     , function (chunk) {\n    chunks.push(chunk);\n  });\n\n  res.on(\"\
                     end\", function () {\n    const body = Buffer.concat(chunks);\n\
                     \    console.log(body.toString());\n  });\n});\n\nreq.write(JSON.stringify({\n\
-                    \  name: 'nodepool-exemplo',\n  flavor: 'cloud-k8s.gp1.small',\n\
-                    \  replicas: 3,\n  tags: ['tag-value1'],\n  taints: [{key: 'exemplo-key',\
-                    \ value: 'valor1', effect: 'NoSchedule'}],\n  auto_scale: {min_replicas:\
+                    \  name: 'nodepool-example',\n  flavor: 'cloud-k8s.gp1.small',\n\
+                    \  replicas: 3,\n  tags: ['tag-value1'],\n  taints: [{key: 'example-key',\
+                    \ value: 'value1', effect: 'NoSchedule'}],\n  auto_scale: {min_replicas:\
                     \ 2, max_replicas: 5}\n}));\nreq.end();"
             -   lang: Ruby + Native
                 source: 'require ''uri''
@@ -916,7 +906,7 @@ paths:
 
                     request["Authorization"] = ''Bearer REPLACE_BEARER_TOKEN''
 
-                    request.body = "{\"name\":\"nodepool-exemplo\",\"flavor\":\"cloud-k8s.gp1.small\",\"replicas\":3,\"tags\":[\"tag-value1\"],\"taints\":[{\"key\":\"exemplo-key\",\"value\":\"valor1\",\"effect\":\"NoSchedule\"}],\"auto_scale\":{\"min_replicas\":2,\"max_replicas\":5}}"
+                    request.body = "{\"name\":\"nodepool-example\",\"flavor\":\"cloud-k8s.gp1.small\",\"replicas\":3,\"tags\":[\"tag-value1\"],\"taints\":[{\"key\":\"example-key\",\"value\":\"value1\",\"effect\":\"NoSchedule\"}],\"auto_scale\":{\"min_replicas\":2,\"max_replicas\":5}}"
 
 
                     response = http.request(request)
@@ -926,7 +916,7 @@ paths:
             tags:
             - nodepool
             summary: List node pools by cluster_id
-            description: Obtem um node pool para um cluster Kubernetes
+            description: Gets a node pool from a Kubernetes cluster by cluster_uuid.
             operationId: getClusterNodePools
             security:
             -   BearerAuth:
@@ -940,7 +930,7 @@ paths:
                 schema:
                     type: string
                     format: uuid
-                description: Identificador no padrão uuid para identificar o cluster
+                description: Cluster's UUID.
             responses:
                 '200':
                     description: Successful operation
@@ -948,12 +938,6 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/ClusterNodePoolsResponse'
-                    links:
-                        create:
-                            operationId: createNodePool
-                            description: Cria um node pool em um cluster kubernetes
-                            parameters:
-                                cluster_id: $request.path.cluster_id
                 '400':
                     description: Bad Request
                     content:
@@ -1056,7 +1040,7 @@ paths:
             tags:
             - nodepool
             summary: Get node pool by node_pool_id
-            description: Lista nodes de um node pool
+            description: Gets nodes in a node pool by nodepool_uuid.
             operationId: getNodePool
             security:
             -   BearerAuth:
@@ -1070,14 +1054,14 @@ paths:
                 schema:
                     type: string
                     format: uuid
-                description: Identificador no padrão uuid para identificar o cluster
+                description: Cluster's UUID.
             -   required: true
                 name: node_pool_id
                 in: path
                 schema:
                     type: string
                     format: uuid
-                description: Identificador no padrão uuid para identificar o nodepool
+                description: Nodepool's UUID.
                 x-mgc-name: id
             responses:
                 '200':
@@ -1089,13 +1073,14 @@ paths:
                     links:
                         update:
                             operationId: patchNodePool
-                            description: Atualiza nodes de um node pool
+                            description: Updates nodes from a node pool by nodepool_uuid.
                             parameters:
                                 cluster_id: $request.path.cluster_id
                                 node_pool_id: $request.path.node_pool_id
                         delete:
                             operationId: deleteNodePool
-                            description: Deleta um node pool em um cluster do Kubernetes
+                            description: Deletes a node pool in a Kubernetes cluster
+                                by nodepool_uuid.
                             parameters:
                                 cluster_id: $request.path.cluster_id
                                 node_pool_id: $request.path.node_pool_id
@@ -1200,7 +1185,7 @@ paths:
             tags:
             - nodepool
             summary: Patch node pool replicas by node_pool_id
-            description: Atualiza nodes de um node pool
+            description: Updates nodes from a node pool by nodepool_uuid.
             operationId: patchNodePool
             security:
             -   BearerAuth:
@@ -1214,14 +1199,14 @@ paths:
                 schema:
                     type: string
                     format: uuid
-                description: Identificador no padrão uuid para identificar o cluster
+                description: Cluster's UUID.
             -   required: true
                 name: node_pool_id
                 in: path
                 schema:
                     type: string
                     format: uuid
-                description: Identificador no padrão uuid para identificar o nodepool
+                description: Nodepool's UUID.
                 x-mgc-name: id
             requestBody:
                 content:
@@ -1238,13 +1223,14 @@ paths:
                     links:
                         get:
                             operationId: getNodePool
-                            description: Lista nodes de um node pool
+                            description: Gets nodes in a node pool by nodepool_uuid.
                             parameters:
                                 cluster_id: $request.path.cluster_id
                                 node_pool_id: $request.path.node_pool_id
                         delete:
                             operationId: deleteNodePool
-                            description: Deleta um node pool em um cluster do Kubernetes
+                            description: Deletes a node pool in a Kubernetes cluster
+                                by nodepool_uuid.
                             parameters:
                                 cluster_id: $request.path.cluster_id
                                 node_pool_id: $request.path.node_pool_id
@@ -1366,7 +1352,7 @@ paths:
             tags:
             - nodepool
             summary: Delete node pool by node_pool_id
-            description: Deleta um node pool em um cluster do Kubernetes
+            description: Deletes a node pool in a Kubernetes cluster by nodepool_uuid.
             operationId: deleteNodePool
             security:
             -   BearerAuth:
@@ -1380,14 +1366,14 @@ paths:
                 schema:
                     type: string
                     format: uuid
-                description: Identificador no padrão uuid para identificar o cluster
+                description: Cluster's UUID.
             -   required: true
                 name: node_pool_id
                 in: path
                 schema:
                     type: string
                     format: uuid
-                description: Identificador no padrão uuid para identificar o nodepool
+                description: Nodepool's UUID.
                 x-mgc-name: id
             responses:
                 '204':
@@ -1494,7 +1480,7 @@ paths:
             tags:
             - nodepool
             summary: List nodes from a node pool by node_pool_id
-            description: Lista nodes de um node pool
+            description: Lists nodes in a node pool by nodepool_uuid.
             operationId: getNodes
             security:
             -   BearerAuth:
@@ -1508,14 +1494,14 @@ paths:
                 schema:
                     type: string
                     format: uuid
-                description: Identificador no padrão uuid para identificar o cluster
+                description: Cluster's UUID.
             -   required: true
                 name: node_pool_id
                 in: path
                 schema:
                     type: string
                     format: uuid
-                description: Identificador no padrão uuid para identificar o nodepool
+                description: Nodepool's UUID.
             responses:
                 '200':
                     description: Successful operation
@@ -1625,7 +1611,7 @@ paths:
             tags:
             - info
             summary: Lists all available flavors
-            description: Lista todos os flavors disponiveis
+            description: Lists all available flavors.
             operationId: getFlavors
             security:
             -   BearerAuth:
@@ -1743,8 +1729,8 @@ paths:
         get:
             tags:
             - info
-            summary: Lists all available versios
-            description: Lista todas as versões de kubernetes disponiveis
+            summary: Lists all available versions
+            description: Lists all available Kubernetes versions.
             operationId: getVersions
             security:
             -   BearerAuth:
@@ -1863,7 +1849,7 @@ paths:
             tags:
             - flavor
             summary: Lists all available flavors
-            description: Lista todos os flavors disponiveis
+            description: Lists all available flavors.
             operationId: getFlavorsV1
             security:
             -   BearerAuth:
@@ -1981,8 +1967,8 @@ paths:
         get:
             tags:
             - version
-            summary: Lists all available versios
-            description: Lista todas as versões de kubernetes disponiveis
+            summary: Lists all available versions
+            description: Lists all available Kubernetes versions.
             operationId: getVersionsV1
             security:
             -   BearerAuth:
@@ -2100,21 +2086,26 @@ components:
     schemas:
         ClusterRequest:
             type: object
-            description: Objeto da requisição da request do cluster
+            description: Request object for the creation of a Kubernetes cluster.
             properties:
                 name:
                     type: string
-                    description: "Nome do cluster kubernetes. O nome destina-se principalmente\
-                        \ à idempotência, e deve ser exclusivo em um namespace. 0\
-                        \ nome não pode ser alterado.\nO nome deve seguir as seguintes\
-                        \ regras:\n  - deve conter no máximo 63 caracteres\n  - deve\
-                        \ conter apenas caracteres alfanuméricos minúsculos ou '-'\n\
-                        \  - deve começar com um caractere alfabético\n  - deve terminar\
-                        \ com um caractere alfanumérico\n"
-                    example: cluster-exemplo
+                    description: "Kubernetes cluster name. The name is primarily intended\
+                        \ for idempotence, and must be unique within a namespace.\
+                        \ The name cannot be changed.\nThe name must follow the following\
+                        \ rules:\n  - must contain a maximum of 63 characters\n  -\
+                        \ must contain only lowercase alphanumeric characters or '-'\n\
+                        \  - must start with an alphabetic character\n  - must end\
+                        \ with an alphanumeric character\n"
+                    example: cluster-example
                 version:
                     type: string
-                    description: Versão do kubernetes nativa do cluster
+                    description: 'The native Kubernetes version of the cluster.
+
+                        Please specify the Kubernetes version using the standard "vX.Y.Z"
+                        format.
+
+                        '
                     example: v1.28.5
                     enum:
                     - v1.26.12
@@ -2122,31 +2113,55 @@ components:
                     default: v1.28.5
                 description:
                     type: string
-                    description: Descrição do cluster
-                    example: Esse é um cluster de exemplo
+                    description: 'A brief description of the Kubernetes cluster.
+
+                        '
+                    example: This is an example cluster.
                     default: ''
                 enabled_bastion:
                     type: boolean
-                    description: Habilita bastion host
+                    description: 'Enables the use of a bastion host for secure access
+                        to the cluster.
+
+                        '
                     example: false
                     default: false
                 enabled_server_group:
                     type: boolean
-                    description: Habilita o uso de server group, com política de anti-affinity,
-                        na criação do cluster e dos node pools
+                    description: 'Enables the use of a server group with anti-affinity
+                        policy during the creation of the cluster and its node pools.
+
+                        '
                     example: false
                     default: true
                 node_pools:
                     type: array
-                    description: Conjunto de nodes em um cluster kubernetes
+                    description: 'An array representing a set of nodes within a Kubernetes
+                        cluster.
+
+                        '
                     items:
                         $ref: '#/components/schemas/CreateNodePoolRequest'
+                    example:
+                    -   name: nodepool-example
+                        flavor: cloud-k8s.gp1.small
+                        replicas: 3
+                        tags:
+                        - tag-value1
+                        taints:
+                        -   key: example-key
+                            value: valor1
+                            effect: NoSchedule
+                        auto_scale:
+                            min_replicas: 2
+                            max_replicas: 5
             required:
             - name
             - enabled_bastion
+            - node_pools
         CreateClusterResponse:
             type: object
-            description: Objeto da requisição da response do cluster
+            description: Object of the cluster response request.
             required:
             - name
             - id
@@ -2154,30 +2169,29 @@ components:
             properties:
                 name:
                     type: string
-                    description: Nome do cluster kubernetes
-                    example: cluster-exemplo
+                    description: Name of the Kubernetes cluster.
+                    example: cluster-example
                 id:
                     type: string
-                    description: Identificador no padrão uuid para identificar o cluster
-                        kubernetes
+                    description: Cluster's UUID.
                     example: 10113826-624a-4801-900f-6a5742433411
                     format: uuid
                 status:
                     $ref: '#/components/schemas/SingleStatus'
         ClustersResponse:
             type: object
-            description: Objeto da requisição da response dos clusters
+            description: Object of the clusters response request.
             required:
             - results
             properties:
                 results:
                     type: array
-                    description: Lista dos clusters kubernetes
+                    description: List of Kubernetes clusters.
                     items:
                         $ref: '#/components/schemas/ClusterResponse'
         ClusterResponse:
             type: object
-            description: Objeto da requisição da response do cluster
+            description: Object of the cluster response request.
             required:
             - id
             - name
@@ -2185,51 +2199,51 @@ components:
             properties:
                 id:
                     type: string
-                    description: Identificador no padrão uuid para identificar o cluster
-                        kubernetes
+                    description: Cluster's UUID.
                     example: 10113826-624a-4801-900f-6a5742433411
                 name:
                     type: string
-                    description: Nome do cluster kubernetes
-                    example: cluster-exemplo
+                    description: Name of the Kubernetes cluster.
+                    example: cluster-example
                 status:
                     $ref: '#/components/schemas/SingleStatus'
                 version:
                     type: string
-                    description: Versão do kubernetes nativa do cluster
+                    description: Native Kubernetes version of the cluster.
                     example: v1.22.9
                 kube_api_server:
                     $ref: '#/components/schemas/KubeApiServer'
                 tags:
                     type: array
-                    description: Lista de tags aplicadas ao cluster kubernetes
+                    description: List of tags applied to the Kubernetes cluster.
                     items:
                         type: string
                         nullable: true
-                        description: Items da lista de tags aplicadas ao cluster kubernetes
-                        example: tag-exemplo
+                        description: Items from the list of tags applied to the Kubernetes
+                            cluster.
+                        example: tag-example
                 description:
                     type: string
-                    description: Descrição do cluster kubernetes
-                    example: Esse é um cluster de exemplo
+                    description: Description of the Kubernetes cluster.
+                    example: This is an example cluster
                 project_id:
                     type: string
-                    description: Identificador único do projeto onde o cluster foi
-                        provisionado
+                    description: Unique identifier of the project where the cluster
+                        was provisioned.
                     example: 0000806e53ec429792a7885e63264411
                 region:
                     type: string
-                    description: Identificador da região em que o cluster Kubernetes
-                        está localizado.
+                    description: Identifier of the region where the Kubernetes cluster
+                        is located.
                     example: br-ne-1a
         ClusterKubeConfigResponse:
             type: object
-            description: Objeto da requisição da response do kubeconfig do cluster
+            description: Object of the kubeconfig response request for the cluster.
             properties:
                 fileName:
                     type: string
-                    description: Objeto do arquivo de resposta do kubeconfig do cluster
-                        kubernetes
+                    description: Object of the kubeconfig file for the Kubernetes
+                        cluster.
                     format: binary
                     example: "apiVersion: v1\nclusters:\n- cluster:\n    certificate-authority-data:\
                         \ <ca-data>\n    server: https://179.190.33.102:6443\n  name:\
@@ -2241,52 +2255,52 @@ components:
                         \ <key_data>\n"
         ClusterByIdResponse:
             type: object
-            description: Objeto da requisição da response do cluster por id
+            description: Object of the cluster response request by uuid.
             properties:
                 name:
                     type: string
-                    description: Nome do cluster kubernetes
-                    example: cluster-exemplo
+                    description: Name of the Kubernetes cluster.
+                    example: cluster-example
                 id:
                     type: string
-                    description: Identificador no padrão uuid para identificar o cluster
-                        kubernetes
+                    description: Cluster's UUID.
                     example: 10113826-624a-4801-900f-6a5742433411
                 status:
                     $ref: '#/components/schemas/SingleStatus'
                 version:
                     type: string
-                    description: Versão do kubernetes nativa do cluster
+                    description: Native Kubernetes version of the cluster.
                     example: v1.22.9
                 tags:
                     type: array
-                    description: Lista de tags aplicadas ao cluster kubernetes
+                    description: List of tags applied to the Kubernetes cluster.
                     items:
                         type: string
-                        description: Items da lista de tags aplicadas ao cluster kubernetes
-                        example: tag-exemplo
+                        description: Items from the list of tags applied to the Kubernetes
+                            cluster.
+                        example: tag-example
                 description:
                     type: string
-                    description: Descrição do cluster kubernetes
-                    example: Esse é um cluster de exemplo
+                    description: Description of the Kubernetes cluster.
+                    example: This is an example cluster
                 project_id:
                     type: string
-                    description: Identificador único do projeto onde o cluster foi
-                        provisionado
+                    description: Unique identifier of the project where the cluster
+                        was provisioned.
                     example: 0000806e53ec429792a7885e63264411
                 region:
                     type: string
-                    description: Identificador da região em que o cluster kubernetes
-                        está localizado
+                    description: Identifier of the region where the Kubernetes cluster
+                        is located.
                     example: br-ne-1a
                 created_at:
                     type: string
-                    description: Data de criação do cluster kubernetes
+                    description: Creation date of the Kubernetes cluster.
                     example: '2023-03-01T09:00:00Z'
                     format: date-time
                 updated_at:
                     type: string
-                    description: Data da ultima alteração do cluster kubernetes
+                    description: Date of the last modification of the Kubernetes cluster.
                     example: '2023-03-01T09:10:00Z'
                     format: date-time
                 network:
@@ -2297,7 +2311,7 @@ components:
                     $ref: '#/components/schemas/KubeApiServer'
                 node_pools:
                     type: array
-                    description: Conjunto de nodes em um cluster kubernetes
+                    description: Set of nodes in a Kubernetes cluster.
                     items:
                         $ref: '#/components/schemas/NodePoolsResponse'
                 addons:
@@ -2310,46 +2324,66 @@ components:
             - region
         CreateNodePoolRequest:
             type: object
-            description: Objeto da requisição da request do nodepool
+            description: Object of the node pool request
             properties:
                 name:
                     type: string
-                    description: "Nome do node pool. O nome destina-se principalmente\
-                        \ à idempotência, e deve ser exclusivo em um namespace. 0\
-                        \ nome não pode ser alterado.\nO nome deve seguir as seguintes\
-                        \ regras:\n  - deve conter no máximo 63 caracteres\n  - deve\
-                        \ conter apenas caracteres alfanuméricos minúsculos ou '-'\n\
-                        \  - deve começar com um caractere alfabético\n  - deve terminar\
-                        \ com um caractere alfanumérico\n"
-                    example: nodepool-exemplo
+                    description: "Name of the node pool. The name is primarily for\
+                        \ idempotence and must be unique within a namespace. The name\
+                        \ cannot be changed.\nThe name must follow the following rules:\n\
+                        \  - Must contain a maximum of 63 characters\n  - Must contain\
+                        \ only lowercase alphanumeric characters or '-'\n  - Must\
+                        \ start with an alphabetic character\n  - Must end with an\
+                        \ alphanumeric character\n"
+                    example: nodepool-example
                 flavor:
                     type: string
-                    description: "Definição da capacidade de CPU, memória RAM e armazenamento\
-                        \ dos nodes\n<table>\n  <tr>\n    <td>Flavor</td>\n    <td>vCPUs</td>\n\
-                        \    <td>RAM(Gb)</td>\n    <td>Root Disk(GB)</td>\n  </tr>\n\
-                        \  <tr>\n    <td>cloud-k8s.gp1.small</td>\n    <td>2</td>\n\
-                        \    <td>4</td>\n    <td>20</td>\n  </tr>\n  <tr>\n    <td>cloud-k8s.gp1.large</td>\n\
-                        \    <td>8</td>\n    <td>16</td>\n    <td>100</td>\n  </tr>\n\
-                        </table>\n"
+                    description: 'Definition of the CPU, RAM, and storage capacity
+                        of the nodes.
+
+
+                        | Flavor                  | vCPUs | RAM (GB) | Root Disk (GB)
+                        |
+
+                        |-------------------------|-------|----------|----------------|
+
+                        | cloud-k8s.gp1.small     | 2     | 4        | 20             |
+
+                        | cloud-k8s.gp1.medium    | 4     | 8        | 50             |
+
+                        | cloud-k8s.gp1.large     | 8     | 16       | 100            |
+
+                        | cloud-k8s.gp2.small     | 2     | 4        | 300            |
+
+                        | cloud-k8s.gp2.large     | 8     | 32       | 300            |
+
+                        | cloud-k8s.hm1.medium    | 4     | 16       | 50             |
+
+                        '
                     example: cloud-k8s.gp1.small
                     enum:
                     - cloud-k8s.gp1.small
+                    - cloud-k8s.gp1.medium
                     - cloud-k8s.gp1.large
+                    - cloud-k8s.gp2.small
+                    - cloud-k8s.gp2.large
+                    - cloud-k8s.hm1.medium
                 replicas:
                     type: integer
-                    description: Número de réplicas dos nós do nodepool
+                    description: Number of replicas of the nodes in the node pool.
                     example: 3
                     default: 1
                 tags:
                     type: array
-                    description: Lista de tags aplicadas ao nodepool
+                    description: List of tags applied to the node pool.
                     items:
                         type: string
-                        description: Items da lista de tags aplicadas ao nodepool
+                        description: Items from the list of tags applied to the node
+                            pool.
                         example: tag-value1
                 taints:
                     type: array
-                    description: Propriedade de associação de um conjunto se nós
+                    description: Property associating a set of nodes.
                     items:
                         $ref: '#/components/schemas/Taint'
                 auto_scale:
@@ -2360,99 +2394,100 @@ components:
             - replicas
         PatchNodePoolRequest:
             type: object
-            description: Objeto da requisição da request de alteração do nodepool
+            description: Object of the node pool modification request.
             properties:
                 replicas:
                     type: integer
-                    description: Quantidade de réplicas dos nós do nodepool
+                    description: Number of replicas of the nodes in the node pool.
                 auto_scale:
                     $ref: '#/components/schemas/AutoScale'
         KubeApiServer:
             type: object
-            description: Informações sobre o Kubernetes API Server do Cluster
+            description: Information about the Kubernetes API Server of the cluster.
             properties:
                 disable_api_server_fip:
                     type: boolean
-                    description: Habilita ou desabilita o uso do Floating IP no API
-                        Server
+                    description: Enables or disables the use of Floating IP on the
+                        API Server.
                     default: false
                     example: true
                 fixed_ip:
                     type: string
-                    description: IP fixo configurado para o Kubernetes API Server
+                    description: Fixed IP configured for the Kubernetes API Server.
                     example: 172.100.10.1
                 floating_ip:
                     type: string
-                    description: Floating IP criado para o Kubernetes API Server
+                    description: Floating IP created for the Kubernetes API Server.
                     example: 172.100.10.1
                 port:
                     type: integer
-                    description: Porta utilizada pelo Kubernetes API Server
+                    description: Port used by the Kubernetes API Server.
                     example: 6443
         NodePoolsResponse:
             type: object
-            description: Objeto da requisição da response do nodepool
+            description: Object of the node pool response.
             properties:
                 id:
                     type: string
-                    description: Identificador no padrão uuid para identificar o nodepool
+                    description: Node pool's UUID.
                     format: uuid
                     example: 2cc6f625-7d67-4ed2-8c5e-24e5b40b951b
                 name:
                     type: string
-                    description: Nome do node pool
-                    example: nodepool-exemplo
+                    description: Node pool name
+                    example: nodepool-example
                 instance_template:
                     $ref: '#/components/schemas/InstanceTemplate'
                 replicas:
                     type: integer
-                    description: Quantidade de réplicas dos nós do nodepool
+                    description: Number of replicas of the nodes in the node pool.
                     example: 3
                 zone:
                     type: array
-                    description: Zona de disponibilidade para criação do cluster kubernetes
+                    description: Availability zone for creating the Kubernetes cluster.
                     items:
                         type: string
-                        description: Items da lista das zonas de disponibilidade para
-                            criação do cluster kubernetes
+                        description: Items from the list of availability zones for
+                            creating the Kubernetes cluster.
                         example: br-ne-1b
                 tags:
                     type: array
-                    description: Lista de tags aplicadas ao nodepool
+                    description: List of tags applied to the node pool.
                     items:
                         type: string
-                        description: Items da lista de tags aplicadas ao nodepool
-                        example: tag-exemplo
+                        description: Items from the list of tags applied to the node
+                            pool.
+                        example: tag-example
                 labels:
                     type: object
                     additionalProperties:
                         type: string
-                    description: Pares de chave/valor anexados ao objeto e usados
-                        para especificação
+                    description: Key/value pairs attached to the object and used for
+                        specification.
                     example:
-                        key1: valor1
+                        key1: value1
                 taints:
                     type: array
-                    description: Propriedade de associação de um conjunto se nós
+                    description: Property for associating a set of nodes.
                     items:
                         $ref: '#/components/schemas/Taint'
                 securityGroups:
                     type: array
-                    description: Nome do grupo de segurança para definir regras que
-                        permitem tráfego de rede no node pool de workers
+                    description: Name of the security group to define rules allowing
+                        network traffic in the worker node pool.
                     items:
                         type: string
-                        description: Items dos grupos de segurança que definem regras
-                            que permitem tráfego de rede no node pool de workers
+                        description: Items from the security groups defining rules
+                            allowing network traffic in the worker node pool.
                         example: security-group-name
                 created_at:
                     type: string
-                    description: Data de criação do cluster kubernetes
+                    description: Date of creation of the Kubernetes cluster.
                     example: '2023-03-01T09:00:00Z'
                     format: date-time
                 updated_at:
                     type: string
-                    description: Data da última alteração do cluster kubernetes
+                    description: Date of the last change to the Kubernetes cluster.
                     example: '2023-03-01T09:10:00Z'
                     format: date-time
                 auto_scale:
@@ -2471,93 +2506,93 @@ components:
             - status
         ClusterNodePoolsResponse:
             type: object
-            description: Objeto da requisição da response dos nodepools
+            description: Object of the node pool response in the cluster.
             required:
             - results
             properties:
                 results:
                     type: array
-                    description: Lista dos node pools
+                    description: List of node pools.
                     items:
                         $ref: '#/components/schemas/NodePoolsResponse'
         NodesResponse:
             type: object
-            description: Objeto da requisição da response dos nodes
+            description: Object of the node response.
             required:
             - results
             properties:
                 results:
                     type: array
-                    description: Lista dos nodes
+                    description: List of nodes.
                     items:
                         $ref: '#/components/schemas/NodeResponse'
         NodeResponse:
             type: object
-            description: Objeto da requisição da response do node
+            description: Object of the node response request.
             properties:
                 id:
                     type: string
-                    description: Identificador no padrão uuid para identificar o node
+                    description: UUID identifier to uniquely identify the node.
                     format: uuid
                     example: 77b3a951-dc2c-4802-a246-63a3c7f7ecac
                 name:
                     type: string
-                    description: Nome do node
-                    example: node-exemplo
+                    description: Name of the node.
+                    example: node-example
                 namespace:
                     type: string
-                    description: Namespace do node
-                    example: namespace-exemplo
+                    description: Namespace of the node.
+                    example: namespace-example
                 cluster_name:
                     type: string
-                    description: Nome do cluster ao qual o node pertence
-                    example: cluster-exemplo
+                    description: Name of the cluster to which the node belongs.
+                    example: cluster-example
                 nodepool_name:
                     type: string
-                    description: Nome do nodepool ao qual o node pertence
-                    example: nodepool-exemplo
+                    description: Name of the node pool to which the node belongs.
+                    example: nodepool-example
                 created_at:
                     type: string
-                    description: Data de criação do node
+                    description: Creation date of the node.
                     format: date-time
                     example: '2023-03-01T09:00:00Z'
                 annotations:
                     type: object
                     additionalProperties:
                         type: string
-                    description: Pares de chave/valor anexados ao objeto e usados
-                        para especificação
+                    description: Key/value pairs attached to the object and used for
+                        specification.
                     example:
-                        annoattion-key1: valor1
+                        annotation-key1: value1
                 labels:
                     type: object
                     additionalProperties:
                         type: string
-                    description: Pares de chave/valor anexados ao objeto e usados
-                        para especificação
+                    description: Key/value pairs attached to the object and used for
+                        specification.
                     example:
-                        label-key1: valor1
+                        label-key1: value1
                 taints:
                     type: array
-                    description: Propriedade de associação de um conjunto de nós
+                    description: Property for associating a set of nodes.
                     items:
                         $ref: '#/components/schemas/Taint'
                 addresses:
                     type: array
-                    description: Lista de endereços acessíveis ao node
+                    description: List of addresses accessible to the node.
                     items:
                         $ref: '#/components/schemas/NodeAddress'
                 flavor:
                     type: string
-                    description: Nome do flavor
+                    description: Name of the flavor.
                     example: cloud-k8s.gp1.small
                 node_image:
                     type: string
-                    description: Imagem do sistema operacional executada pelo node
+                    description: Operating system image run by the node.
                     example: ubuntu-2004-kube-v1.22.9-v1
                 zone:
                     type: string
-                    description: Identificador da região em que o node está localizado
+                    description: Identifier of the region where the node is located.
                     example: br-ne-1c
                 infrastructure:
                     $ref: '#/components/schemas/NodeInfrastructure'
@@ -2581,25 +2616,25 @@ components:
             - status
         NodeAddress:
             type: object
-            description: Informações para o endereço do node
+            description: Information for the node's address.
             properties:
                 address:
                     type: string
-                    description: O endereço do node
-                    example: address-exemplo
+                    description: The node's address
+                    example: address-example
                 type:
                     type: string
-                    description: 'Tipo de endereço do node, um de Hostname, ExternalIP
-                        ou InternalIP.
+                    description: 'Type of the node''s address, one of Hostname, ExternalIP,
+                        or InternalIP.
 
-                        **HostName** - O nome do host relatado pelo kernel do nó.
-                        Pode ser substituído através do parâmetro kubelet --hostname-override.
+                        **HostName** - The host name reported by the node''s kernel.
+                        Can be overridden through the kubelet parameter --hostname-override.
 
-                        **ExternalIP** - Geralmente, o endereço IP do nó que é roteável
-                        externamente (disponível fora do cluster).
+                        **ExternalIP** - Typically, the node''s IP address that is
+                        externally routable (available outside the cluster).
 
-                        **InternalIP** - Geralmente, o endereço IP do nó que é roteável
-                        somente dentro do cluster.
+                        **InternalIP** - Typically, the node''s IP address that is
+                        routable only within the cluster.
 
                         '
                     example: Hostname
@@ -2608,36 +2643,36 @@ components:
             - address
         NodeInfrastructure:
             type: object
-            description: Informações de infraestrutura do node
+            description: Information about the node's infrastructure.
             properties:
                 architecture:
                     type: string
-                    description: Arquitetura relatada pelo node
+                    description: Architecture reported by the node.
                     example: amd64
                 containerRuntimeVersion:
                     type: string
-                    description: Versão do ContainerRuntime relatada pelo node por
-                        meio da API remota de tempo de execução
+                    description: Version of Container Runtime reported by the node
+                        through the remote runtime API.
                     example: containerd://1.6.2
                 kernelVersion:
                     type: string
-                    description: Versão do kernel relatada pelo node de 'uname -r'
+                    description: Kernel version reported by the node from 'uname -r'.
                     example: 5.4.0-122-generic
                 kubeProxyVersion:
                     type: string
-                    description: Versão do KubeProxy relatada pelo node
+                    description: Version of KubeProxy reported by the node.
                     example: v1.22.9
                 kubeletVersion:
                     type: string
-                    description: Versão do Kubelet relatada pelo node
+                    description: Version of Kubelet reported by the node.
                     example: v1.22.9
                 operatingSystem:
                     type: string
-                    description: Sistema operacional relatado pelo node
+                    description: Operating system reported by the node.
                     example: linux
                 osImage:
                     type: string
-                    description: Imagem do SO relatada pelo node de /etc/os-release
+                    description: OS image reported by the node from /etc/os-release.
                     example: Ubuntu 20.04.4 LTS
                 allocatable:
                     $ref: '#/components/schemas/NodeResources'
@@ -2655,29 +2690,29 @@ components:
             - capacity
         NodeResources:
             type: object
-            description: Informações de recursos do node
+            description: Information about node resources.
             properties:
                 cpu:
                     type: string
-                    description: Quantidade de CPU
+                    description: Number of CPUs.
                     example: '2'
                 ephemeral_storage:
                     type: string
-                    description: Quantidade de armazenamento efêmero
+                    description: Amount of ephemeral storage.
                     example: '18859814062'
                 hugepages_1Gi:
                     type: string
-                    description: Alocação e consumo de páginas
+                    description: Allocation and consumption of 1Gi pages.
                 hugepages_2Mi:
                     type: string
-                    description: Alocação e consumo de páginas
+                    description: Allocation and consumption of 2Mi pages.
                 memory:
                     type: string
-                    description: Quantidade de mémoria
+                    description: Amount of memory.
                     example: 3923640Ki
                 pods:
                     type: string
-                    description: Quantidade de pods
+                    description: Number of pods.
                     example: '110'
             required:
             - cpu
@@ -2688,54 +2723,85 @@ components:
             - pods
         Status:
             type: object
-            description: Detalhes a respeito do status do node pool ou control plane
+            description: 'Details about the status of the node pool or control plane.
+
+                '
             required:
             - state
             - messages
             properties:
                 state:
                     type: string
-                    description: "Estado atual do node pool ou control plane.\n<table>\n\
-                        \  <tr>\n    <td>Node pool</td>\n    <td>ScalingUp, ScalingDown,\
-                        \ Running, Failed, Unknown</td>\n  </tr>\n  <tr>\n    <td>Control\
-                        \ Plane</td>\n    <td>ScalingUp, ScalingDown, Running, Failed,\
-                        \ Unknown</td>\n  </tr>\n</table>\n"
+                    description: 'Current state of the node pool or control plane.
+
+
+                        | Component      | Possible States                     |
+
+                        |-----------------|-------------------------------------|
+
+                        | Node pool       | ScalingUp, ScalingDown, Running, Failed,
+                        Unknown |
+
+                        | Control Plane   | ScalingUp, ScalingDown, Running, Failed,
+                        Unknown |
+
+                        '
                     example: Pending
                 messages:
                     type: array
-                    description: Mensagem detalhada sobre o status do node pool ou
-                        control plane
+                    description: 'Detailed message about the status of the node pool
+                        or control plane.
+
+                        '
                     items:
                         type: string
-                        description: Mensagens retornadas pelos control planes ou
-                            nodepools
+                        description: 'Messages returned by the control planes or node
+                            pools.
+
+                            '
                         example: Ready
         SingleStatus:
             type: object
-            description: Detalhes a respeito do status do cluster ou node
+            description: 'Details about the status of the Kubernetes cluster or node.
+
+                '
             required:
             - state
             - message
             properties:
                 state:
                     type: string
-                    description: "Estado atual do cluster ou node.\n<table>\n  <tr>\n\
-                        \    <td>Cluster</td>\n    <td>Pending, Provisioning, Running,\
-                        \ Provisioned, Terminating, Deleting, Failed</td>\n  </tr>\n\
-                        \  <tr>\n    <td>Node</td>\n    <td>Pending, Provisioning,\
-                        \ Provisioned, Running, Deleting, Failed, Unknown</td>\n \
-                        \ </tr>\n</table>\n"
+                    description: 'Current state of the cluster or node.
+
+
+                        | Component | Possible States                              |
+
+                        |-----------|---------------------------------------------|
+
+                        | Cluster   | Pending, Provisioning, Running, Provisioned,
+                        Terminating, Deleting, Failed |
+
+                        | Node      | Pending, Provisioning, Provisioned, Running,
+                        Deleting, Failed, Unknown   |
+
+                        '
                     example: Pending
                 message:
                     type: string
-                    description: Mensagem detalhada sobre o status do cluster ou node
+                    description: 'Detailed message about the status of the cluster
+                        or node.
+
+                        '
                     example: Ready
         Error:
             type: object
             required:
             - id
             - message
-            description: Detalhes a respeito do erro do cluster e/ou node pool
+            description: 'Details about the error in the Kubernetes cluster and/or
+                node pool.
+
+                '
             properties:
                 message:
                     title: Message
@@ -2748,26 +2814,32 @@ components:
                 slug: Unauthorized
         NetworkResponse:
             type: object
-            description: Objeto da requisição da response do recurso de rede do cluster
-                kubernetes
+            description: 'Response object for the Kubernetes cluster network resource
+                request.
+
+                '
             properties:
                 uuid:
                     type: string
-                    description: Identificador no padrão uuid para identificar o nodepool
+                    description: Nodepool's UUID.
                     example: 7c24eb01-9423-4f09-a2d2-99ba5df01411
                 cidr:
                     type: string
-                    description: Endereço de IP disponíveis que serão utilizados para
-                        provisionamento dos nós do cluster
+                    description: 'Available IP addresses used for provisioning nodes
+                        in the cluster.
+
+                        '
                     example: 00.0.0.0/00
                 name:
                     type: string
-                    description: Nome do node pool
-                    example: k8s-clusterapi-cluster-exemplo
+                    description: Name of the node pool.
+                    example: k8s-clusterapi-cluster-example
                 subnet_id:
                     type: string
-                    description: Identificador da subnet interna onde o cluster será
-                        provisionado
+                    description: 'Identifier of the internal subnet where the cluster
+                        will be provisioned.
+
+                        '
                     example: c5f750a0-a032-477e-a23a-bcffab8b0707
             required:
             - uuid
@@ -2776,45 +2848,57 @@ components:
             - subnet_id
         Addons:
             type: object
-            description: Objeto dos complementos que estendem a funcionalidade do
-                cluster kubernetes
+            description: 'Object representing addons that extend the functionality
+                of the Kubernetes cluster.
+
+                '
             properties:
                 loadbalance:
                     type: string
-                    description: Flag correspondente se o serviço de load balancer
-                        está habilitado/desabilitado no cluster
+                    description: 'Flag indicating whether the load balancer service
+                        is enabled/disabled in the cluster.
+
+                        '
                 volume:
                     type: string
-                    description: Flag correspondente se o serviço de storage class
-                        está configurado por padrão
+                    description: 'Flag indicating whether the storage class service
+                        is configured by default.
+
+                        '
                 secrets:
                     type: string
-                    description: Secret nativa do kubernetes a ser incluída ao cluster
-                        durante o provisionamento
+                    description: 'Native Kubernetes secret to be included in the cluster
+                        during provisioning.
+
+                        '
             required:
             - loadbalance
             - volume
             - secrets
         AutoScale:
             type: object
-            description: Objeto que especifica as propriedades para atualização de
-                recursos de carga de trabalho no cluster Kubernetes.
+            description: 'Object specifying properties for updating workload resources
+                in the Kubernetes cluster.
+
+                '
             properties:
                 min_replicas:
                     type: integer
-                    description: Quantidade mínima de réplicas para o autoscaling.
-                        Se não for informado um valor, ou se for igual ou menor que
-                        zero, o valor do autoscaler será assumido com base no campo
-                        "réplicas".
+                    description: 'Minimum number of replicas for autoscaling. If not
+                        provided, or if the value is equal to or less than zero, the
+                        autoscaler value will be assumed based on the "replicas" field.
+
+                        '
                     example: 2
                     minimum: 1
                     default: 1
                 max_replicas:
                     type: integer
-                    description: Quantidade máxima de réplicas para o autoscaling.
-                        Se não for informado um valor, ou se for igual ou menor que
-                        zero, o valor do autoscaler será assumido com base no campo
-                        "réplicas".
+                    description: 'Maximum number of replicas for autoscaling. If not
+                        provided, or if the value is equal to or less than zero, the
+                        autoscaler value will be assumed based on the "replicas" field.
+
+                        '
                     example: 5
                     minimum: 1
                     default: 1
@@ -2826,22 +2910,29 @@ components:
             properties:
                 key:
                     type: string
-                    description: A chave taint a ser aplicada ao node
-                    example: exemplo-key
+                    description: Key of the taint to be applied to the node.
+                    example: example-key
                 value:
                     type: string
-                    description: O valor correspondente a chave taint.
-                    example: valor1
+                    description: Value corresponding to the taint key.
+                    example: value1
                 effect:
                     type: string
-                    description: "O efeito do taint em pods que não toleram o taint.\n\
-                        **NoSchedule** - Não permitir que novos pods sejam agendados\
-                        \ no nó, a menos que eles tolerem a taint, mas permitir que\
-                        \ todos os pods já em execução continuem em execução.\n**PreferNoSchedule**\
-                        \ - Parecido com o NoSchedule, mas tenta não agendar novos\
-                        \ pods no nó, em vez de proibir totalmente o agendamento de\
-                        \ novos pods no nó\n**NoExecute** - Remova todos os pods já\
-                        \ em execução que não tolerem o taint.  \n"
+                    description: 'The effect of the taint on pods that do not tolerate
+                        the taint.
+
+                        - **NoSchedule**: Prevents new pods from being scheduled on
+                        the node, unless they tolerate the taint. Allows all existing
+                        pods to continue running.
+
+                        - **PreferNoSchedule**: Similar to NoSchedule, but attempts
+                        not to schedule new pods on the node, rather than completely
+                        prohibiting new pod scheduling on the node.
+
+                        - **NoExecute**: Removes all already running pods that do
+                        not tolerate the taint.
+
+                        '
                     example: NoSchedule
                     enum:
                     - NoSchedule
@@ -2853,22 +2944,23 @@ components:
             - effect
         InstanceTemplate:
             type: object
-            description: Template do objeto de instância usado para criar instâncias
-                de máquina e grupos gerenciados de instâncias.
+            description: 'Template for the instance object used to create machine
+                instances and managed instance groups.
+
+                '
             properties:
                 flavor:
                     $ref: '#/components/schemas/Flavor'
                 node_image:
                     type: string
-                    description: Imagem do sistema operacional que é executada em
-                        cada nó
+                    description: Operating system image running on each node.
                     example: ubuntu-2004-kube-v1.22.9-v1
                 disk_size:
                     type: integer
-                    description: Tamanho do disco anexado a cada nó
+                    description: Size of the disk attached to each node.
                 disk_type:
                     type: string
-                    description: Tipo de disco anexado a cada nó
+                    description: Type of disk attached to each node.
             required:
             - flavor
             - node_image
@@ -2876,31 +2968,30 @@ components:
             - disk_type
         Flavor:
             type: object
-            description: Definição da capacidade de CPU, memória RAM e armazenamento
-                dos nodes
+            description: Definition of CPU capacity, RAM, and storage for nodes.
             properties:
                 name:
                     type: string
-                    description: Nome do Flavor.
+                    description: Name of the Flavor.
                     example: cloud-k8s.gp1.small
                 id:
                     type: string
-                    description: Identificador exclusivo do Flavor.
+                    description: Unique identifier for the Flavor.
                     example: c777eaa7-d67c-46f4-9e4f-232bc9b67b58
                     default: ''
                 vcpu:
                     type: integer
-                    description: Quantidade de vCPUs disponiveis.
+                    description: Number of available vCPUs.
                     example: 2
                     default: 0
                 ram:
                     type: integer
-                    description: Quantidade de memória RAM, medida em MB.
+                    description: Amount of RAM, measured in MB.
                     example: 4096
                     default: 0
                 size:
                     type: integer
-                    description: Quantidade de disco, medido em GB.
+                    description: Amount of disk space, measured in GB.
                     example: 20
                     default: 0
             required:
@@ -2911,36 +3002,35 @@ components:
             - size
         FlavorWithSku:
             type: object
-            description: Definição da capacidade de CPU, memória RAM e armazenamento
-                dos nodes
+            description: Definition of CPU capacity, RAM, and storage for nodes.
             properties:
                 name:
                     type: string
-                    description: Nome do Flavor.
+                    description: Name of the Flavor.
                     example: cloud-k8s.gp1.small
                 id:
                     type: string
-                    description: Identificador exclusivo do Flavor.
+                    description: Unique identifier for the Flavor.
                     example: c777eaa7-d67c-46f4-9e4f-232bc9b67b58
                     default: ''
                 vcpu:
                     type: integer
-                    description: Quantidade de vCPUs disponiveis.
+                    description: Number of available vCPUs.
                     example: 2
                     default: 0
                 ram:
                     type: integer
-                    description: Quantidade de memória RAM, medida em MB.
+                    description: Amount of RAM, measured in MB.
                     example: 4096
                     default: 0
                 size:
                     type: integer
-                    description: Quantidade de disco, medido em GB.
+                    description: Amount of disk space, measured in GB.
                     example: 20
                     default: 0
                 sku:
                     type: string
-                    description: SKU referente ao flavor
+                    description: SKU associated with the Flavor.
                     example: sku-1234
             required:
             - name
@@ -2951,7 +3041,7 @@ components:
             - sku
         FlavorsResponse:
             type: object
-            description: Objeto de resposta da requisição do flavor
+            description: Response object for the Flavor request.
             required:
             - results
             properties:
@@ -2961,21 +3051,21 @@ components:
                         $ref: '#/components/schemas/FlavorsAvailable'
         FlavorsAvailable:
             type: object
-            description: Listas de flavors disponibilidas pela aplicação
+            description: Lists of available flavors provided by the application.
             properties:
                 bastion:
                     type: array
-                    description: Lista de flavors disponiveis para a Bastion
+                    description: Lists of available flavors for the Bastion.
                     items:
                         $ref: '#/components/schemas/FlavorWithSku'
                 nodepool:
                     type: array
-                    description: Lista de flavors disponiveis para os Node Pools
+                    description: Lists of available flavors for the Node Pools.
                     items:
                         $ref: '#/components/schemas/FlavorWithSku'
                 controlplane:
                     type: array
-                    description: Lista de flavors disponiveis para o Controlplane
+                    description: Lists of available flavors for the Control Plane.
                     items:
                         $ref: '#/components/schemas/FlavorWithSku'
             required:
@@ -2984,26 +3074,26 @@ components:
             - controlplane
         VersionsResponse:
             type: object
-            description: Objeto de resposta da requisição da Versão
+            description: Response object for the Version request.
             required:
             - results
             properties:
                 results:
                     type: array
-                    description: Lista de versões para o cluster kubernetes
+                    description: Lists of Kubernetes cluster versions.
                     items:
                         $ref: '#/components/schemas/Version'
         Version:
             type: object
-            description: Objeto da versão kubernetes
+            description: Object representing a Kubernetes version.
             properties:
                 version:
                     type: string
-                    description: Versão kubernetes
+                    description: Kubernetes version.
                     example: v1.22.9
                 deprecated:
                     type: boolean
-                    description: Indica se a versão está obsoleta
+                    description: Indicates whether the version is deprecated.
                     example: false
             required:
             - version
@@ -3019,21 +3109,19 @@ components:
                     authorizationUrl: https://idp-maas-sandbox.ipet.sh/auth/realms/master/protocol/openid-connect/auth
                     tokenUrl: https://idp-maas-sandbox.ipet.sh/auth/realms/master/protocol/openid-connect/token
                     scopes:
-                        mke.read: Ler informações de recursos IaaS
-                        mke.write: Escrever informações de recursos IaaS
+                        mke.read: Read information about IaaS resources
+                        mke.write: Write information about IaaS resources
             type: oauth2
-            description: OAuth2 via IDPA
+            description: "OAuth2 by IDPA (Identity Provider Authentication)  \n"
 tags:
 -   name: cluster
-    description: Rotas relacionadas a api de cluster.
+    description: Endpoints related to the Cluster API.
 -   name: nodepool
-    description: Rotas relacionadas a api de Nodepool dentro da api de cluster.
+    description: Endpoints related to the Nodepool API within the Cluster API.
 -   name: info
-    description: Rotas relacionadas a informações de configurações do mke-api.
+    description: Endpoints related to configuration information for the MKE API.
 -   name: flavor
-    description: Rotas relacionadas a informações de configurações dos flavors do
-        openstack.
+    description: Endpoints related to configuration information for OpenStack flavors.
 -   name: version
-    description: Rotas relacionadas a informações de configurações das versões de
-        kubernetes.
+    description: Endpoints related to configuration information for Kubernetes versions.
 $id: https://mke.br-ne-1.com/docs/openapi-with-snippets.json

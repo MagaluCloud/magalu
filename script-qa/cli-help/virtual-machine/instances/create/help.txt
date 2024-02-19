@@ -9,6 +9,7 @@ Examples:
 Flags:
       --availability-zone string              Availability Zone (between 1 and 255 characters)
       --cli.list-links enum[=table]           List all available links for this command (one of "json", "table" or "yaml")
+      --cli.watch                             Wait until the operation is completed by calling the 'get' link and waiting until termination. Akin to '! get -w'
   -h, --help                                  help for create
       --image object                          Image (at least one of: single property: id or single property: name)
                                               Use --image=help for more details (required)

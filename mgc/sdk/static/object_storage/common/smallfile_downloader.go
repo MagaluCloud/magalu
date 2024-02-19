@@ -2,9 +2,11 @@ package common
 
 import (
 	"context"
+	"fmt"
 	"os"
 	"path"
 
+	"magalu.cloud/core/progress_report"
 	mgcSchemaPkg "magalu.cloud/core/schema"
 	"magalu.cloud/core/utils"
 )
@@ -32,6 +34,12 @@ func (u *smallFileDownloader) Download(ctx context.Context) error {
 	if err != nil {
 		return err
 	}
+
+	progressReporter := progress_report.NewBytesReporter(ctx, fmt.Sprintf("Downloading %q", u.src), uint64(resp.ContentLength))
+	progressReporter.Start()
+	defer progressReporter.End()
+
+	resp.Body = progress_report.NewReporterReader(resp.Body, progressReporter.Report)
 
 	dir := path.Dir(u.dst.String())
 	if len(dir) != 0 {

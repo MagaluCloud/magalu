@@ -14,7 +14,7 @@ var getCopy = utils.NewLazyLoader[core.Executor](func() core.Executor {
 	executor := core.NewStaticExecute(
 		core.DescriptorSpec{
 			Name:        "copy",
-			Description: "Copy an object from a bucket to another",
+			Description: "Copy an object from a bucket to another bucket",
 		},
 		copy,
 	)

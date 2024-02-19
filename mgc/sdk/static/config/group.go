@@ -19,6 +19,7 @@ Config values may also be loaded via Environment Variables. Any Config available
 			return []core.Descriptor{
 				getList(),
 				getGet(),
+				getGetSchema(),
 				getSet(),
 				getDelete(),
 			}

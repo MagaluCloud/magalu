@@ -6,7 +6,6 @@ import (
 	"math/big"
 
 	"slices"
-	"strings"
 
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -58,7 +57,27 @@ func (m resAttrInfoMap) get(name tfName) (*resAttrInfo, bool) {
 }
 
 type resAttrInfoTree struct {
-	input  resAttrInfoMap
+	createInput  resAttrInfoMap
+	createOutput resAttrInfoMap
+
+	// No need for 'read' input, as it may have extra unneeded parameters (like 'expand', for some products)
+	// which would taint the resource attributes. Parameters absolutely needed for Resource ID will be
+	// present in the 'create' output and 'update' input
+	readOutput resAttrInfoMap
+
+	updateInput resAttrInfoMap
+	// No need for 'update' output, some resources don't have them and they'd be the same
+	// as the 'read' output anyway (or be empty)
+
+	deleteInput resAttrInfoMap
+	// No need for 'delete' output (basically always empty)
+
+	propertySetterInputs  map[mgcName]map[*core.Schema]resAttrInfoMap
+	propertySetterOutputs map[mgcName]map[*core.Schema]resAttrInfoMap
+
+	// Input is the aggregate of all input attributes without duplicates
+	input resAttrInfoMap
+	// Output is the aggregate of all output attributes without duplicates
 	output resAttrInfoMap
 }
 
@@ -75,6 +94,20 @@ func (t resAttrInfoTree) getTFInputFirst(name tfName) (*resAttrInfo, bool) {
 type resAttrInfoGenMetadata struct {
 	schema    *mgcSdk.Schema
 	modifiers func(ctx context.Context, mgcSchema *mgcSdk.Schema, mgcName mgcName) attributeModifiers
+}
+
+type resAttrInfoTreeGenMetadata struct {
+	createInput  resAttrInfoGenMetadata
+	createOutput resAttrInfoGenMetadata
+
+	readOutput resAttrInfoGenMetadata
+
+	updateInput resAttrInfoGenMetadata
+
+	deleteInput resAttrInfoGenMetadata
+
+	propertySetterInputs  map[mgcName][]resAttrInfoGenMetadata
+	propertySetterOutputs map[mgcName][]resAttrInfoGenMetadata
 }
 
 type attributeModifiers struct {
@@ -103,17 +136,6 @@ func addMgcSchemaAttributes(
 		tflog.SubsystemDebug(ctx, schemaGenSubsystem, fmt.Sprintf("adding attribute %q", propName))
 		mgcName := mgcName(propName)
 		propSchema := (*mgcSchemaPkg.Schema)(propSchemaRef.Value)
-
-		if ca, ok := dst[mgcName]; ok {
-			if err := mgcSchemaPkg.CompareJsonSchemas(ca.mgcSchema, propSchema); err != nil {
-				// Ignore update value in favor of create value (This is probably a bug with the API)
-				tflog.SubsystemError(ctx, schemaGenSubsystem, fmt.Sprintf("ignoring DIFFERENT attribute %q:\nOLD=%+v\nNEW=%+v\nERROR=%s\n", propName, ca.mgcSchema, propSchema, err.Error()))
-				continue
-			} else {
-				tflog.SubsystemDebug(ctx, schemaGenSubsystem, fmt.Sprintf("ignoring already computed attribute %q ", propName))
-				continue
-			}
-		}
 
 		modifiers := getModifiers(ctx, mgcSchema, mgcName)
 		if hasSchemaBeenPromoted(propSchema) {
@@ -177,36 +199,153 @@ func getResultModifiers(ctx context.Context, mgcSchema *mgcSdk.Schema, mgcName m
 	}
 }
 
-func generateResAttrInfoTree(ctx context.Context, resName tfName, inputMetadatas, outputMetadatas []resAttrInfoGenMetadata) (resAttrInfoTree, error) {
-	input, d := generateResAttrInfoMap(ctx, resName, inputMetadatas)
-	if d.HasError() {
+func generateResAttrInfoTree(ctx context.Context, resName tfName, treeMetadata resAttrInfoTreeGenMetadata) (resAttrInfoTree, error) {
+	diagnostics := Diagnostics{}
+	tree := resAttrInfoTree{}
+	var d Diagnostics
+
+	tree.createInput, d = generateResAttrInfoMap(ctx, resName, treeMetadata.createInput)
+	if diagnostics.AppendCheckError(d...) {
+		return resAttrInfoTree{}, fmt.Errorf("errors when generating resource create input attributes: %#v", d.Errors())
+	}
+
+	tree.updateInput, d = generateResAttrInfoMap(ctx, resName, treeMetadata.updateInput)
+	if diagnostics.AppendCheckError(d...) {
+		return resAttrInfoTree{}, fmt.Errorf("errors when generating resource update input attributes: %#v", d.Errors())
+	}
+
+	tree.deleteInput, d = generateResAttrInfoMap(ctx, resName, treeMetadata.deleteInput)
+	if diagnostics.AppendCheckError(d...) {
+		return resAttrInfoTree{}, fmt.Errorf("errors when generating resource delete input attributes: %#v", d.Errors())
+	}
+
+	tree.createOutput, d = generateResAttrInfoMap(ctx, resName, treeMetadata.createOutput)
+	if diagnostics.AppendCheckError(d...) {
+		return resAttrInfoTree{}, fmt.Errorf("errors when generating resource create output attributes: %#v", d.Errors())
+	}
+
+	tree.readOutput, d = generateResAttrInfoMap(ctx, resName, treeMetadata.readOutput)
+	if diagnostics.AppendCheckError(d...) {
+		return resAttrInfoTree{}, fmt.Errorf("errors when generating resource read output attributes: %#v", d.Errors())
+	}
+
+	tree.propertySetterInputs, d = generatePropertySetterResAttrInfo(ctx, resName, treeMetadata.propertySetterInputs)
+	if diagnostics.AppendCheckError(d...) {
+		return resAttrInfoTree{}, fmt.Errorf("errors when generating resource property setter input attributes: %#v", d.Errors())
+	}
+
+	tree.propertySetterOutputs, d = generatePropertySetterResAttrInfo(ctx, resName, treeMetadata.propertySetterOutputs)
+	if diagnostics.AppendCheckError(d...) {
+		return resAttrInfoTree{}, fmt.Errorf("errors when generating resource property setter output attributes: %#v", d.Errors())
+	}
+
+	inputs := []resAttrInfoMap{tree.createInput, tree.updateInput, tree.deleteInput}
+	for _, m := range tree.propertySetterInputs {
+		for _, v := range m {
+			inputs = append(inputs, v)
+		}
+	}
+	tree.input, d = generateAggregateResAttrInfoMap(ctx, resName, "input", inputs)
+	if diagnostics.AppendCheckError(d...) {
 		return resAttrInfoTree{}, fmt.Errorf("errors when generating resource input attributes: %#v", d.Errors())
 	}
-	output, d := generateResAttrInfoMap(ctx, resName, outputMetadatas)
-	if d.HasError() {
+
+	outputs := []resAttrInfoMap{tree.createOutput, tree.readOutput}
+	for _, m := range tree.propertySetterOutputs {
+		for _, v := range m {
+			inputs = append(inputs, v)
+		}
+	}
+	tree.output, d = generateAggregateResAttrInfoMap(ctx, resName, "output", outputs)
+	if diagnostics.AppendCheckError(d...) {
 		return resAttrInfoTree{}, fmt.Errorf("errors when generating resource output attributes: %#v", d.Errors())
 	}
 
-	return resAttrInfoTree{input: input, output: output}, nil
+	return tree, nil
 }
 
-func generateResAttrInfoMap(ctx context.Context, resName tfName, metadatas []resAttrInfoGenMetadata) (resAttrInfoMap, Diagnostics) {
+func generateAggregateResAttrInfoMap(ctx context.Context, resName tfName, attrType string, sources []resAttrInfoMap) (resAttrInfoMap, Diagnostics) {
 	ctx = tflog.SubsystemSetField(ctx, schemaGenSubsystem, resourceNameField, resName)
-	tflog.SubsystemDebug(ctx, schemaGenSubsystem, "reading input attributes")
+	tflog.SubsystemDebug(ctx, schemaGenSubsystem, fmt.Sprintf("generating aggregate %s attributes", attrType))
 	diagnostics := Diagnostics{}
 
-	attrInfoMap := resAttrInfoMap{}
-	for _, metadata := range metadatas {
-		err := addMgcSchemaAttributes(attrInfoMap, metadata.schema, metadata.modifiers, ctx)
-		if err != nil {
-			return nil, diagnostics.AppendErrorReturn(
-				"could not create TF input attributes",
-				err.Error(),
-			)
+	aggregateAttrInfoMap := resAttrInfoMap{}
+	for _, attrInfoMap := range sources {
+		for attrMgcName, attrInfo := range attrInfoMap {
+			if current, ok := aggregateAttrInfoMap[attrMgcName]; ok {
+				if err := mgcSchemaPkg.CompareJsonSchemas(current.mgcSchema, attrInfo.mgcSchema); err != nil && !isSubSchema(current.mgcSchema, attrInfo.mgcSchema) {
+					return aggregateAttrInfoMap, diagnostics.AppendErrorReturn(
+						fmt.Sprintf("Cannot generate aggregate CRUD attributes for resource %q", resName),
+						fmt.Sprintf(
+							"The same attribute in different CRUD operations has a different schema and is NOT a sub-schema. Diff: %v",
+							err,
+						),
+					)
+				}
+				continue
+			}
+
+			aggregateAttrInfoMap[attrMgcName] = attrInfo
+
 		}
 	}
 
+	return aggregateAttrInfoMap, diagnostics
+}
+
+func generateResAttrInfoMap(ctx context.Context, resName tfName, metadata resAttrInfoGenMetadata) (resAttrInfoMap, Diagnostics) {
+	if metadata.schema == nil || metadata.modifiers == nil {
+		return nil, nil
+	}
+
+	if metadata.schema.IsEmpty() {
+		return nil, nil
+	}
+
+	ctx = tflog.SubsystemSetField(ctx, schemaGenSubsystem, resourceNameField, resName)
+	tflog.SubsystemDebug(ctx, schemaGenSubsystem, "generating attr info map")
+	diagnostics := Diagnostics{}
+
+	attrInfoMap := resAttrInfoMap{}
+	err := addMgcSchemaAttributes(attrInfoMap, metadata.schema, metadata.modifiers, ctx)
+	if err != nil {
+		return nil, diagnostics.AppendErrorReturn(
+			"could not create TF attributes",
+			err.Error(),
+		)
+	}
+
 	return attrInfoMap, diagnostics
+}
+
+func generatePropertySetterResAttrInfo(
+	ctx context.Context,
+	resName tfName,
+	metadatas map[mgcName][]resAttrInfoGenMetadata,
+) (map[mgcName]map[*core.Schema]resAttrInfoMap, Diagnostics) {
+	diagnostics := Diagnostics{}
+	result := map[mgcName]map[*core.Schema]resAttrInfoMap{}
+
+	for propName, propMetadatas := range metadatas {
+		for _, metadata := range propMetadatas {
+			attr, d := generateResAttrInfoMap(ctx, resName, metadata)
+			if diagnostics.AppendCheckError(d...) {
+				return nil, diagnostics
+			}
+
+			if attr == nil {
+				continue
+			}
+
+			if result[propName] == nil {
+				result[propName] = map[*core.Schema]resAttrInfoMap{}
+			}
+
+			result[propName][metadata.schema] = attr
+		}
+	}
+
+	return result, diagnostics
 }
 
 func generateTFSchema(ctx context.Context, name tfName, description string, attrInfoTree resAttrInfoTree) schema.Schema {
@@ -233,7 +372,7 @@ func generateTFSchema(ctx context.Context, name tfName, description string, attr
 }
 
 func generateTFAttributes(ctx context.Context, attrInfoTree resAttrInfoTree) map[tfName]schema.Attribute {
-	tflog.SubsystemInfo(ctx, schemaGenSubsystem, "reading input attributes")
+	tflog.SubsystemInfo(ctx, schemaGenSubsystem, "generating TF schema from input and output attributes in attr tree")
 
 	tfAttributes := map[tfName]schema.Attribute{}
 	tflog.SubsystemInfo(ctx, schemaGenSubsystem, "generating attributes using input")
@@ -743,21 +882,6 @@ func tfAttrValueFromMgcSchema(ctx context.Context, s *mgcSdk.Schema, attrInfo *r
 
 func (n mgcName) asTFName() tfName {
 	return tfName(strcase.SnakeCase(string(n)))
-}
-
-func (n mgcName) tfNameOverride(r *MgcResource, s *mgcSdk.Schema) tfName {
-	prefix := r.resMgcName.singular() + "_"
-
-	target, found := strings.CutPrefix(string(n), string(prefix))
-	if !found {
-		return ""
-	}
-
-	if _, ok := r.read.ResultSchema().Properties[string(target)]; ok {
-		return mgcName(target).asTFName()
-	}
-
-	return ""
 }
 
 func (n mgcName) singular() mgcName {

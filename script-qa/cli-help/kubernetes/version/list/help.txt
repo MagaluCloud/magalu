@@ -1,4 +1,4 @@
-Lista todas as versões de kubernetes disponiveis
+Lists all available Kubernetes versions.
 
 Usage:
   ./cli kubernetes version list [flags]

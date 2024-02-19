@@ -15,10 +15,12 @@ import (
 	"time"
 
 	"github.com/pkg/browser"
+	"github.com/skip2/go-qrcode"
 	"go.uber.org/zap"
 	"magalu.cloud/core"
 	"magalu.cloud/core/auth"
 	mgcAuthPkg "magalu.cloud/core/auth"
+	mgcHttpPkg "magalu.cloud/core/http"
 	"magalu.cloud/core/utils"
 	mgcAuthScope "magalu.cloud/sdk/static/auth/scopes"
 )
@@ -35,6 +37,7 @@ type loginParameters struct {
 	// Ref: https://github.com/invopop/jsonschema/issues/127
 	Scopes auth.Scopes `json:"scopes,omitempty" jsonschema:"description=All desired scopes for the resulting access token"`
 	Show   bool        `json:"show,omitempty" jsonschema:"description=Show the access token after the login completes"`
+	QRcode bool        `json:"qrcode,omitempty" jsonschema:"description=Generate a qrcode for the login URL,default=false"`
 }
 
 type loginResult struct {
@@ -69,7 +72,11 @@ about a successful login, use the '--show' flag when logging in`,
 		func(ctx context.Context, parameters loginParameters, _ struct{}) (output *loginResult, err error) {
 			auth := mgcAuthPkg.FromContext(ctx)
 			if auth == nil {
-				return nil, fmt.Errorf("unable to retrieve authentication configuration")
+				return nil, fmt.Errorf("programming error: unable to retrieve authentication configuration")
+			}
+			httpClient := mgcHttpPkg.ClientFromContext(ctx)
+			if httpClient == nil {
+				return nil, fmt.Errorf("programming error: unable to retrieve http client configuration")
 			}
 
 			resultChan, cancel, err := startCallbackServer(ctx, auth)
@@ -103,7 +110,23 @@ about a successful login, use the '--show' flag when logging in`,
 
 			loginLogger().Infow("opening browser", "codeUrl", codeUrl)
 			if err := browser.OpenURL(codeUrl.String()); err != nil {
-				return nil, fmt.Errorf("could not open browser, please open it manually. %w", err)
+				loginLogger().Infow("Cant't open browser. Logging in a headless environment")
+				fmt.Println("Could not open browser, please open it manually: ")
+				if parameters.QRcode {
+					qrCode, err := qrcode.New(codeUrl.String(), qrcode.Low)
+					if err != nil {
+						return nil, err
+					}
+					qrCodeString := qrCode.ToSmallString(false)
+					fmt.Println(qrCodeString)
+
+				} else {
+					fmt.Print(codeUrl.String() + "\n\n")
+				}
+				err := headlessLogin(ctx, auth, resultChan)
+				if err != nil {
+					return nil, err
+				}
 			}
 
 			loginLogger().Infow("waiting authentication result", "redirectUri", auth.RedirectUri())
@@ -112,7 +135,7 @@ about a successful login, use the '--show' flag when logging in`,
 				return nil, result.err
 			}
 
-			currentTenant, err := auth.CurrentTenant(ctx)
+			currentTenant, err := auth.CurrentTenant(ctx, &httpClient.Client)
 			if err != nil {
 				return nil, err
 			}
@@ -286,4 +309,30 @@ func showErrorPage(w http.ResponseWriter, err error, status int) {
 	w.WriteHeader(status)
 	w.Header().Set("Content-Type", "text/plain")
 	fmt.Fprintf(w, "Error: %s", err.Error())
+}
+
+func headlessLogin(ctx context.Context, auth *auth.Auth, resultChan chan *authResult) error {
+	var responseUrl string
+	fmt.Println("Enter the response URL:")
+	fmt.Scanln(&responseUrl)
+
+	url, err := url.Parse(responseUrl)
+	if err != nil {
+		return err
+	}
+
+	authCode := url.Query().Get("code")
+	if authCode == "" {
+		return fmt.Errorf("Invalid response URL!")
+	}
+
+	err = auth.RequestAuthTokenWithAuthorizationCode(ctx, authCode)
+	if err != nil {
+		return err
+	}
+
+	token, _ := auth.AccessToken(ctx)
+	temp := &authResult{value: token}
+	resultChan <- temp
+	return nil
 }

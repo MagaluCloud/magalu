@@ -10,7 +10,7 @@ Product catalog:
   block-storage   Block Storage API Product Documentation
   config          Manage Configuration values
   dbaas           DBaaS API Product.
-  kubernetes      APIs referentes ao produto de kubernetes
+  kubernetes      APIs related to the Kubernetes product.
   network         APIs referentes ao produto de Network
   object-storage  Operations for Object Storage API
   profile         Profile related commands

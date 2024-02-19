@@ -4,7 +4,7 @@ import (
 	"io"
 )
 
-type ReportRead func(n int, err error)
+type ReportRead func(n uint64, err error)
 
 type reporterReader struct {
 	parent         io.Reader
@@ -28,7 +28,7 @@ func (pr *reporterReader) Unwrap() io.Reader {
 
 func (pr *reporterReader) Read(p []byte) (n int, err error) {
 	n, err = pr.parent.Read(p)
-	pr.reportProgress(n, err)
+	pr.reportProgress(uint64(n), err)
 	return
 }
 

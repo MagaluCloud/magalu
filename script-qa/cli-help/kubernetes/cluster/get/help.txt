@@ -1,4 +1,4 @@
-Lista as informações de um cluster
+Lists detailed cluster information by cluster_uuid.
 
 Usage:
   ./cli kubernetes cluster get [id] [flags]
@@ -6,7 +6,7 @@ Usage:
 Flags:
       --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
   -h, --help                          help for get
-      --id uuid                       Identificador no padrão uuid para identificar o cluster (required)
+      --id uuid                       Cluster's UUID. (required)
   -v, --version                       version for get
 
 Global Flags:

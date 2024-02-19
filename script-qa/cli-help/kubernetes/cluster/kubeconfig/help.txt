@@ -1,13 +1,12 @@
-Obtem o arquivo do kubeconfig do cluster
+Retrieves the kubeconfig of a Kubernetes cluster by cluster_uuid.
 
 Usage:
   ./cli kubernetes cluster kubeconfig [id] [flags]
 
 Flags:
-      --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-  -h, --help                          help for kubeconfig
-      --id uuid                       Esquema de obter o arquivo do kubeconfig do cluster (required)
-  -v, --version                       version for kubeconfig
+  -h, --help      help for kubeconfig
+      --id uuid   Schema to get the cluster's kubeconfig file. (required)
+  -v, --version   version for kubeconfig
 
 Global Flags:
       --cli.show-cli-globals   Show all CLI global flags on usage text

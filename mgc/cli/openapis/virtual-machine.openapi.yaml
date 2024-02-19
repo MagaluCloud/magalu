@@ -512,7 +512,8 @@ paths:
             x-mgc-wait-termination:
                 maxRetries: 30
                 interval: 5s
-                jsonPathQuery: $.result.status == "completed"
+                jsonPathQuery: $.result.status == "completed" || $.result.status ==
+                    "creating_error"
     /v1/instances/{id}/reboot:
         post:
             tags:
@@ -1050,7 +1051,7 @@ paths:
             security:
             -   OAuth2:
                 - virtual-machine.write
-    /v1/machine_types:
+    /v1/machine-types:
         get:
             tags:
             - machine-types

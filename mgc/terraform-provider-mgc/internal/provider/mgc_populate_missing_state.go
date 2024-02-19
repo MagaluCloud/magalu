@@ -66,7 +66,7 @@ func (o *MgcPopulateUnknownState) PostRun(
 	result core.ResultWithValue,
 	state, plan TerraformParams,
 	targetState *tfsdk.State,
-) (postResult core.ResultWithValue, runChain bool, diagnostics Diagnostics) {
+) (runChain bool, diagnostics Diagnostics) {
 	diagnostics = Diagnostics{}
 
 	tflog.Info(ctx, "populating unknown state values")
@@ -81,13 +81,13 @@ func (o *MgcPopulateUnknownState) PostRun(
 		attrPath := path.Empty().AtName(string(paramTFName))
 		attr, d := targetState.Schema.AttributeAtPath(ctx, attrPath)
 		if diagnostics.AppendCheckError(d...) {
-			return nil, false, diagnostics
+			return false, diagnostics
 		}
 
 		attrValue, err := attr.GetType().ValueFromTerraform(ctx, paramTFValue)
 
 		if err != nil {
-			return nil, false, diagnostics.AppendLocalErrorReturn(
+			return false, diagnostics.AppendLocalErrorReturn(
 				"Unable to pre-populate Response State with Plan",
 				fmt.Sprintf("Attribute %q returned error %v", paramTFName, err),
 			)
@@ -104,16 +104,16 @@ func (o *MgcPopulateUnknownState) PostRun(
 
 		d = targetState.SetAttribute(ctx, attrPath, attrValue)
 		if diagnostics.AppendCheckError(d...) {
-			return result, false, diagnostics
+			return false, diagnostics
 		}
 		tflog.Debug(ctx, fmt.Sprintf("populated attribute %q in response state with known value %s", paramTFName, attrValue.String()))
 	}
 
 	tflog.Info(ctx, "populated unknown state values")
-	return result, false, diagnostics
+	return false, diagnostics
 }
 
-func (o *MgcPopulateUnknownState) ChainOperations(ctx context.Context, _ core.ResultWithValue, readResult ReadResult, state, plan TerraformParams) ([]MgcOperation, bool, Diagnostics) {
+func (o *MgcPopulateUnknownState) ChainOperations(ctx context.Context, _ core.ResultWithValue, state, plan TerraformParams) ([]MgcOperation, bool, Diagnostics) {
 	return nil, false, nil
 }
 

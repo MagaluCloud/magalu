@@ -1,4 +1,4 @@
-Lista todos os flavors disponiveis
+Lists all available flavors.
 
 Usage:
   ./cli kubernetes flavor list [flags]

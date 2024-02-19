@@ -72,15 +72,12 @@ func (u URI) Scheme() string {
 }
 
 func (u URI) IsRoot() bool {
-	scheme := u.Scheme()
-	if scheme != "" {
-		return u.String() == scheme+"://"+u.Hostname()
-	}
-	return u.String() == u.Hostname()
+	path := u.Path()
+	return path == "" || path == "/"
 }
 
 func (u URI) Filename() string {
-	filename := path.Base(u.Path())
+	filename := path.Base(u.String())
 	if filename == "/" || filename == "." {
 		return ""
 	}

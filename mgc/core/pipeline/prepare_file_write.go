@@ -52,8 +52,8 @@ func PrepareWriteChunks(
 				logger.Debugw("context.Done()", "err", ctx.Err())
 				return
 
-			case ch <- WriteableChunk{io.NewOffsetWriter(w, end), i, end}:
-				logger.Debugw("prepared section for write", "offset", i)
+			case ch <- WriteableChunk{io.NewOffsetWriter(w, i), i, end}:
+				logger.Debugw("prepared section for write", "start", i, "end", end)
 			}
 		}
 		logger.Debug("finished preparing sections for write")

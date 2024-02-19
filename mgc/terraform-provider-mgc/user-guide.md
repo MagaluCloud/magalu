@@ -19,6 +19,10 @@ or
 1.  **Download the Magalu Provider:**
 
     - Download the Magalu provider or compile it from the source code.
+      - When compiling, make sure to add the `embed` value to the `-tags` flag, like so: `go build -tags embed`
+      - When compliing, also make sure to export the `MGC_SDK_OPENAPI_DIR` and `MGC_SDK_BLUEPRINTS_DIR` variables
+        pointing to the correct directories where the OpenAPI and Blueprint files are located. In this repo, they
+        are under the `mgc/cli/openapis` and `mgc/cli/blueprints` directories, respectfully
 
 2.  **Install in Terraform Directory:**
 
@@ -57,7 +61,10 @@ or
      ```hcl
      terraform {
         required_providers {
-            mgc = {}
+            mgc = {
+               version = "0.1"
+               source = "magalucloud/mgc"
+            }
         }
      }
 

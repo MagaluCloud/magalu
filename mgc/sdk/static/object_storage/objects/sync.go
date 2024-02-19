@@ -2,7 +2,6 @@ package objects
 
 import (
 	"context"
-	"fmt"
 	"io/fs"
 	"path/filepath"
 
@@ -45,7 +44,12 @@ var getSync = utils.NewLazyLoader[core.Executor](func() core.Executor {
 	})
 })
 
-func createObjectSyncProcessor(cfg common.Config, destination mgcSchemaPkg.URI, srcAbs string) pipeline.Processor[pipeline.WalkDirEntry, error] {
+func createObjectSyncProcessor(
+	cfg common.Config,
+	destination mgcSchemaPkg.URI,
+	srcAbs string,
+	progressReporter *progress_report.UnitsReporter,
+) pipeline.Processor[pipeline.WalkDirEntry, error] {
 	return func(ctx context.Context, dirEntry pipeline.WalkDirEntry) (error, pipeline.ProcessStatus) {
 		if err := dirEntry.Err(); err != nil {
 			return &common.ObjectError{Err: err}, pipeline.ProcessAbort
@@ -54,6 +58,9 @@ func createObjectSyncProcessor(cfg common.Config, destination mgcSchemaPkg.URI, 
 		if dirEntry.DirEntry().IsDir() {
 			return nil, pipeline.ProcessOutput
 		}
+
+		var err error
+		defer progressReporter.Report(1, 0, err)
 
 		absEntry, err := filepath.Abs(dirEntry.Path())
 		if err != nil {
@@ -80,9 +87,9 @@ func createObjectSyncProcessor(cfg common.Config, destination mgcSchemaPkg.URI, 
 }
 
 func sync(ctx context.Context, params syncParams, cfg common.Config) (result core.Value, err error) {
-	if err != nil {
-		return nil, err
-	}
+	ctx, cancel := context.WithCancelCause(ctx)
+	defer cancel(nil)
+
 	srcObjects := pipeline.WalkDirEntries(ctx, params.Source.String(), func(path string, d fs.DirEntry, err error) error {
 		return err
 	})
@@ -126,7 +133,7 @@ func sync(ctx context.Context, params syncParams, cfg common.Config) (result cor
 	}
 
 	for entry := range dstObjects {
-		if entry.Err() != nil {
+		if err := entry.Err(); err != nil {
 			objErr = append(objErr, err)
 			continue
 		}
@@ -167,43 +174,37 @@ func sync(ctx context.Context, params syncParams, cfg common.Config) (result cor
 	}
 
 	if len(toUpload) > 0 {
-		reportProgress := progress_report.FromContext(ctx)
-		total := uint64(len(toUpload))
+		progressReporter := progress_report.NewUnitsReporter(ctx, "Sync Upload", uint64(len(toUpload)))
+		progressReporter.Start()
+		defer progressReporter.End()
 
-		reportProgress("Sync Upload", 0, total, progress_report.UnitsNone, nil)
 		uploadChannel := pipeline.SliceItemGenerator[pipeline.WalkDirEntry](ctx, toUpload)
-		uploadObjectsErrorChan := pipeline.ParallelProcess(ctx, cfg.Workers, uploadChannel, createObjectSyncProcessor(cfg, params.Destination, srcAbs), nil)
+		uploadObjectsErrorChan := pipeline.ParallelProcess(ctx, cfg.Workers, uploadChannel, createObjectSyncProcessor(cfg, params.Destination, srcAbs, progressReporter), nil)
 		uploadObjectsErrorChan = pipeline.Filter(ctx, uploadObjectsErrorChan, pipeline.FilterNonNil[error]{})
 
-		objErr, _ = pipeline.SliceItemConsumer[utils.MultiError](ctx, uploadObjectsErrorChan)
-		reportProgress("Sync Upload", total, total, progress_report.UnitsNone, nil)
+		objErr, err = pipeline.SliceItemConsumer[utils.MultiError](ctx, uploadObjectsErrorChan)
+		if err != nil {
+			progressReporter.Report(0, 0, err)
+			return nil, err
+		}
+
 		if len(objErr) > 0 {
+			progressReporter.Report(0, 0, objErr)
 			return nil, objErr
 		}
+
+		progressReporter.End()
 	}
 
 	if params.Delete && len(toDelete) > 0 {
-		reportProgress := progress_report.FromContext(ctx)
-		bucketName := common.NewBucketNameFromURI(params.Destination)
-		reportChan := make(chan common.DeleteProgressReport)
-		defer close(reportChan)
-
-		if params.BatchSize < common.MinBatchSize || params.BatchSize > common.MaxBatchSize {
-			return nil, core.UsageError{Err: fmt.Errorf("invalid item limit per request BatchSize, must not be lower than %d and must not be higher than %d: %d", common.MinBatchSize, common.MaxBatchSize, params.BatchSize)}
-		}
-
-		go common.ReportDeleteProgress(reportProgress, reportChan, common.DeleteAllObjectsParams{
-			BucketName: bucketName,
-		})
-
 		deleteChannel := pipeline.SliceItemGenerator[pipeline.WalkDirEntry](ctx, toDelete)
-		objsBatch := pipeline.Batch(ctx, deleteChannel, params.BatchSize)
-		deleteObjectsErrorChan := pipeline.ParallelProcess(ctx, cfg.Workers, objsBatch, common.CreateObjectDeletionProcessor(cfg, bucketName, reportChan), nil)
-		deleteObjectsErrorChan = pipeline.Filter(ctx, deleteObjectsErrorChan, pipeline.FilterNonNil[error]{})
-
-		objErr, _ := pipeline.SliceItemConsumer[utils.MultiError](ctx, deleteObjectsErrorChan)
-		if len(objErr) > 0 {
-			return nil, objErr
+		err := common.DeleteObjects(ctx, common.DeleteObjectsParams{
+			Destination: params.Destination,
+			ToDelete:    deleteChannel,
+			BatchSize:   params.BatchSize,
+		}, cfg)
+		if err != nil {
+			return nil, err
 		}
 	}
 

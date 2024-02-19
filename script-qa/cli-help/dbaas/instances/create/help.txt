@@ -10,6 +10,7 @@ Flags:
       --backup-retention-days integer   Backup Retention Days: The number of days that a particular backup is kept until its deletion. (min: 1) (default 30)
       --backup-start-at time            Backup Start At: Start time which is allowed to start the automated backup process. (default "01:00:00")
       --cli.list-links enum[=table]     List all available links for this command (one of "json", "table" or "yaml")
+      --cli.watch                       Wait until the operation is completed by calling the 'get' link and waiting until termination. Akin to '! get -w'
       --datastore-id uuid               Datastore Id (required)
       --flavor-id uuid                  Flavor Id (required)
   -h, --help                            help for create

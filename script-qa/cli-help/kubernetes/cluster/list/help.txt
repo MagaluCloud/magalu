@@ -1,4 +1,4 @@
-Lista todos os clusters de um usuário
+Lists all clusters for a user.
 
 Usage:
   ./cli kubernetes cluster list [flags]

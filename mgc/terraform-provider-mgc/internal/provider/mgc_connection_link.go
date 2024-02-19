@@ -83,11 +83,11 @@ func (o *MgcConnectionLink) Run(ctx context.Context, params core.Parameters, con
 	return core.NewSimpleResult(createResult.Source(), schema.NewNullSchema(), nil), diagnostics
 }
 
-func (o *MgcConnectionLink) PostRun(ctx context.Context, createResult core.ResultWithValue, state, plan TerraformParams, targetState *tfsdk.State) (core.ResultWithValue, bool, Diagnostics) {
-	return createResult, true, nil
+func (o *MgcConnectionLink) PostRun(_ context.Context, _ core.ResultWithValue, _, _ TerraformParams, _ *tfsdk.State) (runChain bool, diagnostics Diagnostics) {
+	return true, nil
 }
 
-func (o *MgcConnectionLink) ChainOperations(ctx context.Context, createResult core.ResultWithValue, readResult ReadResult, state, plan TerraformParams) ([]MgcOperation, bool, Diagnostics) {
+func (o *MgcConnectionLink) ChainOperations(ctx context.Context, createResult core.ResultWithValue, state, plan TerraformParams) ([]MgcOperation, bool, Diagnostics) {
 	if operation := o.operationLoader(createResult); operation != nil {
 		return []MgcOperation{operation}, true, nil
 	}

@@ -1,4 +1,4 @@
-Rotas relacionadas a api de Nodepool dentro da api de cluster.
+Endpoints related to the Nodepool API within the Cluster API.
 
 Usage:
   ./cli kubernetes nodepool [flags]

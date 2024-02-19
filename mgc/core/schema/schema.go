@@ -54,7 +54,7 @@ func NewAnySchema() *Schema {
 			&openapi3.SchemaRef{Value: openapi3.NewStringSchema()},
 			&openapi3.SchemaRef{Value: openapi3.NewFloat64Schema()},
 			&openapi3.SchemaRef{Value: openapi3.NewIntegerSchema()},
-			&openapi3.SchemaRef{Value: openapi3.NewArraySchema()},
+			&openapi3.SchemaRef{Value: openapi3.NewArraySchema().WithItems(&openapi3.Schema{})},
 			&openapi3.SchemaRef{Value: openapi3.NewObjectSchema().WithAnyAdditionalProperties()},
 		},
 	}

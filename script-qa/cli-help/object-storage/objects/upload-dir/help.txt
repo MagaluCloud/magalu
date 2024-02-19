@@ -4,7 +4,7 @@ Usage:
   ./cli object-storage objects upload-dir [src] [dst] [flags]
 
 Examples:
-  ./cli object-storage objects upload-dir --dst="s3://my-bucket/dir/" --src="path/to/folder"
+  ./cli object-storage objects upload-dir --dst="my-bucket/dir/" --src="path/to/folder"
 
 Flags:
       --dst uri                Full destination path in the bucket (required)

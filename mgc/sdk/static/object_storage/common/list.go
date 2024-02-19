@@ -22,7 +22,7 @@ var listObjectsLogger = utils.NewLazyLoader(func() *zap.SugaredLogger {
 })
 
 type ListObjectsParams struct {
-	Destination      mgcSchemaPkg.URI `json:"dst" jsonschema:"description=Path of the bucket to list objects from,example=s3://bucket1" mgc:"positional"`
+	Destination      mgcSchemaPkg.URI `json:"dst" jsonschema:"description=Path of the bucket to list objects from,example=bucket1" mgc:"positional"`
 	PaginationParams `json:",squash"` // nolint
 	Recursive        bool             `json:"recursive,omitempty" jsonschema:"description=List folders and subfolders,default=false"`
 }

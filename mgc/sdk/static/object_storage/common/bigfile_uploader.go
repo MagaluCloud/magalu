@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"context"
 	"encoding/xml"
-	"errors"
 	"fmt"
 	"io"
 	"io/fs"
@@ -17,11 +16,6 @@ import (
 	"magalu.cloud/core/progress_report"
 	mgcSchemaPkg "magalu.cloud/core/schema"
 )
-
-type progressReport struct {
-	bytes uint64
-	err   error
-}
 
 var deleteBucketsLogger *zap.SugaredLogger
 
@@ -61,14 +55,14 @@ type completionRequest struct {
 }
 
 type bigFileUploader struct {
-	cfg        Config
-	dst        mgcSchemaPkg.URI
-	mimeType   string
-	reader     io.ReaderAt
-	fileInfo   fs.FileInfo
-	workerN    int
-	uploadId   string
-	reportChan chan progressReport
+	cfg              Config
+	dst              mgcSchemaPkg.URI
+	mimeType         string
+	reader           io.ReaderAt
+	fileInfo         fs.FileInfo
+	workerN          int
+	uploadId         string
+	progressReporter *progress_report.BytesReporter
 }
 
 var _ uploader = (*bigFileUploader)(nil)
@@ -129,7 +123,7 @@ func (u *bigFileUploader) createMultipartRequest(ctx context.Context, partNumber
 }
 
 func (u *bigFileUploader) sendCompletionRequest(ctx context.Context, parts []completionPart, uploadId string) (err error) {
-	defer func() { u.reportProgress(0, err) }()
+	defer u.progressReporter.Report(0, err)
 
 	sort.Slice(parts, func(i, j int) bool {
 		return parts[i].PartNumber < parts[j].PartNumber
@@ -179,10 +173,10 @@ func (u *bigFileUploader) sendCompletionRequest(ctx context.Context, parts []com
 func (u *bigFileUploader) createPartSenderProcessor(cancel context.CancelCauseFunc, totalParts int, uploadId string) pipeline.Processor[pipeline.ReadableChunk, completionPart] {
 	return func(ctx context.Context, chunk pipeline.ReadableChunk) (part completionPart, status pipeline.ProcessStatus) {
 		var err error
-		defer func() { u.reportProgress(0, err) }()
+		defer u.progressReporter.Report(0, err)
 
 		partNumber := int(chunk.StartOffset/CHUNK_SIZE) + 1
-		reader := progress_report.NewReporterReader(chunk.Reader, u.reportProgress)
+		reader := progress_report.NewReporterReader(chunk.Reader, u.progressReporter.Report)
 		req, err := u.createMultipartRequest(ctx, partNumber, reader)
 		if err != nil {
 			cancel(err)
@@ -191,7 +185,7 @@ func (u *bigFileUploader) createPartSenderProcessor(cancel context.CancelCauseFu
 
 		// This is used while retrying requests
 		req.GetBody = func() (io.ReadCloser, error) {
-			return progress_report.NewReporterReader(io.NewSectionReader(chunk.Reader, 0, CHUNK_SIZE), u.reportProgress), nil
+			return progress_report.NewReporterReader(io.NewSectionReader(chunk.Reader, 0, CHUNK_SIZE), u.progressReporter.Report), nil
 		}
 
 		bigfileUploaderLogger().Debugw("Sending part", "part", partNumber, "total", totalParts)
@@ -214,11 +208,10 @@ func (u *bigFileUploader) createPartSenderProcessor(cancel context.CancelCauseFu
 func (u *bigFileUploader) Upload(ctx context.Context) error {
 	bigfileUploaderLogger().Debug("start")
 
-	reportProgress := progress_report.FromContext(ctx)
-	u.reportChan = make(chan progressReport)
-	defer close(u.reportChan)
-
-	go progressReportSubroutine(reportProgress, u.reportChan, u.fileInfo)
+	progressReportMsg := fmt.Sprintf("Uploading %q", u.fileInfo.Name())
+	u.progressReporter = progress_report.NewBytesReporter(ctx, progressReportMsg, uint64(u.fileInfo.Size()))
+	u.progressReporter.Start()
+	defer u.progressReporter.End()
 
 	ctx, cancel := context.WithCancelCause(ctx)
 	defer cancel(nil)
@@ -239,42 +232,4 @@ func (u *bigFileUploader) Upload(ctx context.Context) error {
 	}
 
 	return u.sendCompletionRequest(ctx, parts, uploadId)
-}
-
-func (u *bigFileUploader) reportProgress(n int, err error) {
-	if u.reportChan == nil {
-		return
-	}
-
-	u.reportChan <- progressReport{bytes: uint64(n), err: err}
-}
-
-func progressReportSubroutine(
-	reportProgress progress_report.ReportProgress,
-	reportChan <-chan progressReport,
-	fileInfo fs.FileInfo,
-) {
-	// TODO as some parts may retry, progress maybe overreported
-	name := "Upload " + fileInfo.Name()
-	total := uint64(fileInfo.Size())
-	bytesDone := uint64(0)
-
-	// Report we're starting progress
-	reportProgress(name, bytesDone, total, progress_report.UnitsBytes, nil)
-
-	var err error
-
-	for report := range reportChan {
-		bytesDone += report.bytes
-		if report.err != nil && !errors.Is(report.err, io.EOF) {
-			err = report.err
-		}
-		reportProgress(name, bytesDone, total, progress_report.UnitsBytes, nil)
-	}
-	// Set DONE flag
-	if err == nil {
-		err = progress_report.ErrorProgressDone
-	}
-
-	reportProgress(name, bytesDone, total, progress_report.UnitsBytes, err)
 }

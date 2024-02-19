@@ -2,6 +2,7 @@ package buckets
 
 import (
 	"context"
+	"fmt"
 
 	"go.uber.org/zap"
 	"magalu.cloud/core"
@@ -23,43 +24,44 @@ type deleteParams struct {
 }
 
 var getDelete = utils.NewLazyLoader[core.Executor](func() core.Executor {
-	executor := core.NewStaticExecute(
+	var executor core.Executor = core.NewStaticExecute(
 		core.DescriptorSpec{
 			Name:        "delete",
 			Description: "Delete an existing Bucket",
 		},
-		delete,
+		deleteBucket,
 	)
 
-	msg := "This command will delete bucket {{.parameters.bucket}}, and its result is NOT reversible."
-
-	cExecutor := core.NewConfirmableExecutor(
+	executor = core.NewPromptInputExecutor(
 		executor,
-		core.ConfirmPromptWithTemplate(msg),
+		core.NewPromptInput(
+			"This command will delete bucket {{.confirmationValue}}, and its result is NOT reversible. Please confirm by retyping: {{.confirmationValue}}",
+			"{{.parameters.bucket}}",
+		),
 	)
 
-	return core.NewExecuteResultOutputOptions(cExecutor, func(exec core.Executor, result core.Result) string {
-		return "template=Deleted bucket {{.bucket}}\n"
+	return core.NewExecuteFormat(executor, func(exec core.Executor, result core.Result) string {
+		return fmt.Sprintf("Deleted bucket %q", result.Source().Parameters["bucket"])
 	})
 })
 
-func delete(ctx context.Context, params deleteParams, cfg common.Config) (result core.Value, err error) {
+func deleteBucket(ctx context.Context, params deleteParams, cfg common.Config) (core.Value, error) {
 	logger := deleteLogger().Named("delete").With(
 		"params", params,
 		"cfg", cfg,
 	)
 
-	err = common.DeleteAllObjects(ctx, common.DeleteAllObjectsParams{BucketName: params.BucketName, BatchSize: common.MaxBatchSize}, cfg)
+	err := common.DeleteAllObjectsInBucket(ctx, common.DeleteAllObjectsInBucketParams{BucketName: params.BucketName, BatchSize: common.MaxBatchSize}, cfg)
 	if err != nil {
 		return nil, err
 	}
 
 	dst := params.BucketName.AsURI()
-	err = common.Delete(ctx, common.DeleteObjectParams{Destination: dst}, cfg)
+	err = common.DeleteBucket(ctx, common.DeleteBucketParams{Destination: dst}, cfg)
 	if err != nil {
 		return nil, err
 	}
 
 	logger.Info("Deleted bucket")
-	return
+	return nil, err
 }

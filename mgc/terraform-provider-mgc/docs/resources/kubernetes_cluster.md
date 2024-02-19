@@ -3,12 +3,12 @@
 page_title: "mgc_kubernetes_cluster Resource - terraform-provider-mgc"
 subcategory: ""
 description: |-
-  Rotas relacionadas a api de cluster.
+  Endpoints related to the Cluster API.
 ---
 
 # mgc_kubernetes_cluster (Resource)
 
-Rotas relacionadas a api de cluster.
+Endpoints related to the Cluster API.
 
 
 
@@ -17,83 +17,73 @@ Rotas relacionadas a api de cluster.
 
 ### Required
 
-- `enabled_bastion` (Boolean) Habilita bastion host
-- `name` (String) Nome do cluster kubernetes. O nome destina-se principalmente à idempotência, e deve ser exclusivo em um namespace. 0 nome não pode ser alterado.
-O nome deve seguir as seguintes regras:
-  - deve conter no máximo 63 caracteres
-  - deve conter apenas caracteres alfanuméricos minúsculos ou '-'
-  - deve começar com um caractere alfabético
-  - deve terminar com um caractere alfanumérico
+- `enabled_bastion` (Boolean) Enables the use of a bastion host for secure access to the cluster.
+- `name` (String) Kubernetes cluster name. The name is primarily intended for idempotence, and must be unique within a namespace. The name cannot be changed.
+The name must follow the following rules:
+  - must contain a maximum of 63 characters
+  - must contain only lowercase alphanumeric characters or '-'
+  - must start with an alphabetic character
+  - must end with an alphanumeric character
+- `node_pools` (Attributes List) An array representing a set of nodes within a Kubernetes cluster. (see [below for nested schema](#nestedatt--node_pools))
 
 ### Optional
 
-- `description` (String) Descrição do cluster
-- `enabled_server_group` (Boolean) Habilita o uso de server group, com política de anti-affinity, na criação do cluster e dos node pools
-- `node_pools` (Attributes List) Conjunto de nodes em um cluster kubernetes (see [below for nested schema](#nestedatt--node_pools))
-- `version` (String) Versão do kubernetes nativa do cluster
+- `description` (String) A brief description of the Kubernetes cluster.
+- `enabled_server_group` (Boolean) Enables the use of a server group with anti-affinity policy during the creation of the cluster and its node pools.
+- `version` (String) The native Kubernetes version of the cluster.
+Please specify the Kubernetes version using the standard "vX.Y.Z" format.
 
 ### Read-Only
 
-- `addons` (Attributes) Objeto dos complementos que estendem a funcionalidade do cluster kubernetes (see [below for nested schema](#nestedatt--addons))
-- `controlplane` (Attributes) Objeto da requisição da response do nodepool (see [below for nested schema](#nestedatt--controlplane))
-- `created_at` (String) Data de criação do cluster kubernetes
-- `current_node_pools` (Attributes List) Conjunto de nodes em um cluster kubernetes (see [below for nested schema](#nestedatt--current_node_pools))
-- `id` (String) Identificador no padrão uuid para identificar o cluster
-- `kube_api_server` (Attributes) Informações sobre o Kubernetes API Server do Cluster (see [below for nested schema](#nestedatt--kube_api_server))
-- `network` (Attributes) Objeto da requisição da response do recurso de rede do cluster kubernetes (see [below for nested schema](#nestedatt--network))
-- `project_id` (String) Identificador único do projeto onde o cluster foi provisionado
-- `region` (String) Identificador da região em que o cluster kubernetes está localizado
-- `status` (Attributes) Detalhes a respeito do status do cluster ou node (see [below for nested schema](#nestedatt--status))
-- `tags` (List of String) Lista de tags aplicadas ao cluster kubernetes
-- `updated_at` (String) Data da ultima alteração do cluster kubernetes
+- `addons` (Attributes) Object representing addons that extend the functionality of the Kubernetes cluster. (see [below for nested schema](#nestedatt--addons))
+- `controlplane` (Attributes) Object of the node pool response. (see [below for nested schema](#nestedatt--controlplane))
+- `created_at` (String) Creation date of the Kubernetes cluster.
+- `current_node_pools` (Attributes List) Set of nodes in a Kubernetes cluster. (see [below for nested schema](#nestedatt--current_node_pools))
+- `id` (String) Cluster's UUID.
+- `kube_api_server` (Attributes) Information about the Kubernetes API Server of the cluster. (see [below for nested schema](#nestedatt--kube_api_server))
+- `network` (Attributes) Response object for the Kubernetes cluster network resource request. (see [below for nested schema](#nestedatt--network))
+- `project_id` (String) Unique identifier of the project where the cluster was provisioned.
+- `region` (String) Identifier of the region where the Kubernetes cluster is located.
+- `status` (Attributes) Details about the status of the Kubernetes cluster or node. (see [below for nested schema](#nestedatt--status))
+- `tags` (List of String) List of tags applied to the Kubernetes cluster.
+- `updated_at` (String) Date of the last modification of the Kubernetes cluster.
 
 <a id="nestedatt--node_pools"></a>
 ### Nested Schema for `node_pools`
 
 Required:
 
-- `flavor` (String) Definição da capacidade de CPU, memória RAM e armazenamento dos nodes
-<table>
-  <tr>
-    <td>Flavor</td>
-    <td>vCPUs</td>
-    <td>RAM(Gb)</td>
-    <td>Root Disk(GB)</td>
-  </tr>
-  <tr>
-    <td>cloud-k8s.gp1.small</td>
-    <td>2</td>
-    <td>4</td>
-    <td>20</td>
-  </tr>
-  <tr>
-    <td>cloud-k8s.gp1.large</td>
-    <td>8</td>
-    <td>16</td>
-    <td>100</td>
-  </tr>
-</table>
-- `name` (String) Nome do node pool. O nome destina-se principalmente à idempotência, e deve ser exclusivo em um namespace. 0 nome não pode ser alterado.
-O nome deve seguir as seguintes regras:
-  - deve conter no máximo 63 caracteres
-  - deve conter apenas caracteres alfanuméricos minúsculos ou '-'
-  - deve começar com um caractere alfabético
-  - deve terminar com um caractere alfanumérico
-- `replicas` (Number) Número de réplicas dos nós do nodepool
+- `flavor` (String) Definition of the CPU, RAM, and storage capacity of the nodes.
+
+| Flavor                  | vCPUs | RAM (GB) | Root Disk (GB) |
+|-------------------------|-------|----------|----------------|
+| cloud-k8s.gp1.small     | 2     | 4        | 20             |
+| cloud-k8s.gp1.medium    | 4     | 8        | 50             |
+| cloud-k8s.gp1.large     | 8     | 16       | 100            |
+| cloud-k8s.gp2.small     | 2     | 4        | 300            |
+| cloud-k8s.gp2.large     | 8     | 32       | 300            |
+| cloud-k8s.hm1.medium    | 4     | 16       | 50             |
+- `name` (String) Name of the node pool. The name is primarily for idempotence and must be unique within a namespace. The name cannot be changed.
+The name must follow the following rules:
+  - Must contain a maximum of 63 characters
+  - Must contain only lowercase alphanumeric characters or '-'
+  - Must start with an alphabetic character
+  - Must end with an alphanumeric character
+- `replicas` (Number) Number of replicas of the nodes in the node pool.
 
 Optional:
 
-- `auto_scale` (Attributes) Objeto que especifica as propriedades para atualização de recursos de carga de trabalho no cluster Kubernetes. (see [below for nested schema](#nestedatt--node_pools--auto_scale))
-- `tags` (List of String) Lista de tags aplicadas ao nodepool
-- `taints` (Attributes List) Propriedade de associação de um conjunto se nós (see [below for nested schema](#nestedatt--node_pools--taints))
+- `auto_scale` (Attributes) Object specifying properties for updating workload resources in the Kubernetes cluster. (see [below for nested schema](#nestedatt--node_pools--auto_scale))
+- `tags` (List of String) List of tags applied to the node pool.
+- `taints` (Attributes List) Property associating a set of nodes. (see [below for nested schema](#nestedatt--node_pools--taints))
 
 <a id="nestedatt--node_pools--auto_scale"></a>
 ### Nested Schema for `node_pools.auto_scale`
 
 Required:
 
-- `max_replicas` (Number) Quantidade máxima de réplicas para o autoscaling. Se não for informado um valor, ou se for igual ou menor que zero, o valor do autoscaler será assumido com base no campo "réplicas".
-- `min_replicas` (Number) Quantidade mínima de réplicas para o autoscaling. Se não for informado um valor, ou se for igual ou menor que zero, o valor do autoscaler será assumido com base no campo "réplicas".
+- `max_replicas` (Number) Maximum number of replicas for autoscaling. If not provided, or if the value is equal to or less than zero, the autoscaler value will be assumed based on the "replicas" field.
+- `min_replicas` (Number) Minimum number of replicas for autoscaling. If not provided, or if the value is equal to or less than zero, the autoscaler value will be assumed based on the "replicas" field.
 
 
 <a id="nestedatt--node_pools--taints"></a>
@@ -101,12 +91,12 @@ Required:
 
 Required:
 
-- `effect` (String) O efeito do taint em pods que não toleram o taint.
-**NoSchedule** - Não permitir que novos pods sejam agendados no nó, a menos que eles tolerem a taint, mas permitir que todos os pods já em execução continuem em execução.
-**PreferNoSchedule** - Parecido com o NoSchedule, mas tenta não agendar novos pods no nó, em vez de proibir totalmente o agendamento de novos pods no nó
-**NoExecute** - Remova todos os pods já em execução que não tolerem o taint.
-- `key` (String) A chave taint a ser aplicada ao node
-- `value` (String) O valor correspondente a chave taint.
+- `effect` (String) The effect of the taint on pods that do not tolerate the taint.
+- **NoSchedule**: Prevents new pods from being scheduled on the node, unless they tolerate the taint. Allows all existing pods to continue running.
+- **PreferNoSchedule**: Similar to NoSchedule, but attempts not to schedule new pods on the node, rather than completely prohibiting new pod scheduling on the node.
+- **NoExecute**: Removes all already running pods that do not tolerate the taint.
+- `key` (String) Key of the taint to be applied to the node.
+- `value` (String) Value corresponding to the taint key.
 
 
 
@@ -115,9 +105,9 @@ Required:
 
 Read-Only:
 
-- `loadbalance` (String) Flag correspondente se o serviço de load balancer está habilitado/desabilitado no cluster
-- `secrets` (String) Secret nativa do kubernetes a ser incluída ao cluster durante o provisionamento
-- `volume` (String) Flag correspondente se o serviço de storage class está configurado por padrão
+- `loadbalance` (String) Flag indicating whether the load balancer service is enabled/disabled in the cluster.
+- `secrets` (String) Native Kubernetes secret to be included in the cluster during provisioning.
+- `volume` (String) Flag indicating whether the storage class service is configured by default.
 
 
 <a id="nestedatt--controlplane"></a>
@@ -125,27 +115,27 @@ Read-Only:
 
 Read-Only:
 
-- `auto_scale` (Attributes) Objeto que especifica as propriedades para atualização de recursos de carga de trabalho no cluster Kubernetes. (see [below for nested schema](#nestedatt--controlplane--auto_scale))
-- `created_at` (String) Data de criação do cluster kubernetes
-- `id` (String) Identificador no padrão uuid para identificar o nodepool
-- `instance_template` (Attributes) Template do objeto de instância usado para criar instâncias de máquina e grupos gerenciados de instâncias. (see [below for nested schema](#nestedatt--controlplane--instance_template))
-- `labels` (Map of String) Pares de chave/valor anexados ao objeto e usados para especificação
-- `name` (String) Nome do node pool
-- `replicas` (Number) Quantidade de réplicas dos nós do nodepool
-- `security_groups` (List of String) Nome do grupo de segurança para definir regras que permitem tráfego de rede no node pool de workers
-- `status` (Attributes) Detalhes a respeito do status do node pool ou control plane (see [below for nested schema](#nestedatt--controlplane--status))
-- `tags` (List of String) Lista de tags aplicadas ao nodepool
-- `taints` (Attributes List) Propriedade de associação de um conjunto se nós (see [below for nested schema](#nestedatt--controlplane--taints))
-- `updated_at` (String) Data da última alteração do cluster kubernetes
-- `zone` (List of String) Zona de disponibilidade para criação do cluster kubernetes
+- `auto_scale` (Attributes) Object specifying properties for updating workload resources in the Kubernetes cluster. (see [below for nested schema](#nestedatt--controlplane--auto_scale))
+- `created_at` (String) Date of creation of the Kubernetes cluster.
+- `id` (String) Node pool's UUID.
+- `instance_template` (Attributes) Template for the instance object used to create machine instances and managed instance groups. (see [below for nested schema](#nestedatt--controlplane--instance_template))
+- `labels` (Map of String) Key/value pairs attached to the object and used for specification.
+- `name` (String) Node pool name
+- `replicas` (Number) Number of replicas of the nodes in the node pool.
+- `security_groups` (List of String) Name of the security group to define rules allowing network traffic in the worker node pool.
+- `status` (Attributes) Details about the status of the node pool or control plane. (see [below for nested schema](#nestedatt--controlplane--status))
+- `tags` (List of String) List of tags applied to the node pool.
+- `taints` (Attributes List) Property for associating a set of nodes. (see [below for nested schema](#nestedatt--controlplane--taints))
+- `updated_at` (String) Date of the last change to the Kubernetes cluster.
+- `zone` (List of String) Availability zone for creating the Kubernetes cluster.
 
 <a id="nestedatt--controlplane--auto_scale"></a>
 ### Nested Schema for `controlplane.auto_scale`
 
 Read-Only:
 
-- `max_replicas` (Number) Quantidade máxima de réplicas para o autoscaling. Se não for informado um valor, ou se for igual ou menor que zero, o valor do autoscaler será assumido com base no campo "réplicas".
-- `min_replicas` (Number) Quantidade mínima de réplicas para o autoscaling. Se não for informado um valor, ou se for igual ou menor que zero, o valor do autoscaler será assumido com base no campo "réplicas".
+- `max_replicas` (Number) Maximum number of replicas for autoscaling. If not provided, or if the value is equal to or less than zero, the autoscaler value will be assumed based on the "replicas" field.
+- `min_replicas` (Number) Minimum number of replicas for autoscaling. If not provided, or if the value is equal to or less than zero, the autoscaler value will be assumed based on the "replicas" field.
 
 
 <a id="nestedatt--controlplane--instance_template"></a>
@@ -153,21 +143,21 @@ Read-Only:
 
 Read-Only:
 
-- `disk_size` (Number) Tamanho do disco anexado a cada nó
-- `disk_type` (String) Tipo de disco anexado a cada nó
-- `flavor` (Attributes) Definição da capacidade de CPU, memória RAM e armazenamento dos nodes (see [below for nested schema](#nestedatt--controlplane--instance_template--flavor))
-- `node_image` (String) Imagem do sistema operacional que é executada em cada nó
+- `disk_size` (Number) Size of the disk attached to each node.
+- `disk_type` (String) Type of disk attached to each node.
+- `flavor` (Attributes) Definition of CPU capacity, RAM, and storage for nodes. (see [below for nested schema](#nestedatt--controlplane--instance_template--flavor))
+- `node_image` (String) Operating system image running on each node.
 
 <a id="nestedatt--controlplane--instance_template--flavor"></a>
 ### Nested Schema for `controlplane.instance_template.flavor`
 
 Read-Only:
 
-- `id` (String) Identificador exclusivo do Flavor.
-- `name` (String) Nome do Flavor.
-- `ram` (Number) Quantidade de memória RAM, medida em MB.
-- `size` (Number) Quantidade de disco, medido em GB.
-- `vcpu` (Number) Quantidade de vCPUs disponiveis.
+- `id` (String) Unique identifier for the Flavor.
+- `name` (String) Name of the Flavor.
+- `ram` (Number) Amount of RAM, measured in MB.
+- `size` (Number) Amount of disk space, measured in GB.
+- `vcpu` (Number) Number of available vCPUs.
 
 
 
@@ -176,18 +166,13 @@ Read-Only:
 
 Read-Only:
 
-- `messages` (List of String) Mensagem detalhada sobre o status do node pool ou control plane
-- `state` (String) Estado atual do node pool ou control plane.
-<table>
-  <tr>
-    <td>Node pool</td>
-    <td>ScalingUp, ScalingDown, Running, Failed, Unknown</td>
-  </tr>
-  <tr>
-    <td>Control Plane</td>
-    <td>ScalingUp, ScalingDown, Running, Failed, Unknown</td>
-  </tr>
-</table>
+- `messages` (List of String) Detailed message about the status of the node pool or control plane.
+- `state` (String) Current state of the node pool or control plane.
+
+| Component      | Possible States                     |
+|-----------------|-------------------------------------|
+| Node pool       | ScalingUp, ScalingDown, Running, Failed, Unknown |
+| Control Plane   | ScalingUp, ScalingDown, Running, Failed, Unknown |
 
 
 <a id="nestedatt--controlplane--taints"></a>
@@ -195,12 +180,12 @@ Read-Only:
 
 Read-Only:
 
-- `effect` (String) O efeito do taint em pods que não toleram o taint.
-**NoSchedule** - Não permitir que novos pods sejam agendados no nó, a menos que eles tolerem a taint, mas permitir que todos os pods já em execução continuem em execução.
-**PreferNoSchedule** - Parecido com o NoSchedule, mas tenta não agendar novos pods no nó, em vez de proibir totalmente o agendamento de novos pods no nó
-**NoExecute** - Remova todos os pods já em execução que não tolerem o taint.
-- `key` (String) A chave taint a ser aplicada ao node
-- `value` (String) O valor correspondente a chave taint.
+- `effect` (String) The effect of the taint on pods that do not tolerate the taint.
+- **NoSchedule**: Prevents new pods from being scheduled on the node, unless they tolerate the taint. Allows all existing pods to continue running.
+- **PreferNoSchedule**: Similar to NoSchedule, but attempts not to schedule new pods on the node, rather than completely prohibiting new pod scheduling on the node.
+- **NoExecute**: Removes all already running pods that do not tolerate the taint.
+- `key` (String) Key of the taint to be applied to the node.
+- `value` (String) Value corresponding to the taint key.
 
 
 
@@ -209,27 +194,27 @@ Read-Only:
 
 Read-Only:
 
-- `auto_scale` (Attributes) Objeto que especifica as propriedades para atualização de recursos de carga de trabalho no cluster Kubernetes. (see [below for nested schema](#nestedatt--current_node_pools--auto_scale))
-- `created_at` (String) Data de criação do cluster kubernetes
-- `id` (String) Identificador no padrão uuid para identificar o nodepool
-- `instance_template` (Attributes) Template do objeto de instância usado para criar instâncias de máquina e grupos gerenciados de instâncias. (see [below for nested schema](#nestedatt--current_node_pools--instance_template))
-- `labels` (Map of String) Pares de chave/valor anexados ao objeto e usados para especificação
-- `name` (String) Nome do node pool
-- `replicas` (Number) Quantidade de réplicas dos nós do nodepool
-- `security_groups` (List of String) Nome do grupo de segurança para definir regras que permitem tráfego de rede no node pool de workers
-- `status` (Attributes) Detalhes a respeito do status do node pool ou control plane (see [below for nested schema](#nestedatt--current_node_pools--status))
-- `tags` (List of String) Lista de tags aplicadas ao nodepool
-- `taints` (Attributes List) Propriedade de associação de um conjunto se nós (see [below for nested schema](#nestedatt--current_node_pools--taints))
-- `updated_at` (String) Data da última alteração do cluster kubernetes
-- `zone` (List of String) Zona de disponibilidade para criação do cluster kubernetes
+- `auto_scale` (Attributes) Object specifying properties for updating workload resources in the Kubernetes cluster. (see [below for nested schema](#nestedatt--current_node_pools--auto_scale))
+- `created_at` (String) Date of creation of the Kubernetes cluster.
+- `id` (String) Node pool's UUID.
+- `instance_template` (Attributes) Template for the instance object used to create machine instances and managed instance groups. (see [below for nested schema](#nestedatt--current_node_pools--instance_template))
+- `labels` (Map of String) Key/value pairs attached to the object and used for specification.
+- `name` (String) Node pool name
+- `replicas` (Number) Number of replicas of the nodes in the node pool.
+- `security_groups` (List of String) Name of the security group to define rules allowing network traffic in the worker node pool.
+- `status` (Attributes) Details about the status of the node pool or control plane. (see [below for nested schema](#nestedatt--current_node_pools--status))
+- `tags` (List of String) List of tags applied to the node pool.
+- `taints` (Attributes List) Property for associating a set of nodes. (see [below for nested schema](#nestedatt--current_node_pools--taints))
+- `updated_at` (String) Date of the last change to the Kubernetes cluster.
+- `zone` (List of String) Availability zone for creating the Kubernetes cluster.
 
 <a id="nestedatt--current_node_pools--auto_scale"></a>
 ### Nested Schema for `current_node_pools.auto_scale`
 
 Read-Only:
 
-- `max_replicas` (Number) Quantidade máxima de réplicas para o autoscaling. Se não for informado um valor, ou se for igual ou menor que zero, o valor do autoscaler será assumido com base no campo "réplicas".
-- `min_replicas` (Number) Quantidade mínima de réplicas para o autoscaling. Se não for informado um valor, ou se for igual ou menor que zero, o valor do autoscaler será assumido com base no campo "réplicas".
+- `max_replicas` (Number) Maximum number of replicas for autoscaling. If not provided, or if the value is equal to or less than zero, the autoscaler value will be assumed based on the "replicas" field.
+- `min_replicas` (Number) Minimum number of replicas for autoscaling. If not provided, or if the value is equal to or less than zero, the autoscaler value will be assumed based on the "replicas" field.
 
 
 <a id="nestedatt--current_node_pools--instance_template"></a>
@@ -237,21 +222,21 @@ Read-Only:
 
 Read-Only:
 
-- `disk_size` (Number) Tamanho do disco anexado a cada nó
-- `disk_type` (String) Tipo de disco anexado a cada nó
-- `flavor` (Attributes) Definição da capacidade de CPU, memória RAM e armazenamento dos nodes (see [below for nested schema](#nestedatt--current_node_pools--instance_template--flavor))
-- `node_image` (String) Imagem do sistema operacional que é executada em cada nó
+- `disk_size` (Number) Size of the disk attached to each node.
+- `disk_type` (String) Type of disk attached to each node.
+- `flavor` (Attributes) Definition of CPU capacity, RAM, and storage for nodes. (see [below for nested schema](#nestedatt--current_node_pools--instance_template--flavor))
+- `node_image` (String) Operating system image running on each node.
 
 <a id="nestedatt--current_node_pools--instance_template--flavor"></a>
 ### Nested Schema for `current_node_pools.instance_template.flavor`
 
 Read-Only:
 
-- `id` (String) Identificador exclusivo do Flavor.
-- `name` (String) Nome do Flavor.
-- `ram` (Number) Quantidade de memória RAM, medida em MB.
-- `size` (Number) Quantidade de disco, medido em GB.
-- `vcpu` (Number) Quantidade de vCPUs disponiveis.
+- `id` (String) Unique identifier for the Flavor.
+- `name` (String) Name of the Flavor.
+- `ram` (Number) Amount of RAM, measured in MB.
+- `size` (Number) Amount of disk space, measured in GB.
+- `vcpu` (Number) Number of available vCPUs.
 
 
 
@@ -260,18 +245,13 @@ Read-Only:
 
 Read-Only:
 
-- `messages` (List of String) Mensagem detalhada sobre o status do node pool ou control plane
-- `state` (String) Estado atual do node pool ou control plane.
-<table>
-  <tr>
-    <td>Node pool</td>
-    <td>ScalingUp, ScalingDown, Running, Failed, Unknown</td>
-  </tr>
-  <tr>
-    <td>Control Plane</td>
-    <td>ScalingUp, ScalingDown, Running, Failed, Unknown</td>
-  </tr>
-</table>
+- `messages` (List of String) Detailed message about the status of the node pool or control plane.
+- `state` (String) Current state of the node pool or control plane.
+
+| Component      | Possible States                     |
+|-----------------|-------------------------------------|
+| Node pool       | ScalingUp, ScalingDown, Running, Failed, Unknown |
+| Control Plane   | ScalingUp, ScalingDown, Running, Failed, Unknown |
 
 
 <a id="nestedatt--current_node_pools--taints"></a>
@@ -279,12 +259,12 @@ Read-Only:
 
 Read-Only:
 
-- `effect` (String) O efeito do taint em pods que não toleram o taint.
-**NoSchedule** - Não permitir que novos pods sejam agendados no nó, a menos que eles tolerem a taint, mas permitir que todos os pods já em execução continuem em execução.
-**PreferNoSchedule** - Parecido com o NoSchedule, mas tenta não agendar novos pods no nó, em vez de proibir totalmente o agendamento de novos pods no nó
-**NoExecute** - Remova todos os pods já em execução que não tolerem o taint.
-- `key` (String) A chave taint a ser aplicada ao node
-- `value` (String) O valor correspondente a chave taint.
+- `effect` (String) The effect of the taint on pods that do not tolerate the taint.
+- **NoSchedule**: Prevents new pods from being scheduled on the node, unless they tolerate the taint. Allows all existing pods to continue running.
+- **PreferNoSchedule**: Similar to NoSchedule, but attempts not to schedule new pods on the node, rather than completely prohibiting new pod scheduling on the node.
+- **NoExecute**: Removes all already running pods that do not tolerate the taint.
+- `key` (String) Key of the taint to be applied to the node.
+- `value` (String) Value corresponding to the taint key.
 
 
 
@@ -293,10 +273,10 @@ Read-Only:
 
 Read-Only:
 
-- `disable_api_server_fip` (Boolean) Habilita ou desabilita o uso do Floating IP no API Server
-- `fixed_ip` (String) IP fixo configurado para o Kubernetes API Server
-- `floating_ip` (String) Floating IP criado para o Kubernetes API Server
-- `port` (Number) Porta utilizada pelo Kubernetes API Server
+- `disable_api_server_fip` (Boolean) Enables or disables the use of Floating IP on the API Server.
+- `fixed_ip` (String) Fixed IP configured for the Kubernetes API Server.
+- `floating_ip` (String) Floating IP created for the Kubernetes API Server.
+- `port` (Number) Port used by the Kubernetes API Server.
 
 
 <a id="nestedatt--network"></a>
@@ -304,10 +284,10 @@ Read-Only:
 
 Read-Only:
 
-- `cidr` (String) Endereço de IP disponíveis que serão utilizados para provisionamento dos nós do cluster
-- `name` (String) Nome do node pool
-- `subnet_id` (String) Identificador da subnet interna onde o cluster será provisionado
-- `uuid` (String) Identificador no padrão uuid para identificar o nodepool
+- `cidr` (String) Available IP addresses used for provisioning nodes in the cluster.
+- `name` (String) Name of the node pool.
+- `subnet_id` (String) Identifier of the internal subnet where the cluster will be provisioned.
+- `uuid` (String) Nodepool's UUID.
 
 
 <a id="nestedatt--status"></a>
@@ -315,15 +295,10 @@ Read-Only:
 
 Read-Only:
 
-- `message` (String) Mensagem detalhada sobre o status do cluster ou node
-- `state` (String) Estado atual do cluster ou node.
-<table>
-  <tr>
-    <td>Cluster</td>
-    <td>Pending, Provisioning, Running, Provisioned, Terminating, Deleting, Failed</td>
-  </tr>
-  <tr>
-    <td>Node</td>
-    <td>Pending, Provisioning, Provisioned, Running, Deleting, Failed, Unknown</td>
-  </tr>
-</table>
+- `message` (String) Detailed message about the status of the cluster or node.
+- `state` (String) Current state of the cluster or node.
+
+| Component | Possible States                              |
+|-----------|---------------------------------------------|
+| Cluster   | Pending, Provisioning, Running, Provisioned, Terminating, Deleting, Failed |
+| Node      | Pending, Provisioning, Provisioned, Running, Deleting, Failed, Unknown   |

@@ -2,21 +2,20 @@ package config
 
 import (
 	"context"
-	"fmt"
 
 	"slices"
 
 	"github.com/jedib0t/go-pretty/v6/table"
-	"go.uber.org/zap"
 	"magalu.cloud/core"
-	mgcConfigPkg "magalu.cloud/core/config"
-	mgcSchemaPkg "magalu.cloud/core/schema"
 	mgcUtilsPkg "magalu.cloud/core/utils"
+	"magalu.cloud/sdk/static/config/common"
 )
 
-var listLogger = mgcUtilsPkg.NewLazyLoader(func() *zap.SugaredLogger {
-	return logger().Named("list")
-})
+type configInfo struct {
+	Name        string `json:"name"`
+	Type        string `json:"type"`
+	Description string `json:"description"`
+}
 
 func configListFormatter(exec core.Executor, result core.Result) string {
 	// it must be this, no need to check
@@ -24,7 +23,7 @@ func configListFormatter(exec core.Executor, result core.Result) string {
 	configMap := resultWithValue.Value().(map[string]any)
 
 	writer := table.NewWriter()
-	writer.AppendHeader(table.Row{"Config", "Type", "Description"})
+	writer.AppendHeader(table.Row{"Name", "Type", "Description"})
 
 	sortedKeys := make([]string, 0, len(configMap))
 	for k := range configMap {
@@ -33,8 +32,8 @@ func configListFormatter(exec core.Executor, result core.Result) string {
 	slices.Sort(sortedKeys)
 
 	for _, k := range sortedKeys {
-		schema := configMap[k].(map[string]any)
-		writer.AppendRow(table.Row{k, schema["type"], schema["description"]})
+		info := configMap[k].(map[string]any)
+		writer.AppendRow(table.Row{k, info["type"], info["description"]})
 	}
 
 	return writer.Render()
@@ -53,42 +52,20 @@ func newList() core.Executor {
 	return core.NewExecuteFormat(executor, configListFormatter)
 }
 
-func getAllConfigs(ctx context.Context) (map[string]*core.Schema, error) {
-	root := core.GrouperFromContext(ctx)
-	if root == nil {
-		return nil, fmt.Errorf("couldn't get Group from context")
-	}
-
-	config := mgcConfigPkg.FromContext(ctx)
-	if config == nil {
-		return nil, fmt.Errorf("couldn't get Config from context")
-	}
-
-	configMap, err := config.BuiltInConfigs()
-	if err != nil {
-		return nil, fmt.Errorf("unable to get built in configs: %w", err)
-	}
-
-	_, err = core.VisitAllExecutors(root, []string{}, false, func(executor core.Executor, path []string) (bool, error) {
-		for name, ref := range executor.ConfigsSchema().Properties {
-			current := (*core.Schema)(ref.Value)
-
-			if existing, ok := configMap[name]; ok {
-				if err := mgcSchemaPkg.CompareJsonSchemas(existing, current); err != nil {
-					listLogger().Warnw("unhandled diverging config", "config", name, "path", path, "current", current, "existing", existing, "error", err)
-				}
-
-				continue
-			}
-			configMap[name] = current
-		}
-
-		return true, nil
-	})
-
+func getAllConfigs(ctx context.Context) (map[string]configInfo, error) {
+	configSchemas, err := common.ListAllConfigSchemas(ctx)
 	if err != nil {
 		return nil, err
 	}
 
-	return configMap, nil
+	result := make(map[string]configInfo, len(configSchemas))
+	for name, schema := range configSchemas {
+		result[name] = configInfo{
+			Name:        name,
+			Type:        schema.Type,
+			Description: schema.Description,
+		}
+	}
+
+	return result, nil
 }

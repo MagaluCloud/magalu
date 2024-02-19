@@ -25,20 +25,14 @@ func copyAllLogger() *zap.SugaredLogger {
 }
 
 type CopyObjectParams struct {
-	Source      mgcSchemaPkg.URI `json:"src" jsonschema:"description=Path of the object to be copied,example=s3://bucket1/file.txt" mgc:"positional"`
-	Destination mgcSchemaPkg.URI `json:"dst" jsonschema:"description=Full destination path in the bucket with desired filename,example=s3://bucket2/dir/file.txt" mgc:"positional"`
+	Source      mgcSchemaPkg.URI `json:"src" jsonschema:"description=Path of the object in a bucket to be copied,example=bucket1/file.txt" mgc:"positional"`
+	Destination mgcSchemaPkg.URI `json:"dst" jsonschema:"description=Full destination path in the bucket with desired filename,example=bucket2/dir/file.txt" mgc:"positional"`
 }
 
 type CopyAllObjectsParams struct {
-	Source      mgcSchemaPkg.URI `json:"src" jsonschema:"description=Path of objects to be copied,example=s3://bucket1" mgc:"positional"`
-	Destination mgcSchemaPkg.URI `json:"dst" jsonschema:"description=Full destination path in the bucket,example=s3://bucket2/dir/" mgc:"positional"`
+	Source      mgcSchemaPkg.URI `json:"src" jsonschema:"description=Path of objects in a bucket to be copied,example=bucket1" mgc:"positional"`
+	Destination mgcSchemaPkg.URI `json:"dst" jsonschema:"description=Full destination path in the bucket,example=bucket2/dir/" mgc:"positional"`
 	Filters     `json:",squash"` // nolint
-}
-
-type copyAllProgressReport struct {
-	files uint64
-	total uint64
-	err   error
 }
 
 func newCopyRequest(ctx context.Context, cfg Config, src mgcSchemaPkg.URI, dst mgcSchemaPkg.URI) (*http.Request, error) {
@@ -62,15 +56,13 @@ func newCopyRequest(ctx context.Context, cfg Config, src mgcSchemaPkg.URI, dst m
 	return req, nil
 }
 
-func createObjectCopyProcessor(cfg Config, params CopyAllObjectsParams, reportChan chan<- copyAllProgressReport) pipeline.Processor[pipeline.WalkDirEntry, error] {
+func createObjectCopyProcessor(cfg Config, params CopyAllObjectsParams, progressReporter *progress_report.UnitsReporter) pipeline.Processor[pipeline.WalkDirEntry, error] {
 	return func(ctx context.Context, dirEntry pipeline.WalkDirEntry) (error, pipeline.ProcessStatus) {
 		bucketName := NewBucketNameFromURI(params.Source)
 		rootURI := bucketName.AsURI()
 		var err error
 
-		defer func() {
-			reportChan <- copyAllProgressReport{uint64(1), 0, err}
-		}()
+		defer progressReporter.Report(1, 0, err)
 
 		objURI := rootURI.JoinPath(dirEntry.Path())
 
@@ -101,6 +93,9 @@ func createObjectCopyProcessor(cfg Config, params CopyAllObjectsParams, reportCh
 }
 
 func CopyMultipleFiles(ctx context.Context, cfg Config, params CopyAllObjectsParams) error {
+	ctx, cancel := context.WithCancelCause(ctx)
+	defer cancel(nil)
+
 	listParams := ListObjectsParams{
 		Destination: params.Source,
 		Recursive:   true,
@@ -108,25 +103,28 @@ func CopyMultipleFiles(ctx context.Context, cfg Config, params CopyAllObjectsPar
 			MaxItems: math.MaxInt64,
 		},
 	}
-
-	reportProgress := progress_report.FromContext(ctx)
-	reportChan := make(chan copyAllProgressReport)
-	defer close(reportChan)
+	progressReportMsg := fmt.Sprintf("Copying objects from %q to %q", params.Source, params.Destination)
+	progressReporter := progress_report.NewUnitsReporter(ctx, progressReportMsg, 0)
+	progressReporter.Start()
+	defer progressReporter.End()
 
 	onNewPage := func(objCount uint64) {
-		reportChan <- copyAllProgressReport{0, objCount, nil}
+		progressReporter.Report(0, objCount, nil)
 	}
 
 	objs := ListGenerator(ctx, listParams, cfg, onNewPage)
-	objs = ApplyFilters(ctx, objs, params.FilterParams, nil)
+	objs = ApplyFilters(ctx, objs, params.FilterParams, cancel)
 
-	go reportCopyAllProgress(reportProgress, reportChan, params)
-
-	copyObjectsErrorChan := pipeline.ParallelProcess(ctx, cfg.Workers, objs, createObjectCopyProcessor(cfg, params, reportChan), nil)
+	copyObjectsErrorChan := pipeline.ParallelProcess(ctx, cfg.Workers, objs, createObjectCopyProcessor(cfg, params, progressReporter), nil)
 	copyObjectsErrorChan = pipeline.Filter(ctx, copyObjectsErrorChan, pipeline.FilterNonNil[error]{})
 
-	objErr, _ := pipeline.SliceItemConsumer[utils.MultiError](ctx, copyObjectsErrorChan)
+	objErr, err := pipeline.SliceItemConsumer[utils.MultiError](ctx, copyObjectsErrorChan)
+	if err != nil {
+		progressReporter.Report(0, 0, err)
+		return err
+	}
 	if len(objErr) > 0 {
+		progressReporter.Report(0, 0, objErr)
 		return objErr
 	}
 
@@ -134,55 +132,19 @@ func CopyMultipleFiles(ctx context.Context, cfg Config, params CopyAllObjectsPar
 }
 
 func CopySingleFile(ctx context.Context, cfg Config, src mgcSchemaPkg.URI, dst mgcSchemaPkg.URI) error {
-	reportProgress := progress_report.FromContext(ctx)
-	reportMsg := "Copying object from " + src.String() + " to " + dst.String()
-	progress := uint64(0)
-	total := uint64(1)
-
-	reportProgress(reportMsg, progress, progress, progress_report.UnitsNone, nil)
+	if dst.IsRoot() {
+		dst = dst.JoinPath(src.Filename())
+	}
 
 	req, err := newCopyRequest(ctx, cfg, src, dst)
 	if err != nil {
-		reportProgress(reportMsg, progress, progress, progress_report.UnitsNone, err)
 		return err
 	}
 
 	resp, err := SendRequest(ctx, req)
 	if err != nil {
-		reportProgress(reportMsg, progress, progress, progress_report.UnitsNone, err)
 		return err
 	}
 
-	reportProgress(reportMsg, total, total, progress_report.UnitsNone, progress_report.ErrorProgressDone)
-
 	return ExtractErr(resp, req)
-}
-
-func reportCopyAllProgress(reportProgress progress_report.ReportProgress, reportChan <-chan copyAllProgressReport, params CopyAllObjectsParams) {
-	reportMsg := "copying objects from bucket: " + params.Source.String()
-	total := uint64(1)
-	progress := uint64(0)
-
-	// total here must be reported as one, otherwise the progress-bar shows
-	// an animation we do not wish the user to see
-	reportProgress(reportMsg, progress, total, progress_report.UnitsNone, nil)
-
-	var errors utils.MultiError
-	for report := range reportChan {
-		progress += report.files
-		total += report.total
-
-		if report.err != nil {
-			errors = append(errors, report.err)
-		}
-
-		reportProgress(reportMsg, progress, total, progress_report.UnitsNone, nil)
-	}
-
-	if len(errors) > 0 {
-		reportProgress(reportMsg, progress, total, progress_report.UnitsNone, errors)
-		return
-	}
-
-	reportProgress(reportMsg, total, total, progress_report.UnitsNone, progress_report.ErrorProgressDone)
 }

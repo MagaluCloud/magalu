@@ -87,6 +87,19 @@ func handleExecutor(
 			return nil, core.UserDeniedConfirmationError{Prompt: msg}
 		}
 	}
+	if pExec, ok := core.ExecutorAs[core.PromptInputExecutor](exec); ok && !getBypassConfirmationFlag(cmd) {
+		msg, validate := pExec.PromptInput(parameters, configs)
+
+		input, err := ui.RunPromptInput(msg)
+		if err != nil {
+			return nil, err
+		}
+
+		err = validate(input)
+		if err != nil {
+			return nil, err
+		}
+	}
 
 	if t := getTimeoutFlag(cmd); t > 0 {
 		var cancel context.CancelFunc

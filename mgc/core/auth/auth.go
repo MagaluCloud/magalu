@@ -157,8 +157,8 @@ func (s ScopesString) AsScopes() Scopes {
 
 type accessTokenClaims struct {
 	jwt.RegisteredClaims
-	TenantIDGenPub string       `json:"tenant"`
-	ScopesStr      ScopesString `json:"scope"`
+	TenantIDWithType string       `json:"tenant"`
+	ScopesStr        ScopesString `json:"scope"`
 }
 
 type FailedRefreshAccessToken struct {
@@ -204,9 +204,7 @@ func (a *Auth) GetConfig() Config {
 
 	c, ok := a.configMap[env]
 	if !ok {
-		logger().Debugw(
-			"getConfig couldn't find a valid config to the env", env,
-		)
+		logger().Debugw("getConfig couldn't find a valid config to the env", "env", env)
 		return a.configMap["default"]
 	}
 	return c
@@ -268,19 +266,24 @@ func (o *Auth) CurrentTenantID() (string, error) {
 		return "", err
 	}
 
-	tenantId := strings.TrimPrefix(claims.TenantIDGenPub, "GENPUB.")
+	tenantId := claims.TenantIDWithType
+	// Dot is a separator, Tenant will be <TenantType>.<ID>. We only want the ID
+	if dotIndex := strings.Index(tenantId, "."); dotIndex != -1 {
+		tenantId = tenantId[dotIndex+1:]
+	}
 	return tenantId, nil
 }
 
-func (o *Auth) CurrentTenant(ctx context.Context) (*Tenant, error) {
+func (o *Auth) CurrentTenant(ctx context.Context, httpClient *http.Client) (*Tenant, error) {
 	currentTenantId, err := o.CurrentTenantID()
 	if err != nil {
 		return nil, err
 	}
 
-	tenants, err := o.ListTenants(ctx)
+	tenants, err := o.ListTenants(ctx, httpClient)
 	if err != nil || len(tenants) == 0 {
-		return nil, fmt.Errorf("error when trying to list tenants for selection: %w", err)
+		logger().Warnw("Failed to get detailed info about Tenant, returning only ID", "err", err)
+		return &Tenant{UUID: currentTenantId}, nil
 	}
 
 	for _, tenant := range tenants {
@@ -289,7 +292,12 @@ func (o *Auth) CurrentTenant(ctx context.Context) (*Tenant, error) {
 		}
 	}
 
-	return nil, fmt.Errorf("unable to find Tenant in Tenant list that matches the current Tenant ID")
+	logger().Warnw(
+		"Tenant ID present in Access Token is not present in the list of Tenants",
+		"id", currentTenantId,
+		"allTenants", tenants,
+	)
+	return nil, fmt.Errorf("unable to find Tenant in Tenant list that matches the current Tenant ID - %s", currentTenantId)
 }
 
 func (o *Auth) CurrentScopesString() (ScopesString, error) {
@@ -553,7 +561,7 @@ func (o *Auth) writeConfigFile(result *ConfigResult) error {
 	return o.profileManager.Current().Write(authFilename, yamlData)
 }
 
-func (o *Auth) ListTenants(ctx context.Context) ([]*Tenant, error) {
+func (o *Auth) ListTenants(ctx context.Context, httpClient *http.Client) ([]*Tenant, error) {
 	at, err := o.AccessToken(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("unable to get current access token. Did you forget to log in?")
@@ -566,7 +574,7 @@ func (o *Auth) ListTenants(ctx context.Context) ([]*Tenant, error) {
 	r.Header.Set("Authorization", "Bearer "+at)
 	r.Header.Set("Content-Type", "application/json")
 
-	resp, err := o.httpClient.Do(r)
+	resp, err := httpClient.Do(r)
 	if err != nil {
 		return nil, err
 	}
@@ -597,7 +605,7 @@ func (o *Auth) SelectTenant(ctx context.Context, id string) (*TokenExchangeResul
 	return o.runTokenExchange(ctx, at, id, scopes, o.httpClient)
 }
 
-func (o *Auth) SetScopes(ctx context.Context, scopes Scopes, client http.Client) (*TokenExchangeResult, error) {
+func (o *Auth) SetScopes(ctx context.Context, scopes Scopes, client *http.Client) (*TokenExchangeResult, error) {
 	at, err := o.AccessToken(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("unable to get current access token: %w. Did you forget to log in?", err)
@@ -607,7 +615,7 @@ func (o *Auth) SetScopes(ctx context.Context, scopes Scopes, client http.Client)
 	if err != nil {
 		return nil, fmt.Errorf("unable to get current tenant ID: %w", err)
 	}
-	return o.runTokenExchange(ctx, at, currentTenantId, scopes.AsScopesString(), &client)
+	return o.runTokenExchange(ctx, at, currentTenantId, scopes.AsScopesString(), client)
 }
 
 func (o *Auth) runTokenExchange(ctx context.Context, currentAt string, tenantId string, scopes ScopesString, client *http.Client) (*TokenExchangeResult, error) {

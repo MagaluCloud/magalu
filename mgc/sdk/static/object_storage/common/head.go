@@ -9,7 +9,7 @@ import (
 	mgcSchemaPkg "magalu.cloud/core/schema"
 )
 
-type headObjectRequestResponse struct {
+type HeadObjectResponse struct {
 	AcceptRanges  string
 	LastModified  string
 	ContentLength int64
@@ -25,7 +25,7 @@ func newHeadRequest(ctx context.Context, cfg Config, dst mgcSchemaPkg.URI) (*htt
 	return http.NewRequestWithContext(ctx, http.MethodHead, string(host), nil)
 }
 
-func HeadFile(ctx context.Context, cfg Config, dst mgcSchemaPkg.URI) (metadata headObjectRequestResponse, err error) {
+func HeadFile(ctx context.Context, cfg Config, dst mgcSchemaPkg.URI) (metadata HeadObjectResponse, err error) {
 	req, err := newHeadRequest(ctx, cfg, dst)
 	if err != nil {
 		return
@@ -57,13 +57,13 @@ func parseContentLength(contentLenght string) (int64, error) {
 	return value, nil
 }
 
-func getMetadataFromResponse(resp *http.Response) (headObjectRequestResponse, error) {
+func getMetadataFromResponse(resp *http.Response) (HeadObjectResponse, error) {
 	contentLength, err := parseContentLength(resp.Header.Get("Content-Length"))
 	if err != nil {
-		return headObjectRequestResponse{}, err
+		return HeadObjectResponse{}, err
 	}
 
-	metadata := headObjectRequestResponse{
+	metadata := HeadObjectResponse{
 		AcceptRanges:  resp.Header.Get("Accept-Ranges"),
 		LastModified:  resp.Header.Get("Last-Modified"),
 		ContentLength: contentLength,

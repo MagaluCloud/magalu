@@ -12,17 +12,12 @@ import (
 	"magalu.cloud/core/utils"
 )
 
-type downloadPartsProgressReport struct {
-	bytes uint64
-	err   error
-}
-
 type bigFileDownloader struct {
-	cfg        Config
-	src        mgcSchemaPkg.URI
-	dst        mgcSchemaPkg.FilePath
-	fileSize   int64
-	reportChan chan downloadPartsProgressReport
+	cfg              Config
+	src              mgcSchemaPkg.URI
+	dst              mgcSchemaPkg.FilePath
+	fileSize         int64
+	progressReporter *progress_report.BytesReporter
 }
 
 func (u *bigFileDownloader) createPartDownloaderProcessor(cancel context.CancelCauseFunc, cfg Config) pipeline.Processor[pipeline.WriteableChunk, error] {
@@ -48,9 +43,7 @@ func (u *bigFileDownloader) createPartDownloaderProcessor(cancel context.CancelC
 			return err, pipeline.ProcessAbort
 		}
 
-		reporterWriter := progress_report.NewReporterWriter(chunk.Writer, func(n int, err error) {
-			u.reportChan <- downloadPartsProgressReport{bytes: uint64(n), err: err}
-		})
+		reporterWriter := progress_report.NewReporterWriter(chunk.Writer, u.progressReporter.Report)
 
 		_, err = io.Copy(reporterWriter, resp.Body)
 		if err != nil {
@@ -62,11 +55,9 @@ func (u *bigFileDownloader) createPartDownloaderProcessor(cancel context.CancelC
 }
 
 func (u *bigFileDownloader) Download(ctx context.Context) error {
-	reportProgress := progress_report.FromContext(ctx)
-	u.reportChan = make(chan downloadPartsProgressReport)
-	defer close(u.reportChan)
-
-	go downloadPartsProgressReportSubroutine(reportProgress, u.reportChan, u.src.String(), u.fileSize)
+	u.progressReporter = progress_report.NewBytesReporter(ctx, fmt.Sprintf("Downloading %q", u.src), uint64(u.fileSize))
+	u.progressReporter.Start()
+	defer u.progressReporter.End()
 
 	ctx, cancel := context.WithCancelCause(ctx)
 	defer cancel(nil)
@@ -87,31 +78,4 @@ func (u *bigFileDownloader) Download(ctx context.Context) error {
 	}
 
 	return nil
-}
-
-func downloadPartsProgressReportSubroutine(
-	reportProgress progress_report.ReportProgress,
-	reportChan <-chan downloadPartsProgressReport,
-	name string,
-	contentLength int64,
-) {
-	total := uint64(contentLength)
-	bytesDone := uint64(0)
-
-	reportProgress(name, bytesDone, total, progress_report.UnitsBytes, nil)
-
-	var err error
-
-	for report := range reportChan {
-		bytesDone += report.bytes
-		if report.err != nil {
-			err = report.err
-		}
-		reportProgress(name, bytesDone, total, progress_report.UnitsBytes, nil)
-	}
-	if err == nil {
-		err = progress_report.ErrorProgressDone
-	}
-
-	reportProgress(name, bytesDone, total, progress_report.UnitsBytes, err)
 }

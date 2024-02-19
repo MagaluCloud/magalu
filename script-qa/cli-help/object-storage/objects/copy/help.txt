@@ -1,15 +1,15 @@
-Copy an object from a bucket to another
+Copy an object from a bucket to another bucket
 
 Usage:
   ./cli object-storage objects copy [src] [dst] [flags]
 
 Examples:
-  ./cli object-storage objects copy --dst="s3://bucket2/dir/file.txt" --src="s3://bucket1/file.txt"
+  ./cli object-storage objects copy --dst="bucket2/dir/file.txt" --src="bucket1/file.txt"
 
 Flags:
       --dst uri   Full destination path in the bucket with desired filename (required)
   -h, --help      help for copy
-      --src uri   Path of the object to be copied (required)
+      --src uri   Path of the object in a bucket to be copied (required)
 
 Global Flags:
       --cli.show-cli-globals   Show all CLI global flags on usage text

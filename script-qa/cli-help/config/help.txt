@@ -10,6 +10,7 @@ Usage:
 Commands:
   delete      Delete/unset a Config value that had been previously set
   get         Get a specific Config value that has been previously set
+  get-schema  Get the JSON Schema for the specified Config
   list        List all available Configs
   set         Set a specific Config value in the configuration file
 

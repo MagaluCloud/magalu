@@ -164,3 +164,35 @@ var _ Executor = (*linkConfirmableExecutor)(nil)
 var _ LinkExecutor = (*linkConfirmableExecutor)(nil)
 var _ ConfirmableExecutor = (*linkConfirmableExecutor)(nil)
 var _ ExecutorWrapper = (*linkConfirmableExecutor)(nil)
+
+type linkPromptInputExecutor struct {
+	LinkExecutor
+	pExec PromptInputExecutor
+}
+
+func NewLinkPromptInputExecutor(linkExecutor LinkExecutor) *linkPromptInputExecutor {
+	tConfirm, ok := ExecutorAs[PromptInputExecutor](linkExecutor)
+	if !ok {
+		panic("linkExecutor target must implement PromptInputExecutor")
+	}
+	return &linkPromptInputExecutor{linkExecutor, tConfirm}
+}
+
+func (l *linkPromptInputExecutor) Execute(ctx context.Context, parameters Parameters, configs Configs) (result Result, err error) {
+	r, e := l.LinkExecutor.Execute(ctx, parameters, configs)
+	return ExecutorWrapResult(l, r, e)
+}
+
+func (l *linkPromptInputExecutor) PromptInput(parameters Parameters, configs Configs) (message string, validate func(input string) error) {
+	p, c := l.extendParametersAndConfigs(parameters, configs)
+	return l.pExec.PromptInput(p, c)
+}
+
+func (l *linkPromptInputExecutor) Unwrap() Executor {
+	return l.LinkExecutor
+}
+
+var _ Executor = (*linkPromptInputExecutor)(nil)
+var _ LinkExecutor = (*linkPromptInputExecutor)(nil)
+var _ PromptInputExecutor = (*linkPromptInputExecutor)(nil)
+var _ ExecutorWrapper = (*linkPromptInputExecutor)(nil)

@@ -71,7 +71,7 @@ func add(ctx context.Context, params addParameters, _ struct{}) (auth.Scopes, er
 	currentScopes.Add(params.Scopes...)
 
 	addLogger().Debugw("will call token exchange with new scopes", "scopes", currentScopes)
-	_, err = a.SetScopes(ctx, currentScopes, httpClient.Client)
+	_, err = a.SetScopes(ctx, currentScopes, &httpClient.Client)
 	if err != nil {
 		addLogger().Warnw("token exchange failed", "scopes", currentScopes, "err", err)
 		return nil, err

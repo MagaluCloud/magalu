@@ -4,7 +4,7 @@ Usage:
   ./cli object-storage objects list [dst] [flags]
 
 Examples:
-  ./cli object-storage objects list --dst="s3://bucket1" --max-items=1000
+  ./cli object-storage objects list --dst="bucket1" --max-items=1000
 
 Flags:
       --continuation-token string   Token of result page to continue from

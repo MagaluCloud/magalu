@@ -8,6 +8,7 @@ import (
 	"magalu.cloud/core"
 	mgcConfigPkg "magalu.cloud/core/config"
 	"magalu.cloud/core/utils"
+	"magalu.cloud/sdk/static/config/common"
 )
 
 type configSetParams struct {
@@ -29,7 +30,7 @@ func newSet() core.Executor {
 				return nil, fmt.Errorf("unable to retrieve system configuration")
 			}
 
-			allConfigs, err := getAllConfigs(ctx)
+			allConfigs, err := common.ListAllConfigSchemas(ctx)
 			if err != nil {
 				return nil, fmt.Errorf("error when getting possible configs: %w", err)
 			}

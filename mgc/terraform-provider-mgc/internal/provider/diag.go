@@ -19,6 +19,10 @@ func (d *Diagnostics) AddError(summary, detail string) {
 	d.Append(NewErrorDiagnostic(summary, detail))
 }
 
+func (d *Diagnostics) AddLocalError(summary, detail string) {
+	d.Append(NewLocalErrorDiagnostic(summary, detail))
+}
+
 func (d *Diagnostics) AddAttributeError(path path.Path, summary, detail string) {
 	(*diag.Diagnostics)(d).AddAttributeError(path, summary, detail)
 }

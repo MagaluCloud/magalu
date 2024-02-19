@@ -134,4 +134,14 @@ func (l *linker) CreateExecutor(originalResult core.Result) (target core.Executo
 	return exec, nil
 }
 
+func (l *linker) IsTargetTerminatorExecutor() bool {
+	if l.spec.WaitTermination != nil {
+		return true
+	}
+	if _, isTerminator := core.ExecutorAs[core.TerminatorExecutor](l.spec.executor); isTerminator {
+		return true
+	}
+	return false
+}
+
 var _ core.Linker = (*linker)(nil)

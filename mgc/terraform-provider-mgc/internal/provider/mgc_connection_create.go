@@ -43,7 +43,7 @@ func (o *MgcConnectionCreate) WrapConext(ctx context.Context) context.Context {
 }
 
 func (o *MgcConnectionCreate) CollectParameters(ctx context.Context, _, plan TerraformParams) (core.Parameters, Diagnostics) {
-	return loadMgcParamsFromState(ctx, o.createConnection.ParametersSchema(), o.attrTree, plan)
+	return loadMgcParamsFromState(ctx, o.createConnection.ParametersSchema(), o.attrTree.createInput, plan)
 }
 
 func (o *MgcConnectionCreate) CollectConfigs(ctx context.Context, _, _ TerraformParams) (core.Configs, Diagnostics) {
@@ -58,33 +58,34 @@ func (o *MgcConnectionCreate) Run(ctx context.Context, params core.Parameters, c
 	return execute(ctx, o.resourceName, o.createConnection, params, configs)
 }
 
-func (o *MgcConnectionCreate) PostRun(ctx context.Context, createResult core.ResultWithValue, state, plan TerraformParams, targetState *tfsdk.State) (core.ResultWithValue, bool, Diagnostics) {
+func (o *MgcConnectionCreate) PostRun(ctx context.Context, createResult core.ResultWithValue, state, plan TerraformParams, targetState *tfsdk.State) (runChain bool, diagnostics Diagnostics) {
 	tflog.Info(ctx, "connection created")
-	diagnostics := Diagnostics{}
+	diagnostics = Diagnostics{}
 
 	createResultEncoded, err := createResult.Encode()
 	if err != nil {
-		diagnostics.AddError(
+		return true, diagnostics.AppendErrorReturn(
 			"failure to encode connection resource creation result",
 			"Terraform wasn't able to encode the result of the creation process to save in its state. Creation was successful, but resource will be deleted, try again.",
 		)
-		return createResult, false, diagnostics
 	}
 
 	tflog.Debug(ctx, "about to store private creation result", map[string]any{"encoded result": createResultEncoded})
 
 	diag := o.setPrivateStateKey(ctx, createResultKey, createResultEncoded)
-	diagnostics.Append(diag...)
-
-	readResult, _, d := applyStateAfter(ctx, o.resourceName, o.attrTree, createResult, nil, targetState)
-	if diagnostics.AppendCheckError(d...) {
-		return nil, true, diagnostics
+	if diagnostics.AppendCheckError(diag...) {
+		return true, diagnostics
 	}
 
-	return readResult, !diagnostics.HasError(), d
+	d := applyStateAfter(ctx, o.resourceName, o.attrTree, createResult, targetState)
+	if diagnostics.AppendCheckError(d...) {
+		return true, diagnostics
+	}
+
+	return true, diagnostics
 }
 
-func (o *MgcConnectionCreate) ChainOperations(ctx context.Context, createResult core.ResultWithValue, _ ReadResult, state, plan TerraformParams) ([]MgcOperation, bool, Diagnostics) {
+func (o *MgcConnectionCreate) ChainOperations(ctx context.Context, createResult core.ResultWithValue, state, plan TerraformParams) ([]MgcOperation, bool, Diagnostics) {
 	diagnostics := Diagnostics{}
 
 	createResultData, d := o.getPrivateStateKey(ctx, createResultKey)
@@ -93,7 +94,7 @@ func (o *MgcConnectionCreate) ChainOperations(ctx context.Context, createResult 
 		if err != nil {
 			return nil, false, diagnostics.AppendErrorReturn(
 				"unable to delete broken connection",
-				"unable to delete broken connection, server state will be out of state with Terraform",
+				"unable to delete broken connection, server state will be out of sync with Terraform",
 			)
 		}
 		deleteOperation := newMgcConnectionDelete(

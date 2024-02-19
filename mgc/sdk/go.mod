@@ -11,6 +11,7 @@ require (
 	github.com/invopop/yaml v0.1.0
 	github.com/jedib0t/go-pretty/v6 v6.4.8
 	github.com/pkg/browser v0.0.0-20210911075715-681adbf594b8
+	github.com/skip2/go-qrcode v0.0.0-20200617195104-da1b6568686e
 	github.com/stoewer/go-strcase v1.3.0
 	go.uber.org/zap v1.25.0
 	golang.org/x/exp v0.0.0-20230817173708-d852ddb80c63

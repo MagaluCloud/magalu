@@ -7,6 +7,7 @@ import (
 
 	"magalu.cloud/core"
 	"magalu.cloud/core/pipeline"
+	"magalu.cloud/core/progress_report"
 	mgcSchemaPkg "magalu.cloud/core/schema"
 	"magalu.cloud/core/utils"
 	"magalu.cloud/sdk/static/object_storage/common"
@@ -14,7 +15,7 @@ import (
 
 type uploadDirParams struct {
 	Source         mgcSchemaPkg.DirPath `json:"src" jsonschema:"description=Source directory path for upload,example=path/to/folder" mgc:"positional"`
-	Destination    mgcSchemaPkg.URI     `json:"dst" jsonschema:"description=Full destination path in the bucket,example=s3://my-bucket/dir/" mgc:"positional"`
+	Destination    mgcSchemaPkg.URI     `json:"dst" jsonschema:"description=Full destination path in the bucket,example=my-bucket/dir/" mgc:"positional"`
 	common.Filters `json:",squash"`     // nolint
 }
 
@@ -65,22 +66,37 @@ func createObjectUploadProcessor(cfg common.Config, destination mgcSchemaPkg.URI
 }
 
 func uploadDir(ctx context.Context, params uploadDirParams, cfg common.Config) (*uploadDirResult, error) {
+	ctx, cancel := context.WithCancelCause(ctx)
+	defer cancel(nil)
+
 	if params.Source.String() == "" {
 		return nil, core.UsageError{Err: fmt.Errorf("source cannot be empty")}
 	}
+
+	progressReportMsg := "Uploading directory: " + params.Source.String()
+	progressReporter := progress_report.NewUnitsReporter(ctx, progressReportMsg, 1)
+	progressReporter.Start()
+	defer progressReporter.End()
 
 	entries := pipeline.WalkDirEntries(ctx, params.Source.String(), func(path string, d fs.DirEntry, err error) error {
 		return err
 	})
 
-	entries = common.ApplyFilters(ctx, entries, params.FilterParams, nil)
+	entries = common.ApplyFilters(ctx, entries, params.FilterParams, cancel)
 	uploadObjectsErrorChan := pipeline.ParallelProcess(ctx, cfg.Workers, entries, createObjectUploadProcessor(cfg, params.Destination), nil)
 	uploadObjectsErrorChan = pipeline.Filter(ctx, uploadObjectsErrorChan, pipeline.FilterNonNil[error]{})
 
-	objErr, _ := pipeline.SliceItemConsumer[utils.MultiError](ctx, uploadObjectsErrorChan)
+	objErr, err := pipeline.SliceItemConsumer[utils.MultiError](ctx, uploadObjectsErrorChan)
+	if err != nil {
+		progressReporter.Report(0, 0, err)
+		return nil, err
+	}
 	if len(objErr) > 0 {
+		progressReporter.Report(0, 0, objErr)
 		return nil, objErr
 	}
+
+	progressReporter.Report(1, 1, nil)
 
 	return &uploadDirResult{
 		URI: params.Destination.String(),

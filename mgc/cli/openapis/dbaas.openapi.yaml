@@ -294,7 +294,7 @@ paths:
                             operationId: instances_v1_resize
                             description: Resizes a database instance.
                             parameters:
-                                instance_id: $request.path.id
+                                instance_id: $request.path.instance_id
                             x-mgc-hidden: true
                         update/status/ACTIVE:
                             operationId: instances_v1_start
@@ -464,7 +464,7 @@ paths:
                             x-mgc-wait-termination:
                                 maxRetries: 20
                                 interval: 10s
-                                jsonPathQuery: $.result.flavor_id == $.owner.parameters.flavor_id
+                                jsonPathQuery: $.result.volume.size == $.owner.parameters.volume.size
                         update:
                             operationId: instances_v1_patch
                             description: Updates a database instance.

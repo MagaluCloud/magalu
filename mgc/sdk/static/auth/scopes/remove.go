@@ -63,7 +63,7 @@ func remove(ctx context.Context, params removeParameters, _ struct{}) (auth.Scop
 	currentScopes.Remove(params.Scopes...)
 
 	removeLogger().Debugw("will call token exchange with new scopes", "scopes", currentScopes)
-	_, err = a.SetScopes(ctx, currentScopes, httpClient.Client)
+	_, err = a.SetScopes(ctx, currentScopes, &httpClient.Client)
 	if err != nil {
 		addLogger().Warnw("token exchange failed", "scopes", currentScopes, "err", err)
 		return nil, err

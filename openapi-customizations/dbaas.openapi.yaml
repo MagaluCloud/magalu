@@ -115,7 +115,7 @@ paths:
                           x-mgc-wait-termination:
                               maxRetries: 20
                               interval: 10s
-                              jsonPathQuery: $.result.flavor_id == $.owner.parameters.flavor_id
+                              jsonPathQuery: $.result.volume.size == $.owner.parameters.volume.size
             x-mgc-name: resize
     /v1/instances/{instance_id}/start:
         post:

@@ -242,6 +242,7 @@ type columnConfig struct {
 
 type column struct {
 	Name     string
+	Parents  []string // if provided, multiple header lines will be created merging these
 	JSONPath string
 	Config   *columnConfig
 }
@@ -383,52 +384,67 @@ func columnsFromArrayOrSlice(v reflect.Value, prefix string) ([]*column, error) 
 	return columnsFromAny(subVal.Interface(), prefix+"[*]")
 }
 
-func columnsFromMap(v reflect.Value, prefix string) ([]*column, error) {
-	length := v.Len()
+type columnGroup struct {
+	name    string
+	columns []*column
+}
+
+func columnsFromMap(v reflect.Value, prefix string) (result []*column, err error) {
 	keys := v.MapKeys()
 
-	// Check for prefix because we don't want the nesting to be deep, only one level
-	if length == 1 && prefix == "$" {
-		key := keys[0]
+	var columnGroups []*columnGroup
+	columnCount := 0
+
+	for _, key := range keys {
 		if key.Kind() == reflect.String {
 			subVal := v.MapIndex(key)
 			subKind := concreteKind(subVal)
+			name := strings.ToUpper(key.String())
+			jsonPath := fmt.Sprintf("%s[%q]", prefix, key)
 
+			var columns []*column
 			switch subKind {
 			case reflect.Array, reflect.Slice:
-				// {
-				//     "resultList": [
-				//         { "field1": 1, "field2", 2 },
-				//         { "field1": 3, "field2", 4 },
-				//     ]
-				// }
-				return columnsFromAny(subVal.Interface(), fmt.Sprintf("%s[%q]", prefix, key))
+				columns, err = columnsFromAny(subVal.Interface(), jsonPath)
+
 			case reflect.Map:
-				// {
-				//     "result": {
-				//         "field1": 1,
-				//         "field2": 2,
-				//     }
-				// }
-				return columnsFromAny(subVal.Interface(), fmt.Sprintf("%s[%q]", prefix, key))
+				columns, err = columnsFromAny(subVal.Interface(), jsonPath)
+
+			default:
+				columns = []*column{{Name: name, JSONPath: jsonPath}}
+			}
+
+			if err != nil {
+				return
+			}
+			columnCount += len(columns)
+			columnGroups = append(columnGroups, &columnGroup{name: name, columns: columns})
+		}
+	}
+
+	if len(columnGroups) == 1 {
+		result = columnGroups[0].columns
+		return
+	}
+	slices.SortFunc(columnGroups, func(l, r *columnGroup) int {
+		return strings.Compare(l.name, r.name)
+	})
+
+	result = make([]*column, 0, columnCount)
+	for _, group := range columnGroups {
+		if len(group.columns) == 1 && group.name == group.columns[0].Name {
+			// NOTE: checking group.name and column.Name avoids replicated header lines
+			// but will keep 2 lines in case of "MACHINE" and "ID".
+			// If one want to avoid such, remove this conditional.
+			result = append(result, group.columns[0])
+		} else {
+			for _, c := range group.columns {
+				c.Parents = append(c.Parents, group.name)
+				result = append(result, c)
 			}
 		}
 	}
-	// {
-	//     "field1": 1,
-	//     "field2": 2,
-	// }
-	result := make([]*column, len(keys))
-	for i, key := range keys {
-		keyStr := key.String()
-		result[i] = &column{
-			Name:     strings.ToUpper(keyStr),
-			JSONPath: fmt.Sprintf("%s[%q]", prefix, keyStr),
-		}
-	}
-	slices.SortFunc(result, func(l *column, r *column) int {
-		return strings.Compare(l.Name, r.Name)
-	})
+
 	return result, nil
 }
 
@@ -507,7 +523,7 @@ func columnsFromString(str string) ([]*column, error) {
 		name := parts[0]
 		jsonPath := parts[1]
 
-		result = append(result, &column{name, jsonPath, nil})
+		result = append(result, &column{Name: name, JSONPath: jsonPath})
 	}
 	return result, nil
 }
@@ -531,19 +547,39 @@ func configureWriter(w table.Writer, options *tableOptions) {
 	}
 }
 
-func buildTableHorizontally(writer table.Writer, val any, options *tableOptions) error {
-	columnCount := len(options.Columns)
-	headers := make(table.Row, columnCount)
-	isHeaderValid := false
-	for i, col := range options.Columns {
-		headers[i] = col.Name
+func getHeadersCount(options *tableOptions) int {
+	headersCount := 0
+	for _, col := range options.Columns {
+		requiredColumHeaderLines := len(col.Parents)
 		if col.Name != "" {
-			isHeaderValid = true
+			requiredColumHeaderLines += 1
+		}
+
+		if headersCount < requiredColumHeaderLines {
+			headersCount = requiredColumHeaderLines
 		}
 	}
+	return headersCount
+}
 
-	if isHeaderValid {
-		writer.AppendHeader(headers)
+func buildTableHorizontally(writer table.Writer, val any, options *tableOptions) error {
+	columnCount := len(options.Columns)
+	headersCount := getHeadersCount(options)
+
+	for headerIdx := 0; headerIdx < headersCount; headerIdx++ {
+		headers := make(table.Row, columnCount)
+		config := table.RowConfig{}
+		for i, col := range options.Columns {
+			if headerIdx < len(col.Parents) {
+				headers[i] = col.Parents[headerIdx]
+				config.AutoMerge = true
+			} else if headerIdx == len(col.Parents) {
+				headers[i] = col.Name
+			} else {
+				headers[i] = ""
+			}
+		}
+		writer.AppendHeader(headers, config)
 	}
 	configureWriter(writer, options)
 
@@ -639,6 +675,15 @@ func buildSubTable(val any, parentOpts *tableOptions) (result string, err error)
 
 func buildTableVertically(tw table.Writer, val any, options *tableOptions) error {
 	configureWriter(tw, options)
+	headersCount := getHeadersCount(options)
+
+	if headersCount > 1 {
+		configs := make([]table.ColumnConfig, headersCount-1)
+		for headersIdx := 0; headersIdx < headersCount-1; headersIdx++ {
+			configs[headersIdx] = table.ColumnConfig{Number: headersIdx + 1, AutoMerge: true}
+		}
+		tw.SetColumnConfigs(configs)
+	}
 
 	for _, col := range options.Columns {
 		value, err := utils.GetJsonPath(col.JSONPath, val)
@@ -646,23 +691,35 @@ func buildTableVertically(tw table.Writer, val any, options *tableOptions) error
 			return err
 		}
 
+		config := table.RowConfig{AutoMergeAlign: text.AlignLeft}
+		row := make(table.Row, 0, headersCount+1)
+		for headersIdx := 0; headersIdx < headersCount; headersIdx++ {
+			if headersIdx < len(col.Parents) {
+				row = append(row, col.Parents[headersIdx])
+			} else {
+				row = append(row, col.Name)
+				config.AutoMerge = true
+			}
+		}
+
 		switch value := value.(type) {
 		case bool, *bool, int, *int, int8, *int8, int16, *int16, int32, *int32, int64, *int64, uint, *uint, uint8, *uint8, uint16, *uint16, uint32, *uint32, uint64, *uint64, float32, *float32, string, *string:
-			tw.AppendRow(table.Row{col.Name, value})
+			row = append(row, value)
 		case map[string]any, []any:
 			subTable, err := buildSubTable(value, options)
 			if err != nil {
 				return err
 			}
-			tw.AppendRow(table.Row{col.Name, subTable})
+			row = append(row, subTable)
 		default:
 			// Marshall the value for easier reading when printing to console, even if inside of a table
 			marshalled, err := json.Marshal(value)
 			if err != nil {
 				return err
 			}
-			tw.AppendRow(table.Row{col.Name, string(marshalled)})
+			row = append(row, string(marshalled))
 		}
+		tw.AppendRow(row, config)
 	}
 
 	return nil

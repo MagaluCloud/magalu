@@ -1,17 +1,17 @@
-Copy all objects from a bucket
+Copy all objects from a bucket to another bucket
 
 Usage:
   ./cli object-storage objects copy-all [src] [dst] [flags]
 
 Examples:
-  ./cli object-storage objects copy-all --dst="s3://bucket2/dir/" --src="s3://bucket1"
+  ./cli object-storage objects copy-all --dst="bucket2/dir/" --src="bucket1"
 
 Flags:
       --dst uri                Full destination path in the bucket (required)
       --filter array(object)   File name pattern to include or exclude
                                Use --filter=help for more details
   -h, --help                   help for copy-all
-      --src uri                Path of objects to be copied (required)
+      --src uri                Path of objects in a bucket to be copied (required)
 
 Global Flags:
       --cli.show-cli-globals   Show all CLI global flags on usage text

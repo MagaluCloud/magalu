@@ -1,4 +1,4 @@
-Rotas relacionadas a informações de configurações dos flavors do openstack.
+Endpoints related to configuration information for OpenStack flavors.
 
 Usage:
   ./cli kubernetes flavor [flags]

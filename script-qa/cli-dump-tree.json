@@ -36,6 +36,11 @@
     "name": "login",
     "parameters": {
      "properties": {
+      "qrcode": {
+       "default": false,
+       "description": "Generate a qrcode for the login URL",
+       "type": "boolean"
+      },
       "scopes": {
        "description": "All desired scopes for the resulting access token",
        "items": {
@@ -3231,6 +3236,7 @@
        "type": "integer"
       },
       {
+       "items": {},
        "type": "array"
       },
       {
@@ -3280,6 +3286,7 @@
        "type": "integer"
       },
       {
+       "items": {},
        "type": "array"
       },
       {
@@ -3288,6 +3295,279 @@
       }
      ],
      "nullable": true
+    },
+    "version": ""
+   },
+   {
+    "configs": {
+     "type": "object"
+    },
+    "description": "Get the JSON Schema for the specified Config. The Schema has\ninformation about the accepted values for the Config, constraints, type, description, etc.",
+    "isInternal": false,
+    "name": "get-schema",
+    "parameters": {
+     "properties": {
+      "key": {
+       "type": "string"
+      }
+     },
+     "required": [
+      "key"
+     ],
+     "type": "object"
+    },
+    "result": {
+     "nullable": true,
+     "properties": {
+      "additionalProperties": {
+       "properties": {
+        "has": {
+         "nullable": true,
+         "type": "boolean"
+        },
+        "schema": {
+         "$ref": "#/$defs/SchemaRef"
+        }
+       },
+       "type": "object"
+      },
+      "allOf": {
+       "$ref": "#/$defs/SchemaRefs"
+      },
+      "allowEmptyValue": {
+       "type": "boolean"
+      },
+      "anyOf": {
+       "$ref": "#/$defs/SchemaRefs"
+      },
+      "default": {
+       "anyOf": [
+        {
+         "type": "boolean"
+        },
+        {
+         "type": "string"
+        },
+        {
+         "type": "number"
+        },
+        {
+         "type": "integer"
+        },
+        {
+         "items": {},
+         "type": "array"
+        },
+        {
+         "additionalProperties": true,
+         "type": "object"
+        }
+       ],
+       "nullable": true
+      },
+      "deprecated": {
+       "type": "boolean"
+      },
+      "description": {
+       "type": "string"
+      },
+      "discriminator": {
+       "properties": {
+        "extensions": {
+         "additionalProperties": true,
+         "type": "object"
+        },
+        "mapping": {
+         "additionalProperties": {
+          "type": "string"
+         },
+         "type": "object"
+        },
+        "propertyName": {
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
+      "enum": {
+       "items": {
+        "anyOf": [
+         {
+          "type": "boolean"
+         },
+         {
+          "type": "string"
+         },
+         {
+          "type": "number"
+         },
+         {
+          "type": "integer"
+         },
+         {
+          "items": {},
+          "type": "array"
+         },
+         {
+          "additionalProperties": true,
+          "type": "object"
+         }
+        ],
+        "nullable": true
+       },
+       "type": "array"
+      },
+      "example": {
+       "anyOf": [
+        {
+         "type": "boolean"
+        },
+        {
+         "type": "string"
+        },
+        {
+         "type": "number"
+        },
+        {
+         "type": "integer"
+        },
+        {
+         "items": {},
+         "type": "array"
+        },
+        {
+         "additionalProperties": true,
+         "type": "object"
+        }
+       ],
+       "nullable": true
+      },
+      "exclusiveMax": {
+       "type": "boolean"
+      },
+      "exclusiveMin": {
+       "type": "boolean"
+      },
+      "extensions": {
+       "additionalProperties": true,
+       "type": "object"
+      },
+      "externalDocs": {
+       "properties": {
+        "description": {
+         "type": "string"
+        },
+        "extensions": {
+         "additionalProperties": true,
+         "type": "object"
+        },
+        "url": {
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
+      "format": {
+       "type": "string"
+      },
+      "items": {
+       "$ref": "#/$defs/SchemaRef"
+      },
+      "max": {
+       "type": "number"
+      },
+      "maxItems": {
+       "format": "int64",
+       "type": "integer"
+      },
+      "maxLength": {
+       "format": "int64",
+       "type": "integer"
+      },
+      "maxProps": {
+       "format": "int64",
+       "type": "integer"
+      },
+      "min": {
+       "type": "number"
+      },
+      "minItems": {
+       "format": "int64",
+       "type": "integer"
+      },
+      "minLength": {
+       "format": "int64",
+       "type": "integer"
+      },
+      "minProps": {
+       "format": "int64",
+       "type": "integer"
+      },
+      "multipleOf": {
+       "type": "number"
+      },
+      "not": {
+       "$ref": "#/$defs/SchemaRef"
+      },
+      "nullable": {
+       "type": "boolean"
+      },
+      "oneOf": {
+       "$ref": "#/$defs/SchemaRefs"
+      },
+      "pattern": {
+       "type": "string"
+      },
+      "properties": {
+       "$ref": "#/$defs/Schemas"
+      },
+      "readOnly": {
+       "type": "boolean"
+      },
+      "required": {
+       "items": {
+        "type": "string"
+       },
+       "type": "array"
+      },
+      "title": {
+       "type": "string"
+      },
+      "type": {
+       "type": "string"
+      },
+      "uniqueItems": {
+       "type": "boolean"
+      },
+      "writeOnly": {
+       "type": "boolean"
+      },
+      "xml": {
+       "properties": {
+        "attribute": {
+         "type": "boolean"
+        },
+        "extensions": {
+         "additionalProperties": true,
+         "type": "object"
+        },
+        "name": {
+         "type": "string"
+        },
+        "namespace": {
+         "type": "string"
+        },
+        "prefix": {
+         "type": "string"
+        },
+        "wrapped": {
+         "type": "boolean"
+        }
+       },
+       "type": "object"
+      }
+     },
+     "type": "object"
     },
     "version": ""
    },
@@ -3349,6 +3629,7 @@
        "type": "integer"
       },
       {
+       "items": {},
        "type": "array"
       },
       {
@@ -8717,6 +8998,7 @@
            "type": "integer"
           },
           {
+           "items": {},
            "type": "array"
           },
           {
@@ -8818,6 +9100,7 @@
            "type": "integer"
           },
           {
+           "items": {},
            "type": "array"
           },
           {
@@ -8919,6 +9202,7 @@
            "type": "integer"
           },
           {
+           "items": {},
            "type": "array"
           },
           {
@@ -8997,6 +9281,7 @@
            "type": "integer"
           },
           {
+           "items": {},
            "type": "array"
           },
           {
@@ -9044,6 +9329,7 @@
            "type": "integer"
           },
           {
+           "items": {},
            "type": "array"
           },
           {
@@ -9122,6 +9408,7 @@
            "type": "integer"
           },
           {
+           "items": {},
            "type": "array"
           },
           {
@@ -9169,6 +9456,7 @@
            "type": "integer"
           },
           {
+           "items": {},
            "type": "array"
           },
           {
@@ -9247,6 +9535,7 @@
            "type": "integer"
           },
           {
+           "items": {},
            "type": "array"
           },
           {
@@ -9294,6 +9583,7 @@
            "type": "integer"
           },
           {
+           "items": {},
            "type": "array"
           },
           {
@@ -9372,6 +9662,7 @@
            "type": "integer"
           },
           {
+           "items": {},
            "type": "array"
           },
           {
@@ -9419,6 +9710,7 @@
            "type": "integer"
           },
           {
+           "items": {},
            "type": "array"
           },
           {
@@ -9520,6 +9812,7 @@
            "type": "integer"
           },
           {
+           "items": {},
            "type": "array"
           },
           {
@@ -9595,7 +9888,7 @@
        },
        "type": "object"
       },
-      "description": "Criação de um cluster kubernetes",
+      "description": "Creates a Kubernetes cluster in Magalu Cloud.",
       "isInternal": false,
       "name": "create",
       "parameters": {
@@ -9603,45 +9896,66 @@
        "properties": {
         "description": {
          "default": "",
-         "description": "Descrição do cluster",
-         "example": "Esse é um cluster de exemplo",
+         "description": "A brief description of the Kubernetes cluster.\n",
+         "example": "This is an example cluster.",
          "type": "string"
         },
         "enabled_bastion": {
          "default": false,
-         "description": "Habilita bastion host",
+         "description": "Enables the use of a bastion host for secure access to the cluster.\n",
          "example": false,
          "type": "boolean"
         },
         "enabled_server_group": {
          "default": true,
-         "description": "Habilita o uso de server group, com política de anti-affinity, na criação do cluster e dos node pools",
+         "description": "Enables the use of a server group with anti-affinity policy during the creation of the cluster and its node pools.\n",
          "example": false,
          "type": "boolean"
         },
         "name": {
-         "description": "Nome do cluster kubernetes. O nome destina-se principalmente à idempotência, e deve ser exclusivo em um namespace. 0 nome não pode ser alterado.\nO nome deve seguir as seguintes regras:\n  - deve conter no máximo 63 caracteres\n  - deve conter apenas caracteres alfanuméricos minúsculos ou '-'\n  - deve começar com um caractere alfabético\n  - deve terminar com um caractere alfanumérico\n",
-         "example": "cluster-exemplo",
+         "description": "Kubernetes cluster name. The name is primarily intended for idempotence, and must be unique within a namespace. The name cannot be changed.\nThe name must follow the following rules:\n  - must contain a maximum of 63 characters\n  - must contain only lowercase alphanumeric characters or '-'\n  - must start with an alphabetic character\n  - must end with an alphanumeric character\n",
+         "example": "cluster-example",
          "type": "string"
         },
         "node_pools": {
-         "description": "Conjunto de nodes em um cluster kubernetes",
+         "description": "An array representing a set of nodes within a Kubernetes cluster.\n",
+         "example": [
+          {
+           "auto_scale": {
+            "max_replicas": 5,
+            "min_replicas": 2
+           },
+           "flavor": "cloud-k8s.gp1.small",
+           "name": "nodepool-example",
+           "replicas": 3,
+           "tags": [
+            "tag-value1"
+           ],
+           "taints": [
+            {
+             "effect": "NoSchedule",
+             "key": "example-key",
+             "value": "valor1"
+            }
+           ]
+          }
+         ],
          "items": {
-          "description": "Objeto da requisição da request do nodepool",
+          "description": "Object of the node pool request",
           "properties": {
            "auto_scale": {
-            "description": "Objeto que especifica as propriedades para atualização de recursos de carga de trabalho no cluster Kubernetes.",
+            "description": "Object specifying properties for updating workload resources in the Kubernetes cluster.\n",
             "properties": {
              "max_replicas": {
               "default": 1,
-              "description": "Quantidade máxima de réplicas para o autoscaling. Se não for informado um valor, ou se for igual ou menor que zero, o valor do autoscaler será assumido com base no campo \"réplicas\".",
+              "description": "Maximum number of replicas for autoscaling. If not provided, or if the value is equal to or less than zero, the autoscaler value will be assumed based on the \"replicas\" field.\n",
               "example": 5,
               "minimum": 1,
               "type": "integer"
              },
              "min_replicas": {
               "default": 1,
-              "description": "Quantidade mínima de réplicas para o autoscaling. Se não for informado um valor, ou se for igual ou menor que zero, o valor do autoscaler será assumido com base no campo \"réplicas\".",
+              "description": "Minimum number of replicas for autoscaling. If not provided, or if the value is equal to or less than zero, the autoscaler value will be assumed based on the \"replicas\" field.\n",
               "example": 2,
               "minimum": 1,
               "type": "integer"
@@ -9654,40 +9968,44 @@
             "type": "object"
            },
            "flavor": {
-            "description": "Definição da capacidade de CPU, memória RAM e armazenamento dos nodes\n<table>\n  <tr>\n    <td>Flavor</td>\n    <td>vCPUs</td>\n    <td>RAM(Gb)</td>\n    <td>Root Disk(GB)</td>\n  </tr>\n  <tr>\n    <td>cloud-k8s.gp1.small</td>\n    <td>2</td>\n    <td>4</td>\n    <td>20</td>\n  </tr>\n  <tr>\n    <td>cloud-k8s.gp1.large</td>\n    <td>8</td>\n    <td>16</td>\n    <td>100</td>\n  </tr>\n</table>\n",
+            "description": "Definition of the CPU, RAM, and storage capacity of the nodes.\n\n| Flavor                  | vCPUs | RAM (GB) | Root Disk (GB) |\n|-------------------------|-------|----------|----------------|\n| cloud-k8s.gp1.small     | 2     | 4        | 20             |\n| cloud-k8s.gp1.medium    | 4     | 8        | 50             |\n| cloud-k8s.gp1.large     | 8     | 16       | 100            |\n| cloud-k8s.gp2.small     | 2     | 4        | 300            |\n| cloud-k8s.gp2.large     | 8     | 32       | 300            |\n| cloud-k8s.hm1.medium    | 4     | 16       | 50             |\n",
             "enum": [
              "cloud-k8s.gp1.small",
-             "cloud-k8s.gp1.large"
+             "cloud-k8s.gp1.medium",
+             "cloud-k8s.gp1.large",
+             "cloud-k8s.gp2.small",
+             "cloud-k8s.gp2.large",
+             "cloud-k8s.hm1.medium"
             ],
             "example": "cloud-k8s.gp1.small",
             "type": "string"
            },
            "name": {
-            "description": "Nome do node pool. O nome destina-se principalmente à idempotência, e deve ser exclusivo em um namespace. 0 nome não pode ser alterado.\nO nome deve seguir as seguintes regras:\n  - deve conter no máximo 63 caracteres\n  - deve conter apenas caracteres alfanuméricos minúsculos ou '-'\n  - deve começar com um caractere alfabético\n  - deve terminar com um caractere alfanumérico\n",
-            "example": "nodepool-exemplo",
+            "description": "Name of the node pool. The name is primarily for idempotence and must be unique within a namespace. The name cannot be changed.\nThe name must follow the following rules:\n  - Must contain a maximum of 63 characters\n  - Must contain only lowercase alphanumeric characters or '-'\n  - Must start with an alphabetic character\n  - Must end with an alphanumeric character\n",
+            "example": "nodepool-example",
             "type": "string"
            },
            "replicas": {
             "default": 1,
-            "description": "Número de réplicas dos nós do nodepool",
+            "description": "Number of replicas of the nodes in the node pool.",
             "example": 3,
             "type": "integer"
            },
            "tags": {
-            "description": "Lista de tags aplicadas ao nodepool",
+            "description": "List of tags applied to the node pool.",
             "items": {
-             "description": "Items da lista de tags aplicadas ao nodepool",
+             "description": "Items from the list of tags applied to the node pool.",
              "example": "tag-value1",
              "type": "string"
             },
             "type": "array"
            },
            "taints": {
-            "description": "Propriedade de associação de um conjunto se nós",
+            "description": "Property associating a set of nodes.",
             "items": {
              "properties": {
               "effect": {
-               "description": "O efeito do taint em pods que não toleram o taint.\n**NoSchedule** - Não permitir que novos pods sejam agendados no nó, a menos que eles tolerem a taint, mas permitir que todos os pods já em execução continuem em execução.\n**PreferNoSchedule** - Parecido com o NoSchedule, mas tenta não agendar novos pods no nó, em vez de proibir totalmente o agendamento de novos pods no nó\n**NoExecute** - Remova todos os pods já em execução que não tolerem o taint.  \n",
+               "description": "The effect of the taint on pods that do not tolerate the taint.\n- **NoSchedule**: Prevents new pods from being scheduled on the node, unless they tolerate the taint. Allows all existing pods to continue running.\n- **PreferNoSchedule**: Similar to NoSchedule, but attempts not to schedule new pods on the node, rather than completely prohibiting new pod scheduling on the node.\n- **NoExecute**: Removes all already running pods that do not tolerate the taint.\n",
                "enum": [
                 "NoSchedule",
                 "PreferNoSchedule",
@@ -9697,13 +10015,13 @@
                "type": "string"
               },
               "key": {
-               "description": "A chave taint a ser aplicada ao node",
-               "example": "exemplo-key",
+               "description": "Key of the taint to be applied to the node.",
+               "example": "example-key",
                "type": "string"
               },
               "value": {
-               "description": "O valor correspondente a chave taint.",
-               "example": "valor1",
+               "description": "Value corresponding to the taint key.",
+               "example": "value1",
                "type": "string"
               }
              },
@@ -9728,7 +10046,7 @@
         },
         "version": {
          "default": "v1.28.5",
-         "description": "Versão do kubernetes nativa do cluster",
+         "description": "The native Kubernetes version of the cluster.\nPlease specify the Kubernetes version using the standard \"vX.Y.Z\" format.\n",
          "enum": [
           "v1.26.12",
           "v1.28.5"
@@ -9739,34 +10057,35 @@
        },
        "required": [
         "enabled_bastion",
-        "name"
+        "name",
+        "node_pools"
        ],
        "type": "object"
       },
       "result": {
-       "description": "Objeto da requisição da response do cluster",
+       "description": "Object of the cluster response request.",
        "properties": {
         "id": {
-         "description": "Identificador no padrão uuid para identificar o cluster kubernetes",
+         "description": "Cluster's UUID.",
          "example": "10113826-624a-4801-900f-6a5742433411",
          "format": "uuid",
          "type": "string"
         },
         "name": {
-         "description": "Nome do cluster kubernetes",
-         "example": "cluster-exemplo",
+         "description": "Name of the Kubernetes cluster.",
+         "example": "cluster-example",
          "type": "string"
         },
         "status": {
-         "description": "Detalhes a respeito do status do cluster ou node",
+         "description": "Details about the status of the Kubernetes cluster or node.\n",
          "properties": {
           "message": {
-           "description": "Mensagem detalhada sobre o status do cluster ou node",
+           "description": "Detailed message about the status of the cluster or node.\n",
            "example": "Ready",
            "type": "string"
           },
           "state": {
-           "description": "Estado atual do cluster ou node.\n<table>\n  <tr>\n    <td>Cluster</td>\n    <td>Pending, Provisioning, Running, Provisioned, Terminating, Deleting, Failed</td>\n  </tr>\n  <tr>\n    <td>Node</td>\n    <td>Pending, Provisioning, Provisioned, Running, Deleting, Failed, Unknown</td>\n  </tr>\n</table>\n",
+           "description": "Current state of the cluster or node.\n\n| Component | Possible States                              |\n|-----------|---------------------------------------------|\n| Cluster   | Pending, Provisioning, Running, Provisioned, Terminating, Deleting, Failed |\n| Node      | Pending, Provisioning, Provisioned, Running, Deleting, Failed, Unknown   |\n",
            "example": "Pending",
            "type": "string"
           }
@@ -9817,14 +10136,14 @@
        },
        "type": "object"
       },
-      "description": "Deleta um cluster",
+      "description": "Deletes a cluster by cluster_uuid.",
       "isInternal": false,
       "name": "delete",
       "parameters": {
        "additionalProperties": false,
        "properties": {
         "id": {
-         "description": "Identificador no padrão uuid para identificar o cluster",
+         "description": "Cluster's UUID.",
          "format": "uuid",
          "type": "string"
         }
@@ -9870,14 +10189,14 @@
        },
        "type": "object"
       },
-      "description": "Lista as informações de um cluster",
+      "description": "Lists detailed cluster information by cluster_uuid.",
       "isInternal": false,
       "name": "get",
       "parameters": {
        "additionalProperties": false,
        "properties": {
         "id": {
-         "description": "Identificador no padrão uuid para identificar o cluster",
+         "description": "Cluster's UUID.",
          "format": "uuid",
          "type": "string"
         }
@@ -9888,21 +10207,21 @@
        "type": "object"
       },
       "result": {
-       "description": "Objeto da requisição da response do cluster por id",
+       "description": "Object of the cluster response request by uuid.",
        "properties": {
         "addons": {
-         "description": "Objeto dos complementos que estendem a funcionalidade do cluster kubernetes",
+         "description": "Object representing addons that extend the functionality of the Kubernetes cluster.\n",
          "properties": {
           "loadbalance": {
-           "description": "Flag correspondente se o serviço de load balancer está habilitado/desabilitado no cluster",
+           "description": "Flag indicating whether the load balancer service is enabled/disabled in the cluster.\n",
            "type": "string"
           },
           "secrets": {
-           "description": "Secret nativa do kubernetes a ser incluída ao cluster durante o provisionamento",
+           "description": "Native Kubernetes secret to be included in the cluster during provisioning.\n",
            "type": "string"
           },
           "volume": {
-           "description": "Flag correspondente se o serviço de storage class está configurado por padrão",
+           "description": "Flag indicating whether the storage class service is configured by default.\n",
            "type": "string"
           }
          },
@@ -9914,21 +10233,21 @@
          "type": "object"
         },
         "controlplane": {
-         "description": "Objeto da requisição da response do nodepool",
+         "description": "Object of the node pool response.",
          "properties": {
           "auto_scale": {
-           "description": "Objeto que especifica as propriedades para atualização de recursos de carga de trabalho no cluster Kubernetes.",
+           "description": "Object specifying properties for updating workload resources in the Kubernetes cluster.\n",
            "properties": {
             "max_replicas": {
              "default": 1,
-             "description": "Quantidade máxima de réplicas para o autoscaling. Se não for informado um valor, ou se for igual ou menor que zero, o valor do autoscaler será assumido com base no campo \"réplicas\".",
+             "description": "Maximum number of replicas for autoscaling. If not provided, or if the value is equal to or less than zero, the autoscaler value will be assumed based on the \"replicas\" field.\n",
              "example": 5,
              "minimum": 1,
              "type": "integer"
             },
             "min_replicas": {
              "default": 1,
-             "description": "Quantidade mínima de réplicas para o autoscaling. Se não for informado um valor, ou se for igual ou menor que zero, o valor do autoscaler será assumido com base no campo \"réplicas\".",
+             "description": "Minimum number of replicas for autoscaling. If not provided, or if the value is equal to or less than zero, the autoscaler value will be assumed based on the \"replicas\" field.\n",
              "example": 2,
              "minimum": 1,
              "type": "integer"
@@ -9941,57 +10260,57 @@
            "type": "object"
           },
           "created_at": {
-           "description": "Data de criação do cluster kubernetes",
+           "description": "Date of creation of the Kubernetes cluster.",
            "example": "2023-03-01T09:00:00Z",
            "format": "date-time",
            "type": "string"
           },
           "id": {
-           "description": "Identificador no padrão uuid para identificar o nodepool",
+           "description": "Node pool's UUID.",
            "example": "2cc6f625-7d67-4ed2-8c5e-24e5b40b951b",
            "format": "uuid",
            "type": "string"
           },
           "instance_template": {
-           "description": "Template do objeto de instância usado para criar instâncias de máquina e grupos gerenciados de instâncias.",
+           "description": "Template for the instance object used to create machine instances and managed instance groups.\n",
            "properties": {
             "disk_size": {
-             "description": "Tamanho do disco anexado a cada nó",
+             "description": "Size of the disk attached to each node.",
              "type": "integer"
             },
             "disk_type": {
-             "description": "Tipo de disco anexado a cada nó",
+             "description": "Type of disk attached to each node.",
              "type": "string"
             },
             "flavor": {
-             "description": "Definição da capacidade de CPU, memória RAM e armazenamento dos nodes",
+             "description": "Definition of CPU capacity, RAM, and storage for nodes.",
              "properties": {
               "id": {
                "default": "",
-               "description": "Identificador exclusivo do Flavor.",
+               "description": "Unique identifier for the Flavor.",
                "example": "c777eaa7-d67c-46f4-9e4f-232bc9b67b58",
                "type": "string"
               },
               "name": {
-               "description": "Nome do Flavor.",
+               "description": "Name of the Flavor.",
                "example": "cloud-k8s.gp1.small",
                "type": "string"
               },
               "ram": {
                "default": 0,
-               "description": "Quantidade de memória RAM, medida em MB.",
+               "description": "Amount of RAM, measured in MB.",
                "example": 4096,
                "type": "integer"
               },
               "size": {
                "default": 0,
-               "description": "Quantidade de disco, medido em GB.",
+               "description": "Amount of disk space, measured in GB.",
                "example": 20,
                "type": "integer"
               },
               "vcpu": {
                "default": 0,
-               "description": "Quantidade de vCPUs disponiveis.",
+               "description": "Number of available vCPUs.",
                "example": 2,
                "type": "integer"
               }
@@ -10006,7 +10325,7 @@
              "type": "object"
             },
             "node_image": {
-             "description": "Imagem do sistema operacional que é executada em cada nó",
+             "description": "Operating system image running on each node.",
              "example": "ubuntu-2004-kube-v1.22.9-v1",
              "type": "string"
             }
@@ -10023,45 +10342,45 @@
            "additionalProperties": {
             "type": "string"
            },
-           "description": "Pares de chave/valor anexados ao objeto e usados para especificação",
+           "description": "Key/value pairs attached to the object and used for specification.",
            "example": {
-            "key1": "valor1"
+            "key1": "value1"
            },
            "type": "object"
           },
           "name": {
-           "description": "Nome do node pool",
-           "example": "nodepool-exemplo",
+           "description": "Node pool name",
+           "example": "nodepool-example",
            "type": "string"
           },
           "replicas": {
-           "description": "Quantidade de réplicas dos nós do nodepool",
+           "description": "Number of replicas of the nodes in the node pool.",
            "example": 3,
            "type": "integer"
           },
           "securityGroups": {
-           "description": "Nome do grupo de segurança para definir regras que permitem tráfego de rede no node pool de workers",
+           "description": "Name of the security group to define rules allowing network traffic in the worker node pool.",
            "items": {
-            "description": "Items dos grupos de segurança que definem regras que permitem tráfego de rede no node pool de workers",
+            "description": "Items from the security groups defining rules allowing network traffic in the worker node pool.",
             "example": "security-group-name",
             "type": "string"
            },
            "type": "array"
           },
           "status": {
-           "description": "Detalhes a respeito do status do node pool ou control plane",
+           "description": "Details about the status of the node pool or control plane.\n",
            "properties": {
             "messages": {
-             "description": "Mensagem detalhada sobre o status do node pool ou control plane",
+             "description": "Detailed message about the status of the node pool or control plane.\n",
              "items": {
-              "description": "Mensagens retornadas pelos control planes ou nodepools",
+              "description": "Messages returned by the control planes or node pools.\n",
               "example": "Ready",
               "type": "string"
              },
              "type": "array"
             },
             "state": {
-             "description": "Estado atual do node pool ou control plane.\n<table>\n  <tr>\n    <td>Node pool</td>\n    <td>ScalingUp, ScalingDown, Running, Failed, Unknown</td>\n  </tr>\n  <tr>\n    <td>Control Plane</td>\n    <td>ScalingUp, ScalingDown, Running, Failed, Unknown</td>\n  </tr>\n</table>\n",
+             "description": "Current state of the node pool or control plane.\n\n| Component      | Possible States                     |\n|-----------------|-------------------------------------|\n| Node pool       | ScalingUp, ScalingDown, Running, Failed, Unknown |\n| Control Plane   | ScalingUp, ScalingDown, Running, Failed, Unknown |\n",
              "example": "Pending",
              "type": "string"
             }
@@ -10073,20 +10392,20 @@
            "type": "object"
           },
           "tags": {
-           "description": "Lista de tags aplicadas ao nodepool",
+           "description": "List of tags applied to the node pool.",
            "items": {
-            "description": "Items da lista de tags aplicadas ao nodepool",
-            "example": "tag-exemplo",
+            "description": "Items from the list of tags applied to the node pool.",
+            "example": "tag-example",
             "type": "string"
            },
            "type": "array"
           },
           "taints": {
-           "description": "Propriedade de associação de um conjunto se nós",
+           "description": "Property for associating a set of nodes.",
            "items": {
             "properties": {
              "effect": {
-              "description": "O efeito do taint em pods que não toleram o taint.\n**NoSchedule** - Não permitir que novos pods sejam agendados no nó, a menos que eles tolerem a taint, mas permitir que todos os pods já em execução continuem em execução.\n**PreferNoSchedule** - Parecido com o NoSchedule, mas tenta não agendar novos pods no nó, em vez de proibir totalmente o agendamento de novos pods no nó\n**NoExecute** - Remova todos os pods já em execução que não tolerem o taint.  \n",
+              "description": "The effect of the taint on pods that do not tolerate the taint.\n- **NoSchedule**: Prevents new pods from being scheduled on the node, unless they tolerate the taint. Allows all existing pods to continue running.\n- **PreferNoSchedule**: Similar to NoSchedule, but attempts not to schedule new pods on the node, rather than completely prohibiting new pod scheduling on the node.\n- **NoExecute**: Removes all already running pods that do not tolerate the taint.\n",
               "enum": [
                "NoSchedule",
                "PreferNoSchedule",
@@ -10096,13 +10415,13 @@
               "type": "string"
              },
              "key": {
-              "description": "A chave taint a ser aplicada ao node",
-              "example": "exemplo-key",
+              "description": "Key of the taint to be applied to the node.",
+              "example": "example-key",
               "type": "string"
              },
              "value": {
-              "description": "O valor correspondente a chave taint.",
-              "example": "valor1",
+              "description": "Value corresponding to the taint key.",
+              "example": "value1",
               "type": "string"
              }
             },
@@ -10116,15 +10435,15 @@
            "type": "array"
           },
           "updated_at": {
-           "description": "Data da última alteração do cluster kubernetes",
+           "description": "Date of the last change to the Kubernetes cluster.",
            "example": "2023-03-01T09:10:00Z",
            "format": "date-time",
            "type": "string"
           },
           "zone": {
-           "description": "Zona de disponibilidade para criação do cluster kubernetes",
+           "description": "Availability zone for creating the Kubernetes cluster.",
            "items": {
-            "description": "Items da lista das zonas de disponibilidade para criação do cluster kubernetes",
+            "description": "Items from the list of availability zones for creating the Kubernetes cluster.",
             "example": "br-ne-1b",
             "type": "string"
            },
@@ -10145,42 +10464,42 @@
          "type": "object"
         },
         "created_at": {
-         "description": "Data de criação do cluster kubernetes",
+         "description": "Creation date of the Kubernetes cluster.",
          "example": "2023-03-01T09:00:00Z",
          "format": "date-time",
          "type": "string"
         },
         "description": {
-         "description": "Descrição do cluster kubernetes",
-         "example": "Esse é um cluster de exemplo",
+         "description": "Description of the Kubernetes cluster.",
+         "example": "This is an example cluster",
          "type": "string"
         },
         "id": {
-         "description": "Identificador no padrão uuid para identificar o cluster kubernetes",
+         "description": "Cluster's UUID.",
          "example": "10113826-624a-4801-900f-6a5742433411",
          "type": "string"
         },
         "kube_api_server": {
-         "description": "Informações sobre o Kubernetes API Server do Cluster",
+         "description": "Information about the Kubernetes API Server of the cluster.",
          "properties": {
           "disable_api_server_fip": {
            "default": false,
-           "description": "Habilita ou desabilita o uso do Floating IP no API Server",
+           "description": "Enables or disables the use of Floating IP on the API Server.",
            "example": true,
            "type": "boolean"
           },
           "fixed_ip": {
-           "description": "IP fixo configurado para o Kubernetes API Server",
+           "description": "Fixed IP configured for the Kubernetes API Server.",
            "example": "172.100.10.1",
            "type": "string"
           },
           "floating_ip": {
-           "description": "Floating IP criado para o Kubernetes API Server",
+           "description": "Floating IP created for the Kubernetes API Server.",
            "example": "172.100.10.1",
            "type": "string"
           },
           "port": {
-           "description": "Porta utilizada pelo Kubernetes API Server",
+           "description": "Port used by the Kubernetes API Server.",
            "example": 6443,
            "type": "integer"
           }
@@ -10188,30 +10507,30 @@
          "type": "object"
         },
         "name": {
-         "description": "Nome do cluster kubernetes",
-         "example": "cluster-exemplo",
+         "description": "Name of the Kubernetes cluster.",
+         "example": "cluster-example",
          "type": "string"
         },
         "network": {
-         "description": "Objeto da requisição da response do recurso de rede do cluster kubernetes",
+         "description": "Response object for the Kubernetes cluster network resource request.\n",
          "properties": {
           "cidr": {
-           "description": "Endereço de IP disponíveis que serão utilizados para provisionamento dos nós do cluster",
+           "description": "Available IP addresses used for provisioning nodes in the cluster.\n",
            "example": "00.0.0.0/00",
            "type": "string"
           },
           "name": {
-           "description": "Nome do node pool",
-           "example": "k8s-clusterapi-cluster-exemplo",
+           "description": "Name of the node pool.",
+           "example": "k8s-clusterapi-cluster-example",
            "type": "string"
           },
           "subnet_id": {
-           "description": "Identificador da subnet interna onde o cluster será provisionado",
+           "description": "Identifier of the internal subnet where the cluster will be provisioned.\n",
            "example": "c5f750a0-a032-477e-a23a-bcffab8b0707",
            "type": "string"
           },
           "uuid": {
-           "description": "Identificador no padrão uuid para identificar o nodepool",
+           "description": "Nodepool's UUID.",
            "example": "7c24eb01-9423-4f09-a2d2-99ba5df01411",
            "type": "string"
           }
@@ -10225,23 +10544,23 @@
          "type": "object"
         },
         "node_pools": {
-         "description": "Conjunto de nodes em um cluster kubernetes",
+         "description": "Set of nodes in a Kubernetes cluster.",
          "items": {
-          "description": "Objeto da requisição da response do nodepool",
+          "description": "Object of the node pool response.",
           "properties": {
            "auto_scale": {
-            "description": "Objeto que especifica as propriedades para atualização de recursos de carga de trabalho no cluster Kubernetes.",
+            "description": "Object specifying properties for updating workload resources in the Kubernetes cluster.\n",
             "properties": {
              "max_replicas": {
               "default": 1,
-              "description": "Quantidade máxima de réplicas para o autoscaling. Se não for informado um valor, ou se for igual ou menor que zero, o valor do autoscaler será assumido com base no campo \"réplicas\".",
+              "description": "Maximum number of replicas for autoscaling. If not provided, or if the value is equal to or less than zero, the autoscaler value will be assumed based on the \"replicas\" field.\n",
               "example": 5,
               "minimum": 1,
               "type": "integer"
              },
              "min_replicas": {
               "default": 1,
-              "description": "Quantidade mínima de réplicas para o autoscaling. Se não for informado um valor, ou se for igual ou menor que zero, o valor do autoscaler será assumido com base no campo \"réplicas\".",
+              "description": "Minimum number of replicas for autoscaling. If not provided, or if the value is equal to or less than zero, the autoscaler value will be assumed based on the \"replicas\" field.\n",
               "example": 2,
               "minimum": 1,
               "type": "integer"
@@ -10254,57 +10573,57 @@
             "type": "object"
            },
            "created_at": {
-            "description": "Data de criação do cluster kubernetes",
+            "description": "Date of creation of the Kubernetes cluster.",
             "example": "2023-03-01T09:00:00Z",
             "format": "date-time",
             "type": "string"
            },
            "id": {
-            "description": "Identificador no padrão uuid para identificar o nodepool",
+            "description": "Node pool's UUID.",
             "example": "2cc6f625-7d67-4ed2-8c5e-24e5b40b951b",
             "format": "uuid",
             "type": "string"
            },
            "instance_template": {
-            "description": "Template do objeto de instância usado para criar instâncias de máquina e grupos gerenciados de instâncias.",
+            "description": "Template for the instance object used to create machine instances and managed instance groups.\n",
             "properties": {
              "disk_size": {
-              "description": "Tamanho do disco anexado a cada nó",
+              "description": "Size of the disk attached to each node.",
               "type": "integer"
              },
              "disk_type": {
-              "description": "Tipo de disco anexado a cada nó",
+              "description": "Type of disk attached to each node.",
               "type": "string"
              },
              "flavor": {
-              "description": "Definição da capacidade de CPU, memória RAM e armazenamento dos nodes",
+              "description": "Definition of CPU capacity, RAM, and storage for nodes.",
               "properties": {
                "id": {
                 "default": "",
-                "description": "Identificador exclusivo do Flavor.",
+                "description": "Unique identifier for the Flavor.",
                 "example": "c777eaa7-d67c-46f4-9e4f-232bc9b67b58",
                 "type": "string"
                },
                "name": {
-                "description": "Nome do Flavor.",
+                "description": "Name of the Flavor.",
                 "example": "cloud-k8s.gp1.small",
                 "type": "string"
                },
                "ram": {
                 "default": 0,
-                "description": "Quantidade de memória RAM, medida em MB.",
+                "description": "Amount of RAM, measured in MB.",
                 "example": 4096,
                 "type": "integer"
                },
                "size": {
                 "default": 0,
-                "description": "Quantidade de disco, medido em GB.",
+                "description": "Amount of disk space, measured in GB.",
                 "example": 20,
                 "type": "integer"
                },
                "vcpu": {
                 "default": 0,
-                "description": "Quantidade de vCPUs disponiveis.",
+                "description": "Number of available vCPUs.",
                 "example": 2,
                 "type": "integer"
                }
@@ -10319,7 +10638,7 @@
               "type": "object"
              },
              "node_image": {
-              "description": "Imagem do sistema operacional que é executada em cada nó",
+              "description": "Operating system image running on each node.",
               "example": "ubuntu-2004-kube-v1.22.9-v1",
               "type": "string"
              }
@@ -10336,45 +10655,45 @@
             "additionalProperties": {
              "type": "string"
             },
-            "description": "Pares de chave/valor anexados ao objeto e usados para especificação",
+            "description": "Key/value pairs attached to the object and used for specification.",
             "example": {
-             "key1": "valor1"
+             "key1": "value1"
             },
             "type": "object"
            },
            "name": {
-            "description": "Nome do node pool",
-            "example": "nodepool-exemplo",
+            "description": "Node pool name",
+            "example": "nodepool-example",
             "type": "string"
            },
            "replicas": {
-            "description": "Quantidade de réplicas dos nós do nodepool",
+            "description": "Number of replicas of the nodes in the node pool.",
             "example": 3,
             "type": "integer"
            },
            "securityGroups": {
-            "description": "Nome do grupo de segurança para definir regras que permitem tráfego de rede no node pool de workers",
+            "description": "Name of the security group to define rules allowing network traffic in the worker node pool.",
             "items": {
-             "description": "Items dos grupos de segurança que definem regras que permitem tráfego de rede no node pool de workers",
+             "description": "Items from the security groups defining rules allowing network traffic in the worker node pool.",
              "example": "security-group-name",
              "type": "string"
             },
             "type": "array"
            },
            "status": {
-            "description": "Detalhes a respeito do status do node pool ou control plane",
+            "description": "Details about the status of the node pool or control plane.\n",
             "properties": {
              "messages": {
-              "description": "Mensagem detalhada sobre o status do node pool ou control plane",
+              "description": "Detailed message about the status of the node pool or control plane.\n",
               "items": {
-               "description": "Mensagens retornadas pelos control planes ou nodepools",
+               "description": "Messages returned by the control planes or node pools.\n",
                "example": "Ready",
                "type": "string"
               },
               "type": "array"
              },
              "state": {
-              "description": "Estado atual do node pool ou control plane.\n<table>\n  <tr>\n    <td>Node pool</td>\n    <td>ScalingUp, ScalingDown, Running, Failed, Unknown</td>\n  </tr>\n  <tr>\n    <td>Control Plane</td>\n    <td>ScalingUp, ScalingDown, Running, Failed, Unknown</td>\n  </tr>\n</table>\n",
+              "description": "Current state of the node pool or control plane.\n\n| Component      | Possible States                     |\n|-----------------|-------------------------------------|\n| Node pool       | ScalingUp, ScalingDown, Running, Failed, Unknown |\n| Control Plane   | ScalingUp, ScalingDown, Running, Failed, Unknown |\n",
               "example": "Pending",
               "type": "string"
              }
@@ -10386,20 +10705,20 @@
             "type": "object"
            },
            "tags": {
-            "description": "Lista de tags aplicadas ao nodepool",
+            "description": "List of tags applied to the node pool.",
             "items": {
-             "description": "Items da lista de tags aplicadas ao nodepool",
-             "example": "tag-exemplo",
+             "description": "Items from the list of tags applied to the node pool.",
+             "example": "tag-example",
              "type": "string"
             },
             "type": "array"
            },
            "taints": {
-            "description": "Propriedade de associação de um conjunto se nós",
+            "description": "Property for associating a set of nodes.",
             "items": {
              "properties": {
               "effect": {
-               "description": "O efeito do taint em pods que não toleram o taint.\n**NoSchedule** - Não permitir que novos pods sejam agendados no nó, a menos que eles tolerem a taint, mas permitir que todos os pods já em execução continuem em execução.\n**PreferNoSchedule** - Parecido com o NoSchedule, mas tenta não agendar novos pods no nó, em vez de proibir totalmente o agendamento de novos pods no nó\n**NoExecute** - Remova todos os pods já em execução que não tolerem o taint.  \n",
+               "description": "The effect of the taint on pods that do not tolerate the taint.\n- **NoSchedule**: Prevents new pods from being scheduled on the node, unless they tolerate the taint. Allows all existing pods to continue running.\n- **PreferNoSchedule**: Similar to NoSchedule, but attempts not to schedule new pods on the node, rather than completely prohibiting new pod scheduling on the node.\n- **NoExecute**: Removes all already running pods that do not tolerate the taint.\n",
                "enum": [
                 "NoSchedule",
                 "PreferNoSchedule",
@@ -10409,13 +10728,13 @@
                "type": "string"
               },
               "key": {
-               "description": "A chave taint a ser aplicada ao node",
-               "example": "exemplo-key",
+               "description": "Key of the taint to be applied to the node.",
+               "example": "example-key",
                "type": "string"
               },
               "value": {
-               "description": "O valor correspondente a chave taint.",
-               "example": "valor1",
+               "description": "Value corresponding to the taint key.",
+               "example": "value1",
                "type": "string"
               }
              },
@@ -10429,15 +10748,15 @@
             "type": "array"
            },
            "updated_at": {
-            "description": "Data da última alteração do cluster kubernetes",
+            "description": "Date of the last change to the Kubernetes cluster.",
             "example": "2023-03-01T09:10:00Z",
             "format": "date-time",
             "type": "string"
            },
            "zone": {
-            "description": "Zona de disponibilidade para criação do cluster kubernetes",
+            "description": "Availability zone for creating the Kubernetes cluster.",
             "items": {
-             "description": "Items da lista das zonas de disponibilidade para criação do cluster kubernetes",
+             "description": "Items from the list of availability zones for creating the Kubernetes cluster.",
              "example": "br-ne-1b",
              "type": "string"
             },
@@ -10460,25 +10779,25 @@
          "type": "array"
         },
         "project_id": {
-         "description": "Identificador único do projeto onde o cluster foi provisionado",
+         "description": "Unique identifier of the project where the cluster was provisioned.",
          "example": "0000806e53ec429792a7885e63264411",
          "type": "string"
         },
         "region": {
-         "description": "Identificador da região em que o cluster kubernetes está localizado",
+         "description": "Identifier of the region where the Kubernetes cluster is located.",
          "example": "br-ne-1a",
          "type": "string"
         },
         "status": {
-         "description": "Detalhes a respeito do status do cluster ou node",
+         "description": "Details about the status of the Kubernetes cluster or node.\n",
          "properties": {
           "message": {
-           "description": "Mensagem detalhada sobre o status do cluster ou node",
+           "description": "Detailed message about the status of the cluster or node.\n",
            "example": "Ready",
            "type": "string"
           },
           "state": {
-           "description": "Estado atual do cluster ou node.\n<table>\n  <tr>\n    <td>Cluster</td>\n    <td>Pending, Provisioning, Running, Provisioned, Terminating, Deleting, Failed</td>\n  </tr>\n  <tr>\n    <td>Node</td>\n    <td>Pending, Provisioning, Provisioned, Running, Deleting, Failed, Unknown</td>\n  </tr>\n</table>\n",
+           "description": "Current state of the cluster or node.\n\n| Component | Possible States                              |\n|-----------|---------------------------------------------|\n| Cluster   | Pending, Provisioning, Running, Provisioned, Terminating, Deleting, Failed |\n| Node      | Pending, Provisioning, Provisioned, Running, Deleting, Failed, Unknown   |\n",
            "example": "Pending",
            "type": "string"
           }
@@ -10490,22 +10809,22 @@
          "type": "object"
         },
         "tags": {
-         "description": "Lista de tags aplicadas ao cluster kubernetes",
+         "description": "List of tags applied to the Kubernetes cluster.",
          "items": {
-          "description": "Items da lista de tags aplicadas ao cluster kubernetes",
-          "example": "tag-exemplo",
+          "description": "Items from the list of tags applied to the Kubernetes cluster.",
+          "example": "tag-example",
           "type": "string"
          },
          "type": "array"
         },
         "updated_at": {
-         "description": "Data da ultima alteração do cluster kubernetes",
+         "description": "Date of the last modification of the Kubernetes cluster.",
          "example": "2023-03-01T09:10:00Z",
          "format": "date-time",
          "type": "string"
         },
         "version": {
-         "description": "Versão do kubernetes nativa do cluster",
+         "description": "Native Kubernetes version of the cluster.",
          "example": "v1.22.9",
          "type": "string"
         }
@@ -10551,14 +10870,14 @@
        },
        "type": "object"
       },
-      "description": "Obtem o arquivo do kubeconfig do cluster",
+      "description": "Retrieves the kubeconfig of a Kubernetes cluster by cluster_uuid.",
       "isInternal": false,
       "name": "kubeconfig",
       "parameters": {
        "additionalProperties": false,
        "properties": {
         "id": {
-         "description": "Esquema de obter o arquivo do kubeconfig do cluster",
+         "description": "Schema to get the cluster's kubeconfig file.",
          "format": "uuid",
          "type": "string"
         }
@@ -10604,7 +10923,7 @@
        },
        "type": "object"
       },
-      "description": "Lista todos os clusters de um usuário",
+      "description": "Lists all clusters for a user.",
       "isInternal": false,
       "name": "list",
       "parameters": {
@@ -10612,44 +10931,44 @@
        "type": "object"
       },
       "result": {
-       "description": "Objeto da requisição da response dos clusters",
+       "description": "Object of the clusters response request.",
        "properties": {
         "results": {
-         "description": "Lista dos clusters kubernetes",
+         "description": "List of Kubernetes clusters.",
          "items": {
-          "description": "Objeto da requisição da response do cluster",
+          "description": "Object of the cluster response request.",
           "properties": {
            "description": {
-            "description": "Descrição do cluster kubernetes",
-            "example": "Esse é um cluster de exemplo",
+            "description": "Description of the Kubernetes cluster.",
+            "example": "This is an example cluster",
             "type": "string"
            },
            "id": {
-            "description": "Identificador no padrão uuid para identificar o cluster kubernetes",
+            "description": "Cluster's UUID.",
             "example": "10113826-624a-4801-900f-6a5742433411",
             "type": "string"
            },
            "kube_api_server": {
-            "description": "Informações sobre o Kubernetes API Server do Cluster",
+            "description": "Information about the Kubernetes API Server of the cluster.",
             "properties": {
              "disable_api_server_fip": {
               "default": false,
-              "description": "Habilita ou desabilita o uso do Floating IP no API Server",
+              "description": "Enables or disables the use of Floating IP on the API Server.",
               "example": true,
               "type": "boolean"
              },
              "fixed_ip": {
-              "description": "IP fixo configurado para o Kubernetes API Server",
+              "description": "Fixed IP configured for the Kubernetes API Server.",
               "example": "172.100.10.1",
               "type": "string"
              },
              "floating_ip": {
-              "description": "Floating IP criado para o Kubernetes API Server",
+              "description": "Floating IP created for the Kubernetes API Server.",
               "example": "172.100.10.1",
               "type": "string"
              },
              "port": {
-              "description": "Porta utilizada pelo Kubernetes API Server",
+              "description": "Port used by the Kubernetes API Server.",
               "example": 6443,
               "type": "integer"
              }
@@ -10657,30 +10976,30 @@
             "type": "object"
            },
            "name": {
-            "description": "Nome do cluster kubernetes",
-            "example": "cluster-exemplo",
+            "description": "Name of the Kubernetes cluster.",
+            "example": "cluster-example",
             "type": "string"
            },
            "project_id": {
-            "description": "Identificador único do projeto onde o cluster foi provisionado",
+            "description": "Unique identifier of the project where the cluster was provisioned.",
             "example": "0000806e53ec429792a7885e63264411",
             "type": "string"
            },
            "region": {
-            "description": "Identificador da região em que o cluster Kubernetes está localizado.",
+            "description": "Identifier of the region where the Kubernetes cluster is located.",
             "example": "br-ne-1a",
             "type": "string"
            },
            "status": {
-            "description": "Detalhes a respeito do status do cluster ou node",
+            "description": "Details about the status of the Kubernetes cluster or node.\n",
             "properties": {
              "message": {
-              "description": "Mensagem detalhada sobre o status do cluster ou node",
+              "description": "Detailed message about the status of the cluster or node.\n",
               "example": "Ready",
               "type": "string"
              },
              "state": {
-              "description": "Estado atual do cluster ou node.\n<table>\n  <tr>\n    <td>Cluster</td>\n    <td>Pending, Provisioning, Running, Provisioned, Terminating, Deleting, Failed</td>\n  </tr>\n  <tr>\n    <td>Node</td>\n    <td>Pending, Provisioning, Provisioned, Running, Deleting, Failed, Unknown</td>\n  </tr>\n</table>\n",
+              "description": "Current state of the cluster or node.\n\n| Component | Possible States                              |\n|-----------|---------------------------------------------|\n| Cluster   | Pending, Provisioning, Running, Provisioned, Terminating, Deleting, Failed |\n| Node      | Pending, Provisioning, Provisioned, Running, Deleting, Failed, Unknown   |\n",
               "example": "Pending",
               "type": "string"
              }
@@ -10692,17 +11011,17 @@
             "type": "object"
            },
            "tags": {
-            "description": "Lista de tags aplicadas ao cluster kubernetes",
+            "description": "List of tags applied to the Kubernetes cluster.",
             "items": {
-             "description": "Items da lista de tags aplicadas ao cluster kubernetes",
-             "example": "tag-exemplo",
+             "description": "Items from the list of tags applied to the Kubernetes cluster.",
+             "example": "tag-example",
              "nullable": true,
              "type": "string"
             },
             "type": "array"
            },
            "version": {
-            "description": "Versão do kubernetes nativa do cluster",
+            "description": "Native Kubernetes version of the cluster.",
             "example": "v1.22.9",
             "type": "string"
            }
@@ -10725,7 +11044,7 @@
       "version": "0.1.0"
      }
     ],
-    "description": "Rotas relacionadas a api de cluster.",
+    "description": "Endpoints related to the Cluster API.",
     "isInternal": false,
     "name": "cluster",
     "version": "0.1.0"
@@ -10762,7 +11081,7 @@
        },
        "type": "object"
       },
-      "description": "Lista todos os flavors disponiveis",
+      "description": "Lists all available flavors.",
       "isInternal": false,
       "name": "list",
       "parameters": {
@@ -10770,48 +11089,48 @@
        "type": "object"
       },
       "result": {
-       "description": "Objeto de resposta da requisição do flavor",
+       "description": "Response object for the Flavor request.",
        "properties": {
         "results": {
          "items": {
-          "description": "Listas de flavors disponibilidas pela aplicação",
+          "description": "Lists of available flavors provided by the application.",
           "properties": {
            "bastion": {
-            "description": "Lista de flavors disponiveis para a Bastion",
+            "description": "Lists of available flavors for the Bastion.",
             "items": {
-             "description": "Definição da capacidade de CPU, memória RAM e armazenamento dos nodes",
+             "description": "Definition of CPU capacity, RAM, and storage for nodes.",
              "properties": {
               "id": {
                "default": "",
-               "description": "Identificador exclusivo do Flavor.",
+               "description": "Unique identifier for the Flavor.",
                "example": "c777eaa7-d67c-46f4-9e4f-232bc9b67b58",
                "type": "string"
               },
               "name": {
-               "description": "Nome do Flavor.",
+               "description": "Name of the Flavor.",
                "example": "cloud-k8s.gp1.small",
                "type": "string"
               },
               "ram": {
                "default": 0,
-               "description": "Quantidade de memória RAM, medida em MB.",
+               "description": "Amount of RAM, measured in MB.",
                "example": 4096,
                "type": "integer"
               },
               "size": {
                "default": 0,
-               "description": "Quantidade de disco, medido em GB.",
+               "description": "Amount of disk space, measured in GB.",
                "example": 20,
                "type": "integer"
               },
               "sku": {
-               "description": "SKU referente ao flavor",
+               "description": "SKU associated with the Flavor.",
                "example": "sku-1234",
                "type": "string"
               },
               "vcpu": {
                "default": 0,
-               "description": "Quantidade de vCPUs disponiveis.",
+               "description": "Number of available vCPUs.",
                "example": 2,
                "type": "integer"
               }
@@ -10829,41 +11148,41 @@
             "type": "array"
            },
            "controlplane": {
-            "description": "Lista de flavors disponiveis para o Controlplane",
+            "description": "Lists of available flavors for the Control Plane.",
             "items": {
-             "description": "Definição da capacidade de CPU, memória RAM e armazenamento dos nodes",
+             "description": "Definition of CPU capacity, RAM, and storage for nodes.",
              "properties": {
               "id": {
                "default": "",
-               "description": "Identificador exclusivo do Flavor.",
+               "description": "Unique identifier for the Flavor.",
                "example": "c777eaa7-d67c-46f4-9e4f-232bc9b67b58",
                "type": "string"
               },
               "name": {
-               "description": "Nome do Flavor.",
+               "description": "Name of the Flavor.",
                "example": "cloud-k8s.gp1.small",
                "type": "string"
               },
               "ram": {
                "default": 0,
-               "description": "Quantidade de memória RAM, medida em MB.",
+               "description": "Amount of RAM, measured in MB.",
                "example": 4096,
                "type": "integer"
               },
               "size": {
                "default": 0,
-               "description": "Quantidade de disco, medido em GB.",
+               "description": "Amount of disk space, measured in GB.",
                "example": 20,
                "type": "integer"
               },
               "sku": {
-               "description": "SKU referente ao flavor",
+               "description": "SKU associated with the Flavor.",
                "example": "sku-1234",
                "type": "string"
               },
               "vcpu": {
                "default": 0,
-               "description": "Quantidade de vCPUs disponiveis.",
+               "description": "Number of available vCPUs.",
                "example": 2,
                "type": "integer"
               }
@@ -10881,41 +11200,41 @@
             "type": "array"
            },
            "nodepool": {
-            "description": "Lista de flavors disponiveis para os Node Pools",
+            "description": "Lists of available flavors for the Node Pools.",
             "items": {
-             "description": "Definição da capacidade de CPU, memória RAM e armazenamento dos nodes",
+             "description": "Definition of CPU capacity, RAM, and storage for nodes.",
              "properties": {
               "id": {
                "default": "",
-               "description": "Identificador exclusivo do Flavor.",
+               "description": "Unique identifier for the Flavor.",
                "example": "c777eaa7-d67c-46f4-9e4f-232bc9b67b58",
                "type": "string"
               },
               "name": {
-               "description": "Nome do Flavor.",
+               "description": "Name of the Flavor.",
                "example": "cloud-k8s.gp1.small",
                "type": "string"
               },
               "ram": {
                "default": 0,
-               "description": "Quantidade de memória RAM, medida em MB.",
+               "description": "Amount of RAM, measured in MB.",
                "example": 4096,
                "type": "integer"
               },
               "size": {
                "default": 0,
-               "description": "Quantidade de disco, medido em GB.",
+               "description": "Amount of disk space, measured in GB.",
                "example": 20,
                "type": "integer"
               },
               "sku": {
-               "description": "SKU referente ao flavor",
+               "description": "SKU associated with the Flavor.",
                "example": "sku-1234",
                "type": "string"
               },
               "vcpu": {
                "default": 0,
-               "description": "Quantidade de vCPUs disponiveis.",
+               "description": "Number of available vCPUs.",
                "example": 2,
                "type": "integer"
               }
@@ -10951,7 +11270,7 @@
       "version": "0.1.0"
      }
     ],
-    "description": "Rotas relacionadas a informações de configurações dos flavors do openstack.",
+    "description": "Endpoints related to configuration information for OpenStack flavors.",
     "isInternal": false,
     "name": "flavor",
     "version": "0.1.0"
@@ -10988,7 +11307,7 @@
        },
        "type": "object"
       },
-      "description": "Lista todos os flavors disponiveis",
+      "description": "Lists all available flavors.",
       "isInternal": false,
       "name": "flavors",
       "parameters": {
@@ -10996,48 +11315,48 @@
        "type": "object"
       },
       "result": {
-       "description": "Objeto de resposta da requisição do flavor",
+       "description": "Response object for the Flavor request.",
        "properties": {
         "results": {
          "items": {
-          "description": "Listas de flavors disponibilidas pela aplicação",
+          "description": "Lists of available flavors provided by the application.",
           "properties": {
            "bastion": {
-            "description": "Lista de flavors disponiveis para a Bastion",
+            "description": "Lists of available flavors for the Bastion.",
             "items": {
-             "description": "Definição da capacidade de CPU, memória RAM e armazenamento dos nodes",
+             "description": "Definition of CPU capacity, RAM, and storage for nodes.",
              "properties": {
               "id": {
                "default": "",
-               "description": "Identificador exclusivo do Flavor.",
+               "description": "Unique identifier for the Flavor.",
                "example": "c777eaa7-d67c-46f4-9e4f-232bc9b67b58",
                "type": "string"
               },
               "name": {
-               "description": "Nome do Flavor.",
+               "description": "Name of the Flavor.",
                "example": "cloud-k8s.gp1.small",
                "type": "string"
               },
               "ram": {
                "default": 0,
-               "description": "Quantidade de memória RAM, medida em MB.",
+               "description": "Amount of RAM, measured in MB.",
                "example": 4096,
                "type": "integer"
               },
               "size": {
                "default": 0,
-               "description": "Quantidade de disco, medido em GB.",
+               "description": "Amount of disk space, measured in GB.",
                "example": 20,
                "type": "integer"
               },
               "sku": {
-               "description": "SKU referente ao flavor",
+               "description": "SKU associated with the Flavor.",
                "example": "sku-1234",
                "type": "string"
               },
               "vcpu": {
                "default": 0,
-               "description": "Quantidade de vCPUs disponiveis.",
+               "description": "Number of available vCPUs.",
                "example": 2,
                "type": "integer"
               }
@@ -11055,41 +11374,41 @@
             "type": "array"
            },
            "controlplane": {
-            "description": "Lista de flavors disponiveis para o Controlplane",
+            "description": "Lists of available flavors for the Control Plane.",
             "items": {
-             "description": "Definição da capacidade de CPU, memória RAM e armazenamento dos nodes",
+             "description": "Definition of CPU capacity, RAM, and storage for nodes.",
              "properties": {
               "id": {
                "default": "",
-               "description": "Identificador exclusivo do Flavor.",
+               "description": "Unique identifier for the Flavor.",
                "example": "c777eaa7-d67c-46f4-9e4f-232bc9b67b58",
                "type": "string"
               },
               "name": {
-               "description": "Nome do Flavor.",
+               "description": "Name of the Flavor.",
                "example": "cloud-k8s.gp1.small",
                "type": "string"
               },
               "ram": {
                "default": 0,
-               "description": "Quantidade de memória RAM, medida em MB.",
+               "description": "Amount of RAM, measured in MB.",
                "example": 4096,
                "type": "integer"
               },
               "size": {
                "default": 0,
-               "description": "Quantidade de disco, medido em GB.",
+               "description": "Amount of disk space, measured in GB.",
                "example": 20,
                "type": "integer"
               },
               "sku": {
-               "description": "SKU referente ao flavor",
+               "description": "SKU associated with the Flavor.",
                "example": "sku-1234",
                "type": "string"
               },
               "vcpu": {
                "default": 0,
-               "description": "Quantidade de vCPUs disponiveis.",
+               "description": "Number of available vCPUs.",
                "example": 2,
                "type": "integer"
               }
@@ -11107,41 +11426,41 @@
             "type": "array"
            },
            "nodepool": {
-            "description": "Lista de flavors disponiveis para os Node Pools",
+            "description": "Lists of available flavors for the Node Pools.",
             "items": {
-             "description": "Definição da capacidade de CPU, memória RAM e armazenamento dos nodes",
+             "description": "Definition of CPU capacity, RAM, and storage for nodes.",
              "properties": {
               "id": {
                "default": "",
-               "description": "Identificador exclusivo do Flavor.",
+               "description": "Unique identifier for the Flavor.",
                "example": "c777eaa7-d67c-46f4-9e4f-232bc9b67b58",
                "type": "string"
               },
               "name": {
-               "description": "Nome do Flavor.",
+               "description": "Name of the Flavor.",
                "example": "cloud-k8s.gp1.small",
                "type": "string"
               },
               "ram": {
                "default": 0,
-               "description": "Quantidade de memória RAM, medida em MB.",
+               "description": "Amount of RAM, measured in MB.",
                "example": 4096,
                "type": "integer"
               },
               "size": {
                "default": 0,
-               "description": "Quantidade de disco, medido em GB.",
+               "description": "Amount of disk space, measured in GB.",
                "example": 20,
                "type": "integer"
               },
               "sku": {
-               "description": "SKU referente ao flavor",
+               "description": "SKU associated with the Flavor.",
                "example": "sku-1234",
                "type": "string"
               },
               "vcpu": {
                "default": 0,
-               "description": "Quantidade de vCPUs disponiveis.",
+               "description": "Number of available vCPUs.",
                "example": 2,
                "type": "integer"
               }
@@ -11206,7 +11525,7 @@
        },
        "type": "object"
       },
-      "description": "Lista todas as versões de kubernetes disponiveis",
+      "description": "Lists all available Kubernetes versions.",
       "isInternal": false,
       "name": "versions",
       "parameters": {
@@ -11214,20 +11533,20 @@
        "type": "object"
       },
       "result": {
-       "description": "Objeto de resposta da requisição da Versão",
+       "description": "Response object for the Version request.",
        "properties": {
         "results": {
-         "description": "Lista de versões para o cluster kubernetes",
+         "description": "Lists of Kubernetes cluster versions.",
          "items": {
-          "description": "Objeto da versão kubernetes",
+          "description": "Object representing a Kubernetes version.",
           "properties": {
            "deprecated": {
-            "description": "Indica se a versão está obsoleta",
+            "description": "Indicates whether the version is deprecated.",
             "example": false,
             "type": "boolean"
            },
            "version": {
-            "description": "Versão kubernetes",
+            "description": "Kubernetes version.",
             "example": "v1.22.9",
             "type": "string"
            }
@@ -11249,7 +11568,7 @@
       "version": "0.1.0"
      }
     ],
-    "description": "Rotas relacionadas a informações de configurações do mke-api.",
+    "description": "Endpoints related to configuration information for the MKE API.",
     "isInternal": false,
     "name": "info",
     "version": "0.1.0"
@@ -11286,25 +11605,25 @@
        },
        "type": "object"
       },
-      "description": "Cria um node pool em um cluster kubernetes",
+      "description": "Creates a node pool in a Kubernetes cluster.",
       "isInternal": false,
       "name": "create",
       "parameters": {
        "additionalProperties": false,
        "properties": {
         "auto_scale": {
-         "description": "Objeto que especifica as propriedades para atualização de recursos de carga de trabalho no cluster Kubernetes.",
+         "description": "Object specifying properties for updating workload resources in the Kubernetes cluster.\n",
          "properties": {
           "max_replicas": {
            "default": 1,
-           "description": "Quantidade máxima de réplicas para o autoscaling. Se não for informado um valor, ou se for igual ou menor que zero, o valor do autoscaler será assumido com base no campo \"réplicas\".",
+           "description": "Maximum number of replicas for autoscaling. If not provided, or if the value is equal to or less than zero, the autoscaler value will be assumed based on the \"replicas\" field.\n",
            "example": 5,
            "minimum": 1,
            "type": "integer"
           },
           "min_replicas": {
            "default": 1,
-           "description": "Quantidade mínima de réplicas para o autoscaling. Se não for informado um valor, ou se for igual ou menor que zero, o valor do autoscaler será assumido com base no campo \"réplicas\".",
+           "description": "Minimum number of replicas for autoscaling. If not provided, or if the value is equal to or less than zero, the autoscaler value will be assumed based on the \"replicas\" field.\n",
            "example": 2,
            "minimum": 1,
            "type": "integer"
@@ -11317,45 +11636,49 @@
          "type": "object"
         },
         "cluster_id": {
-         "description": "Identificador no padrão uuid para identificar o cluster",
+         "description": "Cluster's UUID.",
          "format": "uuid",
          "type": "string"
         },
         "flavor": {
-         "description": "Definição da capacidade de CPU, memória RAM e armazenamento dos nodes\n<table>\n  <tr>\n    <td>Flavor</td>\n    <td>vCPUs</td>\n    <td>RAM(Gb)</td>\n    <td>Root Disk(GB)</td>\n  </tr>\n  <tr>\n    <td>cloud-k8s.gp1.small</td>\n    <td>2</td>\n    <td>4</td>\n    <td>20</td>\n  </tr>\n  <tr>\n    <td>cloud-k8s.gp1.large</td>\n    <td>8</td>\n    <td>16</td>\n    <td>100</td>\n  </tr>\n</table>\n",
+         "description": "Definition of the CPU, RAM, and storage capacity of the nodes.\n\n| Flavor                  | vCPUs | RAM (GB) | Root Disk (GB) |\n|-------------------------|-------|----------|----------------|\n| cloud-k8s.gp1.small     | 2     | 4        | 20             |\n| cloud-k8s.gp1.medium    | 4     | 8        | 50             |\n| cloud-k8s.gp1.large     | 8     | 16       | 100            |\n| cloud-k8s.gp2.small     | 2     | 4        | 300            |\n| cloud-k8s.gp2.large     | 8     | 32       | 300            |\n| cloud-k8s.hm1.medium    | 4     | 16       | 50             |\n",
          "enum": [
           "cloud-k8s.gp1.small",
-          "cloud-k8s.gp1.large"
+          "cloud-k8s.gp1.medium",
+          "cloud-k8s.gp1.large",
+          "cloud-k8s.gp2.small",
+          "cloud-k8s.gp2.large",
+          "cloud-k8s.hm1.medium"
          ],
          "example": "cloud-k8s.gp1.small",
          "type": "string"
         },
         "name": {
-         "description": "Nome do node pool. O nome destina-se principalmente à idempotência, e deve ser exclusivo em um namespace. 0 nome não pode ser alterado.\nO nome deve seguir as seguintes regras:\n  - deve conter no máximo 63 caracteres\n  - deve conter apenas caracteres alfanuméricos minúsculos ou '-'\n  - deve começar com um caractere alfabético\n  - deve terminar com um caractere alfanumérico\n",
-         "example": "nodepool-exemplo",
+         "description": "Name of the node pool. The name is primarily for idempotence and must be unique within a namespace. The name cannot be changed.\nThe name must follow the following rules:\n  - Must contain a maximum of 63 characters\n  - Must contain only lowercase alphanumeric characters or '-'\n  - Must start with an alphabetic character\n  - Must end with an alphanumeric character\n",
+         "example": "nodepool-example",
          "type": "string"
         },
         "replicas": {
          "default": 1,
-         "description": "Número de réplicas dos nós do nodepool",
+         "description": "Number of replicas of the nodes in the node pool.",
          "example": 3,
          "type": "integer"
         },
         "tags": {
-         "description": "Lista de tags aplicadas ao nodepool",
+         "description": "List of tags applied to the node pool.",
          "items": {
-          "description": "Items da lista de tags aplicadas ao nodepool",
+          "description": "Items from the list of tags applied to the node pool.",
           "example": "tag-value1",
           "type": "string"
          },
          "type": "array"
         },
         "taints": {
-         "description": "Propriedade de associação de um conjunto se nós",
+         "description": "Property associating a set of nodes.",
          "items": {
           "properties": {
            "effect": {
-            "description": "O efeito do taint em pods que não toleram o taint.\n**NoSchedule** - Não permitir que novos pods sejam agendados no nó, a menos que eles tolerem a taint, mas permitir que todos os pods já em execução continuem em execução.\n**PreferNoSchedule** - Parecido com o NoSchedule, mas tenta não agendar novos pods no nó, em vez de proibir totalmente o agendamento de novos pods no nó\n**NoExecute** - Remova todos os pods já em execução que não tolerem o taint.  \n",
+            "description": "The effect of the taint on pods that do not tolerate the taint.\n- **NoSchedule**: Prevents new pods from being scheduled on the node, unless they tolerate the taint. Allows all existing pods to continue running.\n- **PreferNoSchedule**: Similar to NoSchedule, but attempts not to schedule new pods on the node, rather than completely prohibiting new pod scheduling on the node.\n- **NoExecute**: Removes all already running pods that do not tolerate the taint.\n",
             "enum": [
              "NoSchedule",
              "PreferNoSchedule",
@@ -11365,13 +11688,13 @@
             "type": "string"
            },
            "key": {
-            "description": "A chave taint a ser aplicada ao node",
-            "example": "exemplo-key",
+            "description": "Key of the taint to be applied to the node.",
+            "example": "example-key",
             "type": "string"
            },
            "value": {
-            "description": "O valor correspondente a chave taint.",
-            "example": "valor1",
+            "description": "Value corresponding to the taint key.",
+            "example": "value1",
             "type": "string"
            }
           },
@@ -11394,21 +11717,21 @@
        "type": "object"
       },
       "result": {
-       "description": "Objeto da requisição da response do nodepool",
+       "description": "Object of the node pool response.",
        "properties": {
         "auto_scale": {
-         "description": "Objeto que especifica as propriedades para atualização de recursos de carga de trabalho no cluster Kubernetes.",
+         "description": "Object specifying properties for updating workload resources in the Kubernetes cluster.\n",
          "properties": {
           "max_replicas": {
            "default": 1,
-           "description": "Quantidade máxima de réplicas para o autoscaling. Se não for informado um valor, ou se for igual ou menor que zero, o valor do autoscaler será assumido com base no campo \"réplicas\".",
+           "description": "Maximum number of replicas for autoscaling. If not provided, or if the value is equal to or less than zero, the autoscaler value will be assumed based on the \"replicas\" field.\n",
            "example": 5,
            "minimum": 1,
            "type": "integer"
           },
           "min_replicas": {
            "default": 1,
-           "description": "Quantidade mínima de réplicas para o autoscaling. Se não for informado um valor, ou se for igual ou menor que zero, o valor do autoscaler será assumido com base no campo \"réplicas\".",
+           "description": "Minimum number of replicas for autoscaling. If not provided, or if the value is equal to or less than zero, the autoscaler value will be assumed based on the \"replicas\" field.\n",
            "example": 2,
            "minimum": 1,
            "type": "integer"
@@ -11421,57 +11744,57 @@
          "type": "object"
         },
         "created_at": {
-         "description": "Data de criação do cluster kubernetes",
+         "description": "Date of creation of the Kubernetes cluster.",
          "example": "2023-03-01T09:00:00Z",
          "format": "date-time",
          "type": "string"
         },
         "id": {
-         "description": "Identificador no padrão uuid para identificar o nodepool",
+         "description": "Node pool's UUID.",
          "example": "2cc6f625-7d67-4ed2-8c5e-24e5b40b951b",
          "format": "uuid",
          "type": "string"
         },
         "instance_template": {
-         "description": "Template do objeto de instância usado para criar instâncias de máquina e grupos gerenciados de instâncias.",
+         "description": "Template for the instance object used to create machine instances and managed instance groups.\n",
          "properties": {
           "disk_size": {
-           "description": "Tamanho do disco anexado a cada nó",
+           "description": "Size of the disk attached to each node.",
            "type": "integer"
           },
           "disk_type": {
-           "description": "Tipo de disco anexado a cada nó",
+           "description": "Type of disk attached to each node.",
            "type": "string"
           },
           "flavor": {
-           "description": "Definição da capacidade de CPU, memória RAM e armazenamento dos nodes",
+           "description": "Definition of CPU capacity, RAM, and storage for nodes.",
            "properties": {
             "id": {
              "default": "",
-             "description": "Identificador exclusivo do Flavor.",
+             "description": "Unique identifier for the Flavor.",
              "example": "c777eaa7-d67c-46f4-9e4f-232bc9b67b58",
              "type": "string"
             },
             "name": {
-             "description": "Nome do Flavor.",
+             "description": "Name of the Flavor.",
              "example": "cloud-k8s.gp1.small",
              "type": "string"
             },
             "ram": {
              "default": 0,
-             "description": "Quantidade de memória RAM, medida em MB.",
+             "description": "Amount of RAM, measured in MB.",
              "example": 4096,
              "type": "integer"
             },
             "size": {
              "default": 0,
-             "description": "Quantidade de disco, medido em GB.",
+             "description": "Amount of disk space, measured in GB.",
              "example": 20,
              "type": "integer"
             },
             "vcpu": {
              "default": 0,
-             "description": "Quantidade de vCPUs disponiveis.",
+             "description": "Number of available vCPUs.",
              "example": 2,
              "type": "integer"
             }
@@ -11486,7 +11809,7 @@
            "type": "object"
           },
           "node_image": {
-           "description": "Imagem do sistema operacional que é executada em cada nó",
+           "description": "Operating system image running on each node.",
            "example": "ubuntu-2004-kube-v1.22.9-v1",
            "type": "string"
           }
@@ -11503,45 +11826,45 @@
          "additionalProperties": {
           "type": "string"
          },
-         "description": "Pares de chave/valor anexados ao objeto e usados para especificação",
+         "description": "Key/value pairs attached to the object and used for specification.",
          "example": {
-          "key1": "valor1"
+          "key1": "value1"
          },
          "type": "object"
         },
         "name": {
-         "description": "Nome do node pool",
-         "example": "nodepool-exemplo",
+         "description": "Node pool name",
+         "example": "nodepool-example",
          "type": "string"
         },
         "replicas": {
-         "description": "Quantidade de réplicas dos nós do nodepool",
+         "description": "Number of replicas of the nodes in the node pool.",
          "example": 3,
          "type": "integer"
         },
         "securityGroups": {
-         "description": "Nome do grupo de segurança para definir regras que permitem tráfego de rede no node pool de workers",
+         "description": "Name of the security group to define rules allowing network traffic in the worker node pool.",
          "items": {
-          "description": "Items dos grupos de segurança que definem regras que permitem tráfego de rede no node pool de workers",
+          "description": "Items from the security groups defining rules allowing network traffic in the worker node pool.",
           "example": "security-group-name",
           "type": "string"
          },
          "type": "array"
         },
         "status": {
-         "description": "Detalhes a respeito do status do node pool ou control plane",
+         "description": "Details about the status of the node pool or control plane.\n",
          "properties": {
           "messages": {
-           "description": "Mensagem detalhada sobre o status do node pool ou control plane",
+           "description": "Detailed message about the status of the node pool or control plane.\n",
            "items": {
-            "description": "Mensagens retornadas pelos control planes ou nodepools",
+            "description": "Messages returned by the control planes or node pools.\n",
             "example": "Ready",
             "type": "string"
            },
            "type": "array"
           },
           "state": {
-           "description": "Estado atual do node pool ou control plane.\n<table>\n  <tr>\n    <td>Node pool</td>\n    <td>ScalingUp, ScalingDown, Running, Failed, Unknown</td>\n  </tr>\n  <tr>\n    <td>Control Plane</td>\n    <td>ScalingUp, ScalingDown, Running, Failed, Unknown</td>\n  </tr>\n</table>\n",
+           "description": "Current state of the node pool or control plane.\n\n| Component      | Possible States                     |\n|-----------------|-------------------------------------|\n| Node pool       | ScalingUp, ScalingDown, Running, Failed, Unknown |\n| Control Plane   | ScalingUp, ScalingDown, Running, Failed, Unknown |\n",
            "example": "Pending",
            "type": "string"
           }
@@ -11553,20 +11876,20 @@
          "type": "object"
         },
         "tags": {
-         "description": "Lista de tags aplicadas ao nodepool",
+         "description": "List of tags applied to the node pool.",
          "items": {
-          "description": "Items da lista de tags aplicadas ao nodepool",
-          "example": "tag-exemplo",
+          "description": "Items from the list of tags applied to the node pool.",
+          "example": "tag-example",
           "type": "string"
          },
          "type": "array"
         },
         "taints": {
-         "description": "Propriedade de associação de um conjunto se nós",
+         "description": "Property for associating a set of nodes.",
          "items": {
           "properties": {
            "effect": {
-            "description": "O efeito do taint em pods que não toleram o taint.\n**NoSchedule** - Não permitir que novos pods sejam agendados no nó, a menos que eles tolerem a taint, mas permitir que todos os pods já em execução continuem em execução.\n**PreferNoSchedule** - Parecido com o NoSchedule, mas tenta não agendar novos pods no nó, em vez de proibir totalmente o agendamento de novos pods no nó\n**NoExecute** - Remova todos os pods já em execução que não tolerem o taint.  \n",
+            "description": "The effect of the taint on pods that do not tolerate the taint.\n- **NoSchedule**: Prevents new pods from being scheduled on the node, unless they tolerate the taint. Allows all existing pods to continue running.\n- **PreferNoSchedule**: Similar to NoSchedule, but attempts not to schedule new pods on the node, rather than completely prohibiting new pod scheduling on the node.\n- **NoExecute**: Removes all already running pods that do not tolerate the taint.\n",
             "enum": [
              "NoSchedule",
              "PreferNoSchedule",
@@ -11576,13 +11899,13 @@
             "type": "string"
            },
            "key": {
-            "description": "A chave taint a ser aplicada ao node",
-            "example": "exemplo-key",
+            "description": "Key of the taint to be applied to the node.",
+            "example": "example-key",
             "type": "string"
            },
            "value": {
-            "description": "O valor correspondente a chave taint.",
-            "example": "valor1",
+            "description": "Value corresponding to the taint key.",
+            "example": "value1",
             "type": "string"
            }
           },
@@ -11596,15 +11919,15 @@
          "type": "array"
         },
         "updated_at": {
-         "description": "Data da última alteração do cluster kubernetes",
+         "description": "Date of the last change to the Kubernetes cluster.",
          "example": "2023-03-01T09:10:00Z",
          "format": "date-time",
          "type": "string"
         },
         "zone": {
-         "description": "Zona de disponibilidade para criação do cluster kubernetes",
+         "description": "Availability zone for creating the Kubernetes cluster.",
          "items": {
-          "description": "Items da lista das zonas de disponibilidade para criação do cluster kubernetes",
+          "description": "Items from the list of availability zones for creating the Kubernetes cluster.",
           "example": "br-ne-1b",
           "type": "string"
          },
@@ -11656,19 +11979,19 @@
        },
        "type": "object"
       },
-      "description": "Deleta um node pool em um cluster do Kubernetes",
+      "description": "Deletes a node pool in a Kubernetes cluster by nodepool_uuid.",
       "isInternal": false,
       "name": "delete",
       "parameters": {
        "additionalProperties": false,
        "properties": {
         "cluster_id": {
-         "description": "Identificador no padrão uuid para identificar o cluster",
+         "description": "Cluster's UUID.",
          "format": "uuid",
          "type": "string"
         },
         "id": {
-         "description": "Identificador no padrão uuid para identificar o nodepool",
+         "description": "Nodepool's UUID.",
          "format": "uuid",
          "type": "string"
         }
@@ -11715,19 +12038,19 @@
        },
        "type": "object"
       },
-      "description": "Lista nodes de um node pool",
+      "description": "Gets nodes in a node pool by nodepool_uuid.",
       "isInternal": false,
       "name": "get",
       "parameters": {
        "additionalProperties": false,
        "properties": {
         "cluster_id": {
-         "description": "Identificador no padrão uuid para identificar o cluster",
+         "description": "Cluster's UUID.",
          "format": "uuid",
          "type": "string"
         },
         "id": {
-         "description": "Identificador no padrão uuid para identificar o nodepool",
+         "description": "Nodepool's UUID.",
          "format": "uuid",
          "type": "string"
         }
@@ -11739,21 +12062,21 @@
        "type": "object"
       },
       "result": {
-       "description": "Objeto da requisição da response do nodepool",
+       "description": "Object of the node pool response.",
        "properties": {
         "auto_scale": {
-         "description": "Objeto que especifica as propriedades para atualização de recursos de carga de trabalho no cluster Kubernetes.",
+         "description": "Object specifying properties for updating workload resources in the Kubernetes cluster.\n",
          "properties": {
           "max_replicas": {
            "default": 1,
-           "description": "Quantidade máxima de réplicas para o autoscaling. Se não for informado um valor, ou se for igual ou menor que zero, o valor do autoscaler será assumido com base no campo \"réplicas\".",
+           "description": "Maximum number of replicas for autoscaling. If not provided, or if the value is equal to or less than zero, the autoscaler value will be assumed based on the \"replicas\" field.\n",
            "example": 5,
            "minimum": 1,
            "type": "integer"
           },
           "min_replicas": {
            "default": 1,
-           "description": "Quantidade mínima de réplicas para o autoscaling. Se não for informado um valor, ou se for igual ou menor que zero, o valor do autoscaler será assumido com base no campo \"réplicas\".",
+           "description": "Minimum number of replicas for autoscaling. If not provided, or if the value is equal to or less than zero, the autoscaler value will be assumed based on the \"replicas\" field.\n",
            "example": 2,
            "minimum": 1,
            "type": "integer"
@@ -11766,57 +12089,57 @@
          "type": "object"
         },
         "created_at": {
-         "description": "Data de criação do cluster kubernetes",
+         "description": "Date of creation of the Kubernetes cluster.",
          "example": "2023-03-01T09:00:00Z",
          "format": "date-time",
          "type": "string"
         },
         "id": {
-         "description": "Identificador no padrão uuid para identificar o nodepool",
+         "description": "Node pool's UUID.",
          "example": "2cc6f625-7d67-4ed2-8c5e-24e5b40b951b",
          "format": "uuid",
          "type": "string"
         },
         "instance_template": {
-         "description": "Template do objeto de instância usado para criar instâncias de máquina e grupos gerenciados de instâncias.",
+         "description": "Template for the instance object used to create machine instances and managed instance groups.\n",
          "properties": {
           "disk_size": {
-           "description": "Tamanho do disco anexado a cada nó",
+           "description": "Size of the disk attached to each node.",
            "type": "integer"
           },
           "disk_type": {
-           "description": "Tipo de disco anexado a cada nó",
+           "description": "Type of disk attached to each node.",
            "type": "string"
           },
           "flavor": {
-           "description": "Definição da capacidade de CPU, memória RAM e armazenamento dos nodes",
+           "description": "Definition of CPU capacity, RAM, and storage for nodes.",
            "properties": {
             "id": {
              "default": "",
-             "description": "Identificador exclusivo do Flavor.",
+             "description": "Unique identifier for the Flavor.",
              "example": "c777eaa7-d67c-46f4-9e4f-232bc9b67b58",
              "type": "string"
             },
             "name": {
-             "description": "Nome do Flavor.",
+             "description": "Name of the Flavor.",
              "example": "cloud-k8s.gp1.small",
              "type": "string"
             },
             "ram": {
              "default": 0,
-             "description": "Quantidade de memória RAM, medida em MB.",
+             "description": "Amount of RAM, measured in MB.",
              "example": 4096,
              "type": "integer"
             },
             "size": {
              "default": 0,
-             "description": "Quantidade de disco, medido em GB.",
+             "description": "Amount of disk space, measured in GB.",
              "example": 20,
              "type": "integer"
             },
             "vcpu": {
              "default": 0,
-             "description": "Quantidade de vCPUs disponiveis.",
+             "description": "Number of available vCPUs.",
              "example": 2,
              "type": "integer"
             }
@@ -11831,7 +12154,7 @@
            "type": "object"
           },
           "node_image": {
-           "description": "Imagem do sistema operacional que é executada em cada nó",
+           "description": "Operating system image running on each node.",
            "example": "ubuntu-2004-kube-v1.22.9-v1",
            "type": "string"
           }
@@ -11848,45 +12171,45 @@
          "additionalProperties": {
           "type": "string"
          },
-         "description": "Pares de chave/valor anexados ao objeto e usados para especificação",
+         "description": "Key/value pairs attached to the object and used for specification.",
          "example": {
-          "key1": "valor1"
+          "key1": "value1"
          },
          "type": "object"
         },
         "name": {
-         "description": "Nome do node pool",
-         "example": "nodepool-exemplo",
+         "description": "Node pool name",
+         "example": "nodepool-example",
          "type": "string"
         },
         "replicas": {
-         "description": "Quantidade de réplicas dos nós do nodepool",
+         "description": "Number of replicas of the nodes in the node pool.",
          "example": 3,
          "type": "integer"
         },
         "securityGroups": {
-         "description": "Nome do grupo de segurança para definir regras que permitem tráfego de rede no node pool de workers",
+         "description": "Name of the security group to define rules allowing network traffic in the worker node pool.",
          "items": {
-          "description": "Items dos grupos de segurança que definem regras que permitem tráfego de rede no node pool de workers",
+          "description": "Items from the security groups defining rules allowing network traffic in the worker node pool.",
           "example": "security-group-name",
           "type": "string"
          },
          "type": "array"
         },
         "status": {
-         "description": "Detalhes a respeito do status do node pool ou control plane",
+         "description": "Details about the status of the node pool or control plane.\n",
          "properties": {
           "messages": {
-           "description": "Mensagem detalhada sobre o status do node pool ou control plane",
+           "description": "Detailed message about the status of the node pool or control plane.\n",
            "items": {
-            "description": "Mensagens retornadas pelos control planes ou nodepools",
+            "description": "Messages returned by the control planes or node pools.\n",
             "example": "Ready",
             "type": "string"
            },
            "type": "array"
           },
           "state": {
-           "description": "Estado atual do node pool ou control plane.\n<table>\n  <tr>\n    <td>Node pool</td>\n    <td>ScalingUp, ScalingDown, Running, Failed, Unknown</td>\n  </tr>\n  <tr>\n    <td>Control Plane</td>\n    <td>ScalingUp, ScalingDown, Running, Failed, Unknown</td>\n  </tr>\n</table>\n",
+           "description": "Current state of the node pool or control plane.\n\n| Component      | Possible States                     |\n|-----------------|-------------------------------------|\n| Node pool       | ScalingUp, ScalingDown, Running, Failed, Unknown |\n| Control Plane   | ScalingUp, ScalingDown, Running, Failed, Unknown |\n",
            "example": "Pending",
            "type": "string"
           }
@@ -11898,20 +12221,20 @@
          "type": "object"
         },
         "tags": {
-         "description": "Lista de tags aplicadas ao nodepool",
+         "description": "List of tags applied to the node pool.",
          "items": {
-          "description": "Items da lista de tags aplicadas ao nodepool",
-          "example": "tag-exemplo",
+          "description": "Items from the list of tags applied to the node pool.",
+          "example": "tag-example",
           "type": "string"
          },
          "type": "array"
         },
         "taints": {
-         "description": "Propriedade de associação de um conjunto se nós",
+         "description": "Property for associating a set of nodes.",
          "items": {
           "properties": {
            "effect": {
-            "description": "O efeito do taint em pods que não toleram o taint.\n**NoSchedule** - Não permitir que novos pods sejam agendados no nó, a menos que eles tolerem a taint, mas permitir que todos os pods já em execução continuem em execução.\n**PreferNoSchedule** - Parecido com o NoSchedule, mas tenta não agendar novos pods no nó, em vez de proibir totalmente o agendamento de novos pods no nó\n**NoExecute** - Remova todos os pods já em execução que não tolerem o taint.  \n",
+            "description": "The effect of the taint on pods that do not tolerate the taint.\n- **NoSchedule**: Prevents new pods from being scheduled on the node, unless they tolerate the taint. Allows all existing pods to continue running.\n- **PreferNoSchedule**: Similar to NoSchedule, but attempts not to schedule new pods on the node, rather than completely prohibiting new pod scheduling on the node.\n- **NoExecute**: Removes all already running pods that do not tolerate the taint.\n",
             "enum": [
              "NoSchedule",
              "PreferNoSchedule",
@@ -11921,13 +12244,13 @@
             "type": "string"
            },
            "key": {
-            "description": "A chave taint a ser aplicada ao node",
-            "example": "exemplo-key",
+            "description": "Key of the taint to be applied to the node.",
+            "example": "example-key",
             "type": "string"
            },
            "value": {
-            "description": "O valor correspondente a chave taint.",
-            "example": "valor1",
+            "description": "Value corresponding to the taint key.",
+            "example": "value1",
             "type": "string"
            }
           },
@@ -11941,15 +12264,15 @@
          "type": "array"
         },
         "updated_at": {
-         "description": "Data da última alteração do cluster kubernetes",
+         "description": "Date of the last change to the Kubernetes cluster.",
          "example": "2023-03-01T09:10:00Z",
          "format": "date-time",
          "type": "string"
         },
         "zone": {
-         "description": "Zona de disponibilidade para criação do cluster kubernetes",
+         "description": "Availability zone for creating the Kubernetes cluster.",
          "items": {
-          "description": "Items da lista das zonas de disponibilidade para criação do cluster kubernetes",
+          "description": "Items from the list of availability zones for creating the Kubernetes cluster.",
           "example": "br-ne-1b",
           "type": "string"
          },
@@ -12001,14 +12324,14 @@
        },
        "type": "object"
       },
-      "description": "Obtem um node pool para um cluster Kubernetes",
+      "description": "Gets a node pool from a Kubernetes cluster by cluster_uuid.",
       "isInternal": false,
       "name": "list",
       "parameters": {
        "additionalProperties": false,
        "properties": {
         "cluster_id": {
-         "description": "Identificador no padrão uuid para identificar o cluster",
+         "description": "Cluster's UUID.",
          "format": "uuid",
          "type": "string"
         }
@@ -12019,26 +12342,26 @@
        "type": "object"
       },
       "result": {
-       "description": "Objeto da requisição da response dos nodepools",
+       "description": "Object of the node pool response in the cluster.",
        "properties": {
         "results": {
-         "description": "Lista dos node pools",
+         "description": "List of node pools.",
          "items": {
-          "description": "Objeto da requisição da response do nodepool",
+          "description": "Object of the node pool response.",
           "properties": {
            "auto_scale": {
-            "description": "Objeto que especifica as propriedades para atualização de recursos de carga de trabalho no cluster Kubernetes.",
+            "description": "Object specifying properties for updating workload resources in the Kubernetes cluster.\n",
             "properties": {
              "max_replicas": {
               "default": 1,
-              "description": "Quantidade máxima de réplicas para o autoscaling. Se não for informado um valor, ou se for igual ou menor que zero, o valor do autoscaler será assumido com base no campo \"réplicas\".",
+              "description": "Maximum number of replicas for autoscaling. If not provided, or if the value is equal to or less than zero, the autoscaler value will be assumed based on the \"replicas\" field.\n",
               "example": 5,
               "minimum": 1,
               "type": "integer"
              },
              "min_replicas": {
               "default": 1,
-              "description": "Quantidade mínima de réplicas para o autoscaling. Se não for informado um valor, ou se for igual ou menor que zero, o valor do autoscaler será assumido com base no campo \"réplicas\".",
+              "description": "Minimum number of replicas for autoscaling. If not provided, or if the value is equal to or less than zero, the autoscaler value will be assumed based on the \"replicas\" field.\n",
               "example": 2,
               "minimum": 1,
               "type": "integer"
@@ -12051,57 +12374,57 @@
             "type": "object"
            },
            "created_at": {
-            "description": "Data de criação do cluster kubernetes",
+            "description": "Date of creation of the Kubernetes cluster.",
             "example": "2023-03-01T09:00:00Z",
             "format": "date-time",
             "type": "string"
            },
            "id": {
-            "description": "Identificador no padrão uuid para identificar o nodepool",
+            "description": "Node pool's UUID.",
             "example": "2cc6f625-7d67-4ed2-8c5e-24e5b40b951b",
             "format": "uuid",
             "type": "string"
            },
            "instance_template": {
-            "description": "Template do objeto de instância usado para criar instâncias de máquina e grupos gerenciados de instâncias.",
+            "description": "Template for the instance object used to create machine instances and managed instance groups.\n",
             "properties": {
              "disk_size": {
-              "description": "Tamanho do disco anexado a cada nó",
+              "description": "Size of the disk attached to each node.",
               "type": "integer"
              },
              "disk_type": {
-              "description": "Tipo de disco anexado a cada nó",
+              "description": "Type of disk attached to each node.",
               "type": "string"
              },
              "flavor": {
-              "description": "Definição da capacidade de CPU, memória RAM e armazenamento dos nodes",
+              "description": "Definition of CPU capacity, RAM, and storage for nodes.",
               "properties": {
                "id": {
                 "default": "",
-                "description": "Identificador exclusivo do Flavor.",
+                "description": "Unique identifier for the Flavor.",
                 "example": "c777eaa7-d67c-46f4-9e4f-232bc9b67b58",
                 "type": "string"
                },
                "name": {
-                "description": "Nome do Flavor.",
+                "description": "Name of the Flavor.",
                 "example": "cloud-k8s.gp1.small",
                 "type": "string"
                },
                "ram": {
                 "default": 0,
-                "description": "Quantidade de memória RAM, medida em MB.",
+                "description": "Amount of RAM, measured in MB.",
                 "example": 4096,
                 "type": "integer"
                },
                "size": {
                 "default": 0,
-                "description": "Quantidade de disco, medido em GB.",
+                "description": "Amount of disk space, measured in GB.",
                 "example": 20,
                 "type": "integer"
                },
                "vcpu": {
                 "default": 0,
-                "description": "Quantidade de vCPUs disponiveis.",
+                "description": "Number of available vCPUs.",
                 "example": 2,
                 "type": "integer"
                }
@@ -12116,7 +12439,7 @@
               "type": "object"
              },
              "node_image": {
-              "description": "Imagem do sistema operacional que é executada em cada nó",
+              "description": "Operating system image running on each node.",
               "example": "ubuntu-2004-kube-v1.22.9-v1",
               "type": "string"
              }
@@ -12133,45 +12456,45 @@
             "additionalProperties": {
              "type": "string"
             },
-            "description": "Pares de chave/valor anexados ao objeto e usados para especificação",
+            "description": "Key/value pairs attached to the object and used for specification.",
             "example": {
-             "key1": "valor1"
+             "key1": "value1"
             },
             "type": "object"
            },
            "name": {
-            "description": "Nome do node pool",
-            "example": "nodepool-exemplo",
+            "description": "Node pool name",
+            "example": "nodepool-example",
             "type": "string"
            },
            "replicas": {
-            "description": "Quantidade de réplicas dos nós do nodepool",
+            "description": "Number of replicas of the nodes in the node pool.",
             "example": 3,
             "type": "integer"
            },
            "securityGroups": {
-            "description": "Nome do grupo de segurança para definir regras que permitem tráfego de rede no node pool de workers",
+            "description": "Name of the security group to define rules allowing network traffic in the worker node pool.",
             "items": {
-             "description": "Items dos grupos de segurança que definem regras que permitem tráfego de rede no node pool de workers",
+             "description": "Items from the security groups defining rules allowing network traffic in the worker node pool.",
              "example": "security-group-name",
              "type": "string"
             },
             "type": "array"
            },
            "status": {
-            "description": "Detalhes a respeito do status do node pool ou control plane",
+            "description": "Details about the status of the node pool or control plane.\n",
             "properties": {
              "messages": {
-              "description": "Mensagem detalhada sobre o status do node pool ou control plane",
+              "description": "Detailed message about the status of the node pool or control plane.\n",
               "items": {
-               "description": "Mensagens retornadas pelos control planes ou nodepools",
+               "description": "Messages returned by the control planes or node pools.\n",
                "example": "Ready",
                "type": "string"
               },
               "type": "array"
              },
              "state": {
-              "description": "Estado atual do node pool ou control plane.\n<table>\n  <tr>\n    <td>Node pool</td>\n    <td>ScalingUp, ScalingDown, Running, Failed, Unknown</td>\n  </tr>\n  <tr>\n    <td>Control Plane</td>\n    <td>ScalingUp, ScalingDown, Running, Failed, Unknown</td>\n  </tr>\n</table>\n",
+              "description": "Current state of the node pool or control plane.\n\n| Component      | Possible States                     |\n|-----------------|-------------------------------------|\n| Node pool       | ScalingUp, ScalingDown, Running, Failed, Unknown |\n| Control Plane   | ScalingUp, ScalingDown, Running, Failed, Unknown |\n",
               "example": "Pending",
               "type": "string"
              }
@@ -12183,20 +12506,20 @@
             "type": "object"
            },
            "tags": {
-            "description": "Lista de tags aplicadas ao nodepool",
+            "description": "List of tags applied to the node pool.",
             "items": {
-             "description": "Items da lista de tags aplicadas ao nodepool",
-             "example": "tag-exemplo",
+             "description": "Items from the list of tags applied to the node pool.",
+             "example": "tag-example",
              "type": "string"
             },
             "type": "array"
            },
            "taints": {
-            "description": "Propriedade de associação de um conjunto se nós",
+            "description": "Property for associating a set of nodes.",
             "items": {
              "properties": {
               "effect": {
-               "description": "O efeito do taint em pods que não toleram o taint.\n**NoSchedule** - Não permitir que novos pods sejam agendados no nó, a menos que eles tolerem a taint, mas permitir que todos os pods já em execução continuem em execução.\n**PreferNoSchedule** - Parecido com o NoSchedule, mas tenta não agendar novos pods no nó, em vez de proibir totalmente o agendamento de novos pods no nó\n**NoExecute** - Remova todos os pods já em execução que não tolerem o taint.  \n",
+               "description": "The effect of the taint on pods that do not tolerate the taint.\n- **NoSchedule**: Prevents new pods from being scheduled on the node, unless they tolerate the taint. Allows all existing pods to continue running.\n- **PreferNoSchedule**: Similar to NoSchedule, but attempts not to schedule new pods on the node, rather than completely prohibiting new pod scheduling on the node.\n- **NoExecute**: Removes all already running pods that do not tolerate the taint.\n",
                "enum": [
                 "NoSchedule",
                 "PreferNoSchedule",
@@ -12206,13 +12529,13 @@
                "type": "string"
               },
               "key": {
-               "description": "A chave taint a ser aplicada ao node",
-               "example": "exemplo-key",
+               "description": "Key of the taint to be applied to the node.",
+               "example": "example-key",
                "type": "string"
               },
               "value": {
-               "description": "O valor correspondente a chave taint.",
-               "example": "valor1",
+               "description": "Value corresponding to the taint key.",
+               "example": "value1",
                "type": "string"
               }
              },
@@ -12226,15 +12549,15 @@
             "type": "array"
            },
            "updated_at": {
-            "description": "Data da última alteração do cluster kubernetes",
+            "description": "Date of the last change to the Kubernetes cluster.",
             "example": "2023-03-01T09:10:00Z",
             "format": "date-time",
             "type": "string"
            },
            "zone": {
-            "description": "Zona de disponibilidade para criação do cluster kubernetes",
+            "description": "Availability zone for creating the Kubernetes cluster.",
             "items": {
-             "description": "Items da lista das zonas de disponibilidade para criação do cluster kubernetes",
+             "description": "Items from the list of availability zones for creating the Kubernetes cluster.",
              "example": "br-ne-1b",
              "type": "string"
             },
@@ -12294,19 +12617,19 @@
        },
        "type": "object"
       },
-      "description": "Lista nodes de um node pool",
+      "description": "Lists nodes in a node pool by nodepool_uuid.",
       "isInternal": false,
       "name": "nodes",
       "parameters": {
        "additionalProperties": false,
        "properties": {
         "cluster_id": {
-         "description": "Identificador no padrão uuid para identificar o cluster",
+         "description": "Cluster's UUID.",
          "format": "uuid",
          "type": "string"
         },
         "node_pool_id": {
-         "description": "Identificador no padrão uuid para identificar o nodepool",
+         "description": "Nodepool's UUID.",
          "format": "uuid",
          "type": "string"
         }
@@ -12318,25 +12641,25 @@
        "type": "object"
       },
       "result": {
-       "description": "Objeto da requisição da response dos nodes",
+       "description": "Object of the node response.",
        "properties": {
         "results": {
-         "description": "Lista dos nodes",
+         "description": "List of nodes.",
          "items": {
-          "description": "Objeto da requisição da response do node",
+          "description": "Object of the node response request.",
           "properties": {
            "addresses": {
-            "description": "Lista de endereços acessíveis ao node",
+            "description": "List of addresses accessible to the node.",
             "items": {
-             "description": "Informações para o endereço do node",
+             "description": "Information for the node's address.",
              "properties": {
               "address": {
-               "description": "O endereço do node",
-               "example": "address-exemplo",
+               "description": "The node's address",
+               "example": "address-example",
                "type": "string"
               },
               "type": {
-               "description": "Tipo de endereço do node, um de Hostname, ExternalIP ou InternalIP.\n**HostName** - O nome do host relatado pelo kernel do nó. Pode ser substituído através do parâmetro kubelet --hostname-override.\n**ExternalIP** - Geralmente, o endereço IP do nó que é roteável externamente (disponível fora do cluster).\n**InternalIP** - Geralmente, o endereço IP do nó que é roteável somente dentro do cluster.\n",
+               "description": "Type of the node's address, one of Hostname, ExternalIP, or InternalIP.\n**HostName** - The host name reported by the node's kernel. Can be overridden through the kubelet parameter --hostname-override.\n**ExternalIP** - Typically, the node's IP address that is externally routable (available outside the cluster).\n**InternalIP** - Typically, the node's IP address that is routable only within the cluster.\n",
                "example": "Hostname",
                "type": "string"
               }
@@ -12353,65 +12676,65 @@
             "additionalProperties": {
              "type": "string"
             },
-            "description": "Pares de chave/valor anexados ao objeto e usados para especificação",
+            "description": "Key/value pairs attached to the object and used for specification.",
             "example": {
-             "annoattion-key1": "valor1"
+             "annotation-key1": "value1"
             },
             "type": "object"
            },
            "cluster_name": {
-            "description": "Nome do cluster ao qual o node pertence",
-            "example": "cluster-exemplo",
+            "description": "Name of the cluster to which the node belongs.",
+            "example": "cluster-example",
             "type": "string"
            },
            "created_at": {
-            "description": "Data de criação do node",
+            "description": "Creation date of the node.",
             "example": "2023-03-01T09:00:00Z",
             "format": "date-time",
             "type": "string"
            },
            "flavor": {
-            "description": "Nome do flavor",
+            "description": "Name of the flavor.",
             "example": "cloud-k8s.gp1.small",
             "type": "string"
            },
            "id": {
-            "description": "Identificador no padrão uuid para identificar o node",
+            "description": "UUID identifier to uniquely identify the node.",
             "example": "77b3a951-dc2c-4802-a246-63a3c7f7ecac",
             "format": "uuid",
             "type": "string"
            },
            "infrastructure": {
-            "description": "Informações de infraestrutura do node",
+            "description": "Information about the node's infrastructure.",
             "properties": {
              "allocatable": {
-              "description": "Informações de recursos do node",
+              "description": "Information about node resources.",
               "properties": {
                "cpu": {
-                "description": "Quantidade de CPU",
+                "description": "Number of CPUs.",
                 "example": "2",
                 "type": "string"
                },
                "ephemeral_storage": {
-                "description": "Quantidade de armazenamento efêmero",
+                "description": "Amount of ephemeral storage.",
                 "example": "18859814062",
                 "type": "string"
                },
                "hugepages_1Gi": {
-                "description": "Alocação e consumo de páginas",
+                "description": "Allocation and consumption of 1Gi pages.",
                 "type": "string"
                },
                "hugepages_2Mi": {
-                "description": "Alocação e consumo de páginas",
+                "description": "Allocation and consumption of 2Mi pages.",
                 "type": "string"
                },
                "memory": {
-                "description": "Quantidade de mémoria",
+                "description": "Amount of memory.",
                 "example": "3923640Ki",
                 "type": "string"
                },
                "pods": {
-                "description": "Quantidade de pods",
+                "description": "Number of pods.",
                 "example": "110",
                 "type": "string"
                }
@@ -12427,38 +12750,38 @@
               "type": "object"
              },
              "architecture": {
-              "description": "Arquitetura relatada pelo node",
+              "description": "Architecture reported by the node.",
               "example": "amd64",
               "type": "string"
              },
              "capacity": {
-              "description": "Informações de recursos do node",
+              "description": "Information about node resources.",
               "properties": {
                "cpu": {
-                "description": "Quantidade de CPU",
+                "description": "Number of CPUs.",
                 "example": "2",
                 "type": "string"
                },
                "ephemeral_storage": {
-                "description": "Quantidade de armazenamento efêmero",
+                "description": "Amount of ephemeral storage.",
                 "example": "18859814062",
                 "type": "string"
                },
                "hugepages_1Gi": {
-                "description": "Alocação e consumo de páginas",
+                "description": "Allocation and consumption of 1Gi pages.",
                 "type": "string"
                },
                "hugepages_2Mi": {
-                "description": "Alocação e consumo de páginas",
+                "description": "Allocation and consumption of 2Mi pages.",
                 "type": "string"
                },
                "memory": {
-                "description": "Quantidade de mémoria",
+                "description": "Amount of memory.",
                 "example": "3923640Ki",
                 "type": "string"
                },
                "pods": {
-                "description": "Quantidade de pods",
+                "description": "Number of pods.",
                 "example": "110",
                 "type": "string"
                }
@@ -12474,32 +12797,32 @@
               "type": "object"
              },
              "containerRuntimeVersion": {
-              "description": "Versão do ContainerRuntime relatada pelo node por meio da API remota de tempo de execução",
+              "description": "Version of Container Runtime reported by the node through the remote runtime API.",
               "example": "containerd://1.6.2",
               "type": "string"
              },
              "kernelVersion": {
-              "description": "Versão do kernel relatada pelo node de 'uname -r'",
+              "description": "Kernel version reported by the node from 'uname -r'.",
               "example": "5.4.0-122-generic",
               "type": "string"
              },
              "kubeProxyVersion": {
-              "description": "Versão do KubeProxy relatada pelo node",
+              "description": "Version of KubeProxy reported by the node.",
               "example": "v1.22.9",
               "type": "string"
              },
              "kubeletVersion": {
-              "description": "Versão do Kubelet relatada pelo node",
+              "description": "Version of Kubelet reported by the node.",
               "example": "v1.22.9",
               "type": "string"
              },
              "operatingSystem": {
-              "description": "Sistema operacional relatado pelo node",
+              "description": "Operating system reported by the node.",
               "example": "linux",
               "type": "string"
              },
              "osImage": {
-              "description": "Imagem do SO relatada pelo node de /etc/os-release",
+              "description": "OS image reported by the node from /etc/os-release.",
               "example": "Ubuntu 20.04.4 LTS",
               "type": "string"
              }
@@ -12521,42 +12844,42 @@
             "additionalProperties": {
              "type": "string"
             },
-            "description": "Pares de chave/valor anexados ao objeto e usados para especificação",
+            "description": "Key/value pairs attached to the object and used for specification.",
             "example": {
-             "label-key1": "valor1"
+             "label-key1": "value1"
             },
             "type": "object"
            },
            "name": {
-            "description": "Nome do node",
-            "example": "node-exemplo",
+            "description": "Name of the node.",
+            "example": "node-example",
             "type": "string"
            },
            "namespace": {
-            "description": "Namespace do node",
-            "example": "namespace-exemplo",
+            "description": "Namespace of the node.",
+            "example": "namespace-example",
             "type": "string"
            },
            "node_image": {
-            "description": "Imagem do sistema operacional executada pelo node",
+            "description": "Operating system image run by the node.",
             "example": "ubuntu-2004-kube-v1.22.9-v1",
             "type": "string"
            },
            "nodepool_name": {
-            "description": "Nome do nodepool ao qual o node pertence",
-            "example": "nodepool-exemplo",
+            "description": "Name of the node pool to which the node belongs.",
+            "example": "nodepool-example",
             "type": "string"
            },
            "status": {
-            "description": "Detalhes a respeito do status do cluster ou node",
+            "description": "Details about the status of the Kubernetes cluster or node.\n",
             "properties": {
              "message": {
-              "description": "Mensagem detalhada sobre o status do cluster ou node",
+              "description": "Detailed message about the status of the cluster or node.\n",
               "example": "Ready",
               "type": "string"
              },
              "state": {
-              "description": "Estado atual do cluster ou node.\n<table>\n  <tr>\n    <td>Cluster</td>\n    <td>Pending, Provisioning, Running, Provisioned, Terminating, Deleting, Failed</td>\n  </tr>\n  <tr>\n    <td>Node</td>\n    <td>Pending, Provisioning, Provisioned, Running, Deleting, Failed, Unknown</td>\n  </tr>\n</table>\n",
+              "description": "Current state of the cluster or node.\n\n| Component | Possible States                              |\n|-----------|---------------------------------------------|\n| Cluster   | Pending, Provisioning, Running, Provisioned, Terminating, Deleting, Failed |\n| Node      | Pending, Provisioning, Provisioned, Running, Deleting, Failed, Unknown   |\n",
               "example": "Pending",
               "type": "string"
              }
@@ -12568,11 +12891,11 @@
             "type": "object"
            },
            "taints": {
-            "description": "Propriedade de associação de um conjunto de nós",
+            "description": "Property for associating a set of nodes.",
             "items": {
              "properties": {
               "effect": {
-               "description": "O efeito do taint em pods que não toleram o taint.\n**NoSchedule** - Não permitir que novos pods sejam agendados no nó, a menos que eles tolerem a taint, mas permitir que todos os pods já em execução continuem em execução.\n**PreferNoSchedule** - Parecido com o NoSchedule, mas tenta não agendar novos pods no nó, em vez de proibir totalmente o agendamento de novos pods no nó\n**NoExecute** - Remova todos os pods já em execução que não tolerem o taint.  \n",
+               "description": "The effect of the taint on pods that do not tolerate the taint.\n- **NoSchedule**: Prevents new pods from being scheduled on the node, unless they tolerate the taint. Allows all existing pods to continue running.\n- **PreferNoSchedule**: Similar to NoSchedule, but attempts not to schedule new pods on the node, rather than completely prohibiting new pod scheduling on the node.\n- **NoExecute**: Removes all already running pods that do not tolerate the taint.\n",
                "enum": [
                 "NoSchedule",
                 "PreferNoSchedule",
@@ -12582,13 +12905,13 @@
                "type": "string"
               },
               "key": {
-               "description": "A chave taint a ser aplicada ao node",
-               "example": "exemplo-key",
+               "description": "Key of the taint to be applied to the node.",
+               "example": "example-key",
                "type": "string"
               },
               "value": {
-               "description": "O valor correspondente a chave taint.",
-               "example": "valor1",
+               "description": "Value corresponding to the taint key.",
+               "example": "value1",
                "type": "string"
               }
              },
@@ -12602,7 +12925,7 @@
             "type": "array"
            },
            "zone": {
-            "description": "Identificador da região em que o node está localizado",
+            "description": "Identifier of the region where the node is located.",
             "example": "br-ne-1c",
             "type": "string"
            }
@@ -12666,25 +12989,25 @@
        },
        "type": "object"
       },
-      "description": "Atualiza nodes de um node pool",
+      "description": "Updates nodes from a node pool by nodepool_uuid.",
       "isInternal": false,
       "name": "update",
       "parameters": {
        "additionalProperties": false,
        "properties": {
         "auto_scale": {
-         "description": "Objeto que especifica as propriedades para atualização de recursos de carga de trabalho no cluster Kubernetes.",
+         "description": "Object specifying properties for updating workload resources in the Kubernetes cluster.\n",
          "properties": {
           "max_replicas": {
            "default": 1,
-           "description": "Quantidade máxima de réplicas para o autoscaling. Se não for informado um valor, ou se for igual ou menor que zero, o valor do autoscaler será assumido com base no campo \"réplicas\".",
+           "description": "Maximum number of replicas for autoscaling. If not provided, or if the value is equal to or less than zero, the autoscaler value will be assumed based on the \"replicas\" field.\n",
            "example": 5,
            "minimum": 1,
            "type": "integer"
           },
           "min_replicas": {
            "default": 1,
-           "description": "Quantidade mínima de réplicas para o autoscaling. Se não for informado um valor, ou se for igual ou menor que zero, o valor do autoscaler será assumido com base no campo \"réplicas\".",
+           "description": "Minimum number of replicas for autoscaling. If not provided, or if the value is equal to or less than zero, the autoscaler value will be assumed based on the \"replicas\" field.\n",
            "example": 2,
            "minimum": 1,
            "type": "integer"
@@ -12697,17 +13020,17 @@
          "type": "object"
         },
         "cluster_id": {
-         "description": "Identificador no padrão uuid para identificar o cluster",
+         "description": "Cluster's UUID.",
          "format": "uuid",
          "type": "string"
         },
         "id": {
-         "description": "Identificador no padrão uuid para identificar o nodepool",
+         "description": "Nodepool's UUID.",
          "format": "uuid",
          "type": "string"
         },
         "replicas": {
-         "description": "Quantidade de réplicas dos nós do nodepool",
+         "description": "Number of replicas of the nodes in the node pool.",
          "type": "integer"
         }
        },
@@ -12718,21 +13041,21 @@
        "type": "object"
       },
       "result": {
-       "description": "Objeto da requisição da response do nodepool",
+       "description": "Object of the node pool response.",
        "properties": {
         "auto_scale": {
-         "description": "Objeto que especifica as propriedades para atualização de recursos de carga de trabalho no cluster Kubernetes.",
+         "description": "Object specifying properties for updating workload resources in the Kubernetes cluster.\n",
          "properties": {
           "max_replicas": {
            "default": 1,
-           "description": "Quantidade máxima de réplicas para o autoscaling. Se não for informado um valor, ou se for igual ou menor que zero, o valor do autoscaler será assumido com base no campo \"réplicas\".",
+           "description": "Maximum number of replicas for autoscaling. If not provided, or if the value is equal to or less than zero, the autoscaler value will be assumed based on the \"replicas\" field.\n",
            "example": 5,
            "minimum": 1,
            "type": "integer"
           },
           "min_replicas": {
            "default": 1,
-           "description": "Quantidade mínima de réplicas para o autoscaling. Se não for informado um valor, ou se for igual ou menor que zero, o valor do autoscaler será assumido com base no campo \"réplicas\".",
+           "description": "Minimum number of replicas for autoscaling. If not provided, or if the value is equal to or less than zero, the autoscaler value will be assumed based on the \"replicas\" field.\n",
            "example": 2,
            "minimum": 1,
            "type": "integer"
@@ -12745,57 +13068,57 @@
          "type": "object"
         },
         "created_at": {
-         "description": "Data de criação do cluster kubernetes",
+         "description": "Date of creation of the Kubernetes cluster.",
          "example": "2023-03-01T09:00:00Z",
          "format": "date-time",
          "type": "string"
         },
         "id": {
-         "description": "Identificador no padrão uuid para identificar o nodepool",
+         "description": "Node pool's UUID.",
          "example": "2cc6f625-7d67-4ed2-8c5e-24e5b40b951b",
          "format": "uuid",
          "type": "string"
         },
         "instance_template": {
-         "description": "Template do objeto de instância usado para criar instâncias de máquina e grupos gerenciados de instâncias.",
+         "description": "Template for the instance object used to create machine instances and managed instance groups.\n",
          "properties": {
           "disk_size": {
-           "description": "Tamanho do disco anexado a cada nó",
+           "description": "Size of the disk attached to each node.",
            "type": "integer"
           },
           "disk_type": {
-           "description": "Tipo de disco anexado a cada nó",
+           "description": "Type of disk attached to each node.",
            "type": "string"
           },
           "flavor": {
-           "description": "Definição da capacidade de CPU, memória RAM e armazenamento dos nodes",
+           "description": "Definition of CPU capacity, RAM, and storage for nodes.",
            "properties": {
             "id": {
              "default": "",
-             "description": "Identificador exclusivo do Flavor.",
+             "description": "Unique identifier for the Flavor.",
              "example": "c777eaa7-d67c-46f4-9e4f-232bc9b67b58",
              "type": "string"
             },
             "name": {
-             "description": "Nome do Flavor.",
+             "description": "Name of the Flavor.",
              "example": "cloud-k8s.gp1.small",
              "type": "string"
             },
             "ram": {
              "default": 0,
-             "description": "Quantidade de memória RAM, medida em MB.",
+             "description": "Amount of RAM, measured in MB.",
              "example": 4096,
              "type": "integer"
             },
             "size": {
              "default": 0,
-             "description": "Quantidade de disco, medido em GB.",
+             "description": "Amount of disk space, measured in GB.",
              "example": 20,
              "type": "integer"
             },
             "vcpu": {
              "default": 0,
-             "description": "Quantidade de vCPUs disponiveis.",
+             "description": "Number of available vCPUs.",
              "example": 2,
              "type": "integer"
             }
@@ -12810,7 +13133,7 @@
            "type": "object"
           },
           "node_image": {
-           "description": "Imagem do sistema operacional que é executada em cada nó",
+           "description": "Operating system image running on each node.",
            "example": "ubuntu-2004-kube-v1.22.9-v1",
            "type": "string"
           }
@@ -12827,45 +13150,45 @@
          "additionalProperties": {
           "type": "string"
          },
-         "description": "Pares de chave/valor anexados ao objeto e usados para especificação",
+         "description": "Key/value pairs attached to the object and used for specification.",
          "example": {
-          "key1": "valor1"
+          "key1": "value1"
          },
          "type": "object"
         },
         "name": {
-         "description": "Nome do node pool",
-         "example": "nodepool-exemplo",
+         "description": "Node pool name",
+         "example": "nodepool-example",
          "type": "string"
         },
         "replicas": {
-         "description": "Quantidade de réplicas dos nós do nodepool",
+         "description": "Number of replicas of the nodes in the node pool.",
          "example": 3,
          "type": "integer"
         },
         "securityGroups": {
-         "description": "Nome do grupo de segurança para definir regras que permitem tráfego de rede no node pool de workers",
+         "description": "Name of the security group to define rules allowing network traffic in the worker node pool.",
          "items": {
-          "description": "Items dos grupos de segurança que definem regras que permitem tráfego de rede no node pool de workers",
+          "description": "Items from the security groups defining rules allowing network traffic in the worker node pool.",
           "example": "security-group-name",
           "type": "string"
          },
          "type": "array"
         },
         "status": {
-         "description": "Detalhes a respeito do status do node pool ou control plane",
+         "description": "Details about the status of the node pool or control plane.\n",
          "properties": {
           "messages": {
-           "description": "Mensagem detalhada sobre o status do node pool ou control plane",
+           "description": "Detailed message about the status of the node pool or control plane.\n",
            "items": {
-            "description": "Mensagens retornadas pelos control planes ou nodepools",
+            "description": "Messages returned by the control planes or node pools.\n",
             "example": "Ready",
             "type": "string"
            },
            "type": "array"
           },
           "state": {
-           "description": "Estado atual do node pool ou control plane.\n<table>\n  <tr>\n    <td>Node pool</td>\n    <td>ScalingUp, ScalingDown, Running, Failed, Unknown</td>\n  </tr>\n  <tr>\n    <td>Control Plane</td>\n    <td>ScalingUp, ScalingDown, Running, Failed, Unknown</td>\n  </tr>\n</table>\n",
+           "description": "Current state of the node pool or control plane.\n\n| Component      | Possible States                     |\n|-----------------|-------------------------------------|\n| Node pool       | ScalingUp, ScalingDown, Running, Failed, Unknown |\n| Control Plane   | ScalingUp, ScalingDown, Running, Failed, Unknown |\n",
            "example": "Pending",
            "type": "string"
           }
@@ -12877,20 +13200,20 @@
          "type": "object"
         },
         "tags": {
-         "description": "Lista de tags aplicadas ao nodepool",
+         "description": "List of tags applied to the node pool.",
          "items": {
-          "description": "Items da lista de tags aplicadas ao nodepool",
-          "example": "tag-exemplo",
+          "description": "Items from the list of tags applied to the node pool.",
+          "example": "tag-example",
           "type": "string"
          },
          "type": "array"
         },
         "taints": {
-         "description": "Propriedade de associação de um conjunto se nós",
+         "description": "Property for associating a set of nodes.",
          "items": {
           "properties": {
            "effect": {
-            "description": "O efeito do taint em pods que não toleram o taint.\n**NoSchedule** - Não permitir que novos pods sejam agendados no nó, a menos que eles tolerem a taint, mas permitir que todos os pods já em execução continuem em execução.\n**PreferNoSchedule** - Parecido com o NoSchedule, mas tenta não agendar novos pods no nó, em vez de proibir totalmente o agendamento de novos pods no nó\n**NoExecute** - Remova todos os pods já em execução que não tolerem o taint.  \n",
+            "description": "The effect of the taint on pods that do not tolerate the taint.\n- **NoSchedule**: Prevents new pods from being scheduled on the node, unless they tolerate the taint. Allows all existing pods to continue running.\n- **PreferNoSchedule**: Similar to NoSchedule, but attempts not to schedule new pods on the node, rather than completely prohibiting new pod scheduling on the node.\n- **NoExecute**: Removes all already running pods that do not tolerate the taint.\n",
             "enum": [
              "NoSchedule",
              "PreferNoSchedule",
@@ -12900,13 +13223,13 @@
             "type": "string"
            },
            "key": {
-            "description": "A chave taint a ser aplicada ao node",
-            "example": "exemplo-key",
+            "description": "Key of the taint to be applied to the node.",
+            "example": "example-key",
             "type": "string"
            },
            "value": {
-            "description": "O valor correspondente a chave taint.",
-            "example": "valor1",
+            "description": "Value corresponding to the taint key.",
+            "example": "value1",
             "type": "string"
            }
           },
@@ -12920,15 +13243,15 @@
          "type": "array"
         },
         "updated_at": {
-         "description": "Data da última alteração do cluster kubernetes",
+         "description": "Date of the last change to the Kubernetes cluster.",
          "example": "2023-03-01T09:10:00Z",
          "format": "date-time",
          "type": "string"
         },
         "zone": {
-         "description": "Zona de disponibilidade para criação do cluster kubernetes",
+         "description": "Availability zone for creating the Kubernetes cluster.",
          "items": {
-          "description": "Items da lista das zonas de disponibilidade para criação do cluster kubernetes",
+          "description": "Items from the list of availability zones for creating the Kubernetes cluster.",
           "example": "br-ne-1b",
           "type": "string"
          },
@@ -12951,7 +13274,7 @@
       "version": "0.1.0"
      }
     ],
-    "description": "Rotas relacionadas a api de Nodepool dentro da api de cluster.",
+    "description": "Endpoints related to the Nodepool API within the Cluster API.",
     "isInternal": false,
     "name": "nodepool",
     "version": "0.1.0"
@@ -12988,7 +13311,7 @@
        },
        "type": "object"
       },
-      "description": "Lista todas as versões de kubernetes disponiveis",
+      "description": "Lists all available Kubernetes versions.",
       "isInternal": false,
       "name": "list",
       "parameters": {
@@ -12996,20 +13319,20 @@
        "type": "object"
       },
       "result": {
-       "description": "Objeto de resposta da requisição da Versão",
+       "description": "Response object for the Version request.",
        "properties": {
         "results": {
-         "description": "Lista de versões para o cluster kubernetes",
+         "description": "Lists of Kubernetes cluster versions.",
          "items": {
-          "description": "Objeto da versão kubernetes",
+          "description": "Object representing a Kubernetes version.",
           "properties": {
            "deprecated": {
-            "description": "Indica se a versão está obsoleta",
+            "description": "Indicates whether the version is deprecated.",
             "example": false,
             "type": "boolean"
            },
            "version": {
-            "description": "Versão kubernetes",
+            "description": "Kubernetes version.",
             "example": "v1.22.9",
             "type": "string"
            }
@@ -13031,13 +13354,13 @@
       "version": "0.1.0"
      }
     ],
-    "description": "Rotas relacionadas a informações de configurações das versões de kubernetes.",
+    "description": "Endpoints related to configuration information for Kubernetes versions.",
     "isInternal": false,
     "name": "version",
     "version": "0.1.0"
    }
   ],
-  "description": "APIs referentes ao produto de kubernetes",
+  "description": "APIs related to the Kubernetes product.",
   "isInternal": false,
   "name": "kubernetes",
   "version": "0.1.0"
@@ -18873,6 +19196,7 @@
          "type": "integer"
         },
         {
+         "items": {},
          "type": "array"
         },
         {
@@ -18946,6 +19270,7 @@
          "type": "integer"
         },
         {
+         "items": {},
          "type": "array"
         },
         {
@@ -19067,20 +19392,20 @@
        },
        "type": "object"
       },
-      "description": "Copy an object from a bucket to another",
+      "description": "Copy an object from a bucket to another bucket",
       "isInternal": false,
       "name": "copy",
       "parameters": {
        "properties": {
         "dst": {
          "description": "Full destination path in the bucket with desired filename",
-         "example": "s3://bucket2/dir/file.txt",
+         "example": "bucket2/dir/file.txt",
          "format": "uri",
          "type": "string"
         },
         "src": {
-         "description": "Path of the object to be copied",
-         "example": "s3://bucket1/file.txt",
+         "description": "Path of the object in a bucket to be copied",
+         "example": "bucket1/file.txt",
          "format": "uri",
          "type": "string"
         }
@@ -19110,6 +19435,7 @@
          "type": "integer"
         },
         {
+         "items": {},
          "type": "array"
         },
         {
@@ -19147,14 +19473,14 @@
        },
        "type": "object"
       },
-      "description": "Copy all objects from a bucket",
+      "description": "Copy all objects from a bucket to another bucket",
       "isInternal": false,
       "name": "copy-all",
       "parameters": {
        "properties": {
         "dst": {
          "description": "Full destination path in the bucket",
-         "example": "s3://bucket2/dir/",
+         "example": "bucket2/dir/",
          "format": "uri",
          "type": "string"
         },
@@ -19176,8 +19502,8 @@
          "type": "array"
         },
         "src": {
-         "description": "Path of objects to be copied",
-         "example": "s3://bucket1",
+         "description": "Path of objects in a bucket to be copied",
+         "example": "bucket1",
          "format": "uri",
          "type": "string"
         }
@@ -19192,7 +19518,7 @@
        "properties": {
         "dst": {
          "description": "Full destination path in the bucket",
-         "example": "s3://bucket2/dir/",
+         "example": "bucket2/dir/",
          "format": "uri",
          "type": "string"
         },
@@ -19214,8 +19540,8 @@
          "type": "array"
         },
         "src": {
-         "description": "Path of objects to be copied",
-         "example": "s3://bucket1",
+         "description": "Path of objects in a bucket to be copied",
+         "example": "bucket1",
          "format": "uri",
          "type": "string"
         }
@@ -19261,7 +19587,7 @@
        "properties": {
         "dst": {
          "description": "Path of the object to be deleted",
-         "example": "s3://bucket1/file.txt",
+         "example": "bucket1/file.txt",
          "format": "uri",
          "type": "string"
         }
@@ -19290,6 +19616,7 @@
          "type": "integer"
         },
         {
+         "items": {},
          "type": "array"
         },
         {
@@ -19387,6 +19714,7 @@
          "type": "integer"
         },
         {
+         "items": {},
          "type": "array"
         },
         {
@@ -19424,20 +19752,20 @@
        },
        "type": "object"
       },
-      "description": "Download an object from a bucket",
+      "description": "Download an object from a bucket. If no destination is specified, the default is the current working directory",
       "isInternal": false,
       "name": "download",
       "parameters": {
        "properties": {
         "dst": {
-         "description": "Name of the file to be saved",
+         "description": "Path and file name to be saved (relative or absolute).If not specified it defaults to the current working directory",
          "example": "file.txt",
          "type": "string",
          "x-contentMediaType": "application/octet-stream"
         },
         "src": {
          "description": "Path of the object to be downloaded",
-         "example": "s3://bucket1/file.txt",
+         "example": "bucket1/file.txt",
          "format": "uri",
          "type": "string"
         }
@@ -19466,6 +19794,7 @@
          "type": "integer"
         },
         {
+         "items": {},
          "type": "array"
         },
         {
@@ -19533,7 +19862,7 @@
         },
         "src": {
          "description": "Path of objects to be downloaded",
-         "example": "s3://mybucket",
+         "example": "mybucket",
          "format": "uri",
          "type": "string"
         }
@@ -19562,6 +19891,7 @@
          "type": "integer"
         },
         {
+         "items": {},
          "type": "array"
         },
         {
@@ -19606,7 +19936,7 @@
        "properties": {
         "dst": {
          "description": "Path of the object to be get metadata from",
-         "example": "s3://bucket1/file.txt",
+         "example": "bucket1/file.txt",
          "format": "uri",
          "type": "string"
         }
@@ -19617,32 +19947,31 @@
        "type": "object"
       },
       "result": {
-       "anyOf": [
-        {
-         "nullable": true,
-         "type": "null"
-        },
-        {
-         "type": "boolean"
-        },
-        {
+       "properties": {
+        "AcceptRanges": {
          "type": "string"
         },
-        {
-         "type": "number"
-        },
-        {
+        "ContentLength": {
          "type": "integer"
         },
-        {
-         "type": "array"
+        "ContentType": {
+         "type": "string"
         },
-        {
-         "additionalProperties": true,
-         "type": "object"
+        "ETag": {
+         "type": "string"
+        },
+        "LastModified": {
+         "type": "string"
         }
+       },
+       "required": [
+        "AcceptRanges",
+        "LastModified",
+        "ContentLength",
+        "ETag",
+        "ContentType"
        ],
-       "nullable": true
+       "type": "object"
       },
       "version": ""
      },
@@ -19683,7 +20012,7 @@
         },
         "dst": {
          "description": "Path of the bucket to list objects from",
-         "example": "s3://bucket1",
+         "example": "bucket1",
          "format": "uri",
          "type": "string"
         },
@@ -19795,6 +20124,93 @@
        },
        "type": "object"
       },
+      "description": "Moves objects from a source to a destination.\nThey can be either local or remote but not both local (Local -> Remote, Remote -> Local, Remote -> Remote)",
+      "isInternal": false,
+      "name": "move-dir",
+      "parameters": {
+       "properties": {
+        "batch_size": {
+         "default": 1000,
+         "description": "Limit of items per batch to process",
+         "maximum": 1000,
+         "minimum": 1,
+         "type": "integer"
+        },
+        "dst": {
+         "description": "Destination to put files into",
+         "example": "s3://my-bucket/dir",
+         "format": "uri",
+         "type": "string"
+        },
+        "src": {
+         "description": "Source path or uri to move files from",
+         "example": "./dir",
+         "format": "uri",
+         "type": "string"
+        }
+       },
+       "required": [
+        "src",
+        "dst"
+       ],
+       "type": "object"
+      },
+      "result": {
+       "properties": {
+        "batch_size": {
+         "default": 1000,
+         "description": "Limit of items per batch to process",
+         "maximum": 1000,
+         "minimum": 1,
+         "type": "integer"
+        },
+        "dst": {
+         "description": "Destination to put files into",
+         "example": "s3://my-bucket/dir",
+         "format": "uri",
+         "type": "string"
+        },
+        "src": {
+         "description": "Source path or uri to move files from",
+         "example": "./dir",
+         "format": "uri",
+         "type": "string"
+        }
+       },
+       "required": [
+        "src",
+        "dst"
+       ],
+       "type": "object"
+      },
+      "version": ""
+     },
+     {
+      "configs": {
+       "properties": {
+        "region": {
+         "default": "br-ne1",
+         "description": "Region to reach the service",
+         "enum": [
+          "br-ne1",
+          "br-se1"
+         ],
+         "type": "string"
+        },
+        "serverUrl": {
+         "description": "Manually specify the server to use",
+         "format": "uri",
+         "type": "string"
+        },
+        "workers": {
+         "default": 5,
+         "description": "Number of routines that spawn to do parallel operations within object_storage",
+         "minimum": 1,
+         "type": "integer"
+        }
+       },
+       "type": "object"
+      },
       "description": "This command uploads any file from the source to the destination if it's not present or has a different size. Additionally any file in the destination not present on the source is deleted.",
       "isInternal": false,
       "name": "sync",
@@ -19850,6 +20266,7 @@
          "type": "integer"
         },
         {
+         "items": {},
          "type": "array"
         },
         {
@@ -19894,7 +20311,7 @@
        "properties": {
         "dst": {
          "description": "Full destination path in the bucket with desired filename",
-         "example": "s3://my-bucket/dir/file.txt",
+         "example": "my-bucket/dir/file.txt",
          "format": "uri",
          "type": "string"
         },
@@ -19961,7 +20378,7 @@
        "properties": {
         "dst": {
          "description": "Full destination path in the bucket",
-         "example": "s3://my-bucket/dir/",
+         "example": "my-bucket/dir/",
          "format": "uri",
          "type": "string"
         },
