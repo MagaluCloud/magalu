@@ -11,6 +11,7 @@ import (
 var getKeys = utils.NewLazyLoader[core.Executor](func() core.Executor {
 	return core.NewStaticExecuteSimple(
 		core.DescriptorSpec{
+			Scopes:      []string{"pa:api-keys:read"},
 			Name:        "list",
 			Description: "List valid Object Storage credentials",
 		},

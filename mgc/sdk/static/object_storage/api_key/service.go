@@ -94,7 +94,7 @@ func ListApiKeys(ctx context.Context) ([]*ApiKeysResult, error) {
 
 		if y.EndValidity != nil {
 			expDate, _ := time.Parse(time.RFC3339, *y.EndValidity)
-			if expDate.After(time.Now()) {
+			if expDate.Before(time.Now()) {
 				continue
 			}
 		}

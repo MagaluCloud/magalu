@@ -11,12 +11,13 @@ import (
 type createParams struct {
 	ApiKeyName        string  `json:"name" jsonschema:"description=Name of new api key" mgc:"positional"`
 	ApiKeyDescription *string `json:"description,omitempty" jsonschema:"description=Description of new api key" mgc:"positional"`
-	ApiKeyExpiration  *string `json:"expiration,omitempty" jsonschema:"description=Date to expire new api,example=2024/11/07" mgc:"positional"`
+	ApiKeyExpiration  *string `json:"expiration,omitempty" jsonschema:"description=Date to expire new api,example=2024-11-07 (YYYY-MM-DD)" mgc:"positional"`
 }
 
 var getCreate = utils.NewLazyLoader[core.Executor](func() core.Executor {
 	executor := core.NewStaticExecute(
 		core.DescriptorSpec{
+			Scopes:      []string{"pa:api-keys:create"},
 			Name:        "create",
 			Description: "Create new credentials used for Object Storage requests",
 		},
