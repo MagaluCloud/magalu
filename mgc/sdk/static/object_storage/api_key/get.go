@@ -1,4 +1,4 @@
-package objectstorage
+package api_key
 
 import (
 	"context"
@@ -10,7 +10,15 @@ import (
 	"magalu.cloud/core"
 )
 
-var getGet = utils.NewLazyLoader[core.Executor](newGet)
+var getGet = utils.NewLazyLoader[core.Executor](func() core.Executor {
+	return core.NewStaticExecuteSimple(
+		core.DescriptorSpec{
+			Name:        "get",
+			Description: "Get the current Object Storage credentials",
+		},
+		get,
+	)
+})
 
 func get(ctx context.Context) (*authSetParams, error) {
 	auth := mgcAuthPkg.FromContext(ctx)
@@ -20,14 +28,4 @@ func get(ctx context.Context) (*authSetParams, error) {
 
 	id, secretKey := auth.AccessKeyPair()
 	return &authSetParams{AccessKeyId: id, SecretAccessKey: secretKey}, nil
-}
-
-func newGet() core.Executor {
-	return core.NewStaticExecuteSimple(
-		core.DescriptorSpec{
-			Name:        "get",
-			Description: "Get the current Object Storage credentials",
-		},
-		get,
-	)
 }

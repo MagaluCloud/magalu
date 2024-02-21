@@ -51,14 +51,16 @@ type ConfigResult struct {
 }
 
 type Config struct {
-	ClientId         string
-	RedirectUri      string
-	LoginUrl         string
-	TokenUrl         string
-	ValidationUrl    string
-	RefreshUrl       string
-	TenantsListUrl   string
-	TokenExchangeUrl string
+	ClientId            string
+	ObjectStoreScopeIDs []string
+	RedirectUri         string
+	LoginUrl            string
+	TokenUrl            string
+	ValidationUrl       string
+	RefreshUrl          string
+	TenantsListUrl      string
+	TokenExchangeUrl    string
+	ApiKeys             string
 }
 
 type Auth struct {
@@ -137,7 +139,7 @@ func New(configMap map[string]Config, client *http.Client, profileManager *profi
 	return &newAuth
 }
 
-func (a *Auth) getConfig() Config {
+func (a *Auth) GetConfig() Config {
 	var env string
 	err := a.mgcConfig.Get("env", &env)
 	if err != nil {
@@ -178,15 +180,15 @@ func (o *Auth) BuiltInScopes() core.Scopes {
 }
 
 func (o *Auth) RedirectUri() string {
-	return o.getConfig().RedirectUri
+	return o.GetConfig().RedirectUri
 }
 
 func (o *Auth) TenantsListUrl() string {
-	return o.getConfig().TenantsListUrl
+	return o.GetConfig().TenantsListUrl
 }
 
 func (o *Auth) TokenExchangeUrl() string {
-	return o.getConfig().TokenExchangeUrl
+	return o.GetConfig().TokenExchangeUrl
 }
 
 func (o *Auth) currentAccessTokenClaims() (*accessTokenClaims, error) {
@@ -306,7 +308,7 @@ func (o *Auth) InitTokensFromFile() {
 }
 
 func (o *Auth) CodeChallengeToURL(scopes core.Scopes) (*url.URL, error) {
-	config := o.getConfig()
+	config := o.GetConfig()
 	loginUrl, err := url.Parse(config.LoginUrl)
 	if err != nil {
 		return nil, err
@@ -339,7 +341,7 @@ func (o *Auth) RequestAuthTokenWithAuthorizationCode(ctx context.Context, authCo
 		logger().Errorw("no code verification provided")
 		return fmt.Errorf("no code verification provided, first execute a code challenge request")
 	}
-	config := o.getConfig()
+	config := o.GetConfig()
 	data := url.Values{}
 	data.Set("client_id", config.ClientId)
 	data.Set("redirect_uri", config.RedirectUri)
@@ -402,7 +404,7 @@ func (o *Auth) ValidateAccessToken(ctx context.Context) error {
 }
 
 func (o *Auth) newValidateAccessTokenRequest(ctx context.Context) (*http.Request, error) {
-	config := o.getConfig()
+	config := o.GetConfig()
 	data := url.Values{}
 	data.Set("client_id", config.ClientId)
 	data.Set("token_hint", "access_token")
@@ -467,7 +469,7 @@ func (o *Auth) newRefreshAccessTokenRequest(ctx context.Context) (*http.Request,
 		return nil, fmt.Errorf("RefreshToken is not set")
 	}
 
-	config := o.getConfig()
+	config := o.GetConfig()
 	data := url.Values{}
 	data.Set("client_id", config.ClientId)
 	data.Set("grant_type", "refresh_token")
@@ -512,7 +514,7 @@ func (o *Auth) ListTenants(ctx context.Context, httpClient *http.Client) ([]*Ten
 		return nil, fmt.Errorf("unable to get current access token. Did you forget to log in?")
 	}
 
-	r, err := http.NewRequestWithContext(ctx, http.MethodGet, o.getConfig().TenantsListUrl, nil)
+	r, err := http.NewRequestWithContext(ctx, http.MethodGet, o.GetConfig().TenantsListUrl, nil)
 	if err != nil {
 		return nil, err
 	}
