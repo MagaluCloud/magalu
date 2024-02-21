@@ -36,15 +36,10 @@ func setTenant(ctx context.Context, params tenantSetParams, _ struct{}) (*mgcAut
 		return nil, fmt.Errorf("unable to get auth from context")
 	}
 
-	var scopes core.Scopes
 	allScopes, err := mgcAuthScope.ListAllAvailable(ctx)
 	if err != nil {
 		return nil, err
 	}
 
-	for _, scope := range allScopes {
-		scopes.Add(scope)
-	}
-
-	return auth.SelectTenant(ctx, params.UUID, scopes.AsScopesString())
+	return auth.SelectTenant(ctx, params.UUID, allScopes.AsScopesString())
 }
