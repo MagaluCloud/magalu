@@ -536,15 +536,10 @@ func (o *Auth) ListTenants(ctx context.Context, httpClient *http.Client) ([]*Ten
 	return result, nil
 }
 
-func (o *Auth) SelectTenant(ctx context.Context, id string) (*TokenExchangeResult, error) {
+func (o *Auth) SelectTenant(ctx context.Context, id string, scopes core.ScopesString) (*TokenExchangeResult, error) {
 	at, err := o.AccessToken(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("unable to get current access token: %w. Did you forget to log in?", err)
-	}
-
-	scopes, err := o.CurrentScopesString()
-	if err != nil {
-		return nil, fmt.Errorf("unable to get current scopes: %w", err)
 	}
 
 	return o.runTokenExchange(ctx, at, id, scopes, o.httpClient)

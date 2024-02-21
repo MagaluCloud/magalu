@@ -7,6 +7,7 @@ import (
 	"magalu.cloud/core"
 	mgcAuthPkg "magalu.cloud/core/auth"
 	"magalu.cloud/core/utils"
+	mgcAuthScope "magalu.cloud/sdk/static/auth/scopes"
 )
 
 type tenantSetParams struct {
@@ -34,5 +35,16 @@ func setTenant(ctx context.Context, params tenantSetParams, _ struct{}) (*mgcAut
 	if auth == nil {
 		return nil, fmt.Errorf("unable to get auth from context")
 	}
-	return auth.SelectTenant(ctx, params.UUID)
+
+	var scopes core.Scopes
+	allScopes, err := mgcAuthScope.ListAllAvailable(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	for _, scope := range allScopes {
+		scopes.Add(scope)
+	}
+
+	return auth.SelectTenant(ctx, params.UUID, scopes.AsScopesString())
 }
