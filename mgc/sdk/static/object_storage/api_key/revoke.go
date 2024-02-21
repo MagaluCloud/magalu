@@ -2,7 +2,6 @@ package api_key
 
 import (
 	"context"
-	"fmt"
 
 	"magalu.cloud/core"
 	"magalu.cloud/core/utils"
@@ -22,19 +21,16 @@ var getRevoke = utils.NewLazyLoader[core.Executor](func() core.Executor {
 		revoke,
 	)
 
-	exec = core.NewExecuteFormat(exec, func(exec core.Executor, result core.Result) string {
-		return fmt.Sprintf("Revoked api-key %q", result.Source().Parameters["uuid"])
-	})
+	msg := "This operation will permanently revoke the api-key {{.parameters.uuid}}. Do you wish to continue?"
 
-	exec = core.NewPromptInputExecutor(
+	cExecutor := core.NewConfirmableExecutor(
 		exec,
-		core.NewPromptInput(
-			"This command will revoke the api-key {{.parameters.uuid}}, and its result is NOT reversible.\nPlease confirm by retyping: {{.confirmationValue}}",
-			"yes",
-		),
+		core.ConfirmPromptWithTemplate(msg),
 	)
 
-	return exec
+	return core.NewExecuteResultOutputOptions(cExecutor, func(exec core.Executor, result core.Result) string {
+		return "template=Revoked!\n"
+	})
 })
 
 func revoke(ctx context.Context, parameter revokeParams, _ struct{}) (bool, error) {
