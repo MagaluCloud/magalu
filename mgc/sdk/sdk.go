@@ -216,7 +216,7 @@ func init() {
 			TokenExchangeUrl: "https://id.magalu.com/oauth/token/exchange",
 		},
 		"pre-prod": { // TODO update this links to the correct ones
-			ClientId:         "cw9qpaUl2nBiC8PVjNFN5jZeb2vTd_1S5cYs1FhEXh0",
+			ClientId:         "dByqQVtHcs07b_O9jpUDgfV5UCskh9TbC64WUXEdVHE",
 			RedirectUri:      "http://localhost:8095/callback",
 			LoginUrl:         "https://idmagalu-preprod.luizalabs.com/login",
 			TokenUrl:         "https://idpa-api-preprod.luizalabs.com/oauth/token",
