@@ -34,6 +34,16 @@ servers:
             enum:
             - br-ne-1
             - br-se-1
+            - br-mgl-1
+            x-mgc-transforms:
+            -   type: translate
+                translations:
+                -   from: br-ne1
+                    to: br-ne-1
+                -   from: br-se1
+                    to: br-se-1
+                -   from: br-mgl1
+                    to: br-mgl-1
         env:
             description: Environment to use
             default: ''

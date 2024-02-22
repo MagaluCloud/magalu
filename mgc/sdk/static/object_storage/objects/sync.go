@@ -4,6 +4,7 @@ import (
 	"context"
 	"io/fs"
 	"path/filepath"
+	"strings"
 
 	"magalu.cloud/core"
 	"magalu.cloud/core/pipeline"
@@ -26,6 +27,7 @@ type syncResult struct {
 	FilesDeleted  int                   `json:"deleted"`
 	FilesUploaded int                   `json:"uploaded"`
 	Deleted       bool                  `json:"hasDeleted"`
+	DeletedFiles  string                `json:"deletedFiles"`
 }
 
 var getSync = utils.NewLazyLoader[core.Executor](func() core.Executor {
@@ -41,7 +43,7 @@ var getSync = utils.NewLazyLoader[core.Executor](func() core.Executor {
 
 	return core.NewExecuteResultOutputOptions(executor, func(exec core.Executor, result core.Result) string {
 		return "template={{if and (eq .deleted 0) (eq .uploaded 0)}}Already Synced{{- else}}" +
-			"Synced files from {{.src}} to {{.dst}} {{.uploaded}} uploaded and {{if .hasDeleted}}{{.deleted}} deleted{{- else}}{{.deleted}} to be deleted with the parameter --delete{{- end}} {{- end}}\n"
+			"Synced files from {{.src}} to {{.dst}} {{.uploaded}} uploaded and {{if .hasDeleted}}{{.deleted}} deleted\n{{if gt .deleted 1}}Files:\n-{{- else if eq .deleted 1}}File:\n-{{- end}}{{.deletedFiles}}{{- else}}{{.deleted}} to be deleted with the parameter --delete{{- end}} {{- end}}\n"
 	})
 })
 
@@ -111,6 +113,8 @@ func sync(ctx context.Context, params syncParams, cfg common.Config) (result cor
 	var toUpload []pipeline.WalkDirEntry
 	var toDelete []pipeline.WalkDirEntry
 	var objErr utils.MultiError
+	var filesToDelete []string
+	var deleteMessage string
 
 	for entry := range srcObjects {
 		if entry.Err() != nil {
@@ -155,6 +159,7 @@ func sync(ctx context.Context, params syncParams, cfg common.Config) (result cor
 
 		if !ok {
 			toDelete = append(toDelete, entry)
+			filesToDelete = append(filesToDelete, entry.DirEntry().Name())
 			continue
 		}
 		srcInfo, _ := srcValue.DirEntry().Info()
@@ -207,6 +212,8 @@ func sync(ctx context.Context, params syncParams, cfg common.Config) (result cor
 		if err != nil {
 			return nil, err
 		}
+		// Join the files names into a formatted string for the template
+		deleteMessage = strings.Join(filesToDelete, "\n-")
 	}
 
 	return syncResult{
@@ -215,5 +222,6 @@ func sync(ctx context.Context, params syncParams, cfg common.Config) (result cor
 		Source:        params.Source,
 		Destination:   params.Destination,
 		Deleted:       params.Delete,
+		DeletedFiles:  deleteMessage,
 	}, nil
 }

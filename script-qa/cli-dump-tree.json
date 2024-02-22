@@ -20124,6 +20124,79 @@
        },
        "type": "object"
       },
+      "description": "Moves one object from a source to a destination.\nIt can be either local or remote but not both local (Local -> Remote, Remote -> Local, Remote -> Remote)",
+      "isInternal": false,
+      "name": "move",
+      "parameters": {
+       "properties": {
+        "dst": {
+         "description": "Destination to put the file into",
+         "example": "s3://my-bucket/test.txt",
+         "format": "uri",
+         "type": "string"
+        },
+        "src": {
+         "description": "A file to move to the Destination",
+         "example": "./hello.txt",
+         "format": "uri",
+         "type": "string"
+        }
+       },
+       "required": [
+        "src",
+        "dst"
+       ],
+       "type": "object"
+      },
+      "result": {
+       "properties": {
+        "dst": {
+         "description": "Destination to put the file into",
+         "example": "s3://my-bucket/test.txt",
+         "format": "uri",
+         "type": "string"
+        },
+        "src": {
+         "description": "A file to move to the Destination",
+         "example": "./hello.txt",
+         "format": "uri",
+         "type": "string"
+        }
+       },
+       "required": [
+        "src",
+        "dst"
+       ],
+       "type": "object"
+      },
+      "version": ""
+     },
+     {
+      "configs": {
+       "properties": {
+        "region": {
+         "default": "br-ne1",
+         "description": "Region to reach the service",
+         "enum": [
+          "br-ne1",
+          "br-se1"
+         ],
+         "type": "string"
+        },
+        "serverUrl": {
+         "description": "Manually specify the server to use",
+         "format": "uri",
+         "type": "string"
+        },
+        "workers": {
+         "default": 5,
+         "description": "Number of routines that spawn to do parallel operations within object_storage",
+         "minimum": 1,
+         "type": "integer"
+        }
+       },
+       "type": "object"
+      },
       "description": "Moves objects from a source to a destination.\nThey can be either local or remote but not both local (Local -> Remote, Remote -> Local, Remote -> Remote)",
       "isInternal": false,
       "name": "move-dir",

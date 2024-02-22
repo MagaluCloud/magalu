@@ -13,6 +13,7 @@ Commands:
   download-all Download all objects from a bucket
   head         Get object metadata
   list         List all objects from a bucket
+  move         Moves one object from source to destination
   move-dir     Moves objects from source to destination
   sync         Synchronizes a local path to a bucket
   upload       Upload a file to a bucket

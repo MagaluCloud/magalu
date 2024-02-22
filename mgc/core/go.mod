@@ -5,6 +5,7 @@ go 1.21.4
 require (
 	github.com/PaesslerAG/gval v1.2.2
 	github.com/PaesslerAG/jsonpath v0.1.1
+	github.com/dustin/go-humanize v1.0.1
 	github.com/getkin/kin-openapi v0.118.0
 	github.com/go-openapi/jsonpointer v0.19.5
 	github.com/golang-jwt/jwt/v5 v5.2.0

@@ -326,6 +326,35 @@ instances:
 +--------------------------------------+-----------+
 ```
 
+Table may have options (all after `=` sign). If no options are specified,
+then columns will be inferred from the actual data. However, columns may
+be specified in a sequence delimited by `,`, in the following format:
+
+```
+name:jsonPath
+name:jsonPath:parents
+name:jsonPath:parents:subTableOptions
+```
+
+Where:
+- `name`: the column name (title/header) to be displayed **(required)**
+- `jsonPath`: selects the data to be displayed **(required)**
+- `parents`: space-delimited list of column parents, which is useful
+  to group multiple columns, if they have the same parent (optional)
+- `subTableOptions`: is a **quoted** string with table options
+  for the inner table, in case the data is either an object or a array.
+  Note that the internal JSON Path will be relative to that data,
+  say the data is `{"parent": {"child": [1,2,3]}}`, if the parent
+  JSON Path is `$.parent`, then this would be `$.child[*]`; analogously
+  if the parent is `$.parent.child`, this would be `$[*]`.
+  To make it a string, you **MUST QUOTE**
+  (recommended to use the back-quote) otherwise the `,` of the internal
+  columns will be handled as being of the external. (optional)
+
+If the first column string (before `,`) is the special purpose string
+`transpose`, then the table will be build along the vertical axis,
+each column will become a row.
+
 ### JSONPath
 
 ```sh

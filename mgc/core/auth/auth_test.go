@@ -188,7 +188,7 @@ func selectTenant(name string, transport mockTransport, expectedResult *TokenExc
 		providedFs: provided,
 		expectedFs: expected,
 		run: func(auth *Auth) error {
-			tnt, err := auth.SelectTenant(context.Background(), `qwe123`)
+			tnt, err := auth.SelectTenant(context.Background(), `qwe123`, "")
 			hasErr := err != nil
 
 			if hasErr != expectedErr {

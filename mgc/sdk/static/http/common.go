@@ -26,7 +26,7 @@ type httpConfig struct {
 	mgcConfigPkg.NetworkConfig `json:",squash"` // nolint
 
 	Env    string `json:"env,omitempty" jsonschema:"description=Environment to use,default=prod,enum=prod,enum=pre-prod"`
-	Region string `json:"region,omitempty" jsonschema:"description=Region to reach the service,default=br-ne-1,enum=br-ne-1,enum=br-se-1"`
+	Region string `json:"region,omitempty" jsonschema:"description=Region to reach the service,default=br-ne-1,enum=br-ne-1,enum=br-se-1,enum=br-mgl-1"`
 }
 
 type httpResult struct {

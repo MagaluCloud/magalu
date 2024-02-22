@@ -20,7 +20,7 @@ type listResponse struct {
 }
 
 var getList = utils.NewLazyLoader[core.Executor](func() core.Executor {
-	return core.NewStaticExecute(
+	executor := core.NewStaticExecute(
 		core.DescriptorSpec{
 			Name:        "list",
 			Description: "List all objects from a bucket",
@@ -28,6 +28,10 @@ var getList = utils.NewLazyLoader[core.Executor](func() core.Executor {
 		},
 		List,
 	)
+
+	return core.NewExecuteResultOutputOptions(executor, func(exec core.Executor, result core.Result) string {
+		return "table=transpose,DIRS:$.CommonPrefixes,FILES:$.Contents::`KEY:$[*].Key,SIZE:fileSize($[*].ContentSize),LASTMODIFIED:humanTime($[*].LastModified)`"
+	})
 })
 
 func List(ctx context.Context, params listParams, cfg common.Config) (result listResponse, err error) {
