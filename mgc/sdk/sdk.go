@@ -218,7 +218,7 @@ func init() {
 			ApiKeysUrl:          "https://id.magalu.com/account/api/v1/api-keys",
 		},
 		"pre-prod": { // TODO update this links to the correct ones
-			ClientId:         "dByqQVtHcs07b_O9jpUDgfV5UCskh9TbC64WUXEdVHE",
+			ClientId:            "dByqQVtHcs07b_O9jpUDgfV5UCskh9TbC64WUXEdVHE",
 			ObjectStoreScopeIDs: []string{"b6afac7e-0afd-42de-b4aa-1bc82a27e307", "5ea6d1f7-20eb-4e80-9a9c-c7923636a4bd"},
 			RedirectUri:         "http://localhost:8095/callback",
 			LoginUrl:            "https://idmagalu-preprod.luizalabs.com/login",
