@@ -215,7 +215,8 @@ func init() {
 			RefreshUrl:          "https://id.magalu.com/oauth/token",
 			TenantsListUrl:      "https://id.magalu.com/account/api/v2/whoami/tenants",
 			TokenExchangeUrl:    "https://id.magalu.com/oauth/token/exchange",
-			ApiKeysUrl:          "https://id.magalu.com/account/api/v1/api-keys",
+			ApiKeysUrlV1:        "https://id.magalu.com/account/api/v1/api-keys",
+			ApiKeysUrlV2:        "https://id.magalu.com/account/api/v2/api-keys",
 		},
 		"pre-prod": { // TODO update this links to the correct ones
 			ClientId:            "dByqQVtHcs07b_O9jpUDgfV5UCskh9TbC64WUXEdVHE",
@@ -227,7 +228,8 @@ func init() {
 			RefreshUrl:          "https://idpa-api-preprod.luizalabs.com/oauth/token",
 			TenantsListUrl:      "https://platform-account-api-preprod.luizalabs.com/api/v2/whoami/tenants",
 			TokenExchangeUrl:    "https://idpa-api-preprod.luizalabs.com/oauth/token/exchange",
-			ApiKeysUrl:          "https://idpa-api-preprod.luizalabs.com/account/api/v1/api-keys",
+			ApiKeysUrlV1:        "https://idpa-api-preprod.luizalabs.com/account/api/v1/api-keys",
+			ApiKeysUrlV2:        "https://idpa-api-preprod.luizalabs.com/account/api/v2/api-keys",
 		},
 	}
 	authConfigMap["default"] = authConfigMap["prod"]

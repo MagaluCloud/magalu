@@ -31,7 +31,7 @@ func list(ctx context.Context) ([]*apiKeysResult, error) {
 		return nil, fmt.Errorf("could not get Auth from context")
 	}
 
-	r, err := http.NewRequestWithContext(ctx, http.MethodGet, auth.GetConfig().ApiKeysUrl, nil)
+	r, err := http.NewRequestWithContext(ctx, http.MethodGet, auth.GetConfig().ApiKeysUrlV1, nil)
 	if err != nil {
 		return nil, err
 	}

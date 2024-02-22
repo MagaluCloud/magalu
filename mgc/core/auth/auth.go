@@ -60,7 +60,8 @@ type Config struct {
 	RefreshUrl          string
 	TenantsListUrl      string
 	TokenExchangeUrl    string
-	ApiKeysUrl          string
+	ApiKeysUrlV1        string
+	ApiKeysUrlV2        string
 }
 
 type Auth struct {

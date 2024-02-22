@@ -50,7 +50,7 @@ func revoke(ctx context.Context, parameter revokeParams, _ struct{}) (*revokePar
 		return nil, fmt.Errorf("couldn't get http client from context")
 	}
 
-	url := fmt.Sprintf("%s/%s/revoke", auth.GetConfig().ApiKeysUrl, parameter.UUID)
+	url := fmt.Sprintf("%s/%s/revoke", auth.GetConfig().ApiKeysUrlV1, parameter.UUID)
 	r, err := http.NewRequestWithContext(ctx, http.MethodPost, url, nil)
 	if err != nil {
 		return nil, err

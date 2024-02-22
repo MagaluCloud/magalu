@@ -98,3 +98,12 @@ pre-commit git hook. However, if one wants to run standalone it can be done via:
 ```sh
 pre-commit run golangci-lint
 ```
+
+
+### Run all
+
+Run pre-commit without any file modified:
+
+```sh
+pre-commit run -a
+```

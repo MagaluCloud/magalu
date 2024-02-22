@@ -33,14 +33,20 @@ type apiKeys struct {
 	} `json:"scopes"`
 }
 
-type createApiKey struct {
-	Name          string   `json:"name"`
-	Description   string   `json:"description"`
-	TenantID      string   `json:"tenant_id"`
-	ScopeIds      []string `json:"scope_ids"`
-	StartValidity string   `json:"start_validity"`
-	EndValidity   string   `json:"end_validity"`
+type scopesObjectStorage struct {
+	ID            string `json:"id"`
+	RequestReason string `json:"request_reason"`
 }
+
+type createApiKey struct {
+	Name          string                `json:"name"`
+	Description   string                `json:"description"`
+	TenantID      string                `json:"tenant_id"`
+	ScopesList    []scopesObjectStorage `json:"scopes"`
+	StartValidity string                `json:"start_validity"`
+	EndValidity   string                `json:"end_validity"`
+}
+
 type apiKeyResult struct {
 	UUID string `json:"uuid,omitempty"`
 }
