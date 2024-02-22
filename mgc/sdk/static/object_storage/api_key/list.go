@@ -48,6 +48,12 @@ func list(ctx context.Context) ([]*apiKeysResult, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	var finallyResult []*apiKeysResult
+	if resp.StatusCode == http.StatusNoContent {
+		return finallyResult, nil
+	}
+
 	if resp.StatusCode != http.StatusOK {
 		return nil, mgcHttpPkg.NewHttpErrorFromResponse(resp, r)
 	}
@@ -57,8 +63,6 @@ func list(ctx context.Context) ([]*apiKeysResult, error) {
 	if err = json.NewDecoder(resp.Body).Decode(&result); err != nil {
 		return nil, err
 	}
-
-	var finallyResult []*apiKeysResult
 
 	for _, y := range result {
 
