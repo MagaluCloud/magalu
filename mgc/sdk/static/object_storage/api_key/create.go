@@ -65,19 +65,17 @@ func create(ctx context.Context, parameter createParams, _ struct{}) (*apiKeyRes
 
 	const reason = "permission to read and write at object-storage"
 
-	var scopes []scopesObjectStorage
-	scopes = append(scopes, scopesObjectStorage{ID: config.ObjectStoreScopeIDs[0], RequestReason: reason})
-	scopes = append(scopes, scopesObjectStorage{ID: config.ObjectStoreScopeIDs[1], RequestReason: reason})
-
 	newApi := &createApiKey{
-		Name:          parameter.ApiKeyName,
-		Description:   *parameter.ApiKeyDescription,
-		TenantID:      currentTenantID,
-		ScopesList:    scopes,
+		Name:        parameter.ApiKeyName,
+		Description: *parameter.ApiKeyDescription,
+		TenantID:    currentTenantID,
+		ScopesList: []scopesObjectStorage{
+			{ID: config.ObjectStoreScopeIDs[0], RequestReason: reason},
+			{ID: config.ObjectStoreScopeIDs[1], RequestReason: reason},
+		},
 		StartValidity: time.Now().Format(time.DateOnly),
 		EndValidity:   *parameter.ApiKeyExpiration,
 	}
-
 	var buf bytes.Buffer
 	err = json.NewEncoder(&buf).Encode(newApi)
 	if err != nil {
