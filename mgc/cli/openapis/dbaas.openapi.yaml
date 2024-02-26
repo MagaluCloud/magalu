@@ -2278,13 +2278,14 @@ servers:
             - br-mgl-1
             x-mgc-transforms:
             -   type: translate
+                allowMissing: true
                 translations:
-                -   from: br-ne1
+                -   from: br-ne-1
                     to: br-ne-1
-                -   from: br-se1
+                -   from: br-se-1
                     to: br-se-1
-                -   from: br-mgl1
-                    to: br-mgl-1
+                -   from: br-mgl-1
+                    to: br-se-1
         env:
             description: Environment to use
             default: api.magalu.cloud
