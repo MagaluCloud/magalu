@@ -11,7 +11,7 @@ Flags:
       --delete               Deletes any item at the destination not present on the source
       --dst uri              Full destination path to sync with the source path (required)
   -h, --help                 help for sync
-      --src file             Source path to sync the remote with (required)
+      --src uri              Source path to sync the remote with (required)
 
 Global Flags:
       --chunk-size integer     Chunk size to consider when doing multipart requests. Specified in Mb (range: 5 - 5120) (default 5)

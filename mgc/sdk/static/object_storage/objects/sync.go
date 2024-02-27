@@ -2,9 +2,11 @@ package objects
 
 import (
 	"context"
+	"fmt"
 	"io/fs"
+	"os"
 	"path/filepath"
-	"strings"
+	"time"
 
 	"magalu.cloud/core"
 	"magalu.cloud/core/pipeline"
@@ -14,20 +16,31 @@ import (
 	"magalu.cloud/sdk/static/object_storage/common"
 )
 
+type syncUploadPair struct {
+	Source      mgcSchemaPkg.URI
+	Destination mgcSchemaPkg.URI
+	Stats       fileSyncStats
+}
+
+type fileSyncStats struct {
+	SourceLength  int64
+	SourceModTime int64
+}
+
 type syncParams struct {
-	Source      mgcSchemaPkg.FilePath `json:"src" jsonschema:"description=Source path to sync the remote with,example=./" mgc:"positional"`
-	Destination mgcSchemaPkg.URI      `json:"dst" jsonschema:"description=Full destination path to sync with the source path,example=s3://my-bucket/dir/" mgc:"positional"`
-	Delete      bool                  `json:"delete,omitempty" jsonschema:"description=Deletes any item at the destination not present on the source,default=false"`
-	BatchSize   int                   `json:"batch_size,omitempty" jsonschema:"description=Limit of items per batch to delete,default=1000,minimum=1,maximum=1000" example:"1000"`
+	Source      mgcSchemaPkg.URI `json:"src" jsonschema:"description=Source path to sync the remote with,example=./" mgc:"positional"`
+	Destination mgcSchemaPkg.URI `json:"dst" jsonschema:"description=Full destination path to sync with the source path,example=s3://my-bucket/dir/" mgc:"positional"`
+	Delete      bool             `json:"delete,omitempty" jsonschema:"description=Deletes any item at the destination not present on the source,default=false"`
+	BatchSize   int              `json:"batch_size,omitempty" jsonschema:"description=Limit of items per batch to delete,default=1000,minimum=1,maximum=1000" example:"1000"`
 }
 
 type syncResult struct {
-	Source        mgcSchemaPkg.FilePath `json:"src" jsonschema:"description=Source path to sync the remote with,example=./" mgc:"positional"`
-	Destination   mgcSchemaPkg.URI      `json:"dst" jsonschema:"description=Full destination path to sync with the source path,example=s3://my-bucket/dir/" mgc:"positional"`
-	FilesDeleted  int                   `json:"deleted"`
-	FilesUploaded int                   `json:"uploaded"`
-	Deleted       bool                  `json:"hasDeleted"`
-	DeletedFiles  string                `json:"deletedFiles"`
+	Source        mgcSchemaPkg.URI `json:"src" jsonschema:"description=Source path to sync the remote with,example=./" mgc:"positional"`
+	Destination   mgcSchemaPkg.URI `json:"dst" jsonschema:"description=Full destination path to sync with the source path,example=s3://my-bucket/dir/" mgc:"positional"`
+	FilesDeleted  int              `json:"deleted"`
+	FilesUploaded int              `json:"uploaded"`
+	Deleted       bool             `json:"hasDeleted"`
+	DeletedFiles  string           `json:"deletedFiles"`
 }
 
 var getSync = utils.NewLazyLoader[core.Executor](func() core.Executor {
@@ -47,181 +60,183 @@ var getSync = utils.NewLazyLoader[core.Executor](func() core.Executor {
 	})
 })
 
-func createObjectSyncProcessor(
+func sync(ctx context.Context, params syncParams, cfg common.Config) (result core.Value, err error) {
+	srcIsRemote := isRemote(params.Source)
+
+	ctx, cancel := context.WithCancelCause(ctx)
+	defer cancel(nil)
+
+	var srcObjects <-chan pipeline.WalkDirEntry
+
+	if srcIsRemote {
+		srcObjects = common.ListGenerator(ctx, common.ListObjectsParams{
+			Destination: params.Source,
+			Recursive:   true,
+			PaginationParams: common.PaginationParams{
+				MaxItems: common.MaxBatchSize,
+			},
+		}, cfg, nil)
+	} else {
+		srcObjects = pipeline.WalkDirEntries(ctx, params.Source.String(), func(path string, d fs.DirEntry, err error) error {
+			if err != nil {
+				return err
+			}
+			return nil
+		})
+	}
+
+	progressReporter := progress_report.NewUnitsReporter(ctx, "Sync Download", 0)
+	progressReporter.Start()
+
+	uploadChannel := pipeline.Process(ctx, srcObjects, createObjectSyncFilePairProcessor(cfg, params.Source, params.Destination, progressReporter), nil)
+	uploadObjectsErrorChan := pipeline.ParallelProcess(ctx, cfg.Workers, uploadChannel, createSyncObjectProcessor(cfg, progressReporter), nil)
+	objErr, err := pipeline.SliceItemConsumer[utils.MultiError](ctx, uploadObjectsErrorChan)
+
+	if len(objErr) > 0 {
+		progressReporter.Report(0, 0, objErr)
+		return nil, objErr
+	}
+
+	// progressReporter.End()
+	return syncResult{
+		Source:        params.Source,
+		Destination:   params.Destination,
+		FilesDeleted:  0,
+		FilesUploaded: 0,
+		Deleted:       params.Delete,
+		DeletedFiles:  "",
+	}, nil
+}
+
+func createObjectSyncFilePairProcessor(
 	cfg common.Config,
+	source mgcSchemaPkg.URI,
 	destination mgcSchemaPkg.URI,
-	srcAbs string,
 	progressReporter *progress_report.UnitsReporter,
-) pipeline.Processor[pipeline.WalkDirEntry, error] {
-	return func(ctx context.Context, dirEntry pipeline.WalkDirEntry) (error, pipeline.ProcessStatus) {
-		if err := dirEntry.Err(); err != nil {
-			return &common.ObjectError{Err: err}, pipeline.ProcessAbort
+) pipeline.Processor[pipeline.WalkDirEntry, syncUploadPair] {
+	return func(ctx context.Context, entry pipeline.WalkDirEntry) (syncUploadPair, pipeline.ProcessStatus) {
+		if err := entry.Err(); err != nil {
+			return syncUploadPair{}, pipeline.ProcessSkip
+		}
+		if entry.DirEntry().IsDir() {
+			return syncUploadPair{}, pipeline.ProcessSkip
 		}
 
-		if dirEntry.DirEntry().IsDir() {
-			return nil, pipeline.ProcessOutput
+		normalizedSource, err := normalizeURI(source, entry.Path())
+		if err != nil {
+			return syncUploadPair{}, pipeline.ProcessSkip
 		}
 
+		normalizedDestination, err := normalizeURI(destination, entry.Path())
+		if err != nil {
+			return syncUploadPair{}, pipeline.ProcessSkip
+		}
+
+		info, err := entry.DirEntry().Info()
+		if err != nil {
+			return syncUploadPair{}, pipeline.ProcessAbort
+		}
+
+		progressReporter.Report(0, 1, nil)
+
+		return syncUploadPair{
+			Source:      normalizedSource,
+			Destination: normalizedDestination,
+			Stats: fileSyncStats{
+				SourceLength:  info.Size(),
+				SourceModTime: info.ModTime().Unix(),
+			},
+		}, pipeline.ProcessOutput
+	}
+}
+
+func normalizeURI(uri mgcSchemaPkg.URI, path string) (mgcSchemaPkg.URI, error) {
+	if uri.Scheme() == "s3" {
+		return uri.JoinPath(path), nil
+	}
+	value, err := filepath.Abs(path)
+	if err != nil {
+		return uri, err
+	}
+
+	return mgcSchemaPkg.FilePath(value).AsURI(), nil
+}
+
+func createSyncObjectProcessor(
+	cfg common.Config,
+	progressReporter *progress_report.UnitsReporter,
+) pipeline.Processor[syncUploadPair, error] {
+	return func(ctx context.Context, entry syncUploadPair) (error, pipeline.ProcessStatus) {
 		var err error
-		defer func() { progressReporter.Report(1, 0, err) }()
+		defer func(cause error) { progressReporter.Report(1, 0, err) }(err)
 
-		absEntry, err := filepath.Abs(dirEntry.Path())
-		if err != nil {
-			return &common.ObjectError{Err: err}, pipeline.ProcessAbort
+		fmt.Printf("%s %s\n", entry.Source, entry.Destination)
+
+		fileStats, err := getFileStats(ctx, entry.Destination, cfg)
+
+		if err == nil && entry.Stats.SourceLength == fileStats.SourceLength && entry.Stats.SourceModTime == fileStats.SourceModTime {
+			fmt.Println("C")
+			return nil, pipeline.ProcessSkip // TODO
 		}
-		relative, err := filepath.Rel(srcAbs, absEntry)
-		if err != nil {
-			return &common.ObjectError{Err: err}, pipeline.ProcessAbort
-		}
-		objURI := destination.JoinPath(relative)
 
-		_, err = upload(
-			ctx,
-			uploadParams{Source: mgcSchemaPkg.FilePath(dirEntry.Path()), Destination: mgcSchemaPkg.URI(objURI)},
-			cfg,
-		)
+		err = sourceDestinationProcessor(ctx, entry.Source, entry.Destination, cfg)
 
 		if err != nil {
-			return &common.ObjectError{Url: mgcSchemaPkg.URI(objURI), Err: err}, pipeline.ProcessOutput
+			return &common.ObjectError{Url: mgcSchemaPkg.URI(entry.Source.Path()), Err: err}, pipeline.ProcessOutput
 		}
 
 		return nil, pipeline.ProcessOutput
 	}
 }
 
-func sync(ctx context.Context, params syncParams, cfg common.Config) (result core.Value, err error) {
-	ctx, cancel := context.WithCancelCause(ctx)
-	defer cancel(nil)
-
-	srcObjects := pipeline.WalkDirEntries(ctx, params.Source.String(), func(path string, d fs.DirEntry, err error) error {
-		return err
-	})
-	srcAbs, err := filepath.Abs(params.Source.String())
-	if err != nil {
-		return nil, err
-	}
-
-	dstObjects := common.ListGenerator(ctx, common.ListObjectsParams{
-		Destination: params.Destination,
-		Recursive:   true,
-		PaginationParams: common.PaginationParams{
-			MaxItems: common.MaxBatchSize,
-		},
-	}, cfg, nil)
-
-	srcMap := make(map[string]pipeline.WalkDirEntry)
-	var toUpload []pipeline.WalkDirEntry
-	var toDelete []pipeline.WalkDirEntry
-	var objErr utils.MultiError
-	var filesToDelete []string
-	var deleteMessage string
-
-	for entry := range srcObjects {
-		if entry.Err() != nil {
-			objErr = append(objErr, err)
-			continue
-		}
-		if entry.DirEntry().IsDir() {
-			continue
-		}
-		absPath, err := filepath.Abs(entry.Path())
-		if err != nil {
-			objErr = append(objErr, err)
-			continue
-		}
-		relPath, err := filepath.Rel(srcAbs, absPath)
-		if err != nil {
-			objErr = append(objErr, err)
-			continue
-		}
-		srcMap[relPath] = entry
-	}
-
-	for entry := range dstObjects {
-		if err := entry.Err(); err != nil {
-			objErr = append(objErr, err)
-			continue
-		}
-		if entry.DirEntry().IsDir() {
-			continue
-		}
-		relPath, err := filepath.Rel(params.Destination.Path(), entry.Path())
-		if err != nil {
-			objErr = append(objErr, err)
-			continue
-		}
-		value, err := entry.DirEntry().Info()
-		if err != nil {
-			objErr = append(objErr, err)
-			continue
-		}
-		srcValue, ok := srcMap[relPath]
-
-		if !ok {
-			toDelete = append(toDelete, entry)
-			filesToDelete = append(filesToDelete, entry.DirEntry().Name())
-			continue
-		}
-		srcInfo, _ := srcValue.DirEntry().Info()
-		if value == nil || srcInfo.Size() != value.Size() {
-			toUpload = append(toUpload, srcValue)
-			continue
-		}
-		delete(srcMap, relPath)
-	}
-	if len(objErr) > 0 {
-		return nil, objErr
-	}
-
-	for _, v := range srcMap {
-		if v != nil {
-			toUpload = append(toUpload, v)
-		}
-	}
-
-	if len(toUpload) > 0 {
-		progressReporter := progress_report.NewUnitsReporter(ctx, "Sync Upload", uint64(len(toUpload)))
-		progressReporter.Start()
-		defer progressReporter.End()
-
-		uploadChannel := pipeline.SliceItemGenerator[pipeline.WalkDirEntry](ctx, toUpload)
-		uploadObjectsErrorChan := pipeline.ParallelProcess(ctx, cfg.Workers, uploadChannel, createObjectSyncProcessor(cfg, params.Destination, srcAbs, progressReporter), nil)
-		uploadObjectsErrorChan = pipeline.Filter(ctx, uploadObjectsErrorChan, pipeline.FilterNonNil[error]{})
-
-		objErr, err = pipeline.SliceItemConsumer[utils.MultiError](ctx, uploadObjectsErrorChan)
-		if err != nil {
-			progressReporter.Report(0, 0, err)
-			return nil, err
-		}
-
-		if len(objErr) > 0 {
-			progressReporter.Report(0, 0, objErr)
-			return nil, objErr
-		}
-
-		progressReporter.End()
-	}
-
-	if params.Delete && len(toDelete) > 0 {
-		deleteChannel := pipeline.SliceItemGenerator[pipeline.WalkDirEntry](ctx, toDelete)
-		err := common.DeleteObjects(ctx, common.DeleteObjectsParams{
-			Destination: params.Destination,
-			ToDelete:    deleteChannel,
-			BatchSize:   params.BatchSize,
+func getFileStats(ctx context.Context, destination mgcSchemaPkg.URI, cfg common.Config) (fileSyncStats, error) {
+	if isRemote(destination) {
+		dstHead, err := headObject(ctx, headObjectParams{
+			Destination: destination,
 		}, cfg)
 		if err != nil {
-			return nil, err
+			return fileSyncStats{}, err
 		}
-		// Join the files names into a formatted string for the template
-		deleteMessage = strings.Join(filesToDelete, "\n-")
+		dstModTime, err := time.Parse(time.RFC3339, dstHead.LastModified)
+		if err != nil {
+			fmt.Printf("%s %s\n", dstModTime, err)
+			return fileSyncStats{}, err
+		}
+		return fileSyncStats{
+			SourceLength:  dstHead.ContentLength,
+			SourceModTime: dstModTime.Unix(),
+		}, nil
 	}
 
-	return syncResult{
-		FilesDeleted:  len(toDelete),
-		FilesUploaded: len(toUpload),
-		Source:        params.Source,
-		Destination:   params.Destination,
-		Deleted:       params.Delete,
-		DeletedFiles:  deleteMessage,
+	stat, err := os.Stat(string(destination))
+	if err != nil {
+		fmt.Printf("%s %s\n", stat, err)
+		return fileSyncStats{}, err
+	}
+	return fileSyncStats{
+		SourceLength:  stat.Size(),
+		SourceModTime: stat.ModTime().Unix(),
 	}, nil
+}
+
+func sourceDestinationProcessor(ctx context.Context, source mgcSchemaPkg.URI, destination mgcSchemaPkg.URI, cfg common.Config) error {
+	fmt.Printf("sourceDestinationProcessor %s %s\n", source, destination)
+	if isRemote(destination) {
+		sourcePath := mgcSchemaPkg.FilePath("/" + source.Path())
+		fmt.Printf("D %s %s\n", source.Path(), sourcePath)
+		_, err := upload(
+			ctx,
+			uploadParams{Source: sourcePath, Destination: destination},
+			cfg,
+		)
+		return err
+	} else {
+		destinationPath := mgcSchemaPkg.FilePath("/" + destination.Path())
+		_, err := download(
+			ctx,
+			common.DownloadObjectParams{Source: source, Destination: destinationPath},
+			cfg,
+		)
+		return err
+	}
 }

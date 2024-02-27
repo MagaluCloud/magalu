@@ -20681,8 +20681,8 @@
         "src": {
          "description": "Source path to sync the remote with",
          "example": "./",
-         "type": "string",
-         "x-contentMediaType": "application/octet-stream"
+         "format": "uri",
+         "type": "string"
         }
        },
        "required": [
