@@ -19,7 +19,7 @@ type revokeParams struct {
 var getRevoke = utils.NewLazyLoader[core.Executor](func() core.Executor {
 	var exec core.Executor = core.NewStaticExecute(
 		core.DescriptorSpec{
-			Scopes:      core.Scopes{"pa:api-keys:revoke"},
+			Scopes:      core.Scopes{scope_PA},
 			Name:        "revoke",
 			Description: "Revoke credentials used in Object Storage requests",
 		},

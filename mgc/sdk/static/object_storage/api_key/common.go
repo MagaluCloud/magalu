@@ -1,6 +1,9 @@
 package api_key
 
-const name_ObjectStorage = "Object Storage"
+const (
+	name_ObjectStorage = "Object Storage"
+	scope_PA           = "pa:cloud-cli:features"
+)
 
 type apiKeysResult struct {
 	UUID          string  `json:"uuid"`

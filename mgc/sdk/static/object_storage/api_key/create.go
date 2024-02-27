@@ -23,7 +23,7 @@ type createParams struct {
 var getCreate = utils.NewLazyLoader[core.Executor](func() core.Executor {
 	executor := core.NewStaticExecute(
 		core.DescriptorSpec{
-			Scopes:      core.Scopes{"pa:api-keys:create"},
+			Scopes:      core.Scopes{scope_PA},
 			Name:        "create",
 			Description: "Create new credentials used for Object Storage requests",
 		},
