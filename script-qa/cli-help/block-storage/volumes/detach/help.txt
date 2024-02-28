@@ -25,13 +25,12 @@ The Volume detachment will be completed when the volume state returns to
  three.
 
 Usage:
-  ./cli block-storage volumes detach [id] [virtual-machine-id] [flags]
+  ./cli block-storage volumes detach [id] [flags]
 
 Flags:
-  -h, --help                      help for detach
-      --id uuid                   Id (required)
-  -v, --version                   version for detach
-      --virtual-machine-id uuid   Virtual Machine Id (required)
+  -h, --help      help for detach
+      --id uuid   Id (required)
+  -v, --version   version for detach
 
 Global Flags:
       --cli.show-cli-globals   Show all CLI global flags on usage text

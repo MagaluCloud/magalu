@@ -1927,16 +1927,10 @@
          "format": "uuid",
          "title": "Id",
          "type": "string"
-        },
-        "virtual_machine_id": {
-         "format": "uuid",
-         "title": "Virtual Machine Id",
-         "type": "string"
         }
        },
        "required": [
-        "id",
-        "virtual_machine_id"
+        "id"
        ],
        "type": "object"
       },

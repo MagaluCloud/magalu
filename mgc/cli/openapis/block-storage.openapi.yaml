@@ -823,7 +823,7 @@ paths:
             -   OAuth2:
                 - block-storage.write
             x-mgc-name: attach
-    /v1/volumes/{id}/detach/{virtual_machine_id}:
+    /v1/volumes/{id}/detach:
         post:
             tags:
             - volumes
@@ -854,13 +854,6 @@ paths:
                     type: string
                     format: uuid
                     title: Id
-            -   name: virtual_machine_id
-                in: path
-                required: true
-                schema:
-                    type: string
-                    format: uuid
-                    title: Virtual Machine Id
             responses:
                 '204':
                     description: Successful Response
