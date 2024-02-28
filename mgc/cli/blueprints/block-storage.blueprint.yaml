@@ -93,7 +93,7 @@ children:
     - "block-storage.write"
 
     confirm: |
-      Deleting {{ .parameters.block_storage_id }} from {{ .parameters.virtual_machine_id }} cannot be undone.
+      Deleting {{ .parameters.block_storage_id }} cannot be undone.
       Confirm?
 
     parametersSchema:
@@ -106,17 +106,15 @@ children:
     result: | # the result values must match the parameters, so use directly:
       {
         "block_storage_id": $.parameters.block_storage_id,
-        "virtual_machine_id": $.parameters.virtual_machine_id
       }
 
     steps:
     - target: /block-storage/volumes/detach
       parameters:
         id: $.parameters.block_storage_id
-        virtual_machine_id: $.parameters.virtual_machine_id
 
       check:
         errorMessageTemplate: |
-          Virtual machine {{ .parameters.virtual_machine_id }} is still attached to block storage {{ .parameters.block_storage_id }}
+          Virtual machine is still attached to block storage {{ .parameters.block_storage_id }}
         jsonPathQuery: |
-          !hasKey($.current.result, "attachment") || $.current.result.attachment[?(@.machine_id != $.parameters.virtual_machine_id)]
+          !hasKey($.current.result, "attachment") || $.current.result.attachment[?(@.machine_id)]
