@@ -93,7 +93,7 @@ children:
     - "block-storage.write"
 
     confirm: |
-      Deleting {{ .parameters.block_storage_id }} cannot be undone.
+      Detaching {{ .parameters.block_storage_id }} cannot be undone.
       Confirm?
 
     parametersSchema:
@@ -117,4 +117,4 @@ children:
         errorMessageTemplate: |
           Virtual machine is still attached to block storage {{ .parameters.block_storage_id }}
         jsonPathQuery: |
-          !hasKey($.current.result, "attachment") || $.current.result.attachment[?(@.machine_id)]
+          !hasKey($.current.result, "attachment")
