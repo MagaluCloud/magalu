@@ -105,7 +105,7 @@ func SendRequestWithIgnoredHeaders(ctx context.Context, req *http.Request, ignor
 
 	accesskeyId, accessSecretKey := auth.FromContext(ctx).AccessKeyPair()
 	if accesskeyId == "" || accessSecretKey == "" {
-		err = fmt.Errorf("access key not set, see how to set it with \"auth object-storage set -h\"")
+		err = fmt.Errorf("api-key not set, see how to set it with \"mgc object-storage api-key -h\"")
 		return
 	}
 
