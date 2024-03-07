@@ -1,0 +1,21 @@
+Routes related to managing Container Registry repositories.
+
+Usage:
+  ./cli mcr repositories [flags]
+  ./cli mcr repositories [command]
+
+Commands:
+  create      Create a registry repository
+  delete      Delete a container registry repository by repository_uuid.
+  get         Get a container registry repository by repository_uuid
+  list        List all container registry repositories
+
+Flags:
+  -h, --help      help for repositories
+  -v, --version   version for repositories
+
+Global Flags:
+      --cli.show-cli-globals   Show all CLI global flags on usage text
+
+Use "./cli mcr repositories [command] --help" for more information about a command.
+

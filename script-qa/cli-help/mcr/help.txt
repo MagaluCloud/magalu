@@ -1,0 +1,20 @@
+Magalu Container Registry product API.
+
+Usage:
+  ./cli mcr [flags]
+  ./cli mcr [command]
+
+Commands:
+  info         Routes related to mcr-api configuration information.
+  registries   Routes related to Container Registry management.
+  repositories Routes related to managing Container Registry repositories.
+
+Flags:
+  -h, --help      help for mcr
+  -v, --version   version for mcr
+
+Global Flags:
+      --cli.show-cli-globals   Show all CLI global flags on usage text
+
+Use "./cli mcr [command] --help" for more information about a command.
+

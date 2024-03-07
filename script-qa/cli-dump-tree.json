@@ -13461,6 +13461,700 @@
  {
   "children": [
    {
+    "children": [],
+    "description": "Routes related to mcr-api configuration information.",
+    "isInternal": false,
+    "name": "info",
+    "version": "0.1.0"
+   },
+   {
+    "children": [
+     {
+      "configs": {
+       "additionalProperties": false,
+       "properties": {
+        "env": {
+         "default": "prod",
+         "description": "Environment to use",
+         "enum": [
+          "prod",
+          "pre-prod"
+         ],
+         "type": "string"
+        },
+        "region": {
+         "default": "br-ne1",
+         "description": "Region to reach the service",
+         "enum": [
+          "br-ne1",
+          "br-se1",
+          "br-mgl1"
+         ],
+         "type": "string"
+        },
+        "serverUrl": {
+         "description": "Manually specify the server to use",
+         "format": "uri",
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
+      "description": "Creates a container registry in Magalu Cloud.",
+      "isInternal": false,
+      "name": "create",
+      "parameters": {
+       "additionalProperties": false,
+       "properties": {
+        "name": {
+         "description": "A unique, global name for the container registry. It must be written in lowercase letters and consists only of numbers and letters, up to a limit of 63 characters.",
+         "type": "string"
+        }
+       },
+       "required": [
+        "name"
+       ],
+       "type": "object"
+      },
+      "result": {
+       "description": "Container Registry's creation response.",
+       "properties": {
+        "id": {
+         "description": "Container Registry's UUID.",
+         "type": "string"
+        },
+        "name": {
+         "description": "A unique, global name for the container registry. It must be written in lowercase letters and consists only of numbers and letters, up to a limit of 63 characters.",
+         "type": "string"
+        }
+       },
+       "required": [
+        "id",
+        "name"
+       ],
+       "type": "object"
+      },
+      "version": "0.1.0"
+     },
+     {
+      "configs": {
+       "additionalProperties": false,
+       "properties": {
+        "env": {
+         "default": "prod",
+         "description": "Environment to use",
+         "enum": [
+          "prod",
+          "pre-prod"
+         ],
+         "type": "string"
+        },
+        "region": {
+         "default": "br-ne1",
+         "description": "Region to reach the service",
+         "enum": [
+          "br-ne1",
+          "br-se1",
+          "br-mgl1"
+         ],
+         "type": "string"
+        },
+        "serverUrl": {
+         "description": "Manually specify the server to use",
+         "format": "uri",
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
+      "description": "Return container registry user's authentication credentials.",
+      "isInternal": false,
+      "name": "credentials",
+      "parameters": {
+       "additionalProperties": false,
+       "properties": {
+        "registry_uuid": {
+         "description": "Container Registry's UUID.",
+         "format": "uuid",
+         "type": "string"
+        }
+       },
+       "required": [
+        "registry_uuid"
+       ],
+       "type": "object"
+      },
+      "result": {
+       "description": "User's credentials for authentication to the container registry.",
+       "properties": {
+        "email": {
+         "description": "Email for authentication to the container registry.",
+         "type": "string"
+        },
+        "password": {
+         "description": "Password for authentication to the container registry.",
+         "type": "string"
+        },
+        "server": {
+         "description": "Name of the container registry.",
+         "type": "string"
+        },
+        "username": {
+         "description": "Username for authentication to the container registry.",
+         "type": "string"
+        }
+       },
+       "required": [
+        "username",
+        "password",
+        "email",
+        "server"
+       ],
+       "type": "object"
+      },
+      "version": "0.1.0"
+     },
+     {
+      "configs": {
+       "additionalProperties": false,
+       "properties": {
+        "env": {
+         "default": "prod",
+         "description": "Environment to use",
+         "enum": [
+          "prod",
+          "pre-prod"
+         ],
+         "type": "string"
+        },
+        "region": {
+         "default": "br-ne1",
+         "description": "Region to reach the service",
+         "enum": [
+          "br-ne1",
+          "br-se1",
+          "br-mgl1"
+         ],
+         "type": "string"
+        },
+        "serverUrl": {
+         "description": "Manually specify the server to use",
+         "format": "uri",
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
+      "description": "Delete a container registry by uuid.",
+      "isInternal": false,
+      "name": "delete",
+      "parameters": {
+       "additionalProperties": false,
+       "properties": {
+        "registry_uuid": {
+         "description": "Container Registry's UUID.",
+         "format": "uuid",
+         "type": "string"
+        }
+       },
+       "required": [
+        "registry_uuid"
+       ],
+       "type": "object"
+      },
+      "result": {
+       "nullable": true,
+       "type": "null"
+      },
+      "version": "0.1.0"
+     },
+     {
+      "configs": {
+       "additionalProperties": false,
+       "properties": {
+        "env": {
+         "default": "prod",
+         "description": "Environment to use",
+         "enum": [
+          "prod",
+          "pre-prod"
+         ],
+         "type": "string"
+        },
+        "region": {
+         "default": "br-ne1",
+         "description": "Region to reach the service",
+         "enum": [
+          "br-ne1",
+          "br-se1",
+          "br-mgl1"
+         ],
+         "type": "string"
+        },
+        "serverUrl": {
+         "description": "Manually specify the server to use",
+         "format": "uri",
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
+      "description": "Show detailed information about the user's container registry.",
+      "isInternal": false,
+      "name": "get",
+      "parameters": {
+       "additionalProperties": false,
+       "properties": {
+        "registry_uuid": {
+         "description": "Container Registry's UUID.",
+         "format": "uuid",
+         "type": "string"
+        }
+       },
+       "required": [
+        "registry_uuid"
+       ],
+       "type": "object"
+      },
+      "result": {
+       "description": "Container Registry's response data.",
+       "properties": {
+        "created_at": {
+         "description": "Date and time of creation of the container registry.",
+         "type": "string"
+        },
+        "id": {
+         "description": "Container Registry's UUID.",
+         "type": "string"
+        },
+        "name": {
+         "description": "Name of the container registry created.",
+         "type": "string"
+        },
+        "storage_usage_bytes": {
+         "description": "Storage used in bytes.",
+         "type": "integer"
+        },
+        "updated_at": {
+         "description": "Date and time of the last change to the container registry.",
+         "type": "string"
+        }
+       },
+       "required": [
+        "id",
+        "name",
+        "storage_usage_bytes",
+        "created_at",
+        "updated_at"
+       ],
+       "type": "object"
+      },
+      "version": "0.1.0"
+     },
+     {
+      "configs": {
+       "additionalProperties": false,
+       "properties": {
+        "env": {
+         "default": "prod",
+         "description": "Environment to use",
+         "enum": [
+          "prod",
+          "pre-prod"
+         ],
+         "type": "string"
+        },
+        "region": {
+         "default": "br-ne1",
+         "description": "Region to reach the service",
+         "enum": [
+          "br-ne1",
+          "br-se1",
+          "br-mgl1"
+         ],
+         "type": "string"
+        },
+        "serverUrl": {
+         "description": "Manually specify the server to use",
+         "format": "uri",
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
+      "description": "List user's container registries.",
+      "isInternal": false,
+      "name": "list",
+      "parameters": {
+       "additionalProperties": false,
+       "type": "object"
+      },
+      "result": {
+       "description": "Container registry information response object.",
+       "properties": {
+        "results": {
+         "description": "List of user registries.",
+         "items": {
+          "description": "Container Registry's response data.",
+          "properties": {
+           "created_at": {
+            "description": "Date and time of creation of the container registry.",
+            "type": "string"
+           },
+           "id": {
+            "description": "Container Registry's UUID.",
+            "type": "string"
+           },
+           "name": {
+            "description": "Name of the container registry created.",
+            "type": "string"
+           },
+           "storage_usage_bytes": {
+            "description": "Storage used in bytes.",
+            "type": "integer"
+           },
+           "updated_at": {
+            "description": "Date and time of the last change to the container registry.",
+            "type": "string"
+           }
+          },
+          "required": [
+           "id",
+           "name",
+           "storage_usage_bytes",
+           "created_at",
+           "updated_at"
+          ],
+          "type": "object"
+         },
+         "type": "array"
+        }
+       },
+       "required": [
+        "results"
+       ],
+       "type": "object"
+      },
+      "version": "0.1.0"
+     }
+    ],
+    "description": "Routes related to Container Registry management.",
+    "isInternal": false,
+    "name": "registries",
+    "version": "0.1.0"
+   },
+   {
+    "children": [
+     {
+      "configs": {
+       "additionalProperties": false,
+       "properties": {
+        "env": {
+         "default": "prod",
+         "description": "Environment to use",
+         "enum": [
+          "prod",
+          "pre-prod"
+         ],
+         "type": "string"
+        },
+        "region": {
+         "default": "br-ne1",
+         "description": "Region to reach the service",
+         "enum": [
+          "br-ne1",
+          "br-se1",
+          "br-mgl1"
+         ],
+         "type": "string"
+        },
+        "serverUrl": {
+         "description": "Manually specify the server to use",
+         "format": "uri",
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
+      "description": "Creates a repository in the container registry.",
+      "isInternal": false,
+      "name": "create",
+      "parameters": {
+       "additionalProperties": false,
+       "properties": {
+        "name": {
+         "description": "Name of the container image repository. Must be unique per registry.",
+         "type": "string"
+        },
+        "registry_uuid": {
+         "description": "Container Registry's UUID.",
+         "format": "uuid",
+         "type": "string"
+        }
+       },
+       "required": [
+        "name",
+        "registry_uuid"
+       ],
+       "type": "object"
+      },
+      "result": {
+       "description": "Information about the repository.",
+       "properties": {
+        "image_count": {
+         "description": "Number of images in the repository.",
+         "type": "integer"
+        },
+        "name": {
+         "description": "Name of the repository.",
+         "type": "string"
+        },
+        "registry_name": {
+         "description": "Name of the container registry.",
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
+      "version": "0.1.0"
+     },
+     {
+      "configs": {
+       "additionalProperties": false,
+       "properties": {
+        "env": {
+         "default": "prod",
+         "description": "Environment to use",
+         "enum": [
+          "prod",
+          "pre-prod"
+         ],
+         "type": "string"
+        },
+        "region": {
+         "default": "br-ne1",
+         "description": "Region to reach the service",
+         "enum": [
+          "br-ne1",
+          "br-se1",
+          "br-mgl1"
+         ],
+         "type": "string"
+        },
+        "serverUrl": {
+         "description": "Manually specify the server to use",
+         "format": "uri",
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
+      "description": "Delete a registry by uuid.",
+      "isInternal": false,
+      "name": "delete",
+      "parameters": {
+       "additionalProperties": false,
+       "properties": {
+        "registry_uuid": {
+         "description": "Container Registry's UUID.",
+         "format": "uuid",
+         "type": "string"
+        },
+        "repository_uuid": {
+         "description": "Repository's UUID.",
+         "format": "uuid",
+         "type": "string"
+        }
+       },
+       "required": [
+        "registry_uuid",
+        "repository_uuid"
+       ],
+       "type": "object"
+      },
+      "result": {
+       "nullable": true,
+       "type": "null"
+      },
+      "version": "0.1.0"
+     },
+     {
+      "configs": {
+       "additionalProperties": false,
+       "properties": {
+        "env": {
+         "default": "prod",
+         "description": "Environment to use",
+         "enum": [
+          "prod",
+          "pre-prod"
+         ],
+         "type": "string"
+        },
+        "region": {
+         "default": "br-ne1",
+         "description": "Region to reach the service",
+         "enum": [
+          "br-ne1",
+          "br-se1",
+          "br-mgl1"
+         ],
+         "type": "string"
+        },
+        "serverUrl": {
+         "description": "Manually specify the server to use",
+         "format": "uri",
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
+      "description": "Return detailed repository's information filtered by uuid.",
+      "isInternal": false,
+      "name": "get",
+      "parameters": {
+       "additionalProperties": false,
+       "properties": {
+        "registry_uuid": {
+         "description": "Container Registry's UUID.",
+         "format": "uuid",
+         "type": "string"
+        },
+        "repository_uuid": {
+         "description": "Repository's UUID.",
+         "format": "uuid",
+         "type": "string"
+        }
+       },
+       "required": [
+        "registry_uuid",
+        "repository_uuid"
+       ],
+       "type": "object"
+      },
+      "result": {
+       "description": "Information about the repository.",
+       "properties": {
+        "image_count": {
+         "description": "Number of images in the repository.",
+         "type": "integer"
+        },
+        "name": {
+         "description": "Name of the repository.",
+         "type": "string"
+        },
+        "registry_name": {
+         "description": "Name of the container registry.",
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
+      "version": "0.1.0"
+     },
+     {
+      "configs": {
+       "additionalProperties": false,
+       "properties": {
+        "env": {
+         "default": "prod",
+         "description": "Environment to use",
+         "enum": [
+          "prod",
+          "pre-prod"
+         ],
+         "type": "string"
+        },
+        "region": {
+         "default": "br-ne1",
+         "description": "Region to reach the service",
+         "enum": [
+          "br-ne1",
+          "br-se1",
+          "br-mgl1"
+         ],
+         "type": "string"
+        },
+        "serverUrl": {
+         "description": "Manually specify the server to use",
+         "format": "uri",
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
+      "description": "List all user's repositories in the container registry.",
+      "isInternal": false,
+      "name": "list",
+      "parameters": {
+       "additionalProperties": false,
+       "properties": {
+        "registry_uuid": {
+         "description": "Container Registry's UUID.",
+         "format": "uuid",
+         "type": "string"
+        }
+       },
+       "required": [
+        "registry_uuid"
+       ],
+       "type": "object"
+      },
+      "result": {
+       "description": "Information returned about the container registry repository.",
+       "properties": {
+        "goal": {
+         "description": "User's repositories quantity.",
+         "properties": {
+          "total": {
+           "description": "Total number of repositories for a user.",
+           "type": "integer"
+          }
+         },
+         "type": "object"
+        },
+        "results": {
+         "description": "Information about the container registry repositories.",
+         "items": {
+          "description": "Information about the repository.",
+          "properties": {
+           "image_count": {
+            "description": "Number of images in the repository.",
+            "type": "integer"
+           },
+           "name": {
+            "description": "Name of the repository.",
+            "type": "string"
+           },
+           "registry_name": {
+            "description": "Name of the container registry.",
+            "type": "string"
+           }
+          },
+          "type": "object"
+         },
+         "type": "array"
+        }
+       },
+       "type": "object"
+      },
+      "version": "0.1.0"
+     }
+    ],
+    "description": "Routes related to managing Container Registry repositories.",
+    "isInternal": false,
+    "name": "repositories",
+    "version": "0.1.0"
+   }
+  ],
+  "description": "Magalu Container Registry product API.",
+  "isInternal": false,
+  "name": "mcr",
+  "version": "0.1.0"
+ },
+ {
+  "children": [
+   {
     "children": [
      {
       "configs": {

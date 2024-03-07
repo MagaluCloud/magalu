@@ -1,0 +1,851 @@
+openapi: 3.0.3
+info:
+    title: mcr-api-product
+    description: Magalu Container Registry product API.
+    contact:
+        name: Tribo IAAS Cloud
+        url: https://github.com/luizalabs
+        email: suporte@jaxyendy.com
+    license:
+        name: Apache 2.0
+        url: https://www.apache.org/licenses/LICENSE-2.0.html
+    version: 0.1.0
+servers:
+-   url: https://{env}/{region}/mcr
+    description: NE-1 pre-prod
+    variables:
+        region:
+            description: Region to reach the service
+            default: br-ne-1
+            enum:
+            - br-ne-1
+            - br-se1
+            - br-mgl1
+            x-mgc-transforms:
+            -   type: translate
+                allowMissing: true
+                translations:
+                -   from: br-ne1
+                    to: br-ne-1
+                -   from: br-mgl1
+                    to: br-se-1
+        env:
+            description: Environment to use
+            default: api.magalu.cloud
+            enum:
+            - api.magalu.cloud
+            - api.pre-prod.jaxyendy.com
+            x-mgc-transforms:
+            -   type: translate
+                translations:
+                -   from: prod
+                    to: api.magalu.cloud
+                -   from: pre-prod
+                    to: api.pre-prod.jaxyendy.com
+-   url: https://api-mcr.team-integration.br-ne-1.jaxyendy.com
+    description: NE-1 team-integration
+-   url: https://api-mcr.br-ne-1.jaxyendy.com
+    description: NE-1 prod
+-   url: https://api-mcr.pre-prod.br-se-1.jaxyendy.com
+    description: SE1 pre-prod
+-   url: https://api-mcr.team-integration.br-se-1.jaxyendy.com
+    description: SE1 team-integration
+-   url: https://api-mcr.br-se-1.jaxyendy.com
+    description: SE1 prod
+paths:
+    /v0/registries:
+        post:
+            tags:
+            - registries
+            summary: Create a container registry
+            description: Creates a container registry in Magalu Cloud.
+            operationId: createRegistry
+            security:
+            -   BearerAuth:
+                - mcr.write
+            -   OAuth2:
+                - mcr.write
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/RegistryRequest'
+            responses:
+                '201':
+                    description: Successful operation
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CreateRegistryResponse'
+                '400':
+                    description: Bad Request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '401':
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '404':
+                    description: Not Found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '429':
+                    description: Too Many Requests
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '500':
+                    description: Internal Server Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+        get:
+            tags:
+            - registries
+            summary: List all container registries
+            description: List user's container registries.
+            operationId: getRegistries
+            security:
+            -   BearerAuth:
+                - mcr.read
+            -   OAuth2:
+                - mcr.read
+            responses:
+                '200':
+                    description: Successful operation
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/RegistriesResponse'
+                '400':
+                    description: Bad Request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '401':
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '404':
+                    description: Not Found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '429':
+                    description: Too Many Requests
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '500':
+                    description: Internal Server Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+    /v0/registries/{registry_uuid}:
+        get:
+            tags:
+            - registries
+            summary: Get registry information
+            description: Show detailed information about the user's container registry.
+            operationId: getRegistry
+            security:
+            -   BearerAuth:
+                - mcr.read
+            -   OAuth2:
+                - mcr.read
+            parameters:
+            -   name: registry_uuid
+                in: path
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+                description: Container Registry's UUID.
+            responses:
+                '200':
+                    description: Successful operation
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/RegistryResponse'
+                    links:
+                        delete:
+                            operationId: deleteRegistry
+                            description: Delete a container registry by registry_uuid
+                            parameters:
+                                registry_uuid: $request.path.registry_uuid
+                        credentials:
+                            operationId: getCredentials
+                            description: Get credentials for container registry
+                            parameters:
+                                registry_uuid: $request.path.registry_uuid
+                '400':
+                    description: Bad Request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '401':
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '404':
+                    description: Not Found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '429':
+                    description: Too Many Requests
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '500':
+                    description: Internal Server Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+        delete:
+            tags:
+            - registries
+            summary: Delete a container registry by registry_uuid
+            description: Delete a container registry by uuid.
+            operationId: deleteRegistry
+            security:
+            -   BearerAuth:
+                - mcr.write
+            -   OAuth2:
+                - mcr.write
+            parameters:
+            -   name: registry_uuid
+                in: path
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+                description: Container Registry's UUID.
+            responses:
+                '204':
+                    description: Successful operation
+                '400':
+                    description: Bad Request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '401':
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '404':
+                    description: Not Found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '429':
+                    description: Too Many Requests
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '500':
+                    description: Internal Server Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+    /v0/registries/{registry_uuid}/credentials:
+        get:
+            tags:
+            - registries
+            summary: Get credentials for container registry
+            description: Return container registry user's authentication credentials.
+            operationId: getCredentials
+            security:
+            -   BearerAuth:
+                - mcr.read
+            -   OAuth2:
+                - mcr.read
+            parameters:
+            -   name: registry_uuid
+                in: path
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+                description: Container Registry's UUID.
+            responses:
+                '200':
+                    description: Successful operation
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CredentialsResponse'
+                    links:
+                        get:
+                            operationId: getRegistry
+                            description: Get registry information
+                            parameters:
+                                registry_uuid: $request.path.registry_uuid
+                        delete:
+                            operationId: deleteRegistry
+                            description: Delete a container registry by registry_uuid
+                            parameters:
+                                registry_uuid: $request.path.registry_uuid
+                '400':
+                    description: Bad Request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '401':
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '404':
+                    description: Not Found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '429':
+                    description: Too Many Requests
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '500':
+                    description: Internal Server Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+    /v0/registries/{registry_uuid}/repositories:
+        post:
+            tags:
+            - repositories
+            summary: Create a registry repository
+            description: Creates a repository in the container registry.
+            operationId: createRepository
+            security:
+            -   BearerAuth:
+                - mcr.write
+            -   OAuth2:
+                - mcr.write
+            parameters:
+            -   name: registry_uuid
+                in: path
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+                description: Container Registry's UUID.
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/RepositoryRequest'
+            responses:
+                '201':
+                    description: Successful operation
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/RepositoryResponse'
+                    links:
+                        list:
+                            operationId: getRepositories
+                            description: List all container registry repositories
+                            parameters:
+                                registry_uuid: $request.path.registry_uuid
+                        get:
+                            operationId: getRepository
+                            description: Get a container registry repository by repository_uuid
+                            parameters:
+                                registry_uuid: $request.path.registry_uuid
+                            x-mgc-wait-termination:
+                                interval: 5s
+                                maxRetries: 10
+                                jsonPathQuery: $.result.name == $.owner.parameters.name
+                        delete:
+                            operationId: deleteRepository
+                            description: Delete a container registry repository by
+                                repository_uuid.
+                            parameters:
+                                registry_uuid: $request.path.registry_uuid
+                '400':
+                    description: Bad Request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '401':
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '404':
+                    description: Not Found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '429':
+                    description: Too Many Requests
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '500':
+                    description: Internal Server Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+        get:
+            tags:
+            - repositories
+            summary: List all container registry repositories
+            description: List all user's repositories in the container registry.
+            operationId: getRepositories
+            security:
+            -   BearerAuth:
+                - mcr.read
+            -   OAuth2:
+                - mcr.read
+            parameters:
+            -   name: registry_uuid
+                in: path
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+                description: Container Registry's UUID.
+            responses:
+                '200':
+                    description: Successful operation
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/RepositoriesResponse'
+                '400':
+                    description: Bad Request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '401':
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '404':
+                    description: Not Found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '429':
+                    description: Too Many Requests
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '500':
+                    description: Internal Server Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+    /v0/registries/{registry_uuid}/repositories/{repository_uuid}:
+        get:
+            tags:
+            - repositories
+            summary: Get a container registry repository by repository_uuid
+            description: Return detailed repository's information filtered by uuid.
+            operationId: getRepository
+            security:
+            -   BearerAuth:
+                - mcr.read
+            -   OAuth2:
+                - mcr.read
+            parameters:
+            -   name: registry_uuid
+                in: path
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+                description: Container Registry's UUID.
+            -   required: true
+                name: repository_uuid
+                in: path
+                schema:
+                    type: string
+                    format: uuid
+                description: Repository's UUID.
+            responses:
+                '201':
+                    description: Successful operation
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/RepositoryResponse'
+                    links:
+                        list:
+                            operationId: getRepositories
+                            description: List all container registry repositories
+                            parameters:
+                                registry_uuid: $request.path.registry_uuid
+                        create:
+                            operationId: createRepository
+                            description: Create a registry repository
+                            parameters:
+                                registry_uuid: $request.path.registry_uuid
+                        update/name:
+                            operationId: createRepository
+                            description: Create a registry repository
+                            parameters:
+                                registry_uuid: $request.path.registry_uuid
+                            x-mgc-hidden: true
+                        delete:
+                            operationId: deleteRepository
+                            description: Delete a container registry repository by
+                                repository_uuid.
+                            parameters:
+                                registry_uuid: $request.path.registry_uuid
+                                repository_uuid: $request.path.repository_uuid
+                '400':
+                    description: Bad Request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '401':
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '404':
+                    description: Not Found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '429':
+                    description: Too Many Requests
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '500':
+                    description: Internal Server Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+        delete:
+            tags:
+            - repositories
+            summary: Delete a container registry repository by repository_uuid.
+            description: Delete a registry by uuid.
+            operationId: deleteRepository
+            security:
+            -   BearerAuth:
+                - mcr.write
+            -   OAuth2:
+                - mcr.write
+            parameters:
+            -   name: registry_uuid
+                in: path
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+                description: Container Registry's UUID.
+            -   required: true
+                name: repository_uuid
+                in: path
+                schema:
+                    type: string
+                    format: uuid
+                description: Repository's UUID.
+            responses:
+                '204':
+                    description: Successful operation
+                '400':
+                    description: Bad Request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '401':
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '404':
+                    description: Not Found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '429':
+                    description: Too Many Requests
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '500':
+                    description: Internal Server Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+components:
+    schemas:
+        RegistryRequest:
+            type: object
+            description: Container Registry Request Object.
+            properties:
+                name:
+                    type: string
+                    description: A unique, global name for the container registry.
+                        It must be written in lowercase letters and consists only
+                        of numbers and letters, up to a limit of 63 characters.
+            required:
+            - name
+        CreateRegistryResponse:
+            type: object
+            description: Container Registry's creation response.
+            properties:
+                id:
+                    type: string
+                    description: Container Registry's UUID.
+                name:
+                    type: string
+                    description: A unique, global name for the container registry.
+                        It must be written in lowercase letters and consists only
+                        of numbers and letters, up to a limit of 63 characters.
+            required:
+            - id
+            - name
+        RegistriesResponse:
+            type: object
+            description: Container registry information response object.
+            required:
+            - results
+            properties:
+                results:
+                    type: array
+                    description: List of user registries.
+                    items:
+                        $ref: '#/components/schemas/RegistryResponse'
+        RegistryResponse:
+            type: object
+            description: Container Registry's response data.
+            required:
+            - id
+            - name
+            - storage_usage_bytes
+            - created_at
+            - updated_at
+            properties:
+                id:
+                    type: string
+                    description: Container Registry's UUID.
+                name:
+                    type: string
+                    description: Name of the container registry created.
+                storage_usage_bytes:
+                    type: integer
+                    description: Storage used in bytes.
+                created_at:
+                    type: string
+                    description: Date and time of creation of the container registry.
+                updated_at:
+                    type: string
+                    description: Date and time of the last change to the container
+                        registry.
+        RepositoryRequest:
+            type: object
+            description: Request Object of a Container Registry Repository.
+            required:
+            - name
+            properties:
+                name:
+                    type: string
+                    description: Name of the container image repository. Must be unique
+                        per registry.
+        RepositoriesResponse:
+            type: object
+            description: Information returned about the container registry repository.
+            properties:
+                goal:
+                    $ref: '#/components/schemas/AmountRepositoryResponse'
+                results:
+                    type: array
+                    description: Information about the container registry repositories.
+                    items:
+                        $ref: '#/components/schemas/RepositoryResponse'
+        RepositoryResponse:
+            type: object
+            description: Information about the repository.
+            properties:
+                registry_name:
+                    type: string
+                    description: Name of the container registry.
+                name:
+                    type: string
+                    description: Name of the repository.
+                image_count:
+                    type: integer
+                    description: Number of images in the repository.
+        CredentialsResponse:
+            type: object
+            description: User's credentials for authentication to the container registry.
+            required:
+            - username
+            - password
+            - email
+            - server
+            properties:
+                username:
+                    type: string
+                    description: Username for authentication to the container registry.
+                password:
+                    type: string
+                    description: Password for authentication to the container registry.
+                email:
+                    type: string
+                    description: Email for authentication to the container registry.
+                server:
+                    type: string
+                    description: Name of the container registry.
+        AmountRepositoryResponse:
+            type: object
+            description: User's repositories quantity.
+            properties:
+                total:
+                    type: integer
+                    description: Total number of repositories for a user.
+        Error:
+            type: object
+            required:
+            - id
+            - message
+            description: Details regarding the registry and/or repository error.
+            properties:
+                message:
+                    title: Message
+                    type: string
+                slug:
+                    title: Slug
+                    type: string
+            example:
+                message: Unauthorized
+                slug: Unauthorized
+    securitySchemes:
+        BearerAuth:
+            type: http
+            scheme: bearer
+            bearerFormat: JWT
+        OAuth2:
+            flows:
+                authorizationCode:
+                    authorizationUrl: https://idp-maas-sandbox.ipet.sh/auth/realms/master/protocol/openid-connect/auth
+                    tokenUrl: https://idp-maas-sandbox.ipet.sh/auth/realms/master/protocol/openid-connect/token
+                    scopes:
+                        mcr.read: Read IaaS resource information
+                        mcr.write: Write IaaS resource information
+            type: oauth2
+            description: OAuth2 via IDPA
+tags:
+-   name: registries
+    description: Routes related to Container Registry management.
+-   name: repositories
+    description: Routes related to managing Container Registry repositories.
+-   name: info
+    description: Routes related to mcr-api configuration information.
+$id: https://mcr.jaxyendy.com/openapi.yaml

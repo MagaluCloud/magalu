@@ -306,6 +306,22 @@ kubernetes.openapi:
       GET:
         - /v0/info/flavors
         - /v0/info/versions
+mcr.openapi:
+  computed-variables:
+    - POST /v0/registries:
+        - '201':
+            computed:
+              - id
+            non-computed:
+              - name
+    - POST /v0/registries/{registry_uuid}/repositories:
+        - '201':
+            computed:
+              - image_count
+              - registry_name
+            non-computed:
+              - name
+              - registry_uuid
 network.openapi:
   computed-variables:
     - POST /v0/ports:
