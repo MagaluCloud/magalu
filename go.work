@@ -4,6 +4,7 @@ use (
 	./mgc/cli
 	./mgc/codegen
 	./mgc/core
+	./mgc/lib
 	./mgc/sdk
 	./mgc/terraform-provider-mgc
 	./mgc/testing/fs_test_helper
