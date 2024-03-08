@@ -239,12 +239,13 @@ func (r *DocumentRefPathResolver) Resolve(ref string) (result any, err error) {
 }
 
 func (r *DocumentRefPathResolver) ResolvePath(path RefPath) (result any, err error) {
-	root, err := r.getRoot()
-	if err != nil {
-		return
-	}
-
 	if path == "" || path == "/" {
+		var root any
+		root, err = r.getRoot()
+		if err != nil {
+			return
+		}
+
 		result = root
 		return
 	}
