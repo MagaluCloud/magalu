@@ -130,7 +130,7 @@ func (o *Sdk) newBlueprintSource(rootRefResolver core.RefPathResolver) core.Grou
 
 func (o *Sdk) RefResolver() core.RefPathResolver {
 	if o.refResolver == nil {
-		o.refResolver = core.NewDocumentRefPathResolver(func() (any, error) { return o.group, nil })
+		o.refResolver = core.NewDocumentRefPathResolver(func() (any, error) { return o.Group(), nil })
 	}
 	return o.refResolver
 }
