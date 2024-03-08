@@ -16,6 +16,7 @@ __pycache__
 mgc/cli/cli
 mgc/cli/mgc
 mgc/terraform-provider-mgc/terraform-provider-mgc
+mgc/codegen/codegen
 /build
 
 # Documentation

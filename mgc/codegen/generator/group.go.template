@@ -1,0 +1,22 @@
+/*
+Package: {{ .Name }}
+{{- if .Summary }}
+
+# Summary
+
+{{ .Summary }}
+{{- end }}
+{{- if .Description }}
+
+# Description
+
+{{ .Description }}
+{{- end }}
+{{- if .Version }}
+
+Version: {{ .Version }}
+{{- end }}
+
+import "{{ .PackageImport }}"
+*/
+package {{ .PackageName }}

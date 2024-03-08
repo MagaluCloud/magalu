@@ -1,0 +1,8 @@
+module {{ .ModuleName }}
+
+go 1.20
+
+require (
+	magalu.cloud/core {{ .CoreVersion }}
+	magalu.cloud/sdk  {{ .SdkVersion }}
+)

@@ -1,0 +1,196 @@
+/*
+Executor: {{ .Name }}
+{{- if .Summary }}
+
+# Summary
+
+{{ .Summary }}
+{{- end }}
+{{- if .Description }}
+
+# Description
+
+{{ .Description }}
+{{- end }}
+{{- if .Version }}
+
+Version: {{ .Version }}
+{{- end }}
+
+import "{{ .PackageImport }}"
+*/
+package {{ .PackageName }}
+
+import (
+	"context"
+
+	mgcCore "magalu.cloud/core"
+	mgcClient "{{ .ClientImport }}"
+	mgcHelpers "{{ .HelpersImport }}"
+)
+{{- range .Types.Types.Definitions }}
+
+{{ if .Doc }}
+{{- .Doc | indent 1 "// " }}
+{{ end -}}
+type {{ .Name }}{{" "}}
+{{- if eq .Kind "alias" -}}
+{{ .Target }}
+{{- else if eq .Kind "struct" -}}
+struct {
+{{- range .Fields }}
+	{{ .Name }} {{ .Type }}{{ if .Tag }} `{{ .Tag }}`{{ end }}{{ if .Comment }} // {{ .Comment }}{{ end }}
+{{- end }}
+}
+{{- else -}}
+{{- end -}}
+{{- end }}
+
+func {{ .GoName }}(
+	client *mgcClient.Client,
+	ctx context.Context,
+{{- if .Types.Parameters }}
+	parameters {{ .Types.Parameters }},
+{{- end }}
+{{- if .Types.Configs }}
+	configs {{ .Types.Configs }},
+{{- end }}
+) (
+{{- if .Types.Result }}
+	result {{ .Types.Result }},
+{{- end}}
+	err error,
+) {
+	exec, ctx, err := mgcHelpers.PrepareExecutor({{ printf "%q" .GoName }}, mgcCore.RefPath({{ printf "%q" .RefPath }}), client, ctx)
+	if err != nil {
+		return
+	}
+
+	var p mgcCore.Parameters
+{{- if .Types.Parameters }}
+	if p, err = mgcHelpers.ConvertParameters[{{ .Types.Parameters }}](parameters); err != nil {
+		return
+	}
+{{- end }}
+
+	var c mgcCore.Configs
+{{- if .Types.Configs }}
+	if c, err = mgcHelpers.ConvertConfigs[{{ .Types.Configs }}](configs); err != nil {
+		return
+	}
+{{- end }}
+{{ if .Types.Result }}
+	r, err := exec.Execute(ctx, p, c)
+	if err != nil {
+		return
+	}
+	return mgcHelpers.ConvertResult[{{ .Types.Result }}](r)
+{{ else }}
+	_, err = exec.Execute(ctx, p, c)
+	return
+{{ end -}}
+}
+{{- if .TerminatorExecutor }}
+
+func {{ .GoName }}UntilTermination(
+	client *mgcClient.Client,
+	ctx context.Context,
+{{- if .Types.Parameters }}
+	parameters {{ .Types.Parameters }},
+{{- end }}
+{{- if .Types.Configs }}
+	configs {{ .Types.Configs }},
+{{- end }}
+) (
+{{- if .Types.Result }}
+	result {{ .Types.Result }},
+{{- end}}
+	err error,
+) {
+	e, ctx, err := mgcHelpers.PrepareExecutor({{ printf "%q" .GoName }}, mgcCore.RefPath({{ printf "%q" .RefPath }}), client, ctx)
+	if err != nil {
+		return
+	}
+
+	exec, ok := e.(mgcCore.TerminatorExecutor)
+	if !ok {
+		// Not expected, but let's fallback
+		return {{ .GoName }}(
+			client,
+			ctx,
+			{{- if .Types.Parameters }}
+			parameters,
+			{{- end }}
+			{{- if .Types.Configs }}
+			configs,
+			{{- end }}
+		)
+	}
+
+	var p mgcCore.Parameters
+{{- if .Types.Parameters }}
+	if p, err = mgcHelpers.ConvertParameters[{{ .Types.Parameters }}](parameters); err != nil {
+		return
+	}
+{{- end }}
+
+	var c mgcCore.Configs
+{{- if .Types.Configs }}
+	if c, err = mgcHelpers.ConvertConfigs[{{ .Types.Configs }}](configs); err != nil {
+		return
+	}
+{{- end }}
+{{ if .Types.Result }}
+	r, err := exec.ExecuteUntilTermination(ctx, p, c)
+	if err != nil {
+		return
+	}
+	return mgcHelpers.ConvertResult[{{ .Types.Result }}](r)
+{{ else }}
+	_, err = exec.Execute(ctx, p, c)
+	return
+{{ end -}}
+}
+{{- end }}
+{{- if .ConfirmableExecutor }}
+
+func {{ .GoName }}ConfirmPrompt(
+	client *mgcClient.Client,
+{{- if .Types.Parameters }}
+	parameters {{ .Types.Parameters }},
+{{- end }}
+{{- if .Types.Configs }}
+	configs {{ .Types.Configs }},
+{{- end }}
+) (message string) {
+	e, err := mgcHelpers.ResolveExecutor({{ printf "%q" .GoName }}, mgcCore.RefPath({{ printf "%q" .RefPath }}), client)
+	if err != nil {
+		return
+	}
+
+	exec, ok := e.(mgcCore.ConfirmableExecutor)
+	if !ok {
+		// Not expected, but let's return an empty message
+		return
+	}
+
+	var p mgcCore.Parameters
+{{- if .Types.Parameters }}
+	if p, err = mgcHelpers.ConvertParameters[{{ .Types.Parameters }}](parameters); err != nil {
+		return
+	}
+{{- end }}
+
+	var c mgcCore.Configs
+{{- if .Types.Configs }}
+	if c, err = mgcHelpers.ConvertConfigs[{{ .Types.Configs }}](configs); err != nil {
+		return
+	}
+{{- end }}
+
+	return exec.ConfirmPrompt(p, c)
+}
+{{- end }}
+
+// TODO: links
+// TODO: related
