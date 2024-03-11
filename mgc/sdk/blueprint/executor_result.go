@@ -64,11 +64,11 @@ func (r *executorResult) adjustValueToSchema(value core.Value) (v core.Value, er
 }
 
 // Try our best to be compliant to the desired schema, recursive
-func adjustValueToSchema(schema *schemaPkg.Schema, value core.Value, logger *zap.SugaredLogger) (v core.Value, err error) {
+func adjustValueToSchema(schema *schemaPkg.Schema, value core.Value, logger *zap.SugaredLogger) (adjusted core.Value, err error) {
 	switch schema.Type {
 	case "boolean":
 		var decoded *bool
-		if decoded, err = utils.DecodeNewValue[bool](v); err != nil {
+		if decoded, err = utils.DecodeNewValue[bool](value); err != nil {
 			return
 		} else {
 			return *decoded, nil
@@ -76,7 +76,7 @@ func adjustValueToSchema(schema *schemaPkg.Schema, value core.Value, logger *zap
 
 	case "integer":
 		var decoded *int64
-		if decoded, err = utils.DecodeNewValue[int64](v); err != nil {
+		if decoded, err = utils.DecodeNewValue[int64](value); err != nil {
 			return
 		} else {
 			return *decoded, nil
@@ -84,7 +84,7 @@ func adjustValueToSchema(schema *schemaPkg.Schema, value core.Value, logger *zap
 
 	case "number":
 		var decoded *float64
-		if decoded, err = utils.DecodeNewValue[float64](v); err != nil {
+		if decoded, err = utils.DecodeNewValue[float64](value); err != nil {
 			return
 		} else {
 			return *decoded, nil
@@ -92,7 +92,7 @@ func adjustValueToSchema(schema *schemaPkg.Schema, value core.Value, logger *zap
 
 	case "string":
 		var decoded *string
-		if decoded, err = utils.DecodeNewValue[string](v); err != nil {
+		if decoded, err = utils.DecodeNewValue[string](value); err != nil {
 			return
 		} else {
 			return *decoded, nil
@@ -100,7 +100,7 @@ func adjustValueToSchema(schema *schemaPkg.Schema, value core.Value, logger *zap
 
 	case "array":
 		var decoded *[]any
-		if decoded, err = utils.DecodeNewValue[[]any](v); err != nil {
+		if decoded, err = utils.DecodeNewValue[[]any](value); err != nil {
 			return
 		} else {
 			sl := *decoded
@@ -118,7 +118,7 @@ func adjustValueToSchema(schema *schemaPkg.Schema, value core.Value, logger *zap
 
 	case "object":
 		var decoded *map[string]any
-		if decoded, err = utils.DecodeNewValue[map[string]any](v); err != nil {
+		if decoded, err = utils.DecodeNewValue[map[string]any](value); err != nil {
 			return
 		} else {
 			m := map[string]any{} // new map so we skip unknown keys
