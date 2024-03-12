@@ -199,3 +199,7 @@ components:
 tags:
 -   name: healthcheck
     x-mgc-hidden: true
+-   name: backups
+    description: Database backups management.
+-   name: datastores
+    x-mgc-hidden: true

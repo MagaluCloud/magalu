@@ -1,7 +1,7 @@
 Returns a engine detail.
 
 Usage:
-  ./cli dbaas datastores get [engine-id] [flags]
+  ./cli dbaas engines get [engine-id] [flags]
 
 Flags:
       --engine-id uuid   Value referring to Engine Id. (required)

@@ -17,7 +17,6 @@ Database instances management.
 
 ### Required
 
-- `datastore_id` (String)
 - `flavor_id` (String)
 - `name` (String)
 - `password` (String)
@@ -28,6 +27,8 @@ Database instances management.
 
 - `backup_retention_days` (Number)
 - `backup_start_at` (String)
+- `datastore_id` (String)
+- `engine_id` (String)
 - `exchange` (String)
 - `status` (String) An enumeration.
 
@@ -83,6 +84,7 @@ Read-Only:
 - `addresses` (Attributes List) (see [below for nested schema](#nestedatt--replicas--addresses))
 - `created_at` (String)
 - `datastore_id` (String)
+- `engine_id` (String)
 - `finished_at` (String)
 - `flavor_id` (String)
 - `generation` (String) An enumeration.

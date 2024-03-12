@@ -20,14 +20,15 @@ Endpoints related to the Nodepool API within the Cluster API.
 - `cluster_id` (String) Cluster's UUID.
 - `flavor` (String) Definition of the CPU, RAM, and storage capacity of the nodes.
 
-| Flavor                  | vCPUs | RAM (GB) | Root Disk (GB) |
-|-------------------------|-------|----------|----------------|
-| cloud-k8s.gp1.small     | 2     | 4        | 20             |
-| cloud-k8s.gp1.medium    | 4     | 8        | 50             |
-| cloud-k8s.gp1.large     | 8     | 16       | 100            |
-| cloud-k8s.gp2.small     | 2     | 4        | 300            |
-| cloud-k8s.gp2.large     | 8     | 32       | 300            |
-| cloud-k8s.hm1.medium    | 4     | 16       | 50             |
+| Flavor                    | vCPUs | RAM (GB) | Root Disk (GB) |
+|---------------------------|-------|----------|----------------|
+| cloud-k8s.gp1.small       | 2     | 4        | 20             |
+| cloud-k8s.gp1.medium      | 4     | 8        | 50             |
+| cloud-k8s.gp1.large       | 8     | 16       | 100            |
+| cloud-k8s.gp2.small       | 2     | 4        | 300            |
+| cloud-k8s.gp2.large       | 8     | 32       | 300            |
+| cloud-k8s.hm1.medium      | 4     | 16       | 50             |
+| cloud-k8s.i1-c48-r96-d300 | 48    | 96       | 300            |
 - `name` (String) Name of the node pool. The name is primarily for idempotence and must be unique within a namespace. The name cannot be changed.
 The name must follow the following rules:
   - Must contain a maximum of 63 characters

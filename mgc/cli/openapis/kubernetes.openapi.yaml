@@ -2428,22 +2428,24 @@ components:
                         of the nodes.
 
 
-                        | Flavor                  | vCPUs | RAM (GB) | Root Disk (GB)
-                        |
+                        | Flavor                    | vCPUs | RAM (GB) | Root Disk
+                        (GB) |
 
-                        |-------------------------|-------|----------|----------------|
+                        |---------------------------|-------|----------|----------------|
 
-                        | cloud-k8s.gp1.small     | 2     | 4        | 20             |
+                        | cloud-k8s.gp1.small       | 2     | 4        | 20             |
 
-                        | cloud-k8s.gp1.medium    | 4     | 8        | 50             |
+                        | cloud-k8s.gp1.medium      | 4     | 8        | 50             |
 
-                        | cloud-k8s.gp1.large     | 8     | 16       | 100            |
+                        | cloud-k8s.gp1.large       | 8     | 16       | 100            |
 
-                        | cloud-k8s.gp2.small     | 2     | 4        | 300            |
+                        | cloud-k8s.gp2.small       | 2     | 4        | 300            |
 
-                        | cloud-k8s.gp2.large     | 8     | 32       | 300            |
+                        | cloud-k8s.gp2.large       | 8     | 32       | 300            |
 
-                        | cloud-k8s.hm1.medium    | 4     | 16       | 50             |
+                        | cloud-k8s.hm1.medium      | 4     | 16       | 50             |
+
+                        | cloud-k8s.i1-c48-r96-d300 | 48    | 96       | 300            |
 
                         '
                     example: cloud-k8s.gp1.small
@@ -2454,6 +2456,7 @@ components:
                     - cloud-k8s.gp2.small
                     - cloud-k8s.gp2.large
                     - cloud-k8s.hm1.medium
+                    - cloud-k8s.i1-c48-r96-d300
                 replicas:
                     type: integer
                     description: Number of replicas of the nodes in the node pool.

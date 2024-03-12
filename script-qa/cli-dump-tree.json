@@ -3618,7 +3618,7 @@
        "type": "object"
       },
       "result": {},
-      "version": "1.15.3"
+      "version": "1.16.0"
      },
      {
       "configs": {
@@ -3769,7 +3769,7 @@
        "title": "BackupDetailResponse",
        "type": "object"
       },
-      "version": "1.15.3"
+      "version": "1.16.0"
      },
      {
       "configs": {
@@ -3970,13 +3970,13 @@
        "title": "BackupsResponse",
        "type": "object"
       },
-      "version": "1.15.3"
+      "version": "1.16.0"
      }
     ],
     "description": "Database backups management.",
     "isInternal": false,
     "name": "backups",
-    "version": "1.15.3"
+    "version": "1.16.0"
    },
    {
     "children": [
@@ -4011,27 +4011,28 @@
        },
        "type": "object"
       },
-      "description": "Returns a datastore detail.",
+      "description": "Returns a engine detail.",
       "isInternal": false,
       "name": "get",
       "parameters": {
        "additionalProperties": false,
        "properties": {
-        "datastore_id": {
-         "description": "Value referring to datastore Id.",
+        "engine_id": {
+         "description": "Value referring to Engine Id.",
          "format": "uuid",
-         "title": "Datastore Id",
+         "title": "Engine Id",
          "type": "string"
         }
        },
        "required": [
-        "datastore_id"
+        "engine_id"
        ],
        "type": "object"
       },
       "result": {
        "properties": {
         "engine": {
+         "deprecated": true,
          "title": "Engine",
          "type": "string"
         },
@@ -4040,13 +4041,17 @@
          "title": "Id",
          "type": "string"
         },
+        "name": {
+         "title": "Name",
+         "type": "string"
+        },
         "status": {
          "description": "An enumeration.",
          "enum": [
           "ACTIVE",
           "DEPRECATED"
          ],
-         "title": "DatastoreStatus",
+         "title": "EngineStatus",
          "type": "string"
         },
         "version": {
@@ -4056,14 +4061,15 @@
        },
        "required": [
         "id",
+        "name",
         "engine",
         "version",
         "status"
        ],
-       "title": "DatastoreResponse",
+       "title": "EngineResponse",
        "type": "object"
       },
-      "version": "1.15.3"
+      "version": "1.16.0"
      },
      {
       "configs": {
@@ -4096,7 +4102,7 @@
        },
        "type": "object"
       },
-      "description": "Returns a list of available datastores. A datastore is a combination of engine and version.",
+      "description": "Returns a list of available datastore.",
       "isInternal": false,
       "name": "list",
       "parameters": {
@@ -4116,7 +4122,7 @@
          "type": "integer"
         },
         "status": {
-         "description": "Value referring to datastore status.",
+         "description": "Value referring to engine status.",
          "enum": [
           "ACTIVE",
           "DEPRECATED"
@@ -4132,6 +4138,7 @@
          "items": {
           "properties": {
            "engine": {
+            "deprecated": true,
             "title": "Engine",
             "type": "string"
            },
@@ -4140,13 +4147,17 @@
             "title": "Id",
             "type": "string"
            },
+           "name": {
+            "title": "Name",
+            "type": "string"
+           },
            "status": {
             "description": "An enumeration.",
             "enum": [
              "ACTIVE",
              "DEPRECATED"
             ],
-            "title": "DatastoreStatus",
+            "title": "EngineStatus",
             "type": "string"
            },
            "version": {
@@ -4156,11 +4167,12 @@
           },
           "required": [
            "id",
+           "name",
            "engine",
            "version",
            "status"
           ],
-          "title": "DatastoreResponse",
+          "title": "EngineResponse",
           "type": "object"
          },
          "title": "Results",
@@ -4170,16 +4182,231 @@
        "required": [
         "results"
        ],
-       "title": "DatastoresResponse",
+       "title": "EnginesResponse",
        "type": "object"
       },
-      "version": "1.15.3"
+      "version": "1.16.0"
      }
     ],
     "description": "Datastores available for database instances.",
-    "isInternal": false,
+    "isInternal": true,
     "name": "datastores",
-    "version": "1.15.3"
+    "version": "1.16.0"
+   },
+   {
+    "children": [
+     {
+      "configs": {
+       "additionalProperties": false,
+       "properties": {
+        "env": {
+         "default": "prod",
+         "description": "Environment to use",
+         "enum": [
+          "prod",
+          "pre-prod"
+         ],
+         "type": "string"
+        },
+        "region": {
+         "default": "br-ne1",
+         "description": "Region to reach the service",
+         "enum": [
+          "br-ne1",
+          "br-se1",
+          "br-mgl1"
+         ],
+         "type": "string"
+        },
+        "serverUrl": {
+         "description": "Manually specify the server to use",
+         "format": "uri",
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
+      "description": "Returns a engine detail.",
+      "isInternal": false,
+      "name": "get",
+      "parameters": {
+       "additionalProperties": false,
+       "properties": {
+        "engine_id": {
+         "description": "Value referring to Engine Id.",
+         "format": "uuid",
+         "title": "Engine Id",
+         "type": "string"
+        }
+       },
+       "required": [
+        "engine_id"
+       ],
+       "type": "object"
+      },
+      "result": {
+       "properties": {
+        "engine": {
+         "deprecated": true,
+         "title": "Engine",
+         "type": "string"
+        },
+        "id": {
+         "format": "uuid",
+         "title": "Id",
+         "type": "string"
+        },
+        "name": {
+         "title": "Name",
+         "type": "string"
+        },
+        "status": {
+         "description": "An enumeration.",
+         "enum": [
+          "ACTIVE",
+          "DEPRECATED"
+         ],
+         "title": "EngineStatus",
+         "type": "string"
+        },
+        "version": {
+         "title": "Version",
+         "type": "string"
+        }
+       },
+       "required": [
+        "id",
+        "name",
+        "engine",
+        "version",
+        "status"
+       ],
+       "title": "EngineResponse",
+       "type": "object"
+      },
+      "version": "1.16.0"
+     },
+     {
+      "configs": {
+       "additionalProperties": false,
+       "properties": {
+        "env": {
+         "default": "prod",
+         "description": "Environment to use",
+         "enum": [
+          "prod",
+          "pre-prod"
+         ],
+         "type": "string"
+        },
+        "region": {
+         "default": "br-ne1",
+         "description": "Region to reach the service",
+         "enum": [
+          "br-ne1",
+          "br-se1",
+          "br-mgl1"
+         ],
+         "type": "string"
+        },
+        "serverUrl": {
+         "description": "Manually specify the server to use",
+         "format": "uri",
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
+      "description": "Returns a list of available engines.",
+      "isInternal": false,
+      "name": "list",
+      "parameters": {
+       "additionalProperties": false,
+       "properties": {
+        "_limit": {
+         "default": 10,
+         "maximum": 25,
+         "minimum": 1,
+         "title": "Limit",
+         "type": "integer"
+        },
+        "_offset": {
+         "default": 0,
+         "minimum": 0,
+         "title": "Offset",
+         "type": "integer"
+        },
+        "status": {
+         "description": "Value referring to engine status.",
+         "enum": [
+          "ACTIVE",
+          "DEPRECATED"
+         ],
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
+      "result": {
+       "properties": {
+        "results": {
+         "items": {
+          "properties": {
+           "engine": {
+            "deprecated": true,
+            "title": "Engine",
+            "type": "string"
+           },
+           "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+           },
+           "name": {
+            "title": "Name",
+            "type": "string"
+           },
+           "status": {
+            "description": "An enumeration.",
+            "enum": [
+             "ACTIVE",
+             "DEPRECATED"
+            ],
+            "title": "EngineStatus",
+            "type": "string"
+           },
+           "version": {
+            "title": "Version",
+            "type": "string"
+           }
+          },
+          "required": [
+           "id",
+           "name",
+           "engine",
+           "version",
+           "status"
+          ],
+          "title": "EngineResponse",
+          "type": "object"
+         },
+         "title": "Results",
+         "type": "array"
+        }
+       },
+       "required": [
+        "results"
+       ],
+       "title": "EnginesResponse",
+       "type": "object"
+      },
+      "version": "1.16.0"
+     }
+    ],
+    "description": "Engines available for database instances.",
+    "isInternal": false,
+    "name": "engines",
+    "version": "1.16.0"
    },
    {
     "children": [
@@ -4291,7 +4518,7 @@
        "title": "FlavorResponse",
        "type": "object"
       },
-      "version": "1.15.3"
+      "version": "1.16.0"
      },
      {
       "configs": {
@@ -4427,13 +4654,13 @@
        "title": "FlavorsResponse",
        "type": "object"
       },
-      "version": "1.15.3"
+      "version": "1.16.0"
      }
     ],
     "description": "Flavors available for database instances.",
     "isInternal": false,
     "name": "flavors",
-    "version": "1.15.3"
+    "version": "1.16.0"
    },
    {
     "children": [
@@ -4476,13 +4703,13 @@
        "type": "object"
       },
       "result": {},
-      "version": "1.15.3"
+      "version": "1.16.0"
      }
     ],
     "description": "Health check.",
     "isInternal": true,
     "name": "healthcheck",
-    "version": "1.15.3"
+    "version": "1.16.0"
    },
    {
     "children": [
@@ -4564,7 +4791,7 @@
          "title": "BackupResponse",
          "type": "object"
         },
-        "version": "1.15.3"
+        "version": "1.16.0"
        },
        {
         "configs": {
@@ -4626,7 +4853,7 @@
          "type": "object"
         },
         "result": {},
-        "version": "1.15.3"
+        "version": "1.16.0"
        },
        {
         "configs": {
@@ -4783,7 +5010,7 @@
          "title": "BackupDetailResponse",
          "type": "object"
         },
-        "version": "1.15.3"
+        "version": "1.16.0"
        },
        {
         "configs": {
@@ -4992,13 +5219,13 @@
          "title": "BackupsResponse",
          "type": "object"
         },
-        "version": "1.15.3"
+        "version": "1.16.0"
        }
       ],
       "description": "Database instances management. | backups",
       "isInternal": false,
       "name": "backups",
-      "version": "1.15.3"
+      "version": "1.16.0"
      },
      {
       "configs": {
@@ -5051,9 +5278,15 @@
          "type": "string"
         },
         "datastore_id": {
+         "deprecated": true,
          "example": "063f3994-b6c2-4c37-96c9-bab8d82d36f7",
          "format": "uuid",
          "title": "Datastore Id",
+         "type": "string"
+        },
+        "engine_id": {
+         "format": "uuid",
+         "title": "Engine Id",
          "type": "string"
         },
         "exchange": {
@@ -5114,7 +5347,6 @@
         }
        },
        "required": [
-        "datastore_id",
         "flavor_id",
         "name",
         "password",
@@ -5137,7 +5369,7 @@
        "title": "InstanceResponse",
        "type": "object"
       },
-      "version": "1.15.3"
+      "version": "1.16.0"
      },
      {
       "configs": {
@@ -5193,7 +5425,7 @@
        "type": "object"
       },
       "result": {},
-      "version": "1.15.3"
+      "version": "1.16.0"
      },
      {
       "configs": {
@@ -5310,8 +5542,14 @@
          "type": "string"
         },
         "datastore_id": {
+         "deprecated": true,
          "format": "uuid",
          "title": "Datastore Id",
+         "type": "string"
+        },
+        "engine_id": {
+         "format": "uuid",
+         "title": "Engine Id",
          "type": "string"
         },
         "finished_at": {
@@ -5389,8 +5627,14 @@
             "type": "string"
            },
            "datastore_id": {
+            "deprecated": true,
             "format": "uuid",
             "title": "Datastore Id",
+            "type": "string"
+           },
+           "engine_id": {
+            "format": "uuid",
+            "title": "Engine Id",
             "type": "string"
            },
            "finished_at": {
@@ -5491,6 +5735,7 @@
            "id",
            "source_id",
            "name",
+           "engine_id",
            "datastore_id",
            "flavor_id",
            "volume",
@@ -5567,6 +5812,7 @@
        "required": [
         "id",
         "name",
+        "engine_id",
         "datastore_id",
         "flavor_id",
         "volume",
@@ -5580,7 +5826,7 @@
        "title": "InstanceDetailResponse",
        "type": "object"
       },
-      "version": "1.15.3"
+      "version": "1.16.0"
      },
      {
       "configs": {
@@ -5726,8 +5972,14 @@
             "type": "string"
            },
            "datastore_id": {
+            "deprecated": true,
             "format": "uuid",
             "title": "Datastore Id",
+            "type": "string"
+           },
+           "engine_id": {
+            "format": "uuid",
+            "title": "Engine Id",
             "type": "string"
            },
            "finished_at": {
@@ -5805,8 +6057,14 @@
                "type": "string"
               },
               "datastore_id": {
+               "deprecated": true,
                "format": "uuid",
                "title": "Datastore Id",
+               "type": "string"
+              },
+              "engine_id": {
+               "format": "uuid",
+               "title": "Engine Id",
                "type": "string"
               },
               "finished_at": {
@@ -5907,6 +6165,7 @@
               "id",
               "source_id",
               "name",
+              "engine_id",
               "datastore_id",
               "flavor_id",
               "volume",
@@ -5983,6 +6242,7 @@
           "required": [
            "id",
            "name",
+           "engine_id",
            "datastore_id",
            "flavor_id",
            "volume",
@@ -6006,7 +6266,7 @@
        "title": "InstancesResponse",
        "type": "object"
       },
-      "version": "1.15.3"
+      "version": "1.16.0"
      },
      {
       "configs": {
@@ -6147,8 +6407,14 @@
          "type": "string"
         },
         "datastore_id": {
+         "deprecated": true,
          "format": "uuid",
          "title": "Datastore Id",
+         "type": "string"
+        },
+        "engine_id": {
+         "format": "uuid",
+         "title": "Engine Id",
          "type": "string"
         },
         "finished_at": {
@@ -6226,8 +6492,14 @@
             "type": "string"
            },
            "datastore_id": {
+            "deprecated": true,
             "format": "uuid",
             "title": "Datastore Id",
+            "type": "string"
+           },
+           "engine_id": {
+            "format": "uuid",
+            "title": "Engine Id",
             "type": "string"
            },
            "finished_at": {
@@ -6328,6 +6600,7 @@
            "id",
            "source_id",
            "name",
+           "engine_id",
            "datastore_id",
            "flavor_id",
            "volume",
@@ -6404,6 +6677,7 @@
        "required": [
         "id",
         "name",
+        "engine_id",
         "datastore_id",
         "flavor_id",
         "volume",
@@ -6417,7 +6691,7 @@
        "title": "InstanceDetailResponse",
        "type": "object"
       },
-      "version": "1.15.3"
+      "version": "1.16.0"
      },
      {
       "configs": {
@@ -6492,7 +6766,7 @@
        "title": "RestoreResponse",
        "type": "object"
       },
-      "version": "1.15.3"
+      "version": "1.16.0"
      },
      {
       "configs": {
@@ -6601,8 +6875,14 @@
          "type": "string"
         },
         "datastore_id": {
+         "deprecated": true,
          "format": "uuid",
          "title": "Datastore Id",
+         "type": "string"
+        },
+        "engine_id": {
+         "format": "uuid",
+         "title": "Engine Id",
          "type": "string"
         },
         "finished_at": {
@@ -6680,8 +6960,14 @@
             "type": "string"
            },
            "datastore_id": {
+            "deprecated": true,
             "format": "uuid",
             "title": "Datastore Id",
+            "type": "string"
+           },
+           "engine_id": {
+            "format": "uuid",
+            "title": "Engine Id",
             "type": "string"
            },
            "finished_at": {
@@ -6782,6 +7068,7 @@
            "id",
            "source_id",
            "name",
+           "engine_id",
            "datastore_id",
            "flavor_id",
            "volume",
@@ -6858,6 +7145,7 @@
        "required": [
         "id",
         "name",
+        "engine_id",
         "datastore_id",
         "flavor_id",
         "volume",
@@ -6871,7 +7159,7 @@
        "title": "InstanceDetailResponse",
        "type": "object"
       },
-      "version": "1.15.3"
+      "version": "1.16.0"
      },
      {
       "configs": {
@@ -6980,8 +7268,14 @@
          "type": "string"
         },
         "datastore_id": {
+         "deprecated": true,
          "format": "uuid",
          "title": "Datastore Id",
+         "type": "string"
+        },
+        "engine_id": {
+         "format": "uuid",
+         "title": "Engine Id",
          "type": "string"
         },
         "finished_at": {
@@ -7059,8 +7353,14 @@
             "type": "string"
            },
            "datastore_id": {
+            "deprecated": true,
             "format": "uuid",
             "title": "Datastore Id",
+            "type": "string"
+           },
+           "engine_id": {
+            "format": "uuid",
+            "title": "Engine Id",
             "type": "string"
            },
            "finished_at": {
@@ -7161,6 +7461,7 @@
            "id",
            "source_id",
            "name",
+           "engine_id",
            "datastore_id",
            "flavor_id",
            "volume",
@@ -7237,6 +7538,7 @@
        "required": [
         "id",
         "name",
+        "engine_id",
         "datastore_id",
         "flavor_id",
         "volume",
@@ -7250,7 +7552,7 @@
        "title": "InstanceDetailResponse",
        "type": "object"
       },
-      "version": "1.15.3"
+      "version": "1.16.0"
      },
      {
       "configs": {
@@ -7379,8 +7681,14 @@
          "type": "string"
         },
         "datastore_id": {
+         "deprecated": true,
          "format": "uuid",
          "title": "Datastore Id",
+         "type": "string"
+        },
+        "engine_id": {
+         "format": "uuid",
+         "title": "Engine Id",
          "type": "string"
         },
         "finished_at": {
@@ -7458,8 +7766,14 @@
             "type": "string"
            },
            "datastore_id": {
+            "deprecated": true,
             "format": "uuid",
             "title": "Datastore Id",
+            "type": "string"
+           },
+           "engine_id": {
+            "format": "uuid",
+            "title": "Engine Id",
             "type": "string"
            },
            "finished_at": {
@@ -7560,6 +7874,7 @@
            "id",
            "source_id",
            "name",
+           "engine_id",
            "datastore_id",
            "flavor_id",
            "volume",
@@ -7636,6 +7951,7 @@
        "required": [
         "id",
         "name",
+        "engine_id",
         "datastore_id",
         "flavor_id",
         "volume",
@@ -7649,13 +7965,13 @@
        "title": "InstanceDetailResponse",
        "type": "object"
       },
-      "version": "1.15.3"
+      "version": "1.16.0"
      }
     ],
     "description": "Database instances management.",
     "isInternal": false,
     "name": "instances",
-    "version": "1.15.3"
+    "version": "1.16.0"
    },
    {
     "children": [
@@ -7737,7 +8053,7 @@
        "title": "ReplicaResponse",
        "type": "object"
       },
-      "version": "1.15.3"
+      "version": "1.16.0"
      },
      {
       "configs": {
@@ -7796,7 +8112,7 @@
        "nullable": true,
        "type": "null"
       },
-      "version": "1.15.3"
+      "version": "1.16.0"
      },
      {
       "configs": {
@@ -7894,8 +8210,14 @@
          "type": "string"
         },
         "datastore_id": {
+         "deprecated": true,
          "format": "uuid",
          "title": "Datastore Id",
+         "type": "string"
+        },
+        "engine_id": {
+         "format": "uuid",
+         "title": "Engine Id",
          "type": "string"
         },
         "finished_at": {
@@ -7996,6 +8318,7 @@
         "id",
         "source_id",
         "name",
+        "engine_id",
         "datastore_id",
         "flavor_id",
         "volume",
@@ -8007,7 +8330,7 @@
        "title": "ReplicaDetailResponse",
        "type": "object"
       },
-      "version": "1.15.3"
+      "version": "1.16.0"
      },
      {
       "configs": {
@@ -8118,8 +8441,14 @@
             "type": "string"
            },
            "datastore_id": {
+            "deprecated": true,
             "format": "uuid",
             "title": "Datastore Id",
+            "type": "string"
+           },
+           "engine_id": {
+            "format": "uuid",
+            "title": "Engine Id",
             "type": "string"
            },
            "finished_at": {
@@ -8220,6 +8549,7 @@
            "id",
            "source_id",
            "name",
+           "engine_id",
            "datastore_id",
            "flavor_id",
            "volume",
@@ -8241,7 +8571,7 @@
        "title": "ReplicasResponse",
        "type": "object"
       },
-      "version": "1.15.3"
+      "version": "1.16.0"
      },
      {
       "configs": {
@@ -8345,8 +8675,14 @@
          "type": "string"
         },
         "datastore_id": {
+         "deprecated": true,
          "format": "uuid",
          "title": "Datastore Id",
+         "type": "string"
+        },
+        "engine_id": {
+         "format": "uuid",
+         "title": "Engine Id",
          "type": "string"
         },
         "finished_at": {
@@ -8447,6 +8783,7 @@
         "id",
         "source_id",
         "name",
+        "engine_id",
         "datastore_id",
         "flavor_id",
         "volume",
@@ -8458,7 +8795,7 @@
        "title": "ReplicaDetailResponse",
        "type": "object"
       },
-      "version": "1.15.3"
+      "version": "1.16.0"
      },
      {
       "configs": {
@@ -8556,8 +8893,14 @@
          "type": "string"
         },
         "datastore_id": {
+         "deprecated": true,
          "format": "uuid",
          "title": "Datastore Id",
+         "type": "string"
+        },
+        "engine_id": {
+         "format": "uuid",
+         "title": "Engine Id",
          "type": "string"
         },
         "finished_at": {
@@ -8658,6 +9001,7 @@
         "id",
         "source_id",
         "name",
+        "engine_id",
         "datastore_id",
         "flavor_id",
         "volume",
@@ -8669,7 +9013,7 @@
        "title": "ReplicaDetailResponse",
        "type": "object"
       },
-      "version": "1.15.3"
+      "version": "1.16.0"
      },
      {
       "configs": {
@@ -8767,8 +9111,14 @@
          "type": "string"
         },
         "datastore_id": {
+         "deprecated": true,
          "format": "uuid",
          "title": "Datastore Id",
+         "type": "string"
+        },
+        "engine_id": {
+         "format": "uuid",
+         "title": "Engine Id",
          "type": "string"
         },
         "finished_at": {
@@ -8869,6 +9219,7 @@
         "id",
         "source_id",
         "name",
+        "engine_id",
         "datastore_id",
         "flavor_id",
         "volume",
@@ -8880,19 +9231,19 @@
        "title": "ReplicaDetailResponse",
        "type": "object"
       },
-      "version": "1.15.3"
+      "version": "1.16.0"
      }
     ],
     "description": "Database replicas management.",
     "isInternal": false,
     "name": "replicas",
-    "version": "1.15.3"
+    "version": "1.16.0"
    }
   ],
   "description": "DBaaS API Product.",
   "isInternal": false,
   "name": "dbaas",
-  "version": "1.15.3"
+  "version": "1.16.0"
  },
  {
   "children": [
@@ -10047,14 +10398,15 @@
             "type": "object"
            },
            "flavor": {
-            "description": "Definition of the CPU, RAM, and storage capacity of the nodes.\n\n| Flavor                  | vCPUs | RAM (GB) | Root Disk (GB) |\n|-------------------------|-------|----------|----------------|\n| cloud-k8s.gp1.small     | 2     | 4        | 20             |\n| cloud-k8s.gp1.medium    | 4     | 8        | 50             |\n| cloud-k8s.gp1.large     | 8     | 16       | 100            |\n| cloud-k8s.gp2.small     | 2     | 4        | 300            |\n| cloud-k8s.gp2.large     | 8     | 32       | 300            |\n| cloud-k8s.hm1.medium    | 4     | 16       | 50             |\n",
+            "description": "Definition of the CPU, RAM, and storage capacity of the nodes.\n\n| Flavor                    | vCPUs | RAM (GB) | Root Disk (GB) |\n|---------------------------|-------|----------|----------------|\n| cloud-k8s.gp1.small       | 2     | 4        | 20             |\n| cloud-k8s.gp1.medium      | 4     | 8        | 50             |\n| cloud-k8s.gp1.large       | 8     | 16       | 100            |\n| cloud-k8s.gp2.small       | 2     | 4        | 300            |\n| cloud-k8s.gp2.large       | 8     | 32       | 300            |\n| cloud-k8s.hm1.medium      | 4     | 16       | 50             |\n| cloud-k8s.i1-c48-r96-d300 | 48    | 96       | 300            |\n",
             "enum": [
              "cloud-k8s.gp1.small",
              "cloud-k8s.gp1.medium",
              "cloud-k8s.gp1.large",
              "cloud-k8s.gp2.small",
              "cloud-k8s.gp2.large",
-             "cloud-k8s.hm1.medium"
+             "cloud-k8s.hm1.medium",
+             "cloud-k8s.i1-c48-r96-d300"
             ],
             "example": "cloud-k8s.gp1.small",
             "type": "string"
@@ -11728,14 +12080,15 @@
          "type": "string"
         },
         "flavor": {
-         "description": "Definition of the CPU, RAM, and storage capacity of the nodes.\n\n| Flavor                  | vCPUs | RAM (GB) | Root Disk (GB) |\n|-------------------------|-------|----------|----------------|\n| cloud-k8s.gp1.small     | 2     | 4        | 20             |\n| cloud-k8s.gp1.medium    | 4     | 8        | 50             |\n| cloud-k8s.gp1.large     | 8     | 16       | 100            |\n| cloud-k8s.gp2.small     | 2     | 4        | 300            |\n| cloud-k8s.gp2.large     | 8     | 32       | 300            |\n| cloud-k8s.hm1.medium    | 4     | 16       | 50             |\n",
+         "description": "Definition of the CPU, RAM, and storage capacity of the nodes.\n\n| Flavor                    | vCPUs | RAM (GB) | Root Disk (GB) |\n|---------------------------|-------|----------|----------------|\n| cloud-k8s.gp1.small       | 2     | 4        | 20             |\n| cloud-k8s.gp1.medium      | 4     | 8        | 50             |\n| cloud-k8s.gp1.large       | 8     | 16       | 100            |\n| cloud-k8s.gp2.small       | 2     | 4        | 300            |\n| cloud-k8s.gp2.large       | 8     | 32       | 300            |\n| cloud-k8s.hm1.medium      | 4     | 16       | 50             |\n| cloud-k8s.i1-c48-r96-d300 | 48    | 96       | 300            |\n",
          "enum": [
           "cloud-k8s.gp1.small",
           "cloud-k8s.gp1.medium",
           "cloud-k8s.gp1.large",
           "cloud-k8s.gp2.small",
           "cloud-k8s.gp2.large",
-          "cloud-k8s.hm1.medium"
+          "cloud-k8s.hm1.medium",
+          "cloud-k8s.i1-c48-r96-d300"
          ],
          "example": "cloud-k8s.gp1.small",
          "type": "string"

@@ -32,6 +32,7 @@ Database replicas management.
 - `addresses` (Attributes List) (see [below for nested schema](#nestedatt--addresses))
 - `created_at` (String)
 - `datastore_id` (String)
+- `engine_id` (String)
 - `finished_at` (String)
 - `generation` (String) An enumeration.
 - `id` (String) The ID of this resource.

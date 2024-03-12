@@ -1,7 +1,7 @@
-Returns a list of available datastore.
+Returns a list of available engines.
 
 Usage:
-  ./cli dbaas datastores list [flags]
+  ./cli dbaas engines list [flags]
 
 Flags:
       --control.limit integer    Limit (range: 1 - 25) (default 10)

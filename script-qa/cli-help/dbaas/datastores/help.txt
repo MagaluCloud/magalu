@@ -5,8 +5,8 @@ Usage:
   ./cli dbaas datastores [command]
 
 Commands:
-  get         Datastore detail.
-  list        List available datastores.
+  get         Engine detail.
+  list        List available engines.
 
 Flags:
   -h, --help      help for datastores

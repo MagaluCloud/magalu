@@ -6,7 +6,7 @@ info:
         name: Tribo IAAS Cloud
         url: https://gitlab.luizalabs.com/cloud/dbaas/docs
         email: cloud-iaas-dbaas@luizalabs.com
-    version: 1.15.3
+    version: 1.16.0
 servers:
 -   url: https://{env}/{region}/database
     variables:
@@ -229,13 +229,62 @@ paths:
             security:
             -   OAuth2:
                 - dbaas.write
+    /v1/engines:
+        get:
+            tags:
+            - engines
+            summary: List available engines.
+            description: Returns a list of available engines.
+            operationId: engines_v1_get_all
+            parameters:
+            -   required: false
+                schema:
+                    title: Offset
+                    minimum: 0.0
+                    type: integer
+                    default: 0
+                name: _offset
+                in: query
+            -   required: false
+                schema:
+                    title: Limit
+                    maximum: 25.0
+                    minimum: 1.0
+                    type: integer
+                    default: 10
+                name: _limit
+                in: query
+            -   description: Value referring to engine status.
+                required: false
+                schema:
+                    allOf:
+                    -   $ref: '#/components/schemas/EngineStatus'
+                    description: Value referring to engine status.
+                    type: string
+                name: status
+                in: query
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/EnginesResponse'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            security:
+            -   OAuth2:
+                - dbaas.read
     /v1/datastores:
         get:
             tags:
             - datastores
-            summary: List available datastores.
-            description: Returns a list of available datastores. A datastore is a
-                combination of engine and version.
+            summary: List available engines.
+            description: Returns a list of available datastore.
             operationId: datastores_v1_get_all
             parameters:
             -   required: false
@@ -255,12 +304,12 @@ paths:
                     default: 10
                 name: _limit
                 in: query
-            -   description: Value referring to datastore status.
+            -   description: Value referring to engine status.
                 required: false
                 schema:
                     allOf:
-                    -   $ref: '#/components/schemas/DatastoreStatus'
-                    description: Value referring to datastore status.
+                    -   $ref: '#/components/schemas/EngineStatus'
+                    description: Value referring to engine status.
                     type: string
                 name: status
                 in: query
@@ -270,7 +319,42 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/DatastoresResponse'
+                                $ref: '#/components/schemas/EnginesResponse'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            deprecated: true
+            security:
+            -   OAuth2:
+                - dbaas.read
+    /v1/engines/{engine_id}:
+        get:
+            tags:
+            - engines
+            summary: Engine detail.
+            description: Returns a engine detail.
+            operationId: engines_v1_get_by_id
+            parameters:
+            -   description: Value referring to Engine Id.
+                required: true
+                schema:
+                    title: Engine Id
+                    type: string
+                    description: Value referring to Engine Id.
+                    format: uuid
+                example: 7a11cfc5-f9f8-4fa2-a418-94a423f6a51f
+                name: engine_id
+                in: path
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/EngineResponse'
                 '422':
                     description: Validation Error
                     content:
@@ -280,23 +364,23 @@ paths:
             security:
             -   OAuth2:
                 - dbaas.read
-    /v1/datastores/{datastore_id}:
+    /v1/datastores/{engine_id}:
         get:
             tags:
             - datastores
-            summary: Datastore detail.
-            description: Returns a datastore detail.
+            summary: Engine detail.
+            description: Returns a engine detail.
             operationId: datastores_v1_get_by_id
             parameters:
-            -   description: Value referring to datastore Id.
+            -   description: Value referring to Engine Id.
                 required: true
                 schema:
-                    title: Datastore Id
+                    title: Engine Id
                     type: string
-                    description: Value referring to datastore Id.
+                    description: Value referring to Engine Id.
                     format: uuid
                 example: 7a11cfc5-f9f8-4fa2-a418-94a423f6a51f
-                name: datastore_id
+                name: engine_id
                 in: path
             responses:
                 '200':
@@ -304,13 +388,14 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/DatastoreResponse'
+                                $ref: '#/components/schemas/EngineResponse'
                 '422':
                     description: Validation Error
                     content:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
+            deprecated: true
             security:
             -   OAuth2:
                 - dbaas.read
@@ -2176,10 +2261,11 @@ components:
                     type: array
                     items:
                         $ref: '#/components/schemas/BackupDetailResponse'
-        DatastoreResponse:
-            title: DatastoreResponse
+        EngineResponse:
+            title: EngineResponse
             required:
             - id
+            - name
             - engine
             - version
             - status
@@ -2189,22 +2275,26 @@ components:
                     title: Id
                     type: string
                     format: uuid
+                name:
+                    title: Name
+                    type: string
                 engine:
                     title: Engine
                     type: string
+                    deprecated: true
                 version:
                     title: Version
                     type: string
                 status:
-                    $ref: '#/components/schemas/DatastoreStatus'
-        DatastoreStatus:
-            title: DatastoreStatus
+                    $ref: '#/components/schemas/EngineStatus'
+        EngineStatus:
+            title: EngineStatus
             enum:
             - ACTIVE
             - DEPRECATED
             description: An enumeration.
-        DatastoresResponse:
-            title: DatastoresResponse
+        EnginesResponse:
+            title: EnginesResponse
             required:
             - results
             type: object
@@ -2213,7 +2303,7 @@ components:
                     title: Results
                     type: array
                     items:
-                        $ref: '#/components/schemas/DatastoreResponse'
+                        $ref: '#/components/schemas/EngineResponse'
         FlavorResponse:
             title: FlavorResponse
             required:
@@ -2307,7 +2397,6 @@ components:
             title: InstanceCreateRequest
             required:
             - name
-            - datastore_id
             - flavor_id
             - user
             - password
@@ -2323,7 +2412,12 @@ components:
                     title: Datastore Id
                     type: string
                     format: uuid
+                    deprecated: true
                     example: 063f3994-b6c2-4c37-96c9-bab8d82d36f7
+                engine_id:
+                    title: Engine Id
+                    type: string
+                    format: uuid
                 flavor_id:
                     title: Flavor Id
                     type: string
@@ -2357,6 +2451,7 @@ components:
             required:
             - id
             - name
+            - engine_id
             - datastore_id
             - flavor_id
             - volume
@@ -2376,10 +2471,15 @@ components:
                     title: Name
                     maxLength: 100
                     type: string
+                engine_id:
+                    title: Engine Id
+                    type: string
+                    format: uuid
                 datastore_id:
                     title: Datastore Id
                     type: string
                     format: uuid
+                    deprecated: true
                 flavor_id:
                     title: Flavor Id
                     type: string
@@ -2583,6 +2683,7 @@ components:
             - id
             - name
             - tenant_id
+            - engine_id
             - datastore_id
             - flavor_id
             - volume
@@ -2606,10 +2707,15 @@ components:
                     title: Tenant Id
                     type: string
                     format: uuid
+                engine_id:
+                    title: Engine Id
+                    type: string
+                    format: uuid
                 datastore_id:
                     title: Datastore Id
                     type: string
                     format: uuid
+                    deprecated: true
                 flavor_id:
                     title: Flavor Id
                     type: string
@@ -2701,6 +2807,7 @@ components:
             - id
             - source_id
             - name
+            - engine_id
             - datastore_id
             - flavor_id
             - volume
@@ -2721,10 +2828,15 @@ components:
                 name:
                     title: Name
                     type: string
+                engine_id:
+                    title: Engine Id
+                    type: string
+                    format: uuid
                 datastore_id:
                     title: Datastore Id
                     type: string
                     format: uuid
+                    deprecated: true
                 flavor_id:
                     title: Flavor Id
                     type: string
@@ -2920,6 +3032,9 @@ tags:
     description: Database backups management.
 -   name: datastores
     description: Datastores available for database instances.
+    x-mgc-hidden: true
+-   name: engines
+    description: Engines available for database instances.
 -   name: instances
     description: Database instances management.
 -   name: flavors
