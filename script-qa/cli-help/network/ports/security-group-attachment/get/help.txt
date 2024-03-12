@@ -1,0 +1,16 @@
+Check if a Public IP is attached to a Port
+
+Usage:
+  ./cli network ports security-group-attachment get [flags]
+
+Flags:
+  -h, --help                       help for get
+      --port-id string             Port Id (required)
+      --security-group-id string   Security Group Id (required)
+
+Global Flags:
+      --cli.show-cli-globals   Show all CLI global flags on usage text
+      --env enum               Environment to use (one of "pre-prod" or "prod") (default "prod")
+      --region enum            Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-ne1")
+      --server-url uri         Manually specify the server to use
+

@@ -1,0 +1,21 @@
+VPC Rules
+
+Usage:
+  ./cli network rules [flags]
+  ./cli network rules [command]
+
+Commands:
+  create      Create Rule
+  delete      Delete a Rule
+  get         Rule Details
+  list        List Rules
+
+Flags:
+  -h, --help      help for rules
+  -v, --version   version for rules
+
+Global Flags:
+      --cli.show-cli-globals   Show all CLI global flags on usage text
+
+Use "./cli network rules [command] --help" for more information about a command.
+

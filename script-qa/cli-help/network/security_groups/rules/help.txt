@@ -1,0 +1,12 @@
+VPC Security Groups | rules
+
+Usage:
+  ./cli network security-groups rules [flags]
+
+Flags:
+  -h, --help      help for rules
+  -v, --version   version for rules
+
+Global Flags:
+      --cli.show-cli-globals   Show all CLI global flags on usage text
+

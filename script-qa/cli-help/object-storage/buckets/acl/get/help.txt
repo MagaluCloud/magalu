@@ -1,0 +1,17 @@
+Get the ACL for the specified bucket
+
+Usage:
+  ./cli object-storage buckets acl get [bucket] [flags]
+
+Flags:
+      --bucket string   Specifies the bucket whose ACL is being requested (between 3 and 63 characters) (required)
+  -h, --help            help for get
+
+Global Flags:
+      --chunk-size integer     Chunk size to consider when doing multipart requests. Specified in Mb (range: 5 - 5120) (default 5)
+      --cli.show-cli-globals   Show all CLI global flags on usage text
+      --env enum               Environment to use (one of "pre-prod" or "prod") (default "prod")
+      --region enum            Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-ne1")
+      --server-url uri         Manually specify the server to use
+      --workers integer        Number of routines that spawn to do parallel operations within object_storage (min: 1) (default 5)
+
