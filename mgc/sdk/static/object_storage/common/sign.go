@@ -338,19 +338,20 @@ func signHeaders(req *http.Request, accessKey, secretKey string, unsignedPayload
 		req.Header.Set("Content-Type", "application/octet-stream")
 	}
 
-	signedHeaders := getSignedHeaders(req, ignoredHeaders)
-	params := NewSignatureParameters(accessKey, time.Now().UTC(), payloadHash, signedHeaders)
-	ctx := NewSignatureContext(params, req)
+	signingTime := time.Now().UTC()
 
-	// Set date header based on the custom key provided
-	req.Header.Set(headerDateKey, params.Date)
+	req.Header.Set(headerDateKey, signingTime.Format(longTimeFormat))
 
-	if _, ok := excludedHeaders[contentMD5Header]; !ok {
+	if _, ok := ignoredHeaders[contentMD5Header]; !ok {
 		if err := setMD5Checksum(req); err != nil {
 			return fmt.Errorf("unable to compute checksum of the body content: %w", err)
 		}
 	}
 
+	signedHeaders := getSignedHeaders(req, ignoredHeaders)
+	params := NewSignatureParameters(accessKey, signingTime, payloadHash, signedHeaders)
+
+	ctx := NewSignatureContext(params, req)
 	if err = sign(ctx, secretKey); err != nil {
 		return
 	}
