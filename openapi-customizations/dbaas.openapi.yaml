@@ -35,6 +35,11 @@ servers:
                 -   from: pre-prod
                     to: api.pre-prod.jaxyendy.com
 paths:
+    /v1/datastores:
+        get:
+            tags:
+            - datastores
+            x-mgc-hidden: true
     /v1/instances/{instance_id}/backups/{backup_id}:
         get:
             x-mgc-wait-termination:
