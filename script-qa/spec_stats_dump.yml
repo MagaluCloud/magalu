@@ -27,9 +27,14 @@ block-storage.openapi:
     - volume-types:
         - post
         - delete
+  typeless-schemas:
+    - components.schemas.SnapshotCreationRequest.description
+    - components.schemas.SnapshotResponse.description
+    - components.schemas.VolumeResponseV1.error
   unused-components:
     - '#/components/schemas/ProjectTypeAll'
     - '#/components/schemas/ValidationError'
+    - '#/components/schemas/VolumeResponseError'
 dbaas.openapi:
   computed-variables:
     - POST /v1/instances:
@@ -357,17 +362,6 @@ network.openapi:
               - vpc_id
               - wait
               - wait_timeout
-    - POST /v0/vpcs/{vpc_id}/subnets:
-        - '201':
-            computed:
-              - id
-            non-computed:
-              - cidr_block
-              - description
-              - dns_nameservers
-              - ip_version
-              - name
-              - vpc_id
     - POST /v0/vpcs/default:
         - '200':
             computed:
@@ -407,16 +401,171 @@ network.openapi:
               - description
               - name
               - validate_quota
+    - POST /v0/vpcs/{vpc_id}/subnets:
+        - '201':
+            computed:
+              - id
+            non-computed:
+              - cidr_block
+              - description
+              - dns_nameservers
+              - ip_version
+              - name
+              - vpc_id
   missing-crud:
     - rule:
-        - post
-    - subnets:
         - post
   typeless-schemas:
     - paths./v0/ports/{port_id}/attach/{security_group_id}.post.responses.200.content.application/json.schema
     - paths./v0/ports/{port_id}/detach/{security_group_id}.post.responses.200.content.application/json.schema
     - paths./v0/public_ips/{public_ip_id}/attach/{port_id}.post.responses.200.content.application/json.schema
     - paths./v0/public_ips/{public_ip_id}/detach/{port_id}.post.responses.200.content.application/json.schema
+    - components.schemas.NetworkApiResponse.external_id
+    - components.schemas.NetworkApiResponse.created_at
+    - components.schemas.NetworkApiResponse.updated
+    - components.schemas.NetworkApiResponse.error
+    - components.schemas.PortCreateRequest.has_pip
+    - components.schemas.PortCreateRequest.has_sg
+    - components.schemas.PortCreateRequest.subnets
+    - components.schemas.PortCreateRequest.security_groups_id
+    - components.schemas.PortResponse.id
+    - components.schemas.PortResponse.name
+    - components.schemas.PortResponse.description
+    - components.schemas.PortResponse.is_admin_state_up
+    - components.schemas.PortResponse.vpc_id
+    - components.schemas.PortResponse.is_port_security_enabled
+    - components.schemas.PortResponse.public_ip
+    - components.schemas.PortResponse.created_at
+    - components.schemas.PortResponse.updated
+    - components.schemas.PortSimpleResponse.id
+    - components.schemas.PublicIpCreateRequest.description
+    - components.schemas.PublicIpDb.id
+    - components.schemas.PublicIpDb.external_id
+    - components.schemas.PublicIpDb.vpc_id
+    - components.schemas.PublicIpDb.description
+    - components.schemas.PublicIpDb.public_ip
+    - components.schemas.PublicIpDb.port_id
+    - components.schemas.PublicIpDb.created_at
+    - components.schemas.PublicIpDb.updated
+    - components.schemas.PublicIpDb.status
+    - components.schemas.PublicIpDb.error
+    - components.schemas.PublicIpResponsePort.public_ip_id
+    - components.schemas.PublicIpResponsePort.public_ip
+    - components.schemas.PublicIpUpdateRequest.public_ip
+    - components.schemas.PublicIpUpdateRequest.external_id
+    - components.schemas.PublicIpUpdateRequest.error
+    - components.schemas.RouterInterfaceResponse.id
+    - components.schemas.RouterInterfaceResponse.vpc_id
+    - components.schemas.RouterInterfaceResponse.router_id
+    - components.schemas.RouterInterfaceResponse.ip_address
+    - components.schemas.RouterInterfaceResponse.nic_vpc_id
+    - components.schemas.RouterInterfaceResponse.created_at
+    - components.schemas.RouterInterfaceResponseList.router_interfaces
+    - components.schemas.RuleCreateRequest.direction
+    - components.schemas.RuleCreateRequest.port_range_min
+    - components.schemas.RuleCreateRequest.port_range_max
+    - components.schemas.RuleCreateRequest.protocol
+    - components.schemas.RuleCreateRequest.remote_ip_prefix
+    - components.schemas.RuleCreateRequest.remote_group_id
+    - components.schemas.RuleCreateRequest.ethertype
+    - components.schemas.RuleResponse.id
+    - components.schemas.RuleResponse.security_group_id
+    - components.schemas.RuleResponse.direction
+    - components.schemas.RuleResponse.port_range_min
+    - components.schemas.RuleResponse.port_range_max
+    - components.schemas.RuleResponse.protocol
+    - components.schemas.RuleResponse.remote_ip_prefix
+    - components.schemas.RuleResponse.remote_group_id
+    - components.schemas.RuleResponse.ethertype
+    - components.schemas.RuleResponse.created_at
+    - components.schemas.RuleResponse.error
+    - components.schemas.RuleResponseEvent.direction
+    - components.schemas.RuleResponseEvent.port_range_min
+    - components.schemas.RuleResponseEvent.port_range_max
+    - components.schemas.RuleResponseEvent.protocol
+    - components.schemas.RuleResponseEvent.remote_ip_prefix
+    - components.schemas.RuleResponseEvent.remote_group_id
+    - components.schemas.RuleResponseEvent.status
+    - components.schemas.RuleResponseEvent.error
+    - components.schemas.RuleResponseEvent.id
+    - components.schemas.RuleResponseEvent.security_group_id
+    - components.schemas.RuleResponseEvent.ethertype
+    - components.schemas.RuleResponseEvent.created_at
+    - components.schemas.SecurityGroupCreateRequest.name
+    - components.schemas.SecurityGroupCreateRequest.description
+    - components.schemas.SecurityGroupDetailEvent.id
+    - components.schemas.SecurityGroupDetailEvent.vpc_id
+    - components.schemas.SecurityGroupDetailEvent.name
+    - components.schemas.SecurityGroupDetailEvent.description
+    - components.schemas.SecurityGroupDetailEvent.created_at
+    - components.schemas.SecurityGroupDetailEvent.updated
+    - components.schemas.SecurityGroupDetailEvent.error
+    - components.schemas.SecurityGroupDetailEvent.tenant_id
+    - components.schemas.SecurityGroupDetailEvent.project_type
+    - components.schemas.SecurityGroupDetailEvent.is_default
+    - components.schemas.SecurityGroupDetailEvent.external_id
+    - components.schemas.SecurityGroupDetailEvent.rules
+    - components.schemas.SecurityGroupResponseEvent.id
+    - components.schemas.SecurityGroupResponseEvent.vpc_id
+    - components.schemas.SecurityGroupResponseEvent.name
+    - components.schemas.SecurityGroupResponseEvent.description
+    - components.schemas.SecurityGroupResponseEvent.created_at
+    - components.schemas.SecurityGroupResponseEvent.updated
+    - components.schemas.SecurityGroupResponseEvent.error
+    - components.schemas.SecurityGroupResponseEvent.tenant_id
+    - components.schemas.SecurityGroupResponseEvent.project_type
+    - components.schemas.SecurityGroupResponseEvent.is_default
+    - components.schemas.SecurityGroupStatusEvent.external_id
+    - components.schemas.SecurityGroupStatusEvent.error
+    - components.schemas.SecurityGroupStatusEvent.rules
+    - components.schemas.SubnetCreateRequest.description
+    - components.schemas.SubnetCreateRequest.cidr_block
+    - components.schemas.SubnetPoolRequest.address_scope_id
+    - components.schemas.SubnetResponse.name
+    - components.schemas.SubnetResponse.description
+    - components.schemas.SubnetResponse.created_at
+    - components.schemas.SubnetResponse.updated
+    - components.schemas.SubnetResponseDetail.name
+    - components.schemas.SubnetResponseDetail.description
+    - components.schemas.SubnetResponseDetail.created_at
+    - components.schemas.SubnetResponseDetail.updated
+    - components.schemas.VpcCreateRequest.description
+    - components.schemas.VpcCreateResponse.id
+    - components.schemas.VpcResponse.id
+    - components.schemas.VpcResponse.tenant_id
+    - components.schemas.VpcResponse.name
+    - components.schemas.VpcResponse.description
+    - components.schemas.VpcResponse.router_id
+    - components.schemas.VpcResponse.external_network
+    - components.schemas.VpcResponse.network_id
+    - components.schemas.VpcResponse.subnets
+    - components.schemas.VpcResponse.created_at
+    - components.schemas.VpcResponse.updated
+    - components.schemas.VpcResponse.is_default
+    - components.schemas.VpcResponseList.vpcs
+    - components.schemas.XVpcCreateRequest.description
+    - components.schemas.XVpcCreateRequest.subnetpool_id
+    - components.schemas.XVpcCreateRequest.cidr
+    - components.schemas.vpc_api_product__vpc__models__rule__RuleDefaultStatusEvent.security_group_id
+    - components.schemas.vpc_api_product__vpc__models__rule__RuleDefaultStatusEvent.direction
+    - components.schemas.vpc_api_product__vpc__models__rule__RuleDefaultStatusEvent.port_range_min
+    - components.schemas.vpc_api_product__vpc__models__rule__RuleDefaultStatusEvent.port_range_max
+    - components.schemas.vpc_api_product__vpc__models__rule__RuleDefaultStatusEvent.protocol
+    - components.schemas.vpc_api_product__vpc__models__rule__RuleDefaultStatusEvent.remote_ip_prefix
+    - components.schemas.vpc_api_product__vpc__models__rule__RuleDefaultStatusEvent.remote_group_id
+    - components.schemas.vpc_api_product__vpc__models__rule__RuleDefaultStatusEvent.error
+    - components.schemas.vpc_api_product__vpc__models__rule__RuleDefaultStatusEvent.resource_id
+    - components.schemas.vpc_api_product__vpc__models__rule__RuleDefaultStatusEvent.external_id
+    - components.schemas.vpc_api_product__vpc__models__security_group__RuleDefaultStatusEvent.direction
+    - components.schemas.vpc_api_product__vpc__models__security_group__RuleDefaultStatusEvent.port_range_min
+    - components.schemas.vpc_api_product__vpc__models__security_group__RuleDefaultStatusEvent.port_range_max
+    - components.schemas.vpc_api_product__vpc__models__security_group__RuleDefaultStatusEvent.protocol
+    - components.schemas.vpc_api_product__vpc__models__security_group__RuleDefaultStatusEvent.remote_ip_prefix
+    - components.schemas.vpc_api_product__vpc__models__security_group__RuleDefaultStatusEvent.remote_group_id
+    - components.schemas.vpc_api_product__vpc__models__security_group__RuleDefaultStatusEvent.status
+    - components.schemas.vpc_api_product__vpc__models__security_group__RuleDefaultStatusEvent.error
+    - components.schemas.vpc_api_product__vpc__models__security_group__RuleDefaultStatusEvent.resource_id
+    - components.schemas.vpc_api_product__vpc__models__security_group__RuleDefaultStatusEvent.external_id
   uneven-resources:
     port:
       DELETE:
@@ -434,6 +583,10 @@ network.openapi:
         expected_prefix: /v0/security_groups
         uneven:
           - /v0/security_groups/default
+    subnets:
+      GET:
+        - /v0/vpcs/{vpc_id}/subnets
+        - /v0/subnets/{subnet_id}
     vpc:
       DELETE:
         - /v0/vpcs/{vpc_id}
@@ -443,20 +596,21 @@ network.openapi:
         uneven:
           - /v0/vpcs/{vpc_id}/public_ips
           - /v0/vpcs/{vpc_id}/security_groups
-          - /v0/vpcs/{vpc_id}/subnets
       POST:
         expected_prefix: /v0/vpcs
         uneven:
           - /v0/vpcs/{vpc_id}/public_ips
           - /v0/vpcs/{vpc_id}/security_groups
-          - /v0/vpcs/{vpc_id}/subnets
           - /v0/vpcs/default
   unused-components:
     - '#/components/schemas/AddInterfaceRequest'
     - '#/components/schemas/ListNetworkApiResponse'
     - '#/components/schemas/ProjectType'
+    - '#/components/schemas/PublicIpResponsePort'
     - '#/components/schemas/RouteRequest'
+    - '#/components/schemas/RouterInterfaceResponse'
     - '#/components/schemas/RouterInterfaceResponseList'
+    - '#/components/schemas/RuleResponseEvent'
     - '#/components/schemas/SecurityGroupStatusEvent'
     - '#/components/schemas/SubnetPoolDetailsResponse'
     - '#/components/schemas/SubnetPoolRequest'
@@ -464,8 +618,45 @@ network.openapi:
     - '#/components/schemas/ValidationError'
     - '#/components/schemas/XVpcCreateRequest'
     - '#/components/schemas/vpc_api_product__vpc__models__rule__RuleDefaultStatusEvent'
+    - '#/components/schemas/vpc_api_product__vpc__models__security_group__RuleDefaultStatusEvent'
 virtual-machine.openapi:
   computed-variables:
+    - POST /v0/images:
+        - '201':
+            computed:
+              - name
+              - os_distribution
+              - size
+              - version
+            non-computed:
+              - id
+              - internal
+              - sku
+    - POST /v0/instance_types:
+        - '201':
+            computed:
+              - disk
+              - gpu
+              - name
+              - ram
+              - vcpus
+            non-computed:
+              - id
+              - internal
+              - sku
+    - POST /v0/instances:
+        - '200':
+            computed:
+              - id
+            non-computed:
+              - allocate_fip
+              - availability_zone
+              - image
+              - key_name
+              - name
+              - network_interfaces
+              - type
+              - user_data
     - POST /v1/instances:
         - '201':
             computed:
@@ -478,6 +669,33 @@ virtual-machine.openapi:
               - network
               - ssh_key_name
               - user_data
+    - POST /latest/instances:
+        - '201':
+            computed:
+              - id
+            non-computed:
+              - availability_zone
+              - image
+              - machine_type
+              - name
+              - network
+              - ssh_key_name
+              - user_data
+    - POST /v0/keypairs/{keypair_name}:
+        - '201':
+            computed:
+              - name
+              - private_key
+              - public_key
+            non-computed:
+              - keypair_name
+    - POST /v0/snapshots:
+        - '202':
+            computed:
+              - id
+            non-computed:
+              - name
+              - virtual_machine_id
     - POST /v1/snapshots:
         - '202':
             computed:
@@ -485,18 +703,155 @@ virtual-machine.openapi:
             non-computed:
               - name
               - virtual_machine
+    - POST /latest/snapshots:
+        - '202':
+            computed:
+              - id
+            non-computed:
+              - name
+              - virtual_machine
   missing-crud:
-    - images:
-        - post
-        - delete
     - machine-types:
         - post
         - delete
+  typeless-schemas:
+    - components.schemas.ImageExtendResponse.platform
+    - components.schemas.ImageInternalResponse.sku
+    - components.schemas.ImageResponse.os_distribution
+    - components.schemas.ImageResponse.version
+    - components.schemas.ImageResponse.sku
+    - components.schemas.ImageResponseExternalV1.version
+    - components.schemas.ImageResponseExternalV1.platform
+    - components.schemas.ImageResponseExternalV1.release_at
+    - components.schemas.ImageResponseExternalV1.end_standard_support_at
+    - components.schemas.ImageResponseExternalV1.end_life_at
+    - components.schemas.InstanceCreateRequest.image
+    - components.schemas.InstanceCreateRequest.availability_zone
+    - components.schemas.InstanceCreateRequest.network_interfaces
+    - components.schemas.InstanceCreateRequest.user_data
+    - components.schemas.InstanceCreateRequestV1.availability_zone
+    - components.schemas.InstanceCreateRequestV1.user_data
+    - components.schemas.InstanceEventDetailsResponse.message
+    - components.schemas.InstanceResponse.instance_id
+    - components.schemas.InstanceResponse.name
+    - components.schemas.InstanceResponse.vcpus
+    - components.schemas.InstanceResponse.memory
+    - components.schemas.InstanceResponse.root_storage
+    - components.schemas.InstanceResponse.power_state
+    - components.schemas.InstanceResponse.power_state_label
+    - components.schemas.InstanceResponse.updated_at
+    - components.schemas.InstanceResponse.key_name
+    - components.schemas.InstanceResponse.availability_zone
+    - components.schemas.InstanceResponse.volumes
+    - components.schemas.InstanceResponse.network_interfaces
+    - components.schemas.InstanceResponse.security_groups
+    - components.schemas.InstanceResponse.ports
+    - components.schemas.InstanceResponse.error
+    - components.schemas.InstanceV1Response.name
+    - components.schemas.InstanceV1Response.user_data
+    - components.schemas.InstanceV1Response.updated_at
+    - components.schemas.InstanceV1Response.ssh_key_name
+    - components.schemas.InstanceV1Response.availability_zone
+    - components.schemas.InstanceV1Response.error
+    - components.schemas.KeypairDeletedAllResponse.deleted_keypairs
+    - components.schemas.KeypairRequest.public_key
+    - components.schemas.NetworkAddress.ip_address
+    - components.schemas.NetworkAddress.version
+    - components.schemas.NetworkAddress.type
+    - components.schemas.NetworkInfo.name
+    - components.schemas.NetworkInterface.mac_address
+    - components.schemas.NetworkInterface.network
+    - components.schemas.NetworkPortsV1Expand.vpc
+    - components.schemas.NetworkPortsV1Expand.ports
+    - components.schemas.SecurityGroup.name
+    - components.schemas.SnapshotResponse.error
+    - components.schemas.SnapshotResponse.updated_at
+    - components.schemas.SnapshotResponse.size
+    - components.schemas.SnapshotResponseV1.name
+    - components.schemas.SnapshotResponseV1.updated_at
+    - components.schemas.SnapshotRestoreRequest.availability_zone
+    - components.schemas.SnapshotRestoreRequest.network_interfaces
+    - components.schemas.SnapshotRestoreRequest.user_data
+    - components.schemas.SnapshotRestoreRequestV1.availability_zone
+    - components.schemas.SnapshotRestoreRequestV1.user_data
+    - components.schemas.SnapshotUpdateInternalRequest.error
+    - components.schemas.SnapshotUpdateInternalRequest.size
+    - components.schemas.SnapshotUpdateInternalRequest.urp_snapshot_id
+    - components.schemas.SnapshotUpdateRequest.error
+    - components.schemas.SnapshotUpdateRequest.size
+  uneven-resources:
+    images:
+      GET:
+        expected_prefix: /v0/images
+        uneven:
+          - /v1/images
+          - /latest/images
+    instances:
+      DELETE:
+        - /v0/instances/{id}
+        - /v1/instances/{id}
+        - /latest/instances/{id}
+      GET:
+        expected_prefix: /v0/instances
+        uneven:
+          - /v1/instances
+          - /v1/instances/{id}
+          - /latest/instances
+          - /latest/instances/{id}
+      PATCH:
+        - /v0/instances/{id}
+        - /v1/instances/{id}/rename
+        - /latest/instances/{id}/rename
+      POST:
+        expected_prefix: /v1/instances
+        uneven:
+          - /v0/instances
+          - /latest/instances
+          - /latest/instances/{id}/reboot
+          - /latest/instances/{id}/retype
+          - /latest/instances/{id}/start
+          - /latest/instances/{id}/stop
+          - /latest/instances/{id}/suspend
+    machine-types:
+      GET:
+        - /v1/machine-types
+        - /latest/machine-types
+    snapshots:
+      DELETE:
+        - /v0/snapshots/{id}
+        - /v1/snapshots/{id}
+        - /latest/snapshots/{id}
+      GET:
+        expected_prefix: /v1/snapshots
+        uneven:
+          - /v0/snapshots
+          - /latest/snapshots
+          - /latest/snapshots/{id}
+      PATCH:
+        - /v0/snapshots/internal/{id}
+        - /v0/snapshots/{urp_snapshot_id}
+        - /v1/snapshots/{id}/rename
+        - /latest/snapshots/{id}/rename
+      POST:
+        expected_prefix: /v0/snapshots
+        uneven:
+          - /v1/snapshots
+          - /v1/snapshots/{id}
+          - /latest/snapshots
+          - /latest/snapshots/{id}
   unused-components:
-    - '#/components/schemas/ImageRequestV1'
-    - '#/components/schemas/ImageResponseV1'
+    - '#/components/schemas/ErrorMessageV1'
+    - '#/components/schemas/IdResponse'
+    - '#/components/schemas/InstanceVolumeResponse'
+    - '#/components/schemas/KeypairDeletedAllResponse'
+    - '#/components/schemas/NetworkID'
+    - '#/components/schemas/NetworkInfo'
+    - '#/components/schemas/NetworkInterface'
+    - '#/components/schemas/PortV1Expand'
+    - '#/components/schemas/ProjectType'
+    - '#/components/schemas/SecurityGroup'
     - '#/components/schemas/ValidationError'
+    - '#/components/schemas/VpcV1Expand'
   xof-single-item:
-    - components.schemas.ImageRequestV1.status
     - components.schemas.InstanceCreateRequestV1.network
     - components.schemas.SnapshotRestoreRequestV1.network

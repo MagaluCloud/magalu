@@ -5,13 +5,14 @@ Usage:
 
 Flags:
       --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-      --description string            Description
+      --description anyValue          Description
+                                      Use --description=help for more details (default "")
   -h, --help                          help for create
       --validate-quota                validateQuota (default true)
   -v, --version                       version for create
       --vpc-id string                 Vpc Id (required)
       --wait                          wait (default true)
-      --wait-timeout integer          waitTimeout: the approximate time in seconds you want to wait when simulating the request as synchronous (only works with wait=true) (default 120)
+      --wait-timeout string           waitTimeout: the approximate time in seconds you want to wait when simulating the request as synchronous (only works with wait=true) (default "120")
 
 Global Flags:
       --cli.show-cli-globals   Show all CLI global flags on usage text

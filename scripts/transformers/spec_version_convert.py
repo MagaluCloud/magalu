@@ -71,8 +71,8 @@ class ConvertVersionTransformer(SpecTranformer):
             d[k] = remaining
         else:
             del d[k]
-            if len(remaining) == 1:
-                d.update(remaining[0])
+            # if len(remaining) == 1:
+            #     d.update(remaining[0])
         return True
 
     def _convert_list_of_examples(

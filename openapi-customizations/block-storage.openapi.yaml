@@ -35,9 +35,9 @@ servers:
                     to: api.magalu.cloud
                   - from: pre-prod
                     to: api.pre-prod.jaxyendy.com
-
 paths:
     /v1/volumes/{id}:
+        get:
             x-mgc-wait-termination:
                 maxRetries: 10
                 interval: 5s
@@ -59,7 +59,6 @@ paths:
                 "204":
                     links:
                         get:
-                            description: Check if Block Storage Volume is attached
                             x-mgc-wait-termination:
                                 maxRetries: 5
                                 interval: 5s
@@ -70,7 +69,6 @@ paths:
                 "204":
                     links:
                         get:
-                            description: Check if Block Storage Volume was detached successfully
                             x-mgc-wait-termination:
                                 maxRetries: 5
                                 interval: 5s

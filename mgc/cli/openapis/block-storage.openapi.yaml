@@ -914,7 +914,7 @@ paths:
                     links:
                         get:
                             operationId: get_volume_v1_v1_volumes__id__get
-                            description: Check if Block Storage Volume is attached
+                            description: Retrieve the details of a volume
                             parameters:
                                 id: $request.path.id
                             x-mgc-wait-termination:
@@ -1018,8 +1018,7 @@ paths:
                     links:
                         get:
                             operationId: get_volume_v1_v1_volumes__id__get
-                            description: Check if Block Storage Volume was detached
-                                successfully
+                            description: Retrieve the details of a volume
                             parameters:
                                 id: $request.path.id
                             x-mgc-wait-termination:
@@ -1630,7 +1629,6 @@ components:
                 description:
                     title: Description
                     nullable: true
-                    type: string
             type: object
             required:
             - volume
@@ -1679,7 +1677,6 @@ components:
                 description:
                     title: Description
                     nullable: true
-                    type: string
                 state:
                     $ref: '#/components/schemas/SnapshotStateV1'
                 status:
@@ -1826,7 +1823,7 @@ components:
                 size:
                     type: integer
                     maximum: 2147483648.0
-                    minimum: 1.0
+                    minimum: 10.0
                     title: Size
                     description: Gibibytes (GiB)
                 type:
@@ -1911,7 +1908,6 @@ components:
                     title: Type
                 error:
                     nullable: true
-                    $ref: '#/components/schemas/VolumeResponseError'
                 attachment:
                     anyOf:
                     -   $ref: '#/components/schemas/AttachmentResponse'
@@ -2084,7 +2080,7 @@ tags:
     description: Operations with volume types for volumes.
 -   name: snapshots
     description: Operations with snapshots for volumes.
-$id: https://block-storage.jaxyendy.com/v1/openapi.json
+$id: https://block-storage.jaxyendy.com/openapi.json
 servers:
 -   url: https://{env}/{region}/volume
     variables:

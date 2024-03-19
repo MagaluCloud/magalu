@@ -1,0 +1,23 @@
+Operations with snapshots for instances. | latest-snapshots
+
+Usage:
+  ./cli virtual-machine snapshots latest-snapshots [flags]
+  ./cli virtual-machine snapshots latest-snapshots [command]
+
+Commands:
+  create      Create a snapshot of a virtual machine asynchronously.
+  delete      Delete a Snapshot asynchronously
+  get         Retrieve the details of an snapshot.
+  list        Lists all snapshots in the current tenant.
+  rename      Renames a snapshot
+  restore     Restore a snapshot to a virtual machine
+
+Flags:
+  -h, --help      help for latest-snapshots
+  -v, --version   version for latest-snapshots
+
+Global Flags:
+      --cli.show-cli-globals   Show all CLI global flags on usage text
+
+Use "./cli virtual-machine snapshots latest-snapshots [command] --help" for more information about a command.
+

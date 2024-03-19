@@ -24,7 +24,7 @@ Flags:
       --cli.watch                     Wait until the operation is completed by calling the 'get' link and waiting until termination. Akin to '! get -w'
   -h, --help                          help for create
       --name string                   Name (between 1 and 255 characters) (required)
-      --size integer                  Size: Gibibytes (GiB) (range: 1 - 2147483648) (required)
+      --size integer                  Size: Gibibytes (GiB) (range: 10 - 2147483648) (required)
       --type object                   Type (at least one of: single property: id or single property: name)
                                       Use --type=help for more details (required)
       --type.id string                Type: Id (min character count: 1)

@@ -1,0 +1,28 @@
+Create a instance asynchronously
+
+Usage:
+  ./cli virtual-machine instances v0-instances create [flags]
+
+Flags:
+      --allocate-fip                  Allocate Fip (default true)
+      --availability-zone anyValue    Availability Zone
+                                      Use --availability-zone=help for more details
+      --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
+  -h, --help                          help for create
+      --image anyValue                Image
+                                      Use --image=help for more details
+      --key-name string               Key Name (between 1 and 255 characters) (required)
+      --name string                   Name (between 1 and 255 characters) (required)
+      --network-interfaces anyValue   Network Interfaces
+                                      Use --network-interfaces=help for more details
+      --type string                   Type (between 1 and 255 characters) (required)
+      --user-data anyValue            User Data
+                                      Use --user-data=help for more details
+  -v, --version                       version for create
+
+Global Flags:
+      --cli.show-cli-globals   Show all CLI global flags on usage text
+      --env enum               Environment to use (one of "pre-prod" or "prod") (default "prod")
+      --region enum            Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-ne1")
+      --server-url uri         Manually specify the server to use
+

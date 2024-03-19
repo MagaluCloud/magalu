@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
     title: vpc-api-product
-    description: APIs referentes ao produto de Network
+    description: APIs referentes ao produto de VPC
     contact:
         name: Tribo IAAS Cloud
         url: https://github.com/luizalabs
@@ -464,7 +464,7 @@ paths:
                         wait=true)
                     default: 120
                     nullable: true
-                    type: integer
+                    type: string
                 description: the approximate time in seconds you want to wait when
                     simulating the request as synchronous (only works with wait=true)
             requestBody:
@@ -791,7 +791,7 @@ paths:
                     default: true
                     title: Wait
                     nullable: true
-                    type: boolean
+                    type: string
             -   name: wait_timeout
                 in: query
                 required: false
@@ -802,7 +802,7 @@ paths:
                         wait=true)
                     default: 120
                     nullable: true
-                    type: integer
+                    type: string
                 description: the approximate time in seconds you want to wait when
                     simulating the request as synchronous (only works with wait=true)
             requestBody:
@@ -1063,7 +1063,7 @@ paths:
                         an approximate timeout with the waitTimeout parameter
                     default: true
                     nullable: true
-                    type: boolean
+                    type: string
                 description: The request will be asynchronous. The wait parameter
                     tells the API that you want the request to simulate synchronous
                     behavior (to maintain endpoint compatibility). You can set an
@@ -1078,7 +1078,7 @@ paths:
                         wait=true)
                     default: 120
                     nullable: true
-                    type: integer
+                    type: string
                 description: the approximate time in seconds you want to wait when
                     simulating the request as synchronous (only works with wait=true)
             requestBody:
@@ -1233,7 +1233,7 @@ paths:
     /v0/vpcs/{vpc_id}/subnets:
         get:
             tags:
-            - vpc
+            - subnets
             summary: List Subnets
             description: Returns a list of subnets for a provided vpc_id
             operationId: listSubnets
@@ -1264,7 +1264,7 @@ paths:
             x-mgc-hidden: true
         post:
             tags:
-            - vpc
+            - subnets
             summary: Create Subnet
             description: Create a Subnet
             operationId: createSubnet
@@ -1751,7 +1751,6 @@ components:
                 external_id:
                     title: External Id
                     nullable: true
-                    type: string
                 vpc_id:
                     type: string
                     title: Vpc Id
@@ -1761,13 +1760,9 @@ components:
                 created_at:
                     title: Created At
                     nullable: true
-                    type: string
-                    format: date-time
                 updated:
                     title: Updated
                     nullable: true
-                    type: string
-                    format: date-time
                 is_default:
                     type: boolean
                     title: Is Default
@@ -1777,7 +1772,6 @@ components:
                 error:
                     title: Error
                     nullable: true
-                    type: string
                 zone:
                     type: string
                     title: Zone
@@ -1812,26 +1806,18 @@ components:
                     title: Has Pip
                     default: true
                     nullable: true
-                    type: boolean
                 has_sg:
                     title: Has Sg
                     default: true
                     nullable: true
-                    type: boolean
                 subnets:
                     title: Subnets
                     default: []
                     nullable: true
-                    items:
-                        type: string
-                    type: array
                 security_groups_id:
                     title: Security Groups Id
                     default: []
                     nullable: true
-                    items:
-                        type: string
-                    type: array
             type: object
             required:
             - name
@@ -1888,27 +1874,21 @@ components:
                 id:
                     title: Id
                     nullable: true
-                    type: string
                 name:
                     title: Name
                     nullable: true
-                    type: string
                 description:
                     title: Description
                     nullable: true
-                    type: string
                 is_admin_state_up:
                     title: Is Admin State Up
                     nullable: true
-                    type: boolean
                 vpc_id:
                     title: Vpc Id
                     nullable: true
-                    type: string
                 is_port_security_enabled:
                     title: Is Port Security Enabled
                     nullable: true
-                    type: boolean
                 security_groups:
                     items:
                         type: string
@@ -1919,9 +1899,6 @@ components:
                     title: Public Ip
                     default: []
                     nullable: true
-                    items:
-                        $ref: '#/components/schemas/PublicIpResponsePort'
-                    type: array
                 ip_address:
                     items:
                         $ref: '#/components/schemas/IpAddress'
@@ -1931,13 +1908,9 @@ components:
                 created_at:
                     title: Created At
                     nullable: true
-                    type: string
-                    format: date-time
                 updated:
                     title: Updated
                     nullable: true
-                    type: string
-                    format: date-time
             type: object
             title: PortResponse
             example:
@@ -1962,7 +1935,6 @@ components:
                 id:
                     title: Id
                     nullable: true
-                    type: string
                 ip_address:
                     items:
                         $ref: '#/components/schemas/IpAddress'
@@ -2036,7 +2008,6 @@ components:
                     title: Description
                     default: ''
                     nullable: true
-                    type: string
             type: object
             title: PublicIpCreateRequest
             example:
@@ -2057,45 +2028,33 @@ components:
                 id:
                     title: Id
                     nullable: true
-                    type: string
                 external_id:
                     title: External Id
                     nullable: true
-                    type: string
                 vpc_id:
                     title: Vpc Id
                     nullable: true
-                    type: string
                 description:
                     title: Description
                     nullable: true
-                    type: string
                 public_ip:
                     title: Public Ip
                     nullable: true
-                    type: string
                 port_id:
                     title: Port Id
                     nullable: true
-                    type: string
                 created_at:
                     title: Created At
                     nullable: true
-                    type: string
-                    format: date-time
                 updated:
                     title: Updated
                     nullable: true
-                    type: string
-                    format: date-time
                 status:
                     title: Status
                     nullable: true
-                    type: string
                 error:
                     title: Error
                     nullable: true
-                    type: string
             type: object
             title: PublicIpDb
             example:
@@ -2125,11 +2084,9 @@ components:
                 public_ip_id:
                     title: Public Ip Id
                     nullable: true
-                    type: string
                 public_ip:
                     title: Public Ip
                     nullable: true
-                    type: string
             type: object
             title: PublicIpResponsePort
             example:
@@ -2149,15 +2106,12 @@ components:
                 public_ip:
                     title: Public Ip
                     nullable: true
-                    type: string
                 external_id:
                     title: External Id
                     nullable: true
-                    type: string
                 error:
                     title: Error
                     nullable: true
-                    type: string
             type: object
             required:
             - status
@@ -2241,28 +2195,21 @@ components:
                 id:
                     title: Id
                     nullable: true
-                    type: string
                 vpc_id:
                     title: Vpc Id
                     nullable: true
-                    type: string
                 router_id:
                     title: Router Id
                     nullable: true
-                    type: string
                 ip_address:
                     title: Ip Address
                     nullable: true
-                    type: string
                 nic_vpc_id:
                     title: Nic Vpc Id
                     nullable: true
-                    type: string
                 created_at:
                     title: Created At
                     nullable: true
-                    type: string
-                    format: date-time
             type: object
             title: RouterInterfaceResponse
             example:
@@ -2277,9 +2224,6 @@ components:
                     title: Router Interfaces
                     default: []
                     nullable: true
-                    items:
-                        $ref: '#/components/schemas/RouterInterfaceResponse'
-                    type: array
             type: object
             title: RouterInterfaceResponseList
             example:
@@ -2294,31 +2238,24 @@ components:
                 direction:
                     title: Direction
                     nullable: true
-                    type: string
                 port_range_min:
                     title: Port Range Min
                     nullable: true
-                    type: integer
                 port_range_max:
                     title: Port Range Max
                     nullable: true
-                    type: integer
                 protocol:
                     title: Protocol
                     nullable: true
-                    type: string
                 remote_ip_prefix:
                     title: Remote Ip Prefix
                     nullable: true
-                    type: string
                 remote_group_id:
                     title: Remote Group Id
                     nullable: true
-                    type: string
                 ethertype:
                     title: Ethertype
                     nullable: true
-                    type: string
             type: object
             title: RuleCreateRequest
             example:
@@ -2345,50 +2282,38 @@ components:
                 id:
                     title: Id
                     nullable: true
-                    type: string
                 security_group_id:
                     title: Security Group Id
                     nullable: true
-                    type: string
                 direction:
                     title: Direction
                     nullable: true
-                    type: string
                 port_range_min:
                     title: Port Range Min
                     nullable: true
-                    type: integer
                 port_range_max:
                     title: Port Range Max
                     nullable: true
-                    type: integer
                 protocol:
                     title: Protocol
                     nullable: true
-                    type: string
                 remote_ip_prefix:
                     title: Remote Ip Prefix
                     nullable: true
-                    type: string
                 remote_group_id:
                     title: Remote Group Id
                     nullable: true
-                    type: string
                 ethertype:
                     title: Ethertype
                     nullable: true
-                    type: string
                 created_at:
                     title: Created At
                     nullable: true
-                    type: string
-                    format: date-time
                 status:
                     $ref: '#/components/schemas/RuleStatus'
                 error:
                     title: Error
                     nullable: true
-                    type: string
             type: object
             required:
             - status
@@ -2410,51 +2335,38 @@ components:
                 direction:
                     title: Direction
                     nullable: true
-                    type: string
                 port_range_min:
                     title: Port Range Min
                     nullable: true
-                    type: integer
                 port_range_max:
                     title: Port Range Max
                     nullable: true
-                    type: integer
                 protocol:
                     title: Protocol
                     nullable: true
-                    type: string
                 remote_ip_prefix:
                     title: Remote Ip Prefix
                     nullable: true
-                    type: string
                 remote_group_id:
                     title: Remote Group Id
                     nullable: true
-                    type: string
                 status:
                     nullable: true
-                    $ref: '#/components/schemas/RuleStatus'
                 error:
                     title: Error
                     nullable: true
-                    type: string
                 id:
                     title: Id
                     nullable: true
-                    type: string
                 security_group_id:
                     title: Security Group Id
                     nullable: true
-                    type: string
                 ethertype:
                     title: Ethertype
                     nullable: true
-                    type: string
                 created_at:
                     title: Created At
                     nullable: true
-                    type: string
-                    format: date-time
             type: object
             title: RuleResponseEvent
             example:
@@ -2505,14 +2417,10 @@ components:
                 name:
                     title: Name
                     nullable: true
-                    type: string
-                    maxLength: 100
-                    minLength: 5
                 description:
                     title: Description
                     default: ''
                     nullable: true
-                    type: string
             type: object
             required:
             - name
@@ -2553,58 +2461,42 @@ components:
                 id:
                     title: Id
                     nullable: true
-                    type: string
                 vpc_id:
                     title: Vpc Id
                     nullable: true
-                    type: string
                 name:
                     title: Name
                     nullable: true
-                    type: string
                 description:
                     title: Description
                     nullable: true
-                    type: string
                 created_at:
                     title: Created At
                     nullable: true
-                    type: string
-                    format: date-time
                 updated:
                     title: Updated
                     nullable: true
-                    type: string
-                    format: date-time
                 status:
                     $ref: '#/components/schemas/SecurityGroupStatus'
                 error:
                     title: Error
                     nullable: true
-                    type: string
                 tenant_id:
                     title: Tenant Id
                     nullable: true
-                    type: string
                 project_type:
                     title: Project Type
                     nullable: true
-                    type: string
                 is_default:
                     title: Is Default
                     nullable: true
-                    type: boolean
                 external_id:
                     title: External Id
                     nullable: true
-                    type: string
                 rules:
                     title: Rules
                     default: []
                     nullable: true
-                    items:
-                        $ref: '#/components/schemas/RuleResponseEvent'
-                    type: array
             type: object
             required:
             - status
@@ -2657,47 +2549,35 @@ components:
                 id:
                     title: Id
                     nullable: true
-                    type: string
                 vpc_id:
                     title: Vpc Id
                     nullable: true
-                    type: string
                 name:
                     title: Name
                     nullable: true
-                    type: string
                 description:
                     title: Description
                     nullable: true
-                    type: string
                 created_at:
                     title: Created At
                     nullable: true
-                    type: string
-                    format: date-time
                 updated:
                     title: Updated
                     nullable: true
-                    type: string
-                    format: date-time
                 status:
                     $ref: '#/components/schemas/SecurityGroupStatus'
                 error:
                     title: Error
                     nullable: true
-                    type: string
                 tenant_id:
                     title: Tenant Id
                     nullable: true
-                    type: string
                 project_type:
                     title: Project Type
                     nullable: true
-                    type: string
                 is_default:
                     title: Is Default
                     nullable: true
-                    type: boolean
             type: object
             required:
             - status
@@ -2726,21 +2606,16 @@ components:
                 external_id:
                     title: External Id
                     nullable: true
-                    type: string
                 status:
                     type: string
                     title: Status
                 error:
                     title: Error
                     nullable: true
-                    type: string
                 rules:
                     title: Rules
                     default: []
                     nullable: true
-                    items:
-                        $ref: '#/components/schemas/vpc_api_product__vpc__models__security_group__RuleDefaultStatusEvent'
-                    type: array
             type: object
             required:
             - status
@@ -2779,11 +2654,9 @@ components:
                 description:
                     title: Description
                     nullable: true
-                    type: string
                 cidr_block:
                     title: Cidr Block
                     nullable: true
-                    type: string
                 ip_version:
                     type: integer
                     title: Ip Version
@@ -2921,7 +2794,6 @@ components:
                     title: Address Scope Id
                     description: The ID of the address scope for the subnet pool
                     nullable: true
-                    type: string
             type: object
             required:
             - name
@@ -3003,11 +2875,9 @@ components:
                 name:
                     title: Name
                     nullable: true
-                    type: string
                 description:
                     title: Description
                     nullable: true
-                    type: string
                 cidr_block:
                     type: string
                     title: Cidr Block
@@ -3017,13 +2887,9 @@ components:
                 created_at:
                     title: Created At
                     nullable: true
-                    type: string
-                    format: date-time
                 updated:
                     title: Updated
                     nullable: true
-                    type: string
-                    format: date-time
             type: object
             required:
             - id
@@ -3051,11 +2917,9 @@ components:
                 name:
                     title: Name
                     nullable: true
-                    type: string
                 description:
                     title: Description
                     nullable: true
-                    type: string
                 cidr_block:
                     type: string
                     title: Cidr Block
@@ -3065,13 +2929,9 @@ components:
                 created_at:
                     title: Created At
                     nullable: true
-                    type: string
-                    format: date-time
                 updated:
                     title: Updated
                     nullable: true
-                    type: string
-                    format: date-time
                 gateway_ip:
                     type: string
                     title: Gateway Ip
@@ -3166,7 +3026,6 @@ components:
                 description:
                     title: Description
                     nullable: true
-                    type: string
             type: object
             required:
             - name
@@ -3179,7 +3038,6 @@ components:
                 id:
                     title: Id
                     nullable: true
-                    type: string
             type: object
             title: VpcCreateResponse
             example:
@@ -3250,38 +3108,28 @@ components:
                 id:
                     title: Id
                     nullable: true
-                    type: string
                 tenant_id:
                     title: Tenant Id
                     nullable: true
-                    type: string
                 name:
                     title: Name
                     nullable: true
-                    type: string
                 description:
                     title: Description
                     nullable: true
-                    type: string
                 router_id:
                     title: Router Id
                     nullable: true
-                    type: string
                 external_network:
                     title: External Network
                     nullable: true
-                    type: string
                 network_id:
                     title: Network Id
                     nullable: true
-                    type: string
                 subnets:
                     title: Subnets
                     default: []
                     nullable: true
-                    items:
-                        type: string
-                    type: array
                 security_groups:
                     items:
                         type: string
@@ -3291,17 +3139,12 @@ components:
                 created_at:
                     title: Created At
                     nullable: true
-                    type: string
-                    format: date-time
                 updated:
                     title: Updated
                     nullable: true
-                    type: string
-                    format: date-time
                 is_default:
                     title: Is Default
                     nullable: true
-                    type: boolean
             type: object
             title: VpcResponse
             example:
@@ -3326,9 +3169,6 @@ components:
                     title: Vpcs
                     default: []
                     nullable: true
-                    items:
-                        $ref: '#/components/schemas/VpcResponse'
-                    type: array
             type: object
             title: VpcResponseList
             example:
@@ -3356,19 +3196,16 @@ components:
                 description:
                     title: Description
                     nullable: true
-                    type: string
                 subnetpool_id:
                     title: Subnetpool Id
                     description: ID of SubnetPool             from which the VPC will
                         get CIDRs.             Can be used instead of 'cidr' field.
                     nullable: true
-                    type: string
                 cidr:
                     title: Cidr
                     description: CIDR from which VPC's subnets will get IPs            Can
                         be used instead of 'subnetpool_id' field.
                     nullable: true
-                    type: string
             type: object
             required:
             - name
@@ -3386,45 +3223,35 @@ components:
                 security_group_id:
                     title: Security Group Id
                     nullable: true
-                    type: string
                 direction:
                     title: Direction
                     nullable: true
-                    type: string
                 port_range_min:
                     title: Port Range Min
                     nullable: true
-                    type: integer
                 port_range_max:
                     title: Port Range Max
                     nullable: true
-                    type: integer
                 protocol:
                     title: Protocol
                     nullable: true
-                    type: string
                 remote_ip_prefix:
                     title: Remote Ip Prefix
                     nullable: true
-                    type: string
                 remote_group_id:
                     title: Remote Group Id
                     nullable: true
-                    type: string
                 status:
                     $ref: '#/components/schemas/RuleStatus'
                 error:
                     title: Error
                     nullable: true
-                    type: string
                 resource_id:
                     title: Resource Id
                     nullable: true
-                    type: string
                 external_id:
                     title: External Id
                     nullable: true
-                    type: string
             type: object
             required:
             - status
@@ -3445,42 +3272,32 @@ components:
                 direction:
                     title: Direction
                     nullable: true
-                    type: string
                 port_range_min:
                     title: Port Range Min
                     nullable: true
-                    type: integer
                 port_range_max:
                     title: Port Range Max
                     nullable: true
-                    type: integer
                 protocol:
                     title: Protocol
                     nullable: true
-                    type: string
                 remote_ip_prefix:
                     title: Remote Ip Prefix
                     nullable: true
-                    type: string
                 remote_group_id:
                     title: Remote Group Id
                     nullable: true
-                    type: string
                 status:
                     nullable: true
-                    $ref: '#/components/schemas/RuleStatus'
                 error:
                     title: Error
                     nullable: true
-                    type: string
                 resource_id:
                     title: Resource Id
                     nullable: true
-                    type: string
                 external_id:
                     title: External Id
                     nullable: true
-                    type: string
             type: object
             title: RuleDefaultStatusEvent
             example:

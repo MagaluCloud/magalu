@@ -1,0 +1,110 @@
+ERROR	magalu.cloud/sdk/blueprint.network.subnets	failed to create child	{"child": {"name":"","version":"","description":"","summary":"","isInternal":false,"scopes":null,"children":null,"parametersSchema":null,"configsSchema":null,"resultSchema":null,"parameters":null,"configs":null,"result":"","steps":null,"$ref":"http://magalu.cloud/sdk#/network/vpcs/subnets/create"}, "error": "could not resolve \"/network/vpcs/subnets\": missing field: \"subnets\""}
+magalu.cloud/sdk/blueprint.createGroupChildren
+	/home/gfz/git/mgc/magalu/mgc/sdk/blueprint/grouper.go:24
+magalu.cloud/sdk/blueprint.newGrouper.func1
+	/home/gfz/git/mgc/magalu/mgc/sdk/blueprint/grouper.go:13
+magalu.cloud/core.(*GrouperLazyChildren[...]).getChildren
+	/home/gfz/git/mgc/magalu/mgc/core/grouper_lazy_children.go:32
+magalu.cloud/core.(*GrouperLazyChildren[...]).GetChildByName
+	/home/gfz/git/mgc/magalu/mgc/core/grouper_lazy_children.go:71
+magalu.cloud/core.mergeAfter
+	/home/gfz/git/mgc/magalu/mgc/core/merge.go:25
+magalu.cloud/core.createChildren.func1
+	/home/gfz/git/mgc/magalu/mgc/core/merge.go:49
+magalu.cloud/core.(*GrouperLazyChildren[...]).VisitChildren
+	/home/gfz/git/mgc/magalu/mgc/core/grouper_lazy_children.go:59
+magalu.cloud/core.createChildren
+	/home/gfz/git/mgc/magalu/mgc/core/merge.go:41
+magalu.cloud/core.createChildren.func1.NewMergeGroup.2
+	/home/gfz/git/mgc/magalu/mgc/core/merge.go:11
+magalu.cloud/core.(*GrouperLazyChildren[...]).getChildren
+	/home/gfz/git/mgc/magalu/mgc/core/grouper_lazy_children.go:32
+magalu.cloud/core.(*GrouperLazyChildren[...]).VisitChildren
+	/home/gfz/git/mgc/magalu/mgc/core/grouper_lazy_children.go:53
+magalu.cloud/cli/cmd.findChildByNameOrAliases
+	/home/gfz/git/mgc/magalu/mgc/cli/cmd/load_cmd_tree.go:27
+magalu.cloud/cli/cmd.loadGrouperChild
+	/home/gfz/git/mgc/magalu/mgc/cli/cmd/load_cmd_tree.go:52
+magalu.cloud/cli/cmd.loadChild
+	/home/gfz/git/mgc/magalu/mgc/cli/cmd/load_cmd_tree.go:71
+magalu.cloud/cli/cmd.loadCommandTree
+	/home/gfz/git/mgc/magalu/mgc/cli/cmd/load_cmd_tree.go:164
+magalu.cloud/cli/cmd.loadCommandTree
+	/home/gfz/git/mgc/magalu/mgc/cli/cmd/load_cmd_tree.go:222
+magalu.cloud/cli/cmd.loadCommandTree
+	/home/gfz/git/mgc/magalu/mgc/cli/cmd/load_cmd_tree.go:222
+magalu.cloud/cli/cmd.loadSdkCommandTree
+	/home/gfz/git/mgc/magalu/mgc/cli/cmd/load_cmd_tree.go:126
+magalu.cloud/cli/cmd.Execute
+	/home/gfz/git/mgc/magalu/mgc/cli/cmd/root.go:87
+main.main
+	/home/gfz/git/mgc/magalu/mgc/cli/main.go:11
+runtime.main
+	/usr/local/go/src/runtime/proc.go:271
+ERROR	magalu.cloud/sdk/blueprint.network.subnets	failed to create child	{"child": {"name":"","version":"","description":"","summary":"","isInternal":false,"scopes":null,"children":null,"parametersSchema":null,"configsSchema":null,"resultSchema":null,"parameters":null,"configs":null,"result":"","steps":null,"$ref":"http://magalu.cloud/sdk#/network/vpcs/subnets/list"}, "error": "could not resolve \"/network/vpcs/subnets\": missing field: \"subnets\""}
+magalu.cloud/sdk/blueprint.createGroupChildren
+	/home/gfz/git/mgc/magalu/mgc/sdk/blueprint/grouper.go:24
+magalu.cloud/sdk/blueprint.newGrouper.func1
+	/home/gfz/git/mgc/magalu/mgc/sdk/blueprint/grouper.go:13
+magalu.cloud/core.(*GrouperLazyChildren[...]).getChildren
+	/home/gfz/git/mgc/magalu/mgc/core/grouper_lazy_children.go:32
+magalu.cloud/core.(*GrouperLazyChildren[...]).GetChildByName
+	/home/gfz/git/mgc/magalu/mgc/core/grouper_lazy_children.go:71
+magalu.cloud/core.mergeAfter
+	/home/gfz/git/mgc/magalu/mgc/core/merge.go:25
+magalu.cloud/core.createChildren.func1
+	/home/gfz/git/mgc/magalu/mgc/core/merge.go:49
+magalu.cloud/core.(*GrouperLazyChildren[...]).VisitChildren
+	/home/gfz/git/mgc/magalu/mgc/core/grouper_lazy_children.go:59
+magalu.cloud/core.createChildren
+	/home/gfz/git/mgc/magalu/mgc/core/merge.go:41
+magalu.cloud/core.createChildren.func1.NewMergeGroup.2
+	/home/gfz/git/mgc/magalu/mgc/core/merge.go:11
+magalu.cloud/core.(*GrouperLazyChildren[...]).getChildren
+	/home/gfz/git/mgc/magalu/mgc/core/grouper_lazy_children.go:32
+magalu.cloud/core.(*GrouperLazyChildren[...]).VisitChildren
+	/home/gfz/git/mgc/magalu/mgc/core/grouper_lazy_children.go:53
+magalu.cloud/cli/cmd.findChildByNameOrAliases
+	/home/gfz/git/mgc/magalu/mgc/cli/cmd/load_cmd_tree.go:27
+magalu.cloud/cli/cmd.loadGrouperChild
+	/home/gfz/git/mgc/magalu/mgc/cli/cmd/load_cmd_tree.go:52
+magalu.cloud/cli/cmd.loadChild
+	/home/gfz/git/mgc/magalu/mgc/cli/cmd/load_cmd_tree.go:71
+magalu.cloud/cli/cmd.loadCommandTree
+	/home/gfz/git/mgc/magalu/mgc/cli/cmd/load_cmd_tree.go:164
+magalu.cloud/cli/cmd.loadCommandTree
+	/home/gfz/git/mgc/magalu/mgc/cli/cmd/load_cmd_tree.go:222
+magalu.cloud/cli/cmd.loadCommandTree
+	/home/gfz/git/mgc/magalu/mgc/cli/cmd/load_cmd_tree.go:222
+magalu.cloud/cli/cmd.loadSdkCommandTree
+	/home/gfz/git/mgc/magalu/mgc/cli/cmd/load_cmd_tree.go:126
+magalu.cloud/cli/cmd.Execute
+	/home/gfz/git/mgc/magalu/mgc/cli/cmd/root.go:87
+main.main
+	/home/gfz/git/mgc/magalu/mgc/cli/main.go:11
+runtime.main
+	/usr/local/go/src/runtime/proc.go:271
+Create a Subnet
+
+Usage:
+  ./cli network subnets vpcs-subnets create [vpc-id] [flags]
+
+Flags:
+      --cidr-block anyValue                    Cidr Block
+                                               Use --cidr-block=help for more details
+      --cli.list-links enum[=table]            List all available links for this command (one of "json", "table" or "yaml")
+      --description anyValue                   Description
+                                               Use --description=help for more details
+      --dns-nameservers array(ipvanyaddress)   Dns Nameservers (default [])
+  -h, --help                                   help for create
+      --ip-version integer                     Ip Version (required)
+      --name string                            Name (required)
+  -v, --version                                version for create
+      --vpc-id string                          Vpc Id (required)
+
+Global Flags:
+      --cli.show-cli-globals   Show all CLI global flags on usage text
+      --env enum               Environment to use (one of "pre-prod" or "prod") (default "prod")
+      --region enum            Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-ne1")
+      --server-url uri         Manually specify the server to use
+

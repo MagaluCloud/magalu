@@ -5,19 +5,26 @@ Usage:
 
 Flags:
       --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-      --direction string              Direction
-      --ethertype string              Ethertype
+      --direction anyValue            Direction
+                                      Use --direction=help for more details
+      --ethertype anyValue            Ethertype
+                                      Use --ethertype=help for more details
   -h, --help                          help for create
-      --port-range-max integer        Port Range Max
-      --port-range-min integer        Port Range Min
-      --protocol string               Protocol
-      --remote-group-id string        Remote Group Id
-      --remote-ip-prefix string       Remote Ip Prefix
+      --port-range-max anyValue       Port Range Max
+                                      Use --port-range-max=help for more details
+      --port-range-min anyValue       Port Range Min
+                                      Use --port-range-min=help for more details
+      --protocol anyValue             Protocol
+                                      Use --protocol=help for more details
+      --remote-group-id anyValue      Remote Group Id
+                                      Use --remote-group-id=help for more details
+      --remote-ip-prefix anyValue     Remote Ip Prefix
+                                      Use --remote-ip-prefix=help for more details
       --security-group-id string      Security Group Id (required)
       --validate-quota                validateQuota (default true)
   -v, --version                       version for create
-      --wait                          Wait (default true)
-      --wait-timeout integer          waitTimeout: the approximate time in seconds you want to wait when simulating the request as synchronous (only works with wait=true) (default 120)
+      --wait string                   Wait (default "true")
+      --wait-timeout string           waitTimeout: the approximate time in seconds you want to wait when simulating the request as synchronous (only works with wait=true) (default "120")
 
 Global Flags:
       --cli.show-cli-globals   Show all CLI global flags on usage text

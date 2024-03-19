@@ -1,0 +1,23 @@
+Operations with instances, including create, delete, start, stop, reboot and other actions. | v0-instances
+
+Usage:
+  ./cli virtual-machine instances v0-instances [flags]
+  ./cli virtual-machine instances v0-instances [command]
+
+Commands:
+  create      Instance Create
+  delete      Instance Delete
+  events      events
+  get         Instance Details
+  list        List Instances
+  update      Update Instance Status
+
+Flags:
+  -h, --help      help for v0-instances
+  -v, --version   version for v0-instances
+
+Global Flags:
+      --cli.show-cli-globals   Show all CLI global flags on usage text
+
+Use "./cli virtual-machine instances v0-instances [command] --help" for more information about a command.
+

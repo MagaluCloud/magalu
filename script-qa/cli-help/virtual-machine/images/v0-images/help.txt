@@ -1,0 +1,21 @@
+Operations with images for instances. | v0-images
+
+Usage:
+  ./cli virtual-machine images v0-images [flags]
+  ./cli virtual-machine images v0-images [command]
+
+Commands:
+  create      Create Image
+  delete      Delete Image
+  list        List Images
+  list-all    List Images All
+
+Flags:
+  -h, --help      help for v0-images
+  -v, --version   version for v0-images
+
+Global Flags:
+      --cli.show-cli-globals   Show all CLI global flags on usage text
+
+Use "./cli virtual-machine images v0-images [command] --help" for more information about a command.
+

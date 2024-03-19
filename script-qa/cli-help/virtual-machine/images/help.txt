@@ -5,7 +5,9 @@ Usage:
   ./cli virtual-machine images [command]
 
 Commands:
-  list        Retrieves all images available in the region.
+  list-latest-images Retrieves all images available in the region.
+  list-v1-images     Retrieves all images available in the region.
+  v0-images          v0-images
 
 Flags:
   -h, --help      help for images

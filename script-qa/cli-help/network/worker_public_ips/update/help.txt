@@ -4,13 +4,16 @@ Usage:
   ./cli network worker-public-ips update [public-ip-id] [flags]
 
 Flags:
-      --error string          Error
-      --external-id string    External Id
-  -h, --help                  help for update
-      --public-ip string      Public Ip
-      --public-ip-id string   Public Ip Id (required)
-      --status enum           PublicIpStatus (one of "created", "error" or "pending") (required)
-  -v, --version               version for update
+      --error anyValue         Error
+                               Use --error=help for more details
+      --external-id anyValue   External Id
+                               Use --external-id=help for more details
+  -h, --help                   help for update
+      --public-ip anyValue     Public Ip
+                               Use --public-ip=help for more details
+      --public-ip-id string    Public Ip Id (required)
+      --status enum            PublicIpStatus (one of "created", "error" or "pending") (required)
+  -v, --version                version for update
 
 Global Flags:
       --cli.show-cli-globals   Show all CLI global flags on usage text

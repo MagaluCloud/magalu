@@ -5,16 +5,9 @@ Usage:
   ./cli virtual-machine instances [command]
 
 Commands:
-  create      Create an instance asynchronously.
-  delete      Delete a instance asynchronously
-  get         Retrieve the details of an instance.
-  list        Lists all instances in the current tenant.
-  reboot      Starts a running or suspended instance.
-  rename      Renames an instance.
-  retype      Changes a running or stopped instance machine type for another one.
-  start       Starts a running or suspended instance.
-  stop        Stops a running instance.
-  suspend     Suspends a running instance.
+  latest-instances latest-instances
+  v0-instances     v0-instances
+  v1-instances     v1-instances
 
 Flags:
   -h, --help      help for instances

@@ -5,9 +5,11 @@ Usage:
 
 Flags:
       --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-      --description string            Description
+      --description anyValue          Description
+                                      Use --description=help for more details (default "")
   -h, --help                          help for create
-      --name string                   Name (between 5 and 100 characters) (required)
+      --name anyValue                 Name
+                                      Use --name=help for more details (required)
       --validate-quota                validateQuota (default true)
   -v, --version                       version for create
 
