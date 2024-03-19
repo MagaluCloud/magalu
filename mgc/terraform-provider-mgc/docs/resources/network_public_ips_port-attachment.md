@@ -17,5 +17,5 @@ Manage the attachment between a Public IP and a Port
 
 ### Required
 
-- `port_id` (String)
-- `public_ip_id` (String)
+- `port_id` (String) Id of the Port to attach the Public IP
+- `public_ip_id` (String) Id of the Public IP to attach port to

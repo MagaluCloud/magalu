@@ -5,8 +5,8 @@ Usage:
 
 Flags:
   -h, --help                       help for delete
-      --port-id string             Port Id (required)
-      --security-group-id string   Security Group Id (required)
+      --port-id string             port_id: ID of the Port to attach security group (required)
+      --security-group-id string   security_group_id: ID of the Security Group to attach (required)
 
 Global Flags:
       --cli.show-cli-globals   Show all CLI global flags on usage text

@@ -17,8 +17,7 @@ Examples:
   ./cli virtual-machine snapshots v1-snapshots restore --machine-type.id="9ec75090-2872-4f51-8111-53d05d96d2c6" --machine-type.name="some_resource_name" --network.associate-public-ip=true --network.vpc.id="9ec75090-2872-4f51-8111-53d05d96d2c6" --network.vpc.name="some_resource_name"
 
 Flags:
-      --availability-zone anyValue            Availability Zone
-                                              Use --availability-zone=help for more details
+      --availability-zone string              Availability Zone (between 1 and 255 characters)
       --cli.list-links enum[=table]           List all available links for this command (one of "json", "table" or "yaml")
   -h, --help                                  help for restore
       --id string                             Id (required)
@@ -41,8 +40,7 @@ Flags:
       --network.vpc.name string               Vpc: Name (between 1 and 255 characters)
                                               This is the same as '--network.vpc=name:string'.
       --ssh-key-name string                   Ssh Key Name (required)
-      --user-data anyValue                    User Data
-                                              Use --user-data=help for more details
+      --user-data string                      User Data (between 1 and 65000 characters)
   -v, --version                               version for restore
 
 Global Flags:

@@ -1,4 +1,4 @@
-Delete Vpc All
+Delete all VPCs from the provided tenant_id
 
 Usage:
   ./cli network vpcs delete-all [flags]

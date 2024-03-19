@@ -4,11 +4,9 @@ Usage:
   ./cli virtual-machine snapshots v0-snapshots update [urp-snapshot-id] [flags]
 
 Flags:
-      --error anyValue           Error
-                                 Use --error=help for more details
+      --error string             Error
   -h, --help                     help for update
-      --size anyValue            Size
-                                 Use --size=help for more details
+      --size integer             Size
       --status string            Status (required)
       --urp-snapshot-id string   Urp Snapshot Id (required)
   -v, --version                  version for update

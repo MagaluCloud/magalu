@@ -4206,6 +4206,7 @@ components:
                 platform:
                     title: Platform
                     nullable: true
+                    type: string
             type: object
             required:
             - id
@@ -4245,6 +4246,7 @@ components:
                 sku:
                     title: Sku
                     nullable: true
+                    type: string
                 internal:
                     type: boolean
                     title: Internal
@@ -4308,15 +4310,18 @@ components:
                 os_distribution:
                     title: Os Distribution
                     nullable: true
+                    type: string
                 version:
                     title: Version
                     nullable: true
+                    type: string
                 size:
                     type: integer
                     title: Size
                 sku:
                     title: Sku
                     nullable: true
+                    type: string
             type: object
             required:
             - id
@@ -4343,18 +4348,26 @@ components:
                 version:
                     title: Version
                     nullable: true
+                    type: string
                 platform:
                     title: Platform
                     nullable: true
+                    type: string
                 release_at:
                     title: Release At
                     nullable: true
+                    type: string
+                    example: '2022-01-01T00:00:10Z'
                 end_standard_support_at:
                     title: End Standard Support At
                     nullable: true
+                    type: string
+                    example: '2022-01-01T00:00:10Z'
                 end_life_at:
                     title: End Life At
                     nullable: true
+                    type: string
+                    example: '2022-01-01T00:00:10Z'
                 minimum_requirements:
                     $ref: '#/components/schemas/ImageReqMin'
             type: object
@@ -4404,12 +4417,21 @@ components:
                 image:
                     title: Image
                     nullable: true
+                    type: string
+                    maxLength: 255
+                    minLength: 1
                 availability_zone:
                     title: Availability Zone
                     nullable: true
+                    type: string
+                    maxLength: 255
+                    minLength: 1
                 network_interfaces:
                     title: Network Interfaces
                     nullable: true
+                    items:
+                        $ref: '#/components/schemas/NetworkID'
+                    type: array
                 allocate_fip:
                     type: boolean
                     title: Allocate Fip
@@ -4417,6 +4439,9 @@ components:
                 user_data:
                     title: User Data
                     nullable: true
+                    type: string
+                    maxLength: 65000
+                    minLength: 1
             type: object
             required:
             - name
@@ -4457,6 +4482,9 @@ components:
                 availability_zone:
                     title: Availability Zone
                     nullable: true
+                    type: string
+                    maxLength: 255
+                    minLength: 1
                 network:
                     allOf:
                     -   $ref: '#/components/schemas/InstanceCreateRequestV1Network'
@@ -4467,6 +4495,9 @@ components:
                 user_data:
                     title: User Data
                     nullable: true
+                    type: string
+                    maxLength: 65000
+                    minLength: 1
             type: object
             required:
             - name
@@ -4520,6 +4551,7 @@ components:
                 message:
                     title: Message
                     nullable: true
+                    type: string
             type: object
             required:
             - event
@@ -4570,9 +4602,11 @@ components:
                 instance_id:
                     title: Instance Id
                     nullable: true
+                    type: string
                 name:
                     title: Name
                     nullable: true
+                    type: string
                 instance_type:
                     $ref: '#/components/schemas/InstanceTypeForInstanceResponse'
                 image:
@@ -4580,18 +4614,23 @@ components:
                 vcpus:
                     title: Vcpus
                     nullable: true
+                    type: integer
                 memory:
                     title: Memory
                     nullable: true
+                    type: integer
                 root_storage:
                     title: Root Storage
                     nullable: true
+                    type: integer
                 power_state:
                     title: Power State
                     nullable: true
+                    type: integer
                 power_state_label:
                     title: Power State Label
                     nullable: true
+                    type: string
                 status:
                     type: string
                     title: Status
@@ -4602,27 +4641,44 @@ components:
                 updated_at:
                     title: Updated At
                     nullable: true
+                    type: string
+                    example: '2022-01-01T00:00:10Z'
                 key_name:
                     title: Key Name
                     nullable: true
+                    type: string
                 availability_zone:
                     title: Availability Zone
                     nullable: true
+                    type: string
                 volumes:
                     title: Volumes
                     nullable: true
+                    items:
+                        $ref: '#/components/schemas/InstanceVolumeResponse'
+                    type: array
                 network_interfaces:
                     title: Network Interfaces
                     nullable: true
+                    items:
+                        $ref: '#/components/schemas/NetworkInterface'
+                    type: array
                 security_groups:
                     title: Security Groups
                     nullable: true
+                    items:
+                        $ref: '#/components/schemas/SecurityGroup'
+                    type: array
                 ports:
                     title: Ports
                     nullable: true
+                    items:
+                        $ref: '#/components/schemas/IdResponse'
+                    type: array
                 error:
                     title: Error
                     nullable: true
+                    type: string
             type: object
             required:
             - id
@@ -4983,6 +5039,7 @@ components:
                 name:
                     title: Name
                     nullable: true
+                    type: string
                 machine_type:
                     anyOf:
                     -   $ref: '#/components/schemas/InstanceTypeForInstanceV1Response'
@@ -5004,6 +5061,7 @@ components:
                 user_data:
                     title: User Data
                     nullable: true
+                    type: string
                 created_at:
                     type: string
                     title: Created At
@@ -5011,12 +5069,16 @@ components:
                 updated_at:
                     title: Updated At
                     nullable: true
+                    type: string
+                    example: '2022-01-01T00:00:10Z'
                 ssh_key_name:
                     title: Ssh Key Name
                     nullable: true
+                    type: string
                 availability_zone:
                     title: Availability Zone
                     nullable: true
+                    type: string
                 network:
                     anyOf:
                     -   $ref: '#/components/schemas/NetworkPortsV1'
@@ -5025,6 +5087,7 @@ components:
                     nullable: true
                 error:
                     nullable: true
+                    $ref: '#/components/schemas/ErrorMessageV1'
             type: object
             required:
             - id
@@ -5157,6 +5220,8 @@ components:
                 deleted_keypairs:
                     title: Deleted Keypairs
                     nullable: true
+                    items: {}
+                    type: array
             type: object
             title: KeypairDeletedAllResponse
             example:
@@ -5170,6 +5235,7 @@ components:
                 public_key:
                     title: Public Key
                     nullable: true
+                    type: string
             type: object
             required:
             - name
@@ -5440,12 +5506,15 @@ components:
                 ip_address:
                     title: Ip Address
                     nullable: true
+                    type: string
                 version:
                     title: Version
                     nullable: true
+                    type: integer
                 type:
                     title: Type
                     nullable: true
+                    type: string
             type: object
             title: NetworkAddress
         NetworkID:
@@ -5462,6 +5531,7 @@ components:
                 name:
                     title: Name
                     nullable: true
+                    type: string
             type: object
             title: NetworkInfo
         NetworkInterface:
@@ -5469,8 +5539,10 @@ components:
                 mac_address:
                     title: Mac Address
                     nullable: true
+                    type: string
                 network:
                     nullable: true
+                    $ref: '#/components/schemas/NetworkInfo'
                 addresses:
                     items:
                         $ref: '#/components/schemas/NetworkAddress'
@@ -5495,9 +5567,13 @@ components:
             properties:
                 vpc:
                     nullable: true
+                    $ref: '#/components/schemas/VpcV1Expand'
                 ports:
                     title: Ports
                     nullable: true
+                    items:
+                        $ref: '#/components/schemas/PortV1Expand'
+                    type: array
             type: object
             title: NetworkPortsV1Expand
         PortID:
@@ -5554,6 +5630,7 @@ components:
                 name:
                     title: Name
                     nullable: true
+                    type: string
             type: object
             title: SecurityGroup
         SnapshotCreateRequest:
@@ -5666,6 +5743,7 @@ components:
                 error:
                     title: Error
                     nullable: true
+                    type: string
                 created_at:
                     type: string
                     title: Created At
@@ -5673,6 +5751,8 @@ components:
                 updated_at:
                     title: Updated At
                     nullable: true
+                    type: string
+                    example: '2022-01-01T00:00:10Z'
                 instance_type_id:
                     type: string
                     title: Instance Type Id
@@ -5681,6 +5761,7 @@ components:
                 size:
                     title: Size
                     nullable: true
+                    type: integer
             type: object
             required:
             - id
@@ -5713,6 +5794,7 @@ components:
                 name:
                     title: Name
                     nullable: true
+                    type: string
                 status:
                     type: string
                     title: Status
@@ -5726,6 +5808,8 @@ components:
                 updated_at:
                     title: Updated At
                     nullable: true
+                    type: string
+                    example: '2022-01-01T00:00:10Z'
                 size:
                     type: integer
                     title: Size
@@ -5774,9 +5858,13 @@ components:
                 availability_zone:
                     title: Availability Zone
                     nullable: true
+                    type: string
                 network_interfaces:
                     title: Network Interfaces
                     nullable: true
+                    items:
+                        $ref: '#/components/schemas/NetworkID'
+                    type: array
                 allocate_fip:
                     type: boolean
                     title: Allocate Fip
@@ -5784,6 +5872,7 @@ components:
                 user_data:
                     title: User Data
                     nullable: true
+                    type: string
             additionalProperties: false
             type: object
             required:
@@ -5819,6 +5908,9 @@ components:
                 availability_zone:
                     title: Availability Zone
                     nullable: true
+                    type: string
+                    maxLength: 255
+                    minLength: 1
                 network:
                     allOf:
                     -   $ref: '#/components/schemas/InstanceCreateRequestV1Network'
@@ -5829,6 +5921,9 @@ components:
                 user_data:
                     title: User Data
                     nullable: true
+                    type: string
+                    maxLength: 65000
+                    minLength: 1
             type: object
             required:
             - name
@@ -5854,12 +5949,15 @@ components:
                 error:
                     title: Error
                     nullable: true
+                    type: string
                 size:
                     title: Size
                     nullable: true
+                    type: integer
                 urp_snapshot_id:
                     title: Urp Snapshot Id
                     nullable: true
+                    type: string
             type: object
             required:
             - status
@@ -5878,9 +5976,11 @@ components:
                 error:
                     title: Error
                     nullable: true
+                    type: string
                 size:
                     title: Size
                     nullable: true
+                    type: integer
             type: object
             required:
             - status

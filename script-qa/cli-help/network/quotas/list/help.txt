@@ -1,11 +1,11 @@
-Return a list of usage quotas from a provided tenant
+Return a list of selected usage quotas from a provided tenant
 
 Usage:
   ./cli network quotas list [flags]
 
 Flags:
   -h, --help              help for list
-      --quota-slug enum   SlugQuotas (one of "nics", "public_ips", "security_group_rules", "security_groups", "subnet_pools", "subnets" or "vpcs") (required)
+      --quota-slug enum   quota_slug: Serivce to check quota usage (one of "nics", "public_ips", "security_group_rules", "security_groups", "subnet_pools", "subnets" or "vpcs") (required)
   -v, --version           version for list
 
 Global Flags:

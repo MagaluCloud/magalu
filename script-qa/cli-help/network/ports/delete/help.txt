@@ -5,7 +5,7 @@ Usage:
 
 Flags:
   -h, --help             help for delete
-      --port-id string   Port Id (required)
+      --port-id string   port_id: ID of the Port to delete (required)
   -v, --version          version for delete
 
 Global Flags:

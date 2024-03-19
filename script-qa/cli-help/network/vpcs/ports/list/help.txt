@@ -10,7 +10,7 @@ Flags:
   -h, --help                         help for list
       --port-id-list array(string)   Port Id List (default [])
   -v, --version                      version for list
-      --vpc-id string                Vpc Id (required)
+      --vpc-id string                vpc_id: ID of VPC to list ports (required)
 
 Global Flags:
       --cli.show-cli-globals   Show all CLI global flags on usage text

@@ -5,8 +5,7 @@ Usage:
 
 Flags:
       --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-      --description anyValue          Description
-                                      Use --description=help for more details
+      --description string            Description
   -h, --help                          help for create
       --name string                   Name (required)
   -v, --version                       version for create

@@ -237,11 +237,11 @@ children:
       - $ref: http://magalu.cloud/sdk#/network/security_groups/rules/list
         isInternal: false
 
-  - name: subnets
-    description: VPC Subnets
-    children:
-      - $ref: http://magalu.cloud/sdk#/network/vpcs/subnets/create
-        isInternal: false
+  # - name: subnets
+  #   description: VPC Subnets
+  #   children:
+  #     - $ref: http://magalu.cloud/sdk#/network/vpcs/subnets/create
+  #       isInternal: false
 
-      - $ref: http://magalu.cloud/sdk#/network/vpcs/subnets/list
-        isInternal: false
+  #     - $ref: http://magalu.cloud/sdk#/network/vpcs/subnets/list
+  #       isInternal: false

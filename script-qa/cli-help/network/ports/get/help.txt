@@ -1,4 +1,4 @@
-Return a port details
+Return a port details from the provided tenant_id
 
 Usage:
   ./cli network ports get [port-id] [flags]

@@ -5,15 +5,12 @@ Usage:
 
 Flags:
       --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-      --error anyValue                Error
-                                      Use --error=help for more details
+      --error string                  Error
   -h, --help                          help for internal
       --id string                     Id (required)
-      --size anyValue                 Size
-                                      Use --size=help for more details
+      --size integer                  Size
       --status string                 Status (required)
-      --urp-snapshot-id anyValue      Urp Snapshot Id
-                                      Use --urp-snapshot-id=help for more details (required)
+      --urp-snapshot-id string        Urp Snapshot Id (required)
   -v, --version                       version for internal
 
 Global Flags:

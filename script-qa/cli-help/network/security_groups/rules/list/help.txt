@@ -5,7 +5,7 @@ Usage:
 
 Flags:
   -h, --help                       help for list
-      --security-group-id string   Security Group Id (required)
+      --security-group-id string   Security Group ID: Id of the Security Group (required)
   -v, --version                    version for list
 
 Global Flags:

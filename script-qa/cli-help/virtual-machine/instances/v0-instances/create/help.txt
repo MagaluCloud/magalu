@@ -4,21 +4,18 @@ Usage:
   ./cli virtual-machine instances v0-instances create [flags]
 
 Flags:
-      --allocate-fip                  Allocate Fip (default true)
-      --availability-zone anyValue    Availability Zone
-                                      Use --availability-zone=help for more details
-      --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-  -h, --help                          help for create
-      --image anyValue                Image
-                                      Use --image=help for more details
-      --key-name string               Key Name (between 1 and 255 characters) (required)
-      --name string                   Name (between 1 and 255 characters) (required)
-      --network-interfaces anyValue   Network Interfaces
-                                      Use --network-interfaces=help for more details
-      --type string                   Type (between 1 and 255 characters) (required)
-      --user-data anyValue            User Data
-                                      Use --user-data=help for more details
-  -v, --version                       version for create
+      --allocate-fip                       Allocate Fip (default true)
+      --availability-zone string           Availability Zone (between 1 and 255 characters)
+      --cli.list-links enum[=table]        List all available links for this command (one of "json", "table" or "yaml")
+  -h, --help                               help for create
+      --image string                       Image (between 1 and 255 characters)
+      --key-name string                    Key Name (between 1 and 255 characters) (required)
+      --name string                        Name (between 1 and 255 characters) (required)
+      --network-interfaces array(object)   Network Interfaces
+                                           Use --network-interfaces=help for more details
+      --type string                        Type (between 1 and 255 characters) (required)
+      --user-data string                   User Data (between 1 and 65000 characters)
+  -v, --version                            version for create
 
 Global Flags:
       --cli.show-cli-globals   Show all CLI global flags on usage text

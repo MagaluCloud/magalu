@@ -1629,6 +1629,7 @@ components:
                 description:
                     title: Description
                     nullable: true
+                    type: string
             type: object
             required:
             - volume
@@ -1677,6 +1678,7 @@ components:
                 description:
                     title: Description
                     nullable: true
+                    type: string
                 state:
                     $ref: '#/components/schemas/SnapshotStateV1'
                 status:
@@ -1908,6 +1910,7 @@ components:
                     title: Type
                 error:
                     nullable: true
+                    $ref: '#/components/schemas/VolumeResponseError'
                 attachment:
                     anyOf:
                     -   $ref: '#/components/schemas/AttachmentResponse'

@@ -5,12 +5,10 @@ Usage:
 
 Flags:
       --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-      --description anyValue          Description
-                                      Use --description=help for more details (default "")
+      --description string            Description
   -h, --help                          help for create
-      --name anyValue                 Name
-                                      Use --name=help for more details (required)
-      --validate-quota                validateQuota (default true)
+      --name string                   Name (between 5 and 100 characters) (required)
+      --validate-quota                validateQuota: Validate the quota before creating Security Group (default true)
   -v, --version                       version for create
 
 Global Flags:

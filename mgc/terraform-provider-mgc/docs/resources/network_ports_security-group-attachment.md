@@ -17,5 +17,5 @@ Manage the attachment between a Security Group and a Port
 
 ### Required
 
-- `port_id` (String)
-- `security_group_id` (String)
+- `port_id` (String) ID of the Port to attach security group
+- `security_group_id` (String) ID of the Security Group to attach

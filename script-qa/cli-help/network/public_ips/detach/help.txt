@@ -6,8 +6,8 @@ Usage:
 Flags:
       --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
   -h, --help                          help for detach
-      --port-id string                Port Id (required)
-      --public-ip-id string           Public Ip Id (required)
+      --port-id string                Port ID: Id of the Port to detach the Public IP (required)
+      --public-ip-id string           Public IP ID: Id of the Public IP to detach port to (required)
   -v, --version                       version for detach
 
 Global Flags:

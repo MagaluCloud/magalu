@@ -5,7 +5,7 @@ Usage:
 
 Flags:
   -h, --help             help for delete
-      --rule-id string   Rule Id (required)
+      --rule-id string   Rule ID: Id of the Rule (required)
   -v, --version          version for delete
 
 Global Flags:

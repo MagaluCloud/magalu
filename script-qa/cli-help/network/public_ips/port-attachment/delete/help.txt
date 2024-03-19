@@ -5,8 +5,8 @@ Usage:
 
 Flags:
   -h, --help                  help for delete
-      --port-id string        Port Id (required)
-      --public-ip-id string   Public Ip Id (required)
+      --port-id string        Port ID: Id of the Port to attach the Public IP (required)
+      --public-ip-id string   Public IP ID: Id of the Public IP to attach port to (required)
 
 Global Flags:
       --cli.show-cli-globals   Show all CLI global flags on usage text
