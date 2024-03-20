@@ -5,11 +5,11 @@ Usage:
   ./cli kubernetes [command]
 
 Commands:
-  cluster     Endpoints related to the Cluster API.
-  flavor      Endpoints related to configuration information for OpenStack flavors.
-  info        Endpoints related to configuration information for the MKE API.
-  nodepool    Endpoints related to the Nodepool API within the Cluster API.
-  version     Endpoints related to configuration information for Kubernetes versions.
+  cluster     Endpoints related to the creation, listing, deletion, and retrieval of the kubeconfig for a Kubernetes cluster.
+  flavor      Endpoints related to listing available flavors for a Kubernetes cluster.
+  info        Endpoints related to listing available flavors (resource configurations) and Kubernetes versions for a Kubernetes cluster.
+  nodepool    Endpoints related to the creation, listing of nodepools and nodes, updating, and deletion of nodepools for a Kubernetes cluster.
+  version     Endpoints related to listing available Kubernetes versions for a Kubernetes cluster.
 
 Flags:
   -h, --help      help for kubernetes

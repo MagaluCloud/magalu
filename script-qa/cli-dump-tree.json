@@ -10399,15 +10399,6 @@
            },
            "flavor": {
             "description": "Definition of the CPU, RAM, and storage capacity of the nodes.\n\n| Flavor                    | vCPUs | RAM (GB) | Root Disk (GB) |\n|---------------------------|-------|----------|----------------|\n| cloud-k8s.gp1.small       | 2     | 4        | 20             |\n| cloud-k8s.gp1.medium      | 4     | 8        | 50             |\n| cloud-k8s.gp1.large       | 8     | 16       | 100            |\n| cloud-k8s.gp2.small       | 2     | 4        | 300            |\n| cloud-k8s.gp2.large       | 8     | 32       | 300            |\n| cloud-k8s.hm1.medium      | 4     | 16       | 50             |\n| cloud-k8s.i1-c48-r96-d300 | 48    | 96       | 300            |\n",
-            "enum": [
-             "cloud-k8s.gp1.small",
-             "cloud-k8s.gp1.medium",
-             "cloud-k8s.gp1.large",
-             "cloud-k8s.gp2.small",
-             "cloud-k8s.gp2.large",
-             "cloud-k8s.hm1.medium",
-             "cloud-k8s.i1-c48-r96-d300"
-            ],
             "example": "cloud-k8s.gp1.small",
             "type": "string"
            },
@@ -11479,7 +11470,7 @@
       "version": "0.1.0"
      }
     ],
-    "description": "Endpoints related to the Cluster API.",
+    "description": "Endpoints related to the creation, listing, deletion, and retrieval of the kubeconfig for a Kubernetes cluster.",
     "isInternal": false,
     "name": "cluster",
     "version": "0.1.0"
@@ -11706,7 +11697,7 @@
       "version": "0.1.0"
      }
     ],
-    "description": "Endpoints related to configuration information for OpenStack flavors.",
+    "description": "Endpoints related to listing available flavors for a Kubernetes cluster.",
     "isInternal": false,
     "name": "flavor",
     "version": "0.1.0"
@@ -12006,7 +11997,7 @@
       "version": "0.1.0"
      }
     ],
-    "description": "Endpoints related to configuration information for the MKE API.",
+    "description": "Endpoints related to listing available flavors (resource configurations) and Kubernetes versions for a Kubernetes cluster.",
     "isInternal": false,
     "name": "info",
     "version": "0.1.0"
@@ -12081,15 +12072,6 @@
         },
         "flavor": {
          "description": "Definition of the CPU, RAM, and storage capacity of the nodes.\n\n| Flavor                    | vCPUs | RAM (GB) | Root Disk (GB) |\n|---------------------------|-------|----------|----------------|\n| cloud-k8s.gp1.small       | 2     | 4        | 20             |\n| cloud-k8s.gp1.medium      | 4     | 8        | 50             |\n| cloud-k8s.gp1.large       | 8     | 16       | 100            |\n| cloud-k8s.gp2.small       | 2     | 4        | 300            |\n| cloud-k8s.gp2.large       | 8     | 32       | 300            |\n| cloud-k8s.hm1.medium      | 4     | 16       | 50             |\n| cloud-k8s.i1-c48-r96-d300 | 48    | 96       | 300            |\n",
-         "enum": [
-          "cloud-k8s.gp1.small",
-          "cloud-k8s.gp1.medium",
-          "cloud-k8s.gp1.large",
-          "cloud-k8s.gp2.small",
-          "cloud-k8s.gp2.large",
-          "cloud-k8s.hm1.medium",
-          "cloud-k8s.i1-c48-r96-d300"
-         ],
          "example": "cloud-k8s.gp1.small",
          "type": "string"
         },
@@ -13719,7 +13701,7 @@
       "version": "0.1.0"
      }
     ],
-    "description": "Endpoints related to the Nodepool API within the Cluster API.",
+    "description": "Endpoints related to the creation, listing of nodepools and nodes, updating, and deletion of nodepools for a Kubernetes cluster.",
     "isInternal": false,
     "name": "nodepool",
     "version": "0.1.0"
@@ -13800,7 +13782,7 @@
       "version": "0.1.0"
      }
     ],
-    "description": "Endpoints related to configuration information for Kubernetes versions.",
+    "description": "Endpoints related to listing available Kubernetes versions for a Kubernetes cluster.",
     "isInternal": false,
     "name": "version",
     "version": "0.1.0"

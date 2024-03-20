@@ -3,12 +3,12 @@
 page_title: "mgc_kubernetes_nodepool Resource - terraform-provider-mgc"
 subcategory: ""
 description: |-
-  Endpoints related to the Nodepool API within the Cluster API.
+  Endpoints related to the creation, listing of nodepools and nodes, updating, and deletion of nodepools for a Kubernetes cluster.
 ---
 
 # mgc_kubernetes_nodepool (Resource)
 
-Endpoints related to the Nodepool API within the Cluster API.
+Endpoints related to the creation, listing of nodepools and nodes, updating, and deletion of nodepools for a Kubernetes cluster.
 
 
 

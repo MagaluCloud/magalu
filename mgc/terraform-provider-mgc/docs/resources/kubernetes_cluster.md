@@ -3,12 +3,12 @@
 page_title: "mgc_kubernetes_cluster Resource - terraform-provider-mgc"
 subcategory: ""
 description: |-
-  Endpoints related to the Cluster API.
+  Endpoints related to the creation, listing, deletion, and retrieval of the kubeconfig for a Kubernetes cluster.
 ---
 
 # mgc_kubernetes_cluster (Resource)
 
-Endpoints related to the Cluster API.
+Endpoints related to the creation, listing, deletion, and retrieval of the kubeconfig for a Kubernetes cluster.
 
 
 

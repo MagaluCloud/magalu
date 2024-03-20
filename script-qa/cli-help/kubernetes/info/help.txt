@@ -1,4 +1,4 @@
-Endpoints related to configuration information for the MKE API.
+Endpoints related to listing available flavors (resource configurations) and Kubernetes versions for a Kubernetes cluster.
 
 Usage:
   ./cli kubernetes info [flags]

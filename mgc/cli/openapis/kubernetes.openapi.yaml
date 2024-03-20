@@ -2449,14 +2449,6 @@ components:
 
                         '
                     example: cloud-k8s.gp1.small
-                    enum:
-                    - cloud-k8s.gp1.small
-                    - cloud-k8s.gp1.medium
-                    - cloud-k8s.gp1.large
-                    - cloud-k8s.gp2.small
-                    - cloud-k8s.gp2.large
-                    - cloud-k8s.hm1.medium
-                    - cloud-k8s.i1-c48-r96-d300
                 replicas:
                     type: integer
                     description: Number of replicas of the nodes in the node pool.
@@ -3204,13 +3196,17 @@ components:
             description: "OAuth2 by IDPA (Identity Provider Authentication)  \n"
 tags:
 -   name: cluster
-    description: Endpoints related to the Cluster API.
+    description: Endpoints related to the creation, listing, deletion, and retrieval
+        of the kubeconfig for a Kubernetes cluster.
 -   name: nodepool
-    description: Endpoints related to the Nodepool API within the Cluster API.
+    description: Endpoints related to the creation, listing of nodepools and nodes,
+        updating, and deletion of nodepools for a Kubernetes cluster.
 -   name: info
-    description: Endpoints related to configuration information for the MKE API.
+    description: Endpoints related to listing available flavors (resource configurations)
+        and Kubernetes versions for a Kubernetes cluster.
 -   name: flavor
-    description: Endpoints related to configuration information for OpenStack flavors.
+    description: Endpoints related to listing available flavors for a Kubernetes cluster.
 -   name: version
-    description: Endpoints related to configuration information for Kubernetes versions.
+    description: Endpoints related to listing available Kubernetes versions for a
+        Kubernetes cluster.
 $id: https://mke.br-ne-1.com/docs/openapi-with-snippets.json
