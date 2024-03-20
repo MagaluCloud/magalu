@@ -82,7 +82,7 @@ func newIdentifiableHttpError(resp *http.Response, req *http.Request) *mgcHttpPk
 		logger().Debugw("ignored invalid response", "Content-Type", resp.Header.Get("Content-Type"), "error", err.Error())
 	}
 
-	if contentType == "application/json" {
+	if contentType == "application/xml" {
 		// Although the contentType is application/json, in the object-storage specific case,
 		// the response comes in XML format. Thus we have to decode it as such
 		data := XMLError{}
