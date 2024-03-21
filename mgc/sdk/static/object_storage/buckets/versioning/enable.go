@@ -21,10 +21,10 @@ var getEnable = utils.NewLazyLoader(func() core.Executor {
 		},
 		enableBucketVersioning,
 	)
-	exec = core.NewExecuteResultOutputOptions(exec, func(exec core.Executor, result core.Result) string {
-		return "template=Enabled versioning for {{.bucket}}"
+
+	return core.NewExecuteResultOutputOptions(exec, func(exec core.Executor, result core.Result) string {
+		return "template=Enabled versioning for {{.bucket}}\n"
 	})
-	return exec
 })
 
 func enableBucketVersioning(ctx context.Context, params enableBucketVersioningParams, cfg common.Config) (core.Value, error) {
@@ -38,7 +38,11 @@ func enableBucketVersioning(ctx context.Context, params enableBucketVersioningPa
 		return nil, err
 	}
 
-	return common.UnwrapResponse[core.Value](res, req)
+	_, err = common.UnwrapResponse[core.Value](res, req)
+	if err != nil {
+		return nil, err
+	}
+	return params, nil
 }
 
 func newEnableBucketVersioningRequest(ctx context.Context, bucketName common.BucketName, cfg common.Config) (*http.Request, error) {

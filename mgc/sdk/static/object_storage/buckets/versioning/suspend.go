@@ -21,10 +21,10 @@ var getSuspend = utils.NewLazyLoader(func() core.Executor {
 		},
 		SuspendBucketVersioning,
 	)
-	exec = core.NewExecuteResultOutputOptions(exec, func(exec core.Executor, result core.Result) string {
-		return "template=Suspended versioning for {{.bucket}}"
+
+	return core.NewExecuteResultOutputOptions(exec, func(exec core.Executor, result core.Result) string {
+		return "template=Suspended versioning for {{.bucket}}\n"
 	})
-	return exec
 })
 
 func SuspendBucketVersioning(ctx context.Context, params SuspendBucketVersioningParams, cfg common.Config) (core.Value, error) {
@@ -38,7 +38,11 @@ func SuspendBucketVersioning(ctx context.Context, params SuspendBucketVersioning
 		return nil, err
 	}
 
-	return common.UnwrapResponse[core.Value](res, req)
+	_, err = common.UnwrapResponse[core.Value](res, req)
+	if err != nil {
+		return nil, err
+	}
+	return params, nil
 }
 
 func newSuspendBucketVersioningRequest(ctx context.Context, bucketName common.BucketName, cfg common.Config) (*http.Request, error) {

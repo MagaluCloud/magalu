@@ -39,5 +39,5 @@ func newSetBucketVersioningRequest(
 		return nil, err
 	}
 
-	return http.NewRequestWithContext(ctx, http.MethodGet, url.String(), bytes.NewBuffer(body))
+	return http.NewRequestWithContext(ctx, http.MethodPut, url.String(), bytes.NewBuffer(body))
 }

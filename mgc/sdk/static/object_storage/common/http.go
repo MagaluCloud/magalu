@@ -28,6 +28,11 @@ func UnwrapResponse[T any](resp *http.Response, req *http.Request) (result T, er
 		return
 	}
 
+	contentLength := resp.Header.Get("Content-Length")
+	if contentLength == "0" {
+		return
+	}
+
 	contentType, params, _ := mime.ParseMediaType(resp.Header.Get("Content-Type"))
 
 	switch {
