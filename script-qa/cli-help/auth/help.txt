@@ -9,7 +9,6 @@ Usage:
 Commands:
   access-token Retrieve the access token used in the APIs
   login        Authenticate with Magalu Cloud
-  scopes       Manage scope operations for current access token
   tenant       Manage Tenants
 
 Flags:
