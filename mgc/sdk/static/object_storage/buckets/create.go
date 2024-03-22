@@ -29,7 +29,7 @@ var getCreate = utils.NewLazyLoader[core.Executor](func() core.Executor {
 				Name:        "create",
 				Summary:     "Create a new Bucket",
 				Description: `Buckets are "containers" that are able to store various Objects inside`,
-				Scopes:      core.Scopes{"object-storage.write"},
+				// Scopes:      core.Scopes{"object-storage.write"},
 			},
 			Links: utils.NewLazyLoaderWithArg(func(e core.Executor) core.Links {
 				return core.Links{

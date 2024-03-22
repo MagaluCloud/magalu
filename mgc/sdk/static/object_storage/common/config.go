@@ -6,7 +6,6 @@ type Config struct {
 	Workers   int    `json:"workers,omitempty" jsonschema:"description=Number of routines that spawn to do parallel operations within object_storage,default=5,minimum=1"`
 	ChunkSize uint64 `json:"chunkSize,omitempty" jsonschema:"description=Chunk size to consider when doing multipart requests. Specified in Mb,default=5,minimum=5,maximum=5120"`
 	Region    string `json:"region,omitempty" jsonschema:"description=Region to reach the service,default=br-ne1,enum=br-ne1,enum=br-se1,enum=br-mgl1"`
-	Env       string `json:"env,omitempty" jsonschema:"description=Environment to use,default=prod,enum=prod,enum=pre-prod"`
 	// See more about the 'squash' directive here: https://pkg.go.dev/github.com/mitchellh/mapstructure#hdr-Embedded_Structs_and_Squashing
 	config.NetworkConfig `json:",squash"` // nolint
 }

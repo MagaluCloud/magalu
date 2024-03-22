@@ -28,7 +28,7 @@ var getList = utils.NewLazyLoader[core.Executor](func() core.Executor {
 		core.DescriptorSpec{
 			Name:        "list",
 			Description: "List all existing Buckets",
-			Scopes:      core.Scopes{"object-storage.read"},
+			// Scopes:      core.Scopes{"object-storage.read"},
 		},
 		list,
 	)

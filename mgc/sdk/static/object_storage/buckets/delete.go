@@ -29,7 +29,7 @@ var getDelete = utils.NewLazyLoader[core.Executor](func() core.Executor {
 		core.DescriptorSpec{
 			Name:        "delete",
 			Description: "Delete an existing Bucket",
-			Scopes:      core.Scopes{"object-storage.write"},
+			// Scopes:      core.Scopes{"object-storage.write"},
 		},
 		deleteBucket,
 	)

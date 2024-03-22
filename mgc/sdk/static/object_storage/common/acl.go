@@ -77,15 +77,15 @@ func (p ACLPermissions) SetHeaders(req *http.Request, cfg Config) error {
 }
 
 type ACLStandardPermissions struct {
-	GrantFullControl []ACLPermission `json:"grant_full_control,omitempty" jsonschema:"description=Grantees get FULL_CONTROL"`
-	GrantRead        []ACLPermission `json:"grant_read,omitempty" jsonschema:"description=Allows grantees to list the objects in the bucket"`
+	grantFullControl []ACLPermission //`json:"grant_full_control,omitempty" jsonschema:"description=Grantees get FULL_CONTROL"`
+	grantRead        []ACLPermission //`json:"grant_read,omitempty" jsonschema:"description=Allows grantees to list the objects in the bucket"`
 	GrantWrite       []ACLPermission `json:"grant_write,omitempty" jsonschema:"description=Allows grantees to create objects in the bucket"`
-	GrantReadAcp     []ACLPermission `json:"grant_read_acp,omitempty" jsonschema:"description=Allows grantees to read the bucket ACL"`
-	GrantWriteAcp    []ACLPermission `json:"grant_write_acp,omitempty" jsonschema:"description=Allows grantees to write the ACL for the applicable bucket"`
+	grantReadAcp     []ACLPermission //`json:"grant_read_acp,omitempty" jsonschema:"description=Allows grantees to read the bucket ACL"`
+	grantWriteAcp    []ACLPermission //`json:"grant_write_acp,omitempty" jsonschema:"description=Allows grantees to write the ACL for the applicable bucket"`
 }
 
 func (o ACLStandardPermissions) Validate() error {
-	allPermissions := [][]ACLPermission{o.GrantFullControl, o.GrantRead, o.GrantWrite, o.GrantReadAcp, o.GrantWriteAcp}
+	allPermissions := [][]ACLPermission{o.grantFullControl, o.grantRead, o.GrantWrite, o.grantReadAcp, o.grantWriteAcp}
 	for _, permissions := range allPermissions {
 		for _, permission := range permissions {
 			err := permission.Validate()
@@ -104,12 +104,12 @@ func (p ACLStandardPermissions) IsEmpty() bool {
 }
 
 func (p ACLStandardPermissions) SetHeaders(req *http.Request, cfg Config) (err error) {
-	err = p.setHeader(req.Header, "x-amz-grant-full-control", p.GrantFullControl, cfg)
+	err = p.setHeader(req.Header, "x-amz-grant-full-control", p.grantFullControl, cfg)
 	if err != nil {
 		return err
 	}
 
-	err = p.setHeader(req.Header, "x-amz-grant-read", p.GrantRead, cfg)
+	err = p.setHeader(req.Header, "x-amz-grant-read", p.grantRead, cfg)
 	if err != nil {
 		return err
 	}
@@ -119,12 +119,12 @@ func (p ACLStandardPermissions) SetHeaders(req *http.Request, cfg Config) (err e
 		return err
 	}
 
-	err = p.setHeader(req.Header, "x-amz-grant-read-acp", p.GrantReadAcp, cfg)
+	err = p.setHeader(req.Header, "x-amz-grant-read-acp", p.grantReadAcp, cfg)
 	if err != nil {
 		return err
 	}
 
-	err = p.setHeader(req.Header, "x-amz-grant-write-acp", p.GrantWriteAcp, cfg)
+	err = p.setHeader(req.Header, "x-amz-grant-write-acp", p.grantWriteAcp, cfg)
 	if err != nil {
 		return err
 	}
@@ -148,7 +148,7 @@ func (p ACLStandardPermissions) tenantIdFromUserProject(userProject string) (str
 }
 
 func (p ACLStandardPermissions) userProjectFromTenantId(tenantId string, cfg Config) string {
-	pattern := fmt.Sprintf("cloud_%s_%s_%s", cfg.translateRegion(), cfg.Env, tenantId)
+	pattern := fmt.Sprintf("cloud_%s_prod_%s", cfg.translateRegion(), tenantId)
 	return fmt.Sprintf("%s:%s", pattern, pattern)
 }
 
@@ -189,8 +189,8 @@ func (p ACLStandardPermissions) setHeader(header http.Header, name string, permi
 type ACLCannedPermissions struct {
 	Private           bool `json:"private,omitempty" jsonschema:"description=Owner gets FULL_CONTROL. No one else has access rights"`
 	PublicRead        bool `json:"public_read,omitempty" jsonschema:"description=Owner gets FULL_CONTROL. Everyone else has READ rights"`
-	PublicReadWrite   bool `json:"public_read_write,omitempty" jsonschema:"description=Owner gets FULL_CONTROL. Everyone else has READ and WRITE rights"`
-	AuthenticatedRead bool `json:"authenticated_read,omitempty" jsonschema:"description=Owner gets FULL_CONTROL. Authenticated users have READ rights"`
+	publicReadWrite   bool //`json:"public_read_write,omitempty" jsonschema:"description=Owner gets FULL_CONTROL. Everyone else has READ and WRITE rights"`
+	authenticatedRead bool //`json:"authenticated_read,omitempty" jsonschema:"description=Owner gets FULL_CONTROL. Authenticated users have READ rights"`
 }
 
 func (o ACLCannedPermissions) Validate() error {
@@ -217,12 +217,12 @@ func (o ACLCannedPermissions) SetHeaders(req *http.Request) {
 		return
 	}
 
-	if o.PublicReadWrite {
+	if o.publicReadWrite {
 		req.Header.Set("x-amz-acl", "public-read-write")
 		return
 	}
 
-	if o.AuthenticatedRead {
+	if o.authenticatedRead {
 		req.Header.Set("x-amz-acl", "authenticated-read")
 		return
 	}

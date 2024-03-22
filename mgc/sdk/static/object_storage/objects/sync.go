@@ -49,7 +49,7 @@ var getSync = utils.NewLazyLoader[core.Executor](func() core.Executor {
 			Name:        "sync",
 			Summary:     "Synchronizes a local path to a bucket",
 			Description: "This command uploads any file from the source to the destination if it's not present or has a different size. Additionally any file in the destination not present on the source is deleted.",
-			Scopes:      core.Scopes{"object-storage.read", "object-storage.write"},
+			// Scopes:      core.Scopes{"object-storage.read", "object-storage.write"},
 		},
 		sync,
 	)

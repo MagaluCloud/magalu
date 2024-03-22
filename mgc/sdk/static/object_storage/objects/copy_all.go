@@ -13,7 +13,7 @@ var getCopyAll = utils.NewLazyLoader[core.Executor](func() core.Executor {
 		core.DescriptorSpec{
 			Name:        "copy-all",
 			Description: "Copy all objects from a bucket to another bucket",
-			Scopes:      core.Scopes{"object-storage.read", "object-storage.write"},
+			// Scopes:      core.Scopes{"object-storage.read", "object-storage.write"},
 		},
 		copyAll,
 	)

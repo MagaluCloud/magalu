@@ -7,27 +7,16 @@ Examples:
   ./cli object-storage buckets acl set --bucket="my-bucket"
 
 Flags:
-      --authenticated-read                 Owner gets FULL_CONTROL. Authenticated users have READ rights
-      --bucket string                      Name of the bucket to set permissions for (required)
-      --grant-full-control array(object)   Grantees get FULL_CONTROL
-                                           Use --grant-full-control=help for more details
-      --grant-read array(object)           Allows grantees to list the objects in the bucket
-                                           Use --grant-read=help for more details
-      --grant-read-acp array(object)       Allows grantees to read the bucket ACL
-                                           Use --grant-read-acp=help for more details
-      --grant-write array(object)          Allows grantees to create objects in the bucket
-                                           Use --grant-write=help for more details
-      --grant-write-acp array(object)      Allows grantees to write the ACL for the applicable bucket
-                                           Use --grant-write-acp=help for more details
-  -h, --help                               help for set
-      --private                            Owner gets FULL_CONTROL. No one else has access rights
-      --public-read                        Owner gets FULL_CONTROL. Everyone else has READ rights
-      --public-read-write                  Owner gets FULL_CONTROL. Everyone else has READ and WRITE rights
+      --bucket string               Name of the bucket to set permissions for (required)
+      --grant-write array(object)   Allows grantees to create objects in the bucket
+                                    Use --grant-write=help for more details
+  -h, --help                        help for set
+      --private                     Owner gets FULL_CONTROL. No one else has access rights
+      --public-read                 Owner gets FULL_CONTROL. Everyone else has READ rights
 
 Global Flags:
       --chunk-size integer     Chunk size to consider when doing multipart requests. Specified in Mb (range: 5 - 5120) (default 5)
       --cli.show-cli-globals   Show all CLI global flags on usage text
-      --env enum               Environment to use (one of "pre-prod" or "prod") (default "prod")
       --region enum            Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-ne1")
       --server-url uri         Manually specify the server to use
       --workers integer        Number of routines that spawn to do parallel operations within object_storage (min: 1) (default 5)

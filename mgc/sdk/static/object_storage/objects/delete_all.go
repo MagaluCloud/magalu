@@ -13,7 +13,7 @@ var getDeleteAll = utils.NewLazyLoader[core.Executor](func() core.Executor {
 		core.DescriptorSpec{
 			Name:        "delete-all",
 			Description: "Delete all objects from a bucket",
-			Scopes:      core.Scopes{"object-storage.read", "object-storage.write"},
+			// Scopes:      core.Scopes{"object-storage.read", "object-storage.write"},
 		},
 		deleteAll,
 	)

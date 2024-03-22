@@ -16,7 +16,7 @@ var getDownload = utils.NewLazyLoader[core.Executor](func() core.Executor {
 			Name:        "download",
 			Summary:     "Download an object from a bucket",
 			Description: "Download an object from a bucket. If no destination is specified, the default is the current working directory",
-			Scopes:      core.Scopes{"object-storage.read"},
+			// Scopes:      core.Scopes{"object-storage.read"},
 		},
 		download,
 	)
