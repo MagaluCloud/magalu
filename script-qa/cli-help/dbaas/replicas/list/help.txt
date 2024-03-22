@@ -4,8 +4,8 @@ Usage:
   ./cli dbaas replicas list [flags]
 
 Flags:
-      --control.limit integer     Limit (range: 1 - 25) (default 10)
-      --control.offset integer    Offset (min: 0)
+      --control.limit integer     Limit (range: 1 - 50) (default 10)
+      --control.offset integer   Offset (min: 0)
       --exchange string          Exchange (default "dbaas-internal")
   -h, --help                     help for list
       --source-id uuid           Source Id

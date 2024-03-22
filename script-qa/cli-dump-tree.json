@@ -3618,7 +3618,7 @@
        "type": "object"
       },
       "result": {},
-      "version": "1.16.0"
+      "version": "1.17.2"
      },
      {
       "configs": {
@@ -3769,7 +3769,7 @@
        "title": "BackupDetailResponse",
        "type": "object"
       },
-      "version": "1.16.0"
+      "version": "1.17.2"
      },
      {
       "configs": {
@@ -3810,7 +3810,7 @@
        "properties": {
         "_limit": {
          "default": 10,
-         "maximum": 25,
+         "maximum": 50,
          "minimum": 1,
          "title": " Limit",
          "type": "integer"
@@ -3818,7 +3818,7 @@
         "_offset": {
          "default": 0,
          "minimum": 0,
-         "title": " Offset",
+         "title": "Offset",
          "type": "integer"
         },
         "exchange": {
@@ -3863,6 +3863,53 @@
       },
       "result": {
        "properties": {
+        "meta": {
+         "properties": {
+          "page": {
+           "properties": {
+            "count": {
+             "description": "The number of items on the current page.",
+             "title": "Count",
+             "type": "integer"
+            },
+            "limit": {
+             "description": "The maximum number of items per page.",
+             "title": "Limit",
+             "type": "integer"
+            },
+            "max_limit": {
+             "description": "The maximum allowable limit for the number of items per page.",
+             "title": "Max Limit",
+             "type": "integer"
+            },
+            "offset": {
+             "description": "The number of items to skip before starting to collect the result set.",
+             "title": "Offset",
+             "type": "integer"
+            },
+            "total": {
+             "description": "The total number of items available across all pages.",
+             "title": "Total",
+             "type": "integer"
+            }
+           },
+           "required": [
+            "offset",
+            "limit",
+            "count",
+            "total",
+            "max_limit"
+           ],
+           "title": "PageResponse",
+           "type": "object"
+          }
+         },
+         "required": [
+          "page"
+         ],
+         "title": "MetaResponse",
+         "type": "object"
+        },
         "results": {
          "items": {
           "properties": {
@@ -3965,18 +4012,19 @@
         }
        },
        "required": [
+        "meta",
         "results"
        ],
        "title": "BackupsResponse",
        "type": "object"
       },
-      "version": "1.16.0"
+      "version": "1.17.2"
      }
     ],
     "description": "Database backups management.",
     "isInternal": false,
     "name": "backups",
-    "version": "1.16.0"
+    "version": "1.17.2"
    },
    {
     "children": [
@@ -4069,7 +4117,7 @@
        "title": "EngineResponse",
        "type": "object"
       },
-      "version": "1.16.0"
+      "version": "1.17.2"
      },
      {
       "configs": {
@@ -4110,7 +4158,7 @@
        "properties": {
         "_limit": {
          "default": 10,
-         "maximum": 25,
+         "maximum": 50,
          "minimum": 1,
          "title": "Limit",
          "type": "integer"
@@ -4134,6 +4182,53 @@
       },
       "result": {
        "properties": {
+        "meta": {
+         "properties": {
+          "page": {
+           "properties": {
+            "count": {
+             "description": "The number of items on the current page.",
+             "title": "Count",
+             "type": "integer"
+            },
+            "limit": {
+             "description": "The maximum number of items per page.",
+             "title": "Limit",
+             "type": "integer"
+            },
+            "max_limit": {
+             "description": "The maximum allowable limit for the number of items per page.",
+             "title": "Max Limit",
+             "type": "integer"
+            },
+            "offset": {
+             "description": "The number of items to skip before starting to collect the result set.",
+             "title": "Offset",
+             "type": "integer"
+            },
+            "total": {
+             "description": "The total number of items available across all pages.",
+             "title": "Total",
+             "type": "integer"
+            }
+           },
+           "required": [
+            "offset",
+            "limit",
+            "count",
+            "total",
+            "max_limit"
+           ],
+           "title": "PageResponse",
+           "type": "object"
+          }
+         },
+         "required": [
+          "page"
+         ],
+         "title": "MetaResponse",
+         "type": "object"
+        },
         "results": {
          "items": {
           "properties": {
@@ -4180,18 +4275,19 @@
         }
        },
        "required": [
+        "meta",
         "results"
        ],
        "title": "EnginesResponse",
        "type": "object"
       },
-      "version": "1.16.0"
+      "version": "1.17.2"
      }
     ],
     "description": "Datastores available for database instances.",
     "isInternal": true,
     "name": "datastores",
-    "version": "1.16.0"
+    "version": "1.17.2"
    },
    {
     "children": [
@@ -4284,7 +4380,7 @@
        "title": "EngineResponse",
        "type": "object"
       },
-      "version": "1.16.0"
+      "version": "1.17.2"
      },
      {
       "configs": {
@@ -4325,7 +4421,7 @@
        "properties": {
         "_limit": {
          "default": 10,
-         "maximum": 25,
+         "maximum": 50,
          "minimum": 1,
          "title": "Limit",
          "type": "integer"
@@ -4349,6 +4445,53 @@
       },
       "result": {
        "properties": {
+        "meta": {
+         "properties": {
+          "page": {
+           "properties": {
+            "count": {
+             "description": "The number of items on the current page.",
+             "title": "Count",
+             "type": "integer"
+            },
+            "limit": {
+             "description": "The maximum number of items per page.",
+             "title": "Limit",
+             "type": "integer"
+            },
+            "max_limit": {
+             "description": "The maximum allowable limit for the number of items per page.",
+             "title": "Max Limit",
+             "type": "integer"
+            },
+            "offset": {
+             "description": "The number of items to skip before starting to collect the result set.",
+             "title": "Offset",
+             "type": "integer"
+            },
+            "total": {
+             "description": "The total number of items available across all pages.",
+             "title": "Total",
+             "type": "integer"
+            }
+           },
+           "required": [
+            "offset",
+            "limit",
+            "count",
+            "total",
+            "max_limit"
+           ],
+           "title": "PageResponse",
+           "type": "object"
+          }
+         },
+         "required": [
+          "page"
+         ],
+         "title": "MetaResponse",
+         "type": "object"
+        },
         "results": {
          "items": {
           "properties": {
@@ -4395,18 +4538,19 @@
         }
        },
        "required": [
+        "meta",
         "results"
        ],
        "title": "EnginesResponse",
        "type": "object"
       },
-      "version": "1.16.0"
+      "version": "1.17.2"
      }
     ],
     "description": "Engines available for database instances.",
     "isInternal": false,
     "name": "engines",
-    "version": "1.16.0"
+    "version": "1.17.2"
    },
    {
     "children": [
@@ -4518,7 +4662,7 @@
        "title": "FlavorResponse",
        "type": "object"
       },
-      "version": "1.16.0"
+      "version": "1.17.2"
      },
      {
       "configs": {
@@ -4559,7 +4703,7 @@
        "properties": {
         "_limit": {
          "default": 10,
-         "maximum": 25,
+         "maximum": 50,
          "minimum": 1,
          "title": " Limit",
          "type": "integer"
@@ -4567,7 +4711,7 @@
         "_offset": {
          "default": 0,
          "minimum": 0,
-         "title": " Offset",
+         "title": "Offset",
          "type": "integer"
         },
         "status": {
@@ -4584,6 +4728,53 @@
       },
       "result": {
        "properties": {
+        "meta": {
+         "properties": {
+          "page": {
+           "properties": {
+            "count": {
+             "description": "The number of items on the current page.",
+             "title": "Count",
+             "type": "integer"
+            },
+            "limit": {
+             "description": "The maximum number of items per page.",
+             "title": "Limit",
+             "type": "integer"
+            },
+            "max_limit": {
+             "description": "The maximum allowable limit for the number of items per page.",
+             "title": "Max Limit",
+             "type": "integer"
+            },
+            "offset": {
+             "description": "The number of items to skip before starting to collect the result set.",
+             "title": "Offset",
+             "type": "integer"
+            },
+            "total": {
+             "description": "The total number of items available across all pages.",
+             "title": "Total",
+             "type": "integer"
+            }
+           },
+           "required": [
+            "offset",
+            "limit",
+            "count",
+            "total",
+            "max_limit"
+           ],
+           "title": "PageResponse",
+           "type": "object"
+          }
+         },
+         "required": [
+          "page"
+         ],
+         "title": "MetaResponse",
+         "type": "object"
+        },
         "results": {
          "items": {
           "properties": {
@@ -4649,18 +4840,19 @@
         }
        },
        "required": [
+        "meta",
         "results"
        ],
        "title": "FlavorsResponse",
        "type": "object"
       },
-      "version": "1.16.0"
+      "version": "1.17.2"
      }
     ],
     "description": "Flavors available for database instances.",
     "isInternal": false,
     "name": "flavors",
-    "version": "1.16.0"
+    "version": "1.17.2"
    },
    {
     "children": [
@@ -4703,13 +4895,13 @@
        "type": "object"
       },
       "result": {},
-      "version": "1.16.0"
+      "version": "1.17.2"
      }
     ],
     "description": "Health check.",
     "isInternal": true,
     "name": "healthcheck",
-    "version": "1.16.0"
+    "version": "1.17.2"
    },
    {
     "children": [
@@ -4791,7 +4983,7 @@
          "title": "BackupResponse",
          "type": "object"
         },
-        "version": "1.16.0"
+        "version": "1.17.2"
        },
        {
         "configs": {
@@ -4853,7 +5045,7 @@
          "type": "object"
         },
         "result": {},
-        "version": "1.16.0"
+        "version": "1.17.2"
        },
        {
         "configs": {
@@ -5010,7 +5202,7 @@
          "title": "BackupDetailResponse",
          "type": "object"
         },
-        "version": "1.16.0"
+        "version": "1.17.2"
        },
        {
         "configs": {
@@ -5051,7 +5243,7 @@
          "properties": {
           "_limit": {
            "default": 10,
-           "maximum": 25,
+           "maximum": 50,
            "minimum": 1,
            "title": " Limit",
            "type": "integer"
@@ -5059,7 +5251,7 @@
           "_offset": {
            "default": 0,
            "minimum": 0,
-           "title": " Offset",
+           "title": "Offset",
            "type": "integer"
           },
           "exchange": {
@@ -5112,6 +5304,53 @@
         },
         "result": {
          "properties": {
+          "meta": {
+           "properties": {
+            "page": {
+             "properties": {
+              "count": {
+               "description": "The number of items on the current page.",
+               "title": "Count",
+               "type": "integer"
+              },
+              "limit": {
+               "description": "The maximum number of items per page.",
+               "title": "Limit",
+               "type": "integer"
+              },
+              "max_limit": {
+               "description": "The maximum allowable limit for the number of items per page.",
+               "title": "Max Limit",
+               "type": "integer"
+              },
+              "offset": {
+               "description": "The number of items to skip before starting to collect the result set.",
+               "title": "Offset",
+               "type": "integer"
+              },
+              "total": {
+               "description": "The total number of items available across all pages.",
+               "title": "Total",
+               "type": "integer"
+              }
+             },
+             "required": [
+              "offset",
+              "limit",
+              "count",
+              "total",
+              "max_limit"
+             ],
+             "title": "PageResponse",
+             "type": "object"
+            }
+           },
+           "required": [
+            "page"
+           ],
+           "title": "MetaResponse",
+           "type": "object"
+          },
           "results": {
            "items": {
             "properties": {
@@ -5214,18 +5453,19 @@
           }
          },
          "required": [
+          "meta",
           "results"
          ],
          "title": "BackupsResponse",
          "type": "object"
         },
-        "version": "1.16.0"
+        "version": "1.17.2"
        }
       ],
       "description": "Database instances management. | backups",
       "isInternal": false,
       "name": "backups",
-      "version": "1.16.0"
+      "version": "1.17.2"
      },
      {
       "configs": {
@@ -5369,7 +5609,7 @@
        "title": "InstanceResponse",
        "type": "object"
       },
-      "version": "1.16.0"
+      "version": "1.17.2"
      },
      {
       "configs": {
@@ -5425,7 +5665,7 @@
        "type": "object"
       },
       "result": {},
-      "version": "1.16.0"
+      "version": "1.17.2"
      },
      {
       "configs": {
@@ -5826,7 +6066,7 @@
        "title": "InstanceDetailResponse",
        "type": "object"
       },
-      "version": "1.16.0"
+      "version": "1.17.2"
      },
      {
       "configs": {
@@ -5882,7 +6122,7 @@
         "_offset": {
          "default": 0,
          "minimum": 0,
-         "title": " Offset",
+         "title": "Offset",
          "type": "integer"
         },
         "exchange": {
@@ -5917,6 +6157,53 @@
       },
       "result": {
        "properties": {
+        "meta": {
+         "properties": {
+          "page": {
+           "properties": {
+            "count": {
+             "description": "The number of items on the current page.",
+             "title": "Count",
+             "type": "integer"
+            },
+            "limit": {
+             "description": "The maximum number of items per page.",
+             "title": "Limit",
+             "type": "integer"
+            },
+            "max_limit": {
+             "description": "The maximum allowable limit for the number of items per page.",
+             "title": "Max Limit",
+             "type": "integer"
+            },
+            "offset": {
+             "description": "The number of items to skip before starting to collect the result set.",
+             "title": "Offset",
+             "type": "integer"
+            },
+            "total": {
+             "description": "The total number of items available across all pages.",
+             "title": "Total",
+             "type": "integer"
+            }
+           },
+           "required": [
+            "offset",
+            "limit",
+            "count",
+            "total",
+            "max_limit"
+           ],
+           "title": "PageResponse",
+           "type": "object"
+          }
+         },
+         "required": [
+          "page"
+         ],
+         "title": "MetaResponse",
+         "type": "object"
+        },
         "results": {
          "items": {
           "properties": {
@@ -6261,12 +6548,13 @@
         }
        },
        "required": [
+        "meta",
         "results"
        ],
        "title": "InstancesResponse",
        "type": "object"
       },
-      "version": "1.16.0"
+      "version": "1.17.2"
      },
      {
       "configs": {
@@ -6691,7 +6979,7 @@
        "title": "InstanceDetailResponse",
        "type": "object"
       },
-      "version": "1.16.0"
+      "version": "1.17.2"
      },
      {
       "configs": {
@@ -6766,7 +7054,7 @@
        "title": "RestoreResponse",
        "type": "object"
       },
-      "version": "1.16.0"
+      "version": "1.17.2"
      },
      {
       "configs": {
@@ -7159,7 +7447,7 @@
        "title": "InstanceDetailResponse",
        "type": "object"
       },
-      "version": "1.16.0"
+      "version": "1.17.2"
      },
      {
       "configs": {
@@ -7552,7 +7840,7 @@
        "title": "InstanceDetailResponse",
        "type": "object"
       },
-      "version": "1.16.0"
+      "version": "1.17.2"
      },
      {
       "configs": {
@@ -7965,13 +8253,13 @@
        "title": "InstanceDetailResponse",
        "type": "object"
       },
-      "version": "1.16.0"
+      "version": "1.17.2"
      }
     ],
     "description": "Database instances management.",
     "isInternal": false,
     "name": "instances",
-    "version": "1.16.0"
+    "version": "1.17.2"
    },
    {
     "children": [
@@ -8053,7 +8341,7 @@
        "title": "ReplicaResponse",
        "type": "object"
       },
-      "version": "1.16.0"
+      "version": "1.17.2"
      },
      {
       "configs": {
@@ -8112,7 +8400,7 @@
        "nullable": true,
        "type": "null"
       },
-      "version": "1.16.0"
+      "version": "1.17.2"
      },
      {
       "configs": {
@@ -8330,7 +8618,7 @@
        "title": "ReplicaDetailResponse",
        "type": "object"
       },
-      "version": "1.16.0"
+      "version": "1.17.2"
      },
      {
       "configs": {
@@ -8371,7 +8659,7 @@
        "properties": {
         "_limit": {
          "default": 10,
-         "maximum": 25,
+         "maximum": 50,
          "minimum": 1,
          "title": " Limit",
          "type": "integer"
@@ -8379,7 +8667,7 @@
         "_offset": {
          "default": 0,
          "minimum": 0,
-         "title": " Offset",
+         "title": "Offset",
          "type": "integer"
         },
         "exchange": {
@@ -8397,6 +8685,53 @@
       },
       "result": {
        "properties": {
+        "meta": {
+         "properties": {
+          "page": {
+           "properties": {
+            "count": {
+             "description": "The number of items on the current page.",
+             "title": "Count",
+             "type": "integer"
+            },
+            "limit": {
+             "description": "The maximum number of items per page.",
+             "title": "Limit",
+             "type": "integer"
+            },
+            "max_limit": {
+             "description": "The maximum allowable limit for the number of items per page.",
+             "title": "Max Limit",
+             "type": "integer"
+            },
+            "offset": {
+             "description": "The number of items to skip before starting to collect the result set.",
+             "title": "Offset",
+             "type": "integer"
+            },
+            "total": {
+             "description": "The total number of items available across all pages.",
+             "title": "Total",
+             "type": "integer"
+            }
+           },
+           "required": [
+            "offset",
+            "limit",
+            "count",
+            "total",
+            "max_limit"
+           ],
+           "title": "PageResponse",
+           "type": "object"
+          }
+         },
+         "required": [
+          "page"
+         ],
+         "title": "MetaResponse",
+         "type": "object"
+        },
         "results": {
          "items": {
           "properties": {
@@ -8566,12 +8901,13 @@
         }
        },
        "required": [
+        "meta",
         "results"
        ],
        "title": "ReplicasResponse",
        "type": "object"
       },
-      "version": "1.16.0"
+      "version": "1.17.2"
      },
      {
       "configs": {
@@ -8795,7 +9131,7 @@
        "title": "ReplicaDetailResponse",
        "type": "object"
       },
-      "version": "1.16.0"
+      "version": "1.17.2"
      },
      {
       "configs": {
@@ -9013,7 +9349,7 @@
        "title": "ReplicaDetailResponse",
        "type": "object"
       },
-      "version": "1.16.0"
+      "version": "1.17.2"
      },
      {
       "configs": {
@@ -9231,19 +9567,19 @@
        "title": "ReplicaDetailResponse",
        "type": "object"
       },
-      "version": "1.16.0"
+      "version": "1.17.2"
      }
     ],
     "description": "Database replicas management.",
     "isInternal": false,
     "name": "replicas",
-    "version": "1.16.0"
+    "version": "1.17.2"
    }
   ],
   "description": "DBaaS API Product.",
   "isInternal": false,
   "name": "dbaas",
-  "version": "1.16.0"
+  "version": "1.17.2"
  },
  {
   "children": [

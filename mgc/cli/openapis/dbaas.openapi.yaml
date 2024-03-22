@@ -6,7 +6,7 @@ info:
         name: Tribo IAAS Cloud
         url: https://gitlab.luizalabs.com/cloud/dbaas/docs
         email: cloud-iaas-dbaas@luizalabs.com
-    version: 1.16.0
+    version: 1.17.2
 servers:
 -   url: https://{env}/{region}/database
     variables:
@@ -96,7 +96,7 @@ paths:
             parameters:
             -   required: false
                 schema:
-                    title: ' Offset'
+                    title: Offset
                     minimum: 0.0
                     type: integer
                     default: 0
@@ -105,7 +105,7 @@ paths:
             -   required: false
                 schema:
                     title: ' Limit'
-                    maximum: 25.0
+                    maximum: 50.0
                     minimum: 1.0
                     type: integer
                     default: 10
@@ -248,7 +248,7 @@ paths:
             -   required: false
                 schema:
                     title: Limit
-                    maximum: 25.0
+                    maximum: 50.0
                     minimum: 1.0
                     type: integer
                     default: 10
@@ -298,7 +298,7 @@ paths:
             -   required: false
                 schema:
                     title: Limit
-                    maximum: 25.0
+                    maximum: 50.0
                     minimum: 1.0
                     type: integer
                     default: 10
@@ -410,7 +410,7 @@ paths:
             parameters:
             -   required: false
                 schema:
-                    title: ' Offset'
+                    title: Offset
                     minimum: 0.0
                     type: integer
                     default: 0
@@ -419,7 +419,7 @@ paths:
             -   required: false
                 schema:
                     title: ' Limit'
-                    maximum: 25.0
+                    maximum: 50.0
                     minimum: 1.0
                     type: integer
                     default: 10
@@ -492,7 +492,7 @@ paths:
             parameters:
             -   required: false
                 schema:
-                    title: ' Offset'
+                    title: Offset
                     minimum: 0.0
                     type: integer
                     default: 0
@@ -1095,7 +1095,7 @@ paths:
                 in: path
             -   required: false
                 schema:
-                    title: ' Offset'
+                    title: Offset
                     minimum: 0.0
                     type: integer
                     default: 0
@@ -1104,7 +1104,7 @@ paths:
             -   required: false
                 schema:
                     title: ' Limit'
-                    maximum: 25.0
+                    maximum: 50.0
                     minimum: 1.0
                     type: integer
                     default: 10
@@ -1423,7 +1423,7 @@ paths:
                 in: query
             -   required: false
                 schema:
-                    title: ' Offset'
+                    title: Offset
                     minimum: 0.0
                     type: integer
                     default: 0
@@ -1538,7 +1538,7 @@ paths:
                 in: query
             -   required: false
                 schema:
-                    title: ' Offset'
+                    title: Offset
                     minimum: 0.0
                     type: integer
                     default: 0
@@ -1686,7 +1686,7 @@ paths:
                 in: query
             -   required: false
                 schema:
-                    title: ' Offset'
+                    title: Offset
                     minimum: 0.0
                     type: integer
                     default: 0
@@ -1695,7 +1695,7 @@ paths:
             -   required: false
                 schema:
                     title: ' Limit'
-                    maximum: 25.0
+                    maximum: 50.0
                     minimum: 1.0
                     type: integer
                     default: 10
@@ -2253,9 +2253,12 @@ components:
         BackupsResponse:
             title: BackupsResponse
             required:
+            - meta
             - results
             type: object
             properties:
+                meta:
+                    $ref: '#/components/schemas/MetaResponse'
                 results:
                     title: Results
                     type: array
@@ -2296,9 +2299,12 @@ components:
         EnginesResponse:
             title: EnginesResponse
             required:
+            - meta
             - results
             type: object
             properties:
+                meta:
+                    $ref: '#/components/schemas/MetaResponse'
                 results:
                     title: Results
                     type: array
@@ -2359,9 +2365,12 @@ components:
         FlavorsResponse:
             title: FlavorsResponse
             required:
+            - meta
             - results
             type: object
             properties:
+                meta:
+                    $ref: '#/components/schemas/MetaResponse'
                 results:
                     title: Results
                     type: array
@@ -2669,9 +2678,12 @@ components:
         InstancesResponse:
             title: InstancesResponse
             required:
+            - meta
             - results
             type: object
             properties:
+                meta:
+                    $ref: '#/components/schemas/MetaResponse'
                 results:
                     title: Results
                     type: array
@@ -2761,14 +2773,57 @@ components:
         InternalInstancesResponse:
             title: InternalInstancesResponse
             required:
+            - meta
             - results
             type: object
             properties:
+                meta:
+                    $ref: '#/components/schemas/MetaResponse'
                 results:
                     title: Results
                     type: array
                     items:
                         $ref: '#/components/schemas/InternalInstanceDetailResponse'
+        MetaResponse:
+            title: MetaResponse
+            required:
+            - page
+            type: object
+            properties:
+                page:
+                    $ref: '#/components/schemas/PageResponse'
+        PageResponse:
+            title: PageResponse
+            required:
+            - offset
+            - limit
+            - count
+            - total
+            - max_limit
+            type: object
+            properties:
+                offset:
+                    title: Offset
+                    type: integer
+                    description: The number of items to skip before starting to collect
+                        the result set.
+                limit:
+                    title: Limit
+                    type: integer
+                    description: The maximum number of items per page.
+                count:
+                    title: Count
+                    type: integer
+                    description: The number of items on the current page.
+                total:
+                    title: Total
+                    type: integer
+                    description: The total number of items available across all pages.
+                max_limit:
+                    title: Max Limit
+                    type: integer
+                    description: The maximum allowable limit for the number of items
+                        per page.
         ReplicaAddressResponse:
             title: ReplicaAddressResponse
             required:
@@ -2905,9 +2960,12 @@ components:
         ReplicasResponse:
             title: ReplicasResponse
             required:
+            - meta
             - results
             type: object
             properties:
+                meta:
+                    $ref: '#/components/schemas/MetaResponse'
                 results:
                     title: Results
                     type: array
@@ -2992,9 +3050,12 @@ components:
         UpgradesResponse:
             title: UpgradesResponse
             required:
+            - meta
             - results
             type: object
             properties:
+                meta:
+                    $ref: '#/components/schemas/MetaResponse'
                 results:
                     title: Results
                     type: array

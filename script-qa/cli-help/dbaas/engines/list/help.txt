@@ -4,7 +4,7 @@ Usage:
   ./cli dbaas engines list [flags]
 
 Flags:
-      --control.limit integer    Limit (range: 1 - 25) (default 10)
+      --control.limit integer    Limit (range: 1 - 50) (default 10)
       --control.offset integer   Offset (min: 0)
   -h, --help                     help for list
       --status enum              Value referring to engine status. (one of "ACTIVE" or "DEPRECATED")

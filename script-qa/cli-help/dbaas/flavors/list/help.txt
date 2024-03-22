@@ -4,8 +4,8 @@ Usage:
   ./cli dbaas flavors list [flags]
 
 Flags:
-      --control.limit integer     Limit (range: 1 - 25) (default 10)
-      --control.offset integer    Offset (min: 0)
+      --control.limit integer     Limit (range: 1 - 50) (default 10)
+      --control.offset integer   Offset (min: 0)
   -h, --help                     help for list
       --status enum              An enumeration. (one of "ACTIVE" or "DEPRECATED") (default "ACTIVE")
   -v, --version                  version for list
