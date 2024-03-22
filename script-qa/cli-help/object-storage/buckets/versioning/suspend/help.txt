@@ -4,7 +4,7 @@ Usage:
   ./cli object-storage buckets versioning suspend [bucket] [flags]
 
 Flags:
-      --bucket string   Bucket name to suspend versioning (between 3 and 63 characters) (required)
+      --bucket string   Bucket name to suspend versioning (required)
   -h, --help            help for suspend
 
 Global Flags:

@@ -4,7 +4,7 @@ Usage:
   ./cli object-storage buckets acl get [bucket] [flags]
 
 Flags:
-      --bucket string   Specifies the bucket whose ACL is being requested (between 3 and 63 characters) (required)
+      --bucket string   Specifies the bucket whose ACL is being requested (required)
   -h, --help            help for get
 
 Global Flags:

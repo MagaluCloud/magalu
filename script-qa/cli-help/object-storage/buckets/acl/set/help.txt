@@ -8,7 +8,7 @@ Examples:
 
 Flags:
       --authenticated-read                 Owner gets FULL_CONTROL. Authenticated users have READ rights
-      --bucket string                      Name of the bucket to set permissions for (between 3 and 63 characters) (required)
+      --bucket string                      Name of the bucket to set permissions for (required)
       --grant-full-control array(object)   Grantees get FULL_CONTROL
                                            Use --grant-full-control=help for more details
       --grant-read array(object)           Allows grantees to list the objects in the bucket

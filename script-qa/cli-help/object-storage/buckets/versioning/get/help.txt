@@ -4,7 +4,7 @@ Usage:
   ./cli object-storage buckets versioning get [bucket] [flags]
 
 Flags:
-      --bucket string   Bucket name to get versioning info from (between 3 and 63 characters) (required)
+      --bucket string   Bucket name to get versioning info from (required)
   -h, --help            help for get
 
 Global Flags:

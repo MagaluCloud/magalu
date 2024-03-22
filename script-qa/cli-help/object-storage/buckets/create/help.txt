@@ -19,7 +19,7 @@ Flags:
                                            Use --grant-write-acp=help for more details
   -h, --help                               help for create
       --location string                    Location constraint for the bucket (default "br-ne-1")
-      --name string                        Name of the bucket to be created (between 3 and 63 characters) (required)
+      --name string                        Name of the bucket to be created (required)
       --private                            Owner gets FULL_CONTROL. No one else has access rights
       --public-read                        Owner gets FULL_CONTROL. Everyone else has READ rights
       --public-read-write                  Owner gets FULL_CONTROL. Everyone else has READ and WRITE rights

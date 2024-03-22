@@ -4,7 +4,7 @@ Usage:
   ./cli object-storage buckets versioning enable [bucket] [flags]
 
 Flags:
-      --bucket string   Bucket name to enable versioning (between 3 and 63 characters) (required)
+      --bucket string   Bucket name to enable versioning (required)
   -h, --help            help for enable
 
 Global Flags:

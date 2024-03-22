@@ -20081,8 +20081,6 @@
          "properties": {
           "bucket": {
            "description": "Specifies the bucket whose ACL is being requested",
-           "maxLength": 63,
-           "minLength": 3,
            "type": "string"
           }
          },
@@ -20215,8 +20213,6 @@
           "bucket": {
            "description": "Name of the bucket to set permissions for",
            "example": "my-bucket",
-           "maxLength": 63,
-           "minLength": 3,
            "type": "string"
           },
           "grant_full_control": {
@@ -20508,8 +20504,6 @@
         },
         "name": {
          "description": "Name of the bucket to be created",
-         "maxLength": 63,
-         "minLength": 3,
          "type": "string"
         },
         "private": {
@@ -20611,8 +20605,6 @@
        "properties": {
         "bucket": {
          "description": "Name of the bucket to be deleted",
-         "maxLength": 63,
-         "minLength": 3,
          "type": "string"
         },
         "force": {
@@ -20877,8 +20869,6 @@
          "properties": {
           "bucket": {
            "description": "Bucket name to enable versioning",
-           "maxLength": 63,
-           "minLength": 3,
            "type": "string"
           }
          },
@@ -20968,8 +20958,6 @@
          "properties": {
           "bucket": {
            "description": "Bucket name to get versioning info from",
-           "maxLength": 63,
-           "minLength": 3,
            "type": "string"
           }
          },
@@ -21045,8 +21033,6 @@
          "properties": {
           "bucket": {
            "description": "Bucket name to suspend versioning",
-           "maxLength": 63,
-           "minLength": 3,
            "type": "string"
           }
          },
@@ -21818,8 +21804,6 @@
         },
         "bucket": {
          "description": "Name of the bucket to delete objects from",
-         "maxLength": 63,
-         "minLength": 3,
          "type": "string"
         },
         "filter": {

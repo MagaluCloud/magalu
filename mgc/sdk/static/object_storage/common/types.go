@@ -13,8 +13,8 @@ type BucketName string
 
 func (b BucketName) JSONSchemaExtend(s *jsonschema.Schema) {
 	// https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucketnamingrules.html
-	s.MinLength = 3
-	s.MaxLength = 63
+	// s.MinLength = 3
+	// s.MaxLength = 63
 }
 
 func (b BucketName) AsURI() mgcSchemaPkg.URI {

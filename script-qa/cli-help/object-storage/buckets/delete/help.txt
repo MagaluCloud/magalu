@@ -4,7 +4,7 @@ Usage:
   ./cli object-storage buckets delete [bucket] [flags]
 
 Flags:
-      --bucket string   Name of the bucket to be deleted (between 3 and 63 characters) (required)
+      --bucket string   Name of the bucket to be deleted (required)
       --force           Delete the bucket even if there are still objects inside (required)
   -h, --help            help for delete
 
