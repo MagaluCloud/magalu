@@ -83,8 +83,6 @@ func newIdentifiableHttpError(resp *http.Response, req *http.Request) *mgcHttpPk
 	}
 
 	if contentType == "application/xml" {
-		// Although the contentType is application/json, in the object-storage specific case,
-		// the response comes in XML format. Thus we have to decode it as such
 		data := XMLError{}
 		decoder := xml.NewDecoder(bytes.NewBuffer(payload))
 
