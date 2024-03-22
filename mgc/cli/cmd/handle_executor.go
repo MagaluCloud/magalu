@@ -45,7 +45,7 @@ func checkScopes(sdk *mgcSdk.Sdk, exec core.Executor) error {
 	}
 
 	if len(missing) > 0 {
-		return fmt.Errorf("this operation requires the following scopes: %v. To add them, run 'auth scopes add'", missing)
+		return fmt.Errorf("this operation requires the following scopes: %v. To add them, run 'mgc auth login'", missing)
 	}
 
 	return nil
