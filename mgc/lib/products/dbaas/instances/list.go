@@ -9,7 +9,7 @@ List all database instances.
 
 Returns a list of database instances for a x-tenant-id.
 
-Version: 1.15.3
+Version: 1.17.2
 
 import "magalu.cloud/lib/products/dbaas/instances"
 */
@@ -38,7 +38,20 @@ type ListConfigs struct {
 }
 
 type ListResult struct {
+	Meta    ListResultMeta    `json:"meta"`
 	Results ListResultResults `json:"results"`
+}
+
+type ListResultMeta struct {
+	Page ListResultMetaPage `json:"page"`
+}
+
+type ListResultMetaPage struct {
+	Count    int `json:"count"`
+	Limit    int `json:"limit"`
+	MaxLimit int `json:"max_limit"`
+	Offset   int `json:"offset"`
+	Total    int `json:"total"`
 }
 
 type ListResultResultsItem struct {
@@ -47,6 +60,7 @@ type ListResultResultsItem struct {
 	BackupStartAt       string                         `json:"backup_start_at"`
 	CreatedAt           string                         `json:"created_at"`
 	DatastoreId         string                         `json:"datastore_id"`
+	EngineId            string                         `json:"engine_id"`
 	FinishedAt          string                         `json:"finished_at,omitempty"`
 	FlavorId            string                         `json:"flavor_id"`
 	Generation          string                         `json:"generation"`
@@ -71,6 +85,7 @@ type ListResultResultsItemReplicasItem struct {
 	Addresses   ListResultResultsItemReplicasItemAddresses `json:"addresses"`
 	CreatedAt   string                                     `json:"created_at"`
 	DatastoreId string                                     `json:"datastore_id"`
+	EngineId    string                                     `json:"engine_id"`
 	FinishedAt  string                                     `json:"finished_at,omitempty"`
 	FlavorId    string                                     `json:"flavor_id"`
 	Generation  string                                     `json:"generation"`

@@ -315,7 +315,7 @@ func (cf *cmdFlags) newCompleteFlagFunc(f *flag.Flag) func(cmd *cobra.Command, a
 func (cf *cmdFlags) addFlags(cmd *cobra.Command) {
 	configFlags := cmd.Root().PersistentFlags()
 	parametersFlags := cmd.Flags()
-
+	showHiddenFlags := getShowHiddenFlag(cmd)
 	for _, f := range cf.schemaFlags {
 		var flags *flag.FlagSet
 		desc := f.Value.(schema_flags.SchemaFlagValue).Desc()
@@ -325,6 +325,9 @@ func (cf *cmdFlags) addFlags(cmd *cobra.Command) {
 			flags = parametersFlags
 		}
 		logger().Debugw("adding schema flag", "flag", f.Name, "desc", desc)
+		if showHiddenFlags {
+			f.Hidden = !showHiddenFlags
+		}
 		flags.AddFlag(f)
 		_ = cmd.RegisterFlagCompletionFunc(f.Name, cf.newCompleteFlagFunc(f))
 	}
@@ -410,7 +413,8 @@ func (cf *cmdFlags) getValues(config *mgcSdk.Config, argValues []string) (core.P
 func newCmdFlags(
 	parentCmd *cobra.Command, // used to discover existing flags
 	parametersSchema, configsSchema *mgcSdk.Schema,
-	positionalArgs []string, // names must match parameterSchema.Properties keys
+	positionalArgs, hiddenFlags []string, // names must match parameterSchema.Properties keys
+
 ) (cf *cmdFlags, err error) {
 	schemaFlagsLen := len(parametersSchema.Properties) + len(configsSchema.Properties)
 
@@ -428,7 +432,7 @@ func newCmdFlags(
 		return normalizeFunc(parentFlags, name)
 	}
 
-	err = cf.addParametersFlags(parametersSchema, positionalArgs, normalizeName)
+	err = cf.addParametersFlags(parametersSchema, positionalArgs, hiddenFlags, normalizeName)
 	cf.addConfigsFlags(configsSchema, normalizeName)
 
 	return
@@ -440,6 +444,7 @@ func newExecutorCmdFlags(parentCmd *cobra.Command, exec core.Executor) (*cmdFlag
 		exec.ParametersSchema(),
 		exec.ConfigsSchema(),
 		exec.PositionalArgs(),
+		exec.HiddenFlags(),
 	)
 }
 
@@ -461,6 +466,7 @@ func (cf *cmdFlags) addSchemaFlag(
 	normalizeName func(name string) flag.NormalizedName,
 	isRequired bool,
 	isConfig bool,
+	isHidden bool,
 ) (f *flag.Flag) {
 	baseFlagName, isControl := strings.CutPrefix(propName, originalControlPrefix)
 	if isControl {
@@ -478,6 +484,7 @@ func (cf *cmdFlags) addSchemaFlag(
 		flagName,
 		isRequired,
 		isConfig,
+		isHidden,
 	)
 	cf.knownFlags[flagName] = f
 	cf.schemaFlags = append(cf.schemaFlags, f)
@@ -560,6 +567,7 @@ func (cf *cmdFlags) addChildSchemaFlag(
 func (cf *cmdFlags) addParametersFlags(
 	parametersSchema *mgcSdk.Schema,
 	positionalArgs []string,
+	hiddenFlags []string,
 	normalizeName func(name string) flag.NormalizedName,
 ) error {
 	if len(positionalArgs) > 0 {
@@ -574,6 +582,7 @@ func (cf *cmdFlags) addParametersFlags(
 			normalizeName,
 			slices.Contains(parametersSchema.Required, propName),
 			false,
+			slices.Contains(hiddenFlags, propName),
 		)
 		position := slices.Index(positionalArgs, propName)
 		if position >= 0 {
@@ -603,6 +612,7 @@ func (cf *cmdFlags) addConfigsFlags(
 			normalizeName,
 			false,
 			true,
+			false,
 		)
 	}
 }

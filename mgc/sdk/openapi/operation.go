@@ -156,6 +156,13 @@ func (o *operation) ParametersSchema() *core.Schema {
 	return o.paramsSchema
 }
 
+func (o *operation) HiddenFlags() []string {
+	if o.parameters.getHiddenFlags == nil {
+		return []string{}
+	}
+	return o.parameters.getHiddenFlags()
+}
+
 func (o *operation) PositionalArgs() []string {
 	return o.parameters.getPositionals()
 }

@@ -9,7 +9,7 @@ Replicas List.
 
 List all replicas for a given instance.
 
-Version: 1.15.3
+Version: 1.17.2
 
 import "magalu.cloud/lib/products/dbaas/replicas"
 */
@@ -37,13 +37,27 @@ type ListConfigs struct {
 }
 
 type ListResult struct {
+	Meta    ListResultMeta    `json:"meta"`
 	Results ListResultResults `json:"results"`
+}
+
+type ListResultMeta struct {
+	Page ListResultMetaPage `json:"page"`
+}
+
+type ListResultMetaPage struct {
+	Count    int `json:"count"`
+	Limit    int `json:"limit"`
+	MaxLimit int `json:"max_limit"`
+	Offset   int `json:"offset"`
+	Total    int `json:"total"`
 }
 
 type ListResultResultsItem struct {
 	Addresses   ListResultResultsItemAddresses `json:"addresses"`
 	CreatedAt   string                         `json:"created_at"`
 	DatastoreId string                         `json:"datastore_id"`
+	EngineId    string                         `json:"engine_id"`
 	FinishedAt  string                         `json:"finished_at,omitempty"`
 	FlavorId    string                         `json:"flavor_id"`
 	Generation  string                         `json:"generation"`

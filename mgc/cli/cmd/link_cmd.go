@@ -32,6 +32,7 @@ func newListLinkFlag() (f *flag.Flag) {
 		listLinkFlag,
 		false,
 		false,
+		false,
 	)
 	f.NoOptDefVal = "table"
 
@@ -205,6 +206,7 @@ func (c *cmdLinks) addLinkCommand(link core.Linker) {
 		c.root,
 		link.AdditionalParametersSchema(),
 		link.AdditionalConfigsSchema(),
+		nil,
 		nil,
 	)
 

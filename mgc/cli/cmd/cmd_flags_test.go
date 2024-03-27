@@ -54,6 +54,7 @@ func Test_cmdFlags_positionalArray(t *testing.T) {
 	type testCase struct {
 		name           string
 		positionalArgs []string
+		hiddenFlags    []string
 		input          []string
 		files          []string
 		array          []string
@@ -288,7 +289,7 @@ func Test_cmdFlags_positionalArray(t *testing.T) {
 	}
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
-			flags, err := newCmdFlags(&cobra.Command{}, schema, &mgcSchemaPkg.Schema{}, tc.positionalArgs)
+			flags, err := newCmdFlags(&cobra.Command{}, schema, &mgcSchemaPkg.Schema{}, tc.positionalArgs, tc.hiddenFlags)
 			checkError(t, "newCmdFlags", nil, err)
 			cmd := &cobra.Command{
 				Use:               buildUse("testing", flags.positionalArgsNames()),

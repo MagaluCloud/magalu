@@ -9,7 +9,7 @@ Backups List.
 
 List all backups.
 
-Version: 1.15.3
+Version: 1.17.2
 
 import "magalu.cloud/lib/products/dbaas/backups"
 */
@@ -39,7 +39,20 @@ type ListConfigs struct {
 }
 
 type ListResult struct {
+	Meta    ListResultMeta    `json:"meta"`
 	Results ListResultResults `json:"results"`
+}
+
+type ListResultMeta struct {
+	Page ListResultMetaPage `json:"page"`
+}
+
+type ListResultMetaPage struct {
+	Count    int `json:"count"`
+	Limit    int `json:"limit"`
+	MaxLimit int `json:"max_limit"`
+	Offset   int `json:"offset"`
+	Total    int `json:"total"`
 }
 
 type ListResultResultsItem struct {

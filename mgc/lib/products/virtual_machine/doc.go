@@ -9,7 +9,7 @@ Package: virtual-machine
 
 # Virtual Machine Api Product
 
-Version: 0.1.0
+Version: 1.199.0
 
 import "magalu.cloud/lib/products/virtual_machine"
 */

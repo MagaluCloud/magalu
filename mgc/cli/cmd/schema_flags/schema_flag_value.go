@@ -44,6 +44,7 @@ func newFlag(value SchemaFlagValue) *flag.Flag {
 		NoOptDefVal: value.RawNoOptDefVal(),
 		Usage:       value.Usage(),
 		Value:       value,
+		Hidden:      value.Desc().IsHidden,
 	}
 }
 
@@ -53,6 +54,7 @@ func NewSchemaFlag(
 	flagName flag.NormalizedName, // public/user-visible name after normalization
 	isRequired bool,
 	isConfig bool,
+	isHidden bool,
 ) *flag.Flag {
 	schema := (*core.Schema)(container.Properties[propName].Value)
 	return newFlag(newSchemaFlagValue(SchemaFlagValueDesc{
@@ -62,6 +64,7 @@ func NewSchemaFlag(
 		flagName,
 		isRequired,
 		isConfig,
+		isHidden,
 	}))
 }
 

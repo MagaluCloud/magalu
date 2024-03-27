@@ -21,6 +21,7 @@ func newWatchFlag() *flag.Flag {
 		watchFlag,
 		false,
 		false,
+		false,
 	)
 	flag.NoOptDefVal = "true"
 	return flag

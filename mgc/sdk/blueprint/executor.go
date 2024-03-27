@@ -93,7 +93,9 @@ func (e *executor) ResultSchema() *core.Schema {
 func (e *executor) PositionalArgs() []string {
 	return e.spec.PositionalArgs
 }
-
+func (e *executor) HiddenFlags() []string {
+	return e.spec.HiddenFlags
+}
 func (e *executor) executeStep(
 	step *executeStep,
 	result *executorResult,

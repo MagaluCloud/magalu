@@ -25,7 +25,6 @@ type PresignParameters struct {
 
 type PresignConfigs struct {
 	ChunkSize int    `json:"chunkSize,omitempty"`
-	Env       string `json:"env,omitempty"`
 	Region    string `json:"region,omitempty"`
 	ServerUrl string `json:"serverUrl,omitempty"`
 	Workers   int    `json:"workers,omitempty"`
