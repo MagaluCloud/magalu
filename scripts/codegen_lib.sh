@@ -12,7 +12,7 @@ BRANCH="$(git rev-parse --abbrev-ref HEAD)"
 
 if [[ "$BRANCH" != "main" ]]; then
   echo 'Aborting script';
-  exit 1;
+  exit 0;
 fi
 
 ## Only generate if we're on a Git tag
