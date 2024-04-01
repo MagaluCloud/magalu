@@ -19,8 +19,8 @@ func ApplyFilters(ctx context.Context, entries <-chan pipeline.WalkDirEntry, par
 	filters := []pipeline.FilterRule[pipeline.WalkDirEntry]{}
 	for _, filter := range params {
 		if filter.Include != "" {
-			filters = append(filters, pipeline.FilterRuleIncludeOnly[pipeline.WalkDirEntry]{
-				Pattern: pipeline.FilterWalkDirEntryIncludeGlobMatch{Pattern: filter.Include, CancelOnError: cancel},
+			filters = append(filters, pipeline.FilterWalkDirEntryIncludeGlobMatch{
+				Pattern: filter.Include, CancelOnError: cancel,
 			})
 		}
 		if filter.Exclude != "" {
@@ -34,6 +34,6 @@ func ApplyFilters(ctx context.Context, entries <-chan pipeline.WalkDirEntry, par
 		return entries
 	}
 
-	filterRule := pipeline.FilterRuleAnd[pipeline.WalkDirEntry]{And: filters}
+	filterRule := pipeline.FilterRuleFirst[pipeline.WalkDirEntry]{Filters: filters}
 	return pipeline.Filter[pipeline.WalkDirEntry](ctx, entries, filterRule)
 }
