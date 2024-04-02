@@ -1,0 +1,162 @@
+project_name: mgc
+builds:
+  -
+    env: [CGO_ENABLED=0]
+    id: "terraformwin"
+    goos:
+      - windows
+    goarch:
+      - amd64
+      - arm64
+    binary: terraform-provider-mgc
+    ldflags:
+      - -s -w -X magalu.cloud/sdk.Version={{.Version}}"
+    flags:
+      - -tags=embed release
+    main: mgc/terraform-provider-mgc/main.go
+  -
+    env: [CGO_ENABLED=0]
+    id: "terraform"
+    goos:
+      - linux
+      - darwin
+      - freebsd
+    goarch:
+      - amd64
+      - arm64
+    binary: terraform-provider-mgc
+    ldflags:
+      - -s -w -X magalu.cloud/sdk.Version={{.Version}}"
+    flags:
+      - -tags=embed release
+    main: mgc/terraform-provider-mgc/main.go
+  -
+    env: [CGO_ENABLED=0]
+    id: "mgc"
+    goos:
+      - linux
+      - darwin
+      - freebsd
+    binary: mgc
+    goarch:
+      - amd64
+      - arm64
+    ldflags:
+      - -s -w -X magalu.cloud/sdk.Version={{.Version}}"
+    flags:
+      - -tags=embed release
+    main: mgc/cli/main.go
+  -
+    env: [CGO_ENABLED=0]
+    id: "mgcwin"
+    goos:
+      - windows
+    binary: mgc
+    goarch:
+      - amd64
+      - arm64
+    ldflags:
+      - -s -w -X magalu.cloud/sdk.Version={{.Version}}"
+    flags:
+      - -tags=embed release
+    main: mgc/cli/main.go
+archives:
+  - id: terraform
+    name_template: "terraform-provider-mgc_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+    builds:
+      - terraform
+    files:
+      - src: "mgc/terraform-provider-mgc/user-guide.md"
+        dst: "README.md"
+      - src: "mgc/terraform-provider-mgc/docs/index.md"
+        dst: "docs/index.md"
+      - src: "mgc/terraform-provider-mgc/docs/**/*"
+        dst: "docs/resources"
+      - src: "mgc/terraform-provider-mgc/install.sh"
+        dst: "install.sh"
+  - id: terraformwin
+    name_template: "terraform-provider-mgc_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+    format: zip
+    builds:
+      - terraformwin
+    files:
+      - src: "mgc/terraform-provider-mgc/user-guide.md"
+        dst: "README.md"
+      - src: "mgc/terraform-provider-mgc/docs/index.md"
+        dst: "docs/index.md"
+      - src: "mgc/terraform-provider-mgc/docs/**/*"
+        dst: "docs/resources"
+      - src: "mgc/terraform-provider-mgc/install.sh"
+        dst: "install.sh"
+  - id: mgc
+    builds:
+      - mgc
+    files:
+      - src: "mgc/cli/RUNNING.md"
+        dst: "README.md"
+      - src: "mgc/sdk/openapi/README.md"
+        dst: "OPENAPI.md"
+      # - src: "mgc/cli/examples"
+      #   dst: "examples"
+      # - "share"
+  - id: mgcwin
+    format: zip
+    builds:
+      - mgcwin
+    files:
+      - src: "mgc/cli/RUNNING.md"
+        dst: "README.md"
+      - src: "mgc/sdk/openapi/README.md"
+        dst: "OPENAPI.md"
+      # - src: "mgc/cli/examples"
+      #   dst: "examples"
+      # - "share"
+
+nfpms:
+-
+  maintainer: Magalu Cloud <magalucloud.cli@luizalabs.com>
+  id: mgc
+  description: MGC CLI.
+  homepage: https://magalu.cloud/
+  license: MIT
+  package_name: mgc
+  bindir: /usr/bin
+  formats:
+  - deb
+  - rpm
+  builds:
+    - mgc
+
+brews:
+  -
+    name: mgc
+    homepage: "https://magalu.cloud"
+    repository:
+      owner: MagaluCloud
+      name: homebrew-mgc
+      token: "{{ .Env.GITHUB_TOKEN }}"
+    commit_author:
+      name: MagaluCloud
+      email: magalucloud.cli@luizalabs.com
+    ids:
+    - mgc
+release:
+  github:
+    owner: MagaluCloud
+    name: mgccli
+  prerelease: auto
+  header: |
+    ## CLI & Terraform provider ({{ .Date }})
+
+  #   Welcome to this new release!
+  # footer: |
+  #   ## Thanks
+
+  #   Those were the changes on {{ .Tag }}!
+## send to bucket
+# blobs:
+#   - provider: s3
+#     bucket: mgccli
+#     region: us-east-1
+#     folder: "{{.Version}}"
+#     endpoint: https://br-ne-1.magaluobjects.com

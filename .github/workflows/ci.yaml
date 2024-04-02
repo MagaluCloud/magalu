@@ -23,7 +23,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-go@v4
         with:
-          go-version: '>=1.17.0'
+          go-version: '>=1.21.0'
           cache-dependency-path: "**/go.sum"
       - run: go version
       - name: Build CLI
@@ -42,26 +42,54 @@ jobs:
         run: go install golang.org/x/tools/cmd/goimports@latest
       - uses: actions/setup-go@v4
         with:
-          go-version: '>=1.17.0'
+          go-version: '>=1.21.0'
           cache-dependency-path: "**/go.sum"
       - uses: pre-commit/action@v3.0.0
         with:
           extra_args: --show-diff-on-failure --color=always --hook-stage push --all-files
-
-  release:
+  pre-release:
+    needs: pre-commit
     if: github.ref_type == 'tag'
     runs-on: ubuntu-latest
     permissions: write-all
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-go@v4
+      - name: Check version.txt
+        run: "bash ./scripts/check_release.sh"
+
+  goreleaser:
+    needs: pre-release
+    runs-on: ubuntu-latest
+    if: github.ref_type == 'tag'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
         with:
-          go-version: '>=1.17.0'
-          cache-dependency-path: "**/go.sum"
-      - name: Build and Zip Assets
+          fetch-depth: 0
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: stable
+      - name: Run GoReleaser
+        uses: goreleaser/goreleaser-action@v5
+        with:
+          distribution: goreleaser
+          version: latest
+          args: release --clean
         env:
-          VERSION: ${{ github.ref_name }}
-        run: "bash ./scripts/build_release.sh zip"
-      - uses: softprops/action-gh-release@v1
-        with:
-          files: build/**/*
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+          # AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          # AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          # Your GoReleaser Pro key, if you are using the 'goreleaser-pro' distribution
+          # GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
+  # createLatest:
+  #   needs: goreleaser
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Create Latest
+  #     run: |
+  #       aws s3 sync ./build s3://test-bucket
+  #     env:
+  #       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  #       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  #       AWS_DEFAULT_REGION: 'us-east-1'DF
