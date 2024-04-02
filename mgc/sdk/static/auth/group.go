@@ -4,6 +4,7 @@ import (
 	"magalu.cloud/core"
 	"magalu.cloud/core/utils"
 	"magalu.cloud/sdk/static/auth/tenant"
+	"magalu.cloud/sdk/static/auth/clients"
 )
 
 var GetGroup = utils.NewLazyLoader(func() core.Grouper {
@@ -20,6 +21,7 @@ of HTTP requests using the MgcSDK. Authentication is done via Magalu Cloud accou
 				getLogin(),
 				getAccessToken(),
 				tenant.GetGroup(),
+				clients.GetGroup(),
 			}
 		},
 	)

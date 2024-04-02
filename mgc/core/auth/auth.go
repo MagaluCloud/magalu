@@ -51,17 +51,20 @@ type ConfigResult struct {
 }
 
 type Config struct {
-	ClientId            string
-	ObjectStoreScopeIDs []string
-	RedirectUri         string
-	LoginUrl            string
-	TokenUrl            string
-	ValidationUrl       string
-	RefreshUrl          string
-	TenantsListUrl      string
-	TokenExchangeUrl    string
-	ApiKeysUrlV1        string
-	ApiKeysUrlV2        string
+	ClientId              string
+	ObjectStoreScopeIDs   []string
+	PublicClientsScopeIDs map[string]string
+	RedirectUri           string
+	LoginUrl              string
+	TokenUrl              string
+	ValidationUrl         string
+	RefreshUrl            string
+	TenantsListUrl        string
+	TokenExchangeUrl      string
+	ApiKeysUrlV1          string
+	ApiKeysUrlV2          string
+	PublicClientsUrl      string
+	ClientsV2Url          string
 }
 
 type Auth struct {
