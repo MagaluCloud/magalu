@@ -46,6 +46,7 @@ The name must follow the following rules:
 ### Read-Only
 
 - `created_at` (String) Date of creation of the Kubernetes cluster.
+- `current_tags` (List of String) List of tags applied to the node pool.
 - `id` (String) Nodepool's UUID.
 - `instance_template` (Attributes) Template for the instance object used to create machine instances and managed instance groups. (see [below for nested schema](#nestedatt--instance_template))
 - `labels` (Map of String) Key/value pairs attached to the object and used for specification.
@@ -107,7 +108,7 @@ Read-Only:
 - `messages` (List of String) Detailed message about the status of the node pool or control plane.
 - `state` (String) Current state of the node pool or control plane.
 
-| Component      | Possible States                     |
-|-----------------|-------------------------------------|
-| Node pool       | ScalingUp, ScalingDown, Running, Failed, Unknown |
-| Control Plane   | ScalingUp, ScalingDown, Running, Failed, Unknown |
+| Component       | Possible States                                           |
+|-----------------|-----------------------------------------------------------|
+| Node pool       | ScalingUp, ScalingDown, Pending, Running, Failed, Unknown |
+| Control Plane   | ScalingUp, ScalingDown, Pending, Running, Failed, Unknown |
