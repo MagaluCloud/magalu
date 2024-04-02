@@ -57,6 +57,7 @@ can generate a command line on-demand for Rest manipulation`,
 	addBypassConfirmationFlag(rootCmd)
 	addHideProgressFlag(rootCmd)
 	addShowInternalFlag(rootCmd)
+	addShowHiddenFlag(rootCmd)
 
 	rootCmd.PersistentFlags().VisitAll(func(f *pflag.Flag) { f.Hidden = true })
 

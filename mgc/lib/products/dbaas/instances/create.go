@@ -9,7 +9,7 @@ Creates a new database instance.
 
 Creates a new database instance asynchronously for a tenant.
 
-Version: 1.15.3
+Version: 1.17.2
 
 import "magalu.cloud/lib/products/dbaas/instances"
 */
@@ -26,7 +26,8 @@ import (
 type CreateParameters struct {
 	BackupRetentionDays int                    `json:"backup_retention_days,omitempty"`
 	BackupStartAt       string                 `json:"backup_start_at,omitempty"`
-	DatastoreId         string                 `json:"datastore_id"`
+	DatastoreId         string                 `json:"datastore_id,omitempty"`
+	EngineId            string                 `json:"engine_id,omitempty"`
 	Exchange            string                 `json:"exchange,omitempty"`
 	FlavorId            string                 `json:"flavor_id"`
 	Name                string                 `json:"name"`

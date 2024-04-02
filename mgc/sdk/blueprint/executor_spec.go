@@ -21,6 +21,7 @@ type executorSpec struct {
 	relatedExecutors map[string]core.Executor
 
 	PositionalArgs []string `json:"positionalArgs,omitempty"`
+	HiddenFlags    []string `json:"hiddenFlags,omitempty"`
 
 	// Resolved schemas, populated by resolve():
 

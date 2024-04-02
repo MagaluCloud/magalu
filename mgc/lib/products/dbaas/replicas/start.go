@@ -9,7 +9,7 @@ Replica Start.
 
 Start an instance replica.
 
-Version: 1.15.3
+Version: 1.17.2
 
 import "magalu.cloud/lib/products/dbaas/replicas"
 */
@@ -38,6 +38,7 @@ type StartResult struct {
 	Addresses   StartResultAddresses `json:"addresses"`
 	CreatedAt   string               `json:"created_at"`
 	DatastoreId string               `json:"datastore_id"`
+	EngineId    string               `json:"engine_id"`
 	FinishedAt  string               `json:"finished_at,omitempty"`
 	FlavorId    string               `json:"flavor_id"`
 	Generation  string               `json:"generation"`

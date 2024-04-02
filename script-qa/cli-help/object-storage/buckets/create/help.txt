@@ -11,7 +11,7 @@ Flags:
   -h, --help                          help for create
       --location string               Location constraint for the bucket (default "br-ne-1")
       --name string                   Name of the bucket to be created (required)
-      --private                       Owner gets FULL_CONTROL. No one else has access rights
+      --private                       Owner gets FULL_CONTROL. Delegated users have access. No one else has access rights
       --public-read                   Owner gets FULL_CONTROL. Everyone else has READ rights
 
 Global Flags:

@@ -3,7 +3,7 @@ Package: nodepool
 
 # Description
 
-Endpoints related to the Nodepool API within the Cluster API.
+Endpoints related to the creation, listing of nodepools and nodes, updating, and deletion of nodepools for a Kubernetes cluster.
 
 Version: 0.1.0
 

@@ -3,7 +3,7 @@ Package: info
 
 # Description
 
-Endpoints related to configuration information for the MKE API.
+Endpoints related to listing available flavors (resource configurations) and Kubernetes versions for a Kubernetes cluster.
 
 Version: 0.1.0
 

@@ -58,6 +58,7 @@ func finalizeParameters(byNameAndLocation map[string]map[string]*parameterWithNa
 type parameters struct {
 	getParameters   func() []*parameterWithName
 	getPositionals  func() []string
+	getHiddenFlags  func() []string
 	extensionPrefix *string
 }
 

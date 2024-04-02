@@ -7,9 +7,9 @@ Executor: get
 
 # Description
 
-# Return a port details
+Return a port details from the provided tenant_id
 
-Version: 1.109.0
+Version: 1.111.0
 
 import "magalu.cloud/lib/products/network/ports"
 */

@@ -9,7 +9,7 @@ Executor: create
 
 # Create a Security Group
 
-Version: 1.109.0
+Version: 1.111.0
 
 import "magalu.cloud/lib/products/network/security_groups"
 */

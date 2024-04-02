@@ -31,8 +31,43 @@ func ReflectExecutorSpecSchemas[ParamsT any, ConfigsT any, ResultT any](baseSpec
 	}
 
 	spec.PositionalArgs = getPositionals(reflect.TypeOf(new(ParamsT)))
+	spec.HiddenFlags = getHiddens(reflect.TypeOf(new(ParamsT)))
 
 	return spec, nil
+}
+
+func getHiddens(t reflect.Type) []string {
+	if t.Kind() == reflect.Pointer {
+		t = t.Elem()
+	}
+
+	if t.Kind() != reflect.Struct {
+		return nil
+	}
+
+	var hidden []string
+
+	for i := 0; i < t.NumField(); i++ {
+		field := t.Field(i)
+
+		if field.Anonymous {
+			hidden = append(hidden, getHiddens(field.Type)...)
+			continue
+		}
+
+		if !GetMgcTagBool(field.Tag, "hidden") {
+			continue
+		}
+
+		name := field.Name
+		if jsonName := strings.Split(field.Tag.Get("json"), ",")[0]; jsonName != "" {
+			name = jsonName
+		}
+
+		hidden = append(hidden, name)
+	}
+
+	return hidden
 }
 
 func getPositionals(t reflect.Type) []string {

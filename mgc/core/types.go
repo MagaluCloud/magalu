@@ -62,6 +62,7 @@ type Executor interface {
 	// The Result.Schema() may be a subset of the schema, if multiple were available.
 	ResultSchema() *Schema
 	PositionalArgs() []string
+	HiddenFlags() []string
 	// Linkers wrap executors that can operate on the result of this executor.
 	//
 	// For other executors that may be associated or operate together with this one, see Related().

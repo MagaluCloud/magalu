@@ -3,7 +3,7 @@ Package: flavor
 
 # Description
 
-Endpoints related to configuration information for OpenStack flavors.
+Endpoints related to listing available flavors for a Kubernetes cluster.
 
 Version: 0.1.0
 

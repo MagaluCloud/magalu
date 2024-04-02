@@ -157,6 +157,24 @@ func (r FilterRuleAnd[T]) RecursiveWrap(wrapper filterRuleWrapper[T]) FilterRule
 	return &FilterRuleAnd[T]{wrapFilterRuleLogArray[T](r.And, wrapper)}
 }
 
+// All values must match FilterInclude or FilterUnknown. If so, return FilterInclude. Otherwise, return FilterExclude
+type FilterRuleFirst[T any] struct {
+	Filters []FilterRule[T]
+}
+
+func (r FilterRuleFirst[T]) Filter(ctx context.Context, entry T) FilterStatus {
+	for i := len(r.Filters) - 1; i >= 0; i-- {
+		if filter := r.Filters[i].Filter(ctx, entry); filter != FilterUnknown {
+			return filter
+		}
+	}
+	return FilterUnknown
+}
+
+func (r FilterRuleFirst[T]) RecursiveWrap(wrapper filterRuleWrapper[T]) FilterRule[T] {
+	return &FilterRuleAnd[T]{wrapFilterRuleLogArray[T](r.Filters, wrapper)}
+}
+
 var _ FilterRule[any] = (*FilterRuleAnd[any])(nil)
 var _ FilterRuleRecursiveWrapper[any] = (*FilterRuleAnd[any])(nil)
 

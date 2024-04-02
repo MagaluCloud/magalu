@@ -5,7 +5,7 @@ Package: rules
 
 # VPC Rules
 
-Version: 1.109.0
+Version: 1.111.0
 
 import "magalu.cloud/lib/products/network/rules"
 */

@@ -3,7 +3,7 @@ Package: version
 
 # Description
 
-Endpoints related to configuration information for Kubernetes versions.
+Endpoints related to listing available Kubernetes versions for a Kubernetes cluster.
 
 Version: 0.1.0
 

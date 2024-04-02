@@ -20,6 +20,7 @@ type SchemaFlagValueDesc struct {
 
 	IsRequired bool
 	IsConfig   bool
+	IsHidden   bool
 }
 
 const (
