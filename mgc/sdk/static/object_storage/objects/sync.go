@@ -6,6 +6,7 @@ import (
 	"io/fs"
 	"os"
 	"path/filepath"
+	"strings"
 	"time"
 
 	"magalu.cloud/core"
@@ -61,6 +62,15 @@ var getSync = utils.NewLazyLoader[core.Executor](func() core.Executor {
 })
 
 func sync(ctx context.Context, params syncParams, cfg common.Config) (result core.Value, err error) {
+	if !strings.HasPrefix(string(params.Source), common.URIPrefix) && !strings.HasPrefix(string(params.Destination), common.URIPrefix) {
+		return nil, fmt.Errorf("enter at least one parameter using the standard prefix \"s3://\"")
+	}
+
+	// TODO GA - Improve and remove this lock
+	if strings.HasPrefix(string(params.Source), common.URIPrefix) && strings.HasPrefix(string(params.Destination), common.URIPrefix) {
+		return nil, fmt.Errorf("to copy or move between buckets, use \"mgc object-storage objects copy/move\"")
+	}
+
 	srcIsRemote := isRemote(params.Source)
 
 	ctx, cancel := context.WithCancelCause(ctx)
@@ -92,12 +102,14 @@ func sync(ctx context.Context, params syncParams, cfg common.Config) (result cor
 	uploadObjectsErrorChan := pipeline.ParallelProcess(ctx, cfg.Workers, uploadChannel, createSyncObjectProcessor(cfg, progressReporter), nil)
 	objErr, err := pipeline.SliceItemConsumer[utils.MultiError](ctx, uploadObjectsErrorChan)
 
-	if len(objErr) > 0 {
-		progressReporter.Report(0, 0, objErr)
-		return nil, objErr
+	for _, er := range objErr {
+		if er != nil {
+			progressReporter.Report(0, 0, objErr)
+			return nil, objErr
+		}
 	}
 
-	// progressReporter.End()
+	progressReporter.End()
 	return syncResult{
 		Source:        params.Source,
 		Destination:   params.Destination,
@@ -151,15 +163,7 @@ func createObjectSyncFilePairProcessor(
 }
 
 func normalizeURI(uri mgcSchemaPkg.URI, path string) (mgcSchemaPkg.URI, error) {
-	if uri.Scheme() == "s3" {
-		return uri.JoinPath(path), nil
-	}
-	value, err := filepath.Abs(path)
-	if err != nil {
-		return uri, err
-	}
-
-	return mgcSchemaPkg.FilePath(value).AsURI(), nil
+	return uri.JoinPath(filepath.Base(path)), nil
 }
 
 func createSyncObjectProcessor(
@@ -170,12 +174,11 @@ func createSyncObjectProcessor(
 		var err error
 		defer func(cause error) { progressReporter.Report(1, 0, err) }(err)
 
-		fmt.Printf("%s %s\n", entry.Source, entry.Destination)
+		logger().Debug("%s %s\n", entry.Source, entry.Destination)
 
 		fileStats, err := getFileStats(ctx, entry.Destination, cfg)
 
 		if err == nil && entry.Stats.SourceLength == fileStats.SourceLength && entry.Stats.SourceModTime == fileStats.SourceModTime {
-			fmt.Println("C")
 			return nil, pipeline.ProcessSkip // TODO
 		}
 
@@ -199,7 +202,7 @@ func getFileStats(ctx context.Context, destination mgcSchemaPkg.URI, cfg common.
 		}
 		dstModTime, err := time.Parse(time.RFC3339, dstHead.LastModified)
 		if err != nil {
-			fmt.Printf("%s %s\n", dstModTime, err)
+			logger().Debug("%s %s\n", dstModTime, err)
 			return fileSyncStats{}, err
 		}
 		return fileSyncStats{
@@ -210,7 +213,7 @@ func getFileStats(ctx context.Context, destination mgcSchemaPkg.URI, cfg common.
 
 	stat, err := os.Stat(string(destination))
 	if err != nil {
-		fmt.Printf("%s %s\n", stat, err)
+		logger().Debug("%s %s\n", stat, err)
 		return fileSyncStats{}, err
 	}
 	return fileSyncStats{
@@ -220,10 +223,8 @@ func getFileStats(ctx context.Context, destination mgcSchemaPkg.URI, cfg common.
 }
 
 func sourceDestinationProcessor(ctx context.Context, source mgcSchemaPkg.URI, destination mgcSchemaPkg.URI, cfg common.Config) error {
-	fmt.Printf("sourceDestinationProcessor %s %s\n", source, destination)
 	if isRemote(destination) {
 		sourcePath := mgcSchemaPkg.FilePath("/" + source.Path())
-		fmt.Printf("D %s %s\n", source.Path(), sourcePath)
 		_, err := upload(
 			ctx,
 			uploadParams{Source: sourcePath, Destination: destination},

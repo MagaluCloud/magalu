@@ -53,6 +53,8 @@ func newList() core.Executor {
 }
 
 func getAllConfigs(ctx context.Context) (map[string]configInfo, error) {
+	var toHide = []string{"logging", "env", "logfilter", "serverUrl"}
+
 	configSchemas, err := common.ListAllConfigSchemas(ctx)
 	if err != nil {
 		return nil, err
@@ -60,10 +62,14 @@ func getAllConfigs(ctx context.Context) (map[string]configInfo, error) {
 
 	result := make(map[string]configInfo, len(configSchemas))
 	for name, schema := range configSchemas {
-		result[name] = configInfo{
-			Name:        name,
-			Type:        schema.Type,
-			Description: schema.Description,
+		if !slices.Contains(toHide, name) {
+
+			result[name] = configInfo{
+				Name:        name,
+				Type:        schema.Type,
+				Description: schema.Description,
+			}
+
 		}
 	}
 
