@@ -163,6 +163,7 @@ func newHttpTransport() http.RoundTripper {
 	transport := mgcHttpPkg.DefaultTransport()
 	transport = mgcHttpPkg.NewDefaultClientLogger(transport)
 	transport = newDefaultSdkTransport(transport, userAgent)
+	transport = mgcHttpPkg.NewDefaultClientRetryer(transport)
 	return transport
 }
 
