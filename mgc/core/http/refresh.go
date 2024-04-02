@@ -68,5 +68,13 @@ func (t *RefreshLogger) RoundTrip(req *http.Request) (*http.Response, error) {
 	}
 	req.Header.Set("Authorization", "Bearer "+token)
 
+	if req.GetBody != nil {
+		body, err := req.GetBody()
+		if err != nil {
+			return nil, fmt.Errorf("tried to recalculate request body for retrying after token refresh but failed: %w", err)
+		}
+		req.Body = body
+	}
+
 	return transport.RoundTrip(req)
 }
