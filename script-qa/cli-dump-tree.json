@@ -36,6 +36,11 @@
     "name": "login",
     "parameters": {
      "properties": {
+      "headless": {
+       "default": false,
+       "description": "Generate URL for the login at local environment",
+       "type": "boolean"
+      },
       "qrcode": {
        "default": false,
        "description": "Generate a qrcode for the login URL",
@@ -19648,6 +19653,72 @@
   "children": [
    {
     "children": [
+     {
+      "configs": {
+       "type": "object"
+      },
+      "description": "Change current Object Storage credential",
+      "isInternal": true,
+      "name": "add",
+      "parameters": {
+       "properties": {
+        "keyId": {
+         "description": "ID of api key to use",
+         "type": "string"
+        },
+        "keySecret": {
+         "description": "Secret of api key to use",
+         "type": "string"
+        }
+       },
+       "required": [
+        "keyId",
+        "keySecret"
+       ],
+       "type": "object"
+      },
+      "result": {
+       "properties": {
+        "description": {
+         "type": "string"
+        },
+        "end_validity": {
+         "type": "string"
+        },
+        "key_pair_id": {
+         "type": "string"
+        },
+        "key_pair_secret": {
+         "type": "string"
+        },
+        "name": {
+         "type": "string"
+        },
+        "revoked_at": {
+         "type": "string"
+        },
+        "start_validity": {
+         "type": "string"
+        },
+        "tenant_name": {
+         "type": "string"
+        },
+        "uuid": {
+         "type": "string"
+        }
+       },
+       "required": [
+        "uuid",
+        "name",
+        "description",
+        "key_pair_id",
+        "key_pair_secret",
+        "start_validity"
+       ],
+       "type": "object"
+      },
+      "version": ""
+     },
      {
       "configs": {
        "type": "object"

@@ -35,9 +35,10 @@ type loginParameters struct {
 	// default values aren't being generated correctly in the schema. When this issue is
 	// resolved, 'omitempty' should be removed.
 	// Ref: https://github.com/invopop/jsonschema/issues/127
-	Scopes core.Scopes `json:"scopes,omitempty" jsonschema:"description=All desired scopes for the resulting access token"`
-	Show   bool        `json:"show,omitempty" jsonschema:"description=Show the access token after the login completes"`
-	QRcode bool        `json:"qrcode,omitempty" jsonschema:"description=Generate a qrcode for the login URL,default=false"`
+	Scopes   core.Scopes `json:"scopes,omitempty" jsonschema:"description=All desired scopes for the resulting access token"`
+	Show     bool        `json:"show,omitempty" jsonschema:"description=Show the access token after the login completes"`
+	QRcode   bool        `json:"qrcode,omitempty" jsonschema:"description=Generate a qrcode for the login URL,default=false"`
+	Headless bool        `json:"headless,omitempty" jsonschema:"description=Generate URL for the login at local environment,default=false"`
 }
 
 type loginResult struct {
@@ -92,8 +93,9 @@ func login(ctx context.Context, parameters loginParameters, _ struct{}) (*loginR
 	if auth == nil {
 		return nil, fmt.Errorf("programming error: unable to retrieve authentication configuration")
 	}
+	isHeadless := parameters.QRcode || parameters.Headless
 
-	resultChan, cancel, err := startCallbackServer(ctx, auth)
+	resultChan, cancel, err := startCallbackServer(ctx, auth, isHeadless)
 	if err != nil {
 		return nil, err
 	}
@@ -121,23 +123,17 @@ func login(ctx context.Context, parameters loginParameters, _ struct{}) (*loginR
 	if err != nil {
 		return nil, err
 	}
+	loginLogger().Infow("running login", "codeUrl", codeUrl)
 
-	loginLogger().Infow("opening browser", "codeUrl", codeUrl)
-	if err := browser.OpenURL(codeUrl.String()); err != nil {
+	if isHeadless {
+		err = preHeadlessLogin(ctx, parameters, codeUrl, auth, resultChan)
+		if err != nil {
+			return nil, err
+		}
+	} else if err := browser.OpenURL(codeUrl.String()); err != nil {
 		loginLogger().Infow("Cant't open browser. Logging in a headless environment")
 		fmt.Println("Could not open browser, please open it manually: ")
-		if parameters.QRcode {
-			qrCode, err := qrcode.New(codeUrl.String(), qrcode.Low)
-			if err != nil {
-				return nil, err
-			}
-			qrCodeString := qrCode.ToSmallString(false)
-			fmt.Println(qrCodeString)
-
-		} else {
-			fmt.Print(codeUrl.String() + "\n\n")
-		}
-		err := headlessLogin(ctx, auth, resultChan)
+		err := preHeadlessLogin(ctx, parameters, codeUrl, auth, resultChan)
 		if err != nil {
 			return nil, err
 		}
@@ -194,7 +190,7 @@ func checkScopesAfterLogin(a *auth.Auth, desiredScopes core.Scopes) {
 	)
 }
 
-func startCallbackServer(ctx context.Context, auth *auth.Auth) (resultChan chan *authResult, cancel func(), err error) {
+func startCallbackServer(ctx context.Context, auth *auth.Auth, isHeadless bool) (resultChan chan *authResult, cancel func(), err error) {
 	callbackUrl, err := url.Parse(auth.RedirectUri())
 	if err != nil {
 		return nil, nil, fmt.Errorf("invalid redirect_uri configuration")
@@ -259,10 +255,11 @@ func startCallbackServer(ctx context.Context, auth *auth.Auth) (resultChan chan 
 			serverDoneChan <- result
 		}
 		go waitChannelsAndShutdownServer()
-
-		if err := srv.Serve(listener); !errors.Is(err, http.ErrServerClosed) {
-			// sync: unblock waitChannelsAndShutdownServer()
-			serverErrorChan <- err
+		if !isHeadless {
+			if err := srv.Serve(listener); !errors.Is(err, http.ErrServerClosed) {
+				// sync: unblock waitChannelsAndShutdownServer()
+				serverErrorChan <- err
+			}
 		}
 
 		result := <-serverDoneChan // sync: wait server shutdown by waitChannelsAndShutdownServer()
@@ -338,6 +335,24 @@ func showErrorPage(w http.ResponseWriter, err error, status int) {
 	w.WriteHeader(status)
 	w.Header().Set("Content-Type", "text/plain")
 	fmt.Fprintf(w, "Error: %s", err.Error())
+}
+
+func preHeadlessLogin(ctx context.Context, parameters loginParameters, codeUrl *url.URL, auth *auth.Auth, resultChan chan *authResult) error {
+	if parameters.QRcode {
+		qrCode, err := qrcode.New(codeUrl.String(), qrcode.Low)
+		if err != nil {
+			return err
+		}
+		qrCodeString := qrCode.ToSmallString(false)
+		fmt.Println(qrCodeString)
+	} else if parameters.Headless || (!parameters.Headless && !parameters.QRcode) {
+		fmt.Print(codeUrl.String() + "\n\n")
+	}
+	err := headlessLogin(ctx, auth, resultChan)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func headlessLogin(ctx context.Context, auth *auth.Auth, resultChan chan *authResult) error {
