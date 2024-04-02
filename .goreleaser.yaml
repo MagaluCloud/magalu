@@ -94,8 +94,8 @@ archives:
     files:
       - src: "mgc/cli/RUNNING.md"
         dst: "README.md"
-      - src: "mgc/sdk/openapi/README.md"
-        dst: "OPENAPI.md"
+      # - src: "mgc/sdk/openapi/README.md"
+      #   dst: "OPENAPI.md"
       # - src: "mgc/cli/examples"
       #   dst: "examples"
       # - "share"
@@ -106,8 +106,8 @@ archives:
     files:
       - src: "mgc/cli/RUNNING.md"
         dst: "README.md"
-      - src: "mgc/sdk/openapi/README.md"
-        dst: "OPENAPI.md"
+      # - src: "mgc/sdk/openapi/README.md"
+      #   dst: "OPENAPI.md"
       # - src: "mgc/cli/examples"
       #   dst: "examples"
       # - "share"

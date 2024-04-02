@@ -163,6 +163,18 @@ func createObjectSyncFilePairProcessor(
 }
 
 func normalizeURI(uri mgcSchemaPkg.URI, path string) (mgcSchemaPkg.URI, error) {
+	if uri.Scheme() == "s3" {
+		return uri.JoinPath(filepath.Base(path)), nil
+	}
+
+	if uri == "." {
+		value, err := filepath.Abs(uri.Path())
+		if err != nil {
+			return uri, err
+		}
+
+		return mgcSchemaPkg.FilePath(value).AsURI().JoinPath(filepath.Base(path)), nil
+	}
 	return uri.JoinPath(filepath.Base(path)), nil
 }
 
