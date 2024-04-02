@@ -12,7 +12,7 @@ Flags:
       --obj-version string   Version of the object to be get metadata from
 
 Global Flags:
-      --chunk-size integer     Chunk size to consider when doing multipart requests. Specified in Mb (range: 5 - 5120) (default 5)
+      --chunk-size integer     Chunk size to consider when doing multipart requests. Specified in Mb (range: 8 - 5120) (default 8)
       --cli.show-cli-globals   Show all CLI global flags on usage text
       --region enum            Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-ne1")
       --server-url uri         Manually specify the server to use
