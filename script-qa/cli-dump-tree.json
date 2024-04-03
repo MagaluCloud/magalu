@@ -20195,6 +20195,9 @@
            "description": "Owner gets FULL_CONTROL. Authenticated users have READ rights",
            "type": "boolean"
           },
+          "aws_exec_read": {
+           "type": "boolean"
+          },
           "bucket": {
            "description": "Name of the bucket to set permissions for",
            "example": "my-bucket",
@@ -20381,6 +20384,9 @@
        "properties": {
         "authenticated_read": {
          "description": "Owner gets FULL_CONTROL. Authenticated users have READ rights",
+         "type": "boolean"
+        },
+        "aws_exec_read": {
          "type": "boolean"
         },
         "enable_versioning": {

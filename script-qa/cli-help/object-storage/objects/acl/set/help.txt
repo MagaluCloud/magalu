@@ -4,7 +4,6 @@ Usage:
   ./cli object-storage objects acl set [dst] [flags]
 
 Flags:
-      --aws-exec-read               
       --bucket-owner-full-control   
       --bucket-owner-read           
       --dst uri                     The full object URL to set the ACL information (required)

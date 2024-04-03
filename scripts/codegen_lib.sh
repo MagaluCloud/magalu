@@ -16,8 +16,10 @@ BRANCH="$(git rev-parse --abbrev-ref HEAD)"
 # fi
 
 ## Only generate if we're on a Git tag
-if ! git describe --tags --exact-match HEAD >/dev/null 2>&1; then
+if git describe --tags --exact-match HEAD >/dev/null 2>&1; then
+    echo "ALOHOMORA"
     exit 0
 fi
 
-(cd $ROOTDIR/mgc/codegen; go build -o codegen; ./codegen $LIBDIR)
+(cd $ROOTDIR/mgc/codegen; go build -tags "embed release" -o codegen; ./codegen $LIBDIR)
+(cd $LIBDIR; go mod tidy)

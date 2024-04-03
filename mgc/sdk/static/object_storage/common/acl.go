@@ -191,6 +191,7 @@ type ACLCannedPermissions struct {
 	PublicRead        bool `json:"public_read,omitempty" jsonschema:"description=Owner gets FULL_CONTROL. Everyone else has READ rights"`
 	PublicReadWrite   bool `json:"public_read_write,omitempty" jsonschema:"description=Owner gets FULL_CONTROL. Everyone else has READ and WRITE rights" mgc:"hidden"`
 	AuthenticatedRead bool `json:"authenticated_read,omitempty" jsonschema:"description=Owner gets FULL_CONTROL. Authenticated users have READ rights" mgc:"hidden"`
+	AwsExecRead       bool `json:"aws_exec_read,omitempty" mgc:"hidden"`
 }
 
 func (o ACLCannedPermissions) Validate() error {
@@ -230,6 +231,10 @@ func (o ACLCannedPermissions) SetHeaders(req *http.Request) {
 	if o.Private {
 		req.Header.Set("x-amz-acl", "private")
 		return
+	}
+	// https://docs.aws.amazon.com/AmazonS3/latest/API/API_PutObjectAcl.html
+	if o.AwsExecRead {
+		req.Header.Set("x-amz-acl", "aws-exec-read")
 	}
 }
 

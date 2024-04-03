@@ -23,6 +23,7 @@ import (
 
 type CreateParameters struct {
 	AuthenticatedRead bool                             `json:"authenticated_read,omitempty"`
+	AwsExecRead       bool                             `json:"aws_exec_read,omitempty"`
 	EnableVersioning  bool                             `json:"enable_versioning,omitempty"`
 	GrantFullControl  CreateParametersGrantFullControl `json:"grant_full_control,omitempty"`
 	GrantRead         CreateParametersGrantRead        `json:"grant_read,omitempty"`
