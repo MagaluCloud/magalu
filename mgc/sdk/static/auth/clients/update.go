@@ -43,7 +43,14 @@ var getUpdate = utils.NewLazyLoader[core.Executor](func() core.Executor {
 		update,
 	)
 
-	return core.NewExecuteResultOutputOptions(executor, func(exec core.Executor, result core.Result) string {
+	msg := "This operation may disable your client {{.parameters.id}} until updates are approved by the ID Magalu. Do you wish to continue?"
+
+	cExecutor := core.NewConfirmableExecutor(
+		executor,
+		core.ConfirmPromptWithTemplate(msg),
+	)
+
+	return core.NewExecuteResultOutputOptions(cExecutor, func(exec core.Executor, result core.Result) string {
 		return "template=Client updated successfully\nClient ID={{.client_id}}\n"
 	})
 })
