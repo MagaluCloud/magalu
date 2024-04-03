@@ -65,12 +65,12 @@ type CreateResult struct {
 	Labels           CreateResultLabels           `json:"labels"`
 	Name             string                       `json:"name"`
 	Replicas         int                          `json:"replicas"`
-	SecurityGroups   CreateResultSecurityGroups   `json:"securityGroups"`
+	SecurityGroups   CreateResultSecurityGroups   `json:"securityGroups,omitempty"`
 	Status           CreateResultStatus           `json:"status"`
 	Tags             CreateResultTags             `json:"tags,omitempty"`
 	Taints           CreateResultTaints           `json:"taints,omitempty"`
 	UpdatedAt        string                       `json:"updated_at,omitempty"`
-	Zone             CreateResultZone             `json:"zone"`
+	Zone             *CreateResultZone            `json:"zone"`
 }
 
 // Template for the instance object used to create machine instances and managed instance groups.
@@ -106,7 +106,7 @@ type CreateResultStatus struct {
 
 type CreateResultStatusMessages []string
 
-type CreateResultTags []string
+type CreateResultTags []*string
 
 type CreateResultTaints []CreateParametersTaintsItem
 

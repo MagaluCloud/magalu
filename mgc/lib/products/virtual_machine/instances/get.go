@@ -9,7 +9,7 @@ Retrieve the details of an instance.
 
 # Get a Virtual Machine instance details
 
-Version: 0.1.0
+Version: v1
 
 import "magalu.cloud/lib/products/virtual_machine/instances"
 */

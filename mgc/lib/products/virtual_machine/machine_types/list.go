@@ -9,7 +9,7 @@ Retrieves all machine-types available in the region.
 
 Retrieves a list of machine types allowed for the current tenant which is logged in.
 
-Version: 0.1.0
+Version: v1
 
 import "magalu.cloud/lib/products/virtual_machine/machine_types"
 */

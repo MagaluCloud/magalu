@@ -15,7 +15,7 @@ so you can get the id of the instance that you want to start.
 #### Rules
 - The instance must be in the stopped or suspended states.
 
-Version: 0.1.0
+Version: v1
 
 import "magalu.cloud/lib/products/virtual_machine/instances"
 */

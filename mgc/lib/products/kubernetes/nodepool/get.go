@@ -43,12 +43,12 @@ type GetResult struct {
 	Labels           GetResultLabels           `json:"labels"`
 	Name             string                    `json:"name"`
 	Replicas         int                       `json:"replicas"`
-	SecurityGroups   GetResultSecurityGroups   `json:"securityGroups"`
+	SecurityGroups   GetResultSecurityGroups   `json:"securityGroups,omitempty"`
 	Status           GetResultStatus           `json:"status"`
 	Tags             GetResultTags             `json:"tags,omitempty"`
 	Taints           GetResultTaints           `json:"taints,omitempty"`
 	UpdatedAt        string                    `json:"updated_at,omitempty"`
-	Zone             GetResultZone             `json:"zone"`
+	Zone             *GetResultZone            `json:"zone"`
 }
 
 // Object specifying properties for updating workload resources in the Kubernetes cluster.
@@ -91,7 +91,7 @@ type GetResultStatus struct {
 
 type GetResultStatusMessages []string
 
-type GetResultTags []string
+type GetResultTags []*string
 
 type GetResultTaintsItem struct {
 	Effect string `json:"effect"`

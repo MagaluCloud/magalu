@@ -5,7 +5,7 @@ Package: instances
 
 Operations with instances, including create, delete, start, stop, reboot and other actions.
 
-Version: 1.199.0
+Version: v1
 
 import "magalu.cloud/lib/products/virtual_machine/instances"
 */

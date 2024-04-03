@@ -9,7 +9,7 @@ Executor: delete
 
 # Delete a Virtual Machine instance
 
-Version: 0.1.0
+Version: v1
 
 import "magalu.cloud/lib/products/virtual_machine/instances"
 */

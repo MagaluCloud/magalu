@@ -14,7 +14,7 @@ which is logged in.
 - You can use the Snapshots list command to retrieve all snapshots, so
 - you can get the id of the snapshot that you want to delete.
 
-Version: 0.1.0
+Version: v1
 
 import "magalu.cloud/lib/products/virtual_machine/snapshots"
 */
