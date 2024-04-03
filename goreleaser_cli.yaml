@@ -1,0 +1,82 @@
+project_name: mgc
+builds:
+  -
+    env: [CGO_ENABLED=0]
+    id: "mgc"
+    goos:
+      - linux
+      - darwin
+      - freebsd
+    binary: mgc
+    goarch:
+      - amd64
+      - arm64
+    ldflags:
+      - -s -w -X magalu.cloud/sdk.Version={{.Version}}"
+    flags:
+      - -tags=embed release
+    main: mgc/cli/main.go
+  -
+    env: [CGO_ENABLED=0]
+    id: "mgcwin"
+    goos:
+      - windows
+    binary: mgc
+    goarch:
+      - amd64
+      - arm64
+    ldflags:
+      - -s -w -X magalu.cloud/sdk.Version={{.Version}}"
+    flags:
+      - -tags=embed release
+    main: mgc/cli/main.go
+archives:
+  - id: mgc
+    builds:
+      - mgc
+    files:
+      - src: "mgc/cli/RUNNING.md"
+        dst: "README.md"
+  - id: mgcwin
+    format: zip
+    builds:
+      - mgcwin
+    files:
+      - src: "mgc/cli/RUNNING.md"
+        dst: "README.md"
+
+nfpms:
+-
+  maintainer: Magalu Cloud <magalucloud.cli@luizalabs.com>
+  id: mgc
+  description: MGC CLI.
+  homepage: https://magalu.cloud/
+  license: MIT
+  package_name: mgc
+  bindir: /usr/bin
+  formats:
+  - deb
+  - rpm
+  builds:
+    - mgc
+
+brews:
+  -
+    name: mgc
+    homepage: "https://magalu.cloud"
+    repository:
+      owner: MagaluCloud
+      name: homebrew-mgc
+      token: "{{ .Env.GITHUB_TOKEN }}"
+    commit_author:
+      name: MagaluCloud
+      email: magalucloud.cli@luizalabs.com
+    ids:
+    - mgc
+release:
+  github:
+    owner: MagaluCloud
+    name: mgccli
+  prerelease: auto
+  header: |
+    ## CLI ({{ .Date }})

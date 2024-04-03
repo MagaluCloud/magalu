@@ -57,7 +57,7 @@ jobs:
       - name: Check version.txt
         run: "bash ./scripts/check_release.sh"
 
-  goreleaser:
+  cli-release:
     needs: pre-release
     runs-on: ubuntu-latest
     if: github.ref_type == 'tag'
@@ -75,10 +75,28 @@ jobs:
         with:
           distribution: goreleaser
           version: latest
-          args: release --clean
+          args: release --clean --config="goreleaser_cli.yaml"
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
-          # AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          # AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          # Your GoReleaser Pro key, if you are using the 'goreleaser-pro' distribution
-          # GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
+
+  terraform-release:
+    needs: pre-release
+    runs-on: ubuntu-latest
+    if: github.ref_type == 'tag'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: stable
+      - name: Run GoReleaser
+        uses: goreleaser/goreleaser-action@v5
+        with:
+          distribution: goreleaser
+          version: latest
+          args: release --clean --config="goreleaser_terraform.yaml"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
