@@ -462,6 +462,7 @@ network.openapi:
     - '#/components/schemas/SubnetPoolRequest'
     - '#/components/schemas/SubnetPoolsResponse'
     - '#/components/schemas/ValidationError'
+    - '#/components/schemas/VpcDetailsResponse'
     - '#/components/schemas/XVpcCreateRequest'
     - '#/components/schemas/vpc_api_product__vpc__models__rule__RuleDefaultStatusEvent'
   xof-single-item:

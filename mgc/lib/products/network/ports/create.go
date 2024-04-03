@@ -9,7 +9,7 @@ Executor: create
 
 Create a Port with provided vpc_id and x-tenant-id. You can provide a list of security_groups_id or subnets
 
-Version: 1.111.0
+Version: 1.114.3
 
 import "magalu.cloud/lib/products/network/ports"
 */

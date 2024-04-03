@@ -9,7 +9,7 @@ Executor: detach
 
 Detach a Security Group to a Port with provided port_id, security_group_id, x-tenant-id of an specific project type
 
-Version: 1.111.0
+Version: 1.114.3
 
 import "magalu.cloud/lib/products/network/ports"
 */

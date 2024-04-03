@@ -9,7 +9,7 @@ public-ips
 
 # Virtual Private Cloud (VPC) | public-ips
 
-Version: 1.111.0
+Version: 1.114.3
 
 import "magalu.cloud/lib/products/network/vpcs/public_ips"
 */

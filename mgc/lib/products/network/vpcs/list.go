@@ -9,7 +9,7 @@ Executor: list
 
 Returns a list of VPCs for a provided tenant_id
 
-Version: 1.111.0
+Version: 1.114.3
 
 import "magalu.cloud/lib/products/network/vpcs"
 */

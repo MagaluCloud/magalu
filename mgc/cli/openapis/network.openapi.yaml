@@ -6,7 +6,7 @@ info:
         name: Tribo IAAS Cloud
         url: https://github.com/luizalabs
         email: thullyo.cunha@luizalabs.com
-    version: 1.111.0
+    version: 1.114.3
 paths:
     /v0/healthcheck:
         get:
@@ -1905,6 +1905,83 @@ components:
                 updated: '2022-01-01 00:00:00'
                 vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                 zone: br-se1-a
+        NetworkResponse:
+            properties:
+                id:
+                    type: string
+                    title: Id
+                name:
+                    type: string
+                    maxLength: 100
+                    minLength: 5
+                    title: Name
+                description:
+                    title: Description
+                    nullable: true
+                    type: string
+                status:
+                    title: Status
+                    nullable: true
+                    type: string
+                mtu:
+                    title: Mtu
+                    nullable: true
+                    type: integer
+                subnets:
+                    title: Subnets
+                    default: []
+                    nullable: true
+                    items:
+                        type: string
+                    type: array
+                shared:
+                    title: Shared
+                    nullable: true
+                    type: boolean
+                tags:
+                    title: Tags
+                    default: []
+                    nullable: true
+                    items:
+                        type: string
+                    type: array
+                port_security_enabled:
+                    title: Port Security Enabled
+                    nullable: true
+                    type: boolean
+                router_external:
+                    title: Router External
+                    nullable: true
+                    type: boolean
+                created_at:
+                    title: Created At
+                    nullable: true
+                    type: string
+                    format: date-time
+                updated_at:
+                    title: Updated At
+                    nullable: true
+                    type: string
+                    format: date-time
+            type: object
+            required:
+            - name
+            title: NetworkResponse
+            example:
+                created_at: '2022-01-01 00:00:00'
+                description: network description
+                id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                is_port_security_enabled: true
+                is_router_external: false
+                is_shared: false
+                mtu: '1500'
+                name: network_name
+                status: ACTIVE
+                subnet_ids:
+                - xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                tags:
+                - network_tag
+                updated_at: '2022-01-01 00:00:00'
         PortCreateRequest:
             properties:
                 name:
@@ -2397,6 +2474,70 @@ components:
                     nic_vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                     router_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                     vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        RouterResponse:
+            properties:
+                id:
+                    title: Id
+                    nullable: true
+                    type: string
+                vpc_id:
+                    type: string
+                    title: Vpc Id
+                external_network:
+                    title: External Network
+                    nullable: true
+                    type: string
+                external_id:
+                    title: External Id
+                    nullable: true
+                    type: string
+                is_default:
+                    type: boolean
+                    title: Is Default
+                name:
+                    title: Name
+                    nullable: true
+                    type: string
+                created_at:
+                    title: Created At
+                    nullable: true
+                    type: string
+                    format: date-time
+                updated:
+                    title: Updated
+                    nullable: true
+                    type: string
+                    format: date-time
+                function:
+                    title: Function
+                    default: primary
+                    nullable: true
+                    type: string
+                status:
+                    type: string
+                    title: Status
+                error:
+                    title: Error
+                    nullable: true
+                    type: string
+            type: object
+            required:
+            - vpc_id
+            - is_default
+            - status
+            title: RouterResponse
+            example:
+                created_at: '2022-01-01 00:00:00'
+                error: 'null'
+                external_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                external_network: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                function: primary
+                id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                is_default: true
+                name: vpc_name
+                status: created
+                updated: '2022-01-01 00:00:00'
+                vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
         RuleCreateRequest:
             properties:
                 direction:
@@ -3361,6 +3502,98 @@ components:
                 deleted_vpcs:
                 -   database: 0
                 -   openstack: 0
+        VpcDetailsResponse:
+            properties:
+                id:
+                    title: Id
+                    nullable: true
+                    type: string
+                tenant_id:
+                    title: Tenant Id
+                    nullable: true
+                    type: string
+                name:
+                    title: Name
+                    nullable: true
+                    type: string
+                description:
+                    title: Description
+                    nullable: true
+                    type: string
+                routers:
+                    title: Routers
+                    default: []
+                    nullable: true
+                    items:
+                        $ref: '#/components/schemas/RouterResponse'
+                    type: array
+                networks:
+                    title: Networks
+                    default: []
+                    nullable: true
+                    items:
+                        $ref: '#/components/schemas/NetworkResponse'
+                    type: array
+                subnets:
+                    title: Subnets
+                    default: []
+                    nullable: true
+                    items:
+                        type: string
+                    type: array
+                created_at:
+                    title: Created At
+                    nullable: true
+                    type: string
+                    format: date-time
+                updated:
+                    title: Updated
+                    nullable: true
+                    type: string
+                    format: date-time
+                is_default:
+                    title: Is Default
+                    nullable: true
+                    type: boolean
+            type: object
+            title: VpcDetailsResponse
+            example:
+                created_at: '2022-01-01 00:00:00'
+                description: DESCRIPTION
+                id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                is_default: true
+                name: vpc_name
+                networks:
+                -   created_at: '2022-01-01 00:00:00'
+                    description: network description
+                    id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                    is_port_security_enabled: true
+                    is_router_external: false
+                    is_shared: false
+                    mtu: '1500'
+                    name: network_name
+                    status: ACTIVE
+                    subnet_ids:
+                    - xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                    tags:
+                    - network_tag
+                    updated_at: '2022-01-01 00:00:00'
+                routers:
+                -   created_at: '2022-01-01 00:00:00'
+                    error: 'null'
+                    external_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                    external_network: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                    function: primary
+                    id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                    is_default: true
+                    name: vpc_name
+                    status: created
+                    updated: '2022-01-01 00:00:00'
+                    vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                subnets:
+                - xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                tenant_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                updated: '2022-01-01 00:00:00'
         VpcResponse:
             properties:
                 id:

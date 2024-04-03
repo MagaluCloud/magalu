@@ -9,7 +9,7 @@ Executor: create
 
 Create a Rule async, returning its ID. To monitor the creation progress, please check the status in the service message or implement polling.
 
-Version: 1.111.0
+Version: 1.114.3
 
 import "magalu.cloud/lib/products/network/rules"
 */
