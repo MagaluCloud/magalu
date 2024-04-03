@@ -5,7 +5,7 @@ Package: images
 
 Operations with images for instances.
 
-Version: 1.199.0
+Version: v1
 
 import "magalu.cloud/lib/products/virtual_machine/images"
 */

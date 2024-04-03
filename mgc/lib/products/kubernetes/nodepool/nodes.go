@@ -55,7 +55,7 @@ type NodesResultResultsItem struct {
 	NodepoolName   string                               `json:"nodepool_name"`
 	Status         NodesResultResultsItemStatus         `json:"status"`
 	Taints         NodesResultResultsItemTaints         `json:"taints"`
-	Zone           string                               `json:"zone"`
+	Zone           *string                              `json:"zone"`
 }
 
 // Information for the node's address.

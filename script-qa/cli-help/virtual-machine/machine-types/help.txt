@@ -5,8 +5,7 @@ Usage:
   ./cli virtual-machine machine-types [command]
 
 Commands:
-  list-latest-types Retrieves all machine-types available in the region.
-  list-v1-types     Retrieves all machine-types available in the region.
+  list        Retrieves all machine-types available in the region.
 
 Flags:
   -h, --help      help for machine-types

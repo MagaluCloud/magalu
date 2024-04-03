@@ -2281,7 +2281,6 @@ components:
             required:
             - id
             - name
-            - project_id
             properties:
                 id:
                     type: string
@@ -2314,8 +2313,8 @@ components:
                     example: This is an example cluster
                 project_id:
                     type: string
-                    description: Unique identifier of the project where the cluster
-                        was provisioned.
+                    description: (Deprecated) Unique identifier of the project where
+                        the cluster was provisioned.
                     example: 0000806e53ec429792a7885e63264411
                 region:
                     type: string
@@ -2362,6 +2361,7 @@ components:
                     description: List of tags applied to the Kubernetes cluster.
                     items:
                         type: string
+                        nullable: true
                         description: Items from the list of tags applied to the Kubernetes
                             cluster.
                         example: tag-example
@@ -2371,8 +2371,8 @@ components:
                     example: This is an example cluster
                 project_id:
                     type: string
-                    description: Unique identifier of the project where the cluster
-                        was provisioned.
+                    description: (Deprecated) Unique identifier of the project where
+                        the cluster was provisioned.
                     example: 0000806e53ec429792a7885e63264411
                 region:
                     type: string
@@ -2406,7 +2406,6 @@ components:
             - name
             - id
             - version
-            - project_id
             - region
         CreateNodePoolRequest:
             type: object
@@ -2526,6 +2525,7 @@ components:
                 zone:
                     type: array
                     description: Availability zone for creating the Kubernetes cluster.
+                    nullable: true
                     items:
                         type: string
                         description: Items from the list of availability zones for
@@ -2536,6 +2536,7 @@ components:
                     description: List of tags applied to the node pool.
                     items:
                         type: string
+                        nullable: true
                         description: Items from the list of tags applied to the node
                             pool.
                         example: tag-example
@@ -2582,7 +2583,6 @@ components:
             - replicas
             - zone
             - labels
-            - securityGroups
             - auto_scale
             - status
         ClusterNodePoolsResponse:
@@ -2673,6 +2673,7 @@ components:
                     example: ubuntu-2004-kube-v1.22.9-v1
                 zone:
                     type: string
+                    nullable: true
                     description: Identifier of the region where the node is located.
                     example: br-ne-1c
                 infrastructure:
@@ -2816,15 +2817,15 @@ components:
                     description: 'Current state of the node pool or control plane.
 
 
-                        | Component      | Possible States                     |
+                        | Component       | Possible States                                           |
 
-                        |-----------------|-------------------------------------|
+                        |-----------------|-----------------------------------------------------------|
 
-                        | Node pool       | ScalingUp, ScalingDown, Running, Failed,
-                        Unknown |
+                        | Node pool       | ScalingUp, ScalingDown, Pending, Running,
+                        Failed, Unknown |
 
-                        | Control Plane   | ScalingUp, ScalingDown, Running, Failed,
-                        Unknown |
+                        | Control Plane   | ScalingUp, ScalingDown, Pending, Running,
+                        Failed, Unknown |
 
                         '
                     example: Pending

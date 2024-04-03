@@ -44,7 +44,7 @@ type GetResult struct {
 	Name          string                 `json:"name"`
 	Network       GetResultNetwork       `json:"network,omitempty"`
 	NodePools     GetResultNodePools     `json:"node_pools,omitempty"`
-	ProjectId     string                 `json:"project_id"`
+	ProjectId     string                 `json:"project_id,omitempty"`
 	Region        string                 `json:"region"`
 	Status        GetResultStatus        `json:"status,omitempty"`
 	Tags          GetResultTags          `json:"tags,omitempty"`
@@ -69,12 +69,12 @@ type GetResultControlplane struct {
 	Labels           GetResultControlplaneLabels           `json:"labels"`
 	Name             string                                `json:"name"`
 	Replicas         int                                   `json:"replicas"`
-	SecurityGroups   GetResultControlplaneSecurityGroups   `json:"securityGroups"`
+	SecurityGroups   GetResultControlplaneSecurityGroups   `json:"securityGroups,omitempty"`
 	Status           GetResultControlplaneStatus           `json:"status"`
 	Tags             GetResultControlplaneTags             `json:"tags,omitempty"`
 	Taints           GetResultControlplaneTaints           `json:"taints,omitempty"`
 	UpdatedAt        string                                `json:"updated_at,omitempty"`
-	Zone             GetResultControlplaneZone             `json:"zone"`
+	Zone             *GetResultControlplaneZone            `json:"zone"`
 }
 
 // Object specifying properties for updating workload resources in the Kubernetes cluster.
@@ -117,7 +117,7 @@ type GetResultControlplaneStatus struct {
 
 type GetResultControlplaneStatusMessages []string
 
-type GetResultControlplaneTags []string
+type GetResultControlplaneTags []*string
 
 type GetResultControlplaneTaintsItem struct {
 	Effect string `json:"effect"`
@@ -155,12 +155,12 @@ type GetResultNodePoolsItem struct {
 	Labels           GetResultControlplaneLabels            `json:"labels"`
 	Name             string                                 `json:"name"`
 	Replicas         int                                    `json:"replicas"`
-	SecurityGroups   GetResultControlplaneSecurityGroups    `json:"securityGroups"`
+	SecurityGroups   GetResultControlplaneSecurityGroups    `json:"securityGroups,omitempty"`
 	Status           GetResultControlplaneStatus            `json:"status"`
 	Tags             GetResultControlplaneTags              `json:"tags,omitempty"`
 	Taints           GetResultNodePoolsItemTaints           `json:"taints,omitempty"`
 	UpdatedAt        string                                 `json:"updated_at,omitempty"`
-	Zone             GetResultControlplaneZone              `json:"zone"`
+	Zone             *GetResultControlplaneZone             `json:"zone"`
 }
 
 // Template for the instance object used to create machine instances and managed instance groups.
@@ -183,7 +183,7 @@ type GetResultStatus struct {
 	State   string `json:"state"`
 }
 
-type GetResultTags []string
+type GetResultTags []*string
 
 func Get(
 	client *mgcClient.Client,

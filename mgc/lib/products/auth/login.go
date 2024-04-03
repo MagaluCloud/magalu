@@ -24,9 +24,10 @@ import (
 )
 
 type LoginParameters struct {
-	Qrcode bool                  `json:"qrcode,omitempty"`
-	Scopes LoginParametersScopes `json:"scopes,omitempty"`
-	Show   bool                  `json:"show,omitempty"`
+	Headless bool                  `json:"headless,omitempty"`
+	Qrcode   bool                  `json:"qrcode,omitempty"`
+	Scopes   LoginParametersScopes `json:"scopes,omitempty"`
+	Show     bool                  `json:"show,omitempty"`
 }
 
 type LoginParametersScopes []string

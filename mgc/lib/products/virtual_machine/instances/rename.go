@@ -13,7 +13,7 @@ Renames a Virtual Machine instance with the id provided in the current tenant wh
 - You can use the virtual-machine list command to retrieve all instances, so you can get the id of
 the instance that you want to rename.
 
-Version: 0.1.0
+Version: v1
 
 import "magalu.cloud/lib/products/virtual_machine/instances"
 */

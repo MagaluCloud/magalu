@@ -42,7 +42,7 @@ Please specify the Kubernetes version using the standard "vX.Y.Z" format.
 - `id` (String) Cluster's UUID.
 - `kube_api_server` (Attributes) Information about the Kubernetes API Server of the cluster. (see [below for nested schema](#nestedatt--kube_api_server))
 - `network` (Attributes) Response object for the Kubernetes cluster network resource request. (see [below for nested schema](#nestedatt--network))
-- `project_id` (String) Unique identifier of the project where the cluster was provisioned.
+- `project_id` (String) (Deprecated) Unique identifier of the project where the cluster was provisioned.
 - `region` (String) Identifier of the region where the Kubernetes cluster is located.
 - `status` (Attributes) Details about the status of the Kubernetes cluster or node. (see [below for nested schema](#nestedatt--status))
 - `tags` (List of String) List of tags applied to the Kubernetes cluster.
@@ -170,10 +170,10 @@ Read-Only:
 - `messages` (List of String) Detailed message about the status of the node pool or control plane.
 - `state` (String) Current state of the node pool or control plane.
 
-| Component      | Possible States                     |
-|-----------------|-------------------------------------|
-| Node pool       | ScalingUp, ScalingDown, Running, Failed, Unknown |
-| Control Plane   | ScalingUp, ScalingDown, Running, Failed, Unknown |
+| Component       | Possible States                                           |
+|-----------------|-----------------------------------------------------------|
+| Node pool       | ScalingUp, ScalingDown, Pending, Running, Failed, Unknown |
+| Control Plane   | ScalingUp, ScalingDown, Pending, Running, Failed, Unknown |
 
 
 <a id="nestedatt--controlplane--taints"></a>
@@ -249,10 +249,10 @@ Read-Only:
 - `messages` (List of String) Detailed message about the status of the node pool or control plane.
 - `state` (String) Current state of the node pool or control plane.
 
-| Component      | Possible States                     |
-|-----------------|-------------------------------------|
-| Node pool       | ScalingUp, ScalingDown, Running, Failed, Unknown |
-| Control Plane   | ScalingUp, ScalingDown, Running, Failed, Unknown |
+| Component       | Possible States                                           |
+|-----------------|-----------------------------------------------------------|
+| Node pool       | ScalingUp, ScalingDown, Pending, Running, Failed, Unknown |
+| Control Plane   | ScalingUp, ScalingDown, Pending, Running, Failed, Unknown |
 
 
 <a id="nestedatt--current_node_pools--taints"></a>

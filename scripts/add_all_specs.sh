@@ -18,6 +18,6 @@ $BASEDIR/add_specs.sh kubernetes kubernetes https://mke.br-ne-1.jaxyendy.com/doc
 # This file is NOT being used, the API is not recommended and we should follow with their S3 compatible API
 # $BASEDIR/add_specs.sh object-storage objects https://object-storage.br-ne-1.jaxyendy.com/openapi.json
 
-$BASEDIR/add_specs.sh virtual-machine compute https://virtual-machine.br-ne-1.jaxyendy.com/openapi.json https://virtual-machine.jaxyendy.com/openapi.json
+$BASEDIR/add_specs.sh virtual-machine compute https://virtual-machine.br-ne-1.jaxyendy.com/v1/openapi.json https://virtual-machine.jaxyendy.com/openapi.json
 
 $BASEDIR/add_specs.sh network network https://vpc.br-ne-1.jaxyendy.com/openapi.json https://network.jaxyendy.com/openapi.json

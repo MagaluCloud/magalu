@@ -19,7 +19,7 @@ A Snapshot is ready for restore when it's in available state.
 - It's not possible to create 2 snapshots with the same name.
 - You can inform ID or Name from a Virtual Machine if both informed the priority will be ID.
 
-Version: 0.1.0
+Version: v1
 
 import "magalu.cloud/lib/products/virtual_machine/snapshots"
 */

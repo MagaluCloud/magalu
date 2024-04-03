@@ -52,12 +52,12 @@ type UpdateResult struct {
 	Labels           UpdateResultLabels           `json:"labels"`
 	Name             string                       `json:"name"`
 	Replicas         int                          `json:"replicas"`
-	SecurityGroups   UpdateResultSecurityGroups   `json:"securityGroups"`
+	SecurityGroups   UpdateResultSecurityGroups   `json:"securityGroups,omitempty"`
 	Status           UpdateResultStatus           `json:"status"`
 	Tags             UpdateResultTags             `json:"tags,omitempty"`
 	Taints           UpdateResultTaints           `json:"taints,omitempty"`
 	UpdatedAt        string                       `json:"updated_at,omitempty"`
-	Zone             UpdateResultZone             `json:"zone"`
+	Zone             *UpdateResultZone            `json:"zone"`
 }
 
 // Template for the instance object used to create machine instances and managed instance groups.
@@ -93,7 +93,7 @@ type UpdateResultStatus struct {
 
 type UpdateResultStatusMessages []string
 
-type UpdateResultTags []string
+type UpdateResultTags []*string
 
 type UpdateResultTaintsItem struct {
 	Effect string `json:"effect"`

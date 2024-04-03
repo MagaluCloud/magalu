@@ -5,7 +5,7 @@ Package: products
 
 All MagaLu Groups & Executors
 
-Version: v0.18.3-rc-1-git-ebea59efa9d9c0193aeb9af60916343b0092ba7c (modified)
+Version: v0.18.4-rc2-git-c3e1682bb3ab16b40da4659068320efe804830dd (modified)
 
 import "magalu.cloud/lib/products"
 */

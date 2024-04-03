@@ -40,7 +40,7 @@ type ListResultResultsItem struct {
 	Id            string                             `json:"id"`
 	KubeApiServer ListResultResultsItemKubeApiServer `json:"kube_api_server,omitempty"`
 	Name          string                             `json:"name"`
-	ProjectId     string                             `json:"project_id"`
+	ProjectId     string                             `json:"project_id,omitempty"`
 	Region        string                             `json:"region,omitempty"`
 	Status        ListResultResultsItemStatus        `json:"status,omitempty"`
 	Tags          ListResultResultsItemTags          `json:"tags,omitempty"`

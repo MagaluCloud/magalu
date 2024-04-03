@@ -19,6 +19,7 @@ var GetGroup = utils.NewLazyLoader(func() core.Grouper {
 				getList(),
 				getRevoke(),
 				getSetCurrent(),
+				getAdd(),
 			}
 		},
 	)

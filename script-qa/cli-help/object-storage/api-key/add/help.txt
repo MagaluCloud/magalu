@@ -1,0 +1,13 @@
+Change current Object Storage credential
+
+Usage:
+  ./cli object-storage api-key add [key-id] [key-secret] [flags]
+
+Flags:
+  -h, --help                help for add
+      --key-id string       ID of api key to use (required)
+      --key-secret string   Secret of api key to use (required)
+
+Global Flags:
+      --cli.show-cli-globals   Show all CLI global flags on usage text
+

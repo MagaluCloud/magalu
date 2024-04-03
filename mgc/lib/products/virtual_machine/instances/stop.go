@@ -15,7 +15,7 @@ the instance that you want to stop.
 #### Rules
 - The instance must be in the running state.
 
-Version: 0.1.0
+Version: v1
 
 import "magalu.cloud/lib/products/virtual_machine/instances"
 */

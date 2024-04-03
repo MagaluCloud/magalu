@@ -47,12 +47,12 @@ type ListResultResultsItem struct {
 	Labels           ListResultResultsItemLabels           `json:"labels"`
 	Name             string                                `json:"name"`
 	Replicas         int                                   `json:"replicas"`
-	SecurityGroups   ListResultResultsItemSecurityGroups   `json:"securityGroups"`
+	SecurityGroups   ListResultResultsItemSecurityGroups   `json:"securityGroups,omitempty"`
 	Status           ListResultResultsItemStatus           `json:"status"`
 	Tags             ListResultResultsItemTags             `json:"tags,omitempty"`
 	Taints           ListResultResultsItemTaints           `json:"taints,omitempty"`
 	UpdatedAt        string                                `json:"updated_at,omitempty"`
-	Zone             ListResultResultsItemZone             `json:"zone"`
+	Zone             *ListResultResultsItemZone            `json:"zone"`
 }
 
 // Object specifying properties for updating workload resources in the Kubernetes cluster.
@@ -95,7 +95,7 @@ type ListResultResultsItemStatus struct {
 
 type ListResultResultsItemStatusMessages []string
 
-type ListResultResultsItemTags []string
+type ListResultResultsItemTags []*string
 
 type ListResultResultsItemTaintsItem struct {
 	Effect string `json:"effect"`

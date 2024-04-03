@@ -10,3 +10,5 @@ require (
 replace magalu.cloud/core => ../core
 
 replace magalu.cloud/sdk => ../sdk
+
+replace magalu.cloud/testing/fs_test_helper => ../testing/fs_test_helper

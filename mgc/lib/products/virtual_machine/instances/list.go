@@ -9,7 +9,7 @@ Lists all instances in the current tenant.
 
 # List Virtual Machine instances
 
-Version: 0.1.0
+Version: v1
 
 import "magalu.cloud/lib/products/virtual_machine/instances"
 */
