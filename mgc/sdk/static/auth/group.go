@@ -3,8 +3,8 @@ package auth
 import (
 	"magalu.cloud/core"
 	"magalu.cloud/core/utils"
-	"magalu.cloud/sdk/static/auth/tenant"
 	"magalu.cloud/sdk/static/auth/clients"
+	"magalu.cloud/sdk/static/auth/tenant"
 )
 
 var GetGroup = utils.NewLazyLoader(func() core.Grouper {
