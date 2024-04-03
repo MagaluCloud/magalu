@@ -2,6 +2,7 @@ package http
 
 import (
 	"net/http"
+	"os"
 	"time"
 )
 
@@ -34,6 +35,12 @@ func (r *ClientRetryer) RoundTrip(req *http.Request) (*http.Response, error) {
 	for i := 0; i < r.attempts; i++ {
 		res, err = r.Transport.RoundTrip(req)
 		if err != nil {
+			if os.IsTimeout(err) {
+				logger().Debugw("Request timeout, retrying...", "attempt", i+1, "status code", res.StatusCode, "")
+				time.Sleep(waitBeforeRetry)
+				waitBeforeRetry = waitBeforeRetry * 2
+				continue
+			}
 			return res, err
 		}
 		if 400 <= res.StatusCode || res.StatusCode < 600 {
