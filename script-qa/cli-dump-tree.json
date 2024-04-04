@@ -28,6 +28,309 @@
     "version": ""
    },
    {
+    "children": [
+     {
+      "configs": {
+       "type": "object"
+      },
+      "description": "Create new client (Oauth Application)",
+      "isInternal": false,
+      "name": "create",
+      "parameters": {
+       "properties": {
+        "access-token-expiration": {
+         "description": "Access token expiration (in seconds)",
+         "example": 7200,
+         "type": "integer"
+        },
+        "always-require-login": {
+         "description": "Must ignore active Magalu ID session and always require login",
+         "type": "boolean"
+        },
+        "audiences": {
+         "description": "Client audiences (separated by space)",
+         "example": "public",
+         "type": "string"
+        },
+        "backchannel-logout-session-enabled": {
+         "description": "Client requires backchannel logout session",
+         "type": "boolean"
+        },
+        "backchannel-logout-uri": {
+         "description": "Backchannel logout URI",
+         "type": "string"
+        },
+        "client-privacy-term-url": {
+         "description": "URL to privacy term",
+         "type": "string"
+        },
+        "description": {
+         "description": "Description of new client",
+         "example": "Client description",
+         "type": "string"
+        },
+        "icon": {
+         "description": "URL for client icon",
+         "type": "string"
+        },
+        "name": {
+         "description": "Name of new client",
+         "example": "Client Name",
+         "type": "string"
+        },
+        "oidc-audiences": {
+         "description": "Audiences for ID token",
+         "type": "string"
+        },
+        "reason": {
+         "description": "Note to inform the reason for creating the client. Will help with the application approval process",
+         "type": "string"
+        },
+        "redirect-uris": {
+         "description": "Redirect URIs (separated by space)",
+         "type": "string"
+        },
+        "refresh-token-custom-expires-enabled": {
+         "description": "Use custom value for refresh token expiration",
+         "type": "boolean"
+        },
+        "refresh-token-expiration": {
+         "description": "Custom refresh token expiration value (in seconds)",
+         "example": 15778476,
+         "type": "integer"
+        },
+        "terms-of-use": {
+         "description": "URL to terms of use",
+         "type": "string"
+        }
+       },
+       "required": [
+        "name",
+        "description",
+        "redirect-uris",
+        "client-privacy-term-url",
+        "terms-of-use",
+        "reason"
+       ],
+       "type": "object"
+      },
+      "result": {
+       "properties": {
+        "client_id": {
+         "type": "string"
+        },
+        "client_secret": {
+         "type": "string"
+        },
+        "uuid": {
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
+      "version": ""
+     },
+     {
+      "configs": {
+       "type": "object"
+      },
+      "description": "List user clients",
+      "isInternal": false,
+      "name": "list",
+      "parameters": {
+       "type": "object"
+      },
+      "result": {
+       "items": {
+        "properties": {
+         "access_token_expiration": {
+          "type": "integer"
+         },
+         "always_require_login": {
+          "type": "boolean"
+         },
+         "audiences": {
+          "items": {
+           "type": "string"
+          },
+          "type": "array"
+         },
+         "backchannel_logout_session_enabled": {
+          "type": "boolean"
+         },
+         "backchannel_logout_uri": {
+          "type": "string"
+         },
+         "client_id": {
+          "type": "string"
+         },
+         "client_privacy_term_url": {
+          "type": "string"
+         },
+         "client_status": {
+          "type": "string"
+         },
+         "description": {
+          "type": "string"
+         },
+         "icon": {
+          "type": "string"
+         },
+         "name": {
+          "type": "string"
+         },
+         "oidc_audience": {
+          "items": {
+           "type": "string"
+          },
+          "type": "array"
+         },
+         "redirect_uris": {
+          "items": {
+           "type": "string"
+          },
+          "type": "array"
+         },
+         "refresh_token_custom_expires_enabled": {
+          "type": "boolean"
+         },
+         "refresh_token_expiration": {
+          "type": "integer"
+         },
+         "scopes": {
+          "items": {
+           "type": "string"
+          },
+          "type": "array"
+         },
+         "scopes_default": {
+          "items": {
+           "type": "string"
+          },
+          "type": "array"
+         },
+         "term_of_use": {
+          "type": "string"
+         },
+         "uuid": {
+          "type": "string"
+         }
+        },
+        "required": [
+         "always_require_login",
+         "backchannel_logout_session_enabled",
+         "refresh_token_custom_expires_enabled"
+        ],
+        "type": "object"
+       },
+       "type": "array"
+      },
+      "version": ""
+     },
+     {
+      "configs": {
+       "type": "object"
+      },
+      "description": "Update a client (Oauth Application)",
+      "isInternal": false,
+      "name": "update",
+      "parameters": {
+       "properties": {
+        "access-token-expiration": {
+         "description": "Access token expiration (in seconds)",
+         "example": 7200,
+         "type": "integer"
+        },
+        "always-require-login": {
+         "description": "Must ignore active Magalu ID session and always require login",
+         "type": "boolean"
+        },
+        "audiences": {
+         "description": "Client audiences (separated by space)",
+         "example": "public",
+         "type": "string"
+        },
+        "backchannel-logout-session-enabled": {
+         "description": "Client requires backchannel logout session",
+         "type": "boolean"
+        },
+        "backchannel-logout-uri": {
+         "description": "Backchannel logout URI",
+         "type": "string"
+        },
+        "client-privacy-term-url": {
+         "description": "URL to privacy term",
+         "type": "string"
+        },
+        "description": {
+         "description": "Description of new client",
+         "example": "Client description",
+         "type": "string"
+        },
+        "icon": {
+         "description": "URL for client icon",
+         "type": "string"
+        },
+        "id": {
+         "description": "UUID of client",
+         "type": "string"
+        },
+        "name": {
+         "description": "Name of new client",
+         "example": "Client Name",
+         "type": "string"
+        },
+        "oidc-audiences": {
+         "description": "Audiences for ID token",
+         "type": "string"
+        },
+        "reason": {
+         "description": "Note to inform the reason for creating the client. Will help with the application approval process",
+         "type": "string"
+        },
+        "redirect-uris": {
+         "description": "Redirect URIs (separated by space)",
+         "type": "string"
+        },
+        "refresh-token-custom-expires-enabled": {
+         "description": "Use custom value for refresh token expiration",
+         "type": "boolean"
+        },
+        "refresh-token-expiration": {
+         "description": "Custom refresh token expiration value (in seconds)",
+         "example": 15778476,
+         "type": "integer"
+        },
+        "terms-of-use": {
+         "description": "URL to terms of use",
+         "type": "string"
+        }
+       },
+       "required": [
+        "id"
+       ],
+       "type": "object"
+      },
+      "result": {
+       "properties": {
+        "client_id": {
+         "type": "string"
+        },
+        "uuid": {
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
+      "version": ""
+     }
+    ],
+    "description": "",
+    "isInternal": false,
+    "name": "clients",
+    "version": ""
+   },
+   {
     "configs": {
      "type": "object"
     },

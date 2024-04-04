@@ -1,0 +1,19 @@
+Manage Clients (Oauth Applications) to use ID Magalu
+
+Usage:
+  ./cli auth clients [flags]
+  ./cli auth clients [command]
+
+Commands:
+  create      Create new client (Oauth Application)
+  list        List user clients
+  update      Update a client (Oauth Application)
+
+Flags:
+  -h, --help   help for clients
+
+Global Flags:
+      --cli.show-cli-globals   Show all CLI global flags on usage text
+
+Use "./cli auth clients [command] --help" for more information about a command.
+
