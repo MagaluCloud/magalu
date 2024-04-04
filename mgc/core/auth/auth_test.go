@@ -380,7 +380,7 @@ secret_access_key: MySecretAccessKeyTeste
 				responseBody: io.NopCloser(bytes.NewBuffer([]byte{})),
 			},
 			&codeVerifier{},
-			false,
+			true,
 			[]fs_test_helper.TestFsEntry{
 				{
 					Path: "/default/auth.yaml",
