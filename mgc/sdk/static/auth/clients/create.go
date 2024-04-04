@@ -43,7 +43,7 @@ var getCreate = utils.NewLazyLoader[core.Executor](func() core.Executor {
 	)
 
 	return core.NewExecuteResultOutputOptions(executor, func(exec core.Executor, result core.Result) string {
-		return "template=Client created successfully\nClient ID={{.client_id}}\nClient Secret:{{.client_secret}}\n"
+		return "template=Client created successfully! We'll analise your requisition and approve your client. You can check the approval status using client list command.\nClient ID: {{.client_id}}\nClient Secret: {{.client_secret}}\n"
 	})
 })
 

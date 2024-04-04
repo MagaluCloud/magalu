@@ -70,7 +70,7 @@ type listClientResult struct {
 	ClientID                         string   `json:"client_id,omitempty"`
 	Name                             string   `json:"name,omitempty"`
 	Description                      string   `json:"description,omitempty"`
-	Status                           string   `json:"client_status,omitempty"`
+	Status                           string   `json:"client_approval_status,omitempty"`
 	Scopes                           []string `json:"scopes,omitempty"`
 	ScopesDefault                    []string `json:"scopes_default,omitempty"`
 	TermOfUse                        string   `json:"term_of_use,omitempty"`

@@ -161,13 +161,13 @@
          "backchannel_logout_uri": {
           "type": "string"
          },
+         "client_approval_status": {
+          "type": "string"
+         },
          "client_id": {
           "type": "string"
          },
          "client_privacy_term_url": {
-          "type": "string"
-         },
-         "client_status": {
           "type": "string"
          },
          "description": {
