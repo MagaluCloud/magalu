@@ -185,7 +185,7 @@ func checkScopesAfterLogin(a *auth.Auth, desiredScopes core.Scopes) {
 	}
 
 	loginLogger().Warnw(
-		"login was successful but resulting scopes were not as requested. This may lead to some operations failing until the scopes are added via 'auth scopes add'",
+		"login was successful but resulting scopes were not as requested. This may lead to some operations failing.",
 		"missing", missing,
 	)
 }
