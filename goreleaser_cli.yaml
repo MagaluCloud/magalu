@@ -1,4 +1,4 @@
-project_name: mgc
+project_name: mgccli
 builds:
   -
     env: [CGO_ENABLED=0]
@@ -52,7 +52,7 @@ nfpms:
   description: MGC CLI.
   homepage: https://magalu.cloud/
   license: MIT
-  package_name: mgc
+  package_name: mgccli
   bindir: /usr/bin
   formats:
   - deb
@@ -62,7 +62,7 @@ nfpms:
 
 brews:
   -
-    name: mgc
+    name: mgccli
     homepage: "https://magalu.cloud"
     repository:
       owner: MagaluCloud
