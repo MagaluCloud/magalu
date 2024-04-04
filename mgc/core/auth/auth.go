@@ -366,6 +366,9 @@ func (o *Auth) RequestAuthTokenWithAuthorizationCode(ctx context.Context, authCo
 	logger().Infow("Will send request for Auth Code", "authCode", authCode)
 	resp, err := o.httpClient.Do(r)
 	if err != nil || resp.StatusCode != http.StatusOK {
+		if err == nil {
+			return fmt.Errorf("bad response from auth server, status %d", resp.StatusCode)
+		}
 		return err
 	}
 
