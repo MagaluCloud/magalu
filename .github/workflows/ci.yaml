@@ -77,7 +77,7 @@ jobs:
           version: latest
           args: release --clean --config="goreleaser_cli.yaml"
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_PAT_NEW }}
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
 
   # terraform-release:
   #   needs: pre-release
