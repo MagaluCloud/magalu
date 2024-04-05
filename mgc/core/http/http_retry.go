@@ -36,7 +36,7 @@ func (r *ClientRetryer) RoundTrip(req *http.Request) (*http.Response, error) {
 		res, err = r.Transport.RoundTrip(req)
 		if err != nil {
 			if os.IsTimeout(err) {
-				logger().Debugw("Request timeout, retrying...", "attempt", i+1, "status code", res.StatusCode, "")
+				logger().Debug("Request timeout, retrying...", "attempt", i+1, "")
 				time.Sleep(waitBeforeRetry)
 				waitBeforeRetry = waitBeforeRetry * 2
 				continue
@@ -44,7 +44,7 @@ func (r *ClientRetryer) RoundTrip(req *http.Request) (*http.Response, error) {
 			return res, err
 		}
 		if res.StatusCode >= 400 && res.StatusCode < 600 {
-			logger().Debugw("Server responded with fail, retrying...", "attempt", i+1, "status code", res.StatusCode, "")
+			logger().Debug("Server responded with fail, retrying...", "attempt", i+1, "status code", res.StatusCode, "")
 			time.Sleep(waitBeforeRetry)
 			waitBeforeRetry = waitBeforeRetry * 2
 			continue
