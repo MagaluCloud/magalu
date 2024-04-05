@@ -79,6 +79,27 @@ func sync(ctx context.Context, params syncParams, cfg common.Config) (result cor
 	var srcObjects <-chan pipeline.WalkDirEntry
 
 	if srcIsRemote {
+		// GA Urgency - [PT-BR]
+		// Inicia verificação de diretório antes das goroutines iniciarem
+		// Você do futuro: fiz dessa forma, pois sem isso era gerado um erro de race condition, onde um download
+		//   era iniciado antes da validação do diretório acontecer.
+		//   Agora, se criar ele antes de tudo, a change de sucesso é maior. =)
+		// O erro que acontecia era um PANIC, ali na linha do 'for _, er := range objErr {'
+		if params.Destination.String() != "." {
+			if _, err := os.Stat(params.Destination.String()); os.IsNotExist(err) {
+				currentDir, err := filepath.Abs(".")
+				if err != nil {
+					return nil, err
+				}
+
+				dir := currentDir + "/" + filepath.Join(params.Destination.String())
+				if err := os.MkdirAll(dir, os.ModePerm); err != nil {
+					return nil, err
+				}
+			}
+
+		}
+
 		srcObjects = common.ListGenerator(ctx, common.ListObjectsParams{
 			Destination: params.Source,
 			Recursive:   true,
@@ -109,7 +130,7 @@ func sync(ctx context.Context, params syncParams, cfg common.Config) (result cor
 		}
 	}
 
-	progressReporter.End()
+	// progressReporter.End()
 	return syncResult{
 		Source:        params.Source,
 		Destination:   params.Destination,
@@ -134,12 +155,12 @@ func createObjectSyncFilePairProcessor(
 			return syncUploadPair{}, pipeline.ProcessSkip
 		}
 
-		normalizedSource, err := normalizeURI(source, entry.Path())
+		normalizedSource, err := normalizeURI(source, entry.Path(), false)
 		if err != nil {
 			return syncUploadPair{}, pipeline.ProcessSkip
 		}
 
-		normalizedDestination, err := normalizeURI(destination, entry.Path())
+		normalizedDestination, err := normalizeURI(destination, entry.Path(), true)
 		if err != nil {
 			return syncUploadPair{}, pipeline.ProcessSkip
 		}
@@ -162,20 +183,46 @@ func createObjectSyncFilePairProcessor(
 	}
 }
 
-func normalizeURI(uri mgcSchemaPkg.URI, path string) (mgcSchemaPkg.URI, error) {
+func normalizeURI(uri mgcSchemaPkg.URI, path string, isDestination bool) (mgcSchemaPkg.URI, error) {
 	if uri.Scheme() == "s3" {
 		return uri.JoinPath(filepath.Base(path)), nil
 	}
 
-	if uri == "." {
+	currentDir, err := filepath.Abs(".")
+	if err != nil {
+		return uri, err
+	}
+
+	dir := uri.String()
+	if dir == "." {
 		value, err := filepath.Abs(uri.Path())
 		if err != nil {
 			return uri, err
 		}
-
-		return mgcSchemaPkg.FilePath(value).AsURI().JoinPath(filepath.Base(path)), nil
+		if _, err := os.Stat(value); !os.IsNotExist(err) {
+			return mgcSchemaPkg.FilePath(value).AsURI().JoinPath(filepath.Base(path)), nil
+		}
 	}
-	return uri.JoinPath(filepath.Base(path)), nil
+
+	if isDestination {
+		if _, err := os.Stat(dir); !os.IsNotExist(err) {
+			currentDir, _ = filepath.Abs(dir)
+			return mgcSchemaPkg.FilePath(currentDir).AsURI().JoinPath(filepath.Base(path)), nil
+		}
+
+		dir = currentDir + "/" + filepath.Join(uri.String())
+
+		if _, err := os.Stat(dir); !os.IsNotExist(err) {
+			return mgcSchemaPkg.FilePath(dir).AsURI().JoinPath(filepath.Base(path)), nil
+		}
+	}
+
+	dir = currentDir + filepath.Join("/"+filepath.Dir(path))
+
+	if _, err := os.Stat(dir); !os.IsNotExist(err) {
+		return mgcSchemaPkg.FilePath(dir).AsURI().JoinPath(filepath.Base(path)), nil
+	}
+	return uri, nil
 }
 
 func createSyncObjectProcessor(
