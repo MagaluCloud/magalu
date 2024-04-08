@@ -71,7 +71,7 @@ signs:
 release:
   github:
     owner: MagaluCloud
-    name: terraform
+    name: terraform-provider-mgc
   prerelease: auto
   header: |
     ## Terraform provider ({{ .Date }})
