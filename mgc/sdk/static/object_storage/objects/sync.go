@@ -79,12 +79,13 @@ func sync(ctx context.Context, params syncParams, cfg common.Config) (result cor
 	var srcObjects <-chan pipeline.WalkDirEntry
 
 	if srcIsRemote {
-		// GA Urgency - [PT-BR]
-		// Inicia verificação de diretório antes das goroutines iniciarem
-		// Você do futuro: fiz dessa forma, pois sem isso era gerado um erro de race condition, onde um download
-		//   era iniciado antes da validação do diretório acontecer.
-		//   Agora, se criar ele antes de tudo, a change de sucesso é maior. =)
-		// O erro que acontecia era um PANIC, ali na linha do 'for _, er := range objErr {'
+		// GA Urgency
+		// Starts directory verification before goroutines start
+		// Future: I did it this way because without it, a race condition error occurred when a download
+		//   was initiated before directory validation took place.
+		//   Now, by creating it beforehand, the chance of success is higher. =)
+		// The error that occurred was a PANIC, right there on the line 'for _, er := range objErr {'
+
 		if params.Destination.String() != "." {
 			if _, err := os.Stat(params.Destination.String()); os.IsNotExist(err) {
 				currentDir, err := filepath.Abs(".")
@@ -118,6 +119,7 @@ func sync(ctx context.Context, params syncParams, cfg common.Config) (result cor
 
 	progressReporter := progress_report.NewUnitsReporter(ctx, "Sync Download", 0)
 	progressReporter.Start()
+	defer progressReporter.End()
 
 	uploadChannel := pipeline.Process(ctx, srcObjects, createObjectSyncFilePairProcessor(cfg, params.Source, params.Destination, progressReporter), nil)
 	uploadObjectsErrorChan := pipeline.ParallelProcess(ctx, cfg.Workers, uploadChannel, createSyncObjectProcessor(cfg, progressReporter), nil)
@@ -130,7 +132,6 @@ func sync(ctx context.Context, params syncParams, cfg common.Config) (result cor
 		}
 	}
 
-	// progressReporter.End()
 	return syncResult{
 		Source:        params.Source,
 		Destination:   params.Destination,
