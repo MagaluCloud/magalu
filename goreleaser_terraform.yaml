@@ -58,6 +58,16 @@ archives:
         dst: "docs/resources"
       - src: "mgc/terraform-provider-mgc/install.sh"
         dst: "install.sh"
+signs:
+  - artifacts: checksum
+    args:
+      - "--batch"
+      - "--local-user"
+      - "{{ .Env.GPG_FINGERPRINT }}"
+      - "--output"
+      - "${signature}"
+      - "--detach-sign"
+      - "${artifact}"
 release:
   github:
     owner: MagaluCloud
