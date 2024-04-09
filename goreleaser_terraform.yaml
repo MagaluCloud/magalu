@@ -63,6 +63,8 @@ signs:
     args:
       - "--batch"
       - "--yes"
+      - "--pinentry-mode"
+      - "loopback"
       - "--passphrase"
       - "${{ secrets.GPG_PASSPHRASE }}"
       - "--local-user"
