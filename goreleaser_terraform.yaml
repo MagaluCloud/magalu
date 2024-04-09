@@ -1,7 +1,6 @@
 project_name: terraform
 builds:
-  -
-    env: [CGO_ENABLED=0]
+  - env: [ CGO_ENABLED=0 ]
     id: "terraformwin"
     goos:
       - windows
@@ -14,8 +13,7 @@ builds:
     flags:
       - -tags=embed release
     main: mgc/terraform-provider-mgc/main.go
-  -
-    env: [CGO_ENABLED=0]
+  - env: [ CGO_ENABLED=0 ]
     id: "terraform"
     goos:
       - linux
@@ -66,7 +64,7 @@ signs:
       - "--pinentry-mode"
       - "loopback"
       - "--passphrase"
-      - "${{ secrets.GPG_PASSPHRASE }}"
+      - "${{ .Env.GPG_PASSPHRASE }}"
       - "--local-user"
       - "{{ .Env.GPG_FINGERPRINT }}"
       - "--output"
