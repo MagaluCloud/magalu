@@ -20,7 +20,7 @@ import (
 type SetParameters struct {
 	AuthenticatedRead bool                          `json:"authenticated_read,omitempty"`
 	AwsExecRead       bool                          `json:"aws_exec_read,omitempty"`
-	Bucket            string                        `json:"bucket"`
+	Dst               string                        `json:"dst"`
 	GrantFullControl  SetParametersGrantFullControl `json:"grant_full_control,omitempty"`
 	GrantRead         SetParametersGrantRead        `json:"grant_read,omitempty"`
 	GrantReadAcp      SetParametersGrantReadAcp     `json:"grant_read_acp,omitempty"`
