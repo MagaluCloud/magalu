@@ -20376,13 +20376,13 @@
         "name": "get",
         "parameters": {
          "properties": {
-          "bucket": {
+          "dst": {
            "description": "Specifies the bucket whose ACL is being requested",
            "type": "string"
           }
          },
          "required": [
-          "bucket"
+          "dst"
          ],
          "type": "object"
         },
