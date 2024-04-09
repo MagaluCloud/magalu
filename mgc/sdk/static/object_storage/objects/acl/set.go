@@ -14,9 +14,9 @@ import (
 
 type setObjectACLParams struct {
 	Destination            mgcSchemaPkg.URI `json:"dst" jsonschema:"description=The full object URL to set the ACL information,example:my-bucket/file.txt" mgc:"positional"`
-	Version                string           `json:"obj_version,omitempty" jsonschema:"description=Version of the object to set the ACL"`
-	BucketOwnerRead        bool             `json:"bucket_owner_read,omitempty"`
-	BucketOwnerFullControl bool             `json:"bucket_owner_full_control,omitempty"`
+	Version                string           `json:"obj_version,omitempty" jsonschema:"description=Version of the object to set the ACL" mgc:"hidden"`
+	BucketOwnerRead        bool             `json:"bucket_owner_read,omitempty" mgc:"hidden"`
+	BucketOwnerFullControl bool             `json:"bucket_owner_full_control,omitempty" mgc:"hidden"`
 	common.ACLPermissions  `json:",squash"` // nolint
 }
 

@@ -10,7 +10,7 @@ import (
 )
 
 type GetBucketACLParams struct {
-	Bucket common.BucketName `json:"bucket" jsonschema:"description=Specifies the bucket whose ACL is being requested" mgc:"positional"`
+	Bucket common.BucketName `json:"dst" jsonschema:"description=Specifies the bucket whose ACL is being requested" mgc:"positional"`
 }
 
 var getGet = utils.NewLazyLoader[core.Executor](func() core.Executor {

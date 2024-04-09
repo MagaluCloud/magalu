@@ -11,18 +11,25 @@ import (
 )
 
 type setBucketACLParams struct {
-	Bucket                common.BucketName `json:"bucket" jsonschema:"description=Name of the bucket to set permissions for,example=my-bucket" mgc:"positional"`
-	common.ACLPermissions `json:",squash"` // nolint
+	Bucket                common.BucketName `json:"dst" jsonschema:"description=Name of the bucket to set permissions for,example=my-bucket" mgc:"positional"`
+	common.ACLPermissions `json:",squash"`  // nolint
 }
 
 var getSet = utils.NewLazyLoader(func() core.Executor {
-	return core.NewStaticExecute(
+	var exec core.Executor = core.NewStaticExecute(
 		core.DescriptorSpec{
 			Name:        "set",
 			Description: "set permission information for the specified bucket",
 		},
 		setACL,
 	)
+
+	exec = core.NewExecuteFormat(exec, func(exec core.Executor, result core.Result) string {
+		fmt.Println(result.Source().Context.Err().Error())
+		return fmt.Sprintf("Successfully set ACL for bucket %q", result.Source().Parameters["dst"])
+	})
+
+	return exec
 })
 
 func setACL(ctx context.Context, params setBucketACLParams, cfg common.Config) (result core.Value, err error) {

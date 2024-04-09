@@ -20376,13 +20376,13 @@
         "name": "get",
         "parameters": {
          "properties": {
-          "bucket": {
+          "dst": {
            "description": "Specifies the bucket whose ACL is being requested",
            "type": "string"
           }
          },
          "required": [
-          "bucket"
+          "dst"
          ],
          "type": "object"
         },
@@ -20500,7 +20500,7 @@
           "aws_exec_read": {
            "type": "boolean"
           },
-          "bucket": {
+          "dst": {
            "description": "Name of the bucket to set permissions for",
            "example": "my-bucket",
            "type": "string"
@@ -20604,7 +20604,7 @@
           }
          },
          "required": [
-          "bucket"
+          "dst"
          ],
          "type": "object"
         },

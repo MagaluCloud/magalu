@@ -1,11 +1,11 @@
 Get the ACL for the specified bucket
 
 Usage:
-  ./cli object-storage buckets acl get [bucket] [flags]
+  ./cli object-storage buckets acl get [dst] [flags]
 
 Flags:
-      --bucket string   Specifies the bucket whose ACL is being requested (required)
-  -h, --help            help for get
+      --dst string   Specifies the bucket whose ACL is being requested (required)
+  -h, --help         help for get
 
 Global Flags:
       --chunk-size integer     Chunk size to consider when doing multipart requests. Specified in Mb (range: 8 - 5120) (default 8)

@@ -4,13 +4,10 @@ Usage:
   ./cli object-storage objects acl set [dst] [flags]
 
 Flags:
-      --bucket-owner-full-control   
-      --bucket-owner-read           
       --dst uri                     The full object URL to set the ACL information (required)
       --grant-write array(object)   Allows grantees to create objects in the bucket
                                     Use --grant-write=help for more details
   -h, --help                        help for set
-      --obj-version string          Version of the object to set the ACL
       --private                     Owner gets FULL_CONTROL. Delegated users have access. No one else has access rights
       --public-read                 Owner gets FULL_CONTROL. Everyone else has READ rights
 

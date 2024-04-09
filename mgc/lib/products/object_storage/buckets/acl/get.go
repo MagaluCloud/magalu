@@ -18,7 +18,7 @@ import (
 )
 
 type GetParameters struct {
-	Bucket string `json:"bucket"`
+	Dst string `json:"dst"`
 }
 
 type GetConfigs struct {

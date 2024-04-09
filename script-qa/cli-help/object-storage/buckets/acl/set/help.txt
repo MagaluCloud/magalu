@@ -1,13 +1,13 @@
 set permission information for the specified bucket
 
 Usage:
-  ./cli object-storage buckets acl set [bucket] [flags]
+  ./cli object-storage buckets acl set [dst] [flags]
 
 Examples:
-  ./cli object-storage buckets acl set --bucket="my-bucket"
+  ./cli object-storage buckets acl set --dst="my-bucket"
 
 Flags:
-      --bucket string               Name of the bucket to set permissions for (required)
+      --dst string                  Name of the bucket to set permissions for (required)
       --grant-write array(object)   Allows grantees to create objects in the bucket
                                     Use --grant-write=help for more details
   -h, --help                        help for set
