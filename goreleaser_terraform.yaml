@@ -62,6 +62,9 @@ signs:
   - artifacts: checksum
     args:
       - "--batch"
+      - "--yes"
+      - "--passphrase"
+      - "${{ secrets.GPG_PASSPHRASE }}"
       - "--local-user"
       - "{{ .Env.GPG_FINGERPRINT }}"
       - "--output"
