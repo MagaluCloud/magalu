@@ -37,17 +37,18 @@ type GetResultAccessControlList struct {
 	Grant GetResultAccessControlListGrant `json:"Grant"`
 }
 
-type GetResultAccessControlListGrant struct {
-	Grantee    GetResultAccessControlListGrantGrantee `json:"Grantee"`
-	Permission string                                 `json:"Permission"`
+type GetResultAccessControlListGrantItem struct {
+	Grantee    GetResultAccessControlListGrantItemGrantee `json:"Grantee"`
+	Permission string                                     `json:"Permission"`
 }
 
-type GetResultAccessControlListGrantGrantee struct {
-	DisplayName  string `json:"DisplayName"`
-	EmailAddress string `json:"EmailAddress"`
-	Id           string `json:"ID"`
-	Uri          string `json:"URI"`
+type GetResultAccessControlListGrantItemGrantee struct {
+	DisplayName string `json:"DisplayName"`
+	Id          string `json:"ID"`
+	Uri         string `json:"URI"`
 }
+
+type GetResultAccessControlListGrant []GetResultAccessControlListGrantItem
 
 type GetResultOwner struct {
 	DisplayName string `json:"DisplayName"`

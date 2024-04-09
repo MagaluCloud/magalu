@@ -64,6 +64,20 @@ func presign(ctx context.Context, p presignObjectParams, cfg common.Config) (pre
 }
 
 func newPresignedRequest(ctx context.Context, cfg common.Config, p presignObjectParams) (*http.Request, error) {
+	headFile, err := common.HeadFile(ctx, cfg, p.Destination, "")
+	if err != nil {
+		return nil, err
+	}
+
+	if len(headFile.ETag) == 0 {
+		return nil, core.UsageError{Err: fmt.Errorf("at least one key is required. Your input: %s", p.Destination)}
+	}
+
+	// path := p.Destination.Path()
+	// if !strings.Contains(path, "/") {
+	// 	return nil, core.UsageError{Err: fmt.Errorf("at least one key is required. Your input: %s", p.Destination)}
+	// }
+
 	host, err := common.BuildBucketHostWithPath(cfg, common.NewBucketNameFromURI(p.Destination), p.Destination.Path())
 	if err != nil {
 		return nil, core.UsageError{Err: err}

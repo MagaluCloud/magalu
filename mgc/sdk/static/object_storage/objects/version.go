@@ -17,12 +17,13 @@ type versioningObjectParams struct {
 
 type ListObjectVersionsResponse struct {
 	XMLName  xml.Name        `xml:"ListVersionsResult"`
+	Text     string          `xml:",chardata"`
 	Versions []ObjectVersion `xml:"Version"`
 }
 
 // https://docs.aws.amazon.com/AmazonS3/latest/API/API_ObjectVersion.html
 type ObjectVersion struct {
-	XMLName      xml.Name     `xml:"Version"`
+	Text         string       `xml:",chardata"`
 	VersionID    string       `xml:"VersionId"`
 	IsLatest     bool         `xml:"IsLatest"`
 	Key          string       `xml:"Key"`
@@ -42,7 +43,7 @@ var getVersions = utils.NewLazyLoader(func() core.Executor {
 		getObjectVersioning,
 	)
 	exec = core.NewExecuteResultOutputOptions(exec, func(exec core.Executor, result core.Result) string {
-		return "table"
+		return "json"
 	})
 	return exec
 })
@@ -59,24 +60,24 @@ func getObjectVersioning(ctx context.Context, params versioningObjectParams, cfg
 	}
 	defer resp.Body.Close()
 
-	// I don't know if this is right and couldn't test yet
-	var listObjectVersionsResponse ListObjectVersionsResponse
-	err = xml.NewDecoder(resp.Body).Decode(&listObjectVersionsResponse)
+	resposta, err := common.UnwrapResponse[ListObjectVersionsResponse](resp, req)
 	if err != nil {
 		return nil, err
 	}
 
-	return listObjectVersionsResponse.Versions, nil
+	return resposta.Versions, nil
 }
 
 func newGetObjectVersioningRequest(ctx context.Context, cfg common.Config, params versioningObjectParams) (*http.Request, error) {
-	url, err := common.BuildBucketHostWithPathURL(cfg, common.NewBucketNameFromURI(params.Destination), params.Destination.Path())
+	url, err := common.BuildBucketHostWithPathURL(cfg, common.NewBucketNameFromURI(params.Destination), "")
 	if err != nil {
 		return nil, core.UsageError{Err: err}
 	}
 
 	// https://docs.aws.amazon.com/AmazonS3/latest/API/API_ListObjectVersions.html#:~:text=in%20the%20specified-,bucket,-.
 	query := url.Query()
+	query.Set("prefix", params.Destination.Path())
+	query.Set("encoding-type", "url")
 	query.Set("versions", "")
 
 	url.RawQuery = query.Encode()

@@ -56,33 +56,33 @@ jobs:
       - uses: actions/checkout@v3
       - name: Check version.txt
         run: "bash ./scripts/check_release.sh"
-#
-#  cli-release:
-#    needs: pre-release
-#    runs-on: ubuntu-latest
-#    if: github.ref_type == 'tag'
-#    steps:
-#      - name: Checkout
-#        uses: actions/checkout@v4
-#        with:
-#          fetch-depth: 0
-#      - name: Set up Go
-#        uses: actions/setup-go@v5
-#        with:
-#          go-version: stable
-#      - name: Run GoReleaser
-#        uses: goreleaser/goreleaser-action@v5
-#        with:
-#          distribution: goreleaser
-#          version: latest
-#          args: release --clean --config="goreleaser_cli.yaml"
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+
+  cli-release:
+   needs: pre-release
+   runs-on: ubuntu-latest
+   if: github.ref_type == 'tag' && github.event_name == 'workflow_dispatch'
+   steps:
+     - name: Checkout
+       uses: actions/checkout@v4
+       with:
+         fetch-depth: 0
+     - name: Set up Go
+       uses: actions/setup-go@v5
+       with:
+         go-version: stable
+     - name: Run GoReleaser
+       uses: goreleaser/goreleaser-action@v5
+       with:
+         distribution: goreleaser
+         version: latest
+         args: release --clean --config="goreleaser_cli.yaml"
+       env:
+         GITHUB_TOKEN: ${{ secrets.GH_PAT }}
 
   terraform-release:
     needs: pre-release
     runs-on: ubuntu-latest
-    if: github.ref_type == 'tag'
+    if: github.ref_type == 'tag' && github.event_name == 'workflow_dispatch'
     steps:
       - name: Checkout
         uses: actions/checkout@v4
