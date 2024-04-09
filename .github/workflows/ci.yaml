@@ -11,6 +11,7 @@ on:
       - synchronize
       - reopened
       - ready_for_review
+  workflow_dispatch:
 
 concurrency:
   group: ci-check-${{ github.ref }}
@@ -60,7 +61,7 @@ jobs:
   cli-release:
    needs: pre-release
    runs-on: ubuntu-latest
-   if: github.ref_type == 'tag'
+   if: github.ref_type == 'tag' && github.event_name == 'workflow_dispatch'
    steps:
      - name: Checkout
        uses: actions/checkout@v4
