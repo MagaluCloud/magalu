@@ -11,8 +11,8 @@ import (
 )
 
 type setBucketACLParams struct {
-	Bucket                common.BucketName `json:"bucket" jsonschema:"description=Name of the bucket to set permissions for,example=my-bucket" mgc:"positional"`
-	common.ACLPermissions `json:",squash"` // nolint
+	Bucket                common.BucketName `json:"dst" jsonschema:"description=Name of the bucket to set permissions for,example=my-bucket" mgc:"positional"`
+	common.ACLPermissions `json:",squash"`  // nolint
 }
 
 var getSet = utils.NewLazyLoader(func() core.Executor {
