@@ -20391,39 +20391,38 @@
           "AccessControlList": {
            "properties": {
             "Grant": {
-             "properties": {
-              "Grantee": {
-               "properties": {
-                "DisplayName": {
-                 "type": "string"
+             "items": {
+              "properties": {
+               "Grantee": {
+                "properties": {
+                 "DisplayName": {
+                  "type": "string"
+                 },
+                 "ID": {
+                  "type": "string"
+                 },
+                 "URI": {
+                  "type": "string"
+                 }
                 },
-                "EmailAddress": {
-                 "type": "string"
-                },
-                "ID": {
-                 "type": "string"
-                },
-                "URI": {
-                 "type": "string"
-                }
+                "required": [
+                 "DisplayName",
+                 "ID",
+                 "URI"
+                ],
+                "type": "object"
                },
-               "required": [
-                "DisplayName",
-                "EmailAddress",
-                "ID",
-                "URI"
-               ],
-               "type": "object"
+               "Permission": {
+                "type": "string"
+               }
               },
-              "Permission": {
-               "type": "string"
-              }
+              "required": [
+               "Grantee",
+               "Permission"
+              ],
+              "type": "object"
              },
-             "required": [
-              "Grantee",
-              "Permission"
-             ],
-             "type": "object"
+             "type": "array"
             }
            },
            "required": [
@@ -21374,39 +21373,38 @@
           "AccessControlList": {
            "properties": {
             "Grant": {
-             "properties": {
-              "Grantee": {
-               "properties": {
-                "DisplayName": {
-                 "type": "string"
+             "items": {
+              "properties": {
+               "Grantee": {
+                "properties": {
+                 "DisplayName": {
+                  "type": "string"
+                 },
+                 "ID": {
+                  "type": "string"
+                 },
+                 "URI": {
+                  "type": "string"
+                 }
                 },
-                "EmailAddress": {
-                 "type": "string"
-                },
-                "ID": {
-                 "type": "string"
-                },
-                "URI": {
-                 "type": "string"
-                }
+                "required": [
+                 "DisplayName",
+                 "ID",
+                 "URI"
+                ],
+                "type": "object"
                },
-               "required": [
-                "DisplayName",
-                "EmailAddress",
-                "ID",
-                "URI"
-               ],
-               "type": "object"
+               "Permission": {
+                "type": "string"
+               }
               },
-              "Permission": {
-               "type": "string"
-              }
+              "required": [
+               "Grantee",
+               "Permission"
+              ],
+              "type": "object"
              },
-             "required": [
-              "Grantee",
-              "Permission"
-             ],
-             "type": "object"
+             "type": "array"
             }
            },
            "required": [

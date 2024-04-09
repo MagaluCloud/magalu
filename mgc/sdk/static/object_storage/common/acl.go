@@ -18,7 +18,7 @@ type AccessControlPolicy struct {
 }
 
 type AccessControlList struct {
-	Grant Grant `xml:"Grant"`
+	Grant []Grant `xml:"Grant"`
 }
 
 type Grant struct {
@@ -27,10 +27,10 @@ type Grant struct {
 }
 
 type Grantee struct {
-	DisplayName  string `xml:"DisplayName"`
-	EmailAddress string `xml:"EmailAddress"`
-	ID           string `xml:"ID"`
-	URI          string `xml:"URI"`
+	DisplayName string `xml:"DisplayName"`
+	// EmailAddress string `xml:"EmailAddress"`
+	ID  string `xml:"ID"`
+	URI string `xml:"URI"`
 }
 
 type ACLPermission struct {
