@@ -92,6 +92,9 @@ jobs:
         uses: actions/setup-go@v5
         with:
           go-version: stable
+      - name: Import GPG key
+        run: |
+          echo "${{ secrets.GPG_PRIVATE_KEY }}" | gpg --import
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v5
         with:
@@ -100,4 +103,4 @@ jobs:
           args: release --clean --config="goreleaser_terraform.yaml"
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
-          GPG_FINGERPRINT: ${{ secrets.GPG_PRIVATE_KEY }}
+          GPG_FINGERPRINT: ${{ secrets.GPG_FINGERPRINT }}
