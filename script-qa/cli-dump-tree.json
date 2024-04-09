@@ -23123,27 +23123,15 @@
          "StorageClass": {
           "type": "string"
          },
-         "VersionID": {
+         "Text": {
           "type": "string"
          },
-         "XMLName": {
-          "properties": {
-           "Local": {
-            "type": "string"
-           },
-           "Space": {
-            "type": "string"
-           }
-          },
-          "required": [
-           "Space",
-           "Local"
-          ],
-          "type": "object"
+         "VersionID": {
+          "type": "string"
          }
         },
         "required": [
-         "XMLName",
+         "Text",
          "VersionID",
          "IsLatest",
          "Key",

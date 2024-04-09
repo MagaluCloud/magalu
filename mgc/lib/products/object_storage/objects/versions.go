@@ -29,25 +29,20 @@ type VersionsConfigs struct {
 }
 
 type VersionsResultItem struct {
-	ETag         string                    `json:"ETag"`
-	IsLatest     bool                      `json:"IsLatest"`
-	Key          string                    `json:"Key"`
-	LastModified string                    `json:"LastModified"`
-	Owner        VersionsResultItemOwner   `json:"Owner"`
-	Size         int                       `json:"Size"`
-	StorageClass string                    `json:"StorageClass"`
-	VersionId    string                    `json:"VersionID"`
-	XmlName      VersionsResultItemXmlName `json:"XMLName"`
+	ETag         string                  `json:"ETag"`
+	IsLatest     bool                    `json:"IsLatest"`
+	Key          string                  `json:"Key"`
+	LastModified string                  `json:"LastModified"`
+	Owner        VersionsResultItemOwner `json:"Owner"`
+	Size         int                     `json:"Size"`
+	StorageClass string                  `json:"StorageClass"`
+	Text         string                  `json:"Text"`
+	VersionId    string                  `json:"VersionID"`
 }
 
 type VersionsResultItemOwner struct {
 	DisplayName string `json:"DisplayName"`
 	Id          string `json:"ID"`
-}
-
-type VersionsResultItemXmlName struct {
-	Local string `json:"Local"`
-	Space string `json:"Space"`
 }
 
 type VersionsResult []VersionsResultItem
