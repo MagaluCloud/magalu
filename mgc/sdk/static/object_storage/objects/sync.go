@@ -79,6 +79,28 @@ func sync(ctx context.Context, params syncParams, cfg common.Config) (result cor
 	var srcObjects <-chan pipeline.WalkDirEntry
 
 	if srcIsRemote {
+		// GA Urgency
+		// Starts directory verification before goroutines start
+		// Future: I did it this way because without it, a race condition error occurred when a download
+		//   was initiated before directory validation took place.
+		//   Now, by creating it beforehand, the chance of success is higher. =)
+		// The error that occurred was a PANIC, right there on the line 'for _, er := range objErr {'
+
+		if params.Destination.String() != "." {
+			if _, err := os.Stat(params.Destination.String()); os.IsNotExist(err) {
+				currentDir, err := filepath.Abs(".")
+				if err != nil {
+					return nil, err
+				}
+
+				dir := currentDir + "/" + filepath.Join(params.Destination.String())
+				if err := os.MkdirAll(dir, os.ModePerm); err != nil {
+					return nil, err
+				}
+			}
+
+		}
+
 		srcObjects = common.ListGenerator(ctx, common.ListObjectsParams{
 			Destination: params.Source,
 			Recursive:   true,
@@ -97,6 +119,7 @@ func sync(ctx context.Context, params syncParams, cfg common.Config) (result cor
 
 	progressReporter := progress_report.NewUnitsReporter(ctx, "Sync Download", 0)
 	progressReporter.Start()
+	defer progressReporter.End()
 
 	uploadChannel := pipeline.Process(ctx, srcObjects, createObjectSyncFilePairProcessor(cfg, params.Source, params.Destination, progressReporter), nil)
 	uploadObjectsErrorChan := pipeline.ParallelProcess(ctx, cfg.Workers, uploadChannel, createSyncObjectProcessor(cfg, progressReporter), nil)
@@ -109,7 +132,6 @@ func sync(ctx context.Context, params syncParams, cfg common.Config) (result cor
 		}
 	}
 
-	progressReporter.End()
 	return syncResult{
 		Source:        params.Source,
 		Destination:   params.Destination,
@@ -134,12 +156,12 @@ func createObjectSyncFilePairProcessor(
 			return syncUploadPair{}, pipeline.ProcessSkip
 		}
 
-		normalizedSource, err := normalizeURI(source, entry.Path())
+		normalizedSource, err := normalizeURI(source, entry.Path(), false)
 		if err != nil {
 			return syncUploadPair{}, pipeline.ProcessSkip
 		}
 
-		normalizedDestination, err := normalizeURI(destination, entry.Path())
+		normalizedDestination, err := normalizeURI(destination, entry.Path(), true)
 		if err != nil {
 			return syncUploadPair{}, pipeline.ProcessSkip
 		}
@@ -162,20 +184,46 @@ func createObjectSyncFilePairProcessor(
 	}
 }
 
-func normalizeURI(uri mgcSchemaPkg.URI, path string) (mgcSchemaPkg.URI, error) {
+func normalizeURI(uri mgcSchemaPkg.URI, path string, isDestination bool) (mgcSchemaPkg.URI, error) {
 	if uri.Scheme() == "s3" {
 		return uri.JoinPath(filepath.Base(path)), nil
 	}
 
-	if uri == "." {
+	currentDir, err := filepath.Abs(".")
+	if err != nil {
+		return uri, err
+	}
+
+	dir := uri.String()
+	if dir == "." {
 		value, err := filepath.Abs(uri.Path())
 		if err != nil {
 			return uri, err
 		}
-
-		return mgcSchemaPkg.FilePath(value).AsURI().JoinPath(filepath.Base(path)), nil
+		if _, err := os.Stat(value); !os.IsNotExist(err) {
+			return mgcSchemaPkg.FilePath(value).AsURI().JoinPath(filepath.Base(path)), nil
+		}
 	}
-	return uri.JoinPath(filepath.Base(path)), nil
+
+	if isDestination {
+		if _, err := os.Stat(dir); !os.IsNotExist(err) {
+			currentDir, _ = filepath.Abs(dir)
+			return mgcSchemaPkg.FilePath(currentDir).AsURI().JoinPath(filepath.Base(path)), nil
+		}
+
+		dir = currentDir + "/" + filepath.Join(uri.String())
+
+		if _, err := os.Stat(dir); !os.IsNotExist(err) {
+			return mgcSchemaPkg.FilePath(dir).AsURI().JoinPath(filepath.Base(path)), nil
+		}
+	}
+
+	dir = currentDir + filepath.Join("/"+filepath.Dir(path))
+
+	if _, err := os.Stat(dir); !os.IsNotExist(err) {
+		return mgcSchemaPkg.FilePath(dir).AsURI().JoinPath(filepath.Base(path)), nil
+	}
+	return uri, nil
 }
 
 func createSyncObjectProcessor(
