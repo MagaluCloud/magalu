@@ -3,8 +3,8 @@ module magalu.cloud/lib
 go 1.21.4
 
 require (
-	magalu.cloud/core v0.18.6-rc3
-	magalu.cloud/sdk v0.18.6-rc3
+	magalu.cloud/core v0.18.6-rc4
+	magalu.cloud/sdk v0.18.6-rc4
 )
 
 require (
