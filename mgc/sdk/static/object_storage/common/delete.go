@@ -191,6 +191,11 @@ func DeleteBucket(ctx context.Context, params DeleteBucketParams, cfg Config) er
 		return err
 	}
 
+	// GA - TEMP
+	if resp.StatusCode == 409 {
+		return fmt.Errorf("the bucket contains multiple versions of objects.\nPlease clean up all versions before attempting deletion.\n")
+	}
+
 	return ExtractErr(resp, req)
 }
 
