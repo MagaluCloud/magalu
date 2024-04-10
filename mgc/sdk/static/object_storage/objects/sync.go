@@ -119,7 +119,7 @@ func sync(ctx context.Context, params syncParams, cfg common.Config) (result cor
 
 	progressReporter := progress_report.NewUnitsReporter(ctx, "Sync Download", 0)
 	progressReporter.Start()
-	defer progressReporter.End()
+	// defer progressReporter.End()
 
 	uploadChannel := pipeline.Process(ctx, srcObjects, createObjectSyncFilePairProcessor(cfg, params.Source, params.Destination, progressReporter), nil)
 	uploadObjectsErrorChan := pipeline.ParallelProcess(ctx, cfg.Workers, uploadChannel, createSyncObjectProcessor(cfg, progressReporter), nil)
@@ -127,7 +127,7 @@ func sync(ctx context.Context, params syncParams, cfg common.Config) (result cor
 
 	for _, er := range objErr {
 		if er != nil {
-			progressReporter.Report(0, 0, objErr)
+			progressReporter.Report(0, 0, err)
 			return nil, objErr
 		}
 	}
@@ -245,7 +245,7 @@ func createSyncObjectProcessor(
 		err = sourceDestinationProcessor(ctx, entry.Source, entry.Destination, cfg)
 
 		if err != nil {
-			return &common.ObjectError{Url: mgcSchemaPkg.URI(entry.Source.Path()), Err: err}, pipeline.ProcessOutput
+			return &common.ObjectError{Url: mgcSchemaPkg.URI(entry.Source.Path()), Err: err}, pipeline.ProcessOutput // ProcessSkip
 		}
 
 		return nil, pipeline.ProcessOutput
