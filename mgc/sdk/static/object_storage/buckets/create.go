@@ -17,7 +17,7 @@ var createLogger = utils.NewLazyLoader(func() *zap.SugaredLogger {
 
 type createParams struct {
 	Name                  common.BucketName `json:"name" jsonschema:"description=Name of the bucket to be created" mgc:"positional"`
-	Location              string            `json:"location,omitempty" jsonschema:"description=Location constraint for the bucket,default=br-ne-1"`
+	Location              string            `json:"location,omitempty" jsonschema:"description=Location constraint for the bucket,default=br-ne1"`
 	EnableVersioning      bool              `json:"enable_versioning,omitempty" jsonschema:"description=Enable versioning for this bucket,default=true"`
 	common.ACLPermissions `json:",squash"`  // nolint
 }
