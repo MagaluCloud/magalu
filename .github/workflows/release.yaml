@@ -91,4 +91,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
           GPG_FINGERPRINT: "${{ secrets.GPG_FINGERPRINT }}"
-          GPG_PASSPHRASE: "123"
+          GPG_PASSPHRASE: 123
