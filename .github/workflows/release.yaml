@@ -17,33 +17,33 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-go@v4
-        with:
-          go-version: '>=1.17.0'
-          cache-dependency-path: "**/go.sum"
-      - name: Check version candidate
-        run: ./scripts/check_release_v2.sh ${{ github.ref_name }}
-      - run: |
-          git config --global url."ssh://git@github.com/".insteadOf "https://github.com/"
-      - name: Update version.txt
-        env:
-          GOPRIVATE: "github.com/MagaluCloud/magalu"
-        run: |
-          echo "${{ github.ref_name }}" > mgc/sdk/version.txt
-          ./scripts/codegen_lib.sh
-      - run: go version
-      - name: Build CLI
-        env:
-          VERSION: CI
-          CHECK_RELEASE: 0
-        run: ./scripts/build_release.sh
+#  build:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/checkout@v3
+#      - uses: actions/setup-go@v4
+#        with:
+#          go-version: '>=1.17.0'
+#          cache-dependency-path: "**/go.sum"
+#      - name: Check version candidate
+#        run: ./scripts/check_release_v2.sh ${{ github.ref_name }}
+#      - run: |
+#          git config --global url."ssh://git@github.com/".insteadOf "https://github.com/"
+#      - name: Update version.txt
+#        env:
+#          GOPRIVATE: "github.com/MagaluCloud/magalu"
+#        run: |
+#          echo "${{ github.ref_name }}" > mgc/sdk/version.txt
+#          ./scripts/codegen_lib.sh
+#      - run: go version
+#      - name: Build CLI
+#        env:
+#          VERSION: CI
+#          CHECK_RELEASE: 0
+#        run: ./scripts/build_release.sh
 
   cli-release:
-    needs: build
+#    needs: build
     runs-on: ubuntu-latest
     if: ${{ inputs.runCLI }}
     steps:
@@ -65,7 +65,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
 
   terraform-release:
-    needs: build
     runs-on: ubuntu-latest
     if: ${{ inputs.runTerraform }}
     steps:
@@ -79,7 +78,7 @@ jobs:
           go-version: stable
       - name: Import GPG key
         run: |
-          echo "${{ secrets.GPG_PRIVATE_KEY }}" | gpg --batch --yes --passphrase 123 --import
+          echo "${{ secrets.GPG_PRIVATE_KEY }}" | gpg --batch --yes --passphrase "${{ secrets.GPG_PASSPHRASE }}"  --import
       - name: Validate GPG key
         run: |
           gpg --fingerprint C290A0E5A99DC0B00B5F229B1F21F3CCAC4AEB1E
