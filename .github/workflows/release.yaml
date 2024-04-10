@@ -80,6 +80,9 @@ jobs:
       - name: Import GPG key
         run: |
           echo "${{ secrets.GPG_PRIVATE_KEY }}" | gpg --batch --yes --passphrase 123 --import
+      - name: Validate GPG key
+        run: |
+          gpg --fingerprint C290A0E5A99DC0B00B5F229B1F21F3CCAC4AEB1E
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v5
         with:
