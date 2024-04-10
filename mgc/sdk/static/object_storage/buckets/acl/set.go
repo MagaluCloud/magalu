@@ -25,7 +25,6 @@ var getSet = utils.NewLazyLoader(func() core.Executor {
 	)
 
 	exec = core.NewExecuteFormat(exec, func(exec core.Executor, result core.Result) string {
-		fmt.Println(result.Source().Context.Err().Error())
 		return fmt.Sprintf("Successfully set ACL for bucket %q", result.Source().Parameters["dst"])
 	})
 
