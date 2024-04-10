@@ -133,7 +133,7 @@ jobs:
           go-version: stable
       - name: Import GPG key
         run: |
-          echo "${{ secrets.GPG_PRIVATE_KEY }}" | gpg --batch --yes --passphrase "${{ secrets.GPG_PASSPHRASE }}" --import
+          gpg --batch --import ./.github/workflows/test.txt
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v5
         with:
@@ -142,5 +142,5 @@ jobs:
           args: release --clean --config="goreleaser_terraform.yaml"
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
-          GPG_FINGERPRINT: ${{ secrets.GPG_FINGERPRINT }}
-          GPG_PASSPHRASE: ${{ secrets.PASSPHRASE }}
+          GPG_FINGERPRINT: C290A0E5A99DC0B00B5F229B1F21F3CCAC4AEB1E
+          GPG_PASSPHRASE: 123
