@@ -20,8 +20,8 @@ builds:
 #      - darwin
 #      - freebsd
     goarch:
-      - amd64
-#      - arm64
+#      - amd64
+      - arm64
     binary: terraform-provider-mgc
     ldflags:
       - -s -w -X magalu.cloud/sdk.Version={{.Version}}"
