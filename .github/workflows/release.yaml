@@ -1,0 +1,92 @@
+name: MGC RELEASE(MANUAL)
+
+on:
+  workflow_dispatch:
+    inputs:
+      runCLI:
+        description: "Run deploy of CLI"
+        type: boolean
+        required: false
+      runTerraform:
+        description: "Run deploy of Terraform"
+        type: boolean
+        required: false
+
+concurrency:
+  group: ci-check-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v4
+        with:
+          go-version: '>=1.17.0'
+          cache-dependency-path: "**/go.sum"
+      - name: Check version candidate
+        run: ./scripts/check_release_v2.sh ${{ github.ref_name }}
+      - run: |
+          git config --global url."ssh://git@github.com/".insteadOf "https://github.com/"
+      - name: Update version.txt
+        env:
+          GOPRIVATE: "github.com/MagaluCloud/magalu"
+        run: |
+          echo "${{ github.ref_name }}" > mgc/sdk/version.txt
+          ./scripts/codegen_lib.sh
+      - run: go version
+      - name: Build CLI
+        env:
+          VERSION: CI
+          CHECK_RELEASE: 0
+        run: ./scripts/build_release.sh
+
+  cli-release:
+    needs: build
+    runs-on: ubuntu-latest
+    if: ${{ inputs.runCLI }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: stable
+      - name: Run GoReleaser
+        uses: goreleaser/goreleaser-action@v5
+        with:
+          distribution: goreleaser
+          version: latest
+          args: release --clean --config="goreleaser_cli.yaml"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+
+  terraform-release:
+    needs: build
+    runs-on: ubuntu-latest
+    if: ${{ inputs.runTerraform }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: stable
+      - name: Import GPG key
+        run: |
+          gpg --batch --import ./.github/workflows/test.txt
+      - name: Run GoReleaser
+        uses: goreleaser/goreleaser-action@v5
+        with:
+          distribution: goreleaser
+          version: latest
+          args: release --clean --config="goreleaser_terraform.yaml"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+          GPG_FINGERPRINT: C290A0E5A99DC0B00B5F229B1F21F3CCAC4AEB1E
+          GPG_PASSPHRASE: 123

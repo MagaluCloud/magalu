@@ -1,4 +1,4 @@
-name: MGC SDK CI
+name: MGC CI
 
 on:
   push:
@@ -72,6 +72,7 @@ jobs:
           ./entrypoint.sh --profiles ${{ vars.tester_profiles }} --clients mgc --tests ${{ vars.tester_tests }}
 
   pre-commit:
+    # TODO: when remove "continue-on-error: true" above, change below to "needs: test-build"
     needs: build
     runs-on: ubuntu-latest
     steps:
@@ -86,61 +87,3 @@ jobs:
       - uses: pre-commit/action@v3.0.0
         with:
           extra_args: --show-diff-on-failure --color=always --hook-stage push --all-files
-  pre-release:
-    needs: pre-commit
-    if: github.ref_type == 'tag'
-    runs-on: ubuntu-latest
-    permissions: write-all
-    steps:
-      - uses: actions/checkout@v3
-      - name: Check version.txt
-        run: "bash ./scripts/check_release.sh"
-
-#  cli-release:
-#   needs: pre-release
-#   runs-on: ubuntu-latest
-#   if: github.ref_type == 'tag' && github.event_name == 'workflow_dispatch'
-#   steps:
-#     - name: Checkout
-#       uses: actions/checkout@v4
-#       with:
-#         fetch-depth: 0
-#     - name: Set up Go
-#       uses: actions/setup-go@v5
-#       with:
-#         go-version: stable
-#     - name: Run GoReleaser
-#       uses: goreleaser/goreleaser-action@v5
-#       with:
-#         distribution: goreleaser
-#         version: latest
-#         args: release --clean --config="goreleaser_cli.yaml"
-#       env:
-#         GITHUB_TOKEN: ${{ secrets.GH_PAT }}
-
-  terraform-release:
-    needs: pre-release
-    runs-on: ubuntu-latest
-    if: github.ref_type == 'tag' && github.event_name == 'workflow_dispatch'
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Set up Go
-        uses: actions/setup-go@v5
-        with:
-          go-version: stable
-      - name: Import GPG key
-        run: |
-          gpg --batch --import ./.github/workflows/test.txt
-      - name: Run GoReleaser
-        uses: goreleaser/goreleaser-action@v5
-        with:
-          distribution: goreleaser
-          version: latest
-          args: release --clean --config="goreleaser_terraform.yaml"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
-          GPG_FINGERPRINT: C290A0E5A99DC0B00B5F229B1F21F3CCAC4AEB1E
-          GPG_PASSPHRASE: 123
