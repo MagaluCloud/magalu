@@ -45,7 +45,7 @@ jobs:
   cli-release:
     needs: build
     runs-on: ubuntu-latest
-    if: ${{ inputs.runCLI }}
+    if:  ${{ inputs.runCLI }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
