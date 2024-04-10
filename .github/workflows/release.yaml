@@ -90,5 +90,5 @@ jobs:
           args: release --clean --config="goreleaser_terraform.yaml"
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
-          GPG_FINGERPRINT: "${{ secrets.GPG_FINGERPRINT }}"
+          GPG_FINGERPRINT: blabla
           GPG_PASSPHRASE: 123
