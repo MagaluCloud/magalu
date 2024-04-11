@@ -1,4 +1,4 @@
-project_name: terraform
+project_name: mgc
 builds:
   - env: [ CGO_ENABLED=0 ]
     id: "terraformwin"
@@ -57,7 +57,10 @@ archives:
       - src: "mgc/terraform-provider-mgc/install.sh"
         dst: "install.sh"
 checksum:
-  name_template: '{{ .ProjectName }}_{{ .Version }}_SHA256SUMS'
+  extra_files:
+    - glob: 'mgc/terraform-provider-mgc/terraform-registry-manifest.json'
+      name_template: '{{ .ProjectName }}_{{ .Version }}_manifest.json'
+  name_template: 'terraform-provider-{{ .ProjectName }}_{{ .Version }}_SHA256SUMS'
   algorithm: sha256
 signs:
   - artifacts: checksum
