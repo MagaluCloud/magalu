@@ -177,6 +177,7 @@ func (o *Auth) AccessToken(ctx context.Context) (string, error) {
 		}
 	}
 
+	// TODO - FINALIZE THIS!
 	// claims, err := o.currentAccessTokenClaims()
 	// if err != nil {
 	// 	if _, err := o.RefreshAccessToken(ctx); err != nil {
