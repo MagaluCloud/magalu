@@ -20782,7 +20782,7 @@
          "type": "array"
         },
         "location": {
-         "default": "br-ne-1",
+         "default": "br-ne1",
          "description": "Location constraint for the bucket",
          "type": "string"
         },
