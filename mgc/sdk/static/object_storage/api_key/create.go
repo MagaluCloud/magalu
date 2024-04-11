@@ -107,9 +107,12 @@ func create(ctx context.Context, parameter createParams, _ struct{}) (*apiKeyRes
 		return nil, err
 	}
 
-	_, err = setCurrent(ctx, selectParams{UUID: result.UUID}, struct{}{})
-	if err == nil {
-		result.Used = true
+	id, _ := auth.AccessKeyPair()
+	if id == "" {
+		_, err = setCurrent(ctx, selectParams{UUID: result.UUID}, struct{}{})
+		if err == nil {
+			result.Used = true
+		}
 	}
 
 	return &result, nil
