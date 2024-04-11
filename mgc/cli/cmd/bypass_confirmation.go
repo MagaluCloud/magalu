@@ -2,12 +2,11 @@ package cmd
 
 import "github.com/spf13/cobra"
 
-const bypassConfirmationFlag = "cli.bypass-confirmation"
+const bypassConfirmationFlag = "no-confirm"
 
 func addBypassConfirmationFlag(cmd *cobra.Command) {
-	cmd.Root().PersistentFlags().BoolP(
+	cmd.Root().PersistentFlags().Bool(
 		bypassConfirmationFlag,
-		"f",
 		false,
 		"Bypasses confirmation step for commands that ask a confirmation from the user",
 	)
