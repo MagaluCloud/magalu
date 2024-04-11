@@ -32,7 +32,7 @@ const (
 	// ShortTimeFormat is the shorten time format used in the credential scope
 	shortTimeFormat = "20060102"
 
-	templateUrl = "https://{{region}}.magaluobjects.com/"
+	templateUrl = "https://{{region}}.magaluobjects.com"
 
 	unsignedPayloadHeader = "UNSIGNED-PAYLOAD"
 

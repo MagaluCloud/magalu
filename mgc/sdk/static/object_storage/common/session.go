@@ -38,10 +38,17 @@ type HostString string
 type BucketHostString string
 
 func BuildHost(cfg Config) HostString {
+	var hostStr string
 	if cfg.ServerUrl != "" {
-		return HostString(cfg.ServerUrl)
+		hostStr = cfg.ServerUrl
+	} else {
+		hostStr = strings.ReplaceAll(templateUrl, "{{region}}", cfg.translateRegion())
 	}
-	return HostString(strings.ReplaceAll(templateUrl, "{{region}}", cfg.translateRegion()))
+
+	if hostStr[len(hostStr)-1] != '/' {
+		hostStr += "/"
+	}
+	return HostString(hostStr)
 }
 
 func BuildHostURL(cfg Config) (*url.URL, error) {
@@ -50,9 +57,10 @@ func BuildHostURL(cfg Config) (*url.URL, error) {
 }
 
 func BuildBucketHost(cfg Config, bucketName BucketName) (BucketHostString, error) {
-	host, err := url.JoinPath(string(BuildHost(cfg)), url.QueryEscape(bucketName.String()))
+	simpleHost := BuildHost(cfg)
+	host, err := url.JoinPath(string(simpleHost), bucketName.String())
 	if err != nil {
-		return BucketHostString(host), err
+		return "", err
 	}
 	// Bucket URI cannot end in '/' as this makes it search for a
 	// non existing directory
