@@ -30,7 +30,6 @@ type CreateParameters struct {
 	GrantReadAcp      CreateParametersGrantReadAcp     `json:"grant_read_acp,omitempty"`
 	GrantWrite        CreateParametersGrantWrite       `json:"grant_write,omitempty"`
 	GrantWriteAcp     CreateParametersGrantWriteAcp    `json:"grant_write_acp,omitempty"`
-	Location          string                           `json:"location,omitempty"`
 	Name              string                           `json:"name"`
 	Private           bool                             `json:"private,omitempty"`
 	PublicRead        bool                             `json:"public_read,omitempty"`
