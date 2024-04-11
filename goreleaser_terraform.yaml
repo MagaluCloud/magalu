@@ -78,6 +78,9 @@ signs:
       - "--detach-sign"
       - "${artifact}"
 release:
+  extra_files:
+    - glob: 'mgc/terraform-provider-mgc/terraform-registry-manifest.json'
+      name_template: '{{ .ProjectName }}_{{ .Version }}_manifest.json'
   github:
     owner: MagaluCloud
     name: terraform-provider-mgc
