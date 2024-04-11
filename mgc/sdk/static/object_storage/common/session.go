@@ -50,7 +50,7 @@ func BuildHostURL(cfg Config) (*url.URL, error) {
 }
 
 func BuildBucketHost(cfg Config, bucketName BucketName) (BucketHostString, error) {
-	host, err := url.JoinPath(string(BuildHost(cfg)), bucketName.String())
+	host, err := url.JoinPath(string(BuildHost(cfg)), url.QueryEscape(bucketName.String()))
 	if err != nil {
 		return BucketHostString(host), err
 	}
