@@ -20058,6 +20058,9 @@
       },
       "result": {
        "properties": {
+        "used": {
+         "type": "boolean"
+        },
         "uuid": {
          "type": "string"
         }

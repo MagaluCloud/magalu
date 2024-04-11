@@ -31,7 +31,7 @@ var getCreate = utils.NewLazyLoader[core.Executor](func() core.Executor {
 	)
 
 	return core.NewExecuteResultOutputOptions(executor, func(exec core.Executor, result core.Result) string {
-		return "template=Key created successfully\nUuid={{.uuid}}\n"
+		return "template={{if .used}}Key created and used successfully{{else}}Key created successfully{{end}} Uuid={{.uuid}}\n"
 	})
 })
 
@@ -105,6 +105,11 @@ func create(ctx context.Context, parameter createParams, _ struct{}) (*apiKeyRes
 	var result apiKeyResult
 	if err = json.NewDecoder(resp.Body).Decode(&result); err != nil {
 		return nil, err
+	}
+
+	_, err = setCurrent(ctx, selectParams{UUID: result.UUID}, struct{}{})
+	if err == nil {
+		result.Used = true
 	}
 
 	return &result, nil
