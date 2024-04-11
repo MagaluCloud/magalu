@@ -5,7 +5,7 @@ Package: products
 
 All MagaLu Groups & Executors
 
-Version: v0.18.6-rc7
+Version: v0.18.6-rc8
 
 import "magalu.cloud/lib/products"
 */
