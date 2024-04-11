@@ -52,4 +52,5 @@ type createApiKey struct {
 
 type apiKeyResult struct {
 	UUID string `json:"uuid,omitempty"`
+	Used bool   `json:"used,omitempty"`
 }

@@ -63,6 +63,7 @@ jobs:
           args: release --clean --config="goreleaser_cli.yaml"
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+          PRIVATE_KEY_PATH: ${{ secrets.SSH_ID_RSA_MAGALUCLI }}
 
   terraform-release:
     needs: build

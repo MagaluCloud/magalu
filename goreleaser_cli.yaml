@@ -64,12 +64,18 @@ brews:
   -
     name: mgccli
     homepage: "https://magalu.cloud"
+    # auto = skip when is -rc
+    # skip_upload: auto
     repository:
-      owner: MagaluCloud
-      name: homebrew-mgccli
-      token: "{{ .Env.GITHUB_TOKEN }}"
       pull_request:
         enabled: true
+        draft: true
+      owner: MagaluCloud
+      name: homebrew-mgccli
+      branch: main
+      git:
+        url: 'git@github.com:MagaluCloud/homebrew-mgccli.git'
+        private_key: '{{ .Env.PRIVATE_KEY_PATH }}'
     commit_author:
       name: MagaluCloud
       email: magalucloud.cli@luizalabs.com

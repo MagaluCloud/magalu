@@ -19,7 +19,7 @@ import (
 
 type PresignParameters struct {
 	Dst       string `json:"dst"`
-	ExpiresIn string `json:"expires-in"`
+	ExpiresIn string `json:"expires-in,omitempty"`
 	Method    string `json:"method"`
 }
 

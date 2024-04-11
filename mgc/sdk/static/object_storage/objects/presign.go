@@ -15,7 +15,7 @@ import (
 
 type presignObjectParams struct {
 	Destination mgcSchemaPkg.URI `json:"dst" jsonschema:"description=Path of the object to generate pre-signed URL for,example=bucket1/file.txt" mgc:"positional"`
-	Expiry      string           `json:"expires-in" jsonschema_description:"Expiration time for the pre-signed URL. Valid time units are 'ns, 'us' (or 'µs'), 'ms', 's',  'm', and 'h'." jsonschema:"example=2h"`
+	Expiry      string           `json:"expires-in,omitempty" jsonschema_description:"Expiration time for the pre-signed URL. Valid time units are 'ns, 'us' (or 'µs'), 'ms', 's',  'm', and 'h'.default=5m" jsonschema:"example=2h"`
 	Method      string           `json:"method" jsonschema:"enum=GET,enum=PUT,default=GET"`
 }
 
@@ -48,6 +48,10 @@ func presign(ctx context.Context, p presignObjectParams, cfg common.Config) (pre
 	}
 
 	accessKey, accessSecretKey := auth.AccessKeyPair()
+
+	if p.Expiry == "" {
+		p.Expiry = "5m"
+	}
 
 	expirationTime, err := time.ParseDuration(p.Expiry)
 	if err != nil {

@@ -13,9 +13,9 @@ on:
       - ready_for_review
   workflow_dispatch:
 
-concurrency:
-  group: ci-check-${{ github.ref }}
-  cancel-in-progress: true
+# concurrency:
+#   group: ci-check-${{ github.ref }}
+#   cancel-in-progress: true
 
 jobs:
   build:

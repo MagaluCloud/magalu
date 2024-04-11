@@ -24,6 +24,7 @@ type CreateParameters struct {
 }
 
 type CreateResult struct {
+	Used bool   `json:"used,omitempty"`
 	Uuid string `json:"uuid,omitempty"`
 }
 
