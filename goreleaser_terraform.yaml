@@ -56,6 +56,9 @@ archives:
         dst: "docs/resources"
       - src: "mgc/terraform-provider-mgc/install.sh"
         dst: "install.sh"
+checksum:
+  name_template: '{{ .ProjectName }}_{{ .Version }}_SHA256SUMS'
+  algorithm: sha256
 signs:
   - artifacts: checksum
     args:
