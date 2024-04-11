@@ -22664,7 +22664,7 @@
          "type": "string"
         },
         "expires-in": {
-         "description": "Expiration time for the pre-signed URL. Valid time units are 'ns, 'us' (or 'µs'), 'ms', 's',  'm', and 'h'.",
+         "description": "Expiration time for the pre-signed URL. Valid time units are 'ns, 'us' (or 'µs'), 'ms', 's',  'm', and 'h'.default=5m",
          "example": "2h",
          "type": "string"
         },
@@ -22679,7 +22679,6 @@
        },
        "required": [
         "dst",
-        "expires-in",
         "method"
        ],
        "type": "object"

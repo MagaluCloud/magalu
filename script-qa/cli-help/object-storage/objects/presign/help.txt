@@ -8,7 +8,7 @@ Examples:
 
 Flags:
       --dst uri             Path of the object to generate pre-signed URL for (required)
-      --expires-in string   Expiration time for the pre-signed URL. Valid time units are 'ns, 'us' (or 'µs'), 'ms', 's',  'm', and 'h'. (required)
+      --expires-in string   Expiration time for the pre-signed URL. Valid time units are 'ns, 'us' (or 'µs'), 'ms', 's',  'm', and 'h'.default=5m
   -h, --help                help for presign
       --method enum         (one of "GET" or "PUT") (required) (default "GET")
 

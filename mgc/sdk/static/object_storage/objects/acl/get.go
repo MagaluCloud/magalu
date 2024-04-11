@@ -25,7 +25,7 @@ var getGet = utils.NewLazyLoader(func() core.Executor {
 		getACL,
 	)
 	exec = core.NewExecuteResultOutputOptions(exec, func(exec core.Executor, result core.Result) string {
-		return "table"
+		return "json"
 	})
 	return exec
 })
