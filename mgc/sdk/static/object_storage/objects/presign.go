@@ -49,6 +49,10 @@ func presign(ctx context.Context, p presignObjectParams, cfg common.Config) (pre
 
 	accessKey, accessSecretKey := auth.AccessKeyPair()
 
+	if p.Expiry == "" {
+		p.Expiry = "5m"
+	}
+
 	expirationTime, err := time.ParseDuration(p.Expiry)
 	if err != nil {
 		return nil, core.UsageError{Err: fmt.Errorf("error when parsing the expirationTime for presigned url: %w", err)}
