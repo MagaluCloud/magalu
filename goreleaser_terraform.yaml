@@ -59,7 +59,7 @@ archives:
 checksum:
   extra_files:
     - glob: 'mgc/terraform-provider-mgc/terraform-registry-manifest.json'
-      name_template: '{{ .ProjectName }}_{{ .Version }}_manifest.json'
+      name_template: 'terraform-provider-{{ .ProjectName }}_{{ .Version }}_manifest.json'
   name_template: 'terraform-provider-{{ .ProjectName }}_{{ .Version }}_SHA256SUMS'
   algorithm: sha256
 signs:
@@ -80,7 +80,7 @@ signs:
 release:
   extra_files:
     - glob: 'mgc/terraform-provider-mgc/terraform-registry-manifest.json'
-      name_template: '{{ .ProjectName }}_{{ .Version }}_manifest.json'
+      name_template: 'terraform-provider-{{ .ProjectName }}_{{ .Version }}_manifest.json'
   github:
     owner: MagaluCloud
     name: terraform-provider-mgc
