@@ -337,7 +337,6 @@ func (o *Auth) SetAPIKey(ctx context.Context, params APIKeyParametersList) error
 }
 
 // SetCurrentSecurityMethods informs auth what method will be used.
-// Check docs for the list of avialable methods.
 func (o *Auth) SetCurrentSecurityMethod(ctx context.Context, s string) error {
 	a := FromContext(ctx)
 	switch s {
