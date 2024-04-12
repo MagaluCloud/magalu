@@ -479,7 +479,7 @@ func (o *operation) forEachSecurityRequirement(cb func(scheme string, scopes []s
 		for _, reqRef := range *o.operation.Security {
 			for scheme, scopes := range reqRef {
 				scheme = strings.ToLower(scheme)
-				if scheme == "oauth2" || scheme == "bearerauth" {
+				if scheme == "oauth2" || scheme == "bearerauth" || scheme == "apikeyauth" {
 					run, err := cb(scheme, scopes)
 					if err != nil {
 						return false, err
@@ -527,16 +527,34 @@ func isAuthForced(parameters core.Parameters) bool {
 	return b
 }
 
+const apiKeyAuthMethod = "apikeyauth"
+
 func (o *operation) setSecurityHeader(ctx context.Context, paramValues core.Parameters, req *http.Request, auth *mgcAuthPkg.Auth) (err error) {
 	if isAuthForced(paramValues) || o.needsAuth() {
 		// TODO: review needsAuth() usage if more security schemes are used. Assuming oauth2 + bearer
 		// If others are to be used, loop using forEachSecurityRequirement()
-		accessToken, err := auth.AccessToken(ctx)
-		if err != nil {
-			return err
+
+		switch auth.CurrentSecurityMethod() {
+
+		case apiKeyAuthMethod:
+			apiKey, err := auth.ApiKey(ctx)
+			if err != nil {
+				return err
+			}
+
+			req.Header.Set("x-api-key", apiKey)
+
+		default:
+			accessToken, err := auth.AccessToken(ctx)
+			if err != nil {
+				return err
+			}
+
+			req.Header.Set("Authorization", "Bearer "+accessToken)
 		}
-		req.Header.Set("Authorization", "Bearer "+accessToken)
+
 		return nil
+
 	}
 
 	return nil

@@ -72,16 +72,18 @@ type Auth struct {
 	// be used in the request to auto-refresh the token. For requests that need the
 	// auto-refresh functionality, like Tenant operations, for example, mgcHttpPkg.ClientFromContext
 	// should be used instead
-	httpClient      *http.Client
-	profileManager  *profile_manager.ProfileManager
-	configMap       map[string]Config
-	accessToken     string
-	refreshToken    string
-	accessKeyId     string
-	secretAccessKey string
-	codeVerifier    *codeVerifier
-	group           singleflight.Group
-	mgcConfig       *config.Config
+	httpClient            *http.Client
+	profileManager        *profile_manager.ProfileManager
+	configMap             map[string]Config
+	accessToken           string
+	refreshToken          string
+	accessKeyId           string
+	secretAccessKey       string
+	codeVerifier          *codeVerifier
+	group                 singleflight.Group
+	mgcConfig             *config.Config
+	apiKey                string
+	currentSecurityMethod string
 }
 
 type Tenant struct {
@@ -118,6 +120,15 @@ type accessTokenClaims struct {
 
 type FailedRefreshAccessToken struct {
 	Message string
+}
+
+// APIKeyParameters
+type APIKeyParameters struct {
+	Key string
+}
+
+type APIKeyParametersList interface {
+	GetAPIKey() string
 }
 
 func (e FailedRefreshAccessToken) Error() string {
@@ -192,6 +203,13 @@ func (o *Auth) AccessToken(ctx context.Context) (string, error) {
 	// }
 
 	return o.accessToken, nil
+}
+
+func (o *Auth) ApiKey(ctx context.Context) (string, error) {
+	if o.apiKey == "" {
+		return "", fmt.Errorf("API Key not set")
+	}
+	return o.apiKey, nil
 }
 
 func (o *Auth) BuiltInScopes() core.Scopes {
@@ -292,6 +310,10 @@ func (o *Auth) AccessKeyPair() (accessKeyId, secretAccessKey string) {
 	return o.accessKeyId, o.secretAccessKey
 }
 
+func (o *Auth) CurrentSecurityMethod() string {
+	return o.currentSecurityMethod
+}
+
 func (o *Auth) SetTokens(token *LoginResult) error {
 	// Always update the tokens, this way the user can assume the Auth object is
 	// up-to-date after this function, even in case of a persistance error
@@ -305,6 +327,30 @@ func (o *Auth) SetAccessKey(id string, key string) error {
 	o.accessKeyId = id
 	o.secretAccessKey = key
 	return o.writeCurrentConfig()
+}
+
+func (o *Auth) SetAPIKey(ctx context.Context, params APIKeyParametersList) error {
+	a := FromContext(ctx)
+
+	a.apiKey = params.GetAPIKey()
+	return o.writeCurrentConfig()
+}
+
+// SetCurrentSecurityMethods informs auth what method will be used.
+// Check docs for the list of avialable methods.
+func (o *Auth) SetCurrentSecurityMethod(ctx context.Context, s string) error {
+	a := FromContext(ctx)
+	switch s {
+	case "apikeyauth":
+		a.currentSecurityMethod = "apikeyauth"
+	case "accessToken":
+		a.currentSecurityMethod = "access_token"
+	default:
+		return fmt.Errorf("unknown security method %s", s)
+	}
+
+	a.currentSecurityMethod = s
+	return a.writeCurrentConfig()
 }
 
 func (o *Auth) writeCurrentConfig() error {
