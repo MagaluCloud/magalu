@@ -273,6 +273,7 @@ func addAction(
 		Long:              exec.Description(),
 		Version:           exec.Version(),
 		GroupID:           "catalog",
+		Annotations:       make(map[string]string),
 
 		RunE: func(cmd *cobra.Command, args []string) error {
 			// First chained args structure is MainArgs
@@ -299,6 +300,11 @@ func addAction(
 
 			return links.handle(result, getOutputFlag(cmd))
 		},
+	}
+
+	observations := exec.DescriptorSpec().Observations
+	if len(observations) != 0 {
+		actionCmd.Annotations[mgcFooterKey] = exec.DescriptorSpec().Observations
 	}
 
 	setCustomHelpTemplate(actionCmd)
