@@ -238,6 +238,13 @@ func getCommandNameAndAliases(origName string) (name string, aliases []string) {
 	return
 }
 
+const mgcFooterKey string = "mgc_footer_help"
+
+func setCustomHelpTemplate(c *cobra.Command) {
+	customTemplate := c.HelpTemplate() + fmt.Sprintf("{{with $footer := index .Annotations \"%s\"}}{{if $footer}}	** {{$footer}}{{end}}\n{{end}}", mgcFooterKey)
+	c.SetHelpTemplate(customTemplate)
+}
+
 func addAction(
 	sdk *mgcSdk.Sdk,
 	parentCmd *cobra.Command,
@@ -293,6 +300,8 @@ func addAction(
 			return links.handle(result, getOutputFlag(cmd))
 		},
 	}
+
+	setCustomHelpTemplate(actionCmd)
 
 	if getLink, ok := exec.Links()["get"]; ok && getLink.IsTargetTerminatorExecutor() {
 		flags.addExtraFlag(newWatchFlag())
