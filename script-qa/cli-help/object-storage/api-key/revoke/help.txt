@@ -1,0 +1,12 @@
+Revoke credentials used in Object Storage requests
+
+Usage:
+  ./cli object-storage api-key revoke [uuid] [flags]
+
+Flags:
+  -h, --help          help for revoke
+      --uuid string   UUID of api key to revoke (required)
+
+Global Flags:
+      --cli.show-cli-globals   Show all CLI global flags on usage text
+

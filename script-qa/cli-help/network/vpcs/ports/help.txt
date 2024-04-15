@@ -1,0 +1,19 @@
+Virtual Private Cloud (VPC) | ports
+
+Usage:
+  ./cli network vpcs ports [flags]
+  ./cli network vpcs ports [command]
+
+Commands:
+  create      Create Port
+  list        List Ports
+
+Flags:
+  -h, --help      help for ports
+  -v, --version   version for ports
+
+Global Flags:
+      --cli.show-cli-globals   Show all CLI global flags on usage text
+
+Use "./cli network vpcs ports [command] --help" for more information about a command.
+
