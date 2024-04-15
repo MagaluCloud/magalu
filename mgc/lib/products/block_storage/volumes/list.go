@@ -46,41 +46,41 @@ type ListResult struct {
 }
 
 type ListResultVolumesItem struct {
-	Attachment *ListResultVolumesItemAttachment `json:"attachment,omitempty"`
-	CreatedAt  string                           `json:"created_at"`
-	Error      ListResultVolumesItemError       `json:"error,omitempty"`
-	Id         string                           `json:"id"`
-	Name       string                           `json:"name"`
-	Size       int                              `json:"size"`
-	State      string                           `json:"state"`
-	Status     string                           `json:"status"`
-	Type       ListResultVolumesItemType        `json:"type"`
-	UpdatedAt  string                           `json:"updated_at"`
+	Attachment ListResultVolumesItemAttachment `json:"attachment,omitempty"`
+	CreatedAt  string                          `json:"created_at"`
+	Error      ListResultVolumesItemError      `json:"error,omitempty"`
+	Id         string                          `json:"id"`
+	Name       string                          `json:"name"`
+	Size       int                             `json:"size"`
+	State      string                          `json:"state"`
+	Status     string                          `json:"status"`
+	Type       ListResultVolumesItemType       `json:"type"`
+	UpdatedAt  string                          `json:"updated_at"`
 }
 
-// any of: ListResultVolumesItemAttachment0, ListResultVolumesItemAttachment1
 type ListResultVolumesItemAttachment struct {
-	ListResultVolumesItemAttachment0 `json:",squash"` // nolint
-	ListResultVolumesItemAttachment1 `json:",squash"` // nolint
+	AttachedAt string                                 `json:"attached_at"`
+	Device     string                                 `json:"device,omitempty"`
+	Machine    ListResultVolumesItemAttachmentMachine `json:"machine"`
 }
 
-type ListResultVolumesItemAttachment0 struct {
-	AttachedAt string `json:"attached_at"`
-	MachineId  string `json:"machine_id"`
+// any of: ListResultVolumesItemAttachmentMachine0, ListResultVolumesItemAttachmentMachine1
+type ListResultVolumesItemAttachmentMachine struct {
+	ListResultVolumesItemAttachmentMachine0 `json:",squash"` // nolint
+	ListResultVolumesItemAttachmentMachine1 `json:",squash"` // nolint
 }
 
-type ListResultVolumesItemAttachment1 struct {
-	AttachedAt string                                  `json:"attached_at"`
-	Machine    ListResultVolumesItemAttachment1Machine `json:"machine"`
-	MachineId  string                                  `json:"machine_id"`
-}
-
-type ListResultVolumesItemAttachment1Machine struct {
+type ListResultVolumesItemAttachmentMachine0 struct {
 	CreatedAt string `json:"created_at"`
+	Id        string `json:"id"`
 	Name      string `json:"name"`
 	State     string `json:"state"`
 	Status    string `json:"status"`
 	UpdatedAt string `json:"updated_at"`
+}
+
+type ListResultVolumesItemAttachmentMachine1 struct {
+	Id string `json:"id"`
 }
 
 type ListResultVolumesItemError struct {
@@ -88,14 +88,10 @@ type ListResultVolumesItemError struct {
 	Slug    string `json:"slug"`
 }
 
-// any of: ListResultVolumesItemType0, ListResultVolumesItemType1
+// any of: ListResultVolumesItemAttachmentMachine1, ListResultVolumesItemType1
 type ListResultVolumesItemType struct {
-	ListResultVolumesItemType0 `json:",squash"` // nolint
-	ListResultVolumesItemType1 `json:",squash"` // nolint
-}
-
-type ListResultVolumesItemType0 struct {
-	Id string `json:"id"`
+	ListResultVolumesItemAttachmentMachine1 `json:",squash"` // nolint
+	ListResultVolumesItemType1              `json:",squash"` // nolint
 }
 
 type ListResultVolumesItemType1 struct {

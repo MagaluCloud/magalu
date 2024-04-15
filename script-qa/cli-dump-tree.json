@@ -2156,7 +2156,10 @@
        "example": {
         "attachment": {
          "attached_at": "2022-01-01T00:00:10Z",
-         "machine_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+         "device": "/dev/vdb",
+         "machine": {
+          "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+         }
         },
         "created_at": "2022-01-01T00:00:10Z",
         "error": {
@@ -2175,67 +2178,35 @@
        },
        "properties": {
         "attachment": {
-         "anyOf": [
-          {
-           "example": {
-            "attached_at": "2022-01-01T00:00:10Z",
-            "machine_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-           },
-           "properties": {
-            "attached_at": {
-             "anyOf": [
-              {
-               "type": "string"
-              },
-              {
-               "format": "date-time",
-               "type": "string"
-              }
-             ],
-             "example": "2022-01-01T00:00:10Z",
-             "title": "Attached At",
-             "type": "string"
-            },
-            "machine_id": {
-             "title": "Machine Id",
-             "type": "string"
-            }
-           },
-           "required": [
-            "machine_id",
-            "attached_at"
-           ],
-           "title": "AttachmentResponse",
-           "type": "object"
+         "example": {
+          "attached_at": "2022-01-01T00:00:10Z",
+          "device": "/dev/vdb",
+          "machine": {
+           "created_at": "2022-01-01T00:00:10Z",
+           "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+           "name": "machine name",
+           "state": "running",
+           "status": "completed",
+           "updated_at": "2022-01-01T00:00:10Z"
+          }
+         },
+         "properties": {
+          "attached_at": {
+           "example": "2022-01-01T00:00:10Z",
+           "format": "date-time",
+           "title": "Attached At",
+           "type": "string"
           },
-          {
-           "example": {
-            "machine": {
-             "created_at": "2022-01-01T00:00:10Z",
-             "name": "machine name",
-             "state": "running",
-             "status": "completed",
-             "updated_at": "2022-01-01T00:00:10Z"
-            }
-           },
-           "properties": {
-            "attached_at": {
-             "anyOf": [
-              {
-               "type": "string"
-              },
-              {
-               "format": "date-time",
-               "type": "string"
-              }
-             ],
-             "example": "2022-01-01T00:00:10Z",
-             "title": "Attached At",
-             "type": "string"
-            },
-            "machine": {
+          "device": {
+           "title": "Device",
+           "type": "string"
+          },
+          "machine": {
+           "anyOf": [
+            {
              "example": {
               "created_at": "2022-01-01T00:00:10Z",
+              "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
               "name": "machine name",
               "state": "running",
               "status": "completed",
@@ -2243,17 +2214,13 @@
              },
              "properties": {
               "created_at": {
-               "anyOf": [
-                {
-                 "type": "string"
-                },
-                {
-                 "format": "date-time",
-                 "type": "string"
-                }
-               ],
                "example": "2022-01-01T00:00:10Z",
+               "format": "date-time",
                "title": "Created At",
+               "type": "string"
+              },
+              "id": {
+               "title": "Id",
                "type": "string"
               },
               "name": {
@@ -2318,21 +2285,14 @@
                "type": "string"
               },
               "updated_at": {
-               "anyOf": [
-                {
-                 "type": "string"
-                },
-                {
-                 "format": "date-time",
-                 "type": "string"
-                }
-               ],
                "example": "2022-01-01T00:00:10Z",
+               "format": "date-time",
                "title": "Updated At",
                "type": "string"
               }
              },
              "required": [
+              "id",
               "name",
               "status",
               "state",
@@ -2342,22 +2302,32 @@
              "title": "AttachmentMachine",
              "type": "object"
             },
-            "machine_id": {
-             "title": "Machine Id",
-             "type": "string"
+            {
+             "example": {
+              "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+             },
+             "properties": {
+              "id": {
+               "minLength": 1,
+               "title": "Id",
+               "type": "string"
+              }
+             },
+             "required": [
+              "id"
+             ],
+             "title": "IdRequest",
+             "type": "object"
             }
-           },
-           "required": [
-            "machine_id",
-            "attached_at",
-            "machine"
            ],
-           "title": "AttachmentResponseExpanded",
            "type": "object"
           }
+         },
+         "required": [
+          "machine",
+          "attached_at"
          ],
-         "nullable": true,
-         "title": "Attachment",
+         "title": "AttachmentResponse",
          "type": "object"
         },
         "created_at": {
@@ -2413,8 +2383,7 @@
           "new",
           "available",
           "in-use",
-          "deleted",
-          "legacy"
+          "deleted"
          ],
          "title": "VolumeStateV1",
          "type": "string"
@@ -2641,7 +2610,10 @@
          {
           "attachment": {
            "attached_at": "2022-01-01T00:00:10Z",
-           "machine_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+           "device": "/dev/vdb",
+           "machine": {
+            "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+           }
           },
           "created_at": "2022-01-01T00:00:10Z",
           "error": {
@@ -2666,7 +2638,10 @@
           "example": {
            "attachment": {
             "attached_at": "2022-01-01T00:00:10Z",
-            "machine_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+            "device": "/dev/vdb",
+            "machine": {
+             "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+            }
            },
            "created_at": "2022-01-01T00:00:10Z",
            "error": {
@@ -2685,67 +2660,35 @@
           },
           "properties": {
            "attachment": {
-            "anyOf": [
-             {
-              "example": {
-               "attached_at": "2022-01-01T00:00:10Z",
-               "machine_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-              },
-              "properties": {
-               "attached_at": {
-                "anyOf": [
-                 {
-                  "type": "string"
-                 },
-                 {
-                  "format": "date-time",
-                  "type": "string"
-                 }
-                ],
-                "example": "2022-01-01T00:00:10Z",
-                "title": "Attached At",
-                "type": "string"
-               },
-               "machine_id": {
-                "title": "Machine Id",
-                "type": "string"
-               }
-              },
-              "required": [
-               "machine_id",
-               "attached_at"
-              ],
-              "title": "AttachmentResponse",
-              "type": "object"
+            "example": {
+             "attached_at": "2022-01-01T00:00:10Z",
+             "device": "/dev/vdb",
+             "machine": {
+              "created_at": "2022-01-01T00:00:10Z",
+              "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+              "name": "machine name",
+              "state": "running",
+              "status": "completed",
+              "updated_at": "2022-01-01T00:00:10Z"
+             }
+            },
+            "properties": {
+             "attached_at": {
+              "example": "2022-01-01T00:00:10Z",
+              "format": "date-time",
+              "title": "Attached At",
+              "type": "string"
              },
-             {
-              "example": {
-               "machine": {
-                "created_at": "2022-01-01T00:00:10Z",
-                "name": "machine name",
-                "state": "running",
-                "status": "completed",
-                "updated_at": "2022-01-01T00:00:10Z"
-               }
-              },
-              "properties": {
-               "attached_at": {
-                "anyOf": [
-                 {
-                  "type": "string"
-                 },
-                 {
-                  "format": "date-time",
-                  "type": "string"
-                 }
-                ],
-                "example": "2022-01-01T00:00:10Z",
-                "title": "Attached At",
-                "type": "string"
-               },
-               "machine": {
+             "device": {
+              "title": "Device",
+              "type": "string"
+             },
+             "machine": {
+              "anyOf": [
+               {
                 "example": {
                  "created_at": "2022-01-01T00:00:10Z",
+                 "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
                  "name": "machine name",
                  "state": "running",
                  "status": "completed",
@@ -2753,17 +2696,13 @@
                 },
                 "properties": {
                  "created_at": {
-                  "anyOf": [
-                   {
-                    "type": "string"
-                   },
-                   {
-                    "format": "date-time",
-                    "type": "string"
-                   }
-                  ],
                   "example": "2022-01-01T00:00:10Z",
+                  "format": "date-time",
                   "title": "Created At",
+                  "type": "string"
+                 },
+                 "id": {
+                  "title": "Id",
                   "type": "string"
                  },
                  "name": {
@@ -2828,21 +2767,14 @@
                   "type": "string"
                  },
                  "updated_at": {
-                  "anyOf": [
-                   {
-                    "type": "string"
-                   },
-                   {
-                    "format": "date-time",
-                    "type": "string"
-                   }
-                  ],
                   "example": "2022-01-01T00:00:10Z",
+                  "format": "date-time",
                   "title": "Updated At",
                   "type": "string"
                  }
                 },
                 "required": [
+                 "id",
                  "name",
                  "status",
                  "state",
@@ -2852,22 +2784,32 @@
                 "title": "AttachmentMachine",
                 "type": "object"
                },
-               "machine_id": {
-                "title": "Machine Id",
-                "type": "string"
+               {
+                "example": {
+                 "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+                },
+                "properties": {
+                 "id": {
+                  "minLength": 1,
+                  "title": "Id",
+                  "type": "string"
+                 }
+                },
+                "required": [
+                 "id"
+                ],
+                "title": "IdRequest",
+                "type": "object"
                }
-              },
-              "required": [
-               "machine_id",
-               "attached_at",
-               "machine"
               ],
-              "title": "AttachmentResponseExpanded",
               "type": "object"
              }
+            },
+            "required": [
+             "machine",
+             "attached_at"
             ],
-            "nullable": true,
-            "title": "Attachment",
+            "title": "AttachmentResponse",
             "type": "object"
            },
            "created_at": {
@@ -2923,8 +2865,7 @@
              "new",
              "available",
              "in-use",
-             "deleted",
-             "legacy"
+             "deleted"
             ],
             "title": "VolumeStateV1",
             "type": "string"
