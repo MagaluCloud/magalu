@@ -2157,7 +2157,7 @@
         "attachment": {
          "attached_at": "2022-01-01T00:00:10Z",
          "device": "/dev/vdb",
-         "machine": {
+         "instance": {
           "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
          }
         },
@@ -2181,7 +2181,7 @@
          "example": {
           "attached_at": "2022-01-01T00:00:10Z",
           "device": "/dev/vdb",
-          "machine": {
+          "instance": {
            "created_at": "2022-01-01T00:00:10Z",
            "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
            "name": "machine name",
@@ -2201,7 +2201,7 @@
            "title": "Device",
            "type": "string"
           },
-          "machine": {
+          "instance": {
            "anyOf": [
             {
              "example": {
@@ -2324,7 +2324,7 @@
           }
          },
          "required": [
-          "machine",
+          "instance",
           "attached_at"
          ],
          "title": "AttachmentResponse",
@@ -2611,7 +2611,7 @@
           "attachment": {
            "attached_at": "2022-01-01T00:00:10Z",
            "device": "/dev/vdb",
-           "machine": {
+           "instance": {
             "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
            }
           },
@@ -2639,7 +2639,7 @@
            "attachment": {
             "attached_at": "2022-01-01T00:00:10Z",
             "device": "/dev/vdb",
-            "machine": {
+            "instance": {
              "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
             }
            },
@@ -2663,7 +2663,7 @@
             "example": {
              "attached_at": "2022-01-01T00:00:10Z",
              "device": "/dev/vdb",
-             "machine": {
+             "instance": {
               "created_at": "2022-01-01T00:00:10Z",
               "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
               "name": "machine name",
@@ -2683,7 +2683,7 @@
               "title": "Device",
               "type": "string"
              },
-             "machine": {
+             "instance": {
               "anyOf": [
                {
                 "example": {
@@ -2806,7 +2806,7 @@
              }
             },
             "required": [
-             "machine",
+             "instance",
              "attached_at"
             ],
             "title": "AttachmentResponse",

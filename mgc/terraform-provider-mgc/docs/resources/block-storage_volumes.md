@@ -48,22 +48,22 @@ Read-Only:
 
 - `attached_at` (String)
 - `device` (String)
-- `machine` (Attributes) (see [below for nested schema](#nestedatt--attachment--machine))
+- `instance` (Attributes) (see [below for nested schema](#nestedatt--attachment--instance))
 
-<a id="nestedatt--attachment--machine"></a>
-### Nested Schema for `attachment.machine`
+<a id="nestedatt--attachment--instance"></a>
+### Nested Schema for `attachment.instance`
 
 Read-Only:
 
 - `created_at` (String)
 - `id` (String)
 - `name` (String)
-- `state` (Attributes) (see [below for nested schema](#nestedatt--attachment--machine--state))
-- `status` (Attributes) (see [below for nested schema](#nestedatt--attachment--machine--status))
+- `state` (Attributes) (see [below for nested schema](#nestedatt--attachment--instance--state))
+- `status` (Attributes) (see [below for nested schema](#nestedatt--attachment--instance--status))
 - `updated_at` (String)
 
-<a id="nestedatt--attachment--machine--state"></a>
-### Nested Schema for `attachment.machine.state`
+<a id="nestedatt--attachment--instance--state"></a>
+### Nested Schema for `attachment.instance.state`
 
 Read-Only:
 
@@ -71,8 +71,8 @@ Read-Only:
 - `string2` (String)
 
 
-<a id="nestedatt--attachment--machine--status"></a>
-### Nested Schema for `attachment.machine.status`
+<a id="nestedatt--attachment--instance--status"></a>
+### Nested Schema for `attachment.instance.status`
 
 Read-Only:
 

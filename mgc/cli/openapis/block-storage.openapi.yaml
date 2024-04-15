@@ -920,7 +920,7 @@ paths:
                             x-mgc-wait-termination:
                                 maxRetries: 5
                                 interval: 5s
-                                jsonPathQuery: hasKey($.result.attachment) && $.result.attachment.machine.id
+                                jsonPathQuery: hasKey($.result.attachment) && $.result.attachment.instance.id
                                     == $.owner.parameters.virtual_machine_id
                         delete:
                             operationId: delete_volume_v1_v1_volumes__id__delete
@@ -1425,18 +1425,18 @@ components:
                     format: date-time
                     title: Attached At
                     example: '2022-01-01T00:00:10Z'
-                machine:
+                instance:
                     anyOf:
                     -   $ref: '#/components/schemas/AttachmentMachine'
                     -   $ref: '#/components/schemas/IdRequest'
             type: object
             required:
-            - machine
+            - instance
             - attached_at
             title: AttachmentResponse
             example:
                 attached_at: '2022-01-01T00:00:10Z'
-                machine:
+                instance:
                     id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                     created_at: '2022-01-01T00:00:10Z'
                     name: machine name
@@ -1902,7 +1902,7 @@ components:
                 attachment:
                         attached_at: '2022-01-01T00:00:10Z'
                         device: /dev/vdb
-                        machine:
+                        instance:
                           id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                 created_at: '2022-01-01T00:00:10Z'
                 error:
@@ -2032,7 +2032,7 @@ components:
                 -   attachment:
                         attached_at: '2022-01-01T00:00:10Z'
                         device: /dev/vdb
-                        machine:
+                        instance:
                           id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                     created_at: '2022-01-01T00:00:10Z'
                     error:
