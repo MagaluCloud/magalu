@@ -136,6 +136,10 @@ func collectResourceChildren(
 			}
 		}
 
+		if obsExt, ok := getExtensionString(extensionPrefix, "observations", desc.op.Extensions, ""); ok && obsExt != "" {
+			trueOp.SimpleDescriptor.Spec.Observations = obsExt
+		}
+
 		children = append(children, op)
 		childrenByName[opName] = op
 	}
