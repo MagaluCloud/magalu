@@ -18,8 +18,9 @@ type setBucketACLParams struct {
 var getSet = utils.NewLazyLoader(func() core.Executor {
 	var exec core.Executor = core.NewStaticExecute(
 		core.DescriptorSpec{
-			Name:        "set",
-			Description: "set permission information for the specified bucket",
+			Name:         "set",
+			Description:  "set permission information for the specified bucket",
+			Observations: "object = \"id:\" (require tenant ID) - Example:id=\"a4900b57-7dbb-4906-b7e8-efed938e325c\"",
 		},
 		setACL,
 	)
