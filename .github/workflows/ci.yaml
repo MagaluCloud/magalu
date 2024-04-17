@@ -47,7 +47,6 @@ jobs:
       volumes:
         - ${{ github.workspace }}/build/mgc-cli-linux-amd64-CI:/tools/mgc2
     steps:
-      - uses: docker-practice/actions-setup-docker@master
       - uses: actions/download-artifact@v4
         with:
           name: mgc-folder
