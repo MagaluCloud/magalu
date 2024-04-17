@@ -19,7 +19,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-go@v4
@@ -40,7 +40,7 @@ jobs:
 
   test-build:
     needs: build
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     env:
       PROFILES: ${{ secrets.tester_profiles_config }}
     container:
@@ -74,7 +74,7 @@ jobs:
   pre-commit:
     # TODO: when remove "continue-on-error: true" above, change below to "needs: test-build"
     needs: build
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v3
