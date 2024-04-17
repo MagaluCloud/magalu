@@ -28,6 +28,5 @@ var Version = func() string {
 			return fmt.Sprintf("%s-%s-%s%s", version, vcs, rev, status)
 		}
 	}
-
 	return version + " (vcs-unknown, please 'go build -buildvcs=true')"
 }()
