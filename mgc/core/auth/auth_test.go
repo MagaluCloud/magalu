@@ -28,11 +28,11 @@ refresh_token: "refresh-token"
 current_environment: "test"
 `)
 
-var dummyConfigResultYamlRealToken = []byte(`---
-access_token: "eyJhbGciOiJIUzI1NiJ9.eyJSb2xlIjoiYWRtaW4iLCJJc3N1ZXIiOiJJc3N1ZXIiLCJVc2VybmFtZSI6ImFkbWluIiwiZXhwIjoxNzA0ODI0MzUzLCJpYXQiOjE3MDQ4MjQzNTN9.Eu1WKIEja4OQc87FH2ku-34Gir2P6RjGATEu-EQPAC8"
-refresh_token: "eyJhbGciOiJIUzI1NiJ9.eyJSb2xlIjoiYWRtaW4iLCJJc3N1ZXIiOiJJc3N1ZXIiLCJVc2VybmFtZSI6ImFkbWluIiwiZXhwIjoxNzA0ODI0MzUzLCJpYXQiOjE3MDQ4MjQzNTN9.Eu1WKIEja4OQc87FH2ku-34Gir2P6RjGATEu-EQPAC8"
-current_environment: "test"
-`)
+// var dummyConfigResultYamlRealToken = []byte(`---
+// access_token: "eyJhbGciOiJIUzI1NiJ9.eyJSb2xlIjoiYWRtaW4iLCJJc3N1ZXIiOiJJc3N1ZXIiLCJVc2VybmFtZSI6ImFkbWluIiwiZXhwIjoxNzA0ODI0MzUzLCJpYXQiOjE3MDQ4MjQzNTN9.Eu1WKIEja4OQc87FH2ku-34Gir2P6RjGATEu-EQPAC8"
+// refresh_token: "eyJhbGciOiJIUzI1NiJ9.eyJSb2xlIjoiYWRtaW4iLCJJc3N1ZXIiOiJJc3N1ZXIiLCJVc2VybmFtZSI6ImFkbWluIiwiZXhwIjoxNzA0ODI0MzUzLCJpYXQiOjE3MDQ4MjQzNTN9.Eu1WKIEja4OQc87FH2ku-34Gir2P6RjGATEu-EQPAC8"
+// current_environment: "test"
+// `)
 
 var dummyConfigMap map[string]Config = map[string]Config{
 	"temp": {
