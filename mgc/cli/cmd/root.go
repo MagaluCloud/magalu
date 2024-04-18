@@ -1,6 +1,9 @@
 package cmd
 
 import (
+	"slices"
+	"strings"
+
 	"magalu.cloud/cli/ui/progress_bar"
 	mgcLoggerPkg "magalu.cloud/core/logger"
 	mgcSdk "magalu.cloud/sdk"
@@ -67,7 +70,22 @@ can generate a command line on-demand for Rest manipulation`,
 
 	// Immediately parse flags for root command because we'll access the global flags prior
 	// to calling Execute (which is when Cobra parses the flags)
-	_ = rootCmd.ParseFlags(argParser.MainArgs())
+	args := argParser.MainArgs()
+	// This loop will parse flags even if unknown flag error arises.
+	// A flag error means that ParseFlags will early return and not parse the rest of the args.
+	// This happens because some flags aren't available until further down the code.
+	for {
+		err = rootCmd.ParseFlags(args)
+		// Either we parsed all the flags or there are no more args to parse
+		if err == nil || len(args) == 0 {
+			break
+		}
+		flag, found := strings.CutPrefix(err.Error(), "unknown flag: ")
+		if found && len(flag) > 0 {
+			skipTo := slices.Index(args, flag)
+			args = args[skipTo+1:]
+		}
+	}
 
 	if hasOutputFormatHelp(rootCmd) {
 		return nil
