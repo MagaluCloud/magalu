@@ -3,15 +3,15 @@ name: MGC DEV RELEASE(MANUAL)
 on:
   workflow_dispatch:
     inputs:
-      runCLI:
-        description: "Run INTERNAL deploy of CLI"
-        type: boolean
+      input_version:
+        description: 'Version to run'
+        default: ${{ github.ref_name }}
         required: false
+        type: string
 
 jobs:
   build:
     runs-on: self-hosted
-    if: ${{ inputs.runCLI }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -21,16 +21,17 @@ jobs:
         uses: actions/setup-go@v5
         with:
           go-version: stable
-      - name: Check version candidate
-        run: ./scripts/check_release_v2.sh ${{ github.ref_name }}
       - run: |
           git config --global url."ssh://git@github.com/".insteadOf "https://github.com/"
       - name: Update version.txt
         env:
           GOPRIVATE: "github.com/MagaluCloud/magalu"
-        run: |
-          echo "${{ github.ref_name }}" > mgc/sdk/version.txt
-          ./scripts/codegen_lib.sh
+      - if: ${{ inputs.username != ''}}
+        run: echo "${{ inputs.username }}" > mgc/sdk/version.txt
+      - if: ${{ inputs.username == ''}}
+        run: echo "${{ github.ref_name }}" > mgc/sdk/version.txt
+      - bane: Run codegen
+        run: ./scripts/codegen_lib.sh
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v5
         with:
