@@ -94,6 +94,9 @@ func (e *executor) PositionalArgs() []string {
 	return e.spec.PositionalArgs
 }
 func (e *executor) HiddenFlags() []string {
+	if e.spec.HiddenFlags == nil {
+		return []string{}
+	}
 	return e.spec.HiddenFlags
 }
 func (e *executor) executeStep(

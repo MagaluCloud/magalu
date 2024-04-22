@@ -30,19 +30,29 @@ func NewClientRetryerWithAttempts(transport http.RoundTripper, attempts int) *Cl
 	}
 }
 
-func (r *ClientRetryer) cloneRequestBody(req *http.Request) (*bytes.Buffer, error) {
+func (r *ClientRetryer) cloneRequestBody(req *http.Request) (io.Reader, error) {
 	body, err := io.ReadAll(req.Body)
 	if err != nil {
-		return nil, err
+		logger().Error(err)
+		return nil, nil
 	}
+
 	req.Body = io.NopCloser(bytes.NewBuffer(body))
-	clonedBody := bytes.NewBuffer(body)
-	return clonedBody, nil
+	return bytes.NewReader(body), nil
 }
 
 func (r *ClientRetryer) cloneRequest(req *http.Request) *http.Request {
-	body, _ := r.cloneRequestBody(req)
-	clonedRequest, err := http.NewRequest(req.Method, req.URL.String(), body)
+	var body io.Reader
+	var err error
+
+	if req.Body != nil {
+		body, err = r.cloneRequestBody(req)
+		if err != nil {
+			logger().Error(err)
+			return req
+		}
+	}
+	clonedRequest, err := http.NewRequestWithContext(req.Context(), req.Method, req.URL.String(), body)
 	if err != nil {
 		return req
 	}
@@ -54,6 +64,9 @@ func (r *ClientRetryer) RoundTrip(req *http.Request) (*http.Response, error) {
 	waitBeforeRetry := 100 * time.Millisecond
 	var res *http.Response
 	var err error
+	if req.Body != nil {
+		defer req.Body.Close()
+	}
 	for i := 0; i < r.attempts; i++ {
 		reqCopy := r.cloneRequest(req)
 		res, err = r.Transport.RoundTrip(reqCopy)
@@ -65,7 +78,6 @@ func (r *ClientRetryer) RoundTrip(req *http.Request) (*http.Response, error) {
 				waitBeforeRetry = waitBeforeRetry * 2
 				continue
 			}
-			req.Body.Close()
 			return res, err
 		}
 		if res.StatusCode >= 500 {
@@ -74,9 +86,9 @@ func (r *ClientRetryer) RoundTrip(req *http.Request) (*http.Response, error) {
 			waitBeforeRetry = waitBeforeRetry * 2
 			continue
 		}
-		req.Body.Close()
+
 		return res, err
 	}
-	req.Body.Close()
+
 	return res, err
 }
