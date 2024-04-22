@@ -115,6 +115,9 @@ func (e *SimpleExecutor) PositionalArgs() []string {
 }
 
 func (e *SimpleExecutor) HiddenFlags() []string {
+	if e.hiddenFlags == nil {
+		return []string{}
+	}
 	return e.hiddenFlags
 }
 
