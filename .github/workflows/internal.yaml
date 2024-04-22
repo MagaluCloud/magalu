@@ -4,17 +4,14 @@ on:
   workflow_dispatch:
     inputs:
       runCLI:
-        description: "Run deploy of CLI"
-        type: boolean
-        required: false
-      runTerraform:
-        description: "Run deploy of Terraform"
+        description: "Run INTERNAL deploy of CLI"
         type: boolean
         required: false
 
 jobs:
   build:
     runs-on: self-hosted
+    if: ${{ inputs.runCLI }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
