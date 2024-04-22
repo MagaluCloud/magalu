@@ -8,8 +8,8 @@ require (
 	github.com/spf13/afero v1.11.0
 	github.com/spf13/cobra v1.7.0
 	github.com/stoewer/go-strcase v1.3.0
-	magalu.cloud/core v0.0.0-unversioned
-	magalu.cloud/sdk v0.0.0-00010101000000-000000000000
+	magalu.cloud/core v0.18.6
+	magalu.cloud/sdk v0.18.6
 )
 
 require (

@@ -920,7 +920,7 @@ paths:
                             x-mgc-wait-termination:
                                 maxRetries: 5
                                 interval: 5s
-                                jsonPathQuery: hasKey($.result.attachment) && $.result.attachment.instance.id
+                                jsonPathQuery: hasKey($.result.attachment) && $.result.attachment.machine_id
                                     == $.owner.parameters.virtual_machine_id
                         delete:
                             operationId: delete_volume_v1_v1_volumes__id__delete
@@ -1381,13 +1381,13 @@ components:
                     title: Name
                 status:
                     anyOf:
-                        - $ref: '#/components/schemas/InstanceStatus'
-                        - type: string
+                    -   $ref: '#/components/schemas/InstanceStatus'
+                    -   type: string
                     title: Status
                 state:
                     anyOf:
-                        - $ref: '#/components/schemas/InstanceState'
-                        - type: string
+                    -   $ref: '#/components/schemas/InstanceState'
+                    -   type: string
                     title: State
                 created_at:
                     type: string
@@ -1401,12 +1401,12 @@ components:
                     example: '2022-01-01T00:00:10Z'
             type: object
             required:
-                - id
-                - name
-                - status
-                - state
-                - created_at
-                - updated_at
+            - id
+            - name
+            - status
+            - state
+            - created_at
+            - updated_at
             title: AttachmentMachine
             example:
                 created_at: '2022-01-01T00:00:10Z'
@@ -1900,10 +1900,10 @@ components:
             title: VolumeResponseV1
             example:
                 attachment:
-                        attached_at: '2022-01-01T00:00:10Z'
-                        device: /dev/vdb
-                        instance:
-                          id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                    attached_at: '2022-01-01T00:00:10Z'
+                    device: /dev/vdb
+                    instance:
+                        id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                 created_at: '2022-01-01T00:00:10Z'
                 error:
                     message: You have reached the limit of allowed disks. Please,
@@ -2033,7 +2033,7 @@ components:
                         attached_at: '2022-01-01T00:00:10Z'
                         device: /dev/vdb
                         instance:
-                          id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                            id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                     created_at: '2022-01-01T00:00:10Z'
                     error:
                         message: You have reached the limit of allowed disks. Please,
