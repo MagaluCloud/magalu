@@ -1,0 +1,45 @@
+name: MGC DEV RELEASE(MANUAL)
+
+on:
+  workflow_dispatch:
+    inputs:
+      runCLI:
+        description: "Run deploy of CLI"
+        type: boolean
+        required: false
+      runTerraform:
+        description: "Run deploy of Terraform"
+        type: boolean
+        required: false
+
+jobs:
+  build:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: stable
+      - name: Check version candidate
+        run: ./scripts/check_release_v2.sh ${{ github.ref_name }}
+      - run: |
+          git config --global url."ssh://git@github.com/".insteadOf "https://github.com/"
+      - name: Update version.txt
+        env:
+          GOPRIVATE: "github.com/MagaluCloud/magalu"
+        run: |
+          echo "${{ github.ref_name }}" > mgc/sdk/version.txt
+          ./scripts/codegen_lib.sh
+      - name: Run GoReleaser
+        uses: goreleaser/goreleaser-action@v5
+        with:
+          distribution: goreleaser
+          version: latest
+          args: release --clean --config="goreleaser_internal_cli.yaml"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+          PRIVATE_KEY_PATH: ${{ secrets.SSH_ID_RSA_MAGALUCLI }}

@@ -1,0 +1,28 @@
+project_name: mgccli
+builds:
+  -
+    env: [CGO_ENABLED=0]
+    id: "mgc"
+    goos:
+      - linux
+    binary: mgc
+    goarch:
+      - amd64
+    ldflags:
+      - -s -w -X magalu.cloud/sdk.Version={{.Version}}"
+    flags:
+      - -tags=embed release
+    main: mgc/cli/main.go
+nfpms:
+-
+  maintainer: Magalu Cloud <magalucloud.cli@luizalabs.com>
+  id: mgc
+  description: MGC CLI.
+  homepage: https://magalu.cloud/
+  license: MIT
+  package_name: mgccli
+  bindir: /usr/bin
+  formats:
+  - deb
+  builds:
+    - mgc
