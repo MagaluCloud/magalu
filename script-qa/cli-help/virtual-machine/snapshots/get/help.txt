@@ -10,6 +10,9 @@ like image or type.
 Usage:
   ./cli virtual-machine snapshots get [id] [flags]
 
+Examples:
+  ./cli virtual-machine snapshots get --id="9ec75090-2872-4f51-8111-53d05d96d2c6"
+
 Flags:
       --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
       --expand array(string)          Expand: You can get more detailed info about: ['image', 'machine-type']  (default [])

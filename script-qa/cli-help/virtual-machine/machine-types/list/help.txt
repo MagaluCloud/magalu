@@ -3,6 +3,9 @@ Retrieves a list of machine types allowed for the current tenant which is logged
 Usage:
   ./cli virtual-machine machine-types list [flags]
 
+Examples:
+  ./cli virtual-machine machine-types list
+
 Flags:
       --control.limit integer     Limit: limit the number of the results (min: 1) (default 50)
       --control.offset integer    Offset: pagination for the results limited (min: 0)

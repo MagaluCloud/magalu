@@ -3,6 +3,9 @@ Delete a Virtual Machine instance
 Usage:
   ./cli virtual-machine instances delete [id] [flags]
 
+Examples:
+  ./cli virtual-machine instances delete --id="9ec75090-2872-4f51-8111-53d05d96d2c6"
+  
 Flags:
       --delete-public-ip   Delete Public Ip
   -h, --help               help for delete

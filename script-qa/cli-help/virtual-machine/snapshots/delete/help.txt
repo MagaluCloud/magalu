@@ -8,6 +8,9 @@ which is logged in.
 Usage:
   ./cli virtual-machine snapshots delete [id] [flags]
 
+Examples:
+  ./cli virtual-machine snapshots delete --id="9ec75090-2872-4f51-8111-53d05d96d2c6"
+
 Flags:
   -h, --help      help for delete
       --id uuid   Id (required)

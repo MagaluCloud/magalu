@@ -7,6 +7,9 @@ the snapshot that you want to rename.
 Usage:
   ./cli virtual-machine snapshots rename [id] [flags]
 
+Examples
+  ./cli virtual-machine snapshots rename --id="9ec75090-2872-4f51-8111-53d05d96d2c6" --name="new_snapshot_name"
+
 Flags:
       --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
       --cli.watch                     Wait until the operation is completed by calling the 'get' link and waiting until termination. Akin to '! get -w'

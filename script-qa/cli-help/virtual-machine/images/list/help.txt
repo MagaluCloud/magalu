@@ -3,6 +3,9 @@ Retrieve a list of images allowed for the current tenant which is logged in.
 Usage:
   ./cli virtual-machine images list [flags]
 
+Examples:
+  ./cli virtual-machine images list
+
 Flags:
       --control.limit integer     Limit (min: 1) (default 50)
       --control.offset integer    Offset (min: 0)

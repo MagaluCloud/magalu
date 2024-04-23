@@ -14,7 +14,7 @@ Usage:
   ./cli virtual-machine snapshots restore [id] [flags]
 
 Examples:
-  ./cli virtual-machine snapshots restore --machine-type.id="9ec75090-2872-4f51-8111-53d05d96d2c6" --machine-type.name="some_resource_name" --network.associate-public-ip=true --network.vpc.id="9ec75090-2872-4f51-8111-53d05d96d2c6" --network.vpc.name="some_resource_name"
+  ./cli virtual-machine snapshots restore --id="9ec75090-2872-4f51-8111-53d05d96d2c6" --name="some_resource_name" --ssh-key-name="my_ssh_key_name" --machine-type.name="some_resource_name" --network.associate-public-ip=true --network.vpc.id="9ec75090-2872-4f51-8111-53d05d96d2c6" --network.vpc.name="some_resource_name"
 
 Flags:
       --availability-zone string              Availability Zone (between 1 and 255 characters)

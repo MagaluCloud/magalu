@@ -3,6 +3,9 @@ List Virtual Machine instances
 Usage:
   ./cli virtual-machine instances list [flags]
 
+Examples:
+  ./cli virtual-machine instances list
+
 Flags:
       --control.limit integer     Limit: limit the number of the results (min: 1) (default 50)
       --control.offset integer    Offset: pagination for the results limited (min: 0)

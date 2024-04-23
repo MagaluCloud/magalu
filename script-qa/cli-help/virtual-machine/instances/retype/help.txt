@@ -16,7 +16,7 @@ Usage:
   ./cli virtual-machine instances retype [id] [flags]
 
 Examples:
-  ./cli virtual-machine instances retype --machine-type.id="9ec75090-2872-4f51-8111-53d05d96d2c6" --machine-type.name="some_resource_name"
+  ./cli virtual-machine instances retype --id="9ec75090-2872-4f51-8111-53d05d96d2c6" --machine-type.name="some_resource_name"
 
 Flags:
       --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")

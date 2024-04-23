@@ -15,7 +15,7 @@ Usage:
   ./cli virtual-machine snapshots create [flags]
 
 Examples:
-  ./cli virtual-machine snapshots create --virtual-machine.id="9ec75090-2872-4f51-8111-53d05d96d2c6" --virtual-machine.name="some_resource_name"
+  ./cli virtual-machine snapshots create --virtual-machine.id="9ec75090-2872-4f51-8111-53d05d96d2c6" --name="snapshot_name"
 
 Flags:
       --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
