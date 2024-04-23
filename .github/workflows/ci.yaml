@@ -81,6 +81,16 @@ jobs:
     runs-on: self-hosted
     steps:
       - uses: actions/setup-python@v3
+      - name: Set owner of working dir recurively (Linux)
+        run: sudo chown -R $(whoami) .
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: stable
       - name: "Install go imports"
         run: go install golang.org/x/tools/cmd/goimports@latest
       - uses: pre-commit/action@v3.0.0
