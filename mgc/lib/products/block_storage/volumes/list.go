@@ -59,18 +59,18 @@ type ListResultVolumesItem struct {
 }
 
 type ListResultVolumesItemAttachment struct {
-	AttachedAt string                                 `json:"attached_at"`
-	Device     string                                 `json:"device,omitempty"`
-	Machine    ListResultVolumesItemAttachmentMachine `json:"machine"`
+	AttachedAt string                                  `json:"attached_at"`
+	Device     string                                  `json:"device,omitempty"`
+	Instance   ListResultVolumesItemAttachmentInstance `json:"instance"`
 }
 
-// any of: ListResultVolumesItemAttachmentMachine0, ListResultVolumesItemAttachmentMachine1
-type ListResultVolumesItemAttachmentMachine struct {
-	ListResultVolumesItemAttachmentMachine0 `json:",squash"` // nolint
-	ListResultVolumesItemAttachmentMachine1 `json:",squash"` // nolint
+// any of: ListResultVolumesItemAttachmentInstance0, ListResultVolumesItemAttachmentInstance1
+type ListResultVolumesItemAttachmentInstance struct {
+	ListResultVolumesItemAttachmentInstance0 `json:",squash"` // nolint
+	ListResultVolumesItemAttachmentInstance1 `json:",squash"` // nolint
 }
 
-type ListResultVolumesItemAttachmentMachine0 struct {
+type ListResultVolumesItemAttachmentInstance0 struct {
 	CreatedAt string `json:"created_at"`
 	Id        string `json:"id"`
 	Name      string `json:"name"`
@@ -79,7 +79,7 @@ type ListResultVolumesItemAttachmentMachine0 struct {
 	UpdatedAt string `json:"updated_at"`
 }
 
-type ListResultVolumesItemAttachmentMachine1 struct {
+type ListResultVolumesItemAttachmentInstance1 struct {
 	Id string `json:"id"`
 }
 
@@ -88,10 +88,10 @@ type ListResultVolumesItemError struct {
 	Slug    string `json:"slug"`
 }
 
-// any of: ListResultVolumesItemAttachmentMachine1, ListResultVolumesItemType1
+// any of: ListResultVolumesItemAttachmentInstance1, ListResultVolumesItemType1
 type ListResultVolumesItemType struct {
-	ListResultVolumesItemAttachmentMachine1 `json:",squash"` // nolint
-	ListResultVolumesItemType1              `json:",squash"` // nolint
+	ListResultVolumesItemAttachmentInstance1 `json:",squash"` // nolint
+	ListResultVolumesItemType1               `json:",squash"` // nolint
 }
 
 type ListResultVolumesItemType1 struct {
