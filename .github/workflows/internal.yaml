@@ -12,6 +12,7 @@ on:
 jobs:
   build:
     runs-on: self-hosted
+    timeout-minutes: 15
     steps:
       - name: Set owner of working dir recurively (Linux)
         run: sudo chown -R $(whoami) .

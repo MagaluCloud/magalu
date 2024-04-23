@@ -19,6 +19,7 @@ on:
 jobs:
   build:
     runs-on: self-hosted
+    timeout-minutes: 10
     steps:
       - name: Set owner of working dir recurively (Linux)
         run: sudo chown -R $(whoami) .
@@ -45,6 +46,7 @@ jobs:
   test-build:
     needs: build
     runs-on: self-hosted
+    timeout-minutes: 15
     env:
       PROFILES: ${{ secrets.tester_profiles_config }}
     container:
@@ -79,6 +81,7 @@ jobs:
     # TODO: when remove "continue-on-error: true" above, change below to "needs: test-build"
     needs: build
     runs-on: self-hosted
+    timeout-minutes: 10
     steps:
       - uses: actions/setup-python@v3
       - name: Set owner of working dir recurively (Linux)
