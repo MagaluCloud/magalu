@@ -30,8 +30,8 @@ const (
 )
 
 const (
-	bearertoken = "bearer_token"
-	apikey      = "api_key"
+	bearerTokenMethod = "bearer_token"
+	apiKeyMethod      = "api_key"
 )
 
 // contextKey is an unexported type for keys defined in this package.
@@ -346,9 +346,9 @@ func (o *Auth) SetAPIKey(ctx context.Context, params APIKeyParametersList) error
 func (o *Auth) SetCurrentSecurityMethod(ctx context.Context, securityMethod string) error {
 	a := FromContext(ctx)
 	switch securityMethod {
-	case bearertoken:
+	case bearerTokenMethod:
 		a.currentSecurityMethod = "access_token"
-	case apikey:
+	case apiKeyMethod:
 		a.currentSecurityMethod = "apikeyauth"
 	default:
 		return fmt.Errorf("unknown security method %s", securityMethod)
