@@ -47,7 +47,7 @@ jobs:
   test-build:
     needs: build
     runs-on: self-hosted
-    timeout-minutes: 15
+    timeout-minutes: 10
     env:
       PROFILES: ${{ secrets.tester_profiles_config }}
     container:
