@@ -19,22 +19,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
+          token: ${{ secrets.GH_PAT }}
           fetch-depth: 0
-      - name: Remove previus github config
-        continue-on-error: true
-        run: git config --global --unset url."ssh://git@github.com/".insteadOf "https://github.com/"
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
+          cache-dependency-path: "**/go.sum"
           go-version: stable
-      - name: Run Codegen with variable version
-        if: ${{ inputs.input_version != ''}}
-        env:
-          GOPRIVATE: "github.com/MagaluCloud/magalu"
-          VERSION: ${{ inputs.input_version}}
-        run: |
-          ./scripts/codegen_lib.sh
-          git config --global url."ssh://git@github.com/".insteadOf "https://github.com/"
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v5
         with:
@@ -42,5 +33,6 @@ jobs:
           version: latest
           args: release --clean --config="goreleaser_internal_cli.yaml"
         env:
+          VERSION: ${{ inputs.input_version}}
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
           PRIVATE_KEY_PATH: ${{ secrets.SSH_ID_RSA_MAGALUCLI }}
