@@ -1,6 +1,7 @@
 # General
 .DS_Store
 *~
+cli.yaml
 
 # VS Code
 .vscode/*
