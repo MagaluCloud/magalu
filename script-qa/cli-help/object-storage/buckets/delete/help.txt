@@ -5,8 +5,8 @@ Usage:
 
 Flags:
       --bucket string   Name of the bucket to be deleted (required)
-      --force           Delete the bucket even if there are still objects inside (required)
   -h, --help            help for delete
+      --recursive       Delete bucket including objects inside (required)
 
 Global Flags:
       --chunk-size integer     Chunk size to consider when doing multipart requests. Specified in Mb (range: 8 - 5120) (default 8)

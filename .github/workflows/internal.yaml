@@ -1,0 +1,45 @@
+name: MGC DEV RELEASE(MANUAL)
+
+on:
+  workflow_dispatch:
+    inputs:
+      input_version:
+        description: 'Version to run'
+        default: ''
+        required: false
+        type: string
+
+jobs:
+  build:
+    runs-on: self-hosted
+    timeout-minutes: 15
+    steps:
+      - name: Set owner of working dir recurively (Linux)
+        run: sudo chown -R $(whoami) .
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: |
+          git config --global --unset url."ssh://git@github.com/".insteadOf "https://github.com/"
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: stable
+      - name: Run Codegen with variable version
+        if: ${{ inputs.input_version != ''}}
+        env:
+          GOPRIVATE: "github.com/MagaluCloud/magalu"
+          VERSION: ${{ inputs.input_version}}
+        run: |
+          ./scripts/codegen_lib.sh
+          git config --global url."ssh://git@github.com/".insteadOf "https://github.com/"
+      - name: Run GoReleaser
+        uses: goreleaser/goreleaser-action@v5
+        with:
+          distribution: goreleaser
+          version: latest
+          args: release --clean --config="goreleaser_internal_cli.yaml"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+          PRIVATE_KEY_PATH: ${{ secrets.SSH_ID_RSA_MAGALUCLI }}

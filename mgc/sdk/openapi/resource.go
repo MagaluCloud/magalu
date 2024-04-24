@@ -94,7 +94,7 @@ func collectResourceChildren(
 		outputFlag, _ := getExtensionString(extensionPrefix, "output-flag", desc.op.Extensions, "")
 		method := strings.ToUpper(desc.method)
 
-		var operation core.Executor = newOperation(
+		trueOp := newOperation(
 			opName,
 			desc,
 			doc.Info.Version,
@@ -106,36 +106,42 @@ func collectResourceChildren(
 			refResolver,
 		)
 
+		var op core.Executor = trueOp
+
 		isDelete := method == "DELETE"
 		cExt, ok := getExtensionObject(extensionPrefix, "confirmable", desc.op.Extensions, nil)
 
 		if (ok && cExt != nil) || isDelete {
-			cExec, err := wrapInConfirmableExecutor(cExt, isDelete, operation)
+			cExec, err := wrapInConfirmableExecutor(cExt, isDelete, op)
 			if err != nil {
 				return children, err
 			}
-			operation = cExec
+			op = cExec
 		}
 
 		cpExt, ok := getExtensionObject(extensionPrefix, "promptInput", desc.op.Extensions, nil)
 		if ok && cpExt != nil {
-			cpExt, err := wrapInPromptInputExecutor(cpExt, isDelete, operation)
+			cpExt, err := wrapInPromptInputExecutor(cpExt, isDelete, op)
 			if err != nil {
 				return children, err
 			}
-			operation = cpExt
+			op = cpExt
 		}
 
 		if wtExt, ok := getExtensionObject(extensionPrefix, "wait-termination", desc.op.Extensions, nil); ok && wtExt != nil {
-			if tExec, err := wrapInTerminatorExecutor(operation, wtExt); err == nil {
-				operation = tExec
+			if tExec, err := wrapInTerminatorExecutor(op, wtExt); err == nil {
+				op = tExec
 			} else {
 				return children, err
 			}
 		}
 
-		children = append(children, operation)
-		childrenByName[opName] = operation
+		if obsExt, ok := getExtensionString(extensionPrefix, "observations", desc.op.Extensions, ""); ok && obsExt != "" {
+			trueOp.SimpleDescriptor.Spec.Observations = obsExt
+		}
+
+		children = append(children, op)
+		childrenByName[opName] = op
 	}
 
 	for _, childTable := range table.childTables {

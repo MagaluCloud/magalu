@@ -44,41 +44,41 @@ type GetConfigs struct {
 }
 
 type GetResult struct {
-	Attachment *GetResultAttachment `json:"attachment,omitempty"`
-	CreatedAt  string               `json:"created_at"`
-	Error      GetResultError       `json:"error,omitempty"`
-	Id         string               `json:"id"`
-	Name       string               `json:"name"`
-	Size       int                  `json:"size"`
-	State      string               `json:"state"`
-	Status     string               `json:"status"`
-	Type       GetResultType        `json:"type"`
-	UpdatedAt  string               `json:"updated_at"`
+	Attachment GetResultAttachment `json:"attachment,omitempty"`
+	CreatedAt  string              `json:"created_at"`
+	Error      GetResultError      `json:"error,omitempty"`
+	Id         string              `json:"id"`
+	Name       string              `json:"name"`
+	Size       int                 `json:"size"`
+	State      string              `json:"state"`
+	Status     string              `json:"status"`
+	Type       GetResultType       `json:"type"`
+	UpdatedAt  string              `json:"updated_at"`
 }
 
-// any of: GetResultAttachment0, GetResultAttachment1
 type GetResultAttachment struct {
-	GetResultAttachment0 `json:",squash"` // nolint
-	GetResultAttachment1 `json:",squash"` // nolint
-}
-
-type GetResultAttachment0 struct {
-	AttachedAt string `json:"attached_at"`
-	MachineId  string `json:"machine_id"`
-}
-
-type GetResultAttachment1 struct {
 	AttachedAt string                      `json:"attached_at"`
-	Machine    GetResultAttachment1Machine `json:"machine"`
-	MachineId  string                      `json:"machine_id"`
+	Device     string                      `json:"device,omitempty"`
+	Instance   GetResultAttachmentInstance `json:"instance"`
 }
 
-type GetResultAttachment1Machine struct {
+// any of: GetResultAttachmentInstance0, GetResultAttachmentInstance1
+type GetResultAttachmentInstance struct {
+	GetResultAttachmentInstance0 `json:",squash"` // nolint
+	GetResultAttachmentInstance1 `json:",squash"` // nolint
+}
+
+type GetResultAttachmentInstance0 struct {
 	CreatedAt string `json:"created_at"`
+	Id        string `json:"id"`
 	Name      string `json:"name"`
 	State     string `json:"state"`
 	Status    string `json:"status"`
 	UpdatedAt string `json:"updated_at"`
+}
+
+type GetResultAttachmentInstance1 struct {
+	Id string `json:"id"`
 }
 
 type GetResultError struct {
@@ -86,14 +86,10 @@ type GetResultError struct {
 	Slug    string `json:"slug"`
 }
 
-// any of: GetResultType0, GetResultType1
+// any of: GetResultAttachmentInstance1, GetResultType1
 type GetResultType struct {
-	GetResultType0 `json:",squash"` // nolint
-	GetResultType1 `json:",squash"` // nolint
-}
-
-type GetResultType0 struct {
-	Id string `json:"id"`
+	GetResultAttachmentInstance1 `json:",squash"` // nolint
+	GetResultType1               `json:",squash"` // nolint
 }
 
 type GetResultType1 struct {

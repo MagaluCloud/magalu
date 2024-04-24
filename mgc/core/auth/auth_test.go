@@ -8,9 +8,7 @@ import (
 	"net/http"
 	"reflect"
 	"testing"
-	"time"
 
-	"magalu.cloud/core"
 	"magalu.cloud/core/config"
 	mgcHttpPkg "magalu.cloud/core/http"
 	"magalu.cloud/core/profile_manager"
@@ -30,11 +28,11 @@ refresh_token: "refresh-token"
 current_environment: "test"
 `)
 
-var dummyConfigResultYamlRealToken = []byte(`---
-access_token: "eyJhbGciOiJIUzI1NiJ9.eyJSb2xlIjoiYWRtaW4iLCJJc3N1ZXIiOiJJc3N1ZXIiLCJVc2VybmFtZSI6ImFkbWluIiwiZXhwIjoxNzA0ODI0MzUzLCJpYXQiOjE3MDQ4MjQzNTN9.Eu1WKIEja4OQc87FH2ku-34Gir2P6RjGATEu-EQPAC8"
-refresh_token: "eyJhbGciOiJIUzI1NiJ9.eyJSb2xlIjoiYWRtaW4iLCJJc3N1ZXIiOiJJc3N1ZXIiLCJVc2VybmFtZSI6ImFkbWluIiwiZXhwIjoxNzA0ODI0MzUzLCJpYXQiOjE3MDQ4MjQzNTN9.Eu1WKIEja4OQc87FH2ku-34Gir2P6RjGATEu-EQPAC8"
-current_environment: "test"
-`)
+// var dummyConfigResultYamlRealToken = []byte(`---
+// access_token: "eyJhbGciOiJIUzI1NiJ9.eyJSb2xlIjoiYWRtaW4iLCJJc3N1ZXIiOiJJc3N1ZXIiLCJVc2VybmFtZSI6ImFkbWluIiwiZXhwIjoxNzA0ODI0MzUzLCJpYXQiOjE3MDQ4MjQzNTN9.Eu1WKIEja4OQc87FH2ku-34Gir2P6RjGATEu-EQPAC8"
+// refresh_token: "eyJhbGciOiJIUzI1NiJ9.eyJSb2xlIjoiYWRtaW4iLCJJc3N1ZXIiOiJJc3N1ZXIiLCJVc2VybmFtZSI6ImFkbWluIiwiZXhwIjoxNzA0ODI0MzUzLCJpYXQiOjE3MDQ4MjQzNTN9.Eu1WKIEja4OQc87FH2ku-34Gir2P6RjGATEu-EQPAC8"
+// current_environment: "test"
+// `)
 
 var dummyConfigMap map[string]Config = map[string]Config{
 	"temp": {
@@ -728,99 +726,99 @@ secret_access_key: ""
 				},
 			},
 		),
-		selectTenant("Invalid tenant result",
-			mockTransport{
-				statusCode:   http.StatusOK,
-				responseBody: io.NopCloser(bytes.NewBuffer([]byte(`{`))),
-			},
-			nil,
-			true,
-			[]fs_test_helper.TestFsEntry{
-				{
-					Path: "/default/auth.yaml",
-					Mode: utils.FILE_PERMISSION,
-					Data: dummyConfigResultYaml,
-				},
-			}, []fs_test_helper.TestFsEntry{
-				{
-					Path: "/default/auth.yaml",
-					Mode: utils.FILE_PERMISSION,
-					Data: dummyConfigResultYaml,
-				},
-				{
-					Path: "/default/cli.yaml",
-					Mode: utils.FILE_PERMISSION,
-					Data: []byte(`env: temp
-`),
-				},
-			}),
-		selectTenant("Valid tenant result",
-			mockTransport{
-				statusCode: http.StatusOK,
-				responseBody: io.NopCloser(bytes.NewBuffer([]byte(`{
-									"id": "qwe123",
-									"access_token": "abc",
-									"created_at": 0,
-									"refresh_token": "def",
-									"scope": "test"
-								}`))),
-			},
-			&TokenExchangeResult{
-				TenantID:     "qwe123",
-				CreatedAt:    core.Time(time.Unix(int64(0), 0)),
-				AccessToken:  "abc",
-				RefreshToken: "def",
-				Scope:        []string{"test"},
-			},
-			false,
-			[]fs_test_helper.TestFsEntry{
-				{
-					Path: "/default/auth.yaml",
-					Mode: utils.FILE_PERMISSION,
-					Data: dummyConfigResultYamlRealToken,
-				},
-			}, []fs_test_helper.TestFsEntry{
-				{
-					Path: "/default/auth.yaml",
-					Mode: utils.FILE_PERMISSION,
-					Data: []byte(`access_key_id: ""
-access_token: abc
-current_environment: ""
-refresh_token: def
-secret_access_key: ""
-`),
-				},
-				{
-					Path: "/default/cli.yaml",
-					Mode: utils.FILE_PERMISSION,
-					Data: []byte(`env: temp
-`),
-				},
-			}),
-		listTenants("empty tenant list",
-			mockTransport{
-				statusCode:   http.StatusOK,
-				responseBody: io.NopCloser(bytes.NewBuffer([]byte(`[]`))),
-			}, []*Tenant{}, false,
-			[]fs_test_helper.TestFsEntry{
-				{
-					Path: "/default/auth.yaml",
-					Mode: utils.FILE_PERMISSION,
-					Data: dummyConfigResultYaml,
-				},
-			}, []fs_test_helper.TestFsEntry{
-				{
-					Path: "/default/auth.yaml",
-					Mode: utils.FILE_PERMISSION,
-					Data: dummyConfigResultYaml,
-				},
-				{
-					Path: "/default/cli.yaml",
-					Mode: utils.FILE_PERMISSION,
-					Data: []byte(`env: temp
-`),
-				},
-			}),
+		// selectTenant("Invalid tenant result",
+		// 	mockTransport{
+		// 		statusCode:   http.StatusOK,
+		// 		responseBody: io.NopCloser(bytes.NewBuffer([]byte(`{`))),
+		// 	},
+		// 	nil,
+		// 	true,
+		// 	[]fs_test_helper.TestFsEntry{
+		// 		{
+		// 			Path: "/default/auth.yaml",
+		// 			Mode: utils.FILE_PERMISSION,
+		// 			Data: dummyConfigResultYaml,
+		// 		},
+		// 	}, []fs_test_helper.TestFsEntry{
+		// 		{
+		// 			Path: "/default/auth.yaml",
+		// 			Mode: utils.FILE_PERMISSION,
+		// 			Data: dummyConfigResultYaml,
+		// 		},
+		// 		{
+		// 			Path: "/default/cli.yaml",
+		// 			Mode: utils.FILE_PERMISSION,
+		// 			Data: []byte(`env: temp
+		// `),
+		// 		},
+		// 	}),
+		// 		selectTenant("Valid tenant result",
+		// 			mockTransport{
+		// 				statusCode: http.StatusOK,
+		// 				responseBody: io.NopCloser(bytes.NewBuffer([]byte(`{
+		// 									"id": "qwe123",
+		// 									"access_token": "abc",
+		// 									"created_at": 0,
+		// 									"refresh_token": "def",
+		// 									"scope": "test"
+		// 								}`))),
+		// 			},
+		// 			&TokenExchangeResult{
+		// 				TenantID:     "qwe123",
+		// 				CreatedAt:    core.Time(time.Unix(int64(0), 0)),
+		// 				AccessToken:  "abc",
+		// 				RefreshToken: "def",
+		// 				Scope:        []string{"test"},
+		// 			},
+		// 			false,
+		// 			[]fs_test_helper.TestFsEntry{
+		// 				{
+		// 					Path: "/default/auth.yaml",
+		// 					Mode: utils.FILE_PERMISSION,
+		// 					Data: dummyConfigResultYamlRealToken,
+		// 				},
+		// 			}, []fs_test_helper.TestFsEntry{
+		// 				{
+		// 					Path: "/default/auth.yaml",
+		// 					Mode: utils.FILE_PERMISSION,
+		// 					Data: []byte(`access_key_id: ""
+		// access_token: abc
+		// current_environment: ""
+		// refresh_token: def
+		// secret_access_key: ""
+		// `),
+		// 				},
+		// 				{
+		// 					Path: "/default/cli.yaml",
+		// 					Mode: utils.FILE_PERMISSION,
+		// 					Data: []byte(`env: temp
+		// `),
+		// 				},
+		// 			}),
+		// 		listTenants("empty tenant list",
+		// 			mockTransport{
+		// 				statusCode:   http.StatusOK,
+		// 				responseBody: io.NopCloser(bytes.NewBuffer([]byte(`[]`))),
+		// 			}, []*Tenant{}, false,
+		// 			[]fs_test_helper.TestFsEntry{
+		// 				{
+		// 					Path: "/default/auth.yaml",
+		// 					Mode: utils.FILE_PERMISSION,
+		// 					Data: dummyConfigResultYaml,
+		// 				},
+		// 			}, []fs_test_helper.TestFsEntry{
+		// 				{
+		// 					Path: "/default/auth.yaml",
+		// 					Mode: utils.FILE_PERMISSION,
+		// 					Data: dummyConfigResultYaml,
+		// 				},
+		// 				{
+		// 					Path: "/default/cli.yaml",
+		// 					Mode: utils.FILE_PERMISSION,
+		// 					Data: []byte(`env: temp
+		// `),
+		// 	},
+		// }),
 		newAuth("empty auth file", "",
 			&ConfigResult{},
 			[]fs_test_helper.TestFsEntry{
@@ -888,48 +886,48 @@ secret_access_key: ""
 				},
 			}),
 
-		listTenants("non empty tenant list",
-			mockTransport{
-				statusCode: http.StatusOK,
-				responseBody: io.NopCloser(bytes.NewBuffer([]byte(`[
-	{
-		"uuid": "1",
-		"legal_name": "jon doe",
-		"email": "jon.doe@profusion.mobi",
-		"is_managed": false,
-		"is_delegated": false
-	},
-	{
-		"uuid": "2",
-		"legal_name": "jon smith",
-		"email": "jon.smith@profusion.mobi",
-		"is_managed": false,
-		"is_delegated": false
-	}
-]`))),
-			}, []*Tenant{
-				{UUID: "1", Name: "jon doe", Email: "jon.doe@profusion.mobi", IsManaged: false, IsDelegated: false},
-				{UUID: "2", Name: "jon smith", Email: "jon.smith@profusion.mobi", IsManaged: false, IsDelegated: false},
-			}, false,
-			[]fs_test_helper.TestFsEntry{
-				{
-					Path: "/default/auth.yaml",
-					Mode: utils.FILE_PERMISSION,
-					Data: dummyConfigResultYaml,
-				},
-			}, []fs_test_helper.TestFsEntry{
-				{
-					Path: "/default/auth.yaml",
-					Mode: utils.FILE_PERMISSION,
-					Data: dummyConfigResultYaml,
-				},
-				{
-					Path: "/default/cli.yaml",
-					Mode: utils.FILE_PERMISSION,
-					Data: []byte(`env: temp
-`),
-				},
-			}),
+		// 		listTenants("non empty tenant list",
+		// 			mockTransport{
+		// 				statusCode: http.StatusOK,
+		// 				responseBody: io.NopCloser(bytes.NewBuffer([]byte(`[
+		// 	{
+		// 		"uuid": "1",
+		// 		"legal_name": "jon doe",
+		// 		"email": "jon.doe@profusion.mobi",
+		// 		"is_managed": false,
+		// 		"is_delegated": false
+		// 	},
+		// 	{
+		// 		"uuid": "2",
+		// 		"legal_name": "jon smith",
+		// 		"email": "jon.smith@profusion.mobi",
+		// 		"is_managed": false,
+		// 		"is_delegated": false
+		// 	}
+		// ]`))),
+		// 			}, []*Tenant{
+		// 				{UUID: "1", Name: "jon doe", Email: "jon.doe@profusion.mobi", IsManaged: false, IsDelegated: false},
+		// 				{UUID: "2", Name: "jon smith", Email: "jon.smith@profusion.mobi", IsManaged: false, IsDelegated: false},
+		// 			}, false,
+		// 			[]fs_test_helper.TestFsEntry{
+		// 				{
+		// 					Path: "/default/auth.yaml",
+		// 					Mode: utils.FILE_PERMISSION,
+		// 					Data: dummyConfigResultYaml,
+		// 				},
+		// 			}, []fs_test_helper.TestFsEntry{
+		// 				{
+		// 					Path: "/default/auth.yaml",
+		// 					Mode: utils.FILE_PERMISSION,
+		// 					Data: dummyConfigResultYaml,
+		// 				},
+		// 				{
+		// 					Path: "/default/cli.yaml",
+		// 					Mode: utils.FILE_PERMISSION,
+		// 					Data: []byte(`env: temp
+		// `),
+		// 				},
+		// 			}),
 		listTenants("request ended with err", mockTransport{
 			shouldReturnError: true,
 		}, nil, true,

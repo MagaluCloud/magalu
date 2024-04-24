@@ -28,7 +28,6 @@ block-storage.openapi:
         - post
         - delete
   unused-components:
-    - '#/components/schemas/ProjectTypeAll'
     - '#/components/schemas/ValidationError'
 dbaas.openapi:
   computed-variables:

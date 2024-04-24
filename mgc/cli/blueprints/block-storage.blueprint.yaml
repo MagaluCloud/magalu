@@ -51,7 +51,7 @@ children:
           maxRetries: 5
           interval: 5s
           jsonPathQuery: |
-            hasKey($.result, "attachment") && $.result.attachment.machine_id == $.owner.parameters.virtual_machine_id
+            hasKey($.result, "attachment") && $.result.attachment.instance.id == $.owner.parameters.virtual_machine_id
           errorJsonPathQuery: |
             $.result.status == "attaching_error" || (!hasKey($.result, "attachment") && $.result.status == "completed")
 
@@ -82,7 +82,7 @@ children:
       maxRetries: 5
       interval: 5s
       jsonPathQuery: |
-        hasKey($.last.result, "attachment") && $.last.result.attachment.machine_id == $.parameters.virtual_machine_id
+        hasKey($.last.result, "attachment") && $.last.result.attachment.instance.id == $.parameters.virtual_machine_id
       errorJsonPathQuery: |
         $.last.result.status == "attaching_error" || (!hasKey($.last.result, "attachment") && $.last.result.status == "completed")
 

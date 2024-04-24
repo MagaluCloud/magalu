@@ -11,7 +11,6 @@ on:
       - synchronize
       - reopened
       - ready_for_review
-  workflow_dispatch:
 
 # concurrency:
 #   group: ci-check-${{ github.ref }}
@@ -19,13 +18,19 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
+    timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-go@v4
+      - name: Set owner of working dir recurively (Linux)
+        run: sudo chown -R $(whoami) .
+      - name: Checkout
+        uses: actions/checkout@v4
         with:
-          go-version: '>=1.17.0'
-          cache-dependency-path: "**/go.sum"
+          fetch-depth: 0
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: stable
       - run: go version
       - name: Build CLI
         env:
@@ -40,7 +45,8 @@ jobs:
 
   test-build:
     needs: build
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
+    timeout-minutes: 15
     env:
       PROFILES: ${{ secrets.tester_profiles_config }}
     container:
@@ -74,16 +80,22 @@ jobs:
   pre-commit:
     # TODO: when remove "continue-on-error: true" above, change below to "needs: test-build"
     needs: build
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
+    timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v3
       - uses: actions/setup-python@v3
+      - name: Set owner of working dir recurively (Linux)
+        run: sudo chown -R $(whoami) .
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: stable
       - name: "Install go imports"
         run: go install golang.org/x/tools/cmd/goimports@latest
-      - uses: actions/setup-go@v4
-        with:
-          go-version: '>=1.17.0'
-          cache-dependency-path: "**/go.sum"
       - uses: pre-commit/action@v3.0.0
         with:
           extra_args: --show-diff-on-failure --color=always --hook-stage push --all-files

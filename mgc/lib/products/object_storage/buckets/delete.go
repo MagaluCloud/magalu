@@ -18,8 +18,8 @@ import (
 )
 
 type DeleteParameters struct {
-	Bucket string `json:"bucket"`
-	Force  bool   `json:"force"`
+	Bucket    string `json:"bucket"`
+	Recursive bool   `json:"recursive"`
 }
 
 type DeleteConfigs struct {

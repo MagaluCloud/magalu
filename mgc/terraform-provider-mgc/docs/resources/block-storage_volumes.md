@@ -46,41 +46,24 @@ Optional:
 
 Read-Only:
 
-- `attached_at` (Attributes) (see [below for nested schema](#nestedatt--attachment--attached_at))
-- `machine` (Attributes) (see [below for nested schema](#nestedatt--attachment--machine))
-- `machine_id` (String)
+- `attached_at` (String)
+- `device` (String)
+- `instance` (Attributes) (see [below for nested schema](#nestedatt--attachment--instance))
 
-<a id="nestedatt--attachment--attached_at"></a>
-### Nested Schema for `attachment.attached_at`
-
-Read-Only:
-
-- `string1` (String)
-- `string2` (String)
-
-
-<a id="nestedatt--attachment--machine"></a>
-### Nested Schema for `attachment.machine`
+<a id="nestedatt--attachment--instance"></a>
+### Nested Schema for `attachment.instance`
 
 Read-Only:
 
-- `created_at` (Attributes) (see [below for nested schema](#nestedatt--attachment--machine--created_at))
+- `created_at` (String)
+- `id` (String)
 - `name` (String)
-- `state` (Attributes) (see [below for nested schema](#nestedatt--attachment--machine--state))
-- `status` (Attributes) (see [below for nested schema](#nestedatt--attachment--machine--status))
-- `updated_at` (Attributes) (see [below for nested schema](#nestedatt--attachment--machine--updated_at))
+- `state` (Attributes) (see [below for nested schema](#nestedatt--attachment--instance--state))
+- `status` (Attributes) (see [below for nested schema](#nestedatt--attachment--instance--status))
+- `updated_at` (String)
 
-<a id="nestedatt--attachment--machine--created_at"></a>
-### Nested Schema for `attachment.machine.created_at`
-
-Read-Only:
-
-- `string1` (String)
-- `string2` (String)
-
-
-<a id="nestedatt--attachment--machine--state"></a>
-### Nested Schema for `attachment.machine.state`
+<a id="nestedatt--attachment--instance--state"></a>
+### Nested Schema for `attachment.instance.state`
 
 Read-Only:
 
@@ -88,17 +71,8 @@ Read-Only:
 - `string2` (String)
 
 
-<a id="nestedatt--attachment--machine--status"></a>
-### Nested Schema for `attachment.machine.status`
-
-Read-Only:
-
-- `string1` (String)
-- `string2` (String)
-
-
-<a id="nestedatt--attachment--machine--updated_at"></a>
-### Nested Schema for `attachment.machine.updated_at`
+<a id="nestedatt--attachment--instance--status"></a>
+### Nested Schema for `attachment.instance.status`
 
 Read-Only:
 

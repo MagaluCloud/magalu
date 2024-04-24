@@ -19,8 +19,9 @@ type getObjectACLParams struct {
 var getGet = utils.NewLazyLoader(func() core.Executor {
 	var exec core.Executor = core.NewStaticExecute(
 		core.DescriptorSpec{
-			Name:        "get",
-			Description: "Get ACL information for the specified object",
+			Name:         "get",
+			Description:  "Get ACL information for the specified object",
+			Observations: "object = \"id:\" (require tenant ID) - Example:id=\"a4900b57-7dbb-4906-b7e8-efed938e325c\"",
 		},
 		getACL,
 	)

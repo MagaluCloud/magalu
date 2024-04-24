@@ -14,3 +14,4 @@ Global Flags:
       --server-url uri         Manually specify the server to use
       --workers integer        Number of routines that spawn to do parallel operations within object_storage (min: 1) (default 5)
 
+	** object = "id:" (require tenant ID) - Example:id="a4900b57-7dbb-4906-b7e8-efed938e325c"
