@@ -24,6 +24,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
+          cache-dependency-path: "**/go.sum"
           go-version: stable
       - name: Run Codegen with variable version
         if: ${{ inputs.input_version != ''}}
@@ -40,6 +41,7 @@ jobs:
           version: latest
           args: release --clean --config="goreleaser_internal_cli.yaml"
         env:
+          VERSION: ${{ inputs.input_version}}
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
           PRIVATE_KEY_PATH: ${{ secrets.SSH_ID_RSA_MAGALUCLI }}
       - run: git config --global --unset url."ssh://git@github.com/".insteadOf "https://github.com/"
