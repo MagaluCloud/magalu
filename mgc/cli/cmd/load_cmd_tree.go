@@ -10,9 +10,7 @@ import (
 	mgcSdk "magalu.cloud/sdk"
 )
 
-func addChildDesc(sdk *mgcSdk.Sdk, parentCmd *cobra.Command, child core.Descriptor) (
-	cmd *cobra.Command, flags *cmdFlags, err error,
-) {
+func addChildDesc(sdk *mgcSdk.Sdk, parentCmd *cobra.Command, child core.Descriptor) (cmd *cobra.Command, flags *cmdFlags, err error) {
 	if childGroup, ok := child.(mgcSdk.Grouper); ok {
 		cmd, err = addGroup(sdk, parentCmd, childGroup)
 		return
@@ -49,9 +47,7 @@ func findChildByNameOrAliases(cmdGrouper core.Grouper, childName string) (child 
 	return
 }
 
-func loadGrouperChild(
-	sdk *mgcSdk.Sdk, cmd *cobra.Command, cmdGrouper core.Grouper, childName string,
-) (*cobra.Command, core.Descriptor, error) {
+func loadGrouperChild(sdk *mgcSdk.Sdk, cmd *cobra.Command, cmdGrouper core.Grouper, childName string) (*cobra.Command, core.Descriptor, error) {
 	child, err := findChildByNameOrAliases(cmdGrouper, childName)
 	if err != nil {
 		return nil, nil, err
@@ -69,9 +65,7 @@ func loadGrouperChild(
 	return childCmd, child, nil
 }
 
-func loadChild(
-	sdk *mgcSdk.Sdk, cmd *cobra.Command, cmdDesc core.Descriptor, childName string,
-) (*cobra.Command, core.Descriptor, error) {
+func loadChild(sdk *mgcSdk.Sdk, cmd *cobra.Command, cmdDesc core.Descriptor, childName string) (*cobra.Command, core.Descriptor, error) {
 	if cmdGrouper, ok := cmdDesc.(core.Grouper); ok {
 		return loadGrouperChild(sdk, cmd, cmdGrouper, childName)
 	}
