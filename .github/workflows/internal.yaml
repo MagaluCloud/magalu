@@ -19,6 +19,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
+          token: ${{ secrets.GH_PAT }}
           fetch-depth: 0
       - run: |
           git config --global --unset url."ssh://git@github.com/".insteadOf "https://github.com/"
