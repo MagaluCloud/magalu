@@ -29,6 +29,11 @@ const (
 	authFilename    = "auth.yaml"
 )
 
+const (
+	bearertoken = "bearer_token"
+	apikey      = "api_key"
+)
+
 // contextKey is an unexported type for keys defined in this package.
 // This prevents collisions with keys defined in other packages.
 type contextKey string
@@ -336,19 +341,19 @@ func (o *Auth) SetAPIKey(ctx context.Context, params APIKeyParametersList) error
 	return o.writeCurrentConfig()
 }
 
-// SetCurrentSecurityMethods informs auth what method will be used.
-func (o *Auth) SetCurrentSecurityMethod(ctx context.Context, s string) error {
+// SetCurrentSecurityMethod informs auth what method will be used.
+// The possibles methods include "bearer_token" and "api_key".
+func (o *Auth) SetCurrentSecurityMethod(ctx context.Context, securityMethod string) error {
 	a := FromContext(ctx)
-	switch s {
-	case "apikeyauth":
-		a.currentSecurityMethod = "apikeyauth"
-	case "accessToken":
+	switch securityMethod {
+	case bearertoken:
 		a.currentSecurityMethod = "access_token"
+	case apikey:
+		a.currentSecurityMethod = "apikeyauth"
 	default:
-		return fmt.Errorf("unknown security method %s", s)
+		return fmt.Errorf("unknown security method %s", securityMethod)
 	}
 
-	a.currentSecurityMethod = s
 	return a.writeCurrentConfig()
 }
 
