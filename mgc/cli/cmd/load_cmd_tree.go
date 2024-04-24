@@ -134,7 +134,7 @@ func loadSdkCommandTree(sdk *mgcSdk.Sdk, cmd *cobra.Command, args []string) erro
 		sdk.Config().Get,
 		sdk.Config().Set,
 	).
-		CheckVersion("0.0.1", args...)
+		CheckVersion(mgcSdk.Version, args...)
 
 	if len(args) > 0 && slices.Contains(builtInCommands, args[0]) {
 		return loadAllChildren(sdk, cmd, root)
@@ -257,7 +257,10 @@ func getCommandNameAndAliases(origName string) (name string, aliases []string) {
 const mgcFooterKey string = "mgc_footer_help"
 
 func setCustomHelpTemplate(c *cobra.Command) {
-	customTemplate := c.HelpTemplate() + fmt.Sprintf("{{with $footer := index .Annotations \"%s\"}}{{if $footer}}	** {{$footer}}{{end}}\n{{end}}", mgcFooterKey)
+	customTemplate := c.HelpTemplate() + fmt.Sprintf(
+		"{{with $footer := index .Annotations \"%s\"}}{{if $footer}}	** {{$footer}}{{end}}\n{{end}}",
+		mgcFooterKey,
+	)
 	c.SetHelpTemplate(customTemplate)
 }
 
