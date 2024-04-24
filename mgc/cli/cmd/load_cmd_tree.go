@@ -25,23 +25,21 @@ func addChildDesc(sdk *mgcSdk.Sdk, parentCmd *cobra.Command, child core.Descript
 }
 
 func findChildByNameOrAliases(cmdGrouper core.Grouper, childName string) (child core.Descriptor, err error) {
-	notFound, _ := cmdGrouper.VisitChildren(
-		func(desc core.Descriptor) (run bool, err error) {
-			name, aliases := getCommandNameAndAliases(desc.Name())
+	notFound, _ := cmdGrouper.VisitChildren(func(desc core.Descriptor) (run bool, err error) {
+		name, aliases := getCommandNameAndAliases(desc.Name())
+		if name == childName {
+			child = desc
+			return false, nil
+		}
+		for _, name := range aliases {
 			if name == childName {
 				child = desc
 				return false, nil
 			}
-			for _, name := range aliases {
-				if name == childName {
-					child = desc
-					return false, nil
-				}
-			}
+		}
 
-			return true, nil
-		},
-	)
+		return true, nil
+	})
 
 	if notFound {
 		err = fmt.Errorf("no command with name %q", childName)
@@ -82,16 +80,14 @@ func loadChild(
 }
 
 func loadAllGrouperChildren(sdk *mgcSdk.Sdk, cmd *cobra.Command, cmdGrouper core.Grouper) error {
-	_, err := cmdGrouper.VisitChildren(
-		func(child core.Descriptor) (run bool, err error) {
-			if child.IsInternal() && !getShowInternalFlag(cmd.Root()) {
-				return true, nil
-			}
+	_, err := cmdGrouper.VisitChildren(func(child core.Descriptor) (run bool, err error) {
+		if child.IsInternal() && !getShowInternalFlag(cmd.Root()) {
+			return true, nil
+		}
 
-			_, _, err = addChildDesc(sdk, cmd, child)
-			return true, err
-		},
-	)
+		_, _, err = addChildDesc(sdk, cmd, child)
+		return true, err
+	})
 	if err == nil {
 		err = loadSelectHelperCommand(sdk, cmd, cmdGrouper)
 	}
@@ -257,10 +253,7 @@ func getCommandNameAndAliases(origName string) (name string, aliases []string) {
 const mgcFooterKey string = "mgc_footer_help"
 
 func setCustomHelpTemplate(c *cobra.Command) {
-	customTemplate := c.HelpTemplate() + fmt.Sprintf(
-		"{{with $footer := index .Annotations \"%s\"}}{{if $footer}}	** {{$footer}}{{end}}\n{{end}}",
-		mgcFooterKey,
-	)
+	customTemplate := c.HelpTemplate() + fmt.Sprintf("{{with $footer := index .Annotations \"%s\"}}{{if $footer}}	** {{$footer}}{{end}}\n{{end}}", mgcFooterKey)
 	c.SetHelpTemplate(customTemplate)
 }
 
@@ -357,12 +350,10 @@ func addGroup(
 		},
 	}
 
-	moduleCmd.AddGroup(
-		&cobra.Group{
-			ID:    "catalog",
-			Title: "Commands:",
-		},
-	)
+	moduleCmd.AddGroup(&cobra.Group{
+		ID:    "catalog",
+		Title: "Commands:",
+	})
 
 	parentCmd.AddCommand(moduleCmd)
 	logger().Debugw("Groupper added to command tree", "name", group.Name())
