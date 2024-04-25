@@ -15,13 +15,13 @@ TERRAFORM_ENTRYPOINT=${TERRAFORM_ENTRYPOINT:-mgc/terraform-provider-mgc/main.go}
 TERRAFORM_NAME=${TERRAFORM_NAME:-terraform-provider-mgc}
 TERRAFORM_SRCDIR=${TERRAFORM_SRCDIR:-$(dirname $TERRAFORM_ENTRYPOINT)}
 
-# if [ -z "$VERSION" ]; then
-#     VERSION=`git log -1 '--pretty=format:%(describe:tags)'`
-# fi
+if [ -z "$VERSION" ]; then
+    VERSION=`git log -1 '--pretty=format:%(describe:tags)'`
+fi
 
-# if [ $CHECK_RELEASE -eq 1 ]; then
-#     ./scripts/check_release.sh
-# fi
+if [ $CHECK_RELEASE -eq 1 ]; then
+    ./scripts/check_release.sh
+fi
 
 source ./scripts/tf_generate_docs.sh
 

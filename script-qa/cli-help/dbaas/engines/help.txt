@@ -1,0 +1,19 @@
+Engines available for database instances.
+
+Usage:
+  ./cli dbaas engines [flags]
+  ./cli dbaas engines [command]
+
+Commands:
+  get         Engine detail.
+  list        List available engines.
+
+Flags:
+  -h, --help      help for engines
+  -v, --version   version for engines
+
+Global Flags:
+      --cli.show-cli-globals   Show all CLI global flags on usage text
+
+Use "./cli dbaas engines [command] --help" for more information about a command.
+

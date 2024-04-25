@@ -1,0 +1,12 @@
+Set the active Tenant to be used for all subsequential requests
+
+Usage:
+  ./cli auth tenant set [uuid] [flags]
+
+Flags:
+  -h, --help          help for set
+      --uuid string   The UUID of the desired Tenant. To list all possible IDs, run auth tenant list (required)
+
+Global Flags:
+      --cli.show-cli-globals   Show all CLI global flags on usage text
+

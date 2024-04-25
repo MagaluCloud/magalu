@@ -1,0 +1,11 @@
+List user clients
+
+Usage:
+  ./cli auth clients list [flags]
+
+Flags:
+  -h, --help   help for list
+
+Global Flags:
+      --cli.show-cli-globals   Show all CLI global flags on usage text
+
