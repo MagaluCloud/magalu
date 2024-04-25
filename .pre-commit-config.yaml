@@ -63,11 +63,11 @@ repos:
         entry: bash -c './scripts/blueprint_index_gen.sh'
         stages: [pre-commit]
         require_serial: true
-    -   id: codegen-lib
-        name: codegen-lib
-        language: system
-        entry: bash -c './scripts/codegen_lib.sh'
-        stages: [pre-commit, pre-push]
+    # -   id: codegen-lib
+    #     name: codegen-lib
+    #     language: system
+    #     entry: bash -c './scripts/codegen_lib.sh'
+    #     stages: [pre-commit, pre-push]
 -   repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.4.0
     hooks:
