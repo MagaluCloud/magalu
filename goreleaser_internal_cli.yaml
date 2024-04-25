@@ -26,3 +26,6 @@ nfpms:
   - deb
   builds:
     - mgc
+release:
+  replace_existing_artifacts: true
+  prerelease: auto
