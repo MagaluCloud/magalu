@@ -26,10 +26,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
+          token: ${{ secrets.GH_PAT }}
           fetch-depth: 0
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
+          cache-dependency-path: "**/go.sum"
           go-version: stable
       - run: go version
       - name: Build CLI
@@ -46,7 +48,7 @@ jobs:
   test-build:
     needs: build
     runs-on: self-hosted
-    timeout-minutes: 15
+    timeout-minutes: 10
     env:
       PROFILES: ${{ secrets.tester_profiles_config }}
     container:
@@ -89,10 +91,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
+          token: ${{ secrets.GH_PAT }}
           fetch-depth: 0
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
+          cache-dependency-path: "**/go.sum"
           go-version: stable
       - name: "Install go imports"
         run: go install golang.org/x/tools/cmd/goimports@latest

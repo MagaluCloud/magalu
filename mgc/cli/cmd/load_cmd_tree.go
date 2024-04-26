@@ -10,9 +10,7 @@ import (
 	mgcSdk "magalu.cloud/sdk"
 )
 
-func addChildDesc(sdk *mgcSdk.Sdk, parentCmd *cobra.Command, child core.Descriptor) (
-	cmd *cobra.Command, flags *cmdFlags, err error,
-) {
+func addChildDesc(sdk *mgcSdk.Sdk, parentCmd *cobra.Command, child core.Descriptor) (cmd *cobra.Command, flags *cmdFlags, err error) {
 	if childGroup, ok := child.(mgcSdk.Grouper); ok {
 		cmd, err = addGroup(sdk, parentCmd, childGroup)
 		return
@@ -25,23 +23,21 @@ func addChildDesc(sdk *mgcSdk.Sdk, parentCmd *cobra.Command, child core.Descript
 }
 
 func findChildByNameOrAliases(cmdGrouper core.Grouper, childName string) (child core.Descriptor, err error) {
-	notFound, _ := cmdGrouper.VisitChildren(
-		func(desc core.Descriptor) (run bool, err error) {
-			name, aliases := getCommandNameAndAliases(desc.Name())
+	notFound, _ := cmdGrouper.VisitChildren(func(desc core.Descriptor) (run bool, err error) {
+		name, aliases := getCommandNameAndAliases(desc.Name())
+		if name == childName {
+			child = desc
+			return false, nil
+		}
+		for _, name := range aliases {
 			if name == childName {
 				child = desc
 				return false, nil
 			}
-			for _, name := range aliases {
-				if name == childName {
-					child = desc
-					return false, nil
-				}
-			}
+		}
 
-			return true, nil
-		},
-	)
+		return true, nil
+	})
 
 	if notFound {
 		err = fmt.Errorf("no command with name %q", childName)
@@ -51,9 +47,7 @@ func findChildByNameOrAliases(cmdGrouper core.Grouper, childName string) (child 
 	return
 }
 
-func loadGrouperChild(
-	sdk *mgcSdk.Sdk, cmd *cobra.Command, cmdGrouper core.Grouper, childName string,
-) (*cobra.Command, core.Descriptor, error) {
+func loadGrouperChild(sdk *mgcSdk.Sdk, cmd *cobra.Command, cmdGrouper core.Grouper, childName string) (*cobra.Command, core.Descriptor, error) {
 	child, err := findChildByNameOrAliases(cmdGrouper, childName)
 	if err != nil {
 		return nil, nil, err
@@ -71,9 +65,7 @@ func loadGrouperChild(
 	return childCmd, child, nil
 }
 
-func loadChild(
-	sdk *mgcSdk.Sdk, cmd *cobra.Command, cmdDesc core.Descriptor, childName string,
-) (*cobra.Command, core.Descriptor, error) {
+func loadChild(sdk *mgcSdk.Sdk, cmd *cobra.Command, cmdDesc core.Descriptor, childName string) (*cobra.Command, core.Descriptor, error) {
 	if cmdGrouper, ok := cmdDesc.(core.Grouper); ok {
 		return loadGrouperChild(sdk, cmd, cmdGrouper, childName)
 	}
@@ -82,16 +74,14 @@ func loadChild(
 }
 
 func loadAllGrouperChildren(sdk *mgcSdk.Sdk, cmd *cobra.Command, cmdGrouper core.Grouper) error {
-	_, err := cmdGrouper.VisitChildren(
-		func(child core.Descriptor) (run bool, err error) {
-			if child.IsInternal() && !getShowInternalFlag(cmd.Root()) {
-				return true, nil
-			}
+	_, err := cmdGrouper.VisitChildren(func(child core.Descriptor) (run bool, err error) {
+		if child.IsInternal() && !getShowInternalFlag(cmd.Root()) {
+			return true, nil
+		}
 
-			_, _, err = addChildDesc(sdk, cmd, child)
-			return true, err
-		},
-	)
+		_, _, err = addChildDesc(sdk, cmd, child)
+		return true, err
+	})
 	if err == nil {
 		err = loadSelectHelperCommand(sdk, cmd, cmdGrouper)
 	}
@@ -134,7 +124,7 @@ func loadSdkCommandTree(sdk *mgcSdk.Sdk, cmd *cobra.Command, args []string) erro
 		sdk.Config().Get,
 		sdk.Config().Set,
 	).
-		CheckVersion("0.0.1", args...)
+		CheckVersion(mgcSdk.Version, args...)
 
 	if len(args) > 0 && slices.Contains(builtInCommands, args[0]) {
 		return loadAllChildren(sdk, cmd, root)
@@ -354,12 +344,10 @@ func addGroup(
 		},
 	}
 
-	moduleCmd.AddGroup(
-		&cobra.Group{
-			ID:    "catalog",
-			Title: "Commands:",
-		},
-	)
+	moduleCmd.AddGroup(&cobra.Group{
+		ID:    "catalog",
+		Title: "Commands:",
+	})
 
 	parentCmd.AddCommand(moduleCmd)
 	logger().Debugw("Groupper added to command tree", "name", group.Name())
