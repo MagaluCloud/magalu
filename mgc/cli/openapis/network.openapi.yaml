@@ -6,7 +6,7 @@ info:
         name: Tribo IAAS Cloud
         url: https://github.com/luizalabs
         email: thullyo.cunha@luizalabs.com
-    version: 1.114.3
+    version: 1.119.0
 paths:
     /v0/healthcheck:
         get:
@@ -34,6 +34,14 @@ paths:
                 provided x-tenant-id. You can provide a list of security_groups_id
                 or subnets.
             operationId: createPortVpcDefault
+            parameters:
+            -   name: x-zone
+                in: header
+                required: false
+                schema:
+                    title: X-Zone
+                    nullable: true
+                    type: string
             requestBody:
                 required: true
                 content:
@@ -133,6 +141,13 @@ paths:
                     description: ID of the VPC to create port
                     type: string
                 description: ID of the VPC to create port
+            -   name: x-zone
+                in: header
+                required: false
+                schema:
+                    title: X-Zone
+                    nullable: true
+                    type: string
             requestBody:
                 required: true
                 content:
@@ -801,9 +816,9 @@ paths:
                     allOf:
                     -   $ref: '#/components/schemas/SlugQuotas'
                     title: quota_slug
-                    description: Serivce to check quota usage
+                    description: Service to check quota usage
                     type: string
-                description: Serivce to check quota usage
+                description: Service to check quota usage
             responses:
                 '200':
                     description: Successful Response
@@ -829,7 +844,10 @@ paths:
             summary: Create Rule
             description: Create a Rule async, returning its ID. To monitor the creation
                 progress, please check the status in the service message or implement
-                polling.
+                polling.Either a remote_ip_prefix or a remote_group_id can be specified.With
+                remote_ip_prefix, all IPs that match the criteria will be allowed.With
+                remote_group_id, only the specified security group is allowed to communicatefollowing
+                the specified protocol, direction and port_range_min/max
             operationId: createRule
             parameters:
             -   name: security_group_id
@@ -1084,6 +1102,33 @@ paths:
                     description: Validate the quota before creating Security Group
                     default: true
                 description: Validate the quota before creating Security Group
+            -   name: wait
+                in: query
+                required: false
+                schema:
+                    type: boolean
+                    title: wait
+                    description: The request will be asynchronous. The wait parameter
+                        tells the API that you want the request to simulate synchronous
+                        behavior (to maintain endpoint compatibility). You can set
+                        an approximate timeout with the waitTimeout parameter
+                    default: true
+                description: The request will be asynchronous. The wait parameter
+                    tells the API that you want the request to simulate synchronous
+                    behavior (to maintain endpoint compatibility). You can set an
+                    approximate timeout with the waitTimeout parameter
+            -   name: wait_timeout
+                in: query
+                required: false
+                schema:
+                    type: integer
+                    title: waitTimeout
+                    description: the approximate time in seconds you want to wait
+                        when simulating the request as synchronous (only works with
+                        wait=true)
+                    default: 120
+                description: the approximate time in seconds you want to wait when
+                    simulating the request as synchronous (only works with wait=true)
             requestBody:
                 required: true
                 content:
@@ -1125,6 +1170,7 @@ paths:
             summary: Create Security Group
             description: Create a Security Group
             operationId: createSecurityGroupDeprecated
+            deprecated: true
             parameters:
             -   name: vpc_id
                 in: path
@@ -1368,6 +1414,13 @@ paths:
                     description: Id of the VPC to create Subnet
                     type: string
                 description: Id of the VPC to create Subnet
+            -   name: x-zone
+                in: header
+                required: false
+                schema:
+                    title: X-Zone
+                    nullable: true
+                    type: string
             requestBody:
                 required: true
                 content:
@@ -1846,7 +1899,7 @@ components:
                     status: created
                     updated: '2022-01-01 00:00:00'
                     vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-                    zone: br-se1-a
+                    zone: a
         NetworkApiResponse:
             properties:
                 id:
@@ -1904,7 +1957,7 @@ components:
                 status: created
                 updated: '2022-01-01 00:00:00'
                 vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-                zone: br-se1-a
+                zone: a
         NetworkResponse:
             properties:
                 id:
@@ -2520,6 +2573,10 @@ components:
                     title: Error
                     nullable: true
                     type: string
+                zone:
+                    title: Zone
+                    nullable: true
+                    type: string
             type: object
             required:
             - vpc_id
@@ -2538,6 +2595,7 @@ components:
                 status: created
                 updated: '2022-01-01 00:00:00'
                 vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                zone: a
         RuleCreateRequest:
             properties:
                 direction:
@@ -2589,6 +2647,75 @@ components:
             title: RuleCreateResponse
             example:
                 id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        RuleDefaultStatusEvent:
+            properties:
+                security_group_id:
+                    title: Security Group Id
+                    nullable: true
+                    type: string
+                direction:
+                    title: Direction
+                    nullable: true
+                    type: string
+                port_range_min:
+                    title: Port Range Min
+                    nullable: true
+                    type: integer
+                port_range_max:
+                    title: Port Range Max
+                    nullable: true
+                    type: integer
+                protocol:
+                    title: Protocol
+                    nullable: true
+                    type: string
+                remote_ip_prefix:
+                    title: Remote Ip Prefix
+                    nullable: true
+                    type: string
+                remote_group_id:
+                    title: Remote Group Id
+                    nullable: true
+                    type: string
+                status:
+                    $ref: '#/components/schemas/RuleStatus'
+                error:
+                    title: Error
+                    nullable: true
+                    type: string
+                resource_id:
+                    title: Resource Id
+                    nullable: true
+                    type: string
+                external_id:
+                    title: External Id
+                    nullable: true
+                    type: string
+                rules_zones:
+                    title: Rules Zones
+                    default: []
+                    nullable: true
+                    items:
+                        $ref: '#/components/schemas/RuleZoneCreateEvent'
+                    type: array
+            type: object
+            required:
+            - status
+            title: RuleDefaultStatusEvent
+            example:
+                direction: egress
+                error: 'null'
+                external_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                port_range_max: 8028
+                port_range_min: 8028
+                protocol: tcp
+                remote_group_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                remote_ip_prefix: 100.94.0.0/24
+                resource_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                rules_zones:
+                -   resource_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                    zone: zone_name
+                status: created
         RuleResponse:
             properties:
                 id:
@@ -2726,6 +2853,112 @@ components:
             - pending
             - error
             title: RuleStatus
+        RuleStatusEvent:
+            properties:
+                direction:
+                    title: Direction
+                    nullable: true
+                    type: string
+                port_range_min:
+                    title: Port Range Min
+                    nullable: true
+                    type: integer
+                port_range_max:
+                    title: Port Range Max
+                    nullable: true
+                    type: integer
+                protocol:
+                    title: Protocol
+                    nullable: true
+                    type: string
+                remote_ip_prefix:
+                    title: Remote Ip Prefix
+                    nullable: true
+                    type: string
+                remote_group_id:
+                    title: Remote Group Id
+                    nullable: true
+                    type: string
+                status:
+                    nullable: true
+                    $ref: '#/components/schemas/RuleStatus'
+                error:
+                    title: Error
+                    nullable: true
+                    type: string
+                api_id:
+                    title: Api Id
+                    nullable: true
+                    type: string
+                rule_zones:
+                    title: Rule Zones
+                    default: {}
+                    nullable: true
+                    additionalProperties:
+                        nullable: true
+                        $ref: '#/components/schemas/RuleZoneStatusEvent'
+                    type: object
+            type: object
+            title: RuleStatusEvent
+            example:
+                api_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                direction: egress
+                error: 'null'
+                external_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                port_range_max: 8028
+                port_range_min: 8028
+                protocol: tcp
+                remote_group_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                remote_ip_prefix: 100.94.0.0/24
+                rule_zones:
+                -   resource_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                    zone: zone_name
+                status: created
+        RuleZoneCreateEvent:
+            properties:
+                resource_id:
+                    type: string
+                    title: Resource Id
+                zone:
+                    title: Zone
+                    nullable: true
+                    type: string
+            type: object
+            required:
+            - resource_id
+            title: RuleZoneCreateEvent
+            example:
+                resource_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                zone: zone_name
+        RuleZoneStatusEvent:
+            properties:
+                api_id:
+                    title: Api Id
+                    nullable: true
+                    type: string
+                zone:
+                    title: Zone
+                    nullable: true
+                    type: string
+                external_id:
+                    title: External Id
+                    nullable: true
+                    type: string
+                status:
+                    nullable: true
+                    $ref: '#/components/schemas/RuleStatus'
+                error:
+                    title: Error
+                    nullable: true
+                    type: string
+            type: object
+            title: RuleZoneStatusEvent
+            example:
+                api_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                error: error data, if any
+                external_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                status: created
+                zone: zone_name
         RulesList:
             properties:
                 rules:
@@ -2991,22 +3224,35 @@ components:
                     title: Error
                     nullable: true
                     type: string
+                api_id:
+                    title: Api Id
+                    nullable: true
+                    type: string
                 rules:
                     title: Rules
                     default: []
                     nullable: true
                     items:
-                        $ref: '#/components/schemas/vpc_api_product__vpc__models__security_group__RuleDefaultStatusEvent'
+                        $ref: '#/components/schemas/RuleStatusEvent'
                     type: array
+                security_group_zones:
+                    title: Security Group Zones
+                    default: {}
+                    nullable: true
+                    additionalProperties:
+                        nullable: true
+                        $ref: '#/components/schemas/SecurityGroupZoneStatusEvent'
+                    type: object
             type: object
             required:
             - status
             title: SecurityGroupStatusEvent
             example:
+                api_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                 error: 'null'
-                external_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                 rules:
-                -   direction: egress
+                -   api_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                    direction: egress
                     error: 'null'
                     external_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                     port_range_max: 8028
@@ -3014,9 +3260,45 @@ components:
                     protocol: tcp
                     remote_group_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                     remote_ip_prefix: 100.94.0.0/24
-                    resource_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                    rule_zones:
+                    -   api_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                        zone: zone_name
                     status: created
+                security_group_zones:
+                -   api_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                    zone: zone_name
                 status: created
+        SecurityGroupZoneStatusEvent:
+            properties:
+                external_id:
+                    title: External Id
+                    nullable: true
+                    type: string
+                status:
+                    type: string
+                    title: Status
+                error:
+                    title: Error
+                    nullable: true
+                    type: string
+                api_id:
+                    title: Api Id
+                    nullable: true
+                    type: string
+                zone:
+                    title: Zone
+                    nullable: true
+                    type: string
+            type: object
+            required:
+            - status
+            title: SecurityGroupZoneStatusEvent
+            example:
+                api_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                error: error data, if any
+                external_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                status: created
+                zone: zone_name
         SlugQuotas:
             type: string
             enum:
@@ -3271,6 +3553,9 @@ components:
                 ip_version:
                     type: string
                     title: Ip Version
+                zone:
+                    type: string
+                    title: Zone
                 created_at:
                     title: Created At
                     nullable: true
@@ -3287,6 +3572,7 @@ components:
             - vpc_id
             - cidr_block
             - ip_version
+            - zone
             title: SubnetResponse
             example:
                 cidr_block: 172.20.0.0/24
@@ -3297,6 +3583,7 @@ components:
                 name: vpc_name
                 updated: '2022-01-01 00:00:00'
                 vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                zone: a
         SubnetResponseDetail:
             properties:
                 id:
@@ -3319,6 +3606,9 @@ components:
                 ip_version:
                     type: string
                     title: Ip Version
+                zone:
+                    type: string
+                    title: Zone
                 created_at:
                     title: Created At
                     nullable: true
@@ -3348,6 +3638,7 @@ components:
             - vpc_id
             - cidr_block
             - ip_version
+            - zone
             - gateway_ip
             - dns_nameservers
             - dhcp_pools
@@ -3367,6 +3658,7 @@ components:
                 name: vpc_name
                 updated: '2022-01-01 00:00:00'
                 vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                zone: a
         SubnetResponseId:
             properties:
                 id:
@@ -3398,6 +3690,7 @@ components:
                     name: vpc_name
                     updated: '2022-01-01 00:00:00'
                     vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                    zone: a
         ValidationError:
             properties:
                 message:
@@ -3590,6 +3883,7 @@ components:
                     status: created
                     updated: '2022-01-01 00:00:00'
                     vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                    zone: a
                 subnets:
                 - xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                 tenant_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
@@ -3728,119 +4022,6 @@ components:
                 description: vpc description
                 name: vpc_name
                 subnetpool_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-        vpc_api_product__vpc__models__rule__RuleDefaultStatusEvent:
-            properties:
-                security_group_id:
-                    title: Security Group Id
-                    nullable: true
-                    type: string
-                direction:
-                    title: Direction
-                    nullable: true
-                    type: string
-                port_range_min:
-                    title: Port Range Min
-                    nullable: true
-                    type: integer
-                port_range_max:
-                    title: Port Range Max
-                    nullable: true
-                    type: integer
-                protocol:
-                    title: Protocol
-                    nullable: true
-                    type: string
-                remote_ip_prefix:
-                    title: Remote Ip Prefix
-                    nullable: true
-                    type: string
-                remote_group_id:
-                    title: Remote Group Id
-                    nullable: true
-                    type: string
-                status:
-                    $ref: '#/components/schemas/RuleStatus'
-                error:
-                    title: Error
-                    nullable: true
-                    type: string
-                resource_id:
-                    title: Resource Id
-                    nullable: true
-                    type: string
-                external_id:
-                    title: External Id
-                    nullable: true
-                    type: string
-            type: object
-            required:
-            - status
-            title: RuleDefaultStatusEvent
-            example:
-                direction: egress
-                error: 'null'
-                external_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-                port_range_max: 8028
-                port_range_min: 8028
-                protocol: tcp
-                remote_group_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-                remote_ip_prefix: 100.94.0.0/24
-                resource_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-                status: created
-        vpc_api_product__vpc__models__security_group__RuleDefaultStatusEvent:
-            properties:
-                direction:
-                    title: Direction
-                    nullable: true
-                    type: string
-                port_range_min:
-                    title: Port Range Min
-                    nullable: true
-                    type: integer
-                port_range_max:
-                    title: Port Range Max
-                    nullable: true
-                    type: integer
-                protocol:
-                    title: Protocol
-                    nullable: true
-                    type: string
-                remote_ip_prefix:
-                    title: Remote Ip Prefix
-                    nullable: true
-                    type: string
-                remote_group_id:
-                    title: Remote Group Id
-                    nullable: true
-                    type: string
-                status:
-                    nullable: true
-                    $ref: '#/components/schemas/RuleStatus'
-                error:
-                    title: Error
-                    nullable: true
-                    type: string
-                resource_id:
-                    title: Resource Id
-                    nullable: true
-                    type: string
-                external_id:
-                    title: External Id
-                    nullable: true
-                    type: string
-            type: object
-            title: RuleDefaultStatusEvent
-            example:
-                direction: egress
-                error: 'null'
-                external_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-                port_range_max: 8028
-                port_range_min: 8028
-                protocol: tcp
-                remote_group_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-                remote_ip_prefix: 100.94.0.0/24
-                resource_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-                status: created
 tags:
 -   name: healthcheck
     description: healthcheck

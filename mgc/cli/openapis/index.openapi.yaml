@@ -22,7 +22,7 @@ modules:
     path: network.openapi.yaml
     summary: APIs referentes ao produto de VPC
     url: https://network.jaxyendy.com/openapi.json
-    version: 1.114.3
+    version: 1.119.0
 -   description: Virtual Machine Api Product
     name: virtual-machine
     path: virtual-machine.openapi.yaml

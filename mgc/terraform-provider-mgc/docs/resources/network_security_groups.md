@@ -23,6 +23,8 @@ VPC Security Groups
 
 - `description` (String)
 - `validate_quota` (Boolean) Validate the quota before creating Security Group
+- `wait` (Boolean) The request will be asynchronous. The wait parameter tells the API that you want the request to simulate synchronous behavior (to maintain endpoint compatibility). You can set an approximate timeout with the waitTimeout parameter
+- `wait_timeout` (Number) the approximate time in seconds you want to wait when simulating the request as synchronous (only works with wait=true)
 
 ### Read-Only
 

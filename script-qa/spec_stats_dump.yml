@@ -1,5 +1,14 @@
 block-storage.openapi:
   computed-variables:
+    - POST /v1/backups:
+        - '202':
+            computed:
+              - id
+            non-computed:
+              - description
+              - name
+              - type
+              - volume
     - POST /v1/snapshots:
         - '202':
             computed:
@@ -29,6 +38,8 @@ block-storage.openapi:
         - delete
   unused-components:
     - '#/components/schemas/ValidationError'
+  xof-single-item:
+    - components.schemas.CreateBackup.type
 dbaas.openapi:
   computed-variables:
     - POST /v1/instances:
@@ -325,6 +336,7 @@ network.openapi:
               - name
               - security_groups_id
               - subnets
+              - x-zone
     - POST /v0/vpcs/{vpc_id}/ports:
         - '200':
             computed:
@@ -336,6 +348,7 @@ network.openapi:
               - security_groups_id
               - subnets
               - vpc_id
+              - x-zone
     - POST /v0/vpcs/{vpc_id}/public_ips:
         - '200':
             computed:
@@ -395,6 +408,8 @@ network.openapi:
               - description
               - name
               - validate_quota
+              - wait
+              - wait_timeout
     - POST /v0/vpcs/{vpc_id}/subnets:
         - '201':
             computed:
@@ -406,9 +421,20 @@ network.openapi:
               - ip_version
               - name
               - vpc_id
+              - x-zone
   missing-crud:
     - rule:
         - post
+  non-snakecase-values:
+    POST /v0/ports:
+      parameters:
+        - x-zone
+    POST /v0/vpcs/{vpc_id}/ports:
+      parameters:
+        - x-zone
+    POST /v0/vpcs/{vpc_id}/subnets:
+      parameters:
+        - x-zone
   typeless-schemas:
     - paths./v0/ports/{port_id}/attach/{security_group_id}.post.responses.200.content.application/json.schema
     - paths./v0/ports/{port_id}/detach/{security_group_id}.post.responses.200.content.application/json.schema
@@ -456,6 +482,7 @@ network.openapi:
     - '#/components/schemas/ProjectType'
     - '#/components/schemas/RouteRequest'
     - '#/components/schemas/RouterInterfaceResponseList'
+    - '#/components/schemas/RuleDefaultStatusEvent'
     - '#/components/schemas/SecurityGroupStatusEvent'
     - '#/components/schemas/SubnetPoolDetailsResponse'
     - '#/components/schemas/SubnetPoolRequest'
@@ -463,7 +490,6 @@ network.openapi:
     - '#/components/schemas/ValidationError'
     - '#/components/schemas/VpcDetailsResponse'
     - '#/components/schemas/XVpcCreateRequest'
-    - '#/components/schemas/vpc_api_product__vpc__models__rule__RuleDefaultStatusEvent'
   xof-single-item:
     - paths./v0/usage.get.parameters.quota_slug.schema
 virtual-machine.openapi:
@@ -497,5 +523,5 @@ virtual-machine.openapi:
   unused-components:
     - '#/components/schemas/ValidationError'
   xof-single-item:
-    - components.schemas.InstanceCreateRequestV1.network
-    - components.schemas.SnapshotRestoreRequestV1.network
+    - components.schemas.InstanceCreateRequestV1Default.network
+    - components.schemas.SnapshotRestoreRequestV1Default.network

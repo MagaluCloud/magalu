@@ -8,6 +8,64 @@ info:
         email: kassio.junqueira@luizalabs.com
     version: v1
 paths:
+    /v1/backups:
+        post:
+            tags:
+            - backups
+            summary: Create a Backup
+            description: "Create a backup for the currently authenticated tenant.\n\
+                \nThe Backup can be used when it reaches the \"available\" state and\
+                \ the\n \"completed\" status.\n\n#### Rules\n- The Backup name must\
+                \ be unique; otherwise, the creation will be disallowed.\n- The Volume\
+                \ can be either in in-use or available states.\n- The Volume must\
+                \ not have an operation in execution.\n\n#### Notes\n- Use the **block-storage\
+                \ volume list** command to retrieve a list of all\n Volumes and obtain\
+                \ the ID of the Volume that will be used to create the\n Backup."
+            operationId: create_backup_v1_backups_post
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/CreateBackup'
+            responses:
+                '202':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/IdResponse'
+                '404':
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/ErrorResponse'
+                                title: Response 404 Create Backup V1 Backups Post
+                    description: Not Found
+                '409':
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/ErrorResponse'
+                                title: Response 409 Create Backup V1 Backups Post
+                    description: Conflict
+                '422':
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/ErrorResponse'
+                                title: Response 422 Create Backup V1 Backups Post
+                    description: Unprocessable Entity
+            x-viveiro: true
+            security:
+            -   OAuth2:
+                - block-storage.write
     /v1/snapshots:
         get:
             tags:
@@ -1390,13 +1448,17 @@ components:
                     -   type: string
                     title: State
                 created_at:
-                    type: string
-                    format: date-time
+                    anyOf:
+                    -   type: string
+                    -   type: string
+                        format: date-time
                     title: Created At
                     example: '2022-01-01T00:00:10Z'
                 updated_at:
-                    type: string
-                    format: date-time
+                    anyOf:
+                    -   type: string
+                    -   type: string
+                        format: date-time
                     title: Updated At
                     example: '2022-01-01T00:00:10Z'
             type: object
@@ -1417,33 +1479,79 @@ components:
                 updated_at: '2022-01-01T00:00:10Z'
         AttachmentResponse:
             properties:
-                device:
+                machine_id:
                     type: string
-                    title: Device
-                attached_at:
-                    type: string
-                    format: date-time
-                    title: Attached At
-                    example: '2022-01-01T00:00:10Z'
+                    title: Machine Id
+                    deprecated: true
                 instance:
                     anyOf:
                     -   $ref: '#/components/schemas/AttachmentMachine'
                     -   $ref: '#/components/schemas/IdRequest'
+                    title: Instance
+                attached_at:
+                    anyOf:
+                    -   type: string
+                    -   type: string
+                        format: date-time
+                    title: Attached At
+                    example: '2022-01-01T00:00:10Z'
+                device:
+                    title: Device
+                    nullable: true
+                    type: string
             type: object
             required:
+            - machine_id
             - instance
             - attached_at
             title: AttachmentResponse
             example:
                 attached_at: '2022-01-01T00:00:10Z'
+                device: /dev/vdb
                 instance:
-                    id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                     created_at: '2022-01-01T00:00:10Z'
+                    id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                     name: machine name
                     state: running
                     status: completed
                     updated_at: '2022-01-01T00:00:10Z'
-                device: /dev/vdb
+                machine_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        BackupType:
+            type: string
+            enum:
+            - full
+            - incremental
+            title: BackupType
+        CreateBackup:
+            properties:
+                description:
+                    title: Description
+                    nullable: true
+                    type: string
+                volume:
+                    anyOf:
+                    -   $ref: '#/components/schemas/IdRequest'
+                    -   $ref: '#/components/schemas/Name'
+                    title: Volume
+                name:
+                    type: string
+                    title: Name
+                type:
+                    allOf:
+                    -   $ref: '#/components/schemas/BackupType'
+                    default: full
+            type: object
+            required:
+            - description
+            - volume
+            - name
+            title: CreateBackup
+            example:
+                description: my-backup
+                name: backup name
+                type: full
+                volume:
+                    id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
         DiskType:
             type: string
             enum:
@@ -1883,9 +1991,10 @@ components:
                     -   $ref: '#/components/schemas/VolumeTypeResponse'
                     title: Type
                 error:
-                    $ref: '#/components/schemas/VolumeResponseError'
                     nullable: true
+                    $ref: '#/components/schemas/VolumeResponseError'
                 attachment:
+                    nullable: true
                     $ref: '#/components/schemas/AttachmentResponse'
             type: object
             required:
@@ -1903,7 +2012,13 @@ components:
                     attached_at: '2022-01-01T00:00:10Z'
                     device: /dev/vdb
                     instance:
+                        created_at: '2022-01-01T00:00:10Z'
                         id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                        name: machine name
+                        state: running
+                        status: completed
+                        updated_at: '2022-01-01T00:00:10Z'
+                    machine_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                 created_at: '2022-01-01T00:00:10Z'
                 error:
                     message: You have reached the limit of allowed disks. Please,
@@ -1938,6 +2053,7 @@ components:
             - available
             - in-use
             - deleted
+            - legacy
             title: VolumeStateV1
         VolumeStatusV1:
             type: string
@@ -2033,7 +2149,13 @@ components:
                         attached_at: '2022-01-01T00:00:10Z'
                         device: /dev/vdb
                         instance:
+                            created_at: '2022-01-01T00:00:10Z'
                             id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                            name: machine name
+                            state: running
+                            status: completed
+                            updated_at: '2022-01-01T00:00:10Z'
+                        machine_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                     created_at: '2022-01-01T00:00:10Z'
                     error:
                         message: You have reached the limit of allowed disks. Please,

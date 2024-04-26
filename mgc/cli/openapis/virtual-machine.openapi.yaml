@@ -191,7 +191,7 @@ paths:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/InstanceCreateRequestV1'
+                            $ref: '#/components/schemas/InstanceCreateRequestV1Default'
             responses:
                 '201':
                     description: Successful Response
@@ -514,7 +514,7 @@ paths:
         post:
             tags:
             - instances
-            summary: Starts a running or suspended instance.
+            summary: Reboot a running or suspended instance.
             description: 'Reboots a Virtual Machine instance with the id provided
                 in the current tenant which is logged in.
 
@@ -1516,7 +1516,7 @@ paths:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/SnapshotRestoreRequestV1'
+                            $ref: '#/components/schemas/SnapshotRestoreRequestV1Default'
             responses:
                 '202':
                     description: Successful Response
@@ -1843,8 +1843,12 @@ components:
             - active
             - deprecated
             - deleted
+            - pending
+            - creating
+            - importing
+            - error
             title: ImageV1Status
-        InstanceCreateRequestV1:
+        InstanceCreateRequestV1Default:
             properties:
                 name:
                     type: string
@@ -1873,7 +1877,7 @@ components:
                     minLength: 1
                 network:
                     allOf:
-                    -   $ref: '#/components/schemas/InstanceCreateRequestV1Network'
+                    -   $ref: '#/components/schemas/InstanceCreateRequestV1NetworkDefault'
                     default:
                         vpc:
                             name: default
@@ -1890,7 +1894,7 @@ components:
             - machine_type
             - ssh_key_name
             - image
-            title: InstanceCreateRequestV1
+            title: InstanceCreateRequestV1Default
             example:
                 availability_zone: br-regiao-1a
                 image:
@@ -1904,7 +1908,7 @@ components:
                         id: 2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6
                 ssh_key_name: keypair_name_here
                 user_data: some_base64_script
-        InstanceCreateRequestV1Network:
+        InstanceCreateRequestV1NetworkDefault:
             properties:
                 vpc:
                     anyOf:
@@ -1918,7 +1922,7 @@ components:
                     title: Associate Public Ip
                     default: true
             type: object
-            title: InstanceCreateRequestV1Network
+            title: InstanceCreateRequestV1NetworkDefault
             example:
                 associate_public_ip: true
                 vpc:
@@ -2453,7 +2457,7 @@ components:
                 state: available
                 status: completed
                 updated_at: '2022-06-11T18:33:12Z'
-        SnapshotRestoreRequestV1:
+        SnapshotRestoreRequestV1Default:
             properties:
                 name:
                     type: string
@@ -2477,7 +2481,7 @@ components:
                     minLength: 1
                 network:
                     allOf:
-                    -   $ref: '#/components/schemas/InstanceCreateRequestV1Network'
+                    -   $ref: '#/components/schemas/InstanceCreateRequestV1NetworkDefault'
                     default:
                         vpc:
                             name: default
@@ -2493,7 +2497,7 @@ components:
             - name
             - machine_type
             - ssh_key_name
-            title: SnapshotRestoreRequestV1
+            title: SnapshotRestoreRequestV1Default
             example:
                 availability_zone: br-regiao-1a
                 machine_type:

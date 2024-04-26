@@ -20,15 +20,24 @@ Flags:
       --cluster-id uuid                   Cluster's UUID. (required)
       --flavor string                     Definition of the CPU, RAM, and storage capacity of the nodes.
                                           
-                                          | Flavor                    | vCPUs | RAM (GB) | Root Disk (GB) |
-                                          |---------------------------|-------|----------|----------------|
-                                          | cloud-k8s.gp1.small       | 2     | 4        | 20             |
-                                          | cloud-k8s.gp1.medium      | 4     | 8        | 50             |
-                                          | cloud-k8s.gp1.large       | 8     | 16       | 100            |
-                                          | cloud-k8s.gp2.small       | 2     | 4        | 300            |
-                                          | cloud-k8s.gp2.large       | 8     | 32       | 300            |
-                                          | cloud-k8s.hm1.medium      | 4     | 16       | 50             |
-                                          | cloud-k8s.i1-c48-r96-d300 | 48    | 96       | 300            |
+                                          | Flavor                     | vCPUs | RAM (GB) | Root Disk (GB) |
+                                          |----------------------------|-------|----------|----------------|
+                                          | cloud-k8s.gp1.small        | 2     | 4        | 20             |
+                                          | cloud-k8s.gp1.medium       | 4     | 8        | 50             |
+                                          | cloud-k8s.gp1.large        | 8     | 16       | 100            |
+                                          | cloud-k8s.gp2.small        | 2     | 4        | 300            |
+                                          | cloud-k8s.gp2.large        | 8     | 32       | 300            |
+                                          | cloud-k8s.hm1.medium       | 4     | 16       | 50             |
+                                          | cloud-k8s.i1-c48-r96-d300  | 48    | 96       | 300            |
+                                          | cloud-k8s.i1-c1-r8-d100    | 1     | 8        | 100            |
+                                          | cloud-k8s.i1-c8-r8-d40     | 8     | 8        | 40             |
+                                          | cloud-k8s.i1-c4-r16-d100   | 4     | 16       | 100            |
+                                          | cloud-k8s.i1-c4-r32-d100   | 4     | 32       | 100            |
+                                          | cloud-k8s.i1-c8-r32-d100   | 8     | 32       | 100            |
+                                          | cloud-k8s.i1-c16-r32-d40   | 16    | 32       | 40             |
+                                          | cloud-k8s.i1-c16-r64-d100  | 16    | 64       | 100            |
+                                          | cloud-k8s.i1-c32-r64-d100  | 32    | 64       | 100            |
+                                          | cloud-k8s.i1-c32-r128-d500 | 32    | 128      | 500            |
                                            (required)
   -h, --help                              help for create
       --name string                       Name of the node pool. The name is primarily for idempotence and must be unique within a namespace. The name cannot be changed.

@@ -2158,8 +2158,14 @@
          "attached_at": "2022-01-01T00:00:10Z",
          "device": "/dev/vdb",
          "instance": {
-          "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-         }
+          "created_at": "2022-01-01T00:00:10Z",
+          "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+          "name": "machine name",
+          "state": "running",
+          "status": "completed",
+          "updated_at": "2022-01-01T00:00:10Z"
+         },
+         "machine_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
         },
         "created_at": "2022-01-01T00:00:10Z",
         "error": {
@@ -2188,16 +2194,26 @@
            "state": "running",
            "status": "completed",
            "updated_at": "2022-01-01T00:00:10Z"
-          }
+          },
+          "machine_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
          },
          "properties": {
           "attached_at": {
+           "anyOf": [
+            {
+             "type": "string"
+            },
+            {
+             "format": "date-time",
+             "type": "string"
+            }
+           ],
            "example": "2022-01-01T00:00:10Z",
-           "format": "date-time",
            "title": "Attached At",
            "type": "string"
           },
           "device": {
+           "nullable": true,
            "title": "Device",
            "type": "string"
           },
@@ -2214,8 +2230,16 @@
              },
              "properties": {
               "created_at": {
+               "anyOf": [
+                {
+                 "type": "string"
+                },
+                {
+                 "format": "date-time",
+                 "type": "string"
+                }
+               ],
                "example": "2022-01-01T00:00:10Z",
-               "format": "date-time",
                "title": "Created At",
                "type": "string"
               },
@@ -2285,8 +2309,16 @@
                "type": "string"
               },
               "updated_at": {
+               "anyOf": [
+                {
+                 "type": "string"
+                },
+                {
+                 "format": "date-time",
+                 "type": "string"
+                }
+               ],
                "example": "2022-01-01T00:00:10Z",
-               "format": "date-time",
                "title": "Updated At",
                "type": "string"
               }
@@ -2320,10 +2352,17 @@
              "type": "object"
             }
            ],
+           "title": "Instance",
            "type": "object"
+          },
+          "machine_id": {
+           "deprecated": true,
+           "title": "Machine Id",
+           "type": "string"
           }
          },
          "required": [
+          "machine_id",
           "instance",
           "attached_at"
          ],
@@ -2383,7 +2422,8 @@
           "new",
           "available",
           "in-use",
-          "deleted"
+          "deleted",
+          "legacy"
          ],
          "title": "VolumeStateV1",
          "type": "string"
@@ -2612,8 +2652,14 @@
            "attached_at": "2022-01-01T00:00:10Z",
            "device": "/dev/vdb",
            "instance": {
-            "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-           }
+            "created_at": "2022-01-01T00:00:10Z",
+            "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+            "name": "machine name",
+            "state": "running",
+            "status": "completed",
+            "updated_at": "2022-01-01T00:00:10Z"
+           },
+           "machine_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
           },
           "created_at": "2022-01-01T00:00:10Z",
           "error": {
@@ -2640,8 +2686,14 @@
             "attached_at": "2022-01-01T00:00:10Z",
             "device": "/dev/vdb",
             "instance": {
-             "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-            }
+             "created_at": "2022-01-01T00:00:10Z",
+             "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+             "name": "machine name",
+             "state": "running",
+             "status": "completed",
+             "updated_at": "2022-01-01T00:00:10Z"
+            },
+            "machine_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
            },
            "created_at": "2022-01-01T00:00:10Z",
            "error": {
@@ -2670,16 +2722,26 @@
               "state": "running",
               "status": "completed",
               "updated_at": "2022-01-01T00:00:10Z"
-             }
+             },
+             "machine_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
             },
             "properties": {
              "attached_at": {
+              "anyOf": [
+               {
+                "type": "string"
+               },
+               {
+                "format": "date-time",
+                "type": "string"
+               }
+              ],
               "example": "2022-01-01T00:00:10Z",
-              "format": "date-time",
               "title": "Attached At",
               "type": "string"
              },
              "device": {
+              "nullable": true,
               "title": "Device",
               "type": "string"
              },
@@ -2696,8 +2758,16 @@
                 },
                 "properties": {
                  "created_at": {
+                  "anyOf": [
+                   {
+                    "type": "string"
+                   },
+                   {
+                    "format": "date-time",
+                    "type": "string"
+                   }
+                  ],
                   "example": "2022-01-01T00:00:10Z",
-                  "format": "date-time",
                   "title": "Created At",
                   "type": "string"
                  },
@@ -2767,8 +2837,16 @@
                   "type": "string"
                  },
                  "updated_at": {
+                  "anyOf": [
+                   {
+                    "type": "string"
+                   },
+                   {
+                    "format": "date-time",
+                    "type": "string"
+                   }
+                  ],
                   "example": "2022-01-01T00:00:10Z",
-                  "format": "date-time",
                   "title": "Updated At",
                   "type": "string"
                  }
@@ -2802,10 +2880,17 @@
                 "type": "object"
                }
               ],
+              "title": "Instance",
               "type": "object"
+             },
+             "machine_id": {
+              "deprecated": true,
+              "title": "Machine Id",
+              "type": "string"
              }
             },
             "required": [
+             "machine_id",
              "instance",
              "attached_at"
             ],
@@ -2865,7 +2950,8 @@
              "new",
              "available",
              "in-use",
-             "deleted"
+             "deleted",
+             "legacy"
             ],
             "title": "VolumeStateV1",
             "type": "string"
@@ -10741,7 +10827,7 @@
             "type": "object"
            },
            "flavor": {
-            "description": "Definition of the CPU, RAM, and storage capacity of the nodes.\n\n| Flavor                    | vCPUs | RAM (GB) | Root Disk (GB) |\n|---------------------------|-------|----------|----------------|\n| cloud-k8s.gp1.small       | 2     | 4        | 20             |\n| cloud-k8s.gp1.medium      | 4     | 8        | 50             |\n| cloud-k8s.gp1.large       | 8     | 16       | 100            |\n| cloud-k8s.gp2.small       | 2     | 4        | 300            |\n| cloud-k8s.gp2.large       | 8     | 32       | 300            |\n| cloud-k8s.hm1.medium      | 4     | 16       | 50             |\n| cloud-k8s.i1-c48-r96-d300 | 48    | 96       | 300            |\n",
+            "description": "Definition of the CPU, RAM, and storage capacity of the nodes.\n\n| Flavor                     | vCPUs | RAM (GB) | Root Disk (GB) |\n|----------------------------|-------|----------|----------------|\n| cloud-k8s.gp1.small        | 2     | 4        | 20             |\n| cloud-k8s.gp1.medium       | 4     | 8        | 50             |\n| cloud-k8s.gp1.large        | 8     | 16       | 100            |\n| cloud-k8s.gp2.small        | 2     | 4        | 300            |\n| cloud-k8s.gp2.large        | 8     | 32       | 300            |\n| cloud-k8s.hm1.medium       | 4     | 16       | 50             |\n| cloud-k8s.i1-c48-r96-d300  | 48    | 96       | 300            |\n| cloud-k8s.i1-c1-r8-d100    | 1     | 8        | 100            |\n| cloud-k8s.i1-c8-r8-d40     | 8     | 8        | 40             |\n| cloud-k8s.i1-c4-r16-d100   | 4     | 16       | 100            |\n| cloud-k8s.i1-c4-r32-d100   | 4     | 32       | 100            |\n| cloud-k8s.i1-c8-r32-d100   | 8     | 32       | 100            |\n| cloud-k8s.i1-c16-r32-d40   | 16    | 32       | 40             |\n| cloud-k8s.i1-c16-r64-d100  | 16    | 64       | 100            |\n| cloud-k8s.i1-c32-r64-d100  | 32    | 64       | 100            |\n| cloud-k8s.i1-c32-r128-d500 | 32    | 128      | 500            |\n",
             "example": "cloud-k8s.gp1.small",
             "type": "string"
            },
@@ -12415,7 +12501,7 @@
          "type": "string"
         },
         "flavor": {
-         "description": "Definition of the CPU, RAM, and storage capacity of the nodes.\n\n| Flavor                    | vCPUs | RAM (GB) | Root Disk (GB) |\n|---------------------------|-------|----------|----------------|\n| cloud-k8s.gp1.small       | 2     | 4        | 20             |\n| cloud-k8s.gp1.medium      | 4     | 8        | 50             |\n| cloud-k8s.gp1.large       | 8     | 16       | 100            |\n| cloud-k8s.gp2.small       | 2     | 4        | 300            |\n| cloud-k8s.gp2.large       | 8     | 32       | 300            |\n| cloud-k8s.hm1.medium      | 4     | 16       | 50             |\n| cloud-k8s.i1-c48-r96-d300 | 48    | 96       | 300            |\n",
+         "description": "Definition of the CPU, RAM, and storage capacity of the nodes.\n\n| Flavor                     | vCPUs | RAM (GB) | Root Disk (GB) |\n|----------------------------|-------|----------|----------------|\n| cloud-k8s.gp1.small        | 2     | 4        | 20             |\n| cloud-k8s.gp1.medium       | 4     | 8        | 50             |\n| cloud-k8s.gp1.large        | 8     | 16       | 100            |\n| cloud-k8s.gp2.small        | 2     | 4        | 300            |\n| cloud-k8s.gp2.large        | 8     | 32       | 300            |\n| cloud-k8s.hm1.medium       | 4     | 16       | 50             |\n| cloud-k8s.i1-c48-r96-d300  | 48    | 96       | 300            |\n| cloud-k8s.i1-c1-r8-d100    | 1     | 8        | 100            |\n| cloud-k8s.i1-c8-r8-d40     | 8     | 8        | 40             |\n| cloud-k8s.i1-c4-r16-d100   | 4     | 16       | 100            |\n| cloud-k8s.i1-c4-r32-d100   | 4     | 32       | 100            |\n| cloud-k8s.i1-c8-r32-d100   | 8     | 32       | 100            |\n| cloud-k8s.i1-c16-r32-d40   | 16    | 32       | 40             |\n| cloud-k8s.i1-c16-r64-d100  | 16    | 64       | 100            |\n| cloud-k8s.i1-c32-r64-d100  | 32    | 64       | 100            |\n| cloud-k8s.i1-c32-r128-d500 | 32    | 128      | 500            |\n",
          "example": "cloud-k8s.gp1.small",
          "type": "string"
         },
@@ -14200,13 +14286,13 @@
        "title": "Healthcheck",
        "type": "object"
       },
-      "version": "1.114.3"
+      "version": "1.119.0"
      }
     ],
     "description": "healthcheck",
     "isInternal": true,
     "name": "healthcheck",
-    "version": "1.114.3"
+    "version": "1.119.0"
    },
    {
     "children": [
@@ -14267,7 +14353,7 @@
        "type": "object"
       },
       "result": {},
-      "version": "1.114.3"
+      "version": "1.119.0"
      },
      {
       "configs": {
@@ -14296,6 +14382,11 @@
         "serverUrl": {
          "description": "Manually specify the server to use",
          "format": "uri",
+         "type": "string"
+        },
+        "x-zone": {
+         "nullable": true,
+         "title": "X-Zone",
          "type": "string"
         }
        },
@@ -14373,7 +14464,7 @@
        "title": "PortCreateResponse",
        "type": "object"
       },
-      "version": "1.114.3"
+      "version": "1.119.0"
      },
      {
       "configs": {
@@ -14401,6 +14492,11 @@
         "serverUrl": {
          "description": "Manually specify the server to use",
          "format": "uri",
+         "type": "string"
+        },
+        "x-zone": {
+         "nullable": true,
+         "title": "X-Zone",
          "type": "string"
         }
        },
@@ -14471,7 +14567,7 @@
        "title": "PortCreateResponse",
        "type": "object"
       },
-      "version": "1.114.3"
+      "version": "1.119.0"
      },
      {
       "configs": {
@@ -14525,7 +14621,7 @@
        "nullable": true,
        "type": "null"
       },
-      "version": "1.114.3"
+      "version": "1.119.0"
      },
      {
       "configs": {
@@ -14613,7 +14709,7 @@
        "title": "PortDeletedAllResponse",
        "type": "object"
       },
-      "version": "1.114.3"
+      "version": "1.119.0"
      },
      {
       "configs": {
@@ -14670,7 +14766,7 @@
        "type": "object"
       },
       "result": {},
-      "version": "1.114.3"
+      "version": "1.119.0"
      },
      {
       "configs": {
@@ -14853,7 +14949,7 @@
        "title": "PortResponse",
        "type": "object"
       },
-      "version": "1.114.3"
+      "version": "1.119.0"
      },
      {
       "configs": {
@@ -15041,7 +15137,7 @@
        "title": "Response Portsdetailedlist",
        "type": "array"
       },
-      "version": "1.114.3"
+      "version": "1.119.0"
      },
      {
       "children": [
@@ -15298,7 +15394,7 @@
     "description": "VPC Port",
     "isInternal": false,
     "name": "ports",
-    "version": "1.114.3"
+    "version": "1.119.0"
    },
    {
     "children": [
@@ -15359,7 +15455,7 @@
        "type": "object"
       },
       "result": {},
-      "version": "1.114.3"
+      "version": "1.119.0"
      },
      {
       "configs": {
@@ -15453,7 +15549,7 @@
        "title": "PublicIpCreateResponse",
        "type": "object"
       },
-      "version": "1.114.3"
+      "version": "1.119.0"
      },
      {
       "configs": {
@@ -15507,7 +15603,7 @@
        "nullable": true,
        "type": "null"
       },
-      "version": "1.114.3"
+      "version": "1.119.0"
      },
      {
       "configs": {
@@ -15564,7 +15660,7 @@
        "type": "object"
       },
       "result": {},
-      "version": "1.114.3"
+      "version": "1.119.0"
      },
      {
       "configs": {
@@ -15685,7 +15781,7 @@
        "title": "PublicIpDb",
        "type": "object"
       },
-      "version": "1.114.3"
+      "version": "1.119.0"
      },
      {
       "configs": {
@@ -15824,7 +15920,7 @@
        "title": "PublicIpsList",
        "type": "object"
       },
-      "version": "1.114.3"
+      "version": "1.119.0"
      },
      {
       "children": [
@@ -16081,7 +16177,7 @@
     "description": "VPC Public IPs",
     "isInternal": false,
     "name": "public_ips",
-    "version": "1.114.3"
+    "version": "1.119.0"
    },
    {
     "children": [
@@ -16123,7 +16219,7 @@
        "additionalProperties": false,
        "properties": {
         "quota_slug": {
-         "description": "Serivce to check quota usage",
+         "description": "Service to check quota usage",
          "enum": [
           "public_ips",
           "subnets",
@@ -16185,13 +16281,13 @@
        "title": "QuotaResult",
        "type": "object"
       },
-      "version": "1.114.3"
+      "version": "1.119.0"
      }
     ],
     "description": "VPC Quotas",
     "isInternal": true,
     "name": "quotas",
-    "version": "1.114.3"
+    "version": "1.119.0"
    },
    {
     "children": [
@@ -16227,7 +16323,7 @@
        },
        "type": "object"
       },
-      "description": "Create a Rule async, returning its ID. To monitor the creation progress, please check the status in the service message or implement polling.",
+      "description": "Create a Rule async, returning its ID. To monitor the creation progress, please check the status in the service message or implement polling.Either a remote_ip_prefix or a remote_group_id can be specified.With remote_ip_prefix, all IPs that match the criteria will be allowed.With remote_group_id, only the specified security group is allowed to communicatefollowing the specified protocol, direction and port_range_min/max",
       "isInternal": false,
       "name": "create",
       "parameters": {
@@ -16317,7 +16413,7 @@
        "title": "RuleCreateResponse",
        "type": "object"
       },
-      "version": "1.114.3"
+      "version": "1.119.0"
      },
      {
       "configs": {
@@ -16371,7 +16467,7 @@
        "nullable": true,
        "type": "null"
       },
-      "version": "1.114.3"
+      "version": "1.119.0"
      },
      {
       "configs": {
@@ -16508,7 +16604,7 @@
        "title": "RuleResponse",
        "type": "object"
       },
-      "version": "1.114.3"
+      "version": "1.119.0"
      },
      {
       "configs": {
@@ -16678,13 +16774,13 @@
        "title": "RulesList",
        "type": "object"
       },
-      "version": "1.114.3"
+      "version": "1.119.0"
      }
     ],
     "description": "VPC Rules",
     "isInternal": false,
     "name": "rules",
-    "version": "1.114.3"
+    "version": "1.119.0"
    },
    {
     "children": [
@@ -16743,6 +16839,18 @@
          "description": "Validate the quota before creating Security Group",
          "title": "validateQuota",
          "type": "boolean"
+        },
+        "wait": {
+         "default": true,
+         "description": "The request will be asynchronous. The wait parameter tells the API that you want the request to simulate synchronous behavior (to maintain endpoint compatibility). You can set an approximate timeout with the waitTimeout parameter",
+         "title": "wait",
+         "type": "boolean"
+        },
+        "wait_timeout": {
+         "default": 120,
+         "description": "the approximate time in seconds you want to wait when simulating the request as synchronous (only works with wait=true)",
+         "title": "waitTimeout",
+         "type": "integer"
         }
        },
        "required": [
@@ -16766,7 +16874,7 @@
        "title": "SecurityGroupCreateResponse",
        "type": "object"
       },
-      "version": "1.114.3"
+      "version": "1.119.0"
      },
      {
       "configs": {
@@ -16822,7 +16930,7 @@
        "title": "SecurityGroupCreateResponse",
        "type": "object"
       },
-      "version": "1.114.3"
+      "version": "1.119.0"
      },
      {
       "configs": {
@@ -16876,7 +16984,7 @@
        "nullable": true,
        "type": "null"
       },
-      "version": "1.114.3"
+      "version": "1.119.0"
      },
      {
       "configs": {
@@ -16945,7 +17053,7 @@
        "title": "SecurityGroupDeletedAllResponse",
        "type": "object"
       },
-      "version": "1.114.3"
+      "version": "1.119.0"
      },
      {
       "configs": {
@@ -17191,7 +17299,7 @@
        "title": "SecurityGroupDetailEvent",
        "type": "object"
       },
-      "version": "1.114.3"
+      "version": "1.119.0"
      },
      {
       "configs": {
@@ -17344,7 +17452,7 @@
        "title": "SecurityGroupListEvent",
        "type": "object"
       },
-      "version": "1.114.3"
+      "version": "1.119.0"
      },
      {
       "children": [
@@ -17380,7 +17488,7 @@
          },
          "type": "object"
         },
-        "description": "Create a Rule async, returning its ID. To monitor the creation progress, please check the status in the service message or implement polling.",
+        "description": "Create a Rule async, returning its ID. To monitor the creation progress, please check the status in the service message or implement polling.Either a remote_ip_prefix or a remote_group_id can be specified.With remote_ip_prefix, all IPs that match the criteria will be allowed.With remote_group_id, only the specified security group is allowed to communicatefollowing the specified protocol, direction and port_range_min/max",
         "isInternal": true,
         "name": "create",
         "parameters": {
@@ -17470,7 +17578,7 @@
          "title": "RuleCreateResponse",
          "type": "object"
         },
-        "version": "1.114.3"
+        "version": "1.119.0"
        },
        {
         "configs": {
@@ -17640,19 +17748,19 @@
          "title": "RulesList",
          "type": "object"
         },
-        "version": "1.114.3"
+        "version": "1.119.0"
        }
       ],
       "description": "VPC Security Groups | rules",
       "isInternal": true,
       "name": "rules",
-      "version": "1.114.3"
+      "version": "1.119.0"
      }
     ],
     "description": "VPC Security Groups",
     "isInternal": false,
     "name": "security_groups",
-    "version": "1.114.3"
+    "version": "1.119.0"
    },
    {
     "children": [
@@ -17710,7 +17818,7 @@
          "nullable": true,
          "type": "null"
         },
-        "version": "1.114.3"
+        "version": "1.119.0"
        },
        {
         "configs": {
@@ -17779,7 +17887,8 @@
           "ip_version": "4",
           "name": "vpc_name",
           "updated": "2022-01-01 00:00:00",
-          "vpc_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+          "vpc_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+          "zone": "a"
          },
          "properties": {
           "cidr_block": {
@@ -17852,6 +17961,10 @@
           "vpc_id": {
            "title": "Vpc Id",
            "type": "string"
+          },
+          "zone": {
+           "title": "Zone",
+           "type": "string"
           }
          },
          "required": [
@@ -17859,6 +17972,7 @@
           "vpc_id",
           "cidr_block",
           "ip_version",
+          "zone",
           "gateway_ip",
           "dns_nameservers",
           "dhcp_pools"
@@ -17866,7 +17980,7 @@
          "title": "SubnetResponseDetail",
          "type": "object"
         },
-        "version": "1.114.3"
+        "version": "1.119.0"
        },
        {
         "configs": {
@@ -17940,13 +18054,13 @@
          "title": "SubnetResponseId",
          "type": "object"
         },
-        "version": "1.114.3"
+        "version": "1.119.0"
        }
       ],
       "description": "VPC Subnets | subnets",
       "isInternal": false,
       "name": "subnets",
-      "version": "1.114.3"
+      "version": "1.119.0"
      },
      {
       "children": [
@@ -17976,6 +18090,11 @@
           "serverUrl": {
            "description": "Manually specify the server to use",
            "format": "uri",
+           "type": "string"
+          },
+          "x-zone": {
+           "nullable": true,
+           "title": "X-Zone",
            "type": "string"
           }
          },
@@ -18043,7 +18162,7 @@
          "title": "SubnetCreateResponse",
          "type": "object"
         },
-        "version": "1.114.3"
+        "version": "1.119.0"
        },
        {
         "configs": {
@@ -18104,7 +18223,8 @@
             "ip_version": "4",
             "name": "vpc_name",
             "updated": "2022-01-01 00:00:00",
-            "vpc_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+            "vpc_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+            "zone": "a"
            }
           ]
          },
@@ -18120,7 +18240,8 @@
              "ip_version": "4",
              "name": "vpc_name",
              "updated": "2022-01-01 00:00:00",
-             "vpc_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+             "vpc_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+             "zone": "a"
             },
             "properties": {
              "cidr_block": {
@@ -18160,13 +18281,18 @@
              "vpc_id": {
               "title": "Vpc Id",
               "type": "string"
+             },
+             "zone": {
+              "title": "Zone",
+              "type": "string"
              }
             },
             "required": [
              "id",
              "vpc_id",
              "cidr_block",
-             "ip_version"
+             "ip_version",
+             "zone"
             ],
             "title": "SubnetResponse",
             "type": "object"
@@ -18178,19 +18304,19 @@
          "title": "SubnetsResponse",
          "type": "object"
         },
-        "version": "1.114.3"
+        "version": "1.119.0"
        }
       ],
       "description": "VPC Subnets | vpcs-subnets",
       "isInternal": true,
       "name": "vpcs-subnets",
-      "version": "1.114.3"
+      "version": "1.119.0"
      }
     ],
     "description": "VPC Subnets",
     "isInternal": false,
     "name": "subnets",
-    "version": "1.114.3"
+    "version": "1.119.0"
    },
    {
     "children": [
@@ -18260,7 +18386,7 @@
        "title": "VpcCreateResponse",
        "type": "object"
       },
-      "version": "1.114.3"
+      "version": "1.119.0"
      },
      {
       "configs": {
@@ -18314,7 +18440,7 @@
        "title": "VpcCreateResponse",
        "type": "object"
       },
-      "version": "1.114.3"
+      "version": "1.119.0"
      },
      {
       "configs": {
@@ -18368,7 +18494,7 @@
        "nullable": true,
        "type": "null"
       },
-      "version": "1.114.3"
+      "version": "1.119.0"
      },
      {
       "configs": {
@@ -18513,7 +18639,7 @@
        "title": "VpcDeletedAllResponse",
        "type": "object"
       },
-      "version": "1.114.3"
+      "version": "1.119.0"
      },
      {
       "configs": {
@@ -18656,7 +18782,7 @@
        "title": "VpcResponse",
        "type": "object"
       },
-      "version": "1.114.3"
+      "version": "1.119.0"
      },
      {
       "configs": {
@@ -18823,7 +18949,7 @@
        "title": "VpcResponseList",
        "type": "object"
       },
-      "version": "1.114.3"
+      "version": "1.119.0"
      },
      {
       "children": [
@@ -18854,6 +18980,11 @@
           "serverUrl": {
            "description": "Manually specify the server to use",
            "format": "uri",
+           "type": "string"
+          },
+          "x-zone": {
+           "nullable": true,
+           "title": "X-Zone",
            "type": "string"
           }
          },
@@ -18931,7 +19062,7 @@
          "title": "PortCreateResponse",
          "type": "object"
         },
-        "version": "1.114.3"
+        "version": "1.119.0"
        },
        {
         "configs": {
@@ -19263,13 +19394,13 @@
          "title": "Response Listports",
          "type": "object"
         },
-        "version": "1.114.3"
+        "version": "1.119.0"
        }
       ],
       "description": "Virtual Private Cloud (VPC) | ports",
       "isInternal": false,
       "name": "ports",
-      "version": "1.114.3"
+      "version": "1.119.0"
      },
      {
       "children": [
@@ -19365,7 +19496,7 @@
          "title": "PublicIpCreateResponse",
          "type": "object"
         },
-        "version": "1.114.3"
+        "version": "1.119.0"
        },
        {
         "configs": {
@@ -19514,13 +19645,13 @@
          "title": "PublicIpsList",
          "type": "object"
         },
-        "version": "1.114.3"
+        "version": "1.119.0"
        }
       ],
       "description": "Virtual Private Cloud (VPC) | public-ips",
       "isInternal": false,
       "name": "public-ips",
-      "version": "1.114.3"
+      "version": "1.119.0"
      },
      {
       "children": [
@@ -19617,7 +19748,7 @@
          "title": "SecurityGroupCreateResponse",
          "type": "object"
         },
-        "version": "1.114.3"
+        "version": "1.119.0"
        },
        {
         "configs": {
@@ -19780,19 +19911,19 @@
          "title": "SecurityGroupListEvent",
          "type": "object"
         },
-        "version": "1.114.3"
+        "version": "1.119.0"
        }
       ],
       "description": "Virtual Private Cloud (VPC) | security-groups",
       "isInternal": true,
       "name": "security-groups",
-      "version": "1.114.3"
+      "version": "1.119.0"
      }
     ],
     "description": "Virtual Private Cloud (VPC)",
     "isInternal": false,
     "name": "vpcs",
-    "version": "1.114.3"
+    "version": "1.119.0"
    },
    {
     "children": [
@@ -19885,19 +20016,19 @@
        "title": "PublicIpResponseId",
        "type": "object"
       },
-      "version": "1.114.3"
+      "version": "1.119.0"
      }
     ],
     "description": "worker_public_ips",
     "isInternal": true,
     "name": "worker_public_ips",
-    "version": "1.114.3"
+    "version": "1.119.0"
    }
   ],
   "description": "APIs referentes ao produto de VPC",
   "isInternal": false,
   "name": "network",
-  "version": "1.114.3"
+  "version": "1.119.0"
  },
  {
   "children": [
@@ -23414,7 +23545,11 @@
             "enum": [
              "active",
              "deprecated",
-             "deleted"
+             "deleted",
+             "pending",
+             "creating",
+             "importing",
+             "error"
             ],
             "title": "ImageV1Status",
             "type": "string"

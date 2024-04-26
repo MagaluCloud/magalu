@@ -26,6 +26,11 @@ validator = jsonschema.validators.validator_for(schema)
 
 
 def validate_oapi(spec: OAPISchema) -> None:
+    # Descomentar para encontrar o erro...
+    # print("SCHEMA:\n\n")
+    # print(schema)
+    # print("SPEC:\n\n")
+    # print(spec)
     jsonschema.validate(
         spec,
         schema,
