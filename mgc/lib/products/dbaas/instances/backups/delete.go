@@ -16,10 +16,7 @@ import "magalu.cloud/lib/products/dbaas/instances/backups"
 package backups
 
 import (
-	"context"
-
 	mgcCore "magalu.cloud/core"
-	mgcClient "magalu.cloud/lib"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
 
@@ -37,16 +34,14 @@ type DeleteConfigs struct {
 
 type DeleteResult any
 
-func Delete(
-	client *mgcClient.Client,
-	ctx context.Context,
+func (s *service) Delete(
 	parameters DeleteParameters,
 	configs DeleteConfigs,
 ) (
 	result DeleteResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("Delete", mgcCore.RefPath("/dbaas/instances/backups/delete"), client, ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Delete", mgcCore.RefPath("/dbaas/instances/backups/delete"), s.client, s.ctx)
 	if err != nil {
 		return
 	}
@@ -68,12 +63,11 @@ func Delete(
 	return mgcHelpers.ConvertResult[DeleteResult](r)
 }
 
-func DeleteConfirmPrompt(
-	client *mgcClient.Client,
+func (s *service) DeleteConfirmPrompt(
 	parameters DeleteParameters,
 	configs DeleteConfigs,
 ) (message string) {
-	e, err := mgcHelpers.ResolveExecutor("Delete", mgcCore.RefPath("/dbaas/instances/backups/delete"), client)
+	e, err := mgcHelpers.ResolveExecutor("Delete", mgcCore.RefPath("/dbaas/instances/backups/delete"), s.client)
 	if err != nil {
 		return
 	}

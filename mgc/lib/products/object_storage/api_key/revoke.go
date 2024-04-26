@@ -10,10 +10,7 @@ import "magalu.cloud/lib/products/object_storage/api_key"
 package apiKey
 
 import (
-	"context"
-
 	mgcCore "magalu.cloud/core"
-	mgcClient "magalu.cloud/lib"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
 
@@ -25,15 +22,13 @@ type RevokeResult struct {
 	Uuid string `json:"uuid"`
 }
 
-func Revoke(
-	client *mgcClient.Client,
-	ctx context.Context,
+func (s *service) Revoke(
 	parameters RevokeParameters,
 ) (
 	result RevokeResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("Revoke", mgcCore.RefPath("/object-storage/api-key/revoke"), client, ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Revoke", mgcCore.RefPath("/object-storage/api-key/revoke"), s.client, s.ctx)
 	if err != nil {
 		return
 	}

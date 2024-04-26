@@ -16,10 +16,7 @@ import "magalu.cloud/lib/products/kubernetes/cluster"
 package cluster
 
 import (
-	"context"
-
 	mgcCore "magalu.cloud/core"
-	mgcClient "magalu.cloud/lib"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
 
@@ -33,15 +30,13 @@ type KubeconfigConfigs struct {
 	ServerUrl string `json:"serverUrl,omitempty"`
 }
 
-func Kubeconfig(
-	client *mgcClient.Client,
-	ctx context.Context,
+func (s *service) Kubeconfig(
 	parameters KubeconfigParameters,
 	configs KubeconfigConfigs,
 ) (
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("Kubeconfig", mgcCore.RefPath("/kubernetes/cluster/kubeconfig"), client, ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Kubeconfig", mgcCore.RefPath("/kubernetes/cluster/kubeconfig"), s.client, s.ctx)
 	if err != nil {
 		return
 	}

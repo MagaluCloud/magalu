@@ -26,10 +26,7 @@ import "magalu.cloud/lib/products/virtual_machine/snapshots"
 package snapshots
 
 import (
-	"context"
-
 	mgcCore "magalu.cloud/core"
-	mgcClient "magalu.cloud/lib"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
 
@@ -78,16 +75,14 @@ type RestoreResult struct {
 	Id string `json:"id"`
 }
 
-func Restore(
-	client *mgcClient.Client,
-	ctx context.Context,
+func (s *service) Restore(
 	parameters RestoreParameters,
 	configs RestoreConfigs,
 ) (
 	result RestoreResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("Restore", mgcCore.RefPath("/virtual-machine/snapshots/restore"), client, ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Restore", mgcCore.RefPath("/virtual-machine/snapshots/restore"), s.client, s.ctx)
 	if err != nil {
 		return
 	}

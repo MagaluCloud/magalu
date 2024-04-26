@@ -14,10 +14,7 @@ import "magalu.cloud/lib/products/object_storage/buckets"
 package buckets
 
 import (
-	"context"
-
 	mgcCore "magalu.cloud/core"
-	mgcClient "magalu.cloud/lib"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
 
@@ -59,16 +56,14 @@ type CreateConfigs struct {
 
 type CreateResult any
 
-func Create(
-	client *mgcClient.Client,
-	ctx context.Context,
+func (s *service) Create(
 	parameters CreateParameters,
 	configs CreateConfigs,
 ) (
 	result CreateResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("Create", mgcCore.RefPath("/object-storage/buckets/create"), client, ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Create", mgcCore.RefPath("/object-storage/buckets/create"), s.client, s.ctx)
 	if err != nil {
 		return
 	}

@@ -10,10 +10,7 @@ import "magalu.cloud/lib/products/object_storage/objects"
 package objects
 
 import (
-	"context"
-
 	mgcCore "magalu.cloud/core"
-	mgcClient "magalu.cloud/lib"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
 
@@ -34,16 +31,14 @@ type UploadResult struct {
 	Uri  string `json:"uri"`
 }
 
-func Upload(
-	client *mgcClient.Client,
-	ctx context.Context,
+func (s *service) Upload(
 	parameters UploadParameters,
 	configs UploadConfigs,
 ) (
 	result UploadResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("Upload", mgcCore.RefPath("/object-storage/objects/upload"), client, ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Upload", mgcCore.RefPath("/object-storage/objects/upload"), s.client, s.ctx)
 	if err != nil {
 		return
 	}

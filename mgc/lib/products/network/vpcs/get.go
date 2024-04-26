@@ -16,10 +16,7 @@ import "magalu.cloud/lib/products/network/vpcs"
 package vpcs
 
 import (
-	"context"
-
 	mgcCore "magalu.cloud/core"
-	mgcClient "magalu.cloud/lib"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
 
@@ -52,16 +49,14 @@ type GetResultSecurityGroups []string
 
 type GetResultSubnets []string
 
-func Get(
-	client *mgcClient.Client,
-	ctx context.Context,
+func (s *service) Get(
 	parameters GetParameters,
 	configs GetConfigs,
 ) (
 	result GetResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("Get", mgcCore.RefPath("/network/vpcs/get"), client, ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Get", mgcCore.RefPath("/network/vpcs/get"), s.client, s.ctx)
 	if err != nil {
 		return
 	}

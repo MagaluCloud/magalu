@@ -10,10 +10,7 @@ import "magalu.cloud/lib/products/profile"
 package profile
 
 import (
-	"context"
-
 	mgcCore "magalu.cloud/core"
-	mgcClient "magalu.cloud/lib"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
 
@@ -25,15 +22,13 @@ type DeleteResult struct {
 	Name string `json:"name"`
 }
 
-func Delete(
-	client *mgcClient.Client,
-	ctx context.Context,
+func (s *service) Delete(
 	parameters DeleteParameters,
 ) (
 	result DeleteResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("Delete", mgcCore.RefPath("/profile/delete"), client, ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Delete", mgcCore.RefPath("/profile/delete"), s.client, s.ctx)
 	if err != nil {
 		return
 	}

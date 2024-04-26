@@ -15,10 +15,7 @@ import "magalu.cloud/lib/products/config"
 package config
 
 import (
-	"context"
-
 	mgcCore "magalu.cloud/core"
-	mgcClient "magalu.cloud/lib"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
 
@@ -28,15 +25,13 @@ type DeleteParameters struct {
 
 type DeleteResult any
 
-func Delete(
-	client *mgcClient.Client,
-	ctx context.Context,
+func (s *service) Delete(
 	parameters DeleteParameters,
 ) (
 	result DeleteResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("Delete", mgcCore.RefPath("/config/delete"), client, ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Delete", mgcCore.RefPath("/config/delete"), s.client, s.ctx)
 	if err != nil {
 		return
 	}

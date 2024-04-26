@@ -10,10 +10,7 @@ import "magalu.cloud/lib/products/object_storage/objects"
 package objects
 
 import (
-	"context"
-
 	mgcCore "magalu.cloud/core"
-	mgcClient "magalu.cloud/lib"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
 
@@ -34,16 +31,14 @@ type PresignResult struct {
 	Url string `json:"url"`
 }
 
-func Presign(
-	client *mgcClient.Client,
-	ctx context.Context,
+func (s *service) Presign(
 	parameters PresignParameters,
 	configs PresignConfigs,
 ) (
 	result PresignResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("Presign", mgcCore.RefPath("/object-storage/objects/presign"), client, ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Presign", mgcCore.RefPath("/object-storage/objects/presign"), s.client, s.ctx)
 	if err != nil {
 		return
 	}

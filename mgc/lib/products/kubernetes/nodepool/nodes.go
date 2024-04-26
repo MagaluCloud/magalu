@@ -16,10 +16,7 @@ import "magalu.cloud/lib/products/kubernetes/nodepool"
 package nodepool
 
 import (
-	"context"
-
 	mgcCore "magalu.cloud/core"
-	mgcClient "magalu.cloud/lib"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
 
@@ -114,16 +111,14 @@ type NodesResultResultsItemTaints []NodesResultResultsItemTaintsItem
 
 type NodesResultResults []NodesResultResultsItem
 
-func Nodes(
-	client *mgcClient.Client,
-	ctx context.Context,
+func (s *service) Nodes(
 	parameters NodesParameters,
 	configs NodesConfigs,
 ) (
 	result NodesResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("Nodes", mgcCore.RefPath("/kubernetes/nodepool/nodes"), client, ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Nodes", mgcCore.RefPath("/kubernetes/nodepool/nodes"), s.client, s.ctx)
 	if err != nil {
 		return
 	}

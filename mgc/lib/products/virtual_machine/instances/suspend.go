@@ -23,10 +23,7 @@ import "magalu.cloud/lib/products/virtual_machine/instances"
 package instances
 
 import (
-	"context"
-
 	mgcCore "magalu.cloud/core"
-	mgcClient "magalu.cloud/lib"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
 
@@ -40,15 +37,13 @@ type SuspendConfigs struct {
 	ServerUrl string `json:"serverUrl,omitempty"`
 }
 
-func Suspend(
-	client *mgcClient.Client,
-	ctx context.Context,
+func (s *service) Suspend(
 	parameters SuspendParameters,
 	configs SuspendConfigs,
 ) (
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("Suspend", mgcCore.RefPath("/virtual-machine/instances/suspend"), client, ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Suspend", mgcCore.RefPath("/virtual-machine/instances/suspend"), s.client, s.ctx)
 	if err != nil {
 		return
 	}

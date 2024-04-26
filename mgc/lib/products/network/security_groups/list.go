@@ -16,10 +16,7 @@ import "magalu.cloud/lib/products/network/security_groups"
 package securityGroups
 
 import (
-	"context"
-
 	mgcCore "magalu.cloud/core"
-	mgcClient "magalu.cloud/lib"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
 
@@ -49,15 +46,13 @@ type ListResultSecurityGroupsItem struct {
 
 type ListResultSecurityGroups []ListResultSecurityGroupsItem
 
-func List(
-	client *mgcClient.Client,
-	ctx context.Context,
+func (s *service) List(
 	configs ListConfigs,
 ) (
 	result ListResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("List", mgcCore.RefPath("/network/security_groups/list"), client, ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("List", mgcCore.RefPath("/network/security_groups/list"), s.client, s.ctx)
 	if err != nil {
 		return
 	}

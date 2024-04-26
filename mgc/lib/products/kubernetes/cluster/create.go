@@ -16,10 +16,7 @@ import "magalu.cloud/lib/products/kubernetes/cluster"
 package cluster
 
 import (
-	"context"
-
 	mgcCore "magalu.cloud/core"
-	mgcClient "magalu.cloud/lib"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
 
@@ -81,16 +78,14 @@ type CreateResultStatus struct {
 	State   string `json:"state"`
 }
 
-func Create(
-	client *mgcClient.Client,
-	ctx context.Context,
+func (s *service) Create(
 	parameters CreateParameters,
 	configs CreateConfigs,
 ) (
 	result CreateResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("Create", mgcCore.RefPath("/kubernetes/cluster/create"), client, ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Create", mgcCore.RefPath("/kubernetes/cluster/create"), s.client, s.ctx)
 	if err != nil {
 		return
 	}

@@ -10,10 +10,7 @@ import "magalu.cloud/lib/products/object_storage/objects"
 package objects
 
 import (
-	"context"
-
 	mgcCore "magalu.cloud/core"
-	mgcClient "magalu.cloud/lib"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
 
@@ -58,16 +55,14 @@ type ListResultContentsItem struct {
 
 type ListResultContents []ListResultContentsItem
 
-func List(
-	client *mgcClient.Client,
-	ctx context.Context,
+func (s *service) List(
 	parameters ListParameters,
 	configs ListConfigs,
 ) (
 	result ListResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("List", mgcCore.RefPath("/object-storage/objects/list"), client, ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("List", mgcCore.RefPath("/object-storage/objects/list"), s.client, s.ctx)
 	if err != nil {
 		return
 	}

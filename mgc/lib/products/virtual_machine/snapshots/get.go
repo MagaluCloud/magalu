@@ -23,10 +23,7 @@ import "magalu.cloud/lib/products/virtual_machine/snapshots"
 package snapshots
 
 import (
-	"context"
-
 	mgcCore "magalu.cloud/core"
-	mgcClient "magalu.cloud/lib"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
 
@@ -94,16 +91,14 @@ type GetResultInstanceMachineType1 struct {
 	Vcpus int    `json:"vcpus"`
 }
 
-func Get(
-	client *mgcClient.Client,
-	ctx context.Context,
+func (s *service) Get(
 	parameters GetParameters,
 	configs GetConfigs,
 ) (
 	result GetResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("Get", mgcCore.RefPath("/virtual-machine/snapshots/get"), client, ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Get", mgcCore.RefPath("/virtual-machine/snapshots/get"), s.client, s.ctx)
 	if err != nil {
 		return
 	}

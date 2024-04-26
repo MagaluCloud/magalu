@@ -22,10 +22,7 @@ import "magalu.cloud/lib/products/virtual_machine/instances"
 package instances
 
 import (
-	"context"
-
 	mgcCore "magalu.cloud/core"
-	mgcClient "magalu.cloud/lib"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
 
@@ -39,15 +36,13 @@ type StopConfigs struct {
 	ServerUrl string `json:"serverUrl,omitempty"`
 }
 
-func Stop(
-	client *mgcClient.Client,
-	ctx context.Context,
+func (s *service) Stop(
 	parameters StopParameters,
 	configs StopConfigs,
 ) (
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("Stop", mgcCore.RefPath("/virtual-machine/instances/stop"), client, ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Stop", mgcCore.RefPath("/virtual-machine/instances/stop"), s.client, s.ctx)
 	if err != nil {
 		return
 	}

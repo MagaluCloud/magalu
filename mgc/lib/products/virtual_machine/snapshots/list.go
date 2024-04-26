@@ -20,10 +20,7 @@ import "magalu.cloud/lib/products/virtual_machine/snapshots"
 package snapshots
 
 import (
-	"context"
-
 	mgcCore "magalu.cloud/core"
-	mgcClient "magalu.cloud/lib"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
 
@@ -99,16 +96,14 @@ type ListResultSnapshotsItemInstanceMachineType1 struct {
 
 type ListResultSnapshots []ListResultSnapshotsItem
 
-func List(
-	client *mgcClient.Client,
-	ctx context.Context,
+func (s *service) List(
 	parameters ListParameters,
 	configs ListConfigs,
 ) (
 	result ListResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("List", mgcCore.RefPath("/virtual-machine/snapshots/list"), client, ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("List", mgcCore.RefPath("/virtual-machine/snapshots/list"), s.client, s.ctx)
 	if err != nil {
 		return
 	}

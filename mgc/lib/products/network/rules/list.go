@@ -16,10 +16,7 @@ import "magalu.cloud/lib/products/network/rules"
 package rules
 
 import (
-	"context"
-
 	mgcCore "magalu.cloud/core"
-	mgcClient "magalu.cloud/lib"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
 
@@ -54,16 +51,14 @@ type ListResultRulesItem struct {
 
 type ListResultRules []ListResultRulesItem
 
-func List(
-	client *mgcClient.Client,
-	ctx context.Context,
+func (s *service) List(
 	parameters ListParameters,
 	configs ListConfigs,
 ) (
 	result ListResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("List", mgcCore.RefPath("/network/rules/list"), client, ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("List", mgcCore.RefPath("/network/rules/list"), s.client, s.ctx)
 	if err != nil {
 		return
 	}

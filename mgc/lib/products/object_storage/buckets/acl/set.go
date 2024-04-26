@@ -10,10 +10,7 @@ import "magalu.cloud/lib/products/object_storage/buckets/acl"
 package acl
 
 import (
-	"context"
-
 	mgcCore "magalu.cloud/core"
-	mgcClient "magalu.cloud/lib"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
 
@@ -54,16 +51,14 @@ type SetConfigs struct {
 
 type SetResult any
 
-func Set(
-	client *mgcClient.Client,
-	ctx context.Context,
+func (s *service) Set(
 	parameters SetParameters,
 	configs SetConfigs,
 ) (
 	result SetResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("Set", mgcCore.RefPath("/object-storage/buckets/acl/set"), client, ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Set", mgcCore.RefPath("/object-storage/buckets/acl/set"), s.client, s.ctx)
 	if err != nil {
 		return
 	}

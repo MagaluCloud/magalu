@@ -10,10 +10,7 @@ import "magalu.cloud/lib/products/auth/tenant"
 package tenant
 
 import (
-	"context"
-
 	mgcCore "magalu.cloud/core"
-	mgcClient "magalu.cloud/lib"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
 
@@ -34,15 +31,13 @@ type SetResultCreatedAt struct {
 
 type SetResultScope []string
 
-func Set(
-	client *mgcClient.Client,
-	ctx context.Context,
+func (s *service) Set(
 	parameters SetParameters,
 ) (
 	result SetResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("Set", mgcCore.RefPath("/auth/tenant/set"), client, ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Set", mgcCore.RefPath("/auth/tenant/set"), s.client, s.ctx)
 	if err != nil {
 		return
 	}

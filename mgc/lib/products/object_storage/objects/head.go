@@ -10,10 +10,7 @@ import "magalu.cloud/lib/products/object_storage/objects"
 package objects
 
 import (
-	"context"
-
 	mgcCore "magalu.cloud/core"
-	mgcClient "magalu.cloud/lib"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
 
@@ -37,16 +34,14 @@ type HeadResult struct {
 	LastModified  string `json:"LastModified"`
 }
 
-func Head(
-	client *mgcClient.Client,
-	ctx context.Context,
+func (s *service) Head(
 	parameters HeadParameters,
 	configs HeadConfigs,
 ) (
 	result HeadResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("Head", mgcCore.RefPath("/object-storage/objects/head"), client, ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Head", mgcCore.RefPath("/object-storage/objects/head"), s.client, s.ctx)
 	if err != nil {
 		return
 	}

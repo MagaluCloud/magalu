@@ -26,10 +26,7 @@ import "magalu.cloud/lib/products/virtual_machine/snapshots"
 package snapshots
 
 import (
-	"context"
-
 	mgcCore "magalu.cloud/core"
-	mgcClient "magalu.cloud/lib"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
 
@@ -62,16 +59,14 @@ type CreateResult struct {
 	Id string `json:"id"`
 }
 
-func Create(
-	client *mgcClient.Client,
-	ctx context.Context,
+func (s *service) Create(
 	parameters CreateParameters,
 	configs CreateConfigs,
 ) (
 	result CreateResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("Create", mgcCore.RefPath("/virtual-machine/snapshots/create"), client, ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Create", mgcCore.RefPath("/virtual-machine/snapshots/create"), s.client, s.ctx)
 	if err != nil {
 		return
 	}

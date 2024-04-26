@@ -10,10 +10,7 @@ import "magalu.cloud/lib/products/profile"
 package profile
 
 import (
-	"context"
-
 	mgcCore "magalu.cloud/core"
-	mgcClient "magalu.cloud/lib"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
 
@@ -25,15 +22,13 @@ type SetCurrentResult struct {
 	Name string `json:"name"`
 }
 
-func SetCurrent(
-	client *mgcClient.Client,
-	ctx context.Context,
+func (s *service) SetCurrent(
 	parameters SetCurrentParameters,
 ) (
 	result SetCurrentResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("SetCurrent", mgcCore.RefPath("/profile/set-current"), client, ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("SetCurrent", mgcCore.RefPath("/profile/set-current"), s.client, s.ctx)
 	if err != nil {
 		return
 	}

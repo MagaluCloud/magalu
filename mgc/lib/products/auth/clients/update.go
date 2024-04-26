@@ -10,10 +10,7 @@ import "magalu.cloud/lib/products/auth/clients"
 package clients
 
 import (
-	"context"
-
 	mgcCore "magalu.cloud/core"
-	mgcClient "magalu.cloud/lib"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
 
@@ -41,15 +38,13 @@ type UpdateResult struct {
 	Uuid     string `json:"uuid,omitempty"`
 }
 
-func Update(
-	client *mgcClient.Client,
-	ctx context.Context,
+func (s *service) Update(
 	parameters UpdateParameters,
 ) (
 	result UpdateResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("Update", mgcCore.RefPath("/auth/clients/update"), client, ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Update", mgcCore.RefPath("/auth/clients/update"), s.client, s.ctx)
 	if err != nil {
 		return
 	}

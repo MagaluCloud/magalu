@@ -16,10 +16,7 @@ import "magalu.cloud/lib/products/network/subnets/subnets"
 package subnets
 
 import (
-	"context"
-
 	mgcCore "magalu.cloud/core"
-	mgcClient "magalu.cloud/lib"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
 
@@ -40,16 +37,14 @@ type UpdateResult struct {
 	Id string `json:"id"`
 }
 
-func Update(
-	client *mgcClient.Client,
-	ctx context.Context,
+func (s *service) Update(
 	parameters UpdateParameters,
 	configs UpdateConfigs,
 ) (
 	result UpdateResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("Update", mgcCore.RefPath("/network/subnets/subnets/update"), client, ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Update", mgcCore.RefPath("/network/subnets/subnets/update"), s.client, s.ctx)
 	if err != nil {
 		return
 	}

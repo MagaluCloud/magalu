@@ -42,10 +42,7 @@ import "magalu.cloud/lib/products/block_storage/volumes"
 package volumes
 
 import (
-	"context"
-
 	mgcCore "magalu.cloud/core"
-	mgcClient "magalu.cloud/lib"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
 
@@ -59,15 +56,13 @@ type DetachConfigs struct {
 	ServerUrl string `json:"serverUrl,omitempty"`
 }
 
-func Detach(
-	client *mgcClient.Client,
-	ctx context.Context,
+func (s *service) Detach(
 	parameters DetachParameters,
 	configs DetachConfigs,
 ) (
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("Detach", mgcCore.RefPath("/block-storage/volumes/detach"), client, ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Detach", mgcCore.RefPath("/block-storage/volumes/detach"), s.client, s.ctx)
 	if err != nil {
 		return
 	}

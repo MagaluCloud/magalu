@@ -15,10 +15,7 @@ import "magalu.cloud/lib/products/config"
 package config
 
 import (
-	"context"
-
 	mgcCore "magalu.cloud/core"
-	mgcClient "magalu.cloud/lib"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
 
@@ -174,15 +171,13 @@ type GetSchemaResultXml struct {
 type GetSchemaResultXmlExtensions struct {
 }
 
-func GetSchema(
-	client *mgcClient.Client,
-	ctx context.Context,
+func (s *service) GetSchema(
 	parameters GetSchemaParameters,
 ) (
 	result GetSchemaResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("GetSchema", mgcCore.RefPath("/config/get-schema"), client, ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("GetSchema", mgcCore.RefPath("/config/get-schema"), s.client, s.ctx)
 	if err != nil {
 		return
 	}

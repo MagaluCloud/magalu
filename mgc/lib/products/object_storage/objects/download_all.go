@@ -10,10 +10,7 @@ import "magalu.cloud/lib/products/object_storage/objects"
 package objects
 
 import (
-	"context"
-
 	mgcCore "magalu.cloud/core"
-	mgcClient "magalu.cloud/lib"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
 
@@ -43,16 +40,14 @@ type DownloadAllResult struct {
 	Src        string `json:"src"`
 }
 
-func DownloadAll(
-	client *mgcClient.Client,
-	ctx context.Context,
+func (s *service) DownloadAll(
 	parameters DownloadAllParameters,
 	configs DownloadAllConfigs,
 ) (
 	result DownloadAllResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("DownloadAll", mgcCore.RefPath("/object-storage/objects/download-all"), client, ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("DownloadAll", mgcCore.RefPath("/object-storage/objects/download-all"), s.client, s.ctx)
 	if err != nil {
 		return
 	}

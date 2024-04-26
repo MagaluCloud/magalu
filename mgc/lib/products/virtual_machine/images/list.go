@@ -16,10 +16,7 @@ import "magalu.cloud/lib/products/virtual_machine/images"
 package images
 
 import (
-	"context"
-
 	mgcCore "magalu.cloud/core"
-	mgcClient "magalu.cloud/lib"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
 
@@ -59,16 +56,14 @@ type ListResultImagesItemMinimumRequirements struct {
 
 type ListResultImages []ListResultImagesItem
 
-func List(
-	client *mgcClient.Client,
-	ctx context.Context,
+func (s *service) List(
 	parameters ListParameters,
 	configs ListConfigs,
 ) (
 	result ListResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("List", mgcCore.RefPath("/virtual-machine/images/list"), client, ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("List", mgcCore.RefPath("/virtual-machine/images/list"), s.client, s.ctx)
 	if err != nil {
 		return
 	}

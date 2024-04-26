@@ -21,10 +21,7 @@ import "magalu.cloud/lib/products/block_storage/volume_types"
 package volumeTypes
 
 import (
-	"context"
-
 	mgcCore "magalu.cloud/core"
-	mgcClient "magalu.cloud/lib"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
 
@@ -53,15 +50,13 @@ type ListResultTypesItemIops struct {
 
 type ListResultTypes []ListResultTypesItem
 
-func List(
-	client *mgcClient.Client,
-	ctx context.Context,
+func (s *service) List(
 	configs ListConfigs,
 ) (
 	result ListResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("List", mgcCore.RefPath("/block-storage/volume-types/list"), client, ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("List", mgcCore.RefPath("/block-storage/volume-types/list"), s.client, s.ctx)
 	if err != nil {
 		return
 	}

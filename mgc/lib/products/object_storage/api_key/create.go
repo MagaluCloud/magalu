@@ -10,10 +10,7 @@ import "magalu.cloud/lib/products/object_storage/api_key"
 package apiKey
 
 import (
-	"context"
-
 	mgcCore "magalu.cloud/core"
-	mgcClient "magalu.cloud/lib"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
 
@@ -28,15 +25,13 @@ type CreateResult struct {
 	Uuid string `json:"uuid,omitempty"`
 }
 
-func Create(
-	client *mgcClient.Client,
-	ctx context.Context,
+func (s *service) Create(
 	parameters CreateParameters,
 ) (
 	result CreateResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("Create", mgcCore.RefPath("/object-storage/api-key/create"), client, ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Create", mgcCore.RefPath("/object-storage/api-key/create"), s.client, s.ctx)
 	if err != nil {
 		return
 	}

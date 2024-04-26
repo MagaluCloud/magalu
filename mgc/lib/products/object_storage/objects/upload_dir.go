@@ -10,10 +10,7 @@ import "magalu.cloud/lib/products/object_storage/objects"
 package objects
 
 import (
-	"context"
-
 	mgcCore "magalu.cloud/core"
-	mgcClient "magalu.cloud/lib"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
 
@@ -43,16 +40,14 @@ type UploadDirResult struct {
 	Uri string `json:"uri"`
 }
 
-func UploadDir(
-	client *mgcClient.Client,
-	ctx context.Context,
+func (s *service) UploadDir(
 	parameters UploadDirParameters,
 	configs UploadDirConfigs,
 ) (
 	result UploadDirResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("UploadDir", mgcCore.RefPath("/object-storage/objects/upload-dir"), client, ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("UploadDir", mgcCore.RefPath("/object-storage/objects/upload-dir"), s.client, s.ctx)
 	if err != nil {
 		return
 	}

@@ -16,10 +16,7 @@ import "magalu.cloud/lib/products/network/public_ips"
 package publicIps
 
 import (
-	"context"
-
 	mgcCore "magalu.cloud/core"
-	mgcClient "magalu.cloud/lib"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
 
@@ -36,16 +33,14 @@ type AttachConfigs struct {
 
 type AttachResult any
 
-func Attach(
-	client *mgcClient.Client,
-	ctx context.Context,
+func (s *service) Attach(
 	parameters AttachParameters,
 	configs AttachConfigs,
 ) (
 	result AttachResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("Attach", mgcCore.RefPath("/network/public_ips/attach"), client, ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Attach", mgcCore.RefPath("/network/public_ips/attach"), s.client, s.ctx)
 	if err != nil {
 		return
 	}

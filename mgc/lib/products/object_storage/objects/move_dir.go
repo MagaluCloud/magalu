@@ -15,10 +15,7 @@ import "magalu.cloud/lib/products/object_storage/objects"
 package objects
 
 import (
-	"context"
-
 	mgcCore "magalu.cloud/core"
-	mgcClient "magalu.cloud/lib"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
 
@@ -41,16 +38,14 @@ type MoveDirResult struct {
 	Src       string `json:"src"`
 }
 
-func MoveDir(
-	client *mgcClient.Client,
-	ctx context.Context,
+func (s *service) MoveDir(
 	parameters MoveDirParameters,
 	configs MoveDirConfigs,
 ) (
 	result MoveDirResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("MoveDir", mgcCore.RefPath("/object-storage/objects/move-dir"), client, ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("MoveDir", mgcCore.RefPath("/object-storage/objects/move-dir"), s.client, s.ctx)
 	if err != nil {
 		return
 	}

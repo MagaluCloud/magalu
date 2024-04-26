@@ -10,10 +10,7 @@ import "magalu.cloud/lib/products/config"
 package config
 
 import (
-	"context"
-
 	mgcCore "magalu.cloud/core"
-	mgcClient "magalu.cloud/lib"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
 
@@ -25,14 +22,11 @@ type ListResultProperty struct {
 	Type        string `json:"type"`
 }
 
-func List(
-	client *mgcClient.Client,
-	ctx context.Context,
-) (
+func (s *service) List() (
 	result ListResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("List", mgcCore.RefPath("/config/list"), client, ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("List", mgcCore.RefPath("/config/list"), s.client, s.ctx)
 	if err != nil {
 		return
 	}

@@ -10,10 +10,7 @@ import "magalu.cloud/lib/products/object_storage/objects"
 package objects
 
 import (
-	"context"
-
 	mgcCore "magalu.cloud/core"
-	mgcClient "magalu.cloud/lib"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
 
@@ -50,16 +47,14 @@ type CopyAllResultFilterItem struct {
 
 type CopyAllResultFilter []CopyAllResultFilterItem
 
-func CopyAll(
-	client *mgcClient.Client,
-	ctx context.Context,
+func (s *service) CopyAll(
 	parameters CopyAllParameters,
 	configs CopyAllConfigs,
 ) (
 	result CopyAllResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("CopyAll", mgcCore.RefPath("/object-storage/objects/copy-all"), client, ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("CopyAll", mgcCore.RefPath("/object-storage/objects/copy-all"), s.client, s.ctx)
 	if err != nil {
 		return
 	}

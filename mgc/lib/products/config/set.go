@@ -10,10 +10,7 @@ import "magalu.cloud/lib/products/config"
 package config
 
 import (
-	"context"
-
 	mgcCore "magalu.cloud/core"
-	mgcClient "magalu.cloud/lib"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
 
@@ -24,15 +21,13 @@ type SetParameters struct {
 
 type SetResult any
 
-func Set(
-	client *mgcClient.Client,
-	ctx context.Context,
+func (s *service) Set(
 	parameters SetParameters,
 ) (
 	result SetResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("Set", mgcCore.RefPath("/config/set"), client, ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Set", mgcCore.RefPath("/config/set"), s.client, s.ctx)
 	if err != nil {
 		return
 	}

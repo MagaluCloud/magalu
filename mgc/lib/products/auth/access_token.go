@@ -10,10 +10,7 @@ import "magalu.cloud/lib/products/auth"
 package auth
 
 import (
-	"context"
-
 	mgcCore "magalu.cloud/core"
-	mgcClient "magalu.cloud/lib"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
 
@@ -25,15 +22,13 @@ type AccessTokenResult struct {
 	AccessToken string `json:"access_token,omitempty"`
 }
 
-func AccessToken(
-	client *mgcClient.Client,
-	ctx context.Context,
+func (s *service) AccessToken(
 	parameters AccessTokenParameters,
 ) (
 	result AccessTokenResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("AccessToken", mgcCore.RefPath("/auth/access_token"), client, ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("AccessToken", mgcCore.RefPath("/auth/access_token"), s.client, s.ctx)
 	if err != nil {
 		return
 	}

@@ -10,10 +10,7 @@ import "magalu.cloud/lib/products/object_storage/buckets/versioning"
 package versioning
 
 import (
-	"context"
-
 	mgcCore "magalu.cloud/core"
-	mgcClient "magalu.cloud/lib"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
 
@@ -30,16 +27,14 @@ type EnableConfigs struct {
 
 type EnableResult any
 
-func Enable(
-	client *mgcClient.Client,
-	ctx context.Context,
+func (s *service) Enable(
 	parameters EnableParameters,
 	configs EnableConfigs,
 ) (
 	result EnableResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("Enable", mgcCore.RefPath("/object-storage/buckets/versioning/enable"), client, ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Enable", mgcCore.RefPath("/object-storage/buckets/versioning/enable"), s.client, s.ctx)
 	if err != nil {
 		return
 	}

@@ -16,10 +16,7 @@ import "magalu.cloud/lib/products/network/vpcs/ports"
 package ports
 
 import (
-	"context"
-
 	mgcCore "magalu.cloud/core"
-	mgcClient "magalu.cloud/lib"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
 
@@ -94,16 +91,14 @@ type ListResult1PortsItemSecurityGroups []string
 
 type ListResult1Ports []ListResult1PortsItem
 
-func List(
-	client *mgcClient.Client,
-	ctx context.Context,
+func (s *service) List(
 	parameters ListParameters,
 	configs ListConfigs,
 ) (
 	result ListResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("List", mgcCore.RefPath("/network/vpcs/ports/list"), client, ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("List", mgcCore.RefPath("/network/vpcs/ports/list"), s.client, s.ctx)
 	if err != nil {
 		return
 	}

@@ -10,10 +10,7 @@ import "magalu.cloud/lib/products/profile"
 package profile
 
 import (
-	"context"
-
 	mgcCore "magalu.cloud/core"
-	mgcClient "magalu.cloud/lib"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
 
@@ -23,14 +20,11 @@ type ListResultItem struct {
 
 type ListResult []ListResultItem
 
-func List(
-	client *mgcClient.Client,
-	ctx context.Context,
-) (
+func (s *service) List() (
 	result ListResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("List", mgcCore.RefPath("/profile/list"), client, ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("List", mgcCore.RefPath("/profile/list"), s.client, s.ctx)
 	if err != nil {
 		return
 	}

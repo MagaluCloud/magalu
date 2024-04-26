@@ -16,10 +16,7 @@ import "magalu.cloud/lib/products/dbaas/instances"
 package instances
 
 import (
-	"context"
-
 	mgcCore "magalu.cloud/core"
-	mgcClient "magalu.cloud/lib"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
 
@@ -101,16 +98,14 @@ type UpdateResultVolume struct {
 	Type string `json:"type"`
 }
 
-func Update(
-	client *mgcClient.Client,
-	ctx context.Context,
+func (s *service) Update(
 	parameters UpdateParameters,
 	configs UpdateConfigs,
 ) (
 	result UpdateResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("Update", mgcCore.RefPath("/dbaas/instances/update"), client, ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Update", mgcCore.RefPath("/dbaas/instances/update"), s.client, s.ctx)
 	if err != nil {
 		return
 	}

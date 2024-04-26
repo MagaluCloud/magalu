@@ -16,10 +16,7 @@ import "magalu.cloud/lib/products/kubernetes/info"
 package info
 
 import (
-	"context"
-
 	mgcCore "magalu.cloud/core"
-	mgcClient "magalu.cloud/lib"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
 
@@ -59,15 +56,13 @@ type FlavorsResultResultsItemNodepool []FlavorsResultResultsItemBastionItem
 
 type FlavorsResultResults []FlavorsResultResultsItem
 
-func Flavors(
-	client *mgcClient.Client,
-	ctx context.Context,
+func (s *service) Flavors(
 	configs FlavorsConfigs,
 ) (
 	result FlavorsResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("Flavors", mgcCore.RefPath("/kubernetes/info/flavors"), client, ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Flavors", mgcCore.RefPath("/kubernetes/info/flavors"), s.client, s.ctx)
 	if err != nil {
 		return
 	}

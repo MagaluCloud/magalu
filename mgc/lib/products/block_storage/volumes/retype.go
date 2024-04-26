@@ -33,10 +33,7 @@ import "magalu.cloud/lib/products/block_storage/volumes"
 package volumes
 
 import (
-	"context"
-
 	mgcCore "magalu.cloud/core"
-	mgcClient "magalu.cloud/lib"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
 
@@ -65,15 +62,13 @@ type RetypeConfigs struct {
 	ServerUrl string `json:"serverUrl,omitempty"`
 }
 
-func Retype(
-	client *mgcClient.Client,
-	ctx context.Context,
+func (s *service) Retype(
 	parameters RetypeParameters,
 	configs RetypeConfigs,
 ) (
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("Retype", mgcCore.RefPath("/block-storage/volumes/retype"), client, ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Retype", mgcCore.RefPath("/block-storage/volumes/retype"), s.client, s.ctx)
 	if err != nil {
 		return
 	}

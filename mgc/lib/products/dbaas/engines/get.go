@@ -16,10 +16,7 @@ import "magalu.cloud/lib/products/dbaas/engines"
 package engines
 
 import (
-	"context"
-
 	mgcCore "magalu.cloud/core"
-	mgcClient "magalu.cloud/lib"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
 
@@ -41,16 +38,14 @@ type GetResult struct {
 	Version string `json:"version"`
 }
 
-func Get(
-	client *mgcClient.Client,
-	ctx context.Context,
+func (s *service) Get(
 	parameters GetParameters,
 	configs GetConfigs,
 ) (
 	result GetResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("Get", mgcCore.RefPath("/dbaas/engines/get"), client, ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Get", mgcCore.RefPath("/dbaas/engines/get"), s.client, s.ctx)
 	if err != nil {
 		return
 	}

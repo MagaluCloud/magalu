@@ -34,10 +34,7 @@ import "magalu.cloud/lib/products/block_storage/volumes"
 package volumes
 
 import (
-	"context"
-
 	mgcCore "magalu.cloud/core"
-	mgcClient "magalu.cloud/lib"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
 
@@ -52,15 +49,13 @@ type AttachConfigs struct {
 	ServerUrl string `json:"serverUrl,omitempty"`
 }
 
-func Attach(
-	client *mgcClient.Client,
-	ctx context.Context,
+func (s *service) Attach(
 	parameters AttachParameters,
 	configs AttachConfigs,
 ) (
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("Attach", mgcCore.RefPath("/block-storage/volumes/attach"), client, ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Attach", mgcCore.RefPath("/block-storage/volumes/attach"), s.client, s.ctx)
 	if err != nil {
 		return
 	}

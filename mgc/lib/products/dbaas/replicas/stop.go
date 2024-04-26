@@ -16,10 +16,7 @@ import "magalu.cloud/lib/products/dbaas/replicas"
 package replicas
 
 import (
-	"context"
-
 	mgcCore "magalu.cloud/core"
-	mgcClient "magalu.cloud/lib"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
 
@@ -64,16 +61,14 @@ type StopResultVolume struct {
 	Type string `json:"type"`
 }
 
-func Stop(
-	client *mgcClient.Client,
-	ctx context.Context,
+func (s *service) Stop(
 	parameters StopParameters,
 	configs StopConfigs,
 ) (
 	result StopResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("Stop", mgcCore.RefPath("/dbaas/replicas/stop"), client, ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Stop", mgcCore.RefPath("/dbaas/replicas/stop"), s.client, s.ctx)
 	if err != nil {
 		return
 	}

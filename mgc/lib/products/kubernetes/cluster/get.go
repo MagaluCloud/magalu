@@ -16,10 +16,7 @@ import "magalu.cloud/lib/products/kubernetes/cluster"
 package cluster
 
 import (
-	"context"
-
 	mgcCore "magalu.cloud/core"
-	mgcClient "magalu.cloud/lib"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
 
@@ -185,16 +182,14 @@ type GetResultStatus struct {
 
 type GetResultTags []*string
 
-func Get(
-	client *mgcClient.Client,
-	ctx context.Context,
+func (s *service) Get(
 	parameters GetParameters,
 	configs GetConfigs,
 ) (
 	result GetResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("Get", mgcCore.RefPath("/kubernetes/cluster/get"), client, ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Get", mgcCore.RefPath("/kubernetes/cluster/get"), s.client, s.ctx)
 	if err != nil {
 		return
 	}

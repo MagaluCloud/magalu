@@ -14,10 +14,7 @@ import "magalu.cloud/lib/products/auth/tenant"
 package tenant
 
 import (
-	"context"
-
 	mgcCore "magalu.cloud/core"
-	mgcClient "magalu.cloud/lib"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
 
@@ -29,14 +26,11 @@ type CurrentResult struct {
 	Uuid        string `json:"uuid"`
 }
 
-func Current(
-	client *mgcClient.Client,
-	ctx context.Context,
-) (
+func (s *service) Current() (
 	result CurrentResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("Current", mgcCore.RefPath("/auth/tenant/current"), client, ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Current", mgcCore.RefPath("/auth/tenant/current"), s.client, s.ctx)
 	if err != nil {
 		return
 	}

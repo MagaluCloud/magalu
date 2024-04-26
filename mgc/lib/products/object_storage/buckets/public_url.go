@@ -10,10 +10,7 @@ import "magalu.cloud/lib/products/object_storage/buckets"
 package buckets
 
 import (
-	"context"
-
 	mgcCore "magalu.cloud/core"
-	mgcClient "magalu.cloud/lib"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
 
@@ -32,16 +29,14 @@ type PublicUrlResult struct {
 	Url string `json:"url"`
 }
 
-func PublicUrl(
-	client *mgcClient.Client,
-	ctx context.Context,
+func (s *service) PublicUrl(
 	parameters PublicUrlParameters,
 	configs PublicUrlConfigs,
 ) (
 	result PublicUrlResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("PublicUrl", mgcCore.RefPath("/object-storage/buckets/public-url"), client, ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("PublicUrl", mgcCore.RefPath("/object-storage/buckets/public-url"), s.client, s.ctx)
 	if err != nil {
 		return
 	}

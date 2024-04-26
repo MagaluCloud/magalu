@@ -10,10 +10,7 @@ import "magalu.cloud/lib/products/object_storage/objects"
 package objects
 
 import (
-	"context"
-
 	mgcCore "magalu.cloud/core"
-	mgcClient "magalu.cloud/lib"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
 
@@ -32,16 +29,14 @@ type CopyConfigs struct {
 
 type CopyResult any
 
-func Copy(
-	client *mgcClient.Client,
-	ctx context.Context,
+func (s *service) Copy(
 	parameters CopyParameters,
 	configs CopyConfigs,
 ) (
 	result CopyResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("Copy", mgcCore.RefPath("/object-storage/objects/copy"), client, ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Copy", mgcCore.RefPath("/object-storage/objects/copy"), s.client, s.ctx)
 	if err != nil {
 		return
 	}

@@ -10,10 +10,7 @@ import "magalu.cloud/lib/products/profile"
 package profile
 
 import (
-	"context"
-
 	mgcCore "magalu.cloud/core"
-	mgcClient "magalu.cloud/lib"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
 
@@ -26,15 +23,13 @@ type CreateResult struct {
 	Name string `json:"name"`
 }
 
-func Create(
-	client *mgcClient.Client,
-	ctx context.Context,
+func (s *service) Create(
 	parameters CreateParameters,
 ) (
 	result CreateResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("Create", mgcCore.RefPath("/profile/create"), client, ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Create", mgcCore.RefPath("/profile/create"), s.client, s.ctx)
 	if err != nil {
 		return
 	}

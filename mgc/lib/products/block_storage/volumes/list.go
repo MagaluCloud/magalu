@@ -19,10 +19,7 @@ import "magalu.cloud/lib/products/block_storage/volumes"
 package volumes
 
 import (
-	"context"
-
 	mgcCore "magalu.cloud/core"
-	mgcClient "magalu.cloud/lib"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
 
@@ -109,16 +106,14 @@ type ListResultVolumesItemType1Iops struct {
 
 type ListResultVolumes []ListResultVolumesItem
 
-func List(
-	client *mgcClient.Client,
-	ctx context.Context,
+func (s *service) List(
 	parameters ListParameters,
 	configs ListConfigs,
 ) (
 	result ListResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("List", mgcCore.RefPath("/block-storage/volumes/list"), client, ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("List", mgcCore.RefPath("/block-storage/volumes/list"), s.client, s.ctx)
 	if err != nil {
 		return
 	}

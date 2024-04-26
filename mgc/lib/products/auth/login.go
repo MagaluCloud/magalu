@@ -16,10 +16,7 @@ import "magalu.cloud/lib/products/auth"
 package auth
 
 import (
-	"context"
-
 	mgcCore "magalu.cloud/core"
-	mgcClient "magalu.cloud/lib"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
 
@@ -45,15 +42,13 @@ type LoginResultSelectedTenant struct {
 	Uuid        string `json:"uuid"`
 }
 
-func Login(
-	client *mgcClient.Client,
-	ctx context.Context,
+func (s *service) Login(
 	parameters LoginParameters,
 ) (
 	result LoginResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("Login", mgcCore.RefPath("/auth/login"), client, ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Login", mgcCore.RefPath("/auth/login"), s.client, s.ctx)
 	if err != nil {
 		return
 	}

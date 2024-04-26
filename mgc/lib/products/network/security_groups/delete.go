@@ -16,10 +16,7 @@ import "magalu.cloud/lib/products/network/security_groups"
 package securityGroups
 
 import (
-	"context"
-
 	mgcCore "magalu.cloud/core"
-	mgcClient "magalu.cloud/lib"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
 
@@ -33,15 +30,13 @@ type DeleteConfigs struct {
 	ServerUrl string `json:"serverUrl,omitempty"`
 }
 
-func Delete(
-	client *mgcClient.Client,
-	ctx context.Context,
+func (s *service) Delete(
 	parameters DeleteParameters,
 	configs DeleteConfigs,
 ) (
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("Delete", mgcCore.RefPath("/network/security_groups/delete"), client, ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Delete", mgcCore.RefPath("/network/security_groups/delete"), s.client, s.ctx)
 	if err != nil {
 		return
 	}
@@ -60,12 +55,11 @@ func Delete(
 	return
 }
 
-func DeleteConfirmPrompt(
-	client *mgcClient.Client,
+func (s *service) DeleteConfirmPrompt(
 	parameters DeleteParameters,
 	configs DeleteConfigs,
 ) (message string) {
-	e, err := mgcHelpers.ResolveExecutor("Delete", mgcCore.RefPath("/network/security_groups/delete"), client)
+	e, err := mgcHelpers.ResolveExecutor("Delete", mgcCore.RefPath("/network/security_groups/delete"), s.client)
 	if err != nil {
 		return
 	}

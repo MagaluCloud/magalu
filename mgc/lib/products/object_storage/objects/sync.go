@@ -14,10 +14,7 @@ import "magalu.cloud/lib/products/object_storage/objects"
 package objects
 
 import (
-	"context"
-
 	mgcCore "magalu.cloud/core"
-	mgcClient "magalu.cloud/lib"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
 
@@ -37,16 +34,14 @@ type SyncConfigs struct {
 
 type SyncResult any
 
-func Sync(
-	client *mgcClient.Client,
-	ctx context.Context,
+func (s *service) Sync(
 	parameters SyncParameters,
 	configs SyncConfigs,
 ) (
 	result SyncResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("Sync", mgcCore.RefPath("/object-storage/objects/sync"), client, ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Sync", mgcCore.RefPath("/object-storage/objects/sync"), s.client, s.ctx)
 	if err != nil {
 		return
 	}

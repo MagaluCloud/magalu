@@ -16,10 +16,7 @@ import "magalu.cloud/lib/products/kubernetes/version"
 package version
 
 import (
-	"context"
-
 	mgcCore "magalu.cloud/core"
-	mgcClient "magalu.cloud/lib"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
 
@@ -42,15 +39,13 @@ type ListResultResultsItem struct {
 
 type ListResultResults []ListResultResultsItem
 
-func List(
-	client *mgcClient.Client,
-	ctx context.Context,
+func (s *service) List(
 	configs ListConfigs,
 ) (
 	result ListResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("List", mgcCore.RefPath("/kubernetes/version/list"), client, ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("List", mgcCore.RefPath("/kubernetes/version/list"), s.client, s.ctx)
 	if err != nil {
 		return
 	}

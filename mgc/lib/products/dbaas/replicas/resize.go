@@ -16,10 +16,7 @@ import "magalu.cloud/lib/products/dbaas/replicas"
 package replicas
 
 import (
-	"context"
-
 	mgcCore "magalu.cloud/core"
-	mgcClient "magalu.cloud/lib"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
 
@@ -65,16 +62,14 @@ type ResizeResultVolume struct {
 	Type string `json:"type"`
 }
 
-func Resize(
-	client *mgcClient.Client,
-	ctx context.Context,
+func (s *service) Resize(
 	parameters ResizeParameters,
 	configs ResizeConfigs,
 ) (
 	result ResizeResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("Resize", mgcCore.RefPath("/dbaas/replicas/resize"), client, ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Resize", mgcCore.RefPath("/dbaas/replicas/resize"), s.client, s.ctx)
 	if err != nil {
 		return
 	}

@@ -16,10 +16,7 @@ import "magalu.cloud/lib/products/virtual_machine/instances"
 package instances
 
 import (
-	"context"
-
 	mgcCore "magalu.cloud/core"
-	mgcClient "magalu.cloud/lib"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
 
@@ -130,16 +127,14 @@ type GetResultNetwork1Vpc struct {
 	Name string `json:"name"`
 }
 
-func Get(
-	client *mgcClient.Client,
-	ctx context.Context,
+func (s *service) Get(
 	parameters GetParameters,
 	configs GetConfigs,
 ) (
 	result GetResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("Get", mgcCore.RefPath("/virtual-machine/instances/get"), client, ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Get", mgcCore.RefPath("/virtual-machine/instances/get"), s.client, s.ctx)
 	if err != nil {
 		return
 	}
@@ -161,16 +156,14 @@ func Get(
 	return mgcHelpers.ConvertResult[GetResult](r)
 }
 
-func GetUntilTermination(
-	client *mgcClient.Client,
-	ctx context.Context,
+func (s *service) GetUntilTermination(
 	parameters GetParameters,
 	configs GetConfigs,
 ) (
 	result GetResult,
 	err error,
 ) {
-	e, ctx, err := mgcHelpers.PrepareExecutor("Get", mgcCore.RefPath("/virtual-machine/instances/get"), client, ctx)
+	e, ctx, err := mgcHelpers.PrepareExecutor("Get", mgcCore.RefPath("/virtual-machine/instances/get"), s.client, s.ctx)
 	if err != nil {
 		return
 	}
@@ -178,9 +171,7 @@ func GetUntilTermination(
 	exec, ok := e.(mgcCore.TerminatorExecutor)
 	if !ok {
 		// Not expected, but let's fallback
-		return Get(
-			client,
-			ctx,
+		return s.Get(
 			parameters,
 			configs,
 		)

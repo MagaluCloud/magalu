@@ -16,10 +16,7 @@ import "magalu.cloud/lib/products/network/security_groups"
 package securityGroups
 
 import (
-	"context"
-
 	mgcCore "magalu.cloud/core"
-	mgcClient "magalu.cloud/lib"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
 
@@ -39,16 +36,14 @@ type CreateResult struct {
 	Id string `json:"id"`
 }
 
-func Create(
-	client *mgcClient.Client,
-	ctx context.Context,
+func (s *service) Create(
 	parameters CreateParameters,
 	configs CreateConfigs,
 ) (
 	result CreateResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("Create", mgcCore.RefPath("/network/security_groups/create"), client, ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Create", mgcCore.RefPath("/network/security_groups/create"), s.client, s.ctx)
 	if err != nil {
 		return
 	}

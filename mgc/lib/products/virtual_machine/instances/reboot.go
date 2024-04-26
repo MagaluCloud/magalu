@@ -22,10 +22,7 @@ import "magalu.cloud/lib/products/virtual_machine/instances"
 package instances
 
 import (
-	"context"
-
 	mgcCore "magalu.cloud/core"
-	mgcClient "magalu.cloud/lib"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
 
@@ -39,15 +36,13 @@ type RebootConfigs struct {
 	ServerUrl string `json:"serverUrl,omitempty"`
 }
 
-func Reboot(
-	client *mgcClient.Client,
-	ctx context.Context,
+func (s *service) Reboot(
 	parameters RebootParameters,
 	configs RebootConfigs,
 ) (
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("Reboot", mgcCore.RefPath("/virtual-machine/instances/reboot"), client, ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Reboot", mgcCore.RefPath("/virtual-machine/instances/reboot"), s.client, s.ctx)
 	if err != nil {
 		return
 	}

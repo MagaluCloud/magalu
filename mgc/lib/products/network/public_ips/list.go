@@ -16,10 +16,7 @@ import "magalu.cloud/lib/products/network/public_ips"
 package publicIps
 
 import (
-	"context"
-
 	mgcCore "magalu.cloud/core"
-	mgcClient "magalu.cloud/lib"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
 
@@ -48,15 +45,13 @@ type ListResultPublicIpsItem struct {
 
 type ListResultPublicIps []ListResultPublicIpsItem
 
-func List(
-	client *mgcClient.Client,
-	ctx context.Context,
+func (s *service) List(
 	configs ListConfigs,
 ) (
 	result ListResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("List", mgcCore.RefPath("/network/public_ips/list"), client, ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("List", mgcCore.RefPath("/network/public_ips/list"), s.client, s.ctx)
 	if err != nil {
 		return
 	}

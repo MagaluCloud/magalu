@@ -16,10 +16,7 @@ import "magalu.cloud/lib/products/virtual_machine/machine_types"
 package machineTypes
 
 import (
-	"context"
-
 	mgcCore "magalu.cloud/core"
-	mgcClient "magalu.cloud/lib"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
 
@@ -51,16 +48,14 @@ type ListResultInstanceTypesItem struct {
 
 type ListResultInstanceTypes []ListResultInstanceTypesItem
 
-func List(
-	client *mgcClient.Client,
-	ctx context.Context,
+func (s *service) List(
 	parameters ListParameters,
 	configs ListConfigs,
 ) (
 	result ListResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("List", mgcCore.RefPath("/virtual-machine/machine-types/list"), client, ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("List", mgcCore.RefPath("/virtual-machine/machine-types/list"), s.client, s.ctx)
 	if err != nil {
 		return
 	}

@@ -23,10 +23,7 @@ import "magalu.cloud/lib/products/block_storage/volumes"
 package volumes
 
 import (
-	"context"
-
 	mgcCore "magalu.cloud/core"
-	mgcClient "magalu.cloud/lib"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
 
@@ -41,15 +38,13 @@ type RenameConfigs struct {
 	ServerUrl string `json:"serverUrl,omitempty"`
 }
 
-func Rename(
-	client *mgcClient.Client,
-	ctx context.Context,
+func (s *service) Rename(
 	parameters RenameParameters,
 	configs RenameConfigs,
 ) (
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("Rename", mgcCore.RefPath("/block-storage/volumes/rename"), client, ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Rename", mgcCore.RefPath("/block-storage/volumes/rename"), s.client, s.ctx)
 	if err != nil {
 		return
 	}

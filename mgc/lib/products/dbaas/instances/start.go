@@ -16,10 +16,7 @@ import "magalu.cloud/lib/products/dbaas/instances"
 package instances
 
 import (
-	"context"
-
 	mgcCore "magalu.cloud/core"
-	mgcClient "magalu.cloud/lib"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
 
@@ -98,16 +95,14 @@ type StartResultVolume struct {
 	Type string `json:"type"`
 }
 
-func Start(
-	client *mgcClient.Client,
-	ctx context.Context,
+func (s *service) Start(
 	parameters StartParameters,
 	configs StartConfigs,
 ) (
 	result StartResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("Start", mgcCore.RefPath("/dbaas/instances/start"), client, ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Start", mgcCore.RefPath("/dbaas/instances/start"), s.client, s.ctx)
 	if err != nil {
 		return
 	}

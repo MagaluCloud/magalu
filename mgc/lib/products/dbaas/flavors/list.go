@@ -16,10 +16,7 @@ import "magalu.cloud/lib/products/dbaas/flavors"
 package flavors
 
 import (
-	"context"
-
 	mgcCore "magalu.cloud/core"
-	mgcClient "magalu.cloud/lib"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
 
@@ -67,16 +64,14 @@ type ListResultResultsItem struct {
 
 type ListResultResults []ListResultResultsItem
 
-func List(
-	client *mgcClient.Client,
-	ctx context.Context,
+func (s *service) List(
 	parameters ListParameters,
 	configs ListConfigs,
 ) (
 	result ListResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("List", mgcCore.RefPath("/dbaas/flavors/list"), client, ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("List", mgcCore.RefPath("/dbaas/flavors/list"), s.client, s.ctx)
 	if err != nil {
 		return
 	}

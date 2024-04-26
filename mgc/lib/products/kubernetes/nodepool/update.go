@@ -16,10 +16,7 @@ import "magalu.cloud/lib/products/kubernetes/nodepool"
 package nodepool
 
 import (
-	"context"
-
 	mgcCore "magalu.cloud/core"
-	mgcClient "magalu.cloud/lib"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
 
@@ -105,16 +102,14 @@ type UpdateResultTaints []UpdateResultTaintsItem
 
 type UpdateResultZone []string
 
-func Update(
-	client *mgcClient.Client,
-	ctx context.Context,
+func (s *service) Update(
 	parameters UpdateParameters,
 	configs UpdateConfigs,
 ) (
 	result UpdateResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("Update", mgcCore.RefPath("/kubernetes/nodepool/update"), client, ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Update", mgcCore.RefPath("/kubernetes/nodepool/update"), s.client, s.ctx)
 	if err != nil {
 		return
 	}

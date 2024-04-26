@@ -16,10 +16,7 @@ import "magalu.cloud/lib/products/network/ports"
 package ports
 
 import (
-	"context"
-
 	mgcCore "magalu.cloud/core"
-	mgcClient "magalu.cloud/lib"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
 
@@ -36,16 +33,14 @@ type DetachConfigs struct {
 
 type DetachResult any
 
-func Detach(
-	client *mgcClient.Client,
-	ctx context.Context,
+func (s *service) Detach(
 	parameters DetachParameters,
 	configs DetachConfigs,
 ) (
 	result DetachResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("Detach", mgcCore.RefPath("/network/ports/detach"), client, ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Detach", mgcCore.RefPath("/network/ports/detach"), s.client, s.ctx)
 	if err != nil {
 		return
 	}
