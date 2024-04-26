@@ -1,43 +1,142 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magalu Cloud - Login Success</title>
+    <style>
+        @font-face {
+            font-family: Magalu Textos Medium;
+            font-style: normal;
+            font-display: swap;
+            src: url(https://magalu.cloud/wp-content/uploads/2023/12/magalu-textos-medium.woff2) format("woff2")
+        }
+
+        @font-face {
+            font-family: Magalu Textos Bold;
+            font-style: normal;
+            font-display: swap;
+            src: url(https://magalu.cloud/wp-content/uploads/2023/12/magalu-textos-bold.woff2) format("woff2")
+        }
+
+        .site-header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding-block-start: 1rem;
+            padding-block-end: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        body {
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+            width: 300px;
+            padding: 20px;
+            margin: 20px auto;
+        }
+
+        .card h1 {
+            font-family: "Magalu Textos Bold", sans-serif;
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 48px;
+        }
+
+        .card p {
+            font-family: "Magalu Textos Medium", sans-serif;
+            color: #777;
+            margin-bottom: 30px;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .card button {
+            background-color: #0086FF;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .card button:hover {
+            background-color: #0086FF;
+            transform: scale(1.02);
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        @media (prefers-color-scheme: dark) {
+            body {
+                background-color: #333;
+                color: #f0f0f0;
+            }
+
+            .card {
+                background: #444;
+                color: #f0f0f0;
+            }
+
+            .card h1, .card p {
+                color: #ffffff;
+            }
+
+            .card button {
+                background-color: #00ccff;
+                color: #333;
+            }
+
+            .card button:hover {
+                background-color: #00ccff;
+                color: #f0f0f0;
+            }
+        }
+    </style>
+
 </head>
-<style>
-    body {
-        text-align: center;
-        padding: 40px 0;
-        background: #EBF0F5;
-    }
-    h1 {
-        color: #88B04B;
-        font-family: "Nunito Sans", "Helvetica Neue", sans-serif;
-        font-weight: 900;
-        font-size: 40px;
-        margin-bottom: 10px;
-    }
-    p {
-        color: #404F5E;
-        font-family: "Nunito Sans", "Helvetica Neue", sans-serif;
-        font-size:20px;
-        margin: 0;
-    }
-    i {
-        color: #9ABC66;
-        font-size: 100px;
-        line-height: 200px;
-        margin-left:-15px;
-    }
-    .card {
-        background: white;
-        padding: 60px;
-        border-radius: 4px;
-        box-shadow: 0 2px 3px #C8D0D8;
-        display: inline-block;
-        margin: 0 auto;
-    }
-</style>
 <body>
+<header class="site-header">
+    <div class="site-branding">
+        <a href="https://magalu.cloud" class="custom-logo-link">
+            <img src="https://magalu.cloud/wp-content/uploads/2023/11/Ativo-3@2x-1-1.svg" alt="Logo">
+        </a>
+    </div>
+</header>
+
 <div class="card">
-    <h1>Login Success</h1>
-    <p>You can close this page</p>
+    <h1 class="success-message">Success!</h1>
+    <p>You have successfully logged in.</p>
+    <p> The page can be closed now.</p>
 </div>
+
 </body>
 </html>
