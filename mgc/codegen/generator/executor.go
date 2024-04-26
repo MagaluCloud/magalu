@@ -83,31 +83,35 @@ func generateTypes(exec core.Executor, execGoName string) (t *templateTypes, err
 	return
 }
 
-func generateExecutor(dirname string, groupTemplateData *groupTemplateData, refPath core.RefPath, exec core.Executor, ctx *GeneratorContext) (err error) {
+func generateExecutor(dirname string, groupTemplateData *groupTemplateData, refPath core.RefPath, exec core.Executor, ctx *GeneratorContext) (executorTemplateData, error) {
 	execDirName, execGoName := getExecutorNames(exec.Name())
 	_, isTerminatorExecutor := exec.(core.TerminatorExecutor)
 	_, isConfirmableExecutor := exec.(core.ConfirmableExecutor)
 	types, err := generateTypes(exec, execGoName)
 	if err != nil {
-		return
+		return executorTemplateData{}, err
 	}
 
-	return templateWrite(
+	execData := executorTemplateData{
+		ModuleName:          ctx.ModuleName,
+		PackageName:         groupTemplateData.PackageName,
+		PackageImport:       groupTemplateData.PackageImport,
+		ClientImport:        ctx.ModuleName,
+		HelpersImport:       path.Join(ctx.ModuleName, helpersPackage),
+		GoName:              execGoName,
+		TerminatorExecutor:  isTerminatorExecutor,
+		ConfirmableExecutor: isConfirmableExecutor,
+		RefPath:             refPath,
+		Types:               types,
+		DescriptorSpec:      exec.DescriptorSpec(),
+	}
+
+	err = templateWrite(
 		ctx,
 		path.Join(dirname, execDirName+".go"),
 		executorTemplate,
-		executorTemplateData{
-			ModuleName:          ctx.ModuleName,
-			PackageName:         groupTemplateData.PackageName,
-			PackageImport:       groupTemplateData.PackageImport,
-			ClientImport:        ctx.ModuleName,
-			HelpersImport:       path.Join(ctx.ModuleName, helpersPackage),
-			GoName:              execGoName,
-			TerminatorExecutor:  isTerminatorExecutor,
-			ConfirmableExecutor: isConfirmableExecutor,
-			RefPath:             refPath,
-			Types:               types,
-			DescriptorSpec:      exec.DescriptorSpec(),
-		},
+		execData,
 	)
+
+	return execData, err
 }

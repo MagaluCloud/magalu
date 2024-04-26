@@ -22,14 +22,28 @@ type groupTemplateData struct {
 	core.DescriptorSpec
 }
 
+type serviceTemplateData struct {
+	ModuleName    string
+	PackageName   string
+	PackageImport string
+	RefPath       core.RefPath
+	ClientImport  string
+	core.DescriptorSpec
+	ExecutorsData []executorTemplateData
+}
+
 var (
 	//go:embed group.go.template
 	groupTemplateContents string
-	groupTemplate         *template.Template
+	//go:embed service.go.template
+	serviceTemplateContents string
+	groupTemplate           *template.Template
+	serviceTemplate         *template.Template
 )
 
 func init() {
 	groupTemplate = templateMust("group.go.template", groupTemplateContents)
+	serviceTemplate = templateMust("service.go.template", serviceTemplateContents)
 }
 
 func getGroupNames(name string) (fileName string, goName string) {
@@ -52,6 +66,14 @@ func generateGroup(dirname string, relPath string, refPath core.RefPath, group c
 		PackageName:    groupGoName,
 		PackageImport:  path.Join(ctx.ModuleName, relPath, groupDirName),
 		DescriptorSpec: group.DescriptorSpec(),
+	}
+
+	serviceTemplateData := &serviceTemplateData{
+		ModuleName:     ctx.ModuleName,
+		PackageName:    groupGoName,
+		PackageImport:  path.Join(ctx.ModuleName, relPath, groupDirName),
+		DescriptorSpec: group.DescriptorSpec(),
+		ExecutorsData:  []executorTemplateData{},
 	}
 
 	err = templateWrite(
@@ -80,16 +102,33 @@ func generateGroup(dirname string, relPath string, refPath core.RefPath, group c
 			return true, nil
 
 		case core.Executor:
-			err = generateExecutor(p, groupTemplateData, childRefPath, c, ctx)
+			execData, err := generateExecutor(p, groupTemplateData, childRefPath, c, ctx)
 			if err != nil {
 				return false, &utils.ChainedError{Name: child.Name(), Err: err}
 			}
+			serviceTemplateData.ClientImport = ctx.ModuleName
+			serviceTemplateData.ExecutorsData = append(serviceTemplateData.ExecutorsData, execData)
 			return true, nil
 
 		default:
 			return false, &utils.ChainedError{Name: child.Name(), Err: fmt.Errorf("child %v not group/executor", child)}
 		}
 	})
+
+	defer func() {
+		if len(serviceTemplateData.ExecutorsData) > 0 {
+			err = templateWrite(
+				ctx,
+				path.Join(p, "service.go"),
+				serviceTemplate,
+				serviceTemplateData,
+			)
+			if err != nil {
+				return
+			}
+		}
+	}()
+
 	return
 }
 
