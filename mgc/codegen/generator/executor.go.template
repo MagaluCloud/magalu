@@ -23,7 +23,7 @@ package {{ .PackageName }}
 
 import (
 
-	mgcCore "magalu.cloud/core"	
+	mgcCore "magalu.cloud/core"
 	mgcHelpers "{{ .HelpersImport }}"
 )
 {{- range .Types.Types.Definitions }}
@@ -45,7 +45,7 @@ struct {
 {{- end }}
 
 func (s *service) {{ .GoName }}(
-	
+
 {{- if .Types.Parameters }}
 	parameters {{ .Types.Parameters }},
 {{- end }}
@@ -89,7 +89,7 @@ func (s *service) {{ .GoName }}(
 }
 {{- if .TerminatorExecutor }}
 
-func (s *service) {{ .GoName }}UntilTermination(	
+func (s *service) {{ .GoName }}UntilTermination(
 {{- if .Types.Parameters }}
 	parameters {{ .Types.Parameters }},
 {{- end }}
@@ -110,7 +110,7 @@ func (s *service) {{ .GoName }}UntilTermination(
 	exec, ok := e.(mgcCore.TerminatorExecutor)
 	if !ok {
 		// Not expected, but let's fallback
-		return s.{{ .GoName }}(			
+		return s.{{ .GoName }}(
 			{{- if .Types.Parameters }}
 			parameters,
 			{{- end }}
@@ -147,7 +147,7 @@ func (s *service) {{ .GoName }}UntilTermination(
 {{- end }}
 {{- if .ConfirmableExecutor }}
 
-func (s *service) {{ .GoName }}ConfirmPrompt(	
+func (s *service) {{ .GoName }}ConfirmPrompt(
 {{- if .Types.Parameters }}
 	parameters {{ .Types.Parameters }},
 {{- end }}

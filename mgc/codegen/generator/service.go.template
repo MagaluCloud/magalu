@@ -5,7 +5,7 @@ package {{ .PackageName }}
 
 import (
 	"context"
-	
+
 	mgcClient "{{ .ClientImport }}"
 )
 
@@ -16,9 +16,9 @@ type service struct {
 }
 
 type Service interface {
-	
-	
-	{{- range .ExecutorsData }}	
+
+
+	{{- range .ExecutorsData }}
 	{{ .GoName }}( {{- if .Types.Parameters }}	parameters {{ .Types.Parameters }}, {{- end }} {{- if .Types.Configs }} configs {{ .Types.Configs }},{{- end }}) ({{- if .Types.Result }} result {{ .Types.Result }},{{- end}} err error,)
 	{{- end }}
 }
