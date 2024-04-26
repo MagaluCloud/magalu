@@ -7,5 +7,3 @@ type APIKeyParameters struct {
 func (a APIKeyParameters) GetAPIKey() string {
 	return a.Key
 }
-
-const APIKeyAuthMethod = "api_key"

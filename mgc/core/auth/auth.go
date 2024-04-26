@@ -29,10 +29,22 @@ const (
 	authFilename    = "auth.yaml"
 )
 
+type SecurityMethod int
+
 const (
-	bearerTokenMethod = "bearer_token"
-	apiKeyMethod      = "api_key"
+	BearerToken SecurityMethod = iota
+	APIKey
 )
+
+func (s SecurityMethod) String() string {
+	switch s {
+	case BearerToken:
+		return "bearerauth" // these hard-coded return values comes from security requirement field on openAPI spec
+	case APIKey:
+		return "apikeyauth"
+	}
+	return ""
+}
 
 // contextKey is an unexported type for keys defined in this package.
 // This prevents collisions with keys defined in other packages.
@@ -334,27 +346,24 @@ func (o *Auth) SetAccessKey(id string, key string) error {
 	return o.writeCurrentConfig()
 }
 
-func (o *Auth) SetAPIKey(ctx context.Context, params APIKeyParametersList) error {
-	a := FromContext(ctx)
-
-	a.apiKey = params.GetAPIKey()
+func (o *Auth) SetAPIKey(params APIKeyParametersList) error {
+	err := o.setCurrentSecurityMethod(APIKey)
+	if err != nil {
+		return err
+	}
+	o.apiKey = params.GetAPIKey()
 	return o.writeCurrentConfig()
 }
 
 // SetCurrentSecurityMethod informs auth what method will be used.
 // The possibles methods include "bearer_token" and "api_key".
-func (o *Auth) SetCurrentSecurityMethod(ctx context.Context, securityMethod string) error {
-	a := FromContext(ctx)
-	switch securityMethod {
-	case bearerTokenMethod:
-		a.currentSecurityMethod = "access_token"
-	case apiKeyMethod:
-		a.currentSecurityMethod = "apikeyauth"
-	default:
-		return fmt.Errorf("unknown security method %s", securityMethod)
+func (o *Auth) setCurrentSecurityMethod(securityMethod SecurityMethod) error {
+	if securityMethod.String() == "" {
+		return fmt.Errorf("unsupported security method")
 	}
+	o.currentSecurityMethod = securityMethod.String()
 
-	return a.writeCurrentConfig()
+	return o.writeCurrentConfig()
 }
 
 func (o *Auth) writeCurrentConfig() error {
