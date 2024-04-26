@@ -22,10 +22,8 @@ import "{{ .PackageImport }}"
 package {{ .PackageName }}
 
 import (
-	"context"
 
-	mgcCore "magalu.cloud/core"
-	mgcClient "{{ .ClientImport }}"
+	mgcCore "magalu.cloud/core"	
 	mgcHelpers "{{ .HelpersImport }}"
 )
 {{- range .Types.Types.Definitions }}
@@ -46,9 +44,8 @@ struct {
 {{- end -}}
 {{- end }}
 
-func {{ .GoName }}(
-	client *mgcClient.Client,
-	ctx context.Context,
+func (s *service) {{ .GoName }}(
+	
 {{- if .Types.Parameters }}
 	parameters {{ .Types.Parameters }},
 {{- end }}
@@ -61,7 +58,7 @@ func {{ .GoName }}(
 {{- end}}
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor({{ printf "%q" .GoName }}, mgcCore.RefPath({{ printf "%q" .RefPath }}), client, ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor({{ printf "%q" .GoName }}, mgcCore.RefPath({{ printf "%q" .RefPath }}), s.client, s.ctx)
 	if err != nil {
 		return
 	}
@@ -92,9 +89,7 @@ func {{ .GoName }}(
 }
 {{- if .TerminatorExecutor }}
 
-func {{ .GoName }}UntilTermination(
-	client *mgcClient.Client,
-	ctx context.Context,
+func (s *service) {{ .GoName }}UntilTermination(	
 {{- if .Types.Parameters }}
 	parameters {{ .Types.Parameters }},
 {{- end }}
@@ -107,7 +102,7 @@ func {{ .GoName }}UntilTermination(
 {{- end}}
 	err error,
 ) {
-	e, ctx, err := mgcHelpers.PrepareExecutor({{ printf "%q" .GoName }}, mgcCore.RefPath({{ printf "%q" .RefPath }}), client, ctx)
+	e, ctx, err := mgcHelpers.PrepareExecutor({{ printf "%q" .GoName }}, mgcCore.RefPath({{ printf "%q" .RefPath }}), s.client, s.ctx)
 	if err != nil {
 		return
 	}
@@ -115,9 +110,7 @@ func {{ .GoName }}UntilTermination(
 	exec, ok := e.(mgcCore.TerminatorExecutor)
 	if !ok {
 		// Not expected, but let's fallback
-		return {{ .GoName }}(
-			client,
-			ctx,
+		return s.{{ .GoName }}(			
 			{{- if .Types.Parameters }}
 			parameters,
 			{{- end }}
@@ -154,8 +147,7 @@ func {{ .GoName }}UntilTermination(
 {{- end }}
 {{- if .ConfirmableExecutor }}
 
-func {{ .GoName }}ConfirmPrompt(
-	client *mgcClient.Client,
+func (s *service) {{ .GoName }}ConfirmPrompt(	
 {{- if .Types.Parameters }}
 	parameters {{ .Types.Parameters }},
 {{- end }}
@@ -163,7 +155,7 @@ func {{ .GoName }}ConfirmPrompt(
 	configs {{ .Types.Configs }},
 {{- end }}
 ) (message string) {
-	e, err := mgcHelpers.ResolveExecutor({{ printf "%q" .GoName }}, mgcCore.RefPath({{ printf "%q" .RefPath }}), client)
+	e, err := mgcHelpers.ResolveExecutor({{ printf "%q" .GoName }}, mgcCore.RefPath({{ printf "%q" .RefPath }}), s.client)
 	if err != nil {
 		return
 	}

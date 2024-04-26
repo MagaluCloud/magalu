@@ -1,0 +1,28 @@
+/*
+import "{{ .PackageImport }}"
+*/
+package {{ .PackageName }}
+
+import (
+	"context"
+	
+	mgcClient "{{ .ClientImport }}"
+)
+
+
+type service struct {
+	ctx    context.Context
+	client *mgcClient.Client
+}
+
+type Service interface {
+	
+	
+	{{- range .ExecutorsData }}	
+	{{ .GoName }}( {{- if .Types.Parameters }}	parameters {{ .Types.Parameters }}, {{- end }} {{- if .Types.Configs }} configs {{ .Types.Configs }},{{- end }}) ({{- if .Types.Result }} result {{ .Types.Result }},{{- end}} err error,)
+	{{- end }}
+}
+
+func NewService(ctx context.Context, client *mgcClient.Client) Service {
+	return &service{ctx, client}
+}
