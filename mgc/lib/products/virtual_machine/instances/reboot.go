@@ -3,7 +3,7 @@ Executor: reboot
 
 # Summary
 
-Starts a running or suspended instance.
+Reboot a running or suspended instance.
 
 # Description
 

@@ -9,7 +9,7 @@ Usage:
 ## Product catalog:
 - Flags:
 - -h, --help              help for list
-- --quota-slug enum   quota_slug: Serivce to check quota usage (one of "nics", "public_ips", "security_group_rules", "security_groups", "subnet_pools", "subnets" or "vpcs") (required)
+- --quota-slug enum   quota_slug: Service to check quota usage (one of "nics", "public_ips", "security_group_rules", "security_groups", "subnet_pools", "subnets" or "vpcs") (required)
 - -v, --version           version for list
 
 ## Other commands:

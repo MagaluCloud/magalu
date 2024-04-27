@@ -9,7 +9,7 @@ Executor: list
 
 Returns a list of rules for a provided security_group_id
 
-Version: 1.114.3
+Version: 1.119.0
 
 import "magalu.cloud/lib/products/network/rules"
 */

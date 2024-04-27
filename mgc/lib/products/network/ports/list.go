@@ -9,7 +9,7 @@ Executor: list
 
 Return a detailed list of ports from the provided tenant_id
 
-Version: 1.114.3
+Version: 1.119.0
 
 import "magalu.cloud/lib/products/network/ports"
 */

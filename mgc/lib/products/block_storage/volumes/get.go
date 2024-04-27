@@ -55,8 +55,9 @@ type GetResult struct {
 
 type GetResultAttachment struct {
 	AttachedAt string                      `json:"attached_at"`
-	Device     string                      `json:"device,omitempty"`
+	Device     *string                     `json:"device,omitempty"`
 	Instance   GetResultAttachmentInstance `json:"instance"`
+	MachineId  string                      `json:"machine_id"`
 }
 
 // any of: GetResultAttachmentInstance0, GetResultAttachmentInstance1

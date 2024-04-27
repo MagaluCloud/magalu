@@ -57,8 +57,9 @@ type ListResultVolumesItem struct {
 
 type ListResultVolumesItemAttachment struct {
 	AttachedAt string                                  `json:"attached_at"`
-	Device     string                                  `json:"device,omitempty"`
+	Device     *string                                 `json:"device,omitempty"`
 	Instance   ListResultVolumesItemAttachmentInstance `json:"instance"`
+	MachineId  string                                  `json:"machine_id"`
 }
 
 // any of: ListResultVolumesItemAttachmentInstance0, ListResultVolumesItemAttachmentInstance1

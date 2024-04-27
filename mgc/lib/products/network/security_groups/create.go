@@ -9,7 +9,7 @@ Executor: create
 
 # Create a Security Group
 
-Version: 1.114.3
+Version: 1.119.0
 
 import "magalu.cloud/lib/products/network/security_groups"
 */
@@ -24,6 +24,8 @@ type CreateParameters struct {
 	Description   *string `json:"description,omitempty"`
 	Name          *string `json:"name"`
 	ValidateQuota bool    `json:"validate_quota,omitempty"`
+	Wait          bool    `json:"wait,omitempty"`
+	WaitTimeout   int     `json:"wait_timeout,omitempty"`
 }
 
 type CreateConfigs struct {

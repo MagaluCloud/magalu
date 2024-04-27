@@ -9,7 +9,7 @@ Executor: get
 
 # Returns a subnet details
 
-Version: 1.114.3
+Version: 1.119.0
 
 import "magalu.cloud/lib/products/network/subnets/subnets"
 */
@@ -42,6 +42,7 @@ type GetResult struct {
 	Name           *string                 `json:"name,omitempty"`
 	Updated        *string                 `json:"updated,omitempty"`
 	VpcId          string                  `json:"vpc_id"`
+	Zone           string                  `json:"zone"`
 }
 
 type GetResultDhcpPoolsItem struct {
