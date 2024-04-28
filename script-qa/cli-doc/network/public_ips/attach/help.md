@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./cli network public-ips attach [public-ip-id] [port-id] [flags]
+  ./mgc network public-ips attach [public-ip-id] [port-id] [flags]
 ```
 
 ## Product catalog:

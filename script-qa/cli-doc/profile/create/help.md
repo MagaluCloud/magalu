@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./cli profile create [name] [copy] [flags]
+  ./mgc profile create [name] [copy] [flags]
 ```
 
 ## Product catalog:

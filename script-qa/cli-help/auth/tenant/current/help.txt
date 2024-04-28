@@ -1,7 +1,7 @@
 The current Tenant is used for all Magalu HTTP requests
 
 Usage:
-  ./cli auth tenant current [flags]
+  ./mgc auth tenant current [flags]
 
 Flags:
   -h, --help   help for current

@@ -1,7 +1,7 @@
 Lists all available flavors.
 
 Usage:
-  ./cli kubernetes flavor list [flags]
+  ./mgc kubernetes flavor list [flags]
 
 Flags:
   -h, --help      help for list

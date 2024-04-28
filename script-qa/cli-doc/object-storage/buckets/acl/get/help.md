@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./cli object-storage buckets acl get [dst] [flags]
+  ./mgc object-storage buckets acl get [dst] [flags]
 ```
 
 ## Product catalog:

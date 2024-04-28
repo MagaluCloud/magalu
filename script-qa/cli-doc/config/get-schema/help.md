@@ -4,7 +4,7 @@ information about the accepted values for the Config, constraints, type, descrip
 ## Usage:
 ```bash
 Usage:
-  ./cli config get-schema [key] [flags]
+  ./mgc config get-schema [key] [flags]
 ```
 
 ## Product catalog:

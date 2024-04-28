@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./cli dbaas instances delete [instance-id] [flags]
+  ./mgc dbaas instances delete [instance-id] [flags]
 ```
 
 ## Product catalog:

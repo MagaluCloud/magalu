@@ -1,7 +1,7 @@
 Returns a list of available engines.
 
 Usage:
-  ./cli dbaas engines list [flags]
+  ./mgc dbaas engines list [flags]
 
 Flags:
       --control.limit integer    Limit (range: 1 - 50) (default 10)

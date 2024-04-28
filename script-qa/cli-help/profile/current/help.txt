@@ -1,7 +1,7 @@
 Shows current selected profile. Any changes to auth or config values will only affect this profile
 
 Usage:
-  ./cli profile current [flags]
+  ./mgc profile current [flags]
 
 Flags:
   -h, --help   help for current

@@ -3,12 +3,12 @@
 ## Usage:
 ```bash
 Usage:
-  ./cli object-storage objects list [dst] [flags]
+  ./mgc object-storage objects list [dst] [flags]
 ```
 
 ## Product catalog:
 - Examples:
-- ./cli object-storage objects list --dst="bucket1" --max-items=1000
+- ./mgc object-storage objects list --dst="bucket1" --max-items=1000
 
 ## Other commands:
 - Flags:

@@ -1,7 +1,7 @@
 List all existing Buckets
 
 Usage:
-  ./cli object-storage buckets list [flags]
+  ./mgc object-storage buckets list [flags]
 
 Flags:
   -h, --help   help for list

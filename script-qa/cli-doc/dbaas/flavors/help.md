@@ -3,8 +3,8 @@
 ## Usage:
 ```bash
 Usage:
-  ./cli dbaas flavors [flags]
-  ./cli dbaas flavors [command]
+  ./mgc dbaas flavors [flags]
+  ./mgc dbaas flavors [command]
 ```
 
 ## Product catalog:

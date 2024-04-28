@@ -3,12 +3,12 @@
 ## Usage:
 ```bash
 Usage:
-  ./cli object-storage objects upload-dir [src] [dst] [flags]
+  ./mgc object-storage objects upload-dir [src] [dst] [flags]
 ```
 
 ## Product catalog:
 - Examples:
-- ./cli object-storage objects upload-dir --dst="my-bucket/dir/" --src="path/to/folder"
+- ./mgc object-storage objects upload-dir --dst="my-bucket/dir/" --src="path/to/folder"
 
 ## Other commands:
 - Flags:

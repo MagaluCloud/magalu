@@ -1,7 +1,7 @@
 List all backups.
 
 Usage:
-  ./cli dbaas instances backups list [instance-id] [flags]
+  ./mgc dbaas instances backups list [instance-id] [flags]
 
 Flags:
       --control.limit integer     Limit (range: 1 - 50) (default 10)

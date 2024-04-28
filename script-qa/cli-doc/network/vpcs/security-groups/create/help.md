@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./cli network vpcs security-groups create [vpc-id] [flags]
+  ./mgc network vpcs security-groups create [vpc-id] [flags]
 ```
 
 ## Product catalog:

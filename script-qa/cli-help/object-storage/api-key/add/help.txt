@@ -1,7 +1,7 @@
 Change current Object Storage credential
 
 Usage:
-  ./cli object-storage api-key add [key-id] [key-secret] [flags]
+  ./mgc object-storage api-key add [key-id] [key-secret] [flags]
 
 Flags:
   -h, --help                help for add

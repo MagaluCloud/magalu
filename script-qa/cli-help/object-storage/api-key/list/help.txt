@@ -1,7 +1,7 @@
 List valid Object Storage credentials
 
 Usage:
-  ./cli object-storage api-key list [flags]
+  ./mgc object-storage api-key list [flags]
 
 Flags:
   -h, --help   help for list

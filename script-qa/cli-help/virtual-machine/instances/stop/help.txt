@@ -7,7 +7,7 @@ the instance that you want to stop.
 - The instance must be in the running state.
 
 Usage:
-  ./cli virtual-machine instances stop [id] [flags]
+  ./mgc virtual-machine instances stop [id] [flags]
 
 Flags:
       --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")

@@ -1,7 +1,7 @@
 Enable versioning for a Bucket
 
 Usage:
-  ./cli object-storage buckets versioning enable [bucket] [flags]
+  ./mgc object-storage buckets versioning enable [bucket] [flags]
 
 Flags:
       --bucket string   Bucket name to enable versioning (required)

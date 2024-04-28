@@ -1,7 +1,7 @@
 Detach a Public IP from a Port
 
 Usage:
-  ./cli network public-ips port-attachment delete [flags]
+  ./mgc network public-ips port-attachment delete [flags]
 
 Flags:
   -h, --help                  help for delete

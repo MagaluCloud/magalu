@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./cli http do [flags]
+  ./mgc http do [flags]
 ```
 
 ## Product catalog:

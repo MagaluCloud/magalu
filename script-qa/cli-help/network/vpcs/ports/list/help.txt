@@ -1,7 +1,7 @@
 List VPC ports
 
 Usage:
-  ./cli network vpcs ports list [vpc-id] [flags]
+  ./mgc network vpcs ports list [vpc-id] [flags]
 
 Flags:
       --control.limit integer        Items Per Page (min: 1) (default 10)

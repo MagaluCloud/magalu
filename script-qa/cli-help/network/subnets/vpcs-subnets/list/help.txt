@@ -1,7 +1,7 @@
 Returns a list of subnets for a provided vpc_id
 
 Usage:
-  ./cli network subnets vpcs-subnets list [vpc-id] [flags]
+  ./mgc network subnets vpcs-subnets list [vpc-id] [flags]
 
 Flags:
   -h, --help            help for list

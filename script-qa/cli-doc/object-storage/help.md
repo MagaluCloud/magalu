@@ -3,8 +3,8 @@
 ## Usage:
 ```bash
 Usage:
-  ./cli object-storage [flags]
-  ./cli object-storage [command]
+  ./mgc object-storage [flags]
+  ./mgc object-storage [command]
 ```
 
 ## Product catalog:

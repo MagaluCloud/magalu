@@ -1,7 +1,7 @@
 Retrieves the kubeconfig of a Kubernetes cluster by cluster_uuid.
 
 Usage:
-  ./cli kubernetes cluster kubeconfig [cluster-id] [flags]
+  ./mgc kubernetes cluster kubeconfig [cluster-id] [flags]
 
 Flags:
       --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")

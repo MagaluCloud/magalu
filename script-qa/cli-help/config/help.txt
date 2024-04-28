@@ -4,8 +4,8 @@ Config values may also be loaded via Environment Variables. Any Config available
 (see 'list') may be exported as an env variable in uppercase with the 'MGC_' prefix
 
 Usage:
-  ./cli config [flags]
-  ./cli config [command]
+  ./mgc config [flags]
+  ./mgc config [command]
 
 Commands:
   delete      Delete/unset a Config value that had been previously set
@@ -20,5 +20,5 @@ Flags:
 Global Flags:
       --cli.show-cli-globals   Show all CLI global flags on usage text
 
-Use "./cli config [command] --help" for more information about a command.
+Use "./mgc config [command] --help" for more information about a command.
 

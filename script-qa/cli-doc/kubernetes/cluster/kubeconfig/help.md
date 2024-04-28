@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./cli kubernetes cluster kubeconfig [cluster-id] [flags]
+  ./mgc kubernetes cluster kubeconfig [cluster-id] [flags]
 ```
 
 ## Product catalog:

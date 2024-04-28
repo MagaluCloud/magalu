@@ -16,10 +16,10 @@ The Volume retype will be completed when the Volume status returns to
  all Volume Types and obtain the ID of the Volume Type you want to use.
 
 Usage:
-  ./cli block-storage volumes retype [id] [flags]
+  ./mgc block-storage volumes retype [id] [flags]
 
 Examples:
-  ./cli block-storage volumes retype --new-type.id="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" --new-type.name="some_resource_name"
+  ./mgc block-storage volumes retype --new-type.id="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" --new-type.name="some_resource_name"
 
 Flags:
       --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")

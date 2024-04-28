@@ -1,7 +1,7 @@
 Virtual Private Cloud (VPC) | security-groups
 
 Usage:
-  ./cli network vpcs security-groups [flags]
+  ./mgc network vpcs security-groups [flags]
 
 Flags:
   -h, --help      help for security-groups

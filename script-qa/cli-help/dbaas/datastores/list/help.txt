@@ -1,7 +1,7 @@
 Returns a list of available datastore.
 
 Usage:
-  ./cli dbaas datastores list [flags]
+  ./mgc dbaas datastores list [flags]
 
 Flags:
       --control.limit integer    Limit (range: 1 - 50) (default 10)

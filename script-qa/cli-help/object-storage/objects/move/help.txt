@@ -2,10 +2,10 @@ Moves one object from a source to a destination.
 It can be either local or remote but not both local (Local -> Remote, Remote -> Local, Remote -> Remote)
 
 Usage:
-  ./cli object-storage objects move [src] [dst] [flags]
+  ./mgc object-storage objects move [src] [dst] [flags]
 
 Examples:
-  ./cli object-storage objects move --dst="s3://my-bucket/test.txt" --src="./hello.txt"
+  ./mgc object-storage objects move --dst="s3://my-bucket/test.txt" --src="./hello.txt"
 
 Flags:
       --dst uri   Destination to put the file into (required)

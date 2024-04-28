@@ -1,8 +1,8 @@
 Virtual Private Cloud (VPC) | ports
 
 Usage:
-  ./cli network vpcs ports [flags]
-  ./cli network vpcs ports [command]
+  ./mgc network vpcs ports [flags]
+  ./mgc network vpcs ports [command]
 
 Commands:
   create      Create Port
@@ -15,5 +15,5 @@ Flags:
 Global Flags:
       --cli.show-cli-globals   Show all CLI global flags on usage text
 
-Use "./cli network vpcs ports [command] --help" for more information about a command.
+Use "./mgc network vpcs ports [command] --help" for more information about a command.
 

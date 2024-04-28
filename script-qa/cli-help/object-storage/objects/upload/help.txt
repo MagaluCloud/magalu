@@ -1,10 +1,10 @@
 Upload a file to a bucket
 
 Usage:
-  ./cli object-storage objects upload [src] [dst] [flags]
+  ./mgc object-storage objects upload [src] [dst] [flags]
 
 Examples:
-  ./cli object-storage objects upload --dst="my-bucket/dir/file.txt" --src="./file.txt"
+  ./mgc object-storage objects upload --dst="my-bucket/dir/file.txt" --src="./file.txt"
 
 Flags:
       --dst uri    Full destination path in the bucket with desired filename (required)

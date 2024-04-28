@@ -1,7 +1,7 @@
 Delete all VPCs from the provided tenant_id
 
 Usage:
-  ./cli network vpcs delete-all [flags]
+  ./mgc network vpcs delete-all [flags]
 
 Flags:
   -h, --help      help for delete-all

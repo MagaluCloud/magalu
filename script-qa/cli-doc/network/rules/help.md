@@ -3,8 +3,8 @@
 ## Usage:
 ```bash
 Usage:
-  ./cli network rules [flags]
-  ./cli network rules [command]
+  ./mgc network rules [flags]
+  ./mgc network rules [command]
 ```
 
 ## Product catalog:

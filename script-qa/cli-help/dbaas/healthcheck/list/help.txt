@@ -1,7 +1,7 @@
 Health Check
 
 Usage:
-  ./cli dbaas healthcheck list [flags]
+  ./mgc dbaas healthcheck list [flags]
 
 Flags:
   -h, --help      help for list

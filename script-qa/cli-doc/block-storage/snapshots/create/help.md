@@ -22,6 +22,6 @@ The Snapshot can be used when it reaches the "available" state and the
 ## Flags:
 ```bash
 Usage:
-  ./cli block-storage snapshots create [flags]
+  ./mgc block-storage snapshots create [flags]
 ```
 

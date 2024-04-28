@@ -1,7 +1,7 @@
 Deletes a node pool in a Kubernetes cluster by nodepool_uuid.
 
 Usage:
-  ./cli kubernetes nodepool delete [cluster-id] [node-pool-id] [flags]
+  ./mgc kubernetes nodepool delete [cluster-id] [node-pool-id] [flags]
 
 Flags:
       --cluster-id uuid     Cluster's UUID. (required)

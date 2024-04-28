@@ -3,8 +3,8 @@
 ## Usage:
 ```bash
 Usage:
-  ./cli virtual-machine machine-types [flags]
-  ./cli virtual-machine machine-types [command]
+  ./mgc virtual-machine machine-types [flags]
+  ./mgc virtual-machine machine-types [command]
 ```
 
 ## Product catalog:

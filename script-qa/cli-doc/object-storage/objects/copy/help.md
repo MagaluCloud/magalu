@@ -3,12 +3,12 @@
 ## Usage:
 ```bash
 Usage:
-  ./cli object-storage objects copy [src] [dst] [flags]
+  ./mgc object-storage objects copy [src] [dst] [flags]
 ```
 
 ## Product catalog:
 - Examples:
-- ./cli object-storage objects copy --dst="bucket2/dir/file.txt" --src="bucket1/file.txt"
+- ./mgc object-storage objects copy --dst="bucket2/dir/file.txt" --src="bucket1/file.txt"
 
 ## Other commands:
 - Flags:

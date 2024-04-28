@@ -5,7 +5,7 @@ Renames a Snapshot with the id provided in the current tenant which is logged in
 the snapshot that you want to rename.
 
 Usage:
-  ./cli virtual-machine snapshots rename [id] [flags]
+  ./mgc virtual-machine snapshots rename [id] [flags]
 
 Flags:
       --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")

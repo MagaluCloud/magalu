@@ -13,7 +13,7 @@ Delete a Snapshot for the currently authenticated tenant.
  a list of all Volumes and obtain the ID of the restored Volume.
 
 Usage:
-  ./cli block-storage snapshots delete [id] [flags]
+  ./mgc block-storage snapshots delete [id] [flags]
 
 Flags:
   -h, --help      help for delete

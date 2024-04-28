@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./cli block-storage volume-attachment delete [flags]
+  ./mgc block-storage volume-attachment delete [flags]
 ```
 
 ## Product catalog:

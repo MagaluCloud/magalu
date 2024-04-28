@@ -1,7 +1,7 @@
 Returns a list of database instances for a x-tenant-id.
 
 Usage:
-  ./cli dbaas instances list [flags]
+  ./mgc dbaas instances list [flags]
 
 Flags:
       --control.expand enum      

@@ -4,8 +4,8 @@ Operations with snapshots for instances.
 ## Usage:
 ```bash
 Usage:
-  ./cli virtual-machine snapshots [flags]
-  ./cli virtual-machine snapshots [command]
+  ./mgc virtual-machine snapshots [flags]
+  ./mgc virtual-machine snapshots [command]
 ```
 
 ## Product catalog:

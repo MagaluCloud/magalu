@@ -1,7 +1,7 @@
 Gets nodes in a node pool by nodepool_uuid.
 
 Usage:
-  ./cli kubernetes nodepool get [cluster-id] [node-pool-id] [flags]
+  ./mgc kubernetes nodepool get [cluster-id] [node-pool-id] [flags]
 
 Flags:
       --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")

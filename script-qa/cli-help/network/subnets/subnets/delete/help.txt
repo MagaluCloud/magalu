@@ -1,7 +1,7 @@
 Delete a subnet from the provided tenant_id
 
 Usage:
-  ./cli network subnets subnets delete [subnet-id] [flags]
+  ./mgc network subnets subnets delete [subnet-id] [flags]
 
 Flags:
   -h, --help               help for delete

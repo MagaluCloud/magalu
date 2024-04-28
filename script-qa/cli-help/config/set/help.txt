@@ -1,7 +1,7 @@
 Set a specific Config value in the configuration file
 
 Usage:
-  ./cli config set [key] [value] [flags]
+  ./mgc config set [key] [value] [flags]
 
 Flags:
   -h, --help             help for set

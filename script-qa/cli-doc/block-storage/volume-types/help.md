@@ -3,8 +3,8 @@
 ## Usage:
 ```bash
 Usage:
-  ./cli block-storage volume-types [flags]
-  ./cli block-storage volume-types [command]
+  ./mgc block-storage volume-types [flags]
+  ./mgc block-storage volume-types [command]
 ```
 
 ## Product catalog:

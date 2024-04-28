@@ -4,8 +4,8 @@ can generate a command line on-demand for Rest manipulation
 ## Usage:
 ```bash
 Usage:
-  ./cli [flags]
-  ./cli [command]
+  ./mgc [flags]
+  ./mgc [command]
 ```
 
 ## Product catalog:
@@ -30,7 +30,7 @@ Usage:
 ```bash
 Flags:
       --cli.show-cli-globals   Show all CLI global flags on usage text
-  -h, --help                   help for ./cli
-  -v, --version                version for ./cli
+  -h, --help                   help for ./mgc
+  -v, --version                version for ./mgc
 ```
 

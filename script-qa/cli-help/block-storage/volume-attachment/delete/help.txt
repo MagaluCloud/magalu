@@ -1,7 +1,7 @@
 Detach a volume from a virtual machine instance
 
 Usage:
-  ./cli block-storage volume-attachment delete [flags]
+  ./mgc block-storage volume-attachment delete [flags]
 
 Flags:
       --block-storage-id uuid     Id

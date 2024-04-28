@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./cli kubernetes cluster delete [cluster-id] [flags]
+  ./mgc kubernetes cluster delete [cluster-id] [flags]
 ```
 
 ## Product catalog:

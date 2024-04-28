@@ -1,7 +1,7 @@
 Get a Virtual Machine instance details
 
 Usage:
-  ./cli virtual-machine instances get [id] [flags]
+  ./mgc virtual-machine instances get [id] [flags]
 
 Flags:
       --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")

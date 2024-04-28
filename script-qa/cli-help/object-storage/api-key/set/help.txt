@@ -1,7 +1,7 @@
 Change current Object Storage credential to selected
 
 Usage:
-  ./cli object-storage api-key set [uuid] [flags]
+  ./mgc object-storage api-key set [uuid] [flags]
 
 Flags:
   -h, --help          help for set

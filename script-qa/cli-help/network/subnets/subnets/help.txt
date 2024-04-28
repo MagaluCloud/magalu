@@ -1,8 +1,8 @@
 VPC Subnets | subnets
 
 Usage:
-  ./cli network subnets subnets [flags]
-  ./cli network subnets subnets [command]
+  ./mgc network subnets subnets [flags]
+  ./mgc network subnets subnets [command]
 
 Commands:
   delete      Delete a Subnet
@@ -16,5 +16,5 @@ Flags:
 Global Flags:
       --cli.show-cli-globals   Show all CLI global flags on usage text
 
-Use "./cli network subnets subnets [command] --help" for more information about a command.
+Use "./mgc network subnets subnets [command] --help" for more information about a command.
 

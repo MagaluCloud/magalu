@@ -1,10 +1,10 @@
 Upload a directory to a bucket
 
 Usage:
-  ./cli object-storage objects upload-dir [src] [dst] [flags]
+  ./mgc object-storage objects upload-dir [src] [dst] [flags]
 
 Examples:
-  ./cli object-storage objects upload-dir --dst="my-bucket/dir/" --src="path/to/folder"
+  ./mgc object-storage objects upload-dir --dst="my-bucket/dir/" --src="path/to/folder"
 
 Flags:
       --dst uri                Full destination path in the bucket (required)

@@ -1,7 +1,7 @@
 Call using HTTP POST
 
 Usage:
-  ./cli http json post [flags]
+  ./mgc http json post [flags]
 
 Flags:
       --body anyOf               (at least one of: boolean, string, number, integer, array or object)

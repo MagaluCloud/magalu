@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./cli virtual-machine instances delete [id] [flags]
+  ./mgc virtual-machine instances delete [id] [flags]
 ```
 
 ## Product catalog:

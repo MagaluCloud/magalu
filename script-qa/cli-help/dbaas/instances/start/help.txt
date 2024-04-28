@@ -1,7 +1,7 @@
 Starts a database instance.
 
 Usage:
-  ./cli dbaas instances start [instance-id] [flags]
+  ./mgc dbaas instances start [instance-id] [flags]
 
 Flags:
       --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")

@@ -1,7 +1,7 @@
 Delete a all ports from the provided tenant_id
 
 Usage:
-  ./cli network ports delete-all [flags]
+  ./mgc network ports delete-all [flags]
 
 Flags:
   -h, --help      help for delete-all

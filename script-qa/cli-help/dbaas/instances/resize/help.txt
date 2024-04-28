@@ -1,10 +1,10 @@
 Resizes a database instance.
 
 Usage:
-  ./cli dbaas instances resize [instance-id] [flags]
+  ./mgc dbaas instances resize [instance-id] [flags]
 
 Examples:
-  ./cli dbaas instances resize --volume.size=30 --volume.type="CLOUD_NVME"
+  ./mgc dbaas instances resize --volume.size=30 --volume.type="CLOUD_NVME"
 
 Flags:
       --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")

@@ -1,10 +1,10 @@
 Retrieve all versions of an object
 
 Usage:
-  ./cli object-storage objects versions [dst] [flags]
+  ./mgc object-storage objects versions [dst] [flags]
 
 Examples:
-  ./cli object-storage objects versions --dst="bucket1/file.txt"
+  ./mgc object-storage objects versions --dst="bucket1/file.txt"
 
 Flags:
       --dst uri   Path of the object to retrieve versions from (required)

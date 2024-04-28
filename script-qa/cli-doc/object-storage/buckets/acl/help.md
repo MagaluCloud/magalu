@@ -3,8 +3,8 @@
 ## Usage:
 ```bash
 Usage:
-  ./cli object-storage buckets acl [flags]
-  ./cli object-storage buckets acl [command]
+  ./mgc object-storage buckets acl [flags]
+  ./mgc object-storage buckets acl [command]
 ```
 
 ## Product catalog:

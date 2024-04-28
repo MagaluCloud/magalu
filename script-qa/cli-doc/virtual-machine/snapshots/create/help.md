@@ -17,11 +17,11 @@ A Snapshot is ready for restore when it's in available state.
 
 ## Other commands:
 - Usage:
-- ./cli virtual-machine snapshots create [flags]
+- ./mgc virtual-machine snapshots create [flags]
 
 ## Flags:
 ```bash
 Examples:
-  ./cli virtual-machine snapshots create --virtual-machine.id="9ec75090-2872-4f51-8111-53d05d96d2c6" --virtual-machine.name="some_resource_name"
+  ./mgc virtual-machine snapshots create --virtual-machine.id="9ec75090-2872-4f51-8111-53d05d96d2c6" --virtual-machine.name="some_resource_name"
 ```
 

@@ -1,7 +1,7 @@
 Get ACL information for the specified object
 
 Usage:
-  ./cli object-storage objects acl get [dst] [flags]
+  ./mgc object-storage objects acl get [dst] [flags]
 
 Flags:
       --dst uri   The full object URL to get the ACL information from (required)

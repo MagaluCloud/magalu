@@ -1,7 +1,7 @@
 Retrieve a list of images allowed for the current tenant which is logged in.
 
 Usage:
-  ./cli virtual-machine images list [flags]
+  ./mgc virtual-machine images list [flags]
 
 Flags:
       --control.limit integer     Limit (min: 1) (default 50)

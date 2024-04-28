@@ -1,7 +1,7 @@
 Call using HTTP OPTIONS
 
 Usage:
-  ./cli http json options [flags]
+  ./mgc http json options [flags]
 
 Flags:
       --body anyOf               (at least one of: boolean, string, number, integer, array or object)

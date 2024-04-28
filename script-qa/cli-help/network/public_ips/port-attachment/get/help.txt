@@ -1,7 +1,7 @@
 Check if a Public IP is attached to a Port
 
 Usage:
-  ./cli network public-ips port-attachment get [flags]
+  ./mgc network public-ips port-attachment get [flags]
 
 Flags:
   -h, --help                  help for get

@@ -1,7 +1,7 @@
 Retrieve the access token used in the APIs
 
 Usage:
-  ./cli auth access-token [flags]
+  ./mgc auth access-token [flags]
 
 Aliases:
   access-token, access_token

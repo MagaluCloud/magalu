@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./cli dbaas backups delete [backup-id] [flags]
+  ./mgc dbaas backups delete [backup-id] [flags]
 ```
 
 ## Product catalog:

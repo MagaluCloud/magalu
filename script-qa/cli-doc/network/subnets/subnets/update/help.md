@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./cli network subnets subnets update [subnet-id] [flags]
+  ./mgc network subnets subnets update [subnet-id] [flags]
 ```
 
 ## Product catalog:

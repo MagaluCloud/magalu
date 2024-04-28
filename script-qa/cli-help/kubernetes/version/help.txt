@@ -1,8 +1,8 @@
 Endpoints related to listing available Kubernetes versions for a Kubernetes cluster.
 
 Usage:
-  ./cli kubernetes version [flags]
-  ./cli kubernetes version [command]
+  ./mgc kubernetes version [flags]
+  ./mgc kubernetes version [command]
 
 Commands:
   list        Lists all available versions
@@ -14,5 +14,5 @@ Flags:
 Global Flags:
       --cli.show-cli-globals   Show all CLI global flags on usage text
 
-Use "./cli kubernetes version [command] --help" for more information about a command.
+Use "./mgc kubernetes version [command] --help" for more information about a command.
 

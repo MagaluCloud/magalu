@@ -1,7 +1,7 @@
 Suspend versioning for a Bucket
 
 Usage:
-  ./cli object-storage buckets versioning suspend [bucket] [flags]
+  ./mgc object-storage buckets versioning suspend [bucket] [flags]
 
 Flags:
       --bucket string   Bucket name to suspend versioning (required)

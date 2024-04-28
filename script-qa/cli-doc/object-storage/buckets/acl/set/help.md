@@ -3,12 +3,12 @@
 ## Usage:
 ```bash
 Usage:
-  ./cli object-storage buckets acl set [dst] [flags]
+  ./mgc object-storage buckets acl set [dst] [flags]
 ```
 
 ## Product catalog:
 - Examples:
-- ./cli object-storage buckets acl set --dst="my-bucket"
+- ./mgc object-storage buckets acl set --dst="my-bucket"
 
 ## Other commands:
 - Flags:

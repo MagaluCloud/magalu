@@ -1,8 +1,8 @@
 Manage credentials to use Object Storage
 
 Usage:
-  ./cli object-storage api-key [flags]
-  ./cli object-storage api-key [command]
+  ./mgc object-storage api-key [flags]
+  ./mgc object-storage api-key [command]
 
 Commands:
   create      Create new credentials used for Object Storage requests
@@ -21,5 +21,5 @@ Flags:
 Global Flags:
       --cli.show-cli-globals   Show all CLI global flags on usage text
 
-Use "./cli object-storage api-key [command] --help" for more information about a command.
+Use "./mgc object-storage api-key [command] --help" for more information about a command.
 

@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./cli network public-ips port-attachment create [flags]
+  ./mgc network public-ips port-attachment create [flags]
 ```
 
 ## Product catalog:

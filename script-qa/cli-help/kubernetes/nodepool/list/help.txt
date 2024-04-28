@@ -1,7 +1,7 @@
 Gets a node pool from a Kubernetes cluster by cluster_uuid.
 
 Usage:
-  ./cli kubernetes nodepool list [cluster-id] [flags]
+  ./mgc kubernetes nodepool list [cluster-id] [flags]
 
 Flags:
       --cluster-id uuid   Cluster's UUID. (required)

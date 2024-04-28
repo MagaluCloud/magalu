@@ -1,8 +1,8 @@
 Database replicas management.
 
 Usage:
-  ./cli dbaas replicas [flags]
-  ./cli dbaas replicas [command]
+  ./mgc dbaas replicas [flags]
+  ./mgc dbaas replicas [command]
 
 Commands:
   create      Replica Create.
@@ -20,5 +20,5 @@ Flags:
 Global Flags:
       --cli.show-cli-globals   Show all CLI global flags on usage text
 
-Use "./cli dbaas replicas [command] --help" for more information about a command.
+Use "./mgc dbaas replicas [command] --help" for more information about a command.
 

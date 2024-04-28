@@ -1,7 +1,7 @@
 Updates a database instance.
 
 Usage:
-  ./cli dbaas instances update [instance-id] [flags]
+  ./mgc dbaas instances update [instance-id] [flags]
 
 Flags:
       --backup-retention-days integer   Backup Retention Days (min: 1)

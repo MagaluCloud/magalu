@@ -1,8 +1,8 @@
 Virtual Private Cloud (VPC)
 
 Usage:
-  ./cli network vpcs [flags]
-  ./cli network vpcs [command]
+  ./mgc network vpcs [flags]
+  ./mgc network vpcs [command]
 
 Commands:
   create      Create VPC
@@ -19,5 +19,5 @@ Flags:
 Global Flags:
       --cli.show-cli-globals   Show all CLI global flags on usage text
 
-Use "./cli network vpcs [command] --help" for more information about a command.
+Use "./mgc network vpcs [command] --help" for more information about a command.
 

@@ -1,10 +1,10 @@
 Creates a new database instance asynchronously for a tenant.
 
 Usage:
-  ./cli dbaas instances create [flags]
+  ./mgc dbaas instances create [flags]
 
 Examples:
-  ./cli dbaas instances create --datastore-id="063f3994-b6c2-4c37-96c9-bab8d82d36f7" --flavor-id="8bbe8e01-40c8-4d2b-80e8-189debc44b1c" --name="dbaas-name" --password="dbaas-password" --user="dbaas-user" --volume.size=30 --volume.type="CLOUD_NVME"
+  ./mgc dbaas instances create --datastore-id="063f3994-b6c2-4c37-96c9-bab8d82d36f7" --flavor-id="8bbe8e01-40c8-4d2b-80e8-189debc44b1c" --name="dbaas-name" --password="dbaas-password" --user="dbaas-user" --volume.size=30 --volume.type="CLOUD_NVME"
 
 Flags:
       --backup-retention-days integer   Backup Retention Days (min: 1) (default 7)

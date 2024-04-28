@@ -1,7 +1,7 @@
 Returns a list of available flavors. A flavor is a hardware template that defines the size of RAM and vcpu.
 
 Usage:
-  ./cli dbaas flavors list [flags]
+  ./mgc dbaas flavors list [flags]
 
 Flags:
       --control.limit integer     Limit (range: 1 - 50) (default 10)

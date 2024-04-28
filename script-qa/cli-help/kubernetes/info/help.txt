@@ -1,8 +1,8 @@
 Endpoints related to listing available flavors (resource configurations) and Kubernetes versions for a Kubernetes cluster.
 
 Usage:
-  ./cli kubernetes info [flags]
-  ./cli kubernetes info [command]
+  ./mgc kubernetes info [flags]
+  ./mgc kubernetes info [command]
 
 Commands:
   flavors     Lists all available flavors
@@ -15,5 +15,5 @@ Flags:
 Global Flags:
       --cli.show-cli-globals   Show all CLI global flags on usage text
 
-Use "./cli kubernetes info [command] --help" for more information about a command.
+Use "./mgc kubernetes info [command] --help" for more information about a command.
 

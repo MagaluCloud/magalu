@@ -1,10 +1,10 @@
 Get bucket public url
 
 Usage:
-  ./cli object-storage buckets public-url [dst] [flags]
+  ./mgc object-storage buckets public-url [dst] [flags]
 
 Examples:
-  ./cli object-storage buckets public-url --dst="bucket1"
+  ./mgc object-storage buckets public-url --dst="bucket1"
 
 Flags:
       --dst uri   Path of the bucket to generate the public url (required)

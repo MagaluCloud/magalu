@@ -1,7 +1,7 @@
 Attach a Public IP to a Port
 
 Usage:
-  ./cli network public-ips port-attachment create [flags]
+  ./mgc network public-ips port-attachment create [flags]
 
 Flags:
       --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")

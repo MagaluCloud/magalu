@@ -1,7 +1,7 @@
 Get versioning info for a Bucket
 
 Usage:
-  ./cli object-storage buckets versioning get [bucket] [flags]
+  ./mgc object-storage buckets versioning get [bucket] [flags]
 
 Flags:
       --bucket string   Bucket name to get versioning info from (required)

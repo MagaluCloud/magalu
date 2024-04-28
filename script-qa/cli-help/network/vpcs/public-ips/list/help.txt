@@ -1,7 +1,7 @@
 Returns a list of Public IPs for a provided vpc_id
 
 Usage:
-  ./cli network vpcs public-ips list [vpc-id] [flags]
+  ./mgc network vpcs public-ips list [vpc-id] [flags]
 
 Flags:
   -h, --help            help for list

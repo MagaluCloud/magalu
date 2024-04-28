@@ -1,7 +1,7 @@
 Return a list of selected usage quotas from a provided tenant
 
 Usage:
-  ./cli network quotas list [flags]
+  ./mgc network quotas list [flags]
 
 Flags:
   -h, --help              help for list

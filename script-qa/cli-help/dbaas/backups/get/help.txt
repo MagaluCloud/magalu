@@ -1,7 +1,7 @@
 Get a backup detail.
 
 Usage:
-  ./cli dbaas backups get [backup-id] [flags]
+  ./mgc dbaas backups get [backup-id] [flags]
 
 Flags:
       --backup-id uuid                Backup Id (required)

@@ -1,7 +1,7 @@
 Delete a rule from the provided tenant_id
 
 Usage:
-  ./cli network rules delete [rule-id] [flags]
+  ./mgc network rules delete [rule-id] [flags]
 
 Flags:
   -h, --help             help for delete

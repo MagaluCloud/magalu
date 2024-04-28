@@ -1,8 +1,8 @@
 Operations with volume types for volumes.
 
 Usage:
-  ./cli block-storage volume-types [flags]
-  ./cli block-storage volume-types [command]
+  ./mgc block-storage volume-types [flags]
+  ./mgc block-storage volume-types [command]
 
 Commands:
   list        List volume types
@@ -14,5 +14,5 @@ Flags:
 Global Flags:
       --cli.show-cli-globals   Show all CLI global flags on usage text
 
-Use "./cli block-storage volume-types [command] --help" for more information about a command.
+Use "./mgc block-storage volume-types [command] --help" for more information about a command.
 

@@ -1,7 +1,7 @@
 Return a VPC details
 
 Usage:
-  ./cli network vpcs get [vpc-id] [flags]
+  ./mgc network vpcs get [vpc-id] [flags]
 
 Flags:
       --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")

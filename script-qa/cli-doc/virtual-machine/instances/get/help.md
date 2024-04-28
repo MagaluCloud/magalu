@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./cli virtual-machine instances get [id] [flags]
+  ./mgc virtual-machine instances get [id] [flags]
 ```
 
 ## Product catalog:

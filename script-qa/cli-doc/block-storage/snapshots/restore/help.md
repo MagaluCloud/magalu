@@ -16,7 +16,7 @@ The restored Volume can be used when it reaches the "available" state and the
 
 ## Other commands:
 - Usage:
-- ./cli block-storage snapshots restore [snapshot-id] [flags]
+- ./mgc block-storage snapshots restore [snapshot-id] [flags]
 
 ## Flags:
 ```bash

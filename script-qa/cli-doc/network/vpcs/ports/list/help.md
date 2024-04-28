@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./cli network vpcs ports list [vpc-id] [flags]
+  ./mgc network vpcs ports list [vpc-id] [flags]
 ```
 
 ## Product catalog:

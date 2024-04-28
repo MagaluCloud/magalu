@@ -8,7 +8,7 @@ Retrieve details of a Snapshot for the currently authenticated tenant.
  details.
 
 Usage:
-  ./cli block-storage snapshots get [id] [flags]
+  ./mgc block-storage snapshots get [id] [flags]
 
 Flags:
       --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")

@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./cli auth access-token [flags]
+  ./mgc auth access-token [flags]
 ```
 
 ## Product catalog:

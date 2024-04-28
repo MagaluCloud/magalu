@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./cli dbaas instances update [instance-id] [flags]
+  ./mgc dbaas instances update [instance-id] [flags]
 ```
 
 ## Product catalog:

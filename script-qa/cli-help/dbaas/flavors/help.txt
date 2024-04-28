@@ -1,8 +1,8 @@
 Flavors available for database instances.
 
 Usage:
-  ./cli dbaas flavors [flags]
-  ./cli dbaas flavors [command]
+  ./mgc dbaas flavors [flags]
+  ./mgc dbaas flavors [command]
 
 Commands:
   get         Flavor detail.
@@ -15,5 +15,5 @@ Flags:
 Global Flags:
       --cli.show-cli-globals   Show all CLI global flags on usage text
 
-Use "./cli dbaas flavors [command] --help" for more information about a command.
+Use "./mgc dbaas flavors [command] --help" for more information about a command.
 

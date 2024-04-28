@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./cli http json options [flags]
+  ./mgc http json options [flags]
 ```
 
 ## Product catalog:

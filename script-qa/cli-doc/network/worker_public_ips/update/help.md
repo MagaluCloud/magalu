@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./cli network worker-public-ips update [public-ip-id] [flags]
+  ./mgc network worker-public-ips update [public-ip-id] [flags]
 ```
 
 ## Product catalog:

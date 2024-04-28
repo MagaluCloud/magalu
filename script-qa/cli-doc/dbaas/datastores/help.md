@@ -3,8 +3,8 @@
 ## Usage:
 ```bash
 Usage:
-  ./cli dbaas datastores [flags]
-  ./cli dbaas datastores [command]
+  ./mgc dbaas datastores [flags]
+  ./mgc dbaas datastores [command]
 ```
 
 ## Product catalog:

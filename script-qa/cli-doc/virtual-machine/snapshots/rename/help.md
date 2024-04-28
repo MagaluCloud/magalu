@@ -9,7 +9,7 @@ the snapshot that you want to rename.
 
 ## Product catalog:
 - Usage:
-- ./cli virtual-machine snapshots rename [id] [flags]
+- ./mgc virtual-machine snapshots rename [id] [flags]
 
 ## Other commands:
 - Flags:

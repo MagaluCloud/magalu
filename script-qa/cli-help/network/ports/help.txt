@@ -1,8 +1,8 @@
 VPC Port
 
 Usage:
-  ./cli network ports [flags]
-  ./cli network ports [command]
+  ./mgc network ports [flags]
+  ./mgc network ports [command]
 
 Commands:
   attach      Attach Security Group
@@ -19,5 +19,5 @@ Flags:
 Global Flags:
       --cli.show-cli-globals   Show all CLI global flags on usage text
 
-Use "./cli network ports [command] --help" for more information about a command.
+Use "./mgc network ports [command] --help" for more information about a command.
 

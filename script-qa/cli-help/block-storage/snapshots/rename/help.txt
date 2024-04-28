@@ -8,7 +8,7 @@ Rename a Snapshot for the currently authenticated tenant.
  all Snapshots and obtain the ID of the Snapshot you wish to rename.
 
 Usage:
-  ./cli block-storage snapshots rename [id] [flags]
+  ./mgc block-storage snapshots rename [id] [flags]
 
 Flags:
       --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")

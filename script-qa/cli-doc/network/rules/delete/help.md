@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./cli network rules delete [rule-id] [flags]
+  ./mgc network rules delete [rule-id] [flags]
 ```
 
 ## Product catalog:

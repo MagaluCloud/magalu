@@ -7,7 +7,7 @@ so you can get the id of the instance that you want to start.
 - The instance must be in the stopped or suspended states.
 
 Usage:
-  ./cli virtual-machine instances start [id] [flags]
+  ./mgc virtual-machine instances start [id] [flags]
 
 Flags:
       --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")

@@ -1,8 +1,8 @@
 VPC Rules
 
 Usage:
-  ./cli network rules [flags]
-  ./cli network rules [command]
+  ./mgc network rules [flags]
+  ./mgc network rules [command]
 
 Commands:
   create      Create Rule
@@ -17,5 +17,5 @@ Flags:
 Global Flags:
       --cli.show-cli-globals   Show all CLI global flags on usage text
 
-Use "./cli network rules [command] --help" for more information about a command.
+Use "./mgc network rules [command] --help" for more information about a command.
 

@@ -1,7 +1,7 @@
 Return a security group details
 
 Usage:
-  ./cli network security-groups get [security-group-id] [flags]
+  ./mgc network security-groups get [security-group-id] [flags]
 
 Flags:
       --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")

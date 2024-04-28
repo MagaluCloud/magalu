@@ -1,7 +1,7 @@
 Delete all objects from a bucket
 
 Usage:
-  ./cli object-storage objects delete-all [bucket] [flags]
+  ./mgc object-storage objects delete-all [bucket] [flags]
 
 Flags:
       --batch-size integer     Limit of items per batch to delete (range: 1 - 1000) (default 1000)

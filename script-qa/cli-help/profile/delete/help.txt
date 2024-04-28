@@ -1,7 +1,7 @@
 Deletes the profile with the specified name
 
 Usage:
-  ./cli profile delete [name] [flags]
+  ./mgc profile delete [name] [flags]
 
 Flags:
   -h, --help          help for delete

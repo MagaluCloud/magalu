@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./cli network vpcs create [flags]
+  ./mgc network vpcs create [flags]
 ```
 
 ## Product catalog:

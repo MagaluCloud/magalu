@@ -15,7 +15,7 @@ Delete a Volume for the currently authenticated tenant.
 **block-storage volume get --id [uuid]** command".
 
 Usage:
-  ./cli block-storage volumes delete [id] [flags]
+  ./mgc block-storage volumes delete [id] [flags]
 
 Flags:
   -h, --help      help for delete

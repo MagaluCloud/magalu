@@ -3,8 +3,8 @@
 ## Usage:
 ```bash
 Usage:
-  ./cli network public-ips [flags]
-  ./cli network public-ips [command]
+  ./mgc network public-ips [flags]
+  ./mgc network public-ips [command]
 ```
 
 ## Product catalog:

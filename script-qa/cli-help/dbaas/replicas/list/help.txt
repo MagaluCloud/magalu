@@ -1,7 +1,7 @@
 List all replicas for a given instance.
 
 Usage:
-  ./cli dbaas replicas list [flags]
+  ./mgc dbaas replicas list [flags]
 
 Flags:
       --control.limit integer     Limit (range: 1 - 50) (default 10)

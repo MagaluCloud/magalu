@@ -1,7 +1,7 @@
 Return a port details from the provided tenant_id
 
 Usage:
-  ./cli network ports get [port-id] [flags]
+  ./mgc network ports get [port-id] [flags]
 
 Flags:
       --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")

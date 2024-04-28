@@ -5,7 +5,7 @@ Otherwise, the value will be searched for in the YAML file
 ## Usage:
 ```bash
 Usage:
-  ./cli config get [key] [flags]
+  ./mgc config get [key] [flags]
 ```
 
 ## Product catalog:

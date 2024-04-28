@@ -5,7 +5,7 @@ Retrieve a list of Snapshots for the currently authenticated tenant.
  create each Snapshot.
 
 Usage:
-  ./cli block-storage snapshots list [flags]
+  ./mgc block-storage snapshots list [flags]
 
 Flags:
       --control.limit integer     Limit (min: 1) (default 50)

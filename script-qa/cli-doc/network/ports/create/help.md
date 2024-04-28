@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./cli network ports create [vpc-id] [flags]
+  ./mgc network ports create [vpc-id] [flags]
 ```
 
 ## Product catalog:

@@ -1,7 +1,7 @@
 Call using HTTP DELETE
 
 Usage:
-  ./cli http json delete [flags]
+  ./mgc http json delete [flags]
 
 Flags:
       --headers object           Use --headers=help for more details

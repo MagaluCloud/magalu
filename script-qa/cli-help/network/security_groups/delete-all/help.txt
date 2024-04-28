@@ -1,7 +1,7 @@
 Delete all security groups from the provided tenant_id
 
 Usage:
-  ./cli network security-groups delete-all [flags]
+  ./mgc network security-groups delete-all [flags]
 
 Flags:
   -h, --help      help for delete-all

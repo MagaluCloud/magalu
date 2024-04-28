@@ -1,7 +1,7 @@
 Detach a Security Group from a Port
 
 Usage:
-  ./cli network ports security-group-attachment delete [flags]
+  ./mgc network ports security-group-attachment delete [flags]
 
 Flags:
   -h, --help                       help for delete

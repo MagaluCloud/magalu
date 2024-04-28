@@ -1,7 +1,7 @@
 Return a tenant's public ip list
 
 Usage:
-  ./cli network public-ips list [flags]
+  ./mgc network public-ips list [flags]
 
 Flags:
   -h, --help      help for list

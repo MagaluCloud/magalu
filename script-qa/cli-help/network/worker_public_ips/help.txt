@@ -1,7 +1,7 @@
 worker_public_ips
 
 Usage:
-  ./cli network worker-public-ips [flags]
+  ./mgc network worker-public-ips [flags]
 
 Aliases:
   worker-public-ips, worker_public_ips

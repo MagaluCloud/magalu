@@ -3,12 +3,12 @@
 ## Usage:
 ```bash
 Usage:
-  ./cli auth clients update [id] [name] [description] [redirect-uris] [icon] [access-token-expiration] [always-require-login] [client-privacy-term-url] [terms-of-use] [audiences] [backchannel-logout-session-enabled] [backchannel-logout-uri] [oidc-audiences] [refresh-token-custom-expires-enabled] [refresh-token-expiration] [reason] [flags]
+  ./mgc auth clients update [id] [name] [description] [redirect-uris] [icon] [access-token-expiration] [always-require-login] [client-privacy-term-url] [terms-of-use] [audiences] [backchannel-logout-session-enabled] [backchannel-logout-uri] [oidc-audiences] [refresh-token-custom-expires-enabled] [refresh-token-expiration] [reason] [flags]
 ```
 
 ## Product catalog:
 - Examples:
-- ./cli auth clients update --access-token-expiration=7200 --audiences="public" --description="Client description" --name="Client Name" --refresh-token-expiration=15778476
+- ./mgc auth clients update --access-token-expiration=7200 --audiences="public" --description="Client description" --name="Client Name" --refresh-token-expiration=15778476
 
 ## Other commands:
 - Flags:

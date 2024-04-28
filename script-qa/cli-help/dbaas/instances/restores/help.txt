@@ -1,7 +1,7 @@
 Restores a backup for an instance asynchronously.
 
 Usage:
-  ./cli dbaas instances restores [instance-id] [flags]
+  ./mgc dbaas instances restores [instance-id] [flags]
 
 Flags:
       --backup-id uuid                Backup Id (required)

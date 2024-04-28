@@ -1,8 +1,8 @@
 Manage bucket versioning
 
 Usage:
-  ./cli object-storage buckets versioning [flags]
-  ./cli object-storage buckets versioning [command]
+  ./mgc object-storage buckets versioning [flags]
+  ./mgc object-storage buckets versioning [command]
 
 Commands:
   enable      Enable versioning for a Bucket
@@ -15,5 +15,5 @@ Flags:
 Global Flags:
       --cli.show-cli-globals   Show all CLI global flags on usage text
 
-Use "./cli object-storage buckets versioning [command] --help" for more information about a command.
+Use "./mgc object-storage buckets versioning [command] --help" for more information about a command.
 

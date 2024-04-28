@@ -1,7 +1,7 @@
 Retrieves a list of machine types allowed for the current tenant which is logged in.
 
 Usage:
-  ./cli virtual-machine machine-types list [flags]
+  ./mgc virtual-machine machine-types list [flags]
 
 Flags:
       --control.limit integer     Limit: limit the number of the results (min: 1) (default 50)

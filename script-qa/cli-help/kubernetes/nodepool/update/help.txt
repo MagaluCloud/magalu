@@ -1,10 +1,10 @@
 Updates nodes from a node pool by nodepool_uuid.
 
 Usage:
-  ./cli kubernetes nodepool update [cluster-id] [node-pool-id] [flags]
+  ./mgc kubernetes nodepool update [cluster-id] [node-pool-id] [flags]
 
 Examples:
-  ./cli kubernetes nodepool update --auto-scale.max-replicas=5 --auto-scale.min-replicas=2
+  ./mgc kubernetes nodepool update --auto-scale.max-replicas=5 --auto-scale.min-replicas=2
 
 Flags:
       --auto-scale object                 Object specifying properties for updating workload resources in the Kubernetes cluster.

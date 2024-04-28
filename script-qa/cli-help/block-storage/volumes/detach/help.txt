@@ -25,7 +25,7 @@ The Volume detachment will be completed when the Volume state returns to
  three.
 
 Usage:
-  ./cli block-storage volumes detach [id] [flags]
+  ./mgc block-storage volumes detach [id] [flags]
 
 Flags:
       --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")

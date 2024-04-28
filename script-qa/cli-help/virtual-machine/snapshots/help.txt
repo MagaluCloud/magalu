@@ -2,8 +2,8 @@ WARN	magalu.cloud/sdk/openapi.virtual-machine.snapshots.create	ignored broken li
 Operations with snapshots for instances.
 
 Usage:
-  ./cli virtual-machine snapshots [flags]
-  ./cli virtual-machine snapshots [command]
+  ./mgc virtual-machine snapshots [flags]
+  ./mgc virtual-machine snapshots [command]
 
 Commands:
   create      Create a snapshot of a virtual machine asynchronously.
@@ -20,5 +20,5 @@ Flags:
 Global Flags:
       --cli.show-cli-globals   Show all CLI global flags on usage text
 
-Use "./cli virtual-machine snapshots [command] --help" for more information about a command.
+Use "./mgc virtual-machine snapshots [command] --help" for more information about a command.
 

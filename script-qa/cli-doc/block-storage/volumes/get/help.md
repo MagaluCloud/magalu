@@ -12,7 +12,7 @@
 
 ## Product catalog:
 - Usage:
-- ./cli block-storage volumes get [id] [flags]
+- ./mgc block-storage volumes get [id] [flags]
 
 ## Other commands:
 - Flags:

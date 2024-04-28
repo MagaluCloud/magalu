@@ -1,8 +1,8 @@
 Database instances management.
 
 Usage:
-  ./cli dbaas instances [flags]
-  ./cli dbaas instances [command]
+  ./mgc dbaas instances [flags]
+  ./mgc dbaas instances [command]
 
 Commands:
   backups     backups
@@ -23,5 +23,5 @@ Flags:
 Global Flags:
       --cli.show-cli-globals   Show all CLI global flags on usage text
 
-Use "./cli dbaas instances [command] --help" for more information about a command.
+Use "./mgc dbaas instances [command] --help" for more information about a command.
 

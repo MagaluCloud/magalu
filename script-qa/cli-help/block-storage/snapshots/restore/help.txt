@@ -11,7 +11,7 @@ The restored Volume can be used when it reaches the "available" state and the
  **block-storage volume get --id [uuid]** command.
 
 Usage:
-  ./cli block-storage snapshots restore [snapshot-id] [flags]
+  ./mgc block-storage snapshots restore [snapshot-id] [flags]
 
 Flags:
       --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")

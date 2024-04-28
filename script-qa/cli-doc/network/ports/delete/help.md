@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./cli network ports delete [port-id] [flags]
+  ./mgc network ports delete [port-id] [flags]
 ```
 
 ## Product catalog:

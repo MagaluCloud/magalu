@@ -1,7 +1,7 @@
 Deletes a database backup.
 
 Usage:
-  ./cli dbaas instances backups delete [instance-id] [backup-id] [flags]
+  ./mgc dbaas instances backups delete [instance-id] [backup-id] [flags]
 
 Flags:
       --backup-id uuid     Backup Id (required)

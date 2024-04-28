@@ -1,8 +1,8 @@
 Create and manage Buckets and Objects via the Object Storage API
 
 Usage:
-  ./cli object-storage [flags]
-  ./cli object-storage [command]
+  ./mgc object-storage [flags]
+  ./mgc object-storage [command]
 
 Commands:
   api-key     Manage credentials to use Object Storage
@@ -15,5 +15,5 @@ Flags:
 Global Flags:
       --cli.show-cli-globals   Show all CLI global flags on usage text
 
-Use "./cli object-storage [command] --help" for more information about a command.
+Use "./mgc object-storage [command] --help" for more information about a command.
 

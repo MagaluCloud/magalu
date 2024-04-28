@@ -3,8 +3,8 @@
 ## Usage:
 ```bash
 Usage:
-  ./cli block-storage volume-attachment [flags]
-  ./cli block-storage volume-attachment [command]
+  ./mgc block-storage volume-attachment [flags]
+  ./mgc block-storage volume-attachment [command]
 ```
 
 ## Product catalog:

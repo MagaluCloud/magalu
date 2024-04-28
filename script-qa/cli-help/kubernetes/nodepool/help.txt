@@ -1,8 +1,8 @@
 Endpoints related to the creation, listing of nodepools and nodes, updating, and deletion of nodepools for a Kubernetes cluster.
 
 Usage:
-  ./cli kubernetes nodepool [flags]
-  ./cli kubernetes nodepool [command]
+  ./mgc kubernetes nodepool [flags]
+  ./mgc kubernetes nodepool [command]
 
 Commands:
   create      Create a node pool
@@ -19,5 +19,5 @@ Flags:
 Global Flags:
       --cli.show-cli-globals   Show all CLI global flags on usage text
 
-Use "./cli kubernetes nodepool [command] --help" for more information about a command.
+Use "./mgc kubernetes nodepool [command] --help" for more information about a command.
 

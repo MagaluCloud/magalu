@@ -1,7 +1,7 @@
 Update a public ip from the provided tenant_id
 
 Usage:
-  ./cli network worker-public-ips update [public-ip-id] [flags]
+  ./mgc network worker-public-ips update [public-ip-id] [flags]
 
 Flags:
       --error string          Error

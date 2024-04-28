@@ -1,7 +1,7 @@
 List Virtual Machine instances
 
 Usage:
-  ./cli virtual-machine instances list [flags]
+  ./mgc virtual-machine instances list [flags]
 
 Flags:
       --control.limit integer     Limit: limit the number of the results (min: 1) (default 50)

@@ -3,7 +3,7 @@ matching the key (in uppercase and with the 'MGC_' prefix), it'll be retreived.
 Otherwise, the value will be searched for in the YAML file
 
 Usage:
-  ./cli config get [key] [flags]
+  ./mgc config get [key] [flags]
 
 Flags:
   -h, --help         help for get

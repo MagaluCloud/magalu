@@ -1,7 +1,7 @@
 Attach a volume to a virtual machine instance
 
 Usage:
-  ./cli block-storage volume-attachment create [flags]
+  ./mgc block-storage volume-attachment create [flags]
 
 Flags:
       --block-storage-id uuid         Id

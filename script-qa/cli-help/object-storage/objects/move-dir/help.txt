@@ -2,10 +2,10 @@ Moves objects from a source to a destination.
 They can be either local or remote but not both local (Local -> Remote, Remote -> Local, Remote -> Remote)
 
 Usage:
-  ./cli object-storage objects move-dir [src] [dst] [flags]
+  ./mgc object-storage objects move-dir [src] [dst] [flags]
 
 Examples:
-  ./cli object-storage objects move-dir --dst="s3://my-bucket/dir" --src="./dir"
+  ./mgc object-storage objects move-dir --dst="s3://my-bucket/dir" --src="./dir"
 
 Flags:
       --batch-size integer   Limit of items per batch to process (range: 1 - 1000) (default 1000)

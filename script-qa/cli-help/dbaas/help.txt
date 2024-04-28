@@ -1,8 +1,8 @@
 DBaaS API Product.
 
 Usage:
-  ./cli dbaas [flags]
-  ./cli dbaas [command]
+  ./mgc dbaas [flags]
+  ./mgc dbaas [command]
 
 Commands:
   backups     Database backups management.
@@ -18,5 +18,5 @@ Flags:
 Global Flags:
       --cli.show-cli-globals   Show all CLI global flags on usage text
 
-Use "./cli dbaas [command] --help" for more information about a command.
+Use "./mgc dbaas [command] --help" for more information about a command.
 

@@ -3,12 +3,12 @@
 ## Usage:
 ```bash
 Usage:
-  ./cli object-storage objects head [dst] [flags]
+  ./mgc object-storage objects head [dst] [flags]
 ```
 
 ## Product catalog:
 - Examples:
-- ./cli object-storage objects head --dst="bucket1/file.txt"
+- ./mgc object-storage objects head --dst="bucket1/file.txt"
 
 ## Other commands:
 - Flags:

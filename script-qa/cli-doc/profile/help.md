@@ -5,8 +5,8 @@ current profile, so users can alter and switch between profiles without loosing 
 ## Usage:
 ```bash
 Usage:
-  ./cli profile [flags]
-  ./cli profile [command]
+  ./mgc profile [flags]
+  ./mgc profile [command]
 ```
 
 ## Product catalog:

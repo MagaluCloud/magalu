@@ -1,7 +1,7 @@
 Set ACL information for the specified object
 
 Usage:
-  ./cli object-storage objects acl set [dst] [flags]
+  ./mgc object-storage objects acl set [dst] [flags]
 
 Flags:
       --dst uri                     The full object URL to set the ACL information (required)

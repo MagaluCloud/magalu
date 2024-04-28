@@ -6,7 +6,7 @@ List Volume Types allowed in the current region.
  is not yet available, please contact our support team for assistance.
 
 Usage:
-  ./cli block-storage volume-types list [flags]
+  ./mgc block-storage volume-types list [flags]
 
 Flags:
   -h, --help      help for list

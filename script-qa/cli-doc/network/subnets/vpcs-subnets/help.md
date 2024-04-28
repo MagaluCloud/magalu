@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./cli network subnets vpcs-subnets [flags]
+  ./mgc network subnets vpcs-subnets [flags]
 ```
 
 ## Product catalog:

@@ -3,8 +3,8 @@ Magalu Cloud account and they each store their data separately, but are billed
 under the same account
 
 Usage:
-  ./cli auth tenant [flags]
-  ./cli auth tenant [command]
+  ./mgc auth tenant [flags]
+  ./mgc auth tenant [command]
 
 Commands:
   current     Get the currently active Tenant
@@ -20,5 +20,5 @@ Flags:
 Global Flags:
       --cli.show-cli-globals   Show all CLI global flags on usage text
 
-Use "./cli auth tenant [command] --help" for more information about a command.
+Use "./mgc auth tenant [command] --help" for more information about a command.
 

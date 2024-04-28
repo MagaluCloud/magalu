@@ -1,7 +1,7 @@
 Create Vpc Default
 
 Usage:
-  ./cli network vpcs create-default [flags]
+  ./mgc network vpcs create-default [flags]
 
 Flags:
       --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")

@@ -17,7 +17,7 @@ The Volume attachment will be completed when the Volume status returns to
 **virtual-machine instances get --id [uuid]** command".
 
 Usage:
-  ./cli block-storage volumes attach [id] [virtual-machine-id] [flags]
+  ./mgc block-storage volumes attach [id] [virtual-machine-id] [flags]
 
 Flags:
       --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")

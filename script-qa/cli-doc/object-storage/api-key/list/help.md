@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./cli object-storage api-key list [flags]
+  ./mgc object-storage api-key list [flags]
 ```
 
 ## Product catalog:

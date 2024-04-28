@@ -2,7 +2,7 @@ Delete/unset a Config value that had been previously set. This does not
 affect the environment variables
 
 Usage:
-  ./cli config delete [key] [flags]
+  ./mgc config delete [key] [flags]
 
 Flags:
   -h, --help         help for delete

@@ -1,7 +1,7 @@
 Create a Port with provided vpc_id and x-tenant-id. You can provide a list of security_groups_id or subnets
 
 Usage:
-  ./cli network vpcs ports create [vpc-id] [flags]
+  ./mgc network vpcs ports create [vpc-id] [flags]
 
 Flags:
       --cli.list-links enum[=table]        List all available links for this command (one of "json", "table" or "yaml")

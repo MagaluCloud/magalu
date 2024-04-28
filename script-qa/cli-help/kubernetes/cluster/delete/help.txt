@@ -1,7 +1,7 @@
 Deletes a cluster by cluster_uuid.
 
 Usage:
-  ./cli kubernetes cluster delete [cluster-id] [flags]
+  ./mgc kubernetes cluster delete [cluster-id] [flags]
 
 Flags:
       --cluster-id uuid   Cluster's UUID. (required)

@@ -5,7 +5,7 @@ List all snapshots in the current tenant which is logged in.
 like image and machine types.
 
 Usage:
-  ./cli virtual-machine snapshots list [flags]
+  ./mgc virtual-machine snapshots list [flags]
 
 Flags:
       --control.limit integer     Limit: limit the number of the results (min: 1) (default 50)

@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./cli network quotas [flags]
+  ./mgc network quotas [flags]
 ```
 
 ## Product catalog:

@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./cli virtual-machine images list [flags]
+  ./mgc virtual-machine images list [flags]
 ```
 
 ## Product catalog:

@@ -3,8 +3,8 @@
 ## Usage:
 ```bash
 Usage:
-  ./cli object-storage buckets versioning [flags]
-  ./cli object-storage buckets versioning [command]
+  ./mgc object-storage buckets versioning [flags]
+  ./mgc object-storage buckets versioning [command]
 ```
 
 ## Product catalog:

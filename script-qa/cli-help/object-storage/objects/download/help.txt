@@ -1,10 +1,10 @@
 Download an object from a bucket. If no destination is specified, the default is the current working directory
 
 Usage:
-  ./cli object-storage objects download [src] [dst] [flags]
+  ./mgc object-storage objects download [src] [dst] [flags]
 
 Examples:
-  ./cli object-storage objects download --dst="file.txt" --src="bucket1/file.txt"
+  ./mgc object-storage objects download --dst="file.txt" --src="bucket1/file.txt"
 
 Flags:
       --dst file             Path and file name to be saved (relative or absolute).If not specified it defaults to the current working directory

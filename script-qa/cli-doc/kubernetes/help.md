@@ -3,8 +3,8 @@
 ## Usage:
 ```bash
 Usage:
-  ./cli kubernetes [flags]
-  ./cli kubernetes [command]
+  ./mgc kubernetes [flags]
+  ./mgc kubernetes [command]
 ```
 
 ## Product catalog:

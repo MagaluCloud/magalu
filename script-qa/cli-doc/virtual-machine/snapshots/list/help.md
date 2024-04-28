@@ -9,7 +9,7 @@ like image and machine types.
 
 ## Product catalog:
 - Usage:
-- ./cli virtual-machine snapshots list [flags]
+- ./mgc virtual-machine snapshots list [flags]
 
 ## Other commands:
 - Flags:

@@ -3,8 +3,8 @@
 ## Usage:
 ```bash
 Usage:
-  ./cli block-storage snapshots [flags]
-  ./cli block-storage snapshots [command]
+  ./mgc block-storage snapshots [flags]
+  ./mgc block-storage snapshots [command]
 ```
 
 ## Product catalog:

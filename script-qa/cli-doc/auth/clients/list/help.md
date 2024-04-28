@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./cli auth clients list [flags]
+  ./mgc auth clients list [flags]
 ```
 
 ## Product catalog:

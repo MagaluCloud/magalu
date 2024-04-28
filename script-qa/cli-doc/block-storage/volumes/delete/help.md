@@ -19,7 +19,7 @@
 
 ## Other commands:
 - Usage:
-- ./cli block-storage volumes delete [id] [flags]
+- ./mgc block-storage volumes delete [id] [flags]
 
 ## Flags:
 ```bash

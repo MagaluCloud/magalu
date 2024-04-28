@@ -3,8 +3,8 @@
 ## Usage:
 ```bash
 Usage:
-  ./cli network healthcheck [flags]
-  ./cli network healthcheck [command]
+  ./mgc network healthcheck [flags]
+  ./mgc network healthcheck [command]
 ```
 
 ## Product catalog:

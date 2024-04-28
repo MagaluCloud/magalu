@@ -1,8 +1,8 @@
 Manage the attachment between a Public IP and a Port
 
 Usage:
-  ./cli network public-ips port-attachment [flags]
-  ./cli network public-ips port-attachment [command]
+  ./mgc network public-ips port-attachment [flags]
+  ./mgc network public-ips port-attachment [command]
 
 Commands:
   create      Attach a Public IP to a Port
@@ -15,5 +15,5 @@ Flags:
 Global Flags:
       --cli.show-cli-globals   Show all CLI global flags on usage text
 
-Use "./cli network public-ips port-attachment [command] --help" for more information about a command.
+Use "./mgc network public-ips port-attachment [command] --help" for more information about a command.
 

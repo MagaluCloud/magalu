@@ -18,11 +18,11 @@ the id of the instance that you want to change the machine type.
 
 ## Other commands:
 - Usage:
-- ./cli virtual-machine instances retype [id] [flags]
+- ./mgc virtual-machine instances retype [id] [flags]
 
 ## Flags:
 ```bash
 Examples:
-  ./cli virtual-machine instances retype --machine-type.id="9ec75090-2872-4f51-8111-53d05d96d2c6" --machine-type.name="some_resource_name"
+  ./mgc virtual-machine instances retype --machine-type.id="9ec75090-2872-4f51-8111-53d05d96d2c6" --machine-type.name="some_resource_name"
 ```
 

@@ -6,7 +6,7 @@ which is logged in.
 - you can get the id of the snapshot that you want to delete.
 
 Usage:
-  ./cli virtual-machine snapshots delete [id] [flags]
+  ./mgc virtual-machine snapshots delete [id] [flags]
 
 Flags:
   -h, --help      help for delete

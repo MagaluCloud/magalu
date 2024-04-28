@@ -1,7 +1,7 @@
 Call using HTTP PUT
 
 Usage:
-  ./cli http json put [flags]
+  ./mgc http json put [flags]
 
 Flags:
       --body anyOf               (at least one of: boolean, string, number, integer, array or object)

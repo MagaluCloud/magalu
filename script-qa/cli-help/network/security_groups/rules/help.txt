@@ -1,7 +1,7 @@
 VPC Security Groups | rules
 
 Usage:
-  ./cli network security-groups rules [flags]
+  ./mgc network security-groups rules [flags]
 
 Flags:
   -h, --help      help for rules

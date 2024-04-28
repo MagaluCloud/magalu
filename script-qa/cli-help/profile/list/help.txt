@@ -1,7 +1,7 @@
 List all available profiles
 
 Usage:
-  ./cli profile list [flags]
+  ./mgc profile list [flags]
 
 Flags:
   -h, --help   help for list

@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./cli network ports list [flags]
+  ./mgc network ports list [flags]
 ```
 
 ## Product catalog:

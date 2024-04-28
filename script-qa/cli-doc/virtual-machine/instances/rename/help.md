@@ -9,7 +9,7 @@ the instance that you want to rename.
 
 ## Product catalog:
 - Usage:
-- ./cli virtual-machine instances rename [id] [flags]
+- ./mgc virtual-machine instances rename [id] [flags]
 
 ## Other commands:
 - Flags:

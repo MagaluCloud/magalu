@@ -9,7 +9,7 @@
 
 ## Product catalog:
 - Usage:
-- ./cli block-storage snapshots list [flags]
+- ./mgc block-storage snapshots list [flags]
 
 ## Other commands:
 - Flags:

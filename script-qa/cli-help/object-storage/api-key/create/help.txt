@@ -1,10 +1,10 @@
 Create new credentials used for Object Storage requests
 
 Usage:
-  ./cli object-storage api-key create [name] [description] [expiration] [flags]
+  ./mgc object-storage api-key create [name] [description] [expiration] [flags]
 
 Examples:
-  ./cli object-storage api-key create --expiration="2024-11-07 (YYYY-MM-DD)"
+  ./mgc object-storage api-key create --expiration="2024-11-07 (YYYY-MM-DD)"
 
 Flags:
       --description string   Description of new api key

@@ -1,8 +1,8 @@
 JSON HTTP access
 
 Usage:
-  ./cli http json [flags]
-  ./cli http json [command]
+  ./mgc http json [flags]
+  ./mgc http json [command]
 
 Commands:
   delete      Call using HTTP DELETE
@@ -20,5 +20,5 @@ Flags:
 Global Flags:
       --cli.show-cli-globals   Show all CLI global flags on usage text
 
-Use "./cli http json [command] --help" for more information about a command.
+Use "./mgc http json [command] --help" for more information about a command.
 

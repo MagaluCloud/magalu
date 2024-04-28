@@ -1,10 +1,10 @@
 List all objects from a bucket
 
 Usage:
-  ./cli object-storage objects list [dst] [flags]
+  ./mgc object-storage objects list [dst] [flags]
 
 Examples:
-  ./cli object-storage objects list --dst="bucket1" --max-items=1000
+  ./mgc object-storage objects list --dst="bucket1" --max-items=1000
 
 Flags:
       --continuation-token string   Token of result page to continue from

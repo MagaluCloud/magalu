@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./cli dbaas replicas start [replica-id] [flags]
+  ./mgc dbaas replicas start [replica-id] [flags]
 ```
 
 ## Product catalog:

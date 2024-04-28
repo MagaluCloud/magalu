@@ -1,7 +1,7 @@
 Lists all clusters for a user.
 
 Usage:
-  ./cli kubernetes cluster list [flags]
+  ./mgc kubernetes cluster list [flags]
 
 Flags:
   -h, --help      help for list

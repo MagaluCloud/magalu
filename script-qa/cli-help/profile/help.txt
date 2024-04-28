@@ -3,8 +3,8 @@ Users can create as many profiles as they choose to. Auth and config operations 
 current profile, so users can alter and switch between profiles without loosing the previous configuration
 
 Usage:
-  ./cli profile [flags]
-  ./cli profile [command]
+  ./mgc profile [flags]
+  ./mgc profile [command]
 
 Commands:
   create         Creates a new profile
@@ -22,5 +22,5 @@ Flags:
 Global Flags:
       --cli.show-cli-globals   Show all CLI global flags on usage text
 
-Use "./cli profile [command] --help" for more information about a command.
+Use "./mgc profile [command] --help" for more information about a command.
 

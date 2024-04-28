@@ -1,8 +1,8 @@
 Bucket operations for Object Storage API
 
 Usage:
-  ./cli object-storage buckets [flags]
-  ./cli object-storage buckets [command]
+  ./mgc object-storage buckets [flags]
+  ./mgc object-storage buckets [command]
 
 Commands:
   acl         ACL-related commands
@@ -18,5 +18,5 @@ Flags:
 Global Flags:
       --cli.show-cli-globals   Show all CLI global flags on usage text
 
-Use "./cli object-storage buckets [command] --help" for more information about a command.
+Use "./mgc object-storage buckets [command] --help" for more information about a command.
 

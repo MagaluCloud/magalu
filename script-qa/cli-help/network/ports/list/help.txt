@@ -1,7 +1,7 @@
 Return a detailed list of ports from the provided tenant_id
 
 Usage:
-  ./cli network ports list [flags]
+  ./mgc network ports list [flags]
 
 Flags:
   -h, --help                         help for list

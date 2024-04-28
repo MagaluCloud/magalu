@@ -1,8 +1,8 @@
 Health check.
 
 Usage:
-  ./cli dbaas healthcheck [flags]
-  ./cli dbaas healthcheck [command]
+  ./mgc dbaas healthcheck [flags]
+  ./mgc dbaas healthcheck [command]
 
 Commands:
   list        Health Check
@@ -14,5 +14,5 @@ Flags:
 Global Flags:
       --cli.show-cli-globals   Show all CLI global flags on usage text
 
-Use "./cli dbaas healthcheck [command] --help" for more information about a command.
+Use "./mgc dbaas healthcheck [command] --help" for more information about a command.
 

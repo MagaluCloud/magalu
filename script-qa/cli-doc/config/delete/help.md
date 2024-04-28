@@ -4,7 +4,7 @@ affect the environment variables
 ## Usage:
 ```bash
 Usage:
-  ./cli config delete [key] [flags]
+  ./mgc config delete [key] [flags]
 ```
 
 ## Product catalog:

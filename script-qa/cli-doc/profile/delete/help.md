@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./cli profile delete [name] [flags]
+  ./mgc profile delete [name] [flags]
 ```
 
 ## Product catalog:

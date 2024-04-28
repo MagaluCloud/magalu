@@ -14,10 +14,10 @@ The Volume can be used when it reaches the "available" state and "completed"
 **block-storage volume get --id [uuid]** command".
 
 Usage:
-  ./cli block-storage volumes create [flags]
+  ./mgc block-storage volumes create [flags]
 
 Examples:
-  ./cli block-storage volumes create --type.id="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" --type.name="some_resource_name"
+  ./mgc block-storage volumes create --type.id="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" --type.name="some_resource_name"
 
 Flags:
       --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")

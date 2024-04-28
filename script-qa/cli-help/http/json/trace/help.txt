@@ -1,7 +1,7 @@
 Call using HTTP TRACE
 
 Usage:
-  ./cli http json trace [flags]
+  ./mgc http json trace [flags]
 
 Flags:
       --headers object           Use --headers=help for more details

@@ -1,8 +1,8 @@
 VPC Subnets
 
 Usage:
-  ./cli network subnets [flags]
-  ./cli network subnets [command]
+  ./mgc network subnets [flags]
+  ./mgc network subnets [command]
 
 Commands:
   subnets     subnets
@@ -14,5 +14,5 @@ Flags:
 Global Flags:
       --cli.show-cli-globals   Show all CLI global flags on usage text
 
-Use "./cli network subnets [command] --help" for more information about a command.
+Use "./mgc network subnets [command] --help" for more information about a command.
 

@@ -1,7 +1,7 @@
 Creates a new profile
 
 Usage:
-  ./cli profile create [name] [copy] [flags]
+  ./mgc profile create [name] [copy] [flags]
 
 Flags:
       --copy string   Name of the profile to copy content from. If this parameter is passed, the new Profile will be pre-populated with the contents of the Profile with the specified name

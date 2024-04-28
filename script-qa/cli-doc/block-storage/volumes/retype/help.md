@@ -23,6 +23,6 @@ The Volume retype will be completed when the Volume status returns to
 ## Flags:
 ```bash
 Usage:
-  ./cli block-storage volumes retype [id] [flags]
+  ./mgc block-storage volumes retype [id] [flags]
 ```
 

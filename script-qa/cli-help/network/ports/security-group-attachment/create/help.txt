@@ -1,7 +1,7 @@
 Attach a Security Group to a Port
 
 Usage:
-  ./cli network ports security-group-attachment create [flags]
+  ./mgc network ports security-group-attachment create [flags]
 
 Flags:
       --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")

@@ -1,7 +1,7 @@
 Returns a list of security groups for a provided vpc_id
 
 Usage:
-  ./cli network vpcs security-groups list [vpc-id] [flags]
+  ./mgc network vpcs security-groups list [vpc-id] [flags]
 
 Flags:
   -h, --help            help for list

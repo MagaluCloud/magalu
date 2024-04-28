@@ -1,7 +1,7 @@
 Create a Security Group
 
 Usage:
-  ./cli network security-groups create [flags]
+  ./mgc network security-groups create [flags]
 
 Flags:
       --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")

@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./cli network security-groups get [security-group-id] [flags]
+  ./mgc network security-groups get [security-group-id] [flags]
 ```
 
 ## Product catalog:

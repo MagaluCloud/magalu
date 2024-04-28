@@ -1,7 +1,7 @@
 Stops a database instance.
 
 Usage:
-  ./cli dbaas instances stop [instance-id] [flags]
+  ./mgc dbaas instances stop [instance-id] [flags]
 
 Flags:
       --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")

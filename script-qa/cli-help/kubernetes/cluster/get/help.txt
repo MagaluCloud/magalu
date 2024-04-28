@@ -1,7 +1,7 @@
 Lists detailed cluster information by cluster_uuid.
 
 Usage:
-  ./cli kubernetes cluster get [cluster-id] [flags]
+  ./mgc kubernetes cluster get [cluster-id] [flags]
 
 Flags:
       --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")

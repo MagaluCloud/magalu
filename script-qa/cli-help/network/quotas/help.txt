@@ -1,7 +1,7 @@
 VPC Quotas
 
 Usage:
-  ./cli network quotas [flags]
+  ./mgc network quotas [flags]
 
 Flags:
   -h, --help      help for quotas

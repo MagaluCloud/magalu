@@ -16,11 +16,11 @@ A Snapshot is ready for restore when it's in available state.
 
 ## Other commands:
 - Usage:
-- ./cli virtual-machine snapshots restore [id] [flags]
+- ./mgc virtual-machine snapshots restore [id] [flags]
 
 ## Flags:
 ```bash
 Examples:
-  ./cli virtual-machine snapshots restore --machine-type.id="9ec75090-2872-4f51-8111-53d05d96d2c6" --machine-type.name="some_resource_name" --network.associate-public-ip=true --network.vpc.id="9ec75090-2872-4f51-8111-53d05d96d2c6" --network.vpc.name="some_resource_name"
+  ./mgc virtual-machine snapshots restore --machine-type.id="9ec75090-2872-4f51-8111-53d05d96d2c6" --machine-type.name="some_resource_name" --network.associate-public-ip=true --network.vpc.id="9ec75090-2872-4f51-8111-53d05d96d2c6" --network.vpc.name="some_resource_name"
 ```
 

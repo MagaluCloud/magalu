@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./cli object-storage api-key revoke [uuid] [flags]
+  ./mgc object-storage api-key revoke [uuid] [flags]
 ```
 
 ## Product catalog:

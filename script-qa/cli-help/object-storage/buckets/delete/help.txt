@@ -1,7 +1,7 @@
 Delete an existing Bucket
 
 Usage:
-  ./cli object-storage buckets delete [bucket] [flags]
+  ./mgc object-storage buckets delete [bucket] [flags]
 
 Flags:
       --bucket string   Name of the bucket to be deleted (required)

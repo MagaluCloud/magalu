@@ -3,8 +3,8 @@
 ## Usage:
 ```bash
 Usage:
-  ./cli virtual-machine instances [flags]
-  ./cli virtual-machine instances [command]
+  ./mgc virtual-machine instances [flags]
+  ./mgc virtual-machine instances [command]
 ```
 
 ## Product catalog:

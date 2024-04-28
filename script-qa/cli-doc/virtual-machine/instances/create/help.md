@@ -3,12 +3,12 @@
 ## Usage:
 ```bash
 Usage:
-  ./cli virtual-machine instances create [flags]
+  ./mgc virtual-machine instances create [flags]
 ```
 
 ## Product catalog:
 - Examples:
-- ./cli virtual-machine instances create --image.id="9ec75090-2872-4f51-8111-53d05d96d2c6" --image.name="some_resource_name" --machine-type.id="9ec75090-2872-4f51-8111-53d05d96d2c6" --machine-type.name="some_resource_name" --network.associate-public-ip=true --network.vpc.id="9ec75090-2872-4f51-8111-53d05d96d2c6" --network.vpc.name="some_resource_name"
+- ./mgc virtual-machine instances create --image.id="9ec75090-2872-4f51-8111-53d05d96d2c6" --image.name="some_resource_name" --machine-type.id="9ec75090-2872-4f51-8111-53d05d96d2c6" --machine-type.name="some_resource_name" --network.associate-public-ip=true --network.vpc.id="9ec75090-2872-4f51-8111-53d05d96d2c6" --network.vpc.name="some_resource_name"
 
 ## Other commands:
 - Flags:

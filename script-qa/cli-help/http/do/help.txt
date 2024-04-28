@@ -1,7 +1,7 @@
 Execute generic http request
 
 Usage:
-  ./cli http do [flags]
+  ./mgc http do [flags]
 
 Flags:
       --body string              

@@ -4,12 +4,12 @@ It can be either local or remote but not both local (Local -> Remote, Remote -> 
 ## Usage:
 ```bash
 Usage:
-  ./cli object-storage objects move [src] [dst] [flags]
+  ./mgc object-storage objects move [src] [dst] [flags]
 ```
 
 ## Product catalog:
 - Examples:
-- ./cli object-storage objects move --dst="s3://my-bucket/test.txt" --src="./hello.txt"
+- ./mgc object-storage objects move --dst="s3://my-bucket/test.txt" --src="./hello.txt"
 
 ## Other commands:
 - Flags:

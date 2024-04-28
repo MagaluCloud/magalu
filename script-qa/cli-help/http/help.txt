@@ -1,8 +1,8 @@
 HTTP access
 
 Usage:
-  ./cli http [flags]
-  ./cli http [command]
+  ./mgc http [flags]
+  ./mgc http [command]
 
 Commands:
   do          Execute generic http request
@@ -14,5 +14,5 @@ Flags:
 Global Flags:
       --cli.show-cli-globals   Show all CLI global flags on usage text
 
-Use "./cli http [command] --help" for more information about a command.
+Use "./mgc http [command] --help" for more information about a command.
 

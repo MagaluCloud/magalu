@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./cli network security-groups delete-all [flags]
+  ./mgc network security-groups delete-all [flags]
 ```
 
 ## Product catalog:

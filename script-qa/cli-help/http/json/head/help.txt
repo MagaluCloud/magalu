@@ -1,7 +1,7 @@
 Call using HTTP HEAD
 
 Usage:
-  ./cli http json head [flags]
+  ./mgc http json head [flags]
 
 Flags:
       --headers object           Use --headers=help for more details

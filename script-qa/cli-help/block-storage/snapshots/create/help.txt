@@ -15,10 +15,10 @@ The Snapshot can be used when it reaches the "available" state and the
  Snapshot.
 
 Usage:
-  ./cli block-storage snapshots create [flags]
+  ./mgc block-storage snapshots create [flags]
 
 Examples:
-  ./cli block-storage snapshots create --volume.id="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" --volume.name="some_resource_name"
+  ./mgc block-storage snapshots create --volume.id="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" --volume.name="some_resource_name"
 
 Flags:
       --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")

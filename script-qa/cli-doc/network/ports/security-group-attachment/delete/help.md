@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./cli network ports security-group-attachment delete [flags]
+  ./mgc network ports security-group-attachment delete [flags]
 ```
 
 ## Product catalog:

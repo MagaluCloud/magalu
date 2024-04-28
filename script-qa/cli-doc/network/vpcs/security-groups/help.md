@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./cli network vpcs security-groups [flags]
+  ./mgc network vpcs security-groups [flags]
 ```
 
 ## Product catalog:

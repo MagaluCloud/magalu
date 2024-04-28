@@ -1,7 +1,7 @@
 Lists all available Kubernetes versions.
 
 Usage:
-  ./cli kubernetes info versions [flags]
+  ./mgc kubernetes info versions [flags]
 
 Flags:
   -h, --help      help for versions

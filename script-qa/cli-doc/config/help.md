@@ -6,8 +6,8 @@ Config values may also be loaded via Environment Variables. Any Config available
 ## Usage:
 ```bash
 Usage:
-  ./cli config [flags]
-  ./cli config [command]
+  ./mgc config [flags]
+  ./mgc config [command]
 ```
 
 ## Product catalog:

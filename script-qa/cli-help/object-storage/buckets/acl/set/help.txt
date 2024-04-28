@@ -1,10 +1,10 @@
 set permission information for the specified bucket
 
 Usage:
-  ./cli object-storage buckets acl set [dst] [flags]
+  ./mgc object-storage buckets acl set [dst] [flags]
 
 Examples:
-  ./cli object-storage buckets acl set --dst="my-bucket"
+  ./mgc object-storage buckets acl set --dst="my-bucket"
 
 Flags:
       --dst string                  Name of the bucket to set permissions for (required)

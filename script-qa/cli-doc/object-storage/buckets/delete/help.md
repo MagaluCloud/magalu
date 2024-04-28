@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./cli object-storage buckets delete [bucket] [flags]
+  ./mgc object-storage buckets delete [bucket] [flags]
 ```
 
 ## Product catalog:

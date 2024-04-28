@@ -1,7 +1,7 @@
 Create a Subnet
 
 Usage:
-  ./cli network subnets vpcs-subnets create [vpc-id] [flags]
+  ./mgc network subnets vpcs-subnets create [vpc-id] [flags]
 
 Flags:
       --cidr-block string                      Cidr Block

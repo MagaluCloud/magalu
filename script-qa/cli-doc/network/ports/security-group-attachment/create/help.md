@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./cli network ports security-group-attachment create [flags]
+  ./mgc network ports security-group-attachment create [flags]
 ```
 
 ## Product catalog:

@@ -5,7 +5,7 @@ Renames a Virtual Machine instance with the id provided in the current tenant wh
 the instance that you want to rename.
 
 Usage:
-  ./cli virtual-machine instances rename [id] [flags]
+  ./mgc virtual-machine instances rename [id] [flags]
 
 Flags:
       --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")

@@ -1,7 +1,7 @@
 Get the ACL for the specified bucket
 
 Usage:
-  ./cli object-storage buckets acl get [dst] [flags]
+  ./mgc object-storage buckets acl get [dst] [flags]
 
 Flags:
       --dst string   Specifies the bucket whose ACL is being requested (required)

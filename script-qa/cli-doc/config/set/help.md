@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./cli config set [key] [value] [flags]
+  ./mgc config set [key] [value] [flags]
 ```
 
 ## Product catalog:

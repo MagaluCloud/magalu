@@ -1,8 +1,8 @@
 ACL related operations
 
 Usage:
-  ./cli object-storage objects acl [flags]
-  ./cli object-storage objects acl [command]
+  ./mgc object-storage objects acl [flags]
+  ./mgc object-storage objects acl [command]
 
 Commands:
   get         Get ACL information for the specified object
@@ -14,5 +14,5 @@ Flags:
 Global Flags:
       --cli.show-cli-globals   Show all CLI global flags on usage text
 
-Use "./cli object-storage objects acl [command] --help" for more information about a command.
+Use "./mgc object-storage objects acl [command] --help" for more information about a command.
 

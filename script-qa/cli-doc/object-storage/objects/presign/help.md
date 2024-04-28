@@ -3,12 +3,12 @@
 ## Usage:
 ```bash
 Usage:
-  ./cli object-storage objects presign [dst] [flags]
+  ./mgc object-storage objects presign [dst] [flags]
 ```
 
 ## Product catalog:
 - Examples:
-- ./cli object-storage objects presign --dst="bucket1/file.txt" --expires-in="2h"
+- ./mgc object-storage objects presign --dst="bucket1/file.txt" --expires-in="2h"
 
 ## Other commands:
 - Flags:

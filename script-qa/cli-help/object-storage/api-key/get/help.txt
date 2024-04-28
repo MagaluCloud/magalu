@@ -1,7 +1,7 @@
 Get details about a specific key
 
 Usage:
-  ./cli object-storage api-key get [uuid] [flags]
+  ./mgc object-storage api-key get [uuid] [flags]
 
 Flags:
   -h, --help          help for get

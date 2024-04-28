@@ -12,7 +12,7 @@ go build
 
 echo "generating $OUT_DIR..."
 python3 ../../scripts/gen_expected_cli_doc_output.py \
-    ./cli \
+    ./mgc \
     "../../$DUMP_TREE" \
     "../../$OUT_DIR"
 echo "generating $OUT_DIR: done"

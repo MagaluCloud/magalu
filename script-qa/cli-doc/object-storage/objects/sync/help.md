@@ -3,12 +3,12 @@
 ## Usage:
 ```bash
 Usage:
-  ./cli object-storage objects sync [src] [dst] [flags]
+  ./mgc object-storage objects sync [src] [dst] [flags]
 ```
 
 ## Product catalog:
 - Examples:
-- ./cli object-storage objects sync --dst="s3://my-bucket/dir/" --src="./"
+- ./mgc object-storage objects sync --dst="s3://my-bucket/dir/" --src="./"
 
 ## Other commands:
 - Flags:

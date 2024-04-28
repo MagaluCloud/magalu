@@ -1,8 +1,8 @@
 VPC Public IPs
 
 Usage:
-  ./cli network public-ips [flags]
-  ./cli network public-ips [command]
+  ./mgc network public-ips [flags]
+  ./mgc network public-ips [command]
 
 Aliases:
   public-ips, public_ips
@@ -22,5 +22,5 @@ Flags:
 Global Flags:
       --cli.show-cli-globals   Show all CLI global flags on usage text
 
-Use "./cli network public-ips [command] --help" for more information about a command.
+Use "./mgc network public-ips [command] --help" for more information about a command.
 

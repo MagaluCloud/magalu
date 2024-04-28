@@ -1,7 +1,7 @@
 Start an instance replica.
 
 Usage:
-  ./cli dbaas replicas start [replica-id] [flags]
+  ./mgc dbaas replicas start [replica-id] [flags]
 
 Flags:
       --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")

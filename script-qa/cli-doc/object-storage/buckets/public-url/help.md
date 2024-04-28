@@ -3,12 +3,12 @@
 ## Usage:
 ```bash
 Usage:
-  ./cli object-storage buckets public-url [dst] [flags]
+  ./mgc object-storage buckets public-url [dst] [flags]
 ```
 
 ## Product catalog:
 - Examples:
-- ./cli object-storage buckets public-url --dst="bucket1"
+- ./mgc object-storage buckets public-url --dst="bucket1"
 
 ## Other commands:
 - Flags:

@@ -4,7 +4,7 @@ Retrieve a list of Volumes for the currently authenticated tenant.
 - Use the expand argument to obtain additional details about the Volume Type.
 
 Usage:
-  ./cli block-storage volumes list [flags]
+  ./mgc block-storage volumes list [flags]
 
 Flags:
       --control.limit integer     Limit (min: 1) (default 50)

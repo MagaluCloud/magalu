@@ -3,12 +3,12 @@
 ## Usage:
 ```bash
 Usage:
-  ./cli kubernetes nodepool update [cluster-id] [node-pool-id] [flags]
+  ./mgc kubernetes nodepool update [cluster-id] [node-pool-id] [flags]
 ```
 
 ## Product catalog:
 - Examples:
-- ./cli kubernetes nodepool update --auto-scale.max-replicas=5 --auto-scale.min-replicas=2
+- ./mgc kubernetes nodepool update --auto-scale.max-replicas=5 --auto-scale.min-replicas=2
 
 ## Other commands:
 - Flags:

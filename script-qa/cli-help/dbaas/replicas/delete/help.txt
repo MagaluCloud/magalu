@@ -1,7 +1,7 @@
 Deletes a replica instance.
 
 Usage:
-  ./cli dbaas replicas delete [replica-id] [flags]
+  ./mgc dbaas replicas delete [replica-id] [flags]
 
 Flags:
       --exchange string   Exchange (default "dbaas-internal")

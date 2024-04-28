@@ -11,7 +11,7 @@ of the instance that you want to reboot.
 
 ## Product catalog:
 - Usage:
-- ./cli virtual-machine instances reboot [id] [flags]
+- ./mgc virtual-machine instances reboot [id] [flags]
 
 ## Other commands:
 - Flags:

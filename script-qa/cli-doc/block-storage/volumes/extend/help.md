@@ -23,6 +23,6 @@ The Volume extension will be completed when the Volume status returns to
 ## Flags:
 ```bash
 Usage:
-  ./cli block-storage volumes extend [id] [flags]
+  ./mgc block-storage volumes extend [id] [flags]
 ```
 

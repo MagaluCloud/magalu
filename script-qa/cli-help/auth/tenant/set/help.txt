@@ -1,7 +1,7 @@
 Set the active Tenant to be used for all subsequential requests
 
 Usage:
-  ./cli auth tenant set [uuid] [flags]
+  ./mgc auth tenant set [uuid] [flags]
 
 Flags:
   -h, --help          help for set

@@ -13,7 +13,7 @@ the instance that you want to suspend.
 
 ## Other commands:
 - Usage:
-- ./cli virtual-machine instances suspend [id] [flags]
+- ./mgc virtual-machine instances suspend [id] [flags]
 
 ## Flags:
 ```bash

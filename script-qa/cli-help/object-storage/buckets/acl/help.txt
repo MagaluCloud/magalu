@@ -1,8 +1,8 @@
 ACL-related commands
 
 Usage:
-  ./cli object-storage buckets acl [flags]
-  ./cli object-storage buckets acl [command]
+  ./mgc object-storage buckets acl [flags]
+  ./mgc object-storage buckets acl [command]
 
 Commands:
   get         Get the ACL for the specified bucket
@@ -14,5 +14,5 @@ Flags:
 Global Flags:
       --cli.show-cli-globals   Show all CLI global flags on usage text
 
-Use "./cli object-storage buckets acl [command] --help" for more information about a command.
+Use "./mgc object-storage buckets acl [command] --help" for more information about a command.
 

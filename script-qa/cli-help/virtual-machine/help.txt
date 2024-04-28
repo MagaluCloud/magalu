@@ -1,8 +1,8 @@
 Virtual Machine Api Product
 
 Usage:
-  ./cli virtual-machine [flags]
-  ./cli virtual-machine [command]
+  ./mgc virtual-machine [flags]
+  ./mgc virtual-machine [command]
 
 Commands:
   images        Operations with images for instances.
@@ -17,5 +17,5 @@ Flags:
 Global Flags:
       --cli.show-cli-globals   Show all CLI global flags on usage text
 
-Use "./cli virtual-machine [command] --help" for more information about a command.
+Use "./mgc virtual-machine [command] --help" for more information about a command.
 

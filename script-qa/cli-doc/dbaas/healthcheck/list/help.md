@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./cli dbaas healthcheck list [flags]
+  ./mgc dbaas healthcheck list [flags]
 ```
 
 ## Product catalog:

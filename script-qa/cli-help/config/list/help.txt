@@ -1,7 +1,7 @@
 List all available Configs
 
 Usage:
-  ./cli config list [flags]
+  ./mgc config list [flags]
 
 Flags:
   -h, --help   help for list

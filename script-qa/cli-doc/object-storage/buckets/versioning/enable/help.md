@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./cli object-storage buckets versioning enable [bucket] [flags]
+  ./mgc object-storage buckets versioning enable [bucket] [flags]
 ```
 
 ## Product catalog:

@@ -3,7 +3,7 @@ the current Tenant will always be set to the default one. To see more details
 about a successful login, use the '--show' flag when logging in
 
 Usage:
-  ./cli auth login [flags]
+  ./mgc auth login [flags]
 
 Flags:
       --headless               Generate URL for the login at local environment

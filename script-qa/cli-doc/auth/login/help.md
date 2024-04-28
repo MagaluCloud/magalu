@@ -5,7 +5,7 @@ about a successful login, use the '--show' flag when logging in
 ## Usage:
 ```bash
 Usage:
-  ./cli auth login [flags]
+  ./mgc auth login [flags]
 ```
 
 ## Product catalog:

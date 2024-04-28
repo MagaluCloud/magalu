@@ -1,7 +1,7 @@
 Delete a port from the provided tenant_id
 
 Usage:
-  ./cli network ports delete [port-id] [flags]
+  ./mgc network ports delete [port-id] [flags]
 
 Flags:
   -h, --help             help for delete

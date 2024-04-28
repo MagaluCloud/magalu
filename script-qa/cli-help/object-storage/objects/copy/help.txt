@@ -1,10 +1,10 @@
 Copy an object from a bucket to another bucket
 
 Usage:
-  ./cli object-storage objects copy [src] [dst] [flags]
+  ./mgc object-storage objects copy [src] [dst] [flags]
 
 Examples:
-  ./cli object-storage objects copy --dst="bucket2/dir/file.txt" --src="bucket1/file.txt"
+  ./mgc object-storage objects copy --dst="bucket2/dir/file.txt" --src="bucket1/file.txt"
 
 Flags:
       --dst uri              Full destination path in the bucket with desired filename (required)

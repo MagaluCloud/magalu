@@ -1,7 +1,7 @@
 Return a Public IP details
 
 Usage:
-  ./cli network public-ips get [public-ip-id] [flags]
+  ./mgc network public-ips get [public-ip-id] [flags]
 
 Flags:
       --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")

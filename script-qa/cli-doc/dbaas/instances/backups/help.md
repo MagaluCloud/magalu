@@ -3,8 +3,8 @@
 ## Usage:
 ```bash
 Usage:
-  ./cli dbaas instances backups [flags]
-  ./cli dbaas instances backups [command]
+  ./mgc dbaas instances backups [flags]
+  ./mgc dbaas instances backups [command]
 ```
 
 ## Product catalog:

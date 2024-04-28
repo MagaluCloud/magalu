@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./cli network vpcs delete-all [flags]
+  ./mgc network vpcs delete-all [flags]
 ```
 
 ## Product catalog:

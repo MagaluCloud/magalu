@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./cli object-storage objects acl set [dst] [flags]
+  ./mgc object-storage objects acl set [dst] [flags]
 ```
 
 ## Product catalog:

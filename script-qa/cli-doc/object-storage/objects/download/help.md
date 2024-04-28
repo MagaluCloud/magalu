@@ -3,12 +3,12 @@
 ## Usage:
 ```bash
 Usage:
-  ./cli object-storage objects download [src] [dst] [flags]
+  ./mgc object-storage objects download [src] [dst] [flags]
 ```
 
 ## Product catalog:
 - Examples:
-- ./cli object-storage objects download --dst="file.txt" --src="bucket1/file.txt"
+- ./mgc object-storage objects download --dst="file.txt" --src="bucket1/file.txt"
 
 ## Other commands:
 - Flags:

@@ -1,7 +1,7 @@
 Update a subnet from the provided tenant_id
 
 Usage:
-  ./cli network subnets subnets update [subnet-id] [flags]
+  ./mgc network subnets subnets update [subnet-id] [flags]
 
 Flags:
       --cli.list-links enum[=table]            List all available links for this command (one of "json", "table" or "yaml")

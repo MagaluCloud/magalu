@@ -3,8 +3,8 @@
 ## Usage:
 ```bash
 Usage:
-  ./cli auth clients [flags]
-  ./cli auth clients [command]
+  ./mgc auth clients [flags]
+  ./mgc auth clients [command]
 ```
 
 ## Product catalog:

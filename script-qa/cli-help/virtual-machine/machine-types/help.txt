@@ -1,8 +1,8 @@
 Operations with machine types for instances.
 
 Usage:
-  ./cli virtual-machine machine-types [flags]
-  ./cli virtual-machine machine-types [command]
+  ./mgc virtual-machine machine-types [flags]
+  ./mgc virtual-machine machine-types [command]
 
 Commands:
   list        Retrieves all machine-types available in the region.
@@ -14,5 +14,5 @@ Flags:
 Global Flags:
       --cli.show-cli-globals   Show all CLI global flags on usage text
 
-Use "./cli virtual-machine machine-types [command] --help" for more information about a command.
+Use "./mgc virtual-machine machine-types [command] --help" for more information about a command.
 

@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./cli profile current [flags]
+  ./mgc profile current [flags]
 ```
 
 ## Product catalog:

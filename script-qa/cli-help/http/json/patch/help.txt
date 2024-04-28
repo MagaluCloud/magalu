@@ -1,7 +1,7 @@
 Call using HTTP PATCH
 
 Usage:
-  ./cli http json patch [flags]
+  ./mgc http json patch [flags]
 
 Flags:
       --body anyOf               (at least one of: boolean, string, number, integer, array or object)

@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./cli network ports attach [port-id] [security-group-id] [flags]
+  ./mgc network ports attach [port-id] [security-group-id] [flags]
 ```
 
 ## Product catalog:
