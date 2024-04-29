@@ -35,6 +35,7 @@ jobs:
           git config --global url."ssh://git@github.com/".insteadOf "https://github.com/"
           ./scripts/codegen_lib.sh
       - name: Run GoReleaser
+        continue-on-error: true
         uses: goreleaser/goreleaser-action@v5
         with:
           distribution: goreleaser
