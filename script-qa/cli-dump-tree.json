@@ -487,7 +487,7 @@
       "configs": {
        "type": "object"
       },
-      "description": "Set the active Tenant to be used for all subsequential requests",
+      "description": "Set the active Tenant to be used for all subsequent requests",
       "isInternal": false,
       "name": "set",
       "parameters": {

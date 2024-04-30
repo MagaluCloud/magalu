@@ -19,8 +19,9 @@ var getSet = utils.NewLazyLoader[core.Executor](newSet)
 func newSet() core.Executor {
 	executor := core.NewStaticExecute(
 		core.DescriptorSpec{
-			Name:        "set",
-			Description: "Set the active Tenant to be used for all subsequential requests",
+			Name:         "set",
+			Description:  "Set the active Tenant to be used for all subsequent requests",
+			Observations: "If you have an API Key set, changing the tenant will unset it.",
 		},
 		setTenant,
 	)
@@ -30,7 +31,9 @@ func newSet() core.Executor {
 	})
 }
 
-func setTenant(ctx context.Context, params tenantSetParams, _ struct{}) (*mgcAuthPkg.TokenExchangeResult, error) {
+func setTenant(ctx context.Context, params tenantSetParams, _ struct{}) (
+	*mgcAuthPkg.TokenExchangeResult, error,
+) {
 	auth := mgcAuthPkg.FromContext(ctx)
 	if auth == nil {
 		return nil, fmt.Errorf("unable to get auth from context")
@@ -41,5 +44,13 @@ func setTenant(ctx context.Context, params tenantSetParams, _ struct{}) (*mgcAut
 		return nil, err
 	}
 
+	id, key := auth.AccessKeyPair()
+	if id != "" && key != "" {
+		fmt.Print("🔐 This operation unset the current api key. \n\n")
+		err = auth.UnsetAccessKey()
+		if err != nil {
+			return nil, err
+		}
+	}
 	return auth.SelectTenant(ctx, params.UUID, allScopes.AsScopesString())
 }

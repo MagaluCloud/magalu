@@ -1,4 +1,4 @@
-# Set the active Tenant to be used for all subsequential requests
+# Set the active Tenant to be used for all subsequent requests
 
 ## Usage:
 ```bash
@@ -17,6 +17,6 @@ Usage:
 
 ## Flags:
 ```bash
-
+** If you have an API Key set, changing the tenant will unset it.
 ```
 
