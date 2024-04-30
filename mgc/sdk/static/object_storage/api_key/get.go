@@ -5,7 +5,6 @@ import (
 	"fmt"
 
 	"magalu.cloud/core"
-	mgcAuthPkg "magalu.cloud/core/auth"
 	"magalu.cloud/core/utils"
 )
 
@@ -24,12 +23,6 @@ var getGet = utils.NewLazyLoader(func() core.Executor {
 })
 
 func get(ctx context.Context, params getKeyParams, _ struct{}) (result *apiKeysResult, err error) {
-	auth := mgcAuthPkg.FromContext(ctx)
-	if auth == nil {
-		err = fmt.Errorf("could not get Auth from context")
-		return
-	}
-
 	apiList, err := list(ctx)
 	if err != nil {
 		return
