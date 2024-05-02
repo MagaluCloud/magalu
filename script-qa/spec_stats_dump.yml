@@ -260,6 +260,7 @@ kubernetes.openapi:
               - name
               - node_pools
               - version
+              - zone
     - POST /v0/clusters/{cluster_id}/node_pools:
         - '201':
             computed:

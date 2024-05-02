@@ -8,7 +8,7 @@ Usage:
 
 ## Product catalog:
 - Examples:
-- ./mgc kubernetes cluster create --description="This is an example cluster." --enabled-bastion=false --enabled-server-group=false --name="cluster-example" --node-pools='[{"auto_scale":{"max_replicas":5,"min_replicas":2},"flavor":"cloud-k8s.gp1.small","name":"nodepool-example","replicas":3,"tags":["tag-value1"],"taints":[{"effect":"NoSchedule","key":"example-key","value":"valor1"}]}]' --param.version="v1.28.5"
+- ./mgc kubernetes cluster create --description="This is an example cluster." --enabled-bastion=false --enabled-server-group=false --name="cluster-example" --node-pools='[{"auto_scale":{"max_replicas":5,"min_replicas":2},"flavor":"cloud-k8s.gp1.small","name":"nodepool-example","replicas":3,"tags":["tag-value1"],"taints":[{"effect":"NoSchedule","key":"example-key","value":"valor1"}]}]' --param.version="v1.28.5" --zone="br-region-zone"
 
 ## Other commands:
 - Flags:
@@ -34,6 +34,7 @@ Usage:
 - Please specify the Kubernetes version using the standard "vX.Y.Z" format.
 - (one of "v1.26.12" or "v1.28.5") (default "v1.28.5")
 - -v, --version                       version for create
+- --zone string                   Identifier of the zone where the Kubernetes cluster will be located.
 
 ## Flags:
 ```bash

@@ -2028,6 +2028,7 @@ components:
                     id: 3a4dc05b-eb10-42ec-8c0c-848e06f7aded
                     name: abc.small
                     ram: 2
+                    sku: some_sku
                     status: active
                     vcpus: 2
         InstanceTypesV1Response:
@@ -2054,6 +2055,9 @@ components:
                 status:
                     type: string
                     title: Status
+                sku:
+                    type: string
+                    title: Sku
             type: object
             required:
             - id
@@ -2062,6 +2066,7 @@ components:
             - ram
             - disk
             - status
+            - sku
             title: InstanceTypesV1Response
             example:
                 disk: 10
@@ -2069,6 +2074,7 @@ components:
                 id: 3a4dc05b-eb10-42ec-8c0c-848e06f7aded
                 name: abc.small
                 ram: 2
+                sku: some_sku
                 status: active
                 vcpus: 2
         InstanceV1Response:

@@ -32,6 +32,7 @@ The name must follow the following rules:
 - `enabled_server_group` (Boolean) Enables the use of a server group with anti-affinity policy during the creation of the cluster and its node pools.
 - `version` (String) The native Kubernetes version of the cluster.
 Please specify the Kubernetes version using the standard "vX.Y.Z" format.
+- `zone` (String) Identifier of the zone where the Kubernetes cluster will be located.
 
 ### Read-Only
 

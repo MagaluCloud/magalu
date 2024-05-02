@@ -49,7 +49,6 @@ Read-Only:
 - `attached_at` (Attributes) (see [below for nested schema](#nestedatt--attachment--attached_at))
 - `device` (String)
 - `instance` (Attributes) (see [below for nested schema](#nestedatt--attachment--instance))
-- `machine_id` (String)
 
 <a id="nestedatt--attachment--attached_at"></a>
 ### Nested Schema for `attachment.attached_at`

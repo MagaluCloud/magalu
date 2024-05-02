@@ -2,12 +2,6 @@ name: MGC DEV RELEASE(MANUAL)
 
 on:
   workflow_dispatch:
-    inputs:
-      input_version:
-        description: 'Version to run'
-        default: ''
-        required: false
-        type: string
 
 jobs:
   build:
@@ -26,14 +20,6 @@ jobs:
         with:
           cache-dependency-path: "**/go.sum"
           go-version: stable
-      - name: Run Codegen with variable version
-        if: ${{ inputs.input_version != ''}}
-        env:
-          GOPRIVATE: "github.com/MagaluCloud/magalu"
-          VERSION: ${{ inputs.input_version}}
-        run: |
-          git config --global url."ssh://git@github.com/".insteadOf "https://github.com/"
-          ./scripts/codegen_lib.sh
       - name: Run GoReleaser
         continue-on-error: true
         uses: goreleaser/goreleaser-action@v5
@@ -42,7 +28,6 @@ jobs:
           version: latest
           args: release --clean --config="goreleaser_internal_cli.yaml"
         env:
-          VERSION: ${{ inputs.input_version}}
+          VERSION: ${{ github.ref_name }}
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
           PRIVATE_KEY_PATH: ${{ secrets.SSH_ID_RSA_MAGALUCLI }}
-      - run: git config --global --unset url."ssh://git@github.com/".insteadOf "https://github.com/"

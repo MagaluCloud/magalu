@@ -2164,8 +2164,7 @@
           "state": "running",
           "status": "completed",
           "updated_at": "2022-01-01T00:00:10Z"
-         },
-         "machine_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+         }
         },
         "created_at": "2022-01-01T00:00:10Z",
         "error": {
@@ -2194,8 +2193,7 @@
            "state": "running",
            "status": "completed",
            "updated_at": "2022-01-01T00:00:10Z"
-          },
-          "machine_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+          }
          },
          "properties": {
           "attached_at": {
@@ -2354,15 +2352,9 @@
            ],
            "title": "Instance",
            "type": "object"
-          },
-          "machine_id": {
-           "deprecated": true,
-           "title": "Machine Id",
-           "type": "string"
           }
          },
          "required": [
-          "machine_id",
           "instance",
           "attached_at"
          ],
@@ -2658,8 +2650,7 @@
             "state": "running",
             "status": "completed",
             "updated_at": "2022-01-01T00:00:10Z"
-           },
-           "machine_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+           }
           },
           "created_at": "2022-01-01T00:00:10Z",
           "error": {
@@ -2692,8 +2683,7 @@
              "state": "running",
              "status": "completed",
              "updated_at": "2022-01-01T00:00:10Z"
-            },
-            "machine_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+            }
            },
            "created_at": "2022-01-01T00:00:10Z",
            "error": {
@@ -2722,8 +2712,7 @@
               "state": "running",
               "status": "completed",
               "updated_at": "2022-01-01T00:00:10Z"
-             },
-             "machine_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+             }
             },
             "properties": {
              "attached_at": {
@@ -2882,15 +2871,9 @@
               ],
               "title": "Instance",
               "type": "object"
-             },
-             "machine_id": {
-              "deprecated": true,
-              "title": "Machine Id",
-              "type": "string"
              }
             },
             "required": [
-             "machine_id",
              "instance",
              "attached_at"
             ],
@@ -10903,6 +10886,11 @@
           "v1.28.5"
          ],
          "example": "v1.28.5",
+         "type": "string"
+        },
+        "zone": {
+         "description": "Identifier of the zone where the Kubernetes cluster will be located.",
+         "example": "br-region-zone",
          "type": "string"
         }
        },
@@ -25217,6 +25205,7 @@
           "id": "3a4dc05b-eb10-42ec-8c0c-848e06f7aded",
           "name": "abc.small",
           "ram": 2,
+          "sku": "some_sku",
           "status": "active",
           "vcpus": 2
          }
@@ -25231,6 +25220,7 @@
            "id": "3a4dc05b-eb10-42ec-8c0c-848e06f7aded",
            "name": "abc.small",
            "ram": 2,
+           "sku": "some_sku",
            "status": "active",
            "vcpus": 2
           },
@@ -25256,6 +25246,10 @@
             "title": "Ram",
             "type": "integer"
            },
+           "sku": {
+            "title": "Sku",
+            "type": "string"
+           },
            "status": {
             "title": "Status",
             "type": "string"
@@ -25271,7 +25265,8 @@
            "vcpus",
            "ram",
            "disk",
-           "status"
+           "status",
+           "sku"
           ],
           "title": "InstanceTypesV1Response",
           "type": "object"
