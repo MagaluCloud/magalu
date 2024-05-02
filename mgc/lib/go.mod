@@ -3,8 +3,8 @@ module magalu.cloud/lib
 go 1.21.4
 
 require (
-	magalu.cloud/core v0.18.10-rc2
-	magalu.cloud/sdk v0.18.10-rc2
+	magalu.cloud/core v0.18.10-rc3
+	magalu.cloud/sdk v0.18.10-rc3
 )
 
 require (
@@ -19,7 +19,7 @@ require (
 	github.com/golang-jwt/jwt/v5 v5.2.0 // indirect
 	github.com/google/uuid v1.4.0 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
-	github.com/iancoleman/orderedmap v0.3.0 // indirect
+	github.com/iancoleman/orderedmap v0.0.0-20190318233801-ac98e3ecb4b0 // indirect
 	github.com/invopop/jsonschema v0.7.0 // indirect
 	github.com/invopop/yaml v0.1.0 // indirect
 	github.com/jedib0t/go-pretty/v6 v6.4.8 // indirect
