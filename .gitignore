@@ -27,3 +27,7 @@ mgc/codegen/codegen
 
 # Go workspace
 go.work.sum
+
+# goland
+.idea
+.idea/*
