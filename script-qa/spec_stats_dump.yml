@@ -54,6 +54,7 @@ dbaas.openapi:
               - exchange
               - flavor_id
               - name
+              - parameters
               - password
               - size
               - type
@@ -71,6 +72,7 @@ dbaas.openapi:
               - generation
               - id
               - name
+              - parameters
               - replicas
               - started_at
               - status
@@ -95,6 +97,7 @@ dbaas.openapi:
               - generation
               - id
               - name
+              - parameters
               - replicas
               - size
               - started_at
@@ -118,6 +121,7 @@ dbaas.openapi:
               - generation
               - id
               - name
+              - parameters
               - replicas
               - size
               - started_at
@@ -170,6 +174,7 @@ dbaas.openapi:
               - generation
               - id
               - name
+              - parameters
               - size
               - source_id
               - started_at
@@ -192,6 +197,7 @@ dbaas.openapi:
               - generation
               - id
               - name
+              - parameters
               - size
               - source_id
               - started_at
@@ -213,6 +219,7 @@ dbaas.openapi:
               - generation
               - id
               - name
+              - parameters
               - size
               - source_id
               - started_at

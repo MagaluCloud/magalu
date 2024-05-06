@@ -6,7 +6,7 @@ info:
         name: Tribo IAAS Cloud
         url: https://gitlab.luizalabs.com/cloud/dbaas/docs
         email: cloud-iaas-dbaas@luizalabs.com
-    version: 1.17.2
+    version: 1.19.0
 servers:
 -   url: https://{env}/{region}/database
     variables:
@@ -2455,6 +2455,12 @@ components:
                     type: string
                     format: time
                     default: 04:00:00
+                parameters:
+                    title: Parameters
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/InstanceParametersRequest'
+                    default: []
         InstanceDetailResponse:
             title: InstanceDetailResponse
             required:
@@ -2470,6 +2476,7 @@ components:
             - created_at
             - backup_retention_days
             - backup_start_at
+            - parameters
             type: object
             properties:
                 id:
@@ -2529,6 +2536,11 @@ components:
                     title: Backup Start At
                     type: string
                     format: time
+                parameters:
+                    title: Parameters
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/InstanceParametersResponse'
                 replicas:
                     title: Replicas
                     type: array
@@ -2547,7 +2559,45 @@ components:
             - G1B
             - G2B
             - G3B
+            - G4B
             description: An enumeration.
+        InstanceParametersNames:
+            title: InstanceParametersNames
+            enum:
+            - LOWER_CASE_TABLE_NAMES
+            description: An enumeration.
+        InstanceParametersRequest:
+            title: InstanceParametersRequest
+            required:
+            - name
+            - value
+            type: object
+            properties:
+                name:
+                    $ref: '#/components/schemas/InstanceParametersNames'
+                value:
+                    title: Value
+                    anyOf:
+                    -   type: number
+                    -   type: integer
+                    -   type: boolean
+                    -   type: string
+        InstanceParametersResponse:
+            title: InstanceParametersResponse
+            required:
+            - name
+            - value
+            type: object
+            properties:
+                name:
+                    $ref: '#/components/schemas/InstanceParametersNames'
+                value:
+                    title: Value
+                    anyOf:
+                    -   type: number
+                    -   type: integer
+                    -   type: boolean
+                    -   type: string
         InstanceResizeRequest:
             title: InstanceResizeRequest
             type: object
@@ -2603,6 +2653,9 @@ components:
             - REBOOT
             - UPGRADING
             - ERROR_UPGRADING
+            - ERROR_RESIZING
+            - ERROR_STARTING
+            - ERROR_STOPPING
             description: An enumeration.
         InstanceStatusResponse:
             title: InstanceStatusResponse
@@ -2870,6 +2923,7 @@ components:
             - status
             - generation
             - created_at
+            - parameters
             type: object
             properties:
                 id:
@@ -2923,6 +2977,11 @@ components:
                     title: Finished At
                     type: string
                     format: date-time
+                parameters:
+                    title: Parameters
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/InstanceParametersResponse'
         ReplicaResizeRequest:
             title: ReplicaResizeRequest
             required:
