@@ -18,6 +18,7 @@ var GetGroup = utils.NewLazyLoader[core.Grouper](func() core.Grouper {
 				getCreate(),           // object-storage buckets create
 				getDelete(),           // object-storage buckets delete
 				getList(),             // object-storage buckets list
+				getBucket(),           // object-storage buckets get
 				getPublicUrl(),        // object-storage objects public-url
 				acl.GetGroup(),        // object-storage buckets acl
 				versioning.GetGroup(), // object-storage buckets versioning
