@@ -82,7 +82,9 @@ can generate a command line on-demand for Rest manipulation`,
 		}
 		flag, found := strings.CutPrefix(err.Error(), "unknown flag: ")
 		if found && len(flag) > 0 {
-			skipTo := slices.Index(args, flag)
+			skipTo := slices.IndexFunc(args, func(arg string) bool {
+				return strings.Split(arg, "=")[0] == flag
+			})
 			args = args[skipTo+1:]
 		}
 	}
