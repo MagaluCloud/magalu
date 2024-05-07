@@ -25,28 +25,28 @@ type GetParameters struct {
 }
 
 type GetConfigs struct {
-	Env       string `json:"env,omitempty"`
-	Region    string `json:"region,omitempty"`
-	ServerUrl string `json:"serverUrl,omitempty"`
+	Env       *string `json:"env,omitempty"`
+	Region    *string `json:"region,omitempty"`
+	ServerUrl *string `json:"serverUrl,omitempty"`
 }
 
 // Object of the cluster response request by uuid.
 type GetResult struct {
-	Addons        GetResultAddons        `json:"addons,omitempty"`
-	Controlplane  GetResultControlplane  `json:"controlplane,omitempty"`
-	CreatedAt     string                 `json:"created_at,omitempty"`
-	Description   string                 `json:"description,omitempty"`
-	Id            string                 `json:"id"`
-	KubeApiServer GetResultKubeApiServer `json:"kube_api_server,omitempty"`
-	Name          string                 `json:"name"`
-	Network       GetResultNetwork       `json:"network,omitempty"`
-	NodePools     GetResultNodePools     `json:"node_pools,omitempty"`
-	ProjectId     string                 `json:"project_id,omitempty"`
-	Region        string                 `json:"region"`
-	Status        GetResultStatus        `json:"status,omitempty"`
-	Tags          GetResultTags          `json:"tags,omitempty"`
-	UpdatedAt     string                 `json:"updated_at,omitempty"`
-	Version       string                 `json:"version"`
+	Addons        *GetResultAddons        `json:"addons,omitempty"`
+	Controlplane  *GetResultControlplane  `json:"controlplane,omitempty"`
+	CreatedAt     *string                 `json:"created_at,omitempty"`
+	Description   *string                 `json:"description,omitempty"`
+	Id            string                  `json:"id"`
+	KubeApiServer *GetResultKubeApiServer `json:"kube_api_server,omitempty"`
+	Name          string                  `json:"name"`
+	Network       *GetResultNetwork       `json:"network,omitempty"`
+	NodePools     *GetResultNodePools     `json:"node_pools,omitempty"`
+	ProjectId     *string                 `json:"project_id,omitempty"`
+	Region        string                  `json:"region"`
+	Status        *GetResultStatus        `json:"status,omitempty"`
+	Tags          *GetResultTags          `json:"tags,omitempty"`
+	UpdatedAt     *string                 `json:"updated_at,omitempty"`
+	Version       string                  `json:"version"`
 }
 
 // Object representing addons that extend the functionality of the Kubernetes cluster.
@@ -60,17 +60,17 @@ type GetResultAddons struct {
 // Object of the node pool response.
 type GetResultControlplane struct {
 	AutoScale        GetResultControlplaneAutoScale        `json:"auto_scale"`
-	CreatedAt        string                                `json:"created_at,omitempty"`
+	CreatedAt        *string                               `json:"created_at,omitempty"`
 	Id               string                                `json:"id"`
 	InstanceTemplate GetResultControlplaneInstanceTemplate `json:"instance_template"`
 	Labels           GetResultControlplaneLabels           `json:"labels"`
 	Name             string                                `json:"name"`
 	Replicas         int                                   `json:"replicas"`
-	SecurityGroups   GetResultControlplaneSecurityGroups   `json:"securityGroups,omitempty"`
+	SecurityGroups   *GetResultControlplaneSecurityGroups  `json:"securityGroups,omitempty"`
 	Status           GetResultControlplaneStatus           `json:"status"`
-	Tags             GetResultControlplaneTags             `json:"tags,omitempty"`
-	Taints           GetResultControlplaneTaints           `json:"taints,omitempty"`
-	UpdatedAt        string                                `json:"updated_at,omitempty"`
+	Tags             *GetResultControlplaneTags            `json:"tags,omitempty"`
+	Taints           *GetResultControlplaneTaints          `json:"taints,omitempty"`
+	UpdatedAt        *string                               `json:"updated_at,omitempty"`
 	Zone             *GetResultControlplaneZone            `json:"zone"`
 }
 
@@ -128,10 +128,10 @@ type GetResultControlplaneZone []string
 
 // Information about the Kubernetes API Server of the cluster.
 type GetResultKubeApiServer struct {
-	DisableApiServerFip bool   `json:"disable_api_server_fip,omitempty"`
-	FixedIp             string `json:"fixed_ip,omitempty"`
-	FloatingIp          string `json:"floating_ip,omitempty"`
-	Port                int    `json:"port,omitempty"`
+	DisableApiServerFip *bool   `json:"disable_api_server_fip,omitempty"`
+	FixedIp             *string `json:"fixed_ip,omitempty"`
+	FloatingIp          *string `json:"floating_ip,omitempty"`
+	Port                *int    `json:"port,omitempty"`
 }
 
 // Response object for the Kubernetes cluster network resource request.
@@ -146,17 +146,17 @@ type GetResultNetwork struct {
 // Object of the node pool response.
 type GetResultNodePoolsItem struct {
 	AutoScale        GetResultControlplaneAutoScale         `json:"auto_scale"`
-	CreatedAt        string                                 `json:"created_at,omitempty"`
+	CreatedAt        *string                                `json:"created_at,omitempty"`
 	Id               string                                 `json:"id"`
 	InstanceTemplate GetResultNodePoolsItemInstanceTemplate `json:"instance_template"`
 	Labels           GetResultControlplaneLabels            `json:"labels"`
 	Name             string                                 `json:"name"`
 	Replicas         int                                    `json:"replicas"`
-	SecurityGroups   GetResultControlplaneSecurityGroups    `json:"securityGroups,omitempty"`
+	SecurityGroups   *GetResultControlplaneSecurityGroups   `json:"securityGroups,omitempty"`
 	Status           GetResultControlplaneStatus            `json:"status"`
-	Tags             GetResultControlplaneTags              `json:"tags,omitempty"`
-	Taints           GetResultNodePoolsItemTaints           `json:"taints,omitempty"`
-	UpdatedAt        string                                 `json:"updated_at,omitempty"`
+	Tags             *GetResultControlplaneTags             `json:"tags,omitempty"`
+	Taints           *GetResultNodePoolsItemTaints          `json:"taints,omitempty"`
+	UpdatedAt        *string                                `json:"updated_at,omitempty"`
 	Zone             *GetResultControlplaneZone             `json:"zone"`
 }
 

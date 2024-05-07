@@ -57,9 +57,9 @@ type RetypeParametersNewType1 struct {
 }
 
 type RetypeConfigs struct {
-	Env       string `json:"env,omitempty"`
-	Region    string `json:"region,omitempty"`
-	ServerUrl string `json:"serverUrl,omitempty"`
+	Env       *string `json:"env,omitempty"`
+	Region    *string `json:"region,omitempty"`
+	ServerUrl *string `json:"serverUrl,omitempty"`
 }
 
 func (s *service) Retype(

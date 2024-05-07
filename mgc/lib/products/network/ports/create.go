@@ -34,9 +34,9 @@ type CreateParametersSecurityGroupsId []string
 type CreateParametersSubnets []string
 
 type CreateConfigs struct {
-	Env       string  `json:"env,omitempty"`
-	Region    string  `json:"region,omitempty"`
-	ServerUrl string  `json:"serverUrl,omitempty"`
+	Env       *string `json:"env,omitempty"`
+	Region    *string `json:"region,omitempty"`
+	ServerUrl *string `json:"serverUrl,omitempty"`
 	XZone     *string `json:"x-zone,omitempty"`
 }
 

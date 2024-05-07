@@ -26,9 +26,9 @@ type AttachParameters struct {
 }
 
 type AttachConfigs struct {
-	Env       string `json:"env,omitempty"`
-	Region    string `json:"region,omitempty"`
-	ServerUrl string `json:"serverUrl,omitempty"`
+	Env       *string `json:"env,omitempty"`
+	Region    *string `json:"region,omitempty"`
+	ServerUrl *string `json:"serverUrl,omitempty"`
 }
 
 type AttachResult any

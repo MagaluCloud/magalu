@@ -21,9 +21,9 @@ import (
 )
 
 type ListConfigs struct {
-	Env       string `json:"env,omitempty"`
-	Region    string `json:"region,omitempty"`
-	ServerUrl string `json:"serverUrl,omitempty"`
+	Env       *string `json:"env,omitempty"`
+	Region    *string `json:"region,omitempty"`
+	ServerUrl *string `json:"serverUrl,omitempty"`
 }
 
 type ListResult struct {
@@ -31,18 +31,18 @@ type ListResult struct {
 }
 
 type ListResultVpcsItem struct {
-	CreatedAt       *string                          `json:"created_at,omitempty"`
-	Description     *string                          `json:"description,omitempty"`
-	ExternalNetwork *string                          `json:"external_network,omitempty"`
-	Id              *string                          `json:"id,omitempty"`
-	IsDefault       *bool                            `json:"is_default,omitempty"`
-	Name            *string                          `json:"name,omitempty"`
-	NetworkId       *string                          `json:"network_id,omitempty"`
-	RouterId        *string                          `json:"router_id,omitempty"`
-	SecurityGroups  ListResultVpcsItemSecurityGroups `json:"security_groups,omitempty"`
-	Subnets         *ListResultVpcsItemSubnets       `json:"subnets,omitempty"`
-	TenantId        *string                          `json:"tenant_id,omitempty"`
-	Updated         *string                          `json:"updated,omitempty"`
+	CreatedAt       *string                           `json:"created_at,omitempty"`
+	Description     *string                           `json:"description,omitempty"`
+	ExternalNetwork *string                           `json:"external_network,omitempty"`
+	Id              *string                           `json:"id,omitempty"`
+	IsDefault       *bool                             `json:"is_default,omitempty"`
+	Name            *string                           `json:"name,omitempty"`
+	NetworkId       *string                           `json:"network_id,omitempty"`
+	RouterId        *string                           `json:"router_id,omitempty"`
+	SecurityGroups  *ListResultVpcsItemSecurityGroups `json:"security_groups,omitempty"`
+	Subnets         *ListResultVpcsItemSubnets        `json:"subnets,omitempty"`
+	TenantId        *string                           `json:"tenant_id,omitempty"`
+	Updated         *string                           `json:"updated,omitempty"`
 }
 
 type ListResultVpcsItemSecurityGroups []string

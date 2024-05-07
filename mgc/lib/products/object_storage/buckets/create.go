@@ -19,18 +19,18 @@ import (
 )
 
 type CreateParameters struct {
-	AuthenticatedRead bool                             `json:"authenticated_read,omitempty"`
-	AwsExecRead       bool                             `json:"aws_exec_read,omitempty"`
-	EnableVersioning  bool                             `json:"enable_versioning,omitempty"`
-	GrantFullControl  CreateParametersGrantFullControl `json:"grant_full_control,omitempty"`
-	GrantRead         CreateParametersGrantRead        `json:"grant_read,omitempty"`
-	GrantReadAcp      CreateParametersGrantReadAcp     `json:"grant_read_acp,omitempty"`
-	GrantWrite        CreateParametersGrantWrite       `json:"grant_write,omitempty"`
-	GrantWriteAcp     CreateParametersGrantWriteAcp    `json:"grant_write_acp,omitempty"`
-	Name              string                           `json:"name"`
-	Private           bool                             `json:"private,omitempty"`
-	PublicRead        bool                             `json:"public_read,omitempty"`
-	PublicReadWrite   bool                             `json:"public_read_write,omitempty"`
+	AuthenticatedRead *bool                             `json:"authenticated_read,omitempty"`
+	AwsExecRead       *bool                             `json:"aws_exec_read,omitempty"`
+	EnableVersioning  *bool                             `json:"enable_versioning,omitempty"`
+	GrantFullControl  *CreateParametersGrantFullControl `json:"grant_full_control,omitempty"`
+	GrantRead         *CreateParametersGrantRead        `json:"grant_read,omitempty"`
+	GrantReadAcp      *CreateParametersGrantReadAcp     `json:"grant_read_acp,omitempty"`
+	GrantWrite        *CreateParametersGrantWrite       `json:"grant_write,omitempty"`
+	GrantWriteAcp     *CreateParametersGrantWriteAcp    `json:"grant_write_acp,omitempty"`
+	Name              string                            `json:"name"`
+	Private           *bool                             `json:"private,omitempty"`
+	PublicRead        *bool                             `json:"public_read,omitempty"`
+	PublicReadWrite   *bool                             `json:"public_read_write,omitempty"`
 }
 
 type CreateParametersGrantFullControlItem struct {
@@ -48,10 +48,10 @@ type CreateParametersGrantWrite []CreateParametersGrantFullControlItem
 type CreateParametersGrantWriteAcp []CreateParametersGrantFullControlItem
 
 type CreateConfigs struct {
-	ChunkSize int    `json:"chunkSize,omitempty"`
-	Region    string `json:"region,omitempty"`
-	ServerUrl string `json:"serverUrl,omitempty"`
-	Workers   int    `json:"workers,omitempty"`
+	ChunkSize *int    `json:"chunkSize,omitempty"`
+	Region    *string `json:"region,omitempty"`
+	ServerUrl *string `json:"serverUrl,omitempty"`
+	Workers   *int    `json:"workers,omitempty"`
 }
 
 type CreateResult any

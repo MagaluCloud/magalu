@@ -21,19 +21,19 @@ import (
 )
 
 type ListParameters struct {
-	Limit      int    `json:"_limit,omitempty"`
-	Offset     int    `json:"_offset,omitempty"`
-	Exchange   string `json:"exchange,omitempty"`
-	InstanceId string `json:"instance_id"`
-	Mode       string `json:"mode,omitempty"`
-	Status     string `json:"status,omitempty"`
-	Type       string `json:"type,omitempty"`
+	Limit      *int    `json:"_limit,omitempty"`
+	Offset     *int    `json:"_offset,omitempty"`
+	Exchange   *string `json:"exchange,omitempty"`
+	InstanceId string  `json:"instance_id"`
+	Mode       *string `json:"mode,omitempty"`
+	Status     *string `json:"status,omitempty"`
+	Type       *string `json:"type,omitempty"`
 }
 
 type ListConfigs struct {
-	Env       string `json:"env,omitempty"`
-	Region    string `json:"region,omitempty"`
-	ServerUrl string `json:"serverUrl,omitempty"`
+	Env       *string `json:"env,omitempty"`
+	Region    *string `json:"region,omitempty"`
+	ServerUrl *string `json:"serverUrl,omitempty"`
 }
 
 type ListResult struct {
@@ -54,19 +54,19 @@ type ListResultMetaPage struct {
 }
 
 type ListResultResultsItem struct {
-	CreatedAt  string `json:"created_at"`
-	DbSize     int    `json:"db_size,omitempty"`
-	FinishedAt string `json:"finished_at,omitempty"`
-	Id         string `json:"id"`
-	InstanceId string `json:"instance_id"`
-	Location   string `json:"location,omitempty"`
-	Mode       string `json:"mode"`
-	Name       string `json:"name,omitempty"`
-	Size       int    `json:"size,omitempty"`
-	StartedAt  string `json:"started_at,omitempty"`
-	Status     string `json:"status"`
-	Type       string `json:"type"`
-	UpdatedAt  string `json:"updated_at,omitempty"`
+	CreatedAt  string  `json:"created_at"`
+	DbSize     *int    `json:"db_size,omitempty"`
+	FinishedAt *string `json:"finished_at,omitempty"`
+	Id         string  `json:"id"`
+	InstanceId string  `json:"instance_id"`
+	Location   *string `json:"location,omitempty"`
+	Mode       string  `json:"mode"`
+	Name       *string `json:"name,omitempty"`
+	Size       *int    `json:"size,omitempty"`
+	StartedAt  *string `json:"started_at,omitempty"`
+	Status     string  `json:"status"`
+	Type       string  `json:"type"`
+	UpdatedAt  *string `json:"updated_at,omitempty"`
 }
 
 type ListResultResults []ListResultResultsItem

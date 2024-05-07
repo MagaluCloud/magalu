@@ -20,20 +20,20 @@ import (
 )
 
 type MoveDirParameters struct {
-	BatchSize int    `json:"batch_size,omitempty"`
+	BatchSize *int   `json:"batch_size,omitempty"`
 	Dst       string `json:"dst"`
 	Src       string `json:"src"`
 }
 
 type MoveDirConfigs struct {
-	ChunkSize int    `json:"chunkSize,omitempty"`
-	Region    string `json:"region,omitempty"`
-	ServerUrl string `json:"serverUrl,omitempty"`
-	Workers   int    `json:"workers,omitempty"`
+	ChunkSize *int    `json:"chunkSize,omitempty"`
+	Region    *string `json:"region,omitempty"`
+	ServerUrl *string `json:"serverUrl,omitempty"`
+	Workers   *int    `json:"workers,omitempty"`
 }
 
 type MoveDirResult struct {
-	BatchSize int    `json:"batch_size,omitempty"`
+	BatchSize *int   `json:"batch_size,omitempty"`
 	Dst       string `json:"dst"`
 	Src       string `json:"src"`
 }

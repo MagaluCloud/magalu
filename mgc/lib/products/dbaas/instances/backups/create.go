@@ -21,15 +21,15 @@ import (
 )
 
 type CreateParameters struct {
-	Exchange   string `json:"exchange,omitempty"`
-	InstanceId string `json:"instance_id"`
-	Mode       string `json:"mode"`
+	Exchange   *string `json:"exchange,omitempty"`
+	InstanceId string  `json:"instance_id"`
+	Mode       string  `json:"mode"`
 }
 
 type CreateConfigs struct {
-	Env       string `json:"env,omitempty"`
-	Region    string `json:"region,omitempty"`
-	ServerUrl string `json:"serverUrl,omitempty"`
+	Env       *string `json:"env,omitempty"`
+	Region    *string `json:"region,omitempty"`
+	ServerUrl *string `json:"serverUrl,omitempty"`
 }
 
 type CreateResult struct {

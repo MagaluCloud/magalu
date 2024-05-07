@@ -15,11 +15,11 @@ import (
 )
 
 type AccessTokenParameters struct {
-	Validate bool `json:"Validate,omitempty"`
+	Validate *bool `json:"Validate,omitempty"`
 }
 
 type AccessTokenResult struct {
-	AccessToken string `json:"access_token,omitempty"`
+	AccessToken *string `json:"access_token,omitempty"`
 }
 
 func (s *service) AccessToken(

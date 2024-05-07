@@ -15,27 +15,27 @@ import (
 )
 
 type UpdateParameters struct {
-	AccessTokenExpiration            int    `json:"access-token-expiration,omitempty"`
-	AlwaysRequireLogin               bool   `json:"always-require-login,omitempty"`
-	Audiences                        string `json:"audiences,omitempty"`
-	BackchannelLogoutSessionEnabled  bool   `json:"backchannel-logout-session-enabled,omitempty"`
-	BackchannelLogoutUri             string `json:"backchannel-logout-uri,omitempty"`
-	ClientPrivacyTermUrl             string `json:"client-privacy-term-url,omitempty"`
-	Description                      string `json:"description,omitempty"`
-	Icon                             string `json:"icon,omitempty"`
-	Id                               string `json:"id"`
-	Name                             string `json:"name,omitempty"`
-	OidcAudiences                    string `json:"oidc-audiences,omitempty"`
-	Reason                           string `json:"reason,omitempty"`
-	RedirectUris                     string `json:"redirect-uris,omitempty"`
-	RefreshTokenCustomExpiresEnabled bool   `json:"refresh-token-custom-expires-enabled,omitempty"`
-	RefreshTokenExpiration           int    `json:"refresh-token-expiration,omitempty"`
-	TermsOfUse                       string `json:"terms-of-use,omitempty"`
+	AccessTokenExpiration            *int    `json:"access-token-expiration,omitempty"`
+	AlwaysRequireLogin               *bool   `json:"always-require-login,omitempty"`
+	Audiences                        *string `json:"audiences,omitempty"`
+	BackchannelLogoutSessionEnabled  *bool   `json:"backchannel-logout-session-enabled,omitempty"`
+	BackchannelLogoutUri             *string `json:"backchannel-logout-uri,omitempty"`
+	ClientPrivacyTermUrl             *string `json:"client-privacy-term-url,omitempty"`
+	Description                      *string `json:"description,omitempty"`
+	Icon                             *string `json:"icon,omitempty"`
+	Id                               string  `json:"id"`
+	Name                             *string `json:"name,omitempty"`
+	OidcAudiences                    *string `json:"oidc-audiences,omitempty"`
+	Reason                           *string `json:"reason,omitempty"`
+	RedirectUris                     *string `json:"redirect-uris,omitempty"`
+	RefreshTokenCustomExpiresEnabled *bool   `json:"refresh-token-custom-expires-enabled,omitempty"`
+	RefreshTokenExpiration           *int    `json:"refresh-token-expiration,omitempty"`
+	TermsOfUse                       *string `json:"terms-of-use,omitempty"`
 }
 
 type UpdateResult struct {
-	ClientId string `json:"client_id,omitempty"`
-	Uuid     string `json:"uuid,omitempty"`
+	ClientId *string `json:"client_id,omitempty"`
+	Uuid     *string `json:"uuid,omitempty"`
 }
 
 func (s *service) Update(

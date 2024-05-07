@@ -15,24 +15,24 @@ import (
 )
 
 type UploadDirParameters struct {
-	Dst     string                    `json:"dst"`
-	Filter  UploadDirParametersFilter `json:"filter,omitempty"`
-	Shallow bool                      `json:"shallow,omitempty"`
-	Src     string                    `json:"src"`
+	Dst     string                     `json:"dst"`
+	Filter  *UploadDirParametersFilter `json:"filter,omitempty"`
+	Shallow *bool                      `json:"shallow,omitempty"`
+	Src     string                     `json:"src"`
 }
 
 type UploadDirParametersFilterItem struct {
-	Exclude string `json:"exclude,omitempty"`
-	Include string `json:"include,omitempty"`
+	Exclude *string `json:"exclude,omitempty"`
+	Include *string `json:"include,omitempty"`
 }
 
 type UploadDirParametersFilter []UploadDirParametersFilterItem
 
 type UploadDirConfigs struct {
-	ChunkSize int    `json:"chunkSize,omitempty"`
-	Region    string `json:"region,omitempty"`
-	ServerUrl string `json:"serverUrl,omitempty"`
-	Workers   int    `json:"workers,omitempty"`
+	ChunkSize *int    `json:"chunkSize,omitempty"`
+	Region    *string `json:"region,omitempty"`
+	ServerUrl *string `json:"serverUrl,omitempty"`
+	Workers   *int    `json:"workers,omitempty"`
 }
 
 type UploadDirResult struct {

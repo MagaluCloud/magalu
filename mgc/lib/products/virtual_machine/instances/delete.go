@@ -21,14 +21,14 @@ import (
 )
 
 type DeleteParameters struct {
-	DeletePublicIp bool   `json:"delete_public_ip,omitempty"`
+	DeletePublicIp *bool  `json:"delete_public_ip,omitempty"`
 	Id             string `json:"id"`
 }
 
 type DeleteConfigs struct {
-	Env       string `json:"env,omitempty"`
-	Region    string `json:"region,omitempty"`
-	ServerUrl string `json:"serverUrl,omitempty"`
+	Env       *string `json:"env,omitempty"`
+	Region    *string `json:"region,omitempty"`
+	ServerUrl *string `json:"serverUrl,omitempty"`
 }
 
 func (s *service) Delete(

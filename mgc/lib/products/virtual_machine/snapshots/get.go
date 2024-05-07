@@ -28,16 +28,16 @@ import (
 )
 
 type GetParameters struct {
-	Expand GetParametersExpand `json:"expand,omitempty"`
-	Id     string              `json:"id"`
+	Expand *GetParametersExpand `json:"expand,omitempty"`
+	Id     string               `json:"id"`
 }
 
 type GetParametersExpand []string
 
 type GetConfigs struct {
-	Env       string `json:"env,omitempty"`
-	Region    string `json:"region,omitempty"`
-	ServerUrl string `json:"serverUrl,omitempty"`
+	Env       *string `json:"env,omitempty"`
+	Region    *string `json:"region,omitempty"`
+	ServerUrl *string `json:"serverUrl,omitempty"`
 }
 
 type GetResult struct {

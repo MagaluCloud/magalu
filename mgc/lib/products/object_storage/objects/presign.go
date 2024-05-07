@@ -15,16 +15,16 @@ import (
 )
 
 type PresignParameters struct {
-	Dst       string `json:"dst"`
-	ExpiresIn string `json:"expires-in,omitempty"`
-	Method    string `json:"method"`
+	Dst       string  `json:"dst"`
+	ExpiresIn *string `json:"expires-in,omitempty"`
+	Method    string  `json:"method"`
 }
 
 type PresignConfigs struct {
-	ChunkSize int    `json:"chunkSize,omitempty"`
-	Region    string `json:"region,omitempty"`
-	ServerUrl string `json:"serverUrl,omitempty"`
-	Workers   int    `json:"workers,omitempty"`
+	ChunkSize *int    `json:"chunkSize,omitempty"`
+	Region    *string `json:"region,omitempty"`
+	ServerUrl *string `json:"serverUrl,omitempty"`
+	Workers   *int    `json:"workers,omitempty"`
 }
 
 type PresignResult struct {

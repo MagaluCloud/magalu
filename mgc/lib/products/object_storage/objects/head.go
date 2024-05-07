@@ -15,15 +15,15 @@ import (
 )
 
 type HeadParameters struct {
-	Dst        string `json:"dst"`
-	ObjVersion string `json:"objVersion,omitempty"`
+	Dst        string  `json:"dst"`
+	ObjVersion *string `json:"objVersion,omitempty"`
 }
 
 type HeadConfigs struct {
-	ChunkSize int    `json:"chunkSize,omitempty"`
-	Region    string `json:"region,omitempty"`
-	ServerUrl string `json:"serverUrl,omitempty"`
-	Workers   int    `json:"workers,omitempty"`
+	ChunkSize *int    `json:"chunkSize,omitempty"`
+	Region    *string `json:"region,omitempty"`
+	ServerUrl *string `json:"serverUrl,omitempty"`
+	Workers   *int    `json:"workers,omitempty"`
 }
 
 type HeadResult struct {

@@ -19,16 +19,16 @@ import (
 )
 
 type DownloadParameters struct {
-	Dst        string `json:"dst,omitempty"`
-	ObjVersion string `json:"obj_version,omitempty"`
-	Src        string `json:"src"`
+	Dst        *string `json:"dst,omitempty"`
+	ObjVersion *string `json:"obj_version,omitempty"`
+	Src        string  `json:"src"`
 }
 
 type DownloadConfigs struct {
-	ChunkSize int    `json:"chunkSize,omitempty"`
-	Region    string `json:"region,omitempty"`
-	ServerUrl string `json:"serverUrl,omitempty"`
-	Workers   int    `json:"workers,omitempty"`
+	ChunkSize *int    `json:"chunkSize,omitempty"`
+	Region    *string `json:"region,omitempty"`
+	ServerUrl *string `json:"serverUrl,omitempty"`
+	Workers   *int    `json:"workers,omitempty"`
 }
 
 type DownloadResult any

@@ -15,34 +15,34 @@ import (
 )
 
 type CopyAllParameters struct {
-	Dst    string                  `json:"dst"`
-	Filter CopyAllParametersFilter `json:"filter,omitempty"`
-	Src    string                  `json:"src"`
+	Dst    string                   `json:"dst"`
+	Filter *CopyAllParametersFilter `json:"filter,omitempty"`
+	Src    string                   `json:"src"`
 }
 
 type CopyAllParametersFilterItem struct {
-	Exclude string `json:"exclude,omitempty"`
-	Include string `json:"include,omitempty"`
+	Exclude *string `json:"exclude,omitempty"`
+	Include *string `json:"include,omitempty"`
 }
 
 type CopyAllParametersFilter []CopyAllParametersFilterItem
 
 type CopyAllConfigs struct {
-	ChunkSize int    `json:"chunkSize,omitempty"`
-	Region    string `json:"region,omitempty"`
-	ServerUrl string `json:"serverUrl,omitempty"`
-	Workers   int    `json:"workers,omitempty"`
+	ChunkSize *int    `json:"chunkSize,omitempty"`
+	Region    *string `json:"region,omitempty"`
+	ServerUrl *string `json:"serverUrl,omitempty"`
+	Workers   *int    `json:"workers,omitempty"`
 }
 
 type CopyAllResult struct {
-	Dst    string              `json:"dst"`
-	Filter CopyAllResultFilter `json:"filter,omitempty"`
-	Src    string              `json:"src"`
+	Dst    string               `json:"dst"`
+	Filter *CopyAllResultFilter `json:"filter,omitempty"`
+	Src    string               `json:"src"`
 }
 
 type CopyAllResultFilterItem struct {
-	Exclude string `json:"exclude,omitempty"`
-	Include string `json:"include,omitempty"`
+	Exclude *string `json:"exclude,omitempty"`
+	Include *string `json:"include,omitempty"`
 }
 
 type CopyAllResultFilter []CopyAllResultFilterItem

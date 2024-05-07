@@ -15,8 +15,8 @@ import (
 )
 
 type CreateParameters struct {
-	Copy string `json:"copy,omitempty"`
-	Name string `json:"name"`
+	Copy *string `json:"copy,omitempty"`
+	Name string  `json:"name"`
 }
 
 type CreateResult struct {

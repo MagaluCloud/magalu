@@ -25,9 +25,9 @@ type ListParameters struct {
 }
 
 type ListConfigs struct {
-	Env       string `json:"env,omitempty"`
-	Region    string `json:"region,omitempty"`
-	ServerUrl string `json:"serverUrl,omitempty"`
+	Env       *string `json:"env,omitempty"`
+	Region    *string `json:"region,omitempty"`
+	ServerUrl *string `json:"serverUrl,omitempty"`
 }
 
 // Object of the node pool response in the cluster.
@@ -38,17 +38,17 @@ type ListResult struct {
 // Object of the node pool response.
 type ListResultResultsItem struct {
 	AutoScale        ListResultResultsItemAutoScale        `json:"auto_scale"`
-	CreatedAt        string                                `json:"created_at,omitempty"`
+	CreatedAt        *string                               `json:"created_at,omitempty"`
 	Id               string                                `json:"id"`
 	InstanceTemplate ListResultResultsItemInstanceTemplate `json:"instance_template"`
 	Labels           ListResultResultsItemLabels           `json:"labels"`
 	Name             string                                `json:"name"`
 	Replicas         int                                   `json:"replicas"`
-	SecurityGroups   ListResultResultsItemSecurityGroups   `json:"securityGroups,omitempty"`
+	SecurityGroups   *ListResultResultsItemSecurityGroups  `json:"securityGroups,omitempty"`
 	Status           ListResultResultsItemStatus           `json:"status"`
-	Tags             ListResultResultsItemTags             `json:"tags,omitempty"`
-	Taints           ListResultResultsItemTaints           `json:"taints,omitempty"`
-	UpdatedAt        string                                `json:"updated_at,omitempty"`
+	Tags             *ListResultResultsItemTags            `json:"tags,omitempty"`
+	Taints           *ListResultResultsItemTaints          `json:"taints,omitempty"`
+	UpdatedAt        *string                               `json:"updated_at,omitempty"`
 	Zone             *ListResultResultsItemZone            `json:"zone"`
 }
 

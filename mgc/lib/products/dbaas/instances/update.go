@@ -21,17 +21,17 @@ import (
 )
 
 type UpdateParameters struct {
-	BackupRetentionDays int    `json:"backup_retention_days,omitempty"`
-	BackupStartAt       string `json:"backup_start_at,omitempty"`
-	Exchange            string `json:"exchange,omitempty"`
-	InstanceId          string `json:"instance_id"`
-	Status              string `json:"status,omitempty"`
+	BackupRetentionDays *int    `json:"backup_retention_days,omitempty"`
+	BackupStartAt       *string `json:"backup_start_at,omitempty"`
+	Exchange            *string `json:"exchange,omitempty"`
+	InstanceId          string  `json:"instance_id"`
+	Status              *string `json:"status,omitempty"`
 }
 
 type UpdateConfigs struct {
-	Env       string `json:"env,omitempty"`
-	Region    string `json:"region,omitempty"`
-	ServerUrl string `json:"serverUrl,omitempty"`
+	Env       *string `json:"env,omitempty"`
+	Region    *string `json:"region,omitempty"`
+	ServerUrl *string `json:"serverUrl,omitempty"`
 }
 
 type UpdateResult struct {
@@ -41,22 +41,22 @@ type UpdateResult struct {
 	CreatedAt           string                `json:"created_at"`
 	DatastoreId         string                `json:"datastore_id"`
 	EngineId            string                `json:"engine_id"`
-	FinishedAt          string                `json:"finished_at,omitempty"`
+	FinishedAt          *string               `json:"finished_at,omitempty"`
 	FlavorId            string                `json:"flavor_id"`
 	Generation          string                `json:"generation"`
 	Id                  string                `json:"id"`
 	Name                string                `json:"name"`
-	Replicas            UpdateResultReplicas  `json:"replicas,omitempty"`
-	StartedAt           string                `json:"started_at,omitempty"`
+	Replicas            *UpdateResultReplicas `json:"replicas,omitempty"`
+	StartedAt           *string               `json:"started_at,omitempty"`
 	Status              string                `json:"status"`
-	UpdatedAt           string                `json:"updated_at,omitempty"`
+	UpdatedAt           *string               `json:"updated_at,omitempty"`
 	Volume              UpdateResultVolume    `json:"volume"`
 }
 
 type UpdateResultAddressesItem struct {
-	Access  string `json:"access"`
-	Address string `json:"address,omitempty"`
-	Type    string `json:"type,omitempty"`
+	Access  string  `json:"access"`
+	Address *string `json:"address,omitempty"`
+	Type    *string `json:"type,omitempty"`
 }
 
 type UpdateResultAddresses []UpdateResultAddressesItem
@@ -66,22 +66,22 @@ type UpdateResultReplicasItem struct {
 	CreatedAt   string                            `json:"created_at"`
 	DatastoreId string                            `json:"datastore_id"`
 	EngineId    string                            `json:"engine_id"`
-	FinishedAt  string                            `json:"finished_at,omitempty"`
+	FinishedAt  *string                           `json:"finished_at,omitempty"`
 	FlavorId    string                            `json:"flavor_id"`
 	Generation  string                            `json:"generation"`
 	Id          string                            `json:"id"`
 	Name        string                            `json:"name"`
 	SourceId    string                            `json:"source_id"`
-	StartedAt   string                            `json:"started_at,omitempty"`
+	StartedAt   *string                           `json:"started_at,omitempty"`
 	Status      string                            `json:"status"`
-	UpdatedAt   string                            `json:"updated_at,omitempty"`
+	UpdatedAt   *string                           `json:"updated_at,omitempty"`
 	Volume      UpdateResultReplicasItemVolume    `json:"volume"`
 }
 
 type UpdateResultReplicasItemAddressesItem struct {
-	Access  string `json:"access"`
-	Address string `json:"address,omitempty"`
-	Type    string `json:"type,omitempty"`
+	Access  string  `json:"access"`
+	Address *string `json:"address,omitempty"`
+	Type    *string `json:"type,omitempty"`
 }
 
 type UpdateResultReplicasItemAddresses []UpdateResultReplicasItemAddressesItem

@@ -14,7 +14,7 @@ import (
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
 
-type ListResult map[string]ListResultProperty
+type ListResult map[string]*ListResultProperty
 
 type ListResultProperty struct {
 	Description string `json:"description"`

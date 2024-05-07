@@ -22,16 +22,16 @@ import (
 
 type CreateParameters struct {
 	Description   *string `json:"description,omitempty"`
-	ValidateQuota bool    `json:"validate_quota,omitempty"`
+	ValidateQuota *bool   `json:"validate_quota,omitempty"`
 	VpcId         string  `json:"vpc_id"`
-	Wait          bool    `json:"wait,omitempty"`
+	Wait          *bool   `json:"wait,omitempty"`
 	WaitTimeout   *int    `json:"wait_timeout,omitempty"`
 }
 
 type CreateConfigs struct {
-	Env       string `json:"env,omitempty"`
-	Region    string `json:"region,omitempty"`
-	ServerUrl string `json:"serverUrl,omitempty"`
+	Env       *string `json:"env,omitempty"`
+	Region    *string `json:"region,omitempty"`
+	ServerUrl *string `json:"serverUrl,omitempty"`
 }
 
 type CreateResult struct {

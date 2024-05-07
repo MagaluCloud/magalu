@@ -25,9 +25,9 @@ type GetParameters struct {
 }
 
 type GetConfigs struct {
-	Env       string `json:"env,omitempty"`
-	Region    string `json:"region,omitempty"`
-	ServerUrl string `json:"serverUrl,omitempty"`
+	Env       *string `json:"env,omitempty"`
+	Region    *string `json:"region,omitempty"`
+	ServerUrl *string `json:"serverUrl,omitempty"`
 }
 
 type GetResult struct {
@@ -58,7 +58,7 @@ type GetResultRulesItem struct {
 	RemoteGroupId   *string `json:"remote_group_id,omitempty"`
 	RemoteIpPrefix  *string `json:"remote_ip_prefix,omitempty"`
 	SecurityGroupId *string `json:"security_group_id,omitempty"`
-	Status          string  `json:"status,omitempty"`
+	Status          *string `json:"status,omitempty"`
 }
 
 type GetResultRules []GetResultRulesItem

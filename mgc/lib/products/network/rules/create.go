@@ -29,15 +29,15 @@ type CreateParameters struct {
 	RemoteGroupId   *string `json:"remote_group_id,omitempty"`
 	RemoteIpPrefix  *string `json:"remote_ip_prefix,omitempty"`
 	SecurityGroupId string  `json:"security_group_id"`
-	ValidateQuota   bool    `json:"validate_quota,omitempty"`
+	ValidateQuota   *bool   `json:"validate_quota,omitempty"`
 	Wait            *bool   `json:"wait,omitempty"`
 	WaitTimeout     *int    `json:"wait_timeout,omitempty"`
 }
 
 type CreateConfigs struct {
-	Env       string `json:"env,omitempty"`
-	Region    string `json:"region,omitempty"`
-	ServerUrl string `json:"serverUrl,omitempty"`
+	Env       *string `json:"env,omitempty"`
+	Region    *string `json:"region,omitempty"`
+	ServerUrl *string `json:"serverUrl,omitempty"`
 }
 
 type CreateResult struct {

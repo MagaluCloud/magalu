@@ -21,17 +21,17 @@ import (
 )
 
 type LoginParameters struct {
-	Headless bool                  `json:"headless,omitempty"`
-	Qrcode   bool                  `json:"qrcode,omitempty"`
-	Scopes   LoginParametersScopes `json:"scopes,omitempty"`
-	Show     bool                  `json:"show,omitempty"`
+	Headless *bool                  `json:"headless,omitempty"`
+	Qrcode   *bool                  `json:"qrcode,omitempty"`
+	Scopes   *LoginParametersScopes `json:"scopes,omitempty"`
+	Show     *bool                  `json:"show,omitempty"`
 }
 
 type LoginParametersScopes []string
 
 type LoginResult struct {
-	AccessToken    string                    `json:"access_token,omitempty"`
-	SelectedTenant LoginResultSelectedTenant `json:"selected_tenant,omitempty"`
+	AccessToken    *string                    `json:"access_token,omitempty"`
+	SelectedTenant *LoginResultSelectedTenant `json:"selected_tenant,omitempty"`
 }
 
 type LoginResultSelectedTenant struct {

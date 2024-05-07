@@ -21,15 +21,15 @@ import (
 )
 
 type ListParameters struct {
-	Limit  int    `json:"_limit,omitempty"`
-	Offset int    `json:"_offset,omitempty"`
-	Status string `json:"status,omitempty"`
+	Limit  *int    `json:"_limit,omitempty"`
+	Offset *int    `json:"_offset,omitempty"`
+	Status *string `json:"status,omitempty"`
 }
 
 type ListConfigs struct {
-	Env       string `json:"env,omitempty"`
-	Region    string `json:"region,omitempty"`
-	ServerUrl string `json:"serverUrl,omitempty"`
+	Env       *string `json:"env,omitempty"`
+	Region    *string `json:"region,omitempty"`
+	ServerUrl *string `json:"serverUrl,omitempty"`
 }
 
 type ListResult struct {

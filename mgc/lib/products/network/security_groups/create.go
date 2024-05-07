@@ -23,15 +23,15 @@ import (
 type CreateParameters struct {
 	Description   *string `json:"description,omitempty"`
 	Name          *string `json:"name"`
-	ValidateQuota bool    `json:"validate_quota,omitempty"`
-	Wait          bool    `json:"wait,omitempty"`
-	WaitTimeout   int     `json:"wait_timeout,omitempty"`
+	ValidateQuota *bool   `json:"validate_quota,omitempty"`
+	Wait          *bool   `json:"wait,omitempty"`
+	WaitTimeout   *int    `json:"wait_timeout,omitempty"`
 }
 
 type CreateConfigs struct {
-	Env       string `json:"env,omitempty"`
-	Region    string `json:"region,omitempty"`
-	ServerUrl string `json:"serverUrl,omitempty"`
+	Env       *string `json:"env,omitempty"`
+	Region    *string `json:"region,omitempty"`
+	ServerUrl *string `json:"serverUrl,omitempty"`
 }
 
 type CreateResult struct {
