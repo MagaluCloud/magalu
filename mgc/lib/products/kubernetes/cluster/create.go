@@ -28,7 +28,6 @@ type CreateParameters struct {
 	NodePools          CreateParametersNodePools `json:"node_pools"`
 	Version            *string                   `json:"version,omitempty"`
 	Zone               *string                   `json:"zone,omitempty"`
-
 }
 
 // Object of the node pool request
