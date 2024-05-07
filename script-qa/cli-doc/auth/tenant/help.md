@@ -13,7 +13,7 @@ Usage:
 - Commands:
 - current     Get the currently active Tenant
 - list        List all available tenants for current login
-- set         Set the active Tenant to be used for all subsequential requests
+- set         Set the active Tenant to be used for all subsequent requests
 
 ## Other commands:
 - Additional Commands:

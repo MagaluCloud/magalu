@@ -28,4 +28,5 @@ nfpms:
     - mgc
 release:
   replace_existing_artifacts: true
-  prerelease: auto
+  draft: true
+  prerelease: true

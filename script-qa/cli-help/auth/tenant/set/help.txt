@@ -1,4 +1,4 @@
-Set the active Tenant to be used for all subsequential requests
+Set the active Tenant to be used for all subsequent requests
 
 Usage:
   ./mgc auth tenant set [uuid] [flags]
@@ -10,3 +10,4 @@ Flags:
 Global Flags:
       --cli.show-cli-globals   Show all CLI global flags on usage text
 
+	** If you have an API Key set, changing the tenant will unset it.

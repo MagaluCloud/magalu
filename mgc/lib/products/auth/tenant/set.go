@@ -3,7 +3,7 @@ Executor: set
 
 # Description
 
-# Set the active Tenant to be used for all subsequential requests
+# Set the active Tenant to be used for all subsequent requests
 
 import "magalu.cloud/lib/products/auth/tenant"
 */

@@ -32,6 +32,11 @@ func getCurrent(ctx context.Context) (*apiKeysResult, error) {
 	}
 
 	id, secretKey := auth.AccessKeyPair()
+	if id == "" && secretKey == "" {
+		fmt.Print("🔓 No current API key set! \n\n")
+		return &apiKeysResult{}, nil
+	}
+
 	keys, err := list(ctx)
 	if err != nil {
 		currentLogger().Warnw("Failed to get detailed info about current key, returning only KeyPairID and SecretKey", "err", err)

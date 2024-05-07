@@ -86,6 +86,7 @@ release:
   github:
     owner: MagaluCloud
     name: mgccli
-  prerelease: auto
+  draft: true
+  prerelease: true
   header: |
     ## CLI ({{ .Date }})

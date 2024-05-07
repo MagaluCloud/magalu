@@ -1479,10 +1479,6 @@ components:
                 updated_at: '2022-01-01T00:00:10Z'
         AttachmentResponse:
             properties:
-                machine_id:
-                    type: string
-                    title: Machine Id
-                    deprecated: true
                 instance:
                     anyOf:
                     -   $ref: '#/components/schemas/AttachmentMachine'
@@ -1501,7 +1497,6 @@ components:
                     type: string
             type: object
             required:
-            - machine_id
             - instance
             - attached_at
             title: AttachmentResponse
@@ -1515,7 +1510,6 @@ components:
                     state: running
                     status: completed
                     updated_at: '2022-01-01T00:00:10Z'
-                machine_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
         BackupType:
             type: string
             enum:
@@ -2018,7 +2012,6 @@ components:
                         state: running
                         status: completed
                         updated_at: '2022-01-01T00:00:10Z'
-                    machine_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                 created_at: '2022-01-01T00:00:10Z'
                 error:
                     message: You have reached the limit of allowed disks. Please,
@@ -2155,7 +2148,6 @@ components:
                             state: running
                             status: completed
                             updated_at: '2022-01-01T00:00:10Z'
-                        machine_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                     created_at: '2022-01-01T00:00:10Z'
                     error:
                         message: You have reached the limit of allowed disks. Please,

@@ -487,7 +487,7 @@
       "configs": {
        "type": "object"
       },
-      "description": "Set the active Tenant to be used for all subsequential requests",
+      "description": "Set the active Tenant to be used for all subsequent requests",
       "isInternal": false,
       "name": "set",
       "parameters": {
@@ -2164,8 +2164,7 @@
           "state": "running",
           "status": "completed",
           "updated_at": "2022-01-01T00:00:10Z"
-         },
-         "machine_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+         }
         },
         "created_at": "2022-01-01T00:00:10Z",
         "error": {
@@ -2194,8 +2193,7 @@
            "state": "running",
            "status": "completed",
            "updated_at": "2022-01-01T00:00:10Z"
-          },
-          "machine_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+          }
          },
          "properties": {
           "attached_at": {
@@ -2354,15 +2352,9 @@
            ],
            "title": "Instance",
            "type": "object"
-          },
-          "machine_id": {
-           "deprecated": true,
-           "title": "Machine Id",
-           "type": "string"
           }
          },
          "required": [
-          "machine_id",
           "instance",
           "attached_at"
          ],
@@ -2658,8 +2650,7 @@
             "state": "running",
             "status": "completed",
             "updated_at": "2022-01-01T00:00:10Z"
-           },
-           "machine_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+           }
           },
           "created_at": "2022-01-01T00:00:10Z",
           "error": {
@@ -2692,8 +2683,7 @@
              "state": "running",
              "status": "completed",
              "updated_at": "2022-01-01T00:00:10Z"
-            },
-            "machine_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+            }
            },
            "created_at": "2022-01-01T00:00:10Z",
            "error": {
@@ -2722,8 +2712,7 @@
               "state": "running",
               "status": "completed",
               "updated_at": "2022-01-01T00:00:10Z"
-             },
-             "machine_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+             }
             },
             "properties": {
              "attached_at": {
@@ -2882,15 +2871,9 @@
               ],
               "title": "Instance",
               "type": "object"
-             },
-             "machine_id": {
-              "deprecated": true,
-              "title": "Machine Id",
-              "type": "string"
              }
             },
             "required": [
-             "machine_id",
              "instance",
              "attached_at"
             ],
@@ -3792,7 +3775,7 @@
        "type": "object"
       },
       "result": {},
-      "version": "1.17.2"
+      "version": "1.19.0"
      },
      {
       "configs": {
@@ -3943,7 +3926,7 @@
        "title": "BackupDetailResponse",
        "type": "object"
       },
-      "version": "1.17.2"
+      "version": "1.19.0"
      },
      {
       "configs": {
@@ -4192,13 +4175,13 @@
        "title": "BackupsResponse",
        "type": "object"
       },
-      "version": "1.17.2"
+      "version": "1.19.0"
      }
     ],
     "description": "Database backups management.",
     "isInternal": false,
     "name": "backups",
-    "version": "1.17.2"
+    "version": "1.19.0"
    },
    {
     "children": [
@@ -4291,7 +4274,7 @@
        "title": "EngineResponse",
        "type": "object"
       },
-      "version": "1.17.2"
+      "version": "1.19.0"
      },
      {
       "configs": {
@@ -4455,13 +4438,13 @@
        "title": "EnginesResponse",
        "type": "object"
       },
-      "version": "1.17.2"
+      "version": "1.19.0"
      }
     ],
     "description": "Datastores available for database instances.",
     "isInternal": true,
     "name": "datastores",
-    "version": "1.17.2"
+    "version": "1.19.0"
    },
    {
     "children": [
@@ -4554,7 +4537,7 @@
        "title": "EngineResponse",
        "type": "object"
       },
-      "version": "1.17.2"
+      "version": "1.19.0"
      },
      {
       "configs": {
@@ -4718,13 +4701,13 @@
        "title": "EnginesResponse",
        "type": "object"
       },
-      "version": "1.17.2"
+      "version": "1.19.0"
      }
     ],
     "description": "Engines available for database instances.",
     "isInternal": false,
     "name": "engines",
-    "version": "1.17.2"
+    "version": "1.19.0"
    },
    {
     "children": [
@@ -4836,7 +4819,7 @@
        "title": "FlavorResponse",
        "type": "object"
       },
-      "version": "1.17.2"
+      "version": "1.19.0"
      },
      {
       "configs": {
@@ -5020,13 +5003,13 @@
        "title": "FlavorsResponse",
        "type": "object"
       },
-      "version": "1.17.2"
+      "version": "1.19.0"
      }
     ],
     "description": "Flavors available for database instances.",
     "isInternal": false,
     "name": "flavors",
-    "version": "1.17.2"
+    "version": "1.19.0"
    },
    {
     "children": [
@@ -5069,13 +5052,13 @@
        "type": "object"
       },
       "result": {},
-      "version": "1.17.2"
+      "version": "1.19.0"
      }
     ],
     "description": "Health check.",
     "isInternal": true,
     "name": "healthcheck",
-    "version": "1.17.2"
+    "version": "1.19.0"
    },
    {
     "children": [
@@ -5157,7 +5140,7 @@
          "title": "BackupResponse",
          "type": "object"
         },
-        "version": "1.17.2"
+        "version": "1.19.0"
        },
        {
         "configs": {
@@ -5219,7 +5202,7 @@
          "type": "object"
         },
         "result": {},
-        "version": "1.17.2"
+        "version": "1.19.0"
        },
        {
         "configs": {
@@ -5376,7 +5359,7 @@
          "title": "BackupDetailResponse",
          "type": "object"
         },
-        "version": "1.17.2"
+        "version": "1.19.0"
        },
        {
         "configs": {
@@ -5633,13 +5616,13 @@
          "title": "BackupsResponse",
          "type": "object"
         },
-        "version": "1.17.2"
+        "version": "1.19.0"
        }
       ],
       "description": "Database instances management. | backups",
       "isInternal": false,
       "name": "backups",
-      "version": "1.17.2"
+      "version": "1.19.0"
      },
      {
       "configs": {
@@ -5720,6 +5703,46 @@
          "title": "Name",
          "type": "string"
         },
+        "parameters": {
+         "default": [],
+         "items": {
+          "properties": {
+           "name": {
+            "description": "An enumeration.",
+            "enum": [
+             "LOWER_CASE_TABLE_NAMES"
+            ],
+            "title": "InstanceParametersNames",
+            "type": "string"
+           },
+           "value": {
+            "anyOf": [
+             {
+              "type": "number"
+             },
+             {
+              "type": "integer"
+             },
+             {
+              "type": "boolean"
+             },
+             {
+              "type": "string"
+             }
+            ],
+            "title": "Value"
+           }
+          },
+          "required": [
+           "name",
+           "value"
+          ],
+          "title": "InstanceParametersRequest",
+          "type": "object"
+         },
+         "title": "Parameters",
+         "type": "array"
+        },
         "password": {
          "example": "dbaas-password",
          "maxLength": 50,
@@ -5783,7 +5806,7 @@
        "title": "InstanceResponse",
        "type": "object"
       },
-      "version": "1.17.2"
+      "version": "1.19.0"
      },
      {
       "configs": {
@@ -5839,7 +5862,7 @@
        "type": "object"
       },
       "result": {},
-      "version": "1.17.2"
+      "version": "1.19.0"
      },
      {
       "configs": {
@@ -5982,7 +6005,8 @@
           "G0B",
           "G1B",
           "G2B",
-          "G3B"
+          "G3B",
+          "G4B"
          ],
          "title": "InstanceGeneration",
          "type": "string"
@@ -5996,6 +6020,45 @@
          "maxLength": 100,
          "title": "Name",
          "type": "string"
+        },
+        "parameters": {
+         "items": {
+          "properties": {
+           "name": {
+            "description": "An enumeration.",
+            "enum": [
+             "LOWER_CASE_TABLE_NAMES"
+            ],
+            "title": "InstanceParametersNames",
+            "type": "string"
+           },
+           "value": {
+            "anyOf": [
+             {
+              "type": "number"
+             },
+             {
+              "type": "integer"
+             },
+             {
+              "type": "boolean"
+             },
+             {
+              "type": "string"
+             }
+            ],
+            "title": "Value"
+           }
+          },
+          "required": [
+           "name",
+           "value"
+          ],
+          "title": "InstanceParametersResponse",
+          "type": "object"
+         },
+         "title": "Parameters",
+         "type": "array"
         },
         "replicas": {
          "items": {
@@ -6067,7 +6130,8 @@
              "G0B",
              "G1B",
              "G2B",
-             "G3B"
+             "G3B",
+             "G4B"
             ],
             "title": "InstanceGeneration",
             "type": "string"
@@ -6080,6 +6144,45 @@
            "name": {
             "title": "Name",
             "type": "string"
+           },
+           "parameters": {
+            "items": {
+             "properties": {
+              "name": {
+               "description": "An enumeration.",
+               "enum": [
+                "LOWER_CASE_TABLE_NAMES"
+               ],
+               "title": "InstanceParametersNames",
+               "type": "string"
+              },
+              "value": {
+               "anyOf": [
+                {
+                 "type": "number"
+                },
+                {
+                 "type": "integer"
+                },
+                {
+                 "type": "boolean"
+                },
+                {
+                 "type": "string"
+                }
+               ],
+               "title": "Value"
+              }
+             },
+             "required": [
+              "name",
+              "value"
+             ],
+             "title": "InstanceParametersResponse",
+             "type": "object"
+            },
+            "title": "Parameters",
+            "type": "array"
            },
            "source_id": {
             "format": "uuid",
@@ -6156,7 +6259,8 @@
            "addresses",
            "status",
            "generation",
-           "created_at"
+           "created_at",
+           "parameters"
           ],
           "title": "ReplicaDetailResponse",
           "type": "object"
@@ -6235,12 +6339,13 @@
         "generation",
         "created_at",
         "backup_retention_days",
-        "backup_start_at"
+        "backup_start_at",
+        "parameters"
        ],
        "title": "InstanceDetailResponse",
        "type": "object"
       },
-      "version": "1.17.2"
+      "version": "1.19.0"
      },
      {
       "configs": {
@@ -6459,7 +6564,8 @@
              "G0B",
              "G1B",
              "G2B",
-             "G3B"
+             "G3B",
+             "G4B"
             ],
             "title": "InstanceGeneration",
             "type": "string"
@@ -6473,6 +6579,45 @@
             "maxLength": 100,
             "title": "Name",
             "type": "string"
+           },
+           "parameters": {
+            "items": {
+             "properties": {
+              "name": {
+               "description": "An enumeration.",
+               "enum": [
+                "LOWER_CASE_TABLE_NAMES"
+               ],
+               "title": "InstanceParametersNames",
+               "type": "string"
+              },
+              "value": {
+               "anyOf": [
+                {
+                 "type": "number"
+                },
+                {
+                 "type": "integer"
+                },
+                {
+                 "type": "boolean"
+                },
+                {
+                 "type": "string"
+                }
+               ],
+               "title": "Value"
+              }
+             },
+             "required": [
+              "name",
+              "value"
+             ],
+             "title": "InstanceParametersResponse",
+             "type": "object"
+            },
+            "title": "Parameters",
+            "type": "array"
            },
            "replicas": {
             "items": {
@@ -6544,7 +6689,8 @@
                 "G0B",
                 "G1B",
                 "G2B",
-                "G3B"
+                "G3B",
+                "G4B"
                ],
                "title": "InstanceGeneration",
                "type": "string"
@@ -6557,6 +6703,45 @@
               "name": {
                "title": "Name",
                "type": "string"
+              },
+              "parameters": {
+               "items": {
+                "properties": {
+                 "name": {
+                  "description": "An enumeration.",
+                  "enum": [
+                   "LOWER_CASE_TABLE_NAMES"
+                  ],
+                  "title": "InstanceParametersNames",
+                  "type": "string"
+                 },
+                 "value": {
+                  "anyOf": [
+                   {
+                    "type": "number"
+                   },
+                   {
+                    "type": "integer"
+                   },
+                   {
+                    "type": "boolean"
+                   },
+                   {
+                    "type": "string"
+                   }
+                  ],
+                  "title": "Value"
+                 }
+                },
+                "required": [
+                 "name",
+                 "value"
+                ],
+                "title": "InstanceParametersResponse",
+                "type": "object"
+               },
+               "title": "Parameters",
+               "type": "array"
               },
               "source_id": {
                "format": "uuid",
@@ -6633,7 +6818,8 @@
               "addresses",
               "status",
               "generation",
-              "created_at"
+              "created_at",
+              "parameters"
              ],
              "title": "ReplicaDetailResponse",
              "type": "object"
@@ -6712,7 +6898,8 @@
            "generation",
            "created_at",
            "backup_retention_days",
-           "backup_start_at"
+           "backup_start_at",
+           "parameters"
           ],
           "title": "InstanceDetailResponse",
           "type": "object"
@@ -6728,7 +6915,7 @@
        "title": "InstancesResponse",
        "type": "object"
       },
-      "version": "1.17.2"
+      "version": "1.19.0"
      },
      {
       "configs": {
@@ -6895,7 +7082,8 @@
           "G0B",
           "G1B",
           "G2B",
-          "G3B"
+          "G3B",
+          "G4B"
          ],
          "title": "InstanceGeneration",
          "type": "string"
@@ -6909,6 +7097,45 @@
          "maxLength": 100,
          "title": "Name",
          "type": "string"
+        },
+        "parameters": {
+         "items": {
+          "properties": {
+           "name": {
+            "description": "An enumeration.",
+            "enum": [
+             "LOWER_CASE_TABLE_NAMES"
+            ],
+            "title": "InstanceParametersNames",
+            "type": "string"
+           },
+           "value": {
+            "anyOf": [
+             {
+              "type": "number"
+             },
+             {
+              "type": "integer"
+             },
+             {
+              "type": "boolean"
+             },
+             {
+              "type": "string"
+             }
+            ],
+            "title": "Value"
+           }
+          },
+          "required": [
+           "name",
+           "value"
+          ],
+          "title": "InstanceParametersResponse",
+          "type": "object"
+         },
+         "title": "Parameters",
+         "type": "array"
         },
         "replicas": {
          "items": {
@@ -6980,7 +7207,8 @@
              "G0B",
              "G1B",
              "G2B",
-             "G3B"
+             "G3B",
+             "G4B"
             ],
             "title": "InstanceGeneration",
             "type": "string"
@@ -6993,6 +7221,45 @@
            "name": {
             "title": "Name",
             "type": "string"
+           },
+           "parameters": {
+            "items": {
+             "properties": {
+              "name": {
+               "description": "An enumeration.",
+               "enum": [
+                "LOWER_CASE_TABLE_NAMES"
+               ],
+               "title": "InstanceParametersNames",
+               "type": "string"
+              },
+              "value": {
+               "anyOf": [
+                {
+                 "type": "number"
+                },
+                {
+                 "type": "integer"
+                },
+                {
+                 "type": "boolean"
+                },
+                {
+                 "type": "string"
+                }
+               ],
+               "title": "Value"
+              }
+             },
+             "required": [
+              "name",
+              "value"
+             ],
+             "title": "InstanceParametersResponse",
+             "type": "object"
+            },
+            "title": "Parameters",
+            "type": "array"
            },
            "source_id": {
             "format": "uuid",
@@ -7069,7 +7336,8 @@
            "addresses",
            "status",
            "generation",
-           "created_at"
+           "created_at",
+           "parameters"
           ],
           "title": "ReplicaDetailResponse",
           "type": "object"
@@ -7148,12 +7416,13 @@
         "generation",
         "created_at",
         "backup_retention_days",
-        "backup_start_at"
+        "backup_start_at",
+        "parameters"
        ],
        "title": "InstanceDetailResponse",
        "type": "object"
       },
-      "version": "1.17.2"
+      "version": "1.19.0"
      },
      {
       "configs": {
@@ -7228,7 +7497,7 @@
        "title": "RestoreResponse",
        "type": "object"
       },
-      "version": "1.17.2"
+      "version": "1.19.0"
      },
      {
       "configs": {
@@ -7363,7 +7632,8 @@
           "G0B",
           "G1B",
           "G2B",
-          "G3B"
+          "G3B",
+          "G4B"
          ],
          "title": "InstanceGeneration",
          "type": "string"
@@ -7377,6 +7647,45 @@
          "maxLength": 100,
          "title": "Name",
          "type": "string"
+        },
+        "parameters": {
+         "items": {
+          "properties": {
+           "name": {
+            "description": "An enumeration.",
+            "enum": [
+             "LOWER_CASE_TABLE_NAMES"
+            ],
+            "title": "InstanceParametersNames",
+            "type": "string"
+           },
+           "value": {
+            "anyOf": [
+             {
+              "type": "number"
+             },
+             {
+              "type": "integer"
+             },
+             {
+              "type": "boolean"
+             },
+             {
+              "type": "string"
+             }
+            ],
+            "title": "Value"
+           }
+          },
+          "required": [
+           "name",
+           "value"
+          ],
+          "title": "InstanceParametersResponse",
+          "type": "object"
+         },
+         "title": "Parameters",
+         "type": "array"
         },
         "replicas": {
          "items": {
@@ -7448,7 +7757,8 @@
              "G0B",
              "G1B",
              "G2B",
-             "G3B"
+             "G3B",
+             "G4B"
             ],
             "title": "InstanceGeneration",
             "type": "string"
@@ -7461,6 +7771,45 @@
            "name": {
             "title": "Name",
             "type": "string"
+           },
+           "parameters": {
+            "items": {
+             "properties": {
+              "name": {
+               "description": "An enumeration.",
+               "enum": [
+                "LOWER_CASE_TABLE_NAMES"
+               ],
+               "title": "InstanceParametersNames",
+               "type": "string"
+              },
+              "value": {
+               "anyOf": [
+                {
+                 "type": "number"
+                },
+                {
+                 "type": "integer"
+                },
+                {
+                 "type": "boolean"
+                },
+                {
+                 "type": "string"
+                }
+               ],
+               "title": "Value"
+              }
+             },
+             "required": [
+              "name",
+              "value"
+             ],
+             "title": "InstanceParametersResponse",
+             "type": "object"
+            },
+            "title": "Parameters",
+            "type": "array"
            },
            "source_id": {
             "format": "uuid",
@@ -7537,7 +7886,8 @@
            "addresses",
            "status",
            "generation",
-           "created_at"
+           "created_at",
+           "parameters"
           ],
           "title": "ReplicaDetailResponse",
           "type": "object"
@@ -7616,12 +7966,13 @@
         "generation",
         "created_at",
         "backup_retention_days",
-        "backup_start_at"
+        "backup_start_at",
+        "parameters"
        ],
        "title": "InstanceDetailResponse",
        "type": "object"
       },
-      "version": "1.17.2"
+      "version": "1.19.0"
      },
      {
       "configs": {
@@ -7756,7 +8107,8 @@
           "G0B",
           "G1B",
           "G2B",
-          "G3B"
+          "G3B",
+          "G4B"
          ],
          "title": "InstanceGeneration",
          "type": "string"
@@ -7770,6 +8122,45 @@
          "maxLength": 100,
          "title": "Name",
          "type": "string"
+        },
+        "parameters": {
+         "items": {
+          "properties": {
+           "name": {
+            "description": "An enumeration.",
+            "enum": [
+             "LOWER_CASE_TABLE_NAMES"
+            ],
+            "title": "InstanceParametersNames",
+            "type": "string"
+           },
+           "value": {
+            "anyOf": [
+             {
+              "type": "number"
+             },
+             {
+              "type": "integer"
+             },
+             {
+              "type": "boolean"
+             },
+             {
+              "type": "string"
+             }
+            ],
+            "title": "Value"
+           }
+          },
+          "required": [
+           "name",
+           "value"
+          ],
+          "title": "InstanceParametersResponse",
+          "type": "object"
+         },
+         "title": "Parameters",
+         "type": "array"
         },
         "replicas": {
          "items": {
@@ -7841,7 +8232,8 @@
              "G0B",
              "G1B",
              "G2B",
-             "G3B"
+             "G3B",
+             "G4B"
             ],
             "title": "InstanceGeneration",
             "type": "string"
@@ -7854,6 +8246,45 @@
            "name": {
             "title": "Name",
             "type": "string"
+           },
+           "parameters": {
+            "items": {
+             "properties": {
+              "name": {
+               "description": "An enumeration.",
+               "enum": [
+                "LOWER_CASE_TABLE_NAMES"
+               ],
+               "title": "InstanceParametersNames",
+               "type": "string"
+              },
+              "value": {
+               "anyOf": [
+                {
+                 "type": "number"
+                },
+                {
+                 "type": "integer"
+                },
+                {
+                 "type": "boolean"
+                },
+                {
+                 "type": "string"
+                }
+               ],
+               "title": "Value"
+              }
+             },
+             "required": [
+              "name",
+              "value"
+             ],
+             "title": "InstanceParametersResponse",
+             "type": "object"
+            },
+            "title": "Parameters",
+            "type": "array"
            },
            "source_id": {
             "format": "uuid",
@@ -7930,7 +8361,8 @@
            "addresses",
            "status",
            "generation",
-           "created_at"
+           "created_at",
+           "parameters"
           ],
           "title": "ReplicaDetailResponse",
           "type": "object"
@@ -8009,12 +8441,13 @@
         "generation",
         "created_at",
         "backup_retention_days",
-        "backup_start_at"
+        "backup_start_at",
+        "parameters"
        ],
        "title": "InstanceDetailResponse",
        "type": "object"
       },
-      "version": "1.17.2"
+      "version": "1.19.0"
      },
      {
       "configs": {
@@ -8169,7 +8602,8 @@
           "G0B",
           "G1B",
           "G2B",
-          "G3B"
+          "G3B",
+          "G4B"
          ],
          "title": "InstanceGeneration",
          "type": "string"
@@ -8183,6 +8617,45 @@
          "maxLength": 100,
          "title": "Name",
          "type": "string"
+        },
+        "parameters": {
+         "items": {
+          "properties": {
+           "name": {
+            "description": "An enumeration.",
+            "enum": [
+             "LOWER_CASE_TABLE_NAMES"
+            ],
+            "title": "InstanceParametersNames",
+            "type": "string"
+           },
+           "value": {
+            "anyOf": [
+             {
+              "type": "number"
+             },
+             {
+              "type": "integer"
+             },
+             {
+              "type": "boolean"
+             },
+             {
+              "type": "string"
+             }
+            ],
+            "title": "Value"
+           }
+          },
+          "required": [
+           "name",
+           "value"
+          ],
+          "title": "InstanceParametersResponse",
+          "type": "object"
+         },
+         "title": "Parameters",
+         "type": "array"
         },
         "replicas": {
          "items": {
@@ -8254,7 +8727,8 @@
              "G0B",
              "G1B",
              "G2B",
-             "G3B"
+             "G3B",
+             "G4B"
             ],
             "title": "InstanceGeneration",
             "type": "string"
@@ -8267,6 +8741,45 @@
            "name": {
             "title": "Name",
             "type": "string"
+           },
+           "parameters": {
+            "items": {
+             "properties": {
+              "name": {
+               "description": "An enumeration.",
+               "enum": [
+                "LOWER_CASE_TABLE_NAMES"
+               ],
+               "title": "InstanceParametersNames",
+               "type": "string"
+              },
+              "value": {
+               "anyOf": [
+                {
+                 "type": "number"
+                },
+                {
+                 "type": "integer"
+                },
+                {
+                 "type": "boolean"
+                },
+                {
+                 "type": "string"
+                }
+               ],
+               "title": "Value"
+              }
+             },
+             "required": [
+              "name",
+              "value"
+             ],
+             "title": "InstanceParametersResponse",
+             "type": "object"
+            },
+            "title": "Parameters",
+            "type": "array"
            },
            "source_id": {
             "format": "uuid",
@@ -8343,7 +8856,8 @@
            "addresses",
            "status",
            "generation",
-           "created_at"
+           "created_at",
+           "parameters"
           ],
           "title": "ReplicaDetailResponse",
           "type": "object"
@@ -8422,18 +8936,19 @@
         "generation",
         "created_at",
         "backup_retention_days",
-        "backup_start_at"
+        "backup_start_at",
+        "parameters"
        ],
        "title": "InstanceDetailResponse",
        "type": "object"
       },
-      "version": "1.17.2"
+      "version": "1.19.0"
      }
     ],
     "description": "Database instances management.",
     "isInternal": false,
     "name": "instances",
-    "version": "1.17.2"
+    "version": "1.19.0"
    },
    {
     "children": [
@@ -8515,7 +9030,7 @@
        "title": "ReplicaResponse",
        "type": "object"
       },
-      "version": "1.17.2"
+      "version": "1.19.0"
      },
      {
       "configs": {
@@ -8574,7 +9089,7 @@
        "nullable": true,
        "type": "null"
       },
-      "version": "1.17.2"
+      "version": "1.19.0"
      },
      {
       "configs": {
@@ -8698,7 +9213,8 @@
           "G0B",
           "G1B",
           "G2B",
-          "G3B"
+          "G3B",
+          "G4B"
          ],
          "title": "InstanceGeneration",
          "type": "string"
@@ -8711,6 +9227,45 @@
         "name": {
          "title": "Name",
          "type": "string"
+        },
+        "parameters": {
+         "items": {
+          "properties": {
+           "name": {
+            "description": "An enumeration.",
+            "enum": [
+             "LOWER_CASE_TABLE_NAMES"
+            ],
+            "title": "InstanceParametersNames",
+            "type": "string"
+           },
+           "value": {
+            "anyOf": [
+             {
+              "type": "number"
+             },
+             {
+              "type": "integer"
+             },
+             {
+              "type": "boolean"
+             },
+             {
+              "type": "string"
+             }
+            ],
+            "title": "Value"
+           }
+          },
+          "required": [
+           "name",
+           "value"
+          ],
+          "title": "InstanceParametersResponse",
+          "type": "object"
+         },
+         "title": "Parameters",
+         "type": "array"
         },
         "source_id": {
          "format": "uuid",
@@ -8787,12 +9342,13 @@
         "addresses",
         "status",
         "generation",
-        "created_at"
+        "created_at",
+        "parameters"
        ],
        "title": "ReplicaDetailResponse",
        "type": "object"
       },
-      "version": "1.17.2"
+      "version": "1.19.0"
      },
      {
       "configs": {
@@ -8976,7 +9532,8 @@
              "G0B",
              "G1B",
              "G2B",
-             "G3B"
+             "G3B",
+             "G4B"
             ],
             "title": "InstanceGeneration",
             "type": "string"
@@ -8989,6 +9546,45 @@
            "name": {
             "title": "Name",
             "type": "string"
+           },
+           "parameters": {
+            "items": {
+             "properties": {
+              "name": {
+               "description": "An enumeration.",
+               "enum": [
+                "LOWER_CASE_TABLE_NAMES"
+               ],
+               "title": "InstanceParametersNames",
+               "type": "string"
+              },
+              "value": {
+               "anyOf": [
+                {
+                 "type": "number"
+                },
+                {
+                 "type": "integer"
+                },
+                {
+                 "type": "boolean"
+                },
+                {
+                 "type": "string"
+                }
+               ],
+               "title": "Value"
+              }
+             },
+             "required": [
+              "name",
+              "value"
+             ],
+             "title": "InstanceParametersResponse",
+             "type": "object"
+            },
+            "title": "Parameters",
+            "type": "array"
            },
            "source_id": {
             "format": "uuid",
@@ -9065,7 +9661,8 @@
            "addresses",
            "status",
            "generation",
-           "created_at"
+           "created_at",
+           "parameters"
           ],
           "title": "ReplicaDetailResponse",
           "type": "object"
@@ -9081,7 +9678,7 @@
        "title": "ReplicasResponse",
        "type": "object"
       },
-      "version": "1.17.2"
+      "version": "1.19.0"
      },
      {
       "configs": {
@@ -9211,7 +9808,8 @@
           "G0B",
           "G1B",
           "G2B",
-          "G3B"
+          "G3B",
+          "G4B"
          ],
          "title": "InstanceGeneration",
          "type": "string"
@@ -9224,6 +9822,45 @@
         "name": {
          "title": "Name",
          "type": "string"
+        },
+        "parameters": {
+         "items": {
+          "properties": {
+           "name": {
+            "description": "An enumeration.",
+            "enum": [
+             "LOWER_CASE_TABLE_NAMES"
+            ],
+            "title": "InstanceParametersNames",
+            "type": "string"
+           },
+           "value": {
+            "anyOf": [
+             {
+              "type": "number"
+             },
+             {
+              "type": "integer"
+             },
+             {
+              "type": "boolean"
+             },
+             {
+              "type": "string"
+             }
+            ],
+            "title": "Value"
+           }
+          },
+          "required": [
+           "name",
+           "value"
+          ],
+          "title": "InstanceParametersResponse",
+          "type": "object"
+         },
+         "title": "Parameters",
+         "type": "array"
         },
         "source_id": {
          "format": "uuid",
@@ -9300,12 +9937,13 @@
         "addresses",
         "status",
         "generation",
-        "created_at"
+        "created_at",
+        "parameters"
        ],
        "title": "ReplicaDetailResponse",
        "type": "object"
       },
-      "version": "1.17.2"
+      "version": "1.19.0"
      },
      {
       "configs": {
@@ -9429,7 +10067,8 @@
           "G0B",
           "G1B",
           "G2B",
-          "G3B"
+          "G3B",
+          "G4B"
          ],
          "title": "InstanceGeneration",
          "type": "string"
@@ -9442,6 +10081,45 @@
         "name": {
          "title": "Name",
          "type": "string"
+        },
+        "parameters": {
+         "items": {
+          "properties": {
+           "name": {
+            "description": "An enumeration.",
+            "enum": [
+             "LOWER_CASE_TABLE_NAMES"
+            ],
+            "title": "InstanceParametersNames",
+            "type": "string"
+           },
+           "value": {
+            "anyOf": [
+             {
+              "type": "number"
+             },
+             {
+              "type": "integer"
+             },
+             {
+              "type": "boolean"
+             },
+             {
+              "type": "string"
+             }
+            ],
+            "title": "Value"
+           }
+          },
+          "required": [
+           "name",
+           "value"
+          ],
+          "title": "InstanceParametersResponse",
+          "type": "object"
+         },
+         "title": "Parameters",
+         "type": "array"
         },
         "source_id": {
          "format": "uuid",
@@ -9518,12 +10196,13 @@
         "addresses",
         "status",
         "generation",
-        "created_at"
+        "created_at",
+        "parameters"
        ],
        "title": "ReplicaDetailResponse",
        "type": "object"
       },
-      "version": "1.17.2"
+      "version": "1.19.0"
      },
      {
       "configs": {
@@ -9647,7 +10326,8 @@
           "G0B",
           "G1B",
           "G2B",
-          "G3B"
+          "G3B",
+          "G4B"
          ],
          "title": "InstanceGeneration",
          "type": "string"
@@ -9660,6 +10340,45 @@
         "name": {
          "title": "Name",
          "type": "string"
+        },
+        "parameters": {
+         "items": {
+          "properties": {
+           "name": {
+            "description": "An enumeration.",
+            "enum": [
+             "LOWER_CASE_TABLE_NAMES"
+            ],
+            "title": "InstanceParametersNames",
+            "type": "string"
+           },
+           "value": {
+            "anyOf": [
+             {
+              "type": "number"
+             },
+             {
+              "type": "integer"
+             },
+             {
+              "type": "boolean"
+             },
+             {
+              "type": "string"
+             }
+            ],
+            "title": "Value"
+           }
+          },
+          "required": [
+           "name",
+           "value"
+          ],
+          "title": "InstanceParametersResponse",
+          "type": "object"
+         },
+         "title": "Parameters",
+         "type": "array"
         },
         "source_id": {
          "format": "uuid",
@@ -9736,24 +10455,25 @@
         "addresses",
         "status",
         "generation",
-        "created_at"
+        "created_at",
+        "parameters"
        ],
        "title": "ReplicaDetailResponse",
        "type": "object"
       },
-      "version": "1.17.2"
+      "version": "1.19.0"
      }
     ],
     "description": "Database replicas management.",
     "isInternal": false,
     "name": "replicas",
-    "version": "1.17.2"
+    "version": "1.19.0"
    }
   ],
   "description": "DBaaS API Product.",
   "isInternal": false,
   "name": "dbaas",
-  "version": "1.17.2"
+  "version": "1.19.0"
  },
  {
   "children": [
@@ -10903,6 +11623,11 @@
           "v1.28.5"
          ],
          "example": "v1.28.5",
+         "type": "string"
+        },
+        "zone": {
+         "description": "Identifier of the zone where the Kubernetes cluster will be located.",
+         "example": "br-region-zone",
          "type": "string"
         }
        },
@@ -25217,6 +25942,7 @@
           "id": "3a4dc05b-eb10-42ec-8c0c-848e06f7aded",
           "name": "abc.small",
           "ram": 2,
+          "sku": "some_sku",
           "status": "active",
           "vcpus": 2
          }
@@ -25231,6 +25957,7 @@
            "id": "3a4dc05b-eb10-42ec-8c0c-848e06f7aded",
            "name": "abc.small",
            "ram": 2,
+           "sku": "some_sku",
            "status": "active",
            "vcpus": 2
           },
@@ -25256,6 +25983,10 @@
             "title": "Ram",
             "type": "integer"
            },
+           "sku": {
+            "title": "Sku",
+            "type": "string"
+           },
            "status": {
             "title": "Status",
             "type": "string"
@@ -25271,7 +26002,8 @@
            "vcpus",
            "ram",
            "disk",
-           "status"
+           "status",
+           "sku"
           ],
           "title": "InstanceTypesV1Response",
           "type": "object"

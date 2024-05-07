@@ -162,7 +162,10 @@ func FromContext(ctx context.Context) *Auth {
 	return a
 }
 
-func New(configMap map[string]Config, client *http.Client, profileManager *profile_manager.ProfileManager, mgcConfig *config.Config) *Auth {
+func New(
+	configMap map[string]Config, client *http.Client, profileManager *profile_manager.ProfileManager,
+	mgcConfig *config.Config,
+) *Auth {
 	newAuth := Auth{
 		httpClient:     client,
 		configMap:      configMap,
@@ -343,6 +346,12 @@ func (o *Auth) SetTokens(token *LoginResult) error {
 func (o *Auth) SetAccessKey(id string, key string) error {
 	o.accessKeyId = id
 	o.secretAccessKey = key
+	return o.writeCurrentConfig()
+}
+
+func (o *Auth) UnsetAccessKey() error {
+	o.accessKeyId = ""
+	o.secretAccessKey = ""
 	return o.writeCurrentConfig()
 }
 
@@ -622,7 +631,9 @@ func (o *Auth) ListTenants(ctx context.Context) ([]*Tenant, error) {
 	return result, nil
 }
 
-func (o *Auth) SelectTenant(ctx context.Context, id string, scopes core.ScopesString) (*TokenExchangeResult, error) {
+func (o *Auth) SelectTenant(ctx context.Context, id string, scopes core.ScopesString) (
+	*TokenExchangeResult, error,
+) {
 	return o.runTokenExchange(ctx, id, scopes)
 }
 
@@ -634,7 +645,9 @@ func (o *Auth) SetScopes(ctx context.Context, scopes core.Scopes) (*TokenExchang
 	return o.runTokenExchange(ctx, currentTenantId, scopes.AsScopesString())
 }
 
-func (o *Auth) runTokenExchange(ctx context.Context, tenantId string, scopes core.ScopesString) (*TokenExchangeResult, error) {
+func (o *Auth) runTokenExchange(
+	ctx context.Context, tenantId string, scopes core.ScopesString,
+) (*TokenExchangeResult, error) {
 	httpClient := o.AuthenticatedHttpClientFromContext(ctx)
 	if httpClient == nil {
 		return nil, fmt.Errorf("programming error: unable to get HTTP Client from context")

@@ -41,7 +41,6 @@ jobs:
           VERSION: CI
           CHECK_RELEASE: 0
         run: ./scripts/build_release.sh
-      - run: git config --global --unset url."ssh://git@github.com/".insteadOf "https://github.com/"
 
   cli-release:
     needs: build

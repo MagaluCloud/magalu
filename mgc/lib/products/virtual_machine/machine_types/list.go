@@ -42,6 +42,7 @@ type ListResultInstanceTypesItem struct {
 	Id     string `json:"id"`
 	Name   string `json:"name"`
 	Ram    int    `json:"ram"`
+	Sku    string `json:"sku"`
 	Status string `json:"status"`
 	Vcpus  int    `json:"vcpus"`
 }
