@@ -24,8 +24,6 @@ Database replicas management.
 
 - `exchange` (String)
 - `flavor_id` (String)
-- `status` (String) An enumeration.
-- `volume` (Attributes) (see [below for nested schema](#nestedatt--volume))
 
 ### Read-Only
 
@@ -37,16 +35,9 @@ Database replicas management.
 - `generation` (String) An enumeration.
 - `id` (String) The ID of this resource.
 - `started_at` (String)
+- `status` (String) An enumeration.
 - `updated_at` (String)
-
-<a id="nestedatt--volume"></a>
-### Nested Schema for `volume`
-
-Read-Only:
-
-- `size` (Number)
-- `type` (String) An enumeration.
-
+- `volume` (Attributes) (see [below for nested schema](#nestedatt--volume))
 
 <a id="nestedatt--addresses"></a>
 ### Nested Schema for `addresses`
@@ -55,4 +46,13 @@ Read-Only:
 
 - `access` (String) An enumeration.
 - `address` (String)
+- `type` (String) An enumeration.
+
+
+<a id="nestedatt--volume"></a>
+### Nested Schema for `volume`
+
+Read-Only:
+
+- `size` (Number)
 - `type` (String) An enumeration.

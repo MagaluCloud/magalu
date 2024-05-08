@@ -57,7 +57,7 @@ func (o *MgcResourceCreate) PostRun(ctx context.Context, createResult core.Resul
 	tflog.Info(ctx, "resource created")
 	diagnostics = Diagnostics{}
 
-	d := applyStateAfter(ctx, o.resourceName, o.attrTree, createResult, targetState)
+	d := applyStateAfter(ctx, o.resourceName, o.attrTree, createResult, state, targetState)
 	if diagnostics.AppendCheckError(d...) {
 		return false, diagnostics
 	}

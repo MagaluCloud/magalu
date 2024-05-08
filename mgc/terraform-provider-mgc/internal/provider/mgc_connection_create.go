@@ -77,7 +77,7 @@ func (o *MgcConnectionCreate) PostRun(ctx context.Context, createResult core.Res
 		return true, diagnostics
 	}
 
-	d := applyStateAfter(ctx, o.resourceName, o.attrTree, createResult, targetState)
+	d := applyStateAfter(ctx, o.resourceName, o.attrTree, createResult, state, targetState)
 	if diagnostics.AppendCheckError(d...) {
 		return true, diagnostics
 	}

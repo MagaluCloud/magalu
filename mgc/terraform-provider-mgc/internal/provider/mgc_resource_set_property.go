@@ -183,7 +183,7 @@ func (o *MgcResourceSetProperty) Run(ctx context.Context, params core.Parameters
 func (o *MgcResourceSetProperty) PostRun(ctx context.Context, result core.ResultWithValue, state, plan TerraformParams, targetState *tfsdk.State) (runChain bool, diagnostics Diagnostics) {
 	diagnostics = Diagnostics{}
 
-	d := applyStateAfter(ctx, o.resourceName, o.attrTree, result, targetState)
+	d := applyStateAfter(ctx, o.resourceName, o.attrTree, result, state, targetState)
 	if diagnostics.AppendCheckError(d...) {
 		return false, diagnostics
 	}

@@ -68,8 +68,7 @@ func newMgcResource(
 	if update == nil {
 		update = core.NoOpExecutor()
 	}
-
-	propertySetterContainer, err := collectPropertySetterContainers(read.Links())
+	propertySetterContainer, err := collectPropertySetterContainers(create.Links())
 	if err != nil {
 		return nil, err
 	}

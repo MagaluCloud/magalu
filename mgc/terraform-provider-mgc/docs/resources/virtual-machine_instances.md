@@ -27,7 +27,6 @@ Operations with instances, including create, delete, start, stop, reboot and oth
 - `availability_zone` (String)
 - `delete_public_ip` (Boolean)
 - `network` (Attributes) (see [below for nested schema](#nestedatt--network))
-- `state` (String)
 - `user_data` (String)
 
 ### Read-Only
@@ -40,6 +39,7 @@ Operations with instances, including create, delete, start, stop, reboot and oth
 - `current_ssh_key_name` (String)
 - `error` (Attributes) (see [below for nested schema](#nestedatt--error))
 - `id` (String) The ID of this resource.
+- `state` (String)
 - `status` (String)
 - `updated_at` (String)
 

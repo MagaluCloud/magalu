@@ -67,6 +67,7 @@ func applyStateAfter(
 	resourceName tfName,
 	attrTree resAttrInfoTree,
 	result core.ResultWithValue,
+	state TerraformParams,
 	tfState *tfsdk.State,
 ) Diagnostics {
 	diagnostics := Diagnostics{}
@@ -74,7 +75,7 @@ func applyStateAfter(
 
 	tflog.Debug(ctx, "[resource] applying request parameters in state")
 	// First, apply the values that the user passed as Parameters to the state (assuming success)
-	d := applyMgcMapToTFState(ctx, result.Source().Parameters, result.Source().Executor.ParametersSchema(), attrTree.input, tfState)
+	d := applyMgcMapToTFState(ctx, result.Source().Parameters, result.Source().Executor.ParametersSchema(), attrTree.input, nil, tfState)
 	if diagnostics.AppendCheckError(d...) {
 		return diagnostics
 	}
@@ -83,7 +84,7 @@ func applyStateAfter(
 	if !d.HasError() {
 		tflog.Debug(ctx, "[resource] applying request result in state")
 		// Then, apply the result values of the request that was performed
-		d := applyMgcMapToTFState(ctx, resultMap, result.Schema(), attrTree.output, tfState)
+		d := applyMgcMapToTFState(ctx, resultMap, result.Schema(), attrTree.output, state, tfState)
 		if diagnostics.AppendCheckError(d...) {
 			return diagnostics
 		}

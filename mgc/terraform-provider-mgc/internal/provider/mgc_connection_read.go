@@ -52,7 +52,7 @@ func (o *MgcConnectionRead) PostRun(ctx context.Context, readResult core.ResultW
 	tflog.Info(ctx, "connection read")
 	diagnostics = Diagnostics{}
 
-	d := applyStateAfter(ctx, o.resourceName, o.attrTree, readResult, targetState)
+	d := applyStateAfter(ctx, o.resourceName, o.attrTree, readResult, state, targetState)
 	if diagnostics.AppendCheckError(d...) {
 		return false, diagnostics
 	}

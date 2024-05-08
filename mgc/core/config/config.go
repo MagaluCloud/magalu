@@ -20,8 +20,9 @@ import (
 type contextKey string
 
 type Config struct {
-	pm    *profile_manager.ProfileManager
-	viper *viper.Viper
+	pm         *profile_manager.ProfileManager
+	viper      *viper.Viper
+	tempConfig *map[string]any
 }
 
 const (
@@ -85,15 +86,38 @@ func (c *Config) Get(key string, out any) error {
 		return fmt.Errorf("result should not be nil pointer")
 	}
 
+	decodeHookFunc := mapstructure.ComposeDecodeHookFunc(
+		mapstructure.StringToTimeDurationHookFunc(),
+		mapstructure.StringToSliceHookFunc(","),
+		mapstructure.TextUnmarshallerHookFunc(),
+		stringUnmarshalHook,
+	)
+
+	if c.tempConfig != nil {
+		if outVal, found := (*c.tempConfig)[key]; found {
+
+			decodeConfig := mapstructure.DecoderConfig{
+				DecodeHook: decodeHookFunc,
+				Result:     out,
+			}
+
+			decoder, err := mapstructure.NewDecoder(&decodeConfig)
+			if err != nil {
+				return fmt.Errorf("fail to create a config decoder: %s ", err.Error())
+			}
+
+			err = decoder.Decode(outVal)
+			if err != nil {
+				return fmt.Errorf("fail to run config decoder: %s", err.Error())
+			}
+			return nil
+		}
+	}
+
 	return c.viper.UnmarshalKey(
 		key,
 		out,
-		viper.DecodeHook(mapstructure.ComposeDecodeHookFunc(
-			mapstructure.StringToTimeDurationHookFunc(),
-			mapstructure.StringToSliceHookFunc(","),
-			mapstructure.TextUnmarshallerHookFunc(),
-			stringUnmarshalHook,
-		)),
+		viper.DecodeHook(decodeHookFunc),
 	)
 }
 
@@ -160,6 +184,19 @@ func marshalValueIfNeeded(value any) (any, error) {
 	default:
 		return value, nil
 	}
+}
+
+func (c *Config) SetTempConfig(key string, value interface{}) error {
+	marshaled, err := marshalValueIfNeeded(value)
+	if err != nil {
+		return fmt.Errorf("unable to marshal config %s: %w", key, err)
+	}
+
+	if c.tempConfig == nil {
+		c.tempConfig = &map[string]any{key: marshaled}
+	}
+
+	return nil
 }
 
 func (c *Config) Set(key string, value interface{}) error {

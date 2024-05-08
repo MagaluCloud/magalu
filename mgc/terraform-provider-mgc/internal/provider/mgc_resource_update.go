@@ -111,7 +111,7 @@ func (o *MgcResourceUpdate) PostRun(ctx context.Context, updateResult core.Resul
 	tflog.Info(ctx, "resource updated")
 	diagnostics = Diagnostics{}
 
-	d := applyStateAfter(ctx, o.resourceName, o.attrTree, updateResult, targetState)
+	d := applyStateAfter(ctx, o.resourceName, o.attrTree, updateResult, state, targetState)
 	if diagnostics.AppendCheckError(d...) {
 		return false, diagnostics
 	}

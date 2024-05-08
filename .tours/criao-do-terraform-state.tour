@@ -1,0 +1,67 @@
+{
+  "$schema": "https://aka.ms/codetour-schema",
+  "title": "Criação do terraform state",
+  "steps": [
+    {
+      "file": "../../../go/pkg/mod/github.com/hashicorp/terraform-plugin-framework@v1.3.4/internal/fwserver/server_createresource.go",
+      "description": "Aqui é um bom ponto, já resumindo todo o inicio do \"terraform apply\"",
+      "line": 80
+    },
+    {
+      "file": "../../../go/pkg/mod/github.com/hashicorp/terraform-plugin-framework@v1.3.4/internal/fwserver/server_createresource.go",
+      "description": "Bora criar!",
+      "line": 101
+    },
+    {
+      "file": "mgc/terraform-provider-mgc/internal/provider/resource.go",
+      "description": "Fogo!",
+      "line": 318
+    },
+    {
+      "file": "mgc/terraform-provider-mgc/internal/provider/mgc_operation.go",
+      "description": "Aqui ele vai no \"runOperation\", que de fato criara o recurso...",
+      "line": 55
+    },
+    {
+      "file": "mgc/terraform-provider-mgc/internal/provider/mgc_operation.go",
+      "description": "Coleta o state (tfstate) e o plan (arquivo do tf).\nAqui, ainda ambos estão \"espelhados\"",
+      "line": 109
+    },
+    {
+      "file": "mgc/terraform-provider-mgc/internal/provider/mgc_operation.go",
+      "description": "Prepara os parametros que serão utilizado la no executor, para criar o recurso.",
+      "line": 114
+    },
+    {
+      "file": "mgc/terraform-provider-mgc/internal/provider/mgc_operation.go",
+      "description": "Tá chegando... executar a operação!",
+      "line": 129
+    },
+    {
+      "file": "mgc/terraform-provider-mgc/internal/provider/mgc_resource_create.go",
+      "description": "O \"createResource\" aqui é um ponteiro lá para o execute - neste caso, um create.",
+      "line": 53
+    },
+    {
+      "file": "mgc/terraform-provider-mgc/internal/provider/mgc_operation.go",
+      "description": "Se der erro, ele já para por aqui. Ex.: bucket já existe e retornou 429... vrau morre aqui!",
+      "line": 131
+    },
+    {
+      "file": "mgc/terraform-provider-mgc/internal/provider/mgc_resource_create.go",
+      "description": "[VALIDAR] State e plan, pra onde foram? ",
+      "line": 60
+    },
+    {
+      "file": "mgc/terraform-provider-mgc/internal/provider/tf_state_applier.go",
+      "description": "Aqui esse arrombado pega só os atribudos do child, no caso, executor de create",
+      "line": 19
+    },
+    {
+      "file": "mgc/terraform-provider-mgc/internal/provider/tf_state_applier.go",
+      "description": "E então aqui, nesse laço... ele adiciona ao tfstate as propriedades que nao foram setadas pelo retorno do executor. Isso resultará no arquivo tfstate",
+      "line": 117
+    }
+  ],
+  "ref": "fix/shitobjs"
+}

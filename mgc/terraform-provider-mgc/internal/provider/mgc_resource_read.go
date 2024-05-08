@@ -45,7 +45,7 @@ func (o *MgcResourceRead) PostRun(ctx context.Context, result core.ResultWithVal
 	tflog.Info(ctx, "resource read")
 	diagnostics = Diagnostics{}
 
-	d := applyStateAfter(ctx, o.resourceName, o.attrTree, result, targetState)
+	d := applyStateAfter(ctx, o.resourceName, o.attrTree, result, state, targetState)
 	if diagnostics.AppendCheckError(d...) {
 		return false, diagnostics
 	}

@@ -11,14 +11,15 @@ import (
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 )
 
-func applyMgcMapToTFState(ctx context.Context, mgcMap map[string]any, schema *mgcSchemaPkg.Schema, attrInfoMap resAttrInfoMap, tfState *tfsdk.State) Diagnostics {
+func applyMgcMapToTFState(ctx context.Context, mgcMap map[string]any, schema *mgcSchemaPkg.Schema, attrInfoMap resAttrInfoMap, state TerraformParams, tfState *tfsdk.State) Diagnostics {
 	resInfo := &resAttrInfo{
 		tfName:          "tfState",
 		mgcName:         "tfState",
 		mgcSchema:       schema,
 		childAttributes: attrInfoMap,
+		state:           state,
 	}
-	return applyMgcObject(ctx, mgcMap, resInfo, tfState, path.Empty())
+	return applyMgcObject(ctx, mgcMap, resInfo, state, tfState, path.Empty())
 }
 
 func applyMgcMap(ctx context.Context, mgcMap map[string]any, attr *resAttrInfo, tfState *tfsdk.State, path path.Path) Diagnostics {
@@ -37,7 +38,7 @@ func applyMgcMap(ctx context.Context, mgcMap map[string]any, attr *resAttrInfo, 
 	return diagnostics
 }
 
-func applyMgcObject(ctx context.Context, mgcValue any, attr *resAttrInfo, tfState *tfsdk.State, path path.Path) Diagnostics {
+func applyMgcObject(ctx context.Context, mgcValue any, attr *resAttrInfo, state TerraformParams, tfState *tfsdk.State, path path.Path) Diagnostics {
 	diagnostics := Diagnostics{}
 	tflog.Debug(
 		ctx,
@@ -104,6 +105,36 @@ func applyMgcObject(ctx context.Context, mgcValue any, attr *resAttrInfo, tfStat
 				fmt.Sprintf("path: %#v - value: %#v - tfschema: %#v", childPath, mgcValue, childAttrSchema),
 			)
 			return diagnostics
+		}
+	}
+
+	for childName, childValue := range state {
+		if _, ok := attr.childAttributes.get(childName); !ok {
+
+			emuleatedAttrInfo := &resAttrInfo{tfName: childName, mgcName: mgcName(childName), mgcSchema: &mgcSchemaPkg.Schema{Type: "string"}}
+
+			childPath := path.AtName(string(childName))
+
+			var d Diagnostics
+			xpto := childValue.Type().String()
+			switch xpto {
+			case "tftypes.Bool":
+				var cValue *bool
+				err := childValue.As(&cValue)
+				if err != nil {
+					tflog.Debug(ctx, err.Error())
+				}
+				d = applyValueToState(ctx, cValue, emuleatedAttrInfo, tfState, childPath)
+			}
+
+			if diagnostics.AppendCheckError(d...) {
+				childAttrSchema, _ := tfState.Schema.AttributeAtPath(ctx, childPath)
+				diagnostics.AddLocalAttributeError(
+					childPath,
+					"unable to force load value",
+					fmt.Sprintf("path: %#v - value: %#v - tfschema: %#v", childPath, mgcValue, childAttrSchema),
+				)
+			}
 		}
 	}
 	return diagnostics
@@ -215,7 +246,7 @@ func applyValueToState(ctx context.Context, mgcValue any, attr *resAttrInfo, tfS
 
 	case "object":
 		tflog.Debug(ctx, fmt.Sprintf("populating nested object in state at path %#v", path))
-		return applyMgcObject(ctx, mgcValue, attr, tfState, path)
+		return applyMgcObject(ctx, mgcValue, attr, nil, tfState, path)
 
 	default:
 		if mgcValue == nil {

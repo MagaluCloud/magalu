@@ -45,6 +45,13 @@ var getCreate = utils.NewLazyLoader[core.Executor](func() core.Executor {
 							Target: getList(),
 						},
 					),
+					"read": core.NewSimpleLink(
+						core.SimpleLinkSpec{
+							Owner:     e,
+							Target:    getBucket(),
+							FromOwner: map[string]string{"name": "bucket"},
+						},
+					),
 				}
 			}),
 		},
@@ -52,7 +59,7 @@ var getCreate = utils.NewLazyLoader[core.Executor](func() core.Executor {
 	)
 
 	return core.NewExecuteResultOutputOptions(executor, func(exec core.Executor, result core.Result) string {
-		return "template=Created bucket {{.name}}\n"
+		return "template=Created bucket {{.bucket}}\n"
 	})
 })
 

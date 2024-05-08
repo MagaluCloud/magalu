@@ -44,6 +44,7 @@ type resAttrInfo struct {
 	tfSchema           schema.Attribute
 	currentCounterpart *resAttrInfo
 	childAttributes    resAttrInfoMap
+	state              TerraformParams
 }
 
 type resAttrInfoMap map[mgcName]*resAttrInfo
