@@ -1,0 +1,19 @@
+Block Storage Volume Attachment
+
+Usage:
+  ./mgc block-storage volume-attachment [flags]
+  ./mgc block-storage volume-attachment [command]
+
+Commands:
+  create      Attach a volume to a virtual machine instance
+  delete      Detach a volume from a virtual machine instance
+  get         Check if a volume is attached to a virtual machine instance
+
+Flags:
+  -h, --help   help for volume-attachment
+
+Global Flags:
+      --cli.show-cli-globals   Show all CLI global flags on usage text
+
+Use "./mgc block-storage volume-attachment [command] --help" for more information about a command.
+
