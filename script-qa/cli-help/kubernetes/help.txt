@@ -4,6 +4,9 @@ Usage:
   ./mgc kubernetes [flags]
   ./mgc kubernetes [command]
 
+Aliases:
+  kubernetes, k8s, kube, kub
+
 Commands:
   cluster     Endpoints related to the creation, listing, deletion, and retrieval of the kubeconfig for a Kubernetes cluster.
   flavor      Endpoints related to listing available flavors for a Kubernetes cluster.

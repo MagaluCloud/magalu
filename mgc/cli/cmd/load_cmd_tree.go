@@ -1,14 +1,20 @@
 package cmd
 
 import (
+	_ "embed"
 	"fmt"
+	"log"
 	"slices"
 
 	"github.com/spf13/cobra"
 	"github.com/stoewer/go-strcase"
+	"gopkg.in/yaml.v2"
 	"magalu.cloud/core"
 	mgcSdk "magalu.cloud/sdk"
 )
+
+//go:embed alias.yml
+var aliasFile []byte
 
 func addChildDesc(sdk *mgcSdk.Sdk, parentCmd *cobra.Command, child core.Descriptor) (cmd *cobra.Command, flags *cmdFlags, err error) {
 	if childGroup, ok := child.(mgcSdk.Grouper); ok {
@@ -238,10 +244,23 @@ func buildUse(name string, args []string) string {
 
 func getCommandNameAndAliases(origName string) (name string, aliases []string) {
 	name = strcase.KebabCase(origName)
+	alias := readAlias()
+	if alias[name] != nil {
+		aliases = alias[name]
+	}
 	if name != origName {
 		aliases = append(aliases, origName)
 	}
 	return
+}
+
+func readAlias() map[string][]string {
+	m := make(map[string][]string)
+	err := yaml.Unmarshal(aliasFile, &m)
+	if err != nil {
+		log.Fatalf("error parsing alias: %v", err)
+	}
+	return m
 }
 
 const mgcFooterKey string = "mgc_footer_help"

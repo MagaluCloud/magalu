@@ -7,6 +7,9 @@ Usage:
   ./mgc config [flags]
   ./mgc config [command]
 
+Aliases:
+  config, conf
+
 Commands:
   delete      Delete/unset a Config value that had been previously set
   get         Get a specific Config value that has been previously set

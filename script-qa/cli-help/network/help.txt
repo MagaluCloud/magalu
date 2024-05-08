@@ -4,6 +4,9 @@ Usage:
   ./mgc network [flags]
   ./mgc network [command]
 
+Aliases:
+  network, net
+
 Commands:
   ports           VPC Port
   public-ips      VPC Public IPs

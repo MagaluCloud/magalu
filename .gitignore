@@ -27,3 +27,4 @@ mgc/codegen/codegen
 
 # Go workspace
 go.work.sum
+dist
