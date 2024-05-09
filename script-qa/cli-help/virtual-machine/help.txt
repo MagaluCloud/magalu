@@ -5,7 +5,7 @@ Usage:
   ./mgc virtual-machine [command]
 
 Aliases:
-  virtual-machine, vm, virtual-machines, machines, vmachine
+  virtual-machine, vms, vm, virtual-machines, machines, vmachine
 
 Commands:
   images        Operations with images for instances.

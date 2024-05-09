@@ -9,7 +9,7 @@ Usage:
 
 ## Product catalog:
 - Aliases:
-- virtual-machine, vm, virtual-machines, machines, vmachine
+- virtual-machine, vms, vm, virtual-machines, machines, vmachine
 
 ## Other commands:
 - Commands:
