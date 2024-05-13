@@ -10,20 +10,20 @@ info:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
   version: 0.1.0
-servers:  
+servers:
   - url: https://api-mke.pre-prod.br-ne-1.jaxyendy.com
     description: "NE-1 pre-prod"
   - url: https://api-mke.team-integration.br-ne-1.jaxyendy.com
-    description: "NE-1 team-integration" 
+    description: "NE-1 team-integration"
   - url: https://api-mke.br-ne-1.jaxyendy.com
-    description: "NE-1 prod"     
+    description: "NE-1 prod"
   - url: https://api-mke.br-se1-pre-prod.jaxyendy.com
-    description: "SE1 pre-prod"  
+    description: "SE1 pre-prod"
   - url: https://api-mke.br-se1-team-integration.jaxyendy.com
     description: "SE1 team-integration"
   - url: https://api-mke.br-se1-prod.jaxyendy.com
     description: "SE1 prod"
-    
+
 paths:
   /v0/clusters:
     post:
@@ -36,7 +36,7 @@ paths:
         - BearerAuth:
           - mke.write
         - OAuth2:
-          - mke.write  
+          - mke.write
       parameters:
         - required: true
           name: x-tenant-id
@@ -44,7 +44,7 @@ paths:
           schema:
             type: string
             format: uuid
-          description: User's UUID for identification.   
+          description: User's UUID for identification.
       requestBody:
         content:
           application/json:
@@ -103,7 +103,7 @@ paths:
         - BearerAuth:
           - mke.read
         - OAuth2:
-          - mke.read  
+          - mke.read
       parameters:
         - required: true
           name: x-tenant-id
@@ -166,7 +166,7 @@ paths:
         - BearerAuth:
           - mke.read
         - OAuth2:
-          - mke.read  
+          - mke.read
       parameters:
         - required: true
           name: x-tenant-id
@@ -235,7 +235,7 @@ paths:
         - BearerAuth:
           - mke.write
         - OAuth2:
-          - mke.write  
+          - mke.write
       parameters:
         - required: true
           name: x-tenant-id
@@ -283,7 +283,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'        
+                $ref: '#/components/schemas/Error'
         '429':
           description: Too Many Requests
           content:
@@ -307,7 +307,7 @@ paths:
         - BearerAuth:
           - mke.read
         - OAuth2:
-          - mke.read  
+          - mke.read
       parameters:
         - required: true
           name: x-tenant-id
@@ -319,7 +319,7 @@ paths:
         - required: true
           name: cluster_id
           in: path
-          schema: 
+          schema:
             type: string
             format: uuid
           description: Schema to get the cluster's kubeconfig file.
@@ -378,7 +378,7 @@ paths:
         - BearerAuth:
           - mke.write
         - OAuth2:
-          - mke.write  
+          - mke.write
       parameters:
         - required: true
           name: x-tenant-id
@@ -452,7 +452,7 @@ paths:
         - BearerAuth:
           - mke.read
         - OAuth2:
-          - mke.read  
+          - mke.read
       parameters:
         - required: true
           name: x-tenant-id
@@ -522,7 +522,7 @@ paths:
         - BearerAuth:
           - mke.read
         - OAuth2:
-          - mke.read  
+          - mke.read
       parameters:
         - required: true
           name: x-tenant-id
@@ -598,7 +598,7 @@ paths:
         - BearerAuth:
           - mke.write
         - OAuth2:
-          - mke.write  
+          - mke.write
       parameters:
         - required: true
           name: x-tenant-id
@@ -679,7 +679,7 @@ paths:
         - BearerAuth:
           - mke.write
         - OAuth2:
-          - mke.write  
+          - mke.write
       parameters:
         - required: true
           name: x-tenant-id
@@ -752,7 +752,7 @@ paths:
         - BearerAuth:
           - mke.read
         - OAuth2:
-          - mke.read  
+          - mke.read
       parameters:
         - required: true
           name: x-tenant-id
@@ -829,7 +829,7 @@ paths:
         - BearerAuth:
           - mke.read
         - OAuth2:
-          - mke.read  
+          - mke.read
       responses:
         '200':
           description: Successful operation
@@ -866,7 +866,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'   
+                $ref: '#/components/schemas/Error'
   /v0/info/versions:
     get:
       tags:
@@ -878,7 +878,7 @@ paths:
         - BearerAuth:
           - mke.read
         - OAuth2:
-          - mke.read  
+          - mke.read
       responses:
         '200':
           description: Successful operation
@@ -927,7 +927,7 @@ paths:
         - BearerAuth:
           - mke.read
         - OAuth2:
-          - mke.read  
+          - mke.read
       responses:
         '200':
           description: Successful operation
@@ -964,11 +964,11 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'   
+                $ref: '#/components/schemas/Error'
   /v1/versions:
     get:
       tags:
-        - version  
+        - version
       summary: Lists all available versions
       description: Lists all available Kubernetes versions.
       operationId: getVersionsV1
@@ -976,7 +976,7 @@ paths:
         - BearerAuth:
           - mke.read
         - OAuth2:
-          - mke.read  
+          - mke.read
       responses:
         '200':
           description: Successful operation
@@ -1013,7 +1013,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'                          
+                $ref: '#/components/schemas/Error'
 components:
   schemas:
     ClusterRequest:
@@ -1050,10 +1050,10 @@ components:
           type: string
           description: |
             Identifier of the zone where the Kubernetes cluster will be located.
-            - "br-ne-1a" 
-            - "br-ne-1b" 
+            - "br-ne-1a"
+            - "br-ne-1b"
             - "br-ne-1c"
-          example: "br-region-zone"  
+          example: "br-region-zone"
         enabled_bastion:
           type: boolean
           description: |
@@ -1149,7 +1149,7 @@ components:
             type: string
             nullable: true
             description: Items from the list of tags applied to the Kubernetes cluster.
-            example: "tag-example" 
+            example: "tag-example"
         description:
           type: string
           description: Description of the Kubernetes cluster.
@@ -1294,7 +1294,7 @@ components:
             | cloud-k8s.i1-c32-r64-d100  | 32    | 64       | 100            |
             | cloud-k8s.i1-c32-r128-d500 | 32    | 128      | 500            |
 
-          example: "cloud-k8s.gp1.small"            
+          example: "cloud-k8s.gp1.small"
         replicas:
           type: integer
           description: Number of replicas of the nodes in the node pool.
@@ -1489,7 +1489,7 @@ components:
           additionalProperties:
             type: string
           description: Key/value pairs attached to the object and used for specification.
-          example: 
+          example:
             label-key1: value1
         taints:
           type: array
@@ -1644,12 +1644,12 @@ components:
           type: string
           description: |
             Current state of the node pool or control plane.
-            
+
             | Component       | Possible States                                           |
             |-----------------|-----------------------------------------------------------|
             | Node pool       | ScalingUp, ScalingDown, Pending, Running, Failed, Unknown |
             | Control Plane   | ScalingUp, ScalingDown, Pending, Running, Failed, Unknown |
-            
+
           example: "Pending"
         messages:
           type: array
@@ -1672,12 +1672,12 @@ components:
           type: string
           description: |
             Current state of the cluster or node.
-            
+
             | Component | Possible States                              |
             |-----------|---------------------------------------------|
             | Cluster   | Pending, Provisioning, Running, Provisioned, Terminating, Deleting, Failed |
             | Node      | Pending, Provisioning, Provisioned, Running, Deleting, Failed, Unknown   |
-            
+
           example: "Pending"
         message:
           type: string
@@ -1715,7 +1715,7 @@ components:
             Available IP addresses used for provisioning nodes in the cluster.
           example: "00.0.0.0/00"
         name:
-          type: string 
+          type: string
           description: Name of the node pool.
           example: "k8s-clusterapi-cluster-example"
         subnet_id:
@@ -1892,7 +1892,7 @@ components:
         - vcpu
         - ram
         - size
-        - sku    
+        - sku
     FlavorsResponse:
       type: object
       description: Response object for the Flavor request.
@@ -1902,7 +1902,7 @@ components:
         results:
           type: array
           items:
-            $ref: '#/components/schemas/FlavorsAvailable'    
+            $ref: '#/components/schemas/FlavorsAvailable'
     FlavorsAvailable:
       type: object
       description: Lists of available flavors provided by the application.
@@ -1925,9 +1925,9 @@ components:
       required:
         - bastion
         - nodepool
-        - controlplane    
+        - controlplane
     VersionsResponse:
-      type: object 
+      type: object
       description: Response object for the Version request.
       required:
         - results
@@ -1951,7 +1951,7 @@ components:
           example: false
       required:
         - version
-        - deprecated  
+        - deprecated
   securitySchemes:
     BearerAuth:
       type: http
@@ -1967,7 +1967,7 @@ components:
                     mke.write: Write information about IaaS resources
         type: oauth2
         description: |
-            OAuth2 by IDPA (Identity Provider Authentication)  
+            OAuth2 by IDPA (Identity Provider Authentication)
 tags:
   - name: cluster
     description: Endpoints related to the creation, listing, deletion, and retrieval of the kubeconfig for a Kubernetes cluster.

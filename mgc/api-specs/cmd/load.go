@@ -1,9 +1,6 @@
 package cmd
 
 import (
-	"fmt"
-	"path/filepath"
-
 	"github.com/spf13/cobra"
 )
 
@@ -14,19 +11,19 @@ var loadSpecsCmd = &cobra.Command{
 
 		_ = verificarEAtualizarDiretorio(SPEC_DIR)
 
-		currentConfig, err := loadListFromViper()
-		if err != nil {
-			fmt.Println(err)
-			return
-		}
+		// currentConfig, err := loadListFromViper()
+		// if err != nil {
+		// 	fmt.Println(err)
+		// 	return
+		// }
 
-		return
+		// return
 
-		for _, v := range currentConfig {
-			_ = removerArquivosOld(filepath.Join(SPEC_DIR))
-			_ = verificarERenomearArquivo(filepath.Join(SPEC_DIR, v.File))
-			_ = getAndSaveFromGitlab(v.Url, filepath.Join(SPEC_DIR, v.File))
-		}
+		// for _, v := range currentConfig {
+		// 	_ = removerArquivosOld(filepath.Join(SPEC_DIR))
+		// 	_ = verificarERenomearArquivo(filepath.Join(SPEC_DIR, v.File))
+		// 	_ = getAndSaveFromGitlab(v.Url, filepath.Join(SPEC_DIR, v.File))
+		// }
 
 	},
 }

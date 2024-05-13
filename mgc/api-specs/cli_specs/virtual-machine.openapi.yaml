@@ -629,7 +629,7 @@ components:
         vcpus:
           title: Vcpus
           type: integer
-        sku: 
+        sku:
           title: Sku
           type: string
       required:
@@ -730,7 +730,7 @@ components:
           - end_life_at: "2022-06-10T18:33:12Z"
             end_standard_support_at: "2022-06-10T18:33:12Z"
             id: "c47e974f-8002-46e9-8a63-d66505be2aa1"
-            minimum_requirements: 
+            minimum_requirements:
               disk: 2
               ram: 1
               vcpu: 1
@@ -739,7 +739,7 @@ components:
             release_at: "2022-06-10T18:33:12Z"
             status: active
             version: "22.10"
-      properties: 
+      properties:
         images:
           items:
             $ref: "#/components/schemas/ImageResponseExternalV1"
@@ -2209,10 +2209,10 @@ paths:
 
         #### Notes
 
-        - You can use the snapshots list command to retrieve all snapshots, so 
+        - You can use the snapshots list command to retrieve all snapshots, so
         you can get the id of the snapshot that you want to get details.
 
-        - You can use the expand argument to get more details 
+        - You can use the expand argument to get more details
         from the inner objects like image or type"
 
       operationId: snapshot_details_v1_latest_snapshots__id__get
@@ -3679,10 +3679,10 @@ paths:
 
         #### Notes
 
-        - You can use the snapshots list command to retrieve all snapshots, so 
+        - You can use the snapshots list command to retrieve all snapshots, so
         you can get the id of the snapshot that you want to get details.
 
-        - You can use the expand argument to get more details 
+        - You can use the expand argument to get more details
         from the inner objects like image or type"
 
       operationId: snapshot_details_v1_v1_snapshots__id__get

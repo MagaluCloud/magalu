@@ -161,29 +161,29 @@ func getAndSaveFromGitlab(url, caminhoDestino string) error {
 	return nil
 }
 
-func getAndSaveFile(url, caminhoDestino string) error {
-	// Faz o download do arquivo JSON
-	resp, err := http.Get(url)
-	if err != nil {
-		return fmt.Errorf("erro ao fazer o download do arquivo JSON: %v", err)
-	}
-	defer resp.Body.Close()
+// func getAndSaveFile(url, caminhoDestino string) error {
+// 	// Faz o download do arquivo JSON
+// 	resp, err := http.Get(url)
+// 	if err != nil {
+// 		return fmt.Errorf("erro ao fazer o download do arquivo JSON: %v", err)
+// 	}
+// 	defer resp.Body.Close()
 
-	// Lê o corpo da resposta
-	dados, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return fmt.Errorf("erro ao ler o corpo da resposta: %v", err)
-	}
+// 	// Lê o corpo da resposta
+// 	dados, err := io.ReadAll(resp.Body)
+// 	if err != nil {
+// 		return fmt.Errorf("erro ao ler o corpo da resposta: %v", err)
+// 	}
 
-	// Grava os dados no arquivo local
-	err = os.WriteFile(caminhoDestino, dados, 0644)
-	if err != nil {
-		return fmt.Errorf("erro ao gravar os dados no arquivo: %v", err)
-	}
+// 	// Grava os dados no arquivo local
+// 	err = os.WriteFile(caminhoDestino, dados, 0644)
+// 	if err != nil {
+// 		return fmt.Errorf("erro ao gravar os dados no arquivo: %v", err)
+// 	}
 
-	fmt.Println("Arquivo JSON baixado e salvo com sucesso.")
-	return nil
-}
+// 	fmt.Println("Arquivo JSON baixado e salvo com sucesso.")
+// 	return nil
+// }
 
 func loadListFromViper() ([]specList, error) {
 	var currentConfig []specList
