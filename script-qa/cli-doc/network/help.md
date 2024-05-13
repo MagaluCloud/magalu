@@ -1,4 +1,4 @@
-# APIs referentes ao produto de VPC
+# Operations for Network API
 
 ## Usage:
 ```bash
@@ -9,12 +9,9 @@ Usage:
 
 ## Product catalog:
 - Commands:
-- ports           VPC Port
-- public-ips      VPC Public IPs
-- rules           VPC Rules
-- security-groups VPC Security Groups
-- subnets         VPC Subnets
-- vpcs            Virtual Private Cloud (VPC)
+- ports       VPC Port
+- public-ips  VPC Public IPs
+- rules       VPC Rules
 
 ## Other commands:
 - Flags:

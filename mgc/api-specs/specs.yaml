@@ -1,0 +1,16 @@
+list:
+    - url: https://vpc.br-ne-1.jaxyendy.com/openapi.json
+      file: network.openapi.json
+      menu: network
+    - url: https://block-storage.br-ne-1.jaxyendy.com/v1/openapi.json
+      file: block-storage.openapi.json
+      menu: block-storage
+    - url: https://dbaas.br-ne-1.jaxyendy.com/openapi.json
+      file: database.openapi.json
+      menu: database
+    - url: https://mke.br-ne-1.jaxyendy.com/docs/openapi-with-snippets.json
+      file: kubernetes.openapi.json
+      menu: kubernetes
+    - url: https://virtual-machine.br-ne-1.jaxyendy.com/v1/openapi.json
+      file: virtual-machine.openapi.json
+      menu: virtual-machine

@@ -1,7 +1,8 @@
-go 1.21.4
+go 1.22.0
 
 use (
 	./mgc/cli
+	./mgc/api-specs
 	./mgc/codegen
 	./mgc/core
 	./mgc/lib

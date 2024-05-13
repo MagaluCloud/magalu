@@ -10,21 +10,18 @@ Usage:
 
 ## Product catalog:
 - Product catalog:
-- auth            Actions with ID Magalu to log in, refresh tokens, change tenants and others
-- block-storage   Block Storage API Product Documentation
-- config          Manage Configuration values
-- dbaas           DBaaS API Product.
-- kubernetes      APIs related to the Kubernetes product.
-- network         APIs referentes ao produto de VPC
-- object-storage  Operations for Object Storage API
-- profile         Profile related commands
-- virtual-machine Virtual Machine Api Product
+- auth           Actions with ID Magalu to log in, refresh tokens, change tenants and others
+- block-storage  Operations for Block Storage API
+- config         Manage Configuration values
+- network        Operations for Network API
+- object-storage Operations for Object Storage API
+- profile        Profile related commands
 
 ## Other commands:
 - Other commands:
-- completion      Generate the autocompletion script for the specified shell
-- dump-tree       Print command tree
-- help            Help about any command
+- completion     Generate the autocompletion script for the specified shell
+- dump-tree      Print command tree
+- help           Help about any command
 
 ## Flags:
 ```bash

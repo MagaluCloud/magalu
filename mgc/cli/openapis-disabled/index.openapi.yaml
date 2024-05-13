@@ -1,0 +1,32 @@
+modules:
+-   description: Block Storage API Product Documentation
+    name: block-storage
+    path: block-storage.openapi.yaml
+    summary: Block Storage API Product Documentation
+    url: https://block-storage.jaxyendy.com/openapi.json
+    version: v1
+-   description: DBaaS API Product.
+    name: dbaas
+    path: dbaas.openapi.yaml
+    summary: DBaaS API Product.
+    url: https://dbaas.jaxyendy.com/openapi.json
+    version: 1.19.0
+-   description: APIs related to the Kubernetes product.
+    name: kubernetes
+    path: kubernetes.openapi.yaml
+    summary: APIs related to the Kubernetes product.
+    url: https://mke.br-ne-1.com/docs/openapi-with-snippets.json
+    version: 0.1.0
+-   description: APIs referentes ao produto de VPC
+    name: network
+    path: network.openapi.yaml
+    summary: APIs referentes ao produto de VPC
+    url: https://network.jaxyendy.com/openapi.json
+    version: 1.119.0
+-   description: Virtual Machine Api Product
+    name: virtual-machine
+    path: virtual-machine.openapi.yaml
+    summary: Virtual Machine Api Product
+    url: https://virtual-machine.jaxyendy.com/openapi.json
+    version: v1
+version: 1.0.0
