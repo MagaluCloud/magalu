@@ -16,7 +16,7 @@ servers:
     variables:
         region:
             description: Region to reach the service
-            default: br-ne-1
+            default: br-se1
             enum:
             - br-ne-1
             - br-se1
@@ -52,6 +52,10 @@ servers:
     description: SE1 team-integration
 -   url: https://api-mke.br-se1-prod.jaxyendy.com
     description: SE1 prod
+-   url: https://api-mke.pre-prod.se1.br.jaxyendy.com
+    description: SE1-BLU pre-prod
+-   url: https://api-mke.prod.se1.br.jaxyendy.com
+    description: SE1-BLU prod
 paths:
     /v0/clusters:
         post:

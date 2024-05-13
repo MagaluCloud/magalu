@@ -37,5 +37,6 @@ VPC Rules
 - `created_at` (String)
 - `current_security_group_id` (String)
 - `error` (String)
+- `external_id` (String)
 - `id` (String) Id of the Rule
 - `status` (String)

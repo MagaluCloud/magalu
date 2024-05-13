@@ -6,7 +6,7 @@ info:
         name: Tribo IAAS Cloud
         url: https://github.com/luizalabs
         email: thullyo.cunha@luizalabs.com
-    version: 1.119.0
+    version: 1.124.1
 paths:
     /v0/healthcheck:
         get:
@@ -2722,6 +2722,10 @@ components:
                     title: Id
                     nullable: true
                     type: string
+                external_id:
+                    title: External Id
+                    nullable: true
+                    type: string
                 security_group_id:
                     title: Security Group Id
                     nullable: true
@@ -2773,6 +2777,7 @@ components:
                 created_at: '2022-01-01 00:00:00'
                 direction: egress
                 ethertype: IPv4
+                external_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                 id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                 port_range_max: 8028
                 port_range_min: 8028
@@ -4062,7 +4067,7 @@ servers:
     variables:
         region:
             description: Region to reach the service
-            default: br-ne-1
+            default: br-se1
             enum:
             - br-ne-1
             - br-se1

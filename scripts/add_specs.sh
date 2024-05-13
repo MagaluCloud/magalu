@@ -30,7 +30,7 @@ servers:
     variables:
         region:
             description: Region to reach the service
-            default: br-ne-1
+            default: br-se1
             enum:
             - br-ne-1
             - br-se1

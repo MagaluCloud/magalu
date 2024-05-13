@@ -172,7 +172,7 @@ To ensure it is working, perform a CLI command that requires authentication:
 
 ```shell
 ./mgc config list  # list all known config and their types
-./mgc config set --key=region --value=br-se-1 # change server region
+./mgc config set --key=region --value=br-se1 # change server region
 ./mgc config get --key=region
 ```
 
