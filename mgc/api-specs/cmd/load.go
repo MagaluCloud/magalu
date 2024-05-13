@@ -20,10 +20,12 @@ var loadSpecsCmd = &cobra.Command{
 			return
 		}
 
+		return
+
 		for _, v := range currentConfig {
 			_ = removerArquivosOld(filepath.Join(SPEC_DIR))
 			_ = verificarERenomearArquivo(filepath.Join(SPEC_DIR, v.File))
-			_ = getAndSaveFile(v.Url, filepath.Join(SPEC_DIR, v.File))
+			_ = getAndSaveFromGitlab(v.Url, filepath.Join(SPEC_DIR, v.File))
 		}
 
 	},

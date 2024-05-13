@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/spf13/viper"
 )
@@ -115,6 +116,49 @@ func validarEndpoint(url string) bool {
 
 	fmt.Println("Endpoint válido.")
 	return true
+}
+
+func getAndSaveFromGitlab(url, caminhoDestino string) error {
+
+	destine := strings.Replace(url, "https://gitlab.luizalabs.com/open-platform/pcx/u0/-/raw/main/api_products", "", 1)
+	destine = strings.Replace(destine, "?ref_type=heads", "", -1)
+	destine = strings.Replace(destine, "/", "%2F", -1)
+
+	url = "https://gitlab.luizalabs.com/api/v4/projects/7739/repository/files/api_products"
+	url += destine + "/raw?ref=main"
+
+	// Faz o download do arquivo JSON
+
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return fmt.Errorf("erro ao criar a solicitação HTTP: %v", err)
+	}
+
+	// Define o cabeçalho de autenticação com o token fornecido
+
+	req.Header.Set("PRIVATE-TOKEN", os.Getenv("TOKEN_GITLAB"))
+
+	// Envia a solicitação HTTP
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return fmt.Errorf("erro ao fazer a solicitação HTTP: %v", err)
+	}
+	defer resp.Body.Close()
+
+	// Lê o corpo da resposta
+	dados, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("erro ao ler o corpo da resposta: %v", err)
+	}
+
+	// Grava os dados no arquivo local
+	err = os.WriteFile(caminhoDestino, dados, 0644)
+	if err != nil {
+		return fmt.Errorf("erro ao gravar os dados no arquivo: %v", err)
+	}
+
+	fmt.Println("Arquivo JSON baixado e salvo com sucesso.")
+	return nil
 }
 
 func getAndSaveFile(url, caminhoDestino string) error {

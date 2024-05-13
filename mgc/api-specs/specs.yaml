@@ -1,16 +1,16 @@
 list:
-    - url: https://vpc.br-ne-1.jaxyendy.com/openapi.json
-      file: network.openapi.json
+    - url: https://gitlab.luizalabs.com/open-platform/pcx/u0/-/raw/main/api_products/vpc/br-ne-1-prod/openapi.yaml?ref_type=heads
+      file: network.openapi.yaml
       menu: network
-    - url: https://block-storage.br-ne-1.jaxyendy.com/v1/openapi.json
-      file: block-storage.openapi.json
+    - url: https://gitlab.luizalabs.com/open-platform/pcx/u0/-/raw/main/api_products/block-storage/br-ne-1-prod/openapi.yaml?ref_type=heads
+      file: block-storage.openapi.yaml
       menu: block-storage
-    - url: https://dbaas.br-ne-1.jaxyendy.com/openapi.json
-      file: database.openapi.json
+    - url: https://gitlab.luizalabs.com/open-platform/pcx/u0/-/raw/main/api_products/dbaas/br-ne-1-prod/openapi.yaml?ref_type=heads
+      file: database.openapi.yaml
       menu: database
-    - url: https://mke.br-ne-1.jaxyendy.com/docs/openapi-with-snippets.json
-      file: kubernetes.openapi.json
+    - url: https://gitlab.luizalabs.com/open-platform/pcx/u0/-/raw/main/api_products/mke-api/br-ne-1-prod/openapi.yaml?ref_type=heads
+      file: kubernetes.openapi.yaml
       menu: kubernetes
-    - url: https://virtual-machine.br-ne-1.jaxyendy.com/v1/openapi.json
-      file: virtual-machine.openapi.json
+    - url: https://gitlab.luizalabs.com/open-platform/pcx/u0/-/raw/main/api_products/virtual-machine/br-ne-1-prod/openapi.yaml?ref_type=heads
+      file: virtual-machine.openapi.yaml
       menu: virtual-machine

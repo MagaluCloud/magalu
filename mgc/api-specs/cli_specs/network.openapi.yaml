@@ -1,0 +1,2755 @@
+servers:
+  - url: "https://vpc.br-ne-1.jaxyendy.com"
+components:
+  securitySchemes:
+    OAuth2:
+      flows:
+        authorizationCode:
+          authorizationUrl: >-
+            https://idp-maas-sandbox.ipet.sh/auth/realms/master/protocol/openid-connect/auth
+          tokenUrl: >-
+            https://idp-maas-sandbox.ipet.sh/auth/realms/master/protocol/openid-connect/token
+          scopes:
+            network.read: Ler informações de recursos VPC IaaS
+            network.write: Escrever informações de recursos VPC IaaS
+      type: oauth2
+      description: |
+        OAuth2 via IDPA
+
+  schemas:
+    DhcpPoolStr:
+      properties:
+        end:
+          title: End
+          type: string
+        start:
+          title: Start
+          type: string
+      required:
+        - start
+        - end
+      title: DhcpPoolStr
+      type: object
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          title: Detail
+          type: array
+      title: HTTPValidationError
+      type: object
+    Healthcheck:
+      example:
+        status: OK
+      properties:
+        status:
+          title: Status
+          type: string
+      required:
+        - status
+      title: Healthcheck
+      type: object
+    IpAddress:
+      example:
+        ip_address: 172.20.0.2
+        subnet_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+      properties:
+        ip_address:
+          title: Ip Address
+          type: string
+        subnet_id:
+          title: Subnet Id
+          type: string
+      required:
+        - ip_address
+        - subnet_id
+      title: IpAddress
+      type: object
+    PortCreateRequest:
+      example:
+        has_pip: true
+        has_sg: true
+        name: port_name
+        security_groups_id:
+          - xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        subnets:
+          - xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+      properties:
+        has_pip:
+          anyOf:
+            - type: boolean
+            - {}
+          default: true
+          title: Has Pip
+        has_sg:
+          anyOf:
+            - type: boolean
+            - {}
+          default: true
+          title: Has Sg
+        name:
+          maxLength: 100
+          minLength: 5
+          title: Name
+          type: string
+        security_groups_id:
+          anyOf:
+            - items:
+                type: string
+              type: array
+            - {}
+          default: []
+          title: Security Groups Id
+        subnets:
+          anyOf:
+            - items:
+                type: string
+              type: array
+            - {}
+          default: []
+          title: Subnets
+      required:
+        - name
+      title: PortCreateRequest
+      type: object
+    PortCreateResponse:
+      example:
+        id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+      properties:
+        id:
+          title: Id
+          type: string
+      required:
+        - id
+      title: PortCreateResponse
+      type: object
+    PortResponse:
+      example:
+        created_at: '2022-01-01 00:00:00'
+        description: port description
+        id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        ip_address:
+          - ip_address: 172.20.0.2
+            subnet_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        is_admin_state_up: true
+        is_port_security_enabled: true
+        name: port_name
+        public_ip:
+          - public_ip: 100.94.5.31
+            public_ip_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        security_groups:
+          - xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        updated: '2022-01-01 00:00:00'
+        vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+      properties:
+        created_at:
+          anyOf:
+            - format: date-time
+              type: string
+            - {}
+          title: Created At
+        description:
+          anyOf:
+            - type: string
+            - {}
+          title: Description
+        id:
+          anyOf:
+            - type: string
+            - {}
+          title: Id
+        ip_address:
+          default: []
+          items:
+            $ref: '#/components/schemas/IpAddress'
+          title: Ip Address
+          type: array
+        is_admin_state_up:
+          anyOf:
+            - type: boolean
+            - {}
+          title: Is Admin State Up
+        is_port_security_enabled:
+          anyOf:
+            - type: boolean
+            - {}
+          title: Is Port Security Enabled
+        name:
+          anyOf:
+            - type: string
+            - {}
+          title: Name
+        public_ip:
+          anyOf:
+            - items:
+                $ref: '#/components/schemas/PublicIpResponsePort'
+              type: array
+            - {}
+          default: []
+          title: Public Ip
+        security_groups:
+          default: []
+          items:
+            type: string
+          title: Security Groups
+          type: array
+        updated:
+          anyOf:
+            - format: date-time
+              type: string
+            - {}
+          title: Updated
+        vpc_id:
+          anyOf:
+            - type: string
+            - {}
+          title: Vpc Id
+      title: PortResponse
+      type: object
+    PortSimpleResponse:
+      example:
+        id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        ip_address:
+          - ip_address: 172.20.0.2
+            subnet_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+      properties:
+        id:
+          anyOf:
+            - type: string
+            - {}
+          title: Id
+        ip_address:
+          default: []
+          items:
+            $ref: '#/components/schemas/IpAddress'
+          title: Ip Address
+          type: array
+      title: PortSimpleResponse
+      type: object
+    PortsList:
+      example:
+        ports:
+          - created_at: '2022-01-01 00:00:00'
+            description: port description
+            id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+            ip_address:
+              - ip_address: 172.20.0.2
+                subnet_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+            is_admin_state_up: true
+            is_port_security_enabled: true
+            name: port_name
+            public_ip:
+              - public_ip: 100.94.5.31
+                public_ip_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+            security_groups:
+              - xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+            updated: '2022-01-01 00:00:00'
+            vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+      properties:
+        ports:
+          items:
+            $ref: '#/components/schemas/PortResponse'
+          title: Ports
+          type: array
+      required:
+        - ports
+      title: PortsList
+      type: object
+    PortsListSimplified:
+      example:
+        ports_simplified:
+          - id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+            ip_address:
+              - ip_address: 172.20.0.2
+                subnet_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+      properties:
+        ports_simplified:
+          items:
+            $ref: '#/components/schemas/PortSimpleResponse'
+          title: Ports Simplified
+          type: array
+      required:
+        - ports_simplified
+      title: PortsListSimplified
+      type: object
+    PublicIpCreateRequest:
+      example:
+        description: public_ip_description
+      properties:
+        description:
+          anyOf:
+            - type: string
+            - {}
+          title: Description
+      title: PublicIpCreateRequest
+      type: object
+    PublicIpCreateResponse:
+      example:
+        id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+      properties:
+        id:
+          title: Id
+          type: string
+      required:
+        - id
+      title: PublicIpCreateResponse
+      type: object
+    PublicIpDb:
+      example:
+        created_at: '2022-01-01 00:00:00'
+        description: port description
+        error: error
+        external_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        port_ip: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        public_ip: 100.94.5.31
+        status: created
+        updated: '2022-01-01 00:00:00'
+        vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+      properties:
+        created_at:
+          anyOf:
+            - format: date-time
+              type: string
+            - {}
+          title: Created At
+        description:
+          anyOf:
+            - type: string
+            - {}
+          title: Description
+        error:
+          anyOf:
+            - type: string
+            - {}
+          title: Error
+        external_id:
+          anyOf:
+            - type: string
+            - {}
+          title: External Id
+        id:
+          anyOf:
+            - type: string
+            - {}
+          title: Id
+        port_id:
+          anyOf:
+            - type: string
+            - {}
+          title: Port Id
+        public_ip:
+          anyOf:
+            - type: string
+            - {}
+          title: Public Ip
+        status:
+          anyOf:
+            - type: string
+            - {}
+          title: Status
+        updated:
+          anyOf:
+            - format: date-time
+              type: string
+            - {}
+          title: Updated
+        vpc_id:
+          anyOf:
+            - type: string
+            - {}
+          title: Vpc Id
+      title: PublicIpDb
+      type: object
+    PublicIpResponsePort:
+      example:
+        public_ip: 100.94.5.31
+        public_ip_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+      properties:
+        public_ip:
+          anyOf:
+            - type: string
+            - {}
+          title: Public Ip
+        public_ip_id:
+          anyOf:
+            - type: string
+            - {}
+          title: Public Ip Id
+      title: PublicIpResponsePort
+      type: object
+    PublicIpsList:
+      example:
+        public_ips:
+          - created_at: '2022-01-01 00:00:00'
+            description: port description
+            error: error
+            external_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+            id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+            port_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+            public_ip: 100.94.5.31
+            status: created
+            updated: '2022-01-01 00:00:00'
+            vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+      properties:
+        public_ips:
+          items:
+            $ref: '#/components/schemas/PublicIpDb'
+          title: Public Ips
+          type: array
+      required:
+        - public_ips
+      title: PublicIpsList
+      type: object
+    RuleCreateRequest:
+      example:
+        direction: egress
+        ethertype: IPv4
+        port_range_max: 8028
+        port_range_min: 8028
+        protocol: tcp
+        remote_group_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        remote_ip_prefix: 100.94.0.0/24
+      properties:
+        direction:
+          anyOf:
+            - type: string
+            - {}
+          title: Direction
+        ethertype:
+          anyOf:
+            - type: string
+            - {}
+          title: Ethertype
+        port_range_max:
+          anyOf:
+            - type: integer
+            - {}
+          title: Port Range Max
+        port_range_min:
+          anyOf:
+            - type: integer
+            - {}
+          title: Port Range Min
+        protocol:
+          anyOf:
+            - type: string
+            - {}
+          title: Protocol
+        remote_group_id:
+          anyOf:
+            - type: string
+            - {}
+          title: Remote Group Id
+        remote_ip_prefix:
+          anyOf:
+            - type: string
+            - {}
+          title: Remote Ip Prefix
+      title: RuleCreateRequest
+      type: object
+    RuleCreateResponse:
+      example:
+        id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+      properties:
+        id:
+          title: Id
+          type: string
+      required:
+        - id
+      title: RuleCreateResponse
+      type: object
+    RuleResponse:
+      example:
+        created_at: '2022-01-01 00:00:00'
+        direction: egress
+        ethertype: IPv4
+        id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        port_range_max: 8028
+        port_range_min: 8028
+        protocol: tcp
+        remote_group_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        remote_ip_prefix: 100.94.0.0/24
+        security_group_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        status: created
+      properties:
+        created_at:
+          anyOf:
+            - format: date-time
+              type: string
+            - {}
+          title: Created At
+        direction:
+          anyOf:
+            - type: string
+            - {}
+          title: Direction
+        error:
+          anyOf:
+            - type: string
+            - {}
+          title: Error
+        ethertype:
+          anyOf:
+            - type: string
+            - {}
+          title: Ethertype
+        id:
+          anyOf:
+            - type: string
+            - {}
+          title: Id
+        port_range_max:
+          anyOf:
+            - type: integer
+            - {}
+          title: Port Range Max
+        port_range_min:
+          anyOf:
+            - type: integer
+            - {}
+          title: Port Range Min
+        protocol:
+          anyOf:
+            - type: string
+            - {}
+          title: Protocol
+        remote_group_id:
+          anyOf:
+            - type: string
+            - {}
+          title: Remote Group Id
+        remote_ip_prefix:
+          anyOf:
+            - type: string
+            - {}
+          title: Remote Ip Prefix
+        security_group_id:
+          anyOf:
+            - type: string
+            - {}
+          title: Security Group Id
+        status:
+          $ref: '#/components/schemas/RuleStatus'
+      required:
+        - status
+      title: RuleResponse
+      type: object
+    RuleResponseEvent:
+      example:
+        created_at: '2022-01-01 00:00:00'
+        direction: egress
+        error: 'null'
+        ethertype: IPv4
+        id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        port_range_max: 8028
+        port_range_min: 8028
+        protocol: tcp
+        remote_group_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        remote_ip_prefix: 100.94.0.0/24
+        security_group_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        status: created
+      properties:
+        created_at:
+          anyOf:
+            - format: date-time
+              type: string
+            - {}
+          title: Created At
+        direction:
+          anyOf:
+            - type: string
+            - {}
+          title: Direction
+        error:
+          anyOf:
+            - type: string
+            - {}
+          title: Error
+        ethertype:
+          anyOf:
+            - type: string
+            - {}
+          title: Ethertype
+        id:
+          anyOf:
+            - type: string
+            - {}
+          title: Id
+        port_range_max:
+          anyOf:
+            - type: integer
+            - {}
+          title: Port Range Max
+        port_range_min:
+          anyOf:
+            - type: integer
+            - {}
+          title: Port Range Min
+        protocol:
+          anyOf:
+            - type: string
+            - {}
+          title: Protocol
+        remote_group_id:
+          anyOf:
+            - type: string
+            - {}
+          title: Remote Group Id
+        remote_ip_prefix:
+          anyOf:
+            - type: string
+            - {}
+          title: Remote Ip Prefix
+        security_group_id:
+          anyOf:
+            - type: string
+            - {}
+          title: Security Group Id
+        status:
+          anyOf:
+            - $ref: '#/components/schemas/RuleStatus'
+            - {}
+      title: RuleResponseEvent
+      type: object
+    RuleStatus:
+      enum:
+        - created
+        - pending
+        - error
+      title: RuleStatus
+      type: string
+    RulesList:
+      example:
+        rules:
+          - created_at: '2022-01-01 00:00:00'
+            direction: egress
+            ethertype: IPv4
+            id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+            port_range_max: 8028
+            port_range_min: 8028
+            protocol: tcp
+            remote_group_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+            remote_ip_prefix: 100.94.0.0/24
+            security_group_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+            status: created
+      properties:
+        rules:
+          items:
+            $ref: '#/components/schemas/RuleResponse'
+          title: Rules
+          type: array
+      required:
+        - rules
+      title: RulesList
+      type: object
+    SecurityGroupCreateRequest:
+      example:
+        description: security group description
+        name: security_group_name
+      properties:
+        description:
+          anyOf:
+            - type: string
+            - {}
+          title: Description
+        name:
+          anyOf:
+            - maxLength: 100
+              minLength: 5
+              type: string
+            - {}
+          title: Name
+      required:
+        - name
+      title: SecurityGroupCreateRequest
+      type: object
+    SecurityGroupCreateResponse:
+      example:
+        id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+      properties:
+        id:
+          title: Id
+          type: string
+      required:
+        - id
+      title: SecurityGroupCreateResponse
+      type: object
+    SecurityGroupDetailEvent:
+      example:
+        created_at: '2022-01-01 00:00:00'
+        description: security group description
+        error: 'null'
+        external_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        is_default: true
+        name: security_group_name
+        project_type: default
+        rules:
+          - created_at: '2022-01-01 00:00:00'
+            direction: egress
+            error: 'null'
+            ethertype: IPv4
+            id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+            port_range_max: 8028
+            port_range_min: 8028
+            protocol: tcp
+            remote_group_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+            remote_ip_prefix: 100.94.0.0/24
+            security_group_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+            status: created
+        status: created
+        tenant_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        updated: '2022-01-01 00:00:00'
+        vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+      properties:
+        created_at:
+          anyOf:
+            - format: date-time
+              type: string
+            - {}
+          title: Created At
+        description:
+          anyOf:
+            - type: string
+            - {}
+          title: Description
+        error:
+          anyOf:
+            - type: string
+            - {}
+          title: Error
+        external_id:
+          anyOf:
+            - type: string
+            - {}
+          title: External Id
+        id:
+          anyOf:
+            - type: string
+            - {}
+          title: Id
+        is_default:
+          anyOf:
+            - type: boolean
+            - {}
+          title: Is Default
+        name:
+          anyOf:
+            - type: string
+            - {}
+          title: Name
+        project_type:
+          anyOf:
+            - type: string
+            - {}
+          title: Project Type
+        rules:
+          anyOf:
+            - items:
+                $ref: '#/components/schemas/RuleResponseEvent'
+              type: array
+            - {}
+          default: []
+          title: Rules
+        status:
+          $ref: '#/components/schemas/SecurityGroupStatus'
+        tenant_id:
+          anyOf:
+            - type: string
+            - {}
+          title: Tenant Id
+        updated:
+          anyOf:
+            - format: date-time
+              type: string
+            - {}
+          title: Updated
+        vpc_id:
+          anyOf:
+            - type: string
+            - {}
+          title: Vpc Id
+      required:
+        - status
+      title: SecurityGroupDetailEvent
+      type: object
+    SecurityGroupListEvent:
+      example:
+        security_groups:
+          - created_at: '2022-01-01 00:00:00'
+            description: security group description
+            error: 'null'
+            id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+            is_default: true
+            name: security_group_name
+            project_type: default
+            status: created
+            tenant_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+            updated: '2022-01-01 00:00:00'
+            vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+      properties:
+        security_groups:
+          items:
+            $ref: '#/components/schemas/SecurityGroupResponseEvent'
+          title: Security Groups
+          type: array
+      required:
+        - security_groups
+      title: SecurityGroupListEvent
+      type: object
+    SecurityGroupResponseEvent:
+      example:
+        created_at: '2022-01-01 00:00:00'
+        description: security group description
+        error: 'null'
+        id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        is_default: true
+        name: security_group_name
+        project_type: default
+        status: created
+        tenant_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        updated: '2022-01-01 00:00:00'
+        vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+      properties:
+        created_at:
+          anyOf:
+            - format: date-time
+              type: string
+            - {}
+          title: Created At
+        description:
+          anyOf:
+            - type: string
+            - {}
+          title: Description
+        error:
+          anyOf:
+            - type: string
+            - {}
+          title: Error
+        id:
+          anyOf:
+            - type: string
+            - {}
+          title: Id
+        is_default:
+          anyOf:
+            - type: boolean
+            - {}
+          title: Is Default
+        name:
+          anyOf:
+            - type: string
+            - {}
+          title: Name
+        project_type:
+          anyOf:
+            - type: string
+            - {}
+          title: Project Type
+        status:
+          $ref: '#/components/schemas/SecurityGroupStatus'
+        tenant_id:
+          anyOf:
+            - type: string
+            - {}
+          title: Tenant Id
+        updated:
+          anyOf:
+            - format: date-time
+              type: string
+            - {}
+          title: Updated
+        vpc_id:
+          anyOf:
+            - type: string
+            - {}
+          title: Vpc Id
+      required:
+        - status
+      title: SecurityGroupResponseEvent
+      type: object
+    SecurityGroupStatus:
+      enum:
+        - created
+        - pending
+        - error
+      title: SecurityGroupStatus
+      type: string
+    SubnetCreateRequest:
+      example:
+        cidr_block: 172.50.0.0/24
+        description: some_description
+        dns_nameservers:
+          - 8.8.8.8
+        ip_version: 4
+        name: subnet_name
+      properties:
+        cidr_block:
+          anyOf:
+            - type: string
+            - {}
+          title: Cidr Block
+        description:
+          anyOf:
+            - type: string
+            - {}
+          title: Description
+        dns_nameservers:
+          default: []
+          items:
+            format: ipvanyaddress
+            type: string
+          title: Dns Nameservers
+          type: array
+        ip_version:
+          title: Ip Version
+          type: integer
+        name:
+          title: Name
+          type: string
+      required:
+        - name
+        - ip_version
+      title: SubnetCreateRequest
+      type: object
+    SubnetCreateResponse:
+      example:
+        id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+      properties:
+        id:
+          title: Id
+          type: string
+      required:
+        - id
+      title: SubnetCreateResponse
+      type: object
+    SubnetPatchRequest:
+      example:
+        dns_nameservers:
+          - 8.8.8.8
+      properties:
+        dns_nameservers:
+          default: []
+          items:
+            format: ipvanyaddress
+            type: string
+          title: Dns Nameservers
+          type: array
+      title: SubnetPatchRequest
+      type: object
+    SubnetResponse:
+      example:
+        cidr_block: 172.20.0.0/24
+        created_at: '2022-01-01 00:00:00'
+        description: vpc description
+        id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        ip_version: '4'
+        name: vpc_name
+        updated: '2022-01-01 00:00:00'
+        vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+      properties:
+        cidr_block:
+          title: Cidr Block
+          type: string
+        created_at:
+          anyOf:
+            - format: date-time
+              type: string
+            - {}
+          title: Created At
+        description:
+          anyOf:
+            - type: string
+            - {}
+          title: Description
+        id:
+          title: Id
+          type: string
+        ip_version:
+          title: Ip Version
+          type: string
+        name:
+          anyOf:
+            - type: string
+            - {}
+          title: Name
+        updated:
+          anyOf:
+            - format: date-time
+              type: string
+            - {}
+          title: Updated
+        vpc_id:
+          title: Vpc Id
+          type: string
+      required:
+        - id
+        - vpc_id
+        - cidr_block
+        - ip_version
+      title: SubnetResponse
+      type: object
+    SubnetResponseDetail:
+      example:
+        cidr_block: 172.20.0.0/24
+        created_at: '2022-01-01 00:00:00'
+        description: vpc description
+        dhcp_pools:
+          - end: 172.50.0.254
+            start: 172.50.0.2
+        dns_nameservers:
+          - 8.8.8.8
+        gateway_ip: 172.50.0.1
+        id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        ip_version: '4'
+        name: vpc_name
+        updated: '2022-01-01 00:00:00'
+        vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+      properties:
+        cidr_block:
+          title: Cidr Block
+          type: string
+        created_at:
+          anyOf:
+            - format: date-time
+              type: string
+            - {}
+          title: Created At
+        description:
+          anyOf:
+            - type: string
+            - {}
+          title: Description
+        dhcp_pools:
+          items:
+            $ref: '#/components/schemas/DhcpPoolStr'
+          title: Dhcp Pools
+          type: array
+        dns_nameservers:
+          items:
+            type: string
+          title: Dns Nameservers
+          type: array
+        gateway_ip:
+          title: Gateway Ip
+          type: string
+        id:
+          title: Id
+          type: string
+        ip_version:
+          title: Ip Version
+          type: string
+        name:
+          anyOf:
+            - type: string
+            - {}
+          title: Name
+        updated:
+          anyOf:
+            - format: date-time
+              type: string
+            - {}
+          title: Updated
+        vpc_id:
+          title: Vpc Id
+          type: string
+      required:
+        - id
+        - vpc_id
+        - cidr_block
+        - ip_version
+        - gateway_ip
+        - dns_nameservers
+        - dhcp_pools
+      title: SubnetResponseDetail
+      type: object
+    SubnetResponseId:
+      example:
+        id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+      properties:
+        id:
+          title: Id
+          type: string
+      required:
+        - id
+      title: SubnetResponseId
+      type: object
+    SubnetsResponse:
+      example:
+        subnets:
+          - cidr_block: 172.20.0.0/24
+            created_at: '2022-01-01 00:00:00'
+            description: vpc description
+            id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+            ip_version: '4'
+            name: vpc_name
+            updated: '2022-01-01 00:00:00'
+            vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+      properties:
+        subnets:
+          default: []
+          items:
+            $ref: '#/components/schemas/SubnetResponse'
+          title: Subnets
+          type: array
+      title: SubnetsResponse
+      type: object
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+              - type: string
+              - type: integer
+          title: Location
+          type: array
+        msg:
+          title: Message
+          type: string
+        type:
+          title: Error Type
+          type: string
+      required:
+        - loc
+        - msg
+        - type
+      title: ValidationError
+      type: object
+    VpcCreateRequest:
+      example:
+        description: DESCRIPTION
+        name: vpc_name
+      properties:
+        description:
+          anyOf:
+            - type: string
+            - {}
+          title: Description
+        name:
+          title: Name
+          type: string
+      required:
+        - name
+      title: VpcCreateRequest
+      type: object
+    VpcCreateResponse:
+      example:
+        id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+      properties:
+        id:
+          anyOf:
+            - type: string
+            - {}
+          title: Id
+      title: VpcCreateResponse
+      type: object
+    VpcResponse:
+      example:
+        created_at: '2022-01-01 00:00:00'
+        description: DESCRIPTION
+        external_network: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        is_default: true
+        name: vpc_name
+        network_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        router_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        security_groups:
+          - xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        subnets:
+          - xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        tenant_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        updated: '2022-01-01 00:00:00'
+      properties:
+        created_at:
+          anyOf:
+            - format: date-time
+              type: string
+            - {}
+          title: Created At
+        description:
+          anyOf:
+            - type: string
+            - {}
+          title: Description
+        external_network:
+          anyOf:
+            - type: string
+            - {}
+          title: External Network
+        id:
+          anyOf:
+            - type: string
+            - {}
+          title: Id
+        is_default:
+          anyOf:
+            - type: boolean
+            - {}
+          title: Is Default
+        name:
+          anyOf:
+            - type: string
+            - {}
+          title: Name
+        network_id:
+          anyOf:
+            - type: string
+            - {}
+          title: Network Id
+        router_id:
+          anyOf:
+            - type: string
+            - {}
+          title: Router Id
+        security_groups:
+          default: []
+          items:
+            type: string
+          title: Security Groups
+          type: array
+        subnets:
+          anyOf:
+            - items:
+                type: string
+              type: array
+            - {}
+          default: []
+          title: Subnets
+        tenant_id:
+          anyOf:
+            - type: string
+            - {}
+          title: Tenant Id
+        updated:
+          anyOf:
+            - format: date-time
+              type: string
+            - {}
+          title: Updated
+      title: VpcResponse
+      type: object
+    VpcResponseList:
+      example:
+        vpcs:
+          - created_at: '2022-01-01 00:00:00'
+            description: DESCRIPTION
+            external_network: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+            id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+            is_default: true
+            name: vpc_name
+            network_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+            router_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+            security_groups:
+              - xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+            subnets:
+              - xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+            tenant_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+            updated: '2022-01-01 00:00:00'
+      properties:
+        vpcs:
+          anyOf:
+            - items:
+                $ref: '#/components/schemas/VpcResponse'
+              type: array
+            - {}
+          default: []
+          title: Vpcs
+      title: VpcResponseList
+      type: object
+info:
+  contact:
+    email: thullyo.cunha@luizalabs.com
+    name: Tribo IAAS Cloud
+    url: 'https://github.com/luizalabs'
+  description: APIs referentes ao produto de VPC
+  title: vpc-api-product
+  version: 1.101.2
+openapi: 3.0.2
+paths:
+  /v0/healthcheck:
+    get:
+      security:
+        - OAuth2:
+            - network.read
+      description: Check api status
+      operationId: healthcheck_v0_healthcheck_get
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Healthcheck'
+          description: Successful Response
+      summary: Healthcheck
+      tags:
+        - healthcheck
+  /v0/ports:
+    get:
+      security:
+        - OAuth2:
+            - network.read
+      tags:
+        - port
+      x-viveiro: true
+      summary: Details of a Port list
+      description: Return a detailed list of ports
+      operationId: portsDetailedList
+      parameters:
+        - description: Port IDs query
+          required: false
+          schema:
+            title: Port Id List
+            type: array
+            items:
+              type: string
+          name: port_id_list
+          in: query
+        - description: Tenant Id
+          required: true
+          schema:
+            title: X-Tenant-Id
+            type: string
+            format: uuid
+          name: x-tenant-id
+          in: header
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                title: Response Portsdetailedlist
+                type: array
+                items:
+                  $ref: '#/components/schemas/PortResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  '/v0/ports/{port_id}':
+    delete:
+      security:
+        - OAuth2:
+            - network.write
+      description: Delete a port from the provided tenant_id
+      operationId: deletePort
+      parameters:
+        - description: ID of the Port to delete
+          in: path
+          name: port_id
+          required: true
+          schema:
+            description: ID of the Port to delete
+            title: port_id
+        - in: header
+          name: x-tenant-id
+          required: true
+          schema:
+            title: X-Tenant-Id
+            type: string
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Delete Port
+      tags:
+        - port
+      x-viveiro: true
+    get:
+      security:
+        - OAuth2:
+            - network.read
+      description: Return a port details from the provided tenant_id
+      operationId: portDetails
+      parameters:
+        - in: path
+          name: port_id
+          required: true
+          schema:
+            title: Port Id
+        - description: Tenant id of the project
+          in: header
+          name: x-tenant-id
+          required: true
+          schema:
+            description: Tenant id of the project
+            title: X-Tenant-Id
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PortResponse'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Port Details
+      tags:
+        - port
+      x-viveiro: true
+  '/v0/ports/{port_id}/attach/{security_group_id}':
+    post:
+      security:
+        - OAuth2:
+            - network.write
+      description: >-
+        Attach a Security Group to a Port with provided port_id,
+        security_group_id, x-tenant-id of an specific project type
+      operationId: attachSecurityGroup
+      parameters:
+        - description: ID of the Port to attach security group
+          in: path
+          name: port_id
+          required: true
+          schema:
+            description: ID of the Port to attach security group
+            title: port_id
+        - description: ID of the Security Group to attach
+          in: path
+          name: security_group_id
+          required: true
+          schema:
+            description: ID of the Security Group to attach
+            title: security_group_id
+        - in: header
+          name: x-tenant-id
+          required: true
+          schema:
+            title: X-Tenant-Id
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: {}
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Attach Security Group
+      tags:
+        - port
+      x-viveiro: true
+  '/v0/ports/{port_id}/detach/{security_group_id}':
+    post:
+      security:
+        - OAuth2:
+            - network.write
+      description: >-
+        Detach a Security Group to a Port with provided port_id,
+        security_group_id, x-tenant-id of an specific project type
+      operationId: detachSecurityGroup
+      parameters:
+        - description: ID of the Port to detach security group
+          in: path
+          name: port_id
+          required: true
+          schema:
+            description: ID of the Port to detach security group
+            title: port_id
+        - description: ID of the Security Group to detach
+          in: path
+          name: security_group_id
+          required: true
+          schema:
+            description: ID of the Security Group to detach
+            title: security_group_id
+        - in: header
+          name: x-tenant-id
+          required: true
+          schema:
+            title: X-Tenant-Id
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: {}
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Detach Security Group
+      tags:
+        - port
+      x-viveiro: true
+  /v0/public_ips:
+    get:
+      security:
+        - OAuth2:
+            - network.read
+      description: Return a tenant's public ip list
+      operationId: tenantPublicIpList
+      parameters:
+        - description: Tenant id of the project
+          in: header
+          name: x-tenant-id
+          required: true
+          schema:
+            description: Tenant id of the project
+            title: X-Tenant-Id
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicIpsList'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Tenant's public IP list
+      tags:
+        - public_ip
+      x-viveiro: true
+  '/v0/public_ips/{public_ip_id}':
+    delete:
+      security:
+        - OAuth2:
+            - network.write
+      description: Delete a Public IP from the provided tenant_id
+      operationId: deletePublicIp
+      parameters:
+        - description: Id of the Public IP to delete
+          in: path
+          name: public_ip_id
+          required: true
+          schema:
+            description: Id of the Public IP to delete
+            title: Public IP ID
+        - in: header
+          name: x-tenant-id
+          required: true
+          schema:
+            title: X-Tenant-Id
+            type: string
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Delete Public IP
+      tags:
+        - public_ip
+      x-viveiro: true
+    get:
+      security:
+        - OAuth2:
+            - network.read
+      description: Return a Public IP details
+      operationId: publicIpDetails
+      parameters:
+        - description: Id of the Public IP to retrieve
+          in: path
+          name: public_ip_id
+          required: true
+          schema:
+            description: Id of the Public IP to retrieve
+            title: Public IP ID
+        - description: Tenant id of the project
+          in: header
+          name: x-tenant-id
+          required: true
+          schema:
+            description: Tenant id of the project
+            title: X-Tenant-Id
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicIpDb'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Public IP Details
+      tags:
+        - public_ip
+      x-viveiro: true
+  '/v0/public_ips/{public_ip_id}/attach/{port_id}':
+    post:
+      security:
+        - OAuth2:
+            - network.write
+      description: Attach a Public IP to a Port
+      operationId: attachPublicIp
+      parameters:
+        - description: Id of the Public IP to attach port to
+          in: path
+          name: public_ip_id
+          required: true
+          schema:
+            description: Id of the Public IP to attach port to
+            title: Public IP ID
+        - description: Id of the Port to attach the Public IP
+          in: path
+          name: port_id
+          required: true
+          schema:
+            description: Id of the Port to attach the Public IP
+            title: Port ID
+        - in: header
+          name: x-tenant-id
+          required: true
+          schema:
+            title: X-Tenant-Id
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: {}
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Attach Public IP
+      tags:
+        - public_ip
+      x-viveiro: true
+  '/v0/public_ips/{public_ip_id}/detach/{port_id}':
+    post:
+      security:
+        - OAuth2:
+            - network.write
+      description: Detach a Public IP to a Port
+      operationId: detachPublicIp
+      parameters:
+        - description: Id of the Public IP to detach port to
+          in: path
+          name: public_ip_id
+          required: true
+          schema:
+            description: Id of the Public IP to detach port to
+            title: Public IP ID
+        - description: Id of the Port to detach the Public IP
+          in: path
+          name: port_id
+          required: true
+          schema:
+            description: Id of the Port to detach the Public IP
+            title: Port ID
+        - in: header
+          name: x-tenant-id
+          required: true
+          schema:
+            title: X-Tenant-Id
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: {}
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Detach Public IP
+      tags:
+        - public_ip
+      x-viveiro: true
+  '/v0/rules/{rule_id}':
+    delete:
+      security:
+        - OAuth2:
+            - network.write
+      description: Delete a rule from the provided tenant_id
+      operationId: deleteRule
+      parameters:
+        - description: Id of the Rule
+          in: path
+          name: rule_id
+          required: true
+          schema:
+            description: Id of the Rule
+            title: Rule ID
+        - in: header
+          name: x-tenant-id
+          required: true
+          schema:
+            title: X-Tenant-Id
+            type: string
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Delete a Rule
+      tags:
+        - rule
+      x-viveiro: true
+    get:
+      security:
+        - OAuth2:
+            - network.read
+      description: Return a rule details
+      operationId: ruleDetails
+      parameters:
+        - description: Id of the Rule
+          in: path
+          name: rule_id
+          required: true
+          schema:
+            description: Id of the Rule
+            title: Rule ID
+        - description: Tenant id of the project
+          in: header
+          name: x-tenant-id
+          required: true
+          schema:
+            description: Tenant id of the project
+            title: X-Tenant-Id
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RuleResponse'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Rule Details
+      tags:
+        - rule
+      x-viveiro: true
+  /v0/security_groups:
+    get:
+      security:
+        - OAuth2:
+            - network.read
+      description: Returns a list of security groups for a provided tenant_id
+      operationId: listSecurityGroupByTenant
+      parameters:
+        - description: Tenant id of the project
+          in: header
+          name: x-tenant-id
+          required: true
+          schema:
+            description: Tenant id of the project
+            title: X-Tenant-Id
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SecurityGroupListEvent'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: List Security Groups by Tenant
+      tags:
+        - security_group
+      x-viveiro: true
+    post:
+      security:
+        - OAuth2:
+            - network.write
+      description: Create a Security Group
+      operationId: createSecurityGroup
+      parameters:
+        - description: Validate the quota before creating Security Group
+          in: query
+          name: validate_quota
+          required: false
+          schema:
+            default: true
+            description: Validate the quota before creating Security Group
+            title: validateQuota
+            type: boolean
+        - description: Tenant id of the project
+          in: header
+          name: x-tenant-id
+          required: true
+          schema:
+            description: Tenant id of the project
+            title: X-Tenant-Id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SecurityGroupCreateRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SecurityGroupCreateResponse'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Create Security Group
+      tags:
+        - security_group
+      x-viveiro: true
+  '/v0/security_groups/{security_group_id}':
+    delete:
+      security:
+        - OAuth2:
+            - network.write
+      description: Delete a security group from the provided tenant_id
+      operationId: deleteSecurityGroup
+      parameters:
+        - description: Id of the security group to delete
+          in: path
+          name: security_group_id
+          required: true
+          schema:
+            description: Id of the security group to delete
+            title: Security Group ID
+        - in: header
+          name: x-tenant-id
+          required: true
+          schema:
+            title: X-Tenant-Id
+            type: string
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Delete a security group
+      tags:
+        - security_group
+      x-viveiro: true
+    get:
+      security:
+        - OAuth2:
+            - network.read
+      description: Return a security group details
+      operationId: securityGroupDetails
+      parameters:
+        - description: Id of the security group to detail
+          in: path
+          name: security_group_id
+          required: true
+          schema:
+            description: Id of the security group to detail
+            title: Security Group ID
+        - description: Tenant id of the project
+          in: header
+          name: x-tenant-id
+          required: true
+          schema:
+            description: Tenant id of the project
+            title: X-Tenant-Id
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SecurityGroupDetailEvent'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Security Group Details
+      tags:
+        - security_group
+      x-viveiro: true
+  '/v0/security_groups/{security_group_id}/rules':
+    get:
+      security:
+        - OAuth2:
+            - network.read
+      description: Returns a list of rules for a provided security_group_id
+      operationId: listRules
+      parameters:
+        - description: Id of the Security Group
+          in: path
+          name: security_group_id
+          required: true
+          schema:
+            description: Id of the Security Group
+            title: Security Group ID
+        - description: Tenant id of the project
+          in: header
+          name: x-tenant-id
+          required: true
+          schema:
+            description: Tenant id of the project
+            title: X-Tenant-Id
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RulesList'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: List Rules
+      tags:
+        - rule
+      x-viveiro: true
+    post:
+      security:
+        - OAuth2:
+            - network.write
+      description: >-
+        Create a Rule async, returning its ID. To monitor the creation progress,
+        please check the status in the service message or implement polling.
+      operationId: createRule
+      parameters:
+        - description: Id of the Security Group
+          in: path
+          name: security_group_id
+          required: true
+          schema:
+            description: Id of the Security Group
+            title: Security Group ID
+        - description: Validate the quota before creating Rule
+          in: query
+          name: validate_quota
+          required: false
+          schema:
+            default: true
+            description: Validate the quota before creating Rule
+            title: validateQuota
+            type: boolean
+        - description: >-
+            The request will be asynchronous. The wait parameter tells the API
+            that you want the request to simulate synchronous behavior (to
+            maintain endpoint compatibility). You can set an approximate timeout
+            with the waitTimeout parameter
+          in: query
+          name: wait
+          required: false
+          schema:
+            default: true
+            description: >-
+              The request will be asynchronous. The wait parameter tells the API
+              that you want the request to simulate synchronous behavior (to
+              maintain endpoint compatibility). You can set an approximate
+              timeout with the waitTimeout parameter
+            title: wait
+            type: boolean
+        - description: >-
+            the approximate time in seconds you want to wait when simulating the
+            request as synchronous (only works with wait=true)
+          in: query
+          name: wait_timeout
+          required: false
+          schema:
+            anyOf:
+              - type: integer
+              - {}
+            default: 120
+            description: >-
+              the approximate time in seconds you want to wait when simulating
+              the request as synchronous (only works with wait=true)
+            title: waitTimeout
+        - in: header
+          name: x-tenant-id
+          required: true
+          schema:
+            title: X-Tenant-Id
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RuleCreateRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RuleCreateResponse'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Create Rule
+      tags:
+        - rule
+      x-viveiro: true
+  '/v0/subnets/{subnet_id}':
+    delete:
+      security:
+        - OAuth2:
+            - network.write
+      description: Delete a subnet from the provided tenant_id
+      operationId: deleteSubnet
+      parameters:
+        - description: Id of the Subnet to delete
+          in: path
+          name: subnet_id
+          required: true
+          schema:
+            description: Id of the Subnet to delete
+            title: Subnet Id
+        - in: header
+          name: x-tenant-id
+          required: true
+          schema:
+            title: X-Tenant-Id
+            type: string
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Delete a Subnet
+      tags:
+        - subnets
+      x-viveiro: true
+    get:
+      security:
+        - OAuth2:
+            - network.read
+      description: Returns a subnet details
+      operationId: subnetDetails
+      parameters:
+        - description: Id of the Subnet to detail
+          in: path
+          name: subnet_id
+          required: true
+          schema:
+            description: Id of the Subnet to detail
+            title: Subnet Id
+        - description: Tenant id of the project
+          in: header
+          name: x-tenant-id
+          required: true
+          schema:
+            description: Tenant id of the project
+            title: X-Tenant-Id
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubnetResponseDetail'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Subnet Details
+      tags:
+        - subnets
+      x-viveiro: true
+    patch:
+      security:
+        - OAuth2:
+            - network.write
+      description: Update a subnet from the provided tenant_id
+      operationId: updateSubnet
+      parameters:
+        - in: path
+          name: subnet_id
+          required: true
+          schema:
+            title: Subnet Id
+            type: string
+        - in: header
+          name: x-tenant-id
+          required: true
+          schema:
+            title: X-Tenant-Id
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubnetPatchRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubnetResponseId'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Update Subnet
+      tags:
+        - subnets
+      x-viveiro: true
+  /v0/vpcs:
+    get:
+      security:
+        - OAuth2:
+            - network.read
+      description: Returns a list of VPCs for a provided tenant_id
+      operationId: listVpcs
+      parameters:
+        - description: Tenant id of the project
+          in: header
+          name: x-tenant-id
+          required: true
+          schema:
+            description: Tenant id of the project
+            title: X-Tenant-Id
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VpcResponseList'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: List VPC
+      tags:
+        - vpc
+      x-viveiro: true
+    post:
+      security:
+        - OAuth2:
+            - network.write
+      description: Create a VPC
+      operationId: createVpc
+      parameters:
+        - in: header
+          name: x-tenant-id
+          required: true
+          schema:
+            title: X-Tenant-Id
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VpcCreateRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VpcCreateResponse'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Create VPC
+      tags:
+        - vpc
+      x-viveiro: true
+  '/v0/vpcs/{vpc_id}':
+    delete:
+      security:
+        - OAuth2:
+            - network.write
+      description: Delete a VPC from the provided tenant_id
+      operationId: deleteVpc
+      parameters:
+        - description: ID of the VPC to delete
+          in: path
+          name: vpc_id
+          required: true
+          schema:
+            description: ID of the VPC to delete
+            title: VPC Id
+        - in: header
+          name: x-tenant-id
+          required: true
+          schema:
+            title: X-Tenant-Id
+            type: string
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Delete VPC
+      tags:
+        - vpc
+      x-viveiro: true
+    get:
+      security:
+        - OAuth2:
+            - network.read
+      description: Return a VPC details
+      operationId: vpcDetails
+      parameters:
+        - description: ID of the VPC to detail
+          in: path
+          name: vpc_id
+          required: true
+          schema:
+            description: ID of the VPC to detail
+            title: VPC Id
+        - description: Tenant id of the project
+          in: header
+          name: x-tenant-id
+          required: true
+          schema:
+            description: Tenant id of the project
+            title: X-Tenant-Id
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VpcResponse'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: VPC Details
+      tags:
+        - vpc
+      x-viveiro: true
+  '/v0/vpcs/{vpc_id}/ports':
+    get:
+      security:
+        - OAuth2:
+            - network.write
+      description: >-
+        Returns a list of ports for a provided vpc_id and x-tenant-id. The list
+        will be paginated, it means you can easily find what you need just
+        setting the page number(_offset) and the quantity of items per
+        page(_limit). The level of detail can also be set
+      operationId: listPorts
+      parameters:
+        - description: ID of VPC to list ports
+          in: path
+          name: vpc_id
+          required: true
+          schema:
+            description: ID of VPC to list ports
+            title: vpc_id
+        - in: query
+          name: detailed
+          required: false
+          schema:
+            default: true
+            title: Detailed
+            type: boolean
+        - description: Page Number
+          in: query
+          name: _offset
+          required: false
+          schema:
+            default: 1
+            description: Page Number
+            minimum: 1
+            title: Page Number
+            type: integer
+        - description: Items Per Page
+          in: query
+          name: _limit
+          required: false
+          schema:
+            default: 10
+            description: Items Per Page
+            minimum: 1
+            title: Items Per Page
+            type: integer
+        - in: query
+          name: port_id_list
+          required: false
+          schema:
+            default: []
+            items: {}
+            title: Port Id List
+            type: array
+        - description: Tenant id of the project
+          in: header
+          name: x-tenant-id
+          required: true
+          schema:
+            description: Tenant id of the project
+            title: X-Tenant-Id
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                anyOf:
+                  - $ref: '#/components/schemas/PortsList'
+                  - $ref: '#/components/schemas/PortsListSimplified'
+                title: Response Listports
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: List Ports
+      tags:
+        - port
+      x-viveiro: true
+    post:
+      security:
+        - OAuth2:
+            - network.write
+      description: >-
+        Create a Port with provided vpc_id and x-tenant-id. You can provide a
+        list of security_groups_id or subnets
+      operationId: createPort
+      parameters:
+        - description: ID of the VPC to create port
+          in: path
+          name: vpc_id
+          required: true
+          schema:
+            description: ID of the VPC to create port
+            title: vpc_id
+        - in: header
+          name: x-tenant-id
+          required: true
+          schema:
+            title: X-Tenant-Id
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PortCreateRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PortCreateResponse'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Create Port
+      tags:
+        - port
+      x-viveiro: true
+  '/v0/vpcs/{vpc_id}/public_ips':
+    get:
+      security:
+        - OAuth2:
+            - network.read
+      description: Returns a list of Public IPs for a provided vpc_id
+      operationId: ListPublicIps
+      parameters:
+        - description: Id of the VPC to list the Public IPs in
+          in: path
+          name: vpc_id
+          required: true
+          schema:
+            description: Id of the VPC to list the Public IPs in
+            title: Vpc ID
+        - description: Tenant id of the project
+          in: header
+          name: x-tenant-id
+          required: true
+          schema:
+            description: Tenant id of the project
+            title: X-Tenant-Id
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicIpsList'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: List Public IPs
+      tags:
+        - public_ip
+      x-viveiro: true
+    post:
+      security:
+        - OAuth2:
+            - network.write
+      description: Create async Public IP in a VPC with provided vpc_id and x_tenant_id
+      operationId: createPublicIp
+      parameters:
+        - description: Id of the VPC to create the Public IP in
+          in: path
+          name: vpc_id
+          required: true
+          schema:
+            description: Id of the VPC to create the Public IP in
+            title: Vpc ID
+        - description: Validate the quota before creating the Public IP
+          in: query
+          name: validate_quota
+          required: false
+          schema:
+            default: true
+            description: Validate the quota before creating the Public IP
+            title: validateQuota
+            type: boolean
+        - description: >-
+            The request will be asynchronous. The wait parameter tells the API
+            that you want the request to simulate synchronous behavior (to
+            maintain endpoint compatibility). You can set an approximate timeout
+            with the waitTimeout parameter
+          in: query
+          name: wait
+          required: false
+          schema:
+            default: true
+            description: >-
+              The request will be asynchronous. The wait parameter tells the API
+              that you want the request to simulate synchronous behavior (to
+              maintain endpoint compatibility). You can set an approximate
+              timeout with the waitTimeout parameter
+            title: wait
+            type: boolean
+        - description: >-
+            the approximate time in seconds you want to wait when simulating the
+            request as synchronous (only works with wait=true)
+          in: query
+          name: wait_timeout
+          required: false
+          schema:
+            anyOf:
+              - type: integer
+              - {}
+            default: 120
+            description: >-
+              the approximate time in seconds you want to wait when simulating
+              the request as synchronous (only works with wait=true)
+            title: waitTimeout
+        - in: header
+          name: x-tenant-id
+          required: true
+          schema:
+            title: X-Tenant-Id
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PublicIpCreateRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicIpCreateResponse'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Create Public IP
+      tags:
+        - public_ip
+      x-viveiro: true
+  '/v0/vpcs/{vpc_id}/security_groups':
+    get:
+      security:
+        - OAuth2:
+            - network.read
+      description: Returns a list of security groups for a provided vpc_id
+      operationId: listSecurityGroup
+      parameters:
+        - description: Id of the VPC to create the Security Group in
+          in: path
+          name: vpc_id
+          required: true
+          schema:
+            description: Id of the VPC to create the Security Group in
+            title: Vpc ID
+        - description: Tenant id of the project
+          in: header
+          name: x-tenant-id
+          required: true
+          schema:
+            description: Tenant id of the project
+            title: X-Tenant-Id
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SecurityGroupListEvent'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: List Security Groups
+      tags:
+        - security_group
+      x-mgc-hidden: true
+      x-viveiro: true
+    post:
+      security:
+        - OAuth2:
+            - network.write
+      description: Create a Security Group
+      operationId: createSecurityGroupDeprecated
+      parameters:
+        - description: Id of the vpc to create the security group in
+          in: path
+          name: vpc_id
+          required: true
+          schema:
+            anyOf:
+              - type: string
+              - {}
+            description: Id of the vpc to create the security group in
+            title: VPC Id
+        - description: >-
+            The request will be asynchronous. The wait parameter tells the API
+            that you want the request to simulate synchronous behavior (to
+            maintain endpoint compatibility). You can set an approximate timeout
+            with the waitTimeout parameter
+          in: query
+          name: wait
+          required: false
+          schema:
+            anyOf:
+              - type: boolean
+              - {}
+            default: true
+            description: >-
+              The request will be asynchronous. The wait parameter tells the API
+              that you want the request to simulate synchronous behavior (to
+              maintain endpoint compatibility). You can set an approximate
+              timeout with the waitTimeout parameter
+            title: wait
+        - description: >-
+            the approximate time in seconds you want to wait when simulating the
+            request as synchronous (only works with wait=true)
+          in: query
+          name: wait_timeout
+          required: false
+          schema:
+            anyOf:
+              - type: integer
+              - {}
+            default: 120
+            description: >-
+              the approximate time in seconds you want to wait when simulating
+              the request as synchronous (only works with wait=true)
+            title: waitTimeout
+        - in: header
+          name: x-tenant-id
+          required: true
+          schema:
+            title: X-Tenant-Id
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SecurityGroupCreateRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SecurityGroupCreateResponse'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Create Security Group
+      tags:
+        - security_group
+      x-mgc-hidden: true
+      x-viveiro: true
+  '/v0/vpcs/{vpc_id}/subnets':
+    get:
+      security:
+        - OAuth2:
+            - network.read
+      description: Returns a list of subnets for a provided vpc_id
+      operationId: listSubnets
+      parameters:
+        - description: Id of the VPC to list Subnets
+          in: path
+          name: vpc_id
+          required: true
+          schema:
+            description: Id of the VPC to list Subnets
+            title: Vpc Id
+        - description: Tenant id of the project
+          in: header
+          name: x-tenant-id
+          required: true
+          schema:
+            description: Tenant id of the project
+            title: X-Tenant-Id
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubnetsResponse'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: List Subnets
+      tags:
+        - subnets
+      x-viveiro: true
+    post:
+      security:
+        - OAuth2:
+            - network.write
+      description: Create a Subnet
+      operationId: createSubnet
+      parameters:
+        - description: Id of the VPC to create Subnet
+          in: path
+          name: vpc_id
+          required: true
+          schema:
+            description: Id of the VPC to create Subnet
+            title: Vpc Id
+        - in: header
+          name: x-tenant-id
+          required: true
+          schema:
+            title: X-Tenant-Id
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubnetCreateRequest'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubnetCreateResponse'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Create Subnet
+      tags:
+        - subnets
+      x-viveiro: true
+tags:
+  - name: vpc
+    description: Rotas relacionadas as apis da VPC API Product para Vpcs
+  - name: port
+    description: Rotas relacionadas as apis da VPC API Product para Portas
+  - name: security_group
+    description: Rotas relacionadas as apis da VPC API Product para Security Groups
+  - name: rule
+    description: Rotas relacionadas as apis da VPC API Product para Rules
+  - name: public_ip
+    description: Rotas relacionadas as apis da VPC API Product para Public IPs
+  - name: subnets
+    description: Rotas relacionadas as apis da VPC API Product para Subnets
+  - name: healthcheck
+    description: Rotas relacionadas a verificação da saúde da aplicação
