@@ -9,7 +9,7 @@ Creates a new database instance.
 
 Creates a new database instance asynchronously for a tenant.
 
-Version: 1.17.2
+Version: 1.19.0
 
 import "magalu.cloud/lib/products/dbaas/instances"
 */
@@ -21,17 +21,28 @@ import (
 )
 
 type CreateParameters struct {
-	BackupRetentionDays *int                   `json:"backup_retention_days,omitempty"`
-	BackupStartAt       *string                `json:"backup_start_at,omitempty"`
-	DatastoreId         *string                `json:"datastore_id,omitempty"`
-	EngineId            *string                `json:"engine_id,omitempty"`
-	Exchange            *string                `json:"exchange,omitempty"`
-	FlavorId            string                 `json:"flavor_id"`
-	Name                string                 `json:"name"`
-	Password            string                 `json:"password"`
-	User                string                 `json:"user"`
-	Volume              CreateParametersVolume `json:"volume"`
+	BackupRetentionDays *int                        `json:"backup_retention_days,omitempty"`
+	BackupStartAt       *string                     `json:"backup_start_at,omitempty"`
+	DatastoreId         *string                     `json:"datastore_id,omitempty"`
+	EngineId            *string                     `json:"engine_id,omitempty"`
+	Exchange            *string                     `json:"exchange,omitempty"`
+	FlavorId            string                      `json:"flavor_id"`
+	Name                string                      `json:"name"`
+	Parameters          *CreateParametersParameters `json:"parameters,omitempty"`
+	Password            string                      `json:"password"`
+	User                string                      `json:"user"`
+	Volume              CreateParametersVolume      `json:"volume"`
 }
+
+type CreateParametersParametersItem struct {
+	Name  string                              `json:"name"`
+	Value CreateParametersParametersItemValue `json:"value"`
+}
+
+// any of: *float64, *int, *bool, *string
+type CreateParametersParametersItemValue any
+
+type CreateParametersParameters []CreateParametersParametersItem
 
 type CreateParametersVolume struct {
 	Size int     `json:"size"`

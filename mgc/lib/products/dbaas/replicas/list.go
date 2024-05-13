@@ -9,7 +9,7 @@ Replicas List.
 
 List all replicas for a given instance.
 
-Version: 1.17.2
+Version: 1.19.0
 
 import "magalu.cloud/lib/products/dbaas/replicas"
 */
@@ -51,20 +51,21 @@ type ListResultMetaPage struct {
 }
 
 type ListResultResultsItem struct {
-	Addresses   ListResultResultsItemAddresses `json:"addresses"`
-	CreatedAt   string                         `json:"created_at"`
-	DatastoreId string                         `json:"datastore_id"`
-	EngineId    string                         `json:"engine_id"`
-	FinishedAt  *string                        `json:"finished_at,omitempty"`
-	FlavorId    string                         `json:"flavor_id"`
-	Generation  string                         `json:"generation"`
-	Id          string                         `json:"id"`
-	Name        string                         `json:"name"`
-	SourceId    string                         `json:"source_id"`
-	StartedAt   *string                        `json:"started_at,omitempty"`
-	Status      string                         `json:"status"`
-	UpdatedAt   *string                        `json:"updated_at,omitempty"`
-	Volume      ListResultResultsItemVolume    `json:"volume"`
+	Addresses   ListResultResultsItemAddresses  `json:"addresses"`
+	CreatedAt   string                          `json:"created_at"`
+	DatastoreId string                          `json:"datastore_id"`
+	EngineId    string                          `json:"engine_id"`
+	FinishedAt  *string                         `json:"finished_at,omitempty"`
+	FlavorId    string                          `json:"flavor_id"`
+	Generation  string                          `json:"generation"`
+	Id          string                          `json:"id"`
+	Name        string                          `json:"name"`
+	Parameters  ListResultResultsItemParameters `json:"parameters"`
+	SourceId    string                          `json:"source_id"`
+	StartedAt   *string                         `json:"started_at,omitempty"`
+	Status      string                          `json:"status"`
+	UpdatedAt   *string                         `json:"updated_at,omitempty"`
+	Volume      ListResultResultsItemVolume     `json:"volume"`
 }
 
 type ListResultResultsItemAddressesItem struct {
@@ -74,6 +75,16 @@ type ListResultResultsItemAddressesItem struct {
 }
 
 type ListResultResultsItemAddresses []ListResultResultsItemAddressesItem
+
+type ListResultResultsItemParametersItem struct {
+	Name  string                                   `json:"name"`
+	Value ListResultResultsItemParametersItemValue `json:"value"`
+}
+
+// any of: *float64, *int, *bool, *string
+type ListResultResultsItemParametersItemValue any
+
+type ListResultResultsItemParameters []ListResultResultsItemParametersItem
 
 type ListResultResultsItemVolume struct {
 	Size int    `json:"size"`

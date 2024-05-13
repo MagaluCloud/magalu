@@ -9,7 +9,7 @@ Replica Stop.
 
 Stop an instance replica.
 
-Version: 1.17.2
+Version: 1.19.0
 
 import "magalu.cloud/lib/products/dbaas/replicas"
 */
@@ -32,20 +32,21 @@ type StopConfigs struct {
 }
 
 type StopResult struct {
-	Addresses   StopResultAddresses `json:"addresses"`
-	CreatedAt   string              `json:"created_at"`
-	DatastoreId string              `json:"datastore_id"`
-	EngineId    string              `json:"engine_id"`
-	FinishedAt  *string             `json:"finished_at,omitempty"`
-	FlavorId    string              `json:"flavor_id"`
-	Generation  string              `json:"generation"`
-	Id          string              `json:"id"`
-	Name        string              `json:"name"`
-	SourceId    string              `json:"source_id"`
-	StartedAt   *string             `json:"started_at,omitempty"`
-	Status      string              `json:"status"`
-	UpdatedAt   *string             `json:"updated_at,omitempty"`
-	Volume      StopResultVolume    `json:"volume"`
+	Addresses   StopResultAddresses  `json:"addresses"`
+	CreatedAt   string               `json:"created_at"`
+	DatastoreId string               `json:"datastore_id"`
+	EngineId    string               `json:"engine_id"`
+	FinishedAt  *string              `json:"finished_at,omitempty"`
+	FlavorId    string               `json:"flavor_id"`
+	Generation  string               `json:"generation"`
+	Id          string               `json:"id"`
+	Name        string               `json:"name"`
+	Parameters  StopResultParameters `json:"parameters"`
+	SourceId    string               `json:"source_id"`
+	StartedAt   *string              `json:"started_at,omitempty"`
+	Status      string               `json:"status"`
+	UpdatedAt   *string              `json:"updated_at,omitempty"`
+	Volume      StopResultVolume     `json:"volume"`
 }
 
 type StopResultAddressesItem struct {
@@ -55,6 +56,16 @@ type StopResultAddressesItem struct {
 }
 
 type StopResultAddresses []StopResultAddressesItem
+
+type StopResultParametersItem struct {
+	Name  string                        `json:"name"`
+	Value StopResultParametersItemValue `json:"value"`
+}
+
+// any of: *float64, *int, *bool, *string
+type StopResultParametersItemValue any
+
+type StopResultParameters []StopResultParametersItem
 
 type StopResultVolume struct {
 	Size int    `json:"size"`

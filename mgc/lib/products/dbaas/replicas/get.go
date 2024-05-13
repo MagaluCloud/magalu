@@ -9,7 +9,7 @@ Replica Detail.
 
 Get an instance replica detail.
 
-Version: 1.17.2
+Version: 1.19.0
 
 import "magalu.cloud/lib/products/dbaas/replicas"
 */
@@ -32,20 +32,21 @@ type GetConfigs struct {
 }
 
 type GetResult struct {
-	Addresses   GetResultAddresses `json:"addresses"`
-	CreatedAt   string             `json:"created_at"`
-	DatastoreId string             `json:"datastore_id"`
-	EngineId    string             `json:"engine_id"`
-	FinishedAt  *string            `json:"finished_at,omitempty"`
-	FlavorId    string             `json:"flavor_id"`
-	Generation  string             `json:"generation"`
-	Id          string             `json:"id"`
-	Name        string             `json:"name"`
-	SourceId    string             `json:"source_id"`
-	StartedAt   *string            `json:"started_at,omitempty"`
-	Status      string             `json:"status"`
-	UpdatedAt   *string            `json:"updated_at,omitempty"`
-	Volume      GetResultVolume    `json:"volume"`
+	Addresses   GetResultAddresses  `json:"addresses"`
+	CreatedAt   string              `json:"created_at"`
+	DatastoreId string              `json:"datastore_id"`
+	EngineId    string              `json:"engine_id"`
+	FinishedAt  *string             `json:"finished_at,omitempty"`
+	FlavorId    string              `json:"flavor_id"`
+	Generation  string              `json:"generation"`
+	Id          string              `json:"id"`
+	Name        string              `json:"name"`
+	Parameters  GetResultParameters `json:"parameters"`
+	SourceId    string              `json:"source_id"`
+	StartedAt   *string             `json:"started_at,omitempty"`
+	Status      string              `json:"status"`
+	UpdatedAt   *string             `json:"updated_at,omitempty"`
+	Volume      GetResultVolume     `json:"volume"`
 }
 
 type GetResultAddressesItem struct {
@@ -55,6 +56,16 @@ type GetResultAddressesItem struct {
 }
 
 type GetResultAddresses []GetResultAddressesItem
+
+type GetResultParametersItem struct {
+	Name  string                       `json:"name"`
+	Value GetResultParametersItemValue `json:"value"`
+}
+
+// any of: *float64, *int, *bool, *string
+type GetResultParametersItemValue any
+
+type GetResultParameters []GetResultParametersItem
 
 type GetResultVolume struct {
 	Size int    `json:"size"`

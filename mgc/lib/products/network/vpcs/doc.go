@@ -5,7 +5,7 @@ Package: vpcs
 
 Virtual Private Cloud (VPC)
 
-Version: 1.119.0
+Version: 1.124.1
 
 import "magalu.cloud/lib/products/network/vpcs"
 */

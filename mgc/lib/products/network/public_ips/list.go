@@ -9,7 +9,7 @@ Executor: list
 
 # Return a tenant's public ip list
 
-Version: 1.119.0
+Version: 1.124.1
 
 import "magalu.cloud/lib/products/network/public_ips"
 */

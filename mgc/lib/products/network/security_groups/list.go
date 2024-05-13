@@ -9,7 +9,7 @@ Executor: list
 
 Returns a list of security groups for a provided tenant_id
 
-Version: 1.119.0
+Version: 1.124.1
 
 import "magalu.cloud/lib/products/network/security_groups"
 */

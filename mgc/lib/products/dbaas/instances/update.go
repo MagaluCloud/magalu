@@ -9,7 +9,7 @@ Database instance update.
 
 Updates a database instance.
 
-Version: 1.17.2
+Version: 1.19.0
 
 import "magalu.cloud/lib/products/dbaas/instances"
 */
@@ -35,22 +35,23 @@ type UpdateConfigs struct {
 }
 
 type UpdateResult struct {
-	Addresses           UpdateResultAddresses `json:"addresses"`
-	BackupRetentionDays int                   `json:"backup_retention_days"`
-	BackupStartAt       string                `json:"backup_start_at"`
-	CreatedAt           string                `json:"created_at"`
-	DatastoreId         string                `json:"datastore_id"`
-	EngineId            string                `json:"engine_id"`
-	FinishedAt          *string               `json:"finished_at,omitempty"`
-	FlavorId            string                `json:"flavor_id"`
-	Generation          string                `json:"generation"`
-	Id                  string                `json:"id"`
-	Name                string                `json:"name"`
-	Replicas            *UpdateResultReplicas `json:"replicas,omitempty"`
-	StartedAt           *string               `json:"started_at,omitempty"`
-	Status              string                `json:"status"`
-	UpdatedAt           *string               `json:"updated_at,omitempty"`
-	Volume              UpdateResultVolume    `json:"volume"`
+	Addresses           UpdateResultAddresses  `json:"addresses"`
+	BackupRetentionDays int                    `json:"backup_retention_days"`
+	BackupStartAt       string                 `json:"backup_start_at"`
+	CreatedAt           string                 `json:"created_at"`
+	DatastoreId         string                 `json:"datastore_id"`
+	EngineId            string                 `json:"engine_id"`
+	FinishedAt          *string                `json:"finished_at,omitempty"`
+	FlavorId            string                 `json:"flavor_id"`
+	Generation          string                 `json:"generation"`
+	Id                  string                 `json:"id"`
+	Name                string                 `json:"name"`
+	Parameters          UpdateResultParameters `json:"parameters"`
+	Replicas            *UpdateResultReplicas  `json:"replicas,omitempty"`
+	StartedAt           *string                `json:"started_at,omitempty"`
+	Status              string                 `json:"status"`
+	UpdatedAt           *string                `json:"updated_at,omitempty"`
+	Volume              UpdateResultVolume     `json:"volume"`
 }
 
 type UpdateResultAddressesItem struct {
@@ -61,21 +62,32 @@ type UpdateResultAddressesItem struct {
 
 type UpdateResultAddresses []UpdateResultAddressesItem
 
+type UpdateResultParametersItem struct {
+	Name  string                          `json:"name"`
+	Value UpdateResultParametersItemValue `json:"value"`
+}
+
+// any of: *float64, *int, *bool, *string
+type UpdateResultParametersItemValue any
+
+type UpdateResultParameters []UpdateResultParametersItem
+
 type UpdateResultReplicasItem struct {
-	Addresses   UpdateResultReplicasItemAddresses `json:"addresses"`
-	CreatedAt   string                            `json:"created_at"`
-	DatastoreId string                            `json:"datastore_id"`
-	EngineId    string                            `json:"engine_id"`
-	FinishedAt  *string                           `json:"finished_at,omitempty"`
-	FlavorId    string                            `json:"flavor_id"`
-	Generation  string                            `json:"generation"`
-	Id          string                            `json:"id"`
-	Name        string                            `json:"name"`
-	SourceId    string                            `json:"source_id"`
-	StartedAt   *string                           `json:"started_at,omitempty"`
-	Status      string                            `json:"status"`
-	UpdatedAt   *string                           `json:"updated_at,omitempty"`
-	Volume      UpdateResultReplicasItemVolume    `json:"volume"`
+	Addresses   UpdateResultReplicasItemAddresses  `json:"addresses"`
+	CreatedAt   string                             `json:"created_at"`
+	DatastoreId string                             `json:"datastore_id"`
+	EngineId    string                             `json:"engine_id"`
+	FinishedAt  *string                            `json:"finished_at,omitempty"`
+	FlavorId    string                             `json:"flavor_id"`
+	Generation  string                             `json:"generation"`
+	Id          string                             `json:"id"`
+	Name        string                             `json:"name"`
+	Parameters  UpdateResultReplicasItemParameters `json:"parameters"`
+	SourceId    string                             `json:"source_id"`
+	StartedAt   *string                            `json:"started_at,omitempty"`
+	Status      string                             `json:"status"`
+	UpdatedAt   *string                            `json:"updated_at,omitempty"`
+	Volume      UpdateResultReplicasItemVolume     `json:"volume"`
 }
 
 type UpdateResultReplicasItemAddressesItem struct {
@@ -85,6 +97,13 @@ type UpdateResultReplicasItemAddressesItem struct {
 }
 
 type UpdateResultReplicasItemAddresses []UpdateResultReplicasItemAddressesItem
+
+type UpdateResultReplicasItemParametersItem struct {
+	Name  string                          `json:"name"`
+	Value UpdateResultParametersItemValue `json:"value"`
+}
+
+type UpdateResultReplicasItemParameters []UpdateResultReplicasItemParametersItem
 
 type UpdateResultReplicasItemVolume struct {
 	Size int    `json:"size"`

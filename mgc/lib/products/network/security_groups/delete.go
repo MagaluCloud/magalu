@@ -9,7 +9,7 @@ Executor: delete
 
 Delete a security group from the provided tenant_id
 
-Version: 1.119.0
+Version: 1.124.1
 
 import "magalu.cloud/lib/products/network/security_groups"
 */

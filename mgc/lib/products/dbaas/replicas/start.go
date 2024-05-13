@@ -9,7 +9,7 @@ Replica Start.
 
 Start an instance replica.
 
-Version: 1.17.2
+Version: 1.19.0
 
 import "magalu.cloud/lib/products/dbaas/replicas"
 */
@@ -32,20 +32,21 @@ type StartConfigs struct {
 }
 
 type StartResult struct {
-	Addresses   StartResultAddresses `json:"addresses"`
-	CreatedAt   string               `json:"created_at"`
-	DatastoreId string               `json:"datastore_id"`
-	EngineId    string               `json:"engine_id"`
-	FinishedAt  *string              `json:"finished_at,omitempty"`
-	FlavorId    string               `json:"flavor_id"`
-	Generation  string               `json:"generation"`
-	Id          string               `json:"id"`
-	Name        string               `json:"name"`
-	SourceId    string               `json:"source_id"`
-	StartedAt   *string              `json:"started_at,omitempty"`
-	Status      string               `json:"status"`
-	UpdatedAt   *string              `json:"updated_at,omitempty"`
-	Volume      StartResultVolume    `json:"volume"`
+	Addresses   StartResultAddresses  `json:"addresses"`
+	CreatedAt   string                `json:"created_at"`
+	DatastoreId string                `json:"datastore_id"`
+	EngineId    string                `json:"engine_id"`
+	FinishedAt  *string               `json:"finished_at,omitempty"`
+	FlavorId    string                `json:"flavor_id"`
+	Generation  string                `json:"generation"`
+	Id          string                `json:"id"`
+	Name        string                `json:"name"`
+	Parameters  StartResultParameters `json:"parameters"`
+	SourceId    string                `json:"source_id"`
+	StartedAt   *string               `json:"started_at,omitempty"`
+	Status      string                `json:"status"`
+	UpdatedAt   *string               `json:"updated_at,omitempty"`
+	Volume      StartResultVolume     `json:"volume"`
 }
 
 type StartResultAddressesItem struct {
@@ -55,6 +56,16 @@ type StartResultAddressesItem struct {
 }
 
 type StartResultAddresses []StartResultAddressesItem
+
+type StartResultParametersItem struct {
+	Name  string                         `json:"name"`
+	Value StartResultParametersItemValue `json:"value"`
+}
+
+// any of: *float64, *int, *bool, *string
+type StartResultParametersItemValue any
+
+type StartResultParameters []StartResultParametersItem
 
 type StartResultVolume struct {
 	Size int    `json:"size"`

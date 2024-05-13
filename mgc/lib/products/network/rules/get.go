@@ -9,7 +9,7 @@ Executor: get
 
 # Return a rule details
 
-Version: 1.119.0
+Version: 1.124.1
 
 import "magalu.cloud/lib/products/network/rules"
 */
@@ -35,6 +35,7 @@ type GetResult struct {
 	Direction       *string `json:"direction,omitempty"`
 	Error           *string `json:"error,omitempty"`
 	Ethertype       *string `json:"ethertype,omitempty"`
+	ExternalId      *string `json:"external_id,omitempty"`
 	Id              *string `json:"id,omitempty"`
 	PortRangeMax    *int    `json:"port_range_max,omitempty"`
 	PortRangeMin    *int    `json:"port_range_min,omitempty"`

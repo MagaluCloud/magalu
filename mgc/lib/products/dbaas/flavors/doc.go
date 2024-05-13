@@ -5,7 +5,7 @@ Package: flavors
 
 Flavors available for database instances.
 
-Version: 1.17.2
+Version: 1.19.0
 
 import "magalu.cloud/lib/products/dbaas/flavors"
 */

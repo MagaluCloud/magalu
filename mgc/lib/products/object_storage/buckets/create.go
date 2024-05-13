@@ -21,13 +21,13 @@ import (
 type CreateParameters struct {
 	AuthenticatedRead *bool                             `json:"authenticated_read,omitempty"`
 	AwsExecRead       *bool                             `json:"aws_exec_read,omitempty"`
+	Bucket            string                            `json:"bucket"`
 	EnableVersioning  *bool                             `json:"enable_versioning,omitempty"`
 	GrantFullControl  *CreateParametersGrantFullControl `json:"grant_full_control,omitempty"`
 	GrantRead         *CreateParametersGrantRead        `json:"grant_read,omitempty"`
 	GrantReadAcp      *CreateParametersGrantReadAcp     `json:"grant_read_acp,omitempty"`
 	GrantWrite        *CreateParametersGrantWrite       `json:"grant_write,omitempty"`
 	GrantWriteAcp     *CreateParametersGrantWriteAcp    `json:"grant_write_acp,omitempty"`
-	Name              string                            `json:"name"`
 	Private           *bool                             `json:"private,omitempty"`
 	PublicRead        *bool                             `json:"public_read,omitempty"`
 	PublicReadWrite   *bool                             `json:"public_read_write,omitempty"`
@@ -54,7 +54,34 @@ type CreateConfigs struct {
 	Workers   *int    `json:"workers,omitempty"`
 }
 
-type CreateResult any
+type CreateResult struct {
+	AuthenticatedRead *bool                         `json:"authenticated_read,omitempty"`
+	AwsExecRead       *bool                         `json:"aws_exec_read,omitempty"`
+	Bucket            string                        `json:"bucket"`
+	EnableVersioning  *bool                         `json:"enable_versioning,omitempty"`
+	GrantFullControl  *CreateResultGrantFullControl `json:"grant_full_control,omitempty"`
+	GrantRead         *CreateResultGrantRead        `json:"grant_read,omitempty"`
+	GrantReadAcp      *CreateResultGrantReadAcp     `json:"grant_read_acp,omitempty"`
+	GrantWrite        *CreateResultGrantWrite       `json:"grant_write,omitempty"`
+	GrantWriteAcp     *CreateResultGrantWriteAcp    `json:"grant_write_acp,omitempty"`
+	Private           *bool                         `json:"private,omitempty"`
+	PublicRead        *bool                         `json:"public_read,omitempty"`
+	PublicReadWrite   *bool                         `json:"public_read_write,omitempty"`
+}
+
+type CreateResultGrantFullControlItem struct {
+	Id string `json:"id"`
+}
+
+type CreateResultGrantFullControl []CreateResultGrantFullControlItem
+
+type CreateResultGrantRead []CreateResultGrantFullControlItem
+
+type CreateResultGrantReadAcp []CreateResultGrantFullControlItem
+
+type CreateResultGrantWrite []CreateResultGrantFullControlItem
+
+type CreateResultGrantWriteAcp []CreateResultGrantFullControlItem
 
 func (s *service) Create(
 	parameters CreateParameters,
