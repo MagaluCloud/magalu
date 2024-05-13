@@ -28,14 +28,6 @@ var getBucket = utils.NewLazyLoader[core.Executor](func() core.Executor {
 
 })
 
-// type versioningConfiguration struct {
-// 	Status    string `xml:"Status"`
-// 	MfaDelete string `xml:"MfaDelete,omitempty"`
-
-// 	Namespace string   `xml:"xmlns,omitempty,attr" json:"-"`
-// 	XMLName   struct{} `xml:"VersioningConfiguration" json:"-"`
-// }
-
 func getValidBucket(ctx context.Context, params getParams, cfg common.Config) (*createParams, error) {
 	req, err := newGetRequest(ctx, params.BucketName, cfg)
 	if err != nil {
