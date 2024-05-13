@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"fmt"
 	"slices"
 	"strings"
 
@@ -14,6 +15,7 @@ import (
 )
 
 const loggerConfigKey = "logging"
+const defaultRegion = "br-se1"
 
 var argParser = &osArgParser{}
 
@@ -122,6 +124,8 @@ can generate a command line on-demand for Rest manipulation`,
 		defer pb.Finalize()
 	}
 
+	setDefaultRegion(sdk)
+
 	err = rootCmd.Execute()
 	if err == nil && loadErr != nil {
 		err = loadErr
@@ -129,4 +133,22 @@ can generate a command line on-demand for Rest manipulation`,
 
 	err = showHelpForError(rootCmd, mainArgs, err) // since we SilenceUsage and SilenceErrors
 	return err
+}
+
+func setDefaultRegion(sdk *mgcSdk.Sdk) {
+	var region string
+	err := sdk.Config().Get("region", &region)
+	if err != nil {
+		logger().Debugw("failed to get region from config", "error", err)
+		return
+	}
+	if region == "" {
+		region = defaultRegion
+		err = sdk.Config().Set("region", region)
+		if err != nil {
+			logger().Debugw("failed to set region in config", "error", err)
+			return
+		}
+		fmt.Println("Using default region:", region)
+	}
 }
