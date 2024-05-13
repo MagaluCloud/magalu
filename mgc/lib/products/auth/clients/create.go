@@ -15,27 +15,27 @@ import (
 )
 
 type CreateParameters struct {
-	AccessTokenExpiration            int    `json:"access-token-expiration,omitempty"`
-	AlwaysRequireLogin               bool   `json:"always-require-login,omitempty"`
-	Audiences                        string `json:"audiences,omitempty"`
-	BackchannelLogoutSessionEnabled  bool   `json:"backchannel-logout-session-enabled,omitempty"`
-	BackchannelLogoutUri             string `json:"backchannel-logout-uri,omitempty"`
-	ClientPrivacyTermUrl             string `json:"client-privacy-term-url"`
-	Description                      string `json:"description"`
-	Icon                             string `json:"icon,omitempty"`
-	Name                             string `json:"name"`
-	OidcAudiences                    string `json:"oidc-audiences,omitempty"`
-	Reason                           string `json:"reason"`
-	RedirectUris                     string `json:"redirect-uris"`
-	RefreshTokenCustomExpiresEnabled bool   `json:"refresh-token-custom-expires-enabled,omitempty"`
-	RefreshTokenExpiration           int    `json:"refresh-token-expiration,omitempty"`
-	TermsOfUse                       string `json:"terms-of-use"`
+	AccessTokenExpiration            *int    `json:"access-token-expiration,omitempty"`
+	AlwaysRequireLogin               *bool   `json:"always-require-login,omitempty"`
+	Audiences                        *string `json:"audiences,omitempty"`
+	BackchannelLogoutSessionEnabled  *bool   `json:"backchannel-logout-session-enabled,omitempty"`
+	BackchannelLogoutUri             *string `json:"backchannel-logout-uri,omitempty"`
+	ClientPrivacyTermUrl             string  `json:"client-privacy-term-url"`
+	Description                      string  `json:"description"`
+	Icon                             *string `json:"icon,omitempty"`
+	Name                             string  `json:"name"`
+	OidcAudiences                    *string `json:"oidc-audiences,omitempty"`
+	Reason                           string  `json:"reason"`
+	RedirectUris                     string  `json:"redirect-uris"`
+	RefreshTokenCustomExpiresEnabled *bool   `json:"refresh-token-custom-expires-enabled,omitempty"`
+	RefreshTokenExpiration           *int    `json:"refresh-token-expiration,omitempty"`
+	TermsOfUse                       string  `json:"terms-of-use"`
 }
 
 type CreateResult struct {
-	ClientId     string `json:"client_id,omitempty"`
-	ClientSecret string `json:"client_secret,omitempty"`
-	Uuid         string `json:"uuid,omitempty"`
+	ClientId     *string `json:"client_id,omitempty"`
+	ClientSecret *string `json:"client_secret,omitempty"`
+	Uuid         *string `json:"uuid,omitempty"`
 }
 
 func (s *service) Create(

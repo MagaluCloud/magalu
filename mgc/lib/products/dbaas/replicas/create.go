@@ -21,16 +21,16 @@ import (
 )
 
 type CreateParameters struct {
-	Exchange string `json:"exchange,omitempty"`
-	FlavorId string `json:"flavor_id,omitempty"`
-	Name     string `json:"name"`
-	SourceId string `json:"source_id"`
+	Exchange *string `json:"exchange,omitempty"`
+	FlavorId *string `json:"flavor_id,omitempty"`
+	Name     string  `json:"name"`
+	SourceId string  `json:"source_id"`
 }
 
 type CreateConfigs struct {
-	Env       string `json:"env,omitempty"`
-	Region    string `json:"region,omitempty"`
-	ServerUrl string `json:"serverUrl,omitempty"`
+	Env       *string `json:"env,omitempty"`
+	Region    *string `json:"region,omitempty"`
+	ServerUrl *string `json:"serverUrl,omitempty"`
 }
 
 type CreateResult struct {

@@ -26,25 +26,25 @@ type GetParameters struct {
 }
 
 type GetConfigs struct {
-	Env       string `json:"env,omitempty"`
-	Region    string `json:"region,omitempty"`
-	ServerUrl string `json:"serverUrl,omitempty"`
+	Env       *string `json:"env,omitempty"`
+	Region    *string `json:"region,omitempty"`
+	ServerUrl *string `json:"serverUrl,omitempty"`
 }
 
 // Object of the node pool response.
 type GetResult struct {
 	AutoScale        GetResultAutoScale        `json:"auto_scale"`
-	CreatedAt        string                    `json:"created_at,omitempty"`
+	CreatedAt        *string                   `json:"created_at,omitempty"`
 	Id               string                    `json:"id"`
 	InstanceTemplate GetResultInstanceTemplate `json:"instance_template"`
 	Labels           GetResultLabels           `json:"labels"`
 	Name             string                    `json:"name"`
 	Replicas         int                       `json:"replicas"`
-	SecurityGroups   GetResultSecurityGroups   `json:"securityGroups,omitempty"`
+	SecurityGroups   *GetResultSecurityGroups  `json:"securityGroups,omitempty"`
 	Status           GetResultStatus           `json:"status"`
-	Tags             GetResultTags             `json:"tags,omitempty"`
-	Taints           GetResultTaints           `json:"taints,omitempty"`
-	UpdatedAt        string                    `json:"updated_at,omitempty"`
+	Tags             *GetResultTags            `json:"tags,omitempty"`
+	Taints           *GetResultTaints          `json:"taints,omitempty"`
+	UpdatedAt        *string                   `json:"updated_at,omitempty"`
 	Zone             *GetResultZone            `json:"zone"`
 }
 

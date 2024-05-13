@@ -17,6 +17,8 @@ Flags:
       --flavor-id uuid                  Flavor Id (required)
   -h, --help                            help for create
       --name string                     Name (max character count: 100) (required)
+      --parameters array(object)        Parameters
+                                        Use --parameters=help for more details (default [])
       --password string                 Password (max character count: 50) (required)
       --user string                     User (max character count: 25) (required)
   -v, --version                         version for create

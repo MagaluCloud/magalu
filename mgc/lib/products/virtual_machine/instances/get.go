@@ -21,22 +21,22 @@ import (
 )
 
 type GetParameters struct {
-	Expand GetParametersExpand `json:"expand,omitempty"`
-	Id     string              `json:"id"`
+	Expand *GetParametersExpand `json:"expand,omitempty"`
+	Id     string               `json:"id"`
 }
 
 type GetParametersExpand []string
 
 type GetConfigs struct {
-	Env       string `json:"env,omitempty"`
-	Region    string `json:"region,omitempty"`
-	ServerUrl string `json:"serverUrl,omitempty"`
+	Env       *string `json:"env,omitempty"`
+	Region    *string `json:"region,omitempty"`
+	ServerUrl *string `json:"serverUrl,omitempty"`
 }
 
 type GetResult struct {
 	AvailabilityZone *string              `json:"availability_zone,omitempty"`
 	CreatedAt        string               `json:"created_at"`
-	Error            GetResultError       `json:"error,omitempty"`
+	Error            *GetResultError      `json:"error,omitempty"`
 	Id               string               `json:"id"`
 	Image            GetResultImage       `json:"image"`
 	MachineType      GetResultMachineType `json:"machine_type"`
@@ -106,7 +106,7 @@ type GetResultNetwork0Ports []GetResultNetwork0PortsItem
 
 type GetResultNetwork1 struct {
 	Ports *GetResultNetwork1Ports `json:"ports,omitempty"`
-	Vpc   GetResultNetwork1Vpc    `json:"vpc,omitempty"`
+	Vpc   *GetResultNetwork1Vpc   `json:"vpc,omitempty"`
 }
 
 type GetResultNetwork1PortsItem struct {

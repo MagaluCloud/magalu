@@ -15,17 +15,17 @@ import (
 )
 
 type SetParameters struct {
-	AuthenticatedRead bool                          `json:"authenticated_read,omitempty"`
-	AwsExecRead       bool                          `json:"aws_exec_read,omitempty"`
-	Dst               string                        `json:"dst"`
-	GrantFullControl  SetParametersGrantFullControl `json:"grant_full_control,omitempty"`
-	GrantRead         SetParametersGrantRead        `json:"grant_read,omitempty"`
-	GrantReadAcp      SetParametersGrantReadAcp     `json:"grant_read_acp,omitempty"`
-	GrantWrite        SetParametersGrantWrite       `json:"grant_write,omitempty"`
-	GrantWriteAcp     SetParametersGrantWriteAcp    `json:"grant_write_acp,omitempty"`
-	Private           bool                          `json:"private,omitempty"`
-	PublicRead        bool                          `json:"public_read,omitempty"`
-	PublicReadWrite   bool                          `json:"public_read_write,omitempty"`
+	AuthenticatedRead *bool                          `json:"authenticated_read,omitempty"`
+	AwsExecRead       *bool                          `json:"aws_exec_read,omitempty"`
+	Dst               string                         `json:"dst"`
+	GrantFullControl  *SetParametersGrantFullControl `json:"grant_full_control,omitempty"`
+	GrantRead         *SetParametersGrantRead        `json:"grant_read,omitempty"`
+	GrantReadAcp      *SetParametersGrantReadAcp     `json:"grant_read_acp,omitempty"`
+	GrantWrite        *SetParametersGrantWrite       `json:"grant_write,omitempty"`
+	GrantWriteAcp     *SetParametersGrantWriteAcp    `json:"grant_write_acp,omitempty"`
+	Private           *bool                          `json:"private,omitempty"`
+	PublicRead        *bool                          `json:"public_read,omitempty"`
+	PublicReadWrite   *bool                          `json:"public_read_write,omitempty"`
 }
 
 type SetParametersGrantFullControlItem struct {
@@ -43,10 +43,10 @@ type SetParametersGrantWrite []SetParametersGrantFullControlItem
 type SetParametersGrantWriteAcp []SetParametersGrantFullControlItem
 
 type SetConfigs struct {
-	ChunkSize int    `json:"chunkSize,omitempty"`
-	Region    string `json:"region,omitempty"`
-	ServerUrl string `json:"serverUrl,omitempty"`
-	Workers   int    `json:"workers,omitempty"`
+	ChunkSize *int    `json:"chunkSize,omitempty"`
+	Region    *string `json:"region,omitempty"`
+	ServerUrl *string `json:"serverUrl,omitempty"`
+	Workers   *int    `json:"workers,omitempty"`
 }
 
 type SetResult any

@@ -25,7 +25,7 @@ type CreateParameters struct {
 	Image            CreateParametersImage       `json:"image"`
 	MachineType      CreateParametersMachineType `json:"machine_type"`
 	Name             string                      `json:"name"`
-	Network          CreateParametersNetwork     `json:"network,omitempty"`
+	Network          *CreateParametersNetwork    `json:"network,omitempty"`
 	SshKeyName       string                      `json:"ssh_key_name"`
 	UserData         *string                     `json:"user_data,omitempty"`
 }
@@ -51,8 +51,8 @@ type CreateParametersMachineType struct {
 }
 
 type CreateParametersNetwork struct {
-	AssociatePublicIp bool                       `json:"associate_public_ip,omitempty"`
-	Vpc               CreateParametersNetworkVpc `json:"vpc,omitempty"`
+	AssociatePublicIp *bool                       `json:"associate_public_ip,omitempty"`
+	Vpc               *CreateParametersNetworkVpc `json:"vpc,omitempty"`
 }
 
 // any of: CreateParametersImage0, CreateParametersImage1
@@ -62,9 +62,9 @@ type CreateParametersNetworkVpc struct {
 }
 
 type CreateConfigs struct {
-	Env       string `json:"env,omitempty"`
-	Region    string `json:"region,omitempty"`
-	ServerUrl string `json:"serverUrl,omitempty"`
+	Env       *string `json:"env,omitempty"`
+	Region    *string `json:"region,omitempty"`
+	ServerUrl *string `json:"serverUrl,omitempty"`
 }
 
 type CreateResult struct {

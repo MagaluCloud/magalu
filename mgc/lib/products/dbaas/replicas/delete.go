@@ -21,14 +21,14 @@ import (
 )
 
 type DeleteParameters struct {
-	Exchange  string `json:"exchange,omitempty"`
-	ReplicaId string `json:"replica_id"`
+	Exchange  *string `json:"exchange,omitempty"`
+	ReplicaId string  `json:"replica_id"`
 }
 
 type DeleteConfigs struct {
-	Env       string `json:"env,omitempty"`
-	Region    string `json:"region,omitempty"`
-	ServerUrl string `json:"serverUrl,omitempty"`
+	Env       *string `json:"env,omitempty"`
+	Region    *string `json:"region,omitempty"`
+	ServerUrl *string `json:"serverUrl,omitempty"`
 }
 
 func (s *service) Delete(

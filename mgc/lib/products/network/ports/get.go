@@ -25,23 +25,23 @@ type GetParameters struct {
 }
 
 type GetConfigs struct {
-	Env       string `json:"env,omitempty"`
-	Region    string `json:"region,omitempty"`
-	ServerUrl string `json:"serverUrl,omitempty"`
+	Env       *string `json:"env,omitempty"`
+	Region    *string `json:"region,omitempty"`
+	ServerUrl *string `json:"serverUrl,omitempty"`
 }
 
 type GetResult struct {
-	CreatedAt             *string                 `json:"created_at,omitempty"`
-	Description           *string                 `json:"description,omitempty"`
-	Id                    *string                 `json:"id,omitempty"`
-	IpAddress             GetResultIpAddress      `json:"ip_address,omitempty"`
-	IsAdminStateUp        *bool                   `json:"is_admin_state_up,omitempty"`
-	IsPortSecurityEnabled *bool                   `json:"is_port_security_enabled,omitempty"`
-	Name                  *string                 `json:"name,omitempty"`
-	PublicIp              *GetResultPublicIp      `json:"public_ip,omitempty"`
-	SecurityGroups        GetResultSecurityGroups `json:"security_groups,omitempty"`
-	Updated               *string                 `json:"updated,omitempty"`
-	VpcId                 *string                 `json:"vpc_id,omitempty"`
+	CreatedAt             *string                  `json:"created_at,omitempty"`
+	Description           *string                  `json:"description,omitempty"`
+	Id                    *string                  `json:"id,omitempty"`
+	IpAddress             *GetResultIpAddress      `json:"ip_address,omitempty"`
+	IsAdminStateUp        *bool                    `json:"is_admin_state_up,omitempty"`
+	IsPortSecurityEnabled *bool                    `json:"is_port_security_enabled,omitempty"`
+	Name                  *string                  `json:"name,omitempty"`
+	PublicIp              *GetResultPublicIp       `json:"public_ip,omitempty"`
+	SecurityGroups        *GetResultSecurityGroups `json:"security_groups,omitempty"`
+	Updated               *string                  `json:"updated,omitempty"`
+	VpcId                 *string                  `json:"vpc_id,omitempty"`
 }
 
 type GetResultIpAddressItem struct {

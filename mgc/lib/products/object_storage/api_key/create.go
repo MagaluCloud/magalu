@@ -15,14 +15,14 @@ import (
 )
 
 type CreateParameters struct {
-	Description string `json:"description,omitempty"`
-	Expiration  string `json:"expiration,omitempty"`
-	Name        string `json:"name"`
+	Description *string `json:"description,omitempty"`
+	Expiration  *string `json:"expiration,omitempty"`
+	Name        string  `json:"name"`
 }
 
 type CreateResult struct {
-	Used bool   `json:"used,omitempty"`
-	Uuid string `json:"uuid,omitempty"`
+	Used *bool   `json:"used,omitempty"`
+	Uuid *string `json:"uuid,omitempty"`
 }
 
 func (s *service) Create(

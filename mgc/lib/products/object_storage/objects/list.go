@@ -15,25 +15,25 @@ import (
 )
 
 type ListParameters struct {
-	ContinuationToken string               `json:"continuation-token,omitempty"`
-	Dst               string               `json:"dst"`
-	Filter            ListParametersFilter `json:"filter,omitempty"`
-	MaxItems          int                  `json:"max-items,omitempty"`
-	Recursive         bool                 `json:"recursive,omitempty"`
+	ContinuationToken *string               `json:"continuation-token,omitempty"`
+	Dst               string                `json:"dst"`
+	Filter            *ListParametersFilter `json:"filter,omitempty"`
+	MaxItems          *int                  `json:"max-items,omitempty"`
+	Recursive         *bool                 `json:"recursive,omitempty"`
 }
 
 type ListParametersFilterItem struct {
-	Exclude string `json:"exclude,omitempty"`
-	Include string `json:"include,omitempty"`
+	Exclude *string `json:"exclude,omitempty"`
+	Include *string `json:"include,omitempty"`
 }
 
 type ListParametersFilter []ListParametersFilterItem
 
 type ListConfigs struct {
-	ChunkSize int    `json:"chunkSize,omitempty"`
-	Region    string `json:"region,omitempty"`
-	ServerUrl string `json:"serverUrl,omitempty"`
-	Workers   int    `json:"workers,omitempty"`
+	ChunkSize *int    `json:"chunkSize,omitempty"`
+	Region    *string `json:"region,omitempty"`
+	ServerUrl *string `json:"serverUrl,omitempty"`
+	Workers   *int    `json:"workers,omitempty"`
 }
 
 type ListResult struct {

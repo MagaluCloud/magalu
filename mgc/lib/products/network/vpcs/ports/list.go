@@ -21,19 +21,19 @@ import (
 )
 
 type ListParameters struct {
-	Limit      int                      `json:"_limit,omitempty"`
-	Offset     int                      `json:"_offset,omitempty"`
-	Detailed   bool                     `json:"detailed,omitempty"`
-	PortIdList ListParametersPortIdList `json:"port_id_list,omitempty"`
-	VpcId      string                   `json:"vpc_id"`
+	Limit      *int                      `json:"_limit,omitempty"`
+	Offset     *int                      `json:"_offset,omitempty"`
+	Detailed   *bool                     `json:"detailed,omitempty"`
+	PortIdList *ListParametersPortIdList `json:"port_id_list,omitempty"`
+	VpcId      string                    `json:"vpc_id"`
 }
 
 type ListParametersPortIdList []string
 
 type ListConfigs struct {
-	Env       string `json:"env,omitempty"`
-	Region    string `json:"region,omitempty"`
-	ServerUrl string `json:"serverUrl,omitempty"`
+	Env       *string `json:"env,omitempty"`
+	Region    *string `json:"region,omitempty"`
+	ServerUrl *string `json:"serverUrl,omitempty"`
 }
 
 // any of: ListResult0, ListResult1
@@ -47,8 +47,8 @@ type ListResult0 struct {
 }
 
 type ListResult0PortsSimplifiedItem struct {
-	Id        *string                                 `json:"id,omitempty"`
-	IpAddress ListResult0PortsSimplifiedItemIpAddress `json:"ip_address,omitempty"`
+	Id        *string                                  `json:"id,omitempty"`
+	IpAddress *ListResult0PortsSimplifiedItemIpAddress `json:"ip_address,omitempty"`
 }
 
 type ListResult0PortsSimplifiedItemIpAddressItem struct {
@@ -65,17 +65,17 @@ type ListResult1 struct {
 }
 
 type ListResult1PortsItem struct {
-	CreatedAt             *string                            `json:"created_at,omitempty"`
-	Description           *string                            `json:"description,omitempty"`
-	Id                    *string                            `json:"id,omitempty"`
-	IpAddress             ListResult1PortsItemIpAddress      `json:"ip_address,omitempty"`
-	IsAdminStateUp        *bool                              `json:"is_admin_state_up,omitempty"`
-	IsPortSecurityEnabled *bool                              `json:"is_port_security_enabled,omitempty"`
-	Name                  *string                            `json:"name,omitempty"`
-	PublicIp              *ListResult1PortsItemPublicIp      `json:"public_ip,omitempty"`
-	SecurityGroups        ListResult1PortsItemSecurityGroups `json:"security_groups,omitempty"`
-	Updated               *string                            `json:"updated,omitempty"`
-	VpcId                 *string                            `json:"vpc_id,omitempty"`
+	CreatedAt             *string                             `json:"created_at,omitempty"`
+	Description           *string                             `json:"description,omitempty"`
+	Id                    *string                             `json:"id,omitempty"`
+	IpAddress             *ListResult1PortsItemIpAddress      `json:"ip_address,omitempty"`
+	IsAdminStateUp        *bool                               `json:"is_admin_state_up,omitempty"`
+	IsPortSecurityEnabled *bool                               `json:"is_port_security_enabled,omitempty"`
+	Name                  *string                             `json:"name,omitempty"`
+	PublicIp              *ListResult1PortsItemPublicIp       `json:"public_ip,omitempty"`
+	SecurityGroups        *ListResult1PortsItemSecurityGroups `json:"security_groups,omitempty"`
+	Updated               *string                             `json:"updated,omitempty"`
+	VpcId                 *string                             `json:"vpc_id,omitempty"`
 }
 
 type ListResult1PortsItemIpAddress []ListResult0PortsSimplifiedItemIpAddressItem

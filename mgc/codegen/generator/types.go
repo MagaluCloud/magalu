@@ -52,20 +52,22 @@ func (t *generatorTemplateTypes) add(def *generatorTemplateTypeDefinition, schem
 	t.Definitions = append(t.Definitions, def)
 }
 
-func (t *generatorTemplateTypes) addSchemaRef(name string, schemaRef *mgcSchemaPkg.SchemaRef) (signature string, err error) {
+func (t *generatorTemplateTypes) addSchemaRef(name string, schemaRef *mgcSchemaPkg.SchemaRef, required bool) (signature string, err error) {
 	if schemaRef == nil {
 		err = errMissingSchema
 		return
 	}
-	return t.addSchema(name, (*mgcSchemaPkg.Schema)(schemaRef.Value))
+	return t.addSchema(name, (*mgcSchemaPkg.Schema)(schemaRef.Value), required)
 }
 
-func (t *generatorTemplateTypes) addSchema(name string, schema *mgcSchemaPkg.Schema) (signature string, err error) {
+func (t *generatorTemplateTypes) addSchema(name string, schema *mgcSchemaPkg.Schema, required bool) (signature string, err error) {
 	signature, err = t.addSchemaInternal(name, schema)
 	if err != nil {
 		return
 	}
-	if schema.Nullable {
+
+	//check if OAD schema is nullable and if the property is not required
+	if schema.Nullable || !required {
 		signature = "*" + signature
 	}
 	return
@@ -154,7 +156,9 @@ func (t *generatorTemplateTypes) addArray(name string, schema *mgcSchemaPkg.Sche
 	}
 
 	var itemSignature string
-	itemSignature, err = t.addSchemaRef(name+"Item", schema.Items)
+
+	// don't create pointer types for array of primitives
+	itemSignature, err = t.addSchemaRef(name+"Item", schema.Items, true)
 	if err != nil {
 		if errors.Is(err, errMissingSchema) {
 			// TODO: this should happen in the schema, but it does, just fallback to "any"
@@ -198,7 +202,7 @@ func (t *generatorTemplateTypes) addAlternatives(name string, doc string, schema
 		}
 		var childSignature string
 		k := fmt.Sprint(i)
-		childSignature, err = t.addSchemaRef(name+k, childRef)
+		childSignature, err = t.addSchemaRef(name+k, childRef, slices.Contains(schema.Required, childRef.Ref))
 		if err != nil {
 			err = &utils.ChainedError{Name: k, Err: err}
 			return
@@ -231,7 +235,7 @@ func (t *generatorTemplateTypes) addMapOf(name string, schema *mgcSchemaPkg.Sche
 
 	childSignature := "any"
 	if propSchemaRef != nil && propSchemaRef.Value != nil {
-		childSignature, err = t.addSchema(name+"Property", (*mgcSchemaPkg.Schema)(propSchemaRef.Value))
+		childSignature, err = t.addSchema(name+"Property", (*mgcSchemaPkg.Schema)(propSchemaRef.Value), slices.Contains(schema.Required, propSchemaRef.Ref))
 		if err != nil {
 			return
 		}
@@ -273,7 +277,7 @@ func (t *generatorTemplateTypes) addObject(name string, schema *mgcSchemaPkg.Sch
 		propRef := schema.Properties[k]
 		fieldName := strcase.UpperCamelCase(k)
 		var fieldType string
-		fieldType, err = t.addSchemaRef(name+fieldName, propRef)
+		fieldType, err = t.addSchemaRef(name+fieldName, propRef, slices.Contains(schema.Required, k))
 		if err != nil {
 			err = &utils.ChainedError{Name: k, Err: err}
 			return
@@ -317,7 +321,9 @@ func (t *generatorTemplateTypes) addObjectAlternatives(objDef *generatorTemplate
 		}
 		var childSignature string
 		k := fmt.Sprint(i)
-		childSignature, err = t.addSchemaRef(name+k, childRef)
+
+		// always create pointer types for alternatives
+		childSignature, err = t.addSchemaRef(name+k, childRef, true)
 		if err != nil {
 			err = &utils.ChainedError{Name: k, Err: err}
 			return

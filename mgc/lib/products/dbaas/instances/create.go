@@ -21,11 +21,11 @@ import (
 )
 
 type CreateParameters struct {
-	BackupRetentionDays int                    `json:"backup_retention_days,omitempty"`
-	BackupStartAt       string                 `json:"backup_start_at,omitempty"`
-	DatastoreId         string                 `json:"datastore_id,omitempty"`
-	EngineId            string                 `json:"engine_id,omitempty"`
-	Exchange            string                 `json:"exchange,omitempty"`
+	BackupRetentionDays *int                   `json:"backup_retention_days,omitempty"`
+	BackupStartAt       *string                `json:"backup_start_at,omitempty"`
+	DatastoreId         *string                `json:"datastore_id,omitempty"`
+	EngineId            *string                `json:"engine_id,omitempty"`
+	Exchange            *string                `json:"exchange,omitempty"`
 	FlavorId            string                 `json:"flavor_id"`
 	Name                string                 `json:"name"`
 	Password            string                 `json:"password"`
@@ -34,14 +34,14 @@ type CreateParameters struct {
 }
 
 type CreateParametersVolume struct {
-	Size int    `json:"size"`
-	Type string `json:"type,omitempty"`
+	Size int     `json:"size"`
+	Type *string `json:"type,omitempty"`
 }
 
 type CreateConfigs struct {
-	Env       string `json:"env,omitempty"`
-	Region    string `json:"region,omitempty"`
-	ServerUrl string `json:"serverUrl,omitempty"`
+	Env       *string `json:"env,omitempty"`
+	Region    *string `json:"region,omitempty"`
+	ServerUrl *string `json:"serverUrl,omitempty"`
 }
 
 type CreateResult struct {

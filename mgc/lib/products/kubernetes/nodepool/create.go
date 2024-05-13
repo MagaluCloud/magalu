@@ -21,13 +21,13 @@ import (
 )
 
 type CreateParameters struct {
-	AutoScale CreateParametersAutoScale `json:"auto_scale,omitempty"`
-	ClusterId string                    `json:"cluster_id"`
-	Flavor    string                    `json:"flavor"`
-	Name      string                    `json:"name"`
-	Replicas  int                       `json:"replicas"`
-	Tags      CreateParametersTags      `json:"tags,omitempty"`
-	Taints    CreateParametersTaints    `json:"taints,omitempty"`
+	AutoScale *CreateParametersAutoScale `json:"auto_scale,omitempty"`
+	ClusterId string                     `json:"cluster_id"`
+	Flavor    string                     `json:"flavor"`
+	Name      string                     `json:"name"`
+	Replicas  int                        `json:"replicas"`
+	Tags      *CreateParametersTags      `json:"tags,omitempty"`
+	Taints    *CreateParametersTaints    `json:"taints,omitempty"`
 }
 
 // Object specifying properties for updating workload resources in the Kubernetes cluster.
@@ -48,25 +48,25 @@ type CreateParametersTaintsItem struct {
 type CreateParametersTaints []CreateParametersTaintsItem
 
 type CreateConfigs struct {
-	Env       string `json:"env,omitempty"`
-	Region    string `json:"region,omitempty"`
-	ServerUrl string `json:"serverUrl,omitempty"`
+	Env       *string `json:"env,omitempty"`
+	Region    *string `json:"region,omitempty"`
+	ServerUrl *string `json:"serverUrl,omitempty"`
 }
 
 // Object of the node pool response.
 type CreateResult struct {
 	AutoScale        CreateParametersAutoScale    `json:"auto_scale"`
-	CreatedAt        string                       `json:"created_at,omitempty"`
+	CreatedAt        *string                      `json:"created_at,omitempty"`
 	Id               string                       `json:"id"`
 	InstanceTemplate CreateResultInstanceTemplate `json:"instance_template"`
 	Labels           CreateResultLabels           `json:"labels"`
 	Name             string                       `json:"name"`
 	Replicas         int                          `json:"replicas"`
-	SecurityGroups   CreateResultSecurityGroups   `json:"securityGroups,omitempty"`
+	SecurityGroups   *CreateResultSecurityGroups  `json:"securityGroups,omitempty"`
 	Status           CreateResultStatus           `json:"status"`
-	Tags             CreateResultTags             `json:"tags,omitempty"`
-	Taints           CreateResultTaints           `json:"taints,omitempty"`
-	UpdatedAt        string                       `json:"updated_at,omitempty"`
+	Tags             *CreateResultTags            `json:"tags,omitempty"`
+	Taints           *CreateResultTaints          `json:"taints,omitempty"`
+	UpdatedAt        *string                      `json:"updated_at,omitempty"`
 	Zone             *CreateResultZone            `json:"zone"`
 }
 

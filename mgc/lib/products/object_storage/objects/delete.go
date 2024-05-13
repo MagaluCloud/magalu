@@ -15,15 +15,15 @@ import (
 )
 
 type DeleteParameters struct {
-	Dst        string `json:"dst"`
-	ObjVersion string `json:"objVersion,omitempty"`
+	Dst        string  `json:"dst"`
+	ObjVersion *string `json:"objVersion,omitempty"`
 }
 
 type DeleteConfigs struct {
-	ChunkSize int    `json:"chunkSize,omitempty"`
-	Region    string `json:"region,omitempty"`
-	ServerUrl string `json:"serverUrl,omitempty"`
-	Workers   int    `json:"workers,omitempty"`
+	ChunkSize *int    `json:"chunkSize,omitempty"`
+	Region    *string `json:"region,omitempty"`
+	ServerUrl *string `json:"serverUrl,omitempty"`
+	Workers   *int    `json:"workers,omitempty"`
 }
 
 type DeleteResult any

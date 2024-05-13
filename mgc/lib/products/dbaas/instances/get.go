@@ -21,15 +21,15 @@ import (
 )
 
 type GetParameters struct {
-	Expand     string `json:"_expand,omitempty"`
-	Exchange   string `json:"exchange,omitempty"`
-	InstanceId string `json:"instance_id"`
+	Expand     *string `json:"_expand,omitempty"`
+	Exchange   *string `json:"exchange,omitempty"`
+	InstanceId string  `json:"instance_id"`
 }
 
 type GetConfigs struct {
-	Env       string `json:"env,omitempty"`
-	Region    string `json:"region,omitempty"`
-	ServerUrl string `json:"serverUrl,omitempty"`
+	Env       *string `json:"env,omitempty"`
+	Region    *string `json:"region,omitempty"`
+	ServerUrl *string `json:"serverUrl,omitempty"`
 }
 
 type GetResult struct {
@@ -39,22 +39,22 @@ type GetResult struct {
 	CreatedAt           string             `json:"created_at"`
 	DatastoreId         string             `json:"datastore_id"`
 	EngineId            string             `json:"engine_id"`
-	FinishedAt          string             `json:"finished_at,omitempty"`
+	FinishedAt          *string            `json:"finished_at,omitempty"`
 	FlavorId            string             `json:"flavor_id"`
 	Generation          string             `json:"generation"`
 	Id                  string             `json:"id"`
 	Name                string             `json:"name"`
-	Replicas            GetResultReplicas  `json:"replicas,omitempty"`
-	StartedAt           string             `json:"started_at,omitempty"`
+	Replicas            *GetResultReplicas `json:"replicas,omitempty"`
+	StartedAt           *string            `json:"started_at,omitempty"`
 	Status              string             `json:"status"`
-	UpdatedAt           string             `json:"updated_at,omitempty"`
+	UpdatedAt           *string            `json:"updated_at,omitempty"`
 	Volume              GetResultVolume    `json:"volume"`
 }
 
 type GetResultAddressesItem struct {
-	Access  string `json:"access"`
-	Address string `json:"address,omitempty"`
-	Type    string `json:"type,omitempty"`
+	Access  string  `json:"access"`
+	Address *string `json:"address,omitempty"`
+	Type    *string `json:"type,omitempty"`
 }
 
 type GetResultAddresses []GetResultAddressesItem
@@ -64,22 +64,22 @@ type GetResultReplicasItem struct {
 	CreatedAt   string                         `json:"created_at"`
 	DatastoreId string                         `json:"datastore_id"`
 	EngineId    string                         `json:"engine_id"`
-	FinishedAt  string                         `json:"finished_at,omitempty"`
+	FinishedAt  *string                        `json:"finished_at,omitempty"`
 	FlavorId    string                         `json:"flavor_id"`
 	Generation  string                         `json:"generation"`
 	Id          string                         `json:"id"`
 	Name        string                         `json:"name"`
 	SourceId    string                         `json:"source_id"`
-	StartedAt   string                         `json:"started_at,omitempty"`
+	StartedAt   *string                        `json:"started_at,omitempty"`
 	Status      string                         `json:"status"`
-	UpdatedAt   string                         `json:"updated_at,omitempty"`
+	UpdatedAt   *string                        `json:"updated_at,omitempty"`
 	Volume      GetResultReplicasItemVolume    `json:"volume"`
 }
 
 type GetResultReplicasItemAddressesItem struct {
-	Access  string `json:"access"`
-	Address string `json:"address,omitempty"`
-	Type    string `json:"type,omitempty"`
+	Access  string  `json:"access"`
+	Address *string `json:"address,omitempty"`
+	Type    *string `json:"type,omitempty"`
 }
 
 type GetResultReplicasItemAddresses []GetResultReplicasItemAddressesItem

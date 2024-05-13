@@ -19,17 +19,17 @@ import (
 )
 
 type SyncParameters struct {
-	BatchSize int    `json:"batch_size,omitempty"`
-	Delete    bool   `json:"delete,omitempty"`
+	BatchSize *int   `json:"batch_size,omitempty"`
+	Delete    *bool  `json:"delete,omitempty"`
 	Dst       string `json:"dst"`
 	Src       string `json:"src"`
 }
 
 type SyncConfigs struct {
-	ChunkSize int    `json:"chunkSize,omitempty"`
-	Region    string `json:"region,omitempty"`
-	ServerUrl string `json:"serverUrl,omitempty"`
-	Workers   int    `json:"workers,omitempty"`
+	ChunkSize *int    `json:"chunkSize,omitempty"`
+	Region    *string `json:"region,omitempty"`
+	ServerUrl *string `json:"serverUrl,omitempty"`
+	Workers   *int    `json:"workers,omitempty"`
 }
 
 type SyncResult any

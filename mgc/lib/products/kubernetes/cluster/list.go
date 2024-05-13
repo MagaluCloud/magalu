@@ -21,9 +21,9 @@ import (
 )
 
 type ListConfigs struct {
-	Env       string `json:"env,omitempty"`
-	Region    string `json:"region,omitempty"`
-	ServerUrl string `json:"serverUrl,omitempty"`
+	Env       *string `json:"env,omitempty"`
+	Region    *string `json:"region,omitempty"`
+	ServerUrl *string `json:"serverUrl,omitempty"`
 }
 
 // Object of the clusters response request.
@@ -33,23 +33,23 @@ type ListResult struct {
 
 // Object of the cluster response request.
 type ListResultResultsItem struct {
-	Description   string                             `json:"description,omitempty"`
-	Id            string                             `json:"id"`
-	KubeApiServer ListResultResultsItemKubeApiServer `json:"kube_api_server,omitempty"`
-	Name          string                             `json:"name"`
-	ProjectId     string                             `json:"project_id,omitempty"`
-	Region        string                             `json:"region,omitempty"`
-	Status        ListResultResultsItemStatus        `json:"status,omitempty"`
-	Tags          ListResultResultsItemTags          `json:"tags,omitempty"`
-	Version       string                             `json:"version,omitempty"`
+	Description   *string                             `json:"description,omitempty"`
+	Id            string                              `json:"id"`
+	KubeApiServer *ListResultResultsItemKubeApiServer `json:"kube_api_server,omitempty"`
+	Name          string                              `json:"name"`
+	ProjectId     *string                             `json:"project_id,omitempty"`
+	Region        *string                             `json:"region,omitempty"`
+	Status        *ListResultResultsItemStatus        `json:"status,omitempty"`
+	Tags          *ListResultResultsItemTags          `json:"tags,omitempty"`
+	Version       *string                             `json:"version,omitempty"`
 }
 
 // Information about the Kubernetes API Server of the cluster.
 type ListResultResultsItemKubeApiServer struct {
-	DisableApiServerFip bool   `json:"disable_api_server_fip,omitempty"`
-	FixedIp             string `json:"fixed_ip,omitempty"`
-	FloatingIp          string `json:"floating_ip,omitempty"`
-	Port                int    `json:"port,omitempty"`
+	DisableApiServerFip *bool   `json:"disable_api_server_fip,omitempty"`
+	FixedIp             *string `json:"fixed_ip,omitempty"`
+	FloatingIp          *string `json:"floating_ip,omitempty"`
+	Port                *int    `json:"port,omitempty"`
 }
 
 // Details about the status of the Kubernetes cluster or node.

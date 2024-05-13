@@ -28,29 +28,29 @@ import (
 )
 
 type GetParameters struct {
-	Expand GetParametersExpand `json:"expand,omitempty"`
-	Id     string              `json:"id"`
+	Expand *GetParametersExpand `json:"expand,omitempty"`
+	Id     string               `json:"id"`
 }
 
 type GetParametersExpand []string
 
 type GetConfigs struct {
-	Env       string `json:"env,omitempty"`
-	Region    string `json:"region,omitempty"`
-	ServerUrl string `json:"serverUrl,omitempty"`
+	Env       *string `json:"env,omitempty"`
+	Region    *string `json:"region,omitempty"`
+	ServerUrl *string `json:"serverUrl,omitempty"`
 }
 
 type GetResult struct {
-	Attachment GetResultAttachment `json:"attachment,omitempty"`
-	CreatedAt  string              `json:"created_at"`
-	Error      GetResultError      `json:"error,omitempty"`
-	Id         string              `json:"id"`
-	Name       string              `json:"name"`
-	Size       int                 `json:"size"`
-	State      string              `json:"state"`
-	Status     string              `json:"status"`
-	Type       GetResultType       `json:"type"`
-	UpdatedAt  string              `json:"updated_at"`
+	Attachment *GetResultAttachment `json:"attachment,omitempty"`
+	CreatedAt  string               `json:"created_at"`
+	Error      *GetResultError      `json:"error,omitempty"`
+	Id         string               `json:"id"`
+	Name       string               `json:"name"`
+	Size       int                  `json:"size"`
+	State      string               `json:"state"`
+	Status     string               `json:"status"`
+	Type       GetResultType        `json:"type"`
+	UpdatedAt  string               `json:"updated_at"`
 }
 
 type GetResultAttachment struct {

@@ -21,31 +21,31 @@ import (
 )
 
 type GetParameters struct {
-	BackupId   string `json:"backup_id"`
-	Exchange   string `json:"exchange,omitempty"`
-	InstanceId string `json:"instance_id"`
+	BackupId   string  `json:"backup_id"`
+	Exchange   *string `json:"exchange,omitempty"`
+	InstanceId string  `json:"instance_id"`
 }
 
 type GetConfigs struct {
-	Env       string `json:"env,omitempty"`
-	Region    string `json:"region,omitempty"`
-	ServerUrl string `json:"serverUrl,omitempty"`
+	Env       *string `json:"env,omitempty"`
+	Region    *string `json:"region,omitempty"`
+	ServerUrl *string `json:"serverUrl,omitempty"`
 }
 
 type GetResult struct {
-	CreatedAt  string `json:"created_at"`
-	DbSize     int    `json:"db_size,omitempty"`
-	FinishedAt string `json:"finished_at,omitempty"`
-	Id         string `json:"id"`
-	InstanceId string `json:"instance_id"`
-	Location   string `json:"location,omitempty"`
-	Mode       string `json:"mode"`
-	Name       string `json:"name,omitempty"`
-	Size       int    `json:"size,omitempty"`
-	StartedAt  string `json:"started_at,omitempty"`
-	Status     string `json:"status"`
-	Type       string `json:"type"`
-	UpdatedAt  string `json:"updated_at,omitempty"`
+	CreatedAt  string  `json:"created_at"`
+	DbSize     *int    `json:"db_size,omitempty"`
+	FinishedAt *string `json:"finished_at,omitempty"`
+	Id         string  `json:"id"`
+	InstanceId string  `json:"instance_id"`
+	Location   *string `json:"location,omitempty"`
+	Mode       string  `json:"mode"`
+	Name       *string `json:"name,omitempty"`
+	Size       *int    `json:"size,omitempty"`
+	StartedAt  *string `json:"started_at,omitempty"`
+	Status     string  `json:"status"`
+	Type       string  `json:"type"`
+	UpdatedAt  *string `json:"updated_at,omitempty"`
 }
 
 func (s *service) Get(

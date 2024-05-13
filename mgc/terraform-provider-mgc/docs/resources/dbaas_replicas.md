@@ -34,6 +34,7 @@ Database replicas management.
 - `finished_at` (String)
 - `generation` (String) An enumeration.
 - `id` (String) The ID of this resource.
+- `parameters` (Attributes List) (see [below for nested schema](#nestedatt--parameters))
 - `started_at` (String)
 - `status` (String) An enumeration.
 - `updated_at` (String)
@@ -47,6 +48,26 @@ Read-Only:
 - `access` (String) An enumeration.
 - `address` (String)
 - `type` (String) An enumeration.
+
+
+<a id="nestedatt--parameters"></a>
+### Nested Schema for `parameters`
+
+Read-Only:
+
+- `name` (String) An enumeration.
+- `value` (Attributes) (see [below for nested schema](#nestedatt--parameters--value))
+
+<a id="nestedatt--parameters--value"></a>
+### Nested Schema for `parameters.value`
+
+Read-Only:
+
+- `boolean1` (Boolean)
+- `integer1` (Number)
+- `number1` (Number)
+- `string1` (String)
+
 
 
 <a id="nestedatt--volume"></a>

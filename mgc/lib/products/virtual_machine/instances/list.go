@@ -21,18 +21,18 @@ import (
 )
 
 type ListParameters struct {
-	Limit  int                  `json:"_limit,omitempty"`
-	Offset int                  `json:"_offset,omitempty"`
-	Sort   string               `json:"_sort,omitempty"`
-	Expand ListParametersExpand `json:"expand,omitempty"`
+	Limit  *int                  `json:"_limit,omitempty"`
+	Offset *int                  `json:"_offset,omitempty"`
+	Sort   *string               `json:"_sort,omitempty"`
+	Expand *ListParametersExpand `json:"expand,omitempty"`
 }
 
 type ListParametersExpand []string
 
 type ListConfigs struct {
-	Env       string `json:"env,omitempty"`
-	Region    string `json:"region,omitempty"`
-	ServerUrl string `json:"serverUrl,omitempty"`
+	Env       *string `json:"env,omitempty"`
+	Region    *string `json:"region,omitempty"`
+	ServerUrl *string `json:"serverUrl,omitempty"`
 }
 
 type ListResult struct {
@@ -42,7 +42,7 @@ type ListResult struct {
 type ListResultInstancesItem struct {
 	AvailabilityZone *string                            `json:"availability_zone,omitempty"`
 	CreatedAt        string                             `json:"created_at"`
-	Error            ListResultInstancesItemError       `json:"error,omitempty"`
+	Error            *ListResultInstancesItemError      `json:"error,omitempty"`
 	Id               string                             `json:"id"`
 	Image            ListResultInstancesItemImage       `json:"image"`
 	MachineType      ListResultInstancesItemMachineType `json:"machine_type"`
@@ -112,7 +112,7 @@ type ListResultInstancesItemNetwork0Ports []ListResultInstancesItemNetwork0Ports
 
 type ListResultInstancesItemNetwork1 struct {
 	Ports *ListResultInstancesItemNetwork1Ports `json:"ports,omitempty"`
-	Vpc   ListResultInstancesItemNetwork1Vpc    `json:"vpc,omitempty"`
+	Vpc   *ListResultInstancesItemNetwork1Vpc   `json:"vpc,omitempty"`
 }
 
 type ListResultInstancesItemNetwork1PortsItem struct {

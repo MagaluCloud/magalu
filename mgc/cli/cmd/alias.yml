@@ -1,0 +1,22 @@
+virtual-machine:
+  - vms
+  - vm
+  - virtual-machines
+  - machines
+  - vmachine
+block-storage:
+  - bs
+  - blocks
+  - blst
+config:
+  - conf
+dbaas:
+  - database
+  - db
+kubernetes:
+  - k8s
+  - kube
+  - kub
+object-storage:
+  - object
+  - objs

@@ -21,10 +21,10 @@ import (
 )
 
 type UpdateParameters struct {
-	AutoScale  UpdateParametersAutoScale `json:"auto_scale,omitempty"`
-	ClusterId  string                    `json:"cluster_id"`
-	NodePoolId string                    `json:"node_pool_id"`
-	Replicas   int                       `json:"replicas,omitempty"`
+	AutoScale  *UpdateParametersAutoScale `json:"auto_scale,omitempty"`
+	ClusterId  string                     `json:"cluster_id"`
+	NodePoolId string                     `json:"node_pool_id"`
+	Replicas   *int                       `json:"replicas,omitempty"`
 }
 
 // Object specifying properties for updating workload resources in the Kubernetes cluster.
@@ -35,25 +35,25 @@ type UpdateParametersAutoScale struct {
 }
 
 type UpdateConfigs struct {
-	Env       string `json:"env,omitempty"`
-	Region    string `json:"region,omitempty"`
-	ServerUrl string `json:"serverUrl,omitempty"`
+	Env       *string `json:"env,omitempty"`
+	Region    *string `json:"region,omitempty"`
+	ServerUrl *string `json:"serverUrl,omitempty"`
 }
 
 // Object of the node pool response.
 type UpdateResult struct {
 	AutoScale        UpdateParametersAutoScale    `json:"auto_scale"`
-	CreatedAt        string                       `json:"created_at,omitempty"`
+	CreatedAt        *string                      `json:"created_at,omitempty"`
 	Id               string                       `json:"id"`
 	InstanceTemplate UpdateResultInstanceTemplate `json:"instance_template"`
 	Labels           UpdateResultLabels           `json:"labels"`
 	Name             string                       `json:"name"`
 	Replicas         int                          `json:"replicas"`
-	SecurityGroups   UpdateResultSecurityGroups   `json:"securityGroups,omitempty"`
+	SecurityGroups   *UpdateResultSecurityGroups  `json:"securityGroups,omitempty"`
 	Status           UpdateResultStatus           `json:"status"`
-	Tags             UpdateResultTags             `json:"tags,omitempty"`
-	Taints           UpdateResultTaints           `json:"taints,omitempty"`
-	UpdatedAt        string                       `json:"updated_at,omitempty"`
+	Tags             *UpdateResultTags            `json:"tags,omitempty"`
+	Taints           *UpdateResultTaints          `json:"taints,omitempty"`
+	UpdatedAt        *string                      `json:"updated_at,omitempty"`
 	Zone             *UpdateResultZone            `json:"zone"`
 }
 

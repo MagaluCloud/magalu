@@ -21,15 +21,15 @@ import (
 )
 
 type ListParameters struct {
-	Limit  int    `json:"_limit,omitempty"`
-	Offset int    `json:"_offset,omitempty"`
-	Sort   string `json:"_sort,omitempty"`
+	Limit  *int    `json:"_limit,omitempty"`
+	Offset *int    `json:"_offset,omitempty"`
+	Sort   *string `json:"_sort,omitempty"`
 }
 
 type ListConfigs struct {
-	Env       string `json:"env,omitempty"`
-	Region    string `json:"region,omitempty"`
-	ServerUrl string `json:"serverUrl,omitempty"`
+	Env       *string `json:"env,omitempty"`
+	Region    *string `json:"region,omitempty"`
+	ServerUrl *string `json:"serverUrl,omitempty"`
 }
 
 type ListResult struct {
@@ -38,7 +38,7 @@ type ListResult struct {
 
 type ListResultInstanceTypesItem struct {
 	Disk   int    `json:"disk"`
-	Gpu    int    `json:"gpu,omitempty"`
+	Gpu    *int   `json:"gpu,omitempty"`
 	Id     string `json:"id"`
 	Name   string `json:"name"`
 	Ram    int    `json:"ram"`

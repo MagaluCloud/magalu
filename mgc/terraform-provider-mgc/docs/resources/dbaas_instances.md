@@ -30,6 +30,7 @@ Database instances management.
 - `datastore_id` (String)
 - `engine_id` (String)
 - `exchange` (String)
+- `parameters` (Attributes List) (see [below for nested schema](#nestedatt--parameters))
 - `status` (String) An enumeration.
 
 ### Read-Only
@@ -55,6 +56,26 @@ Required:
 Optional:
 
 - `type` (String) An enumeration.
+
+
+<a id="nestedatt--parameters"></a>
+### Nested Schema for `parameters`
+
+Required:
+
+- `name` (String) An enumeration.
+- `value` (Attributes) (see [below for nested schema](#nestedatt--parameters--value))
+
+<a id="nestedatt--parameters--value"></a>
+### Nested Schema for `parameters.value`
+
+Optional:
+
+- `boolean1` (Boolean)
+- `integer1` (Number)
+- `number1` (Number)
+- `string1` (String)
+
 
 
 <a id="nestedatt--addresses"></a>
@@ -90,6 +111,7 @@ Read-Only:
 - `generation` (String) An enumeration.
 - `id` (String)
 - `name` (String)
+- `parameters` (Attributes List) (see [below for nested schema](#nestedatt--replicas--parameters))
 - `source_id` (String)
 - `started_at` (String)
 - `status` (String) An enumeration.
@@ -104,6 +126,26 @@ Read-Only:
 - `access` (String) An enumeration.
 - `address` (String)
 - `type` (String) An enumeration.
+
+
+<a id="nestedatt--replicas--parameters"></a>
+### Nested Schema for `replicas.parameters`
+
+Read-Only:
+
+- `name` (String) An enumeration.
+- `value` (Attributes) (see [below for nested schema](#nestedatt--replicas--parameters--value))
+
+<a id="nestedatt--replicas--parameters--value"></a>
+### Nested Schema for `replicas.parameters.value`
+
+Read-Only:
+
+- `boolean1` (Boolean)
+- `integer1` (Number)
+- `number1` (Number)
+- `string1` (String)
+
 
 
 <a id="nestedatt--replicas--volume"></a>

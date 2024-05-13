@@ -21,14 +21,14 @@ import (
 )
 
 type DeleteParameters struct {
-	BackupId string `json:"backup_id"`
-	Exchange string `json:"exchange,omitempty"`
+	BackupId string  `json:"backup_id"`
+	Exchange *string `json:"exchange,omitempty"`
 }
 
 type DeleteConfigs struct {
-	Env       string `json:"env,omitempty"`
-	Region    string `json:"region,omitempty"`
-	ServerUrl string `json:"serverUrl,omitempty"`
+	Env       *string `json:"env,omitempty"`
+	Region    *string `json:"region,omitempty"`
+	ServerUrl *string `json:"serverUrl,omitempty"`
 }
 
 type DeleteResult any

@@ -21,23 +21,23 @@ import (
 )
 
 type CreateParameters struct {
-	Description        string                    `json:"description,omitempty"`
+	Description        *string                   `json:"description,omitempty"`
 	EnabledBastion     bool                      `json:"enabled_bastion"`
-	EnabledServerGroup bool                      `json:"enabled_server_group,omitempty"`
+	EnabledServerGroup *bool                     `json:"enabled_server_group,omitempty"`
 	Name               string                    `json:"name"`
 	NodePools          CreateParametersNodePools `json:"node_pools"`
-	Version            string                    `json:"version,omitempty"`
-	Zone               string                    `json:"zone,omitempty"`
+	Version            *string                   `json:"version,omitempty"`
+	Zone               *string                   `json:"zone,omitempty"`
 }
 
 // Object of the node pool request
 type CreateParametersNodePoolsItem struct {
-	AutoScale CreateParametersNodePoolsItemAutoScale `json:"auto_scale,omitempty"`
-	Flavor    string                                 `json:"flavor"`
-	Name      string                                 `json:"name"`
-	Replicas  int                                    `json:"replicas"`
-	Tags      CreateParametersNodePoolsItemTags      `json:"tags,omitempty"`
-	Taints    CreateParametersNodePoolsItemTaints    `json:"taints,omitempty"`
+	AutoScale *CreateParametersNodePoolsItemAutoScale `json:"auto_scale,omitempty"`
+	Flavor    string                                  `json:"flavor"`
+	Name      string                                  `json:"name"`
+	Replicas  int                                     `json:"replicas"`
+	Tags      *CreateParametersNodePoolsItemTags      `json:"tags,omitempty"`
+	Taints    *CreateParametersNodePoolsItemTaints    `json:"taints,omitempty"`
 }
 
 // Object specifying properties for updating workload resources in the Kubernetes cluster.
@@ -60,9 +60,9 @@ type CreateParametersNodePoolsItemTaints []CreateParametersNodePoolsItemTaintsIt
 type CreateParametersNodePools []CreateParametersNodePoolsItem
 
 type CreateConfigs struct {
-	Env       string `json:"env,omitempty"`
-	Region    string `json:"region,omitempty"`
-	ServerUrl string `json:"serverUrl,omitempty"`
+	Env       *string `json:"env,omitempty"`
+	Region    *string `json:"region,omitempty"`
+	ServerUrl *string `json:"serverUrl,omitempty"`
 }
 
 // Object of the cluster response request.

@@ -25,24 +25,24 @@ type GetParameters struct {
 }
 
 type GetConfigs struct {
-	Env       string `json:"env,omitempty"`
-	Region    string `json:"region,omitempty"`
-	ServerUrl string `json:"serverUrl,omitempty"`
+	Env       *string `json:"env,omitempty"`
+	Region    *string `json:"region,omitempty"`
+	ServerUrl *string `json:"serverUrl,omitempty"`
 }
 
 type GetResult struct {
-	CreatedAt       *string                 `json:"created_at,omitempty"`
-	Description     *string                 `json:"description,omitempty"`
-	ExternalNetwork *string                 `json:"external_network,omitempty"`
-	Id              *string                 `json:"id,omitempty"`
-	IsDefault       *bool                   `json:"is_default,omitempty"`
-	Name            *string                 `json:"name,omitempty"`
-	NetworkId       *string                 `json:"network_id,omitempty"`
-	RouterId        *string                 `json:"router_id,omitempty"`
-	SecurityGroups  GetResultSecurityGroups `json:"security_groups,omitempty"`
-	Subnets         *GetResultSubnets       `json:"subnets,omitempty"`
-	TenantId        *string                 `json:"tenant_id,omitempty"`
-	Updated         *string                 `json:"updated,omitempty"`
+	CreatedAt       *string                  `json:"created_at,omitempty"`
+	Description     *string                  `json:"description,omitempty"`
+	ExternalNetwork *string                  `json:"external_network,omitempty"`
+	Id              *string                  `json:"id,omitempty"`
+	IsDefault       *bool                    `json:"is_default,omitempty"`
+	Name            *string                  `json:"name,omitempty"`
+	NetworkId       *string                  `json:"network_id,omitempty"`
+	RouterId        *string                  `json:"router_id,omitempty"`
+	SecurityGroups  *GetResultSecurityGroups `json:"security_groups,omitempty"`
+	Subnets         *GetResultSubnets        `json:"subnets,omitempty"`
+	TenantId        *string                  `json:"tenant_id,omitempty"`
+	Updated         *string                  `json:"updated,omitempty"`
 }
 
 type GetResultSecurityGroups []string

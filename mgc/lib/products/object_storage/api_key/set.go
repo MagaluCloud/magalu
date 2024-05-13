@@ -19,15 +19,15 @@ type SetParameters struct {
 }
 
 type SetResult struct {
-	Description   string `json:"description"`
-	EndValidity   string `json:"end_validity,omitempty"`
-	KeyPairId     string `json:"key_pair_id"`
-	KeyPairSecret string `json:"key_pair_secret"`
-	Name          string `json:"name"`
-	RevokedAt     string `json:"revoked_at,omitempty"`
-	StartValidity string `json:"start_validity"`
-	TenantName    string `json:"tenant_name,omitempty"`
-	Uuid          string `json:"uuid"`
+	Description   string  `json:"description"`
+	EndValidity   *string `json:"end_validity,omitempty"`
+	KeyPairId     string  `json:"key_pair_id"`
+	KeyPairSecret string  `json:"key_pair_secret"`
+	Name          string  `json:"name"`
+	RevokedAt     *string `json:"revoked_at,omitempty"`
+	StartValidity string  `json:"start_validity"`
+	TenantName    *string `json:"tenant_name,omitempty"`
+	Uuid          string  `json:"uuid"`
 }
 
 func (s *service) Set(

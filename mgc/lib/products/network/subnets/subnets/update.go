@@ -21,16 +21,16 @@ import (
 )
 
 type UpdateParameters struct {
-	DnsNameservers UpdateParametersDnsNameservers `json:"dns_nameservers,omitempty"`
-	SubnetId       string                         `json:"subnet_id"`
+	DnsNameservers *UpdateParametersDnsNameservers `json:"dns_nameservers,omitempty"`
+	SubnetId       string                          `json:"subnet_id"`
 }
 
 type UpdateParametersDnsNameservers []string
 
 type UpdateConfigs struct {
-	Env       string `json:"env,omitempty"`
-	Region    string `json:"region,omitempty"`
-	ServerUrl string `json:"serverUrl,omitempty"`
+	Env       *string `json:"env,omitempty"`
+	Region    *string `json:"region,omitempty"`
+	ServerUrl *string `json:"serverUrl,omitempty"`
 }
 
 type UpdateResult struct {

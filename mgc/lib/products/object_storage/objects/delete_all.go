@@ -15,23 +15,23 @@ import (
 )
 
 type DeleteAllParameters struct {
-	BatchSize int                       `json:"batch_size,omitempty"`
-	Bucket    string                    `json:"bucket"`
-	Filter    DeleteAllParametersFilter `json:"filter,omitempty"`
+	BatchSize *int                       `json:"batch_size,omitempty"`
+	Bucket    string                     `json:"bucket"`
+	Filter    *DeleteAllParametersFilter `json:"filter,omitempty"`
 }
 
 type DeleteAllParametersFilterItem struct {
-	Exclude string `json:"exclude,omitempty"`
-	Include string `json:"include,omitempty"`
+	Exclude *string `json:"exclude,omitempty"`
+	Include *string `json:"include,omitempty"`
 }
 
 type DeleteAllParametersFilter []DeleteAllParametersFilterItem
 
 type DeleteAllConfigs struct {
-	ChunkSize int    `json:"chunkSize,omitempty"`
-	Region    string `json:"region,omitempty"`
-	ServerUrl string `json:"serverUrl,omitempty"`
-	Workers   int    `json:"workers,omitempty"`
+	ChunkSize *int    `json:"chunkSize,omitempty"`
+	Region    *string `json:"region,omitempty"`
+	ServerUrl *string `json:"serverUrl,omitempty"`
+	Workers   *int    `json:"workers,omitempty"`
 }
 
 type DeleteAllResult any
