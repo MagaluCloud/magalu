@@ -6,6 +6,7 @@ cli.yaml
 # VS Code
 .vscode/*
 .history/
+.vscode
 
 # VIM
 *.swp
@@ -27,3 +28,4 @@ mgc/codegen/codegen
 
 # Go workspace
 go.work.sum
+dist

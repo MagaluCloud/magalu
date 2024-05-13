@@ -4,6 +4,9 @@ Usage:
   ./mgc block-storage [flags]
   ./mgc block-storage [command]
 
+Aliases:
+  block-storage, bs, blocks, blst
+
 Commands:
   snapshots    Operations with snapshots for volumes.
   volume-types Operations with volume types for volumes.
