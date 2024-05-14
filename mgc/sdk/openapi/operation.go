@@ -131,12 +131,12 @@ func (o *operation) ParametersSchema() *core.Schema {
 		// Must match forEachParameterName!
 		err = o.parameters.addToSchema(rootSchema, parametersLocations)
 		if err != nil {
-			o.logger.Warnw("error while adding parameters to schema", "error", err, "rootSchema", rootSchema)
+			o.logger.Debugw("error while adding parameters to schema", "error", err, "rootSchema", rootSchema)
 		}
 
 		err = o.requestBody.addToSchema(rootSchema)
 		if err != nil {
-			o.logger.Warnw("error while adding request body", "error", err)
+			o.logger.Debugw("error while adding request body", "error", err)
 		}
 
 		o.addSecurityParameters(rootSchema)

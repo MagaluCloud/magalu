@@ -502,18 +502,15 @@ network.openapi:
     - paths./v0/usage.get.parameters.quota_slug.schema
 virtual-machine.openapi:
   computed-variables:
-    - POST /v1/instances:
-        - '201':
+    - POST /v1/backups:
+        - '202':
             computed:
               - id
             non-computed:
-              - availability_zone
-              - image
-              - machine_type
+              - backup_type
               - name
-              - network
-              - ssh_key_name
-              - user_data
+              - rotation
+              - virtual_machine
     - POST /v1/snapshots:
         - '202':
             computed:
@@ -528,8 +525,16 @@ virtual-machine.openapi:
     - machine-types:
         - post
         - delete
+  operation-missing-security:
+    - PUT /v1/instances/{id}/attach
+    - PUT /v1/instances/{id}/detach
+  uneven-resources:
+    instances:
+      PUT:
+        - /v1/instances/{id}/attach
+        - /v1/instances/{id}/detach
   unused-components:
     - '#/components/schemas/ValidationError'
   xof-single-item:
-    - components.schemas.InstanceCreateRequestV1Default.network
-    - components.schemas.SnapshotRestoreRequestV1Default.network
+    - paths./v1/instances/{id}/attach.put.parameters.project_type.schema
+    - paths./v1/instances/{id}/detach.put.parameters.project_type.schema

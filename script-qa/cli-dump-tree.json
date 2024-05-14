@@ -24436,7 +24436,6 @@
         "_limit": {
          "default": 50,
          "exclusiveMinimum": true,
-         "minimum": 0,
          "title": " Limit",
          "type": "integer"
         },
@@ -24627,6 +24626,87 @@
        },
        "type": "object"
       },
+      "description": "Attach new port at Instance",
+      "isInternal": false,
+      "name": "attach",
+      "parameters": {
+       "additionalProperties": false,
+       "properties": {
+        "force-authentication": {
+         "description": "Force authentication by sending the header even if this API doesn't require it",
+         "type": "boolean"
+        },
+        "id": {
+         "title": "Id",
+         "type": "string"
+        },
+        "project_type": {
+         "default": "default",
+         "enum": [
+          "dbaas",
+          "iamaas",
+          "k8saas",
+          "mngsvc",
+          "default"
+         ],
+         "title": "Project Type",
+         "type": "string"
+        }
+       },
+       "required": [
+        "id"
+       ],
+       "type": "object"
+      },
+      "result": {
+       "example": {
+        "id": "c47e974f-8002-46e9-8a63-d66505be2aa1"
+       },
+       "properties": {
+        "id": {
+         "title": "Id",
+         "type": "string"
+        }
+       },
+       "required": [
+        "id"
+       ],
+       "title": "PortID",
+       "type": "object"
+      },
+      "version": "v1"
+     },
+     {
+      "configs": {
+       "additionalProperties": false,
+       "properties": {
+        "env": {
+         "default": "prod",
+         "description": "Environment to use",
+         "enum": [
+          "prod",
+          "pre-prod"
+         ],
+         "type": "string"
+        },
+        "region": {
+         "default": "br-se1",
+         "description": "Region to reach the service",
+         "enum": [
+          "br-ne1",
+          "br-se1",
+          "br-mgl1"
+         ],
+         "type": "string"
+        },
+        "serverUrl": {
+         "description": "Manually specify the server to use",
+         "format": "uri",
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
       "description": "Create a Virtual Machine instance",
       "isInternal": false,
       "name": "create",
@@ -24731,14 +24811,19 @@
          "type": "string"
         },
         "network": {
-         "default": {
-          "associate_public_ip": true,
-          "vpc": {
-           "name": "default"
-          }
-         },
          "example": {
           "associate_public_ip": true,
+          "nic": {
+           "id": "c8719fd8-7a48-4dbf-b4d8-74f71fa67422",
+           "security_groups": [
+            {
+             "id": "f273fbde-2ddf-4dcd-8c41-342671ac0d17"
+            },
+            {
+             "id": "02a2acf3-d6db-4424-ac97-0254cb9c329e"
+            }
+           ]
+          },
           "vpc": {
            "id": "2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6"
           }
@@ -24748,6 +24833,44 @@
            "default": true,
            "title": "Associate Public Ip",
            "type": "boolean"
+          },
+          "nic": {
+           "properties": {
+            "id": {
+             "maxLength": 255,
+             "minLength": 1,
+             "nullable": true,
+             "title": "Id",
+             "type": "string"
+            },
+            "security_groups": {
+             "items": {
+              "example": {
+               "id": "9ec75090-2872-4f51-8111-53d05d96d2c6"
+              },
+              "properties": {
+               "id": {
+                "maxLength": 255,
+                "minLength": 1,
+                "title": "Id",
+                "type": "string"
+               }
+              },
+              "required": [
+               "id"
+              ],
+              "title": "ID",
+              "type": "object"
+             },
+             "title": "Security Groups",
+             "type": "array"
+            }
+           },
+           "required": [
+            "security_groups"
+           ],
+           "title": "NetworkNic",
+           "type": "object"
           },
           "vpc": {
            "anyOf": [
@@ -24795,6 +24918,7 @@
            "type": "object"
           }
          },
+         "title": "InstanceCreateRequestV1NetworkDefault",
          "type": "object"
         },
         "ssh_key_name": {
@@ -24813,6 +24937,7 @@
         "image",
         "machine_type",
         "name",
+        "network",
         "ssh_key_name"
        ],
        "type": "object"
@@ -24891,6 +25016,87 @@
       "result": {
        "nullable": true,
        "type": "null"
+      },
+      "version": "v1"
+     },
+     {
+      "configs": {
+       "additionalProperties": false,
+       "properties": {
+        "env": {
+         "default": "prod",
+         "description": "Environment to use",
+         "enum": [
+          "prod",
+          "pre-prod"
+         ],
+         "type": "string"
+        },
+        "region": {
+         "default": "br-se1",
+         "description": "Region to reach the service",
+         "enum": [
+          "br-ne1",
+          "br-se1",
+          "br-mgl1"
+         ],
+         "type": "string"
+        },
+        "serverUrl": {
+         "description": "Manually specify the server to use",
+         "format": "uri",
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
+      "description": "Detach a not primary port from Instance",
+      "isInternal": false,
+      "name": "detach",
+      "parameters": {
+       "additionalProperties": false,
+       "properties": {
+        "force-authentication": {
+         "description": "Force authentication by sending the header even if this API doesn't require it",
+         "type": "boolean"
+        },
+        "id": {
+         "title": "Id",
+         "type": "string"
+        },
+        "project_type": {
+         "default": "default",
+         "enum": [
+          "dbaas",
+          "iamaas",
+          "k8saas",
+          "mngsvc",
+          "default"
+         ],
+         "title": "Project Type",
+         "type": "string"
+        }
+       },
+       "required": [
+        "id"
+       ],
+       "type": "object"
+      },
+      "result": {
+       "example": {
+        "id": "c47e974f-8002-46e9-8a63-d66505be2aa1"
+       },
+       "properties": {
+        "id": {
+         "title": "Id",
+         "type": "string"
+        }
+       },
+       "required": [
+        "id"
+       ],
+       "title": "PortID",
+       "type": "object"
       },
       "version": "v1"
      },
@@ -25135,6 +25341,9 @@
            "properties": {
             "ports": {
              "items": {
+              "example": {
+               "id": "c47e974f-8002-46e9-8a63-d66505be2aa1"
+              },
               "properties": {
                "id": {
                 "title": "Id",
@@ -25168,17 +25377,22 @@
                },
                "ipAddresses": {
                 "properties": {
+                 "ipV6Address": {
+                  "nullable": true,
+                  "title": "Ipv6Address",
+                  "type": "string"
+                 },
                  "privateIpAddress": {
                   "title": "Privateipaddress",
                   "type": "string"
                  },
                  "publicIpAddress": {
+                  "nullable": true,
                   "title": "Publicipaddress",
                   "type": "string"
                  }
                 },
                 "required": [
-                 "publicIpAddress",
                  "privateIpAddress"
                 ],
                 "title": "IpAddressExpand",
@@ -25246,6 +25460,8 @@
         },
         "status": {
          "enum": [
+          "attach_nic_pending",
+          "detach_nic_pending",
           "provisioning",
           "creating",
           "creating_error",
@@ -25344,7 +25560,6 @@
          "default": 50,
          "description": "limit the number of the results",
          "exclusiveMinimum": true,
-         "minimum": 0,
          "title": " Limit",
          "type": "integer"
         },
@@ -25594,6 +25809,9 @@
               "properties": {
                "ports": {
                 "items": {
+                 "example": {
+                  "id": "c47e974f-8002-46e9-8a63-d66505be2aa1"
+                 },
                  "properties": {
                   "id": {
                    "title": "Id",
@@ -25627,17 +25845,22 @@
                   },
                   "ipAddresses": {
                    "properties": {
+                    "ipV6Address": {
+                     "nullable": true,
+                     "title": "Ipv6Address",
+                     "type": "string"
+                    },
                     "privateIpAddress": {
                      "title": "Privateipaddress",
                      "type": "string"
                     },
                     "publicIpAddress": {
+                     "nullable": true,
                      "title": "Publicipaddress",
                      "type": "string"
                     }
                    },
                    "required": [
-                    "publicIpAddress",
                     "privateIpAddress"
                    ],
                    "title": "IpAddressExpand",
@@ -25705,6 +25928,8 @@
            },
            "status": {
             "enum": [
+             "attach_nic_pending",
+             "detach_nic_pending",
              "provisioning",
              "creating",
              "creating_error",
@@ -26194,7 +26419,6 @@
          "default": 50,
          "description": "limit the number of the results",
          "exclusiveMinimum": true,
-         "minimum": 0,
          "title": " Limit",
          "type": "integer"
         },
@@ -26233,61 +26457,124 @@
        "properties": {
         "instance_types": {
          "items": {
-          "example": {
-           "disk": 10,
-           "gpu": 1,
-           "id": "3a4dc05b-eb10-42ec-8c0c-848e06f7aded",
-           "name": "abc.small",
-           "ram": 2,
-           "sku": "some_sku",
-           "status": "active",
-           "vcpus": 2
-          },
-          "properties": {
-           "disk": {
-            "title": "Disk",
-            "type": "integer"
+          "anyOf": [
+           {
+            "example": {
+             "disk": 10,
+             "gpu": 1,
+             "id": "3a4dc05b-eb10-42ec-8c0c-848e06f7aded",
+             "name": "abc.small",
+             "ram": 2,
+             "sku": "some_sku",
+             "status": "active",
+             "vcpus": 2
+            },
+            "properties": {
+             "disk": {
+              "title": "Disk",
+              "type": "integer"
+             },
+             "gpu": {
+              "default": 0,
+              "title": "Gpu",
+              "type": "integer"
+             },
+             "id": {
+              "title": "Id",
+              "type": "string"
+             },
+             "name": {
+              "title": "Name",
+              "type": "string"
+             },
+             "ram": {
+              "title": "Ram",
+              "type": "integer"
+             },
+             "sku": {
+              "title": "Sku",
+              "type": "string"
+             },
+             "status": {
+              "title": "Status",
+              "type": "string"
+             },
+             "vcpus": {
+              "title": "Vcpus",
+              "type": "integer"
+             }
+            },
+            "required": [
+             "id",
+             "name",
+             "vcpus",
+             "ram",
+             "disk",
+             "status",
+             "sku"
+            ],
+            "title": "InstanceTypesV1PortalResponse",
+            "type": "object"
            },
-           "gpu": {
-            "default": 0,
-            "title": "Gpu",
-            "type": "integer"
-           },
-           "id": {
-            "title": "Id",
-            "type": "string"
-           },
-           "name": {
-            "title": "Name",
-            "type": "string"
-           },
-           "ram": {
-            "title": "Ram",
-            "type": "integer"
-           },
-           "sku": {
-            "title": "Sku",
-            "type": "string"
-           },
-           "status": {
-            "title": "Status",
-            "type": "string"
-           },
-           "vcpus": {
-            "title": "Vcpus",
-            "type": "integer"
+           {
+            "example": {
+             "disk": 10,
+             "gpu": 1,
+             "id": "3a4dc05b-eb10-42ec-8c0c-848e06f7aded",
+             "name": "abc.small",
+             "ram": 2,
+             "sku": "some_sku",
+             "status": "active",
+             "vcpus": 2
+            },
+            "properties": {
+             "disk": {
+              "title": "Disk",
+              "type": "integer"
+             },
+             "gpu": {
+              "default": 0,
+              "title": "Gpu",
+              "type": "integer"
+             },
+             "id": {
+              "title": "Id",
+              "type": "string"
+             },
+             "name": {
+              "title": "Name",
+              "type": "string"
+             },
+             "ram": {
+              "title": "Ram",
+              "type": "integer"
+             },
+             "sku": {
+              "title": "Sku",
+              "type": "string"
+             },
+             "status": {
+              "title": "Status",
+              "type": "string"
+             },
+             "vcpus": {
+              "title": "Vcpus",
+              "type": "integer"
+             }
+            },
+            "required": [
+             "id",
+             "name",
+             "vcpus",
+             "ram",
+             "disk",
+             "status",
+             "sku"
+            ],
+            "title": "InstanceTypesV1Response",
+            "type": "object"
            }
-          },
-          "required": [
-           "id",
-           "name",
-           "vcpus",
-           "ram",
-           "disk",
-           "status",
-           "sku"
           ],
-          "title": "InstanceTypesV1Response",
           "type": "object"
          },
          "title": "Instance Types",
@@ -26771,7 +27058,6 @@
          "default": 50,
          "description": "limit the number of the results",
          "exclusiveMinimum": true,
-         "minimum": 0,
          "title": " Limit",
          "type": "integer"
         },
@@ -27193,14 +27479,19 @@
          "type": "string"
         },
         "network": {
-         "default": {
-          "associate_public_ip": true,
-          "vpc": {
-           "name": "default"
-          }
-         },
          "example": {
           "associate_public_ip": true,
+          "nic": {
+           "id": "c8719fd8-7a48-4dbf-b4d8-74f71fa67422",
+           "security_groups": [
+            {
+             "id": "f273fbde-2ddf-4dcd-8c41-342671ac0d17"
+            },
+            {
+             "id": "02a2acf3-d6db-4424-ac97-0254cb9c329e"
+            }
+           ]
+          },
           "vpc": {
            "id": "2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6"
           }
@@ -27210,6 +27501,44 @@
            "default": true,
            "title": "Associate Public Ip",
            "type": "boolean"
+          },
+          "nic": {
+           "properties": {
+            "id": {
+             "maxLength": 255,
+             "minLength": 1,
+             "nullable": true,
+             "title": "Id",
+             "type": "string"
+            },
+            "security_groups": {
+             "items": {
+              "example": {
+               "id": "9ec75090-2872-4f51-8111-53d05d96d2c6"
+              },
+              "properties": {
+               "id": {
+                "maxLength": 255,
+                "minLength": 1,
+                "title": "Id",
+                "type": "string"
+               }
+              },
+              "required": [
+               "id"
+              ],
+              "title": "ID",
+              "type": "object"
+             },
+             "title": "Security Groups",
+             "type": "array"
+            }
+           },
+           "required": [
+            "security_groups"
+           ],
+           "title": "NetworkNic",
+           "type": "object"
           },
           "vpc": {
            "anyOf": [
@@ -27257,6 +27586,7 @@
            "type": "object"
           }
          },
+         "title": "InstanceCreateRequestV1NetworkDefault",
          "type": "object"
         },
         "ssh_key_name": {
@@ -27275,6 +27605,7 @@
         "id",
         "machine_type",
         "name",
+        "network",
         "ssh_key_name"
        ],
        "type": "object"
