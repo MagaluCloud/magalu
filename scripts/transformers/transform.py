@@ -18,7 +18,6 @@ from spec_fix_links import FixLinksTransformer
 from spec_create_links import CreateLinks
 from validate_openapi_specs import validate_oapi
 
-
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         prog="Transform OAPI Spec",

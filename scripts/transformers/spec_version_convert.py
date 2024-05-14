@@ -35,6 +35,7 @@ class ConvertVersionTransformer(SpecTranformer):
             "oneOf": self._convert_list_of_nullable,
             "exclusiveMinimum": self._convert_exclusive_constraint,
             "exclusiveMaximum": self._convert_exclusive_constraint,
+            "const": self._convert_const,
         }
         self._convert(spec)
 
@@ -46,6 +47,9 @@ class ConvertVersionTransformer(SpecTranformer):
             return
 
         for k, v in list(d.items()):  # list forces a copy, we may mutate 'd'
+            if isinstance(v, dict):
+                self._convert(v)  # apply converters to nested dictionary
+
             converter = self._dict_item_converters.get(k)
             if converter is not None and converter(d, k, v):
                 continue
@@ -113,4 +117,14 @@ class ConvertVersionTransformer(SpecTranformer):
 
         d[k] = True
         d[k.removeprefix("exclusive").lower()] = v
+        return True
+
+    def _convert_const(
+        self,
+        d: dict,
+        k: str,
+        v: Any,
+    ) -> bool:
+        d["enum"] = [v]
+        del d[k]
         return True
