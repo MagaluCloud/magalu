@@ -1,0 +1,3817 @@
+components:
+  schemas:
+    CreateResponse:
+      example:
+        id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+      properties:
+        id:
+          title: Id
+          type: string
+      required:
+        - id
+      title: CreateResponse
+      type: object
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: "#/components/schemas/ValidationError"
+          title: Detail
+          type: array
+      title: HTTPValidationError
+      type: object
+    ID:
+      example:
+        id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+      properties:
+        id:
+          minLength: 1
+          title: Id
+          type: string
+      required:
+        - id
+      title: ID
+      type: object
+    IdResponse:
+      example:
+        id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+      properties:
+        id:
+          title: Id
+          type: string
+      required:
+        - id
+      title: IdResponse
+      type: object
+    ImageInstanceResponse:
+      properties:
+        name:
+          title: Name
+          type: string
+      required:
+        - name
+      title: ImageInstanceResponse
+      type: object
+    ImageInstanceV1Response:
+      properties:
+        id:
+          title: Id
+          type: string
+      required:
+        - id
+      title: ImageInstanceV1Response
+      type: object
+    ImageResponse:
+      example:
+        id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        name: ubuntu
+        os_distribution: Ubuntu
+        size: 10
+        sku: sku1234
+        version: yy.zz
+      properties:
+        id:
+          title: Id
+          type: string
+        name:
+          title: Name
+          type: string
+        os_distribution:
+          title: Os Distribution
+          type: string
+        size:
+          title: Size
+          type: integer
+        sku:
+          title: Sku
+          type: string
+        version:
+          title: Version
+          type: string
+      required:
+        - id
+        - name
+        - size
+      title: ImageResponse
+      type: object
+    ImageResponseExternalV1:
+      example:
+        code_name: some code name
+        end_life: "2022-06-10T18:33:12Z"
+        end_standard_support: "2022-06-10T18:33:12Z"
+        name: ubuntu 22.10
+        release: "2022-06-10T18:33:12Z"
+        status: active
+        type: major
+        version: "22.10"
+      properties:
+        code_name:
+          title: Code Name
+          type: string
+        end_life:
+          example: "2023-10-11T11:33:47Z"
+          pattern: ^(-?(?:[1-9][0-9]*)?[0-9]{4})-(1[0-2]|0[1-9])-(3[01]|0[1-9]|[12][0-9])T(2[0-3]|[01][0-9]):([0-5][0-9]):([0-5][0-9])(\.[0-9]+)?(Z|[+-](?:2[0-3]|[01][0-9]):[0-5][0-9])?$
+          title: End Life
+          type: string
+        end_standard_support:
+          example: "2023-10-11T11:33:47Z"
+          pattern: ^(-?(?:[1-9][0-9]*)?[0-9]{4})-(1[0-2]|0[1-9])-(3[01]|0[1-9]|[12][0-9])T(2[0-3]|[01][0-9]):([0-5][0-9]):([0-5][0-9])(\.[0-9]+)?(Z|[+-](?:2[0-3]|[01][0-9]):[0-5][0-9])?$
+          title: End Standard Support
+          type: string
+        name:
+          title: Name
+          type: string
+        release:
+          example: "2023-10-11T11:33:47Z"
+          pattern: ^(-?(?:[1-9][0-9]*)?[0-9]{4})-(1[0-2]|0[1-9])-(3[01]|0[1-9]|[12][0-9])T(2[0-3]|[01][0-9]):([0-5][0-9]):([0-5][0-9])(\.[0-9]+)?(Z|[+-](?:2[0-3]|[01][0-9]):[0-5][0-9])?$
+          title: Release
+          type: string
+        status:
+          $ref: "#/components/schemas/ImageV1Status"
+        type:
+          default: major
+          title: Type
+          type: string
+        version:
+          title: Version
+          type: string
+      required:
+        - name
+        - status
+      title: ImageResponseExternalV1
+      type: object
+    ImageV1Status:
+      description: An enumeration.
+      enum:
+        - active
+        - deprecated
+        - deleted
+      title: ImageV1Status
+      type: string
+    InstanceCreateRequest:
+      example:
+        allocate_fip: true
+        availability_zone: br-regiao-1a
+        image: ubuntu-1234
+        key_name: keypair_name_here
+        name: instance name
+        network_interfaces:
+          - id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        type: abc.small
+        user_data: some_base64_script
+      properties:
+        allocate_fip:
+          default: true
+          title: Allocate Fip
+          type: boolean
+        availability_zone:
+          minLength: 1
+          title: Availability Zone
+          type: string
+        image:
+          minLength: 1
+          title: Image
+          type: string
+        key_name:
+          minLength: 1
+          title: Key Name
+          type: string
+        name:
+          maxLength: 225
+          minLength: 1
+          title: Name
+          type: string
+        network_interfaces:
+          items:
+            $ref: "#/components/schemas/NetworkID"
+          title: Network Interfaces
+          type: array
+        type:
+          minLength: 1
+          title: Type
+          type: string
+        user_data:
+          minLength: 1
+          title: User Data
+          type: string
+      required:
+        - name
+        - type
+        - key_name
+      title: InstanceCreateRequest
+      type: object
+    InstanceCreateRequestV1:
+      example:
+        availability_zone: br-regiao-1a
+        image:
+          id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        ssh_key_name: keypair_name_here
+        machine_type:
+          id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        name: instance name
+        network:
+          associate_public_ip: true
+          interfaces:
+            - id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+          vpc:
+            id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        user_data: some_base64_script
+      properties:
+        availability_zone:
+          minLength: 1
+          title: Availability Zone
+          type: string
+        image:
+          anyOf:
+            - $ref: "#/components/schemas/ID"
+            - $ref: "#/components/schemas/Name"
+          title: Image
+        ssh_key_name:
+          minLength: 1
+          title: Key Name
+          type: string
+        machine_type:
+          anyOf:
+            - $ref: "#/components/schemas/ID"
+            - $ref: "#/components/schemas/Name"
+          title: Machine Type
+        name:
+          maxLength: 225
+          minLength: 1
+          title: Name
+          type: string
+        network:
+          $ref: "#/components/schemas/InstanceCreateRequestV1Network"
+        user_data:
+          maxLength: 65000
+          minLength: 1
+          title: User Data
+          type: string
+      required:
+        - name
+        - machine_type
+        - ssh_key_name
+        - image
+        - network
+      title: InstanceCreateRequestV1
+      type: object
+    InstanceCreateRequestV1Network:
+      example:
+        associate_public_ip: true
+        interfaces:
+          - id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        vpc:
+          id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+      properties:
+        associate_public_ip:
+          default: true
+          title: Associate Public Ip
+          type: boolean
+        interfaces:
+          default: []
+          items:
+            $ref: "#/components/schemas/NetworkID"
+          title: Interfaces
+          type: array
+        vpc:
+          anyOf:
+            - $ref: "#/components/schemas/ID"
+            - $ref: "#/components/schemas/Name"
+          default:
+            name: default
+          title: Vpc
+      title: InstanceCreateRequestV1Network
+      type: object
+    InstanceEventDetailsResponse:
+      example:
+        event: suspend
+        event_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        message: an error occurred
+        start_time: "2023-01-24T18:01:01.000000"
+      properties:
+        event:
+          title: Event
+          type: string
+        event_id:
+          title: Event Id
+          type: string
+        message:
+          nullable: true
+          title: Message
+          type: string
+        start_time:
+          title: Start Time
+          type: string
+      required:
+        - event
+        - event_id
+        - start_time
+      title: InstanceEventDetailsResponse
+      type: object
+    InstanceEventResponse:
+      example:
+        event: suspend
+        event_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        start_time: "2023-01-24T18:01:01.000000"
+      properties:
+        event:
+          title: Event
+          type: string
+        event_id:
+          title: Event Id
+          type: string
+        start_time:
+          title: Start Time
+          type: string
+      required:
+        - event
+        - event_id
+        - start_time
+      title: InstanceEventResponse
+      type: object
+    InstancePatchRequest:
+      example:
+        status: shutoff
+      properties:
+        status:
+          $ref: "#/components/schemas/InstanceStatus"
+      required:
+        - status
+      title: InstancePatchRequest
+      type: object
+    InstanceResponse:
+      example:
+        availability_zone: br-regiao-1a
+        created_at: "2022-06-10T18:33:12Z"
+        error: some error description
+        id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        image:
+          name: ubuntu-1234
+        instance_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        instance_type:
+          name: abc.small
+        key_name: keypair_name_here
+        memory: 4
+        name: instance name
+        network_interfaces:
+          - addresses:
+              - ip_address: 172.0.0.1
+                type: fixed
+                version: 4
+              - ip_address: 159.0.0.1
+                type: floating
+                version: 4
+            mac_address: fa:12:12:12:12:12
+            network:
+              name: vpc-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx-network
+        ports:
+          - id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        power_state: 1
+        power_state_label: active
+        root_storage: 10
+        security_groups:
+          - name: port-name
+        status: ACTIVE
+        updated_at: "2022-06-11T18:33:12Z"
+        vcpus: 2
+        volumes:
+          - id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+      properties:
+        availability_zone:
+          nullable: true
+          title: Availability Zone
+          type: string
+        created_at:
+          example: "2023-10-11T11:33:47Z"
+          pattern: ^(-?(?:[1-9][0-9]*)?[0-9]{4})-(1[0-2]|0[1-9])-(3[01]|0[1-9]|[12][0-9])T(2[0-3]|[01][0-9]):([0-5][0-9]):([0-5][0-9])(\.[0-9]+)?(Z|[+-](?:2[0-3]|[01][0-9]):[0-5][0-9])?$
+          title: Created At
+          type: string
+        error:
+          nullable: true
+          title: Error
+          type: string
+        id:
+          title: Id
+          type: string
+        image:
+          $ref: "#/components/schemas/ImageInstanceResponse"
+        instance_id:
+          nullable: true
+          title: Instance Id
+          type: string
+        instance_type:
+          $ref: "#/components/schemas/InstanceTypeForInstanceResponse"
+        key_name:
+          nullable: true
+          title: Key Name
+          type: string
+        memory:
+          nullable: true
+          title: Memory
+          type: integer
+        name:
+          nullable: true
+          title: Name
+          type: string
+        network_interfaces:
+          items:
+            $ref: "#/components/schemas/NetworkInterface"
+          title: Network Interfaces
+          type: array
+        ports:
+          items:
+            $ref: "#/components/schemas/IdResponse"
+          title: Ports
+          type: array
+        power_state:
+          nullable: true
+          title: Power State
+          type: integer
+        power_state_label:
+          nullable: true
+          title: Power State Label
+          type: string
+        root_storage:
+          nullable: true
+          title: Root Storage
+          type: integer
+        security_groups:
+          items:
+            $ref: "#/components/schemas/SecurityGroup"
+          title: Security Groups
+          type: array
+        status:
+          title: Status
+          type: string
+        updated_at:
+          example: "2023-10-11T11:33:47Z"
+          nullable: true
+          pattern: ^(-?(?:[1-9][0-9]*)?[0-9]{4})-(1[0-2]|0[1-9])-(3[01]|0[1-9]|[12][0-9])T(2[0-3]|[01][0-9]):([0-5][0-9]):([0-5][0-9])(\.[0-9]+)?(Z|[+-](?:2[0-3]|[01][0-9]):[0-5][0-9])?$
+          title: Updated At
+          type: string
+        vcpus:
+          nullable: true
+          title: Vcpus
+          type: integer
+        volumes:
+          items:
+            $ref: "#/components/schemas/InstanceVolumeResponse"
+          title: Volumes
+          type: array
+      required:
+        - id
+        - instance_type
+        - image
+        - status
+        - created_at
+      title: InstanceResponse
+      type: object
+    IntanceUpdateRequest:
+      properties:
+        name:
+          type: string
+          maxLength: 225
+          minLength: 1
+          title: Name
+      type: object
+      required:
+        - name
+      title: IntanceUpdateRequest
+      example:
+        name: new instance name
+    InstanceRetypeRequest:
+      example:
+        instance_type_id: 7d8e2b21-0966-4bb9-b93b-d70e90d0656a
+      properties:
+        instance_type_id:
+          format: uuid
+          title: Instance Type Id
+          type: string
+      title: InstanceRetypeRequest
+      type: object
+    InstanceStatus:
+      description: An enumeration.
+      enum:
+        - shutoff
+        - active
+      title: InstanceStatus
+      type: string
+    InstanceTypeForInstanceResponse:
+      properties:
+        name:
+          title: Name
+          type: string
+      required:
+        - name
+      title: InstanceTypeForInstanceResponse
+      type: object
+    InstanceTypeForInstanceV1Response:
+      properties:
+        id:
+          title: Id
+          type: string
+      required:
+        - id
+      title: InstanceTypeForInstanceV1Response
+      type: object
+    InstanceTypesListResponse:
+      example:
+        instance_types:
+          - disk: 10
+            gpu: 1
+            id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+            name: abc.small
+            ram: 2
+            sku: sku1234
+            vcpus: 2
+      properties:
+        instance_types:
+          items:
+            $ref: "#/components/schemas/InstanceTypesResponse"
+          title: Instance Types
+          type: array
+      required:
+        - instance_types
+      title: InstanceTypesListResponse
+      type: object
+    InstanceTypesResponse:
+      example:
+        disk: 10
+        gpu: 1
+        id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        name: abc.small
+        ram: 2
+        sku: sku1234
+        vcpus: 2
+      properties:
+        disk:
+          title: Disk
+          type: integer
+        gpu:
+          default: 0
+          title: Gpu
+          type: integer
+        id:
+          title: Id
+          type: string
+        name:
+          title: Name
+          type: string
+        ram:
+          title: Ram
+          type: integer
+        sku:
+          title: Sku
+          type: string
+        vcpus:
+          title: Vcpus
+          type: integer
+      required:
+        - id
+        - name
+        - vcpus
+        - ram
+        - disk
+        - sku
+      title: InstanceTypesResponse
+      type: object
+    InstanceTypesV1ListResponse:
+      example:
+        instance_types:
+          - disk: 10
+            gpu: 1
+            id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+            name: abc.small
+            ram: 2
+            status: active
+            vcpus: 2
+            sku: some_sku
+      properties:
+        instance_types:
+          items:
+            $ref: "#/components/schemas/InstanceTypesV1Response"
+          title: Instance Types
+          type: array
+      required:
+        - instance_types
+      title: InstanceTypesV1ListResponse
+      type: object
+    InstanceTypesV1Response:
+      example:
+        disk: 10
+        gpu: 1
+        id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        name: abc.small
+        ram: 2
+        status: active
+        vcpus: 2
+        sku: some_sku
+      properties:
+        disk:
+          title: Disk
+          type: integer
+        gpu:
+          default: 0
+          title: Gpu
+          type: integer
+        id:
+          title: Id
+          type: string
+        name:
+          title: Name
+          type: string
+        ram:
+          title: Ram
+          type: integer
+        status:
+          title: Status
+          type: string
+        vcpus:
+          title: Vcpus
+          type: integer
+        sku: 
+          title: Sku
+          type: string
+      required:
+        - id
+        - name
+        - vcpus
+        - ram
+        - disk
+        - status
+        - sku
+      title: InstanceTypesV1Response
+      type: object
+    InstanceV1Response:
+      example:
+        availability_zone: br-regiao-1a
+        created_at: "2022-06-10T18:33:12Z"
+        id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        image:
+          id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        ssh_key_name: keypair_name_here
+        machine_type:
+          id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        name: instance name
+        network:
+          ports:
+            - id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        state: done
+        status: ACTIVE
+        updated_at: "2022-06-11T18:33:12Z"
+        user_data: some_base_64_str
+      properties:
+        availability_zone:
+          nullable: true
+          title: Availability Zone
+          type: string
+        created_at:
+          example: "2023-10-11T11:33:47Z"
+          pattern: ^(-?(?:[1-9][0-9]*)?[0-9]{4})-(1[0-2]|0[1-9])-(3[01]|0[1-9]|[12][0-9])T(2[0-3]|[01][0-9]):([0-5][0-9]):([0-5][0-9])(\.[0-9]+)?(Z|[+-](?:2[0-3]|[01][0-9]):[0-5][0-9])?$
+          title: Created At
+          type: string
+        id:
+          title: Id
+          type: string
+        image:
+          $ref: "#/components/schemas/ImageInstanceV1Response"
+        ssh_key_name:
+          nullable: true
+          title: Key Name
+          type: string
+        machine_type:
+          $ref: "#/components/schemas/InstanceTypeForInstanceV1Response"
+        name:
+          nullable: true
+          title: Name
+          type: string
+        network:
+          allOf:
+            - $ref: "#/components/schemas/NetworkPortsV1"
+          nullable: true
+          title: Network
+        state:
+          title: State
+          type: string
+        status:
+          title: Status
+          type: string
+        updated_at:
+          example: "2023-10-11T11:33:47Z"
+          nullable: true
+          pattern: ^(-?(?:[1-9][0-9]*)?[0-9]{4})-(1[0-2]|0[1-9])-(3[01]|0[1-9]|[12][0-9])T(2[0-3]|[01][0-9]):([0-5][0-9]):([0-5][0-9])(\.[0-9]+)?(Z|[+-](?:2[0-3]|[01][0-9]):[0-5][0-9])?$
+          title: Updated At
+          type: string
+        user_data:
+          nullable: true
+          title: User Data
+          type: string
+      required:
+        - id
+        - machine_type
+        - image
+        - status
+        - state
+        - created_at
+      title: InstanceV1Response
+      type: object
+    InstanceVolumeResponse:
+      properties:
+        id:
+          title: Id
+          type: string
+      required:
+        - id
+      title: InstanceVolumeResponse
+      type: object
+    ListImageExternalV1:
+      example:
+        images:
+          - end_life_at: "2022-06-10T18:33:12Z"
+            end_standard_support_at: "2022-06-10T18:33:12Z"
+            id: "c47e974f-8002-46e9-8a63-d66505be2aa1"
+            minimum_requirements: 
+              disk: 2
+              ram: 1
+              vcpu: 1
+            name: ubuntu 22.10
+            platform: linux
+            release_at: "2022-06-10T18:33:12Z"
+            status: active
+            version: "22.10"
+      properties: 
+        images:
+          items:
+            $ref: "#/components/schemas/ImageResponseExternalV1"
+          title: Images
+          type: array
+      required:
+        - images
+      title: ListImageExternalV1
+      type: object
+    ListImageResponse:
+      example:
+        images:
+          - id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+            name: ubuntu
+            os_distribution: Ubuntu
+            size: 10
+            sku: sku1234
+            version: yy.zz
+      properties:
+        images:
+          default: []
+          items:
+            $ref: "#/components/schemas/ImageResponse"
+          title: Images
+          type: array
+      title: ListImageResponse
+      type: object
+    ListInstanceEventResponse:
+      example:
+        events:
+          - event: suspend
+            event_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+            start_time: "2023-01-24T18:01:01.000000"
+          - event: pause
+            event_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+            start_time: "2023-01-24T18:01:01.000000"
+      properties:
+        events:
+          items:
+            $ref: "#/components/schemas/InstanceEventResponse"
+          title: Events
+          type: array
+      required:
+        - events
+      title: ListInstanceEventResponse
+      type: object
+    ListInstanceResponse:
+      example:
+        instances:
+          - availability_zone: br-regiao-1a
+            created_at: "2022-06-10T18:33:12Z"
+            error: some error description
+            id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+            image:
+              name: ubuntu-1234
+            instance_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+            instance_type:
+              name: abc.small
+            key_name: keypair_name_here
+            memory: 4
+            name: instance name
+            network_interfaces:
+              - addresses:
+                  - ip_address: 172.0.0.1
+                    type: fixed
+                    version: 4
+                  - ip_address: 159.0.0.1
+                    type: floating
+                    version: 4
+                mac_address: fa:12:12:12:12:12
+                network:
+                  name: vpc-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx-network
+            ports:
+              - id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+            power_state: 1
+            power_state_label: active
+            root_storage: 10
+            security_groups:
+              - name: port-name
+            status: ACTIVE
+            updated_at: "2022-06-11T18:33:12Z"
+            vcpus: 2
+            volumes:
+              - id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+          - created_at: "2022-09-01T12:54:15Z"
+            id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+            image:
+              name: cloud-ubuntu-20.04 LTS
+            instance_type:
+              name: cloud-bs1.xsmall
+            key_name: some_keypair_name
+            name: some name instance
+            network_interfaces: []
+            ports: []
+            security_groups: []
+            status: pending
+            volumes: []
+      properties:
+        instances:
+          items:
+            $ref: "#/components/schemas/InstanceResponse"
+          title: Instances
+          type: array
+      required:
+        - instances
+      title: ListInstanceResponse
+      type: object
+    ListInstanceV1Response:
+      example:
+        instances:
+          - availability_zone: br-regiao-1a
+            created_at: "2022-06-10T18:33:12Z"
+            id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+            image:
+              id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+            ssh_key_name: keypair_name_here
+            machine_type:
+              id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+            name: instance name
+            network:
+              ports:
+                - id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+            state: running
+            status: ACTIVE
+            updated_at: "2022-06-11T18:33:12Z"
+            user_data: base64_data
+      properties:
+        instances:
+          items:
+            $ref: "#/components/schemas/InstanceV1Response"
+          title: Instances
+          type: array
+      required:
+        - instances
+      title: ListInstanceV1Response
+      type: object
+    Name:
+      example:
+        name: some_resource_name
+      properties:
+        name:
+          minLength: 1
+          title: Name
+          type: string
+      required:
+        - name
+      title: Name
+      type: object
+    NetworkAddress:
+      properties:
+        ip_address:
+          title: Ip Address
+          type: string
+        type:
+          title: Type
+          type: string
+        version:
+          title: Version
+          type: integer
+      title: NetworkAddress
+      type: object
+    NetworkID:
+      properties:
+        id:
+          title: Id
+          type: string
+      required:
+        - id
+      title: NetworkID
+      type: object
+    NetworkInfo:
+      properties:
+        name:
+          title: Name
+          type: string
+      title: NetworkInfo
+      type: object
+    NetworkInterface:
+      properties:
+        addresses:
+          items:
+            $ref: "#/components/schemas/NetworkAddress"
+          title: Addresses
+          type: array
+        mac_address:
+          title: Mac Address
+          type: string
+        network:
+          $ref: "#/components/schemas/NetworkInfo"
+      required:
+        - addresses
+      title: NetworkInterface
+      type: object
+    NetworkPortsV1:
+      properties:
+        ports:
+          items:
+            $ref: "#/components/schemas/PortID"
+          title: Ports
+          type: array
+      required:
+        - ports
+      title: NetworkPortsV1
+      type: object
+    PortID:
+      properties:
+        id:
+          title: Id
+          type: string
+      required:
+        - id
+      title: PortID
+      type: object
+    ProjectTypeAll:
+      description: An enumeration.
+      enum:
+        - default
+        - dbaas
+        - iamaas
+        - k8saas
+      title: ProjectTypeAll
+    SecurityGroup:
+      properties:
+        name:
+          title: Name
+          type: string
+      title: SecurityGroup
+      type: object
+    SnapshotCreateRequest:
+      example:
+        name: snapshot name
+        virtual_machine_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+      properties:
+        name:
+          minLength: 1
+          title: Name
+          type: string
+        virtual_machine_id:
+          minLength: 1
+          title: Virtual Machine Id
+          type: string
+      required:
+        - name
+        - virtual_machine_id
+      title: SnapshotCreateRequest
+      type: object
+    SnapshotImage:
+      example:
+        name: ubuntu-1234
+      properties:
+        name:
+          title: Name
+          type: string
+      required:
+        - name
+      title: SnapshotImage
+      type: object
+    SnapshotListResponse:
+      example:
+        results:
+          - created_at: "2022-06-10T18:33:12Z"
+            error: seome error details
+            id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+            image:
+              name: ubuntu-1234
+            instance_type_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+            name: snapshot name
+            size: 10000
+            status: some_status
+            tenant_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+            updated_at: "2022-06-12T18:33:12Z"
+            virtual_machine_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+      properties:
+        results:
+          items:
+            $ref: "#/components/schemas/SnapshotResponse"
+          title: Results
+          type: array
+      required:
+        - results
+      title: SnapshotListResponse
+      type: object
+    SnapshotResponse:
+      example:
+        created_at: "2022-06-10T18:33:12Z"
+        error: seome error details
+        id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        image:
+          name: ubuntu-1234
+        instance_type_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        name: snapshot name
+        size: 10000
+        status: some_status
+        tenant_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        updated_at: "2022-06-12T18:33:12Z"
+        virtual_machine_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+      properties:
+        created_at:
+          example: "2023-10-11T11:33:47Z"
+          pattern: ^(-?(?:[1-9][0-9]*)?[0-9]{4})-(1[0-2]|0[1-9])-(3[01]|0[1-9]|[12][0-9])T(2[0-3]|[01][0-9]):([0-5][0-9]):([0-5][0-9])(\.[0-9]+)?(Z|[+-](?:2[0-3]|[01][0-9]):[0-5][0-9])?$
+          title: Created At
+          type: string
+        error:
+          nullable: true
+          title: Error
+          type: string
+        id:
+          title: Id
+          type: string
+        image:
+          $ref: "#/components/schemas/SnapshotImage"
+        instance_type_id:
+          title: Instance Type Id
+          type: string
+        name:
+          title: Name
+          type: string
+        size:
+          title: Size
+          type: integer
+        status:
+          title: Status
+          type: string
+        tenant_id:
+          title: Tenant Id
+          type: string
+        updated_at:
+          example: "2023-10-11T11:33:47Z"
+          nullable: true
+          pattern: ^(-?(?:[1-9][0-9]*)?[0-9]{4})-(1[0-2]|0[1-9])-(3[01]|0[1-9]|[12][0-9])T(2[0-3]|[01][0-9]):([0-5][0-9]):([0-5][0-9])(\.[0-9]+)?(Z|[+-](?:2[0-3]|[01][0-9]):[0-5][0-9])?$
+          title: Updated At
+          type: string
+        virtual_machine_id:
+          title: Virtual Machine Id
+          type: string
+      required:
+        - id
+        - virtual_machine_id
+        - name
+        - tenant_id
+        - status
+        - created_at
+        - instance_type_id
+        - image
+      title: SnapshotResponse
+      type: object
+    SnapshotRestoreRequest:
+      additionalProperties: false
+      example:
+        allocate_fip: true
+        availability_zone: br-regiao-1a
+        key_name: keypair_name
+        name: instance name
+        network_interfaces:
+          - id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        type: abc.small
+        user_data: some_base64_script
+      properties:
+        allocate_fip:
+          default: true
+          title: Allocate Fip
+          type: boolean
+        availability_zone:
+          title: Availability Zone
+          type: string
+        key_name:
+          minLength: 1
+          title: Key Name
+          type: string
+        name:
+          minLength: 1
+          title: Name
+          type: string
+        network_interfaces:
+          items:
+            $ref: "#/components/schemas/NetworkID"
+          title: Network Interfaces
+          type: array
+        type:
+          minLength: 1
+          title: Type
+          type: string
+        user_data:
+          title: User Data
+          type: string
+      required:
+        - name
+        - type
+        - key_name
+      title: SnapshotRestoreRequest
+      type: object
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+              - type: string
+              - type: integer
+          title: Location
+          type: array
+        msg:
+          title: Message
+          type: string
+        type:
+          title: Error Type
+          type: string
+      required:
+        - loc
+        - msg
+        - type
+      title: ValidationError
+      type: object
+    ListSnapshotResponseV1:
+      example:
+        snapshots:
+          - created_at: "2022-06-10T18:33:12Z"
+            id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+            instance:
+              id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+              image:
+                id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+              machine_type:
+                id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+            name: snapshot name
+            size: 1000
+            state: available
+            status: completed
+            updated_at: "2022-06-11T18:33:12Z"
+      properties:
+        snapshots:
+          items:
+            $ref: "#/components/schemas/SnapshotResponseV1"
+          title: Snapshots
+          type: array
+    InstanceResponseSnapshotV1:
+      example:
+        id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        image:
+          id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        machine_type:
+          id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+      properties:
+        id:
+          title: Id
+          type: string
+        image:
+          $ref: "#/components/schemas/ImageInstanceV1Response"
+        machine_type:
+          $ref: "#/components/schemas/InstanceTypeForInstanceV1Response"
+      required:
+        - id
+        - image
+        - machine_type
+      title: InstanceResponseSnapshotV1
+      type: object
+    SnapshotResponseV1:
+      example:
+        created_at: "2022-06-10T18:33:12Z"
+        id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        instance:
+          id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+          image:
+            id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+          machine_type:
+            id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        name: snapshot name
+        size: 1000
+        state: available
+        status: completed
+        updated_at: "2022-06-11T18:33:12Z"
+      properties:
+        created_at:
+          example: "2023-10-11T11:33:47Z"
+          pattern: ^(-?(?:[1-9][0-9]*)?[0-9]{4})-(1[0-2]|0[1-9])-(3[01]|0[1-9]|[12][0-9])T(2[0-3]|[01][0-9]):([0-5][0-9]):([0-5][0-9])(\.[0-9]+)?(Z|[+-](?:2[0-3]|[01][0-9]):[0-5][0-9])?$
+          title: Created At
+          type: string
+        id:
+          title: Id
+          type: string
+        instance:
+          $ref: "#/components/schemas/InstanceResponseSnapshotV1"
+        name:
+          nullable: true
+          title: Name
+          type: string
+        size:
+          title: Size
+          type: integer
+        state:
+          title: State
+          type: string
+        status:
+          title: Status
+          type: string
+        updated_at:
+          example: "2023-10-11T11:33:47Z"
+          nullable: true
+          pattern: ^(-?(?:[1-9][0-9]*)?[0-9]{4})-(1[0-2]|0[1-9])-(3[01]|0[1-9]|[12][0-9])T(2[0-3]|[01][0-9]):([0-5][0-9]):([0-5][0-9])(\.[0-9]+)?(Z|[+-](?:2[0-3]|[01][0-9]):[0-5][0-9])?$
+          title: Updated At
+          type: string
+      required:
+        - id
+        - status
+        - state
+        - created_at
+        - size
+        - instance
+      title: SnapshotResponseV1
+      type: object
+    SnapshotRestoreRequestV1:
+      example:
+        availability_zone: br-regiao-1a
+        ssh_key_name: keypair_name_here
+        machine_type:
+          id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        name: instance name
+        network:
+          associate_public_ip: true
+          vpc:
+            id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        user_data: some_base64_script
+      properties:
+        availability_zone:
+          minLength: 1
+          title: Availability Zone
+          type: string
+        ssh_key_name:
+          minLength: 0
+          title: Key Name
+          type: string
+        machine_type:
+          anyOf:
+            - $ref: "#/components/schemas/ID"
+            - $ref: "#/components/schemas/Name"
+          title: Machine Type
+        name:
+          maxLength: 225
+          minLength: 1
+          title: Name
+          type: string
+        network:
+          allOf:
+            - $ref: "#/components/schemas/InstanceCreateRequestV1Network"
+          default:
+            associate_public_ip: true
+            vpc:
+              name: default
+          title: Network
+        user_data:
+          maxLength: 65000
+          minLength: 1
+          title: User Data
+          type: string
+      required:
+        - name
+        - machine_type
+        - ssh_key_name
+      title: SnapshotRestoreRequestV1
+      type: object
+    ExceptionModel:
+      properties:
+        details:
+          title: Details
+          type: object
+        message:
+          title: Message
+          type: string
+        slug:
+          title: Slug
+          type: string
+      required:
+        - slug
+        - message
+        - details
+      title: ExceptionModel
+      type: object
+    SnapshotCreateRequestV1:
+      example:
+        name: snapshot name
+        virtual_machine:
+          id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+      properties:
+        name:
+          minLength: 1
+          title: Name
+          type: string
+        virtual_machine:
+          anyOf:
+            - $ref: "#/components/schemas/ID"
+            - $ref: "#/components/schemas/Name"
+          title: Virtual Machine
+      required:
+        - name
+        - virtual_machine
+      title: SnapshotCreateRequestV1
+      type: object
+    SnapshotRenameRequest:
+      example:
+        name: new snapshot name
+      properties:
+        name:
+          maxLength: 225
+          minLength: 1
+          title: Name
+          type: string
+      required:
+        - name
+      title: SnapshotRenameRequest
+      type: object
+  securitySchemes:
+    OAuth2:
+      description: OAuth2 via IDPA
+      flows:
+        authorizationCode:
+          authorizationUrl: https://idp-maas-sandbox.ipet.sh/auth/realms/master/protocol/openid-connect/auth
+          scopes:
+            virtual-machine.read: "Ler informa\xE7\xF5es de recursos IaaS"
+            virtual-machine.write: "Escrever informa\xE7\xF5es de recursos IaaS"
+          tokenUrl: https://idp-maas-sandbox.ipet.sh/auth/realms/master/protocol/openid-connect/token
+      type: oauth2
+info:
+  contact:
+    email: kassio.junqueira@luizalabs.com
+    name: IaaS Products
+    url: https://github.com/luizalabs
+  description: Virtual Machine Api Product
+  title: Virtual Machine Api Product
+  version: 0.1.0
+openapi: 3.0.2
+paths:
+  /latest/images:
+    get:
+      description:
+        Retrieve a list of images allowed for the current tenant which
+        is logged in.
+      operationId: list_images_v1_latest_images_get
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListImageExternalV1"
+          description: Successful Response
+      security:
+        - OAuth2:
+            - virtual-machine.read
+      summary: Retrieves all images available in the region.
+      tags:
+        - images
+  /latest/instances:
+    get:
+      description:
+        "List Virtual Machine instances in the current tenant which is
+        logged in.
+
+
+        #### Notes
+
+        - You can use the **extend** argument to get more details from the inner objects
+
+        like image or type."
+      operationId: list_instances_v1_latest_instances_get
+      parameters:
+        - in: query
+          name: project_type
+          required: false
+          schema:
+            allOf:
+              - $ref: "#/components/schemas/ProjectTypeAll"
+            default: default
+        - in: query
+          name: _limit
+          description: "limit the number of the results"
+          required: false
+          schema:
+            minimum: 1.0
+            title: " Limit"
+            type: integer
+        - in: query
+          name: _offset
+          description: "pagination for the results limited"
+          required: false
+          schema:
+            minimum: 0.0
+            title: " Offset"
+            type: integer
+        - in: query
+          name: _sort
+          description: "order of the results using informed fields"
+          required: false
+          schema:
+            default: created_at:desc
+            pattern: (^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$
+            title: " Sort"
+            type: string
+        - description: "You can get more detailed info about: ['image', 'machine-type'] "
+          in: query
+          name: expand
+          required: false
+          schema:
+            default: []
+            description: "You can get more detailed info about: ['image', 'machine-type'] "
+            items:
+              type: string
+            title: Expand
+            type: array
+        - in: header
+          name: x-tenant-id
+          required: true
+          schema:
+            title: X-Tenant-Id
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListInstanceV1Response"
+          description: Successful Response
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+          description: Validation Error
+      security:
+        - OAuth2:
+            - virtual-machine.read
+      summary: Lists all instances in the current tenant.
+      tags:
+        - instances
+    post:
+      description:
+        "Creates a Virtual Machine instance in the current tenant which\
+        \ is logged in.\n\nAn instance is ready for you to use when it's in the running\
+        \ state.\n\n#### Notes\n- For the image data, you can use the virtual-machine\
+        \ images list command\n        to list all available images.\n- For the machine\
+        \ type data, you can use the virtual-machine machine-types\n        list command\
+        \ to list all available machine types.\n- You can verify the state of your\
+        \ instance using the virtual-machine get\ncommand.\n\n#### Rules\n\n- If you\
+        \ don't specify a VPC, the default VPC will be used. When the\ndefault VPC\
+        \ is not available, the command will fail.\n- If you don't specify an network\
+        \ interface, an default network interface\nwill be created.\n- You can either\
+        \ specify an image id or an image name. If you specify\nboth, the image id\
+        \ will be used.\n- You can either specify a machine type id or a machine type\
+        \ name. If\nyou specify both, the machine type id will be used.\n- You can\
+        \ either specify an VPC id or an VPC name. If you specify both,\nthe VPC id\
+        \ will be used.\n- The user data must be a Base64 encoded string."
+      operationId: instance_create_v1_latest_instances_post
+      parameters:
+        - in: query
+          name: project_type
+          required: false
+          schema:
+            allOf:
+              - $ref: "#/components/schemas/ProjectTypeAll"
+            default: default
+        - in: header
+          name: x-tenant-id
+          required: true
+          schema:
+            title: X-Tenant-Id
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/InstanceCreateRequestV1"
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateResponse"
+          description: Successful Response
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+          description: Validation Error
+      security:
+        - OAuth2:
+            - virtual-machine.write
+      summary: Create an instance asynchronously.
+      tags:
+        - instances
+  /latest/instances/{id}:
+    delete:
+      description:
+        "Deletes permanently an instance with the id provided in the current
+        tenant
+
+        which is logged in.
+
+
+        #### Notes
+
+        - You can use the virtual-machine list command to retrieve all instances,
+        so
+
+        - you can get the id of the instance that you want to delete.
+
+
+        #### Result
+
+        - The attached ports will be deleted as well.</li>
+
+        - The attached volumes will be detached.</li>"
+      operationId: instance_delete_v1_latest_instances__id__delete
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            format: uuid
+            title: Id
+            type: string
+        - in: query
+          name: project_type
+          required: false
+          schema:
+            allOf:
+              - $ref: "#/components/schemas/ProjectTypeAll"
+            default: default
+        - in: header
+          name: x-tenant-id
+          required: true
+          schema:
+            title: X-Tenant-Id
+            type: string
+      responses:
+        "204":
+          description: Successful Response
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+          description: Validation Error
+      security:
+        - OAuth2:
+            - virtual-machine.write
+      summary: Delete a instance asynchronously
+      tags:
+        - instances
+    get:
+      description:
+        "Get an instance details for the current tenant which is logged
+        in.
+
+
+        #### Notes
+
+        - You can use the virtual-machine list command to retrieve all instances,
+
+        so you can get the id of the instance that you want to get details.
+
+
+        - You can use the **expand** argument to get more details from the inner objects
+
+        like image or type."
+      operationId: instance_details_v1_latest_instances__id__get
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            title: Id
+            type: string
+        - description: "You can get more detailed info about: ['image', 'machine-type'] "
+          in: query
+          name: expand
+          required: false
+          schema:
+            default: []
+            description: "You can get more detailed info about: ['image', 'machine-type'] "
+            items:
+              type: string
+            title: Expand
+            type: array
+        - in: header
+          name: x-tenant-id
+          required: true
+          schema:
+            title: X-Tenant-Id
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InstanceV1Response"
+          description: Successful Response
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+          description: Validation Error
+      security:
+        - OAuth2:
+            - virtual-machine.read
+      summary: Retrieve the details of an instance.
+      tags:
+        - instances
+  /latest/instances/{id}/reboot:
+    post:
+      description:
+        "Reboots a Virtual Machine instance with the id provided in the
+        current tenant which is logged in.
+
+        #### Notes
+
+        - You can use the virtual-machine list command to retrieve all instances,
+        so you can get the id
+
+        of the instance that you want to reboot.
+
+
+        #### Rules
+
+        - The instance must be in the running state."
+      operationId: reboot_instance_latest_instances__id__reboot_post
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            format: uuid
+            title: Id
+            type: string
+        - in: header
+          name: x-tenant-id
+          required: true
+          schema:
+            title: X-Tenant-Id
+            type: string
+      responses:
+        "204":
+          description: Successful Response
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+          description: Validation Error
+      security:
+        - OAuth2:
+            - virtual-machine.write
+      summary: Starts a running or suspended instance.
+      tags:
+        - instances
+      x-mgc-name: reboot
+  /latest/instances/{id}/retype:
+    post:
+      description:
+        "Changes a Virtual Machine instance machine type with the id provided
+        in the current tenant
+
+        which is logged in.
+
+
+        #### Notes
+
+        - You can use the virtual-machine list command to retrieve all instances,
+        so you can get
+
+        the id of the instance that you want to change the machine type.
+
+
+        #### Rules
+
+        - The instance must be in the running or stopped state.
+
+        - The new machine type must be compatible with the current machine type.
+
+        - The new machine type must be available in the same region as the current
+        machine type.
+
+        - You must provide either the machine type id or the machine type name, if
+        you provide both,
+
+        the machine type id will be used."
+      operationId: retype_instance_latest_instances__id__retype_post
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            format: uuid4
+            title: Id
+            type: string
+        - in: query
+          name: project_type
+          required: false
+          schema:
+            allOf:
+              - $ref: "#/components/schemas/ProjectTypeAll"
+            default: default
+        - in: header
+          name: x-tenant-id
+          required: true
+          schema:
+            title: X-Tenant-Id
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/InstanceRetypeRequest"
+        required: true
+      responses:
+        "204":
+          description: Successful Response
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+          description: Validation Error
+      security:
+        - OAuth2:
+            - virtual-machine.write
+      summary: Changes a running or stopped instance machine type for another one.
+      tags:
+        - instances
+      x-mgc-name: retype
+  /latest/instances/{id}/start:
+    post:
+      description:
+        "Starts a Virtual Machine instance with the id provided in the
+        current tenant which is logged in.
+
+        #### Notes
+
+        - You can use the virtual-machine list command to retrieve all instances,
+
+        so you can get the id of the instance that you want to start.
+
+
+        #### Rules
+
+        - The instance must be in the stopped or suspended states."
+      operationId: start_instance_latest_instances__id__start_post
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            format: uuid
+            title: Id
+            type: string
+        - in: header
+          name: x-tenant-id
+          required: true
+          schema:
+            title: X-Tenant-Id
+            type: string
+      responses:
+        "204":
+          description: Successful Response
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+          description: Validation Error
+      security:
+        - OAuth2:
+            - virtual-machine.write
+      summary: Starts a running or suspended instance.
+      tags:
+        - instances
+      x-mgc-name: start
+  /latest/instances/{id}/stop:
+    post:
+      description:
+        "Stops a Virtual Machine instance with the id provided in the current
+        tenant which is logged in.
+
+        #### Notes
+
+        - You can use the virtual-machine list command to retrieve all instances,
+        so you can get the id of
+
+        the instance that you want to stop.
+
+
+        #### Rules
+
+        - The instance must be in the running state."
+      operationId: stop_instance_latest_instances__id__stop_post
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            format: uuid
+            title: Id
+            type: string
+        - in: header
+          name: x-tenant-id
+          required: true
+          schema:
+            title: X-Tenant-Id
+            type: string
+      responses:
+        "204":
+          description: Successful Response
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+          description: Validation Error
+      security:
+        - OAuth2:
+            - virtual-machine.write
+      summary: Stops a running instance.
+      tags:
+        - instances
+      x-mgc-name: stop
+  /latest/instances/{id}/suspend:
+    post:
+      description:
+        "Suspends a Virtual Machine instance with the id provided in the
+        current tenant which is logged in.
+
+
+        #### Notes
+
+        - You can use the virtual-machine list command to retrieve all instances,
+        so you can get the id of
+
+        the instance that you want to suspend.
+
+
+        #### Rules
+
+        - The instance must be in the running state."
+      operationId: suspend_instance_latest_instances__id__suspend_post
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            format: uuid
+            title: Id
+            type: string
+        - in: header
+          name: x-tenant-id
+          required: true
+          schema:
+            title: X-Tenant-Id
+            type: string
+      responses:
+        "204":
+          description: Successful Response
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+          description: Validation Error
+      security:
+        - OAuth2:
+            - virtual-machine.write
+      summary: Suspends a running instance.
+      tags:
+        - instances
+      x-mgc-name: suspend
+  /latest/machine-types:
+    get:
+      description:
+        Retrieves a list of machine types allowed for the current tenant
+        which is logged in.
+      operationId: list_instance_types_v1_latest_machine_types_get
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InstanceTypesV1ListResponse"
+          description: Successful Response
+      security:
+        - OAuth2:
+            - virtual-machine.read
+      summary: Retrieves all machine-types available in the region.
+      tags:
+        - machine-types
+  /latest/snapshots:
+    get:
+      description: "List all snapshots in the current tenant which is logged in.
+
+
+        #### Notes
+
+        - You can use the **expand** argument to get more details from the inner objects
+
+        like image and machine types."
+      operationId: list_snapshots_v1_latest_snapshots_get
+      parameters:
+        - in: query
+          name: project_type
+          required: false
+          schema:
+            allOf:
+              - $ref: "#/components/schemas/ProjectTypeAll"
+            default: default
+        - in: query
+          name: _limit
+          description: "limit the number of the results"
+          required: false
+          schema:
+            minimum: 1.0
+            title: " Limit"
+            type: integer
+        - in: query
+          name: _offset
+          description: "pagination for the results limited"
+          required: false
+          schema:
+            minimum: 0.0
+            title: " Offset"
+            type: integer
+        - in: query
+          name: _sort
+          description: "order of the results using informed fields"
+          required: false
+          schema:
+            default: created_at:desc
+            pattern: (^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$
+            title: " Sort"
+            type: string
+        - description: "You can get more detailed info about: ['image', 'machine-type'] "
+          in: query
+          name: expand
+          required: false
+          schema:
+            default: []
+            description: "You can get more detailed info about: ['image', 'machine-type'] "
+            items:
+              type: string
+            title: Expand
+            type: array
+        - in: header
+          name: x-tenant-id
+          required: true
+          schema:
+            title: X-Tenant-Id
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListSnapshotResponseV1"
+          description: Successful Response
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+          description: Validation Error
+      security:
+        - OAuth2:
+            - virtual-machine.read
+      summary: Lists all snapshots in the current tenant.
+      tags:
+        - snapshots
+    post:
+      description:
+        "Create a snapshot of a Virtual Machine in the current tenant which
+        is logged in. </br>
+
+        A Snapshot is ready for restore when it's in available state.
+
+
+        #### Notes
+
+        - You can verify the state of snapshot using the snapshot get command,
+
+        - To create a snapshot it's mandatory inform a valid and unique name.
+
+
+        #### Rules
+
+        - It's only possible to create a snapshot of a valid virtual machine.
+
+        - It's not possible to create 2 snapshots with the same name.
+
+        - You can inform ID or Name from a Virtual Machine if both informed the priority
+        will be ID."
+      operationId: snapshot_create_v1_latest_snapshots_post
+      parameters:
+        - in: header
+          name: x-tenant-id
+          required: true
+          schema:
+            title: X-Tenant-Id
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SnapshotCreateRequestV1"
+        required: true
+      responses:
+        "202":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateResponse"
+          description: Successful Response
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionModel"
+          description: Snapshot Not Allowed Exception
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionModel"
+          description: Instance Not Found Exception
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionModel"
+          description: Snapshot Validation Exception
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+          description: Validation Error
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionModel"
+          description: Internal Exception
+      security:
+        - OAuth2:
+            - virtual-machine.write
+      summary: Create a snapshot of a virtual machine asynchronously.
+      tags:
+        - snapshots
+  /latest/snapshots/{id}:
+    delete:
+      description:
+        "Deletes an snapshot with the id provided in the current tenant
+
+        which is logged in.
+
+
+        #### Notes
+
+        - You can use the Snapshots list command to retrieve all snapshots, so
+
+        - you can get the id of the snapshot that you want to delete."
+      operationId: snapshots_delete_latest_snapshots__id__delete
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            format: uuid
+            title: Id
+            type: string
+        - in: query
+          name: project_type
+          required: false
+          schema:
+            allOf:
+              - $ref: "#/components/schemas/ProjectTypeAll"
+            default: default
+        - in: header
+          name: x-tenant-id
+          required: true
+          schema:
+            title: X-Tenant-Id
+            type: string
+      responses:
+        "204":
+          description: Successful Response
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+          description: Validation Error
+      security:
+        - OAuth2:
+            - virtual-machine.write
+      summary: Delete a Snapshot asynchronously
+      tags:
+        - snapshots
+    post:
+      description:
+        "Restore a snapshot of a Virtual Machine with the current tenant
+        which is logged in. </br>
+
+        A Snapshot is ready for restore when it's in available state.
+
+
+        #### Notes
+
+        - You can verify the state of snapshot using the snapshot list command.
+
+        - Use machine-types list to see all machine types available.
+
+
+        #### Rules
+
+        - To restore a snapshot  you have to inform the new virtual machine information.
+
+        - You can choose a machine-type that has a disk equal or larger
+
+        than the original virtual machine type."
+      operationId: restore_snapshot_v1_latest_snapshots__id__post
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            title: Id
+            type: string
+        - in: header
+          name: x-tenant-id
+          required: true
+          schema:
+            title: X-Tenant-Id
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SnapshotRestoreRequestV1"
+        required: true
+      responses:
+        "202":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateResponse"
+          description: Successful Response
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+          description: Validation Error
+      security:
+        - OAuth2:
+            - virtual-machine.write
+      summary: Restore a snapshot to a virtual machine
+      tags:
+        - snapshots
+    get:
+      description:
+        "Get a snapshot details for the current tenant which is logged in.
+
+        #### Notes
+
+        - You can use the snapshots list command to retrieve all snapshots, so 
+        you can get the id of the snapshot that you want to get details.
+
+        - You can use the expand argument to get more details 
+        from the inner objects like image or type"
+
+      operationId: snapshot_details_v1_latest_snapshots__id__get
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            format: uuid
+            title: Id
+            type: string
+        - description: "You can get more detailed info about: ['image', 'machine-type'] "
+          in: query
+          name: expand
+          required: false
+          schema:
+            default: []
+            description: "You can get more detailed info about: ['image', 'machine-type'] "
+            items:
+              type: string
+            title: Expand
+            type: array
+        - in: header
+          name: x-tenant-id
+          required: true
+          schema:
+            title: X-Tenant-Id
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListSnapshotResponseV1"
+          description: Successful Response
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionModel"
+          description: Snapshot Not Allowed Exception
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionModel"
+          description: Instance Not Found Exception
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionModel"
+          description: Snapshot Validation Exception
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+          description: Validation Error
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionModel"
+          description: Internal Exception
+      security:
+        - OAuth2:
+            - virtual-machine.read
+      summary: Retrieve the details of an snapshot.
+      tags:
+        - snapshots
+  /latest/snapshots/{id}/rename:
+    patch:
+      description:
+        "Renames a Snapshot with the id provided in the current tenant
+        which is logged in.
+
+
+        #### Notes
+
+        - You can use the snapshots list command to retrieve all snapshots, so you
+        can get the id of
+
+        the snapshot that you want to rename."
+      operationId: rename_snapshot_latest_snapshots__id__rename_patch
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            title: Id
+            type: string
+        - in: query
+          name: project_type
+          required: false
+          schema:
+            allOf:
+              - $ref: "#/components/schemas/ProjectTypeAll"
+            default: default
+        - in: header
+          name: x-tenant-id
+          required: true
+          schema:
+            title: X-Tenant-Id
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SnapshotRenameRequest"
+        required: true
+      responses:
+        "204":
+          description: Successful Response
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+          description: Validation Error
+      security:
+        - OAuth2:
+            - virtual-machine.write
+      summary: Renames a snapshot
+      tags:
+        - snapshots
+  /v0/images:
+    get:
+      description: Retrive a list of images
+      operationId: list_images_v0_images_get
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListImageResponse"
+          description: Successful Response
+      security:
+        - OAuth2:
+            - virtual-machine.read
+      summary: List Images
+      tags:
+        - images
+  /v0/instance_types:
+    get:
+      description: Returns a list of instance types
+      operationId: list_instance_types_v0_instance_types_get
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InstanceTypesListResponse"
+          description: Successful Response
+      security:
+        - OAuth2:
+            - virtual-machine.read
+      summary: List Instance Types
+      tags:
+        - instance-types
+  /v0/instances:
+    get:
+      description: Returns a list of instances for a provided tenant_id
+      operationId: list_instances_v0_instances_get
+      parameters:
+        - in: header
+          name: x-tenant-id
+          required: true
+          schema:
+            title: X-Tenant-Id
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListInstanceResponse"
+          description: Successful Response
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+          description: Validation Error
+      security:
+        - OAuth2:
+            - virtual-machine.read
+      summary: List Instances
+      tags:
+        - instances
+    post:
+      description: Create a instance asynchronously
+      operationId: instance_create_v0_instances_post
+      parameters:
+        - in: header
+          name: x-tenant-id
+          required: true
+          schema:
+            title: X-Tenant-Id
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/InstanceCreateRequest"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateResponse"
+          description: Successful Response
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+          description: Validation Error
+      security:
+        - OAuth2:
+            - virtual-machine.write
+      summary: Instance Create
+      tags:
+        - instances
+  /v0/instances/{id}:
+    delete:
+      description: Delete a instance
+      operationId: instance_delete_v0_instances__id__delete
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            title: Id
+        - in: header
+          name: x-tenant-id
+          required: true
+          schema:
+            title: X-Tenant-Id
+            type: string
+      responses:
+        "204":
+          description: Successful Response
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+          description: Validation Error
+      security:
+        - OAuth2:
+            - virtual-machine.write
+      summary: Instance Delete
+      tags:
+        - instances
+    get:
+      description: Returns a instance details
+      operationId: instance_details_v0_instances__id__get
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            title: Id
+            type: string
+        - in: header
+          name: x-tenant-id
+          required: true
+          schema:
+            title: X-Tenant-Id
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InstanceResponse"
+          description: Successful Response
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+          description: Validation Error
+      security:
+        - OAuth2:
+            - virtual-machine.read
+      summary: Instance Details
+      tags:
+        - instances
+    patch:
+      description: Update a instance
+      operationId: update_instance_status_v0_instances__id__patch
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            title: Id
+        - in: header
+          name: x-tenant-id
+          required: true
+          schema:
+            title: X-Tenant-Id
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/InstancePatchRequest"
+        required: true
+      responses:
+        "204":
+          description: Successful Response
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+          description: Validation Error
+      security:
+        - OAuth2:
+            - virtual-machine.write
+      summary: Update Instance Status
+      tags:
+        - instances
+  /v0/instances/{id}/events:
+    get:
+      description: Returns a list for all events in a instance
+      operationId: list_instance_events_v0_instances__id__events_get
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            title: Id
+            type: string
+        - in: header
+          name: x-tenant-id
+          required: true
+          schema:
+            title: X-Tenant-Id
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListInstanceEventResponse"
+          description: Successful Response
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+          description: Validation Error
+      security:
+        - OAuth2:
+            - virtual-machine.read
+      summary: List Instance Events
+      tags:
+        - instances
+  /v0/instances/{id}/events/{event_id}:
+    get:
+      description: Returns the event details for the instance
+      operationId: details_instance_event_v0_instances__id__events__event_id__get
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            title: Id
+            type: string
+        - in: path
+          name: event_id
+          required: true
+          schema:
+            title: Event Id
+            type: string
+        - in: header
+          name: x-tenant-id
+          required: true
+          schema:
+            title: X-Tenant-Id
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InstanceEventDetailsResponse"
+          description: Successful Response
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+          description: Validation Error
+      security:
+        - OAuth2:
+            - virtual-machine.read
+      summary: Details Instance Event
+      tags:
+        - instances
+  /v0/snapshots:
+    get:
+      description: List snapshots by tenant
+      operationId: List_snapshots_v0_snapshots_get
+      parameters:
+        - in: query
+          name: _limit
+          required: false
+          schema:
+            minimum: 1.0
+            title: " Limit"
+            type: integer
+        - in: query
+          name: _offset
+          required: false
+          schema:
+            minimum: 0.0
+            title: " Offset"
+            type: integer
+        - in: query
+          name: _sort
+          required: false
+          schema:
+            default: created_at:desc
+            pattern: (^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$
+            title: " Sort"
+            type: string
+        - in: header
+          name: x-tenant-id
+          required: true
+          schema:
+            title: X-Tenant-Id
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SnapshotListResponse"
+          description: Successful Response
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+          description: Validation Error
+      security:
+        - OAuth2:
+            - virtual-machine.read
+      summary: List Snapshots
+      tags:
+        - snapshots
+    post:
+      description: Create a snapshot
+      operationId: create_snapshot_v0_snapshots_post
+      parameters:
+        - in: header
+          name: x-tenant-id
+          required: true
+          schema:
+            title: X-Tenant-Id
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SnapshotCreateRequest"
+        required: true
+      responses:
+        "202":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateResponse"
+          description: Successful Response
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+          description: Validation Error
+      security:
+        - OAuth2:
+            - virtual-machine.write
+      summary: Create Snapshot
+      tags:
+        - snapshots
+  /v0/snapshots/{id}:
+    delete:
+      description: Delete a snapshot
+      operationId: delete_snapshot_v0_snapshots__id__delete
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            title: Id
+            type: string
+        - in: header
+          name: x-tenant-id
+          required: true
+          schema:
+            title: X-Tenant-Id
+            type: string
+      responses:
+        "204":
+          description: Successful Response
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+          description: Validation Error
+      security:
+        - OAuth2:
+            - virtual-machine.write
+      summary: Delete Snapshot
+      tags:
+        - snapshots
+    post:
+      description: Restore a snapshot
+      operationId: restore_snapshot_v0_snapshots__id__post
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            title: Id
+            type: string
+        - in: header
+          name: x-tenant-id
+          required: true
+          schema:
+            title: X-Tenant-Id
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SnapshotRestoreRequest"
+        required: true
+      responses:
+        "202":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateResponse"
+          description: Successful Response
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+          description: Validation Error
+      security:
+        - OAuth2:
+            - virtual-machine.write
+      summary: Restore Snapshot
+      tags:
+        - snapshots
+  /v1/images:
+    get:
+      description:
+        Retrieve a list of images allowed for the current tenant which
+        is logged in.
+      operationId: list_images_v1_v1_images_get
+      parameters:
+        - in: query
+          name: _limit
+          description: "limit the number of the results"
+          required: false
+          schema:
+            default: 50
+            minimum: 1.0
+            title: " Limit"
+            type: integer
+        - in: query
+          name: _offset
+          description: "pagination for the results limited"
+          required: false
+          schema:
+            default: 0
+            minimum: 0.0
+            title: " Offset"
+            type: integer
+        - in: query
+          name: _sort
+          description: "order of the results using informed field"
+          required: false
+          schema:
+            default: created_at:desc
+            pattern: (^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$
+            title: " Sort"
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListImageExternalV1"
+          description: Successful Response
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+          description: Validation Error
+      security:
+        - OAuth2:
+            - virtual-machine.read
+      summary: Retrieves all images available in the region.
+      tags:
+        - images
+  /v1/instances:
+    get:
+      description:
+        "List Virtual Machine instances in the current tenant which is
+        logged in.
+
+
+        #### Notes
+
+        - You can use the **extend** argument to get more details from the inner objects
+
+        like image or type."
+      operationId: list_instances_v1_v1_instances_get
+      parameters:
+        - in: query
+          name: _limit
+          description: "limit the number of the results"
+          required: false
+          schema:
+            minimum: 1.0
+            title: " Limit"
+            type: integer
+        - in: query
+          name: _offset
+          description: "pagination for the results limited"
+          required: false
+          schema:
+            minimum: 0.0
+            title: " Offset"
+            type: integer
+        - in: query
+          name: _sort
+          description: "order of the results using informed fields"
+          required: false
+          schema:
+            default: created_at:desc
+            pattern: (^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$
+            title: " Sort"
+            type: string
+        - description: "You can get more detailed info about: ['image', 'machine-type'] "
+          in: query
+          name: expand
+          required: false
+          schema:
+            default: []
+            description: "You can get more detailed info about: ['image', 'machine-type'] "
+            items:
+              type: string
+            title: Expand
+            type: array
+        - in: header
+          name: x-tenant-id
+          required: true
+          schema:
+            title: X-Tenant-Id
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListInstanceV1Response"
+          description: Successful Response
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+          description: Validation Error
+      security:
+        - OAuth2:
+            - virtual-machine.read
+      summary: Lists all instances in the current tenant.
+      tags:
+        - instances
+    post:
+      description:
+        "Creates a Virtual Machine instance in the current tenant which\
+        \ is logged in.\n\nAn instance is ready for you to use when it's in the running\
+        \ state.\n\n#### Notes\n- For the image data, you can use the virtual-machine\
+        \ images list command\n        to list all available images.\n- For the machine\
+        \ type data, you can use the virtual-machine machine-types\n        list command\
+        \ to list all available machine types.\n- You can verify the state of your\
+        \ instance using the virtual-machine get\ncommand.\n\n#### Rules\n\n- If you\
+        \ don't specify a VPC, the default VPC will be used. When the\ndefault VPC\
+        \ is not available, the command will fail.\n- If you don't specify an network\
+        \ interface, an default network interface\nwill be created.\n- You can either\
+        \ specify an image id or an image name. If you specify\nboth, the image id\
+        \ will be used.\n- You can either specify a machine type id or a machine type\
+        \ name. If\nyou specify both, the machine type id will be used.\n- You can\
+        \ either specify an VPC id or an VPC name. If you specify both,\nthe VPC id\
+        \ will be used.\n- The user data must be a Base64 encoded string."
+      operationId: instance_create_v1_v1_instances_post
+      parameters:
+        - in: header
+          name: x-tenant-id
+          required: true
+          schema:
+            title: X-Tenant-Id
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/InstanceCreateRequestV1"
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateResponse"
+          description: Successful Response
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+          description: Validation Error
+      security:
+        - OAuth2:
+            - virtual-machine.write
+      summary: Create an instance asynchronously.
+      tags:
+        - instances
+  /v1/instances/{id}:
+    delete:
+      description:
+        "Deletes permanently an instance with the id provided in the current
+        tenant
+
+        which is logged in.
+
+
+        #### Notes
+
+        - You can use the virtual-machine list command to retrieve all instances,
+        so
+
+        - you can get the id of the instance that you want to delete.
+
+
+        #### Result
+
+        - The attached ports will be deleted as well.</li>
+
+        - The attached volumes will be detached.</li>"
+      operationId: instance_delete_v1_v1_instances__id__delete
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            format: uuid
+            title: Id
+            type: string
+        - in: header
+          name: x-tenant-id
+          required: true
+          schema:
+            title: X-Tenant-Id
+            type: string
+      responses:
+        "204":
+          description: Successful Response
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+          description: Validation Error
+      security:
+        - OAuth2:
+            - virtual-machine.write
+      summary: Delete a instance asynchronously
+      tags:
+        - instances
+    get:
+      description:
+        "Get an instance details for the current tenant which is logged
+        in.
+
+
+        #### Notes
+
+        - You can use the virtual-machine list command to retrieve all instances,
+
+        so you can get the id of the instance that you want to get details.
+
+
+        - You can use the **expand** argument to get more details from the inner objects
+
+        like image or type."
+      operationId: instance_details_v1_v1_instances__id__get
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            title: Id
+            type: string
+        - description: "You can get more detailed info about: ['image', 'machine-type'] "
+          in: query
+          name: expand
+          required: false
+          schema:
+            default: []
+            description: "You can get more detailed info about: ['image', 'machine-type'] "
+            items:
+              type: string
+            title: Expand
+            type: array
+        - in: header
+          name: x-tenant-id
+          required: true
+          schema:
+            title: X-Tenant-Id
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InstanceV1Response"
+          description: Successful Response
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+          description: Validation Error
+      security:
+        - OAuth2:
+            - virtual-machine.read
+      summary: Retrieve the details of an instance.
+      tags:
+        - instances
+  /v1/instances/{id}/reboot:
+    post:
+      description:
+        "Reboots a Virtual Machine instance with the id provided in the
+        current tenant which is logged in.
+
+        #### Notes
+
+        - You can use the virtual-machine list command to retrieve all instances,
+        so you can get the id
+
+        of the instance that you want to reboot.
+
+
+        #### Rules
+
+        - The instance must be in the running state."
+      operationId: reboot_instance_v1_instances__id__reboot_post
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            format: uuid
+            title: Id
+            type: string
+        - in: header
+          name: x-tenant-id
+          required: true
+          schema:
+            title: X-Tenant-Id
+            type: string
+      responses:
+        "204":
+          description: Successful Response
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+          description: Validation Error
+      security:
+        - OAuth2:
+            - virtual-machine.write
+      summary: Starts a running or suspended instance.
+      tags:
+        - instances
+      x-mgc-name: reboot
+  /v1/instances/{id}/rename:
+    patch:
+      tags:
+        - instances
+      summary: Renames an instance.
+      description: |-
+        Renames a Virtual Machine instance with the id provided in the current tenant which is logged in.
+
+        #### Notes
+        - You can use the virtual-machine list command to retrieve all instances, so you can get the id of
+        the instance that you want to rename.
+      operationId: update_instance_name_v1_instances__id__rename_patch
+      parameters:
+        - required: true
+          schema:
+            type: string
+            title: Id
+          name: id
+          in: path
+        - required: true
+          schema:
+            type: string
+            title: X-Tenant-Id
+          name: x-tenant-id
+          in: header
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/IntanceUpdateRequest"
+        required: true
+      responses:
+        "204":
+          description: Successful Response
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HTTPValidationError"
+  /v1/instances/{id}/retype:
+    post:
+      description:
+        "Changes a Virtual Machine instance machine type with the id provided
+        in the current tenant
+
+        which is logged in.
+
+
+        #### Notes
+
+        - You can use the virtual-machine list command to retrieve all instances,
+        so you can get
+
+        the id of the instance that you want to change the machine type.
+
+
+        #### Rules
+
+        - The instance must be in the running or stopped state.
+
+        - The new machine type must be compatible with the current machine type.
+
+        - The new machine type must be available in the same region as the current
+        machine type.
+
+        - You must provide either the machine type id or the machine type name, if
+        you provide both,
+
+        the machine type id will be used."
+      operationId: retype_instance_v1_instances__id__retype_post
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            format: uuid4
+            title: Id
+            type: string
+        - in: header
+          name: x-tenant-id
+          required: true
+          schema:
+            title: X-Tenant-Id
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/InstanceRetypeRequest"
+        required: true
+      responses:
+        "204":
+          description: Successful Response
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+          description: Validation Error
+      security:
+        - OAuth2:
+            - virtual-machine.write
+      summary: Changes a running or stopped instance machine type for another one.
+      tags:
+        - instances
+      x-mgc-name: retype
+  /v1/instances/{id}/start:
+    post:
+      description:
+        "Starts a Virtual Machine instance with the id provided in the
+        current tenant which is logged in.
+
+        #### Notes
+
+        - You can use the virtual-machine list command to retrieve all instances,
+
+        so you can get the id of the instance that you want to start.
+
+
+        #### Rules
+
+        - The instance must be in the stopped or suspended states."
+      operationId: start_instance_v1_instances__id__start_post
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            format: uuid
+            title: Id
+            type: string
+        - in: header
+          name: x-tenant-id
+          required: true
+          schema:
+            title: X-Tenant-Id
+            type: string
+      responses:
+        "204":
+          description: Successful Response
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+          description: Validation Error
+      security:
+        - OAuth2:
+            - virtual-machine.write
+      summary: Starts a running or suspended instance.
+      tags:
+        - instances
+      x-mgc-name: start
+  /v1/instances/{id}/stop:
+    post:
+      description:
+        "Stops a Virtual Machine instance with the id provided in the current
+        tenant which is logged in.
+
+        #### Notes
+
+        - You can use the virtual-machine list command to retrieve all instances,
+        so you can get the id of
+
+        the instance that you want to stop.
+
+
+        #### Rules
+
+        - The instance must be in the running state."
+      operationId: stop_instance_v1_instances__id__stop_post
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            format: uuid
+            title: Id
+            type: string
+        - in: header
+          name: x-tenant-id
+          required: true
+          schema:
+            title: X-Tenant-Id
+            type: string
+      responses:
+        "204":
+          description: Successful Response
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+          description: Validation Error
+      security:
+        - OAuth2:
+            - virtual-machine.write
+      summary: Stops a running instance.
+      tags:
+        - instances
+      x-mgc-name: stop
+  /v1/instances/{id}/suspend:
+    post:
+      description:
+        "Suspends a Virtual Machine instance with the id provided in the
+        current tenant which is logged in.
+
+
+        #### Notes
+
+        - You can use the virtual-machine list command to retrieve all instances,
+        so you can get the id of
+
+        the instance that you want to suspend.
+
+
+        #### Rules
+
+        - The instance must be in the running state."
+      operationId: suspend_instance_v1_instances__id__suspend_post
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            format: uuid
+            title: Id
+            type: string
+        - in: header
+          name: x-tenant-id
+          required: true
+          schema:
+            title: X-Tenant-Id
+            type: string
+      responses:
+        "204":
+          description: Successful Response
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+          description: Validation Error
+      security:
+        - OAuth2:
+            - virtual-machine.write
+      summary: Suspends a running instance.
+      tags:
+        - instances
+      x-mgc-name: suspend
+  /v1/machine-types:
+    get:
+      description:
+        Retrieves a list of machine types allowed for the current tenant
+        which is logged in.
+      operationId: list_instance_types_v1_v1_machine_types_get
+      parameters:
+        - in: query
+          name: _limit
+          description: "limit the number of the results"
+          required: false
+          schema:
+            default: 50
+            minimum: 1.0
+            title: " Limit"
+            type: integer
+        - in: query
+          description: "pagination for the results limited"
+          name: _offset
+          required: false
+          schema:
+            default: 0
+            minimum: 0.0
+            title: " Offset"
+            type: integer
+        - in: query
+          name: _sort
+          description: "order of the results using informed fields"
+          required: false
+          schema:
+            default: created_at:desc
+            pattern: (^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$
+            title: " Sort"
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InstanceTypesV1ListResponse"
+          description: Successful Response
+      security:
+        - OAuth2:
+            - virtual-machine.read
+      summary: Retrieves all machine-types available in the region.
+      tags:
+        - machine-types
+  /v1/snapshots:
+    get:
+      description: "List all snapshots in the current tenant which is logged in.
+
+
+        #### Notes
+
+        - You can use the **expand** argument to get more details from the inner objects
+
+        like image and machine types."
+      operationId: list_snapshots_v1_v1_snapshots_get
+      parameters:
+        - in: query
+          name: _limit
+          description: "limit the number of the results"
+          required: false
+          schema:
+            default: 50
+            minimum: 1.0
+            title: " Limit"
+            type: integer
+        - in: query
+          name: _offset
+          description: "pagination for the results limited"
+          required: false
+          schema:
+            default: 0
+            minimum: 0.0
+            title: " Offset"
+            type: integer
+        - in: query
+          name: _sort
+          description: "order of the results using informed field"
+          required: false
+          schema:
+            default: created_at:desc
+            pattern: (^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$
+            title: " Sort"
+            type: string
+        - description: "You can get more detailed info about: ['image', 'machine-type'] "
+          in: query
+          name: expand
+          required: false
+          schema:
+            default: []
+            description: "You can get more detailed info about: ['image', 'machine-type'] "
+            items:
+              type: string
+            title: Expand
+            type: array
+        - in: header
+          name: x-tenant-id
+          required: true
+          schema:
+            title: X-Tenant-Id
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListSnapshotResponseV1"
+          description: Successful Response
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+          description: Validation Error
+      security:
+        - OAuth2:
+            - virtual-machine.read
+      summary: Lists all snapshots in the current tenant.
+      tags:
+        - snapshots
+    post:
+      description:
+        "Create a snapshot of a Virtual Machine in the current tenant which
+        is logged in. </br>
+
+        A Snapshot is ready for restore when it's in available state.
+
+
+        #### Notes
+
+        - You can verify the state of snapshot using the snapshot get command,
+
+        - To create a snapshot it's mandatory inform a valid and unique name.
+
+
+        #### Rules
+
+        - It's only possible to create a snapshot of a valid virtual machine.
+
+        - It's not possible to create 2 snapshots with the same name.
+
+        - You can inform ID or Name from a Virtual Machine if both informed the priority
+        will be ID."
+      operationId: snapshot_create_v1_v1_snapshots_post
+      parameters:
+        - in: header
+          name: x-tenant-id
+          required: true
+          schema:
+            title: X-Tenant-Id
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SnapshotCreateRequestV1"
+        required: true
+      responses:
+        "202":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateResponse"
+          description: Successful Response
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionModel"
+          description: Snapshot Not Allowed Exception
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionModel"
+          description: Instance Not Found Exception
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionModel"
+          description: Snapshot Validation Exception
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+          description: Validation Error
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionModel"
+          description: Internal Exception
+      security:
+        - OAuth2:
+            - virtual-machine.write
+      summary: Create a snapshot of a virtual machine asynchronously.
+      tags:
+        - snapshots
+  /v1/snapshots/{id}:
+    delete:
+      description:
+        "Deletes an snapshot with the id provided in the current tenant
+
+        which is logged in.
+
+
+        #### Notes
+
+        - You can use the Snapshots list command to retrieve all snapshots, so
+
+        - you can get the id of the snapshot that you want to delete."
+      operationId: snapshots_delete_v1_snapshots__id__delete
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            format: uuid
+            title: Id
+            type: string
+        - in: header
+          name: x-tenant-id
+          required: true
+          schema:
+            title: X-Tenant-Id
+            type: string
+      responses:
+        "204":
+          description: Successful Response
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+          description: Validation Error
+      security:
+        - OAuth2:
+            - virtual-machine.write
+      summary: Delete a Snapshot asynchronously
+      tags:
+        - snapshots
+    post:
+      description:
+        "Restore a snapshot of a Virtual Machine with the current tenant
+        which is logged in. </br>
+
+        A Snapshot is ready for restore when it's in available state.
+
+
+        #### Notes
+
+        - You can verify the state of snapshot using the snapshot list command.
+
+        - Use machine-types list to see all machine types available.
+
+
+        #### Rules
+
+        - To restore a snapshot  you have to inform the new virtual machine information.
+
+        - You can choose a machine-type that has a disk equal or larger
+
+        than the original virtual machine type."
+      operationId: restore_snapshot_v1_v1_snapshots__id__post
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            title: Id
+            type: string
+        - in: header
+          name: x-tenant-id
+          required: true
+          schema:
+            title: X-Tenant-Id
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SnapshotRestoreRequestV1"
+        required: true
+      responses:
+        "202":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateResponse"
+          description: Successful Response
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+          description: Validation Error
+      security:
+        - OAuth2:
+            - virtual-machine.write
+      summary: Restore a snapshot to a virtual machine
+      tags:
+        - snapshots
+    get:
+      description:
+        "Get a snapshot details for the current tenant which is logged in.
+
+        #### Notes
+
+        - You can use the snapshots list command to retrieve all snapshots, so 
+        you can get the id of the snapshot that you want to get details.
+
+        - You can use the expand argument to get more details 
+        from the inner objects like image or type"
+
+      operationId: snapshot_details_v1_v1_snapshots__id__get
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            format: uuid
+            title: Id
+            type: string
+        - description: "You can get more detailed info about: ['image', 'machine-type'] "
+          in: query
+          name: expand
+          required: false
+          schema:
+            default: []
+            description: "You can get more detailed info about: ['image', 'machine-type'] "
+            items:
+              type: string
+            title: Expand
+            type: array
+        - in: header
+          name: x-tenant-id
+          required: true
+          schema:
+            title: X-Tenant-Id
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListSnapshotResponseV1"
+          description: Successful Response
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionModel"
+          description: Snapshot Not Allowed Exception
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionModel"
+          description: Instance Not Found Exception
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionModel"
+          description: Snapshot Validation Exception
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+          description: Validation Error
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionModel"
+          description: Internal Exception
+      security:
+        - OAuth2:
+            - virtual-machine.read
+      summary: Retrieve the details of an snapshot.
+      tags:
+        - snapshots
+  /v1/snapshots/{id}/rename:
+    patch:
+      description:
+        "Renames a Snapshot with the id provided in the current tenant
+        which is logged in.
+
+
+        #### Notes
+
+        - You can use the snapshots list command to retrieve all snapshots, so you
+        can get the id of
+
+        the snapshot that you want to rename."
+      operationId: rename_snapshot_v1_snapshots__id__rename_patch
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            title: Id
+            type: string
+        - in: header
+          name: x-tenant-id
+          required: true
+          schema:
+            title: X-Tenant-Id
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SnapshotRenameRequest"
+        required: true
+      responses:
+        "204":
+          description: Successful Response
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+          description: Validation Error
+      security:
+        - OAuth2:
+            - virtual-machine.write
+      summary: Renames a snapshot
+      tags:
+        - snapshots
+servers:
+  - url: https://virtual-machine.br-ne-1.jaxyendy.com
+tags:
+  - description: Operations with images for instances.
+    name: images
+  - description: Operations with machine types for instances.
+    name: instance-types
+  - description: Operations with instances, including create, delete, start, stop, reboot and other actions.
+    name: instances
+  - description: Operations with instances snapshots.
+    name: snapshots
+  - description: Operations with machine types for instances.
+    name: machine-types

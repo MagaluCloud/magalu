@@ -25,9 +25,16 @@ func interfaceToMap(i interface{}) (map[string]interface{}, bool) {
 
 func write(cmd *cobra.Command, args []string) {
 	var toSave []specList
-	file := fmt.Sprintf("%s.openapi.json", args[1])
+	var file string
+	if fromViveiro {
+		file = fmt.Sprintf("%s.viveiro.openapi.json", args[1])
+	} else {
+		file = fmt.Sprintf("%s.jaxyendy.openapi.json", args[1])
+
+	}
 	toSave = append(toSave, specList{Url: args[0], File: file, Menu: args[1]})
-	currentConfig, err := loadListFromViper()
+
+	currentConfig, err := loadListFromViper(toWriteViveiro(fromViveiro))
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -42,7 +49,7 @@ func write(cmd *cobra.Command, args []string) {
 	}
 
 	toSave = append(toSave, currentConfig...)
-	viper.Set(TO_READ, toSave)
+	viper.Set(toWriteViveiro(fromViveiro), toSave)
 	err = viper.WriteConfigAs(VIPER_FILE)
 	if err != nil {
 		fmt.Println(err)
