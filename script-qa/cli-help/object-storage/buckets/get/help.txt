@@ -1,24 +1,16 @@
-Warning: loading dynamic arguments: no command with name "get"
-Bucket operations for Object Storage API
+Get bucket
 
 Usage:
-  ./mgc object-storage buckets [flags]
-  ./mgc object-storage buckets [command]
-
-Commands:
-  acl         ACL-related commands
-  create      Create a new Bucket
-  delete      Delete an existing Bucket
-  list        List all existing Buckets
-  public-url  Get bucket public url
-  versioning  Manage bucket versioning
+  ./mgc object-storage buckets get [bucket] [flags]
 
 Flags:
-  -h, --help   help for buckets
+      --bucket string   Name of the bucket to be created (required)
+  -h, --help            help for get
 
 Global Flags:
+      --chunk-size integer     Chunk size to consider when doing multipart requests. Specified in Mb (range: 8 - 5120) (default 8)
       --cli.show-cli-globals   Show all CLI global flags on usage text
+      --region enum            Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-ne1")
+      --server-url uri         Manually specify the server to use
+      --workers integer        Number of routines that spawn to do parallel operations within object_storage (min: 1) (default 5)
 
-Use "./mgc object-storage buckets [command] --help" for more information about a command.
-
-Error: no command with name "get"

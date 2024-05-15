@@ -4,6 +4,9 @@ Usage:
   ./mgc dbaas [flags]
   ./mgc dbaas [command]
 
+Aliases:
+  dbaas, database, db
+
 Commands:
   backups     Database backups management.
   engines     Engines available for database instances.

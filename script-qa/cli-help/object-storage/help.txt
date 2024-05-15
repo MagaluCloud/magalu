@@ -4,6 +4,9 @@ Usage:
   ./mgc object-storage [flags]
   ./mgc object-storage [command]
 
+Aliases:
+  object-storage, object, objs
+
 Commands:
   api-key     Manage credentials to use Object Storage
   buckets     Bucket operations for Object Storage API
