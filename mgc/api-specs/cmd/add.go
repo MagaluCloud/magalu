@@ -24,6 +24,9 @@ func interfaceToMap(i interface{}) (map[string]interface{}, bool) {
 }
 
 func write(cmd *cobra.Command, args []string) {
+	var fromViveiro bool
+	cmd.Flags().BoolVarP(&fromViveiro, "viveiro", "v", false, "Função utilizando viveiro")
+
 	var toSave []specList
 	var file string
 	if fromViveiro {

@@ -11,6 +11,8 @@ var downloadSpecsCmd = &cobra.Command{
 	Use:   "download",
 	Short: "Download all available specs",
 	Run: func(cmd *cobra.Command, args []string) {
+		var fromViveiro bool
+		cmd.Flags().BoolVarP(&fromViveiro, "viveiro", "v", false, "Função utilizando viveiro")
 
 		_ = verificarEAtualizarDiretorio(SPEC_DIR)
 

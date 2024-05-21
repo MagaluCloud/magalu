@@ -27,16 +27,14 @@ func Execute() error {
 	return rootCmd.Execute()
 }
 
-var fromViveiro bool
-
 func init() {
 	cobra.OnInitialize(initConfig)
 	rootCmd.AddCommand(versionCmd)
-	downloadSpecsCmd.Flags().BoolVarP(&fromViveiro, "viveiro", "v", false, "Função utilizando viveiro")
 	rootCmd.AddCommand(downloadSpecsCmd)
-	writeSpecsCmd.Flags().BoolVarP(&fromViveiro, "viveiro", "v", false, "Função utilizando viveiro")
 	rootCmd.AddCommand(writeSpecsCmd)
 	rootCmd.AddCommand(deleteSpecsCmd)
+	rootCmd.AddCommand(listSpecsCmd)
+	rootCmd.AddCommand(convertCmd)
 }
 
 func initConfig() {
