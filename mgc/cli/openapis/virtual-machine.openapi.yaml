@@ -218,6 +218,87 @@ paths:
             security:
             -   OAuth2:
                 - virtual-machine.write
+        post:
+            tags:
+            - backups
+            summary: Restore a backup to a virtual machine
+            description: 'Restore a backup of a Virtual Machine with the current tenant
+                which is logged in. </br>
+
+                A Backup is ready for restore when it''s in completed status.
+
+
+                #### Notes
+
+                - You can verify the status of backup using the backup list command.
+
+                - Use machine-types list to see all machine types available.
+
+
+                #### Rules
+
+                - To restore a backup you have to inform the new virtual machine information.
+
+                - You can choose a machine-type that has a disk equal or larger
+
+                than the minimum disk of the backup.'
+            operationId: restore_backup_v1_backups__id__post
+            parameters:
+            -   name: id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+                    title: Id
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/BackupRestoreRequestDefault'
+            responses:
+                '202':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CreateResponse'
+                '400':
+                    description: Snapshot Not Allowed Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '404':
+                    description: Instance Not Found Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '409':
+                    description: Snapshot Validation Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '500':
+                    description: Internal Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: true
+            x-mgc-output-flag: table=ID:$.id
+            security:
+            -   OAuth2:
+                - virtual-machine.write
     /v1/images:
         get:
             tags:
@@ -423,12 +504,12 @@ paths:
                             parameters:
                                 id: $response.body#/id
                         attach:
-                            operationId: instance_attach_port_v1_instances__id__attach_put
+                            operationId: instance_attach_port_v1_instances__id__attach_post
                             description: Instance Attach Port
                             parameters:
                                 id: $response.body#/id
                         detach:
-                            operationId: instance_detach_port_v1_instances__id__detach_put
+                            operationId: instance_detach_port_v1_instances__id__detach_post
                             description: Instance Detach Port
                             parameters:
                                 id: $response.body#/id
@@ -630,18 +711,18 @@ paths:
                             parameters:
                                 id: $request.path.id
                         attach:
-                            operationId: instance_attach_port_v1_instances__id__attach_put
+                            operationId: instance_attach_port_v1_instances__id__attach_post
                             description: Instance Attach Port
                             parameters:
                                 id: $request.path.id
                         update/id:
-                            operationId: instance_attach_port_v1_instances__id__attach_put
+                            operationId: instance_attach_port_v1_instances__id__attach_post
                             description: Instance Attach Port
                             parameters:
                                 id: $request.path.id
                             x-mgc-hidden: true
                         detach:
-                            operationId: instance_detach_port_v1_instances__id__detach_put
+                            operationId: instance_detach_port_v1_instances__id__detach_post
                             description: Instance Detach Port
                             parameters:
                                 id: $request.path.id
@@ -749,12 +830,12 @@ paths:
                 jsonPathQuery: $.result.status == "completed"
                 errorJsonPathQuery: contains($.result.status, "error")
     /v1/instances/{id}/attach:
-        put:
+        post:
             tags:
             - instances
             summary: Instance Attach Port
             description: Attach new port at Instance
-            operationId: instance_attach_port_v1_instances__id__attach_put
+            operationId: instance_attach_port_v1_instances__id__attach_post
             parameters:
             -   name: id
                 in: path
@@ -800,7 +881,7 @@ paths:
                             parameters:
                                 id: $request.path.id
                         detach:
-                            operationId: instance_detach_port_v1_instances__id__detach_put
+                            operationId: instance_detach_port_v1_instances__id__detach_post
                             description: Instance Detach Port
                             parameters:
                                 id: $request.path.id
@@ -846,13 +927,16 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
+            security:
+            -   OAuth2:
+                - virtual-machine.write
     /v1/instances/{id}/detach:
-        put:
+        post:
             tags:
             - instances
             summary: Instance Detach Port
             description: Detach a not primary port from Instance
-            operationId: instance_detach_port_v1_instances__id__detach_put
+            operationId: instance_detach_port_v1_instances__id__detach_post
             parameters:
             -   name: id
                 in: path
@@ -898,7 +982,7 @@ paths:
                             parameters:
                                 id: $request.path.id
                         attach:
-                            operationId: instance_attach_port_v1_instances__id__attach_put
+                            operationId: instance_attach_port_v1_instances__id__attach_post
                             description: Instance Attach Port
                             parameters:
                                 id: $request.path.id
@@ -944,6 +1028,9 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
+            security:
+            -   OAuth2:
+                - virtual-machine.write
     /v1/instances/{id}/reboot:
         post:
             tags:
@@ -987,12 +1074,12 @@ paths:
                             parameters:
                                 id: $request.path.id
                         attach:
-                            operationId: instance_attach_port_v1_instances__id__attach_put
+                            operationId: instance_attach_port_v1_instances__id__attach_post
                             description: Instance Attach Port
                             parameters:
                                 id: $request.path.id
                         detach:
-                            operationId: instance_detach_port_v1_instances__id__detach_put
+                            operationId: instance_detach_port_v1_instances__id__detach_post
                             description: Instance Detach Port
                             parameters:
                                 id: $request.path.id
@@ -1080,12 +1167,12 @@ paths:
                             parameters:
                                 id: $request.path.id
                         attach:
-                            operationId: instance_attach_port_v1_instances__id__attach_put
+                            operationId: instance_attach_port_v1_instances__id__attach_post
                             description: Instance Attach Port
                             parameters:
                                 id: $request.path.id
                         detach:
-                            operationId: instance_detach_port_v1_instances__id__detach_put
+                            operationId: instance_detach_port_v1_instances__id__detach_post
                             description: Instance Detach Port
                             parameters:
                                 id: $request.path.id
@@ -1216,12 +1303,12 @@ paths:
                             parameters:
                                 id: $request.path.id
                         attach:
-                            operationId: instance_attach_port_v1_instances__id__attach_put
+                            operationId: instance_attach_port_v1_instances__id__attach_post
                             description: Instance Attach Port
                             parameters:
                                 id: $request.path.id
                         detach:
-                            operationId: instance_detach_port_v1_instances__id__detach_put
+                            operationId: instance_detach_port_v1_instances__id__detach_post
                             description: Instance Detach Port
                             parameters:
                                 id: $request.path.id
@@ -1327,12 +1414,12 @@ paths:
                             parameters:
                                 id: $request.path.id
                         attach:
-                            operationId: instance_attach_port_v1_instances__id__attach_put
+                            operationId: instance_attach_port_v1_instances__id__attach_post
                             description: Instance Attach Port
                             parameters:
                                 id: $request.path.id
                         detach:
-                            operationId: instance_detach_port_v1_instances__id__detach_put
+                            operationId: instance_detach_port_v1_instances__id__detach_post
                             description: Instance Detach Port
                             parameters:
                                 id: $request.path.id
@@ -1415,12 +1502,12 @@ paths:
                             parameters:
                                 id: $request.path.id
                         attach:
-                            operationId: instance_attach_port_v1_instances__id__attach_put
+                            operationId: instance_attach_port_v1_instances__id__attach_post
                             description: Instance Attach Port
                             parameters:
                                 id: $request.path.id
                         detach:
-                            operationId: instance_detach_port_v1_instances__id__detach_put
+                            operationId: instance_detach_port_v1_instances__id__detach_post
                             description: Instance Detach Port
                             parameters:
                                 id: $request.path.id
@@ -1504,12 +1591,12 @@ paths:
                             parameters:
                                 id: $request.path.id
                         attach:
-                            operationId: instance_attach_port_v1_instances__id__attach_put
+                            operationId: instance_attach_port_v1_instances__id__attach_post
                             description: Instance Attach Port
                             parameters:
                                 id: $request.path.id
                         detach:
-                            operationId: instance_detach_port_v1_instances__id__detach_put
+                            operationId: instance_detach_port_v1_instances__id__detach_post
                             description: Instance Detach Port
                             parameters:
                                 id: $request.path.id
@@ -2264,6 +2351,57 @@ components:
                 status: completed
                 tenant_id: 39b42f3a-8728-44b9-877b-3d3cb2ff19cc
                 updated_at: '2022-06-11T18:33:12Z'
+        BackupRestoreRequestDefault:
+            properties:
+                name:
+                    type: string
+                    maxLength: 255
+                    minLength: 1
+                    title: Name
+                machine_type:
+                    anyOf:
+                    -   $ref: '#/components/schemas/ID'
+                    -   $ref: '#/components/schemas/Name'
+                    title: Machine Type
+                ssh_key_name:
+                    type: string
+                    title: Ssh Key Name
+                availability_zone:
+                    title: Availability Zone
+                    nullable: true
+                    type: string
+                    maxLength: 255
+                    minLength: 1
+                network:
+                    $ref: '#/components/schemas/InstanceCreateRequestV1NetworkDefault'
+                user_data:
+                    title: User Data
+                    nullable: true
+                    type: string
+                    maxLength: 65000
+                    minLength: 1
+            type: object
+            required:
+            - name
+            - machine_type
+            - ssh_key_name
+            - network
+            title: BackupRestoreRequestDefault
+            example:
+                availability_zone: br-regiao-1a
+                machine_type:
+                    id: 4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a
+                name: instance name
+                network:
+                    associate_public_ip: true
+                    nic:
+                        security_groups:
+                        -   id: f273fbde-2ddf-4dcd-8c41-342671ac0d17
+                        -   id: 02a2acf3-d6db-4424-ac97-0254cb9c329e
+                    vpc:
+                        id: 4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a
+                ssh_key_name: keypair_name_here
+                user_data: some_base64_script
         BackupState:
             type: string
             enum:
@@ -2528,7 +2666,6 @@ components:
                 network:
                     associate_public_ip: true
                     nic:
-                        id: c8719fd8-7a48-4dbf-b4d8-74f71fa67422
                         security_groups:
                         -   id: f273fbde-2ddf-4dcd-8c41-342671ac0d17
                         -   id: 02a2acf3-d6db-4424-ac97-0254cb9c329e
@@ -2546,8 +2683,11 @@ components:
                     default:
                         name: default
                 nic:
+                    anyOf:
+                    -   $ref: '#/components/schemas/ID'
+                    -   $ref: '#/components/schemas/SecurityGroups'
+                    title: Nic
                     nullable: true
-                    $ref: '#/components/schemas/NetworkNic'
                 associate_public_ip:
                     type: boolean
                     title: Associate Public Ip
@@ -2557,7 +2697,6 @@ components:
             example:
                 associate_public_ip: true
                 nic:
-                    id: c8719fd8-7a48-4dbf-b4d8-74f71fa67422
                     security_groups:
                     -   id: f273fbde-2ddf-4dcd-8c41-342671ac0d17
                     -   id: 02a2acf3-d6db-4424-ac97-0254cb9c329e
@@ -2912,6 +3051,8 @@ components:
         InstanceV1Status:
             type: string
             enum:
+            - attaching_nic
+            - detaching_nic
             - attach_nic_pending
             - detach_nic_pending
             - provisioning
@@ -3095,23 +3236,6 @@ components:
             title: Name
             example:
                 name: some_resource_name
-        NetworkNic:
-            properties:
-                id:
-                    title: Id
-                    nullable: true
-                    type: string
-                    maxLength: 255
-                    minLength: 1
-                security_groups:
-                    items:
-                        $ref: '#/components/schemas/ID'
-                    type: array
-                    title: Security Groups
-            type: object
-            required:
-            - security_groups
-            title: NetworkNic
         NetworkPortsV1:
             properties:
                 ports:
@@ -3172,6 +3296,16 @@ components:
             - mngsvc
             - default
             title: ProjectTypeAll
+        SecurityGroups:
+            properties:
+                security_groups:
+                    items:
+                        $ref: '#/components/schemas/ID'
+                    type: array
+                    title: Security Groups
+                    default: []
+            type: object
+            title: SecurityGroups
         SnapshotCreateRequestV1:
             properties:
                 name:
@@ -3281,6 +3415,11 @@ components:
                     maxLength: 255
                     minLength: 1
                 network:
+                    default:
+                        vpc:
+                            name: default
+                        associate_public_ip: true
+                    nullable: true
                     $ref: '#/components/schemas/InstanceCreateRequestV1NetworkDefault'
                 user_data:
                     title: User Data
@@ -3293,7 +3432,6 @@ components:
             - name
             - machine_type
             - ssh_key_name
-            - network
             title: SnapshotRestoreRequestV1Default
             example:
                 availability_zone: br-regiao-1a
@@ -3302,8 +3440,12 @@ components:
                 name: instance name
                 network:
                     associate_public_ip: true
+                    nic:
+                        security_groups:
+                        -   id: f273fbde-2ddf-4dcd-8c41-342671ac0d17
+                        -   id: 02a2acf3-d6db-4424-ac97-0254cb9c329e
                     vpc:
-                        id: 4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a
+                        id: 2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6
                 ssh_key_name: keypair_name_here
                 user_data: some_base64_script
         ValidationError:

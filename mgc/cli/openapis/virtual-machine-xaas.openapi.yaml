@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
     title: Internal Virtual Machine Api Product
     description: Virtual Machine Api Product
-    version: 1.229.0
+    version: 1.230.0
 paths:
     /v1/health:
         get:
@@ -4631,6 +4631,13 @@ components:
                 name: instance name
                 network:
                     associate_public_ip: false
+                    nic:
+                        id: c8719fd8-7a48-4dbf-b4d8-74f71fa67422
+                        security_groups:
+                        -   id: f273fbde-2ddf-4dcd-8c41-342671ac0d17
+                        -   id: 02a2acf3-d6db-4424-ac97-0254cb9c329e
+                    vpc:
+                        id: 2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6
                 ssh_key_name: keypair_name_here
                 user_data: some_base64_script
         SnapshotStateV1:
@@ -4996,7 +5003,7 @@ tags:
     description: xaas machine-types
 -   name: xaas snapshots
     description: xaas snapshots
-$id: https://virtual-machine.team-integration.jaxyendy.com/internal/v1/openapi.json
+$id: https://virtual-machine.jaxyendy.com/internal/v1/openapi.json
 servers:
 -   url: https://{env}/{region}/compute-xaas
     variables:
