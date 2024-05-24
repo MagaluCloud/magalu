@@ -36,23 +36,30 @@ import (
 )
 
 type CreateParameters struct {
-	Name string               `json:"name"`
-	Size int                  `json:"size"`
-	Type CreateParametersType `json:"type"`
+	Backup *CreateParametersBackup `json:"backup,omitempty"`
+	Name   string                  `json:"name"`
+	Size   int                     `json:"size"`
+	Type   CreateParametersType    `json:"type"`
 }
 
-// any of: CreateParametersType0, CreateParametersType1
-type CreateParametersType struct {
-	CreateParametersType0 `json:",squash"` // nolint
-	CreateParametersType1 `json:",squash"` // nolint
+// any of: CreateParametersBackup0, CreateParametersBackup1
+type CreateParametersBackup struct {
+	CreateParametersBackup0 `json:",squash"` // nolint
+	CreateParametersBackup1 `json:",squash"` // nolint
 }
 
-type CreateParametersType0 struct {
+type CreateParametersBackup0 struct {
 	Id string `json:"id"`
 }
 
-type CreateParametersType1 struct {
+type CreateParametersBackup1 struct {
 	Name string `json:"name"`
+}
+
+// any of: CreateParametersBackup0, CreateParametersBackup1
+type CreateParametersType struct {
+	CreateParametersBackup0 `json:",squash"` // nolint
+	CreateParametersBackup1 `json:",squash"` // nolint
 }
 
 type CreateConfigs struct {

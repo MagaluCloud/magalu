@@ -122,8 +122,9 @@ type ListResultInstancesItemNetwork1PortsItem struct {
 }
 
 type ListResultInstancesItemNetwork1PortsItemIpAddresses struct {
-	PrivateIpAddress string `json:"privateIpAddress"`
-	PublicIpAddress  string `json:"publicIpAddress"`
+	IpV6address      *string `json:"ipV6Address,omitempty"`
+	PrivateIpAddress string  `json:"privateIpAddress"`
+	PublicIpAddress  *string `json:"publicIpAddress,omitempty"`
 }
 
 type ListResultInstancesItemNetwork1Ports []ListResultInstancesItemNetwork1PortsItem

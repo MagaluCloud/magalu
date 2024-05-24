@@ -29,6 +29,7 @@ block-storage.openapi:
             computed:
               - id
             non-computed:
+              - backup
               - name
               - size
               - type
@@ -388,6 +389,30 @@ network.openapi:
             non-computed:
               - description
               - name
+    - POST /v0/xaas/vpcs/{vpc_id}/ports:
+        - '200':
+            computed:
+              - id
+            non-computed:
+              - has_pip
+              - has_sg
+              - name
+              - project_type
+              - security_groups_id
+              - subnets
+              - vpc_id
+              - x-zone
+    - POST /v0/xaas/vpcs/{vpc_id}/public_ips:
+        - '200':
+            computed:
+              - id
+            non-computed:
+              - description
+              - project_type
+              - validate_quota
+              - vpc_id
+              - wait
+              - wait_timeout
     - POST /v0/security_groups/{security_group_id}/rules:
         - '200':
             computed:
@@ -418,6 +443,63 @@ network.openapi:
               - validate_quota
               - wait
               - wait_timeout
+    - POST /v0/xaas/security_groups/{security_group_id}/rules:
+        - '201':
+            computed:
+              - id
+            non-computed:
+              - direction
+              - ethertype
+              - port_range_max
+              - port_range_min
+              - project_type
+              - protocol
+              - remote_group_id
+              - remote_ip_prefix
+              - security_group_id
+              - wait
+              - wait_timeout
+    - POST /v0/xaas/security_groups/default:
+        - '201':
+            computed:
+              - id
+            non-computed:
+              - project_type
+    - POST /v0/xaas/security_groups:
+        - '201':
+            computed:
+              - id
+            non-computed:
+              - description
+              - name
+              - project_type
+    - POST /v0/xaas/vpcs/{vpc_id}/security_groups:
+        - '201':
+            computed:
+              - id
+            non-computed:
+              - description
+              - name
+              - project_type
+              - vpc_id
+              - wait
+              - wait_timeout
+    - POST /v0/xaas/vpcs/{vpc_id}/subnetpools:
+        - '201':
+            computed:
+              - external_id
+              - id
+              - tenant_id
+            non-computed:
+              - address_scope_id
+              - default_prefix_length
+              - description
+              - max_prefix_length
+              - min_prefix_length
+              - name
+              - pool_prefix
+              - project_type
+              - vpc_id
     - POST /v0/vpcs/{vpc_id}/subnets:
         - '201':
             computed:
@@ -430,10 +512,52 @@ network.openapi:
               - name
               - vpc_id
               - x-zone
+    - POST /v0/xaas/vpcs:
+        - '200':
+            computed:
+              - id
+            non-computed:
+              - cidr
+              - description
+              - name
+              - project_type
+              - subnetpool_id
+    - POST /v0/xaas/vpcs/{vpc_id}/add_interface:
+        - '200':
+            computed:
+              - created_at
+              - id
+              - ip_address
+              - router_id
+            non-computed:
+              - nic_vpc_id
+              - project_type
+              - vpc_id
   missing-crud:
+    - xaas_network:
+        - post
+        - delete
     - rule:
         - post
+    - xaas_subnets:
+        - post
+        - delete
   non-snakecase-values:
+    GET /v0/xaas/security_groups:
+      parameters:
+        - x-zone
+    GET /v0/xaas/security_groups/{security_group_id}:
+      parameters:
+        - x-zone
+    GET /v0/xaas/vpcs/{vpc_id}/security_groups:
+      parameters:
+        - x-zone
+    PATCH /v0/xaas/rules/{rule_id}:
+      parameters:
+        - x-request-id
+    PATCH /v0/xaas/security_groups/{security_group_id}:
+      parameters:
+        - x-request-id
     POST /v0/ports:
       parameters:
         - x-zone
@@ -443,11 +567,19 @@ network.openapi:
     POST /v0/vpcs/{vpc_id}/subnets:
       parameters:
         - x-zone
+    POST /v0/xaas/vpcs/{vpc_id}/ports:
+      parameters:
+        - x-zone
   typeless-schemas:
     - paths./v0/ports/{port_id}/attach/{security_group_id}.post.responses.200.content.application/json.schema
     - paths./v0/ports/{port_id}/detach/{security_group_id}.post.responses.200.content.application/json.schema
+    - paths./v0/xaas/ports/{port_id}/attach/{security_group_id}.post.responses.200.content.application/json.schema
+    - paths./v0/xaas/ports/{port_id}/detach/{security_group_id}.post.responses.200.content.application/json.schema
     - paths./v0/public_ips/{public_ip_id}/attach/{port_id}.post.responses.200.content.application/json.schema
     - paths./v0/public_ips/{public_ip_id}/detach/{port_id}.post.responses.200.content.application/json.schema
+    - paths./v0/xaas/public_ips/{public_ip_id}/attach/{port_id}.post.responses.200.content.application/json.schema
+    - paths./v0/xaas/public_ips/{public_ip_id}/detach/{port_id}.post.responses.200.content.application/json.schema
+    - paths./v0/xaas/vpcs/{vpc_id}/add_route.post.responses.201.content.application/json.schema
   uneven-resources:
     port:
       DELETE:
@@ -484,22 +616,208 @@ network.openapi:
           - /v0/vpcs/{vpc_id}/public_ips
           - /v0/vpcs/{vpc_id}/security_groups
           - /v0/vpcs/default
+    xaas_port:
+      DELETE:
+        - /v0/xaas/ports/all
+        - /v0/xaas/ports/{port_id}
+      POST:
+        - /v0/xaas/vpcs/{vpc_id}/ports
+        - /v0/xaas/ports/{port_id}/attach/{security_group_id}
+        - /v0/xaas/ports/{port_id}/detach/{security_group_id}
+    xaas_public_ip:
+      GET:
+        expected_prefix: /v0/xaas/public_ips
+        uneven:
+          - /v0/xaas/vpcs/{vpc_id}/public_ips
+      POST:
+        - /v0/xaas/vpcs/{vpc_id}/public_ips
+        - /v0/xaas/public_ips/{public_ip_id}/attach/{port_id}
+        - /v0/xaas/public_ips/{public_ip_id}/detach/{port_id}
+    xaas_rule:
+      GET:
+        - /v0/xaas/security_groups/{security_group_id}/rules
+        - /v0/xaas/rules/{rule_id}
+    xaas_security_group:
+      DELETE:
+        - /v0/xaas/security_groups/{security_group_id}
+        - /v0/xaas/security_groups_all
+      GET:
+        expected_prefix: /v0/xaas/security_groups
+        uneven:
+          - /v0/xaas/vpcs/{vpc_id}/security_groups
+      POST:
+        expected_prefix: /v0/xaas/security_groups
+        uneven:
+          - /v0/xaas/vpcs/{vpc_id}/security_groups
+    xaas_subnetpools:
+      GET:
+        expected_prefix: /v0/xaas/subnetpools
+        uneven:
+          - /v0/xaas/vpcs/{vpc_id}/subnetpools
+    xaas_vpc:
+      DELETE:
+        - /v0/xaas/vpcs/all
+        - /v0/xaas/vpcs/{vpc_id}/delete_interface/{interface_id}
   unused-components:
-    - '#/components/schemas/AddInterfaceRequest'
-    - '#/components/schemas/ListNetworkApiResponse'
-    - '#/components/schemas/ProjectType'
-    - '#/components/schemas/RouteRequest'
-    - '#/components/schemas/RouterInterfaceResponseList'
-    - '#/components/schemas/RuleDefaultStatusEvent'
-    - '#/components/schemas/SecurityGroupStatusEvent'
-    - '#/components/schemas/SubnetPoolDetailsResponse'
-    - '#/components/schemas/SubnetPoolRequest'
-    - '#/components/schemas/SubnetPoolsResponse'
     - '#/components/schemas/ValidationError'
-    - '#/components/schemas/VpcDetailsResponse'
-    - '#/components/schemas/XVpcCreateRequest'
   xof-single-item:
+    - paths./v0/xaas/vpcs/{vpc_id}/networks.get.parameters.project_type.schema
+    - paths./v0/xaas/ports/all.delete.parameters.project_type.schema
+    - paths./v0/xaas/vpcs/{vpc_id}/ports.post.parameters.project_type.schema
+    - paths./v0/xaas/ports/{port_id}/attach/{security_group_id}.post.parameters.project_type.schema
+    - paths./v0/xaas/ports/{port_id}/detach/{security_group_id}.post.parameters.project_type.schema
+    - paths./v0/xaas/ports/{port_id}.get.parameters.project_type.schema
+    - paths./v0/xaas/ports/{port_id}.delete.parameters.project_type.schema
+    - paths./v0/xaas/vpcs/{vpc_id}/public_ips.post.parameters.project_type.schema
+    - paths./v0/xaas/vpcs/{vpc_id}/public_ips.get.parameters.project_type.schema
+    - paths./v0/xaas/public_ips.get.parameters.project_type.schema
+    - paths./v0/xaas/public_ips/{public_ip_id}.get.parameters.project_type.schema
+    - paths./v0/xaas/public_ips/{public_ip_id}.delete.parameters.project_type.schema
+    - paths./v0/xaas/public_ips/{public_ip_id}/attach/{port_id}.post.parameters.project_type.schema
+    - paths./v0/xaas/public_ips/{public_ip_id}/detach/{port_id}.post.parameters.project_type.schema
     - paths./v0/usage.get.parameters.quota_slug.schema
+    - paths./v0/xaas/security_groups/{security_group_id}/rules.post.parameters.project_type.schema
+    - paths./v0/xaas/security_groups/{security_group_id}/rules.get.parameters.project_type.schema
+    - paths./v0/xaas/rules/{rule_id}.get.parameters.project_type.schema
+    - paths./v0/xaas/rules/{rule_id}.delete.parameters.project_type.schema
+    - paths./v0/xaas/rules/{rule_id}.patch.parameters.project_type.schema
+    - paths./v0/xaas/security_groups.post.parameters.project_type.schema
+    - paths./v0/xaas/security_groups.get.parameters.project_type.schema
+    - paths./v0/xaas/vpcs/{vpc_id}/security_groups.post.parameters.project_type.schema
+    - paths./v0/xaas/vpcs/{vpc_id}/security_groups.get.parameters.project_type.schema
+    - paths./v0/xaas/security_groups/{security_group_id}.get.parameters.project_type.schema
+    - paths./v0/xaas/security_groups/{security_group_id}.delete.parameters.project_type.schema
+    - paths./v0/xaas/security_groups/{security_group_id}.patch.parameters.project_type.schema
+    - paths./v0/xaas/security_groups_all.delete.parameters.project_type.schema
+    - paths./v0/xaas/vpcs/{vpc_id}/subnetpools.post.parameters.project_type.schema
+    - paths./v0/xaas/vpcs/{vpc_id}/subnetpools.get.parameters.project_type.schema
+    - paths./v0/xaas/subnetpools.get.parameters.project_type.schema
+    - paths./v0/xaas/subnetpools/{subnetpool_id}.get.parameters.project_type.schema
+    - paths./v0/xaas/subnetpools/{subnetpool_id}.delete.parameters.project_type.schema
+    - paths./v0/xaas/vpcs/{vpc_id}/subnets.get.parameters.project_type.schema
+    - paths./v0/xaas/vpcs.post.parameters.project_type.schema
+    - paths./v0/xaas/vpcs.get.parameters.project_type.schema
+    - paths./v0/xaas/vpcs/all.delete.parameters.project_type.schema
+    - paths./v0/xaas/vpcs/{vpc_id}/add_route.post.parameters.project_type.schema
+    - paths./v0/xaas/vpcs/{vpc_id}/delete_route.post.parameters.project_type.schema
+    - paths./v0/xaas/vpcs/{vpc_id}/add_interface.post.parameters.project_type.schema
+    - paths./v0/xaas/vpcs/{vpc_id}/delete_interface/{interface_id}.delete.parameters.project_type.schema
+    - paths./v0/xaas/vpcs/{vpc_id}/interfaces.get.parameters.project_type.schema
+virtual-machine-xaas.openapi:
+  computed-variables:
+    - POST /v1/internal/images:
+        - '201':
+            computed:
+              - id
+            non-computed:
+              - end_life_at
+              - end_standard_support_at
+              - image_id
+              - image_url
+              - internal
+              - min_disk
+              - min_ram
+              - min_vcpu
+              - name
+              - platform
+              - release_at
+              - sku
+              - status
+              - version
+    - POST /v1/internal/instance_types:
+        - '201':
+            computed:
+              - status
+            non-computed:
+              - disk
+              - gpu
+              - gpu_model
+              - id
+              - internal
+              - name
+              - ram
+              - sku
+              - vcpus
+    - POST /v1/xaas/instances:
+        - '201':
+            computed:
+              - id
+            non-computed:
+              - associate_public_ip
+              - availability_zone
+              - image
+              - machine_type
+              - name
+              - nic
+              - project_type
+              - ssh_key_name
+              - user_data
+              - vpc
+    - POST /v1/xaas/snapshots:
+        - '202':
+            computed:
+              - id
+            non-computed:
+              - name
+              - project_type
+              - virtual_machine
+  missing-crud:
+    - healthchecks:
+        - post
+        - delete
+    - backups:
+        - get
+        - post
+        - delete
+    - diagnostics:
+        - post
+        - delete
+    - keypairs:
+        - get
+    - machine-types:
+        - post
+        - delete
+    - snapshots:
+        - get
+        - post
+        - delete
+    - xaas images:
+        - post
+        - delete
+    - xaas machine-types:
+        - post
+        - delete
+  uneven-resources:
+    backups:
+      PATCH:
+        - /v1/internal/backups/urp/{external_backup_id}
+        - /v1/internal/backups/{id}
+    images:
+      PATCH:
+        expected_prefix: /v1/internal/images/{id}
+        uneven:
+          - /v1/internal/images/urp/{urp_id}
+    instances:
+      GET:
+        - /v1/instances/internal/urp/{id}
+        - /v1/instances/internal/{id}
+        - /v1/internal/instances/urp/{id}
+        - /v1/internal/instances/{id}
+      PATCH:
+        - /v1/internal/instances/urp/{urp_id}
+        - /v1/internal/instances/{id}
+  unused-components:
+    - '#/components/schemas/ValidationError'
+  xof-single-item:
+    - paths./v1/instances/internal/urp/{id}.get.parameters.project_type.schema
+    - paths./v1/instances/internal/{id}.get.parameters.project_type.schema
+    - paths./v1/internal/instances/diagnostics.get.parameters.project_type.schema
+    - paths./v1/internal/instances/urp/{id}.get.parameters.project_type.schema
+    - paths./v1/internal/instances/{id}.delete.parameters.project_type.schema
+    - paths./v1/internal/instances/{id}.get.parameters.project_type.schema
+    - paths./v1/internal/instances/{id}.post.parameters.project_type.schema
+    - paths./v1/internal/instances/{id}/ports/{port_id}.delete.parameters.project_type.schema
+    - components.schemas.ImageRequestV1.status
 virtual-machine.openapi:
   computed-variables:
     - POST /v1/backups:

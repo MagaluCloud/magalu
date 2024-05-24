@@ -480,7 +480,7 @@ func (o *operation) forEachSecurityRequirement(cb func(scheme string, scopes []s
 		for _, reqRef := range *o.operation.Security {
 			for scheme, scopes := range reqRef {
 				scheme = strings.ToLower(scheme)
-				if scheme == "oauth2" || scheme == "bearerauth" || scheme == "apikeyauth" {
+				if isSupportedScheme(scheme) {
 					run, err := cb(scheme, scopes)
 					if err != nil {
 						return false, err
@@ -528,7 +528,31 @@ func isAuthForced(parameters core.Parameters) bool {
 	return b
 }
 
+func isSupportedScheme(schema string) bool {
+	var allSupportedSchemes = []string{
+		bearerAuthMethod,
+		oAuth2Method,
+		apiKeyAuthMethod,
+		xaasAuthMethod,
+	}
+
+	for _, supportedScheme := range allSupportedSchemes {
+		if schema == supportedScheme {
+			return true
+		}
+	}
+
+	return false
+
+}
+
 const apiKeyAuthMethod = "apikeyauth"
+
+const xaasAuthMethod = "xaasauth"
+
+const oAuth2Method = "oauth2"
+
+const bearerAuthMethod = "bearerauth"
 
 func (o *operation) setSecurityHeader(ctx context.Context, paramValues core.Parameters, req *http.Request, auth *mgcAuthPkg.Auth) (err error) {
 	if isAuthForced(paramValues) || o.needsAuth() {
@@ -544,6 +568,14 @@ func (o *operation) setSecurityHeader(ctx context.Context, paramValues core.Para
 			}
 
 			req.Header.Set("x-api-key", apiKey)
+
+		case xaasAuthMethod:
+			xTenantID, err := auth.XTenantID(ctx)
+			if err != nil {
+				return err
+			}
+
+			req.Header.Set("x-tenant-id", xTenantID)
 
 		default:
 			accessToken, err := auth.AccessToken(ctx)

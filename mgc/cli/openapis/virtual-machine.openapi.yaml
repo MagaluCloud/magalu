@@ -9,6 +9,108 @@ info:
     version: v1
 paths:
     /v1/backups:
+        get:
+            tags:
+            - backups
+            summary: Lists all backups in the current tenant.
+            description: 'List Virtual Machine backups in the current tenant which
+                is logged in.
+
+
+                #### Notes
+
+                - You can use the **extend** argument to get more details from the
+                inner objects
+
+                like image or type.'
+            operationId: list_backups_v1_backups_get
+            parameters:
+            -   name: _limit
+                in: query
+                required: false
+                schema:
+                    type: integer
+                    maximum: 2147483647
+                    exclusiveMinimum: true
+                    description: limit the number of the results
+                    default: 50
+                    title: ' Limit'
+                description: limit the number of the results
+            -   name: _offset
+                in: query
+                required: false
+                schema:
+                    type: integer
+                    maximum: 2147483647
+                    minimum: 0
+                    description: pagination for the results limited
+                    default: 0
+                    title: ' Offset'
+                description: pagination for the results limited
+            -   name: _sort
+                in: query
+                required: false
+                schema:
+                    type: string
+                    pattern: ^(^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$
+                    description: order of the results using informed fields
+                    default: created_at:asc
+                    title: ' Sort'
+                description: order of the results using informed fields
+            -   name: expand
+                in: query
+                required: false
+                schema:
+                    type: array
+                    items:
+                        type: string
+                    description: 'You can get more detailed info about: [''instance''] '
+                    default: []
+                    title: Expand
+                description: 'You can get more detailed info about: [''instance''] '
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ListBackupResponse'
+                '400':
+                    description: Snapshot Not Allowed Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '404':
+                    description: Instance Not Found Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '409':
+                    description: Snapshot Validation Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '500':
+                    description: Internal Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: true
+            x-mgc-output-flag: table=ID:$.instances[*].id,NAME:$.instances[*].name,STATE:$.instances[*].state,STATUS:$.instances[*].status,MACHINE_TYPE:$.instances[*].machine_type,IMAGE:$.instances[*].image,
+                CREATED_AT:$.instances[*].created_at, SSH_KEY_NAME:$.instances[*].ssh_key_name
+            security:
+            -   OAuth2:
+                - virtual-machine.read
         post:
             tags:
             - backups
@@ -130,6 +232,7 @@ paths:
                 required: false
                 schema:
                     type: integer
+                    maximum: 2147483647
                     exclusiveMinimum: true
                     default: 50
                     title: ' Limit'
@@ -138,6 +241,7 @@ paths:
                 required: false
                 schema:
                     type: integer
+                    maximum: 2147483647
                     minimum: 0
                     default: 0
                     title: ' Offset'
@@ -189,6 +293,7 @@ paths:
                 required: false
                 schema:
                     type: integer
+                    maximum: 2147483647
                     exclusiveMinimum: true
                     description: limit the number of the results
                     default: 50
@@ -199,6 +304,7 @@ paths:
                 required: false
                 schema:
                     type: integer
+                    maximum: 2147483647
                     minimum: 0
                     description: pagination for the results limited
                     default: 0
@@ -1457,6 +1563,7 @@ paths:
                 required: false
                 schema:
                     type: integer
+                    maximum: 2147483647
                     exclusiveMinimum: true
                     description: limit the number of the results
                     default: 50
@@ -1467,6 +1574,7 @@ paths:
                 required: false
                 schema:
                     type: integer
+                    maximum: 2147483647
                     minimum: 0
                     description: pagination for the results limited
                     default: 0
@@ -1522,6 +1630,7 @@ paths:
                 required: false
                 schema:
                     type: integer
+                    maximum: 2147483647
                     exclusiveMinimum: true
                     description: limit the number of the results
                     default: 50
@@ -1532,6 +1641,7 @@ paths:
                 required: false
                 schema:
                     type: integer
+                    maximum: 2147483647
                     minimum: 0
                     description: pagination for the results limited
                     default: 0
@@ -2083,6 +2193,95 @@ components:
                 rotation: 1
                 virtual_machine:
                     id: 4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a
+        BackupResponse:
+            properties:
+                id:
+                    type: string
+                    title: Id
+                name:
+                    type: string
+                    title: Name
+                backup_type:
+                    type: string
+                    title: Backup Type
+                instance:
+                    anyOf:
+                    -   $ref: '#/components/schemas/InstanceResponseBackupV1'
+                    -   $ref: '#/components/schemas/InstanceSimpleResponseBackupV1'
+                    title: Instance
+                rotation:
+                    type: integer
+                    title: Rotation
+                status:
+                    $ref: '#/components/schemas/BackupStatus'
+                state:
+                    $ref: '#/components/schemas/BackupState'
+                size:
+                    title: Size
+                    nullable: true
+                    type: integer
+                min_disk:
+                    title: Min Disk
+                    nullable: true
+                    type: integer
+                created_at:
+                    type: string
+                    title: Created At
+                    example: '2022-01-01T00:00:10Z'
+                updated_at:
+                    title: Updated At
+                    nullable: true
+                    type: string
+                    example: '2022-01-01T00:00:10Z'
+            type: object
+            required:
+            - id
+            - name
+            - backup_type
+            - instance
+            - rotation
+            - status
+            - state
+            - created_at
+            title: BackupResponse
+            example:
+                backup_type: daily
+                created_at: '2022-06-10T18:33:12Z'
+                id: 2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6
+                instance:
+                    id: 4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a
+                    image:
+                        id: 4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a
+                    machine_type:
+                        id: 4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a
+                    name: instance name
+                min_disk: 10
+                name: backup name
+                project_type: default
+                rotation: 1
+                size: 1000
+                state: available
+                status: completed
+                tenant_id: 39b42f3a-8728-44b9-877b-3d3cb2ff19cc
+                updated_at: '2022-06-11T18:33:12Z'
+        BackupState:
+            type: string
+            enum:
+            - new
+            - available
+            - deleted
+            - error
+            title: BackupState
+        BackupStatus:
+            type: string
+            enum:
+            - provisioning
+            - creating
+            - completed
+            - error
+            - deleting
+            - deleted
+            title: BackupStatus
         BackupType:
             type: string
             title: BackupType
@@ -2300,6 +2499,11 @@ components:
                     maxLength: 255
                     minLength: 1
                 network:
+                    default:
+                        vpc:
+                            name: default
+                        associate_public_ip: true
+                    nullable: true
                     $ref: '#/components/schemas/InstanceCreateRequestV1NetworkDefault'
                 user_data:
                     title: User Data
@@ -2313,7 +2517,6 @@ components:
             - machine_type
             - ssh_key_name
             - image
-            - network
             title: InstanceCreateRequestV1Default
             example:
                 availability_zone: br-regiao-1a
@@ -2360,6 +2563,46 @@ components:
                     -   id: 02a2acf3-d6db-4424-ac97-0254cb9c329e
                 vpc:
                     id: 2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6
+        InstanceResponseBackupV1:
+            properties:
+                id:
+                    type: string
+                    title: Id
+                name:
+                    type: string
+                    title: Name
+                status:
+                    type: string
+                    title: Status
+                state:
+                    type: string
+                    title: State
+                image:
+                    anyOf:
+                    -   $ref: '#/components/schemas/ImageInstanceV1Response'
+                    -   $ref: '#/components/schemas/ImageExtendResponse'
+                    title: Image
+                machine_type:
+                    anyOf:
+                    -   $ref: '#/components/schemas/InstanceTypeForInstanceV1Response'
+                    -   $ref: '#/components/schemas/InstanceTypesExtendResponse'
+                    title: Machine Type
+            type: object
+            required:
+            - id
+            - name
+            - status
+            - state
+            - image
+            - machine_type
+            title: InstanceResponseBackupV1
+            example:
+                instance:
+                    id: 4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a
+                    image:
+                        id: 4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a
+                    machine_type:
+                        id: 4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a
         InstanceResponseSnapshotV1:
             properties:
                 id:
@@ -2402,6 +2645,18 @@ components:
             example:
                 machine_type:
                     id: 2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6
+        InstanceSimpleResponseBackupV1:
+            properties:
+                id:
+                    type: string
+                    title: Id
+            type: object
+            required:
+            - id
+            title: InstanceSimpleResponseBackupV1
+            example:
+                instance:
+                    id: 4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a
         InstanceTypeForInstanceV1Response:
             properties:
                 id:
@@ -2718,6 +2973,31 @@ components:
             required:
             - privateIpAddress
             title: IpAddressExpand
+        ListBackupResponse:
+            properties:
+                backups:
+                    items:
+                        $ref: '#/components/schemas/BackupResponse'
+                    type: array
+                    title: Backups
+            type: object
+            required:
+            - backups
+            title: ListBackupResponse
+            example:
+                backups:
+                -   backup_type: daily
+                    created_at: '2022-06-10T18:33:12Z'
+                    id: 2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6
+                    instance:
+                        id: 4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a
+                    min_disk: 10
+                    name: backup name
+                    rotation: 1
+                    size: 1000
+                    state: available
+                    status: completed
+                    updated_at: '2022-06-11T18:33:12Z'
         ListImageExternalV1:
             properties:
                 images:

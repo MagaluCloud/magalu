@@ -35,7 +35,7 @@ type RestoreParameters struct {
 	Id               string                       `json:"id"`
 	MachineType      RestoreParametersMachineType `json:"machine_type"`
 	Name             string                       `json:"name"`
-	Network          *RestoreParametersNetwork    `json:"network,omitempty"`
+	Network          RestoreParametersNetwork     `json:"network"`
 	SshKeyName       string                       `json:"ssh_key_name"`
 	UserData         *string                      `json:"user_data,omitempty"`
 }
@@ -56,8 +56,16 @@ type RestoreParametersMachineType1 struct {
 
 type RestoreParametersNetwork struct {
 	AssociatePublicIp *bool                        `json:"associate_public_ip,omitempty"`
+	Nic               *RestoreParametersNetworkNic `json:"nic,omitempty"`
 	Vpc               *RestoreParametersNetworkVpc `json:"vpc,omitempty"`
 }
+
+type RestoreParametersNetworkNic struct {
+	Id             *string                                   `json:"id,omitempty"`
+	SecurityGroups RestoreParametersNetworkNicSecurityGroups `json:"security_groups"`
+}
+
+type RestoreParametersNetworkNicSecurityGroups []RestoreParametersMachineType0
 
 // any of: RestoreParametersMachineType0, RestoreParametersMachineType1
 type RestoreParametersNetworkVpc struct {
