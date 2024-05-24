@@ -1,0 +1,12 @@
+xaas_security_group | vpcs-security-groups
+
+Usage:
+  ./mgc network xaas-security-group vpcs-security-groups [flags]
+
+Flags:
+  -h, --help      help for vpcs-security-groups
+  -v, --version   version for vpcs-security-groups
+
+Global Flags:
+      --cli.show-cli-globals   Show all CLI global flags on usage text
+

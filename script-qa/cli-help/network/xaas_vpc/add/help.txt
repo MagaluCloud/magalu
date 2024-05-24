@@ -1,0 +1,12 @@
+xaas_vpc | add
+
+Usage:
+  ./mgc network xaas-vpc add [flags]
+
+Flags:
+  -h, --help      help for add
+  -v, --version   version for add
+
+Global Flags:
+      --cli.show-cli-globals   Show all CLI global flags on usage text
+

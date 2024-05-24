@@ -1,0 +1,15 @@
+xaas_subnetpools
+
+Usage:
+  ./mgc network xaas-subnetpools [flags]
+
+Aliases:
+  xaas-subnetpools, xaas_subnetpools
+
+Flags:
+  -h, --help      help for xaas-subnetpools
+  -v, --version   version for xaas-subnetpools
+
+Global Flags:
+      --cli.show-cli-globals   Show all CLI global flags on usage text
+

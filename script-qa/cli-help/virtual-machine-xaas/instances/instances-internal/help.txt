@@ -1,0 +1,19 @@
+instances | instances-internal
+
+Usage:
+  ./mgc virtual-machine-xaas instances instances-internal [flags]
+  ./mgc virtual-machine-xaas instances instances-internal [command]
+
+Commands:
+  get         Instance Internal Detail
+  urp         Instance Internal By Urp Detail
+
+Flags:
+  -h, --help      help for instances-internal
+  -v, --version   version for instances-internal
+
+Global Flags:
+      --cli.show-cli-globals   Show all CLI global flags on usage text
+
+Use "./mgc virtual-machine-xaas instances instances-internal [command] --help" for more information about a command.
+

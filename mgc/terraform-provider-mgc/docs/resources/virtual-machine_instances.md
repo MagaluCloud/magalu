@@ -73,13 +73,10 @@ Optional:
 <a id="nestedatt--network--nic"></a>
 ### Nested Schema for `network.nic`
 
-Required:
-
-- `security_groups` (Attributes List) (see [below for nested schema](#nestedatt--network--nic--security_groups))
-
 Optional:
 
 - `id` (String)
+- `security_groups` (Attributes List) (see [below for nested schema](#nestedatt--network--nic--security_groups))
 
 <a id="nestedatt--network--nic--security_groups"></a>
 ### Nested Schema for `network.nic.security_groups`

@@ -1,0 +1,23 @@
+This route is when the vm-instace worker already
+deleted the instance from: urp and vpc api to mark the instance 
+
+to 'deleted' on virtual machine DB.
+
+### Note
+This route is used only for internal proposes.
+
+Usage:
+  ./mgc virtual-machine-xaas instances internal-instances delete-id [id] [flags]
+
+Flags:
+  -h, --help                help for delete-id
+      --id uuid             Id (required)
+      --project-type enum   Project Type (one of "dbaas", "default", "iamaas", "k8saas" or "mngsvc") (default "default")
+  -v, --version             version for delete-id
+
+Global Flags:
+      --cli.show-cli-globals   Show all CLI global flags on usage text
+      --env enum               Environment to use (one of "pre-prod" or "prod") (default "prod")
+      --region enum            Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
+      --server-url uri         Manually specify the server to use
+

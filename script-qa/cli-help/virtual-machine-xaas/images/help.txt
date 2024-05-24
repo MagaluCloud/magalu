@@ -1,0 +1,23 @@
+images
+
+Usage:
+  ./mgc virtual-machine-xaas images [flags]
+  ./mgc virtual-machine-xaas images [command]
+
+Commands:
+  create      Create Image V1
+  delete      Delete Image V1
+  list        List Images All V1
+  rename      Update Image Name
+  update      Update Image Status
+  urp         Update Images From Urp
+
+Flags:
+  -h, --help      help for images
+  -v, --version   version for images
+
+Global Flags:
+      --cli.show-cli-globals   Show all CLI global flags on usage text
+
+Use "./mgc virtual-machine-xaas images [command] --help" for more information about a command.
+

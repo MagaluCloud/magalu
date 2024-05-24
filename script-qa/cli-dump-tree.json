@@ -30406,10 +30406,6 @@
       "parameters": {
        "additionalProperties": false,
        "properties": {
-        "force-authentication": {
-         "description": "Force authentication by sending the header even if this API doesn't require it",
-         "type": "boolean"
-        },
         "id": {
          "title": "Id",
          "type": "string"
@@ -30588,7 +30584,6 @@
          "example": {
           "associate_public_ip": true,
           "nic": {
-           "id": "c8719fd8-7a48-4dbf-b4d8-74f71fa67422",
            "security_groups": [
             {
              "id": "f273fbde-2ddf-4dcd-8c41-342671ac0d17"
@@ -30609,41 +30604,57 @@
            "type": "boolean"
           },
           "nic": {
-           "properties": {
-            "id": {
-             "maxLength": 255,
-             "minLength": 1,
-             "nullable": true,
-             "title": "Id",
-             "type": "string"
-            },
-            "security_groups": {
-             "items": {
-              "example": {
-               "id": "9ec75090-2872-4f51-8111-53d05d96d2c6"
-              },
-              "properties": {
-               "id": {
-                "maxLength": 255,
-                "minLength": 1,
-                "title": "Id",
-                "type": "string"
-               }
-              },
-              "required": [
-               "id"
-              ],
-              "title": "ID",
-              "type": "object"
+           "anyOf": [
+            {
+             "example": {
+              "id": "9ec75090-2872-4f51-8111-53d05d96d2c6"
              },
-             "title": "Security Groups",
-             "type": "array"
+             "properties": {
+              "id": {
+               "maxLength": 255,
+               "minLength": 1,
+               "title": "Id",
+               "type": "string"
+              }
+             },
+             "required": [
+              "id"
+             ],
+             "title": "ID",
+             "type": "object"
+            },
+            {
+             "properties": {
+              "security_groups": {
+               "default": [],
+               "items": {
+                "example": {
+                 "id": "9ec75090-2872-4f51-8111-53d05d96d2c6"
+                },
+                "properties": {
+                 "id": {
+                  "maxLength": 255,
+                  "minLength": 1,
+                  "title": "Id",
+                  "type": "string"
+                 }
+                },
+                "required": [
+                 "id"
+                ],
+                "title": "ID",
+                "type": "object"
+               },
+               "title": "Security Groups",
+               "type": "array"
+              }
+             },
+             "title": "SecurityGroups",
+             "type": "object"
             }
-           },
-           "required": [
-            "security_groups"
            ],
-           "title": "NetworkNic",
+           "nullable": true,
+           "title": "Nic",
            "type": "object"
           },
           "vpc": {
@@ -30829,10 +30840,6 @@
       "parameters": {
        "additionalProperties": false,
        "properties": {
-        "force-authentication": {
-         "description": "Force authentication by sending the header even if this API doesn't require it",
-         "type": "boolean"
-        },
         "id": {
          "title": "Id",
          "type": "string"
@@ -31233,6 +31240,8 @@
         },
         "status": {
          "enum": [
+          "attaching_nic",
+          "detaching_nic",
           "attach_nic_pending",
           "detach_nic_pending",
           "provisioning",
@@ -31703,6 +31712,8 @@
            },
            "status": {
             "enum": [
+             "attaching_nic",
+             "detaching_nic",
              "attach_nic_pending",
              "detach_nic_pending",
              "provisioning",
@@ -33261,7 +33272,6 @@
          "example": {
           "associate_public_ip": true,
           "nic": {
-           "id": "c8719fd8-7a48-4dbf-b4d8-74f71fa67422",
            "security_groups": [
             {
              "id": "f273fbde-2ddf-4dcd-8c41-342671ac0d17"
@@ -33282,41 +33292,57 @@
            "type": "boolean"
           },
           "nic": {
-           "properties": {
-            "id": {
-             "maxLength": 255,
-             "minLength": 1,
-             "nullable": true,
-             "title": "Id",
-             "type": "string"
-            },
-            "security_groups": {
-             "items": {
-              "example": {
-               "id": "9ec75090-2872-4f51-8111-53d05d96d2c6"
-              },
-              "properties": {
-               "id": {
-                "maxLength": 255,
-                "minLength": 1,
-                "title": "Id",
-                "type": "string"
-               }
-              },
-              "required": [
-               "id"
-              ],
-              "title": "ID",
-              "type": "object"
+           "anyOf": [
+            {
+             "example": {
+              "id": "9ec75090-2872-4f51-8111-53d05d96d2c6"
              },
-             "title": "Security Groups",
-             "type": "array"
+             "properties": {
+              "id": {
+               "maxLength": 255,
+               "minLength": 1,
+               "title": "Id",
+               "type": "string"
+              }
+             },
+             "required": [
+              "id"
+             ],
+             "title": "ID",
+             "type": "object"
+            },
+            {
+             "properties": {
+              "security_groups": {
+               "default": [],
+               "items": {
+                "example": {
+                 "id": "9ec75090-2872-4f51-8111-53d05d96d2c6"
+                },
+                "properties": {
+                 "id": {
+                  "maxLength": 255,
+                  "minLength": 1,
+                  "title": "Id",
+                  "type": "string"
+                 }
+                },
+                "required": [
+                 "id"
+                ],
+                "title": "ID",
+                "type": "object"
+               },
+               "title": "Security Groups",
+               "type": "array"
+              }
+             },
+             "title": "SecurityGroups",
+             "type": "object"
             }
-           },
-           "required": [
-            "security_groups"
            ],
-           "title": "NetworkNic",
+           "nullable": true,
+           "title": "Nic",
            "type": "object"
           },
           "vpc": {
@@ -33384,7 +33410,6 @@
         "id",
         "machine_type",
         "name",
-        "network",
         "ssh_key_name"
        ],
        "type": "object"
@@ -33497,7 +33522,7 @@
        "nullable": true,
        "type": "null"
       },
-      "version": "1.229.0"
+      "version": "1.230.0"
      },
      {
       "configs": {
@@ -33589,13 +33614,13 @@
        "nullable": true,
        "type": "null"
       },
-      "version": "1.229.0"
+      "version": "1.230.0"
      }
     ],
     "description": "backups",
     "isInternal": false,
     "name": "backups",
-    "version": "1.229.0"
+    "version": "1.230.0"
    },
    {
     "children": [
@@ -34119,7 +34144,7 @@
        "title": "DiagnosticDetailResult",
        "type": "object"
       },
-      "version": "1.229.0"
+      "version": "1.230.0"
      },
      {
       "configs": {
@@ -34347,13 +34372,13 @@
        "title": "DiagnosticList",
        "type": "object"
       },
-      "version": "1.229.0"
+      "version": "1.230.0"
      }
     ],
     "description": "diagnostics",
     "isInternal": false,
     "name": "diagnostics",
-    "version": "1.229.0"
+    "version": "1.230.0"
    },
    {
     "children": [
@@ -34399,7 +34424,7 @@
        "nullable": true,
        "type": "null"
       },
-      "version": "1.229.0"
+      "version": "1.230.0"
      },
      {
       "configs": {
@@ -34452,13 +34477,13 @@
        "title": "Healthcheck",
        "type": "object"
       },
-      "version": "1.229.0"
+      "version": "1.230.0"
      }
     ],
     "description": "healthchecks",
     "isInternal": false,
     "name": "healthchecks",
-    "version": "1.229.0"
+    "version": "1.230.0"
    },
    {
     "children": [
@@ -34615,7 +34640,7 @@
        "title": "ImageResponseV1",
        "type": "object"
       },
-      "version": "1.229.0"
+      "version": "1.230.0"
      },
      {
       "configs": {
@@ -34668,7 +34693,7 @@
        "nullable": true,
        "type": "null"
       },
-      "version": "1.229.0"
+      "version": "1.230.0"
      },
      {
       "configs": {
@@ -34840,7 +34865,7 @@
        "title": "ListImageInternalV1",
        "type": "object"
       },
-      "version": "1.229.0"
+      "version": "1.230.0"
      },
      {
       "configs": {
@@ -34899,7 +34924,7 @@
        "nullable": true,
        "type": "null"
       },
-      "version": "1.229.0"
+      "version": "1.230.0"
      },
      {
       "configs": {
@@ -34975,7 +35000,7 @@
        "nullable": true,
        "type": "null"
       },
-      "version": "1.229.0"
+      "version": "1.230.0"
      },
      {
       "configs": {
@@ -35046,13 +35071,13 @@
        "nullable": true,
        "type": "null"
       },
-      "version": "1.229.0"
+      "version": "1.230.0"
      }
     ],
     "description": "images",
     "isInternal": false,
     "name": "images",
-    "version": "1.229.0"
+    "version": "1.230.0"
    },
    {
     "children": [
@@ -35213,7 +35238,7 @@
        "title": "InstanceTypesV1InternalResponse",
        "type": "object"
       },
-      "version": "1.229.0"
+      "version": "1.230.0"
      },
      {
       "configs": {
@@ -35266,7 +35291,7 @@
        "nullable": true,
        "type": "null"
       },
-      "version": "1.229.0"
+      "version": "1.230.0"
      },
      {
       "configs": {
@@ -35397,13 +35422,13 @@
        "title": "InstanceTypesV1InternalListResponse",
        "type": "object"
       },
-      "version": "1.229.0"
+      "version": "1.230.0"
      }
     ],
     "description": "instance types",
     "isInternal": false,
     "name": "instance types",
-    "version": "1.229.0"
+    "version": "1.230.0"
    },
    {
     "children": [
@@ -35692,7 +35717,7 @@
          "title": "InstanceV1InternalResponse",
          "type": "object"
         },
-        "version": "1.229.0"
+        "version": "1.230.0"
        },
        {
         "configs": {
@@ -35977,13 +36002,13 @@
          "title": "InstanceV1InternalResponse",
          "type": "object"
         },
-        "version": "1.229.0"
+        "version": "1.230.0"
        }
       ],
       "description": "instances | instances-internal",
       "isInternal": false,
       "name": "instances-internal",
-      "version": "1.229.0"
+      "version": "1.230.0"
      },
      {
       "children": [
@@ -36084,7 +36109,7 @@
          "nullable": true,
          "type": "null"
         },
-        "version": "1.229.0"
+        "version": "1.230.0"
        },
        {
         "configs": {
@@ -36136,7 +36161,7 @@
          "title": "InstanceDeletedAllResponse",
          "type": "object"
         },
-        "version": "1.229.0"
+        "version": "1.230.0"
        },
        {
         "configs": {
@@ -36202,7 +36227,7 @@
          "nullable": true,
          "type": "null"
         },
-        "version": "1.229.0"
+        "version": "1.230.0"
        },
        {
         "configs": {
@@ -36272,7 +36297,7 @@
          "nullable": true,
          "type": "null"
         },
-        "version": "1.229.0"
+        "version": "1.230.0"
        },
        {
         "configs": {
@@ -36557,7 +36582,7 @@
          "title": "InstanceV1InternalResponse",
          "type": "object"
         },
-        "version": "1.229.0"
+        "version": "1.230.0"
        },
        {
         "configs": {
@@ -36669,7 +36694,7 @@
          "nullable": true,
          "type": "null"
         },
-        "version": "1.229.0"
+        "version": "1.230.0"
        },
        {
         "children": [
@@ -36956,7 +36981,7 @@
            "title": "InstanceV1InternalResponse",
            "type": "object"
           },
-          "version": "1.229.0"
+          "version": "1.230.0"
          },
          {
           "configs": {
@@ -37068,25 +37093,25 @@
            "nullable": true,
            "type": "null"
           },
-          "version": "1.229.0"
+          "version": "1.230.0"
          }
         ],
         "description": "instances | urp",
         "isInternal": false,
         "name": "urp",
-        "version": "1.229.0"
+        "version": "1.230.0"
        }
       ],
       "description": "instances | internal-instances",
       "isInternal": false,
       "name": "internal-instances",
-      "version": "1.229.0"
+      "version": "1.230.0"
      }
     ],
     "description": "instances",
     "isInternal": false,
     "name": "instances",
-    "version": "1.229.0"
+    "version": "1.230.0"
    },
    {
     "children": [
@@ -37164,7 +37189,7 @@
        "title": "KeypairResponse",
        "type": "object"
       },
-      "version": "1.229.0"
+      "version": "1.230.0"
      },
      {
       "configs": {
@@ -37229,13 +37254,13 @@
        "nullable": true,
        "type": "null"
       },
-      "version": "1.229.0"
+      "version": "1.230.0"
      }
     ],
     "description": "keypairs",
     "isInternal": false,
     "name": "keypairs",
-    "version": "1.229.0"
+    "version": "1.230.0"
    },
    {
     "children": [
@@ -37450,13 +37475,13 @@
        "title": "InstanceTypesV1ListResponse",
        "type": "object"
       },
-      "version": "1.229.0"
+      "version": "1.230.0"
      }
     ],
     "description": "machine-types",
     "isInternal": false,
     "name": "machine-types",
-    "version": "1.229.0"
+    "version": "1.230.0"
    },
    {
     "children": [
@@ -37545,13 +37570,13 @@
        "nullable": true,
        "type": "null"
       },
-      "version": "1.229.0"
+      "version": "1.230.0"
      }
     ],
     "description": "snapshots",
     "isInternal": false,
     "name": "snapshots",
-    "version": "1.229.0"
+    "version": "1.230.0"
    },
    {
     "children": [
@@ -37746,13 +37771,13 @@
        "title": "ListImageExternalV1",
        "type": "object"
       },
-      "version": "1.229.0"
+      "version": "1.230.0"
      }
     ],
     "description": "xaas images",
     "isInternal": false,
     "name": "xaas images",
-    "version": "1.229.0"
+    "version": "1.230.0"
    },
    {
     "children": [
@@ -38063,7 +38088,7 @@
        "title": "CreateResponse",
        "type": "object"
       },
-      "version": "1.229.0"
+      "version": "1.230.0"
      },
      {
       "configs": {
@@ -38133,7 +38158,7 @@
        "nullable": true,
        "type": "null"
       },
-      "version": "1.229.0"
+      "version": "1.230.0"
      },
      {
       "configs": {
@@ -38565,7 +38590,7 @@
        "title": "InstanceV1Response",
        "type": "object"
       },
-      "version": "1.229.0"
+      "version": "1.230.0"
      },
      {
       "configs": {
@@ -39060,7 +39085,7 @@
        "title": "ListInstanceV1Response",
        "type": "object"
       },
-      "version": "1.229.0"
+      "version": "1.230.0"
      },
      {
       "configs": {
@@ -39125,7 +39150,7 @@
        "nullable": true,
        "type": "null"
       },
-      "version": "1.229.0"
+      "version": "1.230.0"
      },
      {
       "configs": {
@@ -39233,7 +39258,7 @@
        "nullable": true,
        "type": "null"
       },
-      "version": "1.229.0"
+      "version": "1.230.0"
      },
      {
       "configs": {
@@ -39298,7 +39323,7 @@
        "nullable": true,
        "type": "null"
       },
-      "version": "1.229.0"
+      "version": "1.230.0"
      },
      {
       "configs": {
@@ -39363,7 +39388,7 @@
        "nullable": true,
        "type": "null"
       },
-      "version": "1.229.0"
+      "version": "1.230.0"
      },
      {
       "configs": {
@@ -39428,13 +39453,13 @@
        "nullable": true,
        "type": "null"
       },
-      "version": "1.229.0"
+      "version": "1.230.0"
      }
     ],
     "description": "xaas instances",
     "isInternal": false,
     "name": "xaas instances",
-    "version": "1.229.0"
+    "version": "1.230.0"
    },
    {
     "children": [
@@ -39523,7 +39548,7 @@
        "title": "KeypairResponse",
        "type": "object"
       },
-      "version": "1.229.0"
+      "version": "1.230.0"
      },
      {
       "configs": {
@@ -39597,7 +39622,7 @@
        "title": "KeypairDeletedAllResponse",
        "type": "object"
       },
-      "version": "1.229.0"
+      "version": "1.230.0"
      },
      {
       "configs": {
@@ -39661,7 +39686,7 @@
        "nullable": true,
        "type": "null"
       },
-      "version": "1.229.0"
+      "version": "1.230.0"
      },
      {
       "configs": {
@@ -39759,13 +39784,13 @@
        "title": "KeypairsListResponse",
        "type": "object"
       },
-      "version": "1.229.0"
+      "version": "1.230.0"
      }
     ],
     "description": "xaas keypairs",
     "isInternal": false,
     "name": "xaas keypairs",
-    "version": "1.229.0"
+    "version": "1.230.0"
    },
    {
     "children": [
@@ -39980,13 +40005,13 @@
        "title": "InstanceTypesV1ListResponse",
        "type": "object"
       },
-      "version": "1.229.0"
+      "version": "1.230.0"
      }
     ],
     "description": "xaas machine-types",
     "isInternal": false,
     "name": "xaas machine-types",
-    "version": "1.229.0"
+    "version": "1.230.0"
    },
    {
     "children": [
@@ -40109,7 +40134,7 @@
        "title": "CreateResponse",
        "type": "object"
       },
-      "version": "1.229.0"
+      "version": "1.230.0"
      },
      {
       "configs": {
@@ -40381,7 +40406,7 @@
        "title": "CreateResponse",
        "type": "object"
       },
-      "version": "1.229.0"
+      "version": "1.230.0"
      },
      {
       "configs": {
@@ -40446,7 +40471,7 @@
        "nullable": true,
        "type": "null"
       },
-      "version": "1.229.0"
+      "version": "1.230.0"
      },
      {
       "configs": {
@@ -40713,7 +40738,7 @@
        "title": "SnapshotResponseV1",
        "type": "object"
       },
-      "version": "1.229.0"
+      "version": "1.230.0"
      },
      {
       "configs": {
@@ -41033,7 +41058,7 @@
        "title": "ListSnapshotResponseV1",
        "type": "object"
       },
-      "version": "1.229.0"
+      "version": "1.230.0"
      },
      {
       "configs": {
@@ -41104,18 +41129,18 @@
        "nullable": true,
        "type": "null"
       },
-      "version": "1.229.0"
+      "version": "1.230.0"
      }
     ],
     "description": "xaas snapshots",
     "isInternal": false,
     "name": "xaas snapshots",
-    "version": "1.229.0"
+    "version": "1.230.0"
    }
   ],
   "description": "Virtual Machine Api Product",
   "isInternal": false,
   "name": "virtual-machine-xaas",
-  "version": "1.229.0"
+  "version": "1.230.0"
  }
 ]

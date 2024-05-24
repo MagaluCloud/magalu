@@ -1,0 +1,12 @@
+xaas_port | ports
+
+Usage:
+  ./mgc network xaas-port ports [flags]
+
+Flags:
+  -h, --help      help for ports
+  -v, --version   version for ports
+
+Global Flags:
+      --cli.show-cli-globals   Show all CLI global flags on usage text
+

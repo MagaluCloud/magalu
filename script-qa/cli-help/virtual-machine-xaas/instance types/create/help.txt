@@ -1,0 +1,34 @@
+This internal method is for create a new flavor (instance type)
+    some information will pass to URP, but some information 
+
+    like ratio or generation for now will be only in the database. 
+
+    For gpu will have 2 infos: 
+
+    1- the gpu model name (today will olny have a100 as model) 
+
+    2 - number of gpu cores this flavor will use.
+
+Usage:
+  ./mgc virtual-machine-xaas instance-types create [flags]
+
+Flags:
+      --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
+      --disk integer                  Disk (required)
+      --gpu integer                   Gpu
+      --gpu-model string              Gpu Model
+  -h, --help                          help for create
+      --id string                     Id (between 1 and 255 characters) (required)
+      --internal                      Internal (required)
+      --name string                   Name (between 1 and 255 characters) (required)
+      --ram integer                   Ram (required)
+      --sku string                    Sku (between 1 and 255 characters) (required)
+      --vcpus integer                 Vcpus (required)
+  -v, --version                       version for create
+
+Global Flags:
+      --cli.show-cli-globals   Show all CLI global flags on usage text
+      --env enum               Environment to use (one of "pre-prod" or "prod") (default "prod")
+      --region enum            Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
+      --server-url uri         Manually specify the server to use
+

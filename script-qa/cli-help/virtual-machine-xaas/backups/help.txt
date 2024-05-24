@@ -1,0 +1,19 @@
+backups
+
+Usage:
+  ./mgc virtual-machine-xaas backups [flags]
+  ./mgc virtual-machine-xaas backups [command]
+
+Commands:
+  update      Update Backup Status
+  urp         Urp Update Backup Status
+
+Flags:
+  -h, --help      help for backups
+  -v, --version   version for backups
+
+Global Flags:
+      --cli.show-cli-globals   Show all CLI global flags on usage text
+
+Use "./mgc virtual-machine-xaas backups [command] --help" for more information about a command.
+

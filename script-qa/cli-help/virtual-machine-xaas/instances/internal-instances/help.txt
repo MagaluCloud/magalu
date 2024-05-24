@@ -1,0 +1,24 @@
+instances | internal-instances
+
+Usage:
+  ./mgc virtual-machine-xaas instances internal-instances [flags]
+  ./mgc virtual-machine-xaas instances internal-instances [command]
+
+Commands:
+  create       Instance Finish Create V1
+  delete       Delete all instances associated with a tenant
+  delete-id    Instance Delete Worker
+  delete-ports Delete Port
+  get          Instance Internal Detail
+  update       Worker Update Instance
+  urp          urp
+
+Flags:
+  -h, --help      help for internal-instances
+  -v, --version   version for internal-instances
+
+Global Flags:
+      --cli.show-cli-globals   Show all CLI global flags on usage text
+
+Use "./mgc virtual-machine-xaas instances internal-instances [command] --help" for more information about a command.
+

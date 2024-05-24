@@ -1,0 +1,19 @@
+diagnostics
+
+Usage:
+  ./mgc virtual-machine-xaas diagnostics [flags]
+  ./mgc virtual-machine-xaas diagnostics [command]
+
+Commands:
+  get         Get Instance Diagnostic
+  list        List Instances Diagnostic
+
+Flags:
+  -h, --help      help for diagnostics
+  -v, --version   version for diagnostics
+
+Global Flags:
+      --cli.show-cli-globals   Show all CLI global flags on usage text
+
+Use "./mgc virtual-machine-xaas diagnostics [command] --help" for more information about a command.
+
