@@ -1,0 +1,12 @@
+Sets profile to be used
+
+Usage:
+  ./mgc profile set-current [name] [flags]
+
+Flags:
+  -h, --help          help for set-current
+      --name string   Profile name (required)
+
+Global Flags:
+      --cli.show-cli-globals   Show all CLI global flags on usage text
+
