@@ -18,7 +18,7 @@ Commands:
   move-dir     Moves objects from source to destination
   presign      Generate a pre-signed URL for accessing an object
   public-url   Get object public url
-  sync         Synchronizes a local path to a bucket
+  sync         Synchronizes a local path with a bucket
   upload       Upload a file to a bucket
   upload-dir   Upload a directory to a bucket
   versions     Retrieve all versions of an object
