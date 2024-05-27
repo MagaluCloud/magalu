@@ -9,8 +9,10 @@ Usage:
 
 ## Product catalog:
 - Commands:
+- attach      Instance Attach Port
 - create      Create an instance asynchronously.
 - delete      Delete a instance asynchronously
+- detach      Instance Detach Port
 - get         Retrieve the details of an instance.
 - list        Lists all instances in the current tenant.
 - reboot      Reboot a running or suspended instance.

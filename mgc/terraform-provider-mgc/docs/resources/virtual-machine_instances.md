@@ -20,13 +20,13 @@ Operations with instances, including create, delete, start, stop, reboot and oth
 - `image` (Attributes) (see [below for nested schema](#nestedatt--image))
 - `machine_type` (Attributes) (see [below for nested schema](#nestedatt--machine_type))
 - `name` (String)
+- `network` (Attributes) (see [below for nested schema](#nestedatt--network))
 - `ssh_key_name` (String)
 
 ### Optional
 
 - `availability_zone` (String)
 - `delete_public_ip` (Boolean)
-- `network` (Attributes) (see [below for nested schema](#nestedatt--network))
 - `user_data` (String)
 
 ### Read-Only
@@ -67,7 +67,28 @@ Optional:
 Optional:
 
 - `associate_public_ip` (Boolean)
+- `nic` (Attributes) (see [below for nested schema](#nestedatt--network--nic))
 - `vpc` (Attributes) (see [below for nested schema](#nestedatt--network--vpc))
+
+<a id="nestedatt--network--nic"></a>
+### Nested Schema for `network.nic`
+
+Required:
+
+- `security_groups` (Attributes List) (see [below for nested schema](#nestedatt--network--nic--security_groups))
+
+Optional:
+
+- `id` (String)
+
+<a id="nestedatt--network--nic--security_groups"></a>
+### Nested Schema for `network.nic.security_groups`
+
+Required:
+
+- `id` (String)
+
+
 
 <a id="nestedatt--network--vpc"></a>
 ### Nested Schema for `network.vpc`
@@ -147,6 +168,7 @@ Read-Only:
 
 Read-Only:
 
+- `ip_v6address` (String)
 - `private_ip_address` (String)
 - `public_ip_address` (String)
 
