@@ -1,22 +1,22 @@
-# This command uploads any file from the source to the destination if it's not present or has a different size. Additionally any file in the destination not present on the source is deleted.
+# This command uploads any file from the local path to the bucket if it is not already present or has changed.
 
 ## Usage:
 ```bash
 Usage:
-  ./mgc object-storage objects sync [src] [dst] [flags]
+  ./mgc object-storage objects sync [local] [bucket] [flags]
 ```
 
 ## Product catalog:
 - Examples:
-- ./mgc object-storage objects sync --dst="s3://my-bucket/dir/" --src="./"
+- ./mgc object-storage objects sync --bucket="my-bucket/dir/" --local="./"
 
 ## Other commands:
 - Flags:
 - --batch-size integer   Limit of items per batch to delete (range: 1 - 1000) (default 1000)
-- --delete               Deletes any item at the destination not present on the source
-- --dst uri              Full destination path to sync with the source path (required)
+- --bucket uri           Bucket path (required)
+- --delete               Deletes any item at the bucket not present on the local
 - -h, --help                 help for sync
-- --src uri              Source path to sync the remote with (required)
+- --local uri            Local path (required)
 
 ## Flags:
 ```bash

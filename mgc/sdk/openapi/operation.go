@@ -18,6 +18,7 @@ import (
 	"magalu.cloud/sdk/openapi/transform"
 
 	"github.com/getkin/kin-openapi/openapi3"
+	"github.com/pterm/pterm"
 )
 
 const defaultResponseStatusCode = "default"
@@ -131,12 +132,12 @@ func (o *operation) ParametersSchema() *core.Schema {
 		// Must match forEachParameterName!
 		err = o.parameters.addToSchema(rootSchema, parametersLocations)
 		if err != nil {
-			o.logger.Warnw("error while adding parameters to schema", "error", err, "rootSchema", rootSchema)
+			o.logger.Debugw("error while adding parameters to schema", "error", err, "rootSchema", rootSchema)
 		}
 
 		err = o.requestBody.addToSchema(rootSchema)
 		if err != nil {
-			o.logger.Warnw("error while adding request body", "error", err)
+			o.logger.Debugw("error while adding request body", "error", err)
 		}
 
 		o.addSecurityParameters(rootSchema)
@@ -628,6 +629,12 @@ func (o *operation) Execute(
 	parameters core.Parameters,
 	configs core.Configs,
 ) (result core.Result, err error) {
+	spinnerInfo, _ := pterm.DefaultSpinner.Start()
+	spinnerInfo.RemoveWhenDone = true
+	defer func() {
+		_ = spinnerInfo.Stop()
+	}()
+
 	logger := o.logger.With("parameters", parameters, "configs", configs)
 	logger.Debug("execute")
 	// keep the original parameters, configs -- do not use the transformed versions!
@@ -742,6 +749,10 @@ func (o *operation) Execute(
 		if resultWithValue, ok := core.ResultAs[core.ResultWithValue](result); ok {
 			result = core.NewResultWithOriginalSource(result.Source(), core.NewResultWithDefaultOutputOptions(resultWithValue, o.outputFlag))
 		}
+	} else if body, _ := io.ReadAll(resp.Body); len(body) == 0 {
+		logger.Debug("no output flag specified")
+		_ = spinnerInfo.Stop()
+		fmt.Println("\033[32m ✅ Operation executed successfully\033[0m")
 	}
 	logger.Debug("finished execution")
 	return

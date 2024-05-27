@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"regexp"
 	"slices"
 	"strings"
 
@@ -88,6 +89,13 @@ can generate a command line on-demand for Rest manipulation`,
 				return strings.Split(arg, "=")[0] == flag
 			})
 			args = args[skipTo+1:]
+			continue
+		}
+		flag, found = strings.CutPrefix(err.Error(), "unknown shorthand flag: ")
+		if found && len(flag) > 0 {
+			flag = getLastFlag(flag)
+			skipTo := slices.Index(args, flag)
+			args = args[skipTo+1:]
 		}
 	}
 
@@ -133,6 +141,18 @@ can generate a command line on-demand for Rest manipulation`,
 
 	err = showHelpForError(rootCmd, mainArgs, err) // since we SilenceUsage and SilenceErrors
 	return err
+}
+
+func getLastFlag(s string) string {
+	re := regexp.MustCompile(`-(\w)`)
+	matches := re.FindAllStringSubmatch(s, -1)
+	if len(matches) > 0 {
+		lastMatch := matches[len(matches)-1]
+		if len(lastMatch) > 1 {
+			return lastMatch[0]
+		}
+	}
+	return ""
 }
 
 func setDefaultRegion(sdk *mgcSdk.Sdk) {

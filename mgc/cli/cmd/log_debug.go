@@ -8,9 +8,8 @@ const logDebugFlag = "debug"
 const logDebugDef = "debug+:*"
 
 func addLogDebugFlag(cmd *cobra.Command) {
-	cmd.Root().PersistentFlags().BoolP(
+	cmd.Root().PersistentFlags().Bool(
 		logDebugFlag,
-		"d",
 		false,
 		`Display detailed log information at the debug level`,
 	)

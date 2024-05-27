@@ -4,6 +4,9 @@ Usage:
   ./mgc virtual-machine [flags]
   ./mgc virtual-machine [command]
 
+Aliases:
+  virtual-machine, vms, vm, virtual-machines, machines, vmachine
+
 Commands:
   images        Operations with images for instances.
   instances     Operations with instances, including create, delete, start, stop, reboot and other actions.
