@@ -1,4 +1,7 @@
 #!/bin/bash
+me=$(basename "$0")
+echo "RUNNING $me"
+
 
 BASEDIR=$(dirname $0)
 ROOTDIR=$(builtin cd $BASEDIR/..; pwd)
@@ -8,7 +11,8 @@ OUT_DIR="script-qa/cli-help"
 
 set -xe
 cd $MGCDIR
-go build
+
+go build -tags \"embed\" -o mgc
 
 echo "generating $OUT_DIR..."
 python3 ../../scripts/gen_expected_cli_help_output.py \
@@ -16,3 +20,5 @@ python3 ../../scripts/gen_expected_cli_help_output.py \
     "../../$DUMP_TREE" \
     "../../$OUT_DIR"
 echo "generating $OUT_DIR: done"
+
+echo "ENDING $me"

@@ -157,7 +157,7 @@ python3 ./scripts/tf_generate_docs.sh
 This script will loop through all the CLI commands and generate output corresponding to each of them. When run, it will iterate through the commands available in the CLI, producing the output associated with each command in sequence.
 
 ```shell
-python3 ./scripts/gen_expected_cli_help_output.py ./cli
+python3 ./scripts/gen_expected_cli_help_output.py ./mgc
 ```
 
 ### [gen_expected_output_file.sh](./gen_expected_output_file.sh)

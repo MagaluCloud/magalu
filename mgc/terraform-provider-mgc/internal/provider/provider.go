@@ -28,8 +28,15 @@ type MgcProvider struct {
 	sdk     *mgcSdk.Sdk
 }
 
+type KeyPair struct {
+	KeyID     types.String `tfsdk:"key_id"`
+	KeySecret types.String `tfsdk:"key_secret"`
+}
+
 type ProviderConfig struct {
 	Region types.String `tfsdk:"region"`
+
+	Default *KeyPair `tfsdk:"objectstorage_apikey"`
 }
 
 func (p *MgcProvider) Metadata(ctx context.Context, req provider.MetadataRequest, resp *provider.MetadataResponse) {
@@ -40,6 +47,22 @@ func (p *MgcProvider) Metadata(ctx context.Context, req provider.MetadataRequest
 
 func (p *MgcProvider) Schema(ctx context.Context, req provider.SchemaRequest, resp *provider.SchemaResponse) {
 	tflog.Debug(ctx, "setting provider schema")
+
+	schemaApiKey := schema.SingleNestedAttribute{
+		MarkdownDescription: "Specific API Key configuration",
+		Optional:            true,
+		Attributes: map[string]schema.Attribute{
+			"key_id": schema.StringAttribute{
+				MarkdownDescription: "API Key ID",
+				Required:            true,
+			},
+			"key_secret": schema.StringAttribute{
+				MarkdownDescription: "API Key Secret",
+				Required:            true,
+			},
+		},
+	}
+
 	resp.Schema = schema.Schema{
 		Description: "Terraform Provider for Magalu Cloud",
 		Attributes: map[string]schema.Attribute{
@@ -47,15 +70,17 @@ func (p *MgcProvider) Schema(ctx context.Context, req provider.SchemaRequest, re
 				MarkdownDescription: "Region",
 				Optional:            true,
 			},
+
+			"objectstorage_apikey": schemaApiKey,
 		},
 	}
 }
 
-// todo - TEMP
 var acceptedRegions = []string{"br-ne1", "br-se1", "br-mgl1"}
 
 func (p *MgcProvider) Configure(ctx context.Context, req provider.ConfigureRequest, resp *provider.ConfigureResponse) {
 	tflog.Info(ctx, "configuring MGC provider")
+
 	var data ProviderConfig
 
 	resp.Diagnostics.Append(req.Config.Get(ctx, &data)...)
@@ -70,6 +95,10 @@ func (p *MgcProvider) Configure(ctx context.Context, req provider.ConfigureReque
 		if err := p.sdk.Config().SetTempConfig("region", data.Region.String()); err != nil {
 			tflog.Error(ctx, "fail to set region")
 		}
+	}
+
+	if data.Default != nil && !data.Default.KeyID.IsNull() && !data.Default.KeySecret.IsNull() {
+		p.sdk.Config().AddTempKeyPair("objectstorage_apikey", data.Default.KeyID.ValueString(), data.Default.KeySecret.ValueString())
 	}
 	resp.DataSourceData = p.sdk
 	resp.ResourceData = p.sdk

@@ -15,14 +15,19 @@ import (
 	"github.com/spf13/viper"
 )
 
-// contextKey is an unexported type for keys defined in this package.
-// This prevents collisions with keys defined in other packages.
-type contextKey string
+type KeyPair struct {
+	KeyID     string
+	KeySecret string
+}
+type tempConfig struct {
+	configMap  map[string]interface{}
+	keyPairMap map[string]KeyPair
+}
 
 type Config struct {
 	pm         *profile_manager.ProfileManager
 	viper      *viper.Viper
-	tempConfig *map[string]any
+	tempConfig *tempConfig
 }
 
 const (
@@ -30,6 +35,10 @@ const (
 	CONFIG_FILE      = "cli.yaml"
 	ENV_PREFIX       = "MGC"
 )
+
+// contextKey is an unexported type for keys defined in this package.
+// This prevents collisions with keys defined in other packages.
+type contextKey string
 
 var configKey contextKey = "magalu.cloud/core/Config"
 
@@ -94,7 +103,7 @@ func (c *Config) Get(key string, out any) error {
 	)
 
 	if c.tempConfig != nil {
-		if outVal, found := (*c.tempConfig)[key]; found {
+		if outVal, found := c.tempConfig.configMap[key]; found {
 
 			decodeConfig := mapstructure.DecoderConfig{
 				DecodeHook: decodeHookFunc,
@@ -186,6 +195,17 @@ func marshalValueIfNeeded(value any) (any, error) {
 	}
 }
 
+func (c *Config) NewTempConfig() {
+	if c.tempConfig == nil {
+		c.tempConfig = &tempConfig{
+			configMap:  make(map[string]interface{}),
+			keyPairMap: make(map[string]KeyPair),
+		}
+	}
+	//Default tmp configs
+	c.tempConfig.configMap["region"] = "br-se1"
+}
+
 func (c *Config) SetTempConfig(key string, value interface{}) error {
 	marshaled, err := marshalValueIfNeeded(value)
 	if err != nil {
@@ -193,10 +213,27 @@ func (c *Config) SetTempConfig(key string, value interface{}) error {
 	}
 
 	if c.tempConfig == nil {
-		c.tempConfig = &map[string]any{key: marshaled}
+		c.NewTempConfig()
 	}
 
+	c.tempConfig.configMap[key] = marshaled
+
 	return nil
+}
+
+func (c *Config) GetTempKeyPair(pairName string) *KeyPair {
+	if c.tempConfig == nil {
+		return nil
+	}
+	return &KeyPair{KeyID: c.tempConfig.keyPairMap[pairName].KeyID, KeySecret: c.tempConfig.keyPairMap[pairName].KeySecret}
+
+}
+
+func (c *Config) AddTempKeyPair(pairName, keyID, keySecret string) {
+	if c.tempConfig == nil {
+		c.NewTempConfig()
+	}
+	c.tempConfig.keyPairMap[pairName] = KeyPair{KeyID: keyID, KeySecret: keySecret}
 }
 
 func (c *Config) Set(key string, value interface{}) error {

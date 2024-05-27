@@ -327,6 +327,9 @@ func (o *Auth) CurrentScopes() (core.Scopes, error) {
 }
 
 func (o *Auth) AccessKeyPair() (accessKeyId, secretAccessKey string) {
+	if tempKeyPair := o.mgcConfig.GetTempKeyPair("objectstorage_apikey"); tempKeyPair != nil {
+		return tempKeyPair.KeyID, tempKeyPair.KeySecret
+	}
 	return o.accessKeyId, o.secretAccessKey
 }
 
