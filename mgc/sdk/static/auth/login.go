@@ -199,6 +199,10 @@ func startCallbackServer(ctx context.Context, auth *auth.Auth, isHeadless bool) 
 	// Host includes the port, then listen to specific address + port, ex: "localhost:8095"
 	addr := callbackUrl.Host
 
+	if envListenAddr := os.Getenv("MGC_LISTEN_ADDRESS"); envListenAddr != "" {
+		addr = envListenAddr + ":8095"
+	}
+
 	// Listen so we can fail early on bad address, before starting goroutine
 	listener, err := net.Listen("tcp", addr)
 	if err != nil {
