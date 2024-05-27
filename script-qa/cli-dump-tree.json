@@ -23873,7 +23873,7 @@
        },
        "type": "object"
       },
-      "description": "This command uploads any file from the source to the destination if it's not present or has a different size. Additionally any file in the destination not present on the source is deleted.",
+      "description": "This command uploads any file from the local path to the bucket if it is not already present or has changed.",
       "isInternal": false,
       "name": "sync",
       "parameters": {
@@ -23885,27 +23885,27 @@
          "minimum": 1,
          "type": "integer"
         },
-        "delete": {
-         "default": false,
-         "description": "Deletes any item at the destination not present on the source",
-         "type": "boolean"
-        },
-        "dst": {
-         "description": "Full destination path to sync with the source path",
-         "example": "s3://my-bucket/dir/",
+        "bucket": {
+         "description": "Bucket path",
+         "example": "my-bucket/dir/",
          "format": "uri",
          "type": "string"
         },
-        "src": {
-         "description": "Source path to sync the remote with",
+        "delete": {
+         "default": false,
+         "description": "Deletes any item at the bucket not present on the local",
+         "type": "boolean"
+        },
+        "local": {
+         "description": "Local path",
          "example": "./",
          "format": "uri",
          "type": "string"
         }
        },
        "required": [
-        "src",
-        "dst"
+        "local",
+        "bucket"
        ],
        "type": "object"
       },

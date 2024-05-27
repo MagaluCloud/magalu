@@ -307,7 +307,11 @@ func uploadFile(ctx context.Context, local mgcSchemaPkg.URI, bucket mgcSchemaPkg
 }
 
 func deleteFile(ctx context.Context, destination mgcSchemaPkg.URI, cfg common.Config) error {
-	return nil
+	param := common.DeleteObjectParams{
+		Destination: destination,
+	}
+	_, err := deleteObject(ctx, param, cfg)
+	return err
 }
 
 func (c *UploadCounter) Increment() {
