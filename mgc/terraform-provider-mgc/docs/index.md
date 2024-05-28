@@ -17,11 +17,19 @@ Terraform Provider for Magalu Cloud
 
 ### Optional
 
-- `objectstorage_apikey` (Attributes) Specific API Key configuration (see [below for nested schema](#nestedatt--objectstorage_apikey))
+- `object_storage` (Attributes) Specific Object Storage configuration (see [below for nested schema](#nestedatt--object_storage))
 - `region` (String) Region
 
-<a id="nestedatt--objectstorage_apikey"></a>
-### Nested Schema for `objectstorage_apikey`
+<a id="nestedatt--object_storage"></a>
+### Nested Schema for `object_storage`
+
+Optional:
+
+- `apikey` (Attributes) Specific API Key configuration (see [below for nested schema](#nestedatt--object_storage--apikey))
+- `bucket_prefix` (String) Bucket Prefix
+
+<a id="nestedatt--object_storage--apikey"></a>
+### Nested Schema for `object_storage.apikey`
 
 Required:
 

@@ -327,7 +327,8 @@ func (o *Auth) CurrentScopes() (core.Scopes, error) {
 }
 
 func (o *Auth) AccessKeyPair() (accessKeyId, secretAccessKey string) {
-	if tempKeyPair := o.mgcConfig.GetTempKeyPair("objectstorage_apikey"); tempKeyPair != nil {
+	//used by terraform - mgc/terraform-provider-mgc/internal/provider/provider.go - yeap, we need improve it
+	if tempKeyPair := o.mgcConfig.GetTempKeyPair("apikey"); tempKeyPair != nil {
 		return tempKeyPair.KeyID, tempKeyPair.KeySecret
 	}
 	return o.accessKeyId, o.secretAccessKey

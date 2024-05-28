@@ -33,10 +33,14 @@ type KeyPair struct {
 	KeySecret types.String `tfsdk:"key_secret"`
 }
 
-type ProviderConfig struct {
-	Region types.String `tfsdk:"region"`
+type ObjectStorageConfig struct {
+	BucketPrefix  types.String `tfsdk:"bucket_prefix"`
+	ObjectKeyPair *KeyPair     `tfsdk:"apikey"`
+}
 
-	Default *KeyPair `tfsdk:"objectstorage_apikey"`
+type ProviderConfig struct {
+	Region        types.String         `tfsdk:"region"`
+	ObjectStorage *ObjectStorageConfig `tfsdk:"object_storage"`
 }
 
 func (p *MgcProvider) Metadata(ctx context.Context, req provider.MetadataRequest, resp *provider.MetadataResponse) {
@@ -63,6 +67,18 @@ func (p *MgcProvider) Schema(ctx context.Context, req provider.SchemaRequest, re
 		},
 	}
 
+	schemaObjectStorage := schema.SingleNestedAttribute{
+		MarkdownDescription: "Specific Object Storage configuration",
+		Optional:            true,
+		Attributes: map[string]schema.Attribute{
+			"bucket_prefix": schema.StringAttribute{
+				MarkdownDescription: "Bucket Prefix",
+				Optional:            true,
+			},
+			"apikey": schemaApiKey,
+		},
+	}
+
 	resp.Schema = schema.Schema{
 		Description: "Terraform Provider for Magalu Cloud",
 		Attributes: map[string]schema.Attribute{
@@ -70,8 +86,7 @@ func (p *MgcProvider) Schema(ctx context.Context, req provider.SchemaRequest, re
 				MarkdownDescription: "Region",
 				Optional:            true,
 			},
-
-			"objectstorage_apikey": schemaApiKey,
+			"object_storage": schemaObjectStorage,
 		},
 	}
 }
@@ -97,8 +112,13 @@ func (p *MgcProvider) Configure(ctx context.Context, req provider.ConfigureReque
 		}
 	}
 
-	if data.Default != nil && !data.Default.KeyID.IsNull() && !data.Default.KeySecret.IsNull() {
-		p.sdk.Config().AddTempKeyPair("objectstorage_apikey", data.Default.KeyID.ValueString(), data.Default.KeySecret.ValueString())
+	if data.ObjectStorage != nil &&
+		!data.ObjectStorage.ObjectKeyPair.KeyID.IsNull() &&
+		!data.ObjectStorage.ObjectKeyPair.KeySecret.IsNull() {
+		p.sdk.Config().AddTempKeyPair("apikey",
+			data.ObjectStorage.ObjectKeyPair.KeyID.ValueString(),
+			data.ObjectStorage.ObjectKeyPair.KeySecret.ValueString(),
+		)
 	}
 	resp.DataSourceData = p.sdk
 	resp.ResourceData = p.sdk

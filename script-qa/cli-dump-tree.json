@@ -21513,125 +21513,8 @@
          "description": "Name of the bucket to be created",
          "type": "string"
         },
-        "enable_versioning": {
-         "default": true,
-         "description": "Enable versioning for this bucket",
-         "type": "boolean"
-        },
-        "grant_full_control": {
-         "description": "Grantees get FULL_CONTROL",
-         "items": {
-          "properties": {
-           "id": {
-            "description": "Either a Tenant ID or a User Project ID",
-            "example": "a4900b57-7dbb-4906-b7e8-efed938e325c",
-            "type": "string"
-           }
-          },
-          "required": [
-           "id"
-          ],
-          "type": "object"
-         },
-         "type": "array"
-        },
-        "grant_read": {
-         "description": "Allows grantees to list the objects in the bucket",
-         "items": {
-          "properties": {
-           "id": {
-            "description": "Either a Tenant ID or a User Project ID",
-            "example": "a4900b57-7dbb-4906-b7e8-efed938e325c",
-            "type": "string"
-           }
-          },
-          "required": [
-           "id"
-          ],
-          "type": "object"
-         },
-         "type": "array"
-        },
-        "grant_read_acp": {
-         "description": "Allows grantees to read the bucket ACL",
-         "items": {
-          "properties": {
-           "id": {
-            "description": "Either a Tenant ID or a User Project ID",
-            "example": "a4900b57-7dbb-4906-b7e8-efed938e325c",
-            "type": "string"
-           }
-          },
-          "required": [
-           "id"
-          ],
-          "type": "object"
-         },
-         "type": "array"
-        },
-        "grant_write": {
-         "description": "Allows grantees to create objects in the bucket",
-         "items": {
-          "properties": {
-           "id": {
-            "description": "Either a Tenant ID or a User Project ID",
-            "example": "a4900b57-7dbb-4906-b7e8-efed938e325c",
-            "type": "string"
-           }
-          },
-          "required": [
-           "id"
-          ],
-          "type": "object"
-         },
-         "type": "array"
-        },
-        "grant_write_acp": {
-         "description": "Allows grantees to write the ACL for the applicable bucket",
-         "items": {
-          "properties": {
-           "id": {
-            "description": "Either a Tenant ID or a User Project ID",
-            "example": "a4900b57-7dbb-4906-b7e8-efed938e325c",
-            "type": "string"
-           }
-          },
-          "required": [
-           "id"
-          ],
-          "type": "object"
-         },
-         "type": "array"
-        },
-        "private": {
-         "description": "Owner gets FULL_CONTROL. Delegated users have access. No one else has access rights",
-         "type": "boolean"
-        },
-        "public_read": {
-         "description": "Owner gets FULL_CONTROL. Everyone else has READ rights",
-         "type": "boolean"
-        },
-        "public_read_write": {
-         "description": "Owner gets FULL_CONTROL. Everyone else has READ and WRITE rights",
-         "type": "boolean"
-        }
-       },
-       "required": [
-        "bucket"
-       ],
-       "type": "object"
-      },
-      "result": {
-       "properties": {
-        "authenticated_read": {
-         "description": "Owner gets FULL_CONTROL. Authenticated users have READ rights",
-         "type": "boolean"
-        },
-        "aws_exec_read": {
-         "type": "boolean"
-        },
-        "bucket": {
-         "description": "Name of the bucket to be created",
+        "bucket_prefix": {
+         "description": "Prefix value to generate a unique bucket name",
          "type": "string"
         },
         "enable_versioning": {
@@ -21738,7 +21621,134 @@
         }
        },
        "required": [
-        "bucket"
+        "bucket",
+        "bucket_prefix"
+       ],
+       "type": "object"
+      },
+      "result": {
+       "properties": {
+        "authenticated_read": {
+         "description": "Owner gets FULL_CONTROL. Authenticated users have READ rights",
+         "type": "boolean"
+        },
+        "aws_exec_read": {
+         "type": "boolean"
+        },
+        "bucket": {
+         "description": "Name of the bucket to be created",
+         "type": "string"
+        },
+        "bucket_prefix": {
+         "description": "Prefix value to generate a unique bucket name",
+         "type": "string"
+        },
+        "enable_versioning": {
+         "default": true,
+         "description": "Enable versioning for this bucket",
+         "type": "boolean"
+        },
+        "grant_full_control": {
+         "description": "Grantees get FULL_CONTROL",
+         "items": {
+          "properties": {
+           "id": {
+            "description": "Either a Tenant ID or a User Project ID",
+            "example": "a4900b57-7dbb-4906-b7e8-efed938e325c",
+            "type": "string"
+           }
+          },
+          "required": [
+           "id"
+          ],
+          "type": "object"
+         },
+         "type": "array"
+        },
+        "grant_read": {
+         "description": "Allows grantees to list the objects in the bucket",
+         "items": {
+          "properties": {
+           "id": {
+            "description": "Either a Tenant ID or a User Project ID",
+            "example": "a4900b57-7dbb-4906-b7e8-efed938e325c",
+            "type": "string"
+           }
+          },
+          "required": [
+           "id"
+          ],
+          "type": "object"
+         },
+         "type": "array"
+        },
+        "grant_read_acp": {
+         "description": "Allows grantees to read the bucket ACL",
+         "items": {
+          "properties": {
+           "id": {
+            "description": "Either a Tenant ID or a User Project ID",
+            "example": "a4900b57-7dbb-4906-b7e8-efed938e325c",
+            "type": "string"
+           }
+          },
+          "required": [
+           "id"
+          ],
+          "type": "object"
+         },
+         "type": "array"
+        },
+        "grant_write": {
+         "description": "Allows grantees to create objects in the bucket",
+         "items": {
+          "properties": {
+           "id": {
+            "description": "Either a Tenant ID or a User Project ID",
+            "example": "a4900b57-7dbb-4906-b7e8-efed938e325c",
+            "type": "string"
+           }
+          },
+          "required": [
+           "id"
+          ],
+          "type": "object"
+         },
+         "type": "array"
+        },
+        "grant_write_acp": {
+         "description": "Allows grantees to write the ACL for the applicable bucket",
+         "items": {
+          "properties": {
+           "id": {
+            "description": "Either a Tenant ID or a User Project ID",
+            "example": "a4900b57-7dbb-4906-b7e8-efed938e325c",
+            "type": "string"
+           }
+          },
+          "required": [
+           "id"
+          ],
+          "type": "object"
+         },
+         "type": "array"
+        },
+        "private": {
+         "description": "Owner gets FULL_CONTROL. Delegated users have access. No one else has access rights",
+         "type": "boolean"
+        },
+        "public_read": {
+         "description": "Owner gets FULL_CONTROL. Everyone else has READ rights",
+         "type": "boolean"
+        },
+        "public_read_write": {
+         "description": "Owner gets FULL_CONTROL. Everyone else has READ and WRITE rights",
+         "type": "boolean"
+        }
+       },
+       "required": [
+        "bucket",
+        "bucket_prefix"
        ],
        "type": "object"
       },
@@ -21892,6 +21902,10 @@
          "description": "Name of the bucket to be created",
          "type": "string"
         },
+        "bucket_prefix": {
+         "description": "Prefix value to generate a unique bucket name",
+         "type": "string"
+        },
         "enable_versioning": {
          "default": true,
          "description": "Enable versioning for this bucket",
@@ -21996,7 +22010,8 @@
         }
        },
        "required": [
-        "bucket"
+        "bucket",
+        "bucket_prefix"
        ],
        "type": "object"
       },

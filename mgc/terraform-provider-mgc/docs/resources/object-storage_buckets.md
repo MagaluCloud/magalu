@@ -18,6 +18,7 @@ Bucket operations for Object Storage API
 ### Required
 
 - `bucket` (String) Name of the bucket to be created
+- `bucket_prefix` (String) Prefix value to generate a unique bucket name
 
 ### Optional
 
