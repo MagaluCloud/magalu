@@ -13,7 +13,7 @@ Renames a Snapshot with the id provided in the current tenant which is logged in
 - You can use the snapshots list command to retrieve all snapshots, so you can get the id of
 the snapshot that you want to rename.
 
-Version: 1.229.0
+Version: 1.230.0
 
 import "magalu.cloud/lib/products/virtual_machine_xaas/xaas_snapshots"
 */

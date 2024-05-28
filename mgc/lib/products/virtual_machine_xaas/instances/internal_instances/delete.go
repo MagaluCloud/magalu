@@ -12,7 +12,7 @@ Internal route to delete all instances associated with a tenant.
 ### Note
 This route is used only for internal proposes.
 
-Version: 1.229.0
+Version: 1.230.0
 
 import "magalu.cloud/lib/products/virtual_machine_xaas/instances/internal_instances"
 */

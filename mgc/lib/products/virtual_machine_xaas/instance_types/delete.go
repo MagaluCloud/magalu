@@ -14,7 +14,7 @@ This route only remove the instance type from virtual machine DB.
 
 Needs to remove the flavor from URP after use this route.
 
-Version: 1.229.0
+Version: 1.230.0
 
 import "magalu.cloud/lib/products/virtual_machine_xaas/instance_types"
 */

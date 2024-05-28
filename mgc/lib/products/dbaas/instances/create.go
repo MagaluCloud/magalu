@@ -9,7 +9,7 @@ Creates a new database instance.
 
 Creates a new database instance asynchronously for a tenant.
 
-Version: 1.19.0
+Version: 1.20.0
 
 import "magalu.cloud/lib/products/dbaas/instances"
 */

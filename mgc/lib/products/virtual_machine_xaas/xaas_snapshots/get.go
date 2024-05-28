@@ -16,7 +16,7 @@ so you can get the id of the snapshot that you want to get details.
 - You can use the **expand** argument to get more details from the inner objects
 like image or type.
 
-Version: 1.229.0
+Version: 1.230.0
 
 import "magalu.cloud/lib/products/virtual_machine_xaas/xaas_snapshots"
 */

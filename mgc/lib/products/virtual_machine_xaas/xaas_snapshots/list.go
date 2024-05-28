@@ -13,7 +13,7 @@ List all snapshots in the current tenant which is logged in.
 - You can use the **expand** argument to get more details from the inner objects
 like image and machine types.
 
-Version: 1.229.0
+Version: 1.230.0
 
 import "magalu.cloud/lib/products/virtual_machine_xaas/xaas_snapshots"
 */

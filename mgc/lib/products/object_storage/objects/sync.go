@@ -3,11 +3,11 @@ Executor: sync
 
 # Summary
 
-# Synchronizes a local path to a bucket
+# Synchronizes a local path with a bucket
 
 # Description
 
-This command uploads any file from the source to the destination if it's not present or has a different size. Additionally any file in the destination not present on the source is deleted.
+This command uploads any file from the local path to the bucket if it is not already present or has changed.
 
 import "magalu.cloud/lib/products/object_storage/objects"
 */
@@ -20,9 +20,9 @@ import (
 
 type SyncParameters struct {
 	BatchSize *int   `json:"batch_size,omitempty"`
+	Bucket    string `json:"bucket"`
 	Delete    *bool  `json:"delete,omitempty"`
-	Dst       string `json:"dst"`
-	Src       string `json:"src"`
+	Local     string `json:"local"`
 }
 
 type SyncConfigs struct {

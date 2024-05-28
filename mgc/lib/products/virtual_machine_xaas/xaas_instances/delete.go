@@ -18,7 +18,7 @@ which is logged in.
 - The attached ports will be deleted as well.</li>
 - The attached volumes will be detached.</li>
 
-Version: 1.229.0
+Version: 1.230.0
 
 import "magalu.cloud/lib/products/virtual_machine_xaas/xaas_instances"
 */

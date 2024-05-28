@@ -12,7 +12,7 @@ This route is to get a detailed information for a instance but adding the urp id
 ### Note
 This route is used only for internal proposes.
 
-Version: 1.229.0
+Version: 1.230.0
 
 import "magalu.cloud/lib/products/virtual_machine_xaas/instances/instances_internal"
 */

@@ -13,7 +13,7 @@ List Virtual Machine instances in the current tenant which is logged in.
 - You can use the **extend** argument to get more details from the inner objects
 like image or type.
 
-Version: 1.229.0
+Version: 1.230.0
 
 import "magalu.cloud/lib/products/virtual_machine_xaas/xaas_instances"
 */

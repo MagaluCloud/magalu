@@ -19,7 +19,7 @@ A Snapshot is ready for restore when it's in available state.
 - You can choose a machine-type that has a disk equal or larger
 than the original virtual machine type.
 
-Version: 1.229.0
+Version: 1.230.0
 
 import "magalu.cloud/lib/products/virtual_machine_xaas/xaas_snapshots"
 */

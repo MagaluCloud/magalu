@@ -5,7 +5,7 @@ Package: machine-types
 
 machine-types
 
-Version: 1.229.0
+Version: 1.230.0
 
 import "magalu.cloud/lib/products/virtual_machine_xaas/machine_types"
 */

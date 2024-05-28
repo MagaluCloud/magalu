@@ -12,7 +12,7 @@ instance id and the instance`s tenant.
 
 This route will get DB info and URP info merged in a response.
 
-Version: 1.229.0
+Version: 1.230.0
 
 import "magalu.cloud/lib/products/virtual_machine_xaas/diagnostics"
 */
