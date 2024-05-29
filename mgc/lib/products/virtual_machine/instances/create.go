@@ -25,7 +25,7 @@ type CreateParameters struct {
 	Image            CreateParametersImage       `json:"image"`
 	MachineType      CreateParametersMachineType `json:"machine_type"`
 	Name             string                      `json:"name"`
-	Network          *CreateParametersNetwork    `json:"network,omitempty"`
+	Network          CreateParametersNetwork     `json:"network"`
 	SshKeyName       string                      `json:"ssh_key_name"`
 	UserData         *string                     `json:"user_data,omitempty"`
 }
@@ -56,17 +56,12 @@ type CreateParametersNetwork struct {
 	Vpc               *CreateParametersNetworkVpc `json:"vpc,omitempty"`
 }
 
-// any of: CreateParametersImage0, CreateParametersNetworkNic1
 type CreateParametersNetworkNic struct {
-	CreateParametersImage0      `json:",squash"` // nolint
-	CreateParametersNetworkNic1 `json:",squash"` // nolint
+	Id             *string                                  `json:"id,omitempty"`
+	SecurityGroups CreateParametersNetworkNicSecurityGroups `json:"security_groups"`
 }
 
-type CreateParametersNetworkNic1 struct {
-	SecurityGroups *CreateParametersNetworkNic1SecurityGroups `json:"security_groups,omitempty"`
-}
-
-type CreateParametersNetworkNic1SecurityGroups []CreateParametersImage0
+type CreateParametersNetworkNicSecurityGroups []CreateParametersImage0
 
 // any of: CreateParametersImage0, CreateParametersImage1
 type CreateParametersNetworkVpc struct {
