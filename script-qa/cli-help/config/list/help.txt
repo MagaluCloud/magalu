@@ -1,0 +1,11 @@
+List all available Configs
+
+Usage:
+  ./mgc config list [flags]
+
+Flags:
+  -h, --help   help for list
+
+Global Flags:
+      --cli.show-cli-globals   Show all CLI global flags on usage text
+
