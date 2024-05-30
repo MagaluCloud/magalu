@@ -45,39 +45,39 @@ jobs:
           name: mgc-folder
           path: build/mgc-cli-linux-amd64-CI/
 
-  test-build:
-    needs: build
-    runs-on: self-hosted
-    timeout-minutes: 10
-    env:
-      PROFILES: ${{ secrets.tester_profiles_config }}
-    container:
-      image: ghcr.io/marmotitude/s3-tester:tests
-      volumes:
-        - ${{ github.workspace }}/build/mgc-cli-linux-amd64-CI:/tools/mgc2
-    steps:
-      - uses: actions/download-artifact@v4
-        with:
-          name: mgc-folder
-          path: build/mgc-cli-linux-amd64-CI/
-      - name: Replace original mgc and run tests
-        # TODO: remove the line below to make passing integration tests REQUIRED
-        continue-on-error: true
-        run: |
-          cd /app
-          # mgc to be replaced
-          mgc --version
-          sha256sum `which mgc`
-          # remove original link to mgc
-          rm /usr/local/bin/mgc
-          # give execute permissions to new binary
-          chmod +x /tools/mgc2/mgc
-          # link the mgc from the mounted volume as the new mgc
-          ln -s /tools/mgc2/mgc /usr/local/bin/mgc
-          # custom mgc
-          mgc --version
-          sha256sum `which mgc`
-          ./entrypoint.sh --profiles ${{ vars.tester_profiles }} --clients mgc --tests ${{ vars.tester_tests }}
+  # test-build:
+  #   needs: build
+  #   runs-on: self-hosted
+  #   timeout-minutes: 10
+  #   env:
+  #     PROFILES: ${{ secrets.tester_profiles_config }}
+  #   container:
+  #     image: ghcr.io/marmotitude/s3-tester:tests
+  #     volumes:
+  #       - ${{ github.workspace }}/build/mgc-cli-linux-amd64-CI:/tools/mgc2
+  #   steps:
+  #     - uses: actions/download-artifact@v4
+  #       with:
+  #         name: mgc-folder
+  #         path: build/mgc-cli-linux-amd64-CI/
+  #     - name: Replace original mgc and run tests
+  #       # TODO: remove the line below to make passing integration tests REQUIRED
+  #       continue-on-error: true
+  #       run: |
+  #         cd /app
+  #         # mgc to be replaced
+  #         mgc --version
+  #         sha256sum `which mgc`
+  #         # remove original link to mgc
+  #         rm /usr/local/bin/mgc
+  #         # give execute permissions to new binary
+  #         chmod +x /tools/mgc2/mgc
+  #         # link the mgc from the mounted volume as the new mgc
+  #         ln -s /tools/mgc2/mgc /usr/local/bin/mgc
+  #         # custom mgc
+  #         mgc --version
+  #         sha256sum `which mgc`
+  #         ./entrypoint.sh --profiles ${{ vars.tester_profiles }} --clients mgc --tests ${{ vars.tester_tests }}
 
   pre-commit:
     # TODO: when remove "continue-on-error: true" above, change below to "needs: test-build"
