@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
     title: Internal Virtual Machine Api Product
     description: Virtual Machine Api Product
-    version: 1.230.0
+    version: 1.232.0
 paths:
     /v1/health:
         get:
@@ -2921,6 +2921,9 @@ components:
                     title: External Backup Id
                 status:
                     $ref: '#/components/schemas/BackupStatus'
+                state:
+                    nullable: true
+                    $ref: '#/components/schemas/BackupState'
                 error:
                     title: Error
                     nullable: true
@@ -2929,10 +2932,12 @@ components:
             required:
             - external_backup_id
             - status
+            - state
             title: BackupPatchRequest
             example:
                 error: some error occurred to create backup
                 external_backup_id: 4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a
+                state: new
                 status: creating
         BackupState:
             type: string
