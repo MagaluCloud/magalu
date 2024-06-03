@@ -116,8 +116,9 @@ type GetResultNetwork1PortsItem struct {
 }
 
 type GetResultNetwork1PortsItemIpAddresses struct {
-	PrivateIpAddress string `json:"privateIpAddress"`
-	PublicIpAddress  string `json:"publicIpAddress"`
+	IpV6address      *string `json:"ipV6Address,omitempty"`
+	PrivateIpAddress string  `json:"privateIpAddress"`
+	PublicIpAddress  *string `json:"publicIpAddress,omitempty"`
 }
 
 type GetResultNetwork1Ports []GetResultNetwork1PortsItem
