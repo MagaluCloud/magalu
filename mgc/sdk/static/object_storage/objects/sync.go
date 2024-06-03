@@ -101,11 +101,17 @@ func sync(ctx context.Context, params syncParams, cfg common.Config) (result cor
 	// TODO - implement progress bar
 	defer progressReporter.End()
 
-	if params.Delete {
-		fillBucketFiles(ctx, params, cfg)
+	fillBucketFiles(ctx, params, cfg)
+
+	basePath, err := normalizeURI(params.Local)
+	fmt.Println("PATH: ", basePath)
+	if err != nil {
+		return nil, err
 	}
 
-	basePath, _ := normalizeURI(params.Local, params.Local.Path())
+	if f, _ := os.Stat(basePath.String()); !f.IsDir()  {
+	  return nil, fmt.Errorf("local path must be a folder")
+	}
 
 	uploadChannel := pipeline.Process(ctx, srcObjects, createObjectSyncFilePairProcessor(cfg, params.Local, params.Bucket, progressReporter, basePath), nil)
 	uploadObjectsErrorChan := pipeline.ParallelProcess(ctx, cfg.Workers, uploadChannel, createSyncObjectProcessor(cfg, progressReporter), nil)
@@ -118,17 +124,19 @@ func sync(ctx context.Context, params syncParams, cfg common.Config) (result cor
 		}
 	}
 
-	for file := range bucketFilesMap {
-		logger().Debugw("Deleting file", "file", file)
-		err := deleteFile(ctx, params.Bucket.JoinPath(file), cfg)
-		if err != nil {
-			logger().Debugw("error deleting file", "error", err)
-		}
-	}
-
 	deletedFiles := make([]string, 0, len(bucketFilesMap))
-	for key := range bucketFilesMap {
-		deletedFiles = append(deletedFiles, key)
+
+	if params.Delete {
+		for file := range bucketFilesMap {
+			logger().Debugw("Deleting file", "file", file)
+			err := deleteFile(ctx, params.Bucket.JoinPath(file), cfg)
+			if err != nil {
+				logger().Debugw("error deleting file", "error", err)
+			}
+		}
+		for key := range bucketFilesMap {
+			deletedFiles = append(deletedFiles, key)
+		}	
 	}
 
 	return syncResult{
@@ -137,7 +145,7 @@ func sync(ctx context.Context, params syncParams, cfg common.Config) (result cor
 		FilesDeleted:  len(bucketFilesMap),
 		FilesUploaded: int(uploadFiles.Value()),
 		Deleted:       params.Delete,
-		DeletedFiles:  strings.Join(deletedFiles, "\n"),
+		DeletedFiles:  strings.Join(deletedFiles, "\n-"),
 	}, nil
 }
 
@@ -171,7 +179,8 @@ func createObjectSyncFilePairProcessor(
 			return syncUploadPair{}, pipeline.ProcessSkip
 		}
 
-		normalizedSource, err := normalizeURI(source, entry.Path())
+		normalizedSource, err := normalizeURI(mgcSchemaPkg.URI(entry.Path()))
+		fmt.Println("FILE PATH: ", normalizedSource)
 		if err != nil {
 			logger().Debugw("error with path", "error", err)
 			return syncUploadPair{}, pipeline.ProcessSkip
@@ -202,7 +211,8 @@ func createObjectSyncFilePairProcessor(
 	}
 }
 
-func normalizeURI(uri mgcSchemaPkg.URI, path string) (mgcSchemaPkg.URI, error) {
+func normalizeURI(uri mgcSchemaPkg.URI) (mgcSchemaPkg.URI, error) {
+	path := filepath.FromSlash(uri.String())
 	if strings.HasPrefix(path, "/") {
 		return mgcSchemaPkg.URI(path), nil
 	}
