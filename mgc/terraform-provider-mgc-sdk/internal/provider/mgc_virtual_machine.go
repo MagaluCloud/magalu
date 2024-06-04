@@ -11,6 +11,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	mgcSdk "magalu.cloud/lib"
+	nwVPCs "magalu.cloud/lib/products/network/vpcs"
 	vmImages "magalu.cloud/lib/products/virtual_machine/images"
 	vmInstances "magalu.cloud/lib/products/virtual_machine/instances"
 	vmMachineTypes "magalu.cloud/lib/products/virtual_machine/machine_types"
@@ -35,6 +36,7 @@ type vm struct {
 	vmInstances    vmInstances.Service
 	vmImages       vmImages.Service
 	vmMachineTypes vmMachineTypes.Service
+	nwVPCs         nwVPCs.Service
 }
 
 // Configure adds the provider configured client to the resource.
@@ -50,9 +52,8 @@ func (r *vm) Configure(ctx context.Context, req resource.ConfigureRequest, resp 
 	if !ok {
 		resp.Diagnostics.AddError(
 			"Unexpected Data Source Configure Type",
-			fmt.Sprintf("Expected *apiKey, got: %T. Please report this issue to the provider developers.", req.ProviderData),
+			fmt.Sprintf("Expected provider config, got: %T. Please report this issue to the provider developers.", req.ProviderData),
 		)
-
 		return
 	}
 
@@ -60,7 +61,7 @@ func (r *vm) Configure(ctx context.Context, req resource.ConfigureRequest, resp 
 	r.vmInstances = vmInstances.NewService(ctx, r.sdkClient)
 	r.vmImages = vmImages.NewService(ctx, r.sdkClient)
 	r.vmMachineTypes = vmMachineTypes.NewService(ctx, r.sdkClient)
-
+	r.nwVPCs = nwVPCs.NewService(ctx, r.sdkClient)
 }
 
 // Metadata returns the resource type name.
@@ -72,6 +73,8 @@ func (r *vm) Metadata(_ context.Context, req resource.MetadataRequest, resp *res
 type vmResourceModel struct {
 	ID             types.String       `tfsdk:"id"`
 	Name           types.String       `tfsdk:"name"`
+	Region         types.String       `tfsdk:"region"`
+	Env            types.String       `tfsdk:"env"`
 	LastUpdated    types.String       `tfsdk:"last_updated"`
 	SshKeyName     types.String       `tfsdk:"ssh_key_name"`
 	DeletePublicIP types.Bool         `tfsdk:"delete_public_ip"`
@@ -89,6 +92,7 @@ type genericIDNameModel struct {
 }
 
 type portsModel struct {
+	Name            types.String `tfsdk:"name"`
 	IPV6            types.String `tfsdk:"ipv6"`
 	PrivateAddress  types.String `tfsdk:"private_address"`
 	PublicIpAddress types.String `tfsdk:"public_address"`
@@ -100,10 +104,15 @@ type networkModel struct {
 	Ports             portsModel         `tfsdk:"ports"`
 }
 
-// Schema defines the schema for the resource.
-func (r *vm) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
-	resp.Schema = schema.Schema{
+func resourceExampleResource() schema.Schema {
+	return schema.Schema{
 		Attributes: map[string]schema.Attribute{
+			"region": schema.StringAttribute{
+				Required: true,
+			},
+			"env": schema.StringAttribute{
+				Optional: true,
+			},
 			"id": schema.StringAttribute{
 				Computed: true,
 			},
@@ -132,25 +141,29 @@ func (r *vm) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.
 			"status": schema.StringAttribute{
 				Computed: true,
 			},
-			"machine_type": schema.SingleNestedAttribute{
-				Required: true,
-				Attributes: map[string]schema.Attribute{
-					"id": schema.StringAttribute{
-						Computed: true,
-					},
-					"name": schema.StringAttribute{
-						Required: true,
-					},
-				},
-			},
 			"image": schema.SingleNestedAttribute{
 				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"id": schema.StringAttribute{
+						Optional: true,
 						Computed: true,
 					},
 					"name": schema.StringAttribute{
-						Required: true,
+						Optional: true,
+						Computed: true,
+					},
+				},
+			},
+			"machine_type": schema.SingleNestedAttribute{
+				Required: true,
+				Attributes: map[string]schema.Attribute{
+					"id": schema.StringAttribute{
+						Optional: true,
+						Computed: true,
+					},
+					"name": schema.StringAttribute{
+						Optional: true,
+						Computed: true,
 					},
 				},
 			},
@@ -178,19 +191,22 @@ func (r *vm) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.
 					},
 					"ports": schema.SingleNestedAttribute{
 						Computed: true,
-						Optional: true,
 						Attributes: map[string]schema.Attribute{
-							"ipv6": schema.StringAttribute{
-								Computed: true,
+							"name": schema.StringAttribute{
 								Optional: true,
+								Computed: true,
+							},
+							"ipv6": schema.StringAttribute{
+								Optional: true,
+								Computed: true,
 							},
 							"private_address": schema.StringAttribute{
-								Computed: true,
 								Optional: true,
+								Computed: true,
 							},
 							"public_address": schema.StringAttribute{
-								Computed: true,
 								Optional: true,
+								Computed: true,
 							},
 						},
 					},
@@ -200,26 +216,36 @@ func (r *vm) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.
 	}
 }
 
+// Schema defines the schema for the resource.
+func (r *vm) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
+	resp.Schema = resourceExampleResource()
+}
+
 // Create creates the resource and sets the initial Terraform state.
 func (r *vm) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
 	//Default formula: PLAN > GEN REQUEST > RUN > RESPONSE
-
-	var plan vmResourceModel
+	plan := &vmResourceModel{}
 	diags := req.Plan.Get(ctx, &plan)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
-
+	// CHANGE IT TO DEFAULT - COMMON BLOCK
 	config := &Config{
 		region: new(string),
 		env:    new(string),
 	}
-
 	*config.env = "prod"
 	*config.region = "br-se1"
 
-	// // TODO - VALIDATE EMPTY STRING ""
+	if !plan.Region.IsNull() {
+		*config.region = plan.Region.ValueString()
+	}
+	if !plan.Env.IsNull() {
+		*config.env = plan.Env.ValueString()
+	}
+
+	// Get image and machine type ID
 	var imageID string
 	imageList, err := r.vmImages.List(vmImages.ListParameters{},
 		vmImages.ListConfigs{Env: config.env, Region: config.region},
@@ -292,9 +318,12 @@ func (r *vm) Create(ctx context.Context, req resource.CreateRequest, resp *resou
 			},
 		},
 	}
-
+	// plan.Netowrk.VPC != nil &&
 	if plan.Netowrk != nil && !plan.Netowrk.VPC.ID.IsNull() {
 		createParams.Network.Vpc = &vmInstances.CreateParametersNetworkVpc{
+			CreateParametersImage0: vmInstances.CreateParametersImage0{
+				Id: plan.Netowrk.VPC.ID.ValueString(),
+			},
 			CreateParametersImage1: vmInstances.CreateParametersImage1{
 				Name: plan.Netowrk.VPC.Name.ValueString(),
 			},
@@ -311,10 +340,17 @@ func (r *vm) Create(ctx context.Context, req resource.CreateRequest, resp *resou
 	}
 
 	var getResult vmInstances.GetResult
-
 	expand := &vmInstances.GetParametersExpand{"network"}
 
-	duration := 30 * time.Second
+	//Save current taint state
+	plan.ID = types.StringValue(result.Id)
+	plan.LastUpdated = types.StringValue(time.Now().Format(time.RFC850))
+	plan.MachineType.ID = types.StringValue(machineTypeID)
+	plan.Image.ID = types.StringValue(imageID)
+	plan.State = types.StringValue("new")
+	plan.Status = types.StringValue("creating")
+
+	duration := 5 * time.Minute
 	startTime := time.Now()
 	for {
 		elapsed := time.Since(startTime)
@@ -347,32 +383,28 @@ func (r *vm) Create(ctx context.Context, req resource.CreateRequest, resp *resou
 		}
 		time.Sleep(1 * time.Second)
 	}
-	if getResult.Network.GetResultNetwork1.Ports != nil && len(*getResult.Network.GetResultNetwork1.Ports) > 0 {
-		if plan.Netowrk == nil {
-			plan.Netowrk = &networkModel{
-				AssociatePublicIP: types.BoolValue(false),
-			}
-		}
 
+	if getResult.Network.GetResultNetwork1.Ports != nil && len(*getResult.Network.GetResultNetwork1.Ports) > 0 {
+		ports := (*getResult.Network.GetResultNetwork1.Ports)[0]
+		if plan.Netowrk == nil {
+			plan.Netowrk = &networkModel{}
+		}
 		plan.Netowrk.VPC = genericIDNameModel{
 			ID:   types.StringValue(getResult.Network.GetResultNetwork1.Vpc.Id),
 			Name: types.StringValue(getResult.Network.GetResultNetwork1.Vpc.Name),
 		}
 
 		plan.Netowrk.Ports = portsModel{
-			IPV6:            types.StringValue(*(*getResult.Network.GetResultNetwork1.Ports)[0].IpAddresses.IpV6address),
-			PrivateAddress:  types.StringValue((*getResult.Network.GetResultNetwork1.Ports)[0].IpAddresses.PrivateIpAddress),
-			PublicIpAddress: types.StringValue(*(*getResult.Network.GetResultNetwork1.Ports)[0].IpAddresses.PublicIpAddress),
+			Name:            types.StringValue(ports.Name),
+			IPV6:            types.StringValue(*ports.IpAddresses.IpV6address),
+			PrivateAddress:  types.StringValue(ports.IpAddresses.PrivateIpAddress),
+			PublicIpAddress: types.StringValue(*ports.IpAddresses.PublicIpAddress),
 		}
 
 	}
 
 	plan.State = types.StringValue(getResult.State)
 	plan.Status = types.StringValue(getResult.Status)
-	plan.ID = types.StringValue(result.Id)
-	plan.LastUpdated = types.StringValue(time.Now().Format(time.RFC850))
-	plan.MachineType.ID = types.StringValue(machineTypeID)
-	plan.Image.ID = types.StringValue(imageID)
 
 	// Set state to fully populated data
 	diags = resp.State.Set(ctx, plan)
