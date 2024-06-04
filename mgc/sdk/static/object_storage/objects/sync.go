@@ -103,6 +103,7 @@ func sync(ctx context.Context, params syncParams, cfg common.Config) (result cor
 
 	fillBucketFiles(ctx, params, cfg)
 
+// fix this
 	basePath, err := normalizeURI(params.Local)
 	fmt.Println("PATH: ", basePath)
 	if err != nil {
@@ -127,6 +128,14 @@ func sync(ctx context.Context, params syncParams, cfg common.Config) (result cor
 	deletedFiles := make([]string, 0, len(bucketFilesMap))
 
 	if params.Delete {
+
+
+		// delOb := common.DeleteObjectsParams{
+		// 	Destination: params.Bucket,
+		// 	ToDelete:    ,
+		// 	BatchSize:   params.BatchSize,
+		// }
+
 		for file := range bucketFilesMap {
 			logger().Debugw("Deleting file", "file", file)
 			err := deleteFile(ctx, params.Bucket.JoinPath(file), cfg)
@@ -145,22 +154,23 @@ func sync(ctx context.Context, params syncParams, cfg common.Config) (result cor
 		FilesDeleted:  len(bucketFilesMap),
 		FilesUploaded: int(uploadFiles.Value()),
 		Deleted:       params.Delete,
-		DeletedFiles:  strings.Join(deletedFiles, "\n-"),
+		DeletedFiles:  strings.Join(deletedFiles, ", "),
 	}, nil
 }
 
 func fillBucketFiles(ctx context.Context, params syncParams, cfg common.Config) {
-	logger().Debug("Deleting files")
-	listParams := listParams{
-		ListObjectsParams: common.ListObjectsParams{Destination: params.Bucket, Recursive: true, PaginationParams: common.PaginationParams{MaxItems: 99999}},
-	}
-	bucketFiles, err := List(ctx, listParams, cfg)
-	if err != nil {
-		logger().Debugw("error listing bucket files", "error", err)
-		return
-	}
-	for _, file := range bucketFiles.Contents {
-		bucketFilesMap[file.Key] = true
+	logger().Debug("Getting bucket files")
+
+	dirBucketFiles := common.ListGenerator(ctx, common.ListObjectsParams{
+		Destination: params.Bucket,
+		Recursive:   true,
+		PaginationParams: common.PaginationParams{
+			MaxItems: common.MaxBatchSize,
+		},
+	}, cfg, nil)
+
+	for file := range dirBucketFiles {
+		bucketFilesMap[file.Path()] = true
 	}
 }
 
@@ -186,7 +196,7 @@ func createObjectSyncFilePairProcessor(
 			return syncUploadPair{}, pipeline.ProcessSkip
 		}
 
-		pathWithFolder := strings.TrimPrefix(entry.Path(), basePath.Path())
+		pathWithFolder := strings.TrimPrefix(entry.Path(), basePath.String())
 		normalizedDestination := destination.JoinPath(pathWithFolder)
 
 		info, err := entry.DirEntry().Info()
