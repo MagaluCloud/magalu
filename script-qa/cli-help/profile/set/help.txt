@@ -1,10 +1,10 @@
 Sets profile to be used
 
 Usage:
-  ./mgc profile set-current [name] [flags]
+  ./mgc profile set [name] [flags]
 
 Flags:
-  -h, --help          help for set-current
+  -h, --help          help for set
       --name string   Profile name (required)
 
 Global Flags:

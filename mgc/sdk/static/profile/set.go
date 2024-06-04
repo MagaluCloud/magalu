@@ -13,13 +13,13 @@ type setCurrentParams struct {
 	Name string `json:"name" jsonschema_description:"Profile name" mgc:"positional"`
 }
 
-var getSetCurrent = utils.NewLazyLoader[core.Executor](func() core.Executor {
+var getSet = utils.NewLazyLoader[core.Executor](func() core.Executor {
 	exec := core.NewStaticExecute(
 		core.DescriptorSpec{
-			Name:        "set-current",
+			Name:        "set",
 			Description: "Sets profile to be used",
 		},
-		setCurrent,
+		setProfile,
 	)
 
 	return core.NewExecuteResultOutputOptions(exec, func(exec core.Executor, result core.Result) string {
@@ -27,7 +27,7 @@ var getSetCurrent = utils.NewLazyLoader[core.Executor](func() core.Executor {
 	})
 })
 
-func setCurrent(ctx context.Context, params setCurrentParams, _ struct{}) (*profile_manager.Profile, error) {
+func setProfile(ctx context.Context, params setCurrentParams, _ struct{}) (*profile_manager.Profile, error) {
 	m := profile_manager.FromContext(ctx)
 	if m == nil {
 		return nil, ProfileError{Name: "", Err: errors.New("couldn't get ProfileManager from context")}

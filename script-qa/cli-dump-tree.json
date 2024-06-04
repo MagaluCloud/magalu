@@ -24295,10 +24295,19 @@
     "configs": {
      "type": "object"
     },
-    "description": "Shows current selected profile. Any changes to auth or config values will only affect this profile",
+    "description": "Deletes the profile with the specified name",
     "isInternal": false,
-    "name": "current",
+    "name": "delete",
     "parameters": {
+     "properties": {
+      "name": {
+       "description": "Profile name",
+       "type": "string"
+      }
+     },
+     "required": [
+      "name"
+     ],
      "type": "object"
     },
     "result": {
@@ -24318,19 +24327,10 @@
     "configs": {
      "type": "object"
     },
-    "description": "Deletes the profile with the specified name",
+    "description": "Get current profile.",
     "isInternal": false,
-    "name": "delete",
+    "name": "get",
     "parameters": {
-     "properties": {
-      "name": {
-       "description": "Profile name",
-       "type": "string"
-      }
-     },
-     "required": [
-      "name"
-     ],
      "type": "object"
     },
     "result": {
@@ -24378,7 +24378,7 @@
     },
     "description": "Sets profile to be used",
     "isInternal": false,
-    "name": "set-current",
+    "name": "set",
     "parameters": {
      "properties": {
       "name": {
