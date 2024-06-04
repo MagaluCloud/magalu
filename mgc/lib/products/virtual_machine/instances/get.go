@@ -56,7 +56,6 @@ type GetResultError struct {
 
 // any of: GetResultImage0, GetResultImage1
 type GetResultImage struct {
-	GetResultImage0 `json:",squash"` // nolint
 	GetResultImage1 `json:",squash"` // nolint
 }
 
@@ -72,7 +71,6 @@ type GetResultImage1 struct {
 
 // any of: GetResultMachineType0, GetResultMachineType1
 type GetResultMachineType struct {
-	GetResultMachineType0 `json:",squash"` // nolint
 	GetResultMachineType1 `json:",squash"` // nolint
 }
 
