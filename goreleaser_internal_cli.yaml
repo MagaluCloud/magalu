@@ -5,6 +5,8 @@ builds:
     id: "mgc"
     goos:
       - linux
+      - windows
+      - darwin
     binary: mgc
     goarch:
       - amd64
@@ -13,19 +15,6 @@ builds:
     flags:
       - -tags=embed release
     main: mgc/cli/main.go
-nfpms:
--
-  maintainer: Magalu Cloud <magalucloud.cli@luizalabs.com>
-  id: mgc
-  description: MGC CLI.
-  homepage: https://magalu.cloud/
-  license: MIT
-  package_name: mgccli
-  bindir: /usr/bin
-  formats:
-  - deb
-  builds:
-    - mgc
 release:
   replace_existing_artifacts: true
   draft: true
