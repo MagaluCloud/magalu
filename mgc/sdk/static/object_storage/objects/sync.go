@@ -5,9 +5,11 @@ import (
 	"crypto/md5"
 	"encoding/hex"
 	"fmt"
+	"io"
 	"io/fs"
 	"os"
 	"path/filepath"
+	"strconv"
 	"strings"
 	sy "sync"
 	"time"
@@ -71,7 +73,7 @@ var getSync = utils.NewLazyLoader[core.Executor](func() core.Executor {
 })
 
 var (
-	bucketFilesMap = make(map[string]bool)
+	allBucketFiles = make(map[string]bool)
 	uploadFiles    = &UploadCounter{}
 )
 
@@ -98,20 +100,17 @@ func sync(ctx context.Context, params syncParams, cfg common.Config) (result cor
 	progressReporter := progress_report.NewUnitsReporter(ctx, "Sync Folder", 0)
 	progressReporter.Start()
 
-	// TODO - implement progress bar
 	defer progressReporter.End()
 
 	fillBucketFiles(ctx, params, cfg)
 
-// fix this
 	basePath, err := normalizeURI(params.Local)
-	fmt.Println("PATH: ", basePath)
 	if err != nil {
 		return nil, err
 	}
 
-	if f, _ := os.Stat(basePath.String()); !f.IsDir()  {
-	  return nil, fmt.Errorf("local path must be a folder")
+	if f, _ := os.Stat(basePath.String()); !f.IsDir() {
+		return nil, fmt.Errorf("local path must be a folder")
 	}
 
 	uploadChannel := pipeline.Process(ctx, srcObjects, createObjectSyncFilePairProcessor(cfg, params.Local, params.Bucket, progressReporter, basePath), nil)
@@ -125,37 +124,52 @@ func sync(ctx context.Context, params syncParams, cfg common.Config) (result cor
 		}
 	}
 
-	deletedFiles := make([]string, 0, len(bucketFilesMap))
+	deletedFiles := make([]string, 0, len(allBucketFiles))
 
 	if params.Delete {
-
-
-		// delOb := common.DeleteObjectsParams{
-		// 	Destination: params.Bucket,
-		// 	ToDelete:    ,
-		// 	BatchSize:   params.BatchSize,
-		// }
-
-		for file := range bucketFilesMap {
-			logger().Debugw("Deleting file", "file", file)
-			err := deleteFile(ctx, params.Bucket.JoinPath(file), cfg)
+		for file := range allBucketFiles {
 			if err != nil {
 				logger().Debugw("error deleting file", "error", err)
 			}
+			deletedFiles = append(deletedFiles, file)
 		}
-		for key := range bucketFilesMap {
-			deletedFiles = append(deletedFiles, key)
-		}	
+		delOb := common.DeleteObjectsParams{
+			Destination: params.Bucket,
+			ToDelete:    bucketObjectsToWalkDirEntry(ctx, deletedFiles),
+			BatchSize:   params.BatchSize,
+		}
+		err = common.DeleteObjects(ctx, delOb, cfg)
+		if err != nil {
+			logger().Debugw("error deleting objects", "error", err)
+		}
 	}
 
 	return syncResult{
 		Source:        params.Local,
 		Destination:   params.Bucket,
-		FilesDeleted:  len(bucketFilesMap),
+		FilesDeleted:  len(allBucketFiles),
 		FilesUploaded: int(uploadFiles.Value()),
-		Deleted:       params.Delete,
+		Deleted:       len(deletedFiles) > 0,
 		DeletedFiles:  strings.Join(deletedFiles, ", "),
 	}, nil
+}
+
+func bucketObjectsToWalkDirEntry(ctx context.Context, bucketObjects []string) <-chan pipeline.WalkDirEntry {
+	out := make(chan pipeline.WalkDirEntry)
+	go func() {
+		defer close(out)
+		var err error
+		for _, obj := range bucketObjects {
+			if ctx.Err() != nil {
+				return
+			}
+			entry := pipeline.NewSimpleWalkDirEntry(obj, &common.BucketContent{
+				Key: obj,
+			}, err)
+			out <- entry
+		}
+	}()
+	return out
 }
 
 func fillBucketFiles(ctx context.Context, params syncParams, cfg common.Config) {
@@ -170,7 +184,7 @@ func fillBucketFiles(ctx context.Context, params syncParams, cfg common.Config) 
 	}, cfg, nil)
 
 	for file := range dirBucketFiles {
-		bucketFilesMap[file.Path()] = true
+		allBucketFiles["/"+file.Path()] = true
 	}
 }
 
@@ -190,7 +204,6 @@ func createObjectSyncFilePairProcessor(
 		}
 
 		normalizedSource, err := normalizeURI(mgcSchemaPkg.URI(entry.Path()))
-		fmt.Println("FILE PATH: ", normalizedSource)
 		if err != nil {
 			logger().Debugw("error with path", "error", err)
 			return syncUploadPair{}, pipeline.ProcessSkip
@@ -206,8 +219,8 @@ func createObjectSyncFilePairProcessor(
 
 		progressReporter.Report(0, 1, nil)
 
-		if bucketFilesMap[pathWithFolder] {
-			delete(bucketFilesMap, pathWithFolder)
+		if allBucketFiles[pathWithFolder] {
+			delete(allBucketFiles, pathWithFolder)
 		}
 
 		return syncUploadPair{
@@ -262,7 +275,7 @@ func createSyncObjectProcessor(
 		}
 
 		if err == nil && entry.Stats.SourceLength == fileStats.SourceLength {
-			localMd5, err := getMD5FromFile(entry.Source.String())
+			localMd5, err := getLocalFileEtagBasedOnRemote(entry.Source.String(), fileStats.Etag)
 			if err != nil {
 				logger().Debugw("error getting md5 from file", "error", err)
 				return err, pipeline.ProcessOutput
@@ -284,13 +297,63 @@ func createSyncObjectProcessor(
 	}
 }
 
-func getMD5FromFile(path string) (string, error) {
-	data, err := os.ReadFile(path)
+func getLocalFileEtagBasedOnRemote(path, remoteEtag string) (string, error) {
+	file, err := os.Open(path)
 	if err != nil {
 		return "", err
 	}
-	hash := md5.Sum(data)
-	return hex.EncodeToString(hash[:]), nil
+	defer file.Close()
+
+	hashes := []byte{}
+	parts := 0
+	chunkSize, err := estimateChunkSizeBasedOnEtag(path, remoteEtag) 
+	if err != nil {
+		logger().Debugw("error estimating chunk size", "error", err)
+		chunkSize = 1024 * 1024 * 5
+	}
+	buf := make([]byte, chunkSize)
+
+	for {
+		n, err := file.Read(buf)
+		if err != nil && err != io.EOF {
+			return "", err
+		}
+		if n == 0 {
+			break
+		}
+
+		hash := md5.Sum(buf[:n])
+		hashes = append(hashes, hash[:]...)
+		parts++
+	}
+
+	if parts <= 1 {
+		return hex.EncodeToString(hashes), nil
+	}
+
+	finalHash := md5.Sum(hashes)
+	return fmt.Sprintf("%s-%d", hex.EncodeToString(finalHash[:]), parts), nil
+}
+
+func estimateChunkSizeBasedOnEtag(filePath string, eTag string) (int64, error) {
+    fileInfo, err := os.Stat(filePath)
+    if err != nil {
+        return 0, err
+    }
+
+    parts := strings.Split(eTag, "-")
+    if len(parts) != 2 {
+        return 0, fmt.Errorf("invalid ETag format")
+    }
+
+    numParts, err := strconv.Atoi(parts[1])
+    if err != nil {
+        return 0, err
+    }
+
+    x := fileInfo.Size() / int64(numParts)
+    y := x % 1048576
+    return x + 1048576 - y, nil
 }
 
 func getFileStats(ctx context.Context, destination mgcSchemaPkg.URI, cfg common.Config) (fileSyncStats, error) {
@@ -323,14 +386,6 @@ func uploadFile(ctx context.Context, local mgcSchemaPkg.URI, bucket mgcSchemaPkg
 		uploadParams{Source: sourcePath, Destination: bucket},
 		cfg,
 	)
-	return err
-}
-
-func deleteFile(ctx context.Context, destination mgcSchemaPkg.URI, cfg common.Config) error {
-	param := common.DeleteObjectParams{
-		Destination: destination,
-	}
-	_, err := deleteObject(ctx, param, cfg)
 	return err
 }
 
