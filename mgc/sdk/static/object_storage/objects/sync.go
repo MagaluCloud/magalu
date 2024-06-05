@@ -4,6 +4,7 @@ import (
 	"context"
 	"crypto/md5"
 	"encoding/hex"
+	"errors"
 	"fmt"
 	"io"
 	"io/fs"
@@ -90,24 +91,24 @@ func sync(ctx context.Context, params syncParams, cfg common.Config) (result cor
 	ctx, cancel := context.WithCancelCause(ctx)
 	defer cancel(nil)
 
-	srcObjects := pipeline.WalkDirEntries(ctx, params.Local.String(), func(path string, d fs.DirEntry, err error) error {
+	basePath, err := normalizeURI(params.Local)
+	if err != nil {
+		return nil, err
+	}
+
+	srcObjects := pipeline.WalkDirEntries(ctx, basePath.String(), func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
 			return err
 		}
 		return nil
 	})
 
-	progressReporter := progress_report.NewUnitsReporter(ctx, "Sync Folder", 0)
+	progressReporter := progress_report.NewUnitsReporter(ctx, "Syncing Folder", 0)
 	progressReporter.Start()
 
 	defer progressReporter.End()
 
 	fillBucketFiles(ctx, params, cfg)
-
-	basePath, err := normalizeURI(params.Local)
-	if err != nil {
-		return nil, err
-	}
 
 	if f, _ := os.Stat(basePath.String()); !f.IsDir() {
 		return nil, fmt.Errorf("local path must be a folder")
@@ -164,7 +165,7 @@ func bucketObjectsToWalkDirEntry(ctx context.Context, bucketObjects []string) <-
 				return
 			}
 			entry := pipeline.NewSimpleWalkDirEntry(obj, &common.BucketContent{
-				Key: obj,
+				Key: strings.TrimPrefix(obj, "/"),
 			}, err)
 			out <- entry
 		}
@@ -235,26 +236,22 @@ func createObjectSyncFilePairProcessor(
 }
 
 func normalizeURI(uri mgcSchemaPkg.URI) (mgcSchemaPkg.URI, error) {
-	path := filepath.FromSlash(uri.String())
-	if strings.HasPrefix(path, "/") {
-		return mgcSchemaPkg.URI(path), nil
+	path := uri.String()
+
+	if strings.HasPrefix(path, "~") {
+		homeDir, err := os.UserHomeDir()
+		if err != nil {
+			return uri, err
+		}
+		path = homeDir + path[1:]
 	}
 
-	currentDir, err := filepath.Abs(".")
+	absPath, err := filepath.Abs(path)
 	if err != nil {
-		return uri, err
+		return uri, errors.New("invalid local path")
 	}
 
-	if strings.HasPrefix(path, "./") {
-		path = path[1:]
-	}
-
-	fullPath := filepath.Join(currentDir, path)
-	if _, err := os.Stat(fullPath); !os.IsNotExist(err) {
-		return mgcSchemaPkg.URI(fullPath), nil
-	}
-
-	return uri, fmt.Errorf("path %s does not exist", fullPath)
+	return mgcSchemaPkg.URI(absPath), nil
 }
 
 func createSyncObjectProcessor(
@@ -304,13 +301,44 @@ func getLocalFileEtagBasedOnRemote(path, remoteEtag string) (string, error) {
 	}
 	defer file.Close()
 
-	hashes := []byte{}
-	parts := 0
-	chunkSize, err := estimateChunkSizeBasedOnEtag(path, remoteEtag) 
-	if err != nil {
-		logger().Debugw("error estimating chunk size", "error", err)
-		chunkSize = 1024 * 1024 * 5
+	if !strings.Contains(remoteEtag, "-") {
+		hash := md5.New()
+		if _, err := io.Copy(hash, file); err != nil {
+			return "", err
+		}
+		return hex.EncodeToString(hash.Sum(nil)), nil
+
 	}
+	return recalculateEtag(path, remoteEtag)
+}
+
+func recalculateEtag(filePath string, eTag string) (string, error) {
+	fileInfo, err := os.Stat(filePath)
+	if err != nil {
+		return "", err
+	}
+
+	parts := strings.Split(eTag, "-")
+	if len(parts) != 2 {
+		return "", fmt.Errorf("invalid ETag format")
+	}
+
+	numParts, err := strconv.Atoi(parts[1])
+	if err != nil {
+		return "", err
+	}
+
+	x := fileInfo.Size() / int64(numParts)
+	y := x % 1048576
+	chunkSize := x + 1048576 - y
+
+	file, err := os.Open(filePath)
+	if err != nil {
+		return "", err
+	}
+	defer file.Close()
+
+	hashes := []byte{}
 	buf := make([]byte, chunkSize)
 
 	for {
@@ -324,36 +352,14 @@ func getLocalFileEtagBasedOnRemote(path, remoteEtag string) (string, error) {
 
 		hash := md5.Sum(buf[:n])
 		hashes = append(hashes, hash[:]...)
-		parts++
 	}
 
-	if parts <= 1 {
+	if numParts <= 1 {
 		return hex.EncodeToString(hashes), nil
 	}
 
 	finalHash := md5.Sum(hashes)
-	return fmt.Sprintf("%s-%d", hex.EncodeToString(finalHash[:]), parts), nil
-}
-
-func estimateChunkSizeBasedOnEtag(filePath string, eTag string) (int64, error) {
-    fileInfo, err := os.Stat(filePath)
-    if err != nil {
-        return 0, err
-    }
-
-    parts := strings.Split(eTag, "-")
-    if len(parts) != 2 {
-        return 0, fmt.Errorf("invalid ETag format")
-    }
-
-    numParts, err := strconv.Atoi(parts[1])
-    if err != nil {
-        return 0, err
-    }
-
-    x := fileInfo.Size() / int64(numParts)
-    y := x % 1048576
-    return x + 1048576 - y, nil
+	return fmt.Sprintf("%s-%d", hex.EncodeToString(finalHash[:]), numParts), nil
 }
 
 func getFileStats(ctx context.Context, destination mgcSchemaPkg.URI, cfg common.Config) (fileSyncStats, error) {
