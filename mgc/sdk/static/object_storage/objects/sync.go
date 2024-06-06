@@ -4,12 +4,10 @@ import (
 	"context"
 	"crypto/md5"
 	"encoding/hex"
-	"errors"
 	"fmt"
 	"io"
 	"io/fs"
 	"os"
-	"path/filepath"
 	"strconv"
 	"strings"
 	sy "sync"
@@ -91,7 +89,7 @@ func sync(ctx context.Context, params syncParams, cfg common.Config) (result cor
 	ctx, cancel := context.WithCancelCause(ctx)
 	defer cancel(nil)
 
-	basePath, err := normalizeURI(params.Local)
+	basePath, err := common.GetAbsSystemURI(params.Local)
 	if err != nil {
 		return nil, err
 	}
@@ -204,7 +202,7 @@ func createObjectSyncFilePairProcessor(
 			return syncUploadPair{}, pipeline.ProcessSkip
 		}
 
-		normalizedSource, err := normalizeURI(mgcSchemaPkg.URI(entry.Path()))
+		normalizedSource, err := common.GetAbsSystemURI(mgcSchemaPkg.URI(entry.Path()))
 		if err != nil {
 			logger().Debugw("error with path", "error", err)
 			return syncUploadPair{}, pipeline.ProcessSkip
@@ -233,25 +231,6 @@ func createObjectSyncFilePairProcessor(
 			},
 		}, pipeline.ProcessOutput
 	}
-}
-
-func normalizeURI(uri mgcSchemaPkg.URI) (mgcSchemaPkg.URI, error) {
-	path := uri.String()
-
-	if strings.HasPrefix(path, "~") {
-		homeDir, err := os.UserHomeDir()
-		if err != nil {
-			return uri, err
-		}
-		path = homeDir + path[1:]
-	}
-
-	absPath, err := filepath.Abs(path)
-	if err != nil {
-		return uri, errors.New("invalid local path")
-	}
-
-	return mgcSchemaPkg.URI(absPath), nil
 }
 
 func createSyncObjectProcessor(
