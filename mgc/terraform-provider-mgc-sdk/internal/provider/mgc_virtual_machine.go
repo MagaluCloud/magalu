@@ -74,27 +74,28 @@ func (r *vm) Metadata(_ context.Context, req resource.MetadataRequest, resp *res
 
 // vmResourceModel maps de resource schema data.
 type vmResourceModel struct {
-	ID                types.String       `tfsdk:"id"`
-	Name              types.String       `tfsdk:"name"`
-	Region            types.String       `tfsdk:"region"`
-	Env               types.String       `tfsdk:"env"`
-	LastUpdated       types.String       `tfsdk:"last_updated"`
-	SshKeyName        types.String       `tfsdk:"ssh_key_name"`
-	DeletePublicIP    types.Bool         `tfsdk:"delete_public_ip"`
-	State             types.String       `tfsdk:"state"`
-	Status            types.String       `tfsdk:"status"`
+	ID           types.String       `tfsdk:"id"`
+	Name         types.String       `tfsdk:"name"`
+	NameIsPrefix types.Bool         `tfsdk:"name_is_prefix"`
+	FinalName    types.String       `tfsdk:"final_name"`
+	Region       types.String       `tfsdk:"region"`
+	Env          types.String       `tfsdk:"env"`
+	LastUpdated  types.String       `tfsdk:"last_updated"`
+	SshKeyName   types.String       `tfsdk:"ssh_key_name"`
+	State        types.String       `tfsdk:"state"`
+	Status       types.String       `tfsdk:"status"`
+	Network      networkVmModel     `tfsdk:"network"`
+	MachineType  genericIDNameModel `tfsdk:"machine_type"`
+	Image        genericIDNameModel `tfsdk:"image"`
+}
+
+type networkVmModel struct {
 	IPV6              types.String       `tfsdk:"ipv6"`
 	PrivateAddress    types.String       `tfsdk:"private_address"`
 	PublicIpAddress   types.String       `tfsdk:"public_address"`
+	DeletePublicIP    types.Bool         `tfsdk:"delete_public_ip"`
 	AssociatePublicIP types.Bool         `tfsdk:"associate_public_ip"`
-	MachineType       genericIDNameModel `tfsdk:"machine_type"`
-	Image             genericIDNameModel `tfsdk:"image"`
 	VPC               genericIDNameModel `tfsdk:"vpc"`
-}
-
-type genericIDNameModel struct {
-	ID   types.String `tfsdk:"id"`
-	Name types.String `tfsdk:"name"`
 }
 
 // Schema defines the schema for the resource.
@@ -105,7 +106,7 @@ func (r *vm) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.UseStateForUnknown(),
 				},
-				Required: true,
+				Optional: true,
 			},
 			"env": schema.StringAttribute{
 				PlanModifiers: []planmodifier.String{
@@ -119,11 +120,23 @@ func (r *vm) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.
 				},
 				Computed: true,
 			},
+			"name_is_prefix": schema.BoolAttribute{
+
+				Optional: true,
+				Computed: true,
+				Default:  booldefault.StaticBool(false),
+			},
 			"name": schema.StringAttribute{
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.UseStateForUnknown(),
 				},
 				Required: true,
+			},
+			"final_name": schema.StringAttribute{
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.UseStateForUnknown(),
+				},
+				Computed: true,
 			},
 			"last_updated": schema.StringAttribute{
 				Computed: true,
@@ -134,50 +147,18 @@ func (r *vm) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.
 				},
 				Required: true,
 			},
-			"delete_public_ip": schema.BoolAttribute{
-				Optional: true,
-				Computed: true,
-				Default:  booldefault.StaticBool(true),
-			},
-			"associate_public_ip": schema.BoolAttribute{
-				Optional: true,
-				Computed: true,
-				Default:  booldefault.StaticBool(false),
-			},
 			"state": schema.StringAttribute{
 				Computed: true,
 			},
 			"status": schema.StringAttribute{
 				Computed: true,
 			},
-			"ipv6": schema.StringAttribute{
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.UseStateForUnknown(),
-				},
-				Computed: true,
-			},
-			"private_address": schema.StringAttribute{
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.UseStateForUnknown(),
-				},
-				Computed: true,
-			},
-			"public_address": schema.StringAttribute{
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.UseStateForUnknown(),
-				},
-				Computed: true,
-			},
-
 			"image": schema.SingleNestedAttribute{
 				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"id": schema.StringAttribute{
-						PlanModifiers: []planmodifier.String{
-							stringplanmodifier.UseStateForUnknown(),
-						},
-						Optional: true,
 						Computed: true,
+						Optional: true,
 					},
 					"name": schema.StringAttribute{
 						PlanModifiers: []planmodifier.String{
@@ -192,9 +173,6 @@ func (r *vm) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.
 				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"id": schema.StringAttribute{
-						PlanModifiers: []planmodifier.String{
-							stringplanmodifier.UseStateForUnknown(),
-						},
 						Optional: true,
 						Computed: true,
 					},
@@ -207,28 +185,86 @@ func (r *vm) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.
 					},
 				},
 			},
-			"vpc": schema.SingleNestedAttribute{
+			"network": schema.SingleNestedAttribute{
 				Required: false,
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
-					"id": schema.StringAttribute{
+					"delete_public_ip": schema.BoolAttribute{
+						Optional: true,
+						Computed: true,
+						Default:  booldefault.StaticBool(true),
+					},
+					"associate_public_ip": schema.BoolAttribute{
+						Required: true,
+					},
+					"ipv6": schema.StringAttribute{
 						PlanModifiers: []planmodifier.String{
 							stringplanmodifier.UseStateForUnknown(),
 						},
-						Optional: true,
 						Computed: true,
 					},
-					"name": schema.StringAttribute{
+					"private_address": schema.StringAttribute{
 						PlanModifiers: []planmodifier.String{
 							stringplanmodifier.UseStateForUnknown(),
 						},
-						Optional: true,
 						Computed: true,
+					},
+					"public_address": schema.StringAttribute{
+						PlanModifiers: []planmodifier.String{
+							stringplanmodifier.UseStateForUnknown(),
+						},
+						Computed: true,
+					},
+					"vpc": schema.SingleNestedAttribute{
+						Required: false,
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"id": schema.StringAttribute{
+								PlanModifiers: []planmodifier.String{
+									stringplanmodifier.UseStateForUnknown(),
+								},
+								Optional: true,
+								Computed: true,
+							},
+							"name": schema.StringAttribute{
+								PlanModifiers: []planmodifier.String{
+									stringplanmodifier.UseStateForUnknown(),
+								},
+								Optional: true,
+								Computed: true,
+							},
+						},
 					},
 				},
 			},
 		},
 	}
+}
+
+func (r *vm) ModifyPlan(ctx context.Context, req resource.ModifyPlanRequest, resp *resource.ModifyPlanResponse) {
+	//do nothing
+}
+
+// Read refreshes the Terraform state with the latest data.
+func (r *vm) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	data := &vmResourceModel{}
+	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
+	config := NewConfig(data.Region.ValueStringPointer(), data.Env.ValueStringPointer())
+
+	getResult, err := r.getVmStatus(data.ID.ValueString(), config)
+	if err != nil {
+		resp.Diagnostics.AddError(
+			"Error Reading VM",
+			"Could not read VM ID "+data.ID.ValueString()+": "+err.Error(),
+		)
+		return
+	}
+
+	data.ID = types.StringValue(getResult.Id)
+	r.setValuesFromServer(data, getResult)
+
+	// Save updated data into Terraform state
+	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
 // Create creates the resource and sets the initial Terraform state.
@@ -239,26 +275,10 @@ func (r *vm) Create(ctx context.Context, req resource.CreateRequest, resp *resou
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	// CHANGE IT TO DEFAULT - COMMON BLOCK
-	config := &Config{
-		region: new(string),
-		env:    new(string),
-	}
-	*config.env = "prod"
-	*config.region = "br-se1"
-
-	if !plan.Region.IsNull() {
-		*config.region = plan.Region.ValueString()
-	}
-	if !plan.Env.IsNull() {
-		*config.env = plan.Env.ValueString()
-	}
+	config := NewConfig(plan.Region.ValueStringPointer(), plan.Env.ValueStringPointer())
 
 	// Get image and machine type ID
-	var imageID string
-	imageList, err := r.vmImages.List(vmImages.ListParameters{},
-		vmImages.ListConfigs{Env: config.env, Region: config.region},
-	)
+	imageID, err := r.getImageID(plan.Image.Name.ValueString(), config)
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Error creating vm",
@@ -266,25 +286,8 @@ func (r *vm) Create(ctx context.Context, req resource.CreateRequest, resp *resou
 		)
 		return
 	}
-	for _, x := range imageList.Images {
-		if strings.Contains(x.Name, plan.Image.Name.ValueString()) {
-			imageID = x.Id
-			break
-		}
-	}
 
-	if imageID == "" {
-		resp.Diagnostics.AddError(
-			"Error creating vm",
-			"Could not found image ID with name: "+plan.Image.Name.ValueString(),
-		)
-		return
-	}
-
-	var machineTypeID string
-	machineTypeList, err := r.vmMachineTypes.List(vmMachineTypes.ListParameters{},
-		vmMachineTypes.ListConfigs{Env: config.env, Region: config.region},
-	)
+	machineTypeID, err := r.getMachineTypeID(plan.MachineType.Name.ValueString(), config)
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Error creating vm",
@@ -292,23 +295,13 @@ func (r *vm) Create(ctx context.Context, req resource.CreateRequest, resp *resou
 		)
 		return
 	}
-	for _, x := range machineTypeList.InstanceTypes {
-		if x.Name == plan.MachineType.Name.ValueString() {
-			machineTypeID = x.Id
-			break
-		}
-	}
 
-	if machineTypeID == "" {
-		resp.Diagnostics.AddError(
-			"Error creating vm",
-			"Could not found machine-type ID with name: "+plan.MachineType.Name.ValueString(),
-		)
-		return
+	if plan.NameIsPrefix.ValueBool() && plan.FinalName.ValueString() == "" {
+		plan.FinalName = types.StringValue(plan.Name.ValueString() + "-" + getRandomWords(3, "-"))
 	}
 
 	createParams := vmInstances.CreateParameters{
-		Name:       plan.Name.ValueString(),
+		Name:       plan.FinalName.ValueString(),
 		SshKeyName: plan.SshKeyName.ValueString(),
 		Image: vmInstances.CreateParametersImage{
 			CreateParametersImage1: vmInstances.CreateParametersImage1{
@@ -326,18 +319,19 @@ func (r *vm) Create(ctx context.Context, req resource.CreateRequest, resp *resou
 				Id: machineTypeID,
 			},
 		},
+		Network: vmInstances.CreateParametersNetwork{
+			AssociatePublicIp: plan.Network.AssociatePublicIP.ValueBoolPointer(),
+		},
 	}
 
-	createParams.Network.AssociatePublicIp = plan.AssociatePublicIP.ValueBoolPointer()
-
-	if !plan.VPC.ID.IsNull() && plan.VPC.ID.ValueString() != "" {
+	if !plan.Network.VPC.ID.IsNull() && plan.Network.VPC.ID.ValueString() != "" {
 		createParams.Network.Vpc = &vmInstances.CreateParametersNetworkVpc{
 			CreateParametersImage0: vmInstances.CreateParametersImage0{
-				Id: plan.VPC.ID.ValueString(),
+				Id: plan.Network.VPC.ID.ValueString(),
 			},
 		}
-	} else if !plan.VPC.Name.IsNull() && plan.VPC.Name.ValueString() != "" {
-		vpcs, err := r.nwVPCs.List(nwVPCs.ListConfigs{Env: config.env, Region: config.region})
+	} else if !plan.Network.VPC.Name.IsNull() && plan.Network.VPC.Name.ValueString() != "" {
+		vpcId, err := r.getVpcID(plan.Network.VPC.Name.ValueString(), config)
 		if err != nil {
 			resp.Diagnostics.AddError(
 				"Error creating vm",
@@ -345,22 +339,19 @@ func (r *vm) Create(ctx context.Context, req resource.CreateRequest, resp *resou
 			)
 			return
 		}
-		for _, x := range *vpcs.Vpcs {
-			if strings.Contains(*x.Name, plan.VPC.Name.ValueString()) {
-				createParams.Network.Vpc = &vmInstances.CreateParametersNetworkVpc{
-					CreateParametersImage0: vmInstances.CreateParametersImage0{
-						Id: *x.Id,
-					},
-					CreateParametersImage1: vmInstances.CreateParametersImage1{
-						Name: *x.Name,
-					},
-				}
-				break
+		if strings.Contains(plan.Network.VPC.Name.ValueString(), plan.Network.VPC.Name.ValueString()) {
+			createParams.Network.Vpc = &vmInstances.CreateParametersNetworkVpc{
+				CreateParametersImage0: vmInstances.CreateParametersImage0{
+					Id: vpcId,
+				},
+				CreateParametersImage1: vmInstances.CreateParametersImage1{
+					Name: plan.Network.VPC.Name.ValueString(),
+				},
 			}
 		}
 	}
 
-	result, err := r.vmInstances.Create(createParams, vmInstances.CreateConfigs{Env: config.env, Region: config.region})
+	result, err := r.vmInstances.Create(createParams, vmInstances.CreateConfigs{Env: config.Env(), Region: config.Region()})
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Error creating vm",
@@ -369,79 +360,16 @@ func (r *vm) Create(ctx context.Context, req resource.CreateRequest, resp *resou
 		return
 	}
 
-	var getResult vmInstances.GetResult
-	expand := &vmInstances.GetParametersExpand{"network"}
-
-	//Save current taint state
+	getResult, err := r.getVmStatus(result.Id, config)
+	if err != nil {
+		resp.Diagnostics.AddError(
+			"Error Reading VM",
+			"Could not read VM ID "+result.Id+": "+err.Error(),
+		)
+		return
+	}
 	plan.ID = types.StringValue(result.Id)
-	plan.LastUpdated = types.StringValue(time.Now().Format(time.RFC850))
-	plan.MachineType.ID = types.StringValue(machineTypeID)
-	plan.Image.ID = types.StringValue(imageID)
-	plan.State = types.StringValue("new")
-	plan.Status = types.StringValue("creating")
-
-	duration := 5 * time.Minute
-	startTime := time.Now()
-	for {
-		elapsed := time.Since(startTime)
-		remaining := duration - elapsed
-		if remaining <= 0 {
-			resp.Diagnostics.AddError(
-				"Error Reading VM",
-				"Timeout to read VM ID "+result.Id+": "+err.Error(),
-			)
-			return
-		}
-
-		getResult, err = r.vmInstances.Get(vmInstances.GetParameters{
-			Id:     result.Id,
-			Expand: expand,
-		}, vmInstances.GetConfigs{Env: config.env, Region: config.region})
-
-		if err != nil {
-			resp.Diagnostics.AddError(
-				"Error Reading VM",
-				"Could not read created VM ID "+result.Id+": "+err.Error(),
-			)
-			return
-		}
-		if getResult.Status == "completed" {
-			break
-		}
-		time.Sleep(1 * time.Second)
-	}
-
-	plan.VPC = genericIDNameModel{
-		ID:   types.StringValue(""),
-		Name: types.StringValue(""),
-	}
-
-	plan.IPV6 = types.StringValue("")
-	plan.PrivateAddress = types.StringValue("")
-	plan.PublicIpAddress = types.StringValue("")
-
-	if getResult.Network.GetResultNetwork1.Ports != nil && len(*getResult.Network.GetResultNetwork1.Ports) > 0 {
-		ports := (*getResult.Network.GetResultNetwork1.Ports)[0]
-
-		plan.VPC = genericIDNameModel{
-			ID:   types.StringValue(getResult.Network.GetResultNetwork1.Vpc.Id),
-			Name: types.StringValue(getResult.Network.GetResultNetwork1.Vpc.Name),
-		}
-
-		plan.PrivateAddress = types.StringValue(ports.IpAddresses.PrivateIpAddress)
-
-		if ports.IpAddresses.IpV6address != nil {
-			plan.IPV6 = types.StringValue(*ports.IpAddresses.IpV6address)
-		}
-
-		if ports.IpAddresses.PublicIpAddress != nil {
-			plan.PublicIpAddress = types.StringValue(*ports.IpAddresses.PublicIpAddress)
-		}
-
-	}
-
-	plan.State = types.StringValue(getResult.State)
-	plan.Status = types.StringValue(getResult.Status)
+	r.setValuesFromServer(plan, getResult)
 
 	// Set state to fully populated data
 	diags = resp.State.Set(ctx, plan)
@@ -452,102 +380,18 @@ func (r *vm) Create(ctx context.Context, req resource.CreateRequest, resp *resou
 
 }
 
-// Read refreshes the Terraform state with the latest data.
-func (r *vm) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var data vmResourceModel
-	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
-
-	config := &Config{
-		region: new(string),
-		env:    new(string),
-	}
-
-	*config.env = DefaultEnv(data.Env.ValueString())
-	*config.region = data.Region.ValueString()
-
-	var getResult vmInstances.GetResult
-	expand := &vmInstances.GetParametersExpand{"network"}
-
-	getResult, err := r.vmInstances.Get(vmInstances.GetParameters{
-		Id:     data.ID.ValueString(),
-		Expand: expand,
-	}, vmInstances.GetConfigs{Env: config.env, Region: config.region})
-	if err != nil {
-		resp.Diagnostics.AddError(
-			"Error Reading VM",
-			"Could not read VM ID "+data.ID.ValueString()+": "+err.Error(),
-		)
-		return
-	}
-
-	//Save current taint state
-	data.ID = types.StringValue(getResult.Id)
-	data.LastUpdated = types.StringValue(time.Now().Format(time.RFC850))
-	data.MachineType.ID = types.StringValue(getResult.MachineType.Id)
-	data.Image.ID = types.StringValue(getResult.Image.Id)
-
-	if getResult.Network.GetResultNetwork1.Ports != nil && len(*getResult.Network.GetResultNetwork1.Ports) > 0 {
-		ports := (*getResult.Network.GetResultNetwork1.Ports)[0]
-
-		data.VPC = genericIDNameModel{
-			ID:   types.StringValue(getResult.Network.GetResultNetwork1.Vpc.Id),
-			Name: types.StringValue(getResult.Network.GetResultNetwork1.Vpc.Name),
-		}
-
-		data.PrivateAddress = types.StringValue(ports.IpAddresses.PrivateIpAddress)
-
-		if ports.IpAddresses.IpV6address != nil {
-			data.IPV6 = types.StringValue(*ports.IpAddresses.IpV6address)
-		}
-
-		if ports.IpAddresses.PublicIpAddress != nil {
-			data.PublicIpAddress = types.StringValue(*ports.IpAddresses.PublicIpAddress)
-		}
-
-	}
-
-	data.State = types.StringValue(getResult.State)
-	data.Status = types.StringValue(getResult.Status)
-
-	// Save updated data into Terraform state
-	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
-}
-
 // Update updates the resource and sets the updated Terraform state on success.
 func (r *vm) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var data vmResourceModel
+	data := &vmResourceModel{}
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
 
-	config := &Config{
-		region: new(string),
-		env:    new(string),
-	}
+	config := NewConfig(data.Region.ValueStringPointer(), data.Env.ValueStringPointer())
 
-	*config.env = DefaultEnv(data.Env.ValueString())
-	*config.region = data.Region.ValueString()
-
-	var machineTypeID string
-	machineTypeList, err := r.vmMachineTypes.List(vmMachineTypes.ListParameters{},
-		vmMachineTypes.ListConfigs{Env: config.env, Region: config.region},
-	)
+	machineTypeID, err := r.getMachineTypeID(data.MachineType.Name.ValueString(), config)
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Error creating vm",
 			"Could not load machine-type list, unexpected error: "+err.Error(),
-		)
-		return
-	}
-	for _, x := range machineTypeList.InstanceTypes {
-		if x.Name == data.MachineType.Name.ValueString() {
-			machineTypeID = x.Id
-			break
-		}
-	}
-
-	if machineTypeID == "" {
-		resp.Diagnostics.AddError(
-			"Error creating vm",
-			"Could not found machine-type ID with name: "+data.MachineType.Name.ValueString(),
 		)
 		return
 	}
@@ -562,7 +406,7 @@ func (r *vm) Update(ctx context.Context, req resource.UpdateRequest, resp *resou
 				Name: data.MachineType.Name.ValueString(),
 			},
 		},
-	}, vmInstances.RetypeConfigs{Env: config.env, Region: config.region})
+	}, vmInstances.RetypeConfigs{Env: config.Env(), Region: config.Region()})
 
 	if err != nil {
 		resp.Diagnostics.AddError(
@@ -572,41 +416,16 @@ func (r *vm) Update(ctx context.Context, req resource.UpdateRequest, resp *resou
 		return
 	}
 
-	var getResult vmInstances.GetResult
-	duration := 5 * time.Minute
-	startTime := time.Now()
-	for {
-		elapsed := time.Since(startTime)
-		remaining := duration - elapsed
-		if remaining <= 0 {
-			resp.Diagnostics.AddError(
-				"Error Reading VM",
-				"Timeout to read VM ID "+data.ID.ValueString()+": "+err.Error(),
-			)
-			return
-		}
-
-		getResult, err = r.vmInstances.Get(vmInstances.GetParameters{
-			Id: data.ID.ValueString(),
-		}, vmInstances.GetConfigs{Env: config.env, Region: config.region})
-
-		if err != nil {
-			resp.Diagnostics.AddError(
-				"Error Reading VM",
-				"Could not read created VM ID "+data.ID.ValueString()+": "+err.Error(),
-			)
-			return
-		}
-		if getResult.Status == "completed" {
-			break
-		}
-		time.Sleep(1 * time.Second)
+	getResult, err := r.getVmStatus(data.ID.ValueString(), config)
+	if err != nil {
+		resp.Diagnostics.AddError(
+			"Error Reading VM",
+			"Error when get new vm status "+data.ID.ValueString()+": "+err.Error(),
+		)
+		return
 	}
 
-	data.LastUpdated = types.StringValue(time.Now().Format(time.RFC850))
-	data.MachineType.ID = types.StringValue(machineTypeID)
-	data.State = types.StringValue(getResult.State)
-	data.Status = types.StringValue(getResult.Status)
+	r.setValuesFromServer(data, getResult)
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
@@ -618,20 +437,14 @@ func (r *vm) Delete(ctx context.Context, req resource.DeleteRequest, resp *resou
 	// Read Terraform prior state data into the model
 	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
 
-	config := &Config{
-		region: new(string),
-		env:    new(string),
-	}
-
-	*config.env = DefaultEnv(data.Env.ValueString())
-	*config.region = data.Region.ValueString()
+	config := NewConfig(data.Region.ValueStringPointer(), data.Env.ValueStringPointer())
 
 	err := r.vmInstances.Delete(
 		vmInstances.DeleteParameters{
-			DeletePublicIp: data.DeletePublicIP.ValueBoolPointer(),
+			DeletePublicIp: data.Network.DeletePublicIP.ValueBoolPointer(),
 			Id:             data.ID.ValueString(),
 		},
-		vmInstances.DeleteConfigs{Env: config.env, Region: config.region})
+		vmInstances.DeleteConfigs{Env: config.Env(), Region: config.Region()})
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Error Reading VM",
@@ -640,4 +453,137 @@ func (r *vm) Delete(ctx context.Context, req resource.DeleteRequest, resp *resou
 		return
 	}
 
+}
+
+func (r *vm) setValuesFromServer(data *vmResourceModel, server *vmInstances.GetResult) error {
+	data.State = types.StringValue(server.State)
+	data.Status = types.StringValue(server.Status)
+	data.LastUpdated = types.StringValue(time.Now().Format(time.RFC850))
+	data.MachineType.ID = types.StringValue(server.MachineType.Id)
+	data.Image.ID = types.StringValue(server.Image.Id)
+
+	data.Network.VPC = genericIDNameModel{
+		ID:   types.StringValue(""),
+		Name: types.StringValue(""),
+	}
+
+	data.Network.IPV6 = types.StringValue("")
+	data.Network.PrivateAddress = types.StringValue("")
+	data.Network.PublicIpAddress = types.StringValue("")
+
+	if server.Network.GetResultNetwork1.Ports != nil && len(*server.Network.GetResultNetwork1.Ports) > 0 {
+		ports := (*server.Network.GetResultNetwork1.Ports)[0]
+
+		data.Network.VPC = genericIDNameModel{
+			ID:   types.StringValue(server.Network.GetResultNetwork1.Vpc.Id),
+			Name: types.StringValue(server.Network.GetResultNetwork1.Vpc.Name),
+		}
+
+		data.Network.PrivateAddress = types.StringValue(ports.IpAddresses.PrivateIpAddress)
+
+		if ports.IpAddresses.IpV6address != nil {
+			data.Network.IPV6 = types.StringValue(*ports.IpAddresses.IpV6address)
+		}
+
+		if ports.IpAddresses.PublicIpAddress != nil {
+			data.Network.PublicIpAddress = types.StringValue(*ports.IpAddresses.PublicIpAddress)
+		}
+
+	}
+	return nil
+}
+
+func (r *vm) getImageID(name string, config Config) (string, error) {
+	var imageID string
+	imageList, err := r.vmImages.List(vmImages.ListParameters{},
+		vmImages.ListConfigs{Env: config.Env(), Region: config.Region()},
+	)
+	if err != nil {
+		return "", fmt.Errorf("could not load image list")
+	}
+	for _, x := range imageList.Images {
+		if strings.Contains(x.Name, name) {
+			imageID = x.Id
+			break
+		}
+	}
+
+	if imageID == "" {
+		return "", fmt.Errorf("could not found image ID with name: " + name)
+	}
+	return imageID, nil
+}
+
+func (r *vm) getMachineTypeID(name string, config Config) (string, error) {
+	var machineTypeID string
+	machineTypeList, err := r.vmMachineTypes.List(vmMachineTypes.ListParameters{},
+		vmMachineTypes.ListConfigs{Env: config.Env(), Region: config.Region()},
+	)
+	if err != nil {
+		return "", fmt.Errorf("could not load machine-type list, unexpected error: " + err.Error())
+	}
+	for _, x := range machineTypeList.InstanceTypes {
+		if x.Name == name {
+			machineTypeID = x.Id
+			break
+		}
+	}
+
+	if machineTypeID == "" {
+		return "", fmt.Errorf("could not found machine-type ID with name: " + name)
+	}
+	return machineTypeID, nil
+}
+
+func (r *vm) getVpcID(name string, config Config) (string, error) {
+	var vpcID string
+	vpcs, err := r.nwVPCs.List(nwVPCs.ListConfigs{Env: config.Env(), Region: config.Region()})
+	if err != nil {
+		return "", fmt.Errorf("could not load vpc list")
+	}
+	for _, x := range *vpcs.Vpcs {
+		if strings.Contains(*x.Name, name) {
+			vpcID = *x.Id
+			break
+		}
+	}
+
+	if vpcID == "" {
+		return "", fmt.Errorf("could not found vpc ID with name: " + name)
+	}
+	return vpcID, nil
+}
+
+func (r *vm) getVmStatus(id string, config Config) (*vmInstances.GetResult, error) {
+	getResult := &vmInstances.GetResult{}
+	expand := &vmInstances.GetParametersExpand{"network"}
+
+	duration := 5 * time.Minute
+	startTime := time.Now()
+	getParam := vmInstances.GetParameters{Id: id, Expand: expand}
+	getConfigParam := vmInstances.GetConfigs{}
+	if config != nil {
+		getConfigParam = vmInstances.GetConfigs{Env: config.Env(), Region: config.Region()}
+	}
+	var err error
+	for {
+		elapsed := time.Since(startTime)
+		remaining := duration - elapsed
+		if remaining <= 0 {
+			if getResult.Status != "" {
+				return getResult, nil
+			}
+			return getResult, fmt.Errorf("timeout to read VM ID")
+		}
+
+		*getResult, err = r.vmInstances.Get(getParam, getConfigParam)
+		if err != nil {
+			return getResult, err
+		}
+
+		if getResult.Status == "completed" {
+			return getResult, nil
+		}
+		time.Sleep(1 * time.Second)
+	}
 }

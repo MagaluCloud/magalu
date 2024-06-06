@@ -2,13 +2,14 @@ package provider
 
 import (
 	"context"
-	"slices"
-	"strings"
 
+	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/provider"
 	"github.com/hashicorp/terraform-plugin-framework/provider/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
+	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
+
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	mgcSdk "magalu.cloud/lib"
@@ -28,6 +29,7 @@ type MgcProvider struct {
 
 type ProviderConfig struct {
 	Region types.String `tfsdk:"region"`
+	Env    types.String `tfsdk:"env"`
 }
 
 func (p *MgcProvider) Metadata(ctx context.Context, req provider.MetadataRequest, resp *provider.MetadataResponse) {
@@ -35,6 +37,8 @@ func (p *MgcProvider) Metadata(ctx context.Context, req provider.MetadataRequest
 	resp.TypeName = providerTypeName
 	resp.Version = p.version
 }
+
+//https://github.com/hashicorp/terraform-plugin-framework-validators
 
 func (p *MgcProvider) Schema(ctx context.Context, req provider.SchemaRequest, resp *provider.SchemaResponse) {
 	tflog.Debug(ctx, "setting provider schema")
@@ -45,12 +49,20 @@ func (p *MgcProvider) Schema(ctx context.Context, req provider.SchemaRequest, re
 			"region": schema.StringAttribute{
 				MarkdownDescription: "Region",
 				Optional:            true,
+				Validators: []validator.String{
+					stringvalidator.OneOf("br-ne1", "br-se1", "br-mgl1"),
+				},
+			},
+			"env": schema.StringAttribute{
+				MarkdownDescription: "Environment",
+				Optional:            true,
+				Validators: []validator.String{
+					stringvalidator.OneOf("prod", "pre-prod"),
+				},
 			},
 		},
 	}
 }
-
-var acceptedRegions = []string{"br-ne1", "br-se1", "br-mgl1"}
 
 func (p *MgcProvider) Configure(ctx context.Context, req provider.ConfigureRequest, resp *provider.ConfigureResponse) {
 	tflog.Info(ctx, "configuring MGC provider")
@@ -63,11 +75,14 @@ func (p *MgcProvider) Configure(ctx context.Context, req provider.ConfigureReque
 	}
 
 	if !data.Region.IsNull() {
-		if !slices.Contains(acceptedRegions, data.Region.ValueString()) {
-			tflog.Error(ctx, "invalid region. Valid options: "+strings.Join(acceptedRegions, ", "))
-		}
 		if err := p.sdk.Config().SetTempConfig("region", data.Region.String()); err != nil {
 			tflog.Error(ctx, "fail to set region")
+		}
+	}
+
+	if !data.Env.IsNull() {
+		if err := p.sdk.Config().SetTempConfig("env", data.Env.String()); err != nil {
+			tflog.Error(ctx, "fail to set env")
 		}
 	}
 
