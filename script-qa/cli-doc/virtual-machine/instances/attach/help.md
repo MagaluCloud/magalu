@@ -10,7 +10,6 @@ Usage:
 - Flags:
 - --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
 - --cli.watch                     Wait until the operation is completed by calling the 'get' link and waiting until termination. Akin to '! get -w'
-- --force-authentication          Force authentication by sending the header even if this API doesn't require it
 - -h, --help                          help for attach
 - --id string                     Id (required)
 - --project-type enum             Project Type (one of "dbaas", "default", "iamaas", "k8saas" or "mngsvc") (default "default")

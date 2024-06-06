@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
     title: Internal Virtual Machine Api Product
     description: Virtual Machine Api Product
-    version: 1.232.0
+    version: 1.233.0
 paths:
     /v1/health:
         get:
@@ -220,6 +220,14 @@ paths:
             description: Retrieve a list of images allowed for the current tenant
                 which is logged in.
             operationId: list_images_all_v1_v1_internal_images_get
+            parameters:
+            -   name: deleted
+                in: query
+                required: false
+                schema:
+                    type: boolean
+                    default: true
+                    title: Deleted
             responses:
                 '200':
                     description: Successful Response
@@ -227,6 +235,12 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/ListImageInternalV1'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
             security:
             -   OAuth2:
@@ -243,11 +257,11 @@ paths:
                 The Image on URP need to be public and protected.'
             operationId: create_image_v1_v1_internal_images_post
             requestBody:
+                required: true
                 content:
                     application/json:
                         schema:
                             $ref: '#/components/schemas/ImageRequestV1'
-                required: true
             responses:
                 '201':
                     description: Successful Response
@@ -3430,6 +3444,9 @@ components:
                 internal:
                     type: boolean
                     title: Internal
+                is_approved:
+                    type: boolean
+                    title: Is Approved
                 min_vcpu:
                     type: integer
                     title: Min Vcpu
@@ -3446,6 +3463,7 @@ components:
             - status
             - sku
             - internal
+            - is_approved
             - min_vcpu
             - min_ram
             - min_disk

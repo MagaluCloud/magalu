@@ -21,9 +21,8 @@ import (
 )
 
 type DetachParameters struct {
-	ForceAuthentication *bool   `json:"force-authentication,omitempty"`
-	Id                  string  `json:"id"`
-	ProjectType         *string `json:"project_type,omitempty"`
+	Id          string  `json:"id"`
+	ProjectType *string `json:"project_type,omitempty"`
 }
 
 type DetachConfigs struct {

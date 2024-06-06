@@ -16,10 +16,10 @@ type service struct {
 
 type Service interface {
 	Create(parameters CreateParameters) (result CreateResult, err error)
-	Current() (result CurrentResult, err error)
 	Delete(parameters DeleteParameters) (result DeleteResult, err error)
+	Get() (result GetResult, err error)
 	List() (result ListResult, err error)
-	SetCurrent(parameters SetCurrentParameters) (result SetCurrentResult, err error)
+	Set(parameters SetParameters) (result SetResult, err error)
 }
 
 func NewService(ctx context.Context, client *mgcClient.Client) Service {

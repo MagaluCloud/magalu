@@ -30226,11 +30226,13 @@
         "_limit": {
          "default": 50,
          "exclusiveMinimum": true,
+         "maximum": 2147483647,
          "title": " Limit",
          "type": "integer"
         },
         "_offset": {
          "default": 0,
+         "maximum": 2147483647,
          "minimum": 0,
          "title": " Offset",
          "type": "integer"
@@ -30422,10 +30424,6 @@
       "parameters": {
        "additionalProperties": false,
        "properties": {
-        "force-authentication": {
-         "description": "Force authentication by sending the header even if this API doesn't require it",
-         "type": "boolean"
-        },
         "id": {
          "title": "Id",
          "type": "string"
@@ -30604,7 +30602,6 @@
          "example": {
           "associate_public_ip": true,
           "nic": {
-           "id": "c8719fd8-7a48-4dbf-b4d8-74f71fa67422",
            "security_groups": [
             {
              "id": "f273fbde-2ddf-4dcd-8c41-342671ac0d17"
@@ -30625,41 +30622,57 @@
            "type": "boolean"
           },
           "nic": {
-           "properties": {
-            "id": {
-             "maxLength": 255,
-             "minLength": 1,
-             "nullable": true,
-             "title": "Id",
-             "type": "string"
-            },
-            "security_groups": {
-             "items": {
-              "example": {
-               "id": "9ec75090-2872-4f51-8111-53d05d96d2c6"
-              },
-              "properties": {
-               "id": {
-                "maxLength": 255,
-                "minLength": 1,
-                "title": "Id",
-                "type": "string"
-               }
-              },
-              "required": [
-               "id"
-              ],
-              "title": "ID",
-              "type": "object"
+           "anyOf": [
+            {
+             "example": {
+              "id": "9ec75090-2872-4f51-8111-53d05d96d2c6"
              },
-             "title": "Security Groups",
-             "type": "array"
+             "properties": {
+              "id": {
+               "maxLength": 255,
+               "minLength": 1,
+               "title": "Id",
+               "type": "string"
+              }
+             },
+             "required": [
+              "id"
+             ],
+             "title": "ID",
+             "type": "object"
+            },
+            {
+             "properties": {
+              "security_groups": {
+               "default": [],
+               "items": {
+                "example": {
+                 "id": "9ec75090-2872-4f51-8111-53d05d96d2c6"
+                },
+                "properties": {
+                 "id": {
+                  "maxLength": 255,
+                  "minLength": 1,
+                  "title": "Id",
+                  "type": "string"
+                 }
+                },
+                "required": [
+                 "id"
+                ],
+                "title": "ID",
+                "type": "object"
+               },
+               "title": "Security Groups",
+               "type": "array"
+              }
+             },
+             "title": "SecurityGroups",
+             "type": "object"
             }
-           },
-           "required": [
-            "security_groups"
            ],
-           "title": "NetworkNic",
+           "nullable": true,
+           "title": "Nic",
            "type": "object"
           },
           "vpc": {
@@ -30727,7 +30740,6 @@
         "image",
         "machine_type",
         "name",
-        "network",
         "ssh_key_name"
        ],
        "type": "object"
@@ -30846,10 +30858,6 @@
       "parameters": {
        "additionalProperties": false,
        "properties": {
-        "force-authentication": {
-         "description": "Force authentication by sending the header even if this API doesn't require it",
-         "type": "boolean"
-        },
         "id": {
          "title": "Id",
          "type": "string"
@@ -31250,6 +31258,8 @@
         },
         "status": {
          "enum": [
+          "attaching_nic",
+          "detaching_nic",
           "attach_nic_pending",
           "detach_nic_pending",
           "provisioning",
@@ -31350,12 +31360,14 @@
          "default": 50,
          "description": "limit the number of the results",
          "exclusiveMinimum": true,
+         "maximum": 2147483647,
          "title": " Limit",
          "type": "integer"
         },
         "_offset": {
          "default": 0,
          "description": "pagination for the results limited",
+         "maximum": 2147483647,
          "minimum": 0,
          "title": " Offset",
          "type": "integer"
@@ -31718,6 +31730,8 @@
            },
            "status": {
             "enum": [
+             "attaching_nic",
+             "detaching_nic",
              "attach_nic_pending",
              "detach_nic_pending",
              "provisioning",
@@ -32209,12 +32223,14 @@
          "default": 50,
          "description": "limit the number of the results",
          "exclusiveMinimum": true,
+         "maximum": 2147483647,
          "title": " Limit",
          "type": "integer"
         },
         "_offset": {
          "default": 0,
          "description": "pagination for the results limited",
+         "maximum": 2147483647,
          "minimum": 0,
          "title": " Offset",
          "type": "integer"
@@ -32848,12 +32864,14 @@
          "default": 50,
          "description": "limit the number of the results",
          "exclusiveMinimum": true,
+         "maximum": 2147483647,
          "title": " Limit",
          "type": "integer"
         },
         "_offset": {
          "default": 0,
          "description": "pagination for the results limited",
+         "maximum": 2147483647,
          "minimum": 0,
          "title": " Offset",
          "type": "integer"
@@ -33272,7 +33290,6 @@
          "example": {
           "associate_public_ip": true,
           "nic": {
-           "id": "c8719fd8-7a48-4dbf-b4d8-74f71fa67422",
            "security_groups": [
             {
              "id": "f273fbde-2ddf-4dcd-8c41-342671ac0d17"
@@ -33293,41 +33310,57 @@
            "type": "boolean"
           },
           "nic": {
-           "properties": {
-            "id": {
-             "maxLength": 255,
-             "minLength": 1,
-             "nullable": true,
-             "title": "Id",
-             "type": "string"
-            },
-            "security_groups": {
-             "items": {
-              "example": {
-               "id": "9ec75090-2872-4f51-8111-53d05d96d2c6"
-              },
-              "properties": {
-               "id": {
-                "maxLength": 255,
-                "minLength": 1,
-                "title": "Id",
-                "type": "string"
-               }
-              },
-              "required": [
-               "id"
-              ],
-              "title": "ID",
-              "type": "object"
+           "anyOf": [
+            {
+             "example": {
+              "id": "9ec75090-2872-4f51-8111-53d05d96d2c6"
              },
-             "title": "Security Groups",
-             "type": "array"
+             "properties": {
+              "id": {
+               "maxLength": 255,
+               "minLength": 1,
+               "title": "Id",
+               "type": "string"
+              }
+             },
+             "required": [
+              "id"
+             ],
+             "title": "ID",
+             "type": "object"
+            },
+            {
+             "properties": {
+              "security_groups": {
+               "default": [],
+               "items": {
+                "example": {
+                 "id": "9ec75090-2872-4f51-8111-53d05d96d2c6"
+                },
+                "properties": {
+                 "id": {
+                  "maxLength": 255,
+                  "minLength": 1,
+                  "title": "Id",
+                  "type": "string"
+                 }
+                },
+                "required": [
+                 "id"
+                ],
+                "title": "ID",
+                "type": "object"
+               },
+               "title": "Security Groups",
+               "type": "array"
+              }
+             },
+             "title": "SecurityGroups",
+             "type": "object"
             }
-           },
-           "required": [
-            "security_groups"
            ],
-           "title": "NetworkNic",
+           "nullable": true,
+           "title": "Nic",
            "type": "object"
           },
           "vpc": {
@@ -33395,7 +33428,6 @@
         "id",
         "machine_type",
         "name",
-        "network",
         "ssh_key_name"
        ],
        "type": "object"
