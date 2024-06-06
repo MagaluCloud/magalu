@@ -1,14 +1,15 @@
-# Shows current selected profile. Any changes to auth or config values will only affect this profile
+# Sets profile to be used
 
 ## Usage:
 ```bash
 Usage:
-  ./mgc profile current [flags]
+  ./mgc profile set [name] [flags]
 ```
 
 ## Product catalog:
 - Flags:
-- -h, --help   help for current
+- -h, --help          help for set
+- --name string   Profile name (required)
 
 ## Other commands:
 - Global Flags:

@@ -1,15 +1,14 @@
-# Sets profile to be used
+# Get current profile.
 
 ## Usage:
 ```bash
 Usage:
-  ./mgc profile set-current [name] [flags]
+  ./mgc profile get [flags]
 ```
 
 ## Product catalog:
 - Flags:
-- -h, --help          help for set-current
-- --name string   Profile name (required)
+- -h, --help   help for get
 
 ## Other commands:
 - Global Flags:
