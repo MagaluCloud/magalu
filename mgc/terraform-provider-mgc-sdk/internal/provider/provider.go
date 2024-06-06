@@ -94,11 +94,8 @@ func (p *MgcProvider) Resources(ctx context.Context) []func() resource.Resource 
 	tflog.Info(ctx, "configuring MGC provider resources")
 
 	return []func() resource.Resource{
-		NewVirtualMachineResource,
-		NewKubernetesResource,
-		NewObjectStorageResource,
-		NewBlockStorageResource,
-		NewNetworkResource,
+		NewVirtualMachineInstancesResource,
+		NewVirtualMachineSnapshotsResource,
 	}
 }
 
