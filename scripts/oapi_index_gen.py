@@ -16,6 +16,7 @@ class IndexModule(TypedDict):
     path: str
     version: str
     description: str
+    super_internal: bool
 
 
 IndexModules = List[IndexModule]
@@ -59,16 +60,15 @@ def load_mods(
             if filename != index_filename:
                 print("ignored file:", filename)
             continue
-
         filepath = os.path.join(oapiDir, filename)
         relpath = os.path.relpath(filepath, outDir)
-
         data = load_yaml(filepath)
         info = data["info"]
         url = data["$id"]
         name = match.group("name")
         full_mods[filename] = data
         description = info.get("x-mgc-description", info.get("description", ""))
+        internal = ("internal" in filename) or ("internal" in url)
         mods.append(
             IndexModule(
                 name=name,
@@ -77,6 +77,7 @@ def load_mods(
                 description=description,
                 version=info.get("version", ""),
                 summary=info.get("summary", description),
+                super_internal=internal,
             )
         )
     return full_mods, mods
