@@ -201,7 +201,6 @@ func createObjectSyncFilePairProcessor(
 		if entry.DirEntry().IsDir() {
 			return syncUploadPair{}, pipeline.ProcessSkip
 		}
-
 		normalizedSource, err := common.GetAbsSystemURI(mgcSchemaPkg.URI(entry.Path()))
 		if err != nil {
 			logger().Debugw("error with path", "error", err)
@@ -365,10 +364,9 @@ func cleanEtag(etag string) string {
 }
 
 func uploadFile(ctx context.Context, local mgcSchemaPkg.URI, bucket mgcSchemaPkg.URI, cfg common.Config) error {
-	sourcePath := mgcSchemaPkg.FilePath("/" + local.Path())
 	_, err := upload(
 		ctx,
-		uploadParams{Source: sourcePath, Destination: bucket},
+		uploadParams{Source: mgcSchemaPkg.FilePath(local), Destination: bucket},
 		cfg,
 	)
 	return err
