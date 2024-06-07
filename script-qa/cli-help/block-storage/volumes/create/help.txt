@@ -17,9 +17,15 @@ Usage:
   ./mgc block-storage volumes create [flags]
 
 Examples:
-  ./mgc block-storage volumes create --type.id="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" --type.name="some_resource_name"
+  ./mgc block-storage volumes create --backup.id="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" --backup.name="some_resource_name" --type.id="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" --type.name="some_resource_name"
 
 Flags:
+      --backup object                 Backup (at least one of: single property: id or single property: name)
+                                      Use --backup=help for more details
+      --backup.id string              Backup: Id (min character count: 1)
+                                      This is the same as '--backup=id:string'.
+      --backup.name string            Backup: Name (between 1 and 255 characters)
+                                      This is the same as '--backup=name:string'.
       --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
       --cli.watch                     Wait until the operation is completed by calling the 'get' link and waiting until termination. Akin to '! get -w'
   -h, --help                          help for create

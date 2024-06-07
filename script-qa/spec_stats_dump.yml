@@ -29,6 +29,7 @@ block-storage.openapi:
             computed:
               - id
             non-computed:
+              - backup
               - name
               - size
               - type
@@ -511,6 +512,20 @@ virtual-machine.openapi:
               - name
               - rotation
               - virtual_machine
+    - POST /v1/instances:
+        - '201':
+            computed:
+              - id
+            non-computed:
+              - associate_public_ip
+              - availability_zone
+              - image
+              - machine_type
+              - name
+              - nic
+              - ssh_key_name
+              - user_data
+              - vpc
     - POST /v1/snapshots:
         - '202':
             computed:
@@ -525,16 +540,5 @@ virtual-machine.openapi:
     - machine-types:
         - post
         - delete
-  operation-missing-security:
-    - PUT /v1/instances/{id}/attach
-    - PUT /v1/instances/{id}/detach
-  uneven-resources:
-    instances:
-      PUT:
-        - /v1/instances/{id}/attach
-        - /v1/instances/{id}/detach
   unused-components:
     - '#/components/schemas/ValidationError'
-  xof-single-item:
-    - paths./v1/instances/{id}/attach.put.parameters.project_type.schema
-    - paths./v1/instances/{id}/detach.put.parameters.project_type.schema

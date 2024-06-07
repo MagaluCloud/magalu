@@ -9,6 +9,78 @@ info:
     version: v1
 paths:
     /v1/backups:
+        get:
+            tags:
+            - backups
+            summary: List backups in the current tenant
+            description: "Retrieve a list of Backups for the currently authenticated\
+                \ tenant.\n\n#### Notes\n- Use the **expand** argument to obtain additional\
+                \ details about the\n Volume used to create each Backup."
+            operationId: list_backups_v1_backups_get
+            parameters:
+            -   name: _limit
+                in: query
+                required: false
+                schema:
+                    type: integer
+                    exclusiveMinimum: true
+                    default: 50
+                    title: ' Limit'
+                    minimum: 0
+            -   name: _offset
+                in: query
+                required: false
+                schema:
+                    type: integer
+                    minimum: 0
+                    default: 0
+                    title: ' Offset'
+            -   name: _sort
+                in: query
+                required: false
+                schema:
+                    type: string
+                    pattern: ^(^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$
+                    default: created_at:asc
+                    title: ' Sort'
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/BackupListResponse'
+                '404':
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/ErrorResponse'
+                                title: Response 404 List Backups V1 Backups Get
+                    description: Not Found
+                '409':
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/ErrorResponse'
+                                title: Response 409 List Backups V1 Backups Get
+                    description: Conflict
+                '422':
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/ErrorResponse'
+                                title: Response 422 List Backups V1 Backups Get
+                    description: Unprocessable Entity
+            x-viveiro: true
+            security:
+            -   OAuth2:
+                - block-storage.read
         post:
             tags:
             - backups
@@ -61,6 +133,175 @@ paths:
                                 items:
                                     $ref: '#/components/schemas/ErrorResponse'
                                 title: Response 422 Create Backup V1 Backups Post
+                    description: Unprocessable Entity
+            x-viveiro: true
+            security:
+            -   OAuth2:
+                - block-storage.write
+    /v1/backups/{id}:
+        delete:
+            tags:
+            - backups
+            summary: Delete a Backup
+            description: "Delete a Backup for the currently authenticated tenant.\n\
+                \n#### Rules\n- The Backup's status must be \"completed\".\n- The\
+                \ Backup's state must be \"available\".\n\n\n#### Notes\n- Utilize\
+                \ the **block-storage backups** list command to retrieve a list of\n\
+                \ all Backups and obtain the ID of the Backup you wish to delete."
+            operationId: delete_backup_v1_backups__id__delete
+            parameters:
+            -   name: id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+                    title: Id
+            responses:
+                '204':
+                    description: Successful Response
+                '404':
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/ErrorResponse'
+                                title: Response 404 Delete Backup V1 Backups  Id  Delete
+                    description: Not Found
+                '409':
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/ErrorResponse'
+                                title: Response 409 Delete Backup V1 Backups  Id  Delete
+                    description: Conflict
+                '422':
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/ErrorResponse'
+                                title: Response 422 Delete Backup V1 Backups  Id  Delete
+                    description: Unprocessable Entity
+            x-viveiro: true
+            security:
+            -   OAuth2:
+                - block-storage.write
+        get:
+            tags:
+            - backups
+            summary: Get a Backup
+            description: "Retrieve details of a Backup for the currently authenticated\
+                \ tenant.\n\n#### Notes\n- Use the **expand** argument to obtain additional\
+                \ details about the Volume\n used to create the Backup.\n- Utilize\
+                \ the **block-storage backups list** command to retrieve a list of\n\
+                \ all Backups and obtain the ID of the Backup for which you want to\
+                \ retrieve\n details."
+            operationId: get_backup_v1_backups__id__get
+            parameters:
+            -   name: id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+                    title: Id
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/BackupResponse'
+                '404':
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/ErrorResponse'
+                                title: Response 404 Get Backup V1 Backups  Id  Get
+                    description: Not Found
+                '409':
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/ErrorResponse'
+                                title: Response 409 Get Backup V1 Backups  Id  Get
+                    description: Conflict
+                '422':
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/ErrorResponse'
+                                title: Response 422 Get Backup V1 Backups  Id  Get
+                    description: Unprocessable Entity
+            x-viveiro: true
+            security:
+            -   OAuth2:
+                - block-storage.read
+        patch:
+            tags:
+            - backups
+            summary: Patch a Backup
+            description: "Patches a Backup for the currently authenticated tenant.\n\
+                \n#### Rules\n- The Backup name must be unique; otherwise, renaming\
+                \ will not be allowed.\n- The Backup's state must be available.\n\n\
+                #### Notes\n- Utilize the **block-storage backups list** command to\
+                \ retrieve a list of\n all Backups and obtain the ID of the Backup\
+                \ you wish to rename."
+            operationId: patch_backup_v1_backups__id__patch
+            parameters:
+            -   name: id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+                    title: Id
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/PatchResourceRequest'
+            responses:
+                '204':
+                    description: Successful Response
+                '404':
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/ErrorResponse'
+                                title: Response 404 Patch Backup V1 Backups  Id  Patch
+                    description: Not Found
+                '409':
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/ErrorResponse'
+                                title: Response 409 Patch Backup V1 Backups  Id  Patch
+                    description: Conflict
+                '422':
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/ErrorResponse'
+                                title: Response 422 Patch Backup V1 Backups  Id  Patch
                     description: Unprocessable Entity
             x-viveiro: true
             security:
@@ -1510,6 +1751,126 @@ components:
                     state: running
                     status: completed
                     updated_at: '2022-01-01T00:00:10Z'
+        BackupListResponse:
+            properties:
+                backups:
+                    items:
+                        $ref: '#/components/schemas/BackupResponse'
+                    type: array
+                    title: Backups
+            type: object
+            required:
+            - backups
+            title: BackupListResponse
+            example:
+                backups:
+                -   created_at: '2022-01-01T00:00:10Z'
+                    description: my backup for testing
+                    id: 3325e4ee-d597-4047-a8f9-6eb462794ed9
+                    name: My backup
+                    size: 10
+                    source_backup:
+                        id: 8140df0a-e155-46f7-96c9-7d61d61549df
+                    state: available
+                    status: completed
+                    type: incremental
+                    updated_at: '2022-01-01T00:00:10Z'
+                    volume:
+                        id: 3e85113a-1444-4507-b01c-445e74b5b938
+        BackupResponse:
+            properties:
+                id:
+                    type: string
+                    title: Id
+                name:
+                    type: string
+                    title: Name
+                size:
+                    type: integer
+                    title: Size
+                description:
+                    title: Description
+                    nullable: true
+                    type: string
+                state:
+                    $ref: '#/components/schemas/BackupState'
+                status:
+                    $ref: '#/components/schemas/BackupStatus'
+                created_at:
+                    anyOf:
+                    -   type: string
+                    -   type: string
+                        format: date-time
+                    title: Created At
+                    example: '2022-01-01T00:00:10Z'
+                updated_at:
+                    anyOf:
+                    -   type: string
+                    -   type: string
+                        format: date-time
+                    title: Updated At
+                    example: '2022-01-01T00:00:10Z'
+                volume:
+                    $ref: '#/components/schemas/IdResponse'
+                type:
+                    $ref: '#/components/schemas/BackupType'
+                source_backup:
+                    nullable: true
+                    $ref: '#/components/schemas/IdResponse'
+            type: object
+            required:
+            - id
+            - name
+            - size
+            - description
+            - state
+            - status
+            - created_at
+            - updated_at
+            - volume
+            - type
+            - source_backup
+            title: BackupResponse
+            example:
+                created_at: '2022-01-01T00:00:10Z'
+                description: my backup for testing
+                id: 4918bbc5-ceb2-40fb-bc2b-5520202b716b
+                name: My backup
+                size: 10
+                source_backup:
+                    id: 13b4e844-f80a-4979-aa6b-e70099a7d90e
+                state: available
+                status: completed
+                type: incremental
+                updated_at: '2022-01-01T00:00:10Z'
+                volume:
+                    id: 5fd08081-9628-4a0d-becc-4367633adda7
+        BackupState:
+            type: string
+            enum:
+            - new
+            - available
+            - deleted
+            title: BackupState
+        BackupStatus:
+            type: string
+            enum:
+            - completed
+            - snapshot_creating
+            - snapshot_creating_error
+            - creating_pending
+            - creating
+            - creating_error
+            - snapshot_deleting
+            - snapshot_deleting_error
+            - deleting_pending
+            - deleting_error
+            - deleting
+            - restoring_pending
+            - restoring
+            - restoring_error
+            - provisioning
+            title: BackupStatus
         BackupType:
             type: string
             enum:
@@ -1679,6 +2040,25 @@ components:
             title: Name
             example:
                 name: some_resource_name
+        PatchResourceRequest:
+            properties:
+                name:
+                    title: Name
+                    nullable: true
+                    type: string
+                    maxLength: 255
+                    minLength: 1
+                description:
+                    title: Description
+                    nullable: true
+                    type: string
+                    maxLength: 255
+                    minLength: 1
+            type: object
+            title: PatchResourceRequest
+            example:
+                description: new description to my resource
+                name: new name to my resource
         RenameVolumeRequest:
             properties:
                 name:
@@ -1909,6 +2289,12 @@ components:
                     -   $ref: '#/components/schemas/IdRequest'
                     -   $ref: '#/components/schemas/Name'
                     title: Type
+                backup:
+                    anyOf:
+                    -   $ref: '#/components/schemas/IdRequest'
+                    -   $ref: '#/components/schemas/Name'
+                    title: Backup
+                    nullable: true
             type: object
             required:
             - name
@@ -1916,6 +2302,8 @@ components:
             - type
             title: VolumeCreateRequestV1
             example:
+                backup:
+                    name: my_backup_name
                 name: volume name
                 size: 10
                 type:

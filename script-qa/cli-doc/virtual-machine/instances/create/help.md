@@ -8,7 +8,7 @@ Usage:
 
 ## Product catalog:
 - Examples:
-- ./mgc virtual-machine instances create --image.id="9ec75090-2872-4f51-8111-53d05d96d2c6" --image.name="some_resource_name" --machine-type.id="9ec75090-2872-4f51-8111-53d05d96d2c6" --machine-type.name="some_resource_name" --network.associate-public-ip=true --network.nic.security-groups='[{"id":"9ec75090-2872-4f51-8111-53d05d96d2c6"}]' --network.vpc.id="9ec75090-2872-4f51-8111-53d05d96d2c6" --network.vpc.name="some_resource_name"
+- ./mgc virtual-machine instances create --image.id="9ec75090-2872-4f51-8111-53d05d96d2c6" --image.name="some_resource_name" --machine-type.id="9ec75090-2872-4f51-8111-53d05d96d2c6" --machine-type.name="some_resource_name" --network.associate-public-ip=true --network.nic.id="9ec75090-2872-4f51-8111-53d05d96d2c6" --network.nic.security-groups='[{"id":"9ec75090-2872-4f51-8111-53d05d96d2c6"}]' --network.vpc.id="9ec75090-2872-4f51-8111-53d05d96d2c6" --network.vpc.name="some_resource_name"
 
 ## Other commands:
 - Flags:
@@ -30,17 +30,17 @@ Usage:
 - This is the same as '--machine-type=name:string'.
 - --name string                           Name (between 1 and 255 characters) (required)
 - --network object                        InstanceCreateRequestV1NetworkDefault (properties: associate_public_ip, nic and vpc)
-- Use --network=help for more details (required)
+- Use --network=help for more details
 - --network.associate-public-ip boolean   InstanceCreateRequestV1NetworkDefault: Associate Public Ip
 - This is the same as '--network=associate_public_ip:boolean'. (default true)
-- --network.nic object                    InstanceCreateRequestV1NetworkDefault: NetworkNic (properties: id and security_groups)
+- --network.nic object                    InstanceCreateRequestV1NetworkDefault: Nic (at least one of: single property: id or single property: security_groups)
 - Use --network.nic=help for more details
 - This is the same as '--network=nic:object'.
-- --network.nic.id string                 NetworkNic: Id (between 1 and 255 characters)
+- --network.nic.id string                 Nic: Id (between 1 and 255 characters)
 - This is the same as '--network.nic=id:string'.
-- --network.nic.security-groups array     NetworkNic: Security Groups
+- --network.nic.security-groups array     Nic: Security Groups
 - Use --network.nic.security-groups=help for more details
-- This is the same as '--network.nic=security_groups:array'.
+- This is the same as '--network.nic=security_groups:array'. (default [])
 - --network.vpc object                    InstanceCreateRequestV1NetworkDefault: Vpc (at least one of: single property: id or single property: name)
 - Use --network.vpc=help for more details
 - This is the same as '--network=vpc:object'. (default {"name":"default"})

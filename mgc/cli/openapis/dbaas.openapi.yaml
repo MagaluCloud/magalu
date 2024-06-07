@@ -6,7 +6,7 @@ info:
         name: Tribo IAAS Cloud
         url: https://gitlab.luizalabs.com/cloud/dbaas/docs
         email: cloud-iaas-dbaas@luizalabs.com
-    version: 1.19.0
+    version: 1.20.0
 servers:
 -   url: https://{env}/{region}/database
     variables:
@@ -2643,6 +2643,11 @@ components:
             - UNKNOWN
             - VERIFY_RESIZE
             - CREATING
+            - CREATING_BACKUP
+            - CREATING_MACHINE
+            - CREATING_NETWORK
+            - CREATING_PROJECT
+            - CREATING_VOLUME
             - STARTING
             - STOPPING
             - BACKING_UP
