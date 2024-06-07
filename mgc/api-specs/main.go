@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	defer panicRecover()
+	// defer panicRecover()
 	err := cmd.Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error: %s\n", err)
@@ -16,8 +16,8 @@ func main() {
 }
 
 func panicRecover() {
-	err := recover()
-	if err != nil {
-		fmt.Println("Fatal error!")
-	}
+	// err := recover()
+	// if err != nil {
+	// 	fmt.Println("Fatal error!")
+	// }
 }

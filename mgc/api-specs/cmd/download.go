@@ -8,15 +8,13 @@ import (
 )
 
 var downloadSpecsCmd = &cobra.Command{
-	Use:   "download",
-	Short: "Download all available specs",
+	Use:    "download",
+	Short:  "Download all available specs",
+	Hidden: true,
 	Run: func(cmd *cobra.Command, args []string) {
-		var fromViveiro bool
-		cmd.Flags().BoolVarP(&fromViveiro, "viveiro", "v", false, "Função utilizando viveiro")
-
 		_ = verificarEAtualizarDiretorio(SPEC_DIR)
 
-		currentConfig, err := loadListFromViper(toWriteViveiro(fromViveiro))
+		currentConfig, err := loadList()
 
 		if err != nil {
 			fmt.Println(err)
@@ -26,12 +24,7 @@ var downloadSpecsCmd = &cobra.Command{
 		for _, v := range currentConfig {
 			_ = removerArquivosOld(filepath.Join(SPEC_DIR))
 			_ = verificarERenomearArquivo(filepath.Join(SPEC_DIR, v.File))
-			if fromViveiro {
-				_ = getAndSaveFromGitlab(v.Url, filepath.Join(SPEC_DIR, v.File))
-			} else {
-				_ = getAndSaveFile(v.Url, filepath.Join(SPEC_DIR, v.File))
-			}
-
+			_ = getAndSaveFile(v.Url, filepath.Join(SPEC_DIR, v.File))
 		}
 
 	},

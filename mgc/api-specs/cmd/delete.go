@@ -11,8 +11,9 @@ func delete(cmd *cobra.Command, args []string) {
 }
 
 var deleteSpecsCmd = &cobra.Command{
-	Use:   "delete",
-	Short: "Delete spec",
-	Args:  cobra.MinimumNArgs(1),
-	Run:   delete,
+	Use:    "delete",
+	Hidden: true,
+	Short:  "Delete spec",
+	Args:   cobra.MinimumNArgs(1),
+	Run:    delete,
 }

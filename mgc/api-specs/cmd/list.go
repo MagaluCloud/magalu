@@ -8,14 +8,13 @@ import (
 )
 
 var listSpecsCmd = &cobra.Command{
-	Use:   "list",
-	Short: "List all available specs",
+	Use:    "list",
+	Short:  "List all available specs",
+	Hidden: true,
 	Run: func(cmd *cobra.Command, args []string) {
-		var fromViveiro bool
-		cmd.Flags().BoolVarP(&fromViveiro, "viveiro", "v", false, "Função utilizando viveiro")
 		_ = verificarEAtualizarDiretorio(SPEC_DIR)
 
-		currentConfig, err := loadListFromViper(toWriteViveiro(fromViveiro))
+		currentConfig, err := loadList()
 
 		if err != nil {
 			fmt.Println(err)

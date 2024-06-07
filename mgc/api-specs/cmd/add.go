@@ -9,9 +9,13 @@ import (
 )
 
 type specList struct {
-	Url  string `json:"url"`
-	File string `json:"file"`
-	Menu string `json:"menu"`
+	Url     string `json:"url"`
+	File    string `json:"file"`
+	Menu    string `json:"menu"`
+	Enabled bool   `json:"enabled"`
+	CLI     bool   `json:"cli"`
+	TF      bool   `json:"tf"`
+	SDK     bool   `json:"sdk"`
 }
 
 func interfaceToMap(i interface{}) (map[string]interface{}, bool) {
@@ -23,21 +27,14 @@ func interfaceToMap(i interface{}) (map[string]interface{}, bool) {
 	return mapa, true
 }
 
-func write(cmd *cobra.Command, args []string) {
-	var fromViveiro bool
-	cmd.Flags().BoolVarP(&fromViveiro, "viveiro", "v", false, "Função utilizando viveiro")
+func add(cmd *cobra.Command, args []string) {
 
 	var toSave []specList
-	var file string
-	if fromViveiro {
-		file = fmt.Sprintf("%s.viveiro.openapi.json", args[1])
-	} else {
-		file = fmt.Sprintf("%s.jaxyendy.openapi.json", args[1])
+	file := fmt.Sprintf("%s.jaxyendy.openapi.json", args[1])
 
-	}
 	toSave = append(toSave, specList{Url: args[0], File: file, Menu: args[1]})
 
-	currentConfig, err := loadListFromViper(toWriteViveiro(fromViveiro))
+	currentConfig, err := loadList()
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -52,7 +49,7 @@ func write(cmd *cobra.Command, args []string) {
 	}
 
 	toSave = append(toSave, currentConfig...)
-	viper.Set(toWriteViveiro(fromViveiro), toSave)
+	viper.Set("jaxyendy", toSave)
 	err = viper.WriteConfigAs(VIPER_FILE)
 	if err != nil {
 		fmt.Println(err)
@@ -60,10 +57,11 @@ func write(cmd *cobra.Command, args []string) {
 	fmt.Println("done")
 }
 
-var writeSpecsCmd = &cobra.Command{
+var addSpecsCmd = &cobra.Command{
 	Use:     "add [url] [menu]",
 	Short:   "Add new spec",
 	Example: "specs add https://block-storage.br-ne-1.jaxyendy.com/v1/openapi.json block-storage",
 	Args:    cobra.MinimumNArgs(2),
-	Run:     write,
+	Hidden:  true,
+	Run:     add,
 }

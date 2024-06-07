@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
-	"strings"
 
+	"github.com/pb33f/libopenapi"
 	"github.com/spf13/viper"
 )
 
@@ -118,49 +118,6 @@ func validarEndpoint(url string) bool {
 	return true
 }
 
-func getAndSaveFromGitlab(url, caminhoDestino string) error {
-
-	destine := strings.Replace(url, "https://gitlab.luizalabs.com/open-platform/pcx/u0/-/raw/main/api_products", "", 1)
-	destine = strings.Replace(destine, "?ref_type=heads", "", -1)
-	destine = strings.Replace(destine, "/", "%2F", -1)
-
-	url = "https://gitlab.luizalabs.com/api/v4/projects/7739/repository/files/api_products"
-	url += destine + "/raw?ref=main"
-
-	// Faz o download do arquivo JSON
-
-	req, err := http.NewRequest("GET", url, nil)
-	if err != nil {
-		return fmt.Errorf("erro ao criar a solicitação HTTP: %v", err)
-	}
-
-	// Define o cabeçalho de autenticação com o token fornecido
-
-	req.Header.Set("PRIVATE-TOKEN", os.Getenv("TOKEN_GITLAB"))
-
-	// Envia a solicitação HTTP
-	resp, err := http.DefaultClient.Do(req)
-	if err != nil {
-		return fmt.Errorf("erro ao fazer a solicitação HTTP: %v", err)
-	}
-	defer resp.Body.Close()
-
-	// Lê o corpo da resposta
-	dados, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return fmt.Errorf("erro ao ler o corpo da resposta: %v", err)
-	}
-
-	// Grava os dados no arquivo local
-	err = os.WriteFile(caminhoDestino, dados, 0644)
-	if err != nil {
-		return fmt.Errorf("erro ao gravar os dados no arquivo: %v", err)
-	}
-
-	fmt.Println("Arquivo JSON baixado e salvo com sucesso.")
-	return nil
-}
-
 func getAndSaveFile(url, caminhoDestino string) error {
 	// Faz o download do arquivo JSON
 	resp, err := http.Get(url)
@@ -170,13 +127,31 @@ func getAndSaveFile(url, caminhoDestino string) error {
 	defer resp.Body.Close()
 
 	// Lê o corpo da resposta
-	dados, err := io.ReadAll(resp.Body)
+	fileBytes, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return fmt.Errorf("erro ao ler o corpo da resposta: %v", err)
 	}
 
+	document, err := libopenapi.NewDocument(fileBytes)
+	if err != nil {
+		panic(fmt.Sprintf("cannot read document: %e", err))
+	}
+
+	_, errors := document.BuildV3Model()
+	if len(errors) > 0 {
+		for i := range errors {
+			fmt.Printf("error: %e\n", errors[i])
+		}
+		panic(fmt.Sprintf("cannot create v3 model from document: %d errors reported", len(errors)))
+	}
+
+	fileBytes, _, _, errors = document.RenderAndReload()
+	if len(errors) > 0 {
+		panic(fmt.Sprintf("cannot re-render document: %d errors reported", len(errors)))
+	}
+
 	// Grava os dados no arquivo local
-	err = os.WriteFile(caminhoDestino, dados, 0644)
+	err = os.WriteFile(caminhoDestino, fileBytes, 0644)
 	if err != nil {
 		return fmt.Errorf("erro ao gravar os dados no arquivo: %v", err)
 	}
@@ -185,26 +160,27 @@ func getAndSaveFile(url, caminhoDestino string) error {
 	return nil
 }
 
-func loadListFromViper(origin string) ([]specList, error) {
+func loadList() ([]specList, error) {
 	var currentConfig []specList
-	fromViper := viper.Get(origin)
+	config := viper.Get("jaxyendy")
 
-	if fromViper != nil {
-		for _, v := range fromViper.([]interface{}) {
+	if config != nil {
+		for _, v := range config.([]interface{}) {
 			vv, ok := interfaceToMap(v)
 			if !ok {
 				return currentConfig, fmt.Errorf("fail to load current config")
 			}
-			currentConfig = append(currentConfig, specList{Url: vv["url"].(string), Menu: vv["menu"].(string), File: vv["file"].(string)})
+			currentConfig = append(currentConfig, specList{
+				Url:     vv["url"].(string),
+				Menu:    vv["menu"].(string),
+				File:    vv["file"].(string),
+				Enabled: vv["enabled"].(bool),
+				CLI:     vv["cli"].(bool),
+				TF:      vv["tf"].(bool),
+				SDK:     vv["sdk"].(bool),
+			})
 		}
 
 	}
 	return currentConfig, nil
-}
-
-func toWriteViveiro(isViveiro bool) string {
-	if isViveiro {
-		return "viveiro"
-	}
-	return "jaxyendy"
 }

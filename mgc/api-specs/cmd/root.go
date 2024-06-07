@@ -29,12 +29,14 @@ func Execute() error {
 
 func init() {
 	cobra.OnInitialize(initConfig)
-	rootCmd.AddCommand(versionCmd)
-	rootCmd.AddCommand(downloadSpecsCmd)
-	rootCmd.AddCommand(writeSpecsCmd)
-	rootCmd.AddCommand(deleteSpecsCmd)
-	rootCmd.AddCommand(listSpecsCmd)
-	rootCmd.AddCommand(convertCmd)
+	rootCmd.AddCommand(versionCmd)       // version
+	rootCmd.AddCommand(downloadSpecsCmd) // download all
+	rootCmd.AddCommand(addSpecsCmd)      // add spec
+	rootCmd.AddCommand(deleteSpecsCmd)   // delete spec
+	rootCmd.AddCommand(listSpecsCmd)     // list specs
+	rootCmd.AddCommand(prepareToGoCmd)   // convert spec to golang
+	rootCmd.AddCommand(downgradeSpecCmd) // downgrade spec
+
 }
 
 func initConfig() {
