@@ -29,3 +29,4 @@ mgc/codegen/codegen
 # Go workspace
 go.work.sum
 dist
+mgc/spec_manipulator/spec_manipulator
