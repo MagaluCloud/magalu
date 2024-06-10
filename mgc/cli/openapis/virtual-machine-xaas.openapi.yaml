@@ -1,0 +1,5042 @@
+openapi: 3.0.3
+info:
+    title: Internal Virtual Machine Api Product
+    description: Virtual Machine Api Product
+    version: 1.232.0
+paths:
+    /v1/health:
+        get:
+            tags:
+            - healthchecks
+            summary: Healthcheck
+            description: Check API service status
+            operationId: healthcheck_v1_health_get
+            responses:
+                '204':
+                    description: Successful Response
+            security:
+            -   OAuth2:
+                - virtual-machine-xaas.read
+    /v1/healthcheck:
+        get:
+            tags:
+            - healthchecks
+            summary: Healthcheck
+            description: Check api status
+            operationId: healthcheck_v1_healthcheck_get
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Healthcheck'
+            security:
+            -   OAuth2:
+                - virtual-machine-xaas.read
+    /v1/instances/internal/urp/{id}:
+        get:
+            tags:
+            - instances
+            summary: Instance Internal By Urp Detail
+            description: 'This route is to get a detailed information for a instance
+                but adding the urp id on the response.
+
+
+                ### Note
+
+                This route is used only for internal proposes.'
+            operationId: instance_internal_by_urp_detail_v1_instances_internal_urp__id__get
+            deprecated: true
+            parameters:
+            -   name: id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Id
+            -   name: project_type
+                in: query
+                required: false
+                schema:
+                    allOf:
+                    -   $ref: '#/components/schemas/ProjectTypeAll'
+                    default: default
+                    title: Project Type
+                    type: string
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/InstanceV1InternalResponse'
+                    links:
+                        get:
+                            operationId: instance_internal_detail_v1_instances_internal__id__get
+                            description: Instance Internal Detail
+                            parameters:
+                                id: $request.path.id
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: true
+            security:
+            -   OAuth2:
+                - virtual-machine-xaas.read
+    /v1/instances/internal/{id}:
+        get:
+            tags:
+            - instances
+            summary: Instance Internal Detail
+            description: 'This route is to get a detailed information for a instance
+                but adding the urp id on the response.
+
+
+                ### Note
+
+                This route is used only for internal proposes.'
+            operationId: instance_internal_detail_v1_instances_internal__id__get
+            deprecated: true
+            parameters:
+            -   name: id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Id
+            -   name: project_type
+                in: query
+                required: false
+                schema:
+                    allOf:
+                    -   $ref: '#/components/schemas/ProjectTypeAll'
+                    default: default
+                    title: Project Type
+                    type: string
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/InstanceV1InternalResponse'
+                    links:
+                        urp:
+                            operationId: instance_internal_by_urp_detail_v1_instances_internal_urp__id__get
+                            description: Instance Internal By Urp Detail
+                            parameters:
+                                id: $request.path.id
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: true
+            security:
+            -   OAuth2:
+                - virtual-machine-xaas.read
+    /v1/internal/backups/urp/{external_backup_id}:
+        patch:
+            tags:
+            - backups
+            summary: Urp Update Backup Status
+            description: Update backup status by id on urp
+            operationId: urp_update_backup_status_v1_internal_backups_urp__external_backup_id__patch
+            parameters:
+            -   name: external_backup_id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: External Backup Id
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/UrpBackupPatchRequest'
+            responses:
+                '204':
+                    description: Successful Response
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: false
+            security:
+            -   OAuth2:
+                - virtual-machine-xaas.write
+    /v1/internal/backups/{id}:
+        patch:
+            tags:
+            - backups
+            summary: Update Backup Status
+            description: Update backup status
+            operationId: update_backup_status_v1_internal_backups__id__patch
+            parameters:
+            -   name: id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Id
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/BackupPatchRequest'
+            responses:
+                '204':
+                    description: Successful Response
+                    links:
+                        urp:
+                            operationId: urp_update_backup_status_v1_internal_backups_urp__external_backup_id__patch
+                            description: Urp Update Backup Status
+                            parameters:
+                                external_backup_id: $request.body#/external_backup_id
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: false
+            security:
+            -   OAuth2:
+                - virtual-machine-xaas.write
+    /v1/internal/images:
+        get:
+            tags:
+            - images
+            summary: List Images All V1
+            description: Retrieve a list of images allowed for the current tenant
+                which is logged in.
+            operationId: list_images_all_v1_v1_internal_images_get
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ListImageInternalV1'
+            x-viveiro: true
+            security:
+            -   OAuth2:
+                - virtual-machine-xaas.read
+        post:
+            tags:
+            - images
+            summary: Create Image V1
+            description: 'Register a URP Image on Virtual Machine DB.
+
+
+                ### Note
+
+                The Image on URP need to be public and protected.'
+            operationId: create_image_v1_v1_internal_images_post
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/ImageRequestV1'
+                required: true
+            responses:
+                '201':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ImageResponseV1'
+                    links:
+                        update:
+                            operationId: update_image_status_v1_internal_images__id__patch
+                            description: Update Image Status
+                            parameters:
+                                id: $response.body#/id
+                        rename:
+                            operationId: update_image_name_v1_internal_images__id__rename_patch
+                            description: Update Image Name
+                            parameters:
+                                id: $response.body#/id
+                        delete:
+                            operationId: delete_image_v1_v1_internal_images__image_id__delete
+                            description: Delete Image V1
+                            parameters:
+                                image_id: $response.body#/id
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            security:
+            -   OAuth2:
+                - virtual-machine-xaas.write
+    /v1/internal/images/urp/{urp_id}:
+        patch:
+            tags:
+            - images
+            summary: Update Images From Urp
+            description: 'Internal route for update status of a image when receive
+                a update from URP.
+
+
+                ### Note
+
+                This route is used only for internal proposes.'
+            operationId: update_images_from_urp_v1_internal_images_urp__urp_id__patch
+            parameters:
+            -   name: urp_id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Urp Id
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/WorkerImageUpdateRequest'
+            responses:
+                '204':
+                    description: Successful Response
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: false
+            security:
+            -   OAuth2:
+                - virtual-machine-xaas.write
+    /v1/internal/images/{id}:
+        patch:
+            tags:
+            - images
+            summary: Update Image Status
+            description: Update image status
+            operationId: update_image_status_v1_internal_images__id__patch
+            parameters:
+            -   name: id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Id
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/ImagePatchRequest'
+            responses:
+                '204':
+                    description: Successful Response
+                    links:
+                        rename:
+                            operationId: update_image_name_v1_internal_images__id__rename_patch
+                            description: Update Image Name
+                            parameters:
+                                id: $request.path.id
+                        delete:
+                            operationId: delete_image_v1_v1_internal_images__image_id__delete
+                            description: Delete Image V1
+                            parameters:
+                                image_id: $request.path.id
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: false
+            security:
+            -   OAuth2:
+                - virtual-machine-xaas.write
+    /v1/internal/images/{id}/rename:
+        patch:
+            tags:
+            - images
+            summary: Update Image Name
+            description: Update image name
+            operationId: update_image_name_v1_internal_images__id__rename_patch
+            parameters:
+            -   name: id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Id
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/ImageRenameRequest'
+            responses:
+                '204':
+                    description: Successful Response
+                    links:
+                        update:
+                            operationId: update_image_status_v1_internal_images__id__patch
+                            description: Update Image Status
+                            parameters:
+                                id: $request.path.id
+                        delete:
+                            operationId: delete_image_v1_v1_internal_images__image_id__delete
+                            description: Delete Image V1
+                            parameters:
+                                image_id: $request.path.id
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: false
+            security:
+            -   OAuth2:
+                - virtual-machine-xaas.write
+    /v1/internal/images/{image_id}:
+        delete:
+            tags:
+            - images
+            summary: Delete Image V1
+            description: "Delete a register image from Virtual Machine DB.\n\n###\
+                \ Note\nThis route only remove the image from virtual machine DB.\
+                \ \n\nNeeds to remove the image from URP after use this route."
+            operationId: delete_image_v1_v1_internal_images__image_id__delete
+            parameters:
+            -   name: image_id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Image Id
+            responses:
+                '204':
+                    description: Successful Response
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            security:
+            -   OAuth2:
+                - virtual-machine-xaas.write
+    /v1/internal/instance_types:
+        get:
+            tags:
+            - instance types
+            summary: List Instance Types Internal V1
+            description: 'Internal list all instance types this route will return
+                even the internal instance types.
+
+
+                ### Note
+
+                This route is used only for internal proposes.'
+            operationId: list_instance_types_internal_v1_v1_internal_instance_types_get
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/InstanceTypesV1InternalListResponse'
+            security:
+            -   OAuth2:
+                - virtual-machine-xaas.read
+        post:
+            tags:
+            - instance types
+            summary: Create Instance Type V1
+            description: "This internal method is for create a new flavor (instance\
+                \ type)\n    some information will pass to URP, but some information\
+                \ \n\n    like ratio or generation for now will be only in the database.\
+                \ \n\n    For gpu will have 2 infos: \n\n    1- the gpu model name\
+                \ (today will olny have a100 as model) \n\n    2 - number of gpu cores\
+                \ this flavor will use."
+            operationId: create_instance_type_v1_v1_internal_instance_types_post
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/InstanceTypesV1Request'
+                required: true
+            responses:
+                '201':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/InstanceTypesV1InternalResponse'
+                    links:
+                        delete:
+                            operationId: delete_instance_type_v1_v1_internal_instance_types__id__delete
+                            description: Delete Instance Type V1
+                            parameters:
+                                id: $request.body#/id
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            security:
+            -   OAuth2:
+                - virtual-machine-xaas.write
+    /v1/internal/instance_types/{id}:
+        delete:
+            tags:
+            - instance types
+            summary: Delete Instance Type V1
+            description: "Remove a instance type from virtual machine DB.\n\n### Note\n\
+                This route only remove the instance type from virtual machine DB.\
+                \ \n\nNeeds to remove the flavor from URP after use this route."
+            operationId: delete_instance_type_v1_v1_internal_instance_types__id__delete
+            parameters:
+            -   name: id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Id
+            responses:
+                '204':
+                    description: Successful Response
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            security:
+            -   OAuth2:
+                - virtual-machine-xaas.write
+    /v1/internal/instances:
+        delete:
+            tags:
+            - instances
+            summary: Delete all instances associated with a tenant
+            description: 'Internal route to delete all instances associated with a
+                tenant.
+
+
+                ### Note
+
+                This route is used only for internal proposes.'
+            operationId: instance_delete_all_v1_v1_internal_instances_delete
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/InstanceDeletedAllResponse'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: false
+            security:
+            -   OAuth2:
+                - virtual-machine-xaas.write
+    /v1/internal/instances/diagnostics:
+        get:
+            tags:
+            - diagnostics
+            summary: List Instances Diagnostic
+            description: 'Get a list of instances informing a tenant ID.
+
+
+                This route only list instances inserted on virtual machine database.'
+            operationId: list_instances_diagnostic_v1_internal_instances_diagnostics_get
+            parameters:
+            -   name: project_type
+                in: query
+                required: false
+                schema:
+                    allOf:
+                    -   $ref: '#/components/schemas/ProjectTypeAll'
+                    default: default
+                    title: Project Type
+                    type: string
+            -   name: _limit
+                in: query
+                required: false
+                schema:
+                    type: integer
+                    maximum: 2147483647
+                    exclusiveMinimum: true
+                    description: limit the number of the results
+                    default: 50
+                    title: ' Limit'
+                description: limit the number of the results
+            -   name: _offset
+                in: query
+                required: false
+                schema:
+                    type: integer
+                    maximum: 2147483647
+                    minimum: 0
+                    description: pagination for the results limited
+                    default: 0
+                    title: ' Offset'
+                description: pagination for the results limited
+            -   name: _sort
+                in: query
+                required: false
+                schema:
+                    type: string
+                    pattern: ^(^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$
+                    description: order of the results using informed fields
+                    default: created_at:asc
+                    title: ' Sort'
+                description: order of the results using informed fields
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/DiagnosticList'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            security:
+            -   OAuth2:
+                - virtual-machine-xaas.read
+    /v1/internal/instances/diagnostics/{id}:
+        get:
+            tags:
+            - diagnostics
+            summary: Get Instance Diagnostic
+            description: "Get more internal information about a instance informing\
+                \ a\ninstance id and the instance`s tenant. \n\nThis route will get\
+                \ DB info and URP info merged in a response."
+            operationId: get_instance_diagnostic_v1_internal_instances_diagnostics__id__get
+            parameters:
+            -   name: id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Id
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/DiagnosticDetailResult'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            security:
+            -   OAuth2:
+                - virtual-machine-xaas.read
+    /v1/internal/instances/urp/{id}:
+        get:
+            tags:
+            - instances
+            summary: Instance Internal By Urp Detail
+            description: 'This route is to get a detailed information for a instance
+                but adding the urp id on the response.
+
+
+                ### Note
+
+                This route is used only for internal proposes.'
+            operationId: instance_internal_by_urp_detail_v1_internal_instances_urp__id__get
+            parameters:
+            -   name: id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Id
+            -   name: project_type
+                in: query
+                required: false
+                schema:
+                    allOf:
+                    -   $ref: '#/components/schemas/ProjectTypeAll'
+                    default: default
+                    title: Project Type
+                    type: string
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/InstanceV1InternalResponse'
+                    links:
+                        update:
+                            operationId: worker_update_instance_urp_v1_internal_instances_urp__urp_id__patch
+                            description: Worker Update Instance Urp
+                            parameters:
+                                urp_id: $request.path.id
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: false
+            security:
+            -   OAuth2:
+                - virtual-machine-xaas.read
+    /v1/internal/instances/urp/{urp_id}:
+        patch:
+            tags:
+            - instances
+            summary: Worker Update Instance Urp
+            description: 'Internal route for update status of a instance when receive
+                a update from URP.
+
+
+                ### Note
+
+                This route is used only for internal proposes.'
+            operationId: worker_update_instance_urp_v1_internal_instances_urp__urp_id__patch
+            parameters:
+            -   name: urp_id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Urp Id
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/WorkerUpdateRequest'
+            responses:
+                '204':
+                    description: Successful Response
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            security:
+            -   OAuth2:
+                - virtual-machine-xaas.write
+    /v1/internal/instances/{id}:
+        delete:
+            tags:
+            - instances
+            summary: Instance Delete Worker
+            description: "This route is when the vm-instace worker already\ndeleted\
+                \ the instance from: urp and vpc api to mark the instance \n\nto 'deleted'\
+                \ on virtual machine DB.\n\n### Note\nThis route is used only for\
+                \ internal proposes."
+            operationId: instance_delete_worker_v1_internal_instances__id__delete
+            parameters:
+            -   name: id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+                    title: Id
+            -   name: project_type
+                in: query
+                required: false
+                schema:
+                    allOf:
+                    -   $ref: '#/components/schemas/ProjectTypeAll'
+                    default: default
+                    title: Project Type
+                    type: string
+            responses:
+                '204':
+                    description: Successful Response
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            security:
+            -   OAuth2:
+                - virtual-machine-xaas.write
+        get:
+            tags:
+            - instances
+            summary: Instance Internal Detail
+            description: 'This route is to get a detailed information for a instance
+                but adding the urp id on the response.
+
+
+                ### Note
+
+                This route is used only for internal proposes.'
+            operationId: instance_internal_detail_v1_internal_instances__id__get
+            parameters:
+            -   name: id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Id
+            -   name: project_type
+                in: query
+                required: false
+                schema:
+                    allOf:
+                    -   $ref: '#/components/schemas/ProjectTypeAll'
+                    default: default
+                    title: Project Type
+                    type: string
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/InstanceV1InternalResponse'
+                    links:
+                        create:
+                            operationId: instance_finish_create_v1_v1_internal_instances__id__post
+                            description: Instance Finish Create V1
+                            parameters:
+                                id: $request.path.id
+                        update:
+                            operationId: worker_update_instance_v1_internal_instances__id__patch
+                            description: Worker Update Instance
+                            parameters:
+                                id: $request.path.id
+                        delete-id:
+                            operationId: instance_delete_worker_v1_internal_instances__id__delete
+                            description: Instance Delete Worker
+                            parameters:
+                                id: $request.path.id
+                        ports:
+                            operationId: delete_port_v1_internal_instances__id__ports__port_id__delete
+                            description: Delete Port
+                            parameters:
+                                id: $request.path.id
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: false
+            security:
+            -   OAuth2:
+                - virtual-machine-xaas.read
+        patch:
+            tags:
+            - instances
+            summary: Worker Update Instance
+            description: 'Internal route for update status of a instance receiving
+                the instance ID.
+
+
+                ### Note
+
+                This route is used only for internal proposes.'
+            operationId: worker_update_instance_v1_internal_instances__id__patch
+            parameters:
+            -   name: id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Id
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/WorkerUpdateRequest'
+            responses:
+                '204':
+                    description: Successful Response
+                    links:
+                        get:
+                            operationId: instance_internal_detail_v1_internal_instances__id__get
+                            description: Instance Internal Detail
+                            parameters:
+                                id: $request.path.id
+                        create:
+                            operationId: instance_finish_create_v1_v1_internal_instances__id__post
+                            description: Instance Finish Create V1
+                            parameters:
+                                id: $request.path.id
+                        delete-id:
+                            operationId: instance_delete_worker_v1_internal_instances__id__delete
+                            description: Instance Delete Worker
+                            parameters:
+                                id: $request.path.id
+                        ports:
+                            operationId: delete_port_v1_internal_instances__id__ports__port_id__delete
+                            description: Delete Port
+                            parameters:
+                                id: $request.path.id
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            security:
+            -   OAuth2:
+                - virtual-machine-xaas.write
+        post:
+            tags:
+            - instances
+            summary: Instance Finish Create V1
+            description: "This route is for internaly to update the information\n\
+                when finished to request a instance creation on URP. \n\nAfter requested\
+                \ successfully this route is called to save\nthe network information\
+                \ and urp instance ID.\n\n### Note\nThis route is used only for internal\
+                \ proposes."
+            operationId: instance_finish_create_v1_v1_internal_instances__id__post
+            parameters:
+            -   name: id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+                    title: Id
+            -   name: project_type
+                in: query
+                required: false
+                schema:
+                    allOf:
+                    -   $ref: '#/components/schemas/ProjectTypeAll'
+                    default: default
+                    title: Project Type
+                    type: string
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/WorkerFinishCreation'
+            responses:
+                '204':
+                    description: Successful Response
+                    links:
+                        get:
+                            operationId: instance_internal_detail_v1_internal_instances__id__get
+                            description: Instance Internal Detail
+                            parameters:
+                                id: $request.path.id
+                        update:
+                            operationId: worker_update_instance_v1_internal_instances__id__patch
+                            description: Worker Update Instance
+                            parameters:
+                                id: $request.path.id
+                        delete-id:
+                            operationId: instance_delete_worker_v1_internal_instances__id__delete
+                            description: Instance Delete Worker
+                            parameters:
+                                id: $request.path.id
+                        ports:
+                            operationId: delete_port_v1_internal_instances__id__ports__port_id__delete
+                            description: Delete Port
+                            parameters:
+                                id: $request.path.id
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            security:
+            -   OAuth2:
+                - virtual-machine-xaas.write
+    /v1/internal/instances/{id}/ports/{port_id}:
+        delete:
+            tags:
+            - instances
+            summary: Delete Port
+            description: Delete a not primary port
+            operationId: delete_port_v1_internal_instances__id__ports__port_id__delete
+            parameters:
+            -   name: id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Id
+            -   name: port_id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Port Id
+            -   name: project_type
+                in: query
+                required: false
+                schema:
+                    allOf:
+                    -   $ref: '#/components/schemas/ProjectTypeAll'
+                    default: default
+                    title: Project Type
+                    type: string
+            responses:
+                '204':
+                    description: Successful Response
+                    links:
+                        get:
+                            operationId: instance_internal_detail_v1_internal_instances__id__get
+                            description: Instance Internal Detail
+                            parameters:
+                                id: $request.path.id
+                        create:
+                            operationId: instance_finish_create_v1_v1_internal_instances__id__post
+                            description: Instance Finish Create V1
+                            parameters:
+                                id: $request.path.id
+                        update:
+                            operationId: worker_update_instance_v1_internal_instances__id__patch
+                            description: Worker Update Instance
+                            parameters:
+                                id: $request.path.id
+                        delete-id:
+                            operationId: instance_delete_worker_v1_internal_instances__id__delete
+                            description: Instance Delete Worker
+                            parameters:
+                                id: $request.path.id
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            security:
+            -   OAuth2:
+                - virtual-machine-xaas.write
+    /v1/internal/keypairs:
+        post:
+            tags:
+            - keypairs
+            summary: Create Keypair Urp
+            description: 'Add a new keypair direct on urp using informed tenant id.
+
+
+                ### Note
+
+                This route is used only for internal proposes.'
+            operationId: create_keypair_urp_v1_internal_keypairs_post
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/KeypairRequest'
+            responses:
+                '201':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/KeypairResponse'
+                    links:
+                        delete:
+                            operationId: delete_keypair_v1_v1_internal_keypairs__keypair_name__delete
+                            description: Delete Keypair V1
+                            parameters:
+                                keypair_name: $request.body#/name
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: false
+            security:
+            -   OAuth2:
+                - virtual-machine-xaas.write
+    /v1/internal/keypairs/{keypair_name}:
+        delete:
+            tags:
+            - keypairs
+            summary: Delete Keypair V1
+            description: 'Delete a existing keypair direct on urp using a informed
+                tenant id.
+
+
+                ### Note
+
+                This route is used only for internal proposes.'
+            operationId: delete_keypair_v1_v1_internal_keypairs__keypair_name__delete
+            parameters:
+            -   name: keypair_name
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Keypair Name
+            -   name: project_type
+                in: query
+                required: true
+                schema:
+                    $ref: '#/components/schemas/ProjectTypeAll'
+            responses:
+                '204':
+                    description: Successful Response
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            security:
+            -   OAuth2:
+                - virtual-machine-xaas.write
+    /v1/internal/machine-types:
+        get:
+            tags:
+            - machine-types
+            summary: Retrieves all machine-types available in the region.
+            description: Retrieves a list of machine types allowed for the current
+                tenant which is logged in.
+            operationId: list_portal_instance_types_v1_v1_internal_machine_types_get
+            parameters:
+            -   name: _limit
+                in: query
+                required: false
+                schema:
+                    type: integer
+                    maximum: 2147483647
+                    exclusiveMinimum: true
+                    description: limit the number of the results
+                    default: 50
+                    title: ' Limit'
+                description: limit the number of the results
+            -   name: _offset
+                in: query
+                required: false
+                schema:
+                    type: integer
+                    maximum: 2147483647
+                    minimum: 0
+                    description: pagination for the results limited
+                    default: 0
+                    title: ' Offset'
+                description: pagination for the results limited
+            -   name: _sort
+                in: query
+                required: false
+                schema:
+                    type: string
+                    pattern: ^(^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$
+                    description: order of the results using informed fields
+                    default: created_at:asc
+                    title: ' Sort'
+                description: order of the results using informed fields
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/InstanceTypesV1ListResponse'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: false
+            security:
+            -   OAuth2:
+                - virtual-machine-xaas.read
+    /v1/internal/snapshots/urp/{urp_id}:
+        patch:
+            tags:
+            - snapshots
+            summary: Worker Update Snapshot Urp
+            description: 'Internal route for update status of a snapshot when receive
+                a update from URP.
+
+
+                ### Note
+
+                This route is used only for internal proposes.'
+            operationId: worker_update_snapshot_urp_v1_internal_snapshots_urp__urp_id__patch
+            parameters:
+            -   name: urp_id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Urp Id
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/WorkerUpdateRequestV1'
+            responses:
+                '204':
+                    description: Successful Response
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            security:
+            -   OAuth2:
+                - virtual-machine-xaas.write
+    /v1/xaas/images:
+        get:
+            tags:
+            - xaas images
+            summary: Retrieves all images available in the region.
+            description: Retrieve a list of images allowed for the current tenant
+                which is logged in.
+            operationId: list_images_v1_xaas_v1_xaas_images_get
+            parameters:
+            -   name: _limit
+                in: query
+                required: false
+                schema:
+                    type: integer
+                    maximum: 2147483647
+                    exclusiveMinimum: true
+                    default: 50
+                    title: ' Limit'
+            -   name: _offset
+                in: query
+                required: false
+                schema:
+                    type: integer
+                    maximum: 2147483647
+                    minimum: 0
+                    default: 0
+                    title: ' Offset'
+            -   name: _sort
+                in: query
+                required: false
+                schema:
+                    type: string
+                    pattern: ^(^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$
+                    default: platform:asc,end_life_at:desc
+                    title: ' Sort'
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ListImageExternalV1'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: true
+            x-mgc-output-flag: table=ID:$.images[*].id,NAME:$.images[*].name,VERSION:$.images[*].version,PLATFORM:$.images[*].platform,END_STANDARD_SUPPORT_AT:$.images[*].end_standard_support_at,STATUS:$.images[*].status
+            security:
+            -   OAuth2:
+                - virtual-machine-xaas.read
+            -   XaasAuth:
+                - virtual-machine-xaas.read
+    /v1/xaas/instances:
+        get:
+            tags:
+            - xaas instances
+            summary: Lists all instances in the current tenant for xaas project
+            description: 'List Virtual Machine instances in the current tenant which
+                is logged in.
+
+
+                #### Notes
+
+                - You can use the **extend** argument to get more details from the
+                inner objects
+
+                like image or type.'
+            operationId: list_instances_v1_v1_xaas_instances_get
+            parameters:
+            -   name: project_type
+                in: query
+                required: true
+                schema:
+                    $ref: '#/components/schemas/ProjectType'
+            -   name: _limit
+                in: query
+                required: false
+                schema:
+                    type: integer
+                    maximum: 2147483647
+                    exclusiveMinimum: true
+                    description: limit the number of the results
+                    default: 50
+                    title: ' Limit'
+                description: limit the number of the results
+            -   name: _offset
+                in: query
+                required: false
+                schema:
+                    type: integer
+                    maximum: 2147483647
+                    minimum: 0
+                    description: pagination for the results limited
+                    default: 0
+                    title: ' Offset'
+                description: pagination for the results limited
+            -   name: _sort
+                in: query
+                required: false
+                schema:
+                    type: string
+                    pattern: ^(^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$
+                    description: order of the results using informed fields
+                    default: created_at:asc
+                    title: ' Sort'
+                description: order of the results using informed fields
+            -   name: expand
+                in: query
+                required: false
+                schema:
+                    type: array
+                    items:
+                        type: string
+                    description: 'You can get more detailed info about: [''image'',
+                        ''machine-type'', ''network''] '
+                    default: []
+                    title: Expand
+                description: 'You can get more detailed info about: [''image'', ''machine-type'',
+                    ''network''] '
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ListInstanceV1Response'
+                '400':
+                    description: Instance Not Allowed Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '404':
+                    description: Instance Not Found Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '409':
+                    description: Instance Validation Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '500':
+                    description: Internal Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            security:
+            -   OAuth2:
+                - virtual-machine-xaas.read
+            -   XaasAuth:
+                - virtual-machine-xaas.read
+        post:
+            tags:
+            - xaas instances
+            summary: Create a instance asynchronously in a xaas project
+            description: "Creates a Virtual Machine instance in the current tenant\
+                \ which is logged in.\n\nAn instance is ready for you to use when\
+                \ it's in the running state.\n\n#### Notes\n- For the image data,\
+                \ you can use the virtual-machine images list command\n        to\
+                \ list all available images.\n- For the machine type data, you can\
+                \ use the virtual-machine machine-types\n        list command to list\
+                \ all available machine types.\n- You can verify the state of your\
+                \ instance using the virtual-machine get\ncommand.\n\n#### Rules\n\
+                \n- If you don't specify a VPC, the default VPC will be used. When\
+                \ the\ndefault VPC is not available, the command will fail.\n- If\
+                \ you don't specify an network interface, an default network interface\n\
+                will be created.\n- You can either specify an image id or an image\
+                \ name. If you specify\nboth, the image id will be used.\n- You can\
+                \ either specify a machine type id or a machine type name. If\nyou\
+                \ specify both, the machine type id will be used.\n- You can either\
+                \ specify an VPC id or an VPC name. If you specify both,\nthe VPC\
+                \ id will be used.\n- The user data must be a Base64 encoded string."
+            operationId: instance_create_v1_v1_xaas_instances_post
+            parameters:
+            -   name: project_type
+                in: query
+                required: true
+                schema:
+                    $ref: '#/components/schemas/ProjectType'
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/InstanceCreateRequestV1Xaas'
+            responses:
+                '201':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CreateResponse'
+                    links:
+                        get:
+                            operationId: instance_details_v1_v1_xaas_instances__id__get
+                            description: Retrieve the details of an instance in a
+                                xaas project
+                            parameters:
+                                id: $response.body#/id
+                        delete:
+                            operationId: instance_delete_v1_v1_xaas_instances__id__delete
+                            description: Delete a instance asynchronously in a xaas
+                                project
+                            parameters:
+                                id: $response.body#/id
+                        reboot:
+                            operationId: reboot_instance_xaas_v1_xaas_instances__id__reboot_post
+                            description: Starts a running or suspended instance.
+                            parameters:
+                                id: $response.body#/id
+                        retype:
+                            operationId: retype_instance_xaas_v1_xaas_instances__id__retype_post
+                            description: Changes a running or stopped instance machine
+                                type for another one.
+                            parameters:
+                                id: $response.body#/id
+                        start:
+                            operationId: start_instance_xaas_v1_xaas_instances__id__start_post
+                            description: Starts a running or suspended instance.
+                            parameters:
+                                id: $response.body#/id
+                        stop:
+                            operationId: stop_instance_xaas_v1_xaas_instances__id__stop_post
+                            description: Stops a running instance.
+                            parameters:
+                                id: $response.body#/id
+                        suspend:
+                            operationId: suspend_instance_xaas_v1_xaas_instances__id__suspend_post
+                            description: Suspends a running instance.
+                            parameters:
+                                id: $response.body#/id
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            security:
+            -   OAuth2:
+                - virtual-machine-xaas.write
+            -   XaasAuth:
+                - virtual-machine-xaas.write
+    /v1/xaas/instances/{id}:
+        delete:
+            tags:
+            - xaas instances
+            summary: Delete a instance asynchronously in a xaas project
+            description: 'Deletes permanently an instance with the id provided in
+                the current tenant
+
+                which is logged in.
+
+
+                #### Notes
+
+                - You can use the virtual-machine list command to retrieve all instances,
+                so
+
+                - you can get the id of the instance that you want to delete.
+
+
+                #### Result
+
+                - The attached ports will be deleted as well.</li>
+
+                - The attached volumes will be detached.</li>'
+            operationId: instance_delete_v1_v1_xaas_instances__id__delete
+            parameters:
+            -   name: id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+                    title: Id
+            -   name: project_type
+                in: query
+                required: true
+                schema:
+                    $ref: '#/components/schemas/ProjectType'
+            -   name: delete_public_ip
+                in: query
+                required: false
+                schema:
+                    type: boolean
+                    default: false
+                    title: Delete Public Ip
+            responses:
+                '204':
+                    description: Successful Response
+                '400':
+                    description: Instance Not Allowed Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '404':
+                    description: Instance Not Found Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '409':
+                    description: Instance Validation Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '500':
+                    description: Internal Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            security:
+            -   OAuth2:
+                - virtual-machine-xaas.write
+            -   XaasAuth:
+                - virtual-machine-xaas.write
+        get:
+            tags:
+            - xaas instances
+            summary: Retrieve the details of an instance in a xaas project
+            description: 'Get an instance details for the current tenant which is
+                logged in.
+
+
+                #### Notes
+
+                - You can use the virtual-machine list command to retrieve all instances,
+
+                so you can get the id of the instance that you want to get details.
+
+
+                - You can use the **expand** argument to get more details from the
+                inner objects
+
+                like image or type.'
+            operationId: instance_details_v1_v1_xaas_instances__id__get
+            parameters:
+            -   name: id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Id
+            -   name: project_type
+                in: query
+                required: true
+                schema:
+                    $ref: '#/components/schemas/ProjectType'
+            -   name: expand
+                in: query
+                required: false
+                schema:
+                    type: array
+                    items:
+                        type: string
+                    description: 'You can get more detailed info about: [''image'',
+                        ''machine-type'', ''network''] '
+                    default: []
+                    title: Expand
+                description: 'You can get more detailed info about: [''image'', ''machine-type'',
+                    ''network''] '
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/InstanceV1Response'
+                    links:
+                        delete:
+                            operationId: instance_delete_v1_v1_xaas_instances__id__delete
+                            description: Delete a instance asynchronously in a xaas
+                                project
+                            parameters:
+                                id: $request.path.id
+                        reboot:
+                            operationId: reboot_instance_xaas_v1_xaas_instances__id__reboot_post
+                            description: Starts a running or suspended instance.
+                            parameters:
+                                id: $request.path.id
+                        retype:
+                            operationId: retype_instance_xaas_v1_xaas_instances__id__retype_post
+                            description: Changes a running or stopped instance machine
+                                type for another one.
+                            parameters:
+                                id: $request.path.id
+                        update/machine_type:
+                            operationId: retype_instance_xaas_v1_xaas_instances__id__retype_post
+                            description: Changes a running or stopped instance machine
+                                type for another one.
+                            parameters:
+                                id: $request.path.id
+                            x-mgc-hidden: true
+                        start:
+                            operationId: start_instance_xaas_v1_xaas_instances__id__start_post
+                            description: Starts a running or suspended instance.
+                            parameters:
+                                id: $request.path.id
+                        stop:
+                            operationId: stop_instance_xaas_v1_xaas_instances__id__stop_post
+                            description: Stops a running instance.
+                            parameters:
+                                id: $request.path.id
+                        suspend:
+                            operationId: suspend_instance_xaas_v1_xaas_instances__id__suspend_post
+                            description: Suspends a running instance.
+                            parameters:
+                                id: $request.path.id
+                '400':
+                    description: Instance Not Allowed Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '404':
+                    description: Instance Not Found Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '409':
+                    description: Instance Validation Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '500':
+                    description: Internal Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            security:
+            -   OAuth2:
+                - virtual-machine-xaas.read
+            -   XaasAuth:
+                - virtual-machine-xaas.read
+    /v1/xaas/instances/{id}/reboot:
+        post:
+            tags:
+            - xaas instances
+            summary: Starts a running or suspended instance.
+            description: 'Reboots a Virtual Machine instance with the id provided
+                in the current tenant which is logged in.
+
+                #### Notes
+
+                - You can use the virtual-machine list command to retrieve all instances,
+                so you can get the id
+
+                of the instance that you want to reboot.
+
+
+                #### Rules
+
+                - The instance must be in the running state.'
+            operationId: reboot_instance_xaas_v1_xaas_instances__id__reboot_post
+            parameters:
+            -   name: id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+                    title: Id
+            -   name: project_type
+                in: query
+                required: true
+                schema:
+                    $ref: '#/components/schemas/ProjectType'
+            responses:
+                '204':
+                    description: Successful Response
+                    links:
+                        get:
+                            operationId: instance_details_v1_v1_xaas_instances__id__get
+                            description: Retrieve the details of an instance in a
+                                xaas project
+                            parameters:
+                                id: $request.path.id
+                        delete:
+                            operationId: instance_delete_v1_v1_xaas_instances__id__delete
+                            description: Delete a instance asynchronously in a xaas
+                                project
+                            parameters:
+                                id: $request.path.id
+                        retype:
+                            operationId: retype_instance_xaas_v1_xaas_instances__id__retype_post
+                            description: Changes a running or stopped instance machine
+                                type for another one.
+                            parameters:
+                                id: $request.path.id
+                        start:
+                            operationId: start_instance_xaas_v1_xaas_instances__id__start_post
+                            description: Starts a running or suspended instance.
+                            parameters:
+                                id: $request.path.id
+                        stop:
+                            operationId: stop_instance_xaas_v1_xaas_instances__id__stop_post
+                            description: Stops a running instance.
+                            parameters:
+                                id: $request.path.id
+                        suspend:
+                            operationId: suspend_instance_xaas_v1_xaas_instances__id__suspend_post
+                            description: Suspends a running instance.
+                            parameters:
+                                id: $request.path.id
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: false
+            security:
+            -   OAuth2:
+                - virtual-machine-xaas.write
+            -   XaasAuth:
+                - virtual-machine-xaas.write
+    /v1/xaas/instances/{id}/retype:
+        post:
+            tags:
+            - xaas instances
+            summary: Changes a running or stopped instance machine type for another
+                one.
+            description: 'Changes a Virtual Machine instance machine type with the
+                id provided in the current tenant
+
+                which is logged in.
+
+
+                #### Notes
+
+                - You can use the virtual-machine list command to retrieve all instances,
+                so you can get
+
+                the id of the instance that you want to change the machine type.
+
+
+                #### Rules
+
+                - The instance must be in the running or stopped state.
+
+                - The new machine type must be compatible with the current machine
+                type.
+
+                - The new machine type must be available in the same region as the
+                current machine type.
+
+                - You must provide either the machine type id or the machine type
+                name, if you provide both,
+
+                the machine type id will be used.'
+            operationId: retype_instance_xaas_v1_xaas_instances__id__retype_post
+            parameters:
+            -   name: id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+                    title: Id
+            -   name: project_type
+                in: query
+                required: true
+                schema:
+                    $ref: '#/components/schemas/ProjectType'
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/InstanceRetypeRequest'
+            responses:
+                '204':
+                    description: Successful Response
+                    links:
+                        get:
+                            operationId: instance_details_v1_v1_xaas_instances__id__get
+                            description: Retrieve the details of an instance in a
+                                xaas project
+                            parameters:
+                                id: $request.path.id
+                            x-mgc-wait-termination:
+                                interval: 5s
+                                maxRetries: 10
+                                jsonPathQuery: $.result.machine_type == $.owner.parameters.machine_type
+                        delete:
+                            operationId: instance_delete_v1_v1_xaas_instances__id__delete
+                            description: Delete a instance asynchronously in a xaas
+                                project
+                            parameters:
+                                id: $request.path.id
+                        reboot:
+                            operationId: reboot_instance_xaas_v1_xaas_instances__id__reboot_post
+                            description: Starts a running or suspended instance.
+                            parameters:
+                                id: $request.path.id
+                        start:
+                            operationId: start_instance_xaas_v1_xaas_instances__id__start_post
+                            description: Starts a running or suspended instance.
+                            parameters:
+                                id: $request.path.id
+                        stop:
+                            operationId: stop_instance_xaas_v1_xaas_instances__id__stop_post
+                            description: Stops a running instance.
+                            parameters:
+                                id: $request.path.id
+                        suspend:
+                            operationId: suspend_instance_xaas_v1_xaas_instances__id__suspend_post
+                            description: Suspends a running instance.
+                            parameters:
+                                id: $request.path.id
+                '400':
+                    description: Instance Not Allowed Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '404':
+                    description: Instance Not Found Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '409':
+                    description: Instance Validation Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '500':
+                    description: Internal Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: false
+            security:
+            -   OAuth2:
+                - virtual-machine-xaas.write
+            -   XaasAuth:
+                - virtual-machine-xaas.write
+    /v1/xaas/instances/{id}/start:
+        post:
+            tags:
+            - xaas instances
+            summary: Starts a running or suspended instance.
+            description: 'Starts a Virtual Machine instance with the id provided in
+                the current
+
+                tenant which is logged in.
+
+                #### Notes
+
+                - You can use the virtual-machine list command to retrieve all instances,
+
+                so you can get the id of the instance that you want to start.
+
+                #### Rules
+
+                - The instance must be in the stopped or suspended states.'
+            operationId: start_instance_xaas_v1_xaas_instances__id__start_post
+            parameters:
+            -   name: id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+                    title: Id
+            -   name: project_type
+                in: query
+                required: true
+                schema:
+                    $ref: '#/components/schemas/ProjectType'
+            responses:
+                '204':
+                    description: Successful Response
+                    links:
+                        get:
+                            operationId: instance_details_v1_v1_xaas_instances__id__get
+                            description: Retrieve the details of an instance in a
+                                xaas project
+                            parameters:
+                                id: $request.path.id
+                        delete:
+                            operationId: instance_delete_v1_v1_xaas_instances__id__delete
+                            description: Delete a instance asynchronously in a xaas
+                                project
+                            parameters:
+                                id: $request.path.id
+                        reboot:
+                            operationId: reboot_instance_xaas_v1_xaas_instances__id__reboot_post
+                            description: Starts a running or suspended instance.
+                            parameters:
+                                id: $request.path.id
+                        retype:
+                            operationId: retype_instance_xaas_v1_xaas_instances__id__retype_post
+                            description: Changes a running or stopped instance machine
+                                type for another one.
+                            parameters:
+                                id: $request.path.id
+                        stop:
+                            operationId: stop_instance_xaas_v1_xaas_instances__id__stop_post
+                            description: Stops a running instance.
+                            parameters:
+                                id: $request.path.id
+                        suspend:
+                            operationId: suspend_instance_xaas_v1_xaas_instances__id__suspend_post
+                            description: Suspends a running instance.
+                            parameters:
+                                id: $request.path.id
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: false
+            security:
+            -   OAuth2:
+                - virtual-machine-xaas.write
+            -   XaasAuth:
+                - virtual-machine-xaas.write
+    /v1/xaas/instances/{id}/stop:
+        post:
+            tags:
+            - xaas instances
+            summary: Stops a running instance.
+            description: 'Stops a Virtual Machine instance with the id provided in
+                the current tenant which is logged in.
+
+                #### Notes
+
+                - You can use the virtual-machine list command to retrieve all instances,
+                so you can get the id of
+
+                the instance that you want to stop.
+
+
+                #### Rules
+
+                - The instance must be in the running state.'
+            operationId: stop_instance_xaas_v1_xaas_instances__id__stop_post
+            parameters:
+            -   name: id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+                    title: Id
+            -   name: project_type
+                in: query
+                required: true
+                schema:
+                    $ref: '#/components/schemas/ProjectType'
+            responses:
+                '204':
+                    description: Successful Response
+                    links:
+                        get:
+                            operationId: instance_details_v1_v1_xaas_instances__id__get
+                            description: Retrieve the details of an instance in a
+                                xaas project
+                            parameters:
+                                id: $request.path.id
+                        delete:
+                            operationId: instance_delete_v1_v1_xaas_instances__id__delete
+                            description: Delete a instance asynchronously in a xaas
+                                project
+                            parameters:
+                                id: $request.path.id
+                        reboot:
+                            operationId: reboot_instance_xaas_v1_xaas_instances__id__reboot_post
+                            description: Starts a running or suspended instance.
+                            parameters:
+                                id: $request.path.id
+                        retype:
+                            operationId: retype_instance_xaas_v1_xaas_instances__id__retype_post
+                            description: Changes a running or stopped instance machine
+                                type for another one.
+                            parameters:
+                                id: $request.path.id
+                        start:
+                            operationId: start_instance_xaas_v1_xaas_instances__id__start_post
+                            description: Starts a running or suspended instance.
+                            parameters:
+                                id: $request.path.id
+                        suspend:
+                            operationId: suspend_instance_xaas_v1_xaas_instances__id__suspend_post
+                            description: Suspends a running instance.
+                            parameters:
+                                id: $request.path.id
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: false
+            security:
+            -   OAuth2:
+                - virtual-machine-xaas.write
+            -   XaasAuth:
+                - virtual-machine-xaas.write
+    /v1/xaas/instances/{id}/suspend:
+        post:
+            tags:
+            - xaas instances
+            summary: Suspends a running instance.
+            description: 'Suspends a Virtual Machine instance with the id provided
+                in the current tenant which is logged in.
+
+
+                #### Notes
+
+                - You can use the virtual-machine list command to retrieve all instances,
+                so you can get the id of
+
+                the instance that you want to suspend.
+
+
+                #### Rules
+
+                - The instance must be in the running state.'
+            operationId: suspend_instance_xaas_v1_xaas_instances__id__suspend_post
+            parameters:
+            -   name: id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+                    title: Id
+            -   name: project_type
+                in: query
+                required: true
+                schema:
+                    $ref: '#/components/schemas/ProjectType'
+            responses:
+                '204':
+                    description: Successful Response
+                    links:
+                        get:
+                            operationId: instance_details_v1_v1_xaas_instances__id__get
+                            description: Retrieve the details of an instance in a
+                                xaas project
+                            parameters:
+                                id: $request.path.id
+                        delete:
+                            operationId: instance_delete_v1_v1_xaas_instances__id__delete
+                            description: Delete a instance asynchronously in a xaas
+                                project
+                            parameters:
+                                id: $request.path.id
+                        reboot:
+                            operationId: reboot_instance_xaas_v1_xaas_instances__id__reboot_post
+                            description: Starts a running or suspended instance.
+                            parameters:
+                                id: $request.path.id
+                        retype:
+                            operationId: retype_instance_xaas_v1_xaas_instances__id__retype_post
+                            description: Changes a running or stopped instance machine
+                                type for another one.
+                            parameters:
+                                id: $request.path.id
+                        start:
+                            operationId: start_instance_xaas_v1_xaas_instances__id__start_post
+                            description: Starts a running or suspended instance.
+                            parameters:
+                                id: $request.path.id
+                        stop:
+                            operationId: stop_instance_xaas_v1_xaas_instances__id__stop_post
+                            description: Stops a running instance.
+                            parameters:
+                                id: $request.path.id
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: false
+            security:
+            -   OAuth2:
+                - virtual-machine-xaas.write
+            -   XaasAuth:
+                - virtual-machine-xaas.write
+    /v1/xaas/keypairs:
+        delete:
+            tags:
+            - xaas keypairs
+            summary: Keypair Delete All Xaas
+            description: Delete all keypairs froma tenant ID
+            operationId: keypair_delete_all_xaas_v1_xaas_keypairs_delete
+            parameters:
+            -   name: project_type
+                in: query
+                required: true
+                schema:
+                    $ref: '#/components/schemas/ProjectType'
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/KeypairDeletedAllResponse'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            security:
+            -   OAuth2:
+                - virtual-machine-xaas.write
+            -   XaasAuth:
+                - virtual-machine-xaas.write
+        get:
+            tags:
+            - xaas keypairs
+            summary: List Keypairs Xaas
+            description: Returns a list of keypairs from a provided tenant_id
+            operationId: list_keypairs_xaas_v1_xaas_keypairs_get
+            parameters:
+            -   name: project_type
+                in: query
+                required: true
+                schema:
+                    $ref: '#/components/schemas/ProjectType'
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/KeypairsListResponse'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: false
+            security:
+            -   OAuth2:
+                - virtual-machine-xaas.read
+            -   XaasAuth:
+                - virtual-machine-xaas.read
+        post:
+            tags:
+            - xaas keypairs
+            summary: Create Keypair Xaas
+            description: Create a keypair
+            operationId: create_keypair_xaas_v1_xaas_keypairs_post
+            parameters:
+            -   name: project_type
+                in: query
+                required: true
+                schema:
+                    $ref: '#/components/schemas/ProjectType'
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/KeypairRequest'
+            responses:
+                '201':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/KeypairResponse'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: false
+            security:
+            -   OAuth2:
+                - virtual-machine-xaas.write
+            -   XaasAuth:
+                - virtual-machine-xaas.write
+    /v1/xaas/keypairs/{keypair_name}:
+        delete:
+            tags:
+            - xaas keypairs
+            summary: Delete Keypair Xaas
+            description: Delete a keypair
+            operationId: delete_keypair_xaas_v1_xaas_keypairs__keypair_name__delete
+            parameters:
+            -   name: keypair_name
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Keypair Name
+            -   name: project_type
+                in: query
+                required: true
+                schema:
+                    $ref: '#/components/schemas/ProjectType'
+            responses:
+                '204':
+                    description: Successful Response
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: false
+            security:
+            -   OAuth2:
+                - virtual-machine-xaas.write
+            -   XaasAuth:
+                - virtual-machine-xaas.write
+    /v1/xaas/machine-types:
+        get:
+            tags:
+            - xaas machine-types
+            summary: Retrieves all machine-types available in the region.
+            description: Retrieves a list of machine types allowed for the current
+                tenant which is logged in.
+            operationId: list_instance_types_v1_xaas_v1_xaas_machine_types_get
+            parameters:
+            -   name: _limit
+                in: query
+                required: false
+                schema:
+                    type: integer
+                    maximum: 2147483647
+                    exclusiveMinimum: true
+                    description: limit the number of the results
+                    default: 50
+                    title: ' Limit'
+                description: limit the number of the results
+            -   name: _offset
+                in: query
+                required: false
+                schema:
+                    type: integer
+                    maximum: 2147483647
+                    minimum: 0
+                    description: pagination for the results limited
+                    default: 0
+                    title: ' Offset'
+                description: pagination for the results limited
+            -   name: _sort
+                in: query
+                required: false
+                schema:
+                    type: string
+                    pattern: ^(^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$
+                    description: order of the results using informed fields
+                    default: created_at:asc
+                    title: ' Sort'
+                description: order of the results using informed fields
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/InstanceTypesV1ListResponse'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            security:
+            -   OAuth2:
+                - virtual-machine-xaas.read
+            -   XaasAuth:
+                - virtual-machine-xaas.read
+    /v1/xaas/snapshots:
+        get:
+            tags:
+            - xaas snapshots
+            summary: Lists all snapshots in the current tenant.
+            description: 'List all snapshots in the current tenant which is logged
+                in.
+
+
+                #### Notes
+
+                - You can use the **expand** argument to get more details from the
+                inner objects
+
+                like image and machine types.'
+            operationId: list_snapshots_v1_xaas_v1_xaas_snapshots_get
+            parameters:
+            -   name: project_type
+                in: query
+                required: true
+                schema:
+                    $ref: '#/components/schemas/ProjectType'
+            -   name: _limit
+                in: query
+                required: false
+                schema:
+                    type: integer
+                    maximum: 2147483647
+                    exclusiveMinimum: true
+                    description: limit the number of the results
+                    default: 50
+                    title: ' Limit'
+                description: limit the number of the results
+            -   name: _offset
+                in: query
+                required: false
+                schema:
+                    type: integer
+                    maximum: 2147483647
+                    minimum: 0
+                    description: pagination for the results limited
+                    default: 0
+                    title: ' Offset'
+                description: pagination for the results limited
+            -   name: _sort
+                in: query
+                required: false
+                schema:
+                    type: string
+                    pattern: ^(^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$
+                    description: order of the results using informed fields
+                    default: created_at:asc
+                    title: ' Sort'
+                description: order of the results using informed fields
+            -   name: expand
+                in: query
+                required: false
+                schema:
+                    type: array
+                    items:
+                        type: string
+                    description: 'You can get more detailed info about: [''image'',
+                        ''machine-type''] '
+                    default: []
+                    title: Expand
+                description: 'You can get more detailed info about: [''image'', ''machine-type''] '
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ListSnapshotResponseV1'
+                '400':
+                    description: Instance Not Allowed Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '404':
+                    description: Instance Not Found Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '409':
+                    description: Instance Validation Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '500':
+                    description: Internal Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: false
+            security:
+            -   OAuth2:
+                - virtual-machine-xaas.read
+            -   XaasAuth:
+                - virtual-machine-xaas.read
+        post:
+            tags:
+            - xaas snapshots
+            summary: Create a snapshot of a virtual machine asynchronously.
+            description: 'Create a snapshot of a Virtual Machine in the current tenant
+                which is logged in. </br>
+
+                A Snapshot is ready for restore when it''s in available state.
+
+
+                #### Notes
+
+                - You can verify the state of snapshot using the snapshot get command,
+
+                - To create a snapshot it''s mandatory inform a valid and unique name.
+
+
+                #### Rules
+
+                - It''s only possible to create a snapshot of a valid virtual machine.
+
+                - It''s not possible to create 2 snapshots with the same name.
+
+                - You can inform ID or Name from a Virtual Machine if both informed
+                the priority will be ID.'
+            operationId: snapshot_create_v1_xaas_v1_xaas_snapshots_post
+            parameters:
+            -   name: project_type
+                in: query
+                required: true
+                schema:
+                    $ref: '#/components/schemas/ProjectType'
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/SnapshotCreateRequestV1'
+            responses:
+                '202':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CreateResponse'
+                    links:
+                        get:
+                            operationId: snapshot_details_v1_xaas_v1_xaas_snapshots__id__get
+                            description: Retrieve the details of an snapshot.
+                            parameters:
+                                id: $response.body#/id
+                        create-id:
+                            operationId: restore_snapshot_v1_xaas_v1_xaas_snapshots__id__post
+                            description: Restore a snapshot to a virtual machine
+                            parameters:
+                                id: $response.body#/id
+                        delete:
+                            operationId: snapshots_delete_xaas_v1_xaas_snapshots__id__delete
+                            description: Delete a Snapshot asynchronously
+                            parameters:
+                                id: $response.body#/id
+                        rename:
+                            operationId: rename_snapshot_xaas_v1_xaas_snapshots__id__rename_patch
+                            description: Renames a snapshot
+                            parameters:
+                                id: $response.body#/id
+                '400':
+                    description: Instance Not Allowed Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '404':
+                    description: Instance Not Found Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '409':
+                    description: Instance Validation Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '500':
+                    description: Internal Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: false
+            security:
+            -   OAuth2:
+                - virtual-machine-xaas.write
+            -   XaasAuth:
+                - virtual-machine-xaas.write
+    /v1/xaas/snapshots/{id}:
+        delete:
+            tags:
+            - xaas snapshots
+            summary: Delete a Snapshot asynchronously
+            description: 'Deletes an snapshot with the id provided in the current
+                tenant
+
+                which is logged in.
+
+
+                #### Notes
+
+                - You can use the Snapshots list command to retrieve all snapshots,
+                so
+
+                - you can get the id of the snapshot that you want to delete.'
+            operationId: snapshots_delete_xaas_v1_xaas_snapshots__id__delete
+            parameters:
+            -   name: id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+                    title: Id
+            -   name: project_type
+                in: query
+                required: true
+                schema:
+                    $ref: '#/components/schemas/ProjectType'
+            responses:
+                '204':
+                    description: Successful Response
+                '400':
+                    description: Instance Not Allowed Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '404':
+                    description: Instance Not Found Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '409':
+                    description: Instance Validation Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '500':
+                    description: Internal Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: false
+            security:
+            -   OAuth2:
+                - virtual-machine-xaas.write
+            -   XaasAuth:
+                - virtual-machine-xaas.write
+        get:
+            tags:
+            - xaas snapshots
+            summary: Retrieve the details of an snapshot.
+            description: 'Get an snapshot details for the current tenant which is
+                logged in.
+
+
+                #### Notes
+
+                - You can use the snapshots list command to retrieve all snapshots,
+
+                so you can get the id of the snapshot that you want to get details.
+
+
+                - You can use the **expand** argument to get more details from the
+                inner objects
+
+                like image or type.'
+            operationId: snapshot_details_v1_xaas_v1_xaas_snapshots__id__get
+            parameters:
+            -   name: id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Id
+            -   name: project_type
+                in: query
+                required: true
+                schema:
+                    $ref: '#/components/schemas/ProjectType'
+            -   name: expand
+                in: query
+                required: false
+                schema:
+                    type: array
+                    items:
+                        type: string
+                    description: 'You can get more detailed info about: [''image'',
+                        ''machine-type''] '
+                    default: []
+                    title: Expand
+                description: 'You can get more detailed info about: [''image'', ''machine-type''] '
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SnapshotResponseV1'
+                    links:
+                        create-id:
+                            operationId: restore_snapshot_v1_xaas_v1_xaas_snapshots__id__post
+                            description: Restore a snapshot to a virtual machine
+                            parameters:
+                                id: $request.path.id
+                        delete:
+                            operationId: snapshots_delete_xaas_v1_xaas_snapshots__id__delete
+                            description: Delete a Snapshot asynchronously
+                            parameters:
+                                id: $request.path.id
+                        rename:
+                            operationId: rename_snapshot_xaas_v1_xaas_snapshots__id__rename_patch
+                            description: Renames a snapshot
+                            parameters:
+                                id: $request.path.id
+                        update/name:
+                            operationId: rename_snapshot_xaas_v1_xaas_snapshots__id__rename_patch
+                            description: Renames a snapshot
+                            parameters:
+                                id: $request.path.id
+                            x-mgc-hidden: true
+                '400':
+                    description: Instance Not Allowed Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '404':
+                    description: Instance Not Found Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '409':
+                    description: Instance Validation Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '500':
+                    description: Internal Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: false
+            security:
+            -   OAuth2:
+                - virtual-machine-xaas.read
+            -   XaasAuth:
+                - virtual-machine-xaas.read
+        post:
+            tags:
+            - xaas snapshots
+            summary: Restore a snapshot to a virtual machine
+            description: 'Restore a snapshot of a Virtual Machine with the current
+                tenant which is logged in. </br>
+
+                A Snapshot is ready for restore when it''s in available state.
+
+
+                #### Notes
+
+                - You can verify the state of snapshot using the snapshot list command.
+
+                - Use machine-types list to see all machine types available.
+
+
+                #### Rules
+
+                - To restore a snapshot  you have to inform the new virtual machine
+                information.
+
+                - You can choose a machine-type that has a disk equal or larger
+
+                than the original virtual machine type.'
+            operationId: restore_snapshot_v1_xaas_v1_xaas_snapshots__id__post
+            parameters:
+            -   name: id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Id
+            -   name: project_type
+                in: query
+                required: true
+                schema:
+                    $ref: '#/components/schemas/ProjectType'
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/SnapshotRestoreRequestV1Xaas'
+            responses:
+                '202':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CreateResponse'
+                    links:
+                        get:
+                            operationId: snapshot_details_v1_xaas_v1_xaas_snapshots__id__get
+                            description: Retrieve the details of an snapshot.
+                            parameters:
+                                id: $request.path.id
+                        delete:
+                            operationId: snapshots_delete_xaas_v1_xaas_snapshots__id__delete
+                            description: Delete a Snapshot asynchronously
+                            parameters:
+                                id: $request.path.id
+                        rename:
+                            operationId: rename_snapshot_xaas_v1_xaas_snapshots__id__rename_patch
+                            description: Renames a snapshot
+                            parameters:
+                                id: $request.path.id
+                '400':
+                    description: Instance Not Allowed Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '404':
+                    description: Instance Not Found Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '409':
+                    description: Instance Validation Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '500':
+                    description: Internal Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: false
+            security:
+            -   OAuth2:
+                - virtual-machine-xaas.write
+            -   XaasAuth:
+                - virtual-machine-xaas.write
+    /v1/xaas/snapshots/{id}/rename:
+        patch:
+            tags:
+            - xaas snapshots
+            summary: Renames a snapshot
+            description: 'Renames a Snapshot with the id provided in the current tenant
+                which is logged in.
+
+
+                #### Notes
+
+                - You can use the snapshots list command to retrieve all snapshots,
+                so you can get the id of
+
+                the snapshot that you want to rename.'
+            operationId: rename_snapshot_xaas_v1_xaas_snapshots__id__rename_patch
+            parameters:
+            -   name: id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Id
+            -   name: project_type
+                in: query
+                required: true
+                schema:
+                    $ref: '#/components/schemas/ProjectType'
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/SnapshotRenameRequest'
+            responses:
+                '204':
+                    description: Successful Response
+                    links:
+                        get:
+                            operationId: snapshot_details_v1_xaas_v1_xaas_snapshots__id__get
+                            description: Retrieve the details of an snapshot.
+                            parameters:
+                                id: $request.path.id
+                            x-mgc-wait-termination:
+                                interval: 5s
+                                maxRetries: 10
+                                jsonPathQuery: $.result.name == $.owner.parameters.name
+                        create-id:
+                            operationId: restore_snapshot_v1_xaas_v1_xaas_snapshots__id__post
+                            description: Restore a snapshot to a virtual machine
+                            parameters:
+                                id: $request.path.id
+                        delete:
+                            operationId: snapshots_delete_xaas_v1_xaas_snapshots__id__delete
+                            description: Delete a Snapshot asynchronously
+                            parameters:
+                                id: $request.path.id
+                '400':
+                    description: Instance Not Allowed Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '404':
+                    description: Instance Not Found Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '409':
+                    description: Instance Validation Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '500':
+                    description: Internal Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: false
+            security:
+            -   OAuth2:
+                - virtual-machine-xaas.write
+            -   XaasAuth:
+                - virtual-machine-xaas.write
+components:
+    schemas:
+        BackupPatchRequest:
+            properties:
+                external_backup_id:
+                    type: string
+                    title: External Backup Id
+                status:
+                    $ref: '#/components/schemas/BackupStatus'
+                state:
+                    nullable: true
+                    $ref: '#/components/schemas/BackupState'
+                error:
+                    title: Error
+                    nullable: true
+                    type: string
+            type: object
+            required:
+            - external_backup_id
+            - status
+            - state
+            title: BackupPatchRequest
+            example:
+                error: some error occurred to create backup
+                external_backup_id: 4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a
+                state: new
+                status: creating
+        BackupState:
+            type: string
+            enum:
+            - new
+            - available
+            - deleted
+            - error
+            title: BackupState
+        BackupStatus:
+            type: string
+            enum:
+            - provisioning
+            - creating
+            - completed
+            - error
+            - deleting
+            - deleted
+            title: BackupStatus
+        CreateResponse:
+            properties:
+                id:
+                    type: string
+                    title: Id
+            type: object
+            required:
+            - id
+            title: CreateResponse
+            example:
+                id: 9ec75090-2872-4f51-8111-53d05d96d2c6
+        DiagnosticDetail:
+            properties:
+                database:
+                    $ref: '#/components/schemas/InstanceOnDb'
+                urp:
+                    nullable: true
+                    $ref: '#/components/schemas/URPResponse'
+            type: object
+            required:
+            - database
+            title: DiagnosticDetail
+            example:
+                database:
+                    created_at: '2022-06-10T18:33:12Z'
+                    error: error_here
+                    id: c47e974f-8002-46e9-8a63-d66505be2aa1
+                    image_name: image_name_here
+                    key_pair_name: key_pair_name_here
+                    name: instance name
+                    ports:
+                    -   port: some_port_1
+                    project_type: default
+                    retries: 0
+                    snapshot_id: c47e974f-8002-46e9-8a63-d66505be2aa1
+                    status: ACTIVE
+                    step: 0
+                    updated_at: '2022-06-11T18:33:12Z'
+                    user_data: user_data_here
+                urp:
+                    addresses:
+                        vpc-id:
+                        -   addr: 172.30.0.55
+                            version: 4
+                    availability_zone: br-se1-a
+                    created_at: '2022-06-10T18:33:12Z'
+                    flavor:
+                        disk: 10
+                        id: cloud-bs1.xsmall
+                        name: cloud-bs1.xsmall
+                        ram: 4
+                        swap: 0
+                        vcpus: 2
+                    host_id: 086177aaa9adbafcdae11ab7b1ec55ac786b12a8a5785a7f436dc9a0
+                    id: c47e974f-8002-46e9-8a63-d66505be2aa1
+                    image:
+                        id: c47e974f-8002-46e9-8a63-d66505be2aa1
+                    key_name: keypair_name_here
+                    name: instance name
+                    power_state: 1
+                    security_groups:
+                    -   name: sg_1
+                    status: ACTIVE
+                    updated_at: '2022-06-11T18:33:12Z'
+                    vm_state: active
+        DiagnosticDetailResult:
+            properties:
+                instance:
+                    $ref: '#/components/schemas/DiagnosticDetail'
+            type: object
+            required:
+            - instance
+            title: DiagnosticDetailResult
+            example:
+                instance:
+                    database:
+                        created_at: '2022-06-10T18:33:12Z'
+                        error: error_here
+                        id: c47e974f-8002-46e9-8a63-d66505be2aa1
+                        image_name: image_name_here
+                        key_pair_name: key_pair_name_here
+                        name: instance name
+                        ports:
+                        -   port: some_port_1
+                        project_type: default
+                        retries: 0
+                        snapshot_id: c47e974f-8002-46e9-8a63-d66505be2aa1
+                        status: ACTIVE
+                        step: 0
+                        updated_at: '2022-06-11T18:33:12Z'
+                        user_data: user_data_here
+                    urp:
+                        addresses:
+                            vpc-id:
+                            -   addr: 172.30.0.55
+                                version: 4
+                        availability_zone: br-se1-a
+                        created_at: '2022-06-10T18:33:12Z'
+                        flavor:
+                            disk: 10
+                            id: cloud-bs1.xsmall
+                            name: cloud-bs1.xsmall
+                            ram: 4
+                            swap: 0
+                            vcpus: 2
+                        host_id: 086177aaa9adbafcdae11ab7b1ec55ac786b12a8a5785a7f436dc9a0
+                        id: c47e974f-8002-46e9-8a63-d66505be2aa1
+                        image:
+                            id: c47e974f-8002-46e9-8a63-d66505be2aa1
+                        key_name: keypair_name_here
+                        name: instance name
+                        power_state: 1
+                        security_groups:
+                        -   name: sg_1
+                        status: ACTIVE
+                        updated_at: '2022-06-11T18:33:12Z'
+                        vm_state: active
+        DiagnosticList:
+            properties:
+                instances:
+                    items:
+                        $ref: '#/components/schemas/InstanceOnDb'
+                    type: array
+                    title: Instances
+            type: object
+            required:
+            - instances
+            title: DiagnosticList
+            example:
+                instances:
+                -   created_at: '2022-06-10T18:33:12Z'
+                    error: error_here
+                    id: c47e974f-8002-46e9-8a63-d66505be2aa1
+                    image_name: image_name_here
+                    key_pair_name: key_pair_name_here
+                    name: instance name
+                    ports:
+                    -   port: some_port_1
+                    project_type: default
+                    retries: 0
+                    snapshot_id: c47e974f-8002-46e9-8a63-d66505be2aa1
+                    status: ACTIVE
+                    step: 0
+                    updated_at: '2022-06-11T18:33:12Z'
+                    user_data: user_data_here
+        ErrorMessageV1:
+            properties:
+                message:
+                    title: Message
+                    type: string
+                slug:
+                    title: Slug
+                    type: string
+            type: object
+            required:
+            - slug
+            - message
+            title: ErrorMessageV1
+            example:
+                message: Unauthorized
+                slug: Unauthorized
+        ExceptionModel:
+            properties:
+                slug:
+                    type: string
+                    title: Slug
+                message:
+                    type: string
+                    title: Message
+                details:
+                    type: object
+                    title: Details
+            type: object
+            required:
+            - slug
+            - message
+            - details
+            title: ExceptionModel
+        HTTPValidationError:
+            properties:
+                message:
+                    title: Message
+                    type: string
+                slug:
+                    title: Slug
+                    type: string
+            type: object
+            title: HTTPValidationError
+            example:
+                message: Unauthorized
+                slug: Unauthorized
+        Healthcheck:
+            properties:
+                status:
+                    type: string
+                    title: Status
+            type: object
+            required:
+            - status
+            title: Healthcheck
+        ID:
+            properties:
+                id:
+                    type: string
+                    maxLength: 255
+                    minLength: 1
+                    title: Id
+            type: object
+            required:
+            - id
+            title: ID
+            example:
+                id: 9ec75090-2872-4f51-8111-53d05d96d2c6
+        ImageExtendResponse:
+            properties:
+                id:
+                    type: string
+                    title: Id
+                name:
+                    type: string
+                    title: Name
+                platform:
+                    title: Platform
+                    nullable: true
+                    type: string
+            type: object
+            required:
+            - id
+            - name
+            title: ImageExtendResponse
+            example:
+                id: 847ceef4-ff96-4762-895d-5e94e410ddeb
+                name: ubuntu
+                platform: linux
+        ImageInstanceV1Response:
+            properties:
+                id:
+                    type: string
+                    title: Id
+            additionalProperties: true
+            type: object
+            required:
+            - id
+            title: ImageInstanceV1Response
+        ImagePatchRequest:
+            properties:
+                is_approved:
+                    title: Is Approved
+                    nullable: true
+                    type: boolean
+                sku:
+                    title: Sku
+                    nullable: true
+                    type: string
+                status:
+                    nullable: true
+                    $ref: '#/components/schemas/ImageV1Status'
+            type: object
+            title: ImagePatchRequest
+            example:
+                is_approved: true
+                sku: sku1234
+                status: active
+        ImageRenameRequest:
+            properties:
+                name:
+                    type: string
+                    minLength: 3
+                    title: Name
+            type: object
+            required:
+            - name
+            title: ImageRenameRequest
+        ImageReqMin:
+            properties:
+                vcpu:
+                    type: integer
+                    title: Vcpu
+                ram:
+                    type: integer
+                    title: Ram
+                disk:
+                    type: integer
+                    title: Disk
+            type: object
+            required:
+            - vcpu
+            - ram
+            - disk
+            title: ImageReqMin
+        ImageRequestV1:
+            properties:
+                image_id:
+                    type: string
+                    title: Image Id
+                sku:
+                    type: string
+                    title: Sku
+                name:
+                    type: string
+                    maxLength: 255
+                    minLength: 1
+                    title: Name
+                status:
+                    allOf:
+                    -   $ref: '#/components/schemas/ImageV1Status'
+                    default: active
+                version:
+                    title: Version
+                    nullable: true
+                    type: string
+                platform:
+                    nullable: true
+                    $ref: '#/components/schemas/ImageV1Platform'
+                release_at:
+                    title: Release At
+                    nullable: true
+                    type: string
+                    example: '2022-01-01T00:00:10Z'
+                end_standard_support_at:
+                    title: End Standard Support At
+                    nullable: true
+                    type: string
+                    example: '2022-01-01T00:00:10Z'
+                end_life_at:
+                    title: End Life At
+                    nullable: true
+                    type: string
+                    example: '2022-01-01T00:00:10Z'
+                internal:
+                    type: boolean
+                    title: Internal
+                min_vcpu:
+                    type: integer
+                    exclusiveMinimum: true
+                    title: Min Vcpu
+                    minimum: 0.0
+                min_ram:
+                    type: integer
+                    exclusiveMinimum: true
+                    title: Min Ram
+                    minimum: 0.0
+                min_disk:
+                    type: integer
+                    exclusiveMinimum: true
+                    title: Min Disk
+                    minimum: 0.0
+                image_url:
+                    title: Image Url
+                    nullable: true
+                    type: string
+                    maxLength: 2083
+                    minLength: 1
+                    format: uri
+            type: object
+            required:
+            - image_id
+            - sku
+            - name
+            - internal
+            - min_vcpu
+            - min_ram
+            - min_disk
+            title: ImageRequestV1
+            example:
+                end_life_at: '2022-06-10T18:33:12Z'
+                end_standard_support_at: '2022-10-30T18:33:12Z'
+                image_id: c322af4a-c1f6-4cd5-a4dc-c8090ebcf44c
+                image_url: https://bin.com
+                internal: false
+                min_disk: 2
+                min_ram: 1
+                min_vcpu: 1
+                name: image name
+                platform: linux
+                release_at: '2022-03-10T18:33:12Z'
+                sku: sku1234
+                status: active
+                version: yy.zz
+        ImageResponseExternalV1:
+            properties:
+                id:
+                    type: string
+                    title: Id
+                name:
+                    type: string
+                    title: Name
+                status:
+                    $ref: '#/components/schemas/ImageV1Status'
+                version:
+                    title: Version
+                    nullable: true
+                    type: string
+                platform:
+                    title: Platform
+                    nullable: true
+                    type: string
+                release_at:
+                    title: Release At
+                    nullable: true
+                    type: string
+                    example: '2022-01-01T00:00:10Z'
+                end_standard_support_at:
+                    title: End Standard Support At
+                    nullable: true
+                    type: string
+                    example: '2022-01-01T00:00:10Z'
+                end_life_at:
+                    title: End Life At
+                    nullable: true
+                    type: string
+                    example: '2022-01-01T00:00:10Z'
+                minimum_requirements:
+                    $ref: '#/components/schemas/ImageReqMin'
+            type: object
+            required:
+            - id
+            - name
+            - status
+            - minimum_requirements
+            title: ImageResponseExternalV1
+            example:
+                end_life_at: '2022-06-10T18:33:12Z'
+                end_standard_support_at: '2022-06-10T18:33:12Z'
+                id: c47e974f-8002-46e9-8a63-d66505be2aa1
+                minimum_requirements:
+                    disk: 2
+                    ram: 1
+                    vcpu: 1
+                name: ubuntu 22.10
+                platform: linux
+                release_at: '2022-06-10T18:33:12Z'
+                status: active
+                version: '22.10'
+        ImageResponseInternalV1:
+            properties:
+                id:
+                    type: string
+                    title: Id
+                name:
+                    type: string
+                    title: Name
+                status:
+                    $ref: '#/components/schemas/ImageV1Status'
+                version:
+                    title: Version
+                    nullable: true
+                    type: string
+                platform:
+                    title: Platform
+                    nullable: true
+                    type: string
+                release_at:
+                    title: Release At
+                    nullable: true
+                    type: string
+                    example: '2022-01-01T00:00:10Z'
+                end_standard_support_at:
+                    title: End Standard Support At
+                    nullable: true
+                    type: string
+                    example: '2022-01-01T00:00:10Z'
+                end_life_at:
+                    title: End Life At
+                    nullable: true
+                    type: string
+                    example: '2022-01-01T00:00:10Z'
+                sku:
+                    type: string
+                    title: Sku
+                internal:
+                    type: boolean
+                    title: Internal
+                min_vcpu:
+                    type: integer
+                    title: Min Vcpu
+                min_ram:
+                    type: integer
+                    title: Min Ram
+                min_disk:
+                    type: integer
+                    title: Min Disk
+            type: object
+            required:
+            - id
+            - name
+            - status
+            - sku
+            - internal
+            - min_vcpu
+            - min_ram
+            - min_disk
+            title: ImageResponseInternalV1
+            example:
+                end_life_at: '2022-06-10T18:33:12Z'
+                end_standard_support_at: '2022-06-10T18:33:12Z'
+                id: 847ceef4-ff96-4762-895d-5e94e410ddeb
+                internal: true
+                min_disk: 2
+                min_ram: 1
+                min_vcpu: 1
+                name: ubuntu 22.10
+                platform: linux
+                release_at: '2022-06-10T18:33:12Z'
+                sku: sku1234
+                status: active
+                version: '22.10'
+        ImageResponseV1:
+            properties:
+                id:
+                    type: string
+                    title: Id
+            type: object
+            required:
+            - id
+            title: ImageResponseV1
+            example:
+                id: c47e974f-8002-46e9-8a63-d66505be2aa1
+        ImageV1Platform:
+            type: string
+            enum:
+            - linux
+            - windows
+            title: ImageV1Platform
+        ImageV1Status:
+            type: string
+            enum:
+            - active
+            - deprecated
+            - deleted
+            - pending
+            - creating
+            - importing
+            - error
+            title: ImageV1Status
+        InstanceCreateRequestV1NetworkXaas:
+            properties:
+                vpc:
+                    anyOf:
+                    -   $ref: '#/components/schemas/ID'
+                    -   $ref: '#/components/schemas/Name'
+                    title: Vpc
+                    default:
+                        name: default
+                nic:
+                    anyOf:
+                    -   $ref: '#/components/schemas/ID'
+                    -   $ref: '#/components/schemas/SecurityGroups'
+                    title: Nic
+                    nullable: true
+                associate_public_ip:
+                    type: boolean
+                    title: Associate Public Ip
+                    default: false
+            type: object
+            title: InstanceCreateRequestV1NetworkXaas
+            example:
+                associate_public_ip: true
+                nic:
+                    security_groups:
+                    -   id: f273fbde-2ddf-4dcd-8c41-342671ac0d17
+                    -   id: 02a2acf3-d6db-4424-ac97-0254cb9c329e
+                vpc:
+                    id: 2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6
+        InstanceCreateRequestV1Xaas:
+            properties:
+                name:
+                    type: string
+                    maxLength: 255
+                    minLength: 1
+                    title: Name
+                machine_type:
+                    anyOf:
+                    -   $ref: '#/components/schemas/ID'
+                    -   $ref: '#/components/schemas/Name'
+                    title: Machine Type
+                ssh_key_name:
+                    type: string
+                    minLength: 0
+                    title: Ssh Key Name
+                image:
+                    anyOf:
+                    -   $ref: '#/components/schemas/ID'
+                    -   $ref: '#/components/schemas/Name'
+                    title: Image
+                availability_zone:
+                    title: Availability Zone
+                    nullable: true
+                    type: string
+                    maxLength: 255
+                    minLength: 1
+                network:
+                    default:
+                        vpc:
+                            name: default
+                        associate_public_ip: false
+                    nullable: true
+                    $ref: '#/components/schemas/InstanceCreateRequestV1NetworkXaas'
+                user_data:
+                    title: User Data
+                    nullable: true
+                    type: string
+                    maxLength: 65000
+                    minLength: 1
+            type: object
+            required:
+            - name
+            - machine_type
+            - ssh_key_name
+            - image
+            title: InstanceCreateRequestV1Xaas
+            example:
+                availability_zone: br-regiao-1a
+                image:
+                    id: 2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6
+                machine_type:
+                    id: 2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6
+                name: instance name
+                network:
+                    associate_public_ip: false
+                    nic:
+                        id: c8719fd8-7a48-4dbf-b4d8-74f71fa67422
+                        security_groups:
+                        -   id: f273fbde-2ddf-4dcd-8c41-342671ac0d17
+                        -   id: 02a2acf3-d6db-4424-ac97-0254cb9c329e
+                    vpc:
+                        id: 2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6
+                ssh_key_name: keypair_name_here
+                user_data: some_base64_script
+        InstanceDeletedAllResponse:
+            properties:
+                deleted_instances:
+                    title: Deleted Instances
+                    nullable: true
+                    items: {}
+                    type: array
+            type: object
+            title: InstanceDeletedAllResponse
+        InstanceOnDb:
+            properties:
+                id:
+                    type: string
+                    title: Id
+                name:
+                    type: string
+                    title: Name
+                status:
+                    type: string
+                    title: Status
+                created_at:
+                    type: string
+                    title: Created At
+                updated_at:
+                    title: Updated At
+                    nullable: true
+                    type: string
+                key_pair_name:
+                    type: string
+                    title: Key Pair Name
+                retries:
+                    type: integer
+                    title: Retries
+                step:
+                    type: integer
+                    title: Step
+                snapshot_id:
+                    title: Snapshot Id
+                    nullable: true
+                    type: string
+                user_data:
+                    title: User Data
+                    nullable: true
+                    type: string
+                image_name:
+                    type: string
+                    title: Image Name
+                error:
+                    title: Error
+                    nullable: true
+                    type: string
+                project_type:
+                    type: string
+                    title: Project Type
+                ports:
+                    items:
+                        $ref: '#/components/schemas/PortDB'
+                    type: array
+                    title: Ports
+            type: object
+            required:
+            - id
+            - name
+            - status
+            - created_at
+            - key_pair_name
+            - retries
+            - step
+            - image_name
+            - project_type
+            - ports
+            title: InstanceOnDb
+            example:
+                created_at: '2022-06-10T18:33:12Z'
+                error: error_here
+                id: c47e974f-8002-46e9-8a63-d66505be2aa1
+                image_name: image_name_here
+                key_pair_name: key_pair_name_here
+                name: instance name
+                ports:
+                -   port: some_port_1
+                project_type: default
+                retries: 0
+                snapshot_id: c47e974f-8002-46e9-8a63-d66505be2aa1
+                status: ACTIVE
+                step: 0
+                updated_at: '2022-06-11T18:33:12Z'
+                user_data: user_data_here
+        InstanceResponseSnapshotV1:
+            properties:
+                id:
+                    type: string
+                    title: Id
+                image:
+                    anyOf:
+                    -   $ref: '#/components/schemas/ImageInstanceV1Response'
+                    -   $ref: '#/components/schemas/ImageExtendResponse'
+                    title: Image
+                machine_type:
+                    anyOf:
+                    -   $ref: '#/components/schemas/InstanceTypeForInstanceV1Response'
+                    -   $ref: '#/components/schemas/InstanceTypesExtendResponse'
+                    title: Machine Type
+            type: object
+            required:
+            - id
+            - image
+            - machine_type
+            title: InstanceResponseSnapshotV1
+            example:
+                instance:
+                    id: 4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a
+                    image:
+                        id: 4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a
+                    machine_type:
+                        id: 4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a
+        InstanceRetypeRequest:
+            properties:
+                machine_type:
+                    anyOf:
+                    -   $ref: '#/components/schemas/ID'
+                    -   $ref: '#/components/schemas/Name'
+                    title: Machine Type
+            type: object
+            required:
+            - machine_type
+            title: InstanceRetypeRequest
+            example:
+                machine_type:
+                    id: 2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6
+        InstanceTypeForInstanceV1Response:
+            properties:
+                id:
+                    type: string
+                    title: Id
+            additionalProperties: true
+            type: object
+            required:
+            - id
+            title: InstanceTypeForInstanceV1Response
+        InstanceTypesExtendResponse:
+            properties:
+                id:
+                    type: string
+                    title: Id
+                name:
+                    type: string
+                    title: Name
+                vcpus:
+                    type: integer
+                    title: Vcpus
+                ram:
+                    type: integer
+                    title: Ram
+                disk:
+                    type: integer
+                    title: Disk
+            type: object
+            required:
+            - id
+            - name
+            - vcpus
+            - ram
+            - disk
+            title: InstanceTypesExtendResponse
+            example:
+                disk: 10
+                id: 3a4dc05b-eb10-42ec-8c0c-848e06f7aded
+                name: abc.small
+                ram: 2
+                vcpus: 2
+        InstanceTypesV1InternalListResponse:
+            properties:
+                instance_types:
+                    items:
+                        $ref: '#/components/schemas/InstanceTypesV1InternalResponse'
+                    type: array
+                    title: Instance Types
+            type: object
+            required:
+            - instance_types
+            title: InstanceTypesV1InternalListResponse
+            example:
+                instance_types:
+                -   disk: 10
+                    gpu: 1
+                    id: 3a4dc05b-eb10-42ec-8c0c-848e06f7aded
+                    internal: true
+                    name: abc.small
+                    ram: 2
+                    status: active
+                    vcpus: 2
+        InstanceTypesV1InternalResponse:
+            properties:
+                id:
+                    type: string
+                    title: Id
+                name:
+                    type: string
+                    title: Name
+                vcpus:
+                    type: integer
+                    title: Vcpus
+                ram:
+                    type: integer
+                    title: Ram
+                disk:
+                    type: integer
+                    title: Disk
+                gpu:
+                    type: integer
+                    title: Gpu
+                    default: 0
+                status:
+                    type: string
+                    title: Status
+                sku:
+                    type: string
+                    title: Sku
+                internal:
+                    type: boolean
+                    title: Internal
+            type: object
+            required:
+            - id
+            - name
+            - vcpus
+            - ram
+            - disk
+            - status
+            - sku
+            - internal
+            title: InstanceTypesV1InternalResponse
+            example:
+                disk: 10
+                gpu: 1
+                id: 3a4dc05b-eb10-42ec-8c0c-848e06f7aded
+                internal: true
+                name: abc.small
+                ram: 2
+                sku: some_sku
+                status: active
+                vcpus: 2
+        InstanceTypesV1ListResponse:
+            properties:
+                instance_types:
+                    items:
+                        anyOf:
+                        -   $ref: '#/components/schemas/InstanceTypesV1PortalResponse'
+                        -   $ref: '#/components/schemas/InstanceTypesV1Response'
+                    type: array
+                    title: Instance Types
+            type: object
+            required:
+            - instance_types
+            title: InstanceTypesV1ListResponse
+            example:
+                instance_types:
+                -   disk: 10
+                    gpu: 1
+                    id: 3a4dc05b-eb10-42ec-8c0c-848e06f7aded
+                    name: abc.small
+                    ram: 2
+                    sku: some_sku
+                    status: active
+                    vcpus: 2
+        InstanceTypesV1PortalResponse:
+            properties:
+                id:
+                    type: string
+                    title: Id
+                name:
+                    type: string
+                    title: Name
+                vcpus:
+                    type: integer
+                    title: Vcpus
+                ram:
+                    type: integer
+                    title: Ram
+                disk:
+                    type: integer
+                    title: Disk
+                gpu:
+                    type: integer
+                    title: Gpu
+                    default: 0
+                status:
+                    type: string
+                    title: Status
+                sku:
+                    type: string
+                    title: Sku
+            type: object
+            required:
+            - id
+            - name
+            - vcpus
+            - ram
+            - disk
+            - status
+            - sku
+            title: InstanceTypesV1PortalResponse
+            example:
+                disk: 10
+                gpu: 1
+                id: 3a4dc05b-eb10-42ec-8c0c-848e06f7aded
+                name: abc.small
+                ram: 2
+                sku: some_sku
+                status: active
+                vcpus: 2
+        InstanceTypesV1Request:
+            properties:
+                id:
+                    type: string
+                    maxLength: 255
+                    minLength: 1
+                    title: Id
+                name:
+                    type: string
+                    maxLength: 255
+                    minLength: 1
+                    title: Name
+                ram:
+                    type: integer
+                    title: Ram
+                disk:
+                    type: integer
+                    title: Disk
+                vcpus:
+                    type: integer
+                    title: Vcpus
+                gpu_model:
+                    title: Gpu Model
+                    nullable: true
+                    type: string
+                gpu:
+                    type: integer
+                    title: Gpu
+                    default: 0
+                sku:
+                    type: string
+                    maxLength: 255
+                    minLength: 1
+                    title: Sku
+                internal:
+                    type: boolean
+                    title: Internal
+            type: object
+            required:
+            - id
+            - name
+            - ram
+            - disk
+            - vcpus
+            - sku
+            - internal
+            title: InstanceTypesV1Request
+            example:
+                disk: 10
+                gpu: 1
+                gpu_model: a100
+                id: 3a4dc05b-eb10-42ec-8c0c-848e06f7aded
+                internal: true
+                name: instance_type_name
+                ram: 1024
+                sku: sku1234
+                vcpus: 1
+        InstanceTypesV1Response:
+            properties:
+                id:
+                    type: string
+                    title: Id
+                name:
+                    type: string
+                    title: Name
+                vcpus:
+                    type: integer
+                    title: Vcpus
+                ram:
+                    type: integer
+                    title: Ram
+                disk:
+                    type: integer
+                    title: Disk
+                gpu:
+                    type: integer
+                    title: Gpu
+                    default: 0
+                status:
+                    type: string
+                    title: Status
+                sku:
+                    type: string
+                    title: Sku
+            type: object
+            required:
+            - id
+            - name
+            - vcpus
+            - ram
+            - disk
+            - status
+            - sku
+            title: InstanceTypesV1Response
+            example:
+                disk: 10
+                gpu: 1
+                id: 3a4dc05b-eb10-42ec-8c0c-848e06f7aded
+                name: abc.small
+                ram: 2
+                sku: some_sku
+                status: active
+                vcpus: 2
+        InstanceV1InternalResponse:
+            properties:
+                id:
+                    type: string
+                    title: Id
+                name:
+                    title: Name
+                    nullable: true
+                    type: string
+                machine_type:
+                    anyOf:
+                    -   $ref: '#/components/schemas/InstanceTypeForInstanceV1Response'
+                    -   $ref: '#/components/schemas/InstanceTypesExtendResponse'
+                    title: Machine Type
+                image:
+                    anyOf:
+                    -   $ref: '#/components/schemas/ImageInstanceV1Response'
+                    -   $ref: '#/components/schemas/ImageExtendResponse'
+                    title: Image
+                status:
+                    type: string
+                    title: Status
+                state:
+                    type: string
+                    title: State
+                instance_id:
+                    title: Instance Id
+                    nullable: true
+                    type: string
+                user_data:
+                    title: User Data
+                    nullable: true
+                    type: string
+                created_at:
+                    type: string
+                    title: Created At
+                    example: '2022-01-01T00:00:10Z'
+                updated_at:
+                    title: Updated At
+                    nullable: true
+                    type: string
+                    example: '2022-01-01T00:00:10Z'
+                key_name:
+                    title: Key Name
+                    nullable: true
+                    type: string
+                availability_zone:
+                    title: Availability Zone
+                    nullable: true
+                    type: string
+                network:
+                    nullable: true
+                    $ref: '#/components/schemas/NetworkPortsV1'
+            type: object
+            required:
+            - id
+            - machine_type
+            - image
+            - status
+            - state
+            - created_at
+            title: InstanceV1InternalResponse
+            example:
+                availability_zone: br-regiao-1a
+                created_at: '2022-06-10T18:33:12Z'
+                id: 2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6
+                image:
+                    id: 2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6
+                instance_id: 2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6
+                key_name: keypair_name_here
+                machine_type:
+                    id: 2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6
+                name: instance name
+                network:
+                    ports:
+                    -   id: 2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6
+                state: running
+                status: completed
+                updated_at: '2022-06-11T18:33:12Z'
+                user_data: some_base_64_str
+        InstanceV1Response:
+            properties:
+                id:
+                    type: string
+                    title: Id
+                name:
+                    title: Name
+                    nullable: true
+                    type: string
+                machine_type:
+                    anyOf:
+                    -   $ref: '#/components/schemas/InstanceTypeForInstanceV1Response'
+                    -   $ref: '#/components/schemas/InstanceTypesExtendResponse'
+                    title: Machine Type
+                image:
+                    anyOf:
+                    -   $ref: '#/components/schemas/ImageInstanceV1Response'
+                    -   $ref: '#/components/schemas/ImageExtendResponse'
+                    title: Image
+                status:
+                    $ref: '#/components/schemas/InstanceV1Status'
+                state:
+                    $ref: '#/components/schemas/InstanceV1State'
+                user_data:
+                    title: User Data
+                    nullable: true
+                    type: string
+                created_at:
+                    type: string
+                    title: Created At
+                    example: '2022-01-01T00:00:10Z'
+                updated_at:
+                    title: Updated At
+                    nullable: true
+                    type: string
+                    example: '2022-01-01T00:00:10Z'
+                ssh_key_name:
+                    title: Ssh Key Name
+                    nullable: true
+                    type: string
+                availability_zone:
+                    title: Availability Zone
+                    nullable: true
+                    type: string
+                network:
+                    anyOf:
+                    -   $ref: '#/components/schemas/NetworkPortsV1'
+                    -   $ref: '#/components/schemas/NetworkPortsV1Expand'
+                    title: Network
+                    nullable: true
+                error:
+                    nullable: true
+                    $ref: '#/components/schemas/ErrorMessageV1'
+            type: object
+            required:
+            - id
+            - machine_type
+            - image
+            - status
+            - state
+            - created_at
+            title: InstanceV1Response
+            example:
+                availability_zone: br-regiao-1a
+                created_at: '2022-06-10T18:33:12Z'
+                error:
+                    message: An error occurred while creating your instance. Please
+                        contact our support for assistance.
+                    slug: create_instance.keypair.not_found
+                id: 2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6
+                image:
+                    id: 2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6
+                machine_type:
+                    id: 2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6
+                name: instance name
+                network:
+                    ports:
+                    -   id: 2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6
+                ssh_key_name: keypair_name_here
+                state: running
+                status: completed
+                updated_at: '2022-06-11T18:33:12Z'
+                user_data: some_base_64_str
+        InstanceV1State:
+            type: string
+            enum:
+            - new
+            - running
+            - stopped
+            - suspended
+            - deleted
+            title: InstanceV1State
+        InstanceV1Status:
+            type: string
+            enum:
+            - attaching_nic
+            - detaching_nic
+            - attach_nic_pending
+            - detach_nic_pending
+            - provisioning
+            - creating
+            - creating_error
+            - creating_network_error
+            - creating_error_quota
+            - creating_error_quota_ram
+            - creating_error_quota_vcpu
+            - creating_error_quota_disk
+            - creating_error_quota_instance
+            - creating_error_quota_floating_ip
+            - completed
+            - retyping_pending
+            - retyping
+            - retyping_confirmed
+            - retyping_error
+            - retyping_error_quota
+            - stopping_pending
+            - stopping
+            - suspending_pending
+            - suspending
+            - rebooting_pending
+            - rebooting
+            - starting_pending
+            - starting
+            - deleting_pending
+            - deleting
+            - deleting_error
+            - deleted
+            title: InstanceV1Status
+        IpAddressExpand:
+            properties:
+                publicIpAddress:
+                    title: Publicipaddress
+                    nullable: true
+                    type: string
+                privateIpAddress:
+                    type: string
+                    title: Privateipaddress
+                ipV6Address:
+                    title: Ipv6Address
+                    nullable: true
+                    type: string
+            type: object
+            required:
+            - privateIpAddress
+            title: IpAddressExpand
+        KeypairDeletedAllResponse:
+            properties:
+                deleted_keypairs:
+                    title: Deleted Keypairs
+                    nullable: true
+                    items: {}
+                    type: array
+            type: object
+            title: KeypairDeletedAllResponse
+            example:
+                deleted_keypairs:
+                -   name: keypair_name_here
+        KeypairRequest:
+            properties:
+                name:
+                    type: string
+                    title: Name
+                public_key:
+                    title: Public Key
+                    nullable: true
+                    type: string
+            type: object
+            required:
+            - name
+            title: KeypairRequest
+            example:
+                name: keypair_name_here
+                public_key: some ssh public key here...
+        KeypairResponse:
+            properties:
+                name:
+                    type: string
+                    title: Name
+                public_key:
+                    type: string
+                    title: Public Key
+            type: object
+            required:
+            - name
+            - public_key
+            title: KeypairResponse
+            example:
+                name: keypair_name_here
+                public_key: some ssh public key here...
+        KeypairsListResponse:
+            properties:
+                keypairs:
+                    items:
+                        $ref: '#/components/schemas/KeypairResponse'
+                    type: array
+                    title: Keypairs
+            type: object
+            required:
+            - keypairs
+            title: KeypairsListResponse
+            example:
+                keypairs:
+                -   name: keypair_name_here
+                    public_key: some ssh public key here...
+        ListImageExternalV1:
+            properties:
+                images:
+                    items:
+                        $ref: '#/components/schemas/ImageResponseExternalV1'
+                    type: array
+                    title: Images
+            type: object
+            required:
+            - images
+            title: ListImageExternalV1
+            example:
+                images:
+                -   end_life_at: '2022-06-10T18:33:12Z'
+                    end_standard_support_at: '2022-06-10T18:33:12Z'
+                    id: c47e974f-8002-46e9-8a63-d66505be2aa1
+                    minimum_requirements:
+                        disk: 2
+                        ram: 1
+                        vcpu: 1
+                    name: ubuntu 22.10
+                    platform: linux
+                    release_at: '2022-06-10T18:33:12Z'
+                    status: active
+                    version: '22.10'
+        ListImageInternalV1:
+            properties:
+                images:
+                    items:
+                        $ref: '#/components/schemas/ImageResponseInternalV1'
+                    type: array
+                    title: Images
+            type: object
+            required:
+            - images
+            title: ListImageInternalV1
+            example:
+                images:
+                -   end_life_at: '2022-06-10T18:33:12Z'
+                    end_standard_support_at: '2022-06-10T18:33:12Z'
+                    id: 847ceef4-ff96-4762-895d-5e94e410ddeb
+                    internal: true
+                    min_disk: 2
+                    min_ram: 1
+                    min_vcpu: 1
+                    name: ubuntu 22.10
+                    platform: linux
+                    release_at: '2022-06-10T18:33:12Z'
+                    sku: sku1234
+                    status: active
+                    version: '22.10'
+        ListInstanceV1Response:
+            properties:
+                instances:
+                    items:
+                        $ref: '#/components/schemas/InstanceV1Response'
+                    type: array
+                    title: Instances
+            type: object
+            required:
+            - instances
+            title: ListInstanceV1Response
+            example:
+                instances:
+                -   availability_zone: br-regiao-1a
+                    created_at: '2022-06-10T18:33:12Z'
+                    error:
+                        message: An error occurred while creating your instance. Please
+                            contact our support for assistance.
+                        slug: create_instance.keypair.not_found
+                    id: 2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6
+                    image:
+                        id: 2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6
+                    machine_type:
+                        id: 2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6
+                    name: instance name
+                    network:
+                        ports:
+                        -   id: 2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6
+                    ssh_key_name: keypair_name_here
+                    state: running
+                    status: completed
+                    updated_at: '2022-06-11T18:33:12Z'
+                    user_data: base64_data
+        ListSnapshotResponseV1:
+            properties:
+                snapshots:
+                    items:
+                        $ref: '#/components/schemas/SnapshotResponseV1'
+                    type: array
+                    title: Snapshots
+            type: object
+            required:
+            - snapshots
+            title: ListSnapshotResponseV1
+            example:
+                snapshots:
+                -   created_at: '2022-06-10T18:33:12Z'
+                    id: 4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a
+                    instance:
+                        id: 4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a
+                        image:
+                            id: 4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a
+                        machine_type:
+                            id: 4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a
+                    name: snapshot name
+                    size: 1000
+                    state: available
+                    status: completed
+                    updated_at: '2022-06-11T18:33:12Z'
+        Name:
+            properties:
+                name:
+                    type: string
+                    maxLength: 255
+                    minLength: 1
+                    title: Name
+            type: object
+            required:
+            - name
+            title: Name
+            example:
+                name: some_resource_name
+        NetworkID:
+            properties:
+                id:
+                    type: string
+                    title: Id
+            type: object
+            required:
+            - id
+            title: NetworkID
+        NetworkPortsV1:
+            properties:
+                ports:
+                    items:
+                        $ref: '#/components/schemas/PortID'
+                    type: array
+                    title: Ports
+            type: object
+            required:
+            - ports
+            title: NetworkPortsV1
+        NetworkPortsV1Expand:
+            properties:
+                vpc:
+                    nullable: true
+                    $ref: '#/components/schemas/VpcV1Expand'
+                ports:
+                    title: Ports
+                    nullable: true
+                    items:
+                        $ref: '#/components/schemas/PortV1Expand'
+                    type: array
+            type: object
+            title: NetworkPortsV1Expand
+        PortDB:
+            properties:
+                port:
+                    type: string
+                    title: Port
+            type: object
+            required:
+            - port
+            title: PortDB
+            example:
+                port: some_port_1
+        PortID:
+            properties:
+                id:
+                    type: string
+                    title: Id
+            type: object
+            required:
+            - id
+            title: PortID
+            example:
+                id: c47e974f-8002-46e9-8a63-d66505be2aa1
+        PortV1Expand:
+            properties:
+                id:
+                    type: string
+                    title: Id
+                name:
+                    type: string
+                    title: Name
+                ipAddresses:
+                    $ref: '#/components/schemas/IpAddressExpand'
+            type: object
+            required:
+            - id
+            - name
+            - ipAddresses
+            title: PortV1Expand
+        ProjectType:
+            type: string
+            enum:
+            - dbaas
+            - iamaas
+            - k8saas
+            - mngsvc
+            title: ProjectType
+        ProjectTypeAll:
+            type: string
+            enum:
+            - dbaas
+            - iamaas
+            - k8saas
+            - mngsvc
+            - default
+            title: ProjectTypeAll
+        SecurityGroups:
+            properties:
+                security_groups:
+                    items:
+                        $ref: '#/components/schemas/ID'
+                    type: array
+                    title: Security Groups
+                    default: []
+            type: object
+            title: SecurityGroups
+        SnapshotCreateRequestV1:
+            properties:
+                name:
+                    type: string
+                    maxLength: 255
+                    minLength: 1
+                    title: Name
+                virtual_machine:
+                    anyOf:
+                    -   $ref: '#/components/schemas/ID'
+                    -   $ref: '#/components/schemas/Name'
+                    title: Virtual Machine
+            type: object
+            required:
+            - name
+            - virtual_machine
+            title: SnapshotCreateRequestV1
+            example:
+                name: snapshot name
+                virtual_machine:
+                    id: 4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a
+        SnapshotRenameRequest:
+            properties:
+                name:
+                    type: string
+                    maxLength: 255
+                    minLength: 1
+                    title: Name
+            type: object
+            required:
+            - name
+            title: SnapshotRenameRequest
+            example:
+                name: new snapshot name
+        SnapshotResponseV1:
+            properties:
+                id:
+                    type: string
+                    title: Id
+                name:
+                    title: Name
+                    nullable: true
+                    type: string
+                status:
+                    type: string
+                    title: Status
+                state:
+                    type: string
+                    title: State
+                created_at:
+                    type: string
+                    title: Created At
+                    example: '2022-01-01T00:00:10Z'
+                updated_at:
+                    title: Updated At
+                    nullable: true
+                    type: string
+                    example: '2022-01-01T00:00:10Z'
+                size:
+                    type: integer
+                    title: Size
+                instance:
+                    $ref: '#/components/schemas/InstanceResponseSnapshotV1'
+            type: object
+            required:
+            - id
+            - status
+            - state
+            - created_at
+            - size
+            - instance
+            title: SnapshotResponseV1
+            example:
+                created_at: '2022-06-10T18:33:12Z'
+                id: 4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a
+                instance:
+                    id: 4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a
+                    image:
+                        id: 4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a
+                    machine_type:
+                        id: 4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a
+                name: snapshot name
+                size: 1000
+                state: available
+                status: completed
+                updated_at: '2022-06-11T18:33:12Z'
+        SnapshotRestoreRequestV1Xaas:
+            properties:
+                name:
+                    type: string
+                    maxLength: 255
+                    minLength: 1
+                    title: Name
+                machine_type:
+                    anyOf:
+                    -   $ref: '#/components/schemas/ID'
+                    -   $ref: '#/components/schemas/Name'
+                    title: Machine Type
+                ssh_key_name:
+                    type: string
+                    minLength: 0
+                    title: Ssh Key Name
+                availability_zone:
+                    title: Availability Zone
+                    nullable: true
+                    type: string
+                    maxLength: 255
+                    minLength: 1
+                network:
+                    $ref: '#/components/schemas/InstanceCreateRequestV1NetworkXaas'
+                user_data:
+                    title: User Data
+                    nullable: true
+                    type: string
+                    maxLength: 65000
+                    minLength: 1
+            type: object
+            required:
+            - name
+            - machine_type
+            - ssh_key_name
+            - network
+            title: SnapshotRestoreRequestV1Xaas
+            example:
+                availability_zone: br-regiao-1a
+                machine_type:
+                    id: 4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a
+                name: instance name
+                network:
+                    associate_public_ip: false
+                    nic:
+                        id: c8719fd8-7a48-4dbf-b4d8-74f71fa67422
+                        security_groups:
+                        -   id: f273fbde-2ddf-4dcd-8c41-342671ac0d17
+                        -   id: 02a2acf3-d6db-4424-ac97-0254cb9c329e
+                    vpc:
+                        id: 2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6
+                ssh_key_name: keypair_name_here
+                user_data: some_base64_script
+        SnapshotStateV1:
+            type: string
+            enum:
+            - not_used
+            - new
+            - available
+            - deleted
+            title: SnapshotStateV1
+        SnapshotStatusV1:
+            type: string
+            enum:
+            - provisioning
+            - creating
+            - creating_error
+            - creating_error_quota
+            - completed
+            - deleting
+            - deleted
+            - deleted_error
+            title: SnapshotStatusV1
+        URPAddress:
+            properties:
+                version:
+                    anyOf:
+                    -   enum:
+                        - 6
+                    -   enum:
+                        - 4
+                    title: Version
+                addr:
+                    type: string
+                    title: Addr
+            type: object
+            required:
+            - version
+            - addr
+            title: URPAddress
+            example:
+                addr: 172.30.0.55
+                version: 4
+        URPFlavor:
+            properties:
+                disk:
+                    type: integer
+                    title: Disk
+                ram:
+                    type: integer
+                    title: Ram
+                swap:
+                    type: integer
+                    title: Swap
+                vcpus:
+                    type: integer
+                    title: Vcpus
+                name:
+                    type: string
+                    title: Name
+                id:
+                    type: string
+                    title: Id
+            type: object
+            required:
+            - disk
+            - ram
+            - swap
+            - vcpus
+            - name
+            - id
+            title: URPFlavor
+            example:
+                disk: 10
+                id: cloud-bs1.xsmall
+                name: cloud-bs1.xsmall
+                ram: 4
+                swap: 0
+                vcpus: 2
+        URPImage:
+            properties:
+                id:
+                    type: string
+                    title: Id
+            type: object
+            required:
+            - id
+            title: URPImage
+            example:
+                id: c47e974f-8002-46e9-8a63-d66505be2aa1
+        URPResponse:
+            properties:
+                id:
+                    type: string
+                    title: Id
+                name:
+                    type: string
+                    title: Name
+                status:
+                    type: string
+                    title: Status
+                flavor:
+                    $ref: '#/components/schemas/URPFlavor'
+                addresses:
+                    additionalProperties:
+                        items:
+                            $ref: '#/components/schemas/URPAddress'
+                        type: array
+                    type: object
+                    title: Addresses
+                security_groups:
+                    items:
+                        $ref: '#/components/schemas/URPSecurityGroup'
+                    type: array
+                    title: Security Groups
+                image:
+                    $ref: '#/components/schemas/URPImage'
+                vm_state:
+                    type: string
+                    title: Vm State
+                power_state:
+                    type: integer
+                    title: Power State
+                availability_zone:
+                    type: string
+                    title: Availability Zone
+                created_at:
+                    type: string
+                    title: Created At
+                updated_at:
+                    type: string
+                    title: Updated At
+                host_id:
+                    type: string
+                    title: Host Id
+                key_name:
+                    type: string
+                    title: Key Name
+            type: object
+            required:
+            - id
+            - name
+            - status
+            - flavor
+            - addresses
+            - security_groups
+            - image
+            - vm_state
+            - power_state
+            - availability_zone
+            - created_at
+            - updated_at
+            - host_id
+            - key_name
+            title: URPResponse
+            example:
+                addresses:
+                    vpc-id:
+                    -   addr: 172.30.0.55
+                        version: 4
+                availability_zone: br-se1-a
+                created_at: '2022-06-10T18:33:12Z'
+                flavor:
+                    disk: 10
+                    id: cloud-bs1.xsmall
+                    name: cloud-bs1.xsmall
+                    ram: 4
+                    swap: 0
+                    vcpus: 2
+                host_id: 086177aaa9adbafcdae11ab7b1ec55ac786b12a8a5785a7f436dc9a0
+                id: c47e974f-8002-46e9-8a63-d66505be2aa1
+                image:
+                    id: c47e974f-8002-46e9-8a63-d66505be2aa1
+                key_name: keypair_name_here
+                name: instance name
+                power_state: 1
+                security_groups:
+                -   name: sg_1
+                status: ACTIVE
+                updated_at: '2022-06-11T18:33:12Z'
+                vm_state: active
+        URPSecurityGroup:
+            properties:
+                name:
+                    type: string
+                    title: Name
+            type: object
+            required:
+            - name
+            title: URPSecurityGroup
+            example:
+                name: sg_1
+        UrpBackupPatchRequest:
+            properties:
+                status:
+                    $ref: '#/components/schemas/BackupStatus'
+                state:
+                    $ref: '#/components/schemas/BackupState'
+                size:
+                    type: integer
+                    title: Size
+                min_disk:
+                    type: integer
+                    title: Min Disk
+                error:
+                    title: Error
+                    nullable: true
+                    type: string
+            type: object
+            required:
+            - status
+            - state
+            - size
+            - min_disk
+            title: UrpBackupPatchRequest
+            example:
+                error: some error occurred to create backup
+                min_disk: 20
+                size: 50
+                state: available
+                status: completed
+        ValidationError:
+            properties:
+                message:
+                    title: Message
+                    type: string
+                slug:
+                    title: Slug
+                    type: string
+            type: object
+            required:
+            - loc
+            - msg
+            - type
+            title: ValidationError
+            example:
+                message: Unauthorized
+                slug: Unauthorized
+        VpcV1Expand:
+            properties:
+                id:
+                    type: string
+                    title: Id
+                name:
+                    type: string
+                    title: Name
+            type: object
+            required:
+            - id
+            - name
+            title: VpcV1Expand
+        WorkerFinishCreation:
+            properties:
+                network_ids:
+                    items:
+                        $ref: '#/components/schemas/NetworkID'
+                    type: array
+                    title: Network Ids
+                    default: []
+                urp_instance_id:
+                    title: Urp Instance Id
+                    nullable: true
+                    type: string
+                status:
+                    type: string
+                    title: Status
+                error:
+                    title: Error
+                    nullable: true
+                    type: string
+            type: object
+            required:
+            - status
+            title: WorkerFinishCreation
+            example:
+                error: some_error
+                network_ids:
+                -   id: 2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6
+                status: created
+                urp_instance_id: 2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6
+        WorkerImageUpdateRequest:
+            properties:
+                status:
+                    nullable: true
+                    $ref: '#/components/schemas/ImageV1Status'
+                error:
+                    title: Error
+                    nullable: true
+                    type: string
+            type: object
+            title: WorkerImageUpdateRequest
+            example:
+                error: some_error
+                status: created
+        WorkerUpdateRequest:
+            properties:
+                status:
+                    nullable: true
+                    $ref: '#/components/schemas/InstanceV1Status'
+                state:
+                    nullable: true
+                    $ref: '#/components/schemas/InstanceV1State'
+                instance_type_id:
+                    title: Instance Type Id
+                    nullable: true
+                    type: string
+                error:
+                    title: Error
+                    nullable: true
+                    type: string
+            type: object
+            title: WorkerUpdateRequest
+            example:
+                error: some_error
+                instance_type_id: some_type_id
+                state: running
+                status: completed
+        WorkerUpdateRequestV1:
+            properties:
+                status:
+                    nullable: true
+                    $ref: '#/components/schemas/SnapshotStatusV1'
+                error:
+                    title: Error
+                    nullable: true
+                    type: string
+                size:
+                    title: Size
+                    nullable: true
+                    type: integer
+                state:
+                    nullable: true
+                    $ref: '#/components/schemas/SnapshotStateV1'
+            type: object
+            title: WorkerUpdateRequestV1
+            example:
+                status: created
+tags:
+-   name: backups
+    description: backups
+-   name: diagnostics
+    description: diagnostics
+-   name: healthchecks
+    description: healthchecks
+-   name: images
+    description: images
+-   name: instance types
+    description: instance types
+-   name: instances
+    description: instances
+-   name: keypairs
+    description: keypairs
+-   name: machine-types
+    description: machine-types
+-   name: snapshots
+    description: snapshots
+-   name: xaas images
+    description: xaas images
+-   name: xaas instances
+    description: xaas instances
+-   name: xaas keypairs
+    description: xaas keypairs
+-   name: xaas machine-types
+    description: xaas machine-types
+-   name: xaas snapshots
+    description: xaas snapshots
+$id: https://virtual-machine.jaxyendy.com/internal/v1/openapi.json
+servers:
+-   url: https://{env}/{region}/compute-xaas
+    variables:
+        region:
+            description: Region to reach the service
+            default: br-se1
+            enum:
+            - br-ne-1
+            - br-se1
+            - br-mgl1
+            x-mgc-transforms:
+            -   type: translate
+                allowMissing: true
+                translations:
+                -   from: br-ne1
+                    to: br-ne-1
+                -   from: br-mgl1
+                    to: br-se-1
+        env:
+            description: Environment to use
+            default: api.magalu.cloud
+            enum:
+            - api.magalu.cloud
+            - api.pre-prod.jaxyendy.com
+            x-mgc-transforms:
+            -   type: translate
+                translations:
+                -   from: prod
+                    to: api.magalu.cloud
+                -   from: pre-prod
+                    to: api.pre-prod.jaxyendy.com

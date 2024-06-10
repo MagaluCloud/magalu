@@ -24,6 +24,10 @@ func NewUploader(cfg Config, src mgcSchemaPkg.FilePath, dst mgcSchemaPkg.URI) (u
 	if err != nil {
 		return nil, fmt.Errorf("error reading object: %w", err)
 	}
+	if fileInfo.IsDir() {
+		return nil, fmt.Errorf("cannot upload a directory, use 'upload-dir' instead")
+	}
+
 	size := fileInfo.Size()
 	mimeType := mime.TypeByExtension(filepath.Ext(fileInfo.Name()))
 

@@ -11,8 +11,13 @@ class AddSecurityTransformer(SpecTranformer):
     def __init__(self, product_name: str):
         self.product_name = product_name
 
+    def EndpointIsXaas(self, endpoint: str):
+        if "xaas" in endpoint:
+            return True
+        return False
+
     def _get_security_schema(
-        self, http_method: str
+        self, endpoint: str, http_method: str
     ) -> List[Dict[str, List[str]]] | None:
         scope = ""
         if http_method in read_requirements:
@@ -22,7 +27,13 @@ class AddSecurityTransformer(SpecTranformer):
         else:
             return None
 
-        return [{"OAuth2": [self.product_name + "." + scope]}]
+        auth = [{"OAuth2": [self.product_name + "." + scope]}]
+
+        if self.EndpointIsXaas(endpoint):
+            XaasSchema = [{"XaasAuth": [self.product_name + "." + scope]}]
+            auth += XaasSchema
+
+        return auth
 
     def transform(self, oapi: OAPI):
         """
@@ -31,12 +42,13 @@ class AddSecurityTransformer(SpecTranformer):
         """
         spec = oapi.obj
         paths = spec.get("paths", {})
-        for operations in paths.values():
+        endpoints = list(paths.keys())
+        for i, operations in enumerate(paths.values()):
             for http_method, op in operations.items():
                 if op.get("security") is not None:
                     continue
 
-                security = self._get_security_schema(http_method)
+                security = self._get_security_schema(endpoints[i], http_method)
                 if security is None:
                     continue
 

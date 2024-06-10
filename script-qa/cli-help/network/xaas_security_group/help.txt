@@ -1,0 +1,15 @@
+xaas_security_group
+
+Usage:
+  ./mgc network xaas-security-group [flags]
+
+Aliases:
+  xaas-security-group, xaas_security_group
+
+Flags:
+  -h, --help      help for xaas-security-group
+  -v, --version   version for xaas-security-group
+
+Global Flags:
+      --cli.show-cli-globals   Show all CLI global flags on usage text
+

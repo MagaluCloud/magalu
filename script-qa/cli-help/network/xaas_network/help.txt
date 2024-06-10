@@ -1,0 +1,15 @@
+xaas_network
+
+Usage:
+  ./mgc network xaas-network [flags]
+
+Aliases:
+  xaas-network, xaas_network
+
+Flags:
+  -h, --help      help for xaas-network
+  -v, --version   version for xaas-network
+
+Global Flags:
+      --cli.show-cli-globals   Show all CLI global flags on usage text
+

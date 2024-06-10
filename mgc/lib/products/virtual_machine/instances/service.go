@@ -15,8 +15,10 @@ type service struct {
 }
 
 type Service interface {
+	Attach(parameters AttachParameters, configs AttachConfigs) (result AttachResult, err error)
 	Create(parameters CreateParameters, configs CreateConfigs) (result CreateResult, err error)
 	Delete(parameters DeleteParameters, configs DeleteConfigs) (err error)
+	Detach(parameters DetachParameters, configs DetachConfigs) (result DetachResult, err error)
 	Get(parameters GetParameters, configs GetConfigs) (result GetResult, err error)
 	List(parameters ListParameters, configs ListConfigs) (result ListResult, err error)
 	Reboot(parameters RebootParameters, configs RebootConfigs) (err error)

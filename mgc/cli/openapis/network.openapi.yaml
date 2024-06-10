@@ -25,6 +25,52 @@ paths:
             security:
             -   OAuth2:
                 - network.read
+    /v0/xaas/vpcs/{vpc_id}/networks:
+        get:
+            tags:
+            - xaas_network
+            summary: List network by VPC
+            description: Returns a list of networks inside a specific VPC
+            operationId: getNetworksByVPC
+            parameters:
+            -   name: vpc_id
+                in: path
+                required: true
+                schema:
+                    title: VPC ID
+                    description: Id of the VPC
+                    type: string
+                description: Id of the VPC
+            -   name: project_type
+                in: query
+                required: true
+                schema:
+                    allOf:
+                    -   $ref: '#/components/schemas/ProjectType'
+                    title: project_type
+                    description: Project type to list Networks
+                    type: string
+                description: Project type to list Networks
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ListNetworkApiResponse'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: false
+            x-mgc-hidden: true
+            security:
+            -   OAuth2:
+                - network.read
+            -   XaasAuth:
+                - network.read
     /v0/ports:
         post:
             tags:
@@ -468,6 +514,351 @@ paths:
             security:
             -   OAuth2:
                 - network.write
+    /v0/xaas/ports/all:
+        delete:
+            tags:
+            - xaas_port
+            summary: Delete Port Xaas All
+            description: Delete all ports of VPCs for a provided tenant_id of an project
+                type
+            operationId: deleteAllXaasPorts
+            parameters:
+            -   name: project_type
+                in: query
+                required: true
+                schema:
+                    allOf:
+                    -   $ref: '#/components/schemas/ProjectType'
+                    title: project_type
+                    description: Project type to delete all ports
+                    type: string
+                description: Project type to delete all ports
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/PortDeletedAllResponse'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: false
+            x-mgc-hidden: true
+            security:
+            -   OAuth2:
+                - network.write
+            -   XaasAuth:
+                - network.write
+    /v0/xaas/vpcs/{vpc_id}/ports:
+        post:
+            tags:
+            - xaas_port
+            summary: Create Port Xaas
+            description: Create a Port on an xaas project with provided vpc_id and
+                x-tenant-id. You can provide a list of security_groups_id or subnets
+            operationId: createPortXaas
+            parameters:
+            -   name: vpc_id
+                in: path
+                required: true
+                schema:
+                    title: vpc_id
+                    description: ID of the VPC to create port
+                    type: string
+                description: ID of the VPC to create port
+            -   name: project_type
+                in: query
+                required: true
+                schema:
+                    allOf:
+                    -   $ref: '#/components/schemas/ProjectType'
+                    title: project_type
+                    description: Project type to create port
+                    type: string
+                description: Project type to create port
+            -   name: x-zone
+                in: header
+                required: false
+                schema:
+                    title: X-Zone
+                    nullable: true
+                    type: string
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/PortCreateRequest'
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/PortCreateResponse'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: false
+            x-mgc-hidden: true
+            security:
+            -   OAuth2:
+                - network.write
+            -   XaasAuth:
+                - network.write
+    /v0/xaas/ports/{port_id}/attach/{security_group_id}:
+        post:
+            tags:
+            - xaas_port
+            summary: Attach XAAS Security Group
+            description: XAAS attach a Security Group to a Port with provided port_id,
+                security_group_id, x-tenant-id of an specific project type
+            operationId: attachXaasSecurityGroup
+            parameters:
+            -   name: port_id
+                in: path
+                required: true
+                schema:
+                    title: port_id
+                    description: ID of the Port to attach security group
+                    type: string
+                description: ID of the Port to attach security group
+            -   name: security_group_id
+                in: path
+                required: true
+                schema:
+                    title: security_group_id
+                    description: ID of the Security Group to attach
+                    type: string
+                description: ID of the Security Group to attach
+            -   name: project_type
+                in: query
+                required: true
+                schema:
+                    allOf:
+                    -   $ref: '#/components/schemas/ProjectType'
+                    title: project_type
+                    description: Project type to attach security group
+                    type: string
+                description: Project type to attach security group
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema: {}
+                    links:
+                        detach:
+                            operationId: detachXaasSecurityGroup
+                            description: Detach XAAS Security Group
+                            parameters:
+                                port_id: $request.path.port_id
+                                security_group_id: $request.path.security_group_id
+                        get:
+                            operationId: xaasPortDetails
+                            description: XaaS Port Details
+                            parameters:
+                                port_id: $request.path.port_id
+                        delete:
+                            operationId: deletePortXaas
+                            description: Delete Port Xaas
+                            parameters:
+                                port_id: $request.path.port_id
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: false
+            x-mgc-hidden: true
+            security:
+            -   OAuth2:
+                - network.write
+            -   XaasAuth:
+                - network.write
+    /v0/xaas/ports/{port_id}/detach/{security_group_id}:
+        post:
+            tags:
+            - xaas_port
+            summary: Detach XAAS Security Group
+            description: XAAS detach a Security Group to a Port with provided port_id,
+                security_group_id, x-tenant-id of an specific project type
+            operationId: detachXaasSecurityGroup
+            parameters:
+            -   name: port_id
+                in: path
+                required: true
+                schema:
+                    title: port_id
+                    description: ID of the Port to detach security group
+                    type: string
+                description: ID of the Port to detach security group
+            -   name: security_group_id
+                in: path
+                required: true
+                schema:
+                    title: security_group_id
+                    description: ID of the Security Group to detach
+                    type: string
+                description: ID of the Security Group to detach
+            -   name: project_type
+                in: query
+                required: true
+                schema:
+                    allOf:
+                    -   $ref: '#/components/schemas/ProjectType'
+                    title: project_type
+                    description: Project type to detach security group
+                    type: string
+                description: Project type to detach security group
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema: {}
+                    links:
+                        attach:
+                            operationId: attachXaasSecurityGroup
+                            description: Attach XAAS Security Group
+                            parameters:
+                                port_id: $request.path.port_id
+                                security_group_id: $request.path.security_group_id
+                        get:
+                            operationId: xaasPortDetails
+                            description: XaaS Port Details
+                            parameters:
+                                port_id: $request.path.port_id
+                        delete:
+                            operationId: deletePortXaas
+                            description: Delete Port Xaas
+                            parameters:
+                                port_id: $request.path.port_id
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: false
+            x-mgc-hidden: true
+            security:
+            -   OAuth2:
+                - network.write
+            -   XaasAuth:
+                - network.write
+    /v0/xaas/ports/{port_id}:
+        get:
+            tags:
+            - xaas_port
+            summary: XaaS Port Details
+            description: Return a port details from the provided tenant_id from a
+                xaas project
+            operationId: xaasPortDetails
+            parameters:
+            -   name: port_id
+                in: path
+                required: true
+                schema:
+                    title: port_id
+                    description: ID of the Port to detail
+                    type: string
+                description: ID of the Port to detail
+            -   name: project_type
+                in: query
+                required: true
+                schema:
+                    allOf:
+                    -   $ref: '#/components/schemas/ProjectType'
+                    title: project_type
+                    description: Project type to detail port
+                    type: string
+                description: Project type to detail port
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/PortResponse'
+                    links:
+                        attach:
+                            operationId: attachXaasSecurityGroup
+                            description: Attach XAAS Security Group
+                            parameters:
+                                port_id: $response.body#/id
+                        detach:
+                            operationId: detachXaasSecurityGroup
+                            description: Detach XAAS Security Group
+                            parameters:
+                                port_id: $response.body#/id
+                        delete:
+                            operationId: deletePortXaas
+                            description: Delete Port Xaas
+                            parameters:
+                                port_id: $response.body#/id
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: false
+            x-mgc-hidden: true
+            security:
+            -   OAuth2:
+                - network.read
+            -   XaasAuth:
+                - network.read
+        delete:
+            tags:
+            - xaas_port
+            summary: Delete Port Xaas
+            description: Delete a port from the provided tenant_id from an xaas project
+            operationId: deletePortXaas
+            parameters:
+            -   name: port_id
+                in: path
+                required: true
+                schema:
+                    title: port_id
+                    description: ID of the Port to delete
+                    type: string
+                description: ID of the Port to delete
+            -   name: project_type
+                in: query
+                required: true
+                schema:
+                    allOf:
+                    -   $ref: '#/components/schemas/ProjectType'
+                    title: project_type
+                    description: Project type to delete port
+                    type: string
+                description: Project type to delete port
+            responses:
+                '204':
+                    description: Successful Response
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: false
+            x-mgc-hidden: true
+            security:
+            -   OAuth2:
+                - network.write
+            -   XaasAuth:
+                - network.write
     /v0/vpcs/{vpc_id}/public_ips:
         post:
             tags:
@@ -801,6 +1192,423 @@ paths:
             security:
             -   OAuth2:
                 - network.read
+    /v0/xaas/vpcs/{vpc_id}/public_ips:
+        post:
+            tags:
+            - xaas_public_ip
+            summary: Create Public IP XaaS
+            description: Create async Public IP in a VPC with provided vpc_id and
+                x_tenant_id for XaaS
+            operationId: createXaaSPublicIp
+            parameters:
+            -   name: vpc_id
+                in: path
+                required: true
+                schema:
+                    title: Vpc ID
+                    description: Id of the VPC to create the Public IP in
+                    type: string
+                description: Id of the VPC to create the Public IP in
+            -   name: project_type
+                in: query
+                required: true
+                schema:
+                    allOf:
+                    -   $ref: '#/components/schemas/ProjectType'
+                    title: project_type
+                    description: Project type to list public ip
+                    type: string
+                description: Project type to list public ip
+            -   name: validate_quota
+                in: query
+                required: false
+                schema:
+                    type: boolean
+                    title: validateQuota
+                    description: Validate the quota before creating the Public IP
+                    default: true
+                description: Validate the quota before creating the Public IP
+            -   name: wait
+                in: query
+                required: false
+                schema:
+                    type: boolean
+                    title: wait
+                    description: The request will be asynchronous. The wait parameter
+                        tells the API that you want the request to simulate synchronous
+                        behavior (to maintain endpoint compatibility). You can set
+                        an approximate timeout with the waitTimeout parameter
+                    default: true
+                description: The request will be asynchronous. The wait parameter
+                    tells the API that you want the request to simulate synchronous
+                    behavior (to maintain endpoint compatibility). You can set an
+                    approximate timeout with the waitTimeout parameter
+            -   name: wait_timeout
+                in: query
+                required: false
+                schema:
+                    title: waitTimeout
+                    description: the approximate time in seconds you want to wait
+                        when simulating the request as synchronous (only works with
+                        wait=true)
+                    default: 120
+                    nullable: true
+                    type: integer
+                description: the approximate time in seconds you want to wait when
+                    simulating the request as synchronous (only works with wait=true)
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/PublicIpCreateRequest'
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/PublicIpCreateResponse'
+                    links:
+                        list:
+                            operationId: XaasListPublicIps
+                            description: List Public IPs XaaS
+                            parameters:
+                                vpc_id: $request.path.vpc_id
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: true
+            security:
+            -   OAuth2:
+                - network.write
+            -   XaasAuth:
+                - network.write
+        get:
+            tags:
+            - xaas_public_ip
+            summary: List Public IPs XaaS
+            description: Returns a list of Public IPs for a provided vpc_id
+            operationId: XaasListPublicIps
+            parameters:
+            -   name: vpc_id
+                in: path
+                required: true
+                schema:
+                    title: Vpc ID
+                    description: Id of the VPC to list the Public IPs in
+                    type: string
+                description: Id of the VPC to list the Public IPs in
+            -   name: project_type
+                in: query
+                required: true
+                schema:
+                    allOf:
+                    -   $ref: '#/components/schemas/ProjectType'
+                    title: project_type
+                    description: Project type to list public ip
+                    type: string
+                description: Project type to list public ip
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/PublicIpsList'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: true
+            security:
+            -   OAuth2:
+                - network.read
+            -   XaasAuth:
+                - network.read
+    /v0/xaas/public_ips:
+        get:
+            tags:
+            - xaas_public_ip
+            summary: Tenant's public IP list XaaS
+            description: Return a tenant's public ip list
+            operationId: tenantXaasListPublicIps
+            parameters:
+            -   name: project_type
+                in: query
+                required: true
+                schema:
+                    allOf:
+                    -   $ref: '#/components/schemas/ProjectType'
+                    title: project_type
+                    description: Project type to list tenant's public ip
+                    type: string
+                description: Project type to list tenant's public ip
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/PublicIpsList'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: true
+            security:
+            -   OAuth2:
+                - network.read
+            -   XaasAuth:
+                - network.read
+    /v0/xaas/public_ips/{public_ip_id}:
+        get:
+            tags:
+            - xaas_public_ip
+            summary: Public IP Details XaaS
+            description: Return a Public IP XaaS details
+            operationId: publicIpXaaSDetails
+            parameters:
+            -   name: public_ip_id
+                in: path
+                required: true
+                schema:
+                    title: Public IP ID
+                    description: Id of the Public IP to retrieve
+                    type: string
+                description: Id of the Public IP to retrieve
+            -   name: project_type
+                in: query
+                required: true
+                schema:
+                    allOf:
+                    -   $ref: '#/components/schemas/ProjectType'
+                    title: project_type
+                    description: Project type to delete tenant's public ip
+                    type: string
+                description: Project type to delete tenant's public ip
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/PublicIpDb'
+                    links:
+                        delete:
+                            operationId: deleteXaaSPublicIp
+                            description: Delete Public IP XaaS
+                            parameters:
+                                public_ip_id: $response.body#/id
+                        attach:
+                            operationId: attachXaaSPublicIp
+                            description: Attach Public IP XaaS
+                            parameters:
+                                public_ip_id: $response.body#/id
+                                port_id: $response.body#/port_id
+                        detach:
+                            operationId: detachXaaSPublicIp
+                            description: Detach Public IP
+                            parameters:
+                                public_ip_id: $response.body#/id
+                                port_id: $response.body#/port_id
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: true
+            security:
+            -   OAuth2:
+                - network.read
+            -   XaasAuth:
+                - network.read
+        delete:
+            tags:
+            - xaas_public_ip
+            summary: Delete Public IP XaaS
+            description: Delete a Public IP from the provided tenant_id for xaas
+            operationId: deleteXaaSPublicIp
+            parameters:
+            -   name: public_ip_id
+                in: path
+                required: true
+                schema:
+                    title: Public IP ID
+                    description: Id of the Public IP to delete
+                    type: string
+                description: Id of the Public IP to delete
+            -   name: project_type
+                in: query
+                required: true
+                schema:
+                    allOf:
+                    -   $ref: '#/components/schemas/ProjectType'
+                    title: project_type
+                    description: Project type to delete tenant's public ip
+                    type: string
+                description: Project type to delete tenant's public ip
+            responses:
+                '204':
+                    description: Successful Response
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: true
+            security:
+            -   OAuth2:
+                - network.write
+            -   XaasAuth:
+                - network.write
+    /v0/xaas/public_ips/{public_ip_id}/attach/{port_id}:
+        post:
+            tags:
+            - xaas_public_ip
+            summary: Attach Public IP XaaS
+            description: Attach a Public IP to a Port
+            operationId: attachXaaSPublicIp
+            parameters:
+            -   name: public_ip_id
+                in: path
+                required: true
+                schema:
+                    title: Public IP ID
+                    description: Id of the Public IP to attach port to
+                    type: string
+                description: Id of the Public IP to attach port to
+            -   name: port_id
+                in: path
+                required: true
+                schema:
+                    title: Port ID
+                    description: Id of the Port to attach the Public IP
+                    type: string
+                description: Id of the Port to attach the Public IP
+            -   name: project_type
+                in: query
+                required: true
+                schema:
+                    allOf:
+                    -   $ref: '#/components/schemas/ProjectType'
+                    title: project_type
+                    description: Project type to delete tenant's public ip
+                    type: string
+                description: Project type to delete tenant's public ip
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema: {}
+                    links:
+                        get:
+                            operationId: publicIpXaaSDetails
+                            description: Public IP Details XaaS
+                            parameters:
+                                public_ip_id: $request.path.public_ip_id
+                        delete:
+                            operationId: deleteXaaSPublicIp
+                            description: Delete Public IP XaaS
+                            parameters:
+                                public_ip_id: $request.path.public_ip_id
+                        detach:
+                            operationId: detachXaaSPublicIp
+                            description: Detach Public IP
+                            parameters:
+                                public_ip_id: $request.path.public_ip_id
+                                port_id: $request.path.port_id
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: true
+            security:
+            -   OAuth2:
+                - network.write
+            -   XaasAuth:
+                - network.write
+    /v0/xaas/public_ips/{public_ip_id}/detach/{port_id}:
+        post:
+            tags:
+            - xaas_public_ip
+            summary: Detach Public IP
+            description: Detach a Public IP to a Port
+            operationId: detachXaaSPublicIp
+            parameters:
+            -   name: public_ip_id
+                in: path
+                required: true
+                schema:
+                    title: Public IP ID
+                    description: Id of the Public IP to detach port to
+                    type: string
+                description: Id of the Public IP to detach port to
+            -   name: port_id
+                in: path
+                required: true
+                schema:
+                    title: Port ID
+                    description: Id of the Port to detach the Public IP
+                    type: string
+                description: Id of the Port to detach the Public IP
+            -   name: project_type
+                in: query
+                required: true
+                schema:
+                    allOf:
+                    -   $ref: '#/components/schemas/ProjectType'
+                    title: project_type
+                    description: Project type to delete tenant's public ip
+                    type: string
+                description: Project type to delete tenant's public ip
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema: {}
+                    links:
+                        get:
+                            operationId: publicIpXaaSDetails
+                            description: Public IP Details XaaS
+                            parameters:
+                                public_ip_id: $request.path.public_ip_id
+                        delete:
+                            operationId: deleteXaaSPublicIp
+                            description: Delete Public IP XaaS
+                            parameters:
+                                public_ip_id: $request.path.public_ip_id
+                        attach:
+                            operationId: attachXaaSPublicIp
+                            description: Attach Public IP XaaS
+                            parameters:
+                                public_ip_id: $request.path.public_ip_id
+                                port_id: $request.path.port_id
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: true
+            security:
+            -   OAuth2:
+                - network.write
+            -   XaasAuth:
+                - network.write
     /v0/usage:
         get:
             tags:
@@ -1025,6 +1833,307 @@ paths:
             x-viveiro: true
             security:
             -   OAuth2:
+                - network.write
+    /v0/xaas/security_groups/{security_group_id}/rules:
+        post:
+            tags:
+            - xaas_rule
+            summary: Create Rule
+            description: Create a Rule async, returning its ID. To monitor the creation
+                progress, please check the status in the service message or implement
+                polling.Either a remote_ip_prefix or a remote_group_id can be specified.With
+                remote_ip_prefix, all IPs that match the criteria will be allowed.With
+                remote_group_id, only the specified security group is allowed to communicatefollowing
+                the specified protocol, direction and port_range_min/max
+            operationId: createRuleXaas
+            parameters:
+            -   name: security_group_id
+                in: path
+                required: true
+                schema:
+                    title: Security Group ID
+                    description: Id of the Security Group
+                    type: string
+                description: Id of the Security Group
+            -   name: project_type
+                in: query
+                required: true
+                schema:
+                    allOf:
+                    -   $ref: '#/components/schemas/ProjectType'
+                    title: project_type
+                    description: Project type to create rule
+                    type: string
+                description: Project type to create rule
+            -   name: wait
+                in: query
+                required: false
+                schema:
+                    title: wait
+                    description: The request will be asynchronous. The wait parameter
+                        tells the API that you want the request to simulate synchronous
+                        behavior (to maintain endpoint compatibility). You can set
+                        an approximate timeout with the waitTimeout parameter
+                    default: true
+                    nullable: true
+                    type: boolean
+                description: The request will be asynchronous. The wait parameter
+                    tells the API that you want the request to simulate synchronous
+                    behavior (to maintain endpoint compatibility). You can set an
+                    approximate timeout with the waitTimeout parameter
+            -   name: wait_timeout
+                in: query
+                required: false
+                schema:
+                    title: waitTimeout
+                    description: the approximate time in seconds you want to wait
+                        when simulating the request as synchronous (only works with
+                        wait=true)
+                    default: 120
+                    nullable: true
+                    type: integer
+                description: the approximate time in seconds you want to wait when
+                    simulating the request as synchronous (only works with wait=true)
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/RuleCreateRequest'
+            responses:
+                '201':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/RuleCreateResponse'
+                    links:
+                        list:
+                            operationId: listRulesXaas
+                            description: List Rules
+                            parameters:
+                                security_group_id: $request.path.security_group_id
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: false
+            x-mgc-hidden: true
+            security:
+            -   OAuth2:
+                - network.write
+            -   XaasAuth:
+                - network.write
+        get:
+            tags:
+            - xaas_rule
+            summary: List Rules
+            description: Returns a list of rules for a provided security_group_id
+            operationId: listRulesXaas
+            parameters:
+            -   name: security_group_id
+                in: path
+                required: true
+                schema:
+                    title: Security Group ID
+                    description: Id of the Security Group
+                    type: string
+                description: Id of the Security Group
+            -   name: project_type
+                in: query
+                required: true
+                schema:
+                    allOf:
+                    -   $ref: '#/components/schemas/ProjectType'
+                    title: project_type
+                    description: Project type to create rule
+                    type: string
+                description: Project type to create rule
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/RulesList'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: false
+            x-mgc-hidden: true
+            security:
+            -   OAuth2:
+                - network.read
+            -   XaasAuth:
+                - network.read
+    /v0/xaas/rules/{rule_id}:
+        get:
+            tags:
+            - xaas_rule
+            summary: Rule Details
+            description: Return a rule details
+            operationId: ruleDetailsXaas
+            parameters:
+            -   name: rule_id
+                in: path
+                required: true
+                schema:
+                    title: Rule ID
+                    description: Id of the Rule
+                    type: string
+                description: Id of the Rule
+            -   name: project_type
+                in: query
+                required: true
+                schema:
+                    allOf:
+                    -   $ref: '#/components/schemas/ProjectType'
+                    title: project_type
+                    description: Project type to create rule
+                    type: string
+                description: Project type to create rule
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/RuleResponse'
+                    links:
+                        update:
+                            operationId: updateAsyncRule
+                            description: Update Async Rule
+                            parameters:
+                                rule_id: $response.body#/id
+                        delete:
+                            operationId: deleteRuleXaas
+                            description: Delete a Rule
+                            parameters:
+                                rule_id: $response.body#/id
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: false
+            x-mgc-hidden: true
+            security:
+            -   OAuth2:
+                - network.read
+            -   XaasAuth:
+                - network.read
+        delete:
+            tags:
+            - xaas_rule
+            summary: Delete a Rule
+            description: Delete a rule from the provided tenant_id
+            operationId: deleteRuleXaas
+            parameters:
+            -   name: rule_id
+                in: path
+                required: true
+                schema:
+                    title: Rule ID
+                    description: Id of the Rule
+                    type: string
+                description: Id of the Rule
+            -   name: project_type
+                in: query
+                required: true
+                schema:
+                    allOf:
+                    -   $ref: '#/components/schemas/ProjectType'
+                    title: project_type
+                    description: Project type to create rule
+                    type: string
+                description: Project type to create rule
+            responses:
+                '204':
+                    description: Successful Response
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: false
+            x-mgc-hidden: true
+            security:
+            -   OAuth2:
+                - network.write
+            -   XaasAuth:
+                - network.write
+        patch:
+            tags:
+            - xaas_rule
+            summary: Update Async Rule
+            description: Update async creation of Rule
+            operationId: updateAsyncRule
+            parameters:
+            -   name: rule_id
+                in: path
+                required: true
+                schema:
+                    title: Rule ID
+                    description: Id of the Rule
+                    type: string
+                description: Id of the Rule
+            -   name: project_type
+                in: query
+                required: true
+                schema:
+                    allOf:
+                    -   $ref: '#/components/schemas/ProjectType'
+                    title: project_type
+                    description: Project type to create rule
+                    type: string
+                description: Project type to create rule
+            -   name: x-request-id
+                in: header
+                required: true
+                schema:
+                    description: Request id of Rule to update
+                    title: X-Request-Id
+                    type: string
+                description: Request id of Rule to update
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/RuleDefaultStatusEvent'
+            responses:
+                '204':
+                    description: Successful Response
+                    links:
+                        get:
+                            operationId: ruleDetailsXaas
+                            description: Rule Details
+                            parameters:
+                                rule_id: $request.path.rule_id
+                        delete:
+                            operationId: deleteRuleXaas
+                            description: Delete a Rule
+                            parameters:
+                                rule_id: $request.path.rule_id
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: false
+            x-mgc-hidden: true
+            security:
+            -   OAuth2:
+                - network.write
+            -   XaasAuth:
                 - network.write
     /v0/security_groups/default:
         post:
@@ -1365,6 +2474,729 @@ paths:
             security:
             -   OAuth2:
                 - network.write
+    /v0/xaas/security_groups/default:
+        post:
+            tags:
+            - xaas_security_group
+            summary: Create Security Group Default
+            description: Create a Security Group Default
+            operationId: createSecurityGroupDefaultXaas
+            parameters:
+            -   name: project_type
+                in: query
+                required: true
+                schema:
+                    $ref: '#/components/schemas/ProjectType'
+            responses:
+                '201':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SecurityGroupCreateResponse'
+                    links:
+                        get:
+                            operationId: securityGroupDetailsXaas
+                            description: Security Group Details
+                            parameters:
+                                security_group_id: $response.body#/id
+                        update:
+                            operationId: updateAsyncSecurityGroup
+                            description: Update Async Security Group
+                            parameters:
+                                security_group_id: $response.body#/id
+                        delete:
+                            operationId: deleteSecurityGroupXaas
+                            description: Delete a security group
+                            parameters:
+                                security_group_id: $response.body#/id
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: false
+            x-mgc-hidden: true
+            security:
+            -   OAuth2:
+                - network.write
+            -   XaasAuth:
+                - network.write
+    /v0/xaas/security_groups:
+        post:
+            tags:
+            - xaas_security_group
+            summary: Create Security Group
+            description: Create a Security Group async, returning its ID. To monitor
+                the creation progress, please check the status in the service message
+                or implement polling.
+            operationId: createSecurityGroupXaas
+            parameters:
+            -   name: project_type
+                in: query
+                required: true
+                schema:
+                    allOf:
+                    -   $ref: '#/components/schemas/ProjectType'
+                    title: project_type
+                    description: Project type to create Security Group
+                    type: string
+                description: Project type to create Security Group
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/SecurityGroupCreateRequest'
+            responses:
+                '201':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SecurityGroupCreateResponse'
+                    links:
+                        get:
+                            operationId: securityGroupDetailsXaas
+                            description: Security Group Details
+                            parameters:
+                                security_group_id: $response.body#/id
+                        update:
+                            operationId: updateAsyncSecurityGroup
+                            description: Update Async Security Group
+                            parameters:
+                                security_group_id: $response.body#/id
+                        delete:
+                            operationId: deleteSecurityGroupXaas
+                            description: Delete a security group
+                            parameters:
+                                security_group_id: $response.body#/id
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: false
+            x-mgc-hidden: true
+            security:
+            -   OAuth2:
+                - network.write
+            -   XaasAuth:
+                - network.write
+        get:
+            tags:
+            - xaas_security_group
+            summary: List Security Groups
+            description: Returns a list of security groups for a provided tenant_id
+            operationId: listSecurityGroupXaas
+            parameters:
+            -   name: project_type
+                in: query
+                required: true
+                schema:
+                    allOf:
+                    -   $ref: '#/components/schemas/ProjectType'
+                    title: project_type
+                    description: Project type to list Security Groups
+                    type: string
+                description: Project type to list Security Groups
+            -   name: x-zone
+                in: header
+                required: false
+                schema:
+                    title: X-Zone
+                    nullable: true
+                    type: string
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/XaasSecurityGroupListEvent'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: false
+            x-mgc-hidden: true
+            security:
+            -   OAuth2:
+                - network.read
+            -   XaasAuth:
+                - network.read
+    /v0/xaas/vpcs/{vpc_id}/security_groups:
+        post:
+            tags:
+            - xaas_security_group
+            summary: Create Security Group
+            description: Create a Security Group
+            operationId: createSecurityGroupXaasDeprecated
+            deprecated: true
+            parameters:
+            -   name: vpc_id
+                in: path
+                required: true
+                schema:
+                    title: VPC Id
+                    description: Id of the vpc to create the security group in
+                    nullable: true
+                    type: string
+                description: Id of the vpc to create the security group in
+            -   name: project_type
+                in: query
+                required: true
+                schema:
+                    allOf:
+                    -   $ref: '#/components/schemas/ProjectType'
+                    title: project_type
+                    description: Project type to create Security Group
+                    type: string
+                description: Project type to create Security Group
+            -   name: wait
+                in: query
+                required: false
+                schema:
+                    title: wait
+                    description: The request will be asynchronous. The wait parameter
+                        tells the API that you want the request to simulate synchronous
+                        behavior (to maintain endpoint compatibility). You can set
+                        an approximate timeout with the waitTimeout parameter
+                    default: true
+                    nullable: true
+                    type: boolean
+                description: The request will be asynchronous. The wait parameter
+                    tells the API that you want the request to simulate synchronous
+                    behavior (to maintain endpoint compatibility). You can set an
+                    approximate timeout with the waitTimeout parameter
+            -   name: wait_timeout
+                in: query
+                required: false
+                schema:
+                    title: waitTimeout
+                    description: the approximate time in seconds you want to wait
+                        when simulating the request as synchronous (only works with
+                        wait=true)
+                    default: 120
+                    nullable: true
+                    type: integer
+                description: the approximate time in seconds you want to wait when
+                    simulating the request as synchronous (only works with wait=true)
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/SecurityGroupCreateRequest'
+            responses:
+                '201':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SecurityGroupCreateResponse'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: false
+            x-mgc-hidden: true
+            security:
+            -   OAuth2:
+                - network.write
+            -   XaasAuth:
+                - network.write
+        get:
+            tags:
+            - xaas_security_group
+            summary: List Security Groups
+            description: Returns a list of security groups for a provided vpc_id
+            operationId: listSecurityGroupXaasDeprecated
+            parameters:
+            -   name: project_type
+                in: query
+                required: true
+                schema:
+                    allOf:
+                    -   $ref: '#/components/schemas/ProjectType'
+                    title: project_type
+                    description: Project type to list Security Groups
+                    type: string
+                description: Project type to list Security Groups
+            -   name: x-zone
+                in: header
+                required: false
+                schema:
+                    title: X-Zone
+                    nullable: true
+                    type: string
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/XaasSecurityGroupListEvent'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: false
+            x-mgc-hidden: true
+            security:
+            -   OAuth2:
+                - network.read
+            -   XaasAuth:
+                - network.read
+    /v0/xaas/security_groups/{security_group_id}:
+        get:
+            tags:
+            - xaas_security_group
+            summary: Security Group Details
+            description: Return a security group details
+            operationId: securityGroupDetailsXaas
+            parameters:
+            -   name: security_group_id
+                in: path
+                required: true
+                schema:
+                    title: securityGroupId
+                    description: Id of the Security Group to detail
+                    type: string
+                description: Id of the Security Group to detail
+            -   name: project_type
+                in: query
+                required: true
+                schema:
+                    allOf:
+                    -   $ref: '#/components/schemas/ProjectType'
+                    title: project_type
+                    description: Project type to detail Security Group
+                    type: string
+                description: Project type to detail Security Group
+            -   name: x-zone
+                in: header
+                required: false
+                schema:
+                    title: X-Zone
+                    nullable: true
+                    type: string
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SecurityGroupDetailEvent'
+                    links:
+                        update:
+                            operationId: updateAsyncSecurityGroup
+                            description: Update Async Security Group
+                            parameters:
+                                security_group_id: $response.body#/id
+                        delete:
+                            operationId: deleteSecurityGroupXaas
+                            description: Delete a security group
+                            parameters:
+                                security_group_id: $response.body#/id
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: false
+            x-mgc-hidden: true
+            security:
+            -   OAuth2:
+                - network.read
+            -   XaasAuth:
+                - network.read
+        delete:
+            tags:
+            - xaas_security_group
+            summary: Delete a security group
+            description: Delete a security group from the provided tenant_id
+            operationId: deleteSecurityGroupXaas
+            parameters:
+            -   name: security_group_id
+                in: path
+                required: true
+                schema:
+                    title: securityGroupId
+                    description: Id of the Security Group to delete
+                    type: string
+                description: Id of the Security Group to delete
+            -   name: project_type
+                in: query
+                required: true
+                schema:
+                    allOf:
+                    -   $ref: '#/components/schemas/ProjectType'
+                    title: project_type
+                    description: Project type to delete Security Group
+                    type: string
+                description: Project type to delete Security Group
+            responses:
+                '204':
+                    description: Successful Response
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: false
+            x-mgc-hidden: true
+            security:
+            -   OAuth2:
+                - network.write
+            -   XaasAuth:
+                - network.write
+        patch:
+            tags:
+            - xaas_security_group
+            summary: Update Async Security Group
+            description: Update async creation of Security Group
+            operationId: updateAsyncSecurityGroup
+            parameters:
+            -   name: security_group_id
+                in: path
+                required: true
+                schema:
+                    title: securityGroupId
+                    description: Id of the async Security Group to update
+                    type: string
+                description: Id of the async Security Group to update
+            -   name: project_type
+                in: query
+                required: true
+                schema:
+                    allOf:
+                    -   $ref: '#/components/schemas/ProjectType'
+                    title: project_type
+                    description: Project type to update Security Group
+                    type: string
+                description: Project type to update Security Group
+            -   name: x-request-id
+                in: header
+                required: true
+                schema:
+                    title: X-Request-Id
+                    type: string
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/SecurityGroupStatusEvent'
+            responses:
+                '204':
+                    description: Successful Response
+                    links:
+                        get:
+                            operationId: securityGroupDetailsXaas
+                            description: Security Group Details
+                            parameters:
+                                security_group_id: $request.path.security_group_id
+                        delete:
+                            operationId: deleteSecurityGroupXaas
+                            description: Delete a security group
+                            parameters:
+                                security_group_id: $request.path.security_group_id
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: false
+            x-mgc-hidden: true
+            security:
+            -   OAuth2:
+                - network.write
+            -   XaasAuth:
+                - network.write
+    /v0/xaas/security_groups_all:
+        delete:
+            tags:
+            - xaas_security_group
+            summary: Delete all security groups xaas
+            description: Delete all security groups from the provided tenant_id xaas
+            operationId: deleteAllSecurityGroupsXaas
+            parameters:
+            -   name: project_type
+                in: query
+                required: true
+                schema:
+                    allOf:
+                    -   $ref: '#/components/schemas/ProjectType'
+                    title: project_type
+                    description: Project type to delete all Security Groups
+                    type: string
+                description: Project type to delete all Security Groups
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SecurityGroupDeletedAllResponse'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: false
+            x-mgc-hidden: true
+            security:
+            -   OAuth2:
+                - network.write
+            -   XaasAuth:
+                - network.write
+    /v0/xaas/vpcs/{vpc_id}/subnetpools:
+        post:
+            tags:
+            - xaas_subnetpools
+            summary: Create a Subnet Pool in a VPC
+            description: Create a Subnet Pool
+            operationId: createSubnetPoolInVPC
+            parameters:
+            -   name: vpc_id
+                in: path
+                required: true
+                schema:
+                    title: VPC Id
+                    description: Id of the VPC to create the Subnet Pool
+                    type: string
+                description: Id of the VPC to create the Subnet Pool
+            -   name: project_type
+                in: query
+                required: true
+                schema:
+                    allOf:
+                    -   $ref: '#/components/schemas/ProjectType'
+                    title: project_type
+                    description: Project type to create Subnet Pool
+                    type: string
+                description: Project type to create Subnet Pool
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/SubnetPoolRequest'
+            responses:
+                '201':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SubnetPoolResponse'
+                    links:
+                        list:
+                            operationId: getSubnetPoolsByVPC
+                            description: List Subnet Pools by VPC
+                            parameters:
+                                vpc_id: $request.path.vpc_id
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: false
+            x-mgc-hidden: true
+            security:
+            -   OAuth2:
+                - network.write
+            -   XaasAuth:
+                - network.write
+        get:
+            tags:
+            - xaas_subnetpools
+            summary: List Subnet Pools by VPC
+            description: Returns a list of subnet pools inside a specific VPC
+            operationId: getSubnetPoolsByVPC
+            parameters:
+            -   name: vpc_id
+                in: path
+                required: true
+                schema:
+                    title: Vpc Id
+                    description: Id of the VPC to list the Subnet Pools
+                    type: string
+                description: Id of the VPC to list the Subnet Pools
+            -   name: project_type
+                in: query
+                required: true
+                schema:
+                    allOf:
+                    -   $ref: '#/components/schemas/ProjectType'
+                    title: project_type
+                    description: Project type to list Subnet Pools by VPC
+                    type: string
+                description: Project type to list Subnet Pools by VPC
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SubnetPoolsResponse'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: false
+            x-mgc-hidden: true
+            security:
+            -   OAuth2:
+                - network.read
+            -   XaasAuth:
+                - network.read
+    /v0/xaas/subnetpools:
+        get:
+            tags:
+            - xaas_subnetpools
+            summary: List Subnet Pools by Tenant
+            description: Returns a list of Subnet Pools for the current tenant's project
+            operationId: listSubnetPoolsByTenant
+            parameters:
+            -   name: project_type
+                in: query
+                required: true
+                schema:
+                    allOf:
+                    -   $ref: '#/components/schemas/ProjectType'
+                    title: project_type
+                    description: Project type to list Subnet Pools
+                    type: string
+                description: Project type to list Subnet Pools
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SubnetPoolsResponse'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: false
+            x-mgc-hidden: true
+            security:
+            -   OAuth2:
+                - network.read
+            -   XaasAuth:
+                - network.read
+    /v0/xaas/subnetpools/{subnetpool_id}:
+        get:
+            tags:
+            - xaas_subnetpools
+            summary: Get Subnet Pool by ID
+            description: Get details of a specific Subnet Pool
+            operationId: getDetailedSubnetPool
+            parameters:
+            -   name: subnetpool_id
+                in: path
+                required: true
+                schema:
+                    title: subnetpoolId
+                    description: Id of the Subnet Pool to get details
+                    type: string
+                description: Id of the Subnet Pool to get details
+            -   name: project_type
+                in: query
+                required: true
+                schema:
+                    allOf:
+                    -   $ref: '#/components/schemas/ProjectType'
+                    title: project_type
+                    description: Project type to detail Subnet Pool
+                    type: string
+                description: Project type to detail Subnet Pool
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SubnetPoolDetailsResponse'
+                    links:
+                        delete:
+                            operationId: deleteSubnetPoolByID
+                            description: Delete Subnet Pool by ID
+                            parameters:
+                                subnetpool_id: $response.body#/id
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: false
+            x-mgc-hidden: true
+            security:
+            -   OAuth2:
+                - network.read
+            -   XaasAuth:
+                - network.read
+        delete:
+            tags:
+            - xaas_subnetpools
+            summary: Delete Subnet Pool by ID
+            description: Delete one Subnet Pool by ID
+            operationId: deleteSubnetPoolByID
+            parameters:
+            -   name: subnetpool_id
+                in: path
+                required: true
+                schema:
+                    title: subnetpoolId
+                    description: Id of the Subnet Pool to delete
+                    type: string
+                description: Id of the Subnet Pool to delete
+            -   name: project_type
+                in: query
+                required: true
+                schema:
+                    allOf:
+                    -   $ref: '#/components/schemas/ProjectType'
+                    title: project_type
+                    description: Project type to delete Subnet Pool
+                    type: string
+                description: Project type to delete Subnet Pool
+            responses:
+                '204':
+                    description: Successful Response
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: false
+            x-mgc-hidden: true
+            security:
+            -   OAuth2:
+                - network.write
+            -   XaasAuth:
+                - network.write
     /v0/vpcs/{vpc_id}/subnets:
         get:
             tags:
@@ -1580,6 +3412,52 @@ paths:
             security:
             -   OAuth2:
                 - network.write
+    /v0/xaas/vpcs/{vpc_id}/subnets:
+        get:
+            tags:
+            - xaas_subnets
+            summary: List XAAS Subnets
+            description: Returns a list of XAAS subnets from the provided vpc_id
+            operationId: listXAASSubnets
+            parameters:
+            -   name: vpc_id
+                in: path
+                required: true
+                schema:
+                    title: VPC Id
+                    description: Id of the VPC to list Subnets
+                    type: string
+                description: Id of the VPC to list Subnets
+            -   name: project_type
+                in: query
+                required: true
+                schema:
+                    allOf:
+                    -   $ref: '#/components/schemas/ProjectType'
+                    title: project_type
+                    description: Project type to list Subnets
+                    type: string
+                description: Project type to list Subnets
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SubnetsResponseXAAS'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: false
+            x-mgc-hidden: true
+            security:
+            -   OAuth2:
+                - network.read
+            -   XaasAuth:
+                - network.read
     /v0/vpcs/default:
         post:
             tags:
@@ -1771,6 +3649,520 @@ paths:
             security:
             -   OAuth2:
                 - network.write
+    /v0/xaas/vpcs:
+        post:
+            tags:
+            - xaas_vpc
+            summary: Create Vpc Xaas
+            description: Create a VPC for a provided tenant_id of an project type
+            operationId: create_vpc_xaas_v0_xaas_vpcs_post
+            parameters:
+            -   name: project_type
+                in: query
+                required: true
+                schema:
+                    allOf:
+                    -   $ref: '#/components/schemas/ProjectType'
+                    title: project_type
+                    description: Project type to create VPC
+                    type: string
+                description: Project type to create VPC
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/XVpcCreateRequest'
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/VpcCreateResponse'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: false
+            x-mgc-hidden: true
+            security:
+            -   OAuth2:
+                - network.write
+            -   XaasAuth:
+                - network.write
+        get:
+            tags:
+            - xaas_vpc
+            summary: List VPC with project type
+            description: Returns a list of VPCs for a provided tenant_id of an project
+                type
+            operationId: listVpcsProjectType
+            parameters:
+            -   name: project_type
+                in: query
+                required: true
+                schema:
+                    allOf:
+                    -   $ref: '#/components/schemas/ProjectType'
+                    title: project_type
+                    description: Project type to list VPCs
+                    type: string
+                description: Project type to list VPCs
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/VpcResponseList'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: false
+            x-mgc-hidden: true
+            security:
+            -   OAuth2:
+                - network.read
+            -   XaasAuth:
+                - network.read
+    /v0/xaas/vpcs/{vpc_id}:
+        get:
+            tags:
+            - xaas_vpc
+            summary: VPC with project type details
+            description: Return a VPC details
+            operationId: vpcProjectTypeDetails
+            parameters:
+            -   name: vpc_id
+                in: path
+                required: true
+                schema:
+                    title: Vpc Id
+                    type: string
+            -   name: project_type
+                in: query
+                required: true
+                schema:
+                    $ref: '#/components/schemas/ProjectType'
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/VpcDetailsResponse'
+                    links:
+                        add_route:
+                            operationId: addVpcPrimaryRouterRoute
+                            description: Add Route on VPCs Primary Router
+                            parameters:
+                                vpc_id: $request.path.vpc_id
+                        delete_route:
+                            operationId: delVpcsPrimaryRouterRoute
+                            description: Delete Route on VPCs primary Router
+                            parameters:
+                                vpc_id: $request.path.vpc_id
+                        add_interface:
+                            operationId: addVpcsPrimaryRouterInterface
+                            description: Add Router interface on VPCs primary router
+                            parameters:
+                                vpc_id: $request.path.vpc_id
+                        delete_interface:
+                            operationId: delVpcsPrimaryRouterInterface
+                            description: Delete router interface on VPCs primary router
+                            parameters:
+                                vpc_id: $request.path.vpc_id
+                        interfaces:
+                            operationId: listVpcsPrimaryRouterInterfaces
+                            description: List Router interfaces from a VPCs primary
+                                Router
+                            parameters:
+                                vpc_id: $request.path.vpc_id
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: false
+            x-mgc-hidden: true
+            security:
+            -   OAuth2:
+                - network.read
+            -   XaasAuth:
+                - network.read
+    /v0/xaas/vpcs/all:
+        delete:
+            tags:
+            - xaas_vpc
+            summary: Delete Vpc Xaas All
+            description: Delete all of VPCs for a provided tenant_id of an project
+                type
+            operationId: deleteAllVpcsXaas
+            parameters:
+            -   name: project_type
+                in: query
+                required: true
+                schema:
+                    allOf:
+                    -   $ref: '#/components/schemas/ProjectType'
+                    title: project_type
+                    description: Project type to delete all VPCs
+                    type: string
+                description: Project type to delete all VPCs
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/VpcDeletedAllResponse'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: false
+            x-mgc-hidden: true
+            security:
+            -   OAuth2:
+                - network.write
+            -   XaasAuth:
+                - network.write
+    /v0/xaas/vpcs/{vpc_id}/add_route:
+        post:
+            tags:
+            - xaas_vpc
+            summary: Add Route on VPCs Primary Router
+            description: Create a static route for VPCs Primary Router
+            operationId: addVpcPrimaryRouterRoute
+            parameters:
+            -   name: vpc_id
+                in: path
+                required: true
+                schema:
+                    title: VPC Id
+                    description: Id of the VPC to create route
+                    type: string
+                description: Id of the VPC to create route
+            -   name: project_type
+                in: query
+                required: true
+                schema:
+                    allOf:
+                    -   $ref: '#/components/schemas/ProjectType'
+                    title: project_type
+                    description: Project type to create route
+                    type: string
+                description: Project type to create route
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/RouteRequest'
+            responses:
+                '201':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema: {}
+                    links:
+                        get:
+                            operationId: vpcProjectTypeDetails
+                            description: VPC with project type details
+                            parameters:
+                                vpc_id: $request.path.vpc_id
+                        delete_route:
+                            operationId: delVpcsPrimaryRouterRoute
+                            description: Delete Route on VPCs primary Router
+                            parameters:
+                                vpc_id: $request.path.vpc_id
+                        add_interface:
+                            operationId: addVpcsPrimaryRouterInterface
+                            description: Add Router interface on VPCs primary router
+                            parameters:
+                                vpc_id: $request.path.vpc_id
+                        delete_interface:
+                            operationId: delVpcsPrimaryRouterInterface
+                            description: Delete router interface on VPCs primary router
+                            parameters:
+                                vpc_id: $request.path.vpc_id
+                        interfaces:
+                            operationId: listVpcsPrimaryRouterInterfaces
+                            description: List Router interfaces from a VPCs primary
+                                Router
+                            parameters:
+                                vpc_id: $request.path.vpc_id
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: false
+            x-mgc-hidden: true
+            security:
+            -   OAuth2:
+                - network.write
+            -   XaasAuth:
+                - network.write
+    /v0/xaas/vpcs/{vpc_id}/delete_route:
+        post:
+            tags:
+            - xaas_vpc
+            summary: Delete Route on VPCs primary Router
+            description: Delete a static route for VPCs primary Router
+            operationId: delVpcsPrimaryRouterRoute
+            parameters:
+            -   name: vpc_id
+                in: path
+                required: true
+                schema:
+                    title: VPC Id
+                    description: Id of the VPC to delete route
+                    type: string
+                description: Id of the VPC to delete route
+            -   name: project_type
+                in: query
+                required: true
+                schema:
+                    allOf:
+                    -   $ref: '#/components/schemas/ProjectType'
+                    title: project_type
+                    description: Project type to delete route
+                    type: string
+                description: Project type to delete route
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/RouteRequest'
+            responses:
+                '204':
+                    description: Successful Response
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: false
+            x-mgc-hidden: true
+            security:
+            -   OAuth2:
+                - network.write
+            -   XaasAuth:
+                - network.write
+    /v0/xaas/vpcs/{vpc_id}/add_interface:
+        post:
+            tags:
+            - xaas_vpc
+            summary: Add Router interface on VPCs primary router
+            description: Create a Router interface on VPCs primary router
+            operationId: addVpcsPrimaryRouterInterface
+            parameters:
+            -   name: vpc_id
+                in: path
+                required: true
+                schema:
+                    title: VPC Id
+                    description: Id of the VPC to add interface
+                    type: string
+                description: Id of the VPC to add interface
+            -   name: project_type
+                in: query
+                required: true
+                schema:
+                    allOf:
+                    -   $ref: '#/components/schemas/ProjectType'
+                    title: project_type
+                    description: Project type to add interface
+                    type: string
+                description: Project type to add interface
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/AddInterfaceRequest'
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/RouterInterfaceResponse'
+                    links:
+                        get:
+                            operationId: vpcProjectTypeDetails
+                            description: VPC with project type details
+                            parameters:
+                                vpc_id: $request.path.vpc_id
+                        add_route:
+                            operationId: addVpcPrimaryRouterRoute
+                            description: Add Route on VPCs Primary Router
+                            parameters:
+                                vpc_id: $request.path.vpc_id
+                        delete_route:
+                            operationId: delVpcsPrimaryRouterRoute
+                            description: Delete Route on VPCs primary Router
+                            parameters:
+                                vpc_id: $request.path.vpc_id
+                        delete_interface:
+                            operationId: delVpcsPrimaryRouterInterface
+                            description: Delete router interface on VPCs primary router
+                            parameters:
+                                vpc_id: $request.path.vpc_id
+                        interfaces:
+                            operationId: listVpcsPrimaryRouterInterfaces
+                            description: List Router interfaces from a VPCs primary
+                                Router
+                            parameters:
+                                vpc_id: $request.path.vpc_id
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: false
+            x-mgc-hidden: true
+            security:
+            -   OAuth2:
+                - network.write
+            -   XaasAuth:
+                - network.write
+    /v0/xaas/vpcs/{vpc_id}/delete_interface/{interface_id}:
+        delete:
+            tags:
+            - xaas_vpc
+            summary: Delete router interface on VPCs primary router
+            description: Delete a router interface on VPCs primary router
+            operationId: delVpcsPrimaryRouterInterface
+            parameters:
+            -   name: vpc_id
+                in: path
+                required: true
+                schema:
+                    title: VPC Id
+                    description: Id of the VPC to delete interface
+                    type: string
+                description: Id of the VPC to delete interface
+            -   name: interface_id
+                in: path
+                required: true
+                schema:
+                    title: Interface Id
+                    description: Id of the interface to delete
+                    type: string
+                description: Id of the interface to delete
+            -   name: project_type
+                in: query
+                required: true
+                schema:
+                    allOf:
+                    -   $ref: '#/components/schemas/ProjectType'
+                    title: project_type
+                    description: Project type to delete interface
+                    type: string
+                description: Project type to delete interface
+            responses:
+                '204':
+                    description: Successful Response
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: false
+            x-mgc-hidden: true
+            security:
+            -   OAuth2:
+                - network.write
+            -   XaasAuth:
+                - network.write
+    /v0/xaas/vpcs/{vpc_id}/interfaces:
+        get:
+            tags:
+            - xaas_vpc
+            summary: List Router interfaces from a VPCs primary Router
+            description: Returns a Router Interface's list from a VPCs primary Router
+            operationId: listVpcsPrimaryRouterInterfaces
+            parameters:
+            -   name: vpc_id
+                in: path
+                required: true
+                schema:
+                    title: VPC Id
+                    description: Id of the VPC to list interfaces
+                    type: string
+                description: Id of the VPC to list interfaces
+            -   name: project_type
+                in: query
+                required: true
+                schema:
+                    allOf:
+                    -   $ref: '#/components/schemas/ProjectType'
+                    title: project_type
+                    description: Project type to list interfaces
+                    type: string
+                description: Project type to list interfaces
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/RouterInterfaceResponseList'
+                    links:
+                        get:
+                            operationId: vpcProjectTypeDetails
+                            description: VPC with project type details
+                            parameters:
+                                vpc_id: $request.path.vpc_id
+                        add_route:
+                            operationId: addVpcPrimaryRouterRoute
+                            description: Add Route on VPCs Primary Router
+                            parameters:
+                                vpc_id: $request.path.vpc_id
+                        delete_route:
+                            operationId: delVpcsPrimaryRouterRoute
+                            description: Delete Route on VPCs primary Router
+                            parameters:
+                                vpc_id: $request.path.vpc_id
+                        add_interface:
+                            operationId: addVpcsPrimaryRouterInterface
+                            description: Add Router interface on VPCs primary router
+                            parameters:
+                                vpc_id: $request.path.vpc_id
+                        delete_interface:
+                            operationId: delVpcsPrimaryRouterInterface
+                            description: Delete router interface on VPCs primary router
+                            parameters:
+                                vpc_id: $request.path.vpc_id
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: false
+            x-mgc-hidden: true
+            security:
+            -   OAuth2:
+                - network.read
+            -   XaasAuth:
+                - network.read
     /v0/worker/public_ips/{public_ip_id}:
         patch:
             tags:
@@ -3675,6 +6067,79 @@ components:
             title: SubnetResponseId
             example:
                 id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        SubnetResponseXAAS:
+            properties:
+                id:
+                    type: string
+                    title: Id
+                vpc_id:
+                    type: string
+                    title: Vpc Id
+                name:
+                    title: Name
+                    nullable: true
+                    type: string
+                description:
+                    title: Description
+                    nullable: true
+                    type: string
+                cidr:
+                    type: string
+                    title: Cidr
+                ethertype:
+                    type: string
+                    title: Ethertype
+                created_at:
+                    title: Created At
+                    nullable: true
+                    type: string
+                    format: date-time
+                updated:
+                    title: Updated
+                    nullable: true
+                    type: string
+                    format: date-time
+                subnetpool_id:
+                    title: Subnetpool Id
+                    nullable: true
+                    type: string
+                external_id:
+                    title: External Id
+                    nullable: true
+                    type: string
+                cidr_block:
+                    type: string
+                    title: Cidr Block
+                ip_version:
+                    type: string
+                    title: Ip Version
+                zone:
+                    type: string
+                    title: Zone
+            type: object
+            required:
+            - id
+            - vpc_id
+            - cidr
+            - ethertype
+            - cidr_block
+            - ip_version
+            - zone
+            title: SubnetResponseXAAS
+            example:
+                cidr: 172.20.0.0/24
+                cidr_block: '[ATENÇÃO] - Este campo futuramente substituirá ''cidr'''
+                created_at: '2022-01-01 00:00:00'
+                description: vpc description
+                ethertype: '4'
+                external_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                ip_version: '[ATENÇÃO] - Este campo futuramente substituirá ''ethertype'''
+                name: vpc_name
+                subnetpool_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                updated: '2022-01-01 00:00:00'
+                vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                zone: a
         SubnetsResponse:
             properties:
                 subnets:
@@ -3693,6 +6158,31 @@ components:
                     id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                     ip_version: '4'
                     name: vpc_name
+                    updated: '2022-01-01 00:00:00'
+                    vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                    zone: a
+        SubnetsResponseXAAS:
+            properties:
+                subnets:
+                    items:
+                        $ref: '#/components/schemas/SubnetResponseXAAS'
+                    type: array
+                    title: Subnets
+                    default: []
+            type: object
+            title: SubnetsResponseXAAS
+            example:
+                subnets:
+                -   cidr: 172.20.0.0/24
+                    cidr_block: '[ATENÇÃO] - Este campo futuramente substituirá ''cidr'''
+                    created_at: '2022-01-01 00:00:00'
+                    description: vpc description
+                    ethertype: '4'
+                    external_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                    id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                    ip_version: '[ATENÇÃO] - Este campo futuramente substituirá ''ethertype'''
+                    name: vpc_name
+                    subnetpool_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                     updated: '2022-01-01 00:00:00'
                     vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                     zone: a
@@ -4027,6 +6517,98 @@ components:
                 description: vpc description
                 name: vpc_name
                 subnetpool_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        XaasSecurityGroupListEvent:
+            properties:
+                security_groups:
+                    items:
+                        $ref: '#/components/schemas/XaasSecurityGroupResponseEvent'
+                    type: array
+                    title: Security Groups
+            type: object
+            required:
+            - security_groups
+            title: XaasSecurityGroupListEvent
+            example:
+                security_groups:
+                -   created_at: '2022-01-01 00:00:00'
+                    description: security group description
+                    error: 'null'
+                    external_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                    id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                    is_default: true
+                    name: security_group_name
+                    project_type: default
+                    status: created
+                    tenant_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                    updated: '2022-01-01 00:00:00'
+                    vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        XaasSecurityGroupResponseEvent:
+            properties:
+                id:
+                    title: Id
+                    nullable: true
+                    type: string
+                vpc_id:
+                    title: Vpc Id
+                    nullable: true
+                    type: string
+                name:
+                    title: Name
+                    nullable: true
+                    type: string
+                description:
+                    title: Description
+                    nullable: true
+                    type: string
+                created_at:
+                    title: Created At
+                    nullable: true
+                    type: string
+                    format: date-time
+                updated:
+                    title: Updated
+                    nullable: true
+                    type: string
+                    format: date-time
+                status:
+                    $ref: '#/components/schemas/SecurityGroupStatus'
+                error:
+                    title: Error
+                    nullable: true
+                    type: string
+                tenant_id:
+                    title: Tenant Id
+                    nullable: true
+                    type: string
+                project_type:
+                    title: Project Type
+                    nullable: true
+                    type: string
+                is_default:
+                    title: Is Default
+                    nullable: true
+                    type: boolean
+                external_id:
+                    title: External Id
+                    nullable: true
+                    type: string
+            type: object
+            required:
+            - status
+            title: XaasSecurityGroupResponseEvent
+            example:
+                created_at: '2022-01-01 00:00:00'
+                description: security group description
+                error: 'null'
+                external_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                is_default: true
+                name: security_group_name
+                project_type: default
+                status: created
+                tenant_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                updated: '2022-01-01 00:00:00'
+                vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 tags:
 -   name: healthcheck
     description: healthcheck
@@ -4061,6 +6643,22 @@ tags:
 -   name: worker_public_ips
     description: worker_public_ips
     x-mgc-hidden: true
+-   name: xaas_network
+    description: xaas_network
+-   name: xaas_port
+    description: xaas_port
+-   name: xaas_public_ip
+    description: xaas_public_ip
+-   name: xaas_rule
+    description: xaas_rule
+-   name: xaas_security_group
+    description: xaas_security_group
+-   name: xaas_subnetpools
+    description: xaas_subnetpools
+-   name: xaas_subnets
+    description: xaas_subnets
+-   name: xaas_vpc
+    description: xaas_vpc
 $id: https://network.jaxyendy.com/openapi.json
 servers:
 -   url: https://{env}/{region}/network
