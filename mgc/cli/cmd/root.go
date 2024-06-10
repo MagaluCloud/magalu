@@ -117,7 +117,7 @@ can generate a command line on-demand for Rest manipulation`,
 
 	loadErr := loadSdkCommandTree(sdk, rootCmd, mainArgs)
 	if loadErr != nil {
-		rootCmd.PrintErrln("Warning: loading dynamic arguments:", loadErr)
+		logger().Debugw("failed to load command tree", "error", loadErr)
 	}
 
 	defer func() {
