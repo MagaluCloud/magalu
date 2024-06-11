@@ -237,7 +237,7 @@ var downgradeSpecCmd = &cobra.Command{
 							},
 						)
 
-						propMap.BuildSchema()
+						_, _ = propMap.BuildSchema()
 						schemaToChange, ok := docModel.Model.Components.Schemas.Get(pair.Key)
 						if ok {
 							pprops := schemaToChange.Schema().Properties
@@ -386,7 +386,7 @@ var downgradeSpecCmd = &cobra.Command{
 				panic(fmt.Sprintf("cannot re-render document: %d errors reported", len(errs)))
 			}
 
-			os.WriteFile(filepath.Join(SPEC_DIR, "conv."+v.File), fileBytes, 0644)
+			_ = os.WriteFile(filepath.Join(SPEC_DIR, "conv."+v.File), fileBytes, 0644)
 		}
 	},
 }
