@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"fmt"
 	"regexp"
 	"slices"
 	"strings"
@@ -169,6 +168,5 @@ func setDefaultRegion(sdk *mgcSdk.Sdk) {
 			logger().Debugw("failed to set region in config", "error", err)
 			return
 		}
-		fmt.Println("Using default region:", region)
 	}
 }
