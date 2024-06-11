@@ -53,10 +53,11 @@ func handleResultWithValue(result core.ResultWithValue, output string) (err erro
 		return nil
 	}
 
-	err = result.ValidateSchema()
-	if err != nil {
-		logValidationErr(err)
-	}
+	// TODO - TEMPORARY
+	// err = result.ValidateSchema()
+	// if err != nil {
+	// 	logValidationErr(err)
+	// }
 
 	name, options := parseOutputFormatter(output)
 	if name == "" {

@@ -23,10 +23,9 @@ paths:
                 required: false
                 schema:
                     type: integer
-                    exclusiveMinimum: true
+                    exclusiveMinimum: false
                     default: 50
                     title: ' Limit'
-                    minimum: 0
             -   name: _offset
                 in: query
                 required: false
@@ -331,10 +330,9 @@ paths:
                 required: false
                 schema:
                     type: integer
-                    exclusiveMinimum: true
+                    exclusiveMinimum: false
                     default: 50
                     title: ' Limit'
-                    minimum: 0
             -   name: _offset
                 in: query
                 required: false
@@ -847,10 +845,9 @@ paths:
                 required: false
                 schema:
                     type: integer
-                    exclusiveMinimum: true
+                    exclusiveMinimum: false
                     default: 50
                     title: ' Limit'
-                    minimum: 0
             -   name: _offset
                 in: query
                 required: false
@@ -1679,27 +1676,25 @@ components:
                     type: string
                     title: Name
                 status:
-                    anyOf:
-                    -   $ref: '#/components/schemas/InstanceStatus'
-                    -   type: string
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Status
                 state:
-                    anyOf:
-                    -   $ref: '#/components/schemas/InstanceState'
-                    -   type: string
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: State
                 created_at:
-                    anyOf:
-                    -   type: string
-                    -   type: string
-                        format: date-time
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Created At
                     example: '2022-01-01T00:00:10Z'
                 updated_at:
-                    anyOf:
-                    -   type: string
-                    -   type: string
-                        format: date-time
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Updated At
                     example: '2022-01-01T00:00:10Z'
             type: object
@@ -1721,21 +1716,25 @@ components:
         AttachmentResponse:
             properties:
                 instance:
-                    anyOf:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: object
+                    oneOf:
                     -   $ref: '#/components/schemas/AttachmentMachine'
                     -   $ref: '#/components/schemas/IdRequest'
                     title: Instance
                 attached_at:
-                    anyOf:
-                    -   type: string
-                    -   type: string
-                        format: date-time
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Attached At
                     example: '2022-01-01T00:00:10Z'
                 device:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Device
                     nullable: true
-                    type: string
             type: object
             required:
             - instance
@@ -1766,17 +1765,17 @@ components:
                 backups:
                 -   created_at: '2022-01-01T00:00:10Z'
                     description: my backup for testing
-                    id: 16a4074d-c320-456e-90e6-696ca09c2913
+                    id: 4d1c16cf-9e6b-4bdf-a5d9-2577ef16b08c
                     name: My backup
                     size: 10
                     source_backup:
-                        id: bebc0bf1-6c46-4f27-bcf4-fd67335baf18
+                        id: 9674a00f-28a6-4323-b314-ca68aa3e6cb8
                     state: available
                     status: completed
                     type: incremental
                     updated_at: '2022-01-01T00:00:10Z'
                     volume:
-                        id: 728be007-8b4b-4874-b002-9e5461ddd3fa
+                        id: 6b62a4fa-bebb-4c57-861d-b59af76150e7
         BackupResponse:
             properties:
                 id:
@@ -1789,25 +1788,25 @@ components:
                     type: integer
                     title: Size
                 description:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Description
                     nullable: true
-                    type: string
                 state:
                     $ref: '#/components/schemas/BackupState'
                 status:
                     $ref: '#/components/schemas/BackupStatus'
                 created_at:
-                    anyOf:
-                    -   type: string
-                    -   type: string
-                        format: date-time
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Created At
                     example: '2022-01-01T00:00:10Z'
                 updated_at:
-                    anyOf:
-                    -   type: string
-                    -   type: string
-                        format: date-time
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Updated At
                     example: '2022-01-01T00:00:10Z'
                 volume:
@@ -1815,8 +1814,12 @@ components:
                 type:
                     $ref: '#/components/schemas/BackupType'
                 source_backup:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: object
+                    oneOf:
+                    -   $ref: '#/components/schemas/IdResponse'
                     nullable: true
-                    $ref: '#/components/schemas/IdResponse'
             type: object
             required:
             - id
@@ -1834,17 +1837,17 @@ components:
             example:
                 created_at: '2022-01-01T00:00:10Z'
                 description: my backup for testing
-                id: eff5fb84-5d20-420e-aa4c-f1bdc4b2841c
+                id: dda30465-181d-4a64-a2de-da4a7914642c
                 name: My backup
                 size: 10
                 source_backup:
-                    id: 97fdf1f9-b4ef-4945-80ae-3dbfb31a20e8
+                    id: 2e1f20ae-a12f-48d1-8ad0-8ec4cfed16b9
                 state: available
                 status: completed
                 type: incremental
                 updated_at: '2022-01-01T00:00:10Z'
                 volume:
-                    id: 0170dcb2-1da9-43a4-aa9f-5ffd341128be
+                    id: f51c9c73-0fed-4c3d-a67d-3f99bea0d642
         BackupState:
             type: string
             enum:
@@ -1880,11 +1883,16 @@ components:
         CreateBackup:
             properties:
                 description:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Description
                     nullable: true
-                    type: string
                 volume:
-                    anyOf:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: object
+                    oneOf:
                     -   $ref: '#/components/schemas/IdRequest'
                     -   $ref: '#/components/schemas/Name'
                     title: Volume
@@ -2043,17 +2051,17 @@ components:
         PatchResourceRequest:
             properties:
                 name:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Name
                     nullable: true
-                    type: string
-                    maxLength: 255
-                    minLength: 1
                 description:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Description
                     nullable: true
-                    type: string
-                    maxLength: 255
-                    minLength: 1
             type: object
             title: PatchResourceRequest
             example:
@@ -2075,7 +2083,10 @@ components:
         SnapshotCreationRequest:
             properties:
                 volume:
-                    anyOf:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: object
+                    oneOf:
                     -   $ref: '#/components/schemas/IdRequest'
                     -   $ref: '#/components/schemas/Name'
                     title: Volume
@@ -2083,9 +2094,11 @@ components:
                     type: string
                     title: Name
                 description:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Description
                     nullable: true
-                    type: string
             type: object
             required:
             - volume
@@ -2132,29 +2145,32 @@ components:
                     type: integer
                     title: Size
                 description:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Description
                     nullable: true
-                    type: string
                 state:
                     $ref: '#/components/schemas/SnapshotStateV1'
                 status:
                     $ref: '#/components/schemas/SnapshotStatusV1'
                 created_at:
-                    anyOf:
-                    -   type: string
-                    -   type: string
-                        format: date-time
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Created At
                     example: '2022-01-01T00:00:10Z'
                 updated_at:
-                    anyOf:
-                    -   type: string
-                    -   type: string
-                        format: date-time
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Updated At
                     example: '2022-01-01T00:00:10Z'
                 volume:
-                    anyOf:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: object
+                    oneOf:
                     -   $ref: '#/components/schemas/IdResponse'
                     -   $ref: '#/components/schemas/SnapshotVolume'
                     title: Volume
@@ -2280,17 +2296,23 @@ components:
                     title: Name
                 size:
                     type: integer
-                    maximum: 2147483648.0
-                    minimum: 10.0
+                    maximum: 2147483648
+                    minimum: 10
                     title: Size
                     description: Gibibytes (GiB)
                 type:
-                    anyOf:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: object
+                    oneOf:
                     -   $ref: '#/components/schemas/IdRequest'
                     -   $ref: '#/components/schemas/Name'
                     title: Type
                 backup:
-                    anyOf:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: object
+                    oneOf:
                     -   $ref: '#/components/schemas/IdRequest'
                     -   $ref: '#/components/schemas/Name'
                     title: Backup
@@ -2312,10 +2334,9 @@ components:
             properties:
                 size:
                     type: integer
-                    exclusiveMinimum: true
+                    exclusiveMinimum: false
                     title: Size
                     description: New volume size in GB
-                    minimum: 0.0
             type: object
             required:
             - size
@@ -2354,30 +2375,39 @@ components:
                 state:
                     $ref: '#/components/schemas/VolumeStateV1'
                 created_at:
-                    anyOf:
-                    -   type: string
-                    -   type: string
-                        format: date-time
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Created At
                     example: '2022-01-01T00:00:10Z'
                 updated_at:
-                    anyOf:
-                    -   type: string
-                    -   type: string
-                        format: date-time
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Updated At
                     example: '2022-01-01T00:00:10Z'
                 type:
-                    anyOf:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: object
+                    oneOf:
                     -   $ref: '#/components/schemas/IdRequest'
                     -   $ref: '#/components/schemas/VolumeTypeResponse'
                     title: Type
                 error:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: object
+                    oneOf:
+                    -   $ref: '#/components/schemas/VolumeResponseError'
                     nullable: true
-                    $ref: '#/components/schemas/VolumeResponseError'
                 attachment:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: object
+                    oneOf:
+                    -   $ref: '#/components/schemas/AttachmentResponse'
                     nullable: true
-                    $ref: '#/components/schemas/AttachmentResponse'
             type: object
             required:
             - id
@@ -2416,7 +2446,10 @@ components:
         VolumeRetypeRequest:
             properties:
                 new_type:
-                    anyOf:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: object
+                    oneOf:
                     -   $ref: '#/components/schemas/IdRequest'
                     -   $ref: '#/components/schemas/Name'
                     title: New Type

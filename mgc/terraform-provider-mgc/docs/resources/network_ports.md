@@ -52,8 +52,3 @@ Read-Only:
 
 <a id="nestedatt--public_ip"></a>
 ### Nested Schema for `public_ip`
-
-Read-Only:
-
-- `public_ip` (String)
-- `public_ip_id` (String)

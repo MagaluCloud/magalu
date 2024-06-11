@@ -11,11 +11,11 @@ Usage:
 - --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
 - --description string            Description
 - -h, --help                          help for create
-- --name string                   Name (between 5 and 100 characters) (required)
+- --name string                   Name (required)
 - -v, --version                       version for create
 - --vpc-id string                 VPC Id: Id of the vpc to create the security group in (required)
-- --wait                          The request will be asynchronous. The wait parameter tells the API that you want the request to simulate synchronous behavior (to maintain endpoint compatibility). You can set an approximate timeout with the waitTimeout parameter (default true)
-- --wait-timeout integer          waitTimeout: the approximate time in seconds you want to wait when simulating the request as synchronous (only works with wait=true) (default 120)
+- --wait                          The request will be asynchronous. The wait parameter tells the API that you want the request to simulate synchronous behavior (to maintain endpoint compatibility). You can set an approximate timeout with the waitTimeout parameter
+- --wait-timeout integer          waitTimeout: the approximate time in seconds you want to wait when simulating the request as synchronous (only works with wait=true)
 
 ## Other commands:
 - Global Flags:

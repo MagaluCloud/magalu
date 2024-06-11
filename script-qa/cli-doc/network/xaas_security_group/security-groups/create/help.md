@@ -11,7 +11,7 @@ Usage:
 - --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
 - --description string            Description
 - -h, --help                          help for create
-- --name string                   Name (between 5 and 100 characters) (required)
+- --name string                   Name (required)
 - --project-type enum             project_type: Project type to create Security Group (one of "dbaas", "default", "iamaas", "k8saas" or "mngsvc") (required)
 - -v, --version                       version for create
 

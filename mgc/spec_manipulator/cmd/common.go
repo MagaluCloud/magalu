@@ -7,7 +7,6 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/pb33f/libopenapi"
 	"github.com/spf13/viper"
 )
 
@@ -132,23 +131,23 @@ func getAndSaveFile(url, caminhoDestino string) error {
 		return fmt.Errorf("erro ao ler o corpo da resposta: %v", err)
 	}
 
-	document, err := libopenapi.NewDocument(fileBytes)
-	if err != nil {
-		panic(fmt.Sprintf("cannot read document: %e", err))
-	}
+	// document, err := libopenapi.NewDocument(fileBytes)
+	// if err != nil {
+	// 	panic(fmt.Sprintf("cannot read document: %e", err))
+	// }
 
-	_, errors := document.BuildV3Model()
-	if len(errors) > 0 {
-		for i := range errors {
-			fmt.Printf("error: %e\n", errors[i])
-		}
-		panic(fmt.Sprintf("cannot create v3 model from document: %d errors reported", len(errors)))
-	}
+	// _, errors := document.BuildV3Model()
+	// if len(errors) > 0 {
+	// 	for i := range errors {
+	// 		fmt.Printf("error: %e\n", errors[i])
+	// 	}
+	// 	panic(fmt.Sprintf("cannot create v3 model from document: %d errors reported", len(errors)))
+	// }
 
-	fileBytes, _, _, errors = document.RenderAndReload()
-	if len(errors) > 0 {
-		panic(fmt.Sprintf("cannot re-render document: %d errors reported", len(errors)))
-	}
+	// fileBytes, _, _, errors = document.RenderAndReload()
+	// if len(errors) > 0 {
+	// 	panic(fmt.Sprintf("cannot re-render document: %d errors reported", len(errors)))
+	// }
 
 	// Grava os dados no arquivo local
 	err = os.WriteFile(caminhoDestino, fileBytes, 0644)
@@ -156,7 +155,6 @@ func getAndSaveFile(url, caminhoDestino string) error {
 		return fmt.Errorf("erro ao gravar os dados no arquivo: %v", err)
 	}
 
-	fmt.Println("Arquivo JSON baixado e salvo com sucesso.")
 	return nil
 }
 

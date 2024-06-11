@@ -1,19 +1,17 @@
-# Detach a not primary port from Instance
+# Detach a non primary port from instance for a default project
 
 ## Usage:
 ```bash
 Usage:
-  ./mgc virtual-machine instances detach [id] [flags]
+  ./mgc virtual-machine instances port detach [id] [port-id] [flags]
 ```
 
 ## Product catalog:
 - Flags:
 - --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-- --cli.watch                     Wait until the operation is completed by calling the 'get' link and waiting until termination. Akin to '! get -w'
-- --force-authentication          Force authentication by sending the header even if this API doesn't require it
 - -h, --help                          help for detach
-- --id string                     Id (required)
-- --project-type enum             Project Type (one of "dbaas", "default", "iamaas", "k8saas" or "mngsvc") (default "default")
+- --id string                     Instance Id (required)
+- --port-id string                Port Id (required)
 - -v, --version                       version for detach
 
 ## Other commands:

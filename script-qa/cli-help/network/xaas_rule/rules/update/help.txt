@@ -3,9 +3,6 @@ Update async creation of Rule
 Usage:
   ./mgc network xaas-rule rules update [rule-id] [flags]
 
-Examples:
-  ./mgc network xaas-rule rules update --rules-zones='[{"resource_id":"xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx","zone":"zone_name"}]'
-
 Flags:
       --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
       --direction string              Direction
@@ -21,7 +18,7 @@ Flags:
       --resource-id string            Resource Id
       --rule-id string                Rule ID: Id of the Rule (required)
       --rules-zones array(object)     Rules Zones
-                                      Use --rules-zones=help for more details (default [])
+                                      Use --rules-zones=help for more details
       --security-group-id string      Security Group Id
       --status enum                   RuleStatus (one of "created", "error" or "pending") (required)
   -v, --version                       version for update

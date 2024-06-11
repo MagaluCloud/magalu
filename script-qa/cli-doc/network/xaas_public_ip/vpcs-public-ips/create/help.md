@@ -16,7 +16,7 @@ Usage:
 - -v, --version                       version for create
 - --vpc-id string                 Vpc ID: Id of the VPC to create the Public IP in (required)
 - --wait                          The request will be asynchronous. The wait parameter tells the API that you want the request to simulate synchronous behavior (to maintain endpoint compatibility). You can set an approximate timeout with the waitTimeout parameter (default true)
-- --wait-timeout integer          waitTimeout: the approximate time in seconds you want to wait when simulating the request as synchronous (only works with wait=true) (default 120)
+- --wait-timeout integer          waitTimeout: the approximate time in seconds you want to wait when simulating the request as synchronous (only works with wait=true)
 
 ## Other commands:
 - Global Flags:

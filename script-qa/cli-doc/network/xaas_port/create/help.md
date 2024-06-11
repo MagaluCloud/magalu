@@ -8,13 +8,13 @@ Usage:
 
 ## Product catalog:
 - Flags:
-- --has-pip                            Has Pip (default true)
-- --has-sg                             Has Sg (default true)
+- --has-pip                            Has Pip
+- --has-sg                             Has Sg
 - -h, --help                               help for create
 - --name string                        Name (between 5 and 100 characters) (required)
 - --project-type enum                  project_type: Project type to create port (one of "dbaas", "default", "iamaas", "k8saas" or "mngsvc") (required)
-- --security-groups-id array(string)   Security Groups Id (default [])
-- --subnets array(string)              Subnets (default [])
+- --security-groups-id array(string)   Security Groups Id
+- --subnets array(string)              Subnets
 - -v, --version                            version for create
 - --vpc-id string                      vpc_id: ID of the VPC to create port (required)
 

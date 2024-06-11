@@ -42,18 +42,3 @@ VPC Security Groups
 
 <a id="nestedatt--rules"></a>
 ### Nested Schema for `rules`
-
-Read-Only:
-
-- `created_at` (String)
-- `direction` (String)
-- `error` (String)
-- `ethertype` (String)
-- `id` (String)
-- `port_range_max` (Number)
-- `port_range_min` (Number)
-- `protocol` (String)
-- `remote_group_id` (String)
-- `remote_ip_prefix` (String)
-- `security_group_id` (String)
-- `status` (String)

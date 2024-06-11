@@ -561,6 +561,9 @@ func mgcBoolSchemaToTFAttribute(ctx context.Context, description string, mgcSche
 
 func mgcArraySchemaToTFAttribute(ctx context.Context, description string, mgcSchema *mgcSdk.Schema, m attributeModifiers) (schema.Attribute, resAttrInfoMap, error) {
 	tflog.SubsystemDebug(ctx, schemaGenSubsystem, "generating attribute as array", map[string]any{"mgcSchema": mgcSchema})
+	if mgcSchema.Items == nil {
+		return nil, nil, nil
+	}
 	mgcItemSchema := (*core.Schema)(mgcSchema.Items.Value)
 	elemAttr, elemAttrs, err := mgcSchemaToTFAttribute(mgcItemSchema, m.getChildModifiers(ctx, mgcItemSchema, "0"), ctx)
 	if err != nil {

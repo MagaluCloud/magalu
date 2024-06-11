@@ -8,7 +8,6 @@ block-storage.openapi:
               - description
               - name
               - type
-              - volume
     - POST /v1/snapshots:
         - '202':
             computed:
@@ -16,7 +15,6 @@ block-storage.openapi:
             non-computed:
               - description
               - name
-              - volume
     - POST /v1/snapshots/{snapshot_id}:
         - '202':
             computed:
@@ -29,18 +27,21 @@ block-storage.openapi:
             computed:
               - id
             non-computed:
-              - backup
               - name
               - size
-              - type
   missing-crud:
     - volume-types:
         - post
         - delete
   unused-components:
+    - '#/components/schemas/InstanceState'
+    - '#/components/schemas/InstanceStatus'
     - '#/components/schemas/ValidationError'
   xof-single-item:
+    - components.schemas.BackupResponse.source_backup
     - components.schemas.CreateBackup.type
+    - components.schemas.VolumeResponseV1.error
+    - components.schemas.VolumeResponseV1.attachment
 dbaas.openapi:
   computed-variables:
     - POST /v1/instances:
@@ -659,6 +660,12 @@ network.openapi:
         - /v0/xaas/vpcs/all
         - /v0/xaas/vpcs/{vpc_id}/delete_interface/{interface_id}
   unused-components:
+    - '#/components/schemas/NetworkResponse'
+    - '#/components/schemas/PublicIpResponsePort'
+    - '#/components/schemas/RouterResponse'
+    - '#/components/schemas/RuleResponseEvent'
+    - '#/components/schemas/RuleStatusEvent'
+    - '#/components/schemas/RuleZoneCreateEvent'
     - '#/components/schemas/ValidationError'
   xof-single-item:
     - paths./v0/xaas/vpcs/{vpc_id}/networks.get.parameters.project_type.schema
@@ -703,121 +710,8 @@ network.openapi:
     - paths./v0/xaas/vpcs/{vpc_id}/add_interface.post.parameters.project_type.schema
     - paths./v0/xaas/vpcs/{vpc_id}/delete_interface/{interface_id}.delete.parameters.project_type.schema
     - paths./v0/xaas/vpcs/{vpc_id}/interfaces.get.parameters.project_type.schema
-virtual-machine-xaas.openapi:
-  computed-variables:
-    - POST /v1/internal/images:
-        - '201':
-            computed:
-              - id
-            non-computed:
-              - end_life_at
-              - end_standard_support_at
-              - image_id
-              - image_url
-              - internal
-              - min_disk
-              - min_ram
-              - min_vcpu
-              - name
-              - platform
-              - release_at
-              - sku
-              - status
-              - version
-    - POST /v1/internal/instance_types:
-        - '201':
-            computed:
-              - status
-            non-computed:
-              - disk
-              - gpu
-              - gpu_model
-              - id
-              - internal
-              - name
-              - ram
-              - sku
-              - vcpus
-    - POST /v1/xaas/instances:
-        - '201':
-            computed:
-              - id
-            non-computed:
-              - associate_public_ip
-              - availability_zone
-              - image
-              - machine_type
-              - name
-              - nic
-              - project_type
-              - ssh_key_name
-              - user_data
-              - vpc
-    - POST /v1/xaas/snapshots:
-        - '202':
-            computed:
-              - id
-            non-computed:
-              - name
-              - project_type
-              - virtual_machine
-  missing-crud:
-    - healthchecks:
-        - post
-        - delete
-    - backups:
-        - get
-        - post
-        - delete
-    - diagnostics:
-        - post
-        - delete
-    - keypairs:
-        - get
-    - machine-types:
-        - post
-        - delete
-    - snapshots:
-        - get
-        - post
-        - delete
-    - xaas images:
-        - post
-        - delete
-    - xaas machine-types:
-        - post
-        - delete
-  uneven-resources:
-    backups:
-      PATCH:
-        - /v1/internal/backups/urp/{external_backup_id}
-        - /v1/internal/backups/{id}
-    images:
-      PATCH:
-        expected_prefix: /v1/internal/images/{id}
-        uneven:
-          - /v1/internal/images/urp/{urp_id}
-    instances:
-      GET:
-        - /v1/instances/internal/urp/{id}
-        - /v1/instances/internal/{id}
-        - /v1/internal/instances/urp/{id}
-        - /v1/internal/instances/{id}
-      PATCH:
-        - /v1/internal/instances/urp/{urp_id}
-        - /v1/internal/instances/{id}
-  unused-components:
-    - '#/components/schemas/ValidationError'
-  xof-single-item:
-    - paths./v1/instances/internal/urp/{id}.get.parameters.project_type.schema
-    - paths./v1/instances/internal/{id}.get.parameters.project_type.schema
-    - paths./v1/internal/instances/diagnostics.get.parameters.project_type.schema
-    - paths./v1/internal/instances/urp/{id}.get.parameters.project_type.schema
-    - paths./v1/internal/instances/{id}.delete.parameters.project_type.schema
-    - paths./v1/internal/instances/{id}.get.parameters.project_type.schema
-    - paths./v1/internal/instances/{id}.post.parameters.project_type.schema
-    - paths./v1/internal/instances/{id}/ports/{port_id}.delete.parameters.project_type.schema
-    - components.schemas.ImageRequestV1.status
+    - components.schemas.RuleStatusEvent.rule_zones
+    - components.schemas.SecurityGroupStatusEvent.security_group_zones
 virtual-machine.openapi:
   computed-variables:
     - POST /v1/backups:
@@ -828,14 +722,21 @@ virtual-machine.openapi:
               - backup_type
               - name
               - rotation
-              - virtual_machine
+    - POST /v1/instances:
+        - '201':
+            computed:
+              - id
+            non-computed:
+              - availability_zone
+              - name
+              - ssh_key_name
+              - user_data
     - POST /v1/snapshots:
         - '202':
             computed:
               - id
             non-computed:
               - name
-              - virtual_machine
   missing-crud:
     - images:
         - post
@@ -843,16 +744,11 @@ virtual-machine.openapi:
     - machine-types:
         - post
         - delete
-  operation-missing-security:
-    - PUT /v1/instances/{id}/attach
-    - PUT /v1/instances/{id}/detach
-  uneven-resources:
-    instances:
-      PUT:
-        - /v1/instances/{id}/attach
-        - /v1/instances/{id}/detach
   unused-components:
+    - '#/components/schemas/PortV1Expand'
     - '#/components/schemas/ValidationError'
   xof-single-item:
-    - paths./v1/instances/{id}/attach.put.parameters.project_type.schema
-    - paths./v1/instances/{id}/detach.put.parameters.project_type.schema
+    - components.schemas.InstanceCreateRequestV1Default.network
+    - components.schemas.InstanceV1Response.error
+    - components.schemas.NetworkPortsV1Expand.vpc
+    - components.schemas.SnapshotRestoreRequestV1Default.network

@@ -28,13 +28,13 @@ Operations with volumes, including create, delete, extend, retype, list and othe
 ### Read-Only
 
 - `attachment` (Attributes) (see [below for nested schema](#nestedatt--attachment))
-- `created_at` (Attributes) (see [below for nested schema](#nestedatt--created_at))
+- `created_at` (String)
 - `current_type` (Attributes) (see [below for nested schema](#nestedatt--current_type))
 - `error` (Attributes) (see [below for nested schema](#nestedatt--error))
 - `id` (String) The ID of this resource.
 - `state` (String)
 - `status` (String)
-- `updated_at` (Attributes) (see [below for nested schema](#nestedatt--updated_at))
+- `updated_at` (String)
 
 <a id="nestedatt--type"></a>
 ### Nested Schema for `type`
@@ -59,76 +59,22 @@ Optional:
 
 Read-Only:
 
-- `attached_at` (Attributes) (see [below for nested schema](#nestedatt--attachment--attached_at))
+- `attached_at` (String)
 - `device` (String)
 - `instance` (Attributes) (see [below for nested schema](#nestedatt--attachment--instance))
-
-<a id="nestedatt--attachment--attached_at"></a>
-### Nested Schema for `attachment.attached_at`
-
-Read-Only:
-
-- `string1` (String)
-- `string2` (String)
-
 
 <a id="nestedatt--attachment--instance"></a>
 ### Nested Schema for `attachment.instance`
 
 Read-Only:
 
-- `created_at` (Attributes) (see [below for nested schema](#nestedatt--attachment--instance--created_at))
+- `created_at` (String)
 - `id` (String)
 - `name` (String)
-- `state` (Attributes) (see [below for nested schema](#nestedatt--attachment--instance--state))
-- `status` (Attributes) (see [below for nested schema](#nestedatt--attachment--instance--status))
-- `updated_at` (Attributes) (see [below for nested schema](#nestedatt--attachment--instance--updated_at))
+- `state` (String)
+- `status` (String)
+- `updated_at` (String)
 
-<a id="nestedatt--attachment--instance--created_at"></a>
-### Nested Schema for `attachment.instance.created_at`
-
-Read-Only:
-
-- `string1` (String)
-- `string2` (String)
-
-
-<a id="nestedatt--attachment--instance--state"></a>
-### Nested Schema for `attachment.instance.state`
-
-Read-Only:
-
-- `string1` (String)
-- `string2` (String)
-
-
-<a id="nestedatt--attachment--instance--status"></a>
-### Nested Schema for `attachment.instance.status`
-
-Read-Only:
-
-- `string1` (String)
-- `string2` (String)
-
-
-<a id="nestedatt--attachment--instance--updated_at"></a>
-### Nested Schema for `attachment.instance.updated_at`
-
-Read-Only:
-
-- `string1` (String)
-- `string2` (String)
-
-
-
-
-<a id="nestedatt--created_at"></a>
-### Nested Schema for `created_at`
-
-Read-Only:
-
-- `string1` (String)
-- `string2` (String)
 
 
 <a id="nestedatt--current_type"></a>
@@ -159,12 +105,3 @@ Read-Only:
 
 - `message` (String)
 - `slug` (String)
-
-
-<a id="nestedatt--updated_at"></a>
-### Nested Schema for `updated_at`
-
-Read-Only:
-
-- `string1` (String)
-- `string2` (String)

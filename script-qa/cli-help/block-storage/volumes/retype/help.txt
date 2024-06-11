@@ -26,7 +26,7 @@ Flags:
       --cli.watch                     Wait until the operation is completed by calling the 'get' link and waiting until termination. Akin to '! get -w'
   -h, --help                          help for retype
       --id uuid                       Id (required)
-      --new-type object               New Type (at least one of: single property: id or single property: name)
+      --new-type object               New Type (exactly one of: single property: id or single property: name)
                                       Use --new-type=help for more details (required)
       --new-type.id string            New Type: Id (min character count: 1)
                                       This is the same as '--new-type=id:string'.

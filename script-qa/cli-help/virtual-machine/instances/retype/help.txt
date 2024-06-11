@@ -23,7 +23,7 @@ Flags:
       --cli.watch                     Wait until the operation is completed by calling the 'get' link and waiting until termination. Akin to '! get -w'
   -h, --help                          help for retype
       --id uuid                       Id (required)
-      --machine-type object           Machine Type (at least one of: single property: id or single property: name)
+      --machine-type object           Machine Type (exactly one of: single property: id or single property: name)
                                       Use --machine-type=help for more details (required)
       --machine-type.id string        Machine Type: Id (between 1 and 255 characters)
                                       This is the same as '--machine-type=id:string'.

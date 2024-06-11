@@ -85,9 +85,11 @@ paths:
                 in: header
                 required: false
                 schema:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: X-Zone
                     nullable: true
-                    type: string
             requestBody:
                 required: true
                 content:
@@ -191,9 +193,11 @@ paths:
                 in: header
                 required: false
                 schema:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: X-Zone
                     nullable: true
-                    type: string
             requestBody:
                 required: true
                 content:
@@ -584,9 +588,11 @@ paths:
                 in: header
                 required: false
                 schema:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: X-Zone
                     nullable: true
-                    type: string
             requestBody:
                 required: true
                 content:
@@ -904,13 +910,12 @@ paths:
                 in: query
                 required: false
                 schema:
+                    type: integer
                     title: waitTimeout
                     description: the approximate time in seconds you want to wait
                         when simulating the request as synchronous (only works with
                         wait=true)
-                    default: 120
                     nullable: true
-                    type: integer
                 description: the approximate time in seconds you want to wait when
                     simulating the request as synchronous (only works with wait=true)
             requestBody:
@@ -1247,13 +1252,12 @@ paths:
                 in: query
                 required: false
                 schema:
+                    type: integer
                     title: waitTimeout
                     description: the approximate time in seconds you want to wait
                         when simulating the request as synchronous (only works with
                         wait=true)
-                    default: 120
                     nullable: true
-                    type: integer
                 description: the approximate time in seconds you want to wait when
                     simulating the request as synchronous (only works with wait=true)
             requestBody:
@@ -1679,14 +1683,15 @@ paths:
                 in: query
                 required: false
                 schema:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: boolean
                     title: wait
                     description: The request will be asynchronous. The wait parameter
                         tells the API that you want the request to simulate synchronous
                         behavior (to maintain endpoint compatibility). You can set
                         an approximate timeout with the waitTimeout parameter
-                    default: true
                     nullable: true
-                    type: boolean
                 description: The request will be asynchronous. The wait parameter
                     tells the API that you want the request to simulate synchronous
                     behavior (to maintain endpoint compatibility). You can set an
@@ -1695,13 +1700,12 @@ paths:
                 in: query
                 required: false
                 schema:
+                    type: integer
                     title: waitTimeout
                     description: the approximate time in seconds you want to wait
                         when simulating the request as synchronous (only works with
                         wait=true)
-                    default: 120
                     nullable: true
-                    type: integer
                 description: the approximate time in seconds you want to wait when
                     simulating the request as synchronous (only works with wait=true)
             requestBody:
@@ -1869,14 +1873,15 @@ paths:
                 in: query
                 required: false
                 schema:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: boolean
                     title: wait
                     description: The request will be asynchronous. The wait parameter
                         tells the API that you want the request to simulate synchronous
                         behavior (to maintain endpoint compatibility). You can set
                         an approximate timeout with the waitTimeout parameter
-                    default: true
                     nullable: true
-                    type: boolean
                 description: The request will be asynchronous. The wait parameter
                     tells the API that you want the request to simulate synchronous
                     behavior (to maintain endpoint compatibility). You can set an
@@ -1885,13 +1890,12 @@ paths:
                 in: query
                 required: false
                 schema:
+                    type: integer
                     title: waitTimeout
                     description: the approximate time in seconds you want to wait
                         when simulating the request as synchronous (only works with
                         wait=true)
-                    default: 120
                     nullable: true
-                    type: integer
                 description: the approximate time in seconds you want to wait when
                     simulating the request as synchronous (only works with wait=true)
             requestBody:
@@ -2285,23 +2289,26 @@ paths:
                 in: path
                 required: true
                 schema:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: VPC Id
                     description: Id of the vpc to create the security group in
                     nullable: true
-                    type: string
                 description: Id of the vpc to create the security group in
             -   name: wait
                 in: query
                 required: false
                 schema:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: boolean
                     title: wait
                     description: The request will be asynchronous. The wait parameter
                         tells the API that you want the request to simulate synchronous
                         behavior (to maintain endpoint compatibility). You can set
                         an approximate timeout with the waitTimeout parameter
-                    default: true
                     nullable: true
-                    type: boolean
                 description: The request will be asynchronous. The wait parameter
                     tells the API that you want the request to simulate synchronous
                     behavior (to maintain endpoint compatibility). You can set an
@@ -2310,13 +2317,12 @@ paths:
                 in: query
                 required: false
                 schema:
+                    type: integer
                     title: waitTimeout
                     description: the approximate time in seconds you want to wait
                         when simulating the request as synchronous (only works with
                         wait=true)
-                    default: 120
                     nullable: true
-                    type: integer
                 description: the approximate time in seconds you want to wait when
                     simulating the request as synchronous (only works with wait=true)
             requestBody:
@@ -2606,9 +2612,11 @@ paths:
                 in: header
                 required: false
                 schema:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: X-Zone
                     nullable: true
-                    type: string
             responses:
                 '200':
                     description: Successful Response
@@ -2642,10 +2650,12 @@ paths:
                 in: path
                 required: true
                 schema:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: VPC Id
                     description: Id of the vpc to create the security group in
                     nullable: true
-                    type: string
                 description: Id of the vpc to create the security group in
             -   name: project_type
                 in: query
@@ -2661,14 +2671,15 @@ paths:
                 in: query
                 required: false
                 schema:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: boolean
                     title: wait
                     description: The request will be asynchronous. The wait parameter
                         tells the API that you want the request to simulate synchronous
                         behavior (to maintain endpoint compatibility). You can set
                         an approximate timeout with the waitTimeout parameter
-                    default: true
                     nullable: true
-                    type: boolean
                 description: The request will be asynchronous. The wait parameter
                     tells the API that you want the request to simulate synchronous
                     behavior (to maintain endpoint compatibility). You can set an
@@ -2677,13 +2688,12 @@ paths:
                 in: query
                 required: false
                 schema:
+                    type: integer
                     title: waitTimeout
                     description: the approximate time in seconds you want to wait
                         when simulating the request as synchronous (only works with
                         wait=true)
-                    default: 120
                     nullable: true
-                    type: integer
                 description: the approximate time in seconds you want to wait when
                     simulating the request as synchronous (only works with wait=true)
             requestBody:
@@ -2733,9 +2743,11 @@ paths:
                 in: header
                 required: false
                 schema:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: X-Zone
                     nullable: true
-                    type: string
             responses:
                 '200':
                     description: Successful Response
@@ -2786,9 +2798,11 @@ paths:
                 in: header
                 required: false
                 schema:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: X-Zone
                     nullable: true
-                    type: string
             responses:
                 '200':
                     description: Successful Response
@@ -3250,9 +3264,11 @@ paths:
                 in: header
                 required: false
                 schema:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: X-Zone
                     nullable: true
-                    type: string
             requestBody:
                 required: true
                 content:
@@ -4298,9 +4314,11 @@ components:
                     type: string
                     title: Id
                 external_id:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: External Id
                     nullable: true
-                    type: string
                 vpc_id:
                     type: string
                     title: Vpc Id
@@ -4308,15 +4326,17 @@ components:
                     type: string
                     title: Name
                 created_at:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Created At
                     nullable: true
-                    type: string
-                    format: date-time
                 updated:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Updated
                     nullable: true
-                    type: string
-                    format: date-time
                 is_default:
                     type: boolean
                     title: Is Default
@@ -4324,9 +4344,11 @@ components:
                     type: string
                     title: Status
                 error:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Error
                     nullable: true
-                    type: string
                 zone:
                     type: string
                     title: Zone
@@ -4361,53 +4383,69 @@ components:
                     minLength: 5
                     title: Name
                 description:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Description
                     nullable: true
-                    type: string
                 status:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Status
                     nullable: true
-                    type: string
                 mtu:
+                    type: integer
                     title: Mtu
                     nullable: true
-                    type: integer
                 subnets:
-                    title: Subnets
-                    default: []
-                    nullable: true
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: array
                     items:
                         type: string
-                    type: array
+                        nullable: true
+                    title: Subnets
+                    nullable: true
                 shared:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: boolean
                     title: Shared
                     nullable: true
-                    type: boolean
                 tags:
-                    title: Tags
-                    default: []
-                    nullable: true
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: array
                     items:
                         type: string
-                    type: array
+                        nullable: true
+                    title: Tags
+                    nullable: true
                 port_security_enabled:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: boolean
                     title: Port Security Enabled
                     nullable: true
-                    type: boolean
                 router_external:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: boolean
                     title: Router External
                     nullable: true
-                    type: boolean
                 created_at:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Created At
                     nullable: true
-                    type: string
-                    format: date-time
                 updated_at:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Updated At
                     nullable: true
-                    type: string
-                    format: date-time
             type: object
             required:
             - name
@@ -4435,29 +4473,35 @@ components:
                     minLength: 5
                     title: Name
                 has_pip:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: boolean
                     title: Has Pip
-                    default: true
                     nullable: true
-                    type: boolean
                 has_sg:
-                    title: Has Sg
-                    default: true
-                    nullable: true
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
                     type: boolean
+                    title: Has Sg
+                    nullable: true
                 subnets:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: array
+                    items:
+                        type: string
+                        nullable: true
                     title: Subnets
-                    default: []
                     nullable: true
-                    items:
-                        type: string
-                    type: array
                 security_groups_id:
-                    title: Security Groups Id
-                    default: []
-                    nullable: true
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: array
                     items:
                         type: string
-                    type: array
+                        nullable: true
+                    title: Security Groups Id
+                    nullable: true
             type: object
             required:
             - name
@@ -4512,29 +4556,41 @@ components:
         PortResponse:
             properties:
                 id:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Id
                     nullable: true
-                    type: string
                 name:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Name
                     nullable: true
-                    type: string
                 description:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Description
                     nullable: true
-                    type: string
                 is_admin_state_up:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: boolean
                     title: Is Admin State Up
                     nullable: true
-                    type: boolean
                 vpc_id:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Vpc Id
                     nullable: true
-                    type: string
                 is_port_security_enabled:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: boolean
                     title: Is Port Security Enabled
                     nullable: true
-                    type: boolean
                 security_groups:
                     items:
                         type: string
@@ -4542,12 +4598,14 @@ components:
                     title: Security Groups
                     default: []
                 public_ip:
-                    title: Public Ip
-                    default: []
-                    nullable: true
-                    items:
-                        $ref: '#/components/schemas/PublicIpResponsePort'
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
                     type: array
+                    items:
+                        type: object
+                        nullable: true
+                    title: Public Ip
+                    nullable: true
                 ip_address:
                     items:
                         $ref: '#/components/schemas/IpAddress'
@@ -4555,15 +4613,17 @@ components:
                     title: Ip Address
                     default: []
                 created_at:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Created At
                     nullable: true
-                    type: string
-                    format: date-time
                 updated:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Updated
                     nullable: true
-                    type: string
-                    format: date-time
             type: object
             title: PortResponse
             example:
@@ -4586,9 +4646,11 @@ components:
         PortSimpleResponse:
             properties:
                 id:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Id
                     nullable: true
-                    type: string
                 ip_address:
                     items:
                         $ref: '#/components/schemas/IpAddress'
@@ -4660,10 +4722,11 @@ components:
         PublicIpCreateRequest:
             properties:
                 description:
-                    title: Description
-                    default: ''
-                    nullable: true
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
                     type: string
+                    title: Description
+                    nullable: true
             type: object
             title: PublicIpCreateRequest
             example:
@@ -4682,47 +4745,65 @@ components:
         PublicIpDb:
             properties:
                 id:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Id
                     nullable: true
-                    type: string
                 external_id:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: External Id
                     nullable: true
-                    type: string
                 vpc_id:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Vpc Id
                     nullable: true
-                    type: string
                 description:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Description
                     nullable: true
-                    type: string
                 public_ip:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Public Ip
                     nullable: true
-                    type: string
                 port_id:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Port Id
                     nullable: true
-                    type: string
                 created_at:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Created At
                     nullable: true
-                    type: string
-                    format: date-time
                 updated:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Updated
                     nullable: true
-                    type: string
-                    format: date-time
                 status:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Status
                     nullable: true
-                    type: string
                 error:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Error
                     nullable: true
-                    type: string
             type: object
             title: PublicIpDb
             example:
@@ -4750,13 +4831,17 @@ components:
         PublicIpResponsePort:
             properties:
                 public_ip_id:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Public Ip Id
                     nullable: true
-                    type: string
                 public_ip:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Public Ip
                     nullable: true
-                    type: string
             type: object
             title: PublicIpResponsePort
             example:
@@ -4774,17 +4859,23 @@ components:
                 status:
                     $ref: '#/components/schemas/PublicIpStatus'
                 public_ip:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Public Ip
                     nullable: true
-                    type: string
                 external_id:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: External Id
                     nullable: true
-                    type: string
                 error:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Error
                     nullable: true
-                    type: string
             type: object
             required:
             - status
@@ -4867,30 +4958,41 @@ components:
         RouterInterfaceResponse:
             properties:
                 id:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Id
                     nullable: true
-                    type: string
                 vpc_id:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Vpc Id
                     nullable: true
-                    type: string
                 router_id:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Router Id
                     nullable: true
-                    type: string
                 ip_address:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Ip Address
                     nullable: true
-                    type: string
                 nic_vpc_id:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Nic Vpc Id
                     nullable: true
-                    type: string
                 created_at:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Created At
                     nullable: true
-                    type: string
-                    format: date-time
             type: object
             title: RouterInterfaceResponse
             example:
@@ -4903,12 +5005,14 @@ components:
         RouterInterfaceResponseList:
             properties:
                 router_interfaces:
-                    title: Router Interfaces
-                    default: []
-                    nullable: true
-                    items:
-                        $ref: '#/components/schemas/RouterInterfaceResponse'
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
                     type: array
+                    items:
+                        type: object
+                        nullable: true
+                    title: Router Interfaces
+                    nullable: true
             type: object
             title: RouterInterfaceResponseList
             example:
@@ -4922,53 +5026,68 @@ components:
         RouterResponse:
             properties:
                 id:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Id
                     nullable: true
-                    type: string
                 vpc_id:
                     type: string
                     title: Vpc Id
                 external_network:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: External Network
                     nullable: true
-                    type: string
                 external_id:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: External Id
                     nullable: true
-                    type: string
                 is_default:
                     type: boolean
                     title: Is Default
                 name:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Name
                     nullable: true
-                    type: string
                 created_at:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Created At
                     nullable: true
-                    type: string
-                    format: date-time
                 updated:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Updated
                     nullable: true
-                    type: string
-                    format: date-time
                 function:
-                    title: Function
-                    default: primary
-                    nullable: true
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
                     type: string
+                    title: Function
+                    nullable: true
                 status:
                     type: string
                     title: Status
                 error:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Error
                     nullable: true
-                    type: string
                 zone:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Zone
                     nullable: true
-                    type: string
             type: object
             required:
             - vpc_id
@@ -4991,33 +5110,43 @@ components:
         RuleCreateRequest:
             properties:
                 direction:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Direction
                     nullable: true
-                    type: string
                 port_range_min:
+                    type: integer
                     title: Port Range Min
                     nullable: true
-                    type: integer
                 port_range_max:
+                    type: integer
                     title: Port Range Max
                     nullable: true
-                    type: integer
                 protocol:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Protocol
                     nullable: true
-                    type: string
                 remote_ip_prefix:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Remote Ip Prefix
                     nullable: true
-                    type: string
                 remote_group_id:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Remote Group Id
                     nullable: true
-                    type: string
                 ethertype:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Ethertype
                     nullable: true
-                    type: string
             type: object
             title: RuleCreateRequest
             example:
@@ -5042,54 +5171,72 @@ components:
         RuleDefaultStatusEvent:
             properties:
                 security_group_id:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Security Group Id
                     nullable: true
-                    type: string
                 direction:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Direction
                     nullable: true
-                    type: string
                 port_range_min:
+                    type: integer
                     title: Port Range Min
                     nullable: true
-                    type: integer
                 port_range_max:
+                    type: integer
                     title: Port Range Max
                     nullable: true
-                    type: integer
                 protocol:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Protocol
                     nullable: true
-                    type: string
                 remote_ip_prefix:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Remote Ip Prefix
                     nullable: true
-                    type: string
                 remote_group_id:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Remote Group Id
                     nullable: true
-                    type: string
                 status:
                     $ref: '#/components/schemas/RuleStatus'
                 error:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Error
                     nullable: true
-                    type: string
                 resource_id:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Resource Id
                     nullable: true
-                    type: string
                 external_id:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: External Id
                     nullable: true
-                    type: string
                 rules_zones:
-                    title: Rules Zones
-                    default: []
-                    nullable: true
-                    items:
-                        $ref: '#/components/schemas/RuleZoneCreateEvent'
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
                     type: array
+                    items:
+                        type: object
+                        nullable: true
+                    title: Rules Zones
+                    nullable: true
             type: object
             required:
             - status
@@ -5111,56 +5258,75 @@ components:
         RuleResponse:
             properties:
                 id:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Id
                     nullable: true
-                    type: string
                 external_id:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: External Id
                     nullable: true
-                    type: string
                 security_group_id:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Security Group Id
                     nullable: true
-                    type: string
                 direction:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Direction
                     nullable: true
-                    type: string
                 port_range_min:
+                    type: integer
                     title: Port Range Min
                     nullable: true
-                    type: integer
                 port_range_max:
+                    type: integer
                     title: Port Range Max
                     nullable: true
-                    type: integer
                 protocol:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Protocol
                     nullable: true
-                    type: string
                 remote_ip_prefix:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Remote Ip Prefix
                     nullable: true
-                    type: string
                 remote_group_id:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Remote Group Id
                     nullable: true
-                    type: string
                 ethertype:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Ethertype
                     nullable: true
-                    type: string
                 created_at:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Created At
                     nullable: true
-                    type: string
-                    format: date-time
                 status:
                     $ref: '#/components/schemas/RuleStatus'
                 error:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Error
                     nullable: true
-                    type: string
             type: object
             required:
             - status
@@ -5181,53 +5347,72 @@ components:
         RuleResponseEvent:
             properties:
                 direction:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Direction
                     nullable: true
-                    type: string
                 port_range_min:
+                    type: integer
                     title: Port Range Min
                     nullable: true
-                    type: integer
                 port_range_max:
+                    type: integer
                     title: Port Range Max
                     nullable: true
-                    type: integer
                 protocol:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Protocol
                     nullable: true
-                    type: string
                 remote_ip_prefix:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Remote Ip Prefix
                     nullable: true
-                    type: string
                 remote_group_id:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Remote Group Id
                     nullable: true
-                    type: string
                 status:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     nullable: true
-                    $ref: '#/components/schemas/RuleStatus'
                 error:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Error
                     nullable: true
-                    type: string
                 id:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Id
                     nullable: true
-                    type: string
                 security_group_id:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Security Group Id
                     nullable: true
-                    type: string
                 ethertype:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Ethertype
                     nullable: true
-                    type: string
                 created_at:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Created At
                     nullable: true
-                    type: string
-                    format: date-time
             type: object
             title: RuleResponseEvent
             example:
@@ -5253,48 +5438,65 @@ components:
         RuleStatusEvent:
             properties:
                 direction:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Direction
                     nullable: true
-                    type: string
                 port_range_min:
+                    type: integer
                     title: Port Range Min
                     nullable: true
-                    type: integer
                 port_range_max:
+                    type: integer
                     title: Port Range Max
                     nullable: true
-                    type: integer
                 protocol:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Protocol
                     nullable: true
-                    type: string
                 remote_ip_prefix:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Remote Ip Prefix
                     nullable: true
-                    type: string
                 remote_group_id:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Remote Group Id
                     nullable: true
-                    type: string
                 status:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     nullable: true
-                    $ref: '#/components/schemas/RuleStatus'
                 error:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Error
                     nullable: true
-                    type: string
                 api_id:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Api Id
                     nullable: true
-                    type: string
                 rule_zones:
-                    title: Rule Zones
-                    default: {}
-                    nullable: true
-                    additionalProperties:
-                        nullable: true
-                        $ref: '#/components/schemas/RuleZoneStatusEvent'
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
                     type: object
+                    oneOf:
+                    -   additionalProperties:
+                            nullable: true
+                            $ref: '#/components/schemas/RuleZoneStatusEvent'
+                        type: object
+                    title: Rule Zones
+                    nullable: true
             type: object
             title: RuleStatusEvent
             example:
@@ -5317,9 +5519,11 @@ components:
                     type: string
                     title: Resource Id
                 zone:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Zone
                     nullable: true
-                    type: string
             type: object
             required:
             - resource_id
@@ -5330,24 +5534,34 @@ components:
         RuleZoneStatusEvent:
             properties:
                 api_id:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Api Id
                     nullable: true
-                    type: string
                 zone:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Zone
                     nullable: true
-                    type: string
                 external_id:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: External Id
                     nullable: true
-                    type: string
                 status:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     nullable: true
-                    $ref: '#/components/schemas/RuleStatus'
                 error:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Error
                     nullable: true
-                    type: string
             type: object
             title: RuleZoneStatusEvent
             example:
@@ -5383,16 +5597,17 @@ components:
         SecurityGroupCreateRequest:
             properties:
                 name:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Name
                     nullable: true
-                    type: string
-                    maxLength: 100
-                    minLength: 5
                 description:
-                    title: Description
-                    default: ''
-                    nullable: true
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
                     type: string
+                    title: Description
+                    nullable: true
             type: object
             required:
             - name
@@ -5431,60 +5646,82 @@ components:
         SecurityGroupDetailEvent:
             properties:
                 id:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Id
                     nullable: true
-                    type: string
                 vpc_id:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Vpc Id
                     nullable: true
-                    type: string
                 name:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Name
                     nullable: true
-                    type: string
                 description:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Description
                     nullable: true
-                    type: string
                 created_at:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Created At
                     nullable: true
-                    type: string
-                    format: date-time
                 updated:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Updated
                     nullable: true
-                    type: string
-                    format: date-time
                 status:
                     $ref: '#/components/schemas/SecurityGroupStatus'
                 error:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Error
                     nullable: true
-                    type: string
                 tenant_id:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Tenant Id
                     nullable: true
-                    type: string
                 project_type:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Project Type
                     nullable: true
-                    type: string
                 is_default:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: boolean
                     title: Is Default
                     nullable: true
-                    type: boolean
                 external_id:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: External Id
                     nullable: true
-                    type: string
                 rules:
-                    title: Rules
-                    default: []
-                    nullable: true
-                    items:
-                        $ref: '#/components/schemas/RuleResponseEvent'
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
                     type: array
+                    items:
+                        type: object
+                        nullable: true
+                    title: Rules
+                    nullable: true
             type: object
             required:
             - status
@@ -5542,49 +5779,67 @@ components:
         SecurityGroupResponseEvent:
             properties:
                 id:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Id
                     nullable: true
-                    type: string
                 vpc_id:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Vpc Id
                     nullable: true
-                    type: string
                 name:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Name
                     nullable: true
-                    type: string
                 description:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Description
                     nullable: true
-                    type: string
                 created_at:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Created At
                     nullable: true
-                    type: string
-                    format: date-time
                 updated:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Updated
                     nullable: true
-                    type: string
-                    format: date-time
                 status:
                     $ref: '#/components/schemas/SecurityGroupStatus'
                 error:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Error
                     nullable: true
-                    type: string
                 tenant_id:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Tenant Id
                     nullable: true
-                    type: string
                 project_type:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Project Type
                     nullable: true
-                    type: string
                 is_default:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: boolean
                     title: Is Default
                     nullable: true
-                    type: boolean
             type: object
             required:
             - status
@@ -5611,35 +5866,46 @@ components:
         SecurityGroupStatusEvent:
             properties:
                 external_id:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: External Id
                     nullable: true
-                    type: string
                 status:
                     type: string
                     title: Status
                 error:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Error
                     nullable: true
-                    type: string
                 api_id:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Api Id
                     nullable: true
-                    type: string
                 rules:
-                    title: Rules
-                    default: []
-                    nullable: true
-                    items:
-                        $ref: '#/components/schemas/RuleStatusEvent'
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
                     type: array
-                security_group_zones:
-                    title: Security Group Zones
-                    default: {}
-                    nullable: true
-                    additionalProperties:
+                    items:
+                        type: object
                         nullable: true
-                        $ref: '#/components/schemas/SecurityGroupZoneStatusEvent'
+                    title: Rules
+                    nullable: true
+                security_group_zones:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
                     type: object
+                    oneOf:
+                    -   additionalProperties:
+                            nullable: true
+                            $ref: '#/components/schemas/SecurityGroupZoneStatusEvent'
+                        type: object
+                    title: Security Group Zones
+                    nullable: true
             type: object
             required:
             - status
@@ -5668,24 +5934,32 @@ components:
         SecurityGroupZoneStatusEvent:
             properties:
                 external_id:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: External Id
                     nullable: true
-                    type: string
                 status:
                     type: string
                     title: Status
                 error:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Error
                     nullable: true
-                    type: string
                 api_id:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Api Id
                     nullable: true
-                    type: string
                 zone:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Zone
                     nullable: true
-                    type: string
             type: object
             required:
             - status
@@ -5713,13 +5987,17 @@ components:
                     type: string
                     title: Name
                 description:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Description
                     nullable: true
-                    type: string
                 cidr_block:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Cidr Block
                     nullable: true
-                    type: string
                 ip_version:
                     type: integer
                     title: Ip Version
@@ -5854,10 +6132,12 @@ components:
                     title: Description
                     description: The description for the subnet pool
                 address_scope_id:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Address Scope Id
                     description: The ID of the address scope for the subnet pool
                     nullable: true
-                    type: string
             type: object
             required:
             - name
@@ -5937,13 +6217,17 @@ components:
                     type: string
                     title: Vpc Id
                 name:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Name
                     nullable: true
-                    type: string
                 description:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Description
                     nullable: true
-                    type: string
                 cidr_block:
                     type: string
                     title: Cidr Block
@@ -5954,15 +6238,17 @@ components:
                     type: string
                     title: Zone
                 created_at:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Created At
                     nullable: true
-                    type: string
-                    format: date-time
                 updated:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Updated
                     nullable: true
-                    type: string
-                    format: date-time
             type: object
             required:
             - id
@@ -5990,13 +6276,17 @@ components:
                     type: string
                     title: Vpc Id
                 name:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Name
                     nullable: true
-                    type: string
                 description:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Description
                     nullable: true
-                    type: string
                 cidr_block:
                     type: string
                     title: Cidr Block
@@ -6007,15 +6297,17 @@ components:
                     type: string
                     title: Zone
                 created_at:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Created At
                     nullable: true
-                    type: string
-                    format: date-time
                 updated:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Updated
                     nullable: true
-                    type: string
-                    format: date-time
                 gateway_ip:
                     type: string
                     title: Gateway Ip
@@ -6076,13 +6368,17 @@ components:
                     type: string
                     title: Vpc Id
                 name:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Name
                     nullable: true
-                    type: string
                 description:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Description
                     nullable: true
-                    type: string
                 cidr:
                     type: string
                     title: Cidr
@@ -6090,23 +6386,29 @@ components:
                     type: string
                     title: Ethertype
                 created_at:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Created At
                     nullable: true
-                    type: string
-                    format: date-time
                 updated:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Updated
                     nullable: true
-                    type: string
-                    format: date-time
                 subnetpool_id:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Subnetpool Id
                     nullable: true
-                    type: string
                 external_id:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: External Id
                     nullable: true
-                    type: string
                 cidr_block:
                     type: string
                     title: Cidr Block
@@ -6209,9 +6511,11 @@ components:
                     type: string
                     title: Name
                 description:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Description
                     nullable: true
-                    type: string
             type: object
             required:
             - name
@@ -6222,9 +6526,11 @@ components:
         VpcCreateResponse:
             properties:
                 id:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Id
                     nullable: true
-                    type: string
             type: object
             title: VpcCreateResponse
             example:
@@ -6293,56 +6599,74 @@ components:
         VpcDetailsResponse:
             properties:
                 id:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Id
                     nullable: true
-                    type: string
                 tenant_id:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Tenant Id
                     nullable: true
-                    type: string
                 name:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Name
                     nullable: true
-                    type: string
                 description:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Description
                     nullable: true
-                    type: string
                 routers:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: array
+                    items:
+                        type: object
+                        nullable: true
                     title: Routers
-                    default: []
                     nullable: true
-                    items:
-                        $ref: '#/components/schemas/RouterResponse'
-                    type: array
                 networks:
-                    title: Networks
-                    default: []
-                    nullable: true
-                    items:
-                        $ref: '#/components/schemas/NetworkResponse'
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
                     type: array
-                subnets:
-                    title: Subnets
-                    default: []
+                    items:
+                        type: object
+                        nullable: true
+                    title: Networks
                     nullable: true
+                subnets:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: array
                     items:
                         type: string
-                    type: array
+                        nullable: true
+                    title: Subnets
+                    nullable: true
                 created_at:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Created At
                     nullable: true
-                    type: string
-                    format: date-time
                 updated:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Updated
                     nullable: true
-                    type: string
-                    format: date-time
                 is_default:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: boolean
                     title: Is Default
                     nullable: true
-                    type: boolean
             type: object
             title: VpcDetailsResponse
             example:
@@ -6386,40 +6710,56 @@ components:
         VpcResponse:
             properties:
                 id:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Id
                     nullable: true
-                    type: string
                 tenant_id:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Tenant Id
                     nullable: true
-                    type: string
                 name:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Name
                     nullable: true
-                    type: string
                 description:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Description
                     nullable: true
-                    type: string
                 router_id:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Router Id
                     nullable: true
-                    type: string
                 external_network:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: External Network
                     nullable: true
-                    type: string
                 network_id:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Network Id
                     nullable: true
-                    type: string
                 subnets:
-                    title: Subnets
-                    default: []
-                    nullable: true
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: array
                     items:
                         type: string
-                    type: array
+                        nullable: true
+                    title: Subnets
+                    nullable: true
                 security_groups:
                     items:
                         type: string
@@ -6427,19 +6767,23 @@ components:
                     title: Security Groups
                     default: []
                 created_at:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Created At
                     nullable: true
-                    type: string
-                    format: date-time
                 updated:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Updated
                     nullable: true
-                    type: string
-                    format: date-time
                 is_default:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: boolean
                     title: Is Default
                     nullable: true
-                    type: boolean
             type: object
             title: VpcResponse
             example:
@@ -6460,12 +6804,14 @@ components:
         VpcResponseList:
             properties:
                 vpcs:
-                    title: Vpcs
-                    default: []
-                    nullable: true
-                    items:
-                        $ref: '#/components/schemas/VpcResponse'
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
                     type: array
+                    items:
+                        type: object
+                        nullable: true
+                    title: Vpcs
+                    nullable: true
             type: object
             title: VpcResponseList
             example:
@@ -6490,21 +6836,27 @@ components:
                     type: string
                     title: Name
                 description:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Description
                     nullable: true
-                    type: string
                 subnetpool_id:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Subnetpool Id
                     description: ID of SubnetPool             from which the VPC will
                         get CIDRs.             Can be used instead of 'cidr' field.
                     nullable: true
-                    type: string
                 cidr:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Cidr
                     description: CIDR from which VPC's subnets will get IPs            Can
                         be used instead of 'subnetpool_id' field.
                     nullable: true
-                    type: string
             type: object
             required:
             - name
@@ -6545,53 +6897,73 @@ components:
         XaasSecurityGroupResponseEvent:
             properties:
                 id:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Id
                     nullable: true
-                    type: string
                 vpc_id:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Vpc Id
                     nullable: true
-                    type: string
                 name:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Name
                     nullable: true
-                    type: string
                 description:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Description
                     nullable: true
-                    type: string
                 created_at:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Created At
                     nullable: true
-                    type: string
-                    format: date-time
                 updated:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Updated
                     nullable: true
-                    type: string
-                    format: date-time
                 status:
                     $ref: '#/components/schemas/SecurityGroupStatus'
                 error:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Error
                     nullable: true
-                    type: string
                 tenant_id:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Tenant Id
                     nullable: true
-                    type: string
                 project_type:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: Project Type
                     nullable: true
-                    type: string
                 is_default:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: boolean
                     title: Is Default
                     nullable: true
-                    type: boolean
                 external_id:
+                    exclusiveMaximum: false
+                    exclusiveMinimum: false
+                    type: string
                     title: External Id
                     nullable: true
-                    type: string
             type: object
             required:
             - status

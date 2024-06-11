@@ -27,7 +27,7 @@ Flags:
   -h, --help                          help for create
       --name string                   Name (required)
   -v, --version                       version for create
-      --volume object                 Volume (at least one of: single property: id or single property: name)
+      --volume object                 Volume (exactly one of: single property: id or single property: name)
                                       Use --volume=help for more details (required)
       --volume.id string              Volume: Id (min character count: 1)
                                       This is the same as '--volume=id:string'.

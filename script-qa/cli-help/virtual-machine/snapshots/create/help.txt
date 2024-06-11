@@ -22,7 +22,7 @@ Flags:
   -h, --help                          help for create
       --name string                   Name (between 1 and 255 characters) (required)
   -v, --version                       version for create
-      --virtual-machine object        Virtual Machine (at least one of: single property: id or single property: name)
+      --virtual-machine object        Virtual Machine (exactly one of: single property: id or single property: name)
                                       Use --virtual-machine=help for more details (required)
       --virtual-machine.id string     Virtual Machine: Id (between 1 and 255 characters)
                                       This is the same as '--virtual-machine=id:string'.

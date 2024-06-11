@@ -35,7 +35,6 @@ xaas_security_group | security-groups
 
 - `created_at` (String)
 - `current_project_type` (String)
-- `current_rules` (Attributes List) (see [below for nested schema](#nestedatt--current_rules))
 - `id` (String) The ID of this resource.
 - `is_default` (Boolean)
 - `tenant_id` (String)
@@ -44,31 +43,6 @@ xaas_security_group | security-groups
 
 <a id="nestedatt--rules"></a>
 ### Nested Schema for `rules`
-
-Optional:
-
-- `api_id` (String)
-- `direction` (String)
-- `error` (String)
-- `port_range_max` (Number)
-- `port_range_min` (Number)
-- `protocol` (String)
-- `remote_group_id` (String)
-- `remote_ip_prefix` (String)
-- `rule_zones` (Attributes Map) (see [below for nested schema](#nestedatt--rules--rule_zones))
-- `status` (String)
-
-<a id="nestedatt--rules--rule_zones"></a>
-### Nested Schema for `rules.rule_zones`
-
-Optional:
-
-- `api_id` (String)
-- `error` (String)
-- `external_id` (String)
-- `status` (String)
-- `zone` (String)
-
 
 
 <a id="nestedatt--security_group_zones"></a>
@@ -84,22 +58,3 @@ Optional:
 - `error` (String)
 - `external_id` (String)
 - `zone` (String)
-
-
-<a id="nestedatt--current_rules"></a>
-### Nested Schema for `current_rules`
-
-Read-Only:
-
-- `created_at` (String)
-- `direction` (String)
-- `error` (String)
-- `ethertype` (String)
-- `id` (String)
-- `port_range_max` (Number)
-- `port_range_min` (Number)
-- `protocol` (String)
-- `remote_group_id` (String)
-- `remote_ip_prefix` (String)
-- `security_group_id` (String)
-- `status` (String)

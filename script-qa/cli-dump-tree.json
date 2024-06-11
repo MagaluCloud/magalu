@@ -597,7 +597,7 @@
          "type": "string"
         },
         "volume": {
-         "anyOf": [
+         "oneOf": [
           {
            "example": {
             "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
@@ -794,15 +794,6 @@
        },
        "properties": {
         "created_at": {
-         "anyOf": [
-          {
-           "type": "string"
-          },
-          {
-           "format": "date-time",
-           "type": "string"
-          }
-         ],
          "example": "2022-01-01T00:00:10Z",
          "title": "Created At",
          "type": "string"
@@ -848,21 +839,12 @@
          "type": "string"
         },
         "updated_at": {
-         "anyOf": [
-          {
-           "type": "string"
-          },
-          {
-           "format": "date-time",
-           "type": "string"
-          }
-         ],
          "example": "2022-01-01T00:00:10Z",
          "title": "Updated At",
          "type": "string"
         },
         "volume": {
-         "anyOf": [
+         "oneOf": [
           {
            "example": {
             "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
@@ -995,8 +977,6 @@
        "properties": {
         "_limit": {
          "default": 50,
-         "exclusiveMinimum": true,
-         "minimum": 0,
          "title": " Limit",
          "type": "integer"
         },
@@ -1063,15 +1043,6 @@
           },
           "properties": {
            "created_at": {
-            "anyOf": [
-             {
-              "type": "string"
-             },
-             {
-              "format": "date-time",
-              "type": "string"
-             }
-            ],
             "example": "2022-01-01T00:00:10Z",
             "title": "Created At",
             "type": "string"
@@ -1117,21 +1088,12 @@
             "type": "string"
            },
            "updated_at": {
-            "anyOf": [
-             {
-              "type": "string"
-             },
-             {
-              "format": "date-time",
-              "type": "string"
-             }
-            ],
             "example": "2022-01-01T00:00:10Z",
             "title": "Updated At",
             "type": "string"
            },
            "volume": {
-            "anyOf": [
+            "oneOf": [
              {
               "example": {
                "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
@@ -1844,7 +1806,8 @@
        "additionalProperties": false,
        "properties": {
         "backup": {
-         "anyOf": [
+         "nullable": true,
+         "oneOf": [
           {
            "example": {
             "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
@@ -1881,7 +1844,6 @@
            "type": "object"
           }
          ],
-         "nullable": true,
          "title": "Backup",
          "type": "object"
         },
@@ -1899,7 +1861,7 @@
          "type": "integer"
         },
         "type": {
-         "anyOf": [
+         "oneOf": [
           {
            "example": {
             "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
@@ -2118,8 +2080,6 @@
         },
         "size": {
          "description": "New volume size in GB",
-         "exclusiveMinimum": true,
-         "minimum": 0,
          "title": "Size",
          "type": "integer"
         }
@@ -2237,17 +2197,9 @@
            "updated_at": "2022-01-01T00:00:10Z"
           }
          },
+         "nullable": true,
          "properties": {
           "attached_at": {
-           "anyOf": [
-            {
-             "type": "string"
-            },
-            {
-             "format": "date-time",
-             "type": "string"
-            }
-           ],
            "example": "2022-01-01T00:00:10Z",
            "title": "Attached At",
            "type": "string"
@@ -2258,7 +2210,7 @@
            "type": "string"
           },
           "instance": {
-           "anyOf": [
+           "oneOf": [
             {
              "example": {
               "created_at": "2022-01-01T00:00:10Z",
@@ -2270,15 +2222,6 @@
              },
              "properties": {
               "created_at": {
-               "anyOf": [
-                {
-                 "type": "string"
-                },
-                {
-                 "format": "date-time",
-                 "type": "string"
-                }
-               ],
                "example": "2022-01-01T00:00:10Z",
                "title": "Created At",
                "type": "string"
@@ -2292,72 +2235,14 @@
                "type": "string"
               },
               "state": {
-               "anyOf": [
-                {
-                 "enum": [
-                  "new",
-                  "running",
-                  "stopped",
-                  "suspended",
-                  "deleted"
-                 ],
-                 "title": "InstanceState",
-                 "type": "string"
-                },
-                {
-                 "type": "string"
-                }
-               ],
                "title": "State",
                "type": "string"
               },
               "status": {
-               "anyOf": [
-                {
-                 "enum": [
-                  "provisioning",
-                  "creating",
-                  "creating_error",
-                  "creating_error_quota",
-                  "completed",
-                  "retyping_pending",
-                  "retyping",
-                  "retyping_confirmed",
-                  "retyping_error",
-                  "retyping_error_quota",
-                  "stopping_pending",
-                  "stopping",
-                  "suspending_pending",
-                  "suspending",
-                  "rebooting_pending",
-                  "rebooting",
-                  "starting_pending",
-                  "starting",
-                  "deleting_pending",
-                  "deleting",
-                  "deleting_error",
-                  "deleted"
-                 ],
-                 "title": "InstanceStatus",
-                 "type": "string"
-                },
-                {
-                 "type": "string"
-                }
-               ],
                "title": "Status",
                "type": "string"
               },
               "updated_at": {
-               "anyOf": [
-                {
-                 "type": "string"
-                },
-                {
-                 "format": "date-time",
-                 "type": "string"
-                }
-               ],
                "example": "2022-01-01T00:00:10Z",
                "title": "Updated At",
                "type": "string"
@@ -2400,19 +2285,9 @@
           "instance",
           "attached_at"
          ],
-         "title": "AttachmentResponse",
          "type": "object"
         },
         "created_at": {
-         "anyOf": [
-          {
-           "type": "string"
-          },
-          {
-           "format": "date-time",
-           "type": "string"
-          }
-         ],
          "example": "2022-01-01T00:00:10Z",
          "title": "Created At",
          "type": "string"
@@ -2422,6 +2297,7 @@
           "message": "Unauthorized",
           "slug": "Unauthorized"
          },
+         "nullable": true,
          "properties": {
           "message": {
            "title": "Message",
@@ -2436,7 +2312,6 @@
           "slug",
           "message"
          ],
-         "title": "VolumeResponseError",
          "type": "object"
         },
         "id": {
@@ -2492,7 +2367,7 @@
          "type": "string"
         },
         "type": {
-         "anyOf": [
+         "oneOf": [
           {
            "example": {
             "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
@@ -2581,15 +2456,6 @@
          "type": "object"
         },
         "updated_at": {
-         "anyOf": [
-          {
-           "type": "string"
-          },
-          {
-           "format": "date-time",
-           "type": "string"
-          }
-         ],
          "example": "2022-01-01T00:00:10Z",
          "title": "Updated At",
          "type": "string"
@@ -2649,8 +2515,6 @@
        "properties": {
         "_limit": {
          "default": 50,
-         "exclusiveMinimum": true,
-         "minimum": 0,
          "title": " Limit",
          "type": "integer"
         },
@@ -2756,17 +2620,9 @@
               "updated_at": "2022-01-01T00:00:10Z"
              }
             },
+            "nullable": true,
             "properties": {
              "attached_at": {
-              "anyOf": [
-               {
-                "type": "string"
-               },
-               {
-                "format": "date-time",
-                "type": "string"
-               }
-              ],
               "example": "2022-01-01T00:00:10Z",
               "title": "Attached At",
               "type": "string"
@@ -2777,7 +2633,7 @@
               "type": "string"
              },
              "instance": {
-              "anyOf": [
+              "oneOf": [
                {
                 "example": {
                  "created_at": "2022-01-01T00:00:10Z",
@@ -2789,15 +2645,6 @@
                 },
                 "properties": {
                  "created_at": {
-                  "anyOf": [
-                   {
-                    "type": "string"
-                   },
-                   {
-                    "format": "date-time",
-                    "type": "string"
-                   }
-                  ],
                   "example": "2022-01-01T00:00:10Z",
                   "title": "Created At",
                   "type": "string"
@@ -2811,72 +2658,14 @@
                   "type": "string"
                  },
                  "state": {
-                  "anyOf": [
-                   {
-                    "enum": [
-                     "new",
-                     "running",
-                     "stopped",
-                     "suspended",
-                     "deleted"
-                    ],
-                    "title": "InstanceState",
-                    "type": "string"
-                   },
-                   {
-                    "type": "string"
-                   }
-                  ],
                   "title": "State",
                   "type": "string"
                  },
                  "status": {
-                  "anyOf": [
-                   {
-                    "enum": [
-                     "provisioning",
-                     "creating",
-                     "creating_error",
-                     "creating_error_quota",
-                     "completed",
-                     "retyping_pending",
-                     "retyping",
-                     "retyping_confirmed",
-                     "retyping_error",
-                     "retyping_error_quota",
-                     "stopping_pending",
-                     "stopping",
-                     "suspending_pending",
-                     "suspending",
-                     "rebooting_pending",
-                     "rebooting",
-                     "starting_pending",
-                     "starting",
-                     "deleting_pending",
-                     "deleting",
-                     "deleting_error",
-                     "deleted"
-                    ],
-                    "title": "InstanceStatus",
-                    "type": "string"
-                   },
-                   {
-                    "type": "string"
-                   }
-                  ],
                   "title": "Status",
                   "type": "string"
                  },
                  "updated_at": {
-                  "anyOf": [
-                   {
-                    "type": "string"
-                   },
-                   {
-                    "format": "date-time",
-                    "type": "string"
-                   }
-                  ],
                   "example": "2022-01-01T00:00:10Z",
                   "title": "Updated At",
                   "type": "string"
@@ -2919,19 +2708,9 @@
              "instance",
              "attached_at"
             ],
-            "title": "AttachmentResponse",
             "type": "object"
            },
            "created_at": {
-            "anyOf": [
-             {
-              "type": "string"
-             },
-             {
-              "format": "date-time",
-              "type": "string"
-             }
-            ],
             "example": "2022-01-01T00:00:10Z",
             "title": "Created At",
             "type": "string"
@@ -2941,6 +2720,7 @@
              "message": "Unauthorized",
              "slug": "Unauthorized"
             },
+            "nullable": true,
             "properties": {
              "message": {
               "title": "Message",
@@ -2955,7 +2735,6 @@
              "slug",
              "message"
             ],
-            "title": "VolumeResponseError",
             "type": "object"
            },
            "id": {
@@ -3011,7 +2790,7 @@
             "type": "string"
            },
            "type": {
-            "anyOf": [
+            "oneOf": [
              {
               "example": {
                "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
@@ -3100,15 +2879,6 @@
             "type": "object"
            },
            "updated_at": {
-            "anyOf": [
-             {
-              "type": "string"
-             },
-             {
-              "format": "date-time",
-              "type": "string"
-             }
-            ],
             "example": "2022-01-01T00:00:10Z",
             "title": "Updated At",
             "type": "string"
@@ -3243,7 +3013,7 @@
          "type": "string"
         },
         "new_type": {
-         "anyOf": [
+         "oneOf": [
           {
            "example": {
             "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
@@ -15167,13 +14937,11 @@
        "magalu.cloud/core/resolved": "true",
        "properties": {
         "has_pip": {
-         "default": true,
          "nullable": true,
          "title": "Has Pip",
          "type": "boolean"
         },
         "has_sg": {
-         "default": true,
          "nullable": true,
          "title": "Has Sg",
          "type": "boolean"
@@ -15185,8 +14953,8 @@
          "type": "string"
         },
         "security_groups_id": {
-         "default": [],
          "items": {
+          "nullable": true,
           "type": "string"
          },
          "nullable": true,
@@ -15194,8 +14962,8 @@
          "type": "array"
         },
         "subnets": {
-         "default": [],
          "items": {
+          "nullable": true,
           "type": "string"
          },
          "nullable": true,
@@ -15276,13 +15044,11 @@
        "additionalProperties": false,
        "properties": {
         "has_pip": {
-         "default": true,
          "nullable": true,
          "title": "Has Pip",
          "type": "boolean"
         },
         "has_sg": {
-         "default": true,
          "nullable": true,
          "title": "Has Sg",
          "type": "boolean"
@@ -15294,8 +15060,8 @@
          "type": "string"
         },
         "security_groups_id": {
-         "default": [],
          "items": {
+          "nullable": true,
           "type": "string"
          },
          "nullable": true,
@@ -15303,8 +15069,8 @@
          "type": "array"
         },
         "subnets": {
-         "default": [],
          "items": {
+          "nullable": true,
           "type": "string"
          },
          "nullable": true,
@@ -15610,7 +15376,6 @@
        },
        "properties": {
         "created_at": {
-         "format": "date-time",
          "nullable": true,
          "title": "Created At",
          "type": "string"
@@ -15668,25 +15433,8 @@
          "type": "string"
         },
         "public_ip": {
-         "default": [],
          "items": {
-          "example": {
-           "public_ip": "100.94.5.31",
-           "public_ip_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-          },
-          "properties": {
-           "public_ip": {
-            "nullable": true,
-            "title": "Public Ip",
-            "type": "string"
-           },
-           "public_ip_id": {
-            "nullable": true,
-            "title": "Public Ip Id",
-            "type": "string"
-           }
-          },
-          "title": "PublicIpResponsePort",
+          "nullable": true,
           "type": "object"
          },
          "nullable": true,
@@ -15702,7 +15450,6 @@
          "type": "array"
         },
         "updated": {
-         "format": "date-time",
          "nullable": true,
          "title": "Updated",
          "type": "string"
@@ -15795,7 +15542,6 @@
         },
         "properties": {
          "created_at": {
-          "format": "date-time",
           "nullable": true,
           "title": "Created At",
           "type": "string"
@@ -15853,25 +15599,8 @@
           "type": "string"
          },
          "public_ip": {
-          "default": [],
           "items": {
-           "example": {
-            "public_ip": "100.94.5.31",
-            "public_ip_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-           },
-           "properties": {
-            "public_ip": {
-             "nullable": true,
-             "title": "Public Ip",
-             "type": "string"
-            },
-            "public_ip_id": {
-             "nullable": true,
-             "title": "Public Ip Id",
-             "type": "string"
-            }
-           },
-           "title": "PublicIpResponsePort",
+           "nullable": true,
            "type": "object"
           },
           "nullable": true,
@@ -15887,7 +15616,6 @@
           "type": "array"
          },
          "updated": {
-          "format": "date-time",
           "nullable": true,
           "title": "Updated",
           "type": "string"
@@ -16264,7 +15992,6 @@
        "magalu.cloud/core/resolved": "true",
        "properties": {
         "description": {
-         "default": "",
          "nullable": true,
          "title": "Description",
          "type": "string"
@@ -16287,7 +16014,6 @@
          "type": "boolean"
         },
         "wait_timeout": {
-         "default": 120,
          "description": "the approximate time in seconds you want to wait when simulating the request as synchronous (only works with wait=true)",
          "nullable": true,
          "title": "waitTimeout",
@@ -16493,7 +16219,6 @@
        },
        "properties": {
         "created_at": {
-         "format": "date-time",
          "nullable": true,
          "title": "Created At",
          "type": "string"
@@ -16534,7 +16259,6 @@
          "type": "string"
         },
         "updated": {
-         "format": "date-time",
          "nullable": true,
          "title": "Updated",
          "type": "string"
@@ -16622,7 +16346,6 @@
           },
           "properties": {
            "created_at": {
-            "format": "date-time",
             "nullable": true,
             "title": "Created At",
             "type": "string"
@@ -16663,7 +16386,6 @@
             "type": "string"
            },
            "updated": {
-            "format": "date-time",
             "nullable": true,
             "title": "Updated",
             "type": "string"
@@ -17144,14 +16866,12 @@
          "type": "boolean"
         },
         "wait": {
-         "default": true,
          "description": "The request will be asynchronous. The wait parameter tells the API that you want the request to simulate synchronous behavior (to maintain endpoint compatibility). You can set an approximate timeout with the waitTimeout parameter",
          "nullable": true,
          "title": "wait",
          "type": "boolean"
         },
         "wait_timeout": {
-         "default": 120,
          "description": "the approximate time in seconds you want to wait when simulating the request as synchronous (only works with wait=true)",
          "nullable": true,
          "title": "waitTimeout",
@@ -17301,7 +17021,6 @@
        },
        "properties": {
         "created_at": {
-         "format": "date-time",
          "nullable": true,
          "title": "Created At",
          "type": "string"
@@ -17467,7 +17186,6 @@
           },
           "properties": {
            "created_at": {
-            "format": "date-time",
             "nullable": true,
             "title": "Created At",
             "type": "string"
@@ -17601,14 +17319,11 @@
        "additionalProperties": false,
        "properties": {
         "description": {
-         "default": "",
          "nullable": true,
          "title": "Description",
          "type": "string"
         },
         "name": {
-         "maxLength": 100,
-         "minLength": 5,
          "nullable": true,
          "title": "Name",
          "type": "string"
@@ -17915,7 +17630,6 @@
        },
        "properties": {
         "created_at": {
-         "format": "date-time",
          "nullable": true,
          "title": "Created At",
          "type": "string"
@@ -17956,90 +17670,8 @@
          "type": "string"
         },
         "rules": {
-         "default": [],
          "items": {
-          "example": {
-           "created_at": "2022-01-01 00:00:00",
-           "direction": "egress",
-           "error": "null",
-           "ethertype": "IPv4",
-           "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-           "port_range_max": 8028,
-           "port_range_min": 8028,
-           "protocol": "tcp",
-           "remote_group_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-           "remote_ip_prefix": "100.94.0.0/24",
-           "security_group_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-           "status": "created"
-          },
-          "properties": {
-           "created_at": {
-            "format": "date-time",
-            "nullable": true,
-            "title": "Created At",
-            "type": "string"
-           },
-           "direction": {
-            "nullable": true,
-            "title": "Direction",
-            "type": "string"
-           },
-           "error": {
-            "nullable": true,
-            "title": "Error",
-            "type": "string"
-           },
-           "ethertype": {
-            "nullable": true,
-            "title": "Ethertype",
-            "type": "string"
-           },
-           "id": {
-            "nullable": true,
-            "title": "Id",
-            "type": "string"
-           },
-           "port_range_max": {
-            "nullable": true,
-            "title": "Port Range Max",
-            "type": "integer"
-           },
-           "port_range_min": {
-            "nullable": true,
-            "title": "Port Range Min",
-            "type": "integer"
-           },
-           "protocol": {
-            "nullable": true,
-            "title": "Protocol",
-            "type": "string"
-           },
-           "remote_group_id": {
-            "nullable": true,
-            "title": "Remote Group Id",
-            "type": "string"
-           },
-           "remote_ip_prefix": {
-            "nullable": true,
-            "title": "Remote Ip Prefix",
-            "type": "string"
-           },
-           "security_group_id": {
-            "nullable": true,
-            "title": "Security Group Id",
-            "type": "string"
-           },
-           "status": {
-            "enum": [
-             "created",
-             "pending",
-             "error"
-            ],
-            "title": "RuleStatus",
-            "type": "string"
-           }
-          },
-          "title": "RuleResponseEvent",
+          "nullable": true,
           "type": "object"
          },
          "nullable": true,
@@ -18061,7 +17693,6 @@
          "type": "string"
         },
         "updated": {
-         "format": "date-time",
          "nullable": true,
          "title": "Updated",
          "type": "string"
@@ -18154,7 +17785,6 @@
           },
           "properties": {
            "created_at": {
-            "format": "date-time",
             "nullable": true,
             "title": "Created At",
             "type": "string"
@@ -18204,7 +17834,6 @@
             "type": "string"
            },
            "updated": {
-            "format": "date-time",
             "nullable": true,
             "title": "Updated",
             "type": "string"
@@ -18321,14 +17950,12 @@
            "type": "boolean"
           },
           "wait": {
-           "default": true,
            "description": "The request will be asynchronous. The wait parameter tells the API that you want the request to simulate synchronous behavior (to maintain endpoint compatibility). You can set an approximate timeout with the waitTimeout parameter",
            "nullable": true,
            "title": "wait",
            "type": "boolean"
           },
           "wait_timeout": {
-           "default": 120,
            "description": "the approximate time in seconds you want to wait when simulating the request as synchronous (only works with wait=true)",
            "nullable": true,
            "title": "waitTimeout",
@@ -18447,7 +18074,6 @@
             },
             "properties": {
              "created_at": {
-              "format": "date-time",
               "nullable": true,
               "title": "Created At",
               "type": "string"
@@ -18681,7 +18307,6 @@
            "type": "string"
           },
           "created_at": {
-           "format": "date-time",
            "nullable": true,
            "title": "Created At",
            "type": "string"
@@ -18738,7 +18363,6 @@
            "type": "string"
           },
           "updated": {
-           "format": "date-time",
            "nullable": true,
            "title": "Updated",
            "type": "string"
@@ -19034,7 +18658,6 @@
               "type": "string"
              },
              "created_at": {
-              "format": "date-time",
               "nullable": true,
               "title": "Created At",
               "type": "string"
@@ -19058,7 +18681,6 @@
               "type": "string"
              },
              "updated": {
-              "format": "date-time",
               "nullable": true,
               "title": "Updated",
               "type": "string"
@@ -19495,7 +19117,6 @@
        },
        "properties": {
         "created_at": {
-         "format": "date-time",
          "nullable": true,
          "title": "Created At",
          "type": "string"
@@ -19544,8 +19165,8 @@
          "type": "array"
         },
         "subnets": {
-         "default": [],
          "items": {
+          "nullable": true,
           "type": "string"
          },
          "nullable": true,
@@ -19558,7 +19179,6 @@
          "type": "string"
         },
         "updated": {
-         "format": "date-time",
          "nullable": true,
          "title": "Updated",
          "type": "string"
@@ -19632,98 +19252,8 @@
        },
        "properties": {
         "vpcs": {
-         "default": [],
          "items": {
-          "example": {
-           "created_at": "2022-01-01 00:00:00",
-           "description": "DESCRIPTION",
-           "external_network": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-           "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-           "is_default": true,
-           "name": "vpc_name",
-           "network_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-           "router_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-           "security_groups": [
-            "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-           ],
-           "subnets": [
-            "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-           ],
-           "tenant_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-           "updated": "2022-01-01 00:00:00"
-          },
-          "properties": {
-           "created_at": {
-            "format": "date-time",
-            "nullable": true,
-            "title": "Created At",
-            "type": "string"
-           },
-           "description": {
-            "nullable": true,
-            "title": "Description",
-            "type": "string"
-           },
-           "external_network": {
-            "nullable": true,
-            "title": "External Network",
-            "type": "string"
-           },
-           "id": {
-            "nullable": true,
-            "title": "Id",
-            "type": "string"
-           },
-           "is_default": {
-            "nullable": true,
-            "title": "Is Default",
-            "type": "boolean"
-           },
-           "name": {
-            "nullable": true,
-            "title": "Name",
-            "type": "string"
-           },
-           "network_id": {
-            "nullable": true,
-            "title": "Network Id",
-            "type": "string"
-           },
-           "router_id": {
-            "nullable": true,
-            "title": "Router Id",
-            "type": "string"
-           },
-           "security_groups": {
-            "default": [],
-            "items": {
-             "type": "string"
-            },
-            "title": "Security Groups",
-            "type": "array"
-           },
-           "subnets": {
-            "default": [],
-            "items": {
-             "type": "string"
-            },
-            "nullable": true,
-            "title": "Subnets",
-            "type": "array"
-           },
-           "tenant_id": {
-            "nullable": true,
-            "title": "Tenant Id",
-            "type": "string"
-           },
-           "updated": {
-            "format": "date-time",
-            "nullable": true,
-            "title": "Updated",
-            "type": "string"
-           }
-          },
-          "title": "VpcResponse",
+          "nullable": true,
           "type": "object"
          },
          "nullable": true,
@@ -19783,13 +19313,11 @@
          "magalu.cloud/core/resolved": "true",
          "properties": {
           "has_pip": {
-           "default": true,
            "nullable": true,
            "title": "Has Pip",
            "type": "boolean"
           },
           "has_sg": {
-           "default": true,
            "nullable": true,
            "title": "Has Sg",
            "type": "boolean"
@@ -19801,8 +19329,8 @@
            "type": "string"
           },
           "security_groups_id": {
-           "default": [],
            "items": {
+            "nullable": true,
             "type": "string"
            },
            "nullable": true,
@@ -19810,8 +19338,8 @@
            "type": "array"
           },
           "subnets": {
-           "default": [],
            "items": {
+            "nullable": true,
             "type": "string"
            },
            "nullable": true,
@@ -20059,7 +19587,6 @@
               },
               "properties": {
                "created_at": {
-                "format": "date-time",
                 "nullable": true,
                 "title": "Created At",
                 "type": "string"
@@ -20117,25 +19644,8 @@
                 "type": "string"
                },
                "public_ip": {
-                "default": [],
                 "items": {
-                 "example": {
-                  "public_ip": "100.94.5.31",
-                  "public_ip_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-                 },
-                 "properties": {
-                  "public_ip": {
-                   "nullable": true,
-                   "title": "Public Ip",
-                   "type": "string"
-                  },
-                  "public_ip_id": {
-                   "nullable": true,
-                   "title": "Public Ip Id",
-                   "type": "string"
-                  }
-                 },
-                 "title": "PublicIpResponsePort",
+                 "nullable": true,
                  "type": "object"
                 },
                 "nullable": true,
@@ -20151,7 +19661,6 @@
                 "type": "array"
                },
                "updated": {
-                "format": "date-time",
                 "nullable": true,
                 "title": "Updated",
                 "type": "string"
@@ -20229,7 +19738,6 @@
          "magalu.cloud/core/resolved": "true",
          "properties": {
           "description": {
-           "default": "",
            "nullable": true,
            "title": "Description",
            "type": "string"
@@ -20252,7 +19760,6 @@
            "type": "boolean"
           },
           "wait_timeout": {
-           "default": 120,
            "description": "the approximate time in seconds you want to wait when simulating the request as synchronous (only works with wait=true)",
            "nullable": true,
            "title": "waitTimeout",
@@ -20365,7 +19872,6 @@
             },
             "properties": {
              "created_at": {
-              "format": "date-time",
               "nullable": true,
               "title": "Created At",
               "type": "string"
@@ -20406,7 +19912,6 @@
               "type": "string"
              },
              "updated": {
-              "format": "date-time",
               "nullable": true,
               "title": "Updated",
               "type": "string"
@@ -20478,14 +19983,11 @@
          "additionalProperties": false,
          "properties": {
           "description": {
-           "default": "",
            "nullable": true,
            "title": "Description",
            "type": "string"
           },
           "name": {
-           "maxLength": 100,
-           "minLength": 5,
            "nullable": true,
            "title": "Name",
            "type": "string"
@@ -20497,14 +19999,12 @@
            "type": "string"
           },
           "wait": {
-           "default": true,
            "description": "The request will be asynchronous. The wait parameter tells the API that you want the request to simulate synchronous behavior (to maintain endpoint compatibility). You can set an approximate timeout with the waitTimeout parameter",
            "nullable": true,
            "title": "wait",
            "type": "boolean"
           },
           "wait_timeout": {
-           "default": 120,
            "description": "the approximate time in seconds you want to wait when simulating the request as synchronous (only works with wait=true)",
            "nullable": true,
            "title": "waitTimeout",
@@ -20619,7 +20119,6 @@
             },
             "properties": {
              "created_at": {
-              "format": "date-time",
               "nullable": true,
               "title": "Created At",
               "type": "string"
@@ -20669,7 +20168,6 @@
               "type": "string"
              },
              "updated": {
-              "format": "date-time",
               "nullable": true,
               "title": "Updated",
               "type": "string"
@@ -20906,7 +20404,6 @@
           },
           "properties": {
            "created_at": {
-            "format": "date-time",
             "nullable": true,
             "title": "Created At",
             "type": "string"
@@ -20938,7 +20435,6 @@
             "type": "string"
            },
            "updated": {
-            "format": "date-time",
             "nullable": true,
             "title": "Updated",
             "type": "string"
@@ -21026,13 +20522,11 @@
        "additionalProperties": false,
        "properties": {
         "has_pip": {
-         "default": true,
          "nullable": true,
          "title": "Has Pip",
          "type": "boolean"
         },
         "has_sg": {
-         "default": true,
          "nullable": true,
          "title": "Has Sg",
          "type": "boolean"
@@ -21056,8 +20550,8 @@
          "type": "string"
         },
         "security_groups_id": {
-         "default": [],
          "items": {
+          "nullable": true,
           "type": "string"
          },
          "nullable": true,
@@ -21065,8 +20559,8 @@
          "type": "array"
         },
         "subnets": {
-         "default": [],
          "items": {
+          "nullable": true,
           "type": "string"
          },
          "nullable": true,
@@ -21508,7 +21002,6 @@
          },
          "properties": {
           "created_at": {
-           "format": "date-time",
            "nullable": true,
            "title": "Created At",
            "type": "string"
@@ -21566,25 +21059,8 @@
            "type": "string"
           },
           "public_ip": {
-           "default": [],
            "items": {
-            "example": {
-             "public_ip": "100.94.5.31",
-             "public_ip_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-            },
-            "properties": {
-             "public_ip": {
-              "nullable": true,
-              "title": "Public Ip",
-              "type": "string"
-             },
-             "public_ip_id": {
-              "nullable": true,
-              "title": "Public Ip Id",
-              "type": "string"
-             }
-            },
-            "title": "PublicIpResponsePort",
+            "nullable": true,
             "type": "object"
            },
            "nullable": true,
@@ -21600,7 +21076,6 @@
            "type": "array"
           },
           "updated": {
-           "format": "date-time",
            "nullable": true,
            "title": "Updated",
            "type": "string"
@@ -21915,7 +21390,6 @@
          },
          "properties": {
           "created_at": {
-           "format": "date-time",
            "nullable": true,
            "title": "Created At",
            "type": "string"
@@ -21956,7 +21430,6 @@
            "type": "string"
           },
           "updated": {
-           "format": "date-time",
            "nullable": true,
            "title": "Updated",
            "type": "string"
@@ -22061,7 +21534,6 @@
             },
             "properties": {
              "created_at": {
-              "format": "date-time",
               "nullable": true,
               "title": "Created At",
               "type": "string"
@@ -22102,7 +21574,6 @@
               "type": "string"
              },
              "updated": {
-              "format": "date-time",
               "nullable": true,
               "title": "Updated",
               "type": "string"
@@ -22174,7 +21645,6 @@
          "additionalProperties": false,
          "properties": {
           "description": {
-           "default": "",
            "nullable": true,
            "title": "Description",
            "type": "string"
@@ -22209,7 +21679,6 @@
            "type": "boolean"
           },
           "wait_timeout": {
-           "default": 120,
            "description": "the approximate time in seconds you want to wait when simulating the request as synchronous (only works with wait=true)",
            "nullable": true,
            "title": "waitTimeout",
@@ -22336,7 +21805,6 @@
             },
             "properties": {
              "created_at": {
-              "format": "date-time",
               "nullable": true,
               "title": "Created At",
               "type": "string"
@@ -22377,7 +21845,6 @@
               "type": "string"
              },
              "updated": {
-              "format": "date-time",
               "nullable": true,
               "title": "Updated",
               "type": "string"
@@ -22564,7 +22031,6 @@
          },
          "properties": {
           "created_at": {
-           "format": "date-time",
            "nullable": true,
            "title": "Created At",
            "type": "string"
@@ -22750,27 +22216,8 @@
            "type": "string"
           },
           "rules_zones": {
-           "default": [],
            "items": {
-            "example": {
-             "resource_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-             "zone": "zone_name"
-            },
-            "properties": {
-             "resource_id": {
-              "title": "Resource Id",
-              "type": "string"
-             },
-             "zone": {
-              "nullable": true,
-              "title": "Zone",
-              "type": "string"
-             }
-            },
-            "required": [
-             "resource_id"
-            ],
-            "title": "RuleZoneCreateEvent",
+            "nullable": true,
             "type": "object"
            },
            "nullable": true,
@@ -22903,14 +22350,12 @@
            "type": "string"
           },
           "wait": {
-           "default": true,
            "description": "The request will be asynchronous. The wait parameter tells the API that you want the request to simulate synchronous behavior (to maintain endpoint compatibility). You can set an approximate timeout with the waitTimeout parameter",
            "nullable": true,
            "title": "wait",
            "type": "boolean"
           },
           "wait_timeout": {
-           "default": 120,
            "description": "the approximate time in seconds you want to wait when simulating the request as synchronous (only works with wait=true)",
            "nullable": true,
            "title": "waitTimeout",
@@ -23041,7 +22486,6 @@
             },
             "properties": {
              "created_at": {
-              "format": "date-time",
               "nullable": true,
               "title": "Created At",
               "type": "string"
@@ -23183,14 +22627,11 @@
          "additionalProperties": false,
          "properties": {
           "description": {
-           "default": "",
            "nullable": true,
            "title": "Description",
            "type": "string"
           },
           "name": {
-           "maxLength": 100,
-           "minLength": 5,
            "nullable": true,
            "title": "Name",
            "type": "string"
@@ -23556,7 +22997,6 @@
          },
          "properties": {
           "created_at": {
-           "format": "date-time",
            "nullable": true,
            "title": "Created At",
            "type": "string"
@@ -23597,90 +23037,8 @@
            "type": "string"
           },
           "rules": {
-           "default": [],
            "items": {
-            "example": {
-             "created_at": "2022-01-01 00:00:00",
-             "direction": "egress",
-             "error": "null",
-             "ethertype": "IPv4",
-             "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-             "port_range_max": 8028,
-             "port_range_min": 8028,
-             "protocol": "tcp",
-             "remote_group_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-             "remote_ip_prefix": "100.94.0.0/24",
-             "security_group_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-             "status": "created"
-            },
-            "properties": {
-             "created_at": {
-              "format": "date-time",
-              "nullable": true,
-              "title": "Created At",
-              "type": "string"
-             },
-             "direction": {
-              "nullable": true,
-              "title": "Direction",
-              "type": "string"
-             },
-             "error": {
-              "nullable": true,
-              "title": "Error",
-              "type": "string"
-             },
-             "ethertype": {
-              "nullable": true,
-              "title": "Ethertype",
-              "type": "string"
-             },
-             "id": {
-              "nullable": true,
-              "title": "Id",
-              "type": "string"
-             },
-             "port_range_max": {
-              "nullable": true,
-              "title": "Port Range Max",
-              "type": "integer"
-             },
-             "port_range_min": {
-              "nullable": true,
-              "title": "Port Range Min",
-              "type": "integer"
-             },
-             "protocol": {
-              "nullable": true,
-              "title": "Protocol",
-              "type": "string"
-             },
-             "remote_group_id": {
-              "nullable": true,
-              "title": "Remote Group Id",
-              "type": "string"
-             },
-             "remote_ip_prefix": {
-              "nullable": true,
-              "title": "Remote Ip Prefix",
-              "type": "string"
-             },
-             "security_group_id": {
-              "nullable": true,
-              "title": "Security Group Id",
-              "type": "string"
-             },
-             "status": {
-              "enum": [
-               "created",
-               "pending",
-               "error"
-              ],
-              "title": "RuleStatus",
-              "type": "string"
-             }
-            },
-            "title": "RuleResponseEvent",
+            "nullable": true,
             "type": "object"
            },
            "nullable": true,
@@ -23702,7 +23060,6 @@
            "type": "string"
           },
           "updated": {
-           "format": "date-time",
            "nullable": true,
            "title": "Updated",
            "type": "string"
@@ -23819,7 +23176,6 @@
             },
             "properties": {
              "created_at": {
-              "format": "date-time",
               "nullable": true,
               "title": "Created At",
               "type": "string"
@@ -23874,7 +23230,6 @@
               "type": "string"
              },
              "updated": {
-              "format": "date-time",
               "nullable": true,
               "title": "Updated",
               "type": "string"
@@ -23975,126 +23330,8 @@
            "type": "string"
           },
           "rules": {
-           "default": [],
            "items": {
-            "example": {
-             "api_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-             "direction": "egress",
-             "error": "null",
-             "external_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-             "port_range_max": 8028,
-             "port_range_min": 8028,
-             "protocol": "tcp",
-             "remote_group_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-             "remote_ip_prefix": "100.94.0.0/24",
-             "rule_zones": [
-              {
-               "resource_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-               "zone": "zone_name"
-              }
-             ],
-             "status": "created"
-            },
-            "properties": {
-             "api_id": {
-              "nullable": true,
-              "title": "Api Id",
-              "type": "string"
-             },
-             "direction": {
-              "nullable": true,
-              "title": "Direction",
-              "type": "string"
-             },
-             "error": {
-              "nullable": true,
-              "title": "Error",
-              "type": "string"
-             },
-             "port_range_max": {
-              "nullable": true,
-              "title": "Port Range Max",
-              "type": "integer"
-             },
-             "port_range_min": {
-              "nullable": true,
-              "title": "Port Range Min",
-              "type": "integer"
-             },
-             "protocol": {
-              "nullable": true,
-              "title": "Protocol",
-              "type": "string"
-             },
-             "remote_group_id": {
-              "nullable": true,
-              "title": "Remote Group Id",
-              "type": "string"
-             },
-             "remote_ip_prefix": {
-              "nullable": true,
-              "title": "Remote Ip Prefix",
-              "type": "string"
-             },
-             "rule_zones": {
-              "additionalProperties": {
-               "example": {
-                "api_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-                "error": "error data, if any",
-                "external_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-                "status": "created",
-                "zone": "zone_name"
-               },
-               "properties": {
-                "api_id": {
-                 "nullable": true,
-                 "title": "Api Id",
-                 "type": "string"
-                },
-                "error": {
-                 "nullable": true,
-                 "title": "Error",
-                 "type": "string"
-                },
-                "external_id": {
-                 "nullable": true,
-                 "title": "External Id",
-                 "type": "string"
-                },
-                "status": {
-                 "enum": [
-                  "created",
-                  "pending",
-                  "error"
-                 ],
-                 "title": "RuleStatus",
-                 "type": "string"
-                },
-                "zone": {
-                 "nullable": true,
-                 "title": "Zone",
-                 "type": "string"
-                }
-               },
-               "title": "RuleZoneStatusEvent",
-               "type": "object"
-              },
-              "default": {},
-              "nullable": true,
-              "title": "Rule Zones",
-              "type": "object"
-             },
-             "status": {
-              "enum": [
-               "created",
-               "pending",
-               "error"
-              ],
-              "title": "RuleStatus",
-              "type": "string"
-             }
-            },
-            "title": "RuleStatusEvent",
+            "nullable": true,
             "type": "object"
            },
            "nullable": true,
@@ -24110,7 +23347,6 @@
            "additionalProperties": {
             "$ref": "#/components/schemas/SecurityGroupZoneStatusEvent"
            },
-           "default": {},
            "nullable": true,
            "title": "Security Group Zones",
            "type": "object"
@@ -24179,14 +23415,11 @@
          "additionalProperties": false,
          "properties": {
           "description": {
-           "default": "",
            "nullable": true,
            "title": "Description",
            "type": "string"
           },
           "name": {
-           "maxLength": 100,
-           "minLength": 5,
            "nullable": true,
            "title": "Name",
            "type": "string"
@@ -24210,14 +23443,12 @@
            "type": "string"
           },
           "wait": {
-           "default": true,
            "description": "The request will be asynchronous. The wait parameter tells the API that you want the request to simulate synchronous behavior (to maintain endpoint compatibility). You can set an approximate timeout with the waitTimeout parameter",
            "nullable": true,
            "title": "wait",
            "type": "boolean"
           },
           "wait_timeout": {
-           "default": 120,
            "description": "the approximate time in seconds you want to wait when simulating the request as synchronous (only works with wait=true)",
            "nullable": true,
            "title": "waitTimeout",
@@ -24347,7 +23578,6 @@
             },
             "properties": {
              "created_at": {
-              "format": "date-time",
               "nullable": true,
               "title": "Created At",
               "type": "string"
@@ -24402,7 +23632,6 @@
               "type": "string"
              },
              "updated": {
-              "format": "date-time",
               "nullable": true,
               "title": "Updated",
               "type": "string"
@@ -25173,7 +24402,6 @@
             "type": "string"
            },
            "created_at": {
-            "format": "date-time",
             "nullable": true,
             "title": "Created At",
             "type": "string"
@@ -25211,7 +24439,6 @@
             "type": "string"
            },
            "updated": {
-            "format": "date-time",
             "nullable": true,
             "title": "Updated",
             "type": "string"
@@ -25333,7 +24560,6 @@
          },
          "properties": {
           "created_at": {
-           "format": "date-time",
            "nullable": true,
            "title": "Created At",
            "type": "string"
@@ -25972,7 +25198,6 @@
        },
        "properties": {
         "created_at": {
-         "format": "date-time",
          "nullable": true,
          "title": "Created At",
          "type": "string"
@@ -25998,102 +25223,8 @@
          "type": "string"
         },
         "networks": {
-         "default": [],
          "items": {
-          "example": {
-           "created_at": "2022-01-01 00:00:00",
-           "description": "network description",
-           "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-           "is_port_security_enabled": true,
-           "is_router_external": false,
-           "is_shared": false,
-           "mtu": "1500",
-           "name": "network_name",
-           "status": "ACTIVE",
-           "subnet_ids": [
-            "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-           ],
-           "tags": [
-            "network_tag"
-           ],
-           "updated_at": "2022-01-01 00:00:00"
-          },
-          "properties": {
-           "created_at": {
-            "format": "date-time",
-            "nullable": true,
-            "title": "Created At",
-            "type": "string"
-           },
-           "description": {
-            "nullable": true,
-            "title": "Description",
-            "type": "string"
-           },
-           "id": {
-            "title": "Id",
-            "type": "string"
-           },
-           "mtu": {
-            "nullable": true,
-            "title": "Mtu",
-            "type": "integer"
-           },
-           "name": {
-            "maxLength": 100,
-            "minLength": 5,
-            "title": "Name",
-            "type": "string"
-           },
-           "port_security_enabled": {
-            "nullable": true,
-            "title": "Port Security Enabled",
-            "type": "boolean"
-           },
-           "router_external": {
-            "nullable": true,
-            "title": "Router External",
-            "type": "boolean"
-           },
-           "shared": {
-            "nullable": true,
-            "title": "Shared",
-            "type": "boolean"
-           },
-           "status": {
-            "nullable": true,
-            "title": "Status",
-            "type": "string"
-           },
-           "subnets": {
-            "default": [],
-            "items": {
-             "type": "string"
-            },
-            "nullable": true,
-            "title": "Subnets",
-            "type": "array"
-           },
-           "tags": {
-            "default": [],
-            "items": {
-             "type": "string"
-            },
-            "nullable": true,
-            "title": "Tags",
-            "type": "array"
-           },
-           "updated_at": {
-            "format": "date-time",
-            "nullable": true,
-            "title": "Updated At",
-            "type": "string"
-           }
-          },
-          "required": [
-           "name"
-          ],
-          "title": "NetworkResponse",
+          "nullable": true,
           "type": "object"
          },
          "nullable": true,
@@ -26101,90 +25232,8 @@
          "type": "array"
         },
         "routers": {
-         "default": [],
          "items": {
-          "example": {
-           "created_at": "2022-01-01 00:00:00",
-           "error": "null",
-           "external_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-           "external_network": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-           "function": "primary",
-           "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-           "is_default": true,
-           "name": "vpc_name",
-           "status": "created",
-           "updated": "2022-01-01 00:00:00",
-           "vpc_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-           "zone": "a"
-          },
-          "properties": {
-           "created_at": {
-            "format": "date-time",
-            "nullable": true,
-            "title": "Created At",
-            "type": "string"
-           },
-           "error": {
-            "nullable": true,
-            "title": "Error",
-            "type": "string"
-           },
-           "external_id": {
-            "nullable": true,
-            "title": "External Id",
-            "type": "string"
-           },
-           "external_network": {
-            "nullable": true,
-            "title": "External Network",
-            "type": "string"
-           },
-           "function": {
-            "default": "primary",
-            "nullable": true,
-            "title": "Function",
-            "type": "string"
-           },
-           "id": {
-            "nullable": true,
-            "title": "Id",
-            "type": "string"
-           },
-           "is_default": {
-            "title": "Is Default",
-            "type": "boolean"
-           },
-           "name": {
-            "nullable": true,
-            "title": "Name",
-            "type": "string"
-           },
-           "status": {
-            "title": "Status",
-            "type": "string"
-           },
-           "updated": {
-            "format": "date-time",
-            "nullable": true,
-            "title": "Updated",
-            "type": "string"
-           },
-           "vpc_id": {
-            "title": "Vpc Id",
-            "type": "string"
-           },
-           "zone": {
-            "nullable": true,
-            "title": "Zone",
-            "type": "string"
-           }
-          },
-          "required": [
-           "vpc_id",
-           "is_default",
-           "status"
-          ],
-          "title": "RouterResponse",
+          "nullable": true,
           "type": "object"
          },
          "nullable": true,
@@ -26192,8 +25241,8 @@
          "type": "array"
         },
         "subnets": {
-         "default": [],
          "items": {
+          "nullable": true,
           "type": "string"
          },
          "nullable": true,
@@ -26206,7 +25255,6 @@
          "type": "string"
         },
         "updated": {
-         "format": "date-time",
          "nullable": true,
          "title": "Updated",
          "type": "string"
@@ -26293,50 +25341,8 @@
        },
        "properties": {
         "router_interfaces": {
-         "default": [],
          "items": {
-          "example": {
-           "created_at": "2022-01-01 00:00:00",
-           "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-           "ip_address": "172.20.0.2",
-           "nic_vpc_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-           "router_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-           "vpc_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-          },
-          "properties": {
-           "created_at": {
-            "format": "date-time",
-            "nullable": true,
-            "title": "Created At",
-            "type": "string"
-           },
-           "id": {
-            "nullable": true,
-            "title": "Id",
-            "type": "string"
-           },
-           "ip_address": {
-            "nullable": true,
-            "title": "Ip Address",
-            "type": "string"
-           },
-           "nic_vpc_id": {
-            "nullable": true,
-            "title": "Nic Vpc Id",
-            "type": "string"
-           },
-           "router_id": {
-            "nullable": true,
-            "title": "Router Id",
-            "type": "string"
-           },
-           "vpc_id": {
-            "nullable": true,
-            "title": "Vpc Id",
-            "type": "string"
-           }
-          },
-          "title": "RouterInterfaceResponse",
+          "nullable": true,
           "type": "object"
          },
          "nullable": true,
@@ -26429,98 +25435,8 @@
        },
        "properties": {
         "vpcs": {
-         "default": [],
          "items": {
-          "example": {
-           "created_at": "2022-01-01 00:00:00",
-           "description": "DESCRIPTION",
-           "external_network": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-           "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-           "is_default": true,
-           "name": "vpc_name",
-           "network_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-           "router_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-           "security_groups": [
-            "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-           ],
-           "subnets": [
-            "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-           ],
-           "tenant_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-           "updated": "2022-01-01 00:00:00"
-          },
-          "properties": {
-           "created_at": {
-            "format": "date-time",
-            "nullable": true,
-            "title": "Created At",
-            "type": "string"
-           },
-           "description": {
-            "nullable": true,
-            "title": "Description",
-            "type": "string"
-           },
-           "external_network": {
-            "nullable": true,
-            "title": "External Network",
-            "type": "string"
-           },
-           "id": {
-            "nullable": true,
-            "title": "Id",
-            "type": "string"
-           },
-           "is_default": {
-            "nullable": true,
-            "title": "Is Default",
-            "type": "boolean"
-           },
-           "name": {
-            "nullable": true,
-            "title": "Name",
-            "type": "string"
-           },
-           "network_id": {
-            "nullable": true,
-            "title": "Network Id",
-            "type": "string"
-           },
-           "router_id": {
-            "nullable": true,
-            "title": "Router Id",
-            "type": "string"
-           },
-           "security_groups": {
-            "default": [],
-            "items": {
-             "type": "string"
-            },
-            "title": "Security Groups",
-            "type": "array"
-           },
-           "subnets": {
-            "default": [],
-            "items": {
-             "type": "string"
-            },
-            "nullable": true,
-            "title": "Subnets",
-            "type": "array"
-           },
-           "tenant_id": {
-            "nullable": true,
-            "title": "Tenant Id",
-            "type": "string"
-           },
-           "updated": {
-            "format": "date-time",
-            "nullable": true,
-            "title": "Updated",
-            "type": "string"
-           }
-          },
-          "title": "VpcResponse",
+          "nullable": true,
           "type": "object"
          },
          "nullable": true,
@@ -30225,12 +29141,13 @@
        "properties": {
         "_limit": {
          "default": 50,
-         "exclusiveMinimum": true,
+         "maximum": 2147483647,
          "title": " Limit",
          "type": "integer"
         },
         "_offset": {
          "default": 0,
+         "maximum": 2147483647,
          "minimum": 0,
          "title": " Offset",
          "type": "integer"
@@ -30284,13 +29201,11 @@
           },
           "properties": {
            "end_life_at": {
-            "example": "2022-01-01T00:00:10Z",
             "nullable": true,
             "title": "End Life At",
             "type": "string"
            },
            "end_standard_support_at": {
-            "example": "2022-01-01T00:00:10Z",
             "nullable": true,
             "title": "End Standard Support At",
             "type": "string"
@@ -30332,7 +29247,6 @@
             "type": "string"
            },
            "release_at": {
-            "example": "2022-01-01T00:00:10Z",
             "nullable": true,
             "title": "Release At",
             "type": "string"
@@ -30416,87 +29330,6 @@
        },
        "type": "object"
       },
-      "description": "Attach new port at Instance",
-      "isInternal": false,
-      "name": "attach",
-      "parameters": {
-       "additionalProperties": false,
-       "properties": {
-        "force-authentication": {
-         "description": "Force authentication by sending the header even if this API doesn't require it",
-         "type": "boolean"
-        },
-        "id": {
-         "title": "Id",
-         "type": "string"
-        },
-        "project_type": {
-         "default": "default",
-         "enum": [
-          "dbaas",
-          "iamaas",
-          "k8saas",
-          "mngsvc",
-          "default"
-         ],
-         "title": "Project Type",
-         "type": "string"
-        }
-       },
-       "required": [
-        "id"
-       ],
-       "type": "object"
-      },
-      "result": {
-       "example": {
-        "id": "c47e974f-8002-46e9-8a63-d66505be2aa1"
-       },
-       "properties": {
-        "id": {
-         "title": "Id",
-         "type": "string"
-        }
-       },
-       "required": [
-        "id"
-       ],
-       "title": "PortID",
-       "type": "object"
-      },
-      "version": "v1"
-     },
-     {
-      "configs": {
-       "additionalProperties": false,
-       "properties": {
-        "env": {
-         "default": "prod",
-         "description": "Environment to use",
-         "enum": [
-          "prod",
-          "pre-prod"
-         ],
-         "type": "string"
-        },
-        "region": {
-         "default": "br-se1",
-         "description": "Region to reach the service",
-         "enum": [
-          "br-ne1",
-          "br-se1",
-          "br-mgl1"
-         ],
-         "type": "string"
-        },
-        "serverUrl": {
-         "description": "Manually specify the server to use",
-         "format": "uri",
-         "type": "string"
-        }
-       },
-       "type": "object"
-      },
       "description": "Create a Virtual Machine instance",
       "isInternal": false,
       "name": "create",
@@ -30504,14 +29337,12 @@
        "additionalProperties": false,
        "properties": {
         "availability_zone": {
-         "maxLength": 255,
-         "minLength": 1,
          "nullable": true,
          "title": "Availability Zone",
          "type": "string"
         },
         "image": {
-         "anyOf": [
+         "oneOf": [
           {
            "example": {
             "id": "9ec75090-2872-4f51-8111-53d05d96d2c6"
@@ -30553,7 +29384,7 @@
          "type": "object"
         },
         "machine_type": {
-         "anyOf": [
+         "oneOf": [
           {
            "example": {
             "id": "9ec75090-2872-4f51-8111-53d05d96d2c6"
@@ -30604,7 +29435,6 @@
          "example": {
           "associate_public_ip": true,
           "nic": {
-           "id": "c8719fd8-7a48-4dbf-b4d8-74f71fa67422",
            "security_groups": [
             {
              "id": "f273fbde-2ddf-4dcd-8c41-342671ac0d17"
@@ -30618,6 +29448,7 @@
            "id": "2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6"
           }
          },
+         "nullable": true,
          "properties": {
           "associate_public_ip": {
            "default": true,
@@ -30625,45 +29456,61 @@
            "type": "boolean"
           },
           "nic": {
-           "properties": {
-            "id": {
-             "maxLength": 255,
-             "minLength": 1,
-             "nullable": true,
-             "title": "Id",
-             "type": "string"
-            },
-            "security_groups": {
-             "items": {
-              "example": {
-               "id": "9ec75090-2872-4f51-8111-53d05d96d2c6"
-              },
-              "properties": {
-               "id": {
-                "maxLength": 255,
-                "minLength": 1,
-                "title": "Id",
-                "type": "string"
-               }
-              },
-              "required": [
-               "id"
-              ],
-              "title": "ID",
-              "type": "object"
+           "nullable": true,
+           "oneOf": [
+            {
+             "example": {
+              "id": "9ec75090-2872-4f51-8111-53d05d96d2c6"
              },
-             "title": "Security Groups",
-             "type": "array"
+             "properties": {
+              "id": {
+               "maxLength": 255,
+               "minLength": 1,
+               "title": "Id",
+               "type": "string"
+              }
+             },
+             "required": [
+              "id"
+             ],
+             "title": "ID",
+             "type": "object"
+            },
+            {
+             "properties": {
+              "security_groups": {
+               "default": [],
+               "items": {
+                "example": {
+                 "id": "9ec75090-2872-4f51-8111-53d05d96d2c6"
+                },
+                "properties": {
+                 "id": {
+                  "maxLength": 255,
+                  "minLength": 1,
+                  "title": "Id",
+                  "type": "string"
+                 }
+                },
+                "required": [
+                 "id"
+                ],
+                "title": "ID",
+                "type": "object"
+               },
+               "title": "Security Groups",
+               "type": "array"
+              }
+             },
+             "title": "SecurityGroups",
+             "type": "object"
             }
-           },
-           "required": [
-            "security_groups"
            ],
-           "title": "NetworkNic",
+           "title": "Nic",
            "type": "object"
           },
           "vpc": {
-           "anyOf": [
+           "oneOf": [
             {
              "example": {
               "id": "9ec75090-2872-4f51-8111-53d05d96d2c6"
@@ -30701,14 +29548,10 @@
              "type": "object"
             }
            ],
-           "default": {
-            "name": "default"
-           },
            "title": "Vpc",
            "type": "object"
           }
          },
-         "title": "InstanceCreateRequestV1NetworkDefault",
          "type": "object"
         },
         "ssh_key_name": {
@@ -30716,8 +29559,6 @@
          "type": "string"
         },
         "user_data": {
-         "maxLength": 65000,
-         "minLength": 1,
          "nullable": true,
          "title": "User Data",
          "type": "string"
@@ -30727,7 +29568,6 @@
         "image",
         "machine_type",
         "name",
-        "network",
         "ssh_key_name"
        ],
        "type": "object"
@@ -30840,87 +29680,6 @@
        },
        "type": "object"
       },
-      "description": "Detach a not primary port from Instance",
-      "isInternal": false,
-      "name": "detach",
-      "parameters": {
-       "additionalProperties": false,
-       "properties": {
-        "force-authentication": {
-         "description": "Force authentication by sending the header even if this API doesn't require it",
-         "type": "boolean"
-        },
-        "id": {
-         "title": "Id",
-         "type": "string"
-        },
-        "project_type": {
-         "default": "default",
-         "enum": [
-          "dbaas",
-          "iamaas",
-          "k8saas",
-          "mngsvc",
-          "default"
-         ],
-         "title": "Project Type",
-         "type": "string"
-        }
-       },
-       "required": [
-        "id"
-       ],
-       "type": "object"
-      },
-      "result": {
-       "example": {
-        "id": "c47e974f-8002-46e9-8a63-d66505be2aa1"
-       },
-       "properties": {
-        "id": {
-         "title": "Id",
-         "type": "string"
-        }
-       },
-       "required": [
-        "id"
-       ],
-       "title": "PortID",
-       "type": "object"
-      },
-      "version": "v1"
-     },
-     {
-      "configs": {
-       "additionalProperties": false,
-       "properties": {
-        "env": {
-         "default": "prod",
-         "description": "Environment to use",
-         "enum": [
-          "prod",
-          "pre-prod"
-         ],
-         "type": "string"
-        },
-        "region": {
-         "default": "br-se1",
-         "description": "Region to reach the service",
-         "enum": [
-          "br-ne1",
-          "br-se1",
-          "br-mgl1"
-         ],
-         "type": "string"
-        },
-        "serverUrl": {
-         "description": "Manually specify the server to use",
-         "format": "uri",
-         "type": "string"
-        }
-       },
-       "type": "object"
-      },
       "description": "Get a Virtual Machine instance details",
       "isInternal": false,
       "name": "get",
@@ -30991,6 +29750,7 @@
           "message": "Unauthorized",
           "slug": "Unauthorized"
          },
+         "nullable": true,
          "properties": {
           "message": {
            "title": "Message",
@@ -31005,7 +29765,6 @@
           "slug",
           "message"
          ],
-         "title": "ErrorMessageV1",
          "type": "object"
         },
         "id": {
@@ -31013,7 +29772,7 @@
          "type": "string"
         },
         "image": {
-         "anyOf": [
+         "oneOf": [
           {
            "additionalProperties": true,
            "properties": {
@@ -31061,7 +29820,7 @@
          "type": "object"
         },
         "machine_type": {
-         "anyOf": [
+         "oneOf": [
           {
            "additionalProperties": true,
            "properties": {
@@ -31126,7 +29885,8 @@
          "type": "string"
         },
         "network": {
-         "anyOf": [
+         "nullable": true,
+         "oneOf": [
           {
            "properties": {
             "ports": {
@@ -31160,45 +29920,7 @@
            "properties": {
             "ports": {
              "items": {
-              "properties": {
-               "id": {
-                "title": "Id",
-                "type": "string"
-               },
-               "ipAddresses": {
-                "properties": {
-                 "ipV6Address": {
-                  "nullable": true,
-                  "title": "Ipv6Address",
-                  "type": "string"
-                 },
-                 "privateIpAddress": {
-                  "title": "Privateipaddress",
-                  "type": "string"
-                 },
-                 "publicIpAddress": {
-                  "nullable": true,
-                  "title": "Publicipaddress",
-                  "type": "string"
-                 }
-                },
-                "required": [
-                 "privateIpAddress"
-                ],
-                "title": "IpAddressExpand",
-                "type": "object"
-               },
-               "name": {
-                "title": "Name",
-                "type": "string"
-               }
-              },
-              "required": [
-               "id",
-               "name",
-               "ipAddresses"
-              ],
-              "title": "PortV1Expand",
+              "nullable": true,
               "type": "object"
              },
              "nullable": true,
@@ -31206,6 +29928,7 @@
              "type": "array"
             },
             "vpc": {
+             "nullable": true,
              "properties": {
               "id": {
                "title": "Id",
@@ -31220,7 +29943,6 @@
               "id",
               "name"
              ],
-             "title": "VpcV1Expand",
              "type": "object"
             }
            },
@@ -31228,7 +29950,6 @@
            "type": "object"
           }
          ],
-         "nullable": true,
          "title": "Network",
          "type": "object"
         },
@@ -31250,6 +29971,8 @@
         },
         "status": {
          "enum": [
+          "attaching_nic",
+          "detaching_nic",
           "attach_nic_pending",
           "detach_nic_pending",
           "provisioning",
@@ -31285,7 +30008,6 @@
          "type": "string"
         },
         "updated_at": {
-         "example": "2022-01-01T00:00:10Z",
          "nullable": true,
          "title": "Updated At",
          "type": "string"
@@ -31349,13 +30071,14 @@
         "_limit": {
          "default": 50,
          "description": "limit the number of the results",
-         "exclusiveMinimum": true,
+         "maximum": 2147483647,
          "title": " Limit",
          "type": "integer"
         },
         "_offset": {
          "default": 0,
          "description": "pagination for the results limited",
+         "maximum": 2147483647,
          "minimum": 0,
          "title": " Offset",
          "type": "integer"
@@ -31459,6 +30182,7 @@
              "message": "Unauthorized",
              "slug": "Unauthorized"
             },
+            "nullable": true,
             "properties": {
              "message": {
               "title": "Message",
@@ -31473,7 +30197,6 @@
              "slug",
              "message"
             ],
-            "title": "ErrorMessageV1",
             "type": "object"
            },
            "id": {
@@ -31481,7 +30204,7 @@
             "type": "string"
            },
            "image": {
-            "anyOf": [
+            "oneOf": [
              {
               "additionalProperties": true,
               "properties": {
@@ -31529,7 +30252,7 @@
             "type": "object"
            },
            "machine_type": {
-            "anyOf": [
+            "oneOf": [
              {
               "additionalProperties": true,
               "properties": {
@@ -31594,7 +30317,8 @@
             "type": "string"
            },
            "network": {
-            "anyOf": [
+            "nullable": true,
+            "oneOf": [
              {
               "properties": {
                "ports": {
@@ -31628,45 +30352,7 @@
               "properties": {
                "ports": {
                 "items": {
-                 "properties": {
-                  "id": {
-                   "title": "Id",
-                   "type": "string"
-                  },
-                  "ipAddresses": {
-                   "properties": {
-                    "ipV6Address": {
-                     "nullable": true,
-                     "title": "Ipv6Address",
-                     "type": "string"
-                    },
-                    "privateIpAddress": {
-                     "title": "Privateipaddress",
-                     "type": "string"
-                    },
-                    "publicIpAddress": {
-                     "nullable": true,
-                     "title": "Publicipaddress",
-                     "type": "string"
-                    }
-                   },
-                   "required": [
-                    "privateIpAddress"
-                   ],
-                   "title": "IpAddressExpand",
-                   "type": "object"
-                  },
-                  "name": {
-                   "title": "Name",
-                   "type": "string"
-                  }
-                 },
-                 "required": [
-                  "id",
-                  "name",
-                  "ipAddresses"
-                 ],
-                 "title": "PortV1Expand",
+                 "nullable": true,
                  "type": "object"
                 },
                 "nullable": true,
@@ -31674,6 +30360,7 @@
                 "type": "array"
                },
                "vpc": {
+                "nullable": true,
                 "properties": {
                  "id": {
                   "title": "Id",
@@ -31688,7 +30375,6 @@
                  "id",
                  "name"
                 ],
-                "title": "VpcV1Expand",
                 "type": "object"
                }
               },
@@ -31696,7 +30382,6 @@
               "type": "object"
              }
             ],
-            "nullable": true,
             "title": "Network",
             "type": "object"
            },
@@ -31718,6 +30403,8 @@
            },
            "status": {
             "enum": [
+             "attaching_nic",
+             "detaching_nic",
              "attach_nic_pending",
              "detach_nic_pending",
              "provisioning",
@@ -31753,7 +30440,6 @@
             "type": "string"
            },
            "updated_at": {
-            "example": "2022-01-01T00:00:10Z",
             "nullable": true,
             "title": "Updated At",
             "type": "string"
@@ -31785,6 +30471,134 @@
        "title": "ListInstanceV1Response",
        "type": "object"
       },
+      "version": "v1"
+     },
+     {
+      "children": [
+       {
+        "configs": {
+         "additionalProperties": false,
+         "properties": {
+          "env": {
+           "default": "prod",
+           "description": "Environment to use",
+           "enum": [
+            "prod",
+            "pre-prod"
+           ],
+           "type": "string"
+          },
+          "region": {
+           "default": "br-se1",
+           "description": "Region to reach the service",
+           "enum": [
+            "br-ne1",
+            "br-se1",
+            "br-mgl1"
+           ],
+           "type": "string"
+          },
+          "serverUrl": {
+           "description": "Manually specify the server to use",
+           "format": "uri",
+           "type": "string"
+          }
+         },
+         "type": "object"
+        },
+        "description": "Attach port to instance for a default project",
+        "isInternal": false,
+        "name": "attach",
+        "parameters": {
+         "additionalProperties": false,
+         "properties": {
+          "id": {
+           "description": "Instance Id",
+           "title": "Id",
+           "type": "string"
+          },
+          "port_id": {
+           "description": "Port Id",
+           "title": "Port Id",
+           "type": "string"
+          }
+         },
+         "required": [
+          "id",
+          "port_id"
+         ],
+         "type": "object"
+        },
+        "result": {
+         "nullable": true,
+         "type": "null"
+        },
+        "version": "v1"
+       },
+       {
+        "configs": {
+         "additionalProperties": false,
+         "properties": {
+          "env": {
+           "default": "prod",
+           "description": "Environment to use",
+           "enum": [
+            "prod",
+            "pre-prod"
+           ],
+           "type": "string"
+          },
+          "region": {
+           "default": "br-se1",
+           "description": "Region to reach the service",
+           "enum": [
+            "br-ne1",
+            "br-se1",
+            "br-mgl1"
+           ],
+           "type": "string"
+          },
+          "serverUrl": {
+           "description": "Manually specify the server to use",
+           "format": "uri",
+           "type": "string"
+          }
+         },
+         "type": "object"
+        },
+        "description": "Detach a non primary port from instance for a default project",
+        "isInternal": false,
+        "name": "detach",
+        "parameters": {
+         "additionalProperties": false,
+         "properties": {
+          "id": {
+           "description": "Instance Id",
+           "title": "Id",
+           "type": "string"
+          },
+          "port_id": {
+           "description": "Port Id",
+           "title": "Port Id",
+           "type": "string"
+          }
+         },
+         "required": [
+          "id",
+          "port_id"
+         ],
+         "type": "object"
+        },
+        "result": {
+         "nullable": true,
+         "type": "null"
+        },
+        "version": "v1"
+       }
+      ],
+      "description": "Operations with instances, including create, delete, start, stop, reboot and other actions. | port",
+      "isInternal": false,
+      "name": "port",
       "version": "v1"
      },
      {
@@ -31944,7 +30758,7 @@
          "type": "string"
         },
         "machine_type": {
-         "anyOf": [
+         "oneOf": [
           {
            "example": {
             "id": "9ec75090-2872-4f51-8111-53d05d96d2c6"
@@ -32208,13 +31022,14 @@
         "_limit": {
          "default": 50,
          "description": "limit the number of the results",
-         "exclusiveMinimum": true,
+         "maximum": 2147483647,
          "title": " Limit",
          "type": "integer"
         },
         "_offset": {
          "default": 0,
          "description": "pagination for the results limited",
+         "maximum": 2147483647,
          "minimum": 0,
          "title": " Offset",
          "type": "integer"
@@ -32431,7 +31246,7 @@
          "type": "string"
         },
         "virtual_machine": {
-         "anyOf": [
+         "oneOf": [
           {
            "example": {
             "id": "9ec75090-2872-4f51-8111-53d05d96d2c6"
@@ -32654,7 +31469,7 @@
            "type": "string"
           },
           "image": {
-           "anyOf": [
+           "oneOf": [
             {
              "additionalProperties": true,
              "properties": {
@@ -32702,7 +31517,7 @@
            "type": "object"
           },
           "machine_type": {
-           "anyOf": [
+           "oneOf": [
             {
              "additionalProperties": true,
              "properties": {
@@ -32788,7 +31603,6 @@
          "type": "string"
         },
         "updated_at": {
-         "example": "2022-01-01T00:00:10Z",
          "nullable": true,
          "title": "Updated At",
          "type": "string"
@@ -32847,13 +31661,14 @@
         "_limit": {
          "default": 50,
          "description": "limit the number of the results",
-         "exclusiveMinimum": true,
+         "maximum": 2147483647,
          "title": " Limit",
          "type": "integer"
         },
         "_offset": {
          "default": 0,
          "description": "pagination for the results limited",
+         "maximum": 2147483647,
          "minimum": 0,
          "title": " Offset",
          "type": "integer"
@@ -32949,7 +31764,7 @@
               "type": "string"
              },
              "image": {
-              "anyOf": [
+              "oneOf": [
                {
                 "additionalProperties": true,
                 "properties": {
@@ -32997,7 +31812,7 @@
               "type": "object"
              },
              "machine_type": {
-              "anyOf": [
+              "oneOf": [
                {
                 "additionalProperties": true,
                 "properties": {
@@ -33083,7 +31898,6 @@
             "type": "string"
            },
            "updated_at": {
-            "example": "2022-01-01T00:00:10Z",
             "nullable": true,
             "title": "Updated At",
             "type": "string"
@@ -33210,8 +32024,6 @@
        "additionalProperties": false,
        "properties": {
         "availability_zone": {
-         "maxLength": 255,
-         "minLength": 1,
          "nullable": true,
          "title": "Availability Zone",
          "type": "string"
@@ -33221,7 +32033,7 @@
          "type": "string"
         },
         "machine_type": {
-         "anyOf": [
+         "oneOf": [
           {
            "example": {
             "id": "9ec75090-2872-4f51-8111-53d05d96d2c6"
@@ -33272,7 +32084,6 @@
          "example": {
           "associate_public_ip": true,
           "nic": {
-           "id": "c8719fd8-7a48-4dbf-b4d8-74f71fa67422",
            "security_groups": [
             {
              "id": "f273fbde-2ddf-4dcd-8c41-342671ac0d17"
@@ -33286,6 +32097,7 @@
            "id": "2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6"
           }
          },
+         "nullable": true,
          "properties": {
           "associate_public_ip": {
            "default": true,
@@ -33293,45 +32105,61 @@
            "type": "boolean"
           },
           "nic": {
-           "properties": {
-            "id": {
-             "maxLength": 255,
-             "minLength": 1,
-             "nullable": true,
-             "title": "Id",
-             "type": "string"
-            },
-            "security_groups": {
-             "items": {
-              "example": {
-               "id": "9ec75090-2872-4f51-8111-53d05d96d2c6"
-              },
-              "properties": {
-               "id": {
-                "maxLength": 255,
-                "minLength": 1,
-                "title": "Id",
-                "type": "string"
-               }
-              },
-              "required": [
-               "id"
-              ],
-              "title": "ID",
-              "type": "object"
+           "nullable": true,
+           "oneOf": [
+            {
+             "example": {
+              "id": "9ec75090-2872-4f51-8111-53d05d96d2c6"
              },
-             "title": "Security Groups",
-             "type": "array"
+             "properties": {
+              "id": {
+               "maxLength": 255,
+               "minLength": 1,
+               "title": "Id",
+               "type": "string"
+              }
+             },
+             "required": [
+              "id"
+             ],
+             "title": "ID",
+             "type": "object"
+            },
+            {
+             "properties": {
+              "security_groups": {
+               "default": [],
+               "items": {
+                "example": {
+                 "id": "9ec75090-2872-4f51-8111-53d05d96d2c6"
+                },
+                "properties": {
+                 "id": {
+                  "maxLength": 255,
+                  "minLength": 1,
+                  "title": "Id",
+                  "type": "string"
+                 }
+                },
+                "required": [
+                 "id"
+                ],
+                "title": "ID",
+                "type": "object"
+               },
+               "title": "Security Groups",
+               "type": "array"
+              }
+             },
+             "title": "SecurityGroups",
+             "type": "object"
             }
-           },
-           "required": [
-            "security_groups"
            ],
-           "title": "NetworkNic",
+           "title": "Nic",
            "type": "object"
           },
           "vpc": {
-           "anyOf": [
+           "oneOf": [
             {
              "example": {
               "id": "9ec75090-2872-4f51-8111-53d05d96d2c6"
@@ -33369,14 +32197,10 @@
              "type": "object"
             }
            ],
-           "default": {
-            "name": "default"
-           },
            "title": "Vpc",
            "type": "object"
           }
          },
-         "title": "InstanceCreateRequestV1NetworkDefault",
          "type": "object"
         },
         "ssh_key_name": {
@@ -33384,8 +32208,6 @@
          "type": "string"
         },
         "user_data": {
-         "maxLength": 65000,
-         "minLength": 1,
          "nullable": true,
          "title": "User Data",
          "type": "string"
@@ -33395,7 +32217,6 @@
         "id",
         "machine_type",
         "name",
-        "network",
         "ssh_key_name"
        ],
        "type": "object"
