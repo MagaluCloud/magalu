@@ -28,7 +28,8 @@
               "type": "integer",
               "title": " Limit",
               "maximum": 2147483647,
-              "description": "limit the number of the results"
+              "description": "limit the number of the results",
+              "default": 50
             }
           },
           {
@@ -40,7 +41,8 @@
               "type": "integer",
               "title": " Offset",
               "maximum": 2147483647,
-              "description": "pagination for the results limited"
+              "description": "pagination for the results limited",
+              "default": 0
             }
           },
           {
@@ -52,7 +54,8 @@
               "type": "string",
               "title": " Sort",
               "pattern": "^(^[\\w-]+:(asc|desc)(,[\\w-]+:(asc|desc))*)?$",
-              "description": "order of the results using informed fields"
+              "description": "order of the results using informed fields",
+              "default": "created_at:asc"
             }
           },
           {
@@ -66,7 +69,8 @@
                 "type": "string"
               },
               "title": "Expand",
-              "description": "You can get more detailed info about: ['instance'] "
+              "description": "You can get more detailed info about: ['instance'] ",
+              "default": []
             }
           },
           {
@@ -267,7 +271,8 @@
                 "type": "string"
               },
               "title": "Expand",
-              "description": "You can get more detailed info about: ['instance'] "
+              "description": "You can get more detailed info about: ['instance'] ",
+              "default": []
             }
           },
           {
@@ -552,7 +557,8 @@
               "exclusiveMinimum": false,
               "type": "integer",
               "title": " Limit",
-              "maximum": 2147483647
+              "maximum": 2147483647,
+              "default": 50
             }
           },
           {
@@ -562,7 +568,8 @@
             "schema": {
               "type": "integer",
               "title": " Offset",
-              "maximum": 2147483647
+              "maximum": 2147483647,
+              "default": 0
             }
           },
           {
@@ -572,7 +579,8 @@
             "schema": {
               "type": "string",
               "title": " Sort",
-              "pattern": "^(^[\\w-]+:(asc|desc)(,[\\w-]+:(asc|desc))*)?$"
+              "pattern": "^(^[\\w-]+:(asc|desc)(,[\\w-]+:(asc|desc))*)?$",
+              "default": "platform:asc,end_life_at:desc"
             }
           }
         ],
@@ -621,7 +629,8 @@
               "type": "integer",
               "title": " Limit",
               "maximum": 2147483647,
-              "description": "limit the number of the results"
+              "description": "limit the number of the results",
+              "default": 50
             }
           },
           {
@@ -633,7 +642,8 @@
               "type": "integer",
               "title": " Offset",
               "maximum": 2147483647,
-              "description": "pagination for the results limited"
+              "description": "pagination for the results limited",
+              "default": 0
             }
           },
           {
@@ -645,7 +655,8 @@
               "type": "string",
               "title": " Sort",
               "pattern": "^(^[\\w-]+:(asc|desc)(,[\\w-]+:(asc|desc))*)?$",
-              "description": "order of the results using informed fields"
+              "description": "order of the results using informed fields",
+              "default": "created_at:asc"
             }
           },
           {
@@ -659,7 +670,8 @@
                 "type": "string"
               },
               "title": "Expand",
-              "description": "You can get more detailed info about: ['image', 'machine-type', 'network'] "
+              "description": "You can get more detailed info about: ['image', 'machine-type', 'network'] ",
+              "default": []
             }
           },
           {
@@ -860,7 +872,8 @@
                 "type": "string"
               },
               "title": "Expand",
-              "description": "You can get more detailed info about: ['image', 'machine-type', 'network'] "
+              "description": "You can get more detailed info about: ['image', 'machine-type', 'network'] ",
+              "default": []
             }
           },
           {
@@ -962,7 +975,8 @@
             "required": false,
             "schema": {
               "type": "boolean",
-              "title": "Delete Public Ip"
+              "title": "Delete Public Ip",
+              "default": false
             }
           },
           {
@@ -1556,7 +1570,8 @@
               "type": "integer",
               "title": " Limit",
               "maximum": 2147483647,
-              "description": "limit the number of the results"
+              "description": "limit the number of the results",
+              "default": 50
             }
           },
           {
@@ -1568,7 +1583,8 @@
               "type": "integer",
               "title": " Offset",
               "maximum": 2147483647,
-              "description": "pagination for the results limited"
+              "description": "pagination for the results limited",
+              "default": 0
             }
           },
           {
@@ -1580,7 +1596,8 @@
               "type": "string",
               "title": " Sort",
               "pattern": "^(^[\\w-]+:(asc|desc)(,[\\w-]+:(asc|desc))*)?$",
-              "description": "order of the results using informed fields"
+              "description": "order of the results using informed fields",
+              "default": "created_at:asc"
             }
           }
         ],
@@ -1629,7 +1646,8 @@
               "type": "integer",
               "title": " Limit",
               "maximum": 2147483647,
-              "description": "limit the number of the results"
+              "description": "limit the number of the results",
+              "default": 50
             }
           },
           {
@@ -1641,7 +1659,8 @@
               "type": "integer",
               "title": " Offset",
               "maximum": 2147483647,
-              "description": "pagination for the results limited"
+              "description": "pagination for the results limited",
+              "default": 0
             }
           },
           {
@@ -1653,7 +1672,8 @@
               "type": "string",
               "title": " Sort",
               "pattern": "^(^[\\w-]+:(asc|desc)(,[\\w-]+:(asc|desc))*)?$",
-              "description": "order of the results using informed fields"
+              "description": "order of the results using informed fields",
+              "default": "created_at:asc"
             }
           },
           {
@@ -1667,7 +1687,8 @@
                 "type": "string"
               },
               "title": "Expand",
-              "description": "You can get more detailed info about: ['image', 'machine-type'] "
+              "description": "You can get more detailed info about: ['image', 'machine-type'] ",
+              "default": []
             }
           },
           {
@@ -1868,7 +1889,8 @@
                 "type": "string"
               },
               "title": "Expand",
-              "description": "You can get more detailed info about: ['image', 'machine-type'] "
+              "description": "You can get more detailed info about: ['image', 'machine-type'] ",
+              "default": []
             }
           },
           {
@@ -2266,6 +2288,7 @@
               }
             ],
             "title": "Rotation",
+            "default": 1,
             "nullable": true
           }
         },
@@ -2460,7 +2483,8 @@
               },
               "associate_public_ip": {
                 "type": "boolean",
-                "title": "Associate Public Ip"
+                "title": "Associate Public Ip",
+                "default": true
               }
             },
             "title": "InstanceCreateRequestV1NetworkDefault",
@@ -3004,7 +3028,8 @@
           },
           "associate_public_ip": {
             "type": "boolean",
-            "title": "Associate Public Ip"
+            "title": "Associate Public Ip",
+            "default": true
           }
         },
         "title": "InstanceCreateRequestV1NetworkDefault",
@@ -3302,7 +3327,8 @@
           },
           "gpu": {
             "type": "integer",
-            "title": "Gpu"
+            "title": "Gpu",
+            "default": 0
           },
           "status": {
             "type": "string",
@@ -3359,7 +3385,8 @@
           },
           "gpu": {
             "type": "integer",
-            "title": "Gpu"
+            "title": "Gpu",
+            "default": 0
           },
           "status": {
             "type": "string",
@@ -4570,7 +4597,8 @@
                 "id": "9ec75090-2872-4f51-8111-53d05d96d2c6"
               }
             },
-            "title": "Security Groups"
+            "title": "Security Groups",
+            "default": []
           }
         },
         "title": "SecurityGroups"
@@ -4902,6 +4930,30 @@
     {
       "name": "snapshots",
       "description": "Operations with snapshots for instances."
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{env}/{region}/$API_ENDPOINT_NAME",
+      "variables": {
+        "region": {
+          "enum": [
+            "br-ne-1",
+            "br-se1",
+            "br-mgl1"
+          ],
+          "default": "br-se1",
+          "description": "Region to reach the service"
+        },
+        "env": {
+          "enum": [
+            "api.magalu.cloud",
+            "api.pre-prod.jaxyendy.com"
+          ],
+          "default": "api.magalu.cloud",
+          "description": "Environment to use"
+        }
+      }
     }
   ]
 }

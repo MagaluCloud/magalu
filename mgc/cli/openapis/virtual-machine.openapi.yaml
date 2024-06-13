@@ -33,6 +33,7 @@ paths:
                     title: ' Limit'
                     maximum: 2147483647
                     description: limit the number of the results
+                    default: 50
             -   name: _offset
                 in: query
                 description: pagination for the results limited
@@ -42,6 +43,7 @@ paths:
                     title: ' Offset'
                     maximum: 2147483647
                     description: pagination for the results limited
+                    default: 0
             -   name: _sort
                 in: query
                 description: order of the results using informed fields
@@ -51,6 +53,7 @@ paths:
                     title: ' Sort'
                     pattern: ^(^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$
                     description: order of the results using informed fields
+                    default: created_at:asc
             -   name: expand
                 in: query
                 description: 'You can get more detailed info about: [''instance''] '
@@ -61,6 +64,7 @@ paths:
                         type: string
                     title: Expand
                     description: 'You can get more detailed info about: [''instance''] '
+                    default: []
             responses:
                 '200':
                     description: Successful Response
@@ -196,6 +200,7 @@ paths:
                         type: string
                     title: Expand
                     description: 'You can get more detailed info about: [''instance''] '
+                    default: []
             responses:
                 '200':
                     description: Successful Response
@@ -389,6 +394,7 @@ paths:
                     type: integer
                     title: ' Limit'
                     maximum: 2147483647
+                    default: 50
             -   name: _offset
                 in: query
                 required: false
@@ -396,6 +402,7 @@ paths:
                     type: integer
                     title: ' Offset'
                     maximum: 2147483647
+                    default: 0
             -   name: _sort
                 in: query
                 required: false
@@ -403,6 +410,7 @@ paths:
                     type: string
                     title: ' Sort'
                     pattern: ^(^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$
+                    default: platform:asc,end_life_at:desc
             responses:
                 '200':
                     description: Successful Response
@@ -448,6 +456,7 @@ paths:
                     title: ' Limit'
                     maximum: 2147483647
                     description: limit the number of the results
+                    default: 50
             -   name: _offset
                 in: query
                 description: pagination for the results limited
@@ -457,6 +466,7 @@ paths:
                     title: ' Offset'
                     maximum: 2147483647
                     description: pagination for the results limited
+                    default: 0
             -   name: _sort
                 in: query
                 description: order of the results using informed fields
@@ -466,6 +476,7 @@ paths:
                     title: ' Sort'
                     pattern: ^(^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$
                     description: order of the results using informed fields
+                    default: created_at:asc
             -   name: expand
                 in: query
                 description: 'You can get more detailed info about: [''image'', ''machine-type'',
@@ -478,6 +489,7 @@ paths:
                     title: Expand
                     description: 'You can get more detailed info about: [''image'',
                         ''machine-type'', ''network''] '
+                    default: []
             responses:
                 '200':
                     description: Successful Response
@@ -673,6 +685,7 @@ paths:
                     title: Expand
                     description: 'You can get more detailed info about: [''image'',
                         ''machine-type'', ''network''] '
+                    default: []
             responses:
                 '200':
                     description: Successful Response
@@ -804,6 +817,7 @@ paths:
                 schema:
                     type: boolean
                     title: Delete Public Ip
+                    default: false
             responses:
                 '204':
                     description: Successful Response
@@ -1498,6 +1512,7 @@ paths:
                     title: ' Limit'
                     maximum: 2147483647
                     description: limit the number of the results
+                    default: 50
             -   name: _offset
                 in: query
                 description: pagination for the results limited
@@ -1507,6 +1522,7 @@ paths:
                     title: ' Offset'
                     maximum: 2147483647
                     description: pagination for the results limited
+                    default: 0
             -   name: _sort
                 in: query
                 description: order of the results using informed fields
@@ -1516,6 +1532,7 @@ paths:
                     title: ' Sort'
                     pattern: ^(^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$
                     description: order of the results using informed fields
+                    default: created_at:asc
             responses:
                 '200':
                     description: Successful Response
@@ -1561,6 +1578,7 @@ paths:
                     title: ' Limit'
                     maximum: 2147483647
                     description: limit the number of the results
+                    default: 50
             -   name: _offset
                 in: query
                 description: pagination for the results limited
@@ -1570,6 +1588,7 @@ paths:
                     title: ' Offset'
                     maximum: 2147483647
                     description: pagination for the results limited
+                    default: 0
             -   name: _sort
                 in: query
                 description: order of the results using informed fields
@@ -1579,6 +1598,7 @@ paths:
                     title: ' Sort'
                     pattern: ^(^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$
                     description: order of the results using informed fields
+                    default: created_at:asc
             -   name: expand
                 in: query
                 description: 'You can get more detailed info about: [''image'', ''machine-type''] '
@@ -1590,6 +1610,7 @@ paths:
                     title: Expand
                     description: 'You can get more detailed info about: [''image'',
                         ''machine-type''] '
+                    default: []
             responses:
                 '200':
                     description: Successful Response
@@ -1767,6 +1788,7 @@ paths:
                     title: Expand
                     description: 'You can get more detailed info about: [''image'',
                         ''machine-type''] '
+                    default: []
             responses:
                 '200':
                     description: Successful Response
@@ -2101,6 +2123,7 @@ components:
                     -   exclusiveMinimum: true
                         type: integer
                     title: Rotation
+                    default: 1
                     nullable: true
             title: BackupRequest
             required:
@@ -2234,6 +2257,7 @@ components:
                         associate_public_ip:
                             type: boolean
                             title: Associate Public Ip
+                            default: true
                     title: InstanceCreateRequestV1NetworkDefault
                     example:
                         associate_public_ip: true
@@ -2584,6 +2608,7 @@ components:
                 associate_public_ip:
                     type: boolean
                     title: Associate Public Ip
+                    default: true
             title: InstanceCreateRequestV1NetworkDefault
             example:
                 associate_public_ip: true
@@ -2777,6 +2802,7 @@ components:
                 gpu:
                     type: integer
                     title: Gpu
+                    default: 0
                 status:
                     type: string
                     title: Status
@@ -2822,6 +2848,7 @@ components:
                 gpu:
                     type: integer
                     title: Gpu
+                    default: 0
                 status:
                     type: string
                     title: Status
@@ -3671,6 +3698,7 @@ components:
                         example:
                             id: 9ec75090-2872-4f51-8111-53d05d96d2c6
                     title: Security Groups
+                    default: []
             title: SecurityGroups
         SnapshotCreateRequestV1:
             type: object
@@ -3880,17 +3908,16 @@ tags:
     description: Operations with machine types for instances.
 -   name: snapshots
     description: Operations with snapshots for instances.
-$id: https://virtual-machine.jaxyendy.com/openapi.json
 servers:
 -   url: https://{env}/{region}/compute
     variables:
         region:
-            description: Region to reach the service
-            default: br-se1
             enum:
             - br-ne-1
             - br-se1
             - br-mgl1
+            default: br-se1
+            description: Region to reach the service
             x-mgc-transforms:
             -   type: translate
                 allowMissing: true
@@ -3900,11 +3927,11 @@ servers:
                 -   from: br-mgl1
                     to: br-se-1
         env:
-            description: Environment to use
-            default: api.magalu.cloud
             enum:
             - api.magalu.cloud
             - api.pre-prod.jaxyendy.com
+            default: api.magalu.cloud
+            description: Environment to use
             x-mgc-transforms:
             -   type: translate
                 translations:
@@ -3912,3 +3939,4 @@ servers:
                     to: api.magalu.cloud
                 -   from: pre-prod
                     to: api.pre-prod.jaxyendy.com
+$id: https://virtual-machine.jaxyendy.com/openapi.json

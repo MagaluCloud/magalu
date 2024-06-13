@@ -9,12 +9,12 @@ Usage:
 ## Product catalog:
 - Flags:
 - --cli.list-links enum[=table]        List all available links for this command (one of "json", "table" or "yaml")
-- --has-pip                            Has Pip
-- --has-sg                             Has Sg
+- --has-pip                            Has Pip (default true)
+- --has-sg                             Has Sg (default true)
 - -h, --help                               help for create
 - --name string                        Name (between 5 and 100 characters) (required)
-- --security-groups-id array(string)   Security Groups Id
-- --subnets array(string)              Subnets
+- --security-groups-id array(string)   Security Groups Id (default [])
+- --subnets array(string)              Subnets (default [])
 - -v, --version                            version for create
 - --vpc-id anyValue                    vpc_id: ID of the VPC to create port
 - Use --vpc-id=help for more details (required)

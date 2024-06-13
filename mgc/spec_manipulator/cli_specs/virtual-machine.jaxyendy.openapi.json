@@ -2871,13 +2871,7 @@
               {
                 "type": "null"
               }
-            ],
-            "default": {
-              "vpc": {
-                "name": "default"
-              },
-              "associate_public_ip": true
-            }
+            ]
           },
           "user_data": {
             "anyOf": [
@@ -2941,10 +2935,7 @@
                 "$ref": "#/components/schemas/Name"
               }
             ],
-            "title": "Vpc",
-            "default": {
-              "name": "default"
-            }
+            "title": "Vpc"
           },
           "nic": {
             "anyOf": [
@@ -4069,13 +4060,7 @@
               {
                 "type": "null"
               }
-            ],
-            "default": {
-              "vpc": {
-                "name": "default"
-              },
-              "associate_public_ip": true
-            }
+            ]
           },
           "user_data": {
             "anyOf": [

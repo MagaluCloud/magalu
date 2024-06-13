@@ -17,7 +17,7 @@
 ## Other commands:
 - Flags:
 - --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-- --expand array(string)          Expand: You can get more detailed info about: ['volume_type', 'attachment']
+- --expand array(string)          Expand: You can get more detailed info about: ['volume_type', 'attachment'] (default [])
 - -h, --help                          help for get
 - --id uuid                       Id (required)
 - -v, --version                       version for get

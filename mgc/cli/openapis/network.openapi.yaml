@@ -40,6 +40,7 @@ paths:
                     type: array
                     items: {}
                     title: Port Id List
+                    default: []
             responses:
                 '200':
                     description: Successful Response
@@ -146,6 +147,7 @@ paths:
                 schema:
                     type: boolean
                     title: Detailed
+                    default: true
             -   name: _offset
                 in: query
                 description: Page Number
@@ -155,6 +157,7 @@ paths:
                     title: Page Number
                     minimum: 1
                     description: Page Number
+                    default: 1
             -   name: _limit
                 in: query
                 description: Items Per Page
@@ -164,6 +167,7 @@ paths:
                     title: Items Per Page
                     minimum: 1
                     description: Items Per Page
+                    default: 10
             -   name: port_id_list
                 in: query
                 required: false
@@ -171,6 +175,7 @@ paths:
                     type: array
                     items: {}
                     title: Port Id List
+                    default: []
             responses:
                 '200':
                     description: Successful Response
@@ -508,6 +513,7 @@ paths:
                     type: boolean
                     title: validateQuota
                     description: Validate the quota before creating the Public IP
+                    default: true
             -   name: wait
                 in: query
                 description: The request will be asynchronous. The wait parameter
@@ -522,6 +528,7 @@ paths:
                         tells the API that you want the request to simulate synchronous
                         behavior (to maintain endpoint compatibility). You can set
                         an approximate timeout with the waitTimeout parameter
+                    default: true
             -   name: wait_timeout
                 in: query
                 description: the approximate time in seconds you want to wait when
@@ -534,6 +541,7 @@ paths:
                     description: the approximate time in seconds you want to wait
                         when simulating the request as synchronous (only works with
                         wait=true)
+                    default: 120
                     nullable: true
             requestBody:
                 content:
@@ -869,6 +877,7 @@ paths:
                     type: boolean
                     title: validateQuota
                     description: Validate the quota before creating Rule
+                    default: true
             -   name: wait
                 in: query
                 description: The request will be asynchronous. The wait parameter
@@ -884,6 +893,7 @@ paths:
                         tells the API that you want the request to simulate synchronous
                         behavior (to maintain endpoint compatibility). You can set
                         an approximate timeout with the waitTimeout parameter
+                    default: true
                     nullable: true
             -   name: wait_timeout
                 in: query
@@ -897,6 +907,7 @@ paths:
                     description: the approximate time in seconds you want to wait
                         when simulating the request as synchronous (only works with
                         wait=true)
+                    default: 120
                     nullable: true
             requestBody:
                 content:
@@ -1067,6 +1078,7 @@ paths:
                     type: boolean
                     title: validateQuota
                     description: Validate the quota before creating Security Group
+                    default: true
             -   name: wait
                 in: query
                 description: The request will be asynchronous. The wait parameter
@@ -1081,6 +1093,7 @@ paths:
                         tells the API that you want the request to simulate synchronous
                         behavior (to maintain endpoint compatibility). You can set
                         an approximate timeout with the waitTimeout parameter
+                    default: true
             -   name: wait_timeout
                 in: query
                 description: the approximate time in seconds you want to wait when
@@ -1092,6 +1105,7 @@ paths:
                     description: the approximate time in seconds you want to wait
                         when simulating the request as synchronous (only works with
                         wait=true)
+                    default: 120
             requestBody:
                 content:
                     application/json:
@@ -1191,6 +1205,7 @@ paths:
                         tells the API that you want the request to simulate synchronous
                         behavior (to maintain endpoint compatibility). You can set
                         an approximate timeout with the waitTimeout parameter
+                    default: true
                     nullable: true
             -   name: wait_timeout
                 in: query
@@ -1204,6 +1219,7 @@ paths:
                     description: the approximate time in seconds you want to wait
                         when simulating the request as synchronous (only works with
                         wait=true)
+                    default: 120
                     nullable: true
             requestBody:
                 content:
@@ -2007,6 +2023,7 @@ components:
                         items:
                             type: string
                     title: Subnets
+                    default: []
                     nullable: true
                 shared:
                     anyOf:
@@ -2019,6 +2036,7 @@ components:
                         items:
                             type: string
                     title: Tags
+                    default: []
                     nullable: true
                 port_security_enabled:
                     anyOf:
@@ -2072,11 +2090,13 @@ components:
                     anyOf:
                     -   type: boolean
                     title: Has Pip
+                    default: true
                     nullable: true
                 has_sg:
                     anyOf:
                     -   type: boolean
                     title: Has Sg
+                    default: true
                     nullable: true
                 subnets:
                     anyOf:
@@ -2084,6 +2104,7 @@ components:
                         items:
                             type: string
                     title: Subnets
+                    default: []
                     nullable: true
                 security_groups_id:
                     anyOf:
@@ -2091,6 +2112,7 @@ components:
                         items:
                             type: string
                     title: Security Groups Id
+                    default: []
                     nullable: true
             title: PortCreateRequest
             required:
@@ -2180,6 +2202,7 @@ components:
                     items:
                         type: string
                     title: Security Groups
+                    default: []
                 public_ip:
                     anyOf:
                     -   type: array
@@ -2201,6 +2224,7 @@ components:
                                 public_ip: 100.94.5.31
                                 public_ip_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                     title: Public Ip
+                    default: []
                     nullable: true
                 ip_address:
                     type: array
@@ -2221,6 +2245,7 @@ components:
                             ip_address: 172.20.0.2
                             subnet_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                     title: Ip Address
+                    default: []
                 created_at:
                     anyOf:
                     -   type: string
@@ -2278,6 +2303,7 @@ components:
                             ip_address: 172.20.0.2
                             subnet_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                     title: Ip Address
+                    default: []
             title: PortSimpleResponse
             example:
                 id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
@@ -2327,6 +2353,7 @@ components:
                                 items:
                                     type: string
                                 title: Security Groups
+                                default: []
                             public_ip:
                                 anyOf:
                                 -   type: array
@@ -2348,6 +2375,7 @@ components:
                                             public_ip: 100.94.5.31
                                             public_ip_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                                 title: Public Ip
+                                default: []
                                 nullable: true
                             ip_address:
                                 type: array
@@ -2368,6 +2396,7 @@ components:
                                         ip_address: 172.20.0.2
                                         subnet_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                                 title: Ip Address
+                                default: []
                             created_at:
                                 anyOf:
                                 -   type: string
@@ -2452,6 +2481,7 @@ components:
                                         ip_address: 172.20.0.2
                                         subnet_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                                 title: Ip Address
+                                default: []
                         title: PortSimpleResponse
                         example:
                             id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
@@ -2484,6 +2514,7 @@ components:
                     anyOf:
                     -   type: string
                     title: Description
+                    default: ''
                     nullable: true
             title: PublicIpCreateRequest
             example:
@@ -2874,6 +2905,7 @@ components:
                                 router_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                                 vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                     title: Router Interfaces
+                    default: []
                     nullable: true
             title: RouterInterfaceResponseList
             example:
@@ -2929,6 +2961,7 @@ components:
                     anyOf:
                     -   type: string
                     title: Function
+                    default: primary
                     nullable: true
                 status:
                     type: string
@@ -3100,6 +3133,7 @@ components:
                                 resource_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                                 zone: zone_name
                     title: Rules Zones
+                    default: []
                     nullable: true
             title: RuleDefaultStatusEvent
             required:
@@ -3344,6 +3378,7 @@ components:
                             -   $ref: '#/components/schemas/RuleZoneStatusEvent'
                             nullable: true
                     title: Rule Zones
+                    default: {}
                     nullable: true
             title: RuleStatusEvent
             example:
@@ -3534,6 +3569,7 @@ components:
                     anyOf:
                     -   type: string
                     title: Description
+                    default: ''
                     nullable: true
             title: SecurityGroupCreateRequest
             required:
@@ -3717,6 +3753,7 @@ components:
                                 security_group_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                                 status: created
                     title: Rules
+                    default: []
                     nullable: true
             title: SecurityGroupDetailEvent
             required:
@@ -4009,6 +4046,7 @@ components:
                                             -   $ref: '#/components/schemas/RuleZoneStatusEvent'
                                             nullable: true
                                     title: Rule Zones
+                                    default: {}
                                     nullable: true
                             title: RuleStatusEvent
                             example:
@@ -4026,6 +4064,7 @@ components:
                                     zone: zone_name
                                 status: created
                     title: Rules
+                    default: []
                     nullable: true
                 security_group_zones:
                     anyOf:
@@ -4035,6 +4074,7 @@ components:
                             -   $ref: '#/components/schemas/SecurityGroupZoneStatusEvent'
                             nullable: true
                     title: Security Group Zones
+                    default: {}
                     nullable: true
             title: SecurityGroupStatusEvent
             required:
@@ -4131,6 +4171,7 @@ components:
                         type: string
                         format: ipvanyaddress
                     title: Dns Nameservers
+                    default: []
             title: SubnetCreateRequest
             required:
             - name
@@ -4162,6 +4203,7 @@ components:
                         type: string
                         format: ipvanyaddress
                     title: Dns Nameservers
+                    default: []
             title: SubnetPatchRequest
             example:
                 dns_nameservers:
@@ -4233,18 +4275,22 @@ components:
                     type: string
                     title: Pool Prefix
                     description: The CIDR notation prefix for the subnet pool.
+                    default: 172.26.0.0/16
                 min_prefix_length:
                     type: integer
                     title: Min Prefix Length
                     description: The minimum prefix length for a subnet in the pool.
+                    default: 24
                 max_prefix_length:
                     type: integer
                     title: Max Prefix Length
                     description: The maximum prefix length for a subnet in the pool.
+                    default: 28
                 default_prefix_length:
                     type: integer
                     title: Default Prefix Length
                     description: The default prefix length for a subnet in the pool.
+                    default: 26
                 description:
                     type: string
                     title: Description
@@ -4350,6 +4396,7 @@ components:
                             tenant_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                             vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                     title: Subnetpools
+                    default: []
             title: SubnetPoolsResponse
             description: A Pydantic model representing a list of Subnet Pools.
             example:
@@ -4580,6 +4627,7 @@ components:
                             vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                             zone: a
                     title: Subnets
+                    default: []
             title: SubnetsResponse
             example:
                 subnets:
@@ -4675,6 +4723,7 @@ components:
                         additionalProperties:
                             type: integer
                     title: Deleted Security Groups
+                    default: []
             title: VpcDeletedAllResponse
             required:
             - deleted_vpcs
@@ -4768,6 +4817,7 @@ components:
                                     anyOf:
                                     -   type: string
                                     title: Function
+                                    default: primary
                                     nullable: true
                                 status:
                                     type: string
@@ -4801,6 +4851,7 @@ components:
                                 vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                                 zone: a
                     title: Routers
+                    default: []
                     nullable: true
                 networks:
                     anyOf:
@@ -4837,6 +4888,7 @@ components:
                                         items:
                                             type: string
                                     title: Subnets
+                                    default: []
                                     nullable: true
                                 shared:
                                     anyOf:
@@ -4849,6 +4901,7 @@ components:
                                         items:
                                             type: string
                                     title: Tags
+                                    default: []
                                     nullable: true
                                 port_security_enabled:
                                     anyOf:
@@ -4891,6 +4944,7 @@ components:
                                 - network_tag
                                 updated_at: '2022-01-01 00:00:00'
                     title: Networks
+                    default: []
                     nullable: true
                 subnets:
                     anyOf:
@@ -4898,6 +4952,7 @@ components:
                         items:
                             type: string
                     title: Subnets
+                    default: []
                     nullable: true
                 created_at:
                     anyOf:
@@ -4999,12 +5054,14 @@ components:
                         items:
                             type: string
                     title: Subnets
+                    default: []
                     nullable: true
                 security_groups:
                     type: array
                     items:
                         type: string
                     title: Security Groups
+                    default: []
                 created_at:
                     anyOf:
                     -   type: string
@@ -5088,12 +5145,14 @@ components:
                                         items:
                                             type: string
                                     title: Subnets
+                                    default: []
                                     nullable: true
                                 security_groups:
                                     type: array
                                     items:
                                         type: string
                                     title: Security Groups
+                                    default: []
                                 created_at:
                                     anyOf:
                                     -   type: string
@@ -5128,6 +5187,7 @@ components:
                                 tenant_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                                 updated: '2022-01-01 00:00:00'
                     title: Vpcs
+                    default: []
                     nullable: true
             title: VpcResponseList
             example:
@@ -5182,6 +5242,37 @@ components:
                 description: vpc description
                 name: vpc_name
                 subnetpool_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+servers:
+-   url: https://{env}/{region}/network
+    variables:
+        region:
+            enum:
+            - br-ne-1
+            - br-se1
+            - br-mgl1
+            default: br-se1
+            description: Region to reach the service
+            x-mgc-transforms:
+            -   type: translate
+                allowMissing: true
+                translations:
+                -   from: br-ne1
+                    to: br-ne-1
+                -   from: br-mgl1
+                    to: br-se-1
+        env:
+            enum:
+            - api.magalu.cloud
+            - api.pre-prod.jaxyendy.com
+            default: api.magalu.cloud
+            description: Environment to use
+            x-mgc-transforms:
+            -   type: translate
+                translations:
+                -   from: prod
+                    to: api.magalu.cloud
+                -   from: pre-prod
+                    to: api.pre-prod.jaxyendy.com
 tags:
 -   name: healthcheck
     description: healthcheck
@@ -5202,34 +5293,3 @@ tags:
 -   name: worker_public_ips
     description: worker_public_ips
 $id: https://network.jaxyendy.com/openapi.json
-servers:
--   url: https://{env}/{region}/network
-    variables:
-        region:
-            description: Region to reach the service
-            default: br-se1
-            enum:
-            - br-ne-1
-            - br-se1
-            - br-mgl1
-            x-mgc-transforms:
-            -   type: translate
-                allowMissing: true
-                translations:
-                -   from: br-ne1
-                    to: br-ne-1
-                -   from: br-mgl1
-                    to: br-se-1
-        env:
-            description: Environment to use
-            default: api.magalu.cloud
-            enum:
-            - api.magalu.cloud
-            - api.pre-prod.jaxyendy.com
-            x-mgc-transforms:
-            -   type: translate
-                translations:
-                -   from: prod
-                    to: api.magalu.cloud
-                -   from: pre-prod
-                    to: api.pre-prod.jaxyendy.com

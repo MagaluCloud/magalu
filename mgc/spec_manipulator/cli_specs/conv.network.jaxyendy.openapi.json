@@ -49,7 +49,8 @@
             "schema": {
               "type": "array",
               "items": {},
-              "title": "Port Id List"
+              "title": "Port Id List",
+              "default": []
             }
           },
           {
@@ -185,7 +186,8 @@
             "required": false,
             "schema": {
               "type": "boolean",
-              "title": "Detailed"
+              "title": "Detailed",
+              "default": true
             }
           },
           {
@@ -197,7 +199,8 @@
               "type": "integer",
               "title": "Page Number",
               "minimum": 1,
-              "description": "Page Number"
+              "description": "Page Number",
+              "default": 1
             }
           },
           {
@@ -209,7 +212,8 @@
               "type": "integer",
               "title": "Items Per Page",
               "minimum": 1,
-              "description": "Items Per Page"
+              "description": "Items Per Page",
+              "default": 10
             }
           },
           {
@@ -219,7 +223,8 @@
             "schema": {
               "type": "array",
               "items": {},
-              "title": "Port Id List"
+              "title": "Port Id List",
+              "default": []
             }
           },
           {
@@ -692,7 +697,8 @@
             "schema": {
               "type": "boolean",
               "title": "validateQuota",
-              "description": "Validate the quota before creating the Public IP"
+              "description": "Validate the quota before creating the Public IP",
+              "default": true
             }
           },
           {
@@ -703,7 +709,8 @@
             "schema": {
               "type": "boolean",
               "title": "wait",
-              "description": "The request will be asynchronous. The wait parameter tells the API that you want the request to simulate synchronous behavior (to maintain endpoint compatibility). You can set an approximate timeout with the waitTimeout parameter"
+              "description": "The request will be asynchronous. The wait parameter tells the API that you want the request to simulate synchronous behavior (to maintain endpoint compatibility). You can set an approximate timeout with the waitTimeout parameter",
+              "default": true
             }
           },
           {
@@ -719,6 +726,7 @@
               ],
               "title": "waitTimeout",
               "description": "the approximate time in seconds you want to wait when simulating the request as synchronous (only works with wait=true)",
+              "default": 120,
               "nullable": true
             }
           },
@@ -1177,7 +1185,8 @@
             "schema": {
               "type": "boolean",
               "title": "validateQuota",
-              "description": "Validate the quota before creating Rule"
+              "description": "Validate the quota before creating Rule",
+              "default": true
             }
           },
           {
@@ -1193,6 +1202,7 @@
               ],
               "title": "wait",
               "description": "The request will be asynchronous. The wait parameter tells the API that you want the request to simulate synchronous behavior (to maintain endpoint compatibility). You can set an approximate timeout with the waitTimeout parameter",
+              "default": true,
               "nullable": true
             }
           },
@@ -1209,6 +1219,7 @@
               ],
               "title": "waitTimeout",
               "description": "the approximate time in seconds you want to wait when simulating the request as synchronous (only works with wait=true)",
+              "default": 120,
               "nullable": true
             }
           },
@@ -1462,7 +1473,8 @@
             "schema": {
               "type": "boolean",
               "title": "validateQuota",
-              "description": "Validate the quota before creating Security Group"
+              "description": "Validate the quota before creating Security Group",
+              "default": true
             }
           },
           {
@@ -1473,7 +1485,8 @@
             "schema": {
               "type": "boolean",
               "title": "wait",
-              "description": "The request will be asynchronous. The wait parameter tells the API that you want the request to simulate synchronous behavior (to maintain endpoint compatibility). You can set an approximate timeout with the waitTimeout parameter"
+              "description": "The request will be asynchronous. The wait parameter tells the API that you want the request to simulate synchronous behavior (to maintain endpoint compatibility). You can set an approximate timeout with the waitTimeout parameter",
+              "default": true
             }
           },
           {
@@ -1484,7 +1497,8 @@
             "schema": {
               "type": "integer",
               "title": "waitTimeout",
-              "description": "the approximate time in seconds you want to wait when simulating the request as synchronous (only works with wait=true)"
+              "description": "the approximate time in seconds you want to wait when simulating the request as synchronous (only works with wait=true)",
+              "default": 120
             }
           },
           {
@@ -1624,6 +1638,7 @@
               ],
               "title": "wait",
               "description": "The request will be asynchronous. The wait parameter tells the API that you want the request to simulate synchronous behavior (to maintain endpoint compatibility). You can set an approximate timeout with the waitTimeout parameter",
+              "default": true,
               "nullable": true
             }
           },
@@ -1640,6 +1655,7 @@
               ],
               "title": "waitTimeout",
               "description": "the approximate time in seconds you want to wait when simulating the request as synchronous (only works with wait=true)",
+              "default": 120,
               "nullable": true
             }
           },
@@ -2856,6 +2872,7 @@
               }
             ],
             "title": "Subnets",
+            "default": [],
             "nullable": true
           },
           "shared": {
@@ -2877,6 +2894,7 @@
               }
             ],
             "title": "Tags",
+            "default": [],
             "nullable": true
           },
           "port_security_enabled": {
@@ -2957,6 +2975,7 @@
               }
             ],
             "title": "Has Pip",
+            "default": true,
             "nullable": true
           },
           "has_sg": {
@@ -2966,6 +2985,7 @@
               }
             ],
             "title": "Has Sg",
+            "default": true,
             "nullable": true
           },
           "subnets": {
@@ -2978,6 +2998,7 @@
               }
             ],
             "title": "Subnets",
+            "default": [],
             "nullable": true
           },
           "security_groups_id": {
@@ -2990,6 +3011,7 @@
               }
             ],
             "title": "Security Groups Id",
+            "default": [],
             "nullable": true
           }
         },
@@ -3135,7 +3157,8 @@
             "items": {
               "type": "string"
             },
-            "title": "Security Groups"
+            "title": "Security Groups",
+            "default": []
           },
           "public_ip": {
             "anyOf": [
@@ -3172,6 +3195,7 @@
               }
             ],
             "title": "Public Ip",
+            "default": [],
             "nullable": true
           },
           "ip_address": {
@@ -3198,7 +3222,8 @@
                 "subnet_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
               }
             },
-            "title": "Ip Address"
+            "title": "Ip Address",
+            "default": []
           },
           "created_at": {
             "anyOf": [
@@ -3284,7 +3309,8 @@
                 "subnet_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
               }
             },
-            "title": "Ip Address"
+            "title": "Ip Address",
+            "default": []
           }
         },
         "title": "PortSimpleResponse",
@@ -3365,7 +3391,8 @@
                   "items": {
                     "type": "string"
                   },
-                  "title": "Security Groups"
+                  "title": "Security Groups",
+                  "default": []
                 },
                 "public_ip": {
                   "anyOf": [
@@ -3402,6 +3429,7 @@
                     }
                   ],
                   "title": "Public Ip",
+                  "default": [],
                   "nullable": true
                 },
                 "ip_address": {
@@ -3428,7 +3456,8 @@
                       "subnet_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
                     }
                   },
-                  "title": "Ip Address"
+                  "title": "Ip Address",
+                  "default": []
                 },
                 "created_at": {
                   "anyOf": [
@@ -3556,7 +3585,8 @@
                       "subnet_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
                     }
                   },
-                  "title": "Ip Address"
+                  "title": "Ip Address",
+                  "default": []
                 }
               },
               "title": "PortSimpleResponse",
@@ -3612,6 +3642,7 @@
               }
             ],
             "title": "Description",
+            "default": "",
             "nullable": true
           }
         },
@@ -4224,6 +4255,7 @@
               }
             ],
             "title": "Router Interfaces",
+            "default": [],
             "nullable": true
           }
         },
@@ -4315,6 +4347,7 @@
               }
             ],
             "title": "Function",
+            "default": "primary",
             "nullable": true
           },
           "status": {
@@ -4590,6 +4623,7 @@
               }
             ],
             "title": "Rules Zones",
+            "default": [],
             "nullable": true
           }
         },
@@ -4992,6 +5026,7 @@
               }
             ],
             "title": "Rule Zones",
+            "default": {},
             "nullable": true
           }
         },
@@ -5290,6 +5325,7 @@
               }
             ],
             "title": "Description",
+            "default": "",
             "nullable": true
           }
         },
@@ -5595,6 +5631,7 @@
               }
             ],
             "title": "Rules",
+            "default": [],
             "nullable": true
           }
         },
@@ -6054,6 +6091,7 @@
                         }
                       ],
                       "title": "Rule Zones",
+                      "default": {},
                       "nullable": true
                     }
                   },
@@ -6080,6 +6118,7 @@
               }
             ],
             "title": "Rules",
+            "default": [],
             "nullable": true
           },
           "security_group_zones": {
@@ -6097,6 +6136,7 @@
               }
             ],
             "title": "Security Group Zones",
+            "default": {},
             "nullable": true
           }
         },
@@ -6240,7 +6280,8 @@
               "type": "string",
               "format": "ipvanyaddress"
             },
-            "title": "Dns Nameservers"
+            "title": "Dns Nameservers",
+            "default": []
           }
         },
         "title": "SubnetCreateRequest",
@@ -6283,7 +6324,8 @@
               "type": "string",
               "format": "ipvanyaddress"
             },
-            "title": "Dns Nameservers"
+            "title": "Dns Nameservers",
+            "default": []
           }
         },
         "title": "SubnetPatchRequest",
@@ -6374,22 +6416,26 @@
           "pool_prefix": {
             "type": "string",
             "title": "Pool Prefix",
-            "description": "The CIDR notation prefix for the subnet pool."
+            "description": "The CIDR notation prefix for the subnet pool.",
+            "default": "172.26.0.0/16"
           },
           "min_prefix_length": {
             "type": "integer",
             "title": "Min Prefix Length",
-            "description": "The minimum prefix length for a subnet in the pool."
+            "description": "The minimum prefix length for a subnet in the pool.",
+            "default": 24
           },
           "max_prefix_length": {
             "type": "integer",
             "title": "Max Prefix Length",
-            "description": "The maximum prefix length for a subnet in the pool."
+            "description": "The maximum prefix length for a subnet in the pool.",
+            "default": 28
           },
           "default_prefix_length": {
             "type": "integer",
             "title": "Default Prefix Length",
-            "description": "The default prefix length for a subnet in the pool."
+            "description": "The default prefix length for a subnet in the pool.",
+            "default": 26
           },
           "description": {
             "type": "string",
@@ -6510,7 +6556,8 @@
                 "vpc_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
               }
             },
-            "title": "Subnetpools"
+            "title": "Subnetpools",
+            "default": []
           }
         },
         "title": "SubnetPoolsResponse",
@@ -6840,7 +6887,8 @@
                 "zone": "a"
               }
             },
-            "title": "Subnets"
+            "title": "Subnets",
+            "default": []
           }
         },
         "title": "SubnetsResponse",
@@ -6988,7 +7036,8 @@
                 "type": "integer"
               }
             },
-            "title": "Deleted Security Groups"
+            "title": "Deleted Security Groups",
+            "default": []
           }
         },
         "title": "VpcDeletedAllResponse",
@@ -7158,6 +7207,7 @@
                         }
                       ],
                       "title": "Function",
+                      "default": "primary",
                       "nullable": true
                     },
                     "status": {
@@ -7207,6 +7257,7 @@
               }
             ],
             "title": "Routers",
+            "default": [],
             "nullable": true
           },
           "networks": {
@@ -7263,6 +7314,7 @@
                         }
                       ],
                       "title": "Subnets",
+                      "default": [],
                       "nullable": true
                     },
                     "shared": {
@@ -7284,6 +7336,7 @@
                         }
                       ],
                       "title": "Tags",
+                      "default": [],
                       "nullable": true
                     },
                     "port_security_enabled": {
@@ -7351,6 +7404,7 @@
               }
             ],
             "title": "Networks",
+            "default": [],
             "nullable": true
           },
           "subnets": {
@@ -7363,6 +7417,7 @@
               }
             ],
             "title": "Subnets",
+            "default": [],
             "nullable": true
           },
           "created_at": {
@@ -7521,6 +7576,7 @@
               }
             ],
             "title": "Subnets",
+            "default": [],
             "nullable": true
           },
           "security_groups": {
@@ -7528,7 +7584,8 @@
             "items": {
               "type": "string"
             },
-            "title": "Security Groups"
+            "title": "Security Groups",
+            "default": []
           },
           "created_at": {
             "anyOf": [
@@ -7663,6 +7720,7 @@
                         }
                       ],
                       "title": "Subnets",
+                      "default": [],
                       "nullable": true
                     },
                     "security_groups": {
@@ -7670,7 +7728,8 @@
                       "items": {
                         "type": "string"
                       },
-                      "title": "Security Groups"
+                      "title": "Security Groups",
+                      "default": []
                     },
                     "created_at": {
                       "anyOf": [
@@ -7725,6 +7784,7 @@
               }
             ],
             "title": "Vpcs",
+            "default": [],
             "nullable": true
           }
         },
@@ -7802,5 +7862,29 @@
         }
       }
     }
-  }
+  },
+  "servers": [
+    {
+      "url": "https://{env}/{region}/$API_ENDPOINT_NAME",
+      "variables": {
+        "region": {
+          "enum": [
+            "br-ne-1",
+            "br-se1",
+            "br-mgl1"
+          ],
+          "default": "br-se1",
+          "description": "Region to reach the service"
+        },
+        "env": {
+          "enum": [
+            "api.magalu.cloud",
+            "api.pre-prod.jaxyendy.com"
+          ],
+          "default": "api.magalu.cloud",
+          "description": "Environment to use"
+        }
+      }
+    }
+  ]
 }

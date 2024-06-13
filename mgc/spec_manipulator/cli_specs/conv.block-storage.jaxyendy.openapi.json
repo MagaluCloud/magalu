@@ -27,7 +27,8 @@
             "schema": {
               "exclusiveMinimum": false,
               "type": "integer",
-              "title": " Limit"
+              "title": " Limit",
+              "default": 50
             }
           },
           {
@@ -36,7 +37,8 @@
             "required": false,
             "schema": {
               "type": "integer",
-              "title": " Offset"
+              "title": " Offset",
+              "default": 0
             }
           },
           {
@@ -46,7 +48,8 @@
             "schema": {
               "type": "string",
               "title": " Sort",
-              "pattern": "^(^[\\w-]+:(asc|desc)(,[\\w-]+:(asc|desc))*)?$"
+              "pattern": "^(^[\\w-]+:(asc|desc)(,[\\w-]+:(asc|desc))*)?$",
+              "default": "created_at:asc"
             }
           },
           {
@@ -472,7 +475,8 @@
                   "volume"
                 ]
               },
-              "title": "Expand"
+              "title": "Expand",
+              "default": []
             }
           },
           {
@@ -482,7 +486,8 @@
             "schema": {
               "exclusiveMinimum": false,
               "type": "integer",
-              "title": " Limit"
+              "title": " Limit",
+              "default": 50
             }
           },
           {
@@ -491,7 +496,8 @@
             "required": false,
             "schema": {
               "type": "integer",
-              "title": " Offset"
+              "title": " Offset",
+              "default": 0
             }
           },
           {
@@ -501,7 +507,8 @@
             "schema": {
               "type": "string",
               "title": " Sort",
-              "pattern": "^(^[\\w-]+:(asc|desc)(,[\\w-]+:(asc|desc))*)?$"
+              "pattern": "^(^[\\w-]+:(asc|desc)(,[\\w-]+:(asc|desc))*)?$",
+              "default": "created_at:asc"
             }
           },
           {
@@ -687,7 +694,8 @@
                   "volume"
                 ]
               },
-              "title": "Expand"
+              "title": "Expand",
+              "default": []
             }
           },
           {
@@ -1062,7 +1070,8 @@
                 "type": "string"
               },
               "title": "Expand",
-              "description": "You can get more detailed info about: ['volume_type', 'attachment']"
+              "description": "You can get more detailed info about: ['volume_type', 'attachment']",
+              "default": []
             }
           },
           {
@@ -1072,7 +1081,8 @@
             "schema": {
               "exclusiveMinimum": false,
               "type": "integer",
-              "title": " Limit"
+              "title": " Limit",
+              "default": 50
             }
           },
           {
@@ -1081,7 +1091,8 @@
             "required": false,
             "schema": {
               "type": "integer",
-              "title": " Offset"
+              "title": " Offset",
+              "default": 0
             }
           },
           {
@@ -1091,7 +1102,8 @@
             "schema": {
               "type": "string",
               "title": " Sort",
-              "pattern": "^(^[\\w-]+:(asc|desc)(,[\\w-]+:(asc|desc))*)?$"
+              "pattern": "^(^[\\w-]+:(asc|desc)(,[\\w-]+:(asc|desc))*)?$",
+              "default": "created_at:asc"
             }
           },
           {
@@ -1271,7 +1283,8 @@
                 "type": "string"
               },
               "title": "Expand",
-              "description": "You can get more detailed info about: ['volume_type', 'attachment']"
+              "description": "You can get more detailed info about: ['volume_type', 'attachment']",
+              "default": []
             }
           },
           {
@@ -2347,7 +2360,8 @@
               {
                 "$ref": "#/components/schemas/BackupType"
               }
-            ]
+            ],
+            "default": "full"
           }
         },
         "title": "CreateBackup",
@@ -3740,6 +3754,30 @@
     {
       "name": "snapshots",
       "description": "Operations with snapshots for volumes."
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{env}/{region}/$API_ENDPOINT_NAME",
+      "variables": {
+        "region": {
+          "enum": [
+            "br-ne-1",
+            "br-se1",
+            "br-mgl1"
+          ],
+          "default": "br-se1",
+          "description": "Region to reach the service"
+        },
+        "env": {
+          "enum": [
+            "api.magalu.cloud",
+            "api.pre-prod.jaxyendy.com"
+          ],
+          "default": "api.magalu.cloud",
+          "description": "Environment to use"
+        }
+      }
     }
   ]
 }

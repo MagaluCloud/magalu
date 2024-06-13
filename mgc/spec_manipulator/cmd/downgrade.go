@@ -37,7 +37,7 @@ func prepareSchema(xchema *base.Schema) *base.Schema {
 	newChema.Description = xchema.Description
 
 	//temporary
-	// newChema.Default = xchema.Default
+	newChema.Default = xchema.Default
 	newChema.Nullable = xchema.Nullable
 	newChema.ReadOnly = xchema.ReadOnly
 	newChema.WriteOnly = xchema.WriteOnly
@@ -51,18 +51,15 @@ func prepareSchema(xchema *base.Schema) *base.Schema {
 
 	// newChema.AdditionalProperties = xchema.AdditionalProperties
 	if xchema.AdditionalProperties != nil {
-
 		if xchema.AdditionalProperties.A != nil {
 			trated := xchema.AdditionalProperties.A.Schema()
 			var anyof []*base.SchemaProxy
-
 			for _, ao := range trated.AnyOf {
 				if ao.Schema().Type[0] == "null" {
 					trated.Nullable = new(bool)
 					*trated.Nullable = true
 					continue
 				}
-
 				anyof = append(anyof, ao)
 				trated.AnyOf = anyof
 			}
@@ -71,7 +68,6 @@ func prepareSchema(xchema *base.Schema) *base.Schema {
 				N: 0,
 			}
 		}
-
 	}
 
 	// 3.1 properties need to be converted to 3.0.x
