@@ -1,0 +1,19 @@
+rule
+
+Usage:
+  ./mgc network rule [flags]
+  ./mgc network rule [command]
+
+Commands:
+  rules                 rules
+  security-groups-rules security-groups-rules
+
+Flags:
+  -h, --help      help for rule
+  -v, --version   version for rule
+
+Global Flags:
+      --cli.show-cli-globals   Show all CLI global flags on usage text
+
+Use "./mgc network rule [command] --help" for more information about a command.
+

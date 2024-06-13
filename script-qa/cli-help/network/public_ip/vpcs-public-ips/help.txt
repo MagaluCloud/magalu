@@ -1,0 +1,19 @@
+public_ip | vpcs-public-ips
+
+Usage:
+  ./mgc network public-ip vpcs-public-ips [flags]
+  ./mgc network public-ip vpcs-public-ips [command]
+
+Commands:
+  create      Create Public IP
+  list        List Public IPs
+
+Flags:
+  -h, --help      help for vpcs-public-ips
+  -v, --version   version for vpcs-public-ips
+
+Global Flags:
+      --cli.show-cli-globals   Show all CLI global flags on usage text
+
+Use "./mgc network public-ip vpcs-public-ips [command] --help" for more information about a command.
+
