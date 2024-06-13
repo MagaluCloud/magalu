@@ -23,13 +23,13 @@ Operations with snapshots for volumes.
 
 ### Read-Only
 
-- `created_at` (String)
+- `created_at` (Attributes) (see [below for nested schema](#nestedatt--created_at))
 - `current_volume` (Attributes) (see [below for nested schema](#nestedatt--current_volume))
 - `id` (String) The ID of this resource.
 - `size` (Number)
 - `state` (String)
 - `status` (String)
-- `updated_at` (String)
+- `updated_at` (Attributes) (see [below for nested schema](#nestedatt--updated_at))
 
 <a id="nestedatt--volume"></a>
 ### Nested Schema for `volume`
@@ -38,6 +38,15 @@ Optional:
 
 - `id` (String)
 - `name` (String)
+
+
+<a id="nestedatt--created_at"></a>
+### Nested Schema for `created_at`
+
+Read-Only:
+
+- `string1` (String)
+- `string2` (String)
 
 
 <a id="nestedatt--current_volume"></a>
@@ -57,3 +66,13 @@ Read-Only:
 
 - `id` (String)
 - `name` (String)
+
+
+
+<a id="nestedatt--updated_at"></a>
+### Nested Schema for `updated_at`
+
+Read-Only:
+
+- `string1` (String)
+- `string2` (String)

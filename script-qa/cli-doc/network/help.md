@@ -9,20 +9,15 @@ Usage:
 
 ## Product catalog:
 - Commands:
-- ports               VPC Port
-- public-ips          VPC Public IPs
-- rules               VPC Rules
-- security-groups     VPC Security Groups
-- subnets             VPC Subnets
-- vpcs                Virtual Private Cloud (VPC)
-- xaas-network        xaas_network
-- xaas-port           xaas_port
-- xaas-public-ip      xaas_public_ip
-- xaas-rule           xaas_rule
-- xaas-security-group xaas_security_group
-- xaas-subnetpools    xaas_subnetpools
-- xaas-subnets        xaas_subnets
-- xaas-vpc            xaas_vpc
+- healthcheck       healthcheck
+- port              port
+- public-ip         public_ip
+- quotas            quotas
+- rule              rule
+- security-group    security_group
+- subnets           subnets
+- vpc               vpc
+- worker-public-ips worker_public_ips
 
 ## Other commands:
 - Flags:

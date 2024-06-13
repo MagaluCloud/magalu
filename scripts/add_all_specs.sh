@@ -1,7 +1,7 @@
 #!/bin/sh
 
 BASEDIR=$(dirname $0)
-ROOTDIR=$(builtin cd $BASEDIR/..; pwd)
+# ROOTDIR=$(builtin cd $BASEDIR/..; pwd)
 
 OAPIDIR=${OAPIDIR:-"mgc/cli/openapis"}
 OAPIEMBED=${OAPIEMBED:-"mgc/sdk/openapi/embed_loader.go"}

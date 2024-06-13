@@ -10,6 +10,7 @@ import (
 	"encoding/json"
 
 	"github.com/pb33f/libopenapi"
+	validator "github.com/pb33f/libopenapi-validator"
 	"github.com/spf13/cobra"
 )
 
@@ -38,7 +39,7 @@ func runPrepare(cmd *cobra.Command, args []string) {
 		return
 	}
 
-	finalFile := filepath.Join(SPEC_DIR, "specs.go")
+	finalFile := filepath.Join(SPEC_DIR, "specs.go.tmp")
 	newFileSpecs, err := os.OpenFile(finalFile, os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
 		fmt.Println(err)
@@ -147,6 +148,55 @@ func runPrepare(cmd *cobra.Command, args []string) {
 			}
 
 			fmt.Printf("Total COMPONENT removed: %v\n", len(toRemove))
+
+			//todo - remove from py
+			// svar := orderedmap.New[string, *v3.ServerVariable]()
+			// svar.Set("region", &v3.ServerVariable{
+			// 	Default:     "br-se1",
+			// 	Description: "Region to reach the service",
+			// 	Enum: []string{
+			// 		"br-ne-1",
+			// 		"br-se1",
+			// 		"br-mgl1",
+			// 	},
+			// })
+
+			// svar.Set("env", &v3.ServerVariable{
+			// 	Description: "Environment to use",
+			// 	Default:     "api.magalu.cloud",
+			// 	Enum: []string{
+			// 		"api.magalu.cloud",
+			// 		"api.pre-prod.jaxyendy.com",
+			// 	},
+			// })
+
+			// servers := []*v3.Server{}
+			// servers = append(servers, &v3.Server{
+			// 	URL:         "https://{env}/{region}/$API_ENDPOINT_NAME",
+			// 	Description: "",
+			// 	Variables:   svar,
+			// })
+
+			// docModel.Model.Servers = servers
+
+			_, document, _, errs = document.RenderAndReload()
+			if len(errors) > 0 {
+				panic(fmt.Sprintf("cannot re-render document: %d errors reported", len(errs)))
+			}
+			docValidator, validatorErrs := validator.NewValidator(document)
+			if len(validatorErrs) > 0 {
+				panic(fmt.Sprintf("cannot create validator: %d errors reported", len(validatorErrs)))
+			}
+
+			valid, validationErrs := docValidator.ValidateDocument()
+
+			if !valid {
+				for _, e := range validationErrs {
+					// 5. Handle the error
+					fmt.Printf("Type: %s, Failure: %s\n", e.ValidationType, e.Message)
+					fmt.Printf("Fix: %s\n\n", e.HowToFix)
+				}
+			}
 
 			fileBytes, _, _, errs = document.RenderAndReload()
 			if len(errors) > 0 {

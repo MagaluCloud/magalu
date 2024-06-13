@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"os"
 	"path/filepath"
 
 	"github.com/spf13/cobra"
@@ -41,8 +42,8 @@ func init() {
 
 func initConfig() {
 
-	home, err := filepath.Abs(".")
-
+	ex, err := os.Executable()
+	home := filepath.Dir(ex)
 	cobra.CheckErr(err)
 
 	// Search config in home directory with name ".cobra" (without extension).
@@ -51,7 +52,6 @@ func initConfig() {
 	viper.SetConfigName(VIPER_FILE)
 
 	viper.AutomaticEnv()
-
 	if err := viper.ReadInConfig(); err == nil {
 		fmt.Println("Using config file:", viper.ConfigFileUsed())
 	}

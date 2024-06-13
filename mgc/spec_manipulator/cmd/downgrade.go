@@ -8,11 +8,268 @@ import (
 
 	"github.com/pb33f/libopenapi"
 	"github.com/pb33f/libopenapi/datamodel/high/base"
+	"github.com/pb33f/libopenapi/orderedmap"
 
-	"gopkg.in/yaml.v3"
+	validator "github.com/pb33f/libopenapi-validator"
 
 	"github.com/spf13/cobra"
 )
+
+func prepareSchema(xchema *base.Schema) *base.Schema {
+	newChema := &base.Schema{}
+	// Compatible with all versions
+	newChema.Not = xchema.Not
+	newChema.Title = xchema.Title
+	newChema.MultipleOf = xchema.MultipleOf
+	newChema.Maximum = xchema.Maximum
+	newChema.Minimum = xchema.Minimum
+	newChema.MaxLength = xchema.MaxLength
+	newChema.MinLength = xchema.MinLength
+	newChema.Pattern = xchema.Pattern
+	newChema.Format = xchema.Format
+	newChema.MaxItems = xchema.MaxItems
+	newChema.MinItems = xchema.MinItems
+	newChema.UniqueItems = xchema.UniqueItems
+	newChema.MaxProperties = xchema.MaxProperties
+	newChema.MinProperties = xchema.MinProperties
+	newChema.Required = xchema.Required
+	newChema.Enum = xchema.Enum
+	newChema.Description = xchema.Description
+
+	//temporary
+	// newChema.Default = xchema.Default
+	newChema.Nullable = xchema.Nullable
+	newChema.ReadOnly = xchema.ReadOnly
+	newChema.WriteOnly = xchema.WriteOnly
+	newChema.XML = xchema.XML
+	newChema.ExternalDocs = xchema.ExternalDocs
+	newChema.Example = xchema.Example
+	newChema.Deprecated = xchema.Deprecated
+	newChema.Extensions = xchema.Extensions
+
+	newChema.Const = nil
+
+	// newChema.AdditionalProperties = xchema.AdditionalProperties
+	if xchema.AdditionalProperties != nil {
+
+		if xchema.AdditionalProperties.A != nil {
+			trated := xchema.AdditionalProperties.A.Schema()
+			var anyof []*base.SchemaProxy
+
+			for _, ao := range trated.AnyOf {
+				if ao.Schema().Type[0] == "null" {
+					trated.Nullable = new(bool)
+					*trated.Nullable = true
+					continue
+				}
+
+				anyof = append(anyof, ao)
+				trated.AnyOf = anyof
+			}
+			newChema.AdditionalProperties = &base.DynamicValue[*base.SchemaProxy, bool]{
+				A: base.CreateSchemaProxy(trated),
+				N: 0,
+			}
+		}
+
+	}
+
+	// 3.1 properties need to be converted to 3.0.x
+	if xchema.Properties != nil {
+		if newChema.Properties == nil {
+			newChema.Properties = orderedmap.New[string, *base.SchemaProxy]()
+		}
+		propMap := orderedmap.New[string, *base.SchemaProxy]()
+
+		for prop := xchema.Properties.Oldest(); prop != nil; prop = prop.Next() {
+			propMap.Set(prop.Key, base.CreateSchemaProxy(prepareSchema(prop.Value.Schema())))
+		}
+
+		newChema.Properties = propMap
+
+	}
+
+	// 3.1 only, used to define a dialect for this schema, label is '$schema'.
+	//SchemaTypeRef string
+
+	// In versions 2 and 3.0, this Type is a single value, so array will only ever have one value
+	// in version 3.1, Type can be multiple values
+	//Type []string
+	if xchema.Type != nil {
+		for _, tp := range xchema.Type {
+			if tp == "null" {
+				newChema.Nullable = new(bool)
+				*newChema.Nullable = true
+				continue
+			}
+			newChema.Type = []string{tp}
+		}
+	}
+
+	// Schemas are resolved on demand using a SchemaProxy
+	//AllOf []*SchemaProxy
+	newAllOf := []*base.SchemaProxy{}
+	if xchema.AllOf != nil {
+		for _, xA := range xchema.AllOf {
+			if xA.IsReference() {
+				newAllOf = append(newAllOf, xA)
+				continue
+			}
+			for _, xT := range xA.Schema().Type {
+				if xT == "null" {
+					newChema.Nullable = new(bool)
+					*newChema.Nullable = true
+					continue
+				}
+				// newChema.Type = []string{xT}
+				newAllOf = append(newAllOf, base.CreateSchemaProxy(prepareSchema(xA.Schema())))
+			}
+		}
+	}
+	if len(newAllOf) > 0 {
+		newChema.AllOf = newAllOf
+	}
+
+	// Polymorphic Schemas are only available in version 3+
+	//OneOf         []*SchemaProxy
+	newOneOf := []*base.SchemaProxy{}
+	if xchema.OneOf != nil {
+		for _, xO := range xchema.OneOf {
+			if xO.IsReference() {
+				newOneOf = append(newOneOf, xO)
+				continue
+			}
+			for _, xT := range xO.Schema().Type {
+				if xT == "null" {
+					newChema.Nullable = new(bool)
+					*newChema.Nullable = true
+					continue
+				}
+				// newChema.Type = []string{xT}
+				newOneOf = append(newOneOf, base.CreateSchemaProxy(prepareSchema(xO.Schema())))
+			}
+		}
+	}
+	if len(newOneOf) > 0 {
+		newChema.OneOf = newOneOf
+	}
+
+	//AnyOf         []*SchemaProxy
+	newAnyOf := []*base.SchemaProxy{}
+	if xchema.AnyOf != nil {
+		for _, xA := range xchema.AnyOf {
+			if xA.IsReference() {
+				newAnyOf = append(newAnyOf, xA)
+				continue
+			}
+			for _, xT := range xA.Schema().Type {
+				if xT == "null" {
+					newChema.Nullable = new(bool)
+					*newChema.Nullable = true
+					continue
+				}
+				// newChema.Type = []string{xT}
+				newAnyOf = append(newAnyOf, base.CreateSchemaProxy(prepareSchema(xA.Schema())))
+			}
+		}
+	}
+	if len(newAnyOf) > 0 {
+		newChema.AnyOf = newAnyOf
+	}
+
+	//Discriminator *Discriminator
+
+	// in 3.1 examples can be an array (which is recommended)
+	//Examples []*yaml.Node
+	if xchema.Examples != nil {
+		if len(xchema.Examples) > 0 {
+			newChema.Example = xchema.Examples[0]
+		}
+	}
+
+	// in 3.1 prefixItems provides tuple validation support.
+	//PrefixItems []*SchemaProxy
+	if xchema.PrefixItems != nil {
+		xchema.PrefixItems = nil
+	}
+
+	// 3.1 Specific properties
+	//Contains          *SchemaProxy
+	//MinContains       *int64
+	//MaxContains       *int64
+	//If                *SchemaProxy
+	//Else              *SchemaProxy
+	//Then              *SchemaProxy
+	//DependentSchemas  *orderedmap.Map[string, *SchemaProxy]
+	//PatternProperties *orderedmap.Map[string, *SchemaProxy]
+	//PropertyNames     *SchemaProxy
+	//UnevaluatedItems  *SchemaProxy
+
+	// in 3.1 UnevaluatedProperties can be a Schema or a boolean
+	// https://github.com/pb33f/libopenapi/issues/118
+	//UnevaluatedProperties *DynamicValue[*SchemaProxy, bool]
+
+	// in 3.1 Items can be a Schema or a boolean
+	//Items *DynamicValue[*SchemaProxy, bool]
+	if xchema.Items != nil {
+		newChema.Items = &base.DynamicValue[*base.SchemaProxy, bool]{
+			A: base.CreateSchemaProxy(prepareSchema(xchema.Items.A.Schema())),
+		}
+
+	}
+
+	// 3.1 only, part of the JSON Schema spec provides a way to identify a sub-schema
+	//Anchor string
+
+	// In versions 2 and 3.0, this ExclusiveMaximum can only be a boolean.
+	// In version 3.1, ExclusiveMaximum is a number.
+	//ExclusiveMaximum *DynamicValue[bool, float64]
+	if xchema.ExclusiveMaximum != nil && xchema.ExclusiveMaximum.IsB() {
+		//assume que é um valor numérico
+		newChema.ExclusiveMaximum = &base.DynamicValue[bool, float64]{
+			A: true,
+			B: xchema.ExclusiveMaximum.B,
+			N: 0,
+		}
+
+		if newChema.Minimum == nil {
+			newChema.Minimum = new(float64)
+			*newChema.Minimum = xchema.ExclusiveMaximum.B
+		}
+	} else if xchema.ExclusiveMaximum != nil && xchema.ExclusiveMaximum.IsA() {
+		//assume que é um boolean
+		newChema.ExclusiveMaximum = &base.DynamicValue[bool, float64]{
+			A: xchema.ExclusiveMaximum.A,
+			B: 0,
+			N: 0,
+		}
+	}
+
+	// In versions 2 and 3.0, this ExclusiveMinimum can only be a boolean.
+	// In version 3.1, ExclusiveMinimum is a number.
+	//ExclusiveMinimum *DynamicValue[bool, float64]
+	if xchema.ExclusiveMinimum != nil && xchema.ExclusiveMinimum.IsB() {
+		//assume que é um valor numérico
+		newChema.ExclusiveMinimum = &base.DynamicValue[bool, float64]{
+			A: true,
+			N: 0,
+		}
+
+		if newChema.Minimum == nil {
+			newChema.Minimum = new(float64)
+			*newChema.Minimum = xchema.ExclusiveMinimum.B
+		}
+	} else if xchema.ExclusiveMinimum != nil && xchema.ExclusiveMinimum.IsA() {
+		//assume que é um boolean
+		newChema.ExclusiveMinimum = &base.DynamicValue[bool, float64]{
+			A: xchema.ExclusiveMinimum.A,
+			N: 0,
+		}
+	}
+
+	return newChema
+
+}
 
 var downgradeSpecCmd = &cobra.Command{
 	Use:    "downgrade",
@@ -56,6 +313,9 @@ var downgradeSpecCmd = &cobra.Command{
 
 			// downgrade to 3.0.x
 			docModel.Model.Version = "3.0.3"
+
+			docModel.Model.Security = nil
+
 			_, document, docModel, errors = document.RenderAndReload()
 			if len(errors) > 0 {
 				for i := range errors {
@@ -63,190 +323,11 @@ var downgradeSpecCmd = &cobra.Command{
 				}
 				panic(fmt.Sprintf("cannot create v3 model from document: %d errors reported", len(errors)))
 			}
-
+			fmt.Println("\nBEGIN FILE:" + file + "\n")
 			// Schemas
 			for pair := docModel.Model.Components.Schemas.Oldest(); pair != nil; pair = pair.Next() {
-				if pair.Value.Schema().Properties == nil {
-					continue
-				}
-				for schema := pair.Value.Schema().Properties.Oldest(); schema != nil; schema = schema.Next() {
-					if len(schema.Value.Schema().AnyOf) > 1 {
-
-						hasNull := new(bool)
-						*hasNull = false
-
-						example := &yaml.Node{}
-						if schema.Value.Schema().Examples != nil {
-							example = schema.Value.Schema().Examples[0]
-						}
-
-						typeAny := ""
-						format := ""
-						var valMin *float64
-						var valMax *float64
-
-						newExclusiveMin := &base.DynamicValue[bool, float64]{}
-						newExclusiveMax := &base.DynamicValue[bool, float64]{}
-
-						var varDefault *yaml.Node
-
-						var oneOf []*base.SchemaProxy
-						var items *base.DynamicValue[*base.SchemaProxy, bool]
-
-						for _, anyOf := range schema.Value.Schema().AnyOf {
-
-							if anyOf.Schema().Type == nil {
-								continue
-							}
-
-							if anyOf.Schema().Type[0] == "null" {
-								*hasNull = true
-							} else if anyOf.Schema().Type[0] == "integer" || anyOf.Schema().Type[0] == "number" {
-								typeAny = anyOf.Schema().Type[0]
-								format = anyOf.Schema().Format
-								newExclusiveMin = anyOf.Schema().ExclusiveMinimum
-								newExclusiveMax = anyOf.Schema().ExclusiveMaximum
-								valMin = anyOf.Schema().Minimum
-								valMax = anyOf.Schema().Maximum
-
-								if newExclusiveMin != nil && newExclusiveMin.IsA() {
-									//Time está com spec invalida, tratar como 3.0.x
-									newExclusiveMin = &base.DynamicValue[bool, float64]{
-										A: newExclusiveMin.IsA(),
-									}
-									if valMin == nil {
-										valMin = &newExclusiveMin.B
-									}
-								}
-
-								if newExclusiveMin != nil && newExclusiveMin.IsB() {
-									//Time está com spec invalida, tratar como 3.0.x
-									newExclusiveMin = &base.DynamicValue[bool, float64]{
-										A: newExclusiveMin.IsA(),
-									}
-									valMin = &newExclusiveMin.B
-								}
-
-								if newExclusiveMax != nil && newExclusiveMax.IsA() {
-									//Time está com spec invalida, tratar como 3.0.x
-									newExclusiveMax = &base.DynamicValue[bool, float64]{
-										A: newExclusiveMax.IsA(),
-									}
-									if valMax == nil {
-										valMax = &newExclusiveMax.B
-									}
-								}
-
-								if newExclusiveMax != nil && newExclusiveMax.IsB() {
-									//Time está com spec invalida, tratar como 3.0.x
-									newExclusiveMax = &base.DynamicValue[bool, float64]{
-										A: newExclusiveMax.IsA(),
-									}
-									valMax = &newExclusiveMax.B
-								}
-
-								varDefault = anyOf.Schema().Default
-							} else if anyOf.Schema().Type[0] == "object" {
-								typeAny = anyOf.Schema().Type[0]
-								format = anyOf.Schema().Format
-								oneOf = append(oneOf, anyOf)
-							} else if anyOf.Schema().Type[0] == "array" {
-								// DISSO
-								// "subnets": {
-								// 	"anyOf": [
-								// 		{
-								// 			"items": {
-								// 				"type": "string"
-								// 			},
-								// 			"type": "array"
-								// 		},
-								// 		{
-								// 			"type": "null"
-								// 		}
-								// 	],
-								// 	"title": "Subnets",
-								// 	"default": []
-								// },
-
-								// FICA ASSIM
-								// "tags": {
-								// 	"type": "array",
-								// 	"description": "List of tags applied to the Kubernetes cluster.",
-								// 	"items": {
-								// 		"type": "string",
-								// 		"nullable": true,
-								// 		"description": "Items from the list of tags applied to the Kubernetes cluster.",
-								// 		"example": "tag-example"
-								// 	}
-								// },
-								typeAny = anyOf.Schema().Type[0]
-
-								xptos := anyOf.Schema().Items
-								if xptos.A.Schema().Type == nil {
-
-									items = &base.DynamicValue[*base.SchemaProxy, bool]{
-										A: base.CreateSchemaProxy(
-											&base.Schema{
-												Type:        []string{"string"},
-												Description: "Array",
-												Example:     example,
-												Nullable:    hasNull,
-											},
-										),
-									}
-								} else {
-									xpp := xptos.A.Schema()
-									fmt.Println(xpp.Type)
-
-									items = &base.DynamicValue[*base.SchemaProxy, bool]{
-										A: base.CreateSchemaProxy(
-											&base.Schema{
-												Type:        []string{xpp.Type[0]},
-												Description: xpp.Description,
-												Example:     example,
-												Nullable:    hasNull,
-											},
-										),
-									}
-								}
-
-								fmt.Println(anyOf.Schema().Items)
-
-							} else {
-								typeAny = anyOf.Schema().Type[0]
-							}
-						}
-						// Sorry for it!
-						// I'm not proud of this code
-
-						propMap := base.CreateSchemaProxy(
-							&base.Schema{
-								Type:             []string{typeAny},
-								Example:          example,
-								Nullable:         hasNull,
-								Description:      schema.Value.Schema().Description,
-								Title:            schema.Value.Schema().Title,
-								Format:           format,
-								ExclusiveMaximum: newExclusiveMax,
-								Maximum:          valMax,
-								ExclusiveMinimum: newExclusiveMin,
-								Minimum:          valMin,
-								Default:          varDefault,
-								OneOf:            oneOf,
-								Items:            items,
-							},
-						)
-
-						_, _ = propMap.BuildSchema()
-						schemaToChange, ok := docModel.Model.Components.Schemas.Get(pair.Key)
-						if ok {
-							pprops := schemaToChange.Schema().Properties
-							pprops.Set(schema.Key, propMap)
-						}
-					}
-
-				}
-
+				xchema := pair.Value.Schema()
+				*xchema = *prepareSchema(xchema)
 			}
 
 			//Paths
@@ -258,130 +339,33 @@ var downgradeSpecCmd = &cobra.Command{
 				for op := operations.Oldest(); op != nil; op = op.Next() {
 					if op.Value.Parameters != nil {
 						for _, param := range op.Value.Parameters {
-							if param.Schema != nil {
-								if param.Schema.Schema().AnyOf != nil {
-									hasNull := new(bool)
-									*hasNull = false
-
-									example := &yaml.Node{}
-									if param.Schema.Schema().Examples != nil {
-										example = param.Schema.Schema().Examples[0]
-									}
-									typeAny := ""
-									format := ""
-
-									var valMin *float64
-									var valMax *float64
-
-									newExclusiveMin := &base.DynamicValue[bool, float64]{}
-									newExclusiveMax := &base.DynamicValue[bool, float64]{}
-
-									var varDefault *yaml.Node
-									var oneOf []*base.SchemaProxy
-									for _, anyOf := range param.Schema.Schema().AnyOf {
-										if anyOf.Schema().Type[0] == "null" {
-											*hasNull = true
-										} else if anyOf.Schema().Type[0] == "integer" || anyOf.Schema().Type[0] == "number" {
-											typeAny = anyOf.Schema().Type[0]
-											format = anyOf.Schema().Format
-											newExclusiveMin = anyOf.Schema().ExclusiveMinimum
-											newExclusiveMax = anyOf.Schema().ExclusiveMaximum
-											valMin = anyOf.Schema().Minimum
-											valMax = anyOf.Schema().Maximum
-
-											if newExclusiveMin != nil && newExclusiveMin.IsA() {
-												//Time está com spec invalida, tratar como 3.0.x
-												newExclusiveMin = &base.DynamicValue[bool, float64]{
-													A: newExclusiveMin.IsA(),
-												}
-												if valMin == nil {
-													valMin = &newExclusiveMin.B
-												}
-											}
-
-											if newExclusiveMin != nil && newExclusiveMin.IsB() {
-												//Time está com spec invalida, tratar como 3.0.x
-												newExclusiveMin = &base.DynamicValue[bool, float64]{
-													A: newExclusiveMin.IsA(),
-												}
-												valMin = &newExclusiveMin.B
-											}
-
-											if newExclusiveMax != nil && newExclusiveMax.IsA() {
-												//Time está com spec invalida, tratar como 3.0.x
-												newExclusiveMax = &base.DynamicValue[bool, float64]{
-													A: newExclusiveMax.IsA(),
-												}
-												if valMax == nil {
-													valMax = &newExclusiveMax.B
-												}
-											}
-
-											if newExclusiveMax != nil && newExclusiveMax.IsB() {
-												//Time está com spec invalida, tratar como 3.0.x
-												newExclusiveMax = &base.DynamicValue[bool, float64]{
-													A: newExclusiveMax.IsA(),
-												}
-												valMax = &newExclusiveMax.B
-											}
-
-											varDefault = anyOf.Schema().Default
-										} else if anyOf.Schema().Type[0] == "object" {
-											typeAny = anyOf.Schema().Type[0]
-											format = anyOf.Schema().Format
-											oneOf = append(oneOf, anyOf)
-										} else if anyOf.Schema().Type[0] == "array" {
-											typeAny = anyOf.Schema().Type[0]
-											for _, it := range anyOf.Schema().Items.A.GetReferenceNode().Value {
-												fmt.Println(it)
-
-											}
-										} else {
-											typeAny = anyOf.Schema().Type[0]
-										}
-									}
-
-									// Sorry for it!
-									// I'm not proud of this code
-									// var schemaToRelace *base.SchemaProxy
-									schemaToRelace := base.CreateSchemaProxy(&base.Schema{
-										Type:             []string{typeAny},
-										Example:          example,
-										Nullable:         hasNull,
-										Description:      param.Schema.Schema().Description,
-										Title:            param.Schema.Schema().Title,
-										Format:           format,
-										ExclusiveMaximum: newExclusiveMax,
-										Maximum:          valMax,
-										ExclusiveMinimum: newExclusiveMin,
-										Minimum:          valMin,
-										Default:          varDefault,
-										OneOf:            oneOf,
-									})
-
-									_, _ = schemaToRelace.BuildSchema()
-
-									pathKey, ok := docModel.Model.Paths.PathItems.Get(path.Key)
-									if ok {
-										operation, ok := pathKey.GetOperations().Get(op.Key)
-										if ok {
-											for opar := range operation.Parameters {
-												if operation.Parameters[opar].Schema == param.Schema {
-													operation.Parameters[opar].Schema = schemaToRelace
-												}
-											}
-										}
-									}
-
-								}
-
-							}
+							xchema := param.Schema.Schema()
+							*xchema = *prepareSchema(xchema)
 						}
 					}
 				}
 			}
 
-			fileBytes, _, _, errs := document.RenderAndReload()
+			_, document, _, errs := document.RenderAndReload()
+			if len(errors) > 0 {
+				panic(fmt.Sprintf("cannot re-render document: %d errors reported", len(errs)))
+			}
+			docValidator, validatorErrs := validator.NewValidator(document)
+			if len(validatorErrs) > 0 {
+				panic(fmt.Sprintf("cannot create validator: %d errors reported", len(validatorErrs)))
+			}
+
+			valid, validationErrs := docValidator.ValidateDocument()
+
+			if !valid {
+				for _, e := range validationErrs {
+					// 5. Handle the error
+					fmt.Printf("Type: %s, Failure: %s\n", e.ValidationType, e.Message)
+					fmt.Printf("Fix: %s\n\n", e.HowToFix)
+				}
+			}
+
+			fileBytes, _, _, errs = document.RenderAndReload()
 			if len(errors) > 0 {
 				panic(fmt.Sprintf("cannot re-render document: %d errors reported", len(errs)))
 			}

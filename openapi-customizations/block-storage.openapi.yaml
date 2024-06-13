@@ -1,11 +1,11 @@
-# This file is to be merged on top of mgc/cli/openapis/vpc.openapi.yaml
+# This file is to be merged on top of mgc/cli/openapis/block-storage.openapi.yaml
 # using yaml_merge.py
 # NOTE: Lists are merged by their indexes, be careful with parameters, tags and such!
 # to keep it sane, keep some list item identifier (ex: "name") and add extra properties,
 # such as "x-mgc-name" or "x-mgc-description"
 
 servers:
-  - url: https://{env}/{region}/volume
+-   url: https://{env}/{region}/volume
     variables:
         region:
             description: Region to reach the service
@@ -26,88 +26,12 @@ servers:
             description: Environment to use
             default: api.magalu.cloud
             enum:
-              - api.magalu.cloud
-              - api.pre-prod.jaxyendy.com
+            - api.magalu.cloud
+            - api.pre-prod.jaxyendy.com
             x-mgc-transforms:
-              - type: translate
+            -   type: translate
                 translations:
-                  - from: prod
+                -   from: prod
                     to: api.magalu.cloud
-                  - from: pre-prod
+                -   from: pre-prod
                     to: api.pre-prod.jaxyendy.com
-paths:
-    /v1/volumes/{id}:
-        get:
-            x-mgc-wait-termination:
-                maxRetries: 10
-                interval: 5s
-                jsonPathQuery: $.result.status == "completed" || $.result.status == "deleted"
-                errorJsonPathQuery: contains($.result.status, "error")
-    /v1/volumes/{id}/retype:
-        post:
-            responses:
-                "204":
-                    links:
-                        get:
-                            x-mgc-wait-termination:
-                                maxRetries: 5
-                                interval: 5s
-                                jsonPathQuery: (hasKey($.owner.parameters.new_type, "id") && $.result.type.id == $.owner.parameters.new_type.id) || (hasKey($.owner.parameters.new_type, "name") && hasKey($.result.type, "name") && $.result.type.name == $.owner.parameters.new_type.name)
-    /v1/volumes/{id}/attach/{virtual_machine_id}:
-        post:
-            responses:
-                "204":
-                    links:
-                        get:
-                            x-mgc-wait-termination:
-                                maxRetries: 5
-                                interval: 5s
-                                jsonPathQuery: hasKey($.result.attachment) && $.result.attachment.machine_id == $.owner.parameters.virtual_machine_id
-    /v1/volumes/{id}/detach:
-        post:
-            responses:
-                "204":
-                    links:
-                        get:
-                            x-mgc-wait-termination:
-                                maxRetries: 5
-                                interval: 5s
-                                jsonPathQuery: \!hasKey($.result.attachment)
-    # The following links are for creating a Terraform Connection Resource automatically.
-    # Unfortunately, the ConnectionResources have a bug because Terraform is losing
-    # private state between requests (bug in Terraform). When that is resolved, this
-    # may be uncommented and the Blueprint version of this (volume-attachment) won't be needed anymor
-    # /v1/volumes/{id}/attach/{virtual_machine_id}:
-    #     post:
-    #         responses:
-    #             "204":
-    #                 links:
-    #                     delete-connection:
-    #                         description: Detach from a Virtual Machine instance
-    #                         operationRef: "#/paths/~1v1~1volumes~1{id}~1detach~1{virtual_machine_id}/post"
-    #                         parameters:
-    #                             id: $request.path.id
-    #                             virtual_machine_id: $.request.path.virtual_machine_id
-    #                     get-connection:
-    #                         description: Check if block storage is attached to Virtual
-    #                           Machine instance
-    #                         operationRef: "#/paths/~1v1~1volumes~1{id}/get"
-    #                         parameters:
-    #                             id: $request.path.id
-    #                         x-mgc-wait-termination:
-    #                             maxRetries: 1
-    #                             interval: 5s
-    #                             jsonPathQuery: hasKey($.result, "attachment") && $.result.attachment[?(@.machine_id == $.owner.parameters.virtual_machine_id)]
-    /v1/snapshots/{id}:
-        get:
-            x-mgc-wait-termination:
-                maxRetries: 10
-                interval: 5s
-                jsonPathQuery: $.result.status == "completed" || $.result.status == "deleted"
-                errorJsonPathQuery: contains($.result.status, "error")
-    /v1/snapshots/{snapshot_id}:
-        post:
-            x-mgc-name: restore
-    /v1/volume-types:
-        get:
-            x-mgc-output-flag: table=ID:$.types[*].id,Name:$.types[*].name,Disk Type:$.types[*].disk_type,STATUS:$.types[*].status,IOPS:$.types[*].iops

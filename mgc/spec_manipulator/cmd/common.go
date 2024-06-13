@@ -130,25 +130,6 @@ func getAndSaveFile(url, caminhoDestino string) error {
 	if err != nil {
 		return fmt.Errorf("erro ao ler o corpo da resposta: %v", err)
 	}
-
-	// document, err := libopenapi.NewDocument(fileBytes)
-	// if err != nil {
-	// 	panic(fmt.Sprintf("cannot read document: %e", err))
-	// }
-
-	// _, errors := document.BuildV3Model()
-	// if len(errors) > 0 {
-	// 	for i := range errors {
-	// 		fmt.Printf("error: %e\n", errors[i])
-	// 	}
-	// 	panic(fmt.Sprintf("cannot create v3 model from document: %d errors reported", len(errors)))
-	// }
-
-	// fileBytes, _, _, errors = document.RenderAndReload()
-	// if len(errors) > 0 {
-	// 	panic(fmt.Sprintf("cannot re-render document: %d errors reported", len(errors)))
-	// }
-
 	// Grava os dados no arquivo local
 	err = os.WriteFile(caminhoDestino, fileBytes, 0644)
 	if err != nil {

@@ -6,17 +6,17 @@ info:
         name: Tribo IAAS Cloud
         url: https://gitlab.luizalabs.com/cloud/dbaas/docs
         email: cloud-iaas-dbaas@luizalabs.com
-    version: 1.20.0
+    version: 1.21.1
 servers:
 -   url: https://{env}/{region}/database
     variables:
         region:
-            description: Region to reach the service
-            default: br-se1
             enum:
             - br-ne-1
             - br-se1
             - br-mgl1
+            default: br-se1
+            description: Region to reach the service
             x-mgc-transforms:
             -   type: translate
                 allowMissing: true
@@ -26,11 +26,11 @@ servers:
                 -   from: br-mgl1
                     to: br-se-1
         env:
-            description: Environment to use
-            default: api.magalu.cloud
             enum:
             - api.magalu.cloud
             - api.pre-prod.jaxyendy.com
+            default: api.magalu.cloud
+            description: Environment to use
             x-mgc-transforms:
             -   type: translate
                 translations:
@@ -38,7 +38,6 @@ servers:
                     to: api.magalu.cloud
                 -   from: pre-prod
                     to: api.pre-prod.jaxyendy.com
--   url: http://localhost:8000
 paths:
     /v1/healthcheck:
         get:
@@ -63,13 +62,13 @@ paths:
             description: Deletes all databases by tenant id.
             operationId: admin_instances_v1_delete_all
             parameters:
-            -   required: false
-                schema:
-                    title: Exchange
-                    type: string
-                    default: dbaas-internal
-                name: exchange
+            -   name: exchange
                 in: query
+                required: false
+                schema:
+                    type: string
+                    title: Exchange
+                    default: dbaas-internal
             responses:
                 '202':
                     description: Successful Response
@@ -94,45 +93,45 @@ paths:
             description: List all backups.
             operationId: backups_list_v1_backups_get
             parameters:
-            -   required: false
+            -   name: _offset
+                in: query
+                required: false
                 schema:
+                    type: integer
                     title: Offset
-                    minimum: 0.0
-                    type: integer
+                    minimum: 0
                     default: 0
-                name: _offset
+            -   name: _limit
                 in: query
-            -   required: false
+                required: false
                 schema:
-                    title: ' Limit'
-                    maximum: 50.0
-                    minimum: 1.0
                     type: integer
+                    title: ' Limit'
+                    maximum: 50
+                    minimum: 1
                     default: 10
-                name: _limit
+            -   name: type
                 in: query
-            -   required: false
+                required: false
                 schema:
                     $ref: '#/components/schemas/BackupType'
-                name: type
+            -   name: mode
                 in: query
-            -   required: false
+                required: false
                 schema:
                     $ref: '#/components/schemas/BackupMode'
-                name: mode
+            -   name: status
                 in: query
-            -   required: false
+                required: false
                 schema:
                     $ref: '#/components/schemas/BackupStatusResponse'
-                name: status
+            -   name: exchange
                 in: query
-            -   required: false
+                required: false
                 schema:
-                    title: Exchange
                     type: string
+                    title: Exchange
                     default: dbaas-internal
-                name: exchange
-                in: query
             responses:
                 '200':
                     description: Successful Response
@@ -157,20 +156,20 @@ paths:
             description: Get a backup detail.
             operationId: backup_detail_v1_backups__backup_id__get
             parameters:
-            -   required: true
-                schema:
-                    title: Backup Id
-                    type: string
-                    format: uuid
-                name: backup_id
+            -   name: backup_id
                 in: path
-            -   required: false
+                required: true
                 schema:
-                    title: Exchange
                     type: string
-                    default: dbaas-internal
-                name: exchange
+                    title: Backup Id
+                    format: uuid
+            -   name: exchange
                 in: query
+                required: false
+                schema:
+                    type: string
+                    title: Exchange
+                    default: dbaas-internal
             responses:
                 '200':
                     description: Successful Response
@@ -200,20 +199,20 @@ paths:
             description: Deletes a database backup.
             operationId: delete_backup_v1_backups__backup_id__delete
             parameters:
-            -   required: true
-                schema:
-                    title: Backup Id
-                    type: string
-                    format: uuid
-                name: backup_id
+            -   name: backup_id
                 in: path
-            -   required: false
+                required: true
                 schema:
-                    title: Exchange
                     type: string
-                    default: dbaas-internal
-                name: exchange
+                    title: Backup Id
+                    format: uuid
+            -   name: exchange
                 in: query
+                required: false
+                schema:
+                    type: string
+                    title: Exchange
+                    default: dbaas-internal
             responses:
                 '202':
                     description: Successful Response
@@ -237,32 +236,31 @@ paths:
             description: Returns a list of available engines.
             operationId: engines_v1_get_all
             parameters:
-            -   required: false
+            -   name: _offset
+                in: query
+                required: false
                 schema:
+                    type: integer
                     title: Offset
-                    minimum: 0.0
-                    type: integer
+                    minimum: 0
                     default: 0
-                name: _offset
+            -   name: _limit
                 in: query
-            -   required: false
+                required: false
                 schema:
-                    title: Limit
-                    maximum: 50.0
-                    minimum: 1.0
                     type: integer
+                    title: Limit
+                    maximum: 50
+                    minimum: 1
                     default: 10
-                name: _limit
+            -   name: status
                 in: query
-            -   description: Value referring to engine status.
+                description: Value referring to engine status.
                 required: false
                 schema:
                     allOf:
                     -   $ref: '#/components/schemas/EngineStatus'
                     description: Value referring to engine status.
-                    type: string
-                name: status
-                in: query
             responses:
                 '200':
                     description: Successful Response
@@ -287,32 +285,31 @@ paths:
             description: Returns a list of available datastore.
             operationId: datastores_v1_get_all
             parameters:
-            -   required: false
+            -   name: _offset
+                in: query
+                required: false
                 schema:
+                    type: integer
                     title: Offset
-                    minimum: 0.0
-                    type: integer
+                    minimum: 0
                     default: 0
-                name: _offset
+            -   name: _limit
                 in: query
-            -   required: false
+                required: false
                 schema:
-                    title: Limit
-                    maximum: 50.0
-                    minimum: 1.0
                     type: integer
+                    title: Limit
+                    maximum: 50
+                    minimum: 1
                     default: 10
-                name: _limit
+            -   name: status
                 in: query
-            -   description: Value referring to engine status.
+                description: Value referring to engine status.
                 required: false
                 schema:
                     allOf:
                     -   $ref: '#/components/schemas/EngineStatus'
                     description: Value referring to engine status.
-                    type: string
-                name: status
-                in: query
             responses:
                 '200':
                     description: Successful Response
@@ -338,16 +335,16 @@ paths:
             description: Returns a engine detail.
             operationId: engines_v1_get_by_id
             parameters:
-            -   description: Value referring to Engine Id.
+            -   name: engine_id
+                in: path
+                description: Value referring to Engine Id.
                 required: true
                 schema:
-                    title: Engine Id
                     type: string
-                    description: Value referring to Engine Id.
+                    title: Engine Id
                     format: uuid
+                    description: Value referring to Engine Id.
                 example: 7a11cfc5-f9f8-4fa2-a418-94a423f6a51f
-                name: engine_id
-                in: path
             responses:
                 '200':
                     description: Successful Response
@@ -372,16 +369,16 @@ paths:
             description: Returns a engine detail.
             operationId: datastores_v1_get_by_id
             parameters:
-            -   description: Value referring to Engine Id.
+            -   name: engine_id
+                in: path
+                description: Value referring to Engine Id.
                 required: true
                 schema:
-                    title: Engine Id
                     type: string
-                    description: Value referring to Engine Id.
+                    title: Engine Id
                     format: uuid
+                    description: Value referring to Engine Id.
                 example: 7a11cfc5-f9f8-4fa2-a418-94a423f6a51f
-                name: engine_id
-                in: path
             responses:
                 '200':
                     description: Successful Response
@@ -408,31 +405,30 @@ paths:
                 template that defines the size of RAM and vcpu.
             operationId: flavors_v1_get_all
             parameters:
-            -   required: false
+            -   name: _offset
+                in: query
+                required: false
                 schema:
+                    type: integer
                     title: Offset
-                    minimum: 0.0
-                    type: integer
+                    minimum: 0
                     default: 0
-                name: _offset
+            -   name: _limit
                 in: query
-            -   required: false
+                required: false
                 schema:
-                    title: ' Limit'
-                    maximum: 50.0
-                    minimum: 1.0
                     type: integer
+                    title: ' Limit'
+                    maximum: 50
+                    minimum: 1
                     default: 10
-                name: _limit
+            -   name: status
                 in: query
-            -   required: false
+                required: false
                 schema:
                     allOf:
                     -   $ref: '#/components/schemas/FlavorStatus'
                     default: ACTIVE
-                    type: string
-                name: status
-                in: query
             responses:
                 '200':
                     description: Successful Response
@@ -457,15 +453,15 @@ paths:
             description: Returns a flavor detail.
             operationId: flavors_v1_get_by_id
             parameters:
-            -   description: Flavor Unique Id.
+            -   name: flavor_id
+                in: path
+                description: Flavor Unique Id.
                 required: true
                 schema:
-                    title: Flavor Id
                     type: string
-                    description: Flavor Unique Id.
+                    title: Flavor Id
                     format: uuid
-                name: flavor_id
-                in: path
+                    description: Flavor Unique Id.
             responses:
                 '200':
                     description: Successful Response
@@ -490,24 +486,26 @@ paths:
             description: Returns a list of database instances for a x-tenant-id.
             operationId: instances_list_v1_instances_get
             parameters:
-            -   required: false
+            -   name: _offset
+                in: query
+                required: false
                 schema:
+                    type: integer
                     title: Offset
-                    minimum: 0.0
-                    type: integer
+                    minimum: 0
                     default: 0
-                name: _offset
+            -   name: _limit
                 in: query
-            -   required: false
+                required: false
                 schema:
-                    title: ' Limit'
-                    maximum: 25.0
-                    minimum: 1.0
                     type: integer
+                    title: ' Limit'
+                    maximum: 25
+                    minimum: 1
                     default: 10
-                name: _limit
+            -   name: _expand
                 in: query
-            -   description: '
+                description: '
 
                     Instance extra attributes or relations to show with the main query.
                     When available, more than one value
@@ -523,22 +521,19 @@ paths:
                         query. When available, more than one value
 
                         can be informed using commas. e.g: `_expand=value1,value2`'
-                    type: string
                 example: replicas
-                name: _expand
+            -   name: status
                 in: query
-            -   required: false
+                required: false
                 schema:
                     $ref: '#/components/schemas/InstanceStatusResponse'
-                name: status
+            -   name: exchange
                 in: query
-            -   required: false
+                required: false
                 schema:
-                    title: Exchange
                     type: string
+                    title: Exchange
                     default: dbaas-internal
-                name: exchange
-                in: query
             responses:
                 '200':
                     description: Successful Response
@@ -562,13 +557,13 @@ paths:
             description: Creates a new database instance asynchronously for a tenant.
             operationId: instances_v1_post
             parameters:
-            -   required: false
-                schema:
-                    title: Exchange
-                    type: string
-                    default: dbaas-internal
-                name: exchange
+            -   name: exchange
                 in: query
+                required: false
+                schema:
+                    type: string
+                    title: Exchange
+                    default: dbaas-internal
             requestBody:
                 content:
                     application/json:
@@ -635,16 +630,18 @@ paths:
             description: Returns a database instance detail.
             operationId: instances_v1_get_by_id
             parameters:
-            -   description: Database Instance Unique Id.
+            -   name: instance_id
+                in: path
+                description: Database Instance Unique Id.
                 required: true
                 schema:
-                    title: Instance Id
                     type: string
-                    description: Database Instance Unique Id.
+                    title: Instance Id
                     format: uuid
-                name: instance_id
-                in: path
-            -   description: '
+                    description: Database Instance Unique Id.
+            -   name: _expand
+                in: query
+                description: '
 
                     Instance extra attributes or relations to show with the main query.
                     When available, more than one value
@@ -660,17 +657,14 @@ paths:
                         query. When available, more than one value
 
                         can be informed using commas. e.g: `_expand=value1,value2`'
-                    type: string
                 example: replicas
-                name: _expand
+            -   name: exchange
                 in: query
-            -   required: false
+                required: false
                 schema:
-                    title: Exchange
                     type: string
+                    title: Exchange
                     default: dbaas-internal
-                name: exchange
-                in: query
             responses:
                 '200':
                     description: Successful Response
@@ -709,24 +703,6 @@ paths:
                             description: Backup restore.
                             parameters:
                                 instance_id: $response.body#/id
-                        update/flavor_id:
-                            operationId: instances_v1_resize
-                            description: Resizes a database instance.
-                            parameters:
-                                instance_id: $request.path.instance_id
-                            x-mgc-hidden: true
-                        update/status/ACTIVE:
-                            operationId: instances_v1_start
-                            description: Starts a database instance.
-                            parameters:
-                                instance_id: $request.path.instance_id
-                            x-mgc-hidden: true
-                        update/status/STOPPED:
-                            operationId: instances_v1_stop
-                            description: Stops a database instance.
-                            parameters:
-                                instance_id: $request.path.instance_id
-                            x-mgc-hidden: true
                 '422':
                     description: Validation Error
                     content:
@@ -736,12 +712,6 @@ paths:
             security:
             -   OAuth2:
                 - dbaas.read
-            x-mgc-wait-termination:
-                maxRetries: 100
-                interval: 20s
-                jsonPathQuery: (hasKey($.result, "status")) && ($.result.status ==
-                    "ACTIVE" || $.result.status == "STOPPED" || $.result.status ==
-                    "ERROR")
         delete:
             tags:
             - instances
@@ -749,20 +719,20 @@ paths:
             description: Deletes a database instance.
             operationId: instances_v1_delete
             parameters:
-            -   required: true
-                schema:
-                    title: Instance Id
-                    type: string
-                    format: uuid
-                name: instance_id
+            -   name: instance_id
                 in: path
-            -   required: false
+                required: true
                 schema:
-                    title: Exchange
                     type: string
-                    default: dbaas-internal
-                name: exchange
+                    title: Instance Id
+                    format: uuid
+            -   name: exchange
                 in: query
+                required: false
+                schema:
+                    type: string
+                    title: Exchange
+                    default: dbaas-internal
             responses:
                 '202':
                     description: Successful Response
@@ -785,20 +755,20 @@ paths:
             description: Updates a database instance.
             operationId: instances_v1_patch
             parameters:
-            -   required: true
-                schema:
-                    title: Instance Id
-                    type: string
-                    format: uuid
-                name: instance_id
+            -   name: instance_id
                 in: path
-            -   required: false
+                required: true
                 schema:
-                    title: Exchange
                     type: string
-                    default: dbaas-internal
-                name: exchange
+                    title: Instance Id
+                    format: uuid
+            -   name: exchange
                 in: query
+                required: false
+                schema:
+                    type: string
+                    title: Exchange
+                    default: dbaas-internal
             requestBody:
                 content:
                     application/json:
@@ -860,20 +830,20 @@ paths:
             description: Resizes a database instance.
             operationId: instances_v1_resize
             parameters:
-            -   required: true
-                schema:
-                    title: Instance Id
-                    type: string
-                    format: uuid
-                name: instance_id
+            -   name: instance_id
                 in: path
-            -   required: false
+                required: true
                 schema:
-                    title: Exchange
                     type: string
-                    default: dbaas-internal
-                name: exchange
+                    title: Instance Id
+                    format: uuid
+            -   name: exchange
                 in: query
+                required: false
+                schema:
+                    type: string
+                    title: Exchange
+                    default: dbaas-internal
             requestBody:
                 content:
                     application/json:
@@ -893,10 +863,6 @@ paths:
                             description: Database instance details.
                             parameters:
                                 instance_id: $response.body#/id
-                            x-mgc-wait-termination:
-                                maxRetries: 20
-                                interval: 10s
-                                jsonPathQuery: $.result.volume.size == $.owner.parameters.volume.size
                         update:
                             operationId: instances_v1_patch
                             description: Database instance update.
@@ -939,20 +905,20 @@ paths:
             description: Starts a database instance.
             operationId: instances_v1_start
             parameters:
-            -   required: true
-                schema:
-                    title: Instance Id
-                    type: string
-                    format: uuid
-                name: instance_id
+            -   name: instance_id
                 in: path
-            -   required: false
+                required: true
                 schema:
-                    title: Exchange
                     type: string
-                    default: dbaas-internal
-                name: exchange
+                    title: Instance Id
+                    format: uuid
+            -   name: exchange
                 in: query
+                required: false
+                schema:
+                    type: string
+                    title: Exchange
+                    default: dbaas-internal
             responses:
                 '200':
                     description: Successful Response
@@ -966,10 +932,6 @@ paths:
                             description: Database instance details.
                             parameters:
                                 instance_id: $response.body#/id
-                            x-mgc-wait-termination:
-                                maxRetries: 20
-                                interval: 10s
-                                jsonPathQuery: $.result.status == "ACTIVE"
                         update:
                             operationId: instances_v1_patch
                             description: Database instance update.
@@ -1004,7 +966,6 @@ paths:
             security:
             -   OAuth2:
                 - dbaas.write
-            x-mgc-name: start
     /v1/instances/{instance_id}/stop:
         post:
             tags:
@@ -1013,20 +974,20 @@ paths:
             description: Stops a database instance.
             operationId: instances_v1_stop
             parameters:
-            -   required: true
-                schema:
-                    title: Instance Id
-                    type: string
-                    format: uuid
-                name: instance_id
+            -   name: instance_id
                 in: path
-            -   required: false
+                required: true
                 schema:
-                    title: Exchange
                     type: string
-                    default: dbaas-internal
-                name: exchange
+                    title: Instance Id
+                    format: uuid
+            -   name: exchange
                 in: query
+                required: false
+                schema:
+                    type: string
+                    title: Exchange
+                    default: dbaas-internal
             responses:
                 '200':
                     description: Successful Response
@@ -1040,10 +1001,6 @@ paths:
                             description: Database instance details.
                             parameters:
                                 instance_id: $response.body#/id
-                            x-mgc-wait-termination:
-                                maxRetries: 20
-                                interval: 10s
-                                jsonPathQuery: $.result.status == "STOPPED"
                         update:
                             operationId: instances_v1_patch
                             description: Database instance update.
@@ -1086,52 +1043,52 @@ paths:
             description: List all backups.
             operationId: backups_list_v1_instances__instance_id__backups_get
             parameters:
-            -   required: true
-                schema:
-                    title: Instance Id
-                    type: string
-                    format: uuid
-                name: instance_id
+            -   name: instance_id
                 in: path
-            -   required: false
+                required: true
                 schema:
+                    type: string
+                    title: Instance Id
+                    format: uuid
+            -   name: _offset
+                in: query
+                required: false
+                schema:
+                    type: integer
                     title: Offset
-                    minimum: 0.0
-                    type: integer
+                    minimum: 0
                     default: 0
-                name: _offset
+            -   name: _limit
                 in: query
-            -   required: false
+                required: false
                 schema:
-                    title: ' Limit'
-                    maximum: 50.0
-                    minimum: 1.0
                     type: integer
+                    title: ' Limit'
+                    maximum: 50
+                    minimum: 1
                     default: 10
-                name: _limit
+            -   name: type
                 in: query
-            -   required: false
+                required: false
                 schema:
                     $ref: '#/components/schemas/BackupType'
-                name: type
+            -   name: mode
                 in: query
-            -   required: false
+                required: false
                 schema:
                     $ref: '#/components/schemas/BackupMode'
-                name: mode
+            -   name: status
                 in: query
-            -   required: false
+                required: false
                 schema:
                     $ref: '#/components/schemas/BackupStatusResponse'
-                name: status
+            -   name: exchange
                 in: query
-            -   required: false
+                required: false
                 schema:
-                    title: Exchange
                     type: string
+                    title: Exchange
                     default: dbaas-internal
-                name: exchange
-                in: query
             responses:
                 '200':
                     description: Successful Response
@@ -1155,20 +1112,20 @@ paths:
             description: Creates a new backup asynchronously.
             operationId: backup_create_v1_instances__instance_id__backups_post
             parameters:
-            -   required: true
-                schema:
-                    title: Instance Id
-                    type: string
-                    format: uuid
-                name: instance_id
+            -   name: instance_id
                 in: path
-            -   required: false
+                required: true
                 schema:
-                    title: Exchange
                     type: string
-                    default: dbaas-internal
-                name: exchange
+                    title: Instance Id
+                    format: uuid
+            -   name: exchange
                 in: query
+                required: false
+                schema:
+                    type: string
+                    title: Exchange
+                    default: dbaas-internal
             requestBody:
                 content:
                     application/json:
@@ -1221,27 +1178,27 @@ paths:
             description: Get a backup detail.
             operationId: backup_detail_v1_instances__instance_id__backups__backup_id__get
             parameters:
-            -   required: true
+            -   name: instance_id
+                in: path
+                required: true
                 schema:
+                    type: string
                     title: Instance Id
-                    type: string
                     format: uuid
-                name: instance_id
+            -   name: backup_id
                 in: path
-            -   required: true
+                required: true
                 schema:
+                    type: string
                     title: Backup Id
-                    type: string
                     format: uuid
-                name: backup_id
-                in: path
-            -   required: false
-                schema:
-                    title: Exchange
-                    type: string
-                    default: dbaas-internal
-                name: exchange
+            -   name: exchange
                 in: query
+                required: false
+                schema:
+                    type: string
+                    title: Exchange
+                    default: dbaas-internal
             responses:
                 '200':
                     description: Successful Response
@@ -1281,10 +1238,6 @@ paths:
             security:
             -   OAuth2:
                 - dbaas.read
-            x-mgc-wait-termination:
-                maxRetries: 20
-                interval: 5s
-                jsonPathQuery: $.status != PENDING && $.status != CREATING
         delete:
             tags:
             - instances
@@ -1292,27 +1245,27 @@ paths:
             description: Deletes a database backup.
             operationId: delete_backup_v1_instances__instance_id__backups__backup_id__delete
             parameters:
-            -   required: true
+            -   name: instance_id
+                in: path
+                required: true
                 schema:
+                    type: string
                     title: Instance Id
-                    type: string
                     format: uuid
-                name: instance_id
+            -   name: backup_id
                 in: path
-            -   required: true
+                required: true
                 schema:
+                    type: string
                     title: Backup Id
-                    type: string
                     format: uuid
-                name: backup_id
-                in: path
-            -   required: false
-                schema:
-                    title: Exchange
-                    type: string
-                    default: dbaas-internal
-                name: exchange
+            -   name: exchange
                 in: query
+                required: false
+                schema:
+                    type: string
+                    title: Exchange
+                    default: dbaas-internal
             responses:
                 '202':
                     description: Successful Response
@@ -1336,20 +1289,20 @@ paths:
             description: Restores a backup for an instance asynchronously.
             operationId: instances_v1_restore
             parameters:
-            -   required: true
-                schema:
-                    title: Instance Id
-                    type: string
-                    format: uuid
-                name: instance_id
+            -   name: instance_id
                 in: path
-            -   required: false
+                required: true
                 schema:
-                    title: Exchange
                     type: string
-                    default: dbaas-internal
-                name: exchange
+                    title: Instance Id
+                    format: uuid
+            -   name: exchange
                 in: query
+                required: false
+                schema:
+                    type: string
+                    title: Exchange
+                    default: dbaas-internal
             requestBody:
                 content:
                     application/json:
@@ -1411,50 +1364,50 @@ paths:
             description: Returns a list of database instances for a x-tenant-id.
             operationId: internal_v1_instances_get_all
             parameters:
-            -   description: Tenant unique identifier.
+            -   name: tenant.id
+                in: query
+                description: Tenant unique identifier.
                 required: false
                 schema:
+                    type: string
                     title: Tenant.Id
                     maxLength: 36
-                    type: string
                     description: Tenant unique identifier.
                 example: 889da663-a1dd-4aed-b53a-03a7e919c335
-                name: tenant.id
+            -   name: _offset
                 in: query
-            -   required: false
+                required: false
                 schema:
+                    type: integer
                     title: Offset
-                    minimum: 0.0
-                    type: integer
+                    minimum: 0
                     default: 0
-                name: _offset
+            -   name: _limit
                 in: query
-            -   required: false
+                required: false
                 schema:
-                    title: ' Limit'
-                    maximum: 25.0
-                    minimum: 1.0
                     type: integer
+                    title: ' Limit'
+                    maximum: 25
+                    minimum: 1
                     default: 10
-                name: _limit
+            -   name: status
                 in: query
-            -   required: false
+                required: false
                 schema:
                     $ref: '#/components/schemas/InstanceStatus'
-                name: status
+            -   name: generation
                 in: query
-            -   required: false
+                required: false
                 schema:
                     $ref: '#/components/schemas/InstanceGeneration'
-                name: generation
+            -   name: exchange
                 in: query
-            -   required: false
+                required: false
                 schema:
-                    title: Exchange
                     type: string
+                    title: Exchange
                     default: dbaas-internal
-                name: exchange
-                in: query
             responses:
                 '200':
                     description: Successful Response
@@ -1479,22 +1432,22 @@ paths:
             description: Returns a database instance detail.
             operationId: internal_v1_instances_get_by_id
             parameters:
-            -   description: Database Instance Unique Id.
+            -   name: instance_id
+                in: path
+                description: Database Instance Unique Id.
                 required: true
                 schema:
+                    type: string
                     title: Instance Id
-                    type: string
-                    description: Database Instance Unique Id.
                     format: uuid
-                name: instance_id
-                in: path
-            -   required: false
-                schema:
-                    title: Exchange
-                    type: string
-                    default: dbaas-internal
-                name: exchange
+                    description: Database Instance Unique Id.
+            -   name: exchange
                 in: query
+                required: false
+                schema:
+                    type: string
+                    title: Exchange
+                    default: dbaas-internal
             responses:
                 '200':
                     description: Successful Response
@@ -1519,57 +1472,57 @@ paths:
             description: List all upgrades.
             operationId: internal_v1_instances_upgrades_get_all
             parameters:
-            -   required: true
-                schema:
-                    title: Instance Id
-                    type: string
-                    format: uuid
-                name: instance_id
+            -   name: instance_id
                 in: path
-            -   description: Tenant unique identifier.
+                required: true
+                schema:
+                    type: string
+                    title: Instance Id
+                    format: uuid
+            -   name: tenant.id
+                in: query
+                description: Tenant unique identifier.
                 required: false
                 schema:
+                    type: string
                     title: Tenant.Id
                     maxLength: 36
-                    type: string
                     description: Tenant unique identifier.
                 example: 889da663-a1dd-4aed-b53a-03a7e919c335
-                name: tenant.id
+            -   name: _offset
                 in: query
-            -   required: false
+                required: false
                 schema:
+                    type: integer
                     title: Offset
-                    minimum: 0.0
-                    type: integer
+                    minimum: 0
                     default: 0
-                name: _offset
+            -   name: _limit
                 in: query
-            -   required: false
+                required: false
                 schema:
-                    title: ' Limit'
-                    maximum: 25.0
-                    minimum: 1.0
                     type: integer
+                    title: ' Limit'
+                    maximum: 25
+                    minimum: 1
                     default: 10
-                name: _limit
+            -   name: status
                 in: query
-            -   required: false
+                required: false
                 schema:
                     $ref: '#/components/schemas/UpgradeStatus'
-                name: status
+            -   name: generation
                 in: query
-            -   required: false
+                required: false
                 schema:
                     $ref: '#/components/schemas/InstanceGeneration'
-                name: generation
+            -   name: exchange
                 in: query
-            -   required: false
+                required: false
                 schema:
-                    title: Exchange
                     type: string
+                    title: Exchange
                     default: dbaas-internal
-                name: exchange
-                in: query
             responses:
                 '200':
                     description: Successful Response
@@ -1594,20 +1547,20 @@ paths:
                 tenant.
             operationId: internal_v1_instances_upgrades_post
             parameters:
-            -   required: true
-                schema:
-                    title: Instance Id
-                    type: string
-                    format: uuid
-                name: instance_id
+            -   name: instance_id
                 in: path
-            -   required: false
+                required: true
                 schema:
-                    title: Exchange
                     type: string
-                    default: dbaas-internal
-                name: exchange
+                    title: Instance Id
+                    format: uuid
+            -   name: exchange
                 in: query
+                required: false
+                schema:
+                    type: string
+                    title: Exchange
+                    default: dbaas-internal
             responses:
                 '202':
                     description: Successful Response
@@ -1632,27 +1585,27 @@ paths:
             description: Get an upgrade detail.
             operationId: internal_v1_instances_upgrades_get_by_id
             parameters:
-            -   required: true
+            -   name: instance_id
+                in: path
+                required: true
                 schema:
+                    type: string
                     title: Instance Id
-                    type: string
                     format: uuid
-                name: instance_id
+            -   name: upgrade_id
                 in: path
-            -   required: true
+                required: true
                 schema:
+                    type: string
                     title: Upgrade Id
-                    type: string
                     format: uuid
-                name: upgrade_id
-                in: path
-            -   required: false
-                schema:
-                    title: Exchange
-                    type: string
-                    default: dbaas-internal
-                name: exchange
+            -   name: exchange
                 in: query
+                required: false
+                schema:
+                    type: string
+                    title: Exchange
+                    default: dbaas-internal
             responses:
                 '200':
                     description: Successful Response
@@ -1677,37 +1630,37 @@ paths:
             description: List all replicas for a given instance.
             operationId: replicas_list_v1_replicas_get
             parameters:
-            -   required: false
+            -   name: source_id
+                in: query
+                required: false
                 schema:
+                    type: string
                     title: Source Id
-                    type: string
                     format: uuid
-                name: source_id
+            -   name: _offset
                 in: query
-            -   required: false
+                required: false
                 schema:
+                    type: integer
                     title: Offset
-                    minimum: 0.0
-                    type: integer
+                    minimum: 0
                     default: 0
-                name: _offset
+            -   name: _limit
                 in: query
-            -   required: false
+                required: false
                 schema:
-                    title: ' Limit'
-                    maximum: 50.0
-                    minimum: 1.0
                     type: integer
+                    title: ' Limit'
+                    maximum: 50
+                    minimum: 1
                     default: 10
-                name: _limit
+            -   name: exchange
                 in: query
-            -   required: false
+                required: false
                 schema:
-                    title: Exchange
                     type: string
+                    title: Exchange
                     default: dbaas-internal
-                name: exchange
-                in: query
             responses:
                 '200':
                     description: Successful Response
@@ -1731,13 +1684,13 @@ paths:
             description: Creates a new replica for an instance asynchronously.
             operationId: replica_create_v1_replicas_post
             parameters:
-            -   required: false
-                schema:
-                    title: Exchange
-                    type: string
-                    default: dbaas-internal
-                name: exchange
+            -   name: exchange
                 in: query
+                required: false
+                schema:
+                    type: string
+                    title: Exchange
+                    default: dbaas-internal
             requestBody:
                 content:
                     application/json:
@@ -1794,20 +1747,20 @@ paths:
             description: Get an instance replica detail.
             operationId: replica_detail_v1_replicas__replica_id__get
             parameters:
-            -   required: true
-                schema:
-                    title: Replica Id
-                    type: string
-                    format: uuid
-                name: replica_id
+            -   name: replica_id
                 in: path
-            -   required: false
+                required: true
                 schema:
-                    title: Exchange
                     type: string
-                    default: dbaas-internal
-                name: exchange
+                    title: Replica Id
+                    format: uuid
+            -   name: exchange
                 in: query
+                required: false
+                schema:
+                    type: string
+                    title: Exchange
+                    default: dbaas-internal
             responses:
                 '200':
                     description: Successful Response
@@ -1842,24 +1795,6 @@ paths:
                             description: Replica Stop.
                             parameters:
                                 replica_id: $response.body#/id
-                        update/volume:
-                            operationId: replica_resize_v1_replicas_post
-                            description: Resizes a database instance.
-                            parameters:
-                                replica_id: $request.path.replica_id
-                            x-mgc-hidden: true
-                        update/status/ACTIVE:
-                            operationId: replica_start_v1_replicas__replica_id__start_post
-                            description: Start an instance replica.
-                            parameters:
-                                replica_id: $request.path.replica_id
-                            x-mgc-hidden: true
-                        update/status/STOPPED:
-                            operationId: replica_stop_v1_replicas__replica_id__stop_post
-                            description: Stop an instance replica.
-                            parameters:
-                                replica_id: $request.path.replica_id
-                            x-mgc-hidden: true
                 '422':
                     description: Validation Error
                     content:
@@ -1876,20 +1811,20 @@ paths:
             description: Deletes a replica instance.
             operationId: replica_v1_delete
             parameters:
-            -   required: true
-                schema:
-                    title: Replica Id
-                    type: string
-                    format: uuid
-                name: replica_id
+            -   name: replica_id
                 in: path
-            -   required: false
+                required: true
                 schema:
-                    title: Exchange
                     type: string
-                    default: dbaas-internal
-                name: exchange
+                    title: Replica Id
+                    format: uuid
+            -   name: exchange
                 in: query
+                required: false
+                schema:
+                    type: string
+                    title: Exchange
+                    default: dbaas-internal
             responses:
                 '202':
                     description: Successful Response
@@ -1910,20 +1845,20 @@ paths:
             description: Resize an instance replica.
             operationId: replica_resize_v1_replicas_post
             parameters:
-            -   required: true
-                schema:
-                    title: Replica Id
-                    type: string
-                    format: uuid
-                name: replica_id
+            -   name: replica_id
                 in: path
-            -   required: false
+                required: true
                 schema:
-                    title: Exchange
                     type: string
-                    default: dbaas-internal
-                name: exchange
+                    title: Replica Id
+                    format: uuid
+            -   name: exchange
                 in: query
+                required: false
+                schema:
+                    type: string
+                    title: Exchange
+                    default: dbaas-internal
             requestBody:
                 content:
                     application/json:
@@ -1945,7 +1880,7 @@ paths:
                                 replica_id: $response.body#/id
                             x-mgc-wait-termination:
                                 interval: 5s
-                                maxRetries: 20
+                                maxRetries: 10
                                 jsonPathQuery: $.result.flavor_id == $.owner.parameters.flavor_id
                         delete:
                             operationId: replica_v1_delete
@@ -1987,20 +1922,20 @@ paths:
             description: Start an instance replica.
             operationId: replica_start_v1_replicas__replica_id__start_post
             parameters:
-            -   required: true
-                schema:
-                    title: Replica Id
-                    type: string
-                    format: uuid
-                name: replica_id
+            -   name: replica_id
                 in: path
-            -   required: false
+                required: true
                 schema:
-                    title: Exchange
                     type: string
-                    default: dbaas-internal
-                name: exchange
+                    title: Replica Id
+                    format: uuid
+            -   name: exchange
                 in: query
+                required: false
+                schema:
+                    type: string
+                    title: Exchange
+                    default: dbaas-internal
             responses:
                 '200':
                     description: Successful Response
@@ -2014,10 +1949,6 @@ paths:
                             description: Replica Detail.
                             parameters:
                                 replica_id: $response.body#/id
-                            x-mgc-wait-termination:
-                                maxRetries: 20
-                                interval: 5s
-                                jsonPathQuery: $.result.status == "ACTIVE"
                         delete:
                             operationId: replica_v1_delete
                             description: Deletes a replica instance.
@@ -2050,20 +1981,20 @@ paths:
             description: Stop an instance replica.
             operationId: replica_stop_v1_replicas__replica_id__stop_post
             parameters:
-            -   required: true
-                schema:
-                    title: Replica Id
-                    type: string
-                    format: uuid
-                name: replica_id
+            -   name: replica_id
                 in: path
-            -   required: false
+                required: true
                 schema:
-                    title: Exchange
                     type: string
-                    default: dbaas-internal
-                name: exchange
+                    title: Replica Id
+                    format: uuid
+            -   name: exchange
                 in: query
+                required: false
+                schema:
+                    type: string
+                    title: Exchange
+                    default: dbaas-internal
             responses:
                 '200':
                     description: Successful Response
@@ -2077,10 +2008,6 @@ paths:
                             description: Replica Detail.
                             parameters:
                                 replica_id: $response.body#/id
-                            x-mgc-wait-termination:
-                                maxRetries: 20
-                                interval: 5s
-                                jsonPathQuery: $.result.status == "STOPPED"
                         delete:
                             operationId: replica_v1_delete
                             description: Deletes a replica instance.
@@ -2120,42 +2047,88 @@ components:
             - IPv6
             description: An enumeration.
         AllDatabasesResponse:
-            title: AllDatabasesResponse
-            required:
-            - all_instances_and_backups
             type: object
             properties:
                 all_instances_and_backups:
-                    title: All Instances And Backups
                     type: array
                     items:
                         $ref: '#/components/schemas/AllDeleting'
-        AllDeleting:
-            title: AllDeleting
+                    title: All Instances And Backups
+            title: AllDatabasesResponse
             required:
-            - instance_id_deleting
-            - backups_ids_deleting
+            - all_instances_and_backups
+        AllDeleting:
             type: object
             properties:
                 instance_id_deleting:
-                    title: Instance Id Deleting
                     type: string
+                    title: Instance Id Deleting
                     format: uuid
                 backups_ids_deleting:
-                    title: Backups Ids Deleting
                     type: array
                     items:
                         type: string
                         format: uuid
-        BackupCreateRequest:
-            title: BackupCreateRequest
+                    title: Backups Ids Deleting
+            title: AllDeleting
             required:
-            - mode
+            - instance_id_deleting
+            - backups_ids_deleting
+        BackupCreateRequest:
             type: object
             properties:
                 mode:
                     $ref: '#/components/schemas/BackupModeRequest'
+            title: BackupCreateRequest
+            required:
+            - mode
         BackupDetailResponse:
+            type: object
+            properties:
+                id:
+                    type: string
+                    title: Id
+                    format: uuid
+                instance_id:
+                    type: string
+                    title: Instance Id
+                    format: uuid
+                name:
+                    type: string
+                    title: Name
+                location:
+                    type: string
+                    title: Location
+                type:
+                    $ref: '#/components/schemas/BackupType'
+                status:
+                    $ref: '#/components/schemas/BackupStatusResponse'
+                mode:
+                    $ref: '#/components/schemas/BackupMode'
+                db_size:
+                    exclusiveMinimum: false
+                    type: integer
+                    title: Db Size
+                size:
+                    exclusiveMinimum: false
+                    type: integer
+                    title: Size
+                started_at:
+                    type: string
+                    title: Started At
+                    format: date-time
+                finished_at:
+                    type: string
+                    title: Finished At
+                    format: date-time
+                created_at:
+                    type: string
+                    title: Created At
+                    format: date-time
+                updated_at:
+                    type: string
+                    title: Updated At
+                    format: date-time
             title: BackupDetailResponse
             required:
             - id
@@ -2164,54 +2137,6 @@ components:
             - status
             - mode
             - created_at
-            type: object
-            properties:
-                id:
-                    title: Id
-                    type: string
-                    format: uuid
-                instance_id:
-                    title: Instance Id
-                    type: string
-                    format: uuid
-                name:
-                    title: Name
-                    type: string
-                location:
-                    title: Location
-                    type: string
-                type:
-                    $ref: '#/components/schemas/BackupType'
-                status:
-                    $ref: '#/components/schemas/BackupStatusResponse'
-                mode:
-                    $ref: '#/components/schemas/BackupMode'
-                db_size:
-                    title: Db Size
-                    exclusiveMinimum: true
-                    type: integer
-                    minimum: 0.0
-                size:
-                    title: Size
-                    exclusiveMinimum: true
-                    type: integer
-                    minimum: 0.0
-                started_at:
-                    title: Started At
-                    type: string
-                    format: date-time
-                finished_at:
-                    title: Finished At
-                    type: string
-                    format: date-time
-                created_at:
-                    title: Created At
-                    type: string
-                    format: date-time
-                updated_at:
-                    title: Updated At
-                    type: string
-                    format: date-time
         BackupMode:
             title: BackupMode
             enum:
@@ -2224,15 +2149,15 @@ components:
             - FULL
             description: An enumeration.
         BackupResponse:
-            title: BackupResponse
-            required:
-            - id
             type: object
             properties:
                 id:
-                    title: Id
                     type: string
+                    title: Id
                     format: uuid
+            title: BackupResponse
+            required:
+            - id
         BackupStatusResponse:
             title: BackupStatusResponse
             enum:
@@ -2251,20 +2176,38 @@ components:
             - AUTOMATED
             description: An enumeration.
         BackupsResponse:
-            title: BackupsResponse
-            required:
-            - meta
-            - results
             type: object
             properties:
                 meta:
                     $ref: '#/components/schemas/MetaResponse'
                 results:
-                    title: Results
                     type: array
                     items:
                         $ref: '#/components/schemas/BackupDetailResponse'
+                    title: Results
+            title: BackupsResponse
+            required:
+            - meta
+            - results
         EngineResponse:
+            type: object
+            properties:
+                id:
+                    type: string
+                    title: Id
+                    format: uuid
+                name:
+                    type: string
+                    title: Name
+                engine:
+                    type: string
+                    title: Engine
+                    deprecated: true
+                version:
+                    type: string
+                    title: Version
+                status:
+                    $ref: '#/components/schemas/EngineStatus'
             title: EngineResponse
             required:
             - id
@@ -2272,24 +2215,6 @@ components:
             - engine
             - version
             - status
-            type: object
-            properties:
-                id:
-                    title: Id
-                    type: string
-                    format: uuid
-                name:
-                    title: Name
-                    type: string
-                engine:
-                    title: Engine
-                    type: string
-                    deprecated: true
-                version:
-                    title: Version
-                    type: string
-                status:
-                    $ref: '#/components/schemas/EngineStatus'
         EngineStatus:
             title: EngineStatus
             enum:
@@ -2297,20 +2222,53 @@ components:
             - DEPRECATED
             description: An enumeration.
         EnginesResponse:
-            title: EnginesResponse
-            required:
-            - meta
-            - results
             type: object
             properties:
                 meta:
                     $ref: '#/components/schemas/MetaResponse'
                 results:
-                    title: Results
                     type: array
                     items:
                         $ref: '#/components/schemas/EngineResponse'
+                    title: Results
+            title: EnginesResponse
+            required:
+            - meta
+            - results
         FlavorResponse:
+            type: object
+            properties:
+                id:
+                    type: string
+                    title: Id
+                    format: uuid
+                name:
+                    type: string
+                    title: Name
+                label:
+                    type: string
+                    title: Label
+                family_description:
+                    type: string
+                    title: Family Description
+                family_slug:
+                    type: string
+                    title: Family Slug
+                size:
+                    type: string
+                    title: Size
+                sku_source:
+                    type: string
+                    title: Sku Source
+                sku_replica:
+                    type: string
+                    title: Sku Replica
+                vcpu:
+                    type: string
+                    title: Vcpu
+                ram:
+                    type: string
+                    title: Ram
             title: FlavorResponse
             required:
             - id
@@ -2323,39 +2281,6 @@ components:
             - sku_replica
             - vcpu
             - ram
-            type: object
-            properties:
-                id:
-                    title: Id
-                    type: string
-                    format: uuid
-                name:
-                    title: Name
-                    type: string
-                label:
-                    title: Label
-                    type: string
-                family_description:
-                    title: Family Description
-                    type: string
-                family_slug:
-                    title: Family Slug
-                    type: string
-                size:
-                    title: Size
-                    type: string
-                sku_source:
-                    title: Sku Source
-                    type: string
-                sku_replica:
-                    title: Sku Replica
-                    type: string
-                vcpu:
-                    title: Vcpu
-                    type: string
-                ram:
-                    title: Ram
-                    type: string
         FlavorStatus:
             title: FlavorStatus
             enum:
@@ -2363,21 +2288,20 @@ components:
             - DEPRECATED
             description: An enumeration.
         FlavorsResponse:
-            title: FlavorsResponse
-            required:
-            - meta
-            - results
             type: object
             properties:
                 meta:
                     $ref: '#/components/schemas/MetaResponse'
                 results:
-                    title: Results
                     type: array
                     items:
                         $ref: '#/components/schemas/FlavorResponse'
+                    title: Results
+            title: FlavorsResponse
+            required:
+            - meta
+            - results
         HTTPValidationError:
-            title: HTTPValidationError
             type: object
             properties:
                 message:
@@ -2386,13 +2310,11 @@ components:
                 slug:
                     title: Slug
                     type: string
+            title: HTTPValidationError
             example:
                 message: Unauthorized
                 slug: Unauthorized
         InstanceAddressResponse:
-            title: InstanceAddressResponse
-            required:
-            - access
             type: object
             properties:
                 access:
@@ -2400,9 +2322,57 @@ components:
                 type:
                     $ref: '#/components/schemas/AddressType'
                 address:
-                    title: Address
                     type: string
+                    title: Address
+            title: InstanceAddressResponse
+            required:
+            - access
         InstanceCreateRequest:
+            type: object
+            properties:
+                name:
+                    type: string
+                    title: Name
+                    maxLength: 100
+                datastore_id:
+                    type: string
+                    title: Datastore Id
+                    format: uuid
+                    deprecated: true
+                engine_id:
+                    type: string
+                    title: Engine Id
+                    format: uuid
+                flavor_id:
+                    type: string
+                    title: Flavor Id
+                    format: uuid
+                user:
+                    type: string
+                    title: User
+                    maxLength: 25
+                password:
+                    type: string
+                    title: Password
+                    maxLength: 50
+                volume:
+                    $ref: '#/components/schemas/InstanceVolumeRequest'
+                backup_retention_days:
+                    exclusiveMinimum: false
+                    type: integer
+                    title: Backup Retention Days
+                    default: 7
+                backup_start_at:
+                    type: string
+                    title: Backup Start At
+                    format: time
+                    default: 04:00:00
+                parameters:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/InstanceParametersRequest'
+                    title: Parameters
+                    default: []
             title: InstanceCreateRequest
             required:
             - name
@@ -2410,58 +2380,75 @@ components:
             - user
             - password
             - volume
+        InstanceDetailResponse:
             type: object
             properties:
+                id:
+                    type: string
+                    title: Id
+                    format: uuid
                 name:
+                    type: string
                     title: Name
                     maxLength: 100
+                engine_id:
                     type: string
-                    example: dbaas-name
+                    title: Engine Id
+                    format: uuid
                 datastore_id:
-                    title: Datastore Id
                     type: string
+                    title: Datastore Id
                     format: uuid
                     deprecated: true
-                    example: 063f3994-b6c2-4c37-96c9-bab8d82d36f7
-                engine_id:
-                    title: Engine Id
-                    type: string
-                    format: uuid
                 flavor_id:
+                    type: string
                     title: Flavor Id
-                    type: string
                     format: uuid
-                    example: 8bbe8e01-40c8-4d2b-80e8-189debc44b1c
-                user:
-                    title: User
-                    maxLength: 25
-                    type: string
-                    example: dbaas-user
-                password:
-                    title: Password
-                    maxLength: 50
-                    type: string
-                    example: dbaas-password
                 volume:
-                    $ref: '#/components/schemas/InstanceVolumeRequest'
-                backup_retention_days:
-                    title: Backup Retention Days
-                    exclusiveMinimum: true
-                    type: integer
-                    default: 7
-                    minimum: 0.0
-                backup_start_at:
-                    title: Backup Start At
-                    type: string
-                    format: time
-                    default: 04:00:00
-                parameters:
-                    title: Parameters
+                    $ref: '#/components/schemas/InstanceVolumeResponse'
+                addresses:
                     type: array
                     items:
-                        $ref: '#/components/schemas/InstanceParametersRequest'
-                    default: []
-        InstanceDetailResponse:
+                        $ref: '#/components/schemas/InstanceAddressResponse'
+                    title: Addresses
+                status:
+                    $ref: '#/components/schemas/InstanceStatusResponse'
+                generation:
+                    $ref: '#/components/schemas/InstanceGeneration'
+                created_at:
+                    type: string
+                    title: Created At
+                    format: date-time
+                updated_at:
+                    type: string
+                    title: Updated At
+                    format: date-time
+                started_at:
+                    type: string
+                    title: Started At
+                    format: date-time
+                finished_at:
+                    type: string
+                    title: Finished At
+                    format: date-time
+                backup_retention_days:
+                    exclusiveMinimum: false
+                    type: integer
+                    title: Backup Retention Days
+                backup_start_at:
+                    type: string
+                    title: Backup Start At
+                    format: time
+                parameters:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/InstanceParametersResponse'
+                    title: Parameters
+                replicas:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/ReplicaDetailResponse'
+                    title: Replicas
             title: InstanceDetailResponse
             required:
             - id
@@ -2477,80 +2464,11 @@ components:
             - backup_retention_days
             - backup_start_at
             - parameters
-            type: object
-            properties:
-                id:
-                    title: Id
-                    type: string
-                    format: uuid
-                name:
-                    title: Name
-                    maxLength: 100
-                    type: string
-                engine_id:
-                    title: Engine Id
-                    type: string
-                    format: uuid
-                datastore_id:
-                    title: Datastore Id
-                    type: string
-                    format: uuid
-                    deprecated: true
-                flavor_id:
-                    title: Flavor Id
-                    type: string
-                    format: uuid
-                volume:
-                    $ref: '#/components/schemas/InstanceVolumeResponse'
-                addresses:
-                    title: Addresses
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/InstanceAddressResponse'
-                status:
-                    $ref: '#/components/schemas/InstanceStatusResponse'
-                generation:
-                    $ref: '#/components/schemas/InstanceGeneration'
-                created_at:
-                    title: Created At
-                    type: string
-                    format: date-time
-                updated_at:
-                    title: Updated At
-                    type: string
-                    format: date-time
-                started_at:
-                    title: Started At
-                    type: string
-                    format: date-time
-                finished_at:
-                    title: Finished At
-                    type: string
-                    format: date-time
-                backup_retention_days:
-                    title: Backup Retention Days
-                    exclusiveMinimum: true
-                    type: integer
-                    minimum: 0.0
-                backup_start_at:
-                    title: Backup Start At
-                    type: string
-                    format: time
-                parameters:
-                    title: Parameters
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/InstanceParametersResponse'
-                replicas:
-                    title: Replicas
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/ReplicaDetailResponse'
         InstanceExpand:
+            type: string
             title: InstanceExpand
             enum:
             - replicas
-            type: string
             description: An enumeration.
         InstanceGeneration:
             title: InstanceGeneration
@@ -2567,57 +2485,57 @@ components:
             - LOWER_CASE_TABLE_NAMES
             description: An enumeration.
         InstanceParametersRequest:
+            type: object
+            properties:
+                name:
+                    $ref: '#/components/schemas/InstanceParametersNames'
+                value:
+                    anyOf:
+                    -   type: number
+                    -   type: integer
+                    -   type: boolean
+                    -   type: string
+                    title: Value
             title: InstanceParametersRequest
             required:
             - name
             - value
+        InstanceParametersResponse:
             type: object
             properties:
                 name:
                     $ref: '#/components/schemas/InstanceParametersNames'
                 value:
-                    title: Value
                     anyOf:
                     -   type: number
                     -   type: integer
                     -   type: boolean
                     -   type: string
-        InstanceParametersResponse:
+                    title: Value
             title: InstanceParametersResponse
             required:
             - name
             - value
-            type: object
-            properties:
-                name:
-                    $ref: '#/components/schemas/InstanceParametersNames'
-                value:
-                    title: Value
-                    anyOf:
-                    -   type: number
-                    -   type: integer
-                    -   type: boolean
-                    -   type: string
         InstanceResizeRequest:
-            title: InstanceResizeRequest
             type: object
             properties:
                 flavor_id:
-                    title: Flavor Id
                     type: string
+                    title: Flavor Id
                     format: uuid
                 volume:
                     $ref: '#/components/schemas/InstanceVolumeRequest'
+            title: InstanceResizeRequest
         InstanceResponse:
-            title: InstanceResponse
-            required:
-            - id
             type: object
             properties:
                 id:
-                    title: Id
                     type: string
+                    title: Id
                     format: uuid
+            title: InstanceResponse
+            required:
+            - id
         InstanceStatus:
             title: InstanceStatus
             enum:
@@ -2682,20 +2600,19 @@ components:
             - MAINTENANCE
             description: An enumeration.
         InstanceUpdateRequest:
-            title: InstanceUpdateRequest
             type: object
             properties:
                 status:
                     $ref: '#/components/schemas/InstanceUpdateStatus'
                 backup_retention_days:
-                    title: Backup Retention Days
-                    exclusiveMinimum: true
+                    exclusiveMinimum: false
                     type: integer
-                    minimum: 0.0
+                    title: Backup Retention Days
                 backup_start_at:
-                    title: Backup Start At
                     type: string
+                    title: Backup Start At
                     format: time
+            title: InstanceUpdateRequest
         InstanceUpdateStatus:
             title: InstanceUpdateStatus
             enum:
@@ -2703,51 +2620,113 @@ components:
             - STOPPED
             description: An enumeration.
         InstanceVolumeRequest:
-            title: InstanceVolumeRequest
-            required:
-            - size
             type: object
             properties:
                 size:
-                    title: Size
-                    maximum: 50000.0
-                    minimum: 10.0
                     type: integer
-                    example: 30
+                    title: Size
+                    maximum: 50000
+                    minimum: 10
                 type:
                     allOf:
                     -   $ref: '#/components/schemas/VolumeType'
                     default: CLOUD_NVME_15K
-                    example: CLOUD_NVME
+            title: InstanceVolumeRequest
+            required:
+            - size
         InstanceVolumeResponse:
+            type: object
+            properties:
+                size:
+                    type: integer
+                    title: Size
+                    maximum: 50000
+                    minimum: 10
+                type:
+                    $ref: '#/components/schemas/VolumeType'
             title: InstanceVolumeResponse
             required:
             - size
             - type
-            type: object
-            properties:
-                size:
-                    title: Size
-                    maximum: 50000.0
-                    minimum: 10.0
-                    type: integer
-                type:
-                    $ref: '#/components/schemas/VolumeType'
         InstancesResponse:
-            title: InstancesResponse
-            required:
-            - meta
-            - results
             type: object
             properties:
                 meta:
                     $ref: '#/components/schemas/MetaResponse'
                 results:
-                    title: Results
                     type: array
                     items:
                         $ref: '#/components/schemas/InstanceDetailResponse'
+                    title: Results
+            title: InstancesResponse
+            required:
+            - meta
+            - results
         InternalInstanceDetailResponse:
+            type: object
+            properties:
+                id:
+                    type: string
+                    title: Id
+                    format: uuid
+                name:
+                    type: string
+                    title: Name
+                    maxLength: 100
+                tenant_id:
+                    type: string
+                    title: Tenant Id
+                    format: uuid
+                engine_id:
+                    type: string
+                    title: Engine Id
+                    format: uuid
+                datastore_id:
+                    type: string
+                    title: Datastore Id
+                    format: uuid
+                    deprecated: true
+                flavor_id:
+                    type: string
+                    title: Flavor Id
+                    format: uuid
+                volume:
+                    $ref: '#/components/schemas/InstanceVolumeResponse'
+                addresses:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/InstanceAddressResponse'
+                    title: Addresses
+                status:
+                    $ref: '#/components/schemas/InstanceStatus'
+                generation:
+                    $ref: '#/components/schemas/InstanceGeneration'
+                generation_hold:
+                    $ref: '#/components/schemas/InstanceGeneration'
+                created_at:
+                    type: string
+                    title: Created At
+                    format: date-time
+                updated_at:
+                    type: string
+                    title: Updated At
+                    format: date-time
+                started_at:
+                    type: string
+                    title: Started At
+                    format: date-time
+                finished_at:
+                    type: string
+                    title: Finished At
+                    format: date-time
+                backup_retention_days:
+                    exclusiveMinimum: false
+                    type: integer
+                    title: Backup Retention Days
+                backup_start_at:
+                    type: string
+                    title: Backup Start At
+                    format: time
             title: InternalInstanceDetailResponse
             required:
             - id
@@ -2763,94 +2742,53 @@ components:
             - created_at
             - backup_retention_days
             - backup_start_at
-            type: object
-            properties:
-                id:
-                    title: Id
-                    type: string
-                    format: uuid
-                name:
-                    title: Name
-                    maxLength: 100
-                    type: string
-                tenant_id:
-                    title: Tenant Id
-                    type: string
-                    format: uuid
-                engine_id:
-                    title: Engine Id
-                    type: string
-                    format: uuid
-                datastore_id:
-                    title: Datastore Id
-                    type: string
-                    format: uuid
-                    deprecated: true
-                flavor_id:
-                    title: Flavor Id
-                    type: string
-                    format: uuid
-                volume:
-                    $ref: '#/components/schemas/InstanceVolumeResponse'
-                addresses:
-                    title: Addresses
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/InstanceAddressResponse'
-                status:
-                    $ref: '#/components/schemas/InstanceStatus'
-                generation:
-                    $ref: '#/components/schemas/InstanceGeneration'
-                generation_hold:
-                    $ref: '#/components/schemas/InstanceGeneration'
-                created_at:
-                    title: Created At
-                    type: string
-                    format: date-time
-                updated_at:
-                    title: Updated At
-                    type: string
-                    format: date-time
-                started_at:
-                    title: Started At
-                    type: string
-                    format: date-time
-                finished_at:
-                    title: Finished At
-                    type: string
-                    format: date-time
-                backup_retention_days:
-                    title: Backup Retention Days
-                    exclusiveMinimum: true
-                    type: integer
-                    minimum: 0.0
-                backup_start_at:
-                    title: Backup Start At
-                    type: string
-                    format: time
         InternalInstancesResponse:
-            title: InternalInstancesResponse
-            required:
-            - meta
-            - results
             type: object
             properties:
                 meta:
                     $ref: '#/components/schemas/MetaResponse'
                 results:
-                    title: Results
                     type: array
                     items:
                         $ref: '#/components/schemas/InternalInstanceDetailResponse'
-        MetaResponse:
-            title: MetaResponse
+                    title: Results
+            title: InternalInstancesResponse
             required:
-            - page
+            - meta
+            - results
+        MetaResponse:
             type: object
             properties:
                 page:
                     $ref: '#/components/schemas/PageResponse'
+            title: MetaResponse
+            required:
+            - page
         PageResponse:
+            type: object
+            properties:
+                offset:
+                    type: integer
+                    title: Offset
+                    description: The number of items to skip before starting to collect
+                        the result set.
+                limit:
+                    type: integer
+                    title: Limit
+                    description: The maximum number of items per page.
+                count:
+                    type: integer
+                    title: Count
+                    description: The number of items on the current page.
+                total:
+                    type: integer
+                    title: Total
+                    description: The total number of items available across all pages.
+                max_limit:
+                    type: integer
+                    title: Max Limit
+                    description: The maximum allowable limit for the number of items
+                        per page.
             title: PageResponse
             required:
             - offset
@@ -2858,34 +2796,7 @@ components:
             - count
             - total
             - max_limit
-            type: object
-            properties:
-                offset:
-                    title: Offset
-                    type: integer
-                    description: The number of items to skip before starting to collect
-                        the result set.
-                limit:
-                    title: Limit
-                    type: integer
-                    description: The maximum number of items per page.
-                count:
-                    title: Count
-                    type: integer
-                    description: The number of items on the current page.
-                total:
-                    title: Total
-                    type: integer
-                    description: The total number of items available across all pages.
-                max_limit:
-                    title: Max Limit
-                    type: integer
-                    description: The maximum allowable limit for the number of items
-                        per page.
         ReplicaAddressResponse:
-            title: ReplicaAddressResponse
-            required:
-            - access
             type: object
             properties:
                 access:
@@ -2893,28 +2804,89 @@ components:
                 type:
                     $ref: '#/components/schemas/AddressType'
                 address:
-                    title: Address
                     type: string
+                    title: Address
+            title: ReplicaAddressResponse
+            required:
+            - access
         ReplicaCreateRequest:
+            type: object
+            properties:
+                source_id:
+                    type: string
+                    title: Source Id
+                    format: uuid
+                name:
+                    type: string
+                    title: Name
+                    maxLength: 255
+                flavor_id:
+                    type: string
+                    title: Flavor Id
+                    format: uuid
             title: ReplicaCreateRequest
             required:
             - source_id
             - name
+        ReplicaDetailResponse:
             type: object
             properties:
-                source_id:
-                    title: Source Id
+                id:
                     type: string
+                    title: Id
+                    format: uuid
+                source_id:
+                    type: string
+                    title: Source Id
                     format: uuid
                 name:
+                    type: string
                     title: Name
-                    maxLength: 255
+                engine_id:
                     type: string
-                flavor_id:
-                    title: Flavor Id
-                    type: string
+                    title: Engine Id
                     format: uuid
-        ReplicaDetailResponse:
+                datastore_id:
+                    type: string
+                    title: Datastore Id
+                    format: uuid
+                    deprecated: true
+                flavor_id:
+                    type: string
+                    title: Flavor Id
+                    format: uuid
+                volume:
+                    $ref: '#/components/schemas/ReplicaVolumeResponse'
+                addresses:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/ReplicaAddressResponse'
+                    title: Addresses
+                status:
+                    $ref: '#/components/schemas/InstanceStatusResponse'
+                generation:
+                    $ref: '#/components/schemas/InstanceGeneration'
+                created_at:
+                    type: string
+                    title: Created At
+                    format: date-time
+                updated_at:
+                    type: string
+                    title: Updated At
+                    format: date-time
+                started_at:
+                    type: string
+                    title: Started At
+                    format: date-time
+                finished_at:
+                    type: string
+                    title: Finished At
+                    format: date-time
+                parameters:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/InstanceParametersResponse'
+                    title: Parameters
             title: ReplicaDetailResponse
             required:
             - id
@@ -2929,133 +2901,105 @@ components:
             - generation
             - created_at
             - parameters
+        ReplicaResizeRequest:
             type: object
             properties:
-                id:
-                    title: Id
-                    type: string
-                    format: uuid
-                source_id:
-                    title: Source Id
-                    type: string
-                    format: uuid
-                name:
-                    title: Name
-                    type: string
-                engine_id:
-                    title: Engine Id
-                    type: string
-                    format: uuid
-                datastore_id:
-                    title: Datastore Id
-                    type: string
-                    format: uuid
-                    deprecated: true
                 flavor_id:
+                    type: string
                     title: Flavor Id
-                    type: string
                     format: uuid
-                volume:
-                    $ref: '#/components/schemas/ReplicaVolumeResponse'
-                addresses:
-                    title: Addresses
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/ReplicaAddressResponse'
-                status:
-                    $ref: '#/components/schemas/InstanceStatusResponse'
-                generation:
-                    $ref: '#/components/schemas/InstanceGeneration'
-                created_at:
-                    title: Created At
-                    type: string
-                    format: date-time
-                updated_at:
-                    title: Updated At
-                    type: string
-                    format: date-time
-                started_at:
-                    title: Started At
-                    type: string
-                    format: date-time
-                finished_at:
-                    title: Finished At
-                    type: string
-                    format: date-time
-                parameters:
-                    title: Parameters
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/InstanceParametersResponse'
-        ReplicaResizeRequest:
             title: ReplicaResizeRequest
             required:
             - flavor_id
-            type: object
-            properties:
-                flavor_id:
-                    title: Flavor Id
-                    type: string
-                    format: uuid
         ReplicaResponse:
-            title: ReplicaResponse
-            required:
-            - id
             type: object
             properties:
                 id:
-                    title: Id
                     type: string
+                    title: Id
                     format: uuid
+            title: ReplicaResponse
+            required:
+            - id
         ReplicaVolumeResponse:
+            type: object
+            properties:
+                size:
+                    type: integer
+                    title: Size
+                    maximum: 50000
+                    minimum: 10
+                type:
+                    $ref: '#/components/schemas/VolumeType'
             title: ReplicaVolumeResponse
             required:
             - size
             - type
-            type: object
-            properties:
-                size:
-                    title: Size
-                    maximum: 50000.0
-                    minimum: 10.0
-                    type: integer
-                type:
-                    $ref: '#/components/schemas/VolumeType'
         ReplicasResponse:
-            title: ReplicasResponse
-            required:
-            - meta
-            - results
             type: object
             properties:
                 meta:
                     $ref: '#/components/schemas/MetaResponse'
                 results:
-                    title: Results
                     type: array
                     items:
                         $ref: '#/components/schemas/ReplicaDetailResponse'
-        RestoreCreateRequest:
-            title: RestoreCreateRequest
+                    title: Results
+            title: ReplicasResponse
             required:
-            - backup_id
+            - meta
+            - results
+        RestoreCreateRequest:
             type: object
             properties:
                 backup_id:
-                    title: Backup Id
                     type: string
+                    title: Backup Id
                     format: uuid
-        RestoreResponse:
-            title: RestoreResponse
+            title: RestoreCreateRequest
             required:
-            - id
+            - backup_id
+        RestoreResponse:
             type: object
             properties:
                 id:
-                    title: Id
                     type: string
+                    title: Id
                     format: uuid
+            title: RestoreResponse
+            required:
+            - id
         UpgradeDetailResponse:
+            type: object
+            properties:
+                id:
+                    type: string
+                    title: Id
+                    format: uuid
+                instance_id:
+                    type: string
+                    title: Instance Id
+                    format: uuid
+                generation:
+                    $ref: '#/components/schemas/InstanceGeneration'
+                status:
+                    $ref: '#/components/schemas/UpgradeStatus'
+                started_at:
+                    type: string
+                    title: Started At
+                    format: date-time
+                finished_at:
+                    type: string
+                    title: Finished At
+                    format: date-time
+                created_at:
+                    type: string
+                    title: Created At
+                    format: date-time
+                updated_at:
+                    type: string
+                    title: Updated At
+                    format: date-time
             title: UpgradeDetailResponse
             required:
             - id
@@ -3063,46 +3007,16 @@ components:
             - generation
             - status
             - created_at
+        UpgradeResponse:
             type: object
             properties:
                 id:
+                    type: string
                     title: Id
-                    type: string
                     format: uuid
-                instance_id:
-                    title: Instance Id
-                    type: string
-                    format: uuid
-                generation:
-                    $ref: '#/components/schemas/InstanceGeneration'
-                status:
-                    $ref: '#/components/schemas/UpgradeStatus'
-                started_at:
-                    title: Started At
-                    type: string
-                    format: date-time
-                finished_at:
-                    title: Finished At
-                    type: string
-                    format: date-time
-                created_at:
-                    title: Created At
-                    type: string
-                    format: date-time
-                updated_at:
-                    title: Updated At
-                    type: string
-                    format: date-time
-        UpgradeResponse:
             title: UpgradeResponse
             required:
             - id
-            type: object
-            properties:
-                id:
-                    title: Id
-                    type: string
-                    format: uuid
         UpgradeStatus:
             title: UpgradeStatus
             enum:
@@ -3112,25 +3026,20 @@ components:
             - ERROR
             description: An enumeration.
         UpgradesResponse:
-            title: UpgradesResponse
-            required:
-            - meta
-            - results
             type: object
             properties:
                 meta:
                     $ref: '#/components/schemas/MetaResponse'
                 results:
-                    title: Results
                     type: array
                     items:
                         $ref: '#/components/schemas/UpgradeDetailResponse'
-        ValidationError:
-            title: ValidationError
+                    title: Results
+            title: UpgradesResponse
             required:
-            - loc
-            - msg
-            - type
+            - meta
+            - results
+        ValidationError:
             type: object
             properties:
                 message:
@@ -3139,6 +3048,11 @@ components:
                 slug:
                     title: Slug
                     type: string
+            title: ValidationError
+            required:
+            - loc
+            - msg
+            - type
             example:
                 message: Unauthorized
                 slug: Unauthorized
@@ -3152,12 +3066,10 @@ components:
 tags:
 -   name: healthcheck
     description: Health check.
-    x-mgc-hidden: true
 -   name: backups
     description: Database backups management.
 -   name: datastores
     description: Datastores available for database instances.
-    x-mgc-hidden: true
 -   name: engines
     description: Engines available for database instances.
 -   name: instances

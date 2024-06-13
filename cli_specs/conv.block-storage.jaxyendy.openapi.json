@@ -1,0 +1,3745 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Block Storage API Product Documentation - v1",
+    "description": "Block Storage API Product Documentation",
+    "contact": {
+      "name": "IaaS Products",
+      "url": "https://github.com/luizalabs",
+      "email": "kassio.junqueira@luizalabs.com"
+    },
+    "version": "v1"
+  },
+  "paths": {
+    "/v1/backups": {
+      "get": {
+        "tags": [
+          "backups"
+        ],
+        "summary": "List backups in the current tenant",
+        "description": "Retrieve a list of Backups for the currently authenticated tenant.\n\n#### Notes\n- Use the **expand** argument to obtain additional details about the\n Volume used to create each Backup.",
+        "operationId": "list_backups_v1_backups_get",
+        "parameters": [
+          {
+            "name": "_limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "exclusiveMinimum": false,
+              "type": "integer",
+              "title": " Limit"
+            }
+          },
+          {
+            "name": "_offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "title": " Offset"
+            }
+          },
+          {
+            "name": "_sort",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": " Sort",
+              "pattern": "^(^[\\w-]+:(asc|desc)(,[\\w-]+:(asc|desc))*)?$"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BackupListResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 404 List Backups V1 Backups Get"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 409 List Backups V1 Backups Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 422 List Backups V1 Backups Get"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": true
+      },
+      "post": {
+        "tags": [
+          "backups"
+        ],
+        "summary": "Create a Backup",
+        "description": "Create a backup for the currently authenticated tenant.\n\nThe Backup can be used when it reaches the \"available\" state and the\n \"completed\" status.\n\n#### Rules\n- The Backup name must be unique; otherwise, the creation will be disallowed.\n- The Volume can be either in in-use or available states.\n- The Volume must not have an operation in execution.\n\n#### Notes\n- Use the **block-storage volume list** command to retrieve a list of all\n Volumes and obtain the ID of the Volume that will be used to create the\n Backup.",
+        "operationId": "create_backup_v1_backups_post",
+        "parameters": [
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateBackup"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IdResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 404 Create Backup V1 Backups Post"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 409 Create Backup V1 Backups Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 422 Create Backup V1 Backups Post"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": true
+      }
+    },
+    "/v1/backups/{id}": {
+      "get": {
+        "tags": [
+          "backups"
+        ],
+        "summary": "Get a Backup",
+        "description": "Retrieve details of a Backup for the currently authenticated tenant.\n\n#### Notes\n- Use the **expand** argument to obtain additional details about the Volume\n used to create the Backup.\n- Utilize the **block-storage backups list** command to retrieve a list of\n all Backups and obtain the ID of the Backup for which you want to retrieve\n details.",
+        "operationId": "get_backup_v1_backups__id__get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Id",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BackupResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 404 Get Backup V1 Backups  Id  Get"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 409 Get Backup V1 Backups  Id  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 422 Get Backup V1 Backups  Id  Get"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": true
+      },
+      "delete": {
+        "tags": [
+          "backups"
+        ],
+        "summary": "Delete a Backup",
+        "description": "Delete a Backup for the currently authenticated tenant.\n\n#### Rules\n- The Backup's status must be \"completed\".\n- The Backup's state must be \"available\".\n\n\n#### Notes\n- Utilize the **block-storage backups** list command to retrieve a list of\n all Backups and obtain the ID of the Backup you wish to delete.",
+        "operationId": "delete_backup_v1_backups__id__delete",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Id",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 404 Delete Backup V1 Backups  Id  Delete"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 409 Delete Backup V1 Backups  Id  Delete"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 422 Delete Backup V1 Backups  Id  Delete"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": true
+      },
+      "patch": {
+        "tags": [
+          "backups"
+        ],
+        "summary": "Patch a Backup",
+        "description": "Patches a Backup for the currently authenticated tenant.\n\n#### Rules\n- The Backup name must be unique; otherwise, renaming will not be allowed.\n- The Backup's state must be available.\n\n#### Notes\n- Utilize the **block-storage backups list** command to retrieve a list of\n all Backups and obtain the ID of the Backup you wish to rename.",
+        "operationId": "patch_backup_v1_backups__id__patch",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Id",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PatchResourceRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 404 Patch Backup V1 Backups  Id  Patch"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 409 Patch Backup V1 Backups  Id  Patch"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 422 Patch Backup V1 Backups  Id  Patch"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": true
+      }
+    },
+    "/v1/snapshots": {
+      "get": {
+        "tags": [
+          "snapshots"
+        ],
+        "summary": "List snapshots in the current tenant",
+        "description": "Retrieve a list of Snapshots for the currently authenticated tenant.\n\n#### Notes\n- Use the expand argument to obtain additional details about the Volume used to\n create each Snapshot.",
+        "operationId": "list_snapshot_v1_snapshots_get",
+        "parameters": [
+          {
+            "name": "expand",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "title": "ExpandSnapshots",
+                "enum": [
+                  "volume"
+                ]
+              },
+              "title": "Expand"
+            }
+          },
+          {
+            "name": "_limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "exclusiveMinimum": false,
+              "type": "integer",
+              "title": " Limit"
+            }
+          },
+          {
+            "name": "_offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "title": " Offset"
+            }
+          },
+          {
+            "name": "_sort",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": " Sort",
+              "pattern": "^(^[\\w-]+:(asc|desc)(,[\\w-]+:(asc|desc))*)?$"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SnapshotListResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 404 List Snapshot V1 Snapshots Get"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 409 List Snapshot V1 Snapshots Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 422 List Snapshot V1 Snapshots Get"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": true
+      },
+      "post": {
+        "tags": [
+          "snapshots"
+        ],
+        "summary": "Create a snapshot",
+        "description": "Create a Snapshot for the currently authenticated tenant.\n\nThe Snapshot can be used when it reaches the \"available\" state and the\n \"completed\" status.\n\n#### Rules\n- The Snapshot name must be unique; otherwise, the creation will be disallowed.\n- Creating Snapshots from restored Volumes may lead to future conflicts as\n you can't delete a Volume with an Snapshot and can't delete a Snapshot with a\n restored Volume, so we recommend avoiding it.\n\n#### Notes\n- Use the **block-storage volume list** command to retrieve a list of all\n Volumes and obtain the ID of the Volume that will be used to create the\n Snapshot.",
+        "operationId": "create_snapshot_v1_snapshots_post",
+        "parameters": [
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SnapshotCreationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IdResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 404 Create Snapshot V1 Snapshots Post"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 409 Create Snapshot V1 Snapshots Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 422 Create Snapshot V1 Snapshots Post"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": true
+      }
+    },
+    "/v1/snapshots/{id}": {
+      "get": {
+        "tags": [
+          "snapshots"
+        ],
+        "summary": "Retrieve the details of a snapshot",
+        "description": "Retrieve details of a Snapshot for the currently authenticated tenant.\n\n#### Notes\n- Use the **expand** argument to obtain additional details about the Volume\n used to create the Snapshot.\n- Utilize the **block-storage snapshots list** command to retrieve a list of\n all Snapshots and obtain the ID of the Snapshot for which you want to retrieve\n details.",
+        "operationId": "get_snapshot_v1_snapshots__id__get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Id",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "title": "ExpandSnapshots",
+                "enum": [
+                  "volume"
+                ]
+              },
+              "title": "Expand"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SnapshotResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 404 Get Snapshot V1 Snapshots  Id  Get"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 409 Get Snapshot V1 Snapshots  Id  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 422 Get Snapshot V1 Snapshots  Id  Get"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": true
+      },
+      "delete": {
+        "tags": [
+          "snapshots"
+        ],
+        "summary": "Delete a snapshot",
+        "description": "Delete a Snapshot for the currently authenticated tenant.\n\n#### Rules\n- The Snapshot's status must be \"completed\".\n- The Snapshot's state must be \"available\".\n- Deleting a Snapshot that has been restored is not possible. If necessary,\n delete the restored Volume first and then proceed to delete the Snapshot.\n\n#### Notes\n- Utilize the **block-storage snapshots** list command to retrieve a list of\n all Snapshots and obtain the ID of the Snapshot you wish to delete.\n- If needed, you can use the **block-storage volume list** command to retrieve\n a list of all Volumes and obtain the ID of the restored Volume.",
+        "operationId": "delete_snapshot_v1_snapshots__id__delete",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Id",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 404 Delete Snapshot V1 Snapshots  Id  Delete"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 409 Delete Snapshot V1 Snapshots  Id  Delete"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 422 Delete Snapshot V1 Snapshots  Id  Delete"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": true
+      }
+    },
+    "/v1/snapshots/{id}/rename": {
+      "patch": {
+        "tags": [
+          "snapshots"
+        ],
+        "summary": "Rename a snapshot",
+        "description": "Rename a Snapshot for the currently authenticated tenant.\n\n#### Rules\n- The Snapshot name must be unique; otherwise, renaming will not be allowed.\n\n#### Notes\n- Utilize the **block-storage snapshots list** command to retrieve a list of\n all Snapshots and obtain the ID of the Snapshot you wish to rename.",
+        "operationId": "rename_snapshot_v1_snapshots__id__rename_patch",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Id",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Name"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 404 Rename Snapshot V1 Snapshots  Id  Rename Patch"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 409 Rename Snapshot V1 Snapshots  Id  Rename Patch"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 422 Rename Snapshot V1 Snapshots  Id  Rename Patch"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": true
+      }
+    },
+    "/v1/snapshots/{snapshot_id}": {
+      "post": {
+        "tags": [
+          "snapshots"
+        ],
+        "summary": "Restore a snapshot to a new volume",
+        "description": "Restore a Snapshot on a new Volume to the currently\n authenticated tenant.\n\nThe restored Volume can be used when it reaches the \"available\" state and the\n \"completed\" status.\n\n#### Notes\n- To obtain the ID of the Snapshot you wish to restore, you can use the\n **block-storage snapshots list** command to list all Snapshots.\n- Check the state and status of your Volume using the\n **block-storage volume get --id [uuid]** command.",
+        "operationId": "restore_snapshot_v1_snapshots__snapshot_id__post",
+        "parameters": [
+          {
+            "name": "snapshot_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Snapshot Id",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SnapshotRestoreRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IdResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 404 Restore Snapshot V1 Snapshots  Snapshot Id  Post"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 409 Restore Snapshot V1 Snapshots  Snapshot Id  Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 422 Restore Snapshot V1 Snapshots  Snapshot Id  Post"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": true
+      }
+    },
+    "/v1/volume-types": {
+      "get": {
+        "tags": [
+          "volume-types"
+        ],
+        "summary": "List volume types",
+        "description": "List Volume Types allowed in the current region.\n\n#### Notes\n\n- Volume types are managed internally. If you wish to use a Volume Type that\n is not yet available, please contact our support team for assistance.",
+        "operationId": "list_volume_types_v1_v1_volume_types_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericVolumeTypeList_VolumeTypeResponse_"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": true
+      }
+    },
+    "/v1/volumes": {
+      "get": {
+        "tags": [
+          "volumes"
+        ],
+        "summary": "List all Volumes",
+        "description": "Retrieve a list of Volumes for the currently authenticated tenant.\n\n#### Notes\n- Use the expand argument to obtain additional details about the Volume Type.",
+        "operationId": "list_volume_v1_v1_volumes_get",
+        "parameters": [
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "You can get more detailed info about: ['volume_type', 'attachment']",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "title": "Expand",
+              "description": "You can get more detailed info about: ['volume_type', 'attachment']"
+            }
+          },
+          {
+            "name": "_limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "exclusiveMinimum": false,
+              "type": "integer",
+              "title": " Limit"
+            }
+          },
+          {
+            "name": "_offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "title": " Offset"
+            }
+          },
+          {
+            "name": "_sort",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": " Sort",
+              "pattern": "^(^[\\w-]+:(asc|desc)(,[\\w-]+:(asc|desc))*)?$"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VolumesResponseV1"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 404 List Volume V1 V1 Volumes Get"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 409 List Volume V1 V1 Volumes Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": true
+      },
+      "post": {
+        "tags": [
+          "volumes"
+        ],
+        "summary": "Create a new Volume",
+        "description": "Create a Volume for the currently authenticated tenant.\n\nThe Volume can be used when it reaches the \"available\" state and \"completed\"\n status.\n\n#### Rules\n- The Volume name must be unique; otherwise, the creation will be disallowed.\n- The Volume type must be available to use.\n\n#### Notes\n- Utilize the **block-storage volume-types list** command to retrieve a list\n of all available Volume Types.\n- Verify the state and status of your Volume using the\n**block-storage volume get --id [uuid]** command\".",
+        "operationId": "create_volume_v1_v1_volumes_post",
+        "parameters": [
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VolumeCreateRequestV1"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IdResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 404 Create Volume V1 V1 Volumes Post"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 409 Create Volume V1 V1 Volumes Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 422 Create Volume V1 V1 Volumes Post"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": true
+      }
+    },
+    "/v1/volumes/{id}": {
+      "get": {
+        "tags": [
+          "volumes"
+        ],
+        "summary": "Retrieve the details of a volume",
+        "description": "Retrieve details of a Volume for the currently authenticated tenant.\n\n#### Notes\n- Use the **expand** argument to obtain additional details about the Volume\n Type.\n- Utilize the **block-storage volume list** command to retrieve a list of all\n Volumes and obtain the ID of the Volume for which you want to retrieve\n details.",
+        "operationId": "get_volume_v1_v1_volumes__id__get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Id",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "You can get more detailed info about: ['volume_type', 'attachment']",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "title": "Expand",
+              "description": "You can get more detailed info about: ['volume_type', 'attachment']"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VolumeResponseV1"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 404 Get Volume V1 V1 Volumes  Id  Get"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 409 Get Volume V1 V1 Volumes  Id  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": true
+      },
+      "delete": {
+        "tags": [
+          "volumes"
+        ],
+        "summary": "Delete a Volume",
+        "description": "Delete a Volume for the currently authenticated tenant.\n\n#### Rules\n- The Volume cannot be attached to a Virtual Machine, i.e., its state cannot\n be \"in-use\". If necessary, detach the Volume from the Virtual Machine before\n proceeding with deletion.\n- The Volume must not have any snapshots. If necessary, delete the Volume's\n  snapshots before proceeding with deletion.\n- The Volume must have the status \"completed\", i.e., must not have any\n  actions in progress.\n\n\n#### Notes\n- Check the state and status of your Volume using the\n**block-storage volume get --id [uuid]** command\".",
+        "operationId": "delete_volume_v1_v1_volumes__id__delete",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Id",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 404 Delete Volume V1 V1 Volumes  Id  Delete"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 409 Delete Volume V1 V1 Volumes  Id  Delete"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 422 Delete Volume V1 V1 Volumes  Id  Delete"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": true
+      }
+    },
+    "/v1/volumes/{id}/attach/{virtual_machine_id}": {
+      "post": {
+        "tags": [
+          "volumes"
+        ],
+        "summary": "Attach a Volume",
+        "description": "Attach a Volume to a Virtual Machine instance for the currently\n authenticated tenant.\n\nThe Volume attachment will be completed when the Volume status returns to\n\"completed\", and the state becomes \"in-use\".\n\n#### Rules\n- The Volume and the Virtual Machine must belong to the same tenant.\n- Both the Volume and Virtual Machine must have the status \"completed\".\n- The Volume's state must be \"available\".\n- The Virtual Machine's state must be \"stopped\" or \"running\".\n\n#### Notes\n- Verify the state and status of your Volume using the\n **block-storage volume get --id [uuid]** command.\n- Verify the state and status of your Virtual Machine using the\n**virtual-machine instances get --id [uuid]** command\".",
+        "operationId": "attach_volume_v1_v1_volumes__id__attach__virtual_machine_id__post",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Id",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "virtual_machine_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Virtual Machine Id",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 404 Attach Volume V1 V1 Volumes  Id  Attach  Virtual Machine Id  Post"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 409 Attach Volume V1 V1 Volumes  Id  Attach  Virtual Machine Id  Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 422 Attach Volume V1 V1 Volumes  Id  Attach  Virtual Machine Id  Post"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": true
+      }
+    },
+    "/v1/volumes/{id}/detach": {
+      "post": {
+        "tags": [
+          "volumes"
+        ],
+        "summary": "Detach a Volume",
+        "description": "Detach a Volume from a Virtual Machine instance for the\n currently authenticated tenant.\n\nThe Volume detachment will be completed when the Volume state returns to\n \"available,\" and the status becomes \"completed\".\n\n#### Rules\n- The Volume and the Virtual Machine must belong to the same tenant.\n- Both the Volume and Virtual Machine must have the status \"completed\".\n- The Volume's state must be \"in-use\".\n- The Virtual Machine's state must be \"stopped\".\n\n#### Notes\n- Verify the state and status of your Volume using the\n **block-storage volume get --id [uuid]** command.\n- Verify the state and status of your Virtual Machine using the\n **virtual-machine instances get --id [uuid]** command.\n- Ensure that any file systems on the device within your operating system are\n unmounted before detaching the Volume.\n\n#### Troubleshooting\n- A failure during detachment can result in the Volume becoming stuck in the\n busy state. If this occurs, detachment may be delayed indefinitely until you\n unmount the Volume, force detachment, reboot the instance, or perform all\n three.",
+        "operationId": "detach_volume_v1_v1_volumes__id__detach_post",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Id",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 404 Detach Volume V1 V1 Volumes  Id  Detach Post"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 409 Detach Volume V1 V1 Volumes  Id  Detach Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 422 Detach Volume V1 V1 Volumes  Id  Detach Post"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": true
+      }
+    },
+    "/v1/volumes/{id}/extend": {
+      "post": {
+        "tags": [
+          "volumes"
+        ],
+        "summary": "Extend a Volume",
+        "description": "Extend the size of an existing Volume for the currently\n authenticated tenant.\n\nThe Volume extension will be completed when the Volume status returns to\n \"completed\".\n\n#### Rules\n- The Volume state must be \"available\".\n- The Volume status must be \"completed\" or \"extend_error\".\n- The new Volume size must be larger than the current size.\n\n#### Notes\n- Utilize the block-storage volume list command to retrieve a list of all\n Volumes and obtain the ID of the Volume you want to extend.\n- Storage quotas are managed internally. If the operation fails due to quota\n restrictions, please contact our support team for assistance.",
+        "operationId": "extend_volume_v1_volumes__id__extend_post",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Id",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VolumeExtendRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 404 Extend Volume V1 Volumes  Id  Extend Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 422 Extend Volume V1 Volumes  Id  Extend Post"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": true
+      }
+    },
+    "/v1/volumes/{id}/rename": {
+      "patch": {
+        "tags": [
+          "volumes"
+        ],
+        "summary": "Rename a volume",
+        "description": "Rename a Volume for the currently authenticated tenant.\n\n#### Rules\n- The Volume name must be unique; otherwise, renaming will not be allowed.\n\n#### Notes\n- Utilize the **block-storage volume list** command to retrieve a list of all\n Volumes and obtain the ID of the Volume you wish to rename.",
+        "operationId": "rename_volume_v1_v1_volumes__id__rename_patch",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Id",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RenameVolumeRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 404 Rename Volume V1 V1 Volumes  Id  Rename Patch"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 409 Rename Volume V1 V1 Volumes  Id  Rename Patch"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 422 Rename Volume V1 V1 Volumes  Id  Rename Patch"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": true
+      }
+    },
+    "/v1/volumes/{id}/retype": {
+      "post": {
+        "tags": [
+          "volumes"
+        ],
+        "summary": "Retype a Volume",
+        "description": "Change the Volume Type of an existing Volume for the currently\n authenticated tenant.\n\nThe Volume retype will be completed when the Volume status returns to\n \"completed\".\n\n#### Rules\n- The Volume state must be \"available\".\n- The Volume status must be \"completed\" or \"retype_error\".\n- The new Volume Type must belong to the same region as the Volume.\n\n#### Notes\n- Utilize the **block-storage volume list** command to retrieve a list of all\n Volumes and obtain the ID of the Volume you want to retype.\n- Utilize the **block-storage volume-types list** command to retrieve a list of\n all Volume Types and obtain the ID of the Volume Type you want to use.",
+        "operationId": "retype_volume_v1_volumes__id__retype_post",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Id",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VolumeRetypeRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 404 Retype Volume V1 Volumes  Id  Retype Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 422 Retype Volume V1 Volumes  Id  Retype Post"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": true
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AttachmentMachine": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/InstanceStatus"
+              }
+            ],
+            "title": "Status"
+          },
+          "state": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/InstanceState"
+              }
+            ],
+            "title": "State"
+          },
+          "created_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "string",
+                "format": "date-time"
+              }
+            ],
+            "title": "Created At",
+            "example": "2022-01-01T00:00:10Z"
+          },
+          "updated_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "string",
+                "format": "date-time"
+              }
+            ],
+            "title": "Updated At",
+            "example": "2022-01-01T00:00:10Z"
+          }
+        },
+        "title": "AttachmentMachine",
+        "required": [
+          "id",
+          "name",
+          "status",
+          "state",
+          "created_at",
+          "updated_at"
+        ],
+        "example": {
+          "created_at": "2022-01-01T00:00:10Z",
+          "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+          "name": "machine name",
+          "state": "running",
+          "status": "completed",
+          "updated_at": "2022-01-01T00:00:10Z"
+        }
+      },
+      "AttachmentResponse": {
+        "type": "object",
+        "properties": {
+          "instance": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AttachmentMachine"
+              },
+              {
+                "$ref": "#/components/schemas/IdRequest"
+              }
+            ],
+            "title": "Instance"
+          },
+          "attached_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "string",
+                "format": "date-time"
+              }
+            ],
+            "title": "Attached At",
+            "example": "2022-01-01T00:00:10Z"
+          },
+          "device": {
+            "anyOf": [
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Device",
+            "nullable": true
+          }
+        },
+        "title": "AttachmentResponse",
+        "required": [
+          "instance",
+          "attached_at"
+        ],
+        "example": {
+          "attached_at": "2022-01-01T00:00:10Z",
+          "device": "/dev/vdb",
+          "instance": {
+            "created_at": "2022-01-01T00:00:10Z",
+            "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+            "name": "machine name",
+            "state": "running",
+            "status": "completed",
+            "updated_at": "2022-01-01T00:00:10Z"
+          }
+        }
+      },
+      "BackupListResponse": {
+        "type": "object",
+        "properties": {
+          "backups": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "title": "Id"
+                },
+                "name": {
+                  "type": "string",
+                  "title": "Name"
+                },
+                "size": {
+                  "type": "integer",
+                  "title": "Size"
+                },
+                "description": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    }
+                  ],
+                  "title": "Description",
+                  "nullable": true
+                },
+                "state": {
+                  "type": "string",
+                  "title": "BackupState",
+                  "enum": [
+                    "new",
+                    "available",
+                    "deleted"
+                  ]
+                },
+                "status": {
+                  "type": "string",
+                  "title": "BackupStatus",
+                  "enum": [
+                    "completed",
+                    "snapshot_creating",
+                    "snapshot_creating_error",
+                    "creating_pending",
+                    "creating",
+                    "creating_error",
+                    "snapshot_deleting",
+                    "snapshot_deleting_error",
+                    "deleting_pending",
+                    "deleting_error",
+                    "deleting",
+                    "restoring_pending",
+                    "restoring",
+                    "restoring_error",
+                    "provisioning"
+                  ]
+                },
+                "created_at": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  ],
+                  "title": "Created At",
+                  "example": "2022-01-01T00:00:10Z"
+                },
+                "updated_at": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  ],
+                  "title": "Updated At",
+                  "example": "2022-01-01T00:00:10Z"
+                },
+                "volume": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "title": "Id",
+                      "minLength": 1
+                    }
+                  },
+                  "title": "IdResponse",
+                  "required": [
+                    "id"
+                  ],
+                  "example": {
+                    "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+                  }
+                },
+                "type": {
+                  "type": "string",
+                  "title": "BackupType",
+                  "enum": [
+                    "full",
+                    "incremental"
+                  ]
+                },
+                "source_backup": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/IdResponse"
+                    }
+                  ],
+                  "nullable": true
+                }
+              },
+              "title": "BackupResponse",
+              "required": [
+                "id",
+                "name",
+                "size",
+                "description",
+                "state",
+                "status",
+                "created_at",
+                "updated_at",
+                "volume",
+                "type",
+                "source_backup"
+              ],
+              "example": {
+                "created_at": "2022-01-01T00:00:10Z",
+                "description": "my backup for testing",
+                "id": "c8782dd3-2fee-432e-ab27-576d1513cffc",
+                "name": "My backup",
+                "size": 10,
+                "source_backup": {
+                  "id": "5ca8cbca-45f5-46bd-a1ce-feda3e62f45d"
+                },
+                "state": "available",
+                "status": "completed",
+                "type": "incremental",
+                "updated_at": "2022-01-01T00:00:10Z",
+                "volume": {
+                  "id": "56a9dfa4-80ac-4f44-ae42-0c3cd62ff9e2"
+                }
+              }
+            },
+            "title": "Backups"
+          }
+        },
+        "title": "BackupListResponse",
+        "required": [
+          "backups"
+        ],
+        "example": {
+          "backups": [
+            {
+              "created_at": "2022-01-01T00:00:10Z",
+              "description": "my backup for testing",
+              "id": "3a347062-82d0-4553-98de-bdccd7cea0bd",
+              "name": "My backup",
+              "size": 10,
+              "source_backup": {
+                "id": "9e254e5c-fff2-4118-a917-674c09640beb"
+              },
+              "state": "available",
+              "status": "completed",
+              "type": "incremental",
+              "updated_at": "2022-01-01T00:00:10Z",
+              "volume": {
+                "id": "655b7fc5-508f-4470-822e-f51ab259fc2c"
+              }
+            }
+          ]
+        }
+      },
+      "BackupResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "size": {
+            "type": "integer",
+            "title": "Size"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Description",
+            "nullable": true
+          },
+          "state": {
+            "type": "string",
+            "title": "BackupState",
+            "enum": [
+              "new",
+              "available",
+              "deleted"
+            ]
+          },
+          "status": {
+            "type": "string",
+            "title": "BackupStatus",
+            "enum": [
+              "completed",
+              "snapshot_creating",
+              "snapshot_creating_error",
+              "creating_pending",
+              "creating",
+              "creating_error",
+              "snapshot_deleting",
+              "snapshot_deleting_error",
+              "deleting_pending",
+              "deleting_error",
+              "deleting",
+              "restoring_pending",
+              "restoring",
+              "restoring_error",
+              "provisioning"
+            ]
+          },
+          "created_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "string",
+                "format": "date-time"
+              }
+            ],
+            "title": "Created At",
+            "example": "2022-01-01T00:00:10Z"
+          },
+          "updated_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "string",
+                "format": "date-time"
+              }
+            ],
+            "title": "Updated At",
+            "example": "2022-01-01T00:00:10Z"
+          },
+          "volume": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "title": "Id",
+                "minLength": 1
+              }
+            },
+            "title": "IdResponse",
+            "required": [
+              "id"
+            ],
+            "example": {
+              "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+            }
+          },
+          "type": {
+            "type": "string",
+            "title": "BackupType",
+            "enum": [
+              "full",
+              "incremental"
+            ]
+          },
+          "source_backup": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/IdResponse"
+              }
+            ],
+            "nullable": true
+          }
+        },
+        "title": "BackupResponse",
+        "required": [
+          "id",
+          "name",
+          "size",
+          "description",
+          "state",
+          "status",
+          "created_at",
+          "updated_at",
+          "volume",
+          "type",
+          "source_backup"
+        ],
+        "example": {
+          "created_at": "2022-01-01T00:00:10Z",
+          "description": "my backup for testing",
+          "id": "c8782dd3-2fee-432e-ab27-576d1513cffc",
+          "name": "My backup",
+          "size": 10,
+          "source_backup": {
+            "id": "5ca8cbca-45f5-46bd-a1ce-feda3e62f45d"
+          },
+          "state": "available",
+          "status": "completed",
+          "type": "incremental",
+          "updated_at": "2022-01-01T00:00:10Z",
+          "volume": {
+            "id": "56a9dfa4-80ac-4f44-ae42-0c3cd62ff9e2"
+          }
+        }
+      },
+      "BackupState": {
+        "type": "string",
+        "title": "BackupState",
+        "enum": [
+          "new",
+          "available",
+          "deleted"
+        ]
+      },
+      "BackupStatus": {
+        "type": "string",
+        "title": "BackupStatus",
+        "enum": [
+          "completed",
+          "snapshot_creating",
+          "snapshot_creating_error",
+          "creating_pending",
+          "creating",
+          "creating_error",
+          "snapshot_deleting",
+          "snapshot_deleting_error",
+          "deleting_pending",
+          "deleting_error",
+          "deleting",
+          "restoring_pending",
+          "restoring",
+          "restoring_error",
+          "provisioning"
+        ]
+      },
+      "BackupType": {
+        "type": "string",
+        "title": "BackupType",
+        "enum": [
+          "full",
+          "incremental"
+        ]
+      },
+      "CreateBackup": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Description",
+            "nullable": true
+          },
+          "volume": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/IdRequest"
+              },
+              {
+                "$ref": "#/components/schemas/Name"
+              }
+            ],
+            "title": "Volume"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "type": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BackupType"
+              }
+            ]
+          }
+        },
+        "title": "CreateBackup",
+        "required": [
+          "description",
+          "volume",
+          "name"
+        ],
+        "example": {
+          "description": "my-backup",
+          "name": "backup name",
+          "type": "full",
+          "volume": {
+            "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+          }
+        }
+      },
+      "DiskType": {
+        "type": "string",
+        "title": "DiskType",
+        "enum": [
+          "nvme",
+          "hdd"
+        ]
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "slug": {
+            "type": "string",
+            "title": "Slug"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          },
+          "detail": {
+            "type": "object",
+            "title": "Detail"
+          }
+        },
+        "title": "ErrorResponse",
+        "required": [
+          "slug",
+          "message",
+          "detail"
+        ],
+        "example": {
+          "detail": {},
+          "message": "Something went wrong",
+          "slug": "generic"
+        }
+      },
+      "ExpandSnapshots": {
+        "type": "string",
+        "title": "ExpandSnapshots",
+        "enum": [
+          "volume"
+        ]
+      },
+      "GenericVolumeTypeList_VolumeTypeResponse_": {
+        "type": "object",
+        "properties": {
+          "types": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "iops": {
+                  "type": "object",
+                  "properties": {
+                    "read": {
+                      "type": "integer",
+                      "title": "Read"
+                    },
+                    "write": {
+                      "type": "integer",
+                      "title": "Write"
+                    }
+                  },
+                  "title": "VolumeTypeSpec",
+                  "required": [
+                    "read",
+                    "write"
+                  ]
+                },
+                "id": {
+                  "type": "string",
+                  "title": "Id"
+                },
+                "name": {
+                  "type": "string",
+                  "title": "Name"
+                },
+                "disk_type": {
+                  "type": "string",
+                  "title": "DiskType",
+                  "enum": [
+                    "nvme",
+                    "hdd"
+                  ]
+                },
+                "status": {
+                  "type": "string",
+                  "title": "VolumeTypeStatus",
+                  "enum": [
+                    "active",
+                    "deprecated",
+                    "deleted"
+                  ]
+                }
+              },
+              "title": "VolumeTypeResponse",
+              "required": [
+                "iops",
+                "id",
+                "name",
+                "disk_type",
+                "status"
+              ],
+              "example": {
+                "disk_type": "nvme",
+                "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+                "iops": {
+                  "read": 1000,
+                  "write": 1000
+                },
+                "name": "my_volume_type",
+                "status": "active"
+              }
+            },
+            "title": "Types"
+          }
+        },
+        "title": "GenericVolumeTypeList[VolumeTypeResponse]",
+        "required": [
+          "types"
+        ],
+        "example": {
+          "types": [
+            {
+              "disk_type": "nvme",
+              "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+              "iops": {
+                "read": 1000,
+                "write": 1000
+              },
+              "name": "my_volume_type",
+              "status": "active"
+            }
+          ]
+        }
+      },
+      "HTTPValidationError": {
+        "type": "object",
+        "properties": {
+          "detail": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "loc": {
+                  "type": "array",
+                  "items": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "integer"
+                      }
+                    ]
+                  },
+                  "title": "Location"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "Message"
+                },
+                "type": {
+                  "type": "string",
+                  "title": "Error Type"
+                }
+              },
+              "title": "ValidationError",
+              "required": [
+                "loc",
+                "msg",
+                "type"
+              ]
+            },
+            "title": "Detail"
+          }
+        },
+        "title": "HTTPValidationError"
+      },
+      "IdRequest": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "minLength": 1
+          }
+        },
+        "title": "IdRequest",
+        "required": [
+          "id"
+        ],
+        "example": {
+          "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+        }
+      },
+      "IdResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "minLength": 1
+          }
+        },
+        "title": "IdResponse",
+        "required": [
+          "id"
+        ],
+        "example": {
+          "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+        }
+      },
+      "InstanceState": {
+        "type": "string",
+        "title": "InstanceState",
+        "enum": [
+          "new",
+          "running",
+          "stopped",
+          "suspended",
+          "deleted"
+        ]
+      },
+      "InstanceStatus": {
+        "type": "string",
+        "title": "InstanceStatus",
+        "enum": [
+          "provisioning",
+          "creating",
+          "creating_error",
+          "creating_error_quota",
+          "completed",
+          "retyping_pending",
+          "retyping",
+          "retyping_confirmed",
+          "retyping_error",
+          "retyping_error_quota",
+          "stopping_pending",
+          "stopping",
+          "suspending_pending",
+          "suspending",
+          "rebooting_pending",
+          "rebooting",
+          "starting_pending",
+          "starting",
+          "deleting_pending",
+          "deleting",
+          "deleting_error",
+          "deleted"
+        ]
+      },
+      "Name": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "maxLength": 255,
+            "minLength": 1
+          }
+        },
+        "title": "Name",
+        "required": [
+          "name"
+        ],
+        "example": {
+          "name": "some_resource_name"
+        }
+      },
+      "PatchResourceRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 255,
+                "minLength": 1
+              }
+            ],
+            "title": "Name",
+            "nullable": true
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 255,
+                "minLength": 1
+              }
+            ],
+            "title": "Description",
+            "nullable": true
+          }
+        },
+        "title": "PatchResourceRequest",
+        "example": {
+          "description": "new description to my resource",
+          "name": "new name to my resource"
+        }
+      },
+      "RenameVolumeRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "maxLength": 255,
+            "minLength": 1
+          }
+        },
+        "title": "RenameVolumeRequest",
+        "required": [
+          "name"
+        ],
+        "example": {
+          "name": "volume name"
+        }
+      },
+      "SnapshotCreationRequest": {
+        "type": "object",
+        "properties": {
+          "volume": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/IdRequest"
+              },
+              {
+                "$ref": "#/components/schemas/Name"
+              }
+            ],
+            "title": "Volume"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Description",
+            "nullable": true
+          }
+        },
+        "title": "SnapshotCreationRequest",
+        "required": [
+          "volume",
+          "name",
+          "description"
+        ],
+        "example": {
+          "description": "my-snapshot",
+          "name": "snapshot name",
+          "volume": {
+            "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+          }
+        }
+      },
+      "SnapshotListResponse": {
+        "type": "object",
+        "properties": {
+          "snapshots": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "title": "Id"
+                },
+                "name": {
+                  "type": "string",
+                  "title": "Name"
+                },
+                "size": {
+                  "type": "integer",
+                  "title": "Size"
+                },
+                "description": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    }
+                  ],
+                  "title": "Description",
+                  "nullable": true
+                },
+                "state": {
+                  "type": "string",
+                  "title": "SnapshotStateV1",
+                  "enum": [
+                    "new",
+                    "available",
+                    "deleted"
+                  ]
+                },
+                "status": {
+                  "type": "string",
+                  "title": "SnapshotStatusV1",
+                  "enum": [
+                    "provisioning",
+                    "creating",
+                    "creating_error",
+                    "creating_error_quota",
+                    "completed",
+                    "deleting",
+                    "deleted",
+                    "deleted_error"
+                  ]
+                },
+                "created_at": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  ],
+                  "title": "Created At",
+                  "example": "2022-01-01T00:00:10Z"
+                },
+                "updated_at": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  ],
+                  "title": "Updated At",
+                  "example": "2022-01-01T00:00:10Z"
+                },
+                "volume": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/IdResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/SnapshotVolume"
+                    }
+                  ],
+                  "title": "Volume"
+                }
+              },
+              "title": "SnapshotResponse",
+              "required": [
+                "id",
+                "name",
+                "size",
+                "description",
+                "state",
+                "status",
+                "created_at",
+                "updated_at",
+                "volume"
+              ],
+              "example": {
+                "created_at": "2022-01-01T00:00:10Z",
+                "description": "my snapshot for testing",
+                "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+                "name": "My snapshot",
+                "size": 10,
+                "state": "available",
+                "status": "completed",
+                "updated_at": "2022-01-01T00:00:10Z",
+                "volume": {
+                  "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+                }
+              }
+            },
+            "title": "Snapshots"
+          }
+        },
+        "title": "SnapshotListResponse",
+        "required": [
+          "snapshots"
+        ],
+        "example": {
+          "snapshots": [
+            {
+              "created_at": "2022-01-01T00:00:10Z",
+              "description": "my snapshot for testing",
+              "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+              "name": "My snapshot",
+              "size": 10,
+              "state": "available",
+              "status": "completed",
+              "updated_at": "2022-01-01T00:00:10Z",
+              "volume": {
+                "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+              }
+            }
+          ]
+        }
+      },
+      "SnapshotResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "size": {
+            "type": "integer",
+            "title": "Size"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Description",
+            "nullable": true
+          },
+          "state": {
+            "type": "string",
+            "title": "SnapshotStateV1",
+            "enum": [
+              "new",
+              "available",
+              "deleted"
+            ]
+          },
+          "status": {
+            "type": "string",
+            "title": "SnapshotStatusV1",
+            "enum": [
+              "provisioning",
+              "creating",
+              "creating_error",
+              "creating_error_quota",
+              "completed",
+              "deleting",
+              "deleted",
+              "deleted_error"
+            ]
+          },
+          "created_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "string",
+                "format": "date-time"
+              }
+            ],
+            "title": "Created At",
+            "example": "2022-01-01T00:00:10Z"
+          },
+          "updated_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "string",
+                "format": "date-time"
+              }
+            ],
+            "title": "Updated At",
+            "example": "2022-01-01T00:00:10Z"
+          },
+          "volume": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/IdResponse"
+              },
+              {
+                "$ref": "#/components/schemas/SnapshotVolume"
+              }
+            ],
+            "title": "Volume"
+          }
+        },
+        "title": "SnapshotResponse",
+        "required": [
+          "id",
+          "name",
+          "size",
+          "description",
+          "state",
+          "status",
+          "created_at",
+          "updated_at",
+          "volume"
+        ],
+        "example": {
+          "created_at": "2022-01-01T00:00:10Z",
+          "description": "my snapshot for testing",
+          "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+          "name": "My snapshot",
+          "size": 10,
+          "state": "available",
+          "status": "completed",
+          "updated_at": "2022-01-01T00:00:10Z",
+          "volume": {
+            "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+          }
+        }
+      },
+      "SnapshotRestoreRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          }
+        },
+        "title": "SnapshotRestoreRequest",
+        "required": [
+          "name"
+        ],
+        "example": {
+          "name": "My volume restored from snapshot"
+        }
+      },
+      "SnapshotStateV1": {
+        "type": "string",
+        "title": "SnapshotStateV1",
+        "enum": [
+          "new",
+          "available",
+          "deleted"
+        ]
+      },
+      "SnapshotStatusV1": {
+        "type": "string",
+        "title": "SnapshotStatusV1",
+        "enum": [
+          "provisioning",
+          "creating",
+          "creating_error",
+          "creating_error_quota",
+          "completed",
+          "deleting",
+          "deleted",
+          "deleted_error"
+        ]
+      },
+      "SnapshotVolume": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "size": {
+            "type": "integer",
+            "title": "Size"
+          },
+          "type": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "title": "Id"
+              },
+              "name": {
+                "type": "string",
+                "title": "Name"
+              }
+            },
+            "title": "SnapshotVolumeType",
+            "required": [
+              "id",
+              "name"
+            ],
+            "example": {
+              "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+              "name": "My volume type"
+            }
+          }
+        },
+        "title": "SnapshotVolume",
+        "required": [
+          "id",
+          "name",
+          "size",
+          "type"
+        ],
+        "example": {
+          "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+          "name": "My volume",
+          "size": 10,
+          "type": {
+            "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+            "name": "My volume type"
+          }
+        }
+      },
+      "SnapshotVolumeType": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          }
+        },
+        "title": "SnapshotVolumeType",
+        "required": [
+          "id",
+          "name"
+        ],
+        "example": {
+          "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+          "name": "My volume type"
+        }
+      },
+      "ValidationError": {
+        "type": "object",
+        "properties": {
+          "loc": {
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          }
+        },
+        "title": "ValidationError",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ]
+      },
+      "VolumeCreateRequestV1": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "maxLength": 255,
+            "minLength": 1
+          },
+          "size": {
+            "type": "integer",
+            "title": "Size",
+            "maximum": 2147483648,
+            "minimum": 10,
+            "description": "Gibibytes (GiB)"
+          },
+          "type": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/IdRequest"
+              },
+              {
+                "$ref": "#/components/schemas/Name"
+              }
+            ],
+            "title": "Type"
+          },
+          "backup": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/IdRequest"
+              },
+              {
+                "$ref": "#/components/schemas/Name"
+              }
+            ],
+            "title": "Backup",
+            "nullable": true
+          }
+        },
+        "title": "VolumeCreateRequestV1",
+        "required": [
+          "name",
+          "size",
+          "type"
+        ],
+        "example": {
+          "backup": {
+            "name": "my_backup_name"
+          },
+          "name": "volume name",
+          "size": 10,
+          "type": {
+            "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+          }
+        }
+      },
+      "VolumeExtendRequest": {
+        "type": "object",
+        "properties": {
+          "size": {
+            "exclusiveMinimum": false,
+            "type": "integer",
+            "title": "Size",
+            "description": "New volume size in GB"
+          }
+        },
+        "title": "VolumeExtendRequest",
+        "required": [
+          "size"
+        ],
+        "example": {
+          "size": 20
+        }
+      },
+      "VolumeResponseError": {
+        "type": "object",
+        "properties": {
+          "slug": {
+            "type": "string",
+            "title": "Slug"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          }
+        },
+        "title": "VolumeResponseError",
+        "required": [
+          "slug",
+          "message"
+        ],
+        "example": {
+          "message": "You have reached the limit of allowed disks. Please, remove unused disks or contact support to increase your quota.",
+          "slug": "creating_error_quota"
+        }
+      },
+      "VolumeResponseV1": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "size": {
+            "type": "integer",
+            "title": "Size"
+          },
+          "status": {
+            "type": "string",
+            "title": "VolumeStatusV1",
+            "enum": [
+              "provisioning",
+              "creating",
+              "creating_error",
+              "creating_error_quota",
+              "completed",
+              "extend_pending",
+              "extending",
+              "extend_error",
+              "extend_error_quota",
+              "attaching_pending",
+              "attaching_error",
+              "attaching",
+              "detaching_pending",
+              "detaching_error",
+              "detaching",
+              "retype_pending",
+              "retyping",
+              "retype_error",
+              "retype_error_quota",
+              "deleting_pending",
+              "deleting",
+              "deleted",
+              "deleted_error"
+            ]
+          },
+          "state": {
+            "type": "string",
+            "title": "VolumeStateV1",
+            "enum": [
+              "new",
+              "available",
+              "in-use",
+              "deleted",
+              "legacy"
+            ]
+          },
+          "created_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "string",
+                "format": "date-time"
+              }
+            ],
+            "title": "Created At",
+            "example": "2022-01-01T00:00:10Z"
+          },
+          "updated_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "string",
+                "format": "date-time"
+              }
+            ],
+            "title": "Updated At",
+            "example": "2022-01-01T00:00:10Z"
+          },
+          "type": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/IdRequest"
+              },
+              {
+                "$ref": "#/components/schemas/VolumeTypeResponse"
+              }
+            ],
+            "title": "Type"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/VolumeResponseError"
+              }
+            ],
+            "nullable": true
+          },
+          "attachment": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AttachmentResponse"
+              }
+            ],
+            "nullable": true
+          }
+        },
+        "title": "VolumeResponseV1",
+        "required": [
+          "id",
+          "name",
+          "size",
+          "status",
+          "state",
+          "created_at",
+          "updated_at",
+          "type"
+        ],
+        "example": {
+          "attachment": {
+            "attached_at": "2022-01-01T00:00:10Z",
+            "device": "/dev/vdb",
+            "instance": {
+              "created_at": "2022-01-01T00:00:10Z",
+              "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+              "name": "machine name",
+              "state": "running",
+              "status": "completed",
+              "updated_at": "2022-01-01T00:00:10Z"
+            }
+          },
+          "created_at": "2022-01-01T00:00:10Z",
+          "error": {
+            "message": "You have reached the limit of allowed disks. Please, remove unused disks or contact support to increase your quota.",
+            "slug": "creating_error_quota"
+          },
+          "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+          "name": "volume name",
+          "size": 10,
+          "state": "in-use",
+          "status": "completed",
+          "type": {
+            "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+          },
+          "updated_at": "2022-01-01T00:00:10Z"
+        }
+      },
+      "VolumeRetypeRequest": {
+        "type": "object",
+        "properties": {
+          "new_type": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/IdRequest"
+              },
+              {
+                "$ref": "#/components/schemas/Name"
+              }
+            ],
+            "title": "New Type"
+          }
+        },
+        "title": "VolumeRetypeRequest",
+        "required": [
+          "new_type"
+        ],
+        "example": {
+          "new_type": {
+            "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+          }
+        }
+      },
+      "VolumeStateV1": {
+        "type": "string",
+        "title": "VolumeStateV1",
+        "enum": [
+          "new",
+          "available",
+          "in-use",
+          "deleted",
+          "legacy"
+        ]
+      },
+      "VolumeStatusV1": {
+        "type": "string",
+        "title": "VolumeStatusV1",
+        "enum": [
+          "provisioning",
+          "creating",
+          "creating_error",
+          "creating_error_quota",
+          "completed",
+          "extend_pending",
+          "extending",
+          "extend_error",
+          "extend_error_quota",
+          "attaching_pending",
+          "attaching_error",
+          "attaching",
+          "detaching_pending",
+          "detaching_error",
+          "detaching",
+          "retype_pending",
+          "retyping",
+          "retype_error",
+          "retype_error_quota",
+          "deleting_pending",
+          "deleting",
+          "deleted",
+          "deleted_error"
+        ]
+      },
+      "VolumeTypeResponse": {
+        "type": "object",
+        "properties": {
+          "iops": {
+            "type": "object",
+            "properties": {
+              "read": {
+                "type": "integer",
+                "title": "Read"
+              },
+              "write": {
+                "type": "integer",
+                "title": "Write"
+              }
+            },
+            "title": "VolumeTypeSpec",
+            "required": [
+              "read",
+              "write"
+            ]
+          },
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "disk_type": {
+            "type": "string",
+            "title": "DiskType",
+            "enum": [
+              "nvme",
+              "hdd"
+            ]
+          },
+          "status": {
+            "type": "string",
+            "title": "VolumeTypeStatus",
+            "enum": [
+              "active",
+              "deprecated",
+              "deleted"
+            ]
+          }
+        },
+        "title": "VolumeTypeResponse",
+        "required": [
+          "iops",
+          "id",
+          "name",
+          "disk_type",
+          "status"
+        ],
+        "example": {
+          "disk_type": "nvme",
+          "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+          "iops": {
+            "read": 1000,
+            "write": 1000
+          },
+          "name": "my_volume_type",
+          "status": "active"
+        }
+      },
+      "VolumeTypeSpec": {
+        "type": "object",
+        "properties": {
+          "read": {
+            "type": "integer",
+            "title": "Read"
+          },
+          "write": {
+            "type": "integer",
+            "title": "Write"
+          }
+        },
+        "title": "VolumeTypeSpec",
+        "required": [
+          "read",
+          "write"
+        ]
+      },
+      "VolumeTypeStatus": {
+        "type": "string",
+        "title": "VolumeTypeStatus",
+        "enum": [
+          "active",
+          "deprecated",
+          "deleted"
+        ]
+      },
+      "VolumesResponseV1": {
+        "type": "object",
+        "properties": {
+          "volumes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "title": "Id"
+                },
+                "name": {
+                  "type": "string",
+                  "title": "Name"
+                },
+                "size": {
+                  "type": "integer",
+                  "title": "Size"
+                },
+                "status": {
+                  "type": "string",
+                  "title": "VolumeStatusV1",
+                  "enum": [
+                    "provisioning",
+                    "creating",
+                    "creating_error",
+                    "creating_error_quota",
+                    "completed",
+                    "extend_pending",
+                    "extending",
+                    "extend_error",
+                    "extend_error_quota",
+                    "attaching_pending",
+                    "attaching_error",
+                    "attaching",
+                    "detaching_pending",
+                    "detaching_error",
+                    "detaching",
+                    "retype_pending",
+                    "retyping",
+                    "retype_error",
+                    "retype_error_quota",
+                    "deleting_pending",
+                    "deleting",
+                    "deleted",
+                    "deleted_error"
+                  ]
+                },
+                "state": {
+                  "type": "string",
+                  "title": "VolumeStateV1",
+                  "enum": [
+                    "new",
+                    "available",
+                    "in-use",
+                    "deleted",
+                    "legacy"
+                  ]
+                },
+                "created_at": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  ],
+                  "title": "Created At",
+                  "example": "2022-01-01T00:00:10Z"
+                },
+                "updated_at": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  ],
+                  "title": "Updated At",
+                  "example": "2022-01-01T00:00:10Z"
+                },
+                "type": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/IdRequest"
+                    },
+                    {
+                      "$ref": "#/components/schemas/VolumeTypeResponse"
+                    }
+                  ],
+                  "title": "Type"
+                },
+                "error": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/VolumeResponseError"
+                    }
+                  ],
+                  "nullable": true
+                },
+                "attachment": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/AttachmentResponse"
+                    }
+                  ],
+                  "nullable": true
+                }
+              },
+              "title": "VolumeResponseV1",
+              "required": [
+                "id",
+                "name",
+                "size",
+                "status",
+                "state",
+                "created_at",
+                "updated_at",
+                "type"
+              ],
+              "example": {
+                "attachment": {
+                  "attached_at": "2022-01-01T00:00:10Z",
+                  "device": "/dev/vdb",
+                  "instance": {
+                    "created_at": "2022-01-01T00:00:10Z",
+                    "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+                    "name": "machine name",
+                    "state": "running",
+                    "status": "completed",
+                    "updated_at": "2022-01-01T00:00:10Z"
+                  }
+                },
+                "created_at": "2022-01-01T00:00:10Z",
+                "error": {
+                  "message": "You have reached the limit of allowed disks. Please, remove unused disks or contact support to increase your quota.",
+                  "slug": "creating_error_quota"
+                },
+                "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+                "name": "volume name",
+                "size": 10,
+                "state": "in-use",
+                "status": "completed",
+                "type": {
+                  "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+                },
+                "updated_at": "2022-01-01T00:00:10Z"
+              }
+            },
+            "title": "Volumes"
+          }
+        },
+        "title": "VolumesResponseV1",
+        "required": [
+          "volumes"
+        ],
+        "example": {
+          "volumes": [
+            {
+              "attachment": {
+                "attached_at": "2022-01-01T00:00:10Z",
+                "device": "/dev/vdb",
+                "instance": {
+                  "created_at": "2022-01-01T00:00:10Z",
+                  "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+                  "name": "machine name",
+                  "state": "running",
+                  "status": "completed",
+                  "updated_at": "2022-01-01T00:00:10Z"
+                }
+              },
+              "created_at": "2022-01-01T00:00:10Z",
+              "error": {
+                "message": "You have reached the limit of allowed disks. Please, remove unused disks or contact support to increase your quota.",
+                "slug": "creating_error_quota"
+              },
+              "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+              "name": "volume name",
+              "size": 10,
+              "state": "in-use",
+              "status": "completed",
+              "type": {
+                "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+              },
+              "updated_at": "2022-01-01T00:00:10Z"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "volumes",
+      "description": "Operations with volumes, including create, delete, extend, retype, list and other actions."
+    },
+    {
+      "name": "volume-types",
+      "description": "Operations with volume types for volumes."
+    },
+    {
+      "name": "snapshots",
+      "description": "Operations with snapshots for volumes."
+    }
+  ]
+}

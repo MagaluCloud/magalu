@@ -22,10 +22,11 @@ var downloadSpecsCmd = &cobra.Command{
 		}
 
 		for _, v := range currentConfig {
-			_ = removerArquivosOld(filepath.Join(SPEC_DIR))
-			_ = verificarERenomearArquivo(filepath.Join(SPEC_DIR, v.File))
+			// _ = removerArquivosOld(filepath.Join(SPEC_DIR))
+			// _ = verificarERenomearArquivo(filepath.Join(SPEC_DIR, v.File))
 			_ = getAndSaveFile(v.Url, filepath.Join(SPEC_DIR, v.File))
 		}
+		runPrepare(cmd, args)
 
 	},
 }

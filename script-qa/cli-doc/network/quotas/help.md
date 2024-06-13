@@ -1,4 +1,4 @@
-# VPC Quotas
+# quotas
 
 ## Usage:
 ```bash

@@ -154,6 +154,22 @@ Read-Only:
 <a id="nestedatt--current_network--object2--ports"></a>
 ### Nested Schema for `current_network.object2.ports`
 
+Read-Only:
+
+- `id` (String)
+- `ip_addresses` (Attributes) (see [below for nested schema](#nestedatt--current_network--object2--ports--ip_addresses))
+- `name` (String)
+
+<a id="nestedatt--current_network--object2--ports--ip_addresses"></a>
+### Nested Schema for `current_network.object2.ports.name`
+
+Read-Only:
+
+- `ip_v6address` (String)
+- `private_ip_address` (String)
+- `public_ip_address` (String)
+
+
 
 <a id="nestedatt--current_network--object2--vpc"></a>
 ### Nested Schema for `current_network.object2.vpc`
