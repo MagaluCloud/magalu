@@ -1,0 +1,19 @@
+port
+
+Usage:
+  ./mgc network port [flags]
+  ./mgc network port [command]
+
+Commands:
+  ports       ports
+  vpcs-ports  vpcs-ports
+
+Flags:
+  -h, --help      help for port
+  -v, --version   version for port
+
+Global Flags:
+      --cli.show-cli-globals   Show all CLI global flags on usage text
+
+Use "./mgc network port [command] --help" for more information about a command.
+
