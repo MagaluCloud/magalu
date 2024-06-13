@@ -5,7 +5,6 @@ import (
 	"io"
 	"net/http"
 	"os"
-	"path/filepath"
 
 	"github.com/spf13/viper"
 )
@@ -29,76 +28,76 @@ func verificarEAtualizarDiretorio(caminho string) error {
 	return err
 }
 
-func verificarERenomearArquivo(caminho string) error {
-	// Verifica se o arquivo já existe
-	_, err := os.Stat(caminho)
-	if err != nil {
-		if os.IsNotExist(err) {
-			// Arquivo não existe
-			return nil
-		}
-		// Outro erro ao verificar o arquivo
-		return err
-	}
+// func verificarERenomearArquivo(caminho string) error {
+// 	// Verifica se o arquivo já existe
+// 	_, err := os.Stat(caminho)
+// 	if err != nil {
+// 		if os.IsNotExist(err) {
+// 			// Arquivo não existe
+// 			return nil
+// 		}
+// 		// Outro erro ao verificar o arquivo
+// 		return err
+// 	}
 
-	// Obtém a data de criação do arquivo
-	info, err := os.Stat(caminho)
-	if err != nil {
-		return err
-	}
-	dataCriacao := info.ModTime()
-	dataCriacaoFormatada := dataCriacao.Format("2006-01-02_15-04-05")
+// 	// Obtém a data de criação do arquivo
+// 	info, err := os.Stat(caminho)
+// 	if err != nil {
+// 		return err
+// 	}
+// 	dataCriacao := info.ModTime()
+// 	dataCriacaoFormatada := dataCriacao.Format("2006-01-02_15-04-05")
 
-	// Obtém o nome e a extensão do arquivo
-	nomeArquivo := filepath.Base(caminho)
-	extensao := filepath.Ext(caminho)
-	nomeArquivoSemExtensao := nomeArquivo[0 : len(nomeArquivo)-len(extensao)]
+// 	// Obtém o nome e a extensão do arquivo
+// 	nomeArquivo := filepath.Base(caminho)
+// 	extensao := filepath.Ext(caminho)
+// 	nomeArquivoSemExtensao := nomeArquivo[0 : len(nomeArquivo)-len(extensao)]
 
-	// Renomeia o arquivo para incluir a data de criação
-	novoNome := fmt.Sprintf("%s_%s.old%s", nomeArquivoSemExtensao, dataCriacaoFormatada, extensao)
-	novoCaminho := filepath.Join(filepath.Dir(caminho), novoNome)
-	err = os.Rename(caminho, novoCaminho)
-	if err != nil {
-		return err
-	}
+// 	// Renomeia o arquivo para incluir a data de criação
+// 	novoNome := fmt.Sprintf("%s_%s.old%s", nomeArquivoSemExtensao, dataCriacaoFormatada, extensao)
+// 	novoCaminho := filepath.Join(filepath.Dir(caminho), novoNome)
+// 	err = os.Rename(caminho, novoCaminho)
+// 	if err != nil {
+// 		return err
+// 	}
 
-	fmt.Printf("Arquivo renomeado para: %s\n", novoCaminho)
-	return nil
-}
+// 	fmt.Printf("Arquivo renomeado para: %s\n", novoCaminho)
+// 	return nil
+// }
 
-func removerArquivosOld(diretorio string) error {
-	// Abre o diretório especificado
-	dir, err := os.Open(diretorio)
-	if err != nil {
-		return fmt.Errorf("erro ao abrir o diretório: %v", err)
-	}
-	defer dir.Close()
+// func removerArquivosOld(diretorio string) error {
+// 	// Abre o diretório especificado
+// 	dir, err := os.Open(diretorio)
+// 	if err != nil {
+// 		return fmt.Errorf("erro ao abrir o diretório: %v", err)
+// 	}
+// 	defer dir.Close()
 
-	// Lê o conteúdo do diretório
-	arquivos, err := dir.Readdir(-1)
-	if err != nil {
-		return fmt.Errorf("erro ao ler o conteúdo do diretório: %v", err)
-	}
+// 	// Lê o conteúdo do diretório
+// 	arquivos, err := dir.Readdir(-1)
+// 	if err != nil {
+// 		return fmt.Errorf("erro ao ler o conteúdo do diretório: %v", err)
+// 	}
 
-	// Itera sobre os arquivos do diretório
-	for _, arquivo := range arquivos {
-		// Verifica se é um arquivo com extensão ".old"
-		if !arquivo.IsDir() && filepath.Ext(arquivo.Name()) == ".old" {
-			// Monta o caminho completo do arquivo
-			caminhoArquivo := filepath.Join(diretorio, arquivo.Name())
+// 	// Itera sobre os arquivos do diretório
+// 	for _, arquivo := range arquivos {
+// 		// Verifica se é um arquivo com extensão ".old"
+// 		if !arquivo.IsDir() && filepath.Ext(arquivo.Name()) == ".old" {
+// 			// Monta o caminho completo do arquivo
+// 			caminhoArquivo := filepath.Join(diretorio, arquivo.Name())
 
-			// Remove o arquivo
-			err := os.Remove(caminhoArquivo)
-			if err != nil {
-				return fmt.Errorf("erro ao remover o arquivo %s: %v", caminhoArquivo, err)
-			}
+// 			// Remove o arquivo
+// 			err := os.Remove(caminhoArquivo)
+// 			if err != nil {
+// 				return fmt.Errorf("erro ao remover o arquivo %s: %v", caminhoArquivo, err)
+// 			}
 
-			fmt.Printf("Arquivo %s removido com sucesso.\n", caminhoArquivo)
-		}
-	}
+// 			fmt.Printf("Arquivo %s removido com sucesso.\n", caminhoArquivo)
+// 		}
+// 	}
 
-	return nil
-}
+// 	return nil
+// }
 
 func validarEndpoint(url string) bool {
 	resp, err := http.Get(url)
