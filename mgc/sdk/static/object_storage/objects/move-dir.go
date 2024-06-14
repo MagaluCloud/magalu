@@ -26,7 +26,6 @@ var getMoveDir = utils.NewLazyLoader[core.Executor](func() core.Executor {
 			Name:        "move-dir",
 			Summary:     "Moves objects from source to destination",
 			Description: "Moves objects from a source to a destination.\nThey can be either local or remote but not both local (Local -> Remote, Remote -> Local, Remote -> Remote)",
-			// Scopes:      core.Scopes{"object-storage.read", "object-storage.write"},
 		},
 		moveDir,
 	)

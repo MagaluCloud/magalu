@@ -34,7 +34,6 @@ var getDownloadAll = utils.NewLazyLoader[core.Executor](func() core.Executor {
 		core.DescriptorSpec{
 			Name:        "download-all",
 			Description: "Download all objects from a bucket",
-			// Scopes:      core.Scopes{"object-storage.read"},
 		},
 		downloadAll,
 	)
