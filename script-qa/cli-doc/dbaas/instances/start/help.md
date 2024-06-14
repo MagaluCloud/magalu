@@ -9,7 +9,6 @@ Usage:
 ## Product catalog:
 - Flags:
 - --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-- --cli.watch                     Wait until the operation is completed by calling the 'get' link and waiting until termination. Akin to '! get -w'
 - --exchange string               Exchange (default "dbaas-internal")
 - -h, --help                          help for start
 - --instance-id uuid              Instance Id (required)

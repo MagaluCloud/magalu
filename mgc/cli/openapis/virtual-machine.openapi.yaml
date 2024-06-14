@@ -4,8 +4,6 @@ info:
     description: Virtual Machine Api Product
     contact:
         name: IaaS Products
-        url: https://github.com/luizalabs
-        email: kassio.junqueira@luizalabs.com
     version: v1
 paths:
     /v1/backups:
@@ -27,47 +25,46 @@ paths:
             parameters:
             -   name: _limit
                 in: query
+                description: limit the number of the results
                 required: false
                 schema:
+                    exclusiveMinimum: false
                     type: integer
+                    title: ' Limit'
                     maximum: 2147483647
-                    exclusiveMinimum: true
                     description: limit the number of the results
                     default: 50
-                    title: ' Limit'
-                description: limit the number of the results
             -   name: _offset
                 in: query
+                description: pagination for the results limited
                 required: false
                 schema:
                     type: integer
+                    title: ' Offset'
                     maximum: 2147483647
-                    minimum: 0
                     description: pagination for the results limited
                     default: 0
-                    title: ' Offset'
-                description: pagination for the results limited
             -   name: _sort
                 in: query
+                description: order of the results using informed fields
                 required: false
                 schema:
                     type: string
+                    title: ' Sort'
                     pattern: ^(^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$
                     description: order of the results using informed fields
                     default: created_at:asc
-                    title: ' Sort'
-                description: order of the results using informed fields
             -   name: expand
                 in: query
+                description: 'You can get more detailed info about: [''instance''] '
                 required: false
                 schema:
                     type: array
                     items:
                         type: string
+                    title: Expand
                     description: 'You can get more detailed info about: [''instance''] '
                     default: []
-                    title: Expand
-                description: 'You can get more detailed info about: [''instance''] '
             responses:
                 '200':
                     description: Successful Response
@@ -118,11 +115,11 @@ paths:
             description: create a backup from instance
             operationId: create_backup_v1_backups_post
             requestBody:
-                required: true
                 content:
                     application/json:
                         schema:
                             $ref: '#/components/schemas/BackupRequest'
+                required: true
             responses:
                 '202':
                     description: Successful Response
@@ -166,6 +163,168 @@ paths:
             -   OAuth2:
                 - virtual-machine.write
     /v1/backups/{id}:
+        get:
+            tags:
+            - backups
+            summary: Retrieve the details of a backup.
+            description: 'Get a backup details for the current tenant which is logged
+                in.
+
+
+                #### Notes
+
+                - You can use the backup list command to retrieve all backups,
+
+                so you can get the id of the backup that you want to get details.
+
+
+                - You can use the **expand** argument to get more details from the
+                object
+
+                like instance.'
+            operationId: details_backup_v1_backups__id__get
+            parameters:
+            -   name: id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Id
+            -   name: expand
+                in: query
+                description: 'You can get more detailed info about: [''instance''] '
+                required: false
+                schema:
+                    type: array
+                    items:
+                        type: string
+                    title: Expand
+                    description: 'You can get more detailed info about: [''instance''] '
+                    default: []
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/BackupResponse'
+                '400':
+                    description: Snapshot Not Allowed Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '404':
+                    description: Instance Not Found Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '409':
+                    description: Snapshot Validation Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '500':
+                    description: Internal Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: true
+            x-mgc-output-flag: table=BACKUP_TYPE:$.backups[].backup_type,CREATED_AT:$.backups[].created_at',  ID:$.backups[].id,INSTANCE:$.backups[].instance,DISK:$.backups[].min_disk,NAME:$.backups[].name,
+                ROTATION:$.backups[].rotation,SIZE:$.backups[].size,STATE:$.backups[].state,STATUS:$.backups[].status,UPDATED_AT:$.backups[*].updated_at
+            security:
+            -   OAuth2:
+                - virtual-machine.read
+        post:
+            tags:
+            - backups
+            summary: Restore a backup to a virtual machine
+            description: 'Restore a backup of a Virtual Machine with the current tenant
+                which is logged in. </br>
+
+                A Backup is ready for restore when it''s in completed status.
+
+
+                #### Notes
+
+                - You can verify the status of backup using the backup list command.
+
+                - Use machine-types list to see all machine types available.
+
+
+                #### Rules
+
+                - To restore a backup you have to inform the new virtual machine information.
+
+                - You can choose a machine-type that has a disk equal or larger
+
+                than the minimum disk of the backup.'
+            operationId: restore_backup_v1_backups__id__post
+            parameters:
+            -   name: id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Id
+                    format: uuid
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/BackupRestoreRequestDefault'
+                required: true
+            responses:
+                '202':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CreateResponse'
+                '400':
+                    description: Snapshot Not Allowed Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '404':
+                    description: Instance Not Found Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '409':
+                    description: Snapshot Validation Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '500':
+                    description: Internal Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: true
+            x-mgc-output-flag: table=ID:$.id
+            security:
+            -   OAuth2:
+                - virtual-machine.write
         delete:
             tags:
             - backups
@@ -178,8 +337,8 @@ paths:
                 required: true
                 schema:
                     type: string
-                    format: uuid
                     title: Id
+                    format: uuid
             responses:
                 '204':
                     description: Successful Response
@@ -393,28 +552,27 @@ paths:
                 in: query
                 required: false
                 schema:
+                    exclusiveMinimum: false
                     type: integer
-                    maximum: 2147483647
-                    exclusiveMinimum: true
-                    default: 50
                     title: ' Limit'
+                    maximum: 2147483647
+                    default: 50
             -   name: _offset
                 in: query
                 required: false
                 schema:
                     type: integer
-                    maximum: 2147483647
-                    minimum: 0
-                    default: 0
                     title: ' Offset'
+                    maximum: 2147483647
+                    default: 0
             -   name: _sort
                 in: query
                 required: false
                 schema:
                     type: string
+                    title: ' Sort'
                     pattern: ^(^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$
                     default: platform:asc,end_life_at:desc
-                    title: ' Sort'
             responses:
                 '200':
                     description: Successful Response
@@ -452,49 +610,48 @@ paths:
             parameters:
             -   name: _limit
                 in: query
+                description: limit the number of the results
                 required: false
                 schema:
+                    exclusiveMinimum: false
                     type: integer
+                    title: ' Limit'
                     maximum: 2147483647
-                    exclusiveMinimum: true
                     description: limit the number of the results
                     default: 50
-                    title: ' Limit'
-                description: limit the number of the results
             -   name: _offset
                 in: query
+                description: pagination for the results limited
                 required: false
                 schema:
                     type: integer
+                    title: ' Offset'
                     maximum: 2147483647
-                    minimum: 0
                     description: pagination for the results limited
                     default: 0
-                    title: ' Offset'
-                description: pagination for the results limited
             -   name: _sort
                 in: query
+                description: order of the results using informed fields
                 required: false
                 schema:
                     type: string
+                    title: ' Sort'
                     pattern: ^(^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$
                     description: order of the results using informed fields
                     default: created_at:asc
-                    title: ' Sort'
-                description: order of the results using informed fields
             -   name: expand
                 in: query
+                description: 'You can get more detailed info about: [''image'', ''machine-type'',
+                    ''network''] '
                 required: false
                 schema:
                     type: array
                     items:
                         type: string
+                    title: Expand
                     description: 'You can get more detailed info about: [''image'',
                         ''machine-type'', ''network''] '
                     default: []
-                    title: Expand
-                description: 'You can get more detailed info about: [''image'', ''machine-type'',
-                    ''network''] '
             responses:
                 '200':
                     description: Successful Response
@@ -533,11 +690,11 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
-            x-mgc-output-flag: table
+            x-mgc-output-flag: table=ID:$.instances[*].id,NAME:$.instances[*].name,STATE:$.instances[*].state,STATUS:$.instances[*].status,MACHINE_TYPE:$.instances[*].machine_type,IMAGE:$.instances[*].image,
+                CREATED_AT:$.instances[*].created_at, SSH_KEY_NAME:$.instances[*].ssh_key_name
             security:
             -   OAuth2:
                 - virtual-machine.read
-            x-mgc-description: List Virtual Machine instances
         post:
             tags:
             - instances
@@ -561,11 +718,11 @@ paths:
                 \ id will be used.\n- The user data must be a Base64 encoded string."
             operationId: instance_create_v1_v1_instances_post
             requestBody:
-                required: true
                 content:
                     application/json:
                         schema:
                             $ref: '#/components/schemas/InstanceCreateRequestV1Default'
+                required: true
             responses:
                 '201':
                     description: Successful Response
@@ -576,42 +733,43 @@ paths:
                     links:
                         get:
                             operationId: instance_details_v1_v1_instances__id__get
-                            description: Read Virtual Machine instance
+                            description: Retrieve the details of an instance.
                             parameters:
                                 id: $response.body#/id
                         delete:
                             operationId: instance_delete_v1_v1_instances__id__delete
-                            description: Delete Virtual Machine instance
+                            description: Delete a instance asynchronously
                             parameters:
                                 id: $response.body#/id
                         reboot:
                             operationId: reboot_instance_v1_instances__id__reboot_post
-                            description: Reboot a Virtual Machine instance
+                            description: Reboot a running or suspended instance.
                             parameters:
                                 id: $response.body#/id
                         rename:
                             operationId: update_instance_name_v1_instances__id__rename_patch
-                            description: Rename a Virtual Machine instance
+                            description: Renames an instance.
                             parameters:
                                 id: $response.body#/id
                         retype:
                             operationId: retype_instance_v1_instances__id__retype_post
-                            description: Retype a Virtual Machine instance
+                            description: Changes a running or stopped instance machine
+                                type for another one.
                             parameters:
                                 id: $response.body#/id
                         start:
                             operationId: start_instance_v1_instances__id__start_post
-                            description: Start a Virtual Machine instance
+                            description: Starts a running or suspended instance.
                             parameters:
                                 id: $response.body#/id
                         stop:
                             operationId: stop_instance_v1_instances__id__stop_post
-                            description: Stop a Virtual Machine instance
+                            description: Stops a running instance.
                             parameters:
                                 id: $response.body#/id
                         suspend:
                             operationId: suspend_instance_v1_instances__id__suspend_post
-                            description: Suspend a Virtual Machine instance
+                            description: Suspends a running instance.
                             parameters:
                                 id: $response.body#/id
                 '400':
@@ -649,85 +807,7 @@ paths:
             security:
             -   OAuth2:
                 - virtual-machine.write
-            x-mgc-description: Create a Virtual Machine instance
     /v1/instances/{id}:
-        delete:
-            tags:
-            - instances
-            summary: Delete a instance asynchronously
-            description: 'Deletes permanently an instance with the id provided in
-                the current tenant
-
-                which is logged in.
-
-
-                #### Notes
-
-                - You can use the virtual-machine list command to retrieve all instances,
-                so
-
-                - you can get the id of the instance that you want to delete.
-
-
-                #### Result
-
-                - The attached ports will be deleted as well.</li>
-
-                - The attached volumes will be detached.</li>'
-            operationId: instance_delete_v1_v1_instances__id__delete
-            parameters:
-            -   name: id
-                in: path
-                required: true
-                schema:
-                    type: string
-                    format: uuid
-                    title: Id
-            -   name: delete_public_ip
-                in: query
-                required: false
-                schema:
-                    type: boolean
-                    default: false
-                    title: Delete Public Ip
-            responses:
-                '204':
-                    description: Successful Response
-                '400':
-                    description: Instance Not Allowed Exception
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ExceptionModel'
-                '404':
-                    description: Instance Not Found Exception
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ExceptionModel'
-                '409':
-                    description: Instance Validation Exception
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ExceptionModel'
-                '500':
-                    description: Internal Exception
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ExceptionModel'
-                '422':
-                    description: Validation Error
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/HTTPValidationError'
-            x-viveiro: true
-            security:
-            -   OAuth2:
-                - virtual-machine.write
-            x-mgc-description: Delete a Virtual Machine instance
         get:
             tags:
             - instances
@@ -757,17 +837,17 @@ paths:
                     title: Id
             -   name: expand
                 in: query
+                description: 'You can get more detailed info about: [''image'', ''machine-type'',
+                    ''network''] '
                 required: false
                 schema:
                     type: array
                     items:
                         type: string
+                    title: Expand
                     description: 'You can get more detailed info about: [''image'',
                         ''machine-type'', ''network''] '
                     default: []
-                    title: Expand
-                description: 'You can get more detailed info about: [''image'', ''machine-type'',
-                    ''network''] '
             responses:
                 '200':
                     description: Successful Response
@@ -778,28 +858,29 @@ paths:
                     links:
                         delete:
                             operationId: instance_delete_v1_v1_instances__id__delete
-                            description: Delete Virtual Machine instance
+                            description: Delete a instance asynchronously
                             parameters:
                                 id: $request.path.id
                         reboot:
                             operationId: reboot_instance_v1_instances__id__reboot_post
-                            description: Reboot a Virtual Machine instance
+                            description: Reboot a running or suspended instance.
                             parameters:
                                 id: $request.path.id
                         rename:
                             operationId: update_instance_name_v1_instances__id__rename_patch
-                            description: Rename a Virtual Machine instance
+                            description: Renames an instance.
                             parameters:
                                 id: $request.path.id
                         update/name:
                             operationId: update_instance_name_v1_instances__id__rename_patch
-                            description: Rename a Virtual Machine instance
+                            description: Renames an instance.
                             parameters:
                                 id: $request.path.id
                             x-mgc-hidden: true
                         retype:
                             operationId: retype_instance_v1_instances__id__retype_post
-                            description: Retype a Virtual Machine instance
+                            description: Changes a running or stopped instance machine
+                                type for another one.
                             parameters:
                                 id: $request.path.id
                         update/machine_type:
@@ -811,37 +892,19 @@ paths:
                             x-mgc-hidden: true
                         start:
                             operationId: start_instance_v1_instances__id__start_post
-                            description: Start a Virtual Machine instance
+                            description: Starts a running or suspended instance.
                             parameters:
                                 id: $request.path.id
                         stop:
                             operationId: stop_instance_v1_instances__id__stop_post
-                            description: Stop a Virtual Machine instance
+                            description: Stops a running instance.
                             parameters:
                                 id: $request.path.id
                         suspend:
                             operationId: suspend_instance_v1_instances__id__suspend_post
-                            description: Suspend a Virtual Machine instance
+                            description: Suspends a running instance.
                             parameters:
                                 id: $request.path.id
-                        update/state/running:
-                            description: Start a Virtual Machine instance
-                            operationId: start_instance_v1_instances__id__start_post
-                            parameters:
-                                id: $request.path.id
-                            x-mgc-hidden: true
-                        update/state/stopped:
-                            description: Stop a Virtual Machine instance
-                            operationId: stop_instance_v1_instances__id__stop_post
-                            parameters:
-                                id: $request.path.id
-                            x-mgc-hidden: true
-                        update/state/suspended:
-                            description: Suspend a Virtual Machine instance
-                            operationId: suspend_instance_v1_instances__id__suspend_post
-                            parameters:
-                                id: $request.path.id
-                            x-mgc-hidden: true
                 '400':
                     description: Instance Not Allowed Exception
                     content:
@@ -878,12 +941,82 @@ paths:
             security:
             -   OAuth2:
                 - virtual-machine.read
-            x-mgc-description: Get a Virtual Machine instance details
-            x-mgc-wait-termination:
-                maxRetries: 30
-                interval: 5s
-                jsonPathQuery: $.result.status == "completed"
-                errorJsonPathQuery: contains($.result.status, "error")
+        delete:
+            tags:
+            - instances
+            summary: Delete a instance asynchronously
+            description: 'Deletes permanently an instance with the id provided in
+                the current tenant
+
+                which is logged in.
+
+
+                #### Notes
+
+                - You can use the virtual-machine list command to retrieve all instances,
+                so
+
+                - you can get the id of the instance that you want to delete.
+
+
+                #### Result
+
+                - The attached ports will be deleted as well.</li>
+
+                - The attached volumes will be detached.</li>'
+            operationId: instance_delete_v1_v1_instances__id__delete
+            parameters:
+            -   name: id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Id
+                    format: uuid
+            -   name: delete_public_ip
+                in: query
+                required: false
+                schema:
+                    type: boolean
+                    title: Delete Public Ip
+                    default: false
+            responses:
+                '204':
+                    description: Successful Response
+                '400':
+                    description: Instance Not Allowed Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '404':
+                    description: Instance Not Found Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '409':
+                    description: Instance Validation Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '500':
+                    description: Internal Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: true
+            security:
+            -   OAuth2:
+                - virtual-machine.write
     /v1/instances/{id}/port/{port_id}/attach:
         post:
             tags:
@@ -894,16 +1027,20 @@ paths:
             parameters:
             -   name: id
                 in: path
+                description: Instance Id
                 required: true
                 schema:
                     type: string
                     title: Id
+                    description: Instance Id
             -   name: port_id
                 in: path
+                description: Port Id
                 required: true
                 schema:
                     type: string
                     title: Port Id
+                    description: Port Id
             responses:
                 '204':
                     description: Successful Response
@@ -934,16 +1071,20 @@ paths:
             parameters:
             -   name: id
                 in: path
+                description: Instance Id
                 required: true
                 schema:
                     type: string
                     title: Id
+                    description: Instance Id
             -   name: port_id
                 in: path
+                description: Port Id
                 required: true
                 schema:
                     type: string
                     title: Port Id
+                    description: Port Id
             responses:
                 '204':
                     description: Successful Response
@@ -990,45 +1131,46 @@ paths:
                 required: true
                 schema:
                     type: string
-                    format: uuid
                     title: Id
+                    format: uuid
             responses:
                 '204':
                     description: Successful Response
                     links:
                         get:
                             operationId: instance_details_v1_v1_instances__id__get
-                            description: Read Virtual Machine instance
+                            description: Retrieve the details of an instance.
                             parameters:
                                 id: $request.path.id
                         delete:
                             operationId: instance_delete_v1_v1_instances__id__delete
-                            description: Delete Virtual Machine instance
+                            description: Delete a instance asynchronously
                             parameters:
                                 id: $request.path.id
                         rename:
                             operationId: update_instance_name_v1_instances__id__rename_patch
-                            description: Rename a Virtual Machine instance
+                            description: Renames an instance.
                             parameters:
                                 id: $request.path.id
                         retype:
                             operationId: retype_instance_v1_instances__id__retype_post
-                            description: Retype a Virtual Machine instance
+                            description: Changes a running or stopped instance machine
+                                type for another one.
                             parameters:
                                 id: $request.path.id
                         start:
                             operationId: start_instance_v1_instances__id__start_post
-                            description: Start a Virtual Machine instance
+                            description: Starts a running or suspended instance.
                             parameters:
                                 id: $request.path.id
                         stop:
                             operationId: stop_instance_v1_instances__id__stop_post
-                            description: Stop a Virtual Machine instance
+                            description: Stops a running instance.
                             parameters:
                                 id: $request.path.id
                         suspend:
                             operationId: suspend_instance_v1_instances__id__suspend_post
-                            description: Suspend a Virtual Machine instance
+                            description: Suspends a running instance.
                             parameters:
                                 id: $request.path.id
                 '422':
@@ -1066,18 +1208,18 @@ paths:
                     type: string
                     title: Id
             requestBody:
-                required: true
                 content:
                     application/json:
                         schema:
                             $ref: '#/components/schemas/IntanceUpdateRequest'
+                required: true
             responses:
                 '204':
                     description: Successful Response
                     links:
                         get:
                             operationId: instance_details_v1_v1_instances__id__get
-                            description: Read Virtual Machine instance
+                            description: Retrieve the details of an instance.
                             parameters:
                                 id: $request.path.id
                             x-mgc-wait-termination:
@@ -1086,32 +1228,33 @@ paths:
                                 jsonPathQuery: $.result.name == $.owner.parameters.name
                         delete:
                             operationId: instance_delete_v1_v1_instances__id__delete
-                            description: Delete Virtual Machine instance
+                            description: Delete a instance asynchronously
                             parameters:
                                 id: $request.path.id
                         reboot:
                             operationId: reboot_instance_v1_instances__id__reboot_post
-                            description: Reboot a Virtual Machine instance
+                            description: Reboot a running or suspended instance.
                             parameters:
                                 id: $request.path.id
                         retype:
                             operationId: retype_instance_v1_instances__id__retype_post
-                            description: Retype a Virtual Machine instance
+                            description: Changes a running or stopped instance machine
+                                type for another one.
                             parameters:
                                 id: $request.path.id
                         start:
                             operationId: start_instance_v1_instances__id__start_post
-                            description: Start a Virtual Machine instance
+                            description: Starts a running or suspended instance.
                             parameters:
                                 id: $request.path.id
                         stop:
                             operationId: stop_instance_v1_instances__id__stop_post
-                            description: Stop a Virtual Machine instance
+                            description: Stops a running instance.
                             parameters:
                                 id: $request.path.id
                         suspend:
                             operationId: suspend_instance_v1_instances__id__suspend_post
-                            description: Suspend a Virtual Machine instance
+                            description: Suspends a running instance.
                             parameters:
                                 id: $request.path.id
                 '400':
@@ -1189,21 +1332,21 @@ paths:
                 required: true
                 schema:
                     type: string
-                    format: uuid
                     title: Id
+                    format: uuid
             requestBody:
-                required: true
                 content:
                     application/json:
                         schema:
                             $ref: '#/components/schemas/InstanceRetypeRequest'
+                required: true
             responses:
                 '204':
                     description: Successful Response
                     links:
                         get:
                             operationId: instance_details_v1_v1_instances__id__get
-                            description: Read Virtual Machine instance
+                            description: Retrieve the details of an instance.
                             parameters:
                                 id: $request.path.id
                             x-mgc-wait-termination:
@@ -1212,32 +1355,32 @@ paths:
                                 jsonPathQuery: $.result.machine_type == $.owner.parameters.machine_type
                         delete:
                             operationId: instance_delete_v1_v1_instances__id__delete
-                            description: Delete Virtual Machine instance
+                            description: Delete a instance asynchronously
                             parameters:
                                 id: $request.path.id
                         reboot:
                             operationId: reboot_instance_v1_instances__id__reboot_post
-                            description: Reboot a Virtual Machine instance
+                            description: Reboot a running or suspended instance.
                             parameters:
                                 id: $request.path.id
                         rename:
                             operationId: update_instance_name_v1_instances__id__rename_patch
-                            description: Rename a Virtual Machine instance
+                            description: Renames an instance.
                             parameters:
                                 id: $request.path.id
                         start:
                             operationId: start_instance_v1_instances__id__start_post
-                            description: Start a Virtual Machine instance
+                            description: Starts a running or suspended instance.
                             parameters:
                                 id: $request.path.id
                         stop:
                             operationId: stop_instance_v1_instances__id__stop_post
-                            description: Stop a Virtual Machine instance
+                            description: Stops a running instance.
                             parameters:
                                 id: $request.path.id
                         suspend:
                             operationId: suspend_instance_v1_instances__id__suspend_post
-                            description: Suspend a Virtual Machine instance
+                            description: Suspends a running instance.
                             parameters:
                                 id: $request.path.id
                 '400':
@@ -1300,45 +1443,46 @@ paths:
                 required: true
                 schema:
                     type: string
-                    format: uuid
                     title: Id
+                    format: uuid
             responses:
                 '204':
                     description: Successful Response
                     links:
                         get:
                             operationId: instance_details_v1_v1_instances__id__get
-                            description: Read Virtual Machine instance
+                            description: Retrieve the details of an instance.
                             parameters:
                                 id: $request.path.id
                         delete:
                             operationId: instance_delete_v1_v1_instances__id__delete
-                            description: Delete Virtual Machine instance
+                            description: Delete a instance asynchronously
                             parameters:
                                 id: $request.path.id
                         reboot:
                             operationId: reboot_instance_v1_instances__id__reboot_post
-                            description: Reboot a Virtual Machine instance
+                            description: Reboot a running or suspended instance.
                             parameters:
                                 id: $request.path.id
                         rename:
                             operationId: update_instance_name_v1_instances__id__rename_patch
-                            description: Rename a Virtual Machine instance
+                            description: Renames an instance.
                             parameters:
                                 id: $request.path.id
                         retype:
                             operationId: retype_instance_v1_instances__id__retype_post
-                            description: Retype a Virtual Machine instance
+                            description: Changes a running or stopped instance machine
+                                type for another one.
                             parameters:
                                 id: $request.path.id
                         stop:
                             operationId: stop_instance_v1_instances__id__stop_post
-                            description: Stop a Virtual Machine instance
+                            description: Stops a running instance.
                             parameters:
                                 id: $request.path.id
                         suspend:
                             operationId: suspend_instance_v1_instances__id__suspend_post
-                            description: Suspend a Virtual Machine instance
+                            description: Suspends a running instance.
                             parameters:
                                 id: $request.path.id
                 '422':
@@ -1378,45 +1522,46 @@ paths:
                 required: true
                 schema:
                     type: string
-                    format: uuid
                     title: Id
+                    format: uuid
             responses:
                 '204':
                     description: Successful Response
                     links:
                         get:
                             operationId: instance_details_v1_v1_instances__id__get
-                            description: Read Virtual Machine instance
+                            description: Retrieve the details of an instance.
                             parameters:
                                 id: $request.path.id
                         delete:
                             operationId: instance_delete_v1_v1_instances__id__delete
-                            description: Delete Virtual Machine instance
+                            description: Delete a instance asynchronously
                             parameters:
                                 id: $request.path.id
                         reboot:
                             operationId: reboot_instance_v1_instances__id__reboot_post
-                            description: Reboot a Virtual Machine instance
+                            description: Reboot a running or suspended instance.
                             parameters:
                                 id: $request.path.id
                         rename:
                             operationId: update_instance_name_v1_instances__id__rename_patch
-                            description: Rename a Virtual Machine instance
+                            description: Renames an instance.
                             parameters:
                                 id: $request.path.id
                         retype:
                             operationId: retype_instance_v1_instances__id__retype_post
-                            description: Retype a Virtual Machine instance
+                            description: Changes a running or stopped instance machine
+                                type for another one.
                             parameters:
                                 id: $request.path.id
                         start:
                             operationId: start_instance_v1_instances__id__start_post
-                            description: Start a Virtual Machine instance
+                            description: Starts a running or suspended instance.
                             parameters:
                                 id: $request.path.id
                         suspend:
                             operationId: suspend_instance_v1_instances__id__suspend_post
-                            description: Suspend a Virtual Machine instance
+                            description: Suspends a running instance.
                             parameters:
                                 id: $request.path.id
                 '422':
@@ -1457,45 +1602,46 @@ paths:
                 required: true
                 schema:
                     type: string
-                    format: uuid
                     title: Id
+                    format: uuid
             responses:
                 '204':
                     description: Successful Response
                     links:
                         get:
                             operationId: instance_details_v1_v1_instances__id__get
-                            description: Read Virtual Machine instance
+                            description: Retrieve the details of an instance.
                             parameters:
                                 id: $request.path.id
                         delete:
                             operationId: instance_delete_v1_v1_instances__id__delete
-                            description: Delete Virtual Machine instance
+                            description: Delete a instance asynchronously
                             parameters:
                                 id: $request.path.id
                         reboot:
                             operationId: reboot_instance_v1_instances__id__reboot_post
-                            description: Reboot a Virtual Machine instance
+                            description: Reboot a running or suspended instance.
                             parameters:
                                 id: $request.path.id
                         rename:
                             operationId: update_instance_name_v1_instances__id__rename_patch
-                            description: Rename a Virtual Machine instance
+                            description: Renames an instance.
                             parameters:
                                 id: $request.path.id
                         retype:
                             operationId: retype_instance_v1_instances__id__retype_post
-                            description: Retype a Virtual Machine instance
+                            description: Changes a running or stopped instance machine
+                                type for another one.
                             parameters:
                                 id: $request.path.id
                         start:
                             operationId: start_instance_v1_instances__id__start_post
-                            description: Start a Virtual Machine instance
+                            description: Starts a running or suspended instance.
                             parameters:
                                 id: $request.path.id
                         stop:
                             operationId: stop_instance_v1_instances__id__stop_post
-                            description: Stop a Virtual Machine instance
+                            description: Stops a running instance.
                             parameters:
                                 id: $request.path.id
                 '422':
@@ -1520,36 +1666,35 @@ paths:
             parameters:
             -   name: _limit
                 in: query
+                description: limit the number of the results
                 required: false
                 schema:
+                    exclusiveMinimum: false
                     type: integer
+                    title: ' Limit'
                     maximum: 2147483647
-                    exclusiveMinimum: true
                     description: limit the number of the results
                     default: 50
-                    title: ' Limit'
-                description: limit the number of the results
             -   name: _offset
                 in: query
+                description: pagination for the results limited
                 required: false
                 schema:
                     type: integer
+                    title: ' Offset'
                     maximum: 2147483647
-                    minimum: 0
                     description: pagination for the results limited
                     default: 0
-                    title: ' Offset'
-                description: pagination for the results limited
             -   name: _sort
                 in: query
+                description: order of the results using informed fields
                 required: false
                 schema:
                     type: string
+                    title: ' Sort'
                     pattern: ^(^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$
                     description: order of the results using informed fields
                     default: created_at:asc
-                    title: ' Sort'
-                description: order of the results using informed fields
             responses:
                 '200':
                     description: Successful Response
@@ -1587,48 +1732,47 @@ paths:
             parameters:
             -   name: _limit
                 in: query
+                description: limit the number of the results
                 required: false
                 schema:
+                    exclusiveMinimum: false
                     type: integer
+                    title: ' Limit'
                     maximum: 2147483647
-                    exclusiveMinimum: true
                     description: limit the number of the results
                     default: 50
-                    title: ' Limit'
-                description: limit the number of the results
             -   name: _offset
                 in: query
+                description: pagination for the results limited
                 required: false
                 schema:
                     type: integer
+                    title: ' Offset'
                     maximum: 2147483647
-                    minimum: 0
                     description: pagination for the results limited
                     default: 0
-                    title: ' Offset'
-                description: pagination for the results limited
             -   name: _sort
                 in: query
+                description: order of the results using informed fields
                 required: false
                 schema:
                     type: string
+                    title: ' Sort'
                     pattern: ^(^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$
                     description: order of the results using informed fields
                     default: created_at:asc
-                    title: ' Sort'
-                description: order of the results using informed fields
             -   name: expand
                 in: query
+                description: 'You can get more detailed info about: [''image'', ''machine-type''] '
                 required: false
                 schema:
                     type: array
                     items:
                         type: string
+                    title: Expand
                     description: 'You can get more detailed info about: [''image'',
                         ''machine-type''] '
                     default: []
-                    title: Expand
-                description: 'You can get more detailed info about: [''image'', ''machine-type''] '
             responses:
                 '200':
                     description: Successful Response
@@ -1699,11 +1843,11 @@ paths:
                 the priority will be ID.'
             operationId: snapshot_create_v1_v1_snapshots_post
             requestBody:
-                required: true
                 content:
                     application/json:
                         schema:
                             $ref: '#/components/schemas/SnapshotCreateRequestV1'
+                required: true
             responses:
                 '202':
                     description: Successful Response
@@ -1723,13 +1867,13 @@ paths:
                             parameters:
                                 id: $response.body#/id
                         delete:
-                            operationId: delete_instance_type_v0_instance_types__instance_type_id__delete
-                            description: Delete Instance Type
+                            operationId: snapshots_delete_v1_snapshots__id__delete
+                            description: Delete a Snapshot asynchronously
                             parameters:
                                 id: $response.body#/id
                         rename:
                             operationId: rename_snapshot_v1_snapshots__id__rename_patch
-                            description: Rename Instance Type
+                            description: Renames a snapshot
                             parameters:
                                 id: $response.body#/id
                 '400':
@@ -1768,68 +1912,6 @@ paths:
             -   OAuth2:
                 - virtual-machine.write
     /v1/snapshots/{id}:
-        delete:
-            tags:
-            - snapshots
-            summary: Delete a Snapshot asynchronously
-            description: 'Deletes an snapshot with the id provided in the current
-                tenant
-
-                which is logged in.
-
-
-                #### Notes
-
-                - You can use the Snapshots list command to retrieve all snapshots,
-                so
-
-                - you can get the id of the snapshot that you want to delete.'
-            operationId: snapshots_delete_v1_snapshots__id__delete
-            parameters:
-            -   name: id
-                in: path
-                required: true
-                schema:
-                    type: string
-                    format: uuid
-                    title: Id
-            responses:
-                '204':
-                    description: Successful Response
-                '400':
-                    description: Snapshot Not Allowed Exception
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ExceptionModel'
-                '404':
-                    description: Instance Not Found Exception
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ExceptionModel'
-                '409':
-                    description: Snapshot Validation Exception
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ExceptionModel'
-                '500':
-                    description: Internal Exception
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ExceptionModel'
-                '422':
-                    description: Validation Error
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/HTTPValidationError'
-            x-viveiro: true
-            security:
-            -   OAuth2:
-                - virtual-machine.write
         get:
             tags:
             - snapshots
@@ -1859,16 +1941,16 @@ paths:
                     title: Id
             -   name: expand
                 in: query
+                description: 'You can get more detailed info about: [''image'', ''machine-type''] '
                 required: false
                 schema:
                     type: array
                     items:
                         type: string
+                    title: Expand
                     description: 'You can get more detailed info about: [''image'',
                         ''machine-type''] '
                     default: []
-                    title: Expand
-                description: 'You can get more detailed info about: [''image'', ''machine-type''] '
             responses:
                 '200':
                     description: Successful Response
@@ -1894,7 +1976,7 @@ paths:
                                 id: $request.path.id
                         update/name:
                             operationId: rename_snapshot_v1_snapshots__id__rename_patch
-                            description: Rename the snapshot
+                            description: Renames a snapshot
                             parameters:
                                 id: $request.path.id
                             x-mgc-hidden: true
@@ -1968,11 +2050,11 @@ paths:
                     type: string
                     title: Id
             requestBody:
-                required: true
                 content:
                     application/json:
                         schema:
                             $ref: '#/components/schemas/SnapshotRestoreRequestV1Default'
+                required: true
             responses:
                 '202':
                     description: Successful Response
@@ -2032,6 +2114,68 @@ paths:
             security:
             -   OAuth2:
                 - virtual-machine.write
+        delete:
+            tags:
+            - snapshots
+            summary: Delete a Snapshot asynchronously
+            description: 'Deletes an snapshot with the id provided in the current
+                tenant
+
+                which is logged in.
+
+
+                #### Notes
+
+                - You can use the Snapshots list command to retrieve all snapshots,
+                so
+
+                - you can get the id of the snapshot that you want to delete.'
+            operationId: snapshots_delete_v1_snapshots__id__delete
+            parameters:
+            -   name: id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Id
+                    format: uuid
+            responses:
+                '204':
+                    description: Successful Response
+                '400':
+                    description: Snapshot Not Allowed Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '404':
+                    description: Instance Not Found Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '409':
+                    description: Snapshot Validation Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '500':
+                    description: Internal Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: true
+            security:
+            -   OAuth2:
+                - virtual-machine.write
     /v1/snapshots/{id}/rename:
         patch:
             tags:
@@ -2056,11 +2200,11 @@ paths:
                     type: string
                     title: Id
             requestBody:
-                required: true
                 content:
                     application/json:
                         schema:
                             $ref: '#/components/schemas/SnapshotRenameRequest'
+                required: true
             responses:
                 '204':
                     description: Successful Response
@@ -2121,32 +2265,33 @@ paths:
 components:
     schemas:
         BackupRequest:
+            type: object
             properties:
                 name:
                     type: string
+                    title: Name
                     maxLength: 255
                     minLength: 1
-                    title: Name
                 virtual_machine:
                     anyOf:
                     -   $ref: '#/components/schemas/ID'
                     -   $ref: '#/components/schemas/Name'
                     title: Virtual Machine
                 backup_type:
-                    $ref: '#/components/schemas/BackupType'
+                    type: string
+                    title: BackupType
                 rotation:
+                    anyOf:
+                    -   exclusiveMinimum: true
+                        type: integer
                     title: Rotation
                     default: 1
                     nullable: true
-                    type: integer
-                    exclusiveMinimum: true
-                    minimum: 1.0
-            type: object
+            title: BackupRequest
             required:
             - name
             - virtual_machine
             - backup_type
-            title: BackupRequest
             example:
                 backup_type: daily
                 name: backup name
@@ -2154,6 +2299,7 @@ components:
                 virtual_machine:
                     id: 4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a
         BackupResponse:
+            type: object
             properties:
                 id:
                     type: string
@@ -2173,27 +2319,44 @@ components:
                     type: integer
                     title: Rotation
                 status:
-                    $ref: '#/components/schemas/BackupStatus'
+                    type: string
+                    title: BackupStatus
+                    enum:
+                    - provisioning
+                    - creating
+                    - completed
+                    - error
+                    - deleting
+                    - deleted
                 state:
-                    $ref: '#/components/schemas/BackupState'
+                    type: string
+                    title: BackupState
+                    enum:
+                    - new
+                    - available
+                    - deleted
+                    - error
                 size:
+                    anyOf:
+                    -   type: integer
                     title: Size
                     nullable: true
-                    type: integer
                 min_disk:
+                    anyOf:
+                    -   type: integer
                     title: Min Disk
                     nullable: true
-                    type: integer
                 created_at:
                     type: string
                     title: Created At
                     example: '2022-01-01T00:00:10Z'
                 updated_at:
+                    anyOf:
+                    -   type: string
+                        example: '2022-01-01T00:00:10Z'
                     title: Updated At
                     nullable: true
-                    type: string
-                    example: '2022-01-01T00:00:10Z'
-            type: object
+            title: BackupResponse
             required:
             - id
             - name
@@ -2203,7 +2366,6 @@ components:
             - status
             - state
             - created_at
-            title: BackupResponse
             example:
                 backup_type: daily
                 created_at: '2022-06-10T18:33:12Z'
@@ -2218,12 +2380,13 @@ components:
                 status: completed
                 updated_at: '2022-06-11T18:33:12Z'
         BackupRestoreRequestDefault:
+            type: object
             properties:
                 name:
                     type: string
+                    title: Name
                     maxLength: 255
                     minLength: 1
-                    title: Name
                 machine_type:
                     anyOf:
                     -   $ref: '#/components/schemas/ID'
@@ -2233,26 +2396,52 @@ components:
                     type: string
                     title: Ssh Key Name
                 availability_zone:
+                    anyOf:
+                    -   type: string
+                        maxLength: 255
+                        minLength: 1
                     title: Availability Zone
                     nullable: true
-                    type: string
-                    maxLength: 255
-                    minLength: 1
                 network:
-                    $ref: '#/components/schemas/InstanceCreateRequestV1NetworkDefault'
+                    type: object
+                    properties:
+                        vpc:
+                            anyOf:
+                            -   $ref: '#/components/schemas/ID'
+                            -   $ref: '#/components/schemas/Name'
+                            title: Vpc
+                        nic:
+                            anyOf:
+                            -   $ref: '#/components/schemas/ID'
+                            -   $ref: '#/components/schemas/SecurityGroups'
+                            title: Nic
+                            nullable: true
+                        associate_public_ip:
+                            type: boolean
+                            title: Associate Public Ip
+                            default: true
+                    title: InstanceCreateRequestV1NetworkDefault
+                    example:
+                        associate_public_ip: true
+                        nic:
+                            security_groups:
+                            -   id: f273fbde-2ddf-4dcd-8c41-342671ac0d17
+                            -   id: 02a2acf3-d6db-4424-ac97-0254cb9c329e
+                        vpc:
+                            id: 2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6
                 user_data:
+                    anyOf:
+                    -   type: string
+                        maxLength: 65000
+                        minLength: 1
                     title: User Data
                     nullable: true
-                    type: string
-                    maxLength: 65000
-                    minLength: 1
-            type: object
+            title: BackupRestoreRequestDefault
             required:
             - name
             - machine_type
             - ssh_key_name
             - network
-            title: BackupRestoreRequestDefault
             example:
                 availability_zone: br-regiao-1a
                 machine_type:
@@ -2270,14 +2459,15 @@ components:
                 user_data: some_base64_script
         BackupState:
             type: string
+            title: BackupState
             enum:
             - new
             - available
             - deleted
             - error
-            title: BackupState
         BackupStatus:
             type: string
+            title: BackupStatus
             enum:
             - provisioning
             - creating
@@ -2285,24 +2475,22 @@ components:
             - error
             - deleting
             - deleted
-            title: BackupStatus
         BackupType:
             type: string
             title: BackupType
-            enum:
-            - daily
         CreateResponse:
+            type: object
             properties:
                 id:
                     type: string
                     title: Id
-            type: object
+            title: CreateResponse
             required:
             - id
-            title: CreateResponse
             example:
                 id: 9ec75090-2872-4f51-8111-53d05d96d2c6
         ErrorMessageV1:
+            type: object
             properties:
                 message:
                     title: Message
@@ -2310,15 +2498,15 @@ components:
                 slug:
                     title: Slug
                     type: string
-            type: object
+            title: ErrorMessageV1
             required:
             - slug
             - message
-            title: ErrorMessageV1
             example:
                 message: Unauthorized
                 slug: Unauthorized
         ExceptionModel:
+            type: object
             properties:
                 slug:
                     type: string
@@ -2329,13 +2517,13 @@ components:
                 details:
                     type: object
                     title: Details
-            type: object
+            title: ExceptionModel
             required:
             - slug
             - message
             - details
-            title: ExceptionModel
         HTTPValidationError:
+            type: object
             properties:
                 message:
                     title: Message
@@ -2343,25 +2531,25 @@ components:
                 slug:
                     title: Slug
                     type: string
-            type: object
             title: HTTPValidationError
             example:
                 message: Unauthorized
                 slug: Unauthorized
         ID:
+            type: object
             properties:
                 id:
                     type: string
+                    title: Id
                     maxLength: 255
                     minLength: 1
-                    title: Id
-            type: object
+            title: ID
             required:
             - id
-            title: ID
             example:
                 id: 9ec75090-2872-4f51-8111-53d05d96d2c6
         ImageExtendResponse:
+            type: object
             properties:
                 id:
                     type: string
@@ -2370,29 +2558,29 @@ components:
                     type: string
                     title: Name
                 platform:
+                    anyOf:
+                    -   type: string
                     title: Platform
                     nullable: true
-                    type: string
-            type: object
+            title: ImageExtendResponse
             required:
             - id
             - name
-            title: ImageExtendResponse
             example:
                 id: 847ceef4-ff96-4762-895d-5e94e410ddeb
                 name: ubuntu
                 platform: linux
         ImageInstanceV1Response:
+            type: object
             properties:
                 id:
                     type: string
                     title: Id
-            additionalProperties: true
-            type: object
+            title: ImageInstanceV1Response
             required:
             - id
-            title: ImageInstanceV1Response
         ImageReqMin:
+            type: object
             properties:
                 vcpu:
                     type: integer
@@ -2403,13 +2591,13 @@ components:
                 disk:
                     type: integer
                     title: Disk
-            type: object
+            title: ImageReqMin
             required:
             - vcpu
             - ram
             - disk
-            title: ImageReqMin
         ImageResponseExternalV1:
+            type: object
             properties:
                 id:
                     type: string
@@ -2418,39 +2606,67 @@ components:
                     type: string
                     title: Name
                 status:
-                    $ref: '#/components/schemas/ImageV1Status'
+                    type: string
+                    title: ImageV1Status
+                    enum:
+                    - active
+                    - deprecated
+                    - deleted
+                    - pending
+                    - creating
+                    - importing
+                    - error
                 version:
+                    anyOf:
+                    -   type: string
                     title: Version
                     nullable: true
-                    type: string
                 platform:
+                    anyOf:
+                    -   type: string
                     title: Platform
                     nullable: true
-                    type: string
                 release_at:
+                    anyOf:
+                    -   type: string
+                        example: '2022-01-01T00:00:10Z'
                     title: Release At
                     nullable: true
-                    type: string
-                    example: '2022-01-01T00:00:10Z'
                 end_standard_support_at:
+                    anyOf:
+                    -   type: string
+                        example: '2022-01-01T00:00:10Z'
                     title: End Standard Support At
                     nullable: true
-                    type: string
-                    example: '2022-01-01T00:00:10Z'
                 end_life_at:
+                    anyOf:
+                    -   type: string
+                        example: '2022-01-01T00:00:10Z'
                     title: End Life At
                     nullable: true
-                    type: string
-                    example: '2022-01-01T00:00:10Z'
                 minimum_requirements:
-                    $ref: '#/components/schemas/ImageReqMin'
-            type: object
+                    type: object
+                    properties:
+                        vcpu:
+                            type: integer
+                            title: Vcpu
+                        ram:
+                            type: integer
+                            title: Ram
+                        disk:
+                            type: integer
+                            title: Disk
+                    title: ImageReqMin
+                    required:
+                    - vcpu
+                    - ram
+                    - disk
+            title: ImageResponseExternalV1
             required:
             - id
             - name
             - status
             - minimum_requirements
-            title: ImageResponseExternalV1
             example:
                 end_life_at: '2022-06-10T18:33:12Z'
                 end_standard_support_at: '2022-06-10T18:33:12Z'
@@ -2466,6 +2682,7 @@ components:
                 version: '22.10'
         ImageV1Status:
             type: string
+            title: ImageV1Status
             enum:
             - active
             - deprecated
@@ -2474,14 +2691,14 @@ components:
             - creating
             - importing
             - error
-            title: ImageV1Status
         InstanceCreateRequestV1Default:
+            type: object
             properties:
                 name:
                     type: string
+                    title: Name
                     maxLength: 255
                     minLength: 1
-                    title: Name
                 machine_type:
                     anyOf:
                     -   $ref: '#/components/schemas/ID'
@@ -2489,7 +2706,6 @@ components:
                     title: Machine Type
                 ssh_key_name:
                     type: string
-                    minLength: 0
                     title: Ssh Key Name
                 image:
                     anyOf:
@@ -2497,31 +2713,29 @@ components:
                     -   $ref: '#/components/schemas/Name'
                     title: Image
                 availability_zone:
+                    anyOf:
+                    -   type: string
+                        maxLength: 255
+                        minLength: 1
                     title: Availability Zone
                     nullable: true
-                    type: string
-                    maxLength: 255
-                    minLength: 1
                 network:
-                    default:
-                        vpc:
-                            name: default
-                        associate_public_ip: true
+                    anyOf:
+                    -   $ref: '#/components/schemas/InstanceCreateRequestV1NetworkDefault'
                     nullable: true
-                    $ref: '#/components/schemas/InstanceCreateRequestV1NetworkDefault'
                 user_data:
+                    anyOf:
+                    -   type: string
+                        maxLength: 65000
+                        minLength: 1
                     title: User Data
                     nullable: true
-                    type: string
-                    maxLength: 65000
-                    minLength: 1
-            type: object
+            title: InstanceCreateRequestV1Default
             required:
             - name
             - machine_type
             - ssh_key_name
             - image
-            title: InstanceCreateRequestV1Default
             example:
                 availability_zone: br-regiao-1a
                 image:
@@ -2540,14 +2754,13 @@ components:
                 ssh_key_name: keypair_name_here
                 user_data: some_base64_script
         InstanceCreateRequestV1NetworkDefault:
+            type: object
             properties:
                 vpc:
                     anyOf:
                     -   $ref: '#/components/schemas/ID'
                     -   $ref: '#/components/schemas/Name'
                     title: Vpc
-                    default:
-                        name: default
                 nic:
                     anyOf:
                     -   $ref: '#/components/schemas/ID'
@@ -2558,7 +2771,6 @@ components:
                     type: boolean
                     title: Associate Public Ip
                     default: true
-            type: object
             title: InstanceCreateRequestV1NetworkDefault
             example:
                 associate_public_ip: true
@@ -2569,6 +2781,7 @@ components:
                 vpc:
                     id: 2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6
         InstanceResponseBackupV1:
+            type: object
             properties:
                 id:
                     type: string
@@ -2592,7 +2805,7 @@ components:
                     -   $ref: '#/components/schemas/InstanceTypeForInstanceV1Response'
                     -   $ref: '#/components/schemas/InstanceTypesExtendResponse'
                     title: Machine Type
-            type: object
+            title: InstanceResponseBackupV1
             required:
             - id
             - name
@@ -2600,7 +2813,6 @@ components:
             - state
             - image
             - machine_type
-            title: InstanceResponseBackupV1
             example:
                 instance:
                     id: 4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a
@@ -2610,6 +2822,7 @@ components:
                         id: 4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a
                     name: instance name
         InstanceResponseSnapshotV1:
+            type: object
             properties:
                 id:
                     type: string
@@ -2624,12 +2837,11 @@ components:
                     -   $ref: '#/components/schemas/InstanceTypeForInstanceV1Response'
                     -   $ref: '#/components/schemas/InstanceTypesExtendResponse'
                     title: Machine Type
-            type: object
+            title: InstanceResponseSnapshotV1
             required:
             - id
             - image
             - machine_type
-            title: InstanceResponseSnapshotV1
             example:
                 instance:
                     id: 4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a
@@ -2638,28 +2850,28 @@ components:
                     machine_type:
                         id: 4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a
         InstanceRetypeRequest:
+            type: object
             properties:
                 machine_type:
                     anyOf:
                     -   $ref: '#/components/schemas/ID'
                     -   $ref: '#/components/schemas/Name'
                     title: Machine Type
-            type: object
+            title: InstanceRetypeRequest
             required:
             - machine_type
-            title: InstanceRetypeRequest
             example:
                 machine_type:
                     id: 2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6
         InstanceSimpleResponseBackupV1:
+            type: object
             properties:
                 id:
                     type: string
                     title: Id
-            type: object
+            title: InstanceSimpleResponseBackupV1
             required:
             - id
-            title: InstanceSimpleResponseBackupV1
             example:
                 instance:
                     id: 4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a
@@ -2669,16 +2881,16 @@ components:
                         id: 4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a
                     name: instance name
         InstanceTypeForInstanceV1Response:
+            type: object
             properties:
                 id:
                     type: string
                     title: Id
-            additionalProperties: true
-            type: object
+            title: InstanceTypeForInstanceV1Response
             required:
             - id
-            title: InstanceTypeForInstanceV1Response
         InstanceTypesExtendResponse:
+            type: object
             properties:
                 id:
                     type: string
@@ -2695,14 +2907,13 @@ components:
                 disk:
                     type: integer
                     title: Disk
-            type: object
+            title: InstanceTypesExtendResponse
             required:
             - id
             - name
             - vcpus
             - ram
             - disk
-            title: InstanceTypesExtendResponse
             example:
                 disk: 10
                 id: 3a4dc05b-eb10-42ec-8c0c-848e06f7aded
@@ -2710,18 +2921,18 @@ components:
                 ram: 2
                 vcpus: 2
         InstanceTypesV1ListResponse:
+            type: object
             properties:
                 instance_types:
+                    type: array
                     items:
                         anyOf:
                         -   $ref: '#/components/schemas/InstanceTypesV1PortalResponse'
                         -   $ref: '#/components/schemas/InstanceTypesV1Response'
-                    type: array
                     title: Instance Types
-            type: object
+            title: InstanceTypesV1ListResponse
             required:
             - instance_types
-            title: InstanceTypesV1ListResponse
             example:
                 instance_types:
                 -   disk: 10
@@ -2733,6 +2944,7 @@ components:
                     status: active
                     vcpus: 2
         InstanceTypesV1PortalResponse:
+            type: object
             properties:
                 id:
                     type: string
@@ -2759,7 +2971,7 @@ components:
                 sku:
                     type: string
                     title: Sku
-            type: object
+            title: InstanceTypesV1PortalResponse
             required:
             - id
             - name
@@ -2768,7 +2980,6 @@ components:
             - disk
             - status
             - sku
-            title: InstanceTypesV1PortalResponse
             example:
                 disk: 10
                 gpu: 1
@@ -2779,6 +2990,7 @@ components:
                 status: active
                 vcpus: 2
         InstanceTypesV1Response:
+            type: object
             properties:
                 id:
                     type: string
@@ -2805,7 +3017,7 @@ components:
                 sku:
                     type: string
                     title: Sku
-            type: object
+            title: InstanceTypesV1Response
             required:
             - id
             - name
@@ -2814,7 +3026,6 @@ components:
             - disk
             - status
             - sku
-            title: InstanceTypesV1Response
             example:
                 disk: 10
                 gpu: 1
@@ -2825,14 +3036,16 @@ components:
                 status: active
                 vcpus: 2
         InstanceV1Response:
+            type: object
             properties:
                 id:
                     type: string
                     title: Id
                 name:
+                    anyOf:
+                    -   type: string
                     title: Name
                     nullable: true
-                    type: string
                 machine_type:
                     anyOf:
                     -   $ref: '#/components/schemas/InstanceTypeForInstanceV1Response'
@@ -2844,34 +3057,75 @@ components:
                     -   $ref: '#/components/schemas/ImageExtendResponse'
                     title: Image
                 status:
-                    $ref: '#/components/schemas/InstanceV1Status'
-                    x-mgc-transforms:
-                    -   type: lowercase
+                    type: string
+                    title: InstanceV1Status
+                    enum:
+                    - attaching_nic
+                    - detaching_nic
+                    - attach_nic_pending
+                    - detach_nic_pending
+                    - provisioning
+                    - creating
+                    - creating_error
+                    - creating_network_error
+                    - creating_error_quota
+                    - creating_error_quota_ram
+                    - creating_error_quota_vcpu
+                    - creating_error_quota_disk
+                    - creating_error_quota_instance
+                    - creating_error_quota_floating_ip
+                    - completed
+                    - retyping_pending
+                    - retyping
+                    - retyping_confirmed
+                    - retyping_error
+                    - retyping_error_quota
+                    - stopping_pending
+                    - stopping
+                    - suspending_pending
+                    - suspending
+                    - rebooting_pending
+                    - rebooting
+                    - starting_pending
+                    - starting
+                    - deleting_pending
+                    - deleting
+                    - deleting_error
+                    - deleted
                 state:
-                    $ref: '#/components/schemas/InstanceV1State'
-                    x-mgc-transforms:
-                    -   type: lowercase
+                    type: string
+                    title: InstanceV1State
+                    enum:
+                    - new
+                    - running
+                    - stopped
+                    - suspended
+                    - deleted
                 user_data:
+                    anyOf:
+                    -   type: string
                     title: User Data
                     nullable: true
-                    type: string
                 created_at:
                     type: string
                     title: Created At
                     example: '2022-01-01T00:00:10Z'
                 updated_at:
+                    anyOf:
+                    -   type: string
+                        example: '2022-01-01T00:00:10Z'
                     title: Updated At
                     nullable: true
-                    type: string
-                    example: '2022-01-01T00:00:10Z'
                 ssh_key_name:
+                    anyOf:
+                    -   type: string
                     title: Ssh Key Name
                     nullable: true
-                    type: string
                 availability_zone:
+                    anyOf:
+                    -   type: string
                     title: Availability Zone
                     nullable: true
-                    type: string
                 network:
                     anyOf:
                     -   $ref: '#/components/schemas/NetworkPortsV1'
@@ -2879,9 +3133,10 @@ components:
                     title: Network
                     nullable: true
                 error:
+                    anyOf:
+                    -   $ref: '#/components/schemas/ErrorMessageV1'
                     nullable: true
-                    $ref: '#/components/schemas/ErrorMessageV1'
-            type: object
+            title: InstanceV1Response
             required:
             - id
             - machine_type
@@ -2889,7 +3144,6 @@ components:
             - status
             - state
             - created_at
-            title: InstanceV1Response
             example:
                 availability_zone: br-regiao-1a
                 created_at: '2022-06-10T18:33:12Z'
@@ -2913,15 +3167,16 @@ components:
                 user_data: some_base_64_str
         InstanceV1State:
             type: string
+            title: InstanceV1State
             enum:
             - new
             - running
             - stopped
             - suspended
             - deleted
-            title: InstanceV1State
         InstanceV1Status:
             type: string
+            title: InstanceV1Status
             enum:
             - attaching_nic
             - detaching_nic
@@ -2955,48 +3210,128 @@ components:
             - deleting
             - deleting_error
             - deleted
-            title: InstanceV1Status
         IntanceUpdateRequest:
+            type: object
             properties:
                 name:
                     type: string
+                    title: Name
                     maxLength: 255
                     minLength: 1
-                    title: Name
-            type: object
+            title: IntanceUpdateRequest
             required:
             - name
-            title: IntanceUpdateRequest
             example:
                 name: new instance name
         IpAddressExpand:
+            type: object
             properties:
                 publicIpAddress:
+                    anyOf:
+                    -   type: string
                     title: Publicipaddress
                     nullable: true
-                    type: string
                 privateIpAddress:
                     type: string
                     title: Privateipaddress
                 ipV6Address:
+                    anyOf:
+                    -   type: string
                     title: Ipv6Address
                     nullable: true
-                    type: string
-            type: object
+            title: IpAddressExpand
             required:
             - privateIpAddress
-            title: IpAddressExpand
         ListBackupResponse:
+            type: object
             properties:
                 backups:
-                    items:
-                        $ref: '#/components/schemas/BackupResponse'
                     type: array
+                    items:
+                        type: object
+                        properties:
+                            id:
+                                type: string
+                                title: Id
+                            name:
+                                type: string
+                                title: Name
+                            backup_type:
+                                type: string
+                                title: Backup Type
+                            instance:
+                                anyOf:
+                                -   $ref: '#/components/schemas/InstanceResponseBackupV1'
+                                -   $ref: '#/components/schemas/InstanceSimpleResponseBackupV1'
+                                title: Instance
+                            rotation:
+                                type: integer
+                                title: Rotation
+                            status:
+                                type: string
+                                title: BackupStatus
+                                enum:
+                                - provisioning
+                                - creating
+                                - completed
+                                - error
+                                - deleting
+                                - deleted
+                            state:
+                                type: string
+                                title: BackupState
+                                enum:
+                                - new
+                                - available
+                                - deleted
+                                - error
+                            size:
+                                anyOf:
+                                -   type: integer
+                                title: Size
+                                nullable: true
+                            min_disk:
+                                anyOf:
+                                -   type: integer
+                                title: Min Disk
+                                nullable: true
+                            created_at:
+                                type: string
+                                title: Created At
+                                example: '2022-01-01T00:00:10Z'
+                            updated_at:
+                                anyOf:
+                                -   type: string
+                                    example: '2022-01-01T00:00:10Z'
+                                title: Updated At
+                                nullable: true
+                        title: BackupResponse
+                        required:
+                        - id
+                        - name
+                        - backup_type
+                        - instance
+                        - rotation
+                        - status
+                        - state
+                        - created_at
+                        example:
+                            backup_type: daily
+                            created_at: '2022-06-10T18:33:12Z'
+                            id: 2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6
+                            instance:
+                                id: 4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a
+                            min_disk: 10
+                            name: backup name
+                            rotation: 1
+                            size: 1000
+                            state: available
+                            status: completed
+                            updated_at: '2022-06-11T18:33:12Z'
                     title: Backups
-            type: object
+            title: ListBackupResponse
             required:
             - backups
-            title: ListBackupResponse
             example:
                 backups:
                 -   backup_type: daily
@@ -3012,16 +3347,98 @@ components:
                     status: completed
                     updated_at: '2022-06-11T18:33:12Z'
         ListImageExternalV1:
+            type: object
             properties:
                 images:
-                    items:
-                        $ref: '#/components/schemas/ImageResponseExternalV1'
                     type: array
+                    items:
+                        type: object
+                        properties:
+                            id:
+                                type: string
+                                title: Id
+                            name:
+                                type: string
+                                title: Name
+                            status:
+                                type: string
+                                title: ImageV1Status
+                                enum:
+                                - active
+                                - deprecated
+                                - deleted
+                                - pending
+                                - creating
+                                - importing
+                                - error
+                            version:
+                                anyOf:
+                                -   type: string
+                                title: Version
+                                nullable: true
+                            platform:
+                                anyOf:
+                                -   type: string
+                                title: Platform
+                                nullable: true
+                            release_at:
+                                anyOf:
+                                -   type: string
+                                    example: '2022-01-01T00:00:10Z'
+                                title: Release At
+                                nullable: true
+                            end_standard_support_at:
+                                anyOf:
+                                -   type: string
+                                    example: '2022-01-01T00:00:10Z'
+                                title: End Standard Support At
+                                nullable: true
+                            end_life_at:
+                                anyOf:
+                                -   type: string
+                                    example: '2022-01-01T00:00:10Z'
+                                title: End Life At
+                                nullable: true
+                            minimum_requirements:
+                                type: object
+                                properties:
+                                    vcpu:
+                                        type: integer
+                                        title: Vcpu
+                                    ram:
+                                        type: integer
+                                        title: Ram
+                                    disk:
+                                        type: integer
+                                        title: Disk
+                                title: ImageReqMin
+                                required:
+                                - vcpu
+                                - ram
+                                - disk
+                        title: ImageResponseExternalV1
+                        required:
+                        - id
+                        - name
+                        - status
+                        - minimum_requirements
+                        example:
+                            end_life_at: '2022-06-10T18:33:12Z'
+                            end_standard_support_at: '2022-06-10T18:33:12Z'
+                            id: c47e974f-8002-46e9-8a63-d66505be2aa1
+                            minimum_requirements:
+                                disk: 2
+                                ram: 1
+                                vcpu: 1
+                            name: ubuntu 22.10
+                            platform: linux
+                            release_at: '2022-06-10T18:33:12Z'
+                            status: active
+                            version: '22.10'
                     title: Images
-            type: object
+            title: ListImageExternalV1
             required:
             - images
-            title: ListImageExternalV1
             example:
                 images:
                 -   end_life_at: '2022-06-10T18:33:12Z'
@@ -3037,16 +3454,144 @@ components:
                     status: active
                     version: '22.10'
         ListInstanceV1Response:
+            type: object
             properties:
                 instances:
-                    items:
-                        $ref: '#/components/schemas/InstanceV1Response'
                     type: array
+                    items:
+                        type: object
+                        properties:
+                            id:
+                                type: string
+                                title: Id
+                            name:
+                                anyOf:
+                                -   type: string
+                                title: Name
+                                nullable: true
+                            machine_type:
+                                anyOf:
+                                -   $ref: '#/components/schemas/InstanceTypeForInstanceV1Response'
+                                -   $ref: '#/components/schemas/InstanceTypesExtendResponse'
+                                title: Machine Type
+                            image:
+                                anyOf:
+                                -   $ref: '#/components/schemas/ImageInstanceV1Response'
+                                -   $ref: '#/components/schemas/ImageExtendResponse'
+                                title: Image
+                            status:
+                                type: string
+                                title: InstanceV1Status
+                                enum:
+                                - attaching_nic
+                                - detaching_nic
+                                - attach_nic_pending
+                                - detach_nic_pending
+                                - provisioning
+                                - creating
+                                - creating_error
+                                - creating_network_error
+                                - creating_error_quota
+                                - creating_error_quota_ram
+                                - creating_error_quota_vcpu
+                                - creating_error_quota_disk
+                                - creating_error_quota_instance
+                                - creating_error_quota_floating_ip
+                                - completed
+                                - retyping_pending
+                                - retyping
+                                - retyping_confirmed
+                                - retyping_error
+                                - retyping_error_quota
+                                - stopping_pending
+                                - stopping
+                                - suspending_pending
+                                - suspending
+                                - rebooting_pending
+                                - rebooting
+                                - starting_pending
+                                - starting
+                                - deleting_pending
+                                - deleting
+                                - deleting_error
+                                - deleted
+                            state:
+                                type: string
+                                title: InstanceV1State
+                                enum:
+                                - new
+                                - running
+                                - stopped
+                                - suspended
+                                - deleted
+                            user_data:
+                                anyOf:
+                                -   type: string
+                                title: User Data
+                                nullable: true
+                            created_at:
+                                type: string
+                                title: Created At
+                                example: '2022-01-01T00:00:10Z'
+                            updated_at:
+                                anyOf:
+                                -   type: string
+                                    example: '2022-01-01T00:00:10Z'
+                                title: Updated At
+                                nullable: true
+                            ssh_key_name:
+                                anyOf:
+                                -   type: string
+                                title: Ssh Key Name
+                                nullable: true
+                            availability_zone:
+                                anyOf:
+                                -   type: string
+                                title: Availability Zone
+                                nullable: true
+                            network:
+                                anyOf:
+                                -   $ref: '#/components/schemas/NetworkPortsV1'
+                                -   $ref: '#/components/schemas/NetworkPortsV1Expand'
+                                title: Network
+                                nullable: true
+                            error:
+                                anyOf:
+                                -   $ref: '#/components/schemas/ErrorMessageV1'
+                                nullable: true
+                        title: InstanceV1Response
+                        required:
+                        - id
+                        - machine_type
+                        - image
+                        - status
+                        - state
+                        - created_at
+                        example:
+                            availability_zone: br-regiao-1a
+                            created_at: '2022-06-10T18:33:12Z'
+                            error:
+                                message: An error occurred while creating your instance.
+                                    Please contact our support for assistance.
+                                slug: create_instance.keypair.not_found
+                            id: 2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6
+                            image:
+                                id: 2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6
+                            machine_type:
+                                id: 2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6
+                            name: instance name
+                            network:
+                                ports:
+                                -   id: 2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6
+                            ssh_key_name: keypair_name_here
+                            state: running
+                            status: completed
+                            updated_at: '2022-06-11T18:33:12Z'
+                            user_data: some_base_64_str
                     title: Instances
-            type: object
+            title: ListInstanceV1Response
             required:
             - instances
-            title: ListInstanceV1Response
             example:
                 instances:
                 -   availability_zone: br-regiao-1a
@@ -3070,16 +3615,94 @@ components:
                     updated_at: '2022-06-11T18:33:12Z'
                     user_data: base64_data
         ListSnapshotResponseV1:
+            type: object
             properties:
                 snapshots:
-                    items:
-                        $ref: '#/components/schemas/SnapshotResponseV1'
                     type: array
+                    items:
+                        type: object
+                        properties:
+                            id:
+                                type: string
+                                title: Id
+                            name:
+                                anyOf:
+                                -   type: string
+                                title: Name
+                                nullable: true
+                            status:
+                                type: string
+                                title: Status
+                            state:
+                                type: string
+                                title: State
+                            created_at:
+                                type: string
+                                title: Created At
+                                example: '2022-01-01T00:00:10Z'
+                            updated_at:
+                                anyOf:
+                                -   type: string
+                                    example: '2022-01-01T00:00:10Z'
+                                title: Updated At
+                                nullable: true
+                            size:
+                                type: integer
+                                title: Size
+                            instance:
+                                type: object
+                                properties:
+                                    id:
+                                        type: string
+                                        title: Id
+                                    image:
+                                        anyOf:
+                                        -   $ref: '#/components/schemas/ImageInstanceV1Response'
+                                        -   $ref: '#/components/schemas/ImageExtendResponse'
+                                        title: Image
+                                    machine_type:
+                                        anyOf:
+                                        -   $ref: '#/components/schemas/InstanceTypeForInstanceV1Response'
+                                        -   $ref: '#/components/schemas/InstanceTypesExtendResponse'
+                                        title: Machine Type
+                                title: InstanceResponseSnapshotV1
+                                required:
+                                - id
+                                - image
+                                - machine_type
+                                example:
+                                    instance:
+                                        id: 4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a
+                                        image:
+                                            id: 4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a
+                                        machine_type:
+                                            id: 4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a
+                        title: SnapshotResponseV1
+                        required:
+                        - id
+                        - status
+                        - state
+                        - created_at
+                        - size
+                        - instance
+                        example:
+                            created_at: '2022-06-10T18:33:12Z'
+                            id: 4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a
+                            instance:
+                                id: 4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a
+                                image:
+                                    id: 4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a
+                                machine_type:
+                                    id: 4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a
+                            name: snapshot name
+                            size: 1000
+                            state: available
+                            status: completed
+                            updated_at: '2022-06-11T18:33:12Z'
                     title: Snapshots
-            type: object
+            title: ListSnapshotResponseV1
             required:
             - snapshots
-            title: ListSnapshotResponseV1
             example:
                 snapshots:
                 -   created_at: '2022-06-10T18:33:12Z'
@@ -3096,54 +3719,97 @@ components:
                     status: completed
                     updated_at: '2022-06-11T18:33:12Z'
         Name:
+            type: object
             properties:
                 name:
                     type: string
+                    title: Name
                     maxLength: 255
                     minLength: 1
-                    title: Name
-            type: object
+            title: Name
             required:
             - name
-            title: Name
             example:
                 name: some_resource_name
         NetworkPortsV1:
+            type: object
             properties:
                 ports:
-                    items:
-                        $ref: '#/components/schemas/PortID'
                     type: array
+                    items:
+                        type: object
+                        properties:
+                            id:
+                                type: string
+                                title: Id
+                        title: PortID
+                        required:
+                        - id
+                        example:
+                            id: c47e974f-8002-46e9-8a63-d66505be2aa1
                     title: Ports
-            type: object
+            title: NetworkPortsV1
             required:
             - ports
-            title: NetworkPortsV1
         NetworkPortsV1Expand:
+            type: object
             properties:
                 vpc:
+                    anyOf:
+                    -   $ref: '#/components/schemas/VpcV1Expand'
                     nullable: true
-                    $ref: '#/components/schemas/VpcV1Expand'
                 ports:
+                    anyOf:
+                    -   type: array
+                        items:
+                            type: object
+                            properties:
+                                id:
+                                    type: string
+                                    title: Id
+                                name:
+                                    type: string
+                                    title: Name
+                                ipAddresses:
+                                    type: object
+                                    properties:
+                                        publicIpAddress:
+                                            anyOf:
+                                            -   type: string
+                                            title: Publicipaddress
+                                            nullable: true
+                                        privateIpAddress:
+                                            type: string
+                                            title: Privateipaddress
+                                        ipV6Address:
+                                            anyOf:
+                                            -   type: string
+                                            title: Ipv6Address
+                                            nullable: true
+                                    title: IpAddressExpand
+                                    required:
+                                    - privateIpAddress
+                            title: PortV1Expand
+                            required:
+                            - id
+                            - name
+                            - ipAddresses
                     title: Ports
                     nullable: true
-                    items:
-                        $ref: '#/components/schemas/PortV1Expand'
-                    type: array
-            type: object
             title: NetworkPortsV1Expand
         PortID:
+            type: object
             properties:
                 id:
                     type: string
                     title: Id
-            type: object
+            title: PortID
             required:
             - id
-            title: PortID
             example:
                 id: c47e974f-8002-46e9-8a63-d66505be2aa1
         PortV1Expand:
+            type: object
             properties:
                 id:
                     type: string
@@ -3152,66 +3818,95 @@ components:
                     type: string
                     title: Name
                 ipAddresses:
-                    $ref: '#/components/schemas/IpAddressExpand'
-            type: object
+                    type: object
+                    properties:
+                        publicIpAddress:
+                            anyOf:
+                            -   type: string
+                            title: Publicipaddress
+                            nullable: true
+                        privateIpAddress:
+                            type: string
+                            title: Privateipaddress
+                        ipV6Address:
+                            anyOf:
+                            -   type: string
+                            title: Ipv6Address
+                            nullable: true
+                    title: IpAddressExpand
+                    required:
+                    - privateIpAddress
+            title: PortV1Expand
             required:
             - id
             - name
             - ipAddresses
-            title: PortV1Expand
         SecurityGroups:
+            type: object
             properties:
                 security_groups:
-                    items:
-                        $ref: '#/components/schemas/ID'
                     type: array
+                    items:
+                        type: object
+                        properties:
+                            id:
+                                type: string
+                                title: Id
+                                maxLength: 255
+                                minLength: 1
+                        title: ID
+                        required:
+                        - id
+                        example:
+                            id: 9ec75090-2872-4f51-8111-53d05d96d2c6
                     title: Security Groups
                     default: []
-            type: object
             title: SecurityGroups
         SnapshotCreateRequestV1:
+            type: object
             properties:
                 name:
                     type: string
+                    title: Name
                     maxLength: 255
                     minLength: 1
-                    title: Name
                 virtual_machine:
                     anyOf:
                     -   $ref: '#/components/schemas/ID'
                     -   $ref: '#/components/schemas/Name'
                     title: Virtual Machine
-            type: object
+            title: SnapshotCreateRequestV1
             required:
             - name
             - virtual_machine
-            title: SnapshotCreateRequestV1
             example:
                 name: snapshot name
                 virtual_machine:
                     id: 4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a
         SnapshotRenameRequest:
+            type: object
             properties:
                 name:
                     type: string
+                    title: Name
                     maxLength: 255
                     minLength: 1
-                    title: Name
-            type: object
+            title: SnapshotRenameRequest
             required:
             - name
-            title: SnapshotRenameRequest
             example:
                 name: new snapshot name
         SnapshotResponseV1:
+            type: object
             properties:
                 id:
                     type: string
                     title: Id
                 name:
+                    anyOf:
+                    -   type: string
                     title: Name
                     nullable: true
-                    type: string
                 status:
                     type: string
                     title: Status
@@ -3223,16 +3918,43 @@ components:
                     title: Created At
                     example: '2022-01-01T00:00:10Z'
                 updated_at:
+                    anyOf:
+                    -   type: string
+                        example: '2022-01-01T00:00:10Z'
                     title: Updated At
                     nullable: true
-                    type: string
-                    example: '2022-01-01T00:00:10Z'
                 size:
                     type: integer
                     title: Size
                 instance:
-                    $ref: '#/components/schemas/InstanceResponseSnapshotV1'
-            type: object
+                    type: object
+                    properties:
+                        id:
+                            type: string
+                            title: Id
+                        image:
+                            anyOf:
+                            -   $ref: '#/components/schemas/ImageInstanceV1Response'
+                            -   $ref: '#/components/schemas/ImageExtendResponse'
+                            title: Image
+                        machine_type:
+                            anyOf:
+                            -   $ref: '#/components/schemas/InstanceTypeForInstanceV1Response'
+                            -   $ref: '#/components/schemas/InstanceTypesExtendResponse'
+                            title: Machine Type
+                    title: InstanceResponseSnapshotV1
+                    required:
+                    - id
+                    - image
+                    - machine_type
+                    example:
+                        instance:
+                            id: 4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a
+                            image:
+                                id: 4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a
+                            machine_type:
+                                id: 4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a
+            title: SnapshotResponseV1
             required:
             - id
             - status
@@ -3240,7 +3962,6 @@ components:
             - created_at
             - size
             - instance
-            title: SnapshotResponseV1
             example:
                 created_at: '2022-06-10T18:33:12Z'
                 id: 4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a
@@ -3256,12 +3977,13 @@ components:
                 status: completed
                 updated_at: '2022-06-11T18:33:12Z'
         SnapshotRestoreRequestV1Default:
+            type: object
             properties:
                 name:
                     type: string
+                    title: Name
                     maxLength: 255
                     minLength: 1
-                    title: Name
                 machine_type:
                     anyOf:
                     -   $ref: '#/components/schemas/ID'
@@ -3269,33 +3991,30 @@ components:
                     title: Machine Type
                 ssh_key_name:
                     type: string
-                    minLength: 0
                     title: Ssh Key Name
                 availability_zone:
+                    anyOf:
+                    -   type: string
+                        maxLength: 255
+                        minLength: 1
                     title: Availability Zone
                     nullable: true
-                    type: string
-                    maxLength: 255
-                    minLength: 1
                 network:
-                    default:
-                        vpc:
-                            name: default
-                        associate_public_ip: true
+                    anyOf:
+                    -   $ref: '#/components/schemas/InstanceCreateRequestV1NetworkDefault'
                     nullable: true
-                    $ref: '#/components/schemas/InstanceCreateRequestV1NetworkDefault'
                 user_data:
+                    anyOf:
+                    -   type: string
+                        maxLength: 65000
+                        minLength: 1
                     title: User Data
                     nullable: true
-                    type: string
-                    maxLength: 65000
-                    minLength: 1
-            type: object
+            title: SnapshotRestoreRequestV1Default
             required:
             - name
             - machine_type
             - ssh_key_name
-            title: SnapshotRestoreRequestV1Default
             example:
                 availability_zone: br-regiao-1a
                 machine_type:
@@ -3312,6 +4031,7 @@ components:
                 ssh_key_name: keypair_name_here
                 user_data: some_base64_script
         ValidationError:
+            type: object
             properties:
                 message:
                     title: Message
@@ -3319,16 +4039,16 @@ components:
                 slug:
                     title: Slug
                     type: string
-            type: object
+            title: ValidationError
             required:
             - loc
             - msg
             - type
-            title: ValidationError
             example:
                 message: Unauthorized
                 slug: Unauthorized
         VpcV1Expand:
+            type: object
             properties:
                 id:
                     type: string
@@ -3336,11 +4056,10 @@ components:
                 name:
                     type: string
                     title: Name
-            type: object
+            title: VpcV1Expand
             required:
             - id
             - name
-            title: VpcV1Expand
 tags:
 -   name: instances
     description: Operations with instances, including create, delete, start, stop,
@@ -3351,17 +4070,16 @@ tags:
     description: Operations with machine types for instances.
 -   name: snapshots
     description: Operations with snapshots for instances.
-$id: https://virtual-machine.jaxyendy.com/openapi.json
 servers:
 -   url: https://{env}/{region}/compute
     variables:
         region:
-            description: Region to reach the service
-            default: br-se1
             enum:
             - br-ne-1
             - br-se1
             - br-mgl1
+            default: br-se1
+            description: Region to reach the service
             x-mgc-transforms:
             -   type: translate
                 allowMissing: true
@@ -3371,11 +4089,11 @@ servers:
                 -   from: br-mgl1
                     to: br-se-1
         env:
-            description: Environment to use
-            default: api.magalu.cloud
             enum:
             - api.magalu.cloud
             - api.pre-prod.jaxyendy.com
+            default: api.magalu.cloud
+            description: Environment to use
             x-mgc-transforms:
             -   type: translate
                 translations:
@@ -3383,3 +4101,4 @@ servers:
                     to: api.magalu.cloud
                 -   from: pre-prod
                     to: api.pre-prod.jaxyendy.com
+$id: https://virtual-machine.jaxyendy.com/openapi.json

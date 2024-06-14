@@ -16,7 +16,8 @@ Usage:
 - --ip-version integer                     Ip Version (required)
 - --name string                            Name (required)
 - -v, --version                                version for create
-- --vpc-id string                          Vpc Id: Id of the VPC to create Subnet (required)
+- --vpc-id anyValue                        Vpc Id: Id of the VPC to create Subnet
+- Use --vpc-id=help for more details (required)
 
 ## Other commands:
 - Global Flags:

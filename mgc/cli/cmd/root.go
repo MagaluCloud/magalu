@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"fmt"
 	"regexp"
 	"slices"
 	"strings"
@@ -117,7 +116,7 @@ can generate a command line on-demand for Rest manipulation`,
 
 	loadErr := loadSdkCommandTree(sdk, rootCmd, mainArgs)
 	if loadErr != nil {
-		rootCmd.PrintErrln("Warning: loading dynamic arguments:", loadErr)
+		logger().Debugw("failed to load command tree", "error", loadErr)
 	}
 
 	defer func() {
@@ -169,6 +168,5 @@ func setDefaultRegion(sdk *mgcSdk.Sdk) {
 			logger().Debugw("failed to set region in config", "error", err)
 			return
 		}
-		fmt.Println("Using default region:", region)
 	}
 }

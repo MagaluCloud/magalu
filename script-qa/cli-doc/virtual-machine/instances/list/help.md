@@ -1,12 +1,17 @@
-# List Virtual Machine instances
+# List Virtual Machine instances in the current tenant which is logged in.
 
 ## Usage:
 ```bash
-Usage:
-  ./mgc virtual-machine instances list [flags]
+#### Notes
+- You can use the **extend** argument to get more details from the inner objects
+like image or type.
 ```
 
 ## Product catalog:
+- Usage:
+- ./mgc virtual-machine instances list [flags]
+
+## Other commands:
 - Flags:
 - --control.limit integer     Limit: limit the number of the results (max: 2147483647) (default 50)
 - --control.offset integer    Offset: pagination for the results limited (range: 0 - 2147483647)
@@ -15,15 +20,12 @@ Usage:
 - -h, --help                     help for list
 - -v, --version                  version for list
 
-## Other commands:
-- Global Flags:
-- --cli.show-cli-globals   Show all CLI global flags on usage text
-- --env enum               Environment to use (one of "pre-prod" or "prod") (default "prod")
-- --region enum            Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
-- --server-url uri         Manually specify the server to use
-
 ## Flags:
 ```bash
-
+Global Flags:
+      --cli.show-cli-globals   Show all CLI global flags on usage text
+      --env enum               Environment to use (one of "pre-prod" or "prod") (default "prod")
+      --region enum            Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
+      --server-url uri         Manually specify the server to use
 ```
 

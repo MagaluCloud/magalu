@@ -23,7 +23,7 @@ Flags:
       --cli.watch                     Wait until the operation is completed by calling the 'get' link and waiting until termination. Akin to '! get -w'
   -h, --help                          help for extend
       --id uuid                       Id (required)
-      --size integer                  New volume size in GB (min: 1) (required)
+      --size integer                  New volume size in GB (required)
   -v, --version                       version for extend
 
 Global Flags:

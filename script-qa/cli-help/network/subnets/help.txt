@@ -1,11 +1,12 @@
-VPC Subnets
+subnets
 
 Usage:
   ./mgc network subnets [flags]
   ./mgc network subnets [command]
 
 Commands:
-  subnets     subnets
+  subnets      subnets
+  vpcs-subnets vpcs-subnets
 
 Flags:
   -h, --help      help for subnets

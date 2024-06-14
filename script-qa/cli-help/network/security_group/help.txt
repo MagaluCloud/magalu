@@ -1,0 +1,21 @@
+security_group
+
+Usage:
+  ./mgc network security-group [flags]
+  ./mgc network security-group [command]
+
+Aliases:
+  security-group, security_group
+
+Commands:
+  security-groups security-groups
+
+Flags:
+  -h, --help      help for security-group
+  -v, --version   version for security-group
+
+Global Flags:
+      --cli.show-cli-globals   Show all CLI global flags on usage text
+
+Use "./mgc network security-group [command] --help" for more information about a command.
+

@@ -1,4 +1,4 @@
-# This file is to be merged on top of mgc/cli/openapis/mke.openapi.yaml
+# This file is to be merged on top of mgc/cli/openapis/kubernetes.openapi.yaml
 # using yaml_merge.py
 # NOTE: Lists are merged by their indexes, be careful with parameters, tags and such!
 # to keep it sane, keep some list item identifier (ex: "name") and add extra properties,

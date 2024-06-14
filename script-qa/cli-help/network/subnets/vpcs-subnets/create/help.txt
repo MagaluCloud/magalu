@@ -12,7 +12,8 @@ Flags:
       --ip-version integer                     Ip Version (required)
       --name string                            Name (required)
   -v, --version                                version for create
-      --vpc-id string                          Vpc Id: Id of the VPC to create Subnet (required)
+      --vpc-id anyValue                        Vpc Id: Id of the VPC to create Subnet
+                                               Use --vpc-id=help for more details (required)
 
 Global Flags:
       --cli.show-cli-globals   Show all CLI global flags on usage text

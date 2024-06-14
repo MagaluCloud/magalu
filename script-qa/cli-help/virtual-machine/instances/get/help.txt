@@ -1,4 +1,11 @@
-Get a Virtual Machine instance details
+Get an instance details for the current tenant which is logged in.
+
+#### Notes
+- You can use the virtual-machine list command to retrieve all instances,
+so you can get the id of the instance that you want to get details.
+
+- You can use the **expand** argument to get more details from the inner objects
+like image or type.
 
 Usage:
   ./mgc virtual-machine instances get [id] [flags]

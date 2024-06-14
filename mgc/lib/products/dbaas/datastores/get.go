@@ -3,53 +3,49 @@ Executor: get
 
 # Summary
 
-Datastore detail.
+Engine detail.
 
 # Description
 
-Returns a datastore detail.
+Returns a engine detail.
 
-Version: 1.15.3
+Version: 1.21.1
 
 import "magalu.cloud/lib/products/dbaas/datastores"
 */
 package datastores
 
 import (
-	"context"
-
 	mgcCore "magalu.cloud/core"
-	mgcClient "magalu.cloud/lib"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
 
 type GetParameters struct {
-	DatastoreId string `json:"datastore_id"`
+	EngineId string `json:"engine_id"`
 }
 
 type GetConfigs struct {
-	Env       string `json:"env,omitempty"`
-	Region    string `json:"region,omitempty"`
-	ServerUrl string `json:"serverUrl,omitempty"`
+	Env       *string `json:"env,omitempty"`
+	Region    *string `json:"region,omitempty"`
+	ServerUrl *string `json:"serverUrl,omitempty"`
 }
 
 type GetResult struct {
 	Engine  string `json:"engine"`
 	Id      string `json:"id"`
+	Name    string `json:"name"`
 	Status  string `json:"status"`
 	Version string `json:"version"`
 }
 
-func Get(
-	client *mgcClient.Client,
-	ctx context.Context,
+func (s *service) Get(
 	parameters GetParameters,
 	configs GetConfigs,
 ) (
 	result GetResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("Get", mgcCore.RefPath("/dbaas/datastores/get"), client, ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Get", mgcCore.RefPath("/dbaas/datastores/get"), s.client, s.ctx)
 	if err != nil {
 		return
 	}

@@ -7,7 +7,7 @@ subnets
 
 # Description
 
-# VPC Subnets | subnets
+subnets | subnets
 
 Version: 1.124.1
 

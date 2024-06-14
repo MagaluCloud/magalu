@@ -1,4 +1,4 @@
-VPC Subnets | subnets
+subnets | subnets
 
 Usage:
   ./mgc network subnets subnets [flags]

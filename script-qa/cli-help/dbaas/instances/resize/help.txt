@@ -3,12 +3,8 @@ Resizes a database instance.
 Usage:
   ./mgc dbaas instances resize [instance-id] [flags]
 
-Examples:
-  ./mgc dbaas instances resize --volume.size=30 --volume.type="CLOUD_NVME"
-
 Flags:
       --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-      --cli.watch                     Wait until the operation is completed by calling the 'get' link and waiting until termination. Akin to '! get -w'
       --exchange string               Exchange (default "dbaas-internal")
       --flavor-id uuid                Flavor Id
   -h, --help                          help for resize

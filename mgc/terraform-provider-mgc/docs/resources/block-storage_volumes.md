@@ -80,30 +80,12 @@ Read-Only:
 - `created_at` (Attributes) (see [below for nested schema](#nestedatt--attachment--instance--created_at))
 - `id` (String)
 - `name` (String)
-- `state` (Attributes) (see [below for nested schema](#nestedatt--attachment--instance--state))
-- `status` (Attributes) (see [below for nested schema](#nestedatt--attachment--instance--status))
+- `state` (String)
+- `status` (String)
 - `updated_at` (Attributes) (see [below for nested schema](#nestedatt--attachment--instance--updated_at))
 
 <a id="nestedatt--attachment--instance--created_at"></a>
 ### Nested Schema for `attachment.instance.created_at`
-
-Read-Only:
-
-- `string1` (String)
-- `string2` (String)
-
-
-<a id="nestedatt--attachment--instance--state"></a>
-### Nested Schema for `attachment.instance.state`
-
-Read-Only:
-
-- `string1` (String)
-- `string2` (String)
-
-
-<a id="nestedatt--attachment--instance--status"></a>
-### Nested Schema for `attachment.instance.status`
 
 Read-Only:
 

@@ -20,13 +20,13 @@ Operations with instances, including create, delete, start, stop, reboot and oth
 - `image` (Attributes) (see [below for nested schema](#nestedatt--image))
 - `machine_type` (Attributes) (see [below for nested schema](#nestedatt--machine_type))
 - `name` (String)
-- `network` (Attributes) (see [below for nested schema](#nestedatt--network))
 - `ssh_key_name` (String)
 
 ### Optional
 
 - `availability_zone` (String)
 - `delete_public_ip` (Boolean)
+- `network` (Attributes) (see [below for nested schema](#nestedatt--network))
 - `user_data` (String)
 
 ### Read-Only
@@ -73,13 +73,10 @@ Optional:
 <a id="nestedatt--network--nic"></a>
 ### Nested Schema for `network.nic`
 
-Required:
-
-- `security_groups` (Attributes List) (see [below for nested schema](#nestedatt--network--nic--security_groups))
-
 Optional:
 
 - `id` (String)
+- `security_groups` (Attributes List) (see [below for nested schema](#nestedatt--network--nic--security_groups))
 
 <a id="nestedatt--network--nic--security_groups"></a>
 ### Nested Schema for `network.nic.security_groups`

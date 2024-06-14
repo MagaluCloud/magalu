@@ -6,6 +6,7 @@ use (
 	./mgc/core
 	./mgc/lib
 	./mgc/sdk
+	./mgc/spec_manipulator
 	./mgc/terraform-provider-mgc
 	./mgc/testing/fs_test_helper
 	./mgc/tools

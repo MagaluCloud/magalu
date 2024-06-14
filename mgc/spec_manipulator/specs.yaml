@@ -1,0 +1,43 @@
+jaxyendy:
+    - url: https://vpc.br-ne-1.jaxyendy.com/openapi.json
+      file: network.jaxyendy.openapi.json
+      menu: network
+      cli: true
+      tf: true
+      sdk: true
+      enabled: true
+    - url: https://block-storage.br-ne-1.jaxyendy.com/v1/openapi.json
+      file: block-storage.jaxyendy.openapi.json
+      menu: block-storage
+      cli: true
+      tf: true
+      sdk: true
+      enabled: true
+    - url: https://dbaas.br-ne-1.jaxyendy.com/openapi.json
+      file: database.jaxyendy.openapi.json
+      menu: database
+      cli: true
+      tf: true
+      sdk: true
+      enabled: true
+    - url: https://mke.br-ne-1.jaxyendy.com/docs/openapi-with-snippets.json
+      file: kubernetes.jaxyendy.openapi.json
+      menu: kubernetes
+      cli: true
+      tf: true
+      sdk: true
+      enabled: true
+    - url: https://virtual-machine.br-ne-1.jaxyendy.com/v1/openapi.json
+      file: virtual-machine.jaxyendy.openapi.json
+      menu: virtual-machine
+      cli: true
+      tf: true
+      sdk: true
+      enabled: true
+    - url: https://virtual-machine.br-ne-1.jaxyendy.com/internal/v1/openapi.json
+      file: virtual-machine-xaas.jaxyendy.openapi.json
+      menu: virtual-machine-xaas
+      cli: false
+      tf: false
+      sdk: true
+      enabled: true
