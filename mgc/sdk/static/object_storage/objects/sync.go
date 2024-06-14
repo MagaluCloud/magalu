@@ -2,13 +2,9 @@ package objects
 
 import (
 	"context"
-	"crypto/md5"
-	"encoding/hex"
 	"fmt"
-	"io"
 	"io/fs"
 	"os"
-	"strconv"
 	"strings"
 	sy "sync"
 	"time"
@@ -59,8 +55,7 @@ var getSync = utils.NewLazyLoader[core.Executor](func() core.Executor {
 		core.DescriptorSpec{
 			Name:        "sync",
 			Summary:     "Synchronizes a local path with a bucket",
-			Description: "This command uploads any file from the local path to the bucket if it is not already present or has changed.",
-			// Scopes:      core.Scopes{"object-storage.read", "object-storage.write"},
+			Description: "This command uploads any file from the local path to the bucket if it is not already present or has modified time changed.",
 		},
 		sync,
 	)
@@ -249,17 +244,11 @@ func createSyncObjectProcessor(
 			logger().Debugw("error getting file stats", "error", err)
 		}
 
-		if err == nil && entry.Stats.SourceLength == fileStats.SourceLength {
-			localMd5, err := getLocalFileEtagBasedOnRemote(entry.Source.String(), fileStats.Etag)
-			if err != nil {
-				logger().Debugw("error getting md5 from file", "error", err)
-				return err, pipeline.ProcessOutput
-			}
-			if localMd5 == fileStats.Etag {
-				logger().Debug("Skipping file [%s] - no change", entry.Source)
-				return nil, pipeline.ProcessSkip
-			}
-			logger().Debug("Uploading file [%s] - changed", entry.Source)
+		isSameSize := entry.Stats.SourceLength == fileStats.SourceLength
+		isLocalOlderThenBucket := entry.Stats.SourceModTime < fileStats.SourceModTime
+		if err == nil && isSameSize && isLocalOlderThenBucket {
+			logger().Debug("Skipping file [%s] - no change", entry.Source)
+			return nil, pipeline.ProcessSkip
 		}
 
 		err = uploadFile(ctx, entry.Source, entry.Destination, cfg)
@@ -270,74 +259,6 @@ func createSyncObjectProcessor(
 		uploadFiles.Increment()
 		return nil, pipeline.ProcessOutput
 	}
-}
-
-func getLocalFileEtagBasedOnRemote(path, remoteEtag string) (string, error) {
-	file, err := os.Open(path)
-	if err != nil {
-		return "", err
-	}
-	defer file.Close()
-
-	if !strings.Contains(remoteEtag, "-") {
-		hash := md5.New()
-		if _, err := io.Copy(hash, file); err != nil {
-			return "", err
-		}
-		return hex.EncodeToString(hash.Sum(nil)), nil
-
-	}
-	return recalculateEtag(path, remoteEtag)
-}
-
-func recalculateEtag(filePath string, eTag string) (string, error) {
-	fileInfo, err := os.Stat(filePath)
-	if err != nil {
-		return "", err
-	}
-
-	parts := strings.Split(eTag, "-")
-	if len(parts) != 2 {
-		return "", fmt.Errorf("invalid ETag format")
-	}
-
-	numParts, err := strconv.Atoi(parts[1])
-	if err != nil {
-		return "", err
-	}
-
-	x := fileInfo.Size() / int64(numParts)
-	y := x % 1048576
-	chunkSize := x + 1048576 - y
-
-	file, err := os.Open(filePath)
-	if err != nil {
-		return "", err
-	}
-	defer file.Close()
-
-	hashes := []byte{}
-	buf := make([]byte, chunkSize)
-
-	for {
-		n, err := file.Read(buf)
-		if err != nil && err != io.EOF {
-			return "", err
-		}
-		if n == 0 {
-			break
-		}
-
-		hash := md5.Sum(buf[:n])
-		hashes = append(hashes, hash[:]...)
-	}
-
-	if numParts <= 1 {
-		return hex.EncodeToString(hashes), nil
-	}
-
-	finalHash := md5.Sum(hashes)
-	return fmt.Sprintf("%s-%d", hex.EncodeToString(finalHash[:]), numParts), nil
 }
 
 func getFileStats(ctx context.Context, destination mgcSchemaPkg.URI, cfg common.Config) (fileSyncStats, error) {
