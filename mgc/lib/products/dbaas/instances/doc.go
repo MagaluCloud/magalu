@@ -5,7 +5,7 @@ Package: instances
 
 Database instances management.
 
-Version: 1.20.0
+Version: 1.21.1
 
 import "magalu.cloud/lib/products/dbaas/instances"
 */

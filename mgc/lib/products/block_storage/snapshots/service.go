@@ -16,11 +16,11 @@ type service struct {
 
 type Service interface {
 	Create(parameters CreateParameters, configs CreateConfigs) (result CreateResult, err error)
+	CreateSnapshotId(parameters CreateSnapshotIdParameters, configs CreateSnapshotIdConfigs) (result CreateSnapshotIdResult, err error)
 	Delete(parameters DeleteParameters, configs DeleteConfigs) (err error)
 	Get(parameters GetParameters, configs GetConfigs) (result GetResult, err error)
 	List(parameters ListParameters, configs ListConfigs) (result ListResult, err error)
 	Rename(parameters RenameParameters, configs RenameConfigs) (err error)
-	Restore(parameters RestoreParameters, configs RestoreConfigs) (result RestoreResult, err error)
 }
 
 func NewService(ctx context.Context, client *mgcClient.Client) Service {

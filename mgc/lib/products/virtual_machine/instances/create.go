@@ -7,7 +7,32 @@ Create an instance asynchronously.
 
 # Description
 
-# Create a Virtual Machine instance
+Creates a Virtual Machine instance in the current tenant which is logged in.
+
+An instance is ready for you to use when it's in the running state.
+
+#### Notes
+  - For the image data, you can use the virtual-machine images list command
+    to list all available images.
+  - For the machine type data, you can use the virtual-machine machine-types
+    list command to list all available machine types.
+  - You can verify the state of your instance using the virtual-machine get
+
+command.
+
+#### Rules
+
+- If you don't specify a VPC, the default VPC will be used. When the
+default VPC is not available, the command will fail.
+- If you don't specify an network interface, an default network interface
+will be created.
+- You can either specify an image id or an image name. If you specify
+both, the image id will be used.
+- You can either specify a machine type id or a machine type name. If
+you specify both, the machine type id will be used.
+- You can either specify an VPC id or an VPC name. If you specify both,
+the VPC id will be used.
+- The user data must be a Base64 encoded string.
 
 Version: v1
 
@@ -25,7 +50,7 @@ type CreateParameters struct {
 	Image            CreateParametersImage       `json:"image"`
 	MachineType      CreateParametersMachineType `json:"machine_type"`
 	Name             string                      `json:"name"`
-	Network          CreateParametersNetwork     `json:"network"`
+	Network          *CreateParametersNetwork    `json:"network,omitempty"`
 	SshKeyName       string                      `json:"ssh_key_name"`
 	UserData         *string                     `json:"user_data,omitempty"`
 }
@@ -56,12 +81,21 @@ type CreateParametersNetwork struct {
 	Vpc               *CreateParametersNetworkVpc `json:"vpc,omitempty"`
 }
 
+// any of: CreateParametersImage0, CreateParametersNetworkNic1
 type CreateParametersNetworkNic struct {
-	Id             *string                                  `json:"id,omitempty"`
-	SecurityGroups CreateParametersNetworkNicSecurityGroups `json:"security_groups"`
+	CreateParametersImage0      `json:",squash"` // nolint
+	CreateParametersNetworkNic1 `json:",squash"` // nolint
 }
 
-type CreateParametersNetworkNicSecurityGroups []CreateParametersImage0
+type CreateParametersNetworkNic1 struct {
+	SecurityGroups *CreateParametersNetworkNic1SecurityGroups `json:"security_groups,omitempty"`
+}
+
+type CreateParametersNetworkNic1SecurityGroupsItem struct {
+	Id string `json:"id"`
+}
+
+type CreateParametersNetworkNic1SecurityGroups []CreateParametersNetworkNic1SecurityGroupsItem
 
 // any of: CreateParametersImage0, CreateParametersImage1
 type CreateParametersNetworkVpc struct {
