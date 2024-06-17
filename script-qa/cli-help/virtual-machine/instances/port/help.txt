@@ -1,0 +1,19 @@
+Operations with instances, including create, delete, start, stop, reboot and other actions. | port
+
+Usage:
+  ./mgc virtual-machine instances port [flags]
+  ./mgc virtual-machine instances port [command]
+
+Commands:
+  attach      Attach port to instance
+  detach      Detach a non primary port from instance
+
+Flags:
+  -h, --help      help for port
+  -v, --version   version for port
+
+Global Flags:
+      --cli.show-cli-globals   Show all CLI global flags on usage text
+
+Use "./mgc virtual-machine instances port [command] --help" for more information about a command.
+
