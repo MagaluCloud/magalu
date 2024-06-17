@@ -1,0 +1,20 @@
+Routes related to managing Container Registry repositories.
+
+Usage:
+  ./mgc container-registry repositories [flags]
+  ./mgc container-registry repositories [command]
+
+Commands:
+  delete      Delete a container registry repository by repository_name.
+  get         Get a container registry repository by repository_name
+  list        List all container registry repositories
+
+Flags:
+  -h, --help      help for repositories
+  -v, --version   version for repositories
+
+Global Flags:
+      --cli.show-cli-globals   Show all CLI global flags on usage text
+
+Use "./mgc container-registry repositories [command] --help" for more information about a command.
+

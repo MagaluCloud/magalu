@@ -3,7 +3,7 @@
   "info": {
     "title": "Internal Virtual Machine Api Product",
     "description": "Virtual Machine Api Product",
-    "version": "1.235.0"
+    "version": "1.237.0"
   },
   "paths": {
     "/v1/health": {
@@ -242,6 +242,14 @@
             "schema": {
               "type": "string",
               "title": "Id"
+            }
+          },
+          {
+            "name": "project_type",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ProjectTypeAll"
             }
           },
           {
@@ -1549,6 +1557,246 @@
           "status": "creating"
         }
       },
+      "BackupRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "maxLength": 255,
+            "minLength": 1
+          },
+          "virtual_machine": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ID"
+              },
+              {
+                "$ref": "#/components/schemas/Name"
+              }
+            ],
+            "title": "Virtual Machine"
+          },
+          "backup_type": {
+            "$ref": "#/components/schemas/BackupType"
+          },
+          "rotation": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rotation",
+            "default": 10
+          }
+        },
+        "title": "BackupRequest",
+        "required": [
+          "name",
+          "virtual_machine",
+          "backup_type"
+        ],
+        "example": {
+          "backup_type": "daily",
+          "name": "backup name",
+          "rotation": 1,
+          "virtual_machine": {
+            "id": "4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a"
+          }
+        }
+      },
+      "BackupResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "backup_type": {
+            "type": "string",
+            "title": "Backup Type"
+          },
+          "instance": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/InstanceResponseBackupV1"
+              },
+              {
+                "$ref": "#/components/schemas/InstanceSimpleResponseBackupV1"
+              }
+            ],
+            "title": "Instance"
+          },
+          "status": {
+            "$ref": "#/components/schemas/BackupStatus"
+          },
+          "state": {
+            "$ref": "#/components/schemas/BackupState"
+          },
+          "size": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Size"
+          },
+          "min_disk": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Min Disk"
+          },
+          "created_at": {
+            "type": "string",
+            "examples": [
+              "2022-01-01T00:00:10Z"
+            ],
+            "title": "Created At"
+          },
+          "updated_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "examples": [
+                  "2022-01-01T00:00:10Z"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Updated At"
+          }
+        },
+        "title": "BackupResponse",
+        "required": [
+          "id",
+          "name",
+          "backup_type",
+          "instance",
+          "status",
+          "state",
+          "created_at"
+        ],
+        "example": {
+          "backup_type": "daily",
+          "created_at": "2022-06-10T18:33:12Z",
+          "id": "2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6",
+          "instance": {
+            "id": "4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a"
+          },
+          "min_disk": 10,
+          "name": "backup name",
+          "size": 1000,
+          "state": "available",
+          "status": "completed",
+          "updated_at": "2022-06-11T18:33:12Z"
+        }
+      },
+      "BackupRestoreRequestDefault": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "maxLength": 255,
+            "minLength": 1
+          },
+          "machine_type": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ID"
+              },
+              {
+                "$ref": "#/components/schemas/Name"
+              }
+            ],
+            "title": "Machine Type"
+          },
+          "ssh_key_name": {
+            "type": "string",
+            "title": "Ssh Key Name"
+          },
+          "availability_zone": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 255,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Availability Zone"
+          },
+          "network": {
+            "$ref": "#/components/schemas/InstanceCreateRequestV1NetworkDefault"
+          },
+          "user_data": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 65000,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "User Data"
+          }
+        },
+        "title": "BackupRestoreRequestDefault",
+        "required": [
+          "name",
+          "machine_type",
+          "ssh_key_name",
+          "network"
+        ],
+        "example": {
+          "availability_zone": "br-regiao-1a",
+          "machine_type": {
+            "id": "4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a"
+          },
+          "name": "instance name",
+          "network": {
+            "associate_public_ip": true,
+            "nic": {
+              "security_groups": [
+                {
+                  "id": "f273fbde-2ddf-4dcd-8c41-342671ac0d17"
+                },
+                {
+                  "id": "02a2acf3-d6db-4424-ac97-0254cb9c329e"
+                }
+              ]
+            },
+            "vpc": {
+              "id": "4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a"
+            }
+          },
+          "ssh_key_name": "keypair_name_here",
+          "user_data": "some_base64_script"
+        }
+      },
       "BackupState": {
         "type": "string",
         "title": "BackupState",
@@ -1570,6 +1818,11 @@
           "deleting",
           "deleted"
         ]
+      },
+      "BackupType": {
+        "type": "string",
+        "title": "BackupType",
+        "const": "daily"
       },
       "CreateResponse": {
         "type": "object",
@@ -2418,6 +2671,61 @@
           "error"
         ]
       },
+      "InstanceCreateRequestV1NetworkDefault": {
+        "type": "object",
+        "properties": {
+          "vpc": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ID"
+              },
+              {
+                "$ref": "#/components/schemas/Name"
+              }
+            ],
+            "title": "Vpc",
+            "default": {
+              "name": "default"
+            }
+          },
+          "nic": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ID"
+              },
+              {
+                "$ref": "#/components/schemas/SecurityGroups"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Nic"
+          },
+          "associate_public_ip": {
+            "type": "boolean",
+            "title": "Associate Public Ip",
+            "default": true
+          }
+        },
+        "title": "InstanceCreateRequestV1NetworkDefault",
+        "example": {
+          "associate_public_ip": true,
+          "nic": {
+            "security_groups": [
+              {
+                "id": "f273fbde-2ddf-4dcd-8c41-342671ac0d17"
+              },
+              {
+                "id": "02a2acf3-d6db-4424-ac97-0254cb9c329e"
+              }
+            ]
+          },
+          "vpc": {
+            "id": "2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6"
+          }
+        }
+      },
       "InstanceDeletedAllResponse": {
         "type": "object",
         "properties": {
@@ -2561,6 +2869,70 @@
           "user_data": "user_data_here"
         }
       },
+      "InstanceResponseBackupV1": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "state": {
+            "type": "string",
+            "title": "State"
+          },
+          "image": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ImageInstanceV1Response"
+              },
+              {
+                "$ref": "#/components/schemas/ImageExtendResponse"
+              }
+            ],
+            "title": "Image"
+          },
+          "machine_type": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/InstanceTypeForInstanceV1Response"
+              },
+              {
+                "$ref": "#/components/schemas/InstanceTypesExtendResponse"
+              }
+            ],
+            "title": "Machine Type"
+          }
+        },
+        "title": "InstanceResponseBackupV1",
+        "required": [
+          "id",
+          "name",
+          "status",
+          "state",
+          "image",
+          "machine_type"
+        ],
+        "example": {
+          "instance": {
+            "id": "4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a",
+            "image": {
+              "id": "4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a"
+            },
+            "machine_type": {
+              "id": "4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a"
+            },
+            "name": "instance name"
+          }
+        }
+      },
       "InstanceResponseSnapshotV1": {
         "type": "object",
         "properties": {
@@ -2631,6 +3003,31 @@
         "example": {
           "machine_type": {
             "id": "2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6"
+          }
+        }
+      },
+      "InstanceSimpleResponseBackupV1": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          }
+        },
+        "title": "InstanceSimpleResponseBackupV1",
+        "required": [
+          "id"
+        ],
+        "example": {
+          "instance": {
+            "id": "4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a",
+            "image": {
+              "id": "4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a"
+            },
+            "machine_type": {
+              "id": "4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a"
+            },
+            "name": "instance name"
           }
         }
       },
@@ -3512,6 +3909,40 @@
             {
               "name": "keypair_name_here",
               "public_key": "some ssh public key here..."
+            }
+          ]
+        }
+      },
+      "ListBackupResponse": {
+        "type": "object",
+        "properties": {
+          "backups": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BackupResponse"
+            },
+            "title": "Backups"
+          }
+        },
+        "title": "ListBackupResponse",
+        "required": [
+          "backups"
+        ],
+        "example": {
+          "backups": [
+            {
+              "backup_type": "daily",
+              "created_at": "2022-06-10T18:33:12Z",
+              "id": "2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6",
+              "instance": {
+                "id": "4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a"
+              },
+              "min_disk": 10,
+              "name": "backup name ffff",
+              "size": 1000,
+              "state": "available",
+              "status": "completed",
+              "updated_at": "2022-06-11T18:33:12Z"
             }
           ]
         }
@@ -4509,29 +4940,5 @@
         }
       }
     }
-  },
-  "servers": [
-    {
-      "url": "https://{env}/{region}/$API_ENDPOINT_NAME",
-      "variables": {
-        "region": {
-          "enum": [
-            "br-ne-1",
-            "br-se1",
-            "br-mgl1"
-          ],
-          "default": "br-se1",
-          "description": "Region to reach the service"
-        },
-        "env": {
-          "enum": [
-            "api.magalu.cloud",
-            "api.pre-prod.jaxyendy.com"
-          ],
-          "default": "api.magalu.cloud",
-          "description": "Environment to use"
-        }
-      }
-    }
-  ]
+  }
 }

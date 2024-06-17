@@ -29,3 +29,7 @@ echo "VIRTUAL MACHINE"
 
 $BASEDIR/add_specs.sh network network mgc/spec_manipulator/cli_specs/conv.network.jaxyendy.openapi.json https://network.jaxyendy.com/openapi.json
 echo "NETWORK"
+
+
+$BASEDIR/add_specs.sh container-registry container-registry mgc/spec_manipulator/cli_specs/container-registry.openapi.yaml https://container-registry.jaxyendy.com/openapi.json
+echo "REGISTRY"

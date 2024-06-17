@@ -6,17 +6,17 @@ info:
         name: Tribo IAAS Cloud
         url: https://gitlab.luizalabs.com/cloud/dbaas/docs
         email: cloud-iaas-dbaas@luizalabs.com
-    version: 1.21.1
+    version: 1.21.2
 servers:
 -   url: https://{env}/{region}/database
     variables:
         region:
+            description: Region to reach the service
+            default: br-se1
             enum:
             - br-ne-1
             - br-se1
             - br-mgl1
-            default: br-se1
-            description: Region to reach the service
             x-mgc-transforms:
             -   type: translate
                 allowMissing: true
@@ -26,11 +26,11 @@ servers:
                 -   from: br-mgl1
                     to: br-se-1
         env:
+            description: Environment to use
+            default: api.magalu.cloud
             enum:
             - api.magalu.cloud
             - api.pre-prod.jaxyendy.com
-            default: api.magalu.cloud
-            description: Environment to use
             x-mgc-transforms:
             -   type: translate
                 translations:
@@ -38,6 +38,7 @@ servers:
                     to: api.magalu.cloud
                 -   from: pre-prod
                     to: api.pre-prod.jaxyendy.com
+-   url: http://localhost:8000
 paths:
     /v1/healthcheck:
         get:

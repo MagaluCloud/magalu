@@ -3750,6 +3750,1153 @@
        },
        "type": "object"
       },
+      "description": "Delete repository image by digest or tag",
+      "isInternal": false,
+      "name": "delete",
+      "parameters": {
+       "additionalProperties": false,
+       "properties": {
+        "digest_or_tag": {
+         "description": "Digest or tag of an image",
+         "type": "string"
+        },
+        "registry_id": {
+         "description": "Container Registry's UUID.",
+         "format": "uuid",
+         "type": "string"
+        },
+        "repository_name": {
+         "description": "Repository's name.",
+         "type": "string"
+        }
+       },
+       "required": [
+        "digest_or_tag",
+        "registry_id",
+        "repository_name"
+       ],
+       "type": "object"
+      },
+      "result": {
+       "nullable": true,
+       "type": "null"
+      },
+      "version": "0.1.0"
+     },
+     {
+      "configs": {
+       "additionalProperties": false,
+       "properties": {
+        "env": {
+         "default": "prod",
+         "description": "Environment to use",
+         "enum": [
+          "prod",
+          "pre-prod"
+         ],
+         "type": "string"
+        },
+        "region": {
+         "default": "br-se1",
+         "description": "Region to reach the service",
+         "enum": [
+          "br-ne1",
+          "br-se1",
+          "br-mgl1"
+         ],
+         "type": "string"
+        },
+        "serverUrl": {
+         "description": "Manually specify the server to use",
+         "format": "uri",
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
+      "description": "Show detailed information about the image.",
+      "isInternal": false,
+      "name": "get",
+      "parameters": {
+       "additionalProperties": false,
+       "properties": {
+        "digest_or_tag": {
+         "description": "Digest or tag of an image.",
+         "type": "string"
+        },
+        "registry_id": {
+         "description": "Container Registry's UUID.",
+         "format": "uuid",
+         "type": "string"
+        },
+        "repository_name": {
+         "description": "Repository's name.",
+         "type": "string"
+        }
+       },
+       "required": [
+        "digest_or_tag",
+        "registry_id",
+        "repository_name"
+       ],
+       "type": "object"
+      },
+      "result": {
+       "description": "Repository image response data.",
+       "example": {
+        "digest": "sha256:aef9ff594b36575be6248901a4e5a9bad031f3e0fd42c33a6d2bd501dde5e955",
+        "extra_attr": {},
+        "manifest_media_type": "application/vnd.docker.distribution.manifest.v2+json",
+        "media_type": "application/vnd.docker.container.image.v1+json",
+        "pulled_at": "2024-05-15T19:56:47Z",
+        "pushed_at": "2024-05-15T19:56:47Z",
+        "size_bytes": 3552429,
+        "tags": [
+         "latest"
+        ],
+        "tags_details": [
+         {
+          "name": "latest",
+          "pulled_at": "2024-05-15T19:56:47Z",
+          "pushed_at": "2024-05-15T19:56:47Z",
+          "signed": false
+         }
+        ]
+       },
+       "properties": {
+        "digest": {
+         "description": "Image digest.",
+         "type": "string"
+        },
+        "extra_attr": {
+         "description": "Extra attributes about the image.",
+         "type": "object"
+        },
+        "manifest_media_type": {
+         "description": "The manifest media type of the image.",
+         "type": "string"
+        },
+        "media_type": {
+         "description": "The media type of the image.",
+         "type": "string"
+        },
+        "pulled_at": {
+         "description": "Date and time when the image was pulled.",
+         "type": "string"
+        },
+        "pushed_at": {
+         "description": "Date and time when the image was pushed.",
+         "type": "string"
+        },
+        "size_bytes": {
+         "description": "Image size in bytes.",
+         "type": "integer"
+        },
+        "tags": {
+         "description": "Tags of the image.",
+         "items": {
+          "description": "Tag names.",
+          "type": "string"
+         },
+         "type": "array"
+        },
+        "tags_details": {
+         "description": "Tags details of the image",
+         "items": {
+          "description": "Tag of an image response.",
+          "example": {
+           "name": "latest",
+           "pulled_at": "2024-05-15T19:56:47Z",
+           "pushed_at": "2024-05-15T19:56:47Z",
+           "signed": false
+          },
+          "properties": {
+           "name": {
+            "description": "Tag name.",
+            "type": "string"
+           },
+           "pulled_at": {
+            "description": "Date and time when the tag was pulled.",
+            "type": "string"
+           },
+           "pushed_at": {
+            "description": "Date and time when the tag was pushed.",
+            "type": "string"
+           },
+           "signed": {
+            "description": "Boolean value indicating if the image is signed or not.",
+            "type": "boolean"
+           }
+          },
+          "type": "object"
+         },
+         "type": "array"
+        }
+       },
+       "required": [
+        "digest",
+        "size_bytes",
+        "pushed_at",
+        "pulled_at",
+        "tags"
+       ],
+       "type": "object"
+      },
+      "version": "0.1.0"
+     },
+     {
+      "configs": {
+       "additionalProperties": false,
+       "properties": {
+        "env": {
+         "default": "prod",
+         "description": "Environment to use",
+         "enum": [
+          "prod",
+          "pre-prod"
+         ],
+         "type": "string"
+        },
+        "region": {
+         "default": "br-se1",
+         "description": "Region to reach the service",
+         "enum": [
+          "br-ne1",
+          "br-se1",
+          "br-mgl1"
+         ],
+         "type": "string"
+        },
+        "serverUrl": {
+         "description": "Manually specify the server to use",
+         "format": "uri",
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
+      "description": "List all images in container registry repository",
+      "isInternal": false,
+      "name": "list",
+      "parameters": {
+       "additionalProperties": false,
+       "properties": {
+        "_limit": {
+         "description": "Limit",
+         "minimum": 1,
+         "title": "Limit",
+         "type": "integer"
+        },
+        "_offset": {
+         "description": "Offset",
+         "minimum": 0,
+         "type": "integer"
+        },
+        "_sort": {
+         "default": "pushed_at:desc",
+         "description": "Fields to use as reference to sort.",
+         "pattern": "(^[\\w-]+:(asc|desc)(,[\\w-]+:(asc|desc))*)?$",
+         "type": "string"
+        },
+        "expand": {
+         "description": "You can get more detailed info about: ['tags_details', 'extra_attr', 'manifest_media_type', 'media_type']",
+         "items": {
+          "type": "string"
+         },
+         "type": "array"
+        },
+        "registry_id": {
+         "description": "Container Registry's UUID.",
+         "format": "uuid",
+         "type": "string"
+        },
+        "repository_name": {
+         "description": "Repository's name.",
+         "type": "string"
+        }
+       },
+       "required": [
+        "registry_id",
+        "repository_name"
+       ],
+       "type": "object"
+      },
+      "result": {
+       "description": "Repository images response.",
+       "properties": {
+        "results": {
+         "description": "List of repository images.",
+         "items": {
+          "description": "Repository image response data.",
+          "example": {
+           "digest": "sha256:aef9ff594b36575be6248901a4e5a9bad031f3e0fd42c33a6d2bd501dde5e955",
+           "extra_attr": {},
+           "manifest_media_type": "application/vnd.docker.distribution.manifest.v2+json",
+           "media_type": "application/vnd.docker.container.image.v1+json",
+           "pulled_at": "2024-05-15T19:56:47Z",
+           "pushed_at": "2024-05-15T19:56:47Z",
+           "size_bytes": 3552429,
+           "tags": [
+            "latest"
+           ],
+           "tags_details": [
+            {
+             "name": "latest",
+             "pulled_at": "2024-05-15T19:56:47Z",
+             "pushed_at": "2024-05-15T19:56:47Z",
+             "signed": false
+            }
+           ]
+          },
+          "properties": {
+           "digest": {
+            "description": "Image digest.",
+            "type": "string"
+           },
+           "extra_attr": {
+            "description": "Extra attributes about the image.",
+            "type": "object"
+           },
+           "manifest_media_type": {
+            "description": "The manifest media type of the image.",
+            "type": "string"
+           },
+           "media_type": {
+            "description": "The media type of the image.",
+            "type": "string"
+           },
+           "pulled_at": {
+            "description": "Date and time when the image was pulled.",
+            "type": "string"
+           },
+           "pushed_at": {
+            "description": "Date and time when the image was pushed.",
+            "type": "string"
+           },
+           "size_bytes": {
+            "description": "Image size in bytes.",
+            "type": "integer"
+           },
+           "tags": {
+            "description": "Tags of the image.",
+            "items": {
+             "description": "Tag names.",
+             "type": "string"
+            },
+            "type": "array"
+           },
+           "tags_details": {
+            "description": "Tags details of the image",
+            "items": {
+             "description": "Tag of an image response.",
+             "example": {
+              "name": "latest",
+              "pulled_at": "2024-05-15T19:56:47Z",
+              "pushed_at": "2024-05-15T19:56:47Z",
+              "signed": false
+             },
+             "properties": {
+              "name": {
+               "description": "Tag name.",
+               "type": "string"
+              },
+              "pulled_at": {
+               "description": "Date and time when the tag was pulled.",
+               "type": "string"
+              },
+              "pushed_at": {
+               "description": "Date and time when the tag was pushed.",
+               "type": "string"
+              },
+              "signed": {
+               "description": "Boolean value indicating if the image is signed or not.",
+               "type": "boolean"
+              }
+             },
+             "type": "object"
+            },
+            "type": "array"
+           }
+          },
+          "required": [
+           "digest",
+           "size_bytes",
+           "pushed_at",
+           "pulled_at",
+           "tags"
+          ],
+          "type": "object"
+         },
+         "type": "array"
+        }
+       },
+       "required": [
+        "results"
+       ],
+       "type": "object"
+      },
+      "version": "0.1.0"
+     }
+    ],
+    "description": "Routes related to managing Container Registry repositories images.",
+    "isInternal": false,
+    "name": "images",
+    "version": "0.1.0"
+   },
+   {
+    "children": [],
+    "description": "Routes related to mcr-api configuration information.",
+    "isInternal": false,
+    "name": "info",
+    "version": "0.1.0"
+   },
+   {
+    "children": [
+     {
+      "configs": {
+       "additionalProperties": false,
+       "properties": {
+        "env": {
+         "default": "prod",
+         "description": "Environment to use",
+         "enum": [
+          "prod",
+          "pre-prod"
+         ],
+         "type": "string"
+        },
+        "region": {
+         "default": "br-se1",
+         "description": "Region to reach the service",
+         "enum": [
+          "br-ne1",
+          "br-se1",
+          "br-mgl1"
+         ],
+         "type": "string"
+        },
+        "serverUrl": {
+         "description": "Manually specify the server to use",
+         "format": "uri",
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
+      "description": "Return container registry user's authentication credentials.",
+      "isInternal": false,
+      "name": "list",
+      "parameters": {
+       "additionalProperties": false,
+       "type": "object"
+      },
+      "result": {
+       "description": "User's credentials for authentication to the container registry.",
+       "example": {
+        "email": "janedoe@email.com",
+        "password": "62kWa168QL!d4IVwN6wTfTYFv63=Sc1D",
+        "username": "e3d49354-35d7-4565-b634-65d8b86aa594"
+       },
+       "properties": {
+        "email": {
+         "description": "Email for authentication to the container registry.",
+         "type": "string"
+        },
+        "password": {
+         "description": "Password for authentication to the container registry.",
+         "type": "string"
+        },
+        "username": {
+         "description": "Username for authentication to the container registry.",
+         "type": "string"
+        }
+       },
+       "required": [
+        "username",
+        "password",
+        "email"
+       ],
+       "type": "object"
+      },
+      "version": "0.1.0"
+     },
+     {
+      "children": [
+       {
+        "configs": {
+         "additionalProperties": false,
+         "properties": {
+          "env": {
+           "default": "prod",
+           "description": "Environment to use",
+           "enum": [
+            "prod",
+            "pre-prod"
+           ],
+           "type": "string"
+          },
+          "region": {
+           "default": "br-se1",
+           "description": "Region to reach the service",
+           "enum": [
+            "br-ne1",
+            "br-se1",
+            "br-mgl1"
+           ],
+           "type": "string"
+          },
+          "serverUrl": {
+           "description": "Manually specify the server to use",
+           "format": "uri",
+           "type": "string"
+          }
+         },
+         "type": "object"
+        },
+        "description": "Creates a container registry in Magalu Cloud.",
+        "isInternal": false,
+        "name": "create",
+        "parameters": {
+         "additionalProperties": false,
+         "properties": {
+          "name": {
+           "description": "A unique, global name for the container registry. It must be written in lowercase letters and consists only of numbers and letters, up to a limit of 63 characters.",
+           "type": "string"
+          }
+         },
+         "required": [
+          "name"
+         ],
+         "type": "object"
+        },
+        "result": {
+         "description": "Container Registry's creation response.",
+         "example": {
+          "id": "0c6bbd87-881a-4bf8-b3f6-4ff3ceacb42c",
+          "name": "cool_registry"
+         },
+         "properties": {
+          "id": {
+           "description": "Container Registry's UUID.",
+           "type": "string"
+          },
+          "name": {
+           "description": "A unique, global name for the container registry. It must be written in lowercase letters and consists only of numbers and letters, up to a limit of 63 characters.",
+           "type": "string"
+          }
+         },
+         "required": [
+          "id",
+          "name"
+         ],
+         "type": "object"
+        },
+        "version": "0.1.0"
+       },
+       {
+        "configs": {
+         "additionalProperties": false,
+         "properties": {
+          "env": {
+           "default": "prod",
+           "description": "Environment to use",
+           "enum": [
+            "prod",
+            "pre-prod"
+           ],
+           "type": "string"
+          },
+          "region": {
+           "default": "br-se1",
+           "description": "Region to reach the service",
+           "enum": [
+            "br-ne1",
+            "br-se1",
+            "br-mgl1"
+           ],
+           "type": "string"
+          },
+          "serverUrl": {
+           "description": "Manually specify the server to use",
+           "format": "uri",
+           "type": "string"
+          }
+         },
+         "type": "object"
+        },
+        "description": "Delete a container registry by uuid.",
+        "isInternal": false,
+        "name": "delete",
+        "parameters": {
+         "additionalProperties": false,
+         "properties": {
+          "registry_id": {
+           "description": "Container Registry's UUID.",
+           "format": "uuid",
+           "type": "string"
+          }
+         },
+         "required": [
+          "registry_id"
+         ],
+         "type": "object"
+        },
+        "result": {
+         "nullable": true,
+         "type": "null"
+        },
+        "version": "0.1.0"
+       },
+       {
+        "configs": {
+         "additionalProperties": false,
+         "properties": {
+          "env": {
+           "default": "prod",
+           "description": "Environment to use",
+           "enum": [
+            "prod",
+            "pre-prod"
+           ],
+           "type": "string"
+          },
+          "region": {
+           "default": "br-se1",
+           "description": "Region to reach the service",
+           "enum": [
+            "br-ne1",
+            "br-se1",
+            "br-mgl1"
+           ],
+           "type": "string"
+          },
+          "serverUrl": {
+           "description": "Manually specify the server to use",
+           "format": "uri",
+           "type": "string"
+          }
+         },
+         "type": "object"
+        },
+        "description": "Show detailed information about the user's container registry.",
+        "isInternal": false,
+        "name": "get",
+        "parameters": {
+         "additionalProperties": false,
+         "properties": {
+          "registry_id": {
+           "description": "Container Registry's UUID.",
+           "format": "uuid",
+           "type": "string"
+          }
+         },
+         "required": [
+          "registry_id"
+         ],
+         "type": "object"
+        },
+        "result": {
+         "description": "Container Registry's response data.",
+         "example": {
+          "created_at": "2024-05-15T19:56:47Z",
+          "id": "0c6bbd87-881a-4bf8-b3f6-4ff3ceacb42c",
+          "name": "cool_registry",
+          "storage_usage_bytes": 12345,
+          "updated_at": "2024-05-15T19:56:47Z"
+         },
+         "properties": {
+          "created_at": {
+           "description": "Date and time of creation of the container registry.",
+           "type": "string"
+          },
+          "id": {
+           "description": "Container Registry's UUID.",
+           "type": "string"
+          },
+          "name": {
+           "description": "Name of the container registry created.",
+           "type": "string"
+          },
+          "storage_usage_bytes": {
+           "description": "Storage used in bytes.",
+           "type": "integer"
+          },
+          "updated_at": {
+           "description": "Date and time of the last change to the container registry.",
+           "type": "string"
+          }
+         },
+         "required": [
+          "id",
+          "name",
+          "storage_usage_bytes",
+          "created_at",
+          "updated_at"
+         ],
+         "type": "object"
+        },
+        "version": "0.1.0"
+       },
+       {
+        "configs": {
+         "additionalProperties": false,
+         "properties": {
+          "env": {
+           "default": "prod",
+           "description": "Environment to use",
+           "enum": [
+            "prod",
+            "pre-prod"
+           ],
+           "type": "string"
+          },
+          "region": {
+           "default": "br-se1",
+           "description": "Region to reach the service",
+           "enum": [
+            "br-ne1",
+            "br-se1",
+            "br-mgl1"
+           ],
+           "type": "string"
+          },
+          "serverUrl": {
+           "description": "Manually specify the server to use",
+           "format": "uri",
+           "type": "string"
+          }
+         },
+         "type": "object"
+        },
+        "description": "List user's container registries.",
+        "isInternal": false,
+        "name": "list",
+        "parameters": {
+         "additionalProperties": false,
+         "properties": {
+          "_limit": {
+           "description": "Limit",
+           "minimum": 1,
+           "title": "Limit",
+           "type": "integer"
+          },
+          "_offset": {
+           "description": "Offset",
+           "minimum": 0,
+           "type": "integer"
+          },
+          "_sort": {
+           "default": "created:asc",
+           "description": "Fields to use as reference to sort.",
+           "pattern": "(^[\\w-]+:(asc|desc)(,[\\w-]+:(asc|desc))*)?$",
+           "type": "string"
+          }
+         },
+         "type": "object"
+        },
+        "result": {
+         "description": "Container registry information response object.",
+         "properties": {
+          "results": {
+           "description": "List of user registries.",
+           "items": {
+            "description": "Container Registry's response data.",
+            "example": {
+             "created_at": "2024-05-15T19:56:47Z",
+             "id": "0c6bbd87-881a-4bf8-b3f6-4ff3ceacb42c",
+             "name": "cool_registry",
+             "storage_usage_bytes": 12345,
+             "updated_at": "2024-05-15T19:56:47Z"
+            },
+            "properties": {
+             "created_at": {
+              "description": "Date and time of creation of the container registry.",
+              "type": "string"
+             },
+             "id": {
+              "description": "Container Registry's UUID.",
+              "type": "string"
+             },
+             "name": {
+              "description": "Name of the container registry created.",
+              "type": "string"
+             },
+             "storage_usage_bytes": {
+              "description": "Storage used in bytes.",
+              "type": "integer"
+             },
+             "updated_at": {
+              "description": "Date and time of the last change to the container registry.",
+              "type": "string"
+             }
+            },
+            "required": [
+             "id",
+             "name",
+             "storage_usage_bytes",
+             "created_at",
+             "updated_at"
+            ],
+            "type": "object"
+           },
+           "type": "array"
+          }
+         },
+         "required": [
+          "results"
+         ],
+         "type": "object"
+        },
+        "version": "0.1.0"
+       }
+      ],
+      "description": "Routes related to Container Registry management. | registries",
+      "isInternal": false,
+      "name": "registries",
+      "version": "0.1.0"
+     }
+    ],
+    "description": "Routes related to Container Registry management.",
+    "isInternal": false,
+    "name": "registries",
+    "version": "0.1.0"
+   },
+   {
+    "children": [
+     {
+      "configs": {
+       "additionalProperties": false,
+       "properties": {
+        "env": {
+         "default": "prod",
+         "description": "Environment to use",
+         "enum": [
+          "prod",
+          "pre-prod"
+         ],
+         "type": "string"
+        },
+        "region": {
+         "default": "br-se1",
+         "description": "Region to reach the service",
+         "enum": [
+          "br-ne1",
+          "br-se1",
+          "br-mgl1"
+         ],
+         "type": "string"
+        },
+        "serverUrl": {
+         "description": "Manually specify the server to use",
+         "format": "uri",
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
+      "description": "Delete a repository by name.",
+      "isInternal": false,
+      "name": "delete",
+      "parameters": {
+       "additionalProperties": false,
+       "properties": {
+        "registry_id": {
+         "description": "Container Registry's UUID.",
+         "format": "uuid",
+         "type": "string"
+        },
+        "repository_name": {
+         "description": "Repository's name.",
+         "type": "string"
+        }
+       },
+       "required": [
+        "registry_id",
+        "repository_name"
+       ],
+       "type": "object"
+      },
+      "result": {
+       "nullable": true,
+       "type": "null"
+      },
+      "version": "0.1.0"
+     },
+     {
+      "configs": {
+       "additionalProperties": false,
+       "properties": {
+        "env": {
+         "default": "prod",
+         "description": "Environment to use",
+         "enum": [
+          "prod",
+          "pre-prod"
+         ],
+         "type": "string"
+        },
+        "region": {
+         "default": "br-se1",
+         "description": "Region to reach the service",
+         "enum": [
+          "br-ne1",
+          "br-se1",
+          "br-mgl1"
+         ],
+         "type": "string"
+        },
+        "serverUrl": {
+         "description": "Manually specify the server to use",
+         "format": "uri",
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
+      "description": "Return detailed repository's information filtered by name.",
+      "isInternal": false,
+      "name": "get",
+      "parameters": {
+       "additionalProperties": false,
+       "properties": {
+        "registry_id": {
+         "description": "Container Registry's UUID.",
+         "format": "uuid",
+         "type": "string"
+        },
+        "repository_name": {
+         "description": "Repository's name.",
+         "type": "string"
+        }
+       },
+       "required": [
+        "registry_id",
+        "repository_name"
+       ],
+       "type": "object"
+      },
+      "result": {
+       "description": "Information about the repository.",
+       "example": {
+        "created_at": "2024-05-15T19:56:47Z",
+        "image_count": 2,
+        "name": "alpine",
+        "registry_name": "cool_registry",
+        "updated_at": "2024-05-15T19:56:47Z"
+       },
+       "properties": {
+        "created_at": {
+         "description": "Date and time of creation of the repository.",
+         "type": "string"
+        },
+        "image_count": {
+         "description": "Number of images in the repository.",
+         "type": "integer"
+        },
+        "name": {
+         "description": "Name of the repository.",
+         "type": "string"
+        },
+        "registry_name": {
+         "description": "Name of the container registry.",
+         "type": "string"
+        },
+        "updated_at": {
+         "description": "Date and time of the last change to the repository.",
+         "type": "string"
+        }
+       },
+       "required": [
+        "registry_name",
+        "name",
+        "image_count",
+        "created_at",
+        "updated_at"
+       ],
+       "type": "object"
+      },
+      "version": "0.1.0"
+     },
+     {
+      "configs": {
+       "additionalProperties": false,
+       "properties": {
+        "env": {
+         "default": "prod",
+         "description": "Environment to use",
+         "enum": [
+          "prod",
+          "pre-prod"
+         ],
+         "type": "string"
+        },
+        "region": {
+         "default": "br-se1",
+         "description": "Region to reach the service",
+         "enum": [
+          "br-ne1",
+          "br-se1",
+          "br-mgl1"
+         ],
+         "type": "string"
+        },
+        "serverUrl": {
+         "description": "Manually specify the server to use",
+         "format": "uri",
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
+      "description": "List all user's repositories in the container registry.",
+      "isInternal": false,
+      "name": "list",
+      "parameters": {
+       "additionalProperties": false,
+       "properties": {
+        "_limit": {
+         "description": "Limit",
+         "minimum": 1,
+         "title": "Limit",
+         "type": "integer"
+        },
+        "_offset": {
+         "description": "Offset",
+         "minimum": 0,
+         "type": "integer"
+        },
+        "_sort": {
+         "default": "created_at:desc",
+         "description": "Fields to use as reference to sort.",
+         "pattern": "(^[\\w-]+:(asc|desc)(,[\\w-]+:(asc|desc))*)?$",
+         "type": "string"
+        },
+        "registry_id": {
+         "description": "Container Registry's UUID.",
+         "format": "uuid",
+         "type": "string"
+        }
+       },
+       "required": [
+        "registry_id"
+       ],
+       "type": "object"
+      },
+      "result": {
+       "description": "Information returned about the container registry repository.",
+       "properties": {
+        "goal": {
+         "description": "User's repositories quantity.",
+         "example": {
+          "total": 1
+         },
+         "properties": {
+          "total": {
+           "description": "Total number of repositories for a user.",
+           "type": "integer"
+          }
+         },
+         "type": "object"
+        },
+        "results": {
+         "description": "Information about the container registry repositories.",
+         "items": {
+          "description": "Information about the repository.",
+          "example": {
+           "created_at": "2024-05-15T19:56:47Z",
+           "image_count": 2,
+           "name": "alpine",
+           "registry_name": "cool_registry",
+           "updated_at": "2024-05-15T19:56:47Z"
+          },
+          "properties": {
+           "created_at": {
+            "description": "Date and time of creation of the repository.",
+            "type": "string"
+           },
+           "image_count": {
+            "description": "Number of images in the repository.",
+            "type": "integer"
+           },
+           "name": {
+            "description": "Name of the repository.",
+            "type": "string"
+           },
+           "registry_name": {
+            "description": "Name of the container registry.",
+            "type": "string"
+           },
+           "updated_at": {
+            "description": "Date and time of the last change to the repository.",
+            "type": "string"
+           }
+          },
+          "required": [
+           "registry_name",
+           "name",
+           "image_count",
+           "created_at",
+           "updated_at"
+          ],
+          "type": "object"
+         },
+         "type": "array"
+        }
+       },
+       "required": [
+        "results"
+       ],
+       "type": "object"
+      },
+      "version": "0.1.0"
+     }
+    ],
+    "description": "Routes related to managing Container Registry repositories.",
+    "isInternal": false,
+    "name": "repositories",
+    "version": "0.1.0"
+   }
+  ],
+  "description": "Magalu Container Registry product API.",
+  "isInternal": false,
+  "name": "container-registry",
+  "version": "0.1.0"
+ },
+ {
+  "children": [
+   {
+    "children": [
+     {
+      "configs": {
+       "additionalProperties": false,
+       "properties": {
+        "env": {
+         "default": "prod",
+         "description": "Environment to use",
+         "enum": [
+          "prod",
+          "pre-prod"
+         ],
+         "type": "string"
+        },
+        "region": {
+         "default": "br-se1",
+         "description": "Region to reach the service",
+         "enum": [
+          "br-ne1",
+          "br-se1",
+          "br-mgl1"
+         ],
+         "type": "string"
+        },
+        "serverUrl": {
+         "description": "Manually specify the server to use",
+         "format": "uri",
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
       "description": "Deletes a database backup.",
       "isInternal": false,
       "name": "delete",
@@ -3773,7 +4920,7 @@
        "type": "object"
       },
       "result": {},
-      "version": "1.21.1"
+      "version": "1.21.2"
      },
      {
       "configs": {
@@ -3924,7 +5071,7 @@
        "title": "BackupDetailResponse",
        "type": "object"
       },
-      "version": "1.21.1"
+      "version": "1.21.2"
      },
      {
       "configs": {
@@ -4173,13 +5320,13 @@
        "title": "BackupsResponse",
        "type": "object"
       },
-      "version": "1.21.1"
+      "version": "1.21.2"
      }
     ],
     "description": "Database backups management.",
     "isInternal": false,
     "name": "backups",
-    "version": "1.21.1"
+    "version": "1.21.2"
    },
    {
     "children": [
@@ -4272,7 +5419,7 @@
        "title": "EngineResponse",
        "type": "object"
       },
-      "version": "1.21.1"
+      "version": "1.21.2"
      },
      {
       "configs": {
@@ -4436,13 +5583,13 @@
        "title": "EnginesResponse",
        "type": "object"
       },
-      "version": "1.21.1"
+      "version": "1.21.2"
      }
     ],
     "description": "Datastores available for database instances.",
     "isInternal": true,
     "name": "datastores",
-    "version": "1.21.1"
+    "version": "1.21.2"
    },
    {
     "children": [
@@ -4535,7 +5682,7 @@
        "title": "EngineResponse",
        "type": "object"
       },
-      "version": "1.21.1"
+      "version": "1.21.2"
      },
      {
       "configs": {
@@ -4699,13 +5846,13 @@
        "title": "EnginesResponse",
        "type": "object"
       },
-      "version": "1.21.1"
+      "version": "1.21.2"
      }
     ],
     "description": "Engines available for database instances.",
     "isInternal": false,
     "name": "engines",
-    "version": "1.21.1"
+    "version": "1.21.2"
    },
    {
     "children": [
@@ -4817,7 +5964,7 @@
        "title": "FlavorResponse",
        "type": "object"
       },
-      "version": "1.21.1"
+      "version": "1.21.2"
      },
      {
       "configs": {
@@ -5001,13 +6148,13 @@
        "title": "FlavorsResponse",
        "type": "object"
       },
-      "version": "1.21.1"
+      "version": "1.21.2"
      }
     ],
     "description": "Flavors available for database instances.",
     "isInternal": false,
     "name": "flavors",
-    "version": "1.21.1"
+    "version": "1.21.2"
    },
    {
     "children": [
@@ -5050,13 +6197,13 @@
        "type": "object"
       },
       "result": {},
-      "version": "1.21.1"
+      "version": "1.21.2"
      }
     ],
     "description": "Health check.",
     "isInternal": true,
     "name": "healthcheck",
-    "version": "1.21.1"
+    "version": "1.21.2"
    },
    {
     "children": [
@@ -5138,7 +6285,7 @@
          "title": "BackupResponse",
          "type": "object"
         },
-        "version": "1.21.1"
+        "version": "1.21.2"
        },
        {
         "configs": {
@@ -5200,7 +6347,7 @@
          "type": "object"
         },
         "result": {},
-        "version": "1.21.1"
+        "version": "1.21.2"
        },
        {
         "configs": {
@@ -5357,7 +6504,7 @@
          "title": "BackupDetailResponse",
          "type": "object"
         },
-        "version": "1.21.1"
+        "version": "1.21.2"
        },
        {
         "configs": {
@@ -5614,13 +6761,13 @@
          "title": "BackupsResponse",
          "type": "object"
         },
-        "version": "1.21.1"
+        "version": "1.21.2"
        }
       ],
       "description": "Database instances management. | backups",
       "isInternal": false,
       "name": "backups",
-      "version": "1.21.1"
+      "version": "1.21.2"
      },
      {
       "configs": {
@@ -5804,7 +6951,7 @@
        "title": "InstanceResponse",
        "type": "object"
       },
-      "version": "1.21.1"
+      "version": "1.21.2"
      },
      {
       "configs": {
@@ -5860,7 +7007,7 @@
        "type": "object"
       },
       "result": {},
-      "version": "1.21.1"
+      "version": "1.21.2"
      },
      {
       "configs": {
@@ -6343,7 +7490,7 @@
        "title": "InstanceDetailResponse",
        "type": "object"
       },
-      "version": "1.21.1"
+      "version": "1.21.2"
      },
      {
       "configs": {
@@ -6913,7 +8060,7 @@
        "title": "InstancesResponse",
        "type": "object"
       },
-      "version": "1.21.1"
+      "version": "1.21.2"
      },
      {
       "configs": {
@@ -7420,7 +8567,7 @@
        "title": "InstanceDetailResponse",
        "type": "object"
       },
-      "version": "1.21.1"
+      "version": "1.21.2"
      },
      {
       "configs": {
@@ -7495,7 +8642,7 @@
        "title": "RestoreResponse",
        "type": "object"
       },
-      "version": "1.21.1"
+      "version": "1.21.2"
      },
      {
       "configs": {
@@ -7970,7 +9117,7 @@
        "title": "InstanceDetailResponse",
        "type": "object"
       },
-      "version": "1.21.1"
+      "version": "1.21.2"
      },
      {
       "configs": {
@@ -8445,7 +9592,7 @@
        "title": "InstanceDetailResponse",
        "type": "object"
       },
-      "version": "1.21.1"
+      "version": "1.21.2"
      },
      {
       "configs": {
@@ -8940,13 +10087,13 @@
        "title": "InstanceDetailResponse",
        "type": "object"
       },
-      "version": "1.21.1"
+      "version": "1.21.2"
      }
     ],
     "description": "Database instances management.",
     "isInternal": false,
     "name": "instances",
-    "version": "1.21.1"
+    "version": "1.21.2"
    },
    {
     "children": [
@@ -9028,7 +10175,7 @@
        "title": "ReplicaResponse",
        "type": "object"
       },
-      "version": "1.21.1"
+      "version": "1.21.2"
      },
      {
       "configs": {
@@ -9087,7 +10234,7 @@
        "nullable": true,
        "type": "null"
       },
-      "version": "1.21.1"
+      "version": "1.21.2"
      },
      {
       "configs": {
@@ -9346,7 +10493,7 @@
        "title": "ReplicaDetailResponse",
        "type": "object"
       },
-      "version": "1.21.1"
+      "version": "1.21.2"
      },
      {
       "configs": {
@@ -9676,7 +10823,7 @@
        "title": "ReplicasResponse",
        "type": "object"
       },
-      "version": "1.21.1"
+      "version": "1.21.2"
      },
      {
       "configs": {
@@ -9941,7 +11088,7 @@
        "title": "ReplicaDetailResponse",
        "type": "object"
       },
-      "version": "1.21.1"
+      "version": "1.21.2"
      },
      {
       "configs": {
@@ -10200,7 +11347,7 @@
        "title": "ReplicaDetailResponse",
        "type": "object"
       },
-      "version": "1.21.1"
+      "version": "1.21.2"
      },
      {
       "configs": {
@@ -10459,19 +11606,19 @@
        "title": "ReplicaDetailResponse",
        "type": "object"
       },
-      "version": "1.21.1"
+      "version": "1.21.2"
      }
     ],
     "description": "Database replicas management.",
     "isInternal": false,
     "name": "replicas",
-    "version": "1.21.1"
+    "version": "1.21.2"
    }
   ],
   "description": "DBaaS API Product.",
   "isInternal": false,
   "name": "dbaas",
-  "version": "1.21.1"
+  "version": "1.21.2"
  },
  {
   "children": [
@@ -20704,7 +21851,7 @@
     "version": "1.124.1"
    }
   ],
-  "description": "APIs referentes ao produto de VPC",
+  "description": "APIs related to the VPC product",
   "isInternal": false,
   "name": "network",
   "version": "1.124.1"

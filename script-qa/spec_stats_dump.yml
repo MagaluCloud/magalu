@@ -64,6 +64,25 @@ block-storage.openapi:
     - components.schemas.SnapshotResponse.description
     - components.schemas.VolumeResponseV1.error
     - components.schemas.VolumeResponseV1.attachment
+container-registry.openapi:
+  computed-variables:
+    - POST /v0/registries:
+        - '201':
+            computed:
+              - id
+            non-computed:
+              - name
+  missing-crud:
+    - repositories:
+        - post
+    - images:
+        - post
+  uneven-resources:
+    registries:
+      GET:
+        expected_prefix: /v0/registries
+        uneven:
+          - /v0/credentials
 dbaas.openapi:
   computed-variables:
     - POST /v1/instances:

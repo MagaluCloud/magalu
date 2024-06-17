@@ -2287,15 +2287,15 @@
           "rotation": {
             "anyOf": [
               {
-                "exclusiveMinimum": 1,
-                "type": "integer"
+                "type": "integer",
+                "minimum": 1
               },
               {
                 "type": "null"
               }
             ],
             "title": "Rotation",
-            "default": 1
+            "default": 10
           }
         },
         "title": "BackupRequest",
@@ -2338,10 +2338,6 @@
               }
             ],
             "title": "Instance"
-          },
-          "rotation": {
-            "type": "integer",
-            "title": "Rotation"
           },
           "status": {
             "$ref": "#/components/schemas/BackupStatus"
@@ -2399,7 +2395,6 @@
           "name",
           "backup_type",
           "instance",
-          "rotation",
           "status",
           "state",
           "created_at"
@@ -2413,7 +2408,6 @@
           },
           "min_disk": 10,
           "name": "backup name",
-          "rotation": 1,
           "size": 1000,
           "state": "available",
           "status": "completed",
@@ -2871,7 +2865,13 @@
               {
                 "type": "null"
               }
-            ]
+            ],
+            "default": {
+              "vpc": {
+                "name": "default"
+              },
+              "associate_public_ip": true
+            }
           },
           "user_data": {
             "anyOf": [
@@ -2935,7 +2935,10 @@
                 "$ref": "#/components/schemas/Name"
               }
             ],
-            "title": "Vpc"
+            "title": "Vpc",
+            "default": {
+              "name": "default"
+            }
           },
           "nic": {
             "anyOf": [
@@ -3635,7 +3638,6 @@
               },
               "min_disk": 10,
               "name": "backup name ffff",
-              "rotation": 1,
               "size": 1000,
               "state": "available",
               "status": "completed",
@@ -4060,7 +4062,13 @@
               {
                 "type": "null"
               }
-            ]
+            ],
+            "default": {
+              "vpc": {
+                "name": "default"
+              },
+              "associate_public_ip": true
+            }
           },
           "user_data": {
             "anyOf": [
@@ -4177,30 +4185,6 @@
     {
       "name": "snapshots",
       "description": "Operations with snapshots for instances."
-    }
-  ],
-  "servers": [
-    {
-      "url": "https://{env}/{region}/$API_ENDPOINT_NAME",
-      "variables": {
-        "region": {
-          "enum": [
-            "br-ne-1",
-            "br-se1",
-            "br-mgl1"
-          ],
-          "default": "br-se1",
-          "description": "Region to reach the service"
-        },
-        "env": {
-          "enum": [
-            "api.magalu.cloud",
-            "api.pre-prod.jaxyendy.com"
-          ],
-          "default": "api.magalu.cloud",
-          "description": "Environment to use"
-        }
-      }
     }
   ]
 }

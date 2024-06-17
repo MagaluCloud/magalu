@@ -2,13 +2,13 @@
   "openapi": "3.1.0",
   "info": {
     "title": "vpc-api-product",
-    "description": "APIs referentes ao produto de VPC",
+    "description": "APIs related to the VPC product",
     "contact": {
       "name": "Tribo IAAS Cloud",
       "url": "https://github.com/luizalabs",
       "email": "thullyo.cunha@luizalabs.com"
     },
-    "version": "1.124.1"
+    "version": "1.125.2"
   },
   "paths": {
     "/v0/healthcheck": {
@@ -31,6 +31,95 @@
             }
           }
         }
+      }
+    },
+    "/v0/internal/conciliator": {
+      "post": {
+        "tags": [
+          "backoffice_conciliator"
+        ],
+        "summary": "Start conciliator",
+        "description": "Start conciliator validation",
+        "operationId": "InternalStartConciliator",
+        "parameters": [
+          {
+            "name": "resource-type",
+            "in": "header",
+            "description": "Resources to start the conciliator",
+            "required": false,
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/ResourceType"
+                }
+              ],
+              "title": "Resource Type",
+              "description": "Resources to start the conciliator",
+              "default": "security_group, rule, public_ip"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "description": "Tenant id of the project",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id",
+              "description": "Tenant id of the project"
+            }
+          },
+          {
+            "name": "skip",
+            "in": "header",
+            "description": "Number of tenants to skip",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "title": "Skip",
+              "description": "Number of tenants to skip",
+              "default": 0
+            }
+          },
+          {
+            "name": "limit",
+            "in": "header",
+            "description": "Limit of tenants",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "title": "Limit of tenants",
+              "description": "Limit of tenants"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": false
       }
     },
     "/v0/ports": {
@@ -3658,6 +3747,16 @@
           ]
         }
       },
+      "ResourceType": {
+        "type": "string",
+        "title": "ResourceType",
+        "enum": [
+          "security_group",
+          "rule",
+          "public_ip",
+          "security_group, rule, public_ip"
+        ]
+      },
       "RouteRequest": {
         "type": "object",
         "properties": {
@@ -6596,29 +6695,5 @@
         }
       }
     }
-  },
-  "servers": [
-    {
-      "url": "https://{env}/{region}/$API_ENDPOINT_NAME",
-      "variables": {
-        "region": {
-          "enum": [
-            "br-ne-1",
-            "br-se1",
-            "br-mgl1"
-          ],
-          "default": "br-se1",
-          "description": "Region to reach the service"
-        },
-        "env": {
-          "enum": [
-            "api.magalu.cloud",
-            "api.pre-prod.jaxyendy.com"
-          ],
-          "default": "api.magalu.cloud",
-          "description": "Environment to use"
-        }
-      }
-    }
-  ]
+  }
 }

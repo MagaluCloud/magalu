@@ -6,13 +6,20 @@ modules:
     super_internal: false
     url: https://block-storage.jaxyendy.com/openapi.json
     version: v1
+-   description: Magalu Container Registry product API.
+    name: container-registry
+    path: container-registry.openapi.yaml
+    summary: Magalu Container Registry product API.
+    super_internal: false
+    url: https://container-registry.jaxyendy.com/openapi.json
+    version: 0.1.0
 -   description: DBaaS API Product.
     name: dbaas
     path: dbaas.openapi.yaml
     summary: DBaaS API Product.
     super_internal: false
     url: https://dbaas.jaxyendy.com/openapi.json
-    version: 1.21.1
+    version: 1.21.2
 -   description: APIs related to the Kubernetes product.
     name: kubernetes
     path: kubernetes.openapi.yaml
@@ -20,10 +27,10 @@ modules:
     super_internal: false
     url: https://mke.br-ne-1.com/docs/openapi-with-snippets.json
     version: 0.1.0
--   description: APIs referentes ao produto de VPC
+-   description: APIs related to the VPC product
     name: network
     path: network.openapi.yaml
-    summary: APIs referentes ao produto de VPC
+    summary: APIs related to the VPC product
     super_internal: false
     url: https://network.jaxyendy.com/openapi.json
     version: 1.124.1

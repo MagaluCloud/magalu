@@ -1993,18 +1993,18 @@
             {
               "created_at": "2022-01-01T00:00:10Z",
               "description": "my backup for testing",
-              "id": "86a34883-82f7-4564-a01d-f2f9882362e8",
+              "id": "0ec17fac-4a80-4643-b40a-b4851dc60140",
               "name": "My backup",
               "size": 10,
               "source_backup": {
-                "id": "86410935-3ff6-497d-8abf-f9fa61b58ad4"
+                "id": "61f7f4bd-85c9-40a0-98d4-660214a89e3f"
               },
               "state": "available",
               "status": "completed",
               "type": "incremental",
               "updated_at": "2022-01-01T00:00:10Z",
               "volume": {
-                "id": "3eaccd29-b89e-4e09-8e5b-c28d1d8651e4"
+                "id": "bd42185b-4353-40de-9235-c3cac294ad41"
               }
             }
           ]
@@ -2106,18 +2106,18 @@
         "example": {
           "created_at": "2022-01-01T00:00:10Z",
           "description": "my backup for testing",
-          "id": "5eb39750-5484-4a65-9c2f-8a4d21b32887",
+          "id": "fe924a87-b29c-4273-884b-9d09098b8dd6",
           "name": "My backup",
           "size": 10,
           "source_backup": {
-            "id": "930de1c0-a67f-408c-89ec-63e69c1c9398"
+            "id": "1b20d26f-5574-47e1-b3f4-b186b2006438"
           },
           "state": "available",
           "status": "completed",
           "type": "incremental",
           "updated_at": "2022-01-01T00:00:10Z",
           "volume": {
-            "id": "d4be7e8f-8e74-4160-982f-f45ef792dbf1"
+            "id": "31de3679-9474-4b29-ace0-df4e1922c65d"
           }
         }
       },
@@ -3166,30 +3166,6 @@
     {
       "name": "snapshots",
       "description": "Operations with snapshots for volumes."
-    }
-  ],
-  "servers": [
-    {
-      "url": "https://{env}/{region}/$API_ENDPOINT_NAME",
-      "variables": {
-        "region": {
-          "enum": [
-            "br-ne-1",
-            "br-se1",
-            "br-mgl1"
-          ],
-          "default": "br-se1",
-          "description": "Region to reach the service"
-        },
-        "env": {
-          "enum": [
-            "api.magalu.cloud",
-            "api.pre-prod.jaxyendy.com"
-          ],
-          "default": "api.magalu.cloud",
-          "description": "Environment to use"
-        }
-      }
     }
   ]
 }

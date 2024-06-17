@@ -1,0 +1,12 @@
+Routes related to mcr-api configuration information.
+
+Usage:
+  ./mgc container-registry info [flags]
+
+Flags:
+  -h, --help      help for info
+  -v, --version   version for info
+
+Global Flags:
+      --cli.show-cli-globals   Show all CLI global flags on usage text
+

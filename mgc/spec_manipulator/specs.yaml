@@ -41,3 +41,10 @@ jaxyendy:
       tf: false
       sdk: true
       enabled: true
+    - url: https://mcr.br-ne-1.jaxyendy.com/docs/openapi.yaml
+      file: container-registry.openapi.yaml
+      menu: container-registry
+      cli: false
+      tf: false
+      sdk: true
+      enabled: true

@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
     title: vpc-api-product
-    description: APIs referentes ao produto de VPC
+    description: APIs related to the VPC product
     contact:
         name: Tribo IAAS Cloud
         url: https://github.com/luizalabs

@@ -8,30 +8,14 @@
       "url": "https://gitlab.luizalabs.com/cloud/dbaas/docs",
       "email": "cloud-iaas-dbaas@luizalabs.com"
     },
-    "version": "1.21.1"
+    "version": "1.21.2"
   },
   "servers": [
     {
-      "url": "https://{env}/{region}/$API_ENDPOINT_NAME",
-      "variables": {
-        "region": {
-          "enum": [
-            "br-ne-1",
-            "br-se1",
-            "br-mgl1"
-          ],
-          "default": "br-se1",
-          "description": "Region to reach the service"
-        },
-        "env": {
-          "enum": [
-            "api.magalu.cloud",
-            "api.pre-prod.jaxyendy.com"
-          ],
-          "default": "api.magalu.cloud",
-          "description": "Environment to use"
-        }
-      }
+      "url": "http://dbaas-api-product.dbaas-api-product.svc.cluster.local"
+    },
+    {
+      "url": "http://localhost:8000"
     }
   ],
   "paths": {
