@@ -3,7 +3,7 @@ Package: subnets
 
 # Description
 
-subnets
+# VPC Subnets
 
 Version: 1.124.1
 

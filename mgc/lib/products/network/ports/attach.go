@@ -21,8 +21,8 @@ import (
 )
 
 type AttachParameters struct {
-	PortId          string `json:"port_id"`
-	SecurityGroupId string `json:"security_group_id"`
+	PortId          any `json:"port_id"`
+	SecurityGroupId any `json:"security_group_id"`
 }
 
 type AttachConfigs struct {

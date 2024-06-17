@@ -21,7 +21,7 @@ import (
 )
 
 type DeleteParameters struct {
-	VpcId string `json:"vpc_id"`
+	VpcId any `json:"vpc_id"`
 }
 
 type DeleteConfigs struct {

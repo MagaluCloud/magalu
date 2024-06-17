@@ -21,7 +21,7 @@ import (
 )
 
 type ListParameters struct {
-	SecurityGroupId string `json:"security_group_id"`
+	SecurityGroupId any `json:"security_group_id"`
 }
 
 type ListConfigs struct {

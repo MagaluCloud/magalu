@@ -21,7 +21,7 @@ import (
 )
 
 type GetParameters struct {
-	RuleId string `json:"rule_id"`
+	RuleId any `json:"rule_id"`
 }
 
 type GetConfigs struct {

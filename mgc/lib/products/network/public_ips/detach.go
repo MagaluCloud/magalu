@@ -21,8 +21,8 @@ import (
 )
 
 type DetachParameters struct {
-	PortId     string `json:"port_id"`
-	PublicIpId string `json:"public_ip_id"`
+	PortId     any `json:"port_id"`
+	PublicIpId any `json:"public_ip_id"`
 }
 
 type DetachConfigs struct {

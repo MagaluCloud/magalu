@@ -7,11 +7,7 @@ Lists all instances in the current tenant.
 
 # Description
 
-List Virtual Machine instances in the current tenant which is logged in.
-
-#### Notes
-- You can use the **extend** argument to get more details from the inner objects
-like image or type.
+# List Virtual Machine instances
 
 Version: v1
 

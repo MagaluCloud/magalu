@@ -25,10 +25,10 @@ type ListParameters struct {
 	Offset     *int                      `json:"_offset,omitempty"`
 	Detailed   *bool                     `json:"detailed,omitempty"`
 	PortIdList *ListParametersPortIdList `json:"port_id_list,omitempty"`
-	VpcId      string                    `json:"vpc_id"`
+	VpcId      any                       `json:"vpc_id"`
 }
 
-type ListParametersPortIdList []string
+type ListParametersPortIdList []any
 
 type ListConfigs struct {
 	Env       *string `json:"env,omitempty"`
@@ -78,7 +78,12 @@ type ListResult1PortsItem struct {
 	VpcId                 *string                             `json:"vpc_id,omitempty"`
 }
 
-type ListResult1PortsItemIpAddress []ListResult0PortsSimplifiedItemIpAddressItem
+type ListResult1PortsItemIpAddressItem struct {
+	IpAddress string `json:"ip_address"`
+	SubnetId  string `json:"subnet_id"`
+}
+
+type ListResult1PortsItemIpAddress []ListResult1PortsItemIpAddressItem
 
 type ListResult1PortsItemPublicIpItem struct {
 	PublicIp   *string `json:"public_ip,omitempty"`

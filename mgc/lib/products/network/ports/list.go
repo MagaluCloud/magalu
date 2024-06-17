@@ -24,7 +24,7 @@ type ListParameters struct {
 	PortIdList *ListParametersPortIdList `json:"port_id_list,omitempty"`
 }
 
-type ListParametersPortIdList []string
+type ListParametersPortIdList []any
 
 type ListConfigs struct {
 	Env       *string `json:"env,omitempty"`
