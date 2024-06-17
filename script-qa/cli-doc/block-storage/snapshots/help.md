@@ -9,12 +9,12 @@ Usage:
 
 ## Product catalog:
 - Commands:
-- create             Create a snapshot
-- create-snapshot-id Restore a snapshot to a new volume
-- delete             Delete a snapshot
-- get                Retrieve the details of a snapshot
-- list               List snapshots in the current tenant
-- rename             Rename a snapshot
+- create      Create a snapshot
+- delete      Delete a snapshot
+- get         Retrieve the details of a snapshot
+- list        List snapshots in the current tenant
+- rename      Rename a snapshot
+- restore     Restore a snapshot to a new volume
 
 ## Other commands:
 - Flags:

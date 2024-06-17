@@ -560,6 +560,12 @@ paths:
             security:
             -   OAuth2:
                 - block-storage.read
+            x-mgc-wait-termination:
+                maxRetries: 10
+                interval: 5s
+                jsonPathQuery: $.result.status == "completed" || $.result.status ==
+                    "deleted"
+                errorJsonPathQuery: contains($.result.status, "error")
         delete:
             tags:
             - snapshots
@@ -787,6 +793,7 @@ paths:
             security:
             -   OAuth2:
                 - block-storage.write
+            x-mgc-name: restore
     /v1/volume-types:
         get:
             tags:
@@ -808,6 +815,7 @@ paths:
             security:
             -   OAuth2:
                 - block-storage.read
+            x-mgc-output-flag: table=ID:$.types[*].id,Name:$.types[*].name,Disk Type:$.types[*].disk_type,STATUS:$.types[*].status,IOPS:$.types[*].iops
     /v1/volumes:
         get:
             tags:
@@ -1103,6 +1111,12 @@ paths:
             security:
             -   OAuth2:
                 - block-storage.read
+            x-mgc-wait-termination:
+                maxRetries: 10
+                interval: 5s
+                jsonPathQuery: $.result.status == "completed" || $.result.status ==
+                    "deleted"
+                errorJsonPathQuery: contains($.result.status, "error")
         delete:
             tags:
             - volumes
@@ -1202,6 +1216,11 @@ paths:
                             description: Retrieve the details of a volume
                             parameters:
                                 id: $request.path.id
+                            x-mgc-wait-termination:
+                                maxRetries: 5
+                                interval: 5s
+                                jsonPathQuery: hasKey($.result.attachment) && $.result.attachment.machine_id
+                                    == $.owner.parameters.virtual_machine_id
                         delete:
                             operationId: delete_volume_v1_v1_volumes__id__delete
                             description: Delete a Volume
@@ -1301,6 +1320,10 @@ paths:
                             description: Retrieve the details of a volume
                             parameters:
                                 id: $request.path.id
+                            x-mgc-wait-termination:
+                                maxRetries: 5
+                                interval: 5s
+                                jsonPathQuery: \!hasKey($.result.attachment)
                         delete:
                             operationId: delete_volume_v1_v1_volumes__id__delete
                             description: Delete a Volume
@@ -1590,8 +1613,12 @@ paths:
                                 id: $request.path.id
                             x-mgc-wait-termination:
                                 interval: 5s
-                                maxRetries: 10
-                                jsonPathQuery: $.result.type == $.owner.parameters.new_type
+                                maxRetries: 5
+                                jsonPathQuery: (hasKey($.owner.parameters.new_type,
+                                    "id") && $.result.type.id == $.owner.parameters.new_type.id)
+                                    || (hasKey($.owner.parameters.new_type, "name")
+                                    && hasKey($.result.type, "name") && $.result.type.name
+                                    == $.owner.parameters.new_type.name)
                         delete:
                             operationId: delete_volume_v1_v1_volumes__id__delete
                             description: Delete a Volume

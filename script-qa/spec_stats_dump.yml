@@ -254,15 +254,9 @@ dbaas.openapi:
               - exchange
               - replica_id
   missing-crud:
-    - healthcheck:
-        - post
-        - delete
     - backups:
         - post
     - engines:
-        - post
-        - delete
-    - datastores:
         - post
         - delete
     - flavors:
@@ -397,6 +391,27 @@ network.openapi:
               - vpc_id
               - wait
               - wait_timeout
+    - POST /v0/vpcs/{vpc_id}/security_groups:
+        - '200':
+            computed:
+              - id
+            non-computed:
+              - description
+              - name
+              - vpc_id
+              - wait
+              - wait_timeout
+    - POST /v0/vpcs/default:
+        - '200':
+            computed:
+              - id
+    - POST /v0/vpcs:
+        - '200':
+            computed:
+              - id
+            non-computed:
+              - description
+              - name
     - POST /v0/security_groups/{security_group_id}/rules:
         - '200':
             computed:
@@ -427,16 +442,6 @@ network.openapi:
               - validate_quota
               - wait
               - wait_timeout
-    - POST /v0/vpcs/{vpc_id}/security_groups:
-        - '200':
-            computed:
-              - id
-            non-computed:
-              - description
-              - name
-              - vpc_id
-              - wait
-              - wait_timeout
     - POST /v0/vpcs/{vpc_id}/subnets:
         - '201':
             computed:
@@ -449,28 +454,9 @@ network.openapi:
               - name
               - vpc_id
               - x-zone
-    - POST /v0/vpcs/default:
-        - '200':
-            computed:
-              - id
-    - POST /v0/vpcs:
-        - '200':
-            computed:
-              - id
-            non-computed:
-              - description
-              - name
   missing-crud:
-    - healthcheck:
+    - rule:
         - post
-        - delete
-    - quotas:
-        - post
-        - delete
-    - worker_public_ips:
-        - get
-        - post
-        - delete
   non-snakecase-values:
     POST /v0/ports:
       parameters:
@@ -521,39 +507,18 @@ network.openapi:
       DELETE:
         - /v0/ports/{port_id}
         - /v0/ports/all
-      GET:
-        expected_prefix: /v0/ports
-        uneven:
-          - /v0/vpcs/{vpc_id}/ports
-      POST:
-        expected_prefix: /v0/ports
-        uneven:
-          - /v0/vpcs/{vpc_id}/ports
     public_ip:
-      GET:
-        expected_prefix: /v0/public_ips
-        uneven:
-          - /v0/vpcs/{vpc_id}/public_ips
       POST:
-        - /v0/vpcs/{vpc_id}/public_ips
         - /v0/public_ips/{public_ip_id}/attach/{port_id}
         - /v0/public_ips/{public_ip_id}/detach/{port_id}
-    rule:
-      GET:
-        - /v0/security_groups/{security_group_id}/rules
-        - /v0/rules/{rule_id}
     security_group:
       DELETE:
         - /v0/security_groups/{security_group_id}
         - /v0/security_groups_all
-      GET:
-        expected_prefix: /v0/security_groups
-        uneven:
-          - /v0/vpcs/{vpc_id}/security_groups
       POST:
         expected_prefix: /v0/security_groups
         uneven:
-          - /v0/vpcs/{vpc_id}/security_groups
+          - /v0/security_groups/default
     subnets:
       GET:
         - /v0/vpcs/{vpc_id}/subnets
@@ -562,6 +527,17 @@ network.openapi:
       DELETE:
         - /v0/vpcs/{vpc_id}
         - /v0/vpcs/all
+      GET:
+        expected_prefix: /v0/vpcs
+        uneven:
+          - /v0/vpcs/{vpc_id}/public_ips
+          - /v0/vpcs/{vpc_id}/security_groups
+      POST:
+        expected_prefix: /v0/vpcs
+        uneven:
+          - /v0/vpcs/{vpc_id}/public_ips
+          - /v0/vpcs/{vpc_id}/security_groups
+          - /v0/vpcs/default
   unused-components:
     - '#/components/schemas/AddInterfaceRequest'
     - '#/components/schemas/DhcpPoolStr'

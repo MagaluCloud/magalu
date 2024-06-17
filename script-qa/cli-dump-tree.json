@@ -695,78 +695,6 @@
        },
        "type": "object"
       },
-      "description": "Restore a Snapshot on a new Volume to the currently\n authenticated tenant.\n\nThe restored Volume can be used when it reaches the \"available\" state and the\n \"completed\" status.\n\n#### Notes\n- To obtain the ID of the Snapshot you wish to restore, you can use the\n **block-storage snapshots list** command to list all Snapshots.\n- Check the state and status of your Volume using the\n **block-storage volume get --id [uuid]** command.",
-      "isInternal": false,
-      "name": "create-snapshot-id",
-      "parameters": {
-       "additionalProperties": false,
-       "properties": {
-        "name": {
-         "title": "Name",
-         "type": "string"
-        },
-        "snapshot_id": {
-         "format": "uuid",
-         "title": "Snapshot Id",
-         "type": "string"
-        }
-       },
-       "required": [
-        "name",
-        "snapshot_id"
-       ],
-       "type": "object"
-      },
-      "result": {
-       "example": {
-        "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-       },
-       "properties": {
-        "id": {
-         "minLength": 1,
-         "title": "Id",
-         "type": "string"
-        }
-       },
-       "required": [
-        "id"
-       ],
-       "title": "IdResponse",
-       "type": "object"
-      },
-      "version": "v1"
-     },
-     {
-      "configs": {
-       "additionalProperties": false,
-       "properties": {
-        "env": {
-         "default": "prod",
-         "description": "Environment to use",
-         "enum": [
-          "prod",
-          "pre-prod"
-         ],
-         "type": "string"
-        },
-        "region": {
-         "default": "br-se1",
-         "description": "Region to reach the service",
-         "enum": [
-          "br-ne1",
-          "br-se1",
-          "br-mgl1"
-         ],
-         "type": "string"
-        },
-        "serverUrl": {
-         "description": "Manually specify the server to use",
-         "format": "uri",
-         "type": "string"
-        }
-       },
-       "type": "object"
-      },
       "description": "Delete a Snapshot for the currently authenticated tenant.\n\n#### Rules\n- The Snapshot's status must be \"completed\".\n- The Snapshot's state must be \"available\".\n- Deleting a Snapshot that has been restored is not possible. If necessary,\n delete the restored Volume first and then proceed to delete the Snapshot.\n\n#### Notes\n- Utilize the **block-storage snapshots** list command to retrieve a list of\n all Snapshots and obtain the ID of the Snapshot you wish to delete.\n- If needed, you can use the **block-storage volume list** command to retrieve\n a list of all Volumes and obtain the ID of the restored Volume.",
       "isInternal": false,
       "name": "delete",
@@ -1362,6 +1290,78 @@
       "result": {
        "nullable": true,
        "type": "null"
+      },
+      "version": "v1"
+     },
+     {
+      "configs": {
+       "additionalProperties": false,
+       "properties": {
+        "env": {
+         "default": "prod",
+         "description": "Environment to use",
+         "enum": [
+          "prod",
+          "pre-prod"
+         ],
+         "type": "string"
+        },
+        "region": {
+         "default": "br-se1",
+         "description": "Region to reach the service",
+         "enum": [
+          "br-ne1",
+          "br-se1",
+          "br-mgl1"
+         ],
+         "type": "string"
+        },
+        "serverUrl": {
+         "description": "Manually specify the server to use",
+         "format": "uri",
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
+      "description": "Restore a Snapshot on a new Volume to the currently\n authenticated tenant.\n\nThe restored Volume can be used when it reaches the \"available\" state and the\n \"completed\" status.\n\n#### Notes\n- To obtain the ID of the Snapshot you wish to restore, you can use the\n **block-storage snapshots list** command to list all Snapshots.\n- Check the state and status of your Volume using the\n **block-storage volume get --id [uuid]** command.",
+      "isInternal": false,
+      "name": "restore",
+      "parameters": {
+       "additionalProperties": false,
+       "properties": {
+        "name": {
+         "title": "Name",
+         "type": "string"
+        },
+        "snapshot_id": {
+         "format": "uuid",
+         "title": "Snapshot Id",
+         "type": "string"
+        }
+       },
+       "required": [
+        "name",
+        "snapshot_id"
+       ],
+       "type": "object"
+      },
+      "result": {
+       "example": {
+        "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+       },
+       "properties": {
+        "id": {
+         "minLength": 1,
+         "title": "Id",
+         "type": "string"
+        }
+       },
+       "required": [
+        "id"
+       ],
+       "title": "IdResponse",
+       "type": "object"
       },
       "version": "v1"
      }
@@ -3606,6 +3606,8 @@
          "type": "string"
         },
         "db_size": {
+         "exclusiveMinimum": true,
+         "minimum": 0,
          "title": "Db Size",
          "type": "integer"
         },
@@ -3642,6 +3644,8 @@
          "type": "string"
         },
         "size": {
+         "exclusiveMinimum": true,
+         "minimum": 0,
          "title": "Size",
          "type": "integer"
         },
@@ -3840,6 +3844,8 @@
             "type": "string"
            },
            "db_size": {
+            "exclusiveMinimum": true,
+            "minimum": 0,
             "title": "Db Size",
             "type": "integer"
            },
@@ -3876,6 +3882,8 @@
             "type": "string"
            },
            "size": {
+            "exclusiveMinimum": true,
+            "minimum": 0,
             "title": "Size",
             "type": "integer"
            },
@@ -4202,7 +4210,7 @@
      }
     ],
     "description": "Datastores available for database instances.",
-    "isInternal": false,
+    "isInternal": true,
     "name": "datastores",
     "version": "1.21.1"
    },
@@ -4816,7 +4824,7 @@
      }
     ],
     "description": "Health check.",
-    "isInternal": false,
+    "isInternal": true,
     "name": "healthcheck",
     "version": "1.21.1"
    },
@@ -5031,6 +5039,8 @@
            "type": "string"
           },
           "db_size": {
+           "exclusiveMinimum": true,
+           "minimum": 0,
            "title": "Db Size",
            "type": "integer"
           },
@@ -5067,6 +5077,8 @@
            "type": "string"
           },
           "size": {
+           "exclusiveMinimum": true,
+           "minimum": 0,
            "title": "Size",
            "type": "integer"
           },
@@ -5273,6 +5285,8 @@
               "type": "string"
              },
              "db_size": {
+              "exclusiveMinimum": true,
+              "minimum": 0,
               "title": "Db Size",
               "type": "integer"
              },
@@ -5309,6 +5323,8 @@
               "type": "string"
              },
              "size": {
+              "exclusiveMinimum": true,
+              "minimum": 0,
               "title": "Size",
               "type": "integer"
              },
@@ -5415,6 +5431,8 @@
        "properties": {
         "backup_retention_days": {
          "default": 7,
+         "exclusiveMinimum": true,
+         "minimum": 0,
          "title": "Backup Retention Days",
          "type": "integer"
         },
@@ -5426,6 +5444,7 @@
         },
         "datastore_id": {
          "deprecated": true,
+         "example": "063f3994-b6c2-4c37-96c9-bab8d82d36f7",
          "format": "uuid",
          "title": "Datastore Id",
          "type": "string"
@@ -5441,11 +5460,13 @@
          "type": "string"
         },
         "flavor_id": {
+         "example": "8bbe8e01-40c8-4d2b-80e8-189debc44b1c",
          "format": "uuid",
          "title": "Flavor Id",
          "type": "string"
         },
         "name": {
+         "example": "dbaas-name",
          "maxLength": 100,
          "title": "Name",
          "type": "string"
@@ -5491,11 +5512,13 @@
          "type": "array"
         },
         "password": {
+         "example": "dbaas-password",
          "maxLength": 50,
          "title": "Password",
          "type": "string"
         },
         "user": {
+         "example": "dbaas-user",
          "maxLength": 25,
          "title": "User",
          "type": "string"
@@ -5503,6 +5526,7 @@
         "volume": {
          "properties": {
           "size": {
+           "example": 30,
            "maximum": 50000,
            "minimum": 10,
            "title": "Size",
@@ -5516,6 +5540,7 @@
             "CLOUD_HDD",
             "CLOUD_NVME_15K"
            ],
+           "example": "CLOUD_NVME",
            "type": "string"
           }
          },
@@ -5706,6 +5731,8 @@
          "type": "array"
         },
         "backup_retention_days": {
+         "exclusiveMinimum": true,
+         "minimum": 0,
          "title": "Backup Retention Days",
          "type": "integer"
         },
@@ -6263,6 +6290,8 @@
             "type": "array"
            },
            "backup_retention_days": {
+            "exclusiveMinimum": true,
+            "minimum": 0,
             "title": "Backup Retention Days",
             "type": "integer"
            },
@@ -6711,6 +6740,7 @@
         "volume": {
          "properties": {
           "size": {
+           "example": 30,
            "maximum": 50000,
            "minimum": 10,
            "title": "Size",
@@ -6724,6 +6754,7 @@
             "CLOUD_HDD",
             "CLOUD_NVME_15K"
            ],
+           "example": "CLOUD_NVME",
            "type": "string"
           }
          },
@@ -6777,6 +6808,8 @@
          "type": "array"
         },
         "backup_retention_days": {
+         "exclusiveMinimum": true,
+         "minimum": 0,
          "title": "Backup Retention Days",
          "type": "integer"
         },
@@ -7325,6 +7358,8 @@
          "type": "array"
         },
         "backup_retention_days": {
+         "exclusiveMinimum": true,
+         "minimum": 0,
          "title": "Backup Retention Days",
          "type": "integer"
         },
@@ -7798,6 +7833,8 @@
          "type": "array"
         },
         "backup_retention_days": {
+         "exclusiveMinimum": true,
+         "minimum": 0,
          "title": "Backup Retention Days",
          "type": "integer"
         },
@@ -8218,6 +8255,8 @@
        "additionalProperties": false,
        "properties": {
         "backup_retention_days": {
+         "exclusiveMinimum": true,
+         "minimum": 0,
          "title": "Backup Retention Days",
          "type": "integer"
         },
@@ -8289,6 +8328,8 @@
          "type": "array"
         },
         "backup_retention_days": {
+         "exclusiveMinimum": true,
+         "minimum": 0,
          "title": "Backup Retention Days",
          "type": "integer"
         },
@@ -14742,619 +14783,1090 @@
      }
     ],
     "description": "healthcheck",
-    "isInternal": false,
+    "isInternal": true,
     "name": "healthcheck",
     "version": "1.124.1"
    },
    {
     "children": [
      {
-      "children": [
-       {
-        "configs": {
-         "additionalProperties": false,
-         "properties": {
-          "env": {
-           "default": "prod",
-           "description": "Environment to use",
-           "enum": [
-            "prod",
-            "pre-prod"
-           ],
-           "type": "string"
-          },
-          "region": {
-           "default": "br-se1",
-           "description": "Region to reach the service",
-           "enum": [
-            "br-ne1",
-            "br-se1",
-            "br-mgl1"
-           ],
-           "type": "string"
-          },
-          "serverUrl": {
-           "description": "Manually specify the server to use",
-           "format": "uri",
-           "type": "string"
-          }
-         },
-         "type": "object"
-        },
-        "description": "Attach a Security Group to a Port with provided port_id, security_group_id, x-tenant-id of an specific project type",
-        "isInternal": false,
-        "name": "attach",
-        "parameters": {
-         "additionalProperties": false,
-         "properties": {
-          "port_id": {
-           "description": "ID of the Port to attach security group",
-           "title": "port_id"
-          },
-          "security_group_id": {
-           "description": "ID of the Security Group to attach",
-           "title": "security_group_id"
-          }
-         },
-         "required": [
-          "port_id",
-          "security_group_id"
+      "configs": {
+       "additionalProperties": false,
+       "properties": {
+        "env": {
+         "default": "prod",
+         "description": "Environment to use",
+         "enum": [
+          "prod",
+          "pre-prod"
          ],
-         "type": "object"
+         "type": "string"
         },
-        "result": {},
-        "version": "1.124.1"
+        "region": {
+         "default": "br-se1",
+         "description": "Region to reach the service",
+         "enum": [
+          "br-ne1",
+          "br-se1",
+          "br-mgl1"
+         ],
+         "type": "string"
+        },
+        "serverUrl": {
+         "description": "Manually specify the server to use",
+         "format": "uri",
+         "type": "string"
+        }
        },
-       {
-        "configs": {
-         "additionalProperties": false,
-         "properties": {
-          "env": {
-           "default": "prod",
-           "description": "Environment to use",
-           "enum": [
-            "prod",
-            "pre-prod"
-           ],
-           "type": "string"
-          },
-          "region": {
-           "default": "br-se1",
-           "description": "Region to reach the service",
-           "enum": [
-            "br-ne1",
-            "br-se1",
-            "br-mgl1"
-           ],
-           "type": "string"
-          },
-          "serverUrl": {
-           "description": "Manually specify the server to use",
-           "format": "uri",
-           "type": "string"
-          },
-          "x-zone": {
-           "nullable": true,
-           "title": "X-Zone",
-           "type": "string"
-          }
-         },
-         "type": "object"
+       "type": "object"
+      },
+      "description": "Attach a Security Group to a Port with provided port_id, security_group_id, x-tenant-id of an specific project type",
+      "isInternal": false,
+      "name": "attach",
+      "parameters": {
+       "additionalProperties": false,
+       "properties": {
+        "port_id": {
+         "description": "ID of the Port to attach security group",
+         "title": "port_id"
         },
-        "description": "Create a Port on the default VPC. Uses VPC default in the provided x-tenant-id. You can provide a list of security_groups_id or subnets.",
-        "isInternal": true,
-        "name": "create",
-        "parameters": {
-         "additionalProperties": false,
-         "properties": {
-          "has_pip": {
-           "default": true,
-           "nullable": true,
-           "title": "Has Pip",
-           "type": "boolean"
-          },
-          "has_sg": {
-           "default": true,
-           "nullable": true,
-           "title": "Has Sg",
-           "type": "boolean"
-          },
-          "name": {
-           "maxLength": 100,
-           "minLength": 5,
-           "title": "Name",
-           "type": "string"
-          },
-          "security_groups_id": {
-           "default": [],
-           "items": {
-            "type": "string"
-           },
-           "nullable": true,
-           "title": "Security Groups Id",
-           "type": "array"
-          },
-          "subnets": {
-           "default": [],
-           "items": {
-            "type": "string"
-           },
-           "nullable": true,
-           "title": "Subnets",
-           "type": "array"
-          }
-         },
-         "required": [
-          "name"
-         ],
-         "type": "object"
-        },
-        "result": {
-         "example": {
-          "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-         },
-         "properties": {
-          "id": {
-           "title": "Id",
-           "type": "string"
-          }
-         },
-         "required": [
-          "id"
-         ],
-         "title": "PortCreateResponse",
-         "type": "object"
-        },
-        "version": "1.124.1"
+        "security_group_id": {
+         "description": "ID of the Security Group to attach",
+         "title": "security_group_id"
+        }
        },
-       {
-        "configs": {
-         "additionalProperties": false,
-         "properties": {
-          "env": {
-           "default": "prod",
-           "description": "Environment to use",
-           "enum": [
-            "prod",
-            "pre-prod"
-           ],
-           "type": "string"
-          },
-          "region": {
-           "default": "br-se1",
-           "description": "Region to reach the service",
-           "enum": [
-            "br-ne1",
-            "br-se1",
-            "br-mgl1"
-           ],
-           "type": "string"
-          },
-          "serverUrl": {
-           "description": "Manually specify the server to use",
-           "format": "uri",
-           "type": "string"
-          }
-         },
-         "type": "object"
-        },
-        "description": "Delete a port from the provided tenant_id",
-        "isInternal": false,
-        "name": "delete",
-        "parameters": {
-         "additionalProperties": false,
-         "properties": {
-          "port_id": {
-           "description": "ID of the Port to delete",
-           "title": "port_id"
-          }
-         },
-         "required": [
-          "port_id"
+       "required": [
+        "port_id",
+        "security_group_id"
+       ],
+       "type": "object"
+      },
+      "result": {},
+      "version": "1.124.1"
+     },
+     {
+      "configs": {
+       "additionalProperties": false,
+       "properties": {
+        "env": {
+         "default": "prod",
+         "description": "Environment to use",
+         "enum": [
+          "prod",
+          "pre-prod"
          ],
-         "type": "object"
+         "type": "string"
         },
-        "result": {
+        "region": {
+         "default": "br-se1",
+         "description": "Region to reach the service",
+         "enum": [
+          "br-ne1",
+          "br-se1",
+          "br-mgl1"
+         ],
+         "type": "string"
+        },
+        "serverUrl": {
+         "description": "Manually specify the server to use",
+         "format": "uri",
+         "type": "string"
+        },
+        "x-zone": {
          "nullable": true,
-         "type": "null"
-        },
-        "version": "1.124.1"
+         "title": "X-Zone",
+         "type": "string"
+        }
        },
-       {
-        "configs": {
-         "additionalProperties": false,
-         "properties": {
-          "env": {
-           "default": "prod",
-           "description": "Environment to use",
-           "enum": [
-            "prod",
-            "pre-prod"
-           ],
-           "type": "string"
-          },
-          "region": {
-           "default": "br-se1",
-           "description": "Region to reach the service",
-           "enum": [
-            "br-ne1",
-            "br-se1",
-            "br-mgl1"
-           ],
-           "type": "string"
-          },
-          "serverUrl": {
-           "description": "Manually specify the server to use",
-           "format": "uri",
-           "type": "string"
-          }
+       "type": "object"
+      },
+      "description": "Create a Port on the default VPC. Uses VPC default in the provided x-tenant-id. You can provide a list of security_groups_id or subnets.",
+      "isInternal": true,
+      "name": "create-default-vpc",
+      "parameters": {
+       "additionalProperties": false,
+       "properties": {
+        "has_pip": {
+         "default": true,
+         "nullable": true,
+         "title": "Has Pip",
+         "type": "boolean"
+        },
+        "has_sg": {
+         "default": true,
+         "nullable": true,
+         "title": "Has Sg",
+         "type": "boolean"
+        },
+        "name": {
+         "maxLength": 100,
+         "minLength": 5,
+         "title": "Name",
+         "type": "string"
+        },
+        "security_groups_id": {
+         "default": [],
+         "items": {
+          "type": "string"
          },
-         "type": "object"
+         "nullable": true,
+         "title": "Security Groups Id",
+         "type": "array"
         },
-        "description": "Delete a all ports from the provided tenant_id",
-        "isInternal": true,
-        "name": "delete-all",
-        "parameters": {
-         "additionalProperties": false,
-         "type": "object"
+        "subnets": {
+         "default": [],
+         "items": {
+          "type": "string"
+         },
+         "nullable": true,
+         "title": "Subnets",
+         "type": "array"
+        }
+       },
+       "required": [
+        "name"
+       ],
+       "type": "object"
+      },
+      "result": {
+       "example": {
+        "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+       },
+       "properties": {
+        "id": {
+         "title": "Id",
+         "type": "string"
+        }
+       },
+       "required": [
+        "id"
+       ],
+       "title": "PortCreateResponse",
+       "type": "object"
+      },
+      "version": "1.124.1"
+     },
+     {
+      "configs": {
+       "additionalProperties": false,
+       "properties": {
+        "env": {
+         "default": "prod",
+         "description": "Environment to use",
+         "enum": [
+          "prod",
+          "pre-prod"
+         ],
+         "type": "string"
         },
-        "result": {
-         "example": {
-          "deleted_ports": [
-           {
-            "openstack": 0
+        "region": {
+         "default": "br-se1",
+         "description": "Region to reach the service",
+         "enum": [
+          "br-ne1",
+          "br-se1",
+          "br-mgl1"
+         ],
+         "type": "string"
+        },
+        "serverUrl": {
+         "description": "Manually specify the server to use",
+         "format": "uri",
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
+      "description": "Delete a port from the provided tenant_id",
+      "isInternal": false,
+      "name": "delete",
+      "parameters": {
+       "additionalProperties": false,
+       "properties": {
+        "port_id": {
+         "description": "ID of the Port to delete",
+         "title": "port_id"
+        }
+       },
+       "required": [
+        "port_id"
+       ],
+       "type": "object"
+      },
+      "result": {
+       "nullable": true,
+       "type": "null"
+      },
+      "version": "1.124.1"
+     },
+     {
+      "configs": {
+       "additionalProperties": false,
+       "properties": {
+        "env": {
+         "default": "prod",
+         "description": "Environment to use",
+         "enum": [
+          "prod",
+          "pre-prod"
+         ],
+         "type": "string"
+        },
+        "region": {
+         "default": "br-se1",
+         "description": "Region to reach the service",
+         "enum": [
+          "br-ne1",
+          "br-se1",
+          "br-mgl1"
+         ],
+         "type": "string"
+        },
+        "serverUrl": {
+         "description": "Manually specify the server to use",
+         "format": "uri",
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
+      "description": "Delete a all ports from the provided tenant_id",
+      "isInternal": true,
+      "name": "delete-all",
+      "parameters": {
+       "additionalProperties": false,
+       "type": "object"
+      },
+      "result": {
+       "example": {
+        "deleted_ports": [
+         {
+          "openstack": 0
+         },
+         {
+          "database": 0
+         }
+        ],
+        "deleted_public_ips": [
+         {
+          "openstack": 0
+         },
+         {
+          "database": 0
+         }
+        ]
+       },
+       "properties": {
+        "deleted_ports": {
+         "items": {
+          "additionalProperties": {
+           "type": "integer"
+          },
+          "type": "object"
+         },
+         "title": "Deleted Ports",
+         "type": "array"
+        },
+        "deleted_public_ips": {
+         "items": {
+          "additionalProperties": {
+           "type": "integer"
+          },
+          "type": "object"
+         },
+         "title": "Deleted Public Ips",
+         "type": "array"
+        }
+       },
+       "required": [
+        "deleted_ports",
+        "deleted_public_ips"
+       ],
+       "title": "PortDeletedAllResponse",
+       "type": "object"
+      },
+      "version": "1.124.1"
+     },
+     {
+      "configs": {
+       "additionalProperties": false,
+       "properties": {
+        "env": {
+         "default": "prod",
+         "description": "Environment to use",
+         "enum": [
+          "prod",
+          "pre-prod"
+         ],
+         "type": "string"
+        },
+        "region": {
+         "default": "br-se1",
+         "description": "Region to reach the service",
+         "enum": [
+          "br-ne1",
+          "br-se1",
+          "br-mgl1"
+         ],
+         "type": "string"
+        },
+        "serverUrl": {
+         "description": "Manually specify the server to use",
+         "format": "uri",
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
+      "description": "Detach a Security Group to a Port with provided port_id, security_group_id, x-tenant-id of an specific project type",
+      "isInternal": false,
+      "name": "detach",
+      "parameters": {
+       "additionalProperties": false,
+       "properties": {
+        "port_id": {
+         "description": "ID of the Port to detach security group",
+         "title": "port_id"
+        },
+        "security_group_id": {
+         "description": "ID of the Security Group to detach",
+         "title": "security_group_id"
+        }
+       },
+       "required": [
+        "port_id",
+        "security_group_id"
+       ],
+       "type": "object"
+      },
+      "result": {},
+      "version": "1.124.1"
+     },
+     {
+      "configs": {
+       "additionalProperties": false,
+       "properties": {
+        "env": {
+         "default": "prod",
+         "description": "Environment to use",
+         "enum": [
+          "prod",
+          "pre-prod"
+         ],
+         "type": "string"
+        },
+        "region": {
+         "default": "br-se1",
+         "description": "Region to reach the service",
+         "enum": [
+          "br-ne1",
+          "br-se1",
+          "br-mgl1"
+         ],
+         "type": "string"
+        },
+        "serverUrl": {
+         "description": "Manually specify the server to use",
+         "format": "uri",
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
+      "description": "Return a port details from the provided tenant_id",
+      "isInternal": false,
+      "name": "get",
+      "parameters": {
+       "additionalProperties": false,
+       "properties": {
+        "port_id": {
+         "title": "Port Id"
+        }
+       },
+       "required": [
+        "port_id"
+       ],
+       "type": "object"
+      },
+      "result": {
+       "example": {
+        "created_at": "2022-01-01 00:00:00",
+        "description": "port description",
+        "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+        "ip_address": [
+         {
+          "ip_address": "172.20.0.2",
+          "subnet_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+         }
+        ],
+        "is_admin_state_up": true,
+        "is_port_security_enabled": true,
+        "name": "port_name",
+        "public_ip": [
+         {
+          "public_ip": "100.94.5.31",
+          "public_ip_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+         }
+        ],
+        "security_groups": [
+         "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+        ],
+        "updated": "2022-01-01 00:00:00",
+        "vpc_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+       },
+       "properties": {
+        "created_at": {
+         "format": "date-time",
+         "nullable": true,
+         "title": "Created At",
+         "type": "string"
+        },
+        "description": {
+         "nullable": true,
+         "title": "Description",
+         "type": "string"
+        },
+        "id": {
+         "nullable": true,
+         "title": "Id",
+         "type": "string"
+        },
+        "ip_address": {
+         "default": [],
+         "items": {
+          "example": {
+           "ip_address": "172.20.0.2",
+           "subnet_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+          },
+          "properties": {
+           "ip_address": {
+            "title": "Ip Address",
+            "type": "string"
            },
-           {
-            "database": 0
+           "subnet_id": {
+            "title": "Subnet Id",
+            "type": "string"
            }
+          },
+          "required": [
+           "ip_address",
+           "subnet_id"
           ],
-          "deleted_public_ips": [
-           {
-            "openstack": 0
+          "title": "IpAddress",
+          "type": "object"
+         },
+         "title": "Ip Address",
+         "type": "array"
+        },
+        "is_admin_state_up": {
+         "nullable": true,
+         "title": "Is Admin State Up",
+         "type": "boolean"
+        },
+        "is_port_security_enabled": {
+         "nullable": true,
+         "title": "Is Port Security Enabled",
+         "type": "boolean"
+        },
+        "name": {
+         "nullable": true,
+         "title": "Name",
+         "type": "string"
+        },
+        "public_ip": {
+         "default": [],
+         "items": {
+          "example": {
+           "public_ip": "100.94.5.31",
+           "public_ip_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+          },
+          "properties": {
+           "public_ip": {
+            "nullable": true,
+            "title": "Public Ip",
+            "type": "string"
            },
-           {
-            "database": 0
+           "public_ip_id": {
+            "nullable": true,
+            "title": "Public Ip Id",
+            "type": "string"
            }
-          ]
-         },
-         "properties": {
-          "deleted_ports": {
-           "items": {
-            "additionalProperties": {
-             "type": "integer"
-            },
-            "type": "object"
-           },
-           "title": "Deleted Ports",
-           "type": "array"
           },
-          "deleted_public_ips": {
-           "items": {
-            "additionalProperties": {
-             "type": "integer"
-            },
-            "type": "object"
-           },
-           "title": "Deleted Public Ips",
-           "type": "array"
-          }
+          "title": "PublicIpResponsePort",
+          "type": "object"
          },
-         "required": [
-          "deleted_ports",
-          "deleted_public_ips"
-         ],
-         "title": "PortDeletedAllResponse",
-         "type": "object"
+         "nullable": true,
+         "title": "Public Ip",
+         "type": "array"
         },
-        "version": "1.124.1"
+        "security_groups": {
+         "default": [],
+         "items": {
+          "type": "string"
+         },
+         "title": "Security Groups",
+         "type": "array"
+        },
+        "updated": {
+         "format": "date-time",
+         "nullable": true,
+         "title": "Updated",
+         "type": "string"
+        },
+        "vpc_id": {
+         "nullable": true,
+         "title": "Vpc Id",
+         "type": "string"
+        }
        },
-       {
-        "configs": {
-         "additionalProperties": false,
-         "properties": {
-          "env": {
-           "default": "prod",
-           "description": "Environment to use",
-           "enum": [
-            "prod",
-            "pre-prod"
-           ],
-           "type": "string"
-          },
-          "region": {
-           "default": "br-se1",
-           "description": "Region to reach the service",
-           "enum": [
-            "br-ne1",
-            "br-se1",
-            "br-mgl1"
-           ],
-           "type": "string"
-          },
-          "serverUrl": {
-           "description": "Manually specify the server to use",
-           "format": "uri",
-           "type": "string"
-          }
-         },
-         "type": "object"
-        },
-        "description": "Detach a Security Group to a Port with provided port_id, security_group_id, x-tenant-id of an specific project type",
-        "isInternal": false,
-        "name": "detach",
-        "parameters": {
-         "additionalProperties": false,
-         "properties": {
-          "port_id": {
-           "description": "ID of the Port to detach security group",
-           "title": "port_id"
-          },
-          "security_group_id": {
-           "description": "ID of the Security Group to detach",
-           "title": "security_group_id"
-          }
-         },
-         "required": [
-          "port_id",
-          "security_group_id"
+       "title": "PortResponse",
+       "type": "object"
+      },
+      "version": "1.124.1"
+     },
+     {
+      "configs": {
+       "additionalProperties": false,
+       "properties": {
+        "env": {
+         "default": "prod",
+         "description": "Environment to use",
+         "enum": [
+          "prod",
+          "pre-prod"
          ],
-         "type": "object"
+         "type": "string"
         },
-        "result": {},
-        "version": "1.124.1"
+        "region": {
+         "default": "br-se1",
+         "description": "Region to reach the service",
+         "enum": [
+          "br-ne1",
+          "br-se1",
+          "br-mgl1"
+         ],
+         "type": "string"
+        },
+        "serverUrl": {
+         "description": "Manually specify the server to use",
+         "format": "uri",
+         "type": "string"
+        }
        },
-       {
-        "configs": {
-         "additionalProperties": false,
-         "properties": {
-          "env": {
-           "default": "prod",
-           "description": "Environment to use",
-           "enum": [
-            "prod",
-            "pre-prod"
-           ],
-           "type": "string"
-          },
-          "region": {
-           "default": "br-se1",
-           "description": "Region to reach the service",
-           "enum": [
-            "br-ne1",
-            "br-se1",
-            "br-mgl1"
-           ],
-           "type": "string"
-          },
-          "serverUrl": {
-           "description": "Manually specify the server to use",
-           "format": "uri",
-           "type": "string"
+       "type": "object"
+      },
+      "description": "Return a detailed list of ports from the provided tenant_id",
+      "isInternal": false,
+      "name": "list",
+      "parameters": {
+       "additionalProperties": false,
+       "properties": {
+        "port_id_list": {
+         "default": [],
+         "items": {},
+         "title": "Port Id List",
+         "type": "array"
+        }
+       },
+       "type": "object"
+      },
+      "result": {
+       "items": {
+        "example": {
+         "created_at": "2022-01-01 00:00:00",
+         "description": "port description",
+         "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+         "ip_address": [
+          {
+           "ip_address": "172.20.0.2",
+           "subnet_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
           }
-         },
-         "type": "object"
-        },
-        "description": "Return a port details from the provided tenant_id",
-        "isInternal": false,
-        "name": "get",
-        "parameters": {
-         "additionalProperties": false,
-         "properties": {
-          "port_id": {
-           "title": "Port Id"
-          }
-         },
-         "required": [
-          "port_id"
          ],
-         "type": "object"
+         "is_admin_state_up": true,
+         "is_port_security_enabled": true,
+         "name": "port_name",
+         "public_ip": [
+          {
+           "public_ip": "100.94.5.31",
+           "public_ip_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+          }
+         ],
+         "security_groups": [
+          "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+         ],
+         "updated": "2022-01-01 00:00:00",
+         "vpc_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
         },
-        "result": {
-         "example": {
-          "created_at": "2022-01-01 00:00:00",
-          "description": "port description",
-          "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-          "ip_address": [
-           {
+        "properties": {
+         "created_at": {
+          "format": "date-time",
+          "nullable": true,
+          "title": "Created At",
+          "type": "string"
+         },
+         "description": {
+          "nullable": true,
+          "title": "Description",
+          "type": "string"
+         },
+         "id": {
+          "nullable": true,
+          "title": "Id",
+          "type": "string"
+         },
+         "ip_address": {
+          "default": [],
+          "items": {
+           "example": {
             "ip_address": "172.20.0.2",
             "subnet_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-           }
-          ],
-          "is_admin_state_up": true,
-          "is_port_security_enabled": true,
-          "name": "port_name",
-          "public_ip": [
-           {
+           },
+           "properties": {
+            "ip_address": {
+             "title": "Ip Address",
+             "type": "string"
+            },
+            "subnet_id": {
+             "title": "Subnet Id",
+             "type": "string"
+            }
+           },
+           "required": [
+            "ip_address",
+            "subnet_id"
+           ],
+           "title": "IpAddress",
+           "type": "object"
+          },
+          "title": "Ip Address",
+          "type": "array"
+         },
+         "is_admin_state_up": {
+          "nullable": true,
+          "title": "Is Admin State Up",
+          "type": "boolean"
+         },
+         "is_port_security_enabled": {
+          "nullable": true,
+          "title": "Is Port Security Enabled",
+          "type": "boolean"
+         },
+         "name": {
+          "nullable": true,
+          "title": "Name",
+          "type": "string"
+         },
+         "public_ip": {
+          "default": [],
+          "items": {
+           "example": {
             "public_ip": "100.94.5.31",
             "public_ip_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-           }
-          ],
-          "security_groups": [
-           "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-          ],
+           },
+           "properties": {
+            "public_ip": {
+             "nullable": true,
+             "title": "Public Ip",
+             "type": "string"
+            },
+            "public_ip_id": {
+             "nullable": true,
+             "title": "Public Ip Id",
+             "type": "string"
+            }
+           },
+           "title": "PublicIpResponsePort",
+           "type": "object"
+          },
+          "nullable": true,
+          "title": "Public Ip",
+          "type": "array"
+         },
+         "security_groups": {
+          "default": [],
+          "items": {
+           "type": "string"
+          },
+          "title": "Security Groups",
+          "type": "array"
+         },
+         "updated": {
+          "format": "date-time",
+          "nullable": true,
+          "title": "Updated",
+          "type": "string"
+         },
+         "vpc_id": {
+          "nullable": true,
+          "title": "Vpc Id",
+          "type": "string"
+         }
+        },
+        "title": "PortResponse",
+        "type": "object"
+       },
+       "title": "Response Portsdetailedlist",
+       "type": "array"
+      },
+      "version": "1.124.1"
+     }
+    ],
+    "description": "VPC Port",
+    "isInternal": false,
+    "name": "ports",
+    "version": "1.124.1"
+   },
+   {
+    "children": [
+     {
+      "configs": {
+       "additionalProperties": false,
+       "properties": {
+        "env": {
+         "default": "prod",
+         "description": "Environment to use",
+         "enum": [
+          "prod",
+          "pre-prod"
+         ],
+         "type": "string"
+        },
+        "region": {
+         "default": "br-se1",
+         "description": "Region to reach the service",
+         "enum": [
+          "br-ne1",
+          "br-se1",
+          "br-mgl1"
+         ],
+         "type": "string"
+        },
+        "serverUrl": {
+         "description": "Manually specify the server to use",
+         "format": "uri",
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
+      "description": "Attach a Public IP to a Port",
+      "isInternal": false,
+      "name": "attach",
+      "parameters": {
+       "additionalProperties": false,
+       "properties": {
+        "port_id": {
+         "description": "Id of the Port to attach the Public IP",
+         "title": "Port ID"
+        },
+        "public_ip_id": {
+         "description": "Id of the Public IP to attach port to",
+         "title": "Public IP ID"
+        }
+       },
+       "required": [
+        "port_id",
+        "public_ip_id"
+       ],
+       "type": "object"
+      },
+      "result": {},
+      "version": "1.124.1"
+     },
+     {
+      "configs": {
+       "additionalProperties": false,
+       "properties": {
+        "env": {
+         "default": "prod",
+         "description": "Environment to use",
+         "enum": [
+          "prod",
+          "pre-prod"
+         ],
+         "type": "string"
+        },
+        "region": {
+         "default": "br-se1",
+         "description": "Region to reach the service",
+         "enum": [
+          "br-ne1",
+          "br-se1",
+          "br-mgl1"
+         ],
+         "type": "string"
+        },
+        "serverUrl": {
+         "description": "Manually specify the server to use",
+         "format": "uri",
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
+      "description": "Delete a Public IP from the provided tenant_id",
+      "isInternal": false,
+      "name": "delete",
+      "parameters": {
+       "additionalProperties": false,
+       "properties": {
+        "public_ip_id": {
+         "description": "Id of the Public IP to delete",
+         "title": "Public IP ID"
+        }
+       },
+       "required": [
+        "public_ip_id"
+       ],
+       "type": "object"
+      },
+      "result": {
+       "nullable": true,
+       "type": "null"
+      },
+      "version": "1.124.1"
+     },
+     {
+      "configs": {
+       "additionalProperties": false,
+       "properties": {
+        "env": {
+         "default": "prod",
+         "description": "Environment to use",
+         "enum": [
+          "prod",
+          "pre-prod"
+         ],
+         "type": "string"
+        },
+        "region": {
+         "default": "br-se1",
+         "description": "Region to reach the service",
+         "enum": [
+          "br-ne1",
+          "br-se1",
+          "br-mgl1"
+         ],
+         "type": "string"
+        },
+        "serverUrl": {
+         "description": "Manually specify the server to use",
+         "format": "uri",
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
+      "description": "Detach a Public IP to a Port",
+      "isInternal": false,
+      "name": "detach",
+      "parameters": {
+       "additionalProperties": false,
+       "properties": {
+        "port_id": {
+         "description": "Id of the Port to detach the Public IP",
+         "title": "Port ID"
+        },
+        "public_ip_id": {
+         "description": "Id of the Public IP to detach port to",
+         "title": "Public IP ID"
+        }
+       },
+       "required": [
+        "port_id",
+        "public_ip_id"
+       ],
+       "type": "object"
+      },
+      "result": {},
+      "version": "1.124.1"
+     },
+     {
+      "configs": {
+       "additionalProperties": false,
+       "properties": {
+        "env": {
+         "default": "prod",
+         "description": "Environment to use",
+         "enum": [
+          "prod",
+          "pre-prod"
+         ],
+         "type": "string"
+        },
+        "region": {
+         "default": "br-se1",
+         "description": "Region to reach the service",
+         "enum": [
+          "br-ne1",
+          "br-se1",
+          "br-mgl1"
+         ],
+         "type": "string"
+        },
+        "serverUrl": {
+         "description": "Manually specify the server to use",
+         "format": "uri",
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
+      "description": "Return a Public IP details",
+      "isInternal": false,
+      "name": "get",
+      "parameters": {
+       "additionalProperties": false,
+       "properties": {
+        "public_ip_id": {
+         "description": "Id of the Public IP to retrieve",
+         "title": "Public IP ID"
+        }
+       },
+       "required": [
+        "public_ip_id"
+       ],
+       "type": "object"
+      },
+      "result": {
+       "example": {
+        "created_at": "2022-01-01 00:00:00",
+        "description": "port description",
+        "error": "error",
+        "external_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+        "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+        "port_ip": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+        "public_ip": "100.94.5.31",
+        "status": "created",
+        "updated": "2022-01-01 00:00:00",
+        "vpc_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+       },
+       "properties": {
+        "created_at": {
+         "format": "date-time",
+         "nullable": true,
+         "title": "Created At",
+         "type": "string"
+        },
+        "description": {
+         "nullable": true,
+         "title": "Description",
+         "type": "string"
+        },
+        "error": {
+         "nullable": true,
+         "title": "Error",
+         "type": "string"
+        },
+        "external_id": {
+         "nullable": true,
+         "title": "External Id",
+         "type": "string"
+        },
+        "id": {
+         "nullable": true,
+         "title": "Id",
+         "type": "string"
+        },
+        "port_id": {
+         "nullable": true,
+         "title": "Port Id",
+         "type": "string"
+        },
+        "public_ip": {
+         "nullable": true,
+         "title": "Public Ip",
+         "type": "string"
+        },
+        "status": {
+         "nullable": true,
+         "title": "Status",
+         "type": "string"
+        },
+        "updated": {
+         "format": "date-time",
+         "nullable": true,
+         "title": "Updated",
+         "type": "string"
+        },
+        "vpc_id": {
+         "nullable": true,
+         "title": "Vpc Id",
+         "type": "string"
+        }
+       },
+       "title": "PublicIpDb",
+       "type": "object"
+      },
+      "version": "1.124.1"
+     },
+     {
+      "configs": {
+       "additionalProperties": false,
+       "properties": {
+        "env": {
+         "default": "prod",
+         "description": "Environment to use",
+         "enum": [
+          "prod",
+          "pre-prod"
+         ],
+         "type": "string"
+        },
+        "region": {
+         "default": "br-se1",
+         "description": "Region to reach the service",
+         "enum": [
+          "br-ne1",
+          "br-se1",
+          "br-mgl1"
+         ],
+         "type": "string"
+        },
+        "serverUrl": {
+         "description": "Manually specify the server to use",
+         "format": "uri",
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
+      "description": "Return a tenant's public ip list",
+      "isInternal": false,
+      "name": "list",
+      "parameters": {
+       "additionalProperties": false,
+       "type": "object"
+      },
+      "result": {
+       "example": {
+        "public_ips": [
+         {
+          "created_at": "2022-01-01 00:00:00",
+          "description": "port description",
+          "error": "error",
+          "external_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+          "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+          "port_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+          "public_ip": "100.94.5.31",
+          "status": "created",
           "updated": "2022-01-01 00:00:00",
           "vpc_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-         },
-         "properties": {
-          "created_at": {
-           "format": "date-time",
-           "nullable": true,
-           "title": "Created At",
-           "type": "string"
-          },
-          "description": {
-           "nullable": true,
-           "title": "Description",
-           "type": "string"
-          },
-          "id": {
-           "nullable": true,
-           "title": "Id",
-           "type": "string"
-          },
-          "ip_address": {
-           "default": [],
-           "items": {
-            "example": {
-             "ip_address": "172.20.0.2",
-             "subnet_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-            },
-            "properties": {
-             "ip_address": {
-              "title": "Ip Address",
-              "type": "string"
-             },
-             "subnet_id": {
-              "title": "Subnet Id",
-              "type": "string"
-             }
-            },
-            "required": [
-             "ip_address",
-             "subnet_id"
-            ],
-            "title": "IpAddress",
-            "type": "object"
-           },
-           "title": "Ip Address",
-           "type": "array"
-          },
-          "is_admin_state_up": {
-           "nullable": true,
-           "title": "Is Admin State Up",
-           "type": "boolean"
-          },
-          "is_port_security_enabled": {
-           "nullable": true,
-           "title": "Is Port Security Enabled",
-           "type": "boolean"
-          },
-          "name": {
-           "nullable": true,
-           "title": "Name",
-           "type": "string"
-          },
-          "public_ip": {
-           "default": [],
-           "items": {
-            "example": {
-             "public_ip": "100.94.5.31",
-             "public_ip_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-            },
-            "properties": {
-             "public_ip": {
-              "nullable": true,
-              "title": "Public Ip",
-              "type": "string"
-             },
-             "public_ip_id": {
-              "nullable": true,
-              "title": "Public Ip Id",
-              "type": "string"
-             }
-            },
-            "title": "PublicIpResponsePort",
-            "type": "object"
-           },
-           "nullable": true,
-           "title": "Public Ip",
-           "type": "array"
-          },
-          "security_groups": {
-           "default": [],
-           "items": {
-            "type": "string"
-           },
-           "title": "Security Groups",
-           "type": "array"
-          },
-          "updated": {
-           "format": "date-time",
-           "nullable": true,
-           "title": "Updated",
-           "type": "string"
-          },
-          "vpc_id": {
-           "nullable": true,
-           "title": "Vpc Id",
-           "type": "string"
-          }
-         },
-         "title": "PortResponse",
-         "type": "object"
-        },
-        "version": "1.124.1"
+         }
+        ]
        },
-       {
-        "configs": {
-         "additionalProperties": false,
-         "properties": {
-          "env": {
-           "default": "prod",
-           "description": "Environment to use",
-           "enum": [
-            "prod",
-            "pre-prod"
-           ],
-           "type": "string"
-          },
-          "region": {
-           "default": "br-se1",
-           "description": "Region to reach the service",
-           "enum": [
-            "br-ne1",
-            "br-se1",
-            "br-mgl1"
-           ],
-           "type": "string"
-          },
-          "serverUrl": {
-           "description": "Manually specify the server to use",
-           "format": "uri",
-           "type": "string"
-          }
-         },
-         "type": "object"
-        },
-        "description": "Return a detailed list of ports from the provided tenant_id",
-        "isInternal": false,
-        "name": "list",
-        "parameters": {
-         "additionalProperties": false,
-         "properties": {
-          "port_id_list": {
-           "default": [],
-           "items": {},
-           "title": "Port Id List",
-           "type": "array"
-          }
-         },
-         "type": "object"
-        },
-        "result": {
+       "properties": {
+        "public_ips": {
          "items": {
           "example": {
            "created_at": "2022-01-01 00:00:00",
            "description": "port description",
+           "error": "error",
+           "external_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
            "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-           "ip_address": [
-            {
-             "ip_address": "172.20.0.2",
-             "subnet_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-            }
-           ],
-           "is_admin_state_up": true,
-           "is_port_security_enabled": true,
-           "name": "port_name",
-           "public_ip": [
-            {
-             "public_ip": "100.94.5.31",
-             "public_ip_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-            }
-           ],
-           "security_groups": [
-            "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-           ],
+           "port_ip": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+           "public_ip": "100.94.5.31",
+           "status": "created",
            "updated": "2022-01-01 00:00:00",
            "vpc_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
           },
@@ -15370,86 +15882,35 @@
             "title": "Description",
             "type": "string"
            },
+           "error": {
+            "nullable": true,
+            "title": "Error",
+            "type": "string"
+           },
+           "external_id": {
+            "nullable": true,
+            "title": "External Id",
+            "type": "string"
+           },
            "id": {
             "nullable": true,
             "title": "Id",
             "type": "string"
            },
-           "ip_address": {
-            "default": [],
-            "items": {
-             "example": {
-              "ip_address": "172.20.0.2",
-              "subnet_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-             },
-             "properties": {
-              "ip_address": {
-               "title": "Ip Address",
-               "type": "string"
-              },
-              "subnet_id": {
-               "title": "Subnet Id",
-               "type": "string"
-              }
-             },
-             "required": [
-              "ip_address",
-              "subnet_id"
-             ],
-             "title": "IpAddress",
-             "type": "object"
-            },
-            "title": "Ip Address",
-            "type": "array"
-           },
-           "is_admin_state_up": {
+           "port_id": {
             "nullable": true,
-            "title": "Is Admin State Up",
-            "type": "boolean"
-           },
-           "is_port_security_enabled": {
-            "nullable": true,
-            "title": "Is Port Security Enabled",
-            "type": "boolean"
-           },
-           "name": {
-            "nullable": true,
-            "title": "Name",
+            "title": "Port Id",
             "type": "string"
            },
            "public_ip": {
-            "default": [],
-            "items": {
-             "example": {
-              "public_ip": "100.94.5.31",
-              "public_ip_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-             },
-             "properties": {
-              "public_ip": {
-               "nullable": true,
-               "title": "Public Ip",
-               "type": "string"
-              },
-              "public_ip_id": {
-               "nullable": true,
-               "title": "Public Ip Id",
-               "type": "string"
-              }
-             },
-             "title": "PublicIpResponsePort",
-             "type": "object"
-            },
             "nullable": true,
             "title": "Public Ip",
-            "type": "array"
+            "type": "string"
            },
-           "security_groups": {
-            "default": [],
-            "items": {
-             "type": "string"
-            },
-            "title": "Security Groups",
-            "type": "array"
+           "status": {
+            "nullable": true,
+            "title": "Status",
+            "type": "string"
            },
            "updated": {
             "format": "date-time",
@@ -15463,1151 +15924,25 @@
             "type": "string"
            }
           },
-          "title": "PortResponse",
+          "title": "PublicIpDb",
           "type": "object"
          },
-         "title": "Response Portsdetailedlist",
+         "title": "Public Ips",
          "type": "array"
-        },
-        "version": "1.124.1"
-       }
-      ],
-      "description": "port | ports",
-      "isInternal": false,
-      "name": "ports",
-      "version": "1.124.1"
-     },
-     {
-      "children": [
-       {
-        "configs": {
-         "additionalProperties": false,
-         "properties": {
-          "env": {
-           "default": "prod",
-           "description": "Environment to use",
-           "enum": [
-            "prod",
-            "pre-prod"
-           ],
-           "type": "string"
-          },
-          "region": {
-           "default": "br-se1",
-           "description": "Region to reach the service",
-           "enum": [
-            "br-ne1",
-            "br-se1",
-            "br-mgl1"
-           ],
-           "type": "string"
-          },
-          "serverUrl": {
-           "description": "Manually specify the server to use",
-           "format": "uri",
-           "type": "string"
-          },
-          "x-zone": {
-           "nullable": true,
-           "title": "X-Zone",
-           "type": "string"
-          }
-         },
-         "type": "object"
-        },
-        "description": "Create a Port with provided vpc_id and x-tenant-id. You can provide a list of security_groups_id or subnets",
-        "isInternal": false,
-        "name": "create",
-        "parameters": {
-         "additionalProperties": false,
-         "properties": {
-          "has_pip": {
-           "default": true,
-           "nullable": true,
-           "title": "Has Pip",
-           "type": "boolean"
-          },
-          "has_sg": {
-           "default": true,
-           "nullable": true,
-           "title": "Has Sg",
-           "type": "boolean"
-          },
-          "name": {
-           "maxLength": 100,
-           "minLength": 5,
-           "title": "Name",
-           "type": "string"
-          },
-          "security_groups_id": {
-           "default": [],
-           "items": {
-            "type": "string"
-           },
-           "nullable": true,
-           "title": "Security Groups Id",
-           "type": "array"
-          },
-          "subnets": {
-           "default": [],
-           "items": {
-            "type": "string"
-           },
-           "nullable": true,
-           "title": "Subnets",
-           "type": "array"
-          },
-          "vpc_id": {
-           "description": "ID of the VPC to create port",
-           "title": "vpc_id"
-          }
-         },
-         "required": [
-          "name",
-          "vpc_id"
-         ],
-         "type": "object"
-        },
-        "result": {
-         "example": {
-          "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-         },
-         "properties": {
-          "id": {
-           "title": "Id",
-           "type": "string"
-          }
-         },
-         "required": [
-          "id"
-         ],
-         "title": "PortCreateResponse",
-         "type": "object"
-        },
-        "version": "1.124.1"
+        }
        },
-       {
-        "configs": {
-         "additionalProperties": false,
-         "properties": {
-          "env": {
-           "default": "prod",
-           "description": "Environment to use",
-           "enum": [
-            "prod",
-            "pre-prod"
-           ],
-           "type": "string"
-          },
-          "region": {
-           "default": "br-se1",
-           "description": "Region to reach the service",
-           "enum": [
-            "br-ne1",
-            "br-se1",
-            "br-mgl1"
-           ],
-           "type": "string"
-          },
-          "serverUrl": {
-           "description": "Manually specify the server to use",
-           "format": "uri",
-           "type": "string"
-          }
-         },
-         "type": "object"
-        },
-        "description": "Returns a list of ports for a provided vpc_id and x-tenant-id. The list will be paginated, it means you can easily find what you need just setting the page number(_offset) and the quantity of items per page(_limit). The level of detail can also be set",
-        "isInternal": false,
-        "name": "list",
-        "parameters": {
-         "additionalProperties": false,
-         "properties": {
-          "_limit": {
-           "default": 10,
-           "description": "Items Per Page",
-           "minimum": 1,
-           "title": "Items Per Page",
-           "type": "integer"
-          },
-          "_offset": {
-           "default": 1,
-           "description": "Page Number",
-           "minimum": 1,
-           "title": "Page Number",
-           "type": "integer"
-          },
-          "detailed": {
-           "default": true,
-           "title": "Detailed",
-           "type": "boolean"
-          },
-          "port_id_list": {
-           "default": [],
-           "items": {},
-           "title": "Port Id List",
-           "type": "array"
-          },
-          "vpc_id": {
-           "description": "ID of VPC to list ports",
-           "title": "vpc_id"
-          }
-         },
-         "required": [
-          "vpc_id"
-         ],
-         "type": "object"
-        },
-        "result": {
-         "anyOf": [
-          {
-           "example": {
-            "ports_simplified": [
-             {
-              "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-              "ip_address": [
-               {
-                "ip_address": "172.20.0.2",
-                "subnet_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-               }
-              ]
-             }
-            ]
-           },
-           "properties": {
-            "ports_simplified": {
-             "items": {
-              "example": {
-               "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-               "ip_address": [
-                {
-                 "ip_address": "172.20.0.2",
-                 "subnet_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-                }
-               ]
-              },
-              "properties": {
-               "id": {
-                "nullable": true,
-                "title": "Id",
-                "type": "string"
-               },
-               "ip_address": {
-                "default": [],
-                "items": {
-                 "example": {
-                  "ip_address": "172.20.0.2",
-                  "subnet_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-                 },
-                 "properties": {
-                  "ip_address": {
-                   "title": "Ip Address",
-                   "type": "string"
-                  },
-                  "subnet_id": {
-                   "title": "Subnet Id",
-                   "type": "string"
-                  }
-                 },
-                 "required": [
-                  "ip_address",
-                  "subnet_id"
-                 ],
-                 "title": "IpAddress",
-                 "type": "object"
-                },
-                "title": "Ip Address",
-                "type": "array"
-               }
-              },
-              "title": "PortSimpleResponse",
-              "type": "object"
-             },
-             "title": "Ports Simplified",
-             "type": "array"
-            }
-           },
-           "required": [
-            "ports_simplified"
-           ],
-           "title": "PortsListSimplified",
-           "type": "object"
-          },
-          {
-           "example": {
-            "ports": [
-             {
-              "created_at": "2022-01-01 00:00:00",
-              "description": "port description",
-              "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-              "ip_address": [
-               {
-                "ip_address": "172.20.0.2",
-                "subnet_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-               }
-              ],
-              "is_admin_state_up": true,
-              "is_port_security_enabled": true,
-              "name": "port_name",
-              "public_ip": [
-               {
-                "public_ip": "100.94.5.31",
-                "public_ip_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-               }
-              ],
-              "security_groups": [
-               "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-              ],
-              "updated": "2022-01-01 00:00:00",
-              "vpc_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-             }
-            ]
-           },
-           "properties": {
-            "ports": {
-             "items": {
-              "example": {
-               "created_at": "2022-01-01 00:00:00",
-               "description": "port description",
-               "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-               "ip_address": [
-                {
-                 "ip_address": "172.20.0.2",
-                 "subnet_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-                }
-               ],
-               "is_admin_state_up": true,
-               "is_port_security_enabled": true,
-               "name": "port_name",
-               "public_ip": [
-                {
-                 "public_ip": "100.94.5.31",
-                 "public_ip_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-                }
-               ],
-               "security_groups": [
-                "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-               ],
-               "updated": "2022-01-01 00:00:00",
-               "vpc_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-              },
-              "properties": {
-               "created_at": {
-                "format": "date-time",
-                "nullable": true,
-                "title": "Created At",
-                "type": "string"
-               },
-               "description": {
-                "nullable": true,
-                "title": "Description",
-                "type": "string"
-               },
-               "id": {
-                "nullable": true,
-                "title": "Id",
-                "type": "string"
-               },
-               "ip_address": {
-                "default": [],
-                "items": {
-                 "example": {
-                  "ip_address": "172.20.0.2",
-                  "subnet_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-                 },
-                 "properties": {
-                  "ip_address": {
-                   "title": "Ip Address",
-                   "type": "string"
-                  },
-                  "subnet_id": {
-                   "title": "Subnet Id",
-                   "type": "string"
-                  }
-                 },
-                 "required": [
-                  "ip_address",
-                  "subnet_id"
-                 ],
-                 "title": "IpAddress",
-                 "type": "object"
-                },
-                "title": "Ip Address",
-                "type": "array"
-               },
-               "is_admin_state_up": {
-                "nullable": true,
-                "title": "Is Admin State Up",
-                "type": "boolean"
-               },
-               "is_port_security_enabled": {
-                "nullable": true,
-                "title": "Is Port Security Enabled",
-                "type": "boolean"
-               },
-               "name": {
-                "nullable": true,
-                "title": "Name",
-                "type": "string"
-               },
-               "public_ip": {
-                "default": [],
-                "items": {
-                 "example": {
-                  "public_ip": "100.94.5.31",
-                  "public_ip_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-                 },
-                 "properties": {
-                  "public_ip": {
-                   "nullable": true,
-                   "title": "Public Ip",
-                   "type": "string"
-                  },
-                  "public_ip_id": {
-                   "nullable": true,
-                   "title": "Public Ip Id",
-                   "type": "string"
-                  }
-                 },
-                 "title": "PublicIpResponsePort",
-                 "type": "object"
-                },
-                "nullable": true,
-                "title": "Public Ip",
-                "type": "array"
-               },
-               "security_groups": {
-                "default": [],
-                "items": {
-                 "type": "string"
-                },
-                "title": "Security Groups",
-                "type": "array"
-               },
-               "updated": {
-                "format": "date-time",
-                "nullable": true,
-                "title": "Updated",
-                "type": "string"
-               },
-               "vpc_id": {
-                "nullable": true,
-                "title": "Vpc Id",
-                "type": "string"
-               }
-              },
-              "title": "PortResponse",
-              "type": "object"
-             },
-             "title": "Ports",
-             "type": "array"
-            }
-           },
-           "required": [
-            "ports"
-           ],
-           "title": "PortsList",
-           "type": "object"
-          }
-         ],
-         "title": "Response Listports",
-         "type": "object"
-        },
-        "version": "1.124.1"
-       }
-      ],
-      "description": "port | vpcs-ports",
-      "isInternal": false,
-      "name": "vpcs-ports",
+       "required": [
+        "public_ips"
+       ],
+       "title": "PublicIpsList",
+       "type": "object"
+      },
       "version": "1.124.1"
      }
     ],
-    "description": "port",
+    "description": "VPC Public IPs",
     "isInternal": false,
-    "name": "port",
-    "version": "1.124.1"
-   },
-   {
-    "children": [
-     {
-      "children": [
-       {
-        "configs": {
-         "additionalProperties": false,
-         "properties": {
-          "env": {
-           "default": "prod",
-           "description": "Environment to use",
-           "enum": [
-            "prod",
-            "pre-prod"
-           ],
-           "type": "string"
-          },
-          "region": {
-           "default": "br-se1",
-           "description": "Region to reach the service",
-           "enum": [
-            "br-ne1",
-            "br-se1",
-            "br-mgl1"
-           ],
-           "type": "string"
-          },
-          "serverUrl": {
-           "description": "Manually specify the server to use",
-           "format": "uri",
-           "type": "string"
-          }
-         },
-         "type": "object"
-        },
-        "description": "Attach a Public IP to a Port",
-        "isInternal": false,
-        "name": "attach",
-        "parameters": {
-         "additionalProperties": false,
-         "properties": {
-          "port_id": {
-           "description": "Id of the Port to attach the Public IP",
-           "title": "Port ID"
-          },
-          "public_ip_id": {
-           "description": "Id of the Public IP to attach port to",
-           "title": "Public IP ID"
-          }
-         },
-         "required": [
-          "port_id",
-          "public_ip_id"
-         ],
-         "type": "object"
-        },
-        "result": {},
-        "version": "1.124.1"
-       },
-       {
-        "configs": {
-         "additionalProperties": false,
-         "properties": {
-          "env": {
-           "default": "prod",
-           "description": "Environment to use",
-           "enum": [
-            "prod",
-            "pre-prod"
-           ],
-           "type": "string"
-          },
-          "region": {
-           "default": "br-se1",
-           "description": "Region to reach the service",
-           "enum": [
-            "br-ne1",
-            "br-se1",
-            "br-mgl1"
-           ],
-           "type": "string"
-          },
-          "serverUrl": {
-           "description": "Manually specify the server to use",
-           "format": "uri",
-           "type": "string"
-          }
-         },
-         "type": "object"
-        },
-        "description": "Delete a Public IP from the provided tenant_id",
-        "isInternal": false,
-        "name": "delete",
-        "parameters": {
-         "additionalProperties": false,
-         "properties": {
-          "public_ip_id": {
-           "description": "Id of the Public IP to delete",
-           "title": "Public IP ID"
-          }
-         },
-         "required": [
-          "public_ip_id"
-         ],
-         "type": "object"
-        },
-        "result": {
-         "nullable": true,
-         "type": "null"
-        },
-        "version": "1.124.1"
-       },
-       {
-        "configs": {
-         "additionalProperties": false,
-         "properties": {
-          "env": {
-           "default": "prod",
-           "description": "Environment to use",
-           "enum": [
-            "prod",
-            "pre-prod"
-           ],
-           "type": "string"
-          },
-          "region": {
-           "default": "br-se1",
-           "description": "Region to reach the service",
-           "enum": [
-            "br-ne1",
-            "br-se1",
-            "br-mgl1"
-           ],
-           "type": "string"
-          },
-          "serverUrl": {
-           "description": "Manually specify the server to use",
-           "format": "uri",
-           "type": "string"
-          }
-         },
-         "type": "object"
-        },
-        "description": "Detach a Public IP to a Port",
-        "isInternal": false,
-        "name": "detach",
-        "parameters": {
-         "additionalProperties": false,
-         "properties": {
-          "port_id": {
-           "description": "Id of the Port to detach the Public IP",
-           "title": "Port ID"
-          },
-          "public_ip_id": {
-           "description": "Id of the Public IP to detach port to",
-           "title": "Public IP ID"
-          }
-         },
-         "required": [
-          "port_id",
-          "public_ip_id"
-         ],
-         "type": "object"
-        },
-        "result": {},
-        "version": "1.124.1"
-       },
-       {
-        "configs": {
-         "additionalProperties": false,
-         "properties": {
-          "env": {
-           "default": "prod",
-           "description": "Environment to use",
-           "enum": [
-            "prod",
-            "pre-prod"
-           ],
-           "type": "string"
-          },
-          "region": {
-           "default": "br-se1",
-           "description": "Region to reach the service",
-           "enum": [
-            "br-ne1",
-            "br-se1",
-            "br-mgl1"
-           ],
-           "type": "string"
-          },
-          "serverUrl": {
-           "description": "Manually specify the server to use",
-           "format": "uri",
-           "type": "string"
-          }
-         },
-         "type": "object"
-        },
-        "description": "Return a Public IP details",
-        "isInternal": false,
-        "name": "get",
-        "parameters": {
-         "additionalProperties": false,
-         "properties": {
-          "public_ip_id": {
-           "description": "Id of the Public IP to retrieve",
-           "title": "Public IP ID"
-          }
-         },
-         "required": [
-          "public_ip_id"
-         ],
-         "type": "object"
-        },
-        "result": {
-         "example": {
-          "created_at": "2022-01-01 00:00:00",
-          "description": "port description",
-          "error": "error",
-          "external_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-          "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-          "port_ip": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-          "public_ip": "100.94.5.31",
-          "status": "created",
-          "updated": "2022-01-01 00:00:00",
-          "vpc_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-         },
-         "properties": {
-          "created_at": {
-           "format": "date-time",
-           "nullable": true,
-           "title": "Created At",
-           "type": "string"
-          },
-          "description": {
-           "nullable": true,
-           "title": "Description",
-           "type": "string"
-          },
-          "error": {
-           "nullable": true,
-           "title": "Error",
-           "type": "string"
-          },
-          "external_id": {
-           "nullable": true,
-           "title": "External Id",
-           "type": "string"
-          },
-          "id": {
-           "nullable": true,
-           "title": "Id",
-           "type": "string"
-          },
-          "port_id": {
-           "nullable": true,
-           "title": "Port Id",
-           "type": "string"
-          },
-          "public_ip": {
-           "nullable": true,
-           "title": "Public Ip",
-           "type": "string"
-          },
-          "status": {
-           "nullable": true,
-           "title": "Status",
-           "type": "string"
-          },
-          "updated": {
-           "format": "date-time",
-           "nullable": true,
-           "title": "Updated",
-           "type": "string"
-          },
-          "vpc_id": {
-           "nullable": true,
-           "title": "Vpc Id",
-           "type": "string"
-          }
-         },
-         "title": "PublicIpDb",
-         "type": "object"
-        },
-        "version": "1.124.1"
-       },
-       {
-        "configs": {
-         "additionalProperties": false,
-         "properties": {
-          "env": {
-           "default": "prod",
-           "description": "Environment to use",
-           "enum": [
-            "prod",
-            "pre-prod"
-           ],
-           "type": "string"
-          },
-          "region": {
-           "default": "br-se1",
-           "description": "Region to reach the service",
-           "enum": [
-            "br-ne1",
-            "br-se1",
-            "br-mgl1"
-           ],
-           "type": "string"
-          },
-          "serverUrl": {
-           "description": "Manually specify the server to use",
-           "format": "uri",
-           "type": "string"
-          }
-         },
-         "type": "object"
-        },
-        "description": "Return a tenant's public ip list",
-        "isInternal": false,
-        "name": "list",
-        "parameters": {
-         "additionalProperties": false,
-         "type": "object"
-        },
-        "result": {
-         "example": {
-          "public_ips": [
-           {
-            "created_at": "2022-01-01 00:00:00",
-            "description": "port description",
-            "error": "error",
-            "external_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-            "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-            "port_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-            "public_ip": "100.94.5.31",
-            "status": "created",
-            "updated": "2022-01-01 00:00:00",
-            "vpc_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-           }
-          ]
-         },
-         "properties": {
-          "public_ips": {
-           "items": {
-            "example": {
-             "created_at": "2022-01-01 00:00:00",
-             "description": "port description",
-             "error": "error",
-             "external_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-             "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-             "port_ip": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-             "public_ip": "100.94.5.31",
-             "status": "created",
-             "updated": "2022-01-01 00:00:00",
-             "vpc_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-            },
-            "properties": {
-             "created_at": {
-              "format": "date-time",
-              "nullable": true,
-              "title": "Created At",
-              "type": "string"
-             },
-             "description": {
-              "nullable": true,
-              "title": "Description",
-              "type": "string"
-             },
-             "error": {
-              "nullable": true,
-              "title": "Error",
-              "type": "string"
-             },
-             "external_id": {
-              "nullable": true,
-              "title": "External Id",
-              "type": "string"
-             },
-             "id": {
-              "nullable": true,
-              "title": "Id",
-              "type": "string"
-             },
-             "port_id": {
-              "nullable": true,
-              "title": "Port Id",
-              "type": "string"
-             },
-             "public_ip": {
-              "nullable": true,
-              "title": "Public Ip",
-              "type": "string"
-             },
-             "status": {
-              "nullable": true,
-              "title": "Status",
-              "type": "string"
-             },
-             "updated": {
-              "format": "date-time",
-              "nullable": true,
-              "title": "Updated",
-              "type": "string"
-             },
-             "vpc_id": {
-              "nullable": true,
-              "title": "Vpc Id",
-              "type": "string"
-             }
-            },
-            "title": "PublicIpDb",
-            "type": "object"
-           },
-           "title": "Public Ips",
-           "type": "array"
-          }
-         },
-         "required": [
-          "public_ips"
-         ],
-         "title": "PublicIpsList",
-         "type": "object"
-        },
-        "version": "1.124.1"
-       }
-      ],
-      "description": "public_ip | public-ips",
-      "isInternal": false,
-      "name": "public-ips",
-      "version": "1.124.1"
-     },
-     {
-      "children": [
-       {
-        "configs": {
-         "additionalProperties": false,
-         "properties": {
-          "env": {
-           "default": "prod",
-           "description": "Environment to use",
-           "enum": [
-            "prod",
-            "pre-prod"
-           ],
-           "type": "string"
-          },
-          "region": {
-           "default": "br-se1",
-           "description": "Region to reach the service",
-           "enum": [
-            "br-ne1",
-            "br-se1",
-            "br-mgl1"
-           ],
-           "type": "string"
-          },
-          "serverUrl": {
-           "description": "Manually specify the server to use",
-           "format": "uri",
-           "type": "string"
-          }
-         },
-         "type": "object"
-        },
-        "description": "Create async Public IP in a VPC with provided vpc_id and x_tenant_id",
-        "isInternal": false,
-        "name": "create",
-        "parameters": {
-         "additionalProperties": false,
-         "properties": {
-          "description": {
-           "default": "",
-           "nullable": true,
-           "title": "Description",
-           "type": "string"
-          },
-          "validate_quota": {
-           "default": true,
-           "description": "Validate the quota before creating the Public IP",
-           "title": "validateQuota",
-           "type": "boolean"
-          },
-          "vpc_id": {
-           "description": "Id of the VPC to create the Public IP in",
-           "title": "Vpc ID"
-          },
-          "wait": {
-           "default": true,
-           "description": "The request will be asynchronous. The wait parameter tells the API that you want the request to simulate synchronous behavior (to maintain endpoint compatibility). You can set an approximate timeout with the waitTimeout parameter",
-           "title": "wait",
-           "type": "boolean"
-          },
-          "wait_timeout": {
-           "default": 120,
-           "description": "the approximate time in seconds you want to wait when simulating the request as synchronous (only works with wait=true)",
-           "nullable": true,
-           "title": "waitTimeout",
-           "type": "integer"
-          }
-         },
-         "required": [
-          "vpc_id"
-         ],
-         "type": "object"
-        },
-        "result": {
-         "example": {
-          "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-         },
-         "properties": {
-          "id": {
-           "title": "Id",
-           "type": "string"
-          }
-         },
-         "required": [
-          "id"
-         ],
-         "title": "PublicIpCreateResponse",
-         "type": "object"
-        },
-        "version": "1.124.1"
-       },
-       {
-        "configs": {
-         "additionalProperties": false,
-         "properties": {
-          "env": {
-           "default": "prod",
-           "description": "Environment to use",
-           "enum": [
-            "prod",
-            "pre-prod"
-           ],
-           "type": "string"
-          },
-          "region": {
-           "default": "br-se1",
-           "description": "Region to reach the service",
-           "enum": [
-            "br-ne1",
-            "br-se1",
-            "br-mgl1"
-           ],
-           "type": "string"
-          },
-          "serverUrl": {
-           "description": "Manually specify the server to use",
-           "format": "uri",
-           "type": "string"
-          }
-         },
-         "type": "object"
-        },
-        "description": "Returns a list of Public IPs for a provided vpc_id",
-        "isInternal": false,
-        "name": "list",
-        "parameters": {
-         "additionalProperties": false,
-         "properties": {
-          "vpc_id": {
-           "description": "Id of the VPC to list the Public IPs in",
-           "title": "Vpc ID"
-          }
-         },
-         "required": [
-          "vpc_id"
-         ],
-         "type": "object"
-        },
-        "result": {
-         "example": {
-          "public_ips": [
-           {
-            "created_at": "2022-01-01 00:00:00",
-            "description": "port description",
-            "error": "error",
-            "external_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-            "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-            "port_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-            "public_ip": "100.94.5.31",
-            "status": "created",
-            "updated": "2022-01-01 00:00:00",
-            "vpc_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-           }
-          ]
-         },
-         "properties": {
-          "public_ips": {
-           "items": {
-            "example": {
-             "created_at": "2022-01-01 00:00:00",
-             "description": "port description",
-             "error": "error",
-             "external_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-             "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-             "port_ip": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-             "public_ip": "100.94.5.31",
-             "status": "created",
-             "updated": "2022-01-01 00:00:00",
-             "vpc_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-            },
-            "properties": {
-             "created_at": {
-              "format": "date-time",
-              "nullable": true,
-              "title": "Created At",
-              "type": "string"
-             },
-             "description": {
-              "nullable": true,
-              "title": "Description",
-              "type": "string"
-             },
-             "error": {
-              "nullable": true,
-              "title": "Error",
-              "type": "string"
-             },
-             "external_id": {
-              "nullable": true,
-              "title": "External Id",
-              "type": "string"
-             },
-             "id": {
-              "nullable": true,
-              "title": "Id",
-              "type": "string"
-             },
-             "port_id": {
-              "nullable": true,
-              "title": "Port Id",
-              "type": "string"
-             },
-             "public_ip": {
-              "nullable": true,
-              "title": "Public Ip",
-              "type": "string"
-             },
-             "status": {
-              "nullable": true,
-              "title": "Status",
-              "type": "string"
-             },
-             "updated": {
-              "format": "date-time",
-              "nullable": true,
-              "title": "Updated",
-              "type": "string"
-             },
-             "vpc_id": {
-              "nullable": true,
-              "title": "Vpc Id",
-              "type": "string"
-             }
-            },
-            "title": "PublicIpDb",
-            "type": "object"
-           },
-           "title": "Public Ips",
-           "type": "array"
-          }
-         },
-         "required": [
-          "public_ips"
-         ],
-         "title": "PublicIpsList",
-         "type": "object"
-        },
-        "version": "1.124.1"
-       }
-      ],
-      "description": "public_ip | vpcs-public-ips",
-      "isInternal": false,
-      "name": "vpcs-public-ips",
-      "version": "1.124.1"
-     }
-    ],
-    "description": "public_ip",
-    "isInternal": false,
-    "name": "public_ip",
+    "name": "public_ips",
     "version": "1.124.1"
    },
    {
@@ -16715,121 +16050,549 @@
       "version": "1.124.1"
      }
     ],
-    "description": "quotas",
-    "isInternal": false,
+    "description": "VPC Quotas",
+    "isInternal": true,
     "name": "quotas",
     "version": "1.124.1"
    },
    {
     "children": [
      {
-      "children": [
-       {
-        "configs": {
-         "additionalProperties": false,
-         "properties": {
-          "env": {
-           "default": "prod",
-           "description": "Environment to use",
-           "enum": [
-            "prod",
-            "pre-prod"
-           ],
-           "type": "string"
-          },
-          "region": {
-           "default": "br-se1",
-           "description": "Region to reach the service",
-           "enum": [
-            "br-ne1",
-            "br-se1",
-            "br-mgl1"
-           ],
-           "type": "string"
-          },
-          "serverUrl": {
-           "description": "Manually specify the server to use",
-           "format": "uri",
-           "type": "string"
-          }
-         },
-         "type": "object"
-        },
-        "description": "Delete a rule from the provided tenant_id",
-        "isInternal": false,
-        "name": "delete",
-        "parameters": {
-         "additionalProperties": false,
-         "properties": {
-          "rule_id": {
-           "description": "Id of the Rule",
-           "title": "Rule ID"
-          }
-         },
-         "required": [
-          "rule_id"
+      "configs": {
+       "additionalProperties": false,
+       "properties": {
+        "env": {
+         "default": "prod",
+         "description": "Environment to use",
+         "enum": [
+          "prod",
+          "pre-prod"
          ],
-         "type": "object"
+         "type": "string"
         },
-        "result": {
-         "nullable": true,
-         "type": "null"
+        "region": {
+         "default": "br-se1",
+         "description": "Region to reach the service",
+         "enum": [
+          "br-ne1",
+          "br-se1",
+          "br-mgl1"
+         ],
+         "type": "string"
         },
-        "version": "1.124.1"
+        "serverUrl": {
+         "description": "Manually specify the server to use",
+         "format": "uri",
+         "type": "string"
+        }
        },
-       {
-        "configs": {
-         "additionalProperties": false,
-         "properties": {
-          "env": {
-           "default": "prod",
-           "description": "Environment to use",
-           "enum": [
-            "prod",
-            "pre-prod"
-           ],
-           "type": "string"
-          },
-          "region": {
-           "default": "br-se1",
-           "description": "Region to reach the service",
-           "enum": [
-            "br-ne1",
-            "br-se1",
-            "br-mgl1"
-           ],
-           "type": "string"
-          },
-          "serverUrl": {
-           "description": "Manually specify the server to use",
-           "format": "uri",
-           "type": "string"
-          }
-         },
-         "type": "object"
-        },
-        "description": "Return a rule details",
-        "isInternal": false,
-        "name": "get",
-        "parameters": {
-         "additionalProperties": false,
-         "properties": {
-          "rule_id": {
-           "description": "Id of the Rule",
-           "title": "Rule ID"
-          }
-         },
-         "required": [
-          "rule_id"
+       "type": "object"
+      },
+      "description": "Delete a rule from the provided tenant_id",
+      "isInternal": false,
+      "name": "delete",
+      "parameters": {
+       "additionalProperties": false,
+       "properties": {
+        "rule_id": {
+         "description": "Id of the Rule",
+         "title": "Rule ID"
+        }
+       },
+       "required": [
+        "rule_id"
+       ],
+       "type": "object"
+      },
+      "result": {
+       "nullable": true,
+       "type": "null"
+      },
+      "version": "1.124.1"
+     },
+     {
+      "configs": {
+       "additionalProperties": false,
+       "properties": {
+        "env": {
+         "default": "prod",
+         "description": "Environment to use",
+         "enum": [
+          "prod",
+          "pre-prod"
          ],
-         "type": "object"
+         "type": "string"
         },
-        "result": {
-         "example": {
+        "region": {
+         "default": "br-se1",
+         "description": "Region to reach the service",
+         "enum": [
+          "br-ne1",
+          "br-se1",
+          "br-mgl1"
+         ],
+         "type": "string"
+        },
+        "serverUrl": {
+         "description": "Manually specify the server to use",
+         "format": "uri",
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
+      "description": "Return a rule details",
+      "isInternal": false,
+      "name": "get",
+      "parameters": {
+       "additionalProperties": false,
+       "properties": {
+        "rule_id": {
+         "description": "Id of the Rule",
+         "title": "Rule ID"
+        }
+       },
+       "required": [
+        "rule_id"
+       ],
+       "type": "object"
+      },
+      "result": {
+       "example": {
+        "created_at": "2022-01-01 00:00:00",
+        "direction": "egress",
+        "ethertype": "IPv4",
+        "external_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+        "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+        "port_range_max": 8028,
+        "port_range_min": 8028,
+        "protocol": "tcp",
+        "remote_group_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+        "remote_ip_prefix": "100.94.0.0/24",
+        "security_group_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+        "status": "created"
+       },
+       "properties": {
+        "created_at": {
+         "format": "date-time",
+         "nullable": true,
+         "title": "Created At",
+         "type": "string"
+        },
+        "direction": {
+         "nullable": true,
+         "title": "Direction",
+         "type": "string"
+        },
+        "error": {
+         "nullable": true,
+         "title": "Error",
+         "type": "string"
+        },
+        "ethertype": {
+         "nullable": true,
+         "title": "Ethertype",
+         "type": "string"
+        },
+        "external_id": {
+         "nullable": true,
+         "title": "External Id",
+         "type": "string"
+        },
+        "id": {
+         "nullable": true,
+         "title": "Id",
+         "type": "string"
+        },
+        "port_range_max": {
+         "nullable": true,
+         "title": "Port Range Max",
+         "type": "integer"
+        },
+        "port_range_min": {
+         "nullable": true,
+         "title": "Port Range Min",
+         "type": "integer"
+        },
+        "protocol": {
+         "nullable": true,
+         "title": "Protocol",
+         "type": "string"
+        },
+        "remote_group_id": {
+         "nullable": true,
+         "title": "Remote Group Id",
+         "type": "string"
+        },
+        "remote_ip_prefix": {
+         "nullable": true,
+         "title": "Remote Ip Prefix",
+         "type": "string"
+        },
+        "security_group_id": {
+         "nullable": true,
+         "title": "Security Group Id",
+         "type": "string"
+        },
+        "status": {
+         "enum": [
+          "created",
+          "pending",
+          "error"
+         ],
+         "title": "RuleStatus",
+         "type": "string"
+        }
+       },
+       "required": [
+        "status"
+       ],
+       "title": "RuleResponse",
+       "type": "object"
+      },
+      "version": "1.124.1"
+     }
+    ],
+    "description": "VPC Rules",
+    "isInternal": false,
+    "name": "rules",
+    "version": "1.124.1"
+   },
+   {
+    "children": [
+     {
+      "configs": {
+       "additionalProperties": false,
+       "properties": {
+        "env": {
+         "default": "prod",
+         "description": "Environment to use",
+         "enum": [
+          "prod",
+          "pre-prod"
+         ],
+         "type": "string"
+        },
+        "region": {
+         "default": "br-se1",
+         "description": "Region to reach the service",
+         "enum": [
+          "br-ne1",
+          "br-se1",
+          "br-mgl1"
+         ],
+         "type": "string"
+        },
+        "serverUrl": {
+         "description": "Manually specify the server to use",
+         "format": "uri",
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
+      "description": "Create a Security Group",
+      "isInternal": false,
+      "name": "create",
+      "parameters": {
+       "additionalProperties": false,
+       "properties": {
+        "description": {
+         "default": "",
+         "nullable": true,
+         "title": "Description",
+         "type": "string"
+        },
+        "name": {
+         "maxLength": 100,
+         "minLength": 5,
+         "nullable": true,
+         "title": "Name",
+         "type": "string"
+        },
+        "validate_quota": {
+         "default": true,
+         "description": "Validate the quota before creating Security Group",
+         "title": "validateQuota",
+         "type": "boolean"
+        },
+        "wait": {
+         "default": true,
+         "description": "The request will be asynchronous. The wait parameter tells the API that you want the request to simulate synchronous behavior (to maintain endpoint compatibility). You can set an approximate timeout with the waitTimeout parameter",
+         "title": "wait",
+         "type": "boolean"
+        },
+        "wait_timeout": {
+         "default": 120,
+         "description": "the approximate time in seconds you want to wait when simulating the request as synchronous (only works with wait=true)",
+         "title": "waitTimeout",
+         "type": "integer"
+        }
+       },
+       "required": [
+        "name"
+       ],
+       "type": "object"
+      },
+      "result": {
+       "example": {
+        "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+       },
+       "properties": {
+        "id": {
+         "title": "Id",
+         "type": "string"
+        }
+       },
+       "required": [
+        "id"
+       ],
+       "title": "SecurityGroupCreateResponse",
+       "type": "object"
+      },
+      "version": "1.124.1"
+     },
+     {
+      "configs": {
+       "additionalProperties": false,
+       "properties": {
+        "env": {
+         "default": "prod",
+         "description": "Environment to use",
+         "enum": [
+          "prod",
+          "pre-prod"
+         ],
+         "type": "string"
+        },
+        "region": {
+         "default": "br-se1",
+         "description": "Region to reach the service",
+         "enum": [
+          "br-ne1",
+          "br-se1",
+          "br-mgl1"
+         ],
+         "type": "string"
+        },
+        "serverUrl": {
+         "description": "Manually specify the server to use",
+         "format": "uri",
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
+      "description": "Create a Security Group Default",
+      "isInternal": true,
+      "name": "create-default",
+      "parameters": {
+       "additionalProperties": false,
+       "type": "object"
+      },
+      "result": {
+       "example": {
+        "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+       },
+       "properties": {
+        "id": {
+         "title": "Id",
+         "type": "string"
+        }
+       },
+       "required": [
+        "id"
+       ],
+       "title": "SecurityGroupCreateResponse",
+       "type": "object"
+      },
+      "version": "1.124.1"
+     },
+     {
+      "configs": {
+       "additionalProperties": false,
+       "properties": {
+        "env": {
+         "default": "prod",
+         "description": "Environment to use",
+         "enum": [
+          "prod",
+          "pre-prod"
+         ],
+         "type": "string"
+        },
+        "region": {
+         "default": "br-se1",
+         "description": "Region to reach the service",
+         "enum": [
+          "br-ne1",
+          "br-se1",
+          "br-mgl1"
+         ],
+         "type": "string"
+        },
+        "serverUrl": {
+         "description": "Manually specify the server to use",
+         "format": "uri",
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
+      "description": "Delete a security group from the provided tenant_id",
+      "isInternal": false,
+      "name": "delete",
+      "parameters": {
+       "additionalProperties": false,
+       "properties": {
+        "security_group_id": {
+         "description": "Id of the security group to delete",
+         "title": "Security Group ID"
+        }
+       },
+       "required": [
+        "security_group_id"
+       ],
+       "type": "object"
+      },
+      "result": {
+       "nullable": true,
+       "type": "null"
+      },
+      "version": "1.124.1"
+     },
+     {
+      "configs": {
+       "additionalProperties": false,
+       "properties": {
+        "env": {
+         "default": "prod",
+         "description": "Environment to use",
+         "enum": [
+          "prod",
+          "pre-prod"
+         ],
+         "type": "string"
+        },
+        "region": {
+         "default": "br-se1",
+         "description": "Region to reach the service",
+         "enum": [
+          "br-ne1",
+          "br-se1",
+          "br-mgl1"
+         ],
+         "type": "string"
+        },
+        "serverUrl": {
+         "description": "Manually specify the server to use",
+         "format": "uri",
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
+      "description": "Delete all security groups from the provided tenant_id",
+      "isInternal": true,
+      "name": "delete-all",
+      "parameters": {
+       "additionalProperties": false,
+       "type": "object"
+      },
+      "result": {
+       "example": {
+        "deleted_security_groups": [
+         {
+          "database": 0
+         },
+         {
+          "openstack": 0
+         }
+        ]
+       },
+       "properties": {
+        "deleted_security_groups": {
+         "items": {
+          "additionalProperties": {
+           "type": "integer"
+          },
+          "type": "object"
+         },
+         "title": "Deleted Security Groups",
+         "type": "array"
+        }
+       },
+       "required": [
+        "deleted_security_groups"
+       ],
+       "title": "SecurityGroupDeletedAllResponse",
+       "type": "object"
+      },
+      "version": "1.124.1"
+     },
+     {
+      "configs": {
+       "additionalProperties": false,
+       "properties": {
+        "env": {
+         "default": "prod",
+         "description": "Environment to use",
+         "enum": [
+          "prod",
+          "pre-prod"
+         ],
+         "type": "string"
+        },
+        "region": {
+         "default": "br-se1",
+         "description": "Region to reach the service",
+         "enum": [
+          "br-ne1",
+          "br-se1",
+          "br-mgl1"
+         ],
+         "type": "string"
+        },
+        "serverUrl": {
+         "description": "Manually specify the server to use",
+         "format": "uri",
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
+      "description": "Return a security group details",
+      "isInternal": false,
+      "name": "get",
+      "parameters": {
+       "additionalProperties": false,
+       "properties": {
+        "security_group_id": {
+         "description": "Id of the security group to detail",
+         "title": "Security Group ID"
+        }
+       },
+       "required": [
+        "security_group_id"
+       ],
+       "type": "object"
+      },
+      "result": {
+       "example": {
+        "created_at": "2022-01-01 00:00:00",
+        "description": "security group description",
+        "error": "null",
+        "external_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+        "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+        "is_default": true,
+        "name": "security_group_name",
+        "project_type": "default",
+        "rules": [
+         {
           "created_at": "2022-01-01 00:00:00",
           "direction": "egress",
+          "error": "null",
           "ethertype": "IPv4",
-          "external_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
           "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
           "port_range_max": 8028,
           "port_range_min": 8028,
@@ -16838,91 +16601,331 @@
           "remote_ip_prefix": "100.94.0.0/24",
           "security_group_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
           "status": "created"
-         },
-         "properties": {
-          "created_at": {
-           "format": "date-time",
-           "nullable": true,
-           "title": "Created At",
-           "type": "string"
-          },
-          "direction": {
-           "nullable": true,
-           "title": "Direction",
-           "type": "string"
-          },
-          "error": {
-           "nullable": true,
-           "title": "Error",
-           "type": "string"
-          },
-          "ethertype": {
-           "nullable": true,
-           "title": "Ethertype",
-           "type": "string"
-          },
-          "external_id": {
-           "nullable": true,
-           "title": "External Id",
-           "type": "string"
-          },
-          "id": {
-           "nullable": true,
-           "title": "Id",
-           "type": "string"
-          },
-          "port_range_max": {
-           "nullable": true,
-           "title": "Port Range Max",
-           "type": "integer"
-          },
-          "port_range_min": {
-           "nullable": true,
-           "title": "Port Range Min",
-           "type": "integer"
-          },
-          "protocol": {
-           "nullable": true,
-           "title": "Protocol",
-           "type": "string"
-          },
-          "remote_group_id": {
-           "nullable": true,
-           "title": "Remote Group Id",
-           "type": "string"
-          },
-          "remote_ip_prefix": {
-           "nullable": true,
-           "title": "Remote Ip Prefix",
-           "type": "string"
-          },
-          "security_group_id": {
-           "nullable": true,
-           "title": "Security Group Id",
-           "type": "string"
-          },
-          "status": {
-           "enum": [
-            "created",
-            "pending",
-            "error"
-           ],
-           "title": "RuleStatus",
-           "type": "string"
-          }
-         },
-         "required": [
-          "status"
-         ],
-         "title": "RuleResponse",
-         "type": "object"
+         }
+        ],
+        "status": "created",
+        "tenant_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+        "updated": "2022-01-01 00:00:00",
+        "vpc_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+       },
+       "properties": {
+        "created_at": {
+         "format": "date-time",
+         "nullable": true,
+         "title": "Created At",
+         "type": "string"
         },
-        "version": "1.124.1"
-       }
-      ],
-      "description": "rule | rules",
+        "description": {
+         "nullable": true,
+         "title": "Description",
+         "type": "string"
+        },
+        "error": {
+         "nullable": true,
+         "title": "Error",
+         "type": "string"
+        },
+        "external_id": {
+         "nullable": true,
+         "title": "External Id",
+         "type": "string"
+        },
+        "id": {
+         "nullable": true,
+         "title": "Id",
+         "type": "string"
+        },
+        "is_default": {
+         "nullable": true,
+         "title": "Is Default",
+         "type": "boolean"
+        },
+        "name": {
+         "nullable": true,
+         "title": "Name",
+         "type": "string"
+        },
+        "project_type": {
+         "nullable": true,
+         "title": "Project Type",
+         "type": "string"
+        },
+        "rules": {
+         "default": [],
+         "items": {
+          "example": {
+           "created_at": "2022-01-01 00:00:00",
+           "direction": "egress",
+           "error": "null",
+           "ethertype": "IPv4",
+           "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+           "port_range_max": 8028,
+           "port_range_min": 8028,
+           "protocol": "tcp",
+           "remote_group_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+           "remote_ip_prefix": "100.94.0.0/24",
+           "security_group_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+           "status": "created"
+          },
+          "properties": {
+           "created_at": {
+            "format": "date-time",
+            "nullable": true,
+            "title": "Created At",
+            "type": "string"
+           },
+           "direction": {
+            "nullable": true,
+            "title": "Direction",
+            "type": "string"
+           },
+           "error": {
+            "nullable": true,
+            "title": "Error",
+            "type": "string"
+           },
+           "ethertype": {
+            "nullable": true,
+            "title": "Ethertype",
+            "type": "string"
+           },
+           "id": {
+            "nullable": true,
+            "title": "Id",
+            "type": "string"
+           },
+           "port_range_max": {
+            "nullable": true,
+            "title": "Port Range Max",
+            "type": "integer"
+           },
+           "port_range_min": {
+            "nullable": true,
+            "title": "Port Range Min",
+            "type": "integer"
+           },
+           "protocol": {
+            "nullable": true,
+            "title": "Protocol",
+            "type": "string"
+           },
+           "remote_group_id": {
+            "nullable": true,
+            "title": "Remote Group Id",
+            "type": "string"
+           },
+           "remote_ip_prefix": {
+            "nullable": true,
+            "title": "Remote Ip Prefix",
+            "type": "string"
+           },
+           "security_group_id": {
+            "nullable": true,
+            "title": "Security Group Id",
+            "type": "string"
+           },
+           "status": {
+            "enum": [
+             "created",
+             "pending",
+             "error"
+            ],
+            "nullable": true,
+            "type": "string"
+           }
+          },
+          "title": "RuleResponseEvent",
+          "type": "object"
+         },
+         "nullable": true,
+         "title": "Rules",
+         "type": "array"
+        },
+        "status": {
+         "enum": [
+          "created",
+          "pending",
+          "error"
+         ],
+         "title": "SecurityGroupStatus",
+         "type": "string"
+        },
+        "tenant_id": {
+         "nullable": true,
+         "title": "Tenant Id",
+         "type": "string"
+        },
+        "updated": {
+         "format": "date-time",
+         "nullable": true,
+         "title": "Updated",
+         "type": "string"
+        },
+        "vpc_id": {
+         "nullable": true,
+         "title": "Vpc Id",
+         "type": "string"
+        }
+       },
+       "required": [
+        "status"
+       ],
+       "title": "SecurityGroupDetailEvent",
+       "type": "object"
+      },
+      "version": "1.124.1"
+     },
+     {
+      "configs": {
+       "additionalProperties": false,
+       "properties": {
+        "env": {
+         "default": "prod",
+         "description": "Environment to use",
+         "enum": [
+          "prod",
+          "pre-prod"
+         ],
+         "type": "string"
+        },
+        "region": {
+         "default": "br-se1",
+         "description": "Region to reach the service",
+         "enum": [
+          "br-ne1",
+          "br-se1",
+          "br-mgl1"
+         ],
+         "type": "string"
+        },
+        "serverUrl": {
+         "description": "Manually specify the server to use",
+         "format": "uri",
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
+      "description": "Returns a list of security groups for a provided tenant_id",
       "isInternal": false,
-      "name": "rules",
+      "name": "list",
+      "parameters": {
+       "additionalProperties": false,
+       "type": "object"
+      },
+      "result": {
+       "example": {
+        "security_groups": [
+         {
+          "created_at": "2022-01-01 00:00:00",
+          "description": "security group description",
+          "error": "null",
+          "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+          "is_default": true,
+          "name": "security_group_name",
+          "project_type": "default",
+          "status": "created",
+          "tenant_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+          "updated": "2022-01-01 00:00:00",
+          "vpc_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+         }
+        ]
+       },
+       "properties": {
+        "security_groups": {
+         "items": {
+          "example": {
+           "created_at": "2022-01-01 00:00:00",
+           "description": "security group description",
+           "error": "null",
+           "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+           "is_default": true,
+           "name": "security_group_name",
+           "project_type": "default",
+           "status": "created",
+           "tenant_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+           "updated": "2022-01-01 00:00:00",
+           "vpc_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+          },
+          "properties": {
+           "created_at": {
+            "format": "date-time",
+            "nullable": true,
+            "title": "Created At",
+            "type": "string"
+           },
+           "description": {
+            "nullable": true,
+            "title": "Description",
+            "type": "string"
+           },
+           "error": {
+            "nullable": true,
+            "title": "Error",
+            "type": "string"
+           },
+           "id": {
+            "nullable": true,
+            "title": "Id",
+            "type": "string"
+           },
+           "is_default": {
+            "nullable": true,
+            "title": "Is Default",
+            "type": "boolean"
+           },
+           "name": {
+            "nullable": true,
+            "title": "Name",
+            "type": "string"
+           },
+           "project_type": {
+            "nullable": true,
+            "title": "Project Type",
+            "type": "string"
+           },
+           "status": {
+            "enum": [
+             "created",
+             "pending",
+             "error"
+            ],
+            "title": "SecurityGroupStatus",
+            "type": "string"
+           },
+           "tenant_id": {
+            "nullable": true,
+            "title": "Tenant Id",
+            "type": "string"
+           },
+           "updated": {
+            "format": "date-time",
+            "nullable": true,
+            "title": "Updated",
+            "type": "string"
+           },
+           "vpc_id": {
+            "nullable": true,
+            "title": "Vpc Id",
+            "type": "string"
+           }
+          },
+          "required": [
+           "status"
+          ],
+          "title": "SecurityGroupResponseEvent",
+          "type": "object"
+         },
+         "title": "Security Groups",
+         "type": "array"
+        }
+       },
+       "required": [
+        "security_groups"
+       ],
+       "title": "SecurityGroupListEvent",
+       "type": "object"
+      },
       "version": "1.124.1"
      },
      {
@@ -16959,7 +16962,7 @@
          "type": "object"
         },
         "description": "Create a Rule async, returning its ID. To monitor the creation progress, please check the status in the service message or implement polling.Either a remote_ip_prefix or a remote_group_id can be specified.With remote_ip_prefix, all IPs that match the criteria will be allowed.With remote_group_id, only the specified security group is allowed to communicatefollowing the specified protocol, direction and port_range_min/max",
-        "isInternal": false,
+        "isInternal": true,
         "name": "create",
         "parameters": {
          "additionalProperties": false,
@@ -17079,7 +17082,7 @@
          "type": "object"
         },
         "description": "Returns a list of rules for a provided security_group_id",
-        "isInternal": false,
+        "isInternal": true,
         "name": "list",
         "parameters": {
          "additionalProperties": false,
@@ -17220,964 +17223,15 @@
         "version": "1.124.1"
        }
       ],
-      "description": "rule | security-groups-rules",
-      "isInternal": false,
-      "name": "security-groups-rules",
-      "version": "1.124.1"
-     }
-    ],
-    "description": "rule",
-    "isInternal": false,
-    "name": "rule",
-    "version": "1.124.1"
-   },
-   {
-    "children": [
-     {
-      "children": [
-       {
-        "configs": {
-         "additionalProperties": false,
-         "properties": {
-          "env": {
-           "default": "prod",
-           "description": "Environment to use",
-           "enum": [
-            "prod",
-            "pre-prod"
-           ],
-           "type": "string"
-          },
-          "region": {
-           "default": "br-se1",
-           "description": "Region to reach the service",
-           "enum": [
-            "br-ne1",
-            "br-se1",
-            "br-mgl1"
-           ],
-           "type": "string"
-          },
-          "serverUrl": {
-           "description": "Manually specify the server to use",
-           "format": "uri",
-           "type": "string"
-          }
-         },
-         "type": "object"
-        },
-        "description": "Create a Security Group",
-        "isInternal": false,
-        "name": "create",
-        "parameters": {
-         "additionalProperties": false,
-         "properties": {
-          "description": {
-           "default": "",
-           "nullable": true,
-           "title": "Description",
-           "type": "string"
-          },
-          "name": {
-           "maxLength": 100,
-           "minLength": 5,
-           "nullable": true,
-           "title": "Name",
-           "type": "string"
-          },
-          "validate_quota": {
-           "default": true,
-           "description": "Validate the quota before creating Security Group",
-           "title": "validateQuota",
-           "type": "boolean"
-          },
-          "wait": {
-           "default": true,
-           "description": "The request will be asynchronous. The wait parameter tells the API that you want the request to simulate synchronous behavior (to maintain endpoint compatibility). You can set an approximate timeout with the waitTimeout parameter",
-           "title": "wait",
-           "type": "boolean"
-          },
-          "wait_timeout": {
-           "default": 120,
-           "description": "the approximate time in seconds you want to wait when simulating the request as synchronous (only works with wait=true)",
-           "title": "waitTimeout",
-           "type": "integer"
-          }
-         },
-         "required": [
-          "name"
-         ],
-         "type": "object"
-        },
-        "result": {
-         "example": {
-          "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-         },
-         "properties": {
-          "id": {
-           "title": "Id",
-           "type": "string"
-          }
-         },
-         "required": [
-          "id"
-         ],
-         "title": "SecurityGroupCreateResponse",
-         "type": "object"
-        },
-        "version": "1.124.1"
-       },
-       {
-        "configs": {
-         "additionalProperties": false,
-         "properties": {
-          "env": {
-           "default": "prod",
-           "description": "Environment to use",
-           "enum": [
-            "prod",
-            "pre-prod"
-           ],
-           "type": "string"
-          },
-          "region": {
-           "default": "br-se1",
-           "description": "Region to reach the service",
-           "enum": [
-            "br-ne1",
-            "br-se1",
-            "br-mgl1"
-           ],
-           "type": "string"
-          },
-          "serverUrl": {
-           "description": "Manually specify the server to use",
-           "format": "uri",
-           "type": "string"
-          }
-         },
-         "type": "object"
-        },
-        "description": "Create a Security Group Default",
-        "isInternal": true,
-        "name": "create-default",
-        "parameters": {
-         "additionalProperties": false,
-         "type": "object"
-        },
-        "result": {
-         "example": {
-          "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-         },
-         "properties": {
-          "id": {
-           "title": "Id",
-           "type": "string"
-          }
-         },
-         "required": [
-          "id"
-         ],
-         "title": "SecurityGroupCreateResponse",
-         "type": "object"
-        },
-        "version": "1.124.1"
-       },
-       {
-        "configs": {
-         "additionalProperties": false,
-         "properties": {
-          "env": {
-           "default": "prod",
-           "description": "Environment to use",
-           "enum": [
-            "prod",
-            "pre-prod"
-           ],
-           "type": "string"
-          },
-          "region": {
-           "default": "br-se1",
-           "description": "Region to reach the service",
-           "enum": [
-            "br-ne1",
-            "br-se1",
-            "br-mgl1"
-           ],
-           "type": "string"
-          },
-          "serverUrl": {
-           "description": "Manually specify the server to use",
-           "format": "uri",
-           "type": "string"
-          }
-         },
-         "type": "object"
-        },
-        "description": "Delete a security group from the provided tenant_id",
-        "isInternal": false,
-        "name": "delete",
-        "parameters": {
-         "additionalProperties": false,
-         "properties": {
-          "security_group_id": {
-           "description": "Id of the security group to delete",
-           "title": "Security Group ID"
-          }
-         },
-         "required": [
-          "security_group_id"
-         ],
-         "type": "object"
-        },
-        "result": {
-         "nullable": true,
-         "type": "null"
-        },
-        "version": "1.124.1"
-       },
-       {
-        "configs": {
-         "additionalProperties": false,
-         "properties": {
-          "env": {
-           "default": "prod",
-           "description": "Environment to use",
-           "enum": [
-            "prod",
-            "pre-prod"
-           ],
-           "type": "string"
-          },
-          "region": {
-           "default": "br-se1",
-           "description": "Region to reach the service",
-           "enum": [
-            "br-ne1",
-            "br-se1",
-            "br-mgl1"
-           ],
-           "type": "string"
-          },
-          "serverUrl": {
-           "description": "Manually specify the server to use",
-           "format": "uri",
-           "type": "string"
-          }
-         },
-         "type": "object"
-        },
-        "description": "Delete all security groups from the provided tenant_id",
-        "isInternal": true,
-        "name": "delete-all",
-        "parameters": {
-         "additionalProperties": false,
-         "type": "object"
-        },
-        "result": {
-         "example": {
-          "deleted_security_groups": [
-           {
-            "database": 0
-           },
-           {
-            "openstack": 0
-           }
-          ]
-         },
-         "properties": {
-          "deleted_security_groups": {
-           "items": {
-            "additionalProperties": {
-             "type": "integer"
-            },
-            "type": "object"
-           },
-           "title": "Deleted Security Groups",
-           "type": "array"
-          }
-         },
-         "required": [
-          "deleted_security_groups"
-         ],
-         "title": "SecurityGroupDeletedAllResponse",
-         "type": "object"
-        },
-        "version": "1.124.1"
-       },
-       {
-        "configs": {
-         "additionalProperties": false,
-         "properties": {
-          "env": {
-           "default": "prod",
-           "description": "Environment to use",
-           "enum": [
-            "prod",
-            "pre-prod"
-           ],
-           "type": "string"
-          },
-          "region": {
-           "default": "br-se1",
-           "description": "Region to reach the service",
-           "enum": [
-            "br-ne1",
-            "br-se1",
-            "br-mgl1"
-           ],
-           "type": "string"
-          },
-          "serverUrl": {
-           "description": "Manually specify the server to use",
-           "format": "uri",
-           "type": "string"
-          }
-         },
-         "type": "object"
-        },
-        "description": "Return a security group details",
-        "isInternal": false,
-        "name": "get",
-        "parameters": {
-         "additionalProperties": false,
-         "properties": {
-          "security_group_id": {
-           "description": "Id of the security group to detail",
-           "title": "Security Group ID"
-          }
-         },
-         "required": [
-          "security_group_id"
-         ],
-         "type": "object"
-        },
-        "result": {
-         "example": {
-          "created_at": "2022-01-01 00:00:00",
-          "description": "security group description",
-          "error": "null",
-          "external_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-          "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-          "is_default": true,
-          "name": "security_group_name",
-          "project_type": "default",
-          "rules": [
-           {
-            "created_at": "2022-01-01 00:00:00",
-            "direction": "egress",
-            "error": "null",
-            "ethertype": "IPv4",
-            "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-            "port_range_max": 8028,
-            "port_range_min": 8028,
-            "protocol": "tcp",
-            "remote_group_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-            "remote_ip_prefix": "100.94.0.0/24",
-            "security_group_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-            "status": "created"
-           }
-          ],
-          "status": "created",
-          "tenant_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-          "updated": "2022-01-01 00:00:00",
-          "vpc_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-         },
-         "properties": {
-          "created_at": {
-           "format": "date-time",
-           "nullable": true,
-           "title": "Created At",
-           "type": "string"
-          },
-          "description": {
-           "nullable": true,
-           "title": "Description",
-           "type": "string"
-          },
-          "error": {
-           "nullable": true,
-           "title": "Error",
-           "type": "string"
-          },
-          "external_id": {
-           "nullable": true,
-           "title": "External Id",
-           "type": "string"
-          },
-          "id": {
-           "nullable": true,
-           "title": "Id",
-           "type": "string"
-          },
-          "is_default": {
-           "nullable": true,
-           "title": "Is Default",
-           "type": "boolean"
-          },
-          "name": {
-           "nullable": true,
-           "title": "Name",
-           "type": "string"
-          },
-          "project_type": {
-           "nullable": true,
-           "title": "Project Type",
-           "type": "string"
-          },
-          "rules": {
-           "default": [],
-           "items": {
-            "example": {
-             "created_at": "2022-01-01 00:00:00",
-             "direction": "egress",
-             "error": "null",
-             "ethertype": "IPv4",
-             "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-             "port_range_max": 8028,
-             "port_range_min": 8028,
-             "protocol": "tcp",
-             "remote_group_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-             "remote_ip_prefix": "100.94.0.0/24",
-             "security_group_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-             "status": "created"
-            },
-            "properties": {
-             "created_at": {
-              "format": "date-time",
-              "nullable": true,
-              "title": "Created At",
-              "type": "string"
-             },
-             "direction": {
-              "nullable": true,
-              "title": "Direction",
-              "type": "string"
-             },
-             "error": {
-              "nullable": true,
-              "title": "Error",
-              "type": "string"
-             },
-             "ethertype": {
-              "nullable": true,
-              "title": "Ethertype",
-              "type": "string"
-             },
-             "id": {
-              "nullable": true,
-              "title": "Id",
-              "type": "string"
-             },
-             "port_range_max": {
-              "nullable": true,
-              "title": "Port Range Max",
-              "type": "integer"
-             },
-             "port_range_min": {
-              "nullable": true,
-              "title": "Port Range Min",
-              "type": "integer"
-             },
-             "protocol": {
-              "nullable": true,
-              "title": "Protocol",
-              "type": "string"
-             },
-             "remote_group_id": {
-              "nullable": true,
-              "title": "Remote Group Id",
-              "type": "string"
-             },
-             "remote_ip_prefix": {
-              "nullable": true,
-              "title": "Remote Ip Prefix",
-              "type": "string"
-             },
-             "security_group_id": {
-              "nullable": true,
-              "title": "Security Group Id",
-              "type": "string"
-             },
-             "status": {
-              "enum": [
-               "created",
-               "pending",
-               "error"
-              ],
-              "nullable": true,
-              "type": "string"
-             }
-            },
-            "title": "RuleResponseEvent",
-            "type": "object"
-           },
-           "nullable": true,
-           "title": "Rules",
-           "type": "array"
-          },
-          "status": {
-           "enum": [
-            "created",
-            "pending",
-            "error"
-           ],
-           "title": "SecurityGroupStatus",
-           "type": "string"
-          },
-          "tenant_id": {
-           "nullable": true,
-           "title": "Tenant Id",
-           "type": "string"
-          },
-          "updated": {
-           "format": "date-time",
-           "nullable": true,
-           "title": "Updated",
-           "type": "string"
-          },
-          "vpc_id": {
-           "nullable": true,
-           "title": "Vpc Id",
-           "type": "string"
-          }
-         },
-         "required": [
-          "status"
-         ],
-         "title": "SecurityGroupDetailEvent",
-         "type": "object"
-        },
-        "version": "1.124.1"
-       },
-       {
-        "configs": {
-         "additionalProperties": false,
-         "properties": {
-          "env": {
-           "default": "prod",
-           "description": "Environment to use",
-           "enum": [
-            "prod",
-            "pre-prod"
-           ],
-           "type": "string"
-          },
-          "region": {
-           "default": "br-se1",
-           "description": "Region to reach the service",
-           "enum": [
-            "br-ne1",
-            "br-se1",
-            "br-mgl1"
-           ],
-           "type": "string"
-          },
-          "serverUrl": {
-           "description": "Manually specify the server to use",
-           "format": "uri",
-           "type": "string"
-          }
-         },
-         "type": "object"
-        },
-        "description": "Returns a list of security groups for a provided tenant_id",
-        "isInternal": false,
-        "name": "list",
-        "parameters": {
-         "additionalProperties": false,
-         "type": "object"
-        },
-        "result": {
-         "example": {
-          "security_groups": [
-           {
-            "created_at": "2022-01-01 00:00:00",
-            "description": "security group description",
-            "error": "null",
-            "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-            "is_default": true,
-            "name": "security_group_name",
-            "project_type": "default",
-            "status": "created",
-            "tenant_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-            "updated": "2022-01-01 00:00:00",
-            "vpc_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-           }
-          ]
-         },
-         "properties": {
-          "security_groups": {
-           "items": {
-            "example": {
-             "created_at": "2022-01-01 00:00:00",
-             "description": "security group description",
-             "error": "null",
-             "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-             "is_default": true,
-             "name": "security_group_name",
-             "project_type": "default",
-             "status": "created",
-             "tenant_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-             "updated": "2022-01-01 00:00:00",
-             "vpc_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-            },
-            "properties": {
-             "created_at": {
-              "format": "date-time",
-              "nullable": true,
-              "title": "Created At",
-              "type": "string"
-             },
-             "description": {
-              "nullable": true,
-              "title": "Description",
-              "type": "string"
-             },
-             "error": {
-              "nullable": true,
-              "title": "Error",
-              "type": "string"
-             },
-             "id": {
-              "nullable": true,
-              "title": "Id",
-              "type": "string"
-             },
-             "is_default": {
-              "nullable": true,
-              "title": "Is Default",
-              "type": "boolean"
-             },
-             "name": {
-              "nullable": true,
-              "title": "Name",
-              "type": "string"
-             },
-             "project_type": {
-              "nullable": true,
-              "title": "Project Type",
-              "type": "string"
-             },
-             "status": {
-              "enum": [
-               "created",
-               "pending",
-               "error"
-              ],
-              "title": "SecurityGroupStatus",
-              "type": "string"
-             },
-             "tenant_id": {
-              "nullable": true,
-              "title": "Tenant Id",
-              "type": "string"
-             },
-             "updated": {
-              "format": "date-time",
-              "nullable": true,
-              "title": "Updated",
-              "type": "string"
-             },
-             "vpc_id": {
-              "nullable": true,
-              "title": "Vpc Id",
-              "type": "string"
-             }
-            },
-            "required": [
-             "status"
-            ],
-            "title": "SecurityGroupResponseEvent",
-            "type": "object"
-           },
-           "title": "Security Groups",
-           "type": "array"
-          }
-         },
-         "required": [
-          "security_groups"
-         ],
-         "title": "SecurityGroupListEvent",
-         "type": "object"
-        },
-        "version": "1.124.1"
-       }
-      ],
-      "description": "security_group | security-groups",
-      "isInternal": false,
-      "name": "security-groups",
-      "version": "1.124.1"
-     },
-     {
-      "children": [
-       {
-        "configs": {
-         "additionalProperties": false,
-         "properties": {
-          "env": {
-           "default": "prod",
-           "description": "Environment to use",
-           "enum": [
-            "prod",
-            "pre-prod"
-           ],
-           "type": "string"
-          },
-          "region": {
-           "default": "br-se1",
-           "description": "Region to reach the service",
-           "enum": [
-            "br-ne1",
-            "br-se1",
-            "br-mgl1"
-           ],
-           "type": "string"
-          },
-          "serverUrl": {
-           "description": "Manually specify the server to use",
-           "format": "uri",
-           "type": "string"
-          }
-         },
-         "type": "object"
-        },
-        "description": "Create a Security Group",
-        "isInternal": true,
-        "name": "create",
-        "parameters": {
-         "additionalProperties": false,
-         "properties": {
-          "description": {
-           "default": "",
-           "nullable": true,
-           "title": "Description",
-           "type": "string"
-          },
-          "name": {
-           "maxLength": 100,
-           "minLength": 5,
-           "nullable": true,
-           "title": "Name",
-           "type": "string"
-          },
-          "vpc_id": {
-           "description": "Id of the vpc to create the security group in",
-           "nullable": true,
-           "title": "VPC Id",
-           "type": "string"
-          },
-          "wait": {
-           "default": true,
-           "description": "The request will be asynchronous. The wait parameter tells the API that you want the request to simulate synchronous behavior (to maintain endpoint compatibility). You can set an approximate timeout with the waitTimeout parameter",
-           "nullable": true,
-           "title": "wait",
-           "type": "boolean"
-          },
-          "wait_timeout": {
-           "default": 120,
-           "description": "the approximate time in seconds you want to wait when simulating the request as synchronous (only works with wait=true)",
-           "nullable": true,
-           "title": "waitTimeout",
-           "type": "integer"
-          }
-         },
-         "required": [
-          "name",
-          "vpc_id"
-         ],
-         "type": "object"
-        },
-        "result": {
-         "example": {
-          "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-         },
-         "properties": {
-          "id": {
-           "title": "Id",
-           "type": "string"
-          }
-         },
-         "required": [
-          "id"
-         ],
-         "title": "SecurityGroupCreateResponse",
-         "type": "object"
-        },
-        "version": "1.124.1"
-       },
-       {
-        "configs": {
-         "additionalProperties": false,
-         "properties": {
-          "env": {
-           "default": "prod",
-           "description": "Environment to use",
-           "enum": [
-            "prod",
-            "pre-prod"
-           ],
-           "type": "string"
-          },
-          "region": {
-           "default": "br-se1",
-           "description": "Region to reach the service",
-           "enum": [
-            "br-ne1",
-            "br-se1",
-            "br-mgl1"
-           ],
-           "type": "string"
-          },
-          "serverUrl": {
-           "description": "Manually specify the server to use",
-           "format": "uri",
-           "type": "string"
-          }
-         },
-         "type": "object"
-        },
-        "description": "Returns a list of security groups for a provided vpc_id",
-        "isInternal": true,
-        "name": "list",
-        "parameters": {
-         "additionalProperties": false,
-         "properties": {
-          "vpc_id": {
-           "description": "Id of the VPC to create the Security Group in",
-           "title": "Vpc ID"
-          }
-         },
-         "required": [
-          "vpc_id"
-         ],
-         "type": "object"
-        },
-        "result": {
-         "example": {
-          "security_groups": [
-           {
-            "created_at": "2022-01-01 00:00:00",
-            "description": "security group description",
-            "error": "null",
-            "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-            "is_default": true,
-            "name": "security_group_name",
-            "project_type": "default",
-            "status": "created",
-            "tenant_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-            "updated": "2022-01-01 00:00:00",
-            "vpc_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-           }
-          ]
-         },
-         "properties": {
-          "security_groups": {
-           "items": {
-            "example": {
-             "created_at": "2022-01-01 00:00:00",
-             "description": "security group description",
-             "error": "null",
-             "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-             "is_default": true,
-             "name": "security_group_name",
-             "project_type": "default",
-             "status": "created",
-             "tenant_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-             "updated": "2022-01-01 00:00:00",
-             "vpc_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-            },
-            "properties": {
-             "created_at": {
-              "format": "date-time",
-              "nullable": true,
-              "title": "Created At",
-              "type": "string"
-             },
-             "description": {
-              "nullable": true,
-              "title": "Description",
-              "type": "string"
-             },
-             "error": {
-              "nullable": true,
-              "title": "Error",
-              "type": "string"
-             },
-             "id": {
-              "nullable": true,
-              "title": "Id",
-              "type": "string"
-             },
-             "is_default": {
-              "nullable": true,
-              "title": "Is Default",
-              "type": "boolean"
-             },
-             "name": {
-              "nullable": true,
-              "title": "Name",
-              "type": "string"
-             },
-             "project_type": {
-              "nullable": true,
-              "title": "Project Type",
-              "type": "string"
-             },
-             "status": {
-              "enum": [
-               "created",
-               "pending",
-               "error"
-              ],
-              "title": "SecurityGroupStatus",
-              "type": "string"
-             },
-             "tenant_id": {
-              "nullable": true,
-              "title": "Tenant Id",
-              "type": "string"
-             },
-             "updated": {
-              "format": "date-time",
-              "nullable": true,
-              "title": "Updated",
-              "type": "string"
-             },
-             "vpc_id": {
-              "nullable": true,
-              "title": "Vpc Id",
-              "type": "string"
-             }
-            },
-            "required": [
-             "status"
-            ],
-            "title": "SecurityGroupResponseEvent",
-            "type": "object"
-           },
-           "title": "Security Groups",
-           "type": "array"
-          }
-         },
-         "required": [
-          "security_groups"
-         ],
-         "title": "SecurityGroupListEvent",
-         "type": "object"
-        },
-        "version": "1.124.1"
-       }
-      ],
-      "description": "security_group | vpcs-security-groups",
+      "description": "VPC Security Groups | rules",
       "isInternal": true,
-      "name": "vpcs-security-groups",
+      "name": "rules",
       "version": "1.124.1"
      }
     ],
-    "description": "security_group",
+    "description": "VPC Security Groups",
     "isInternal": false,
-    "name": "security_group",
+    "name": "security_groups",
     "version": "1.124.1"
    },
    {
@@ -18473,7 +17527,7 @@
         "version": "1.124.1"
        }
       ],
-      "description": "subnets | subnets",
+      "description": "VPC Subnets | subnets",
       "isInternal": false,
       "name": "subnets",
       "version": "1.124.1"
@@ -18517,7 +17571,7 @@
          "type": "object"
         },
         "description": "Create a Subnet",
-        "isInternal": false,
+        "isInternal": true,
         "name": "create",
         "parameters": {
          "additionalProperties": false,
@@ -18611,7 +17665,7 @@
          "type": "object"
         },
         "description": "Returns a list of subnets for a provided vpc_id",
-        "isInternal": false,
+        "isInternal": true,
         "name": "list",
         "parameters": {
          "additionalProperties": false,
@@ -18721,13 +17775,13 @@
         "version": "1.124.1"
        }
       ],
-      "description": "subnets | vpcs-subnets",
-      "isInternal": false,
+      "description": "VPC Subnets | vpcs-subnets",
+      "isInternal": true,
       "name": "vpcs-subnets",
       "version": "1.124.1"
      }
     ],
-    "description": "subnets",
+    "description": "VPC Subnets",
     "isInternal": false,
     "name": "subnets",
     "version": "1.124.1"
@@ -19362,11 +18416,966 @@
        "type": "object"
       },
       "version": "1.124.1"
+     },
+     {
+      "children": [
+       {
+        "configs": {
+         "additionalProperties": false,
+         "properties": {
+          "env": {
+           "default": "prod",
+           "description": "Environment to use",
+           "enum": [
+            "prod",
+            "pre-prod"
+           ],
+           "type": "string"
+          },
+          "region": {
+           "default": "br-se1",
+           "description": "Region to reach the service",
+           "enum": [
+            "br-ne1",
+            "br-se1",
+            "br-mgl1"
+           ],
+           "type": "string"
+          },
+          "serverUrl": {
+           "description": "Manually specify the server to use",
+           "format": "uri",
+           "type": "string"
+          },
+          "x-zone": {
+           "nullable": true,
+           "title": "X-Zone",
+           "type": "string"
+          }
+         },
+         "type": "object"
+        },
+        "description": "Create a Port with provided vpc_id and x-tenant-id. You can provide a list of security_groups_id or subnets",
+        "isInternal": false,
+        "name": "create",
+        "parameters": {
+         "additionalProperties": false,
+         "properties": {
+          "has_pip": {
+           "default": true,
+           "nullable": true,
+           "title": "Has Pip",
+           "type": "boolean"
+          },
+          "has_sg": {
+           "default": true,
+           "nullable": true,
+           "title": "Has Sg",
+           "type": "boolean"
+          },
+          "name": {
+           "maxLength": 100,
+           "minLength": 5,
+           "title": "Name",
+           "type": "string"
+          },
+          "security_groups_id": {
+           "default": [],
+           "items": {
+            "type": "string"
+           },
+           "nullable": true,
+           "title": "Security Groups Id",
+           "type": "array"
+          },
+          "subnets": {
+           "default": [],
+           "items": {
+            "type": "string"
+           },
+           "nullable": true,
+           "title": "Subnets",
+           "type": "array"
+          },
+          "vpc_id": {
+           "description": "ID of the VPC to create port",
+           "title": "vpc_id"
+          }
+         },
+         "required": [
+          "name",
+          "vpc_id"
+         ],
+         "type": "object"
+        },
+        "result": {
+         "example": {
+          "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+         },
+         "properties": {
+          "id": {
+           "title": "Id",
+           "type": "string"
+          }
+         },
+         "required": [
+          "id"
+         ],
+         "title": "PortCreateResponse",
+         "type": "object"
+        },
+        "version": "1.124.1"
+       },
+       {
+        "configs": {
+         "additionalProperties": false,
+         "properties": {
+          "env": {
+           "default": "prod",
+           "description": "Environment to use",
+           "enum": [
+            "prod",
+            "pre-prod"
+           ],
+           "type": "string"
+          },
+          "region": {
+           "default": "br-se1",
+           "description": "Region to reach the service",
+           "enum": [
+            "br-ne1",
+            "br-se1",
+            "br-mgl1"
+           ],
+           "type": "string"
+          },
+          "serverUrl": {
+           "description": "Manually specify the server to use",
+           "format": "uri",
+           "type": "string"
+          }
+         },
+         "type": "object"
+        },
+        "description": "List VPC ports",
+        "isInternal": false,
+        "name": "list",
+        "parameters": {
+         "additionalProperties": false,
+         "properties": {
+          "_limit": {
+           "default": 10,
+           "description": "Items Per Page",
+           "minimum": 1,
+           "title": "Items Per Page",
+           "type": "integer"
+          },
+          "_offset": {
+           "default": 1,
+           "description": "Page Number",
+           "minimum": 1,
+           "title": "Page Number",
+           "type": "integer"
+          },
+          "detailed": {
+           "default": true,
+           "title": "Detailed",
+           "type": "boolean"
+          },
+          "port_id_list": {
+           "default": [],
+           "items": {},
+           "title": "Port Id List",
+           "type": "array"
+          },
+          "vpc_id": {
+           "description": "ID of VPC to list ports",
+           "title": "vpc_id"
+          }
+         },
+         "required": [
+          "vpc_id"
+         ],
+         "type": "object"
+        },
+        "result": {
+         "anyOf": [
+          {
+           "example": {
+            "ports_simplified": [
+             {
+              "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+              "ip_address": [
+               {
+                "ip_address": "172.20.0.2",
+                "subnet_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+               }
+              ]
+             }
+            ]
+           },
+           "properties": {
+            "ports_simplified": {
+             "items": {
+              "example": {
+               "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+               "ip_address": [
+                {
+                 "ip_address": "172.20.0.2",
+                 "subnet_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+                }
+               ]
+              },
+              "properties": {
+               "id": {
+                "nullable": true,
+                "title": "Id",
+                "type": "string"
+               },
+               "ip_address": {
+                "default": [],
+                "items": {
+                 "example": {
+                  "ip_address": "172.20.0.2",
+                  "subnet_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+                 },
+                 "properties": {
+                  "ip_address": {
+                   "title": "Ip Address",
+                   "type": "string"
+                  },
+                  "subnet_id": {
+                   "title": "Subnet Id",
+                   "type": "string"
+                  }
+                 },
+                 "required": [
+                  "ip_address",
+                  "subnet_id"
+                 ],
+                 "title": "IpAddress",
+                 "type": "object"
+                },
+                "title": "Ip Address",
+                "type": "array"
+               }
+              },
+              "title": "PortSimpleResponse",
+              "type": "object"
+             },
+             "title": "Ports Simplified",
+             "type": "array"
+            }
+           },
+           "required": [
+            "ports_simplified"
+           ],
+           "title": "PortsListSimplified",
+           "type": "object"
+          },
+          {
+           "example": {
+            "ports": [
+             {
+              "created_at": "2022-01-01 00:00:00",
+              "description": "port description",
+              "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+              "ip_address": [
+               {
+                "ip_address": "172.20.0.2",
+                "subnet_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+               }
+              ],
+              "is_admin_state_up": true,
+              "is_port_security_enabled": true,
+              "name": "port_name",
+              "public_ip": [
+               {
+                "public_ip": "100.94.5.31",
+                "public_ip_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+               }
+              ],
+              "security_groups": [
+               "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+              ],
+              "updated": "2022-01-01 00:00:00",
+              "vpc_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+             }
+            ]
+           },
+           "properties": {
+            "ports": {
+             "items": {
+              "example": {
+               "created_at": "2022-01-01 00:00:00",
+               "description": "port description",
+               "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+               "ip_address": [
+                {
+                 "ip_address": "172.20.0.2",
+                 "subnet_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+                }
+               ],
+               "is_admin_state_up": true,
+               "is_port_security_enabled": true,
+               "name": "port_name",
+               "public_ip": [
+                {
+                 "public_ip": "100.94.5.31",
+                 "public_ip_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+                }
+               ],
+               "security_groups": [
+                "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+               ],
+               "updated": "2022-01-01 00:00:00",
+               "vpc_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+              },
+              "properties": {
+               "created_at": {
+                "format": "date-time",
+                "nullable": true,
+                "title": "Created At",
+                "type": "string"
+               },
+               "description": {
+                "nullable": true,
+                "title": "Description",
+                "type": "string"
+               },
+               "id": {
+                "nullable": true,
+                "title": "Id",
+                "type": "string"
+               },
+               "ip_address": {
+                "default": [],
+                "items": {
+                 "example": {
+                  "ip_address": "172.20.0.2",
+                  "subnet_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+                 },
+                 "properties": {
+                  "ip_address": {
+                   "title": "Ip Address",
+                   "type": "string"
+                  },
+                  "subnet_id": {
+                   "title": "Subnet Id",
+                   "type": "string"
+                  }
+                 },
+                 "required": [
+                  "ip_address",
+                  "subnet_id"
+                 ],
+                 "title": "IpAddress",
+                 "type": "object"
+                },
+                "title": "Ip Address",
+                "type": "array"
+               },
+               "is_admin_state_up": {
+                "nullable": true,
+                "title": "Is Admin State Up",
+                "type": "boolean"
+               },
+               "is_port_security_enabled": {
+                "nullable": true,
+                "title": "Is Port Security Enabled",
+                "type": "boolean"
+               },
+               "name": {
+                "nullable": true,
+                "title": "Name",
+                "type": "string"
+               },
+               "public_ip": {
+                "default": [],
+                "items": {
+                 "example": {
+                  "public_ip": "100.94.5.31",
+                  "public_ip_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+                 },
+                 "properties": {
+                  "public_ip": {
+                   "nullable": true,
+                   "title": "Public Ip",
+                   "type": "string"
+                  },
+                  "public_ip_id": {
+                   "nullable": true,
+                   "title": "Public Ip Id",
+                   "type": "string"
+                  }
+                 },
+                 "title": "PublicIpResponsePort",
+                 "type": "object"
+                },
+                "nullable": true,
+                "title": "Public Ip",
+                "type": "array"
+               },
+               "security_groups": {
+                "default": [],
+                "items": {
+                 "type": "string"
+                },
+                "title": "Security Groups",
+                "type": "array"
+               },
+               "updated": {
+                "format": "date-time",
+                "nullable": true,
+                "title": "Updated",
+                "type": "string"
+               },
+               "vpc_id": {
+                "nullable": true,
+                "title": "Vpc Id",
+                "type": "string"
+               }
+              },
+              "title": "PortResponse",
+              "type": "object"
+             },
+             "title": "Ports",
+             "type": "array"
+            }
+           },
+           "required": [
+            "ports"
+           ],
+           "title": "PortsList",
+           "type": "object"
+          }
+         ],
+         "title": "Response Listports",
+         "type": "object"
+        },
+        "version": "1.124.1"
+       }
+      ],
+      "description": "Virtual Private Cloud (VPC) | ports",
+      "isInternal": false,
+      "name": "ports",
+      "version": "1.124.1"
+     },
+     {
+      "children": [
+       {
+        "configs": {
+         "additionalProperties": false,
+         "properties": {
+          "env": {
+           "default": "prod",
+           "description": "Environment to use",
+           "enum": [
+            "prod",
+            "pre-prod"
+           ],
+           "type": "string"
+          },
+          "region": {
+           "default": "br-se1",
+           "description": "Region to reach the service",
+           "enum": [
+            "br-ne1",
+            "br-se1",
+            "br-mgl1"
+           ],
+           "type": "string"
+          },
+          "serverUrl": {
+           "description": "Manually specify the server to use",
+           "format": "uri",
+           "type": "string"
+          }
+         },
+         "type": "object"
+        },
+        "description": "Create async Public IP in a VPC with provided vpc_id and x_tenant_id",
+        "isInternal": true,
+        "name": "create",
+        "parameters": {
+         "additionalProperties": false,
+         "properties": {
+          "description": {
+           "default": "",
+           "nullable": true,
+           "title": "Description",
+           "type": "string"
+          },
+          "validate_quota": {
+           "default": true,
+           "description": "Validate the quota before creating the Public IP",
+           "title": "validateQuota",
+           "type": "boolean"
+          },
+          "vpc_id": {
+           "description": "Id of the VPC to create the Public IP in",
+           "title": "Vpc ID"
+          },
+          "wait": {
+           "default": true,
+           "description": "The request will be asynchronous. The wait parameter tells the API that you want the request to simulate synchronous behavior (to maintain endpoint compatibility). You can set an approximate timeout with the waitTimeout parameter",
+           "title": "wait",
+           "type": "boolean"
+          },
+          "wait_timeout": {
+           "default": 120,
+           "description": "the approximate time in seconds you want to wait when simulating the request as synchronous (only works with wait=true)",
+           "nullable": true,
+           "title": "waitTimeout",
+           "type": "integer"
+          }
+         },
+         "required": [
+          "vpc_id"
+         ],
+         "type": "object"
+        },
+        "result": {
+         "example": {
+          "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+         },
+         "properties": {
+          "id": {
+           "title": "Id",
+           "type": "string"
+          }
+         },
+         "required": [
+          "id"
+         ],
+         "title": "PublicIpCreateResponse",
+         "type": "object"
+        },
+        "version": "1.124.1"
+       },
+       {
+        "configs": {
+         "additionalProperties": false,
+         "properties": {
+          "env": {
+           "default": "prod",
+           "description": "Environment to use",
+           "enum": [
+            "prod",
+            "pre-prod"
+           ],
+           "type": "string"
+          },
+          "region": {
+           "default": "br-se1",
+           "description": "Region to reach the service",
+           "enum": [
+            "br-ne1",
+            "br-se1",
+            "br-mgl1"
+           ],
+           "type": "string"
+          },
+          "serverUrl": {
+           "description": "Manually specify the server to use",
+           "format": "uri",
+           "type": "string"
+          }
+         },
+         "type": "object"
+        },
+        "description": "Returns a list of Public IPs for a provided vpc_id",
+        "isInternal": false,
+        "name": "list",
+        "parameters": {
+         "additionalProperties": false,
+         "properties": {
+          "vpc_id": {
+           "description": "Id of the VPC to list the Public IPs in",
+           "title": "Vpc ID"
+          }
+         },
+         "required": [
+          "vpc_id"
+         ],
+         "type": "object"
+        },
+        "result": {
+         "example": {
+          "public_ips": [
+           {
+            "created_at": "2022-01-01 00:00:00",
+            "description": "port description",
+            "error": "error",
+            "external_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+            "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+            "port_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+            "public_ip": "100.94.5.31",
+            "status": "created",
+            "updated": "2022-01-01 00:00:00",
+            "vpc_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+           }
+          ]
+         },
+         "properties": {
+          "public_ips": {
+           "items": {
+            "example": {
+             "created_at": "2022-01-01 00:00:00",
+             "description": "port description",
+             "error": "error",
+             "external_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+             "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+             "port_ip": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+             "public_ip": "100.94.5.31",
+             "status": "created",
+             "updated": "2022-01-01 00:00:00",
+             "vpc_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+            },
+            "properties": {
+             "created_at": {
+              "format": "date-time",
+              "nullable": true,
+              "title": "Created At",
+              "type": "string"
+             },
+             "description": {
+              "nullable": true,
+              "title": "Description",
+              "type": "string"
+             },
+             "error": {
+              "nullable": true,
+              "title": "Error",
+              "type": "string"
+             },
+             "external_id": {
+              "nullable": true,
+              "title": "External Id",
+              "type": "string"
+             },
+             "id": {
+              "nullable": true,
+              "title": "Id",
+              "type": "string"
+             },
+             "port_id": {
+              "nullable": true,
+              "title": "Port Id",
+              "type": "string"
+             },
+             "public_ip": {
+              "nullable": true,
+              "title": "Public Ip",
+              "type": "string"
+             },
+             "status": {
+              "nullable": true,
+              "title": "Status",
+              "type": "string"
+             },
+             "updated": {
+              "format": "date-time",
+              "nullable": true,
+              "title": "Updated",
+              "type": "string"
+             },
+             "vpc_id": {
+              "nullable": true,
+              "title": "Vpc Id",
+              "type": "string"
+             }
+            },
+            "title": "PublicIpDb",
+            "type": "object"
+           },
+           "title": "Public Ips",
+           "type": "array"
+          }
+         },
+         "required": [
+          "public_ips"
+         ],
+         "title": "PublicIpsList",
+         "type": "object"
+        },
+        "version": "1.124.1"
+       }
+      ],
+      "description": "Virtual Private Cloud (VPC) | public-ips",
+      "isInternal": false,
+      "name": "public-ips",
+      "version": "1.124.1"
+     },
+     {
+      "children": [
+       {
+        "configs": {
+         "additionalProperties": false,
+         "properties": {
+          "env": {
+           "default": "prod",
+           "description": "Environment to use",
+           "enum": [
+            "prod",
+            "pre-prod"
+           ],
+           "type": "string"
+          },
+          "region": {
+           "default": "br-se1",
+           "description": "Region to reach the service",
+           "enum": [
+            "br-ne1",
+            "br-se1",
+            "br-mgl1"
+           ],
+           "type": "string"
+          },
+          "serverUrl": {
+           "description": "Manually specify the server to use",
+           "format": "uri",
+           "type": "string"
+          }
+         },
+         "type": "object"
+        },
+        "description": "Create a Security Group",
+        "isInternal": true,
+        "name": "create",
+        "parameters": {
+         "additionalProperties": false,
+         "properties": {
+          "description": {
+           "default": "",
+           "nullable": true,
+           "title": "Description",
+           "type": "string"
+          },
+          "name": {
+           "maxLength": 100,
+           "minLength": 5,
+           "nullable": true,
+           "title": "Name",
+           "type": "string"
+          },
+          "vpc_id": {
+           "description": "Id of the vpc to create the security group in",
+           "nullable": true,
+           "title": "VPC Id",
+           "type": "string"
+          },
+          "wait": {
+           "default": true,
+           "description": "The request will be asynchronous. The wait parameter tells the API that you want the request to simulate synchronous behavior (to maintain endpoint compatibility). You can set an approximate timeout with the waitTimeout parameter",
+           "nullable": true,
+           "title": "wait",
+           "type": "boolean"
+          },
+          "wait_timeout": {
+           "default": 120,
+           "description": "the approximate time in seconds you want to wait when simulating the request as synchronous (only works with wait=true)",
+           "nullable": true,
+           "title": "waitTimeout",
+           "type": "integer"
+          }
+         },
+         "required": [
+          "name",
+          "vpc_id"
+         ],
+         "type": "object"
+        },
+        "result": {
+         "example": {
+          "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+         },
+         "properties": {
+          "id": {
+           "title": "Id",
+           "type": "string"
+          }
+         },
+         "required": [
+          "id"
+         ],
+         "title": "SecurityGroupCreateResponse",
+         "type": "object"
+        },
+        "version": "1.124.1"
+       },
+       {
+        "configs": {
+         "additionalProperties": false,
+         "properties": {
+          "env": {
+           "default": "prod",
+           "description": "Environment to use",
+           "enum": [
+            "prod",
+            "pre-prod"
+           ],
+           "type": "string"
+          },
+          "region": {
+           "default": "br-se1",
+           "description": "Region to reach the service",
+           "enum": [
+            "br-ne1",
+            "br-se1",
+            "br-mgl1"
+           ],
+           "type": "string"
+          },
+          "serverUrl": {
+           "description": "Manually specify the server to use",
+           "format": "uri",
+           "type": "string"
+          }
+         },
+         "type": "object"
+        },
+        "description": "Returns a list of security groups for a provided vpc_id",
+        "isInternal": true,
+        "name": "list",
+        "parameters": {
+         "additionalProperties": false,
+         "properties": {
+          "vpc_id": {
+           "description": "Id of the VPC to create the Security Group in",
+           "title": "Vpc ID"
+          }
+         },
+         "required": [
+          "vpc_id"
+         ],
+         "type": "object"
+        },
+        "result": {
+         "example": {
+          "security_groups": [
+           {
+            "created_at": "2022-01-01 00:00:00",
+            "description": "security group description",
+            "error": "null",
+            "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+            "is_default": true,
+            "name": "security_group_name",
+            "project_type": "default",
+            "status": "created",
+            "tenant_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+            "updated": "2022-01-01 00:00:00",
+            "vpc_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+           }
+          ]
+         },
+         "properties": {
+          "security_groups": {
+           "items": {
+            "example": {
+             "created_at": "2022-01-01 00:00:00",
+             "description": "security group description",
+             "error": "null",
+             "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+             "is_default": true,
+             "name": "security_group_name",
+             "project_type": "default",
+             "status": "created",
+             "tenant_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+             "updated": "2022-01-01 00:00:00",
+             "vpc_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+            },
+            "properties": {
+             "created_at": {
+              "format": "date-time",
+              "nullable": true,
+              "title": "Created At",
+              "type": "string"
+             },
+             "description": {
+              "nullable": true,
+              "title": "Description",
+              "type": "string"
+             },
+             "error": {
+              "nullable": true,
+              "title": "Error",
+              "type": "string"
+             },
+             "id": {
+              "nullable": true,
+              "title": "Id",
+              "type": "string"
+             },
+             "is_default": {
+              "nullable": true,
+              "title": "Is Default",
+              "type": "boolean"
+             },
+             "name": {
+              "nullable": true,
+              "title": "Name",
+              "type": "string"
+             },
+             "project_type": {
+              "nullable": true,
+              "title": "Project Type",
+              "type": "string"
+             },
+             "status": {
+              "enum": [
+               "created",
+               "pending",
+               "error"
+              ],
+              "title": "SecurityGroupStatus",
+              "type": "string"
+             },
+             "tenant_id": {
+              "nullable": true,
+              "title": "Tenant Id",
+              "type": "string"
+             },
+             "updated": {
+              "format": "date-time",
+              "nullable": true,
+              "title": "Updated",
+              "type": "string"
+             },
+             "vpc_id": {
+              "nullable": true,
+              "title": "Vpc Id",
+              "type": "string"
+             }
+            },
+            "required": [
+             "status"
+            ],
+            "title": "SecurityGroupResponseEvent",
+            "type": "object"
+           },
+           "title": "Security Groups",
+           "type": "array"
+          }
+         },
+         "required": [
+          "security_groups"
+         ],
+         "title": "SecurityGroupListEvent",
+         "type": "object"
+        },
+        "version": "1.124.1"
+       }
+      ],
+      "description": "Virtual Private Cloud (VPC) | security-groups",
+      "isInternal": true,
+      "name": "security-groups",
+      "version": "1.124.1"
      }
     ],
-    "description": "vpc",
+    "description": "Virtual Private Cloud (VPC)",
     "isInternal": false,
-    "name": "vpc",
+    "name": "vpcs",
     "version": "1.124.1"
    },
    {
@@ -19463,7 +19472,7 @@
      }
     ],
     "description": "worker_public_ips",
-    "isInternal": false,
+    "isInternal": true,
     "name": "worker_public_ips",
     "version": "1.124.1"
    }
@@ -19866,7 +19875,7 @@
            "type": "integer"
           },
           "region": {
-           "default": "br-ne1",
+           "default": "br-se1",
            "description": "Region to reach the service",
            "enum": [
             "br-ne1",
@@ -19983,7 +19992,7 @@
            "type": "integer"
           },
           "region": {
-           "default": "br-ne1",
+           "default": "br-se1",
            "description": "Region to reach the service",
            "enum": [
             "br-ne1",
@@ -20174,7 +20183,7 @@
          "type": "integer"
         },
         "region": {
-         "default": "br-ne1",
+         "default": "br-se1",
          "description": "Region to reach the service",
          "enum": [
           "br-ne1",
@@ -20467,7 +20476,7 @@
          "type": "integer"
         },
         "region": {
-         "default": "br-ne1",
+         "default": "br-se1",
          "description": "Region to reach the service",
          "enum": [
           "br-ne1",
@@ -20553,7 +20562,7 @@
          "type": "integer"
         },
         "region": {
-         "default": "br-ne1",
+         "default": "br-se1",
          "description": "Region to reach the service",
          "enum": [
           "br-ne1",
@@ -20731,7 +20740,7 @@
          "type": "integer"
         },
         "region": {
-         "default": "br-ne1",
+         "default": "br-se1",
          "description": "Region to reach the service",
          "enum": [
           "br-ne1",
@@ -20815,7 +20824,7 @@
          "type": "integer"
         },
         "region": {
-         "default": "br-ne1",
+         "default": "br-se1",
          "description": "Region to reach the service",
          "enum": [
           "br-ne1",
@@ -20882,7 +20891,7 @@
            "type": "integer"
           },
           "region": {
-           "default": "br-ne1",
+           "default": "br-se1",
            "description": "Region to reach the service",
            "enum": [
             "br-ne1",
@@ -20962,7 +20971,7 @@
            "type": "integer"
           },
           "region": {
-           "default": "br-ne1",
+           "default": "br-se1",
            "description": "Region to reach the service",
            "enum": [
             "br-ne1",
@@ -21028,7 +21037,7 @@
            "type": "integer"
           },
           "region": {
-           "default": "br-ne1",
+           "default": "br-se1",
            "description": "Region to reach the service",
            "enum": [
             "br-ne1",
@@ -21124,7 +21133,7 @@
            "type": "integer"
           },
           "region": {
-           "default": "br-ne1",
+           "default": "br-se1",
            "description": "Region to reach the service",
            "enum": [
             "br-ne1",
@@ -21242,7 +21251,7 @@
            "type": "integer"
           },
           "region": {
-           "default": "br-ne1",
+           "default": "br-se1",
            "description": "Region to reach the service",
            "enum": [
             "br-ne1",
@@ -21443,7 +21452,7 @@
          "type": "integer"
         },
         "region": {
-         "default": "br-ne1",
+         "default": "br-se1",
          "description": "Region to reach the service",
          "enum": [
           "br-ne1",
@@ -21536,7 +21545,7 @@
          "type": "integer"
         },
         "region": {
-         "default": "br-ne1",
+         "default": "br-se1",
          "description": "Region to reach the service",
          "enum": [
           "br-ne1",
@@ -21651,7 +21660,7 @@
          "type": "integer"
         },
         "region": {
-         "default": "br-ne1",
+         "default": "br-se1",
          "description": "Region to reach the service",
          "enum": [
           "br-ne1",
@@ -21737,7 +21746,7 @@
          "type": "integer"
         },
         "region": {
-         "default": "br-ne1",
+         "default": "br-se1",
          "description": "Region to reach the service",
          "enum": [
           "br-ne1",
@@ -21841,7 +21850,7 @@
          "type": "integer"
         },
         "region": {
-         "default": "br-ne1",
+         "default": "br-se1",
          "description": "Region to reach the service",
          "enum": [
           "br-ne1",
@@ -21933,7 +21942,7 @@
          "type": "integer"
         },
         "region": {
-         "default": "br-ne1",
+         "default": "br-se1",
          "description": "Region to reach the service",
          "enum": [
           "br-ne1",
@@ -22033,7 +22042,7 @@
          "type": "integer"
         },
         "region": {
-         "default": "br-ne1",
+         "default": "br-se1",
          "description": "Region to reach the service",
          "enum": [
           "br-ne1",
@@ -22117,7 +22126,7 @@
          "type": "integer"
         },
         "region": {
-         "default": "br-ne1",
+         "default": "br-se1",
          "description": "Region to reach the service",
          "enum": [
           "br-ne1",
@@ -22248,7 +22257,7 @@
          "type": "integer"
         },
         "region": {
-         "default": "br-ne1",
+         "default": "br-se1",
          "description": "Region to reach the service",
          "enum": [
           "br-ne1",
@@ -22329,7 +22338,7 @@
          "type": "integer"
         },
         "region": {
-         "default": "br-ne1",
+         "default": "br-se1",
          "description": "Region to reach the service",
          "enum": [
           "br-ne1",
@@ -22424,7 +22433,7 @@
          "type": "integer"
         },
         "region": {
-         "default": "br-ne1",
+         "default": "br-se1",
          "description": "Region to reach the service",
          "enum": [
           "br-ne1",
@@ -22503,7 +22512,7 @@
          "type": "integer"
         },
         "region": {
-         "default": "br-ne1",
+         "default": "br-se1",
          "description": "Region to reach the service",
          "enum": [
           "br-ne1",
@@ -22568,7 +22577,7 @@
          "type": "integer"
         },
         "region": {
-         "default": "br-ne1",
+         "default": "br-se1",
          "description": "Region to reach the service",
          "enum": [
           "br-ne1",
@@ -22669,7 +22678,7 @@
          "type": "integer"
         },
         "region": {
-         "default": "br-ne1",
+         "default": "br-se1",
          "description": "Region to reach the service",
          "enum": [
           "br-ne1",
@@ -22744,7 +22753,7 @@
          "type": "integer"
         },
         "region": {
-         "default": "br-ne1",
+         "default": "br-se1",
          "description": "Region to reach the service",
          "enum": [
           "br-ne1",
@@ -22841,7 +22850,7 @@
          "type": "integer"
         },
         "region": {
-         "default": "br-ne1",
+         "default": "br-se1",
          "description": "Region to reach the service",
          "enum": [
           "br-ne1",
@@ -23344,7 +23353,7 @@
        },
        "type": "object"
       },
-      "description": "Creates a Virtual Machine instance in the current tenant which is logged in.\n\nAn instance is ready for you to use when it's in the running state.\n\n#### Notes\n- For the image data, you can use the virtual-machine images list command\n        to list all available images.\n- For the machine type data, you can use the virtual-machine machine-types\n        list command to list all available machine types.\n- You can verify the state of your instance using the virtual-machine get\ncommand.\n\n#### Rules\n\n- If you don't specify a VPC, the default VPC will be used. When the\ndefault VPC is not available, the command will fail.\n- If you don't specify an network interface, an default network interface\nwill be created.\n- You can either specify an image id or an image name. If you specify\nboth, the image id will be used.\n- You can either specify a machine type id or a machine type name. If\nyou specify both, the machine type id will be used.\n- You can either specify an VPC id or an VPC name. If you specify both,\nthe VPC id will be used.\n- The user data must be a Base64 encoded string.",
+      "description": "Create a Virtual Machine instance",
       "isInternal": false,
       "name": "create",
       "parameters": {
@@ -23639,7 +23648,7 @@
        },
        "type": "object"
       },
-      "description": "Deletes permanently an instance with the id provided in the current tenant\nwhich is logged in.\n\n#### Notes\n- You can use the virtual-machine list command to retrieve all instances, so\n- you can get the id of the instance that you want to delete.\n\n#### Result\n- The attached ports will be deleted as well.</li>\n- The attached volumes will be detached.</li>",
+      "description": "Delete a Virtual Machine instance",
       "isInternal": false,
       "name": "delete",
       "parameters": {
@@ -23698,7 +23707,7 @@
        },
        "type": "object"
       },
-      "description": "Get an instance details for the current tenant which is logged in.\n\n#### Notes\n- You can use the virtual-machine list command to retrieve all instances,\nso you can get the id of the instance that you want to get details.\n\n- You can use the **expand** argument to get more details from the inner objects\nlike image or type.",
+      "description": "Get a Virtual Machine instance details",
       "isInternal": false,
       "name": "get",
       "parameters": {
@@ -24117,7 +24126,7 @@
        },
        "type": "object"
       },
-      "description": "List Virtual Machine instances in the current tenant which is logged in.\n\n#### Notes\n- You can use the **extend** argument to get more details from the inner objects\nlike image or type.",
+      "description": "List Virtual Machine instances",
       "isInternal": false,
       "name": "list",
       "parameters": {

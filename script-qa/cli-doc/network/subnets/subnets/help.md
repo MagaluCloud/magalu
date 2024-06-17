@@ -1,4 +1,4 @@
-# subnets | subnets
+# VPC Subnets | subnets
 
 ## Usage:
 ```bash

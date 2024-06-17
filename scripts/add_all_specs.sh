@@ -18,14 +18,14 @@ echo "DATABASE"
 $BASEDIR/add_specs.sh kubernetes kubernetes mgc/spec_manipulator/cli_specs/kubernetes.jaxyendy.openapi.json https://mke.br-ne-1.com/docs/openapi-with-snippets.json
 echo "KUBERNETES"
 
-# This file is NOT being used, the API is not recommended and we should follow with their S3 compatible API
-# $BASEDIR/add_specs.sh object-storage objects https://object-storage.br-ne-1.jaxyendy.com/openapi.json
+# # This file is NOT being used, the API is not recommended and we should follow with their S3 compatible API
+# # $BASEDIR/add_specs.sh object-storage objects https://object-storage.br-ne-1.jaxyendy.com/openapi.json
 
 $BASEDIR/add_specs.sh virtual-machine compute mgc/spec_manipulator/cli_specs/conv.virtual-machine.jaxyendy.openapi.json https://virtual-machine.jaxyendy.com/openapi.json
 echo "VIRTUAL MACHINE"
 
-# $BASEDIR/add_specs.sh virtual-machine-xaas compute-xaas mgc/spec_manipulator/cli_specs/virtual-machine-xaas.jaxyendy.openapi.json https://virtual-machine.jaxyendy.com/internal/v1/openapi.json
-# echo "VIRTUAL MACHINE XAAS"
+# # $BASEDIR/add_specs.sh virtual-machine-xaas compute-xaas mgc/spec_manipulator/cli_specs/virtual-machine-xaas.jaxyendy.openapi.json https://virtual-machine.jaxyendy.com/internal/v1/openapi.json
+# # echo "VIRTUAL MACHINE XAAS"
 
 $BASEDIR/add_specs.sh network network mgc/spec_manipulator/cli_specs/conv.network.jaxyendy.openapi.json https://network.jaxyendy.com/openapi.json
 echo "NETWORK"

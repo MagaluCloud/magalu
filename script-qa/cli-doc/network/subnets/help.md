@@ -1,4 +1,4 @@
-# subnets
+# VPC Subnets
 
 ## Usage:
 ```bash
@@ -9,8 +9,7 @@ Usage:
 
 ## Product catalog:
 - Commands:
-- subnets      subnets
-- vpcs-subnets vpcs-subnets
+- subnets     subnets
 
 ## Other commands:
 - Flags:

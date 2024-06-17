@@ -703,6 +703,24 @@ paths:
                             description: Backup restore.
                             parameters:
                                 instance_id: $response.body#/id
+                        update/flavor_id:
+                            operationId: instances_v1_resize
+                            description: Resizes a database instance.
+                            parameters:
+                                instance_id: $request.path.instance_id
+                            x-mgc-hidden: true
+                        update/status/ACTIVE:
+                            operationId: instances_v1_start
+                            description: Starts a database instance.
+                            parameters:
+                                instance_id: $request.path.instance_id
+                            x-mgc-hidden: true
+                        update/status/STOPPED:
+                            operationId: instances_v1_stop
+                            description: Stops a database instance.
+                            parameters:
+                                instance_id: $request.path.instance_id
+                            x-mgc-hidden: true
                 '422':
                     description: Validation Error
                     content:
@@ -712,6 +730,12 @@ paths:
             security:
             -   OAuth2:
                 - dbaas.read
+            x-mgc-wait-termination:
+                maxRetries: 100
+                interval: 20s
+                jsonPathQuery: (hasKey($.result, "status")) && ($.result.status ==
+                    "ACTIVE" || $.result.status == "STOPPED" || $.result.status ==
+                    "ERROR")
         delete:
             tags:
             - instances
@@ -863,6 +887,10 @@ paths:
                             description: Database instance details.
                             parameters:
                                 instance_id: $response.body#/id
+                            x-mgc-wait-termination:
+                                maxRetries: 20
+                                interval: 10s
+                                jsonPathQuery: $.result.volume.size == $.owner.parameters.volume.size
                         update:
                             operationId: instances_v1_patch
                             description: Database instance update.
@@ -932,6 +960,10 @@ paths:
                             description: Database instance details.
                             parameters:
                                 instance_id: $response.body#/id
+                            x-mgc-wait-termination:
+                                maxRetries: 20
+                                interval: 10s
+                                jsonPathQuery: $.result.status == "ACTIVE"
                         update:
                             operationId: instances_v1_patch
                             description: Database instance update.
@@ -966,6 +998,7 @@ paths:
             security:
             -   OAuth2:
                 - dbaas.write
+            x-mgc-name: start
     /v1/instances/{instance_id}/stop:
         post:
             tags:
@@ -1001,6 +1034,10 @@ paths:
                             description: Database instance details.
                             parameters:
                                 instance_id: $response.body#/id
+                            x-mgc-wait-termination:
+                                maxRetries: 20
+                                interval: 10s
+                                jsonPathQuery: $.result.status == "STOPPED"
                         update:
                             operationId: instances_v1_patch
                             description: Database instance update.
@@ -1238,6 +1275,10 @@ paths:
             security:
             -   OAuth2:
                 - dbaas.read
+            x-mgc-wait-termination:
+                maxRetries: 20
+                interval: 5s
+                jsonPathQuery: $.status != PENDING && $.status != CREATING
         delete:
             tags:
             - instances
@@ -1795,6 +1836,24 @@ paths:
                             description: Replica Stop.
                             parameters:
                                 replica_id: $response.body#/id
+                        update/volume:
+                            operationId: replica_resize_v1_replicas_post
+                            description: Resizes a database instance.
+                            parameters:
+                                replica_id: $request.path.replica_id
+                            x-mgc-hidden: true
+                        update/status/ACTIVE:
+                            operationId: replica_start_v1_replicas__replica_id__start_post
+                            description: Start an instance replica.
+                            parameters:
+                                replica_id: $request.path.replica_id
+                            x-mgc-hidden: true
+                        update/status/STOPPED:
+                            operationId: replica_stop_v1_replicas__replica_id__stop_post
+                            description: Stop an instance replica.
+                            parameters:
+                                replica_id: $request.path.replica_id
+                            x-mgc-hidden: true
                 '422':
                     description: Validation Error
                     content:
@@ -1880,7 +1939,7 @@ paths:
                                 replica_id: $response.body#/id
                             x-mgc-wait-termination:
                                 interval: 5s
-                                maxRetries: 10
+                                maxRetries: 20
                                 jsonPathQuery: $.result.flavor_id == $.owner.parameters.flavor_id
                         delete:
                             operationId: replica_v1_delete
@@ -1949,6 +2008,10 @@ paths:
                             description: Replica Detail.
                             parameters:
                                 replica_id: $response.body#/id
+                            x-mgc-wait-termination:
+                                maxRetries: 20
+                                interval: 5s
+                                jsonPathQuery: $.result.status == "ACTIVE"
                         delete:
                             operationId: replica_v1_delete
                             description: Deletes a replica instance.
@@ -2008,6 +2071,10 @@ paths:
                             description: Replica Detail.
                             parameters:
                                 replica_id: $response.body#/id
+                            x-mgc-wait-termination:
+                                maxRetries: 20
+                                interval: 5s
+                                jsonPathQuery: $.result.status == "STOPPED"
                         delete:
                             operationId: replica_v1_delete
                             description: Deletes a replica instance.
@@ -2106,13 +2173,15 @@ components:
                 mode:
                     $ref: '#/components/schemas/BackupMode'
                 db_size:
-                    exclusiveMinimum: false
+                    exclusiveMinimum: true
                     type: integer
                     title: Db Size
+                    minimum: 0.0
                 size:
-                    exclusiveMinimum: false
+                    exclusiveMinimum: true
                     type: integer
                     title: Size
+                    minimum: 0.0
                 started_at:
                     type: string
                     title: Started At
@@ -2334,11 +2403,13 @@ components:
                     type: string
                     title: Name
                     maxLength: 100
+                    example: dbaas-name
                 datastore_id:
                     type: string
                     title: Datastore Id
                     format: uuid
                     deprecated: true
+                    example: 063f3994-b6c2-4c37-96c9-bab8d82d36f7
                 engine_id:
                     type: string
                     title: Engine Id
@@ -2347,21 +2418,25 @@ components:
                     type: string
                     title: Flavor Id
                     format: uuid
+                    example: 8bbe8e01-40c8-4d2b-80e8-189debc44b1c
                 user:
                     type: string
                     title: User
                     maxLength: 25
+                    example: dbaas-user
                 password:
                     type: string
                     title: Password
                     maxLength: 50
+                    example: dbaas-password
                 volume:
                     $ref: '#/components/schemas/InstanceVolumeRequest'
                 backup_retention_days:
-                    exclusiveMinimum: false
+                    exclusiveMinimum: true
                     type: integer
                     title: Backup Retention Days
                     default: 7
+                    minimum: 0.0
                 backup_start_at:
                     type: string
                     title: Backup Start At
@@ -2432,9 +2507,10 @@ components:
                     title: Finished At
                     format: date-time
                 backup_retention_days:
-                    exclusiveMinimum: false
+                    exclusiveMinimum: true
                     type: integer
                     title: Backup Retention Days
+                    minimum: 0.0
                 backup_start_at:
                     type: string
                     title: Backup Start At
@@ -2605,9 +2681,10 @@ components:
                 status:
                     $ref: '#/components/schemas/InstanceUpdateStatus'
                 backup_retention_days:
-                    exclusiveMinimum: false
+                    exclusiveMinimum: true
                     type: integer
                     title: Backup Retention Days
+                    minimum: 0.0
                 backup_start_at:
                     type: string
                     title: Backup Start At
@@ -2627,10 +2704,12 @@ components:
                     title: Size
                     maximum: 50000
                     minimum: 10
+                    example: 30
                 type:
                     allOf:
                     -   $ref: '#/components/schemas/VolumeType'
                     default: CLOUD_NVME_15K
+                    example: CLOUD_NVME
             title: InstanceVolumeRequest
             required:
             - size
@@ -3066,10 +3145,12 @@ components:
 tags:
 -   name: healthcheck
     description: Health check.
+    x-mgc-hidden: true
 -   name: backups
     description: Database backups management.
 -   name: datastores
     description: Datastores available for database instances.
+    x-mgc-hidden: true
 -   name: engines
     description: Engines available for database instances.
 -   name: instances

@@ -1,28 +1,27 @@
-# Deletes permanently an instance with the id provided in the current tenant
-which is logged in.
+# Delete a Virtual Machine instance
 
 ## Usage:
 ```bash
-#### Notes
-- You can use the virtual-machine list command to retrieve all instances, so
-- you can get the id of the instance that you want to delete.
+Usage:
+  ./mgc virtual-machine instances delete [id] [flags]
 ```
 
 ## Product catalog:
-- #### Result
-- - The attached ports will be deleted as well.</li>
-- - The attached volumes will be detached.</li>
+- Flags:
+- --delete-public-ip   Delete Public Ip
+- -h, --help               help for delete
+- --id uuid            Id (required)
+- -v, --version            version for delete
 
 ## Other commands:
-- Usage:
-- ./mgc virtual-machine instances delete [id] [flags]
+- Global Flags:
+- --cli.show-cli-globals   Show all CLI global flags on usage text
+- --env enum               Environment to use (one of "pre-prod" or "prod") (default "prod")
+- --region enum            Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
+- --server-url uri         Manually specify the server to use
 
 ## Flags:
 ```bash
-Flags:
-      --delete-public-ip   Delete Public Ip
-  -h, --help               help for delete
-      --id uuid            Id (required)
-  -v, --version            version for delete
+
 ```
 
