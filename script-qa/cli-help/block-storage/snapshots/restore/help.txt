@@ -1,0 +1,29 @@
+Restore a Snapshot on a new Volume to the currently
+ authenticated tenant.
+
+The restored Volume can be used when it reaches the "available" state and the
+ "completed" status.
+
+#### Notes
+- To obtain the ID of the Snapshot you wish to restore, you can use the
+ **block-storage snapshots list** command to list all Snapshots.
+- Check the state and status of your Volume using the
+ **block-storage volume get --id [uuid]** command.
+
+Usage:
+  ./mgc block-storage snapshots restore [snapshot-id] [flags]
+
+Flags:
+      --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
+      --cli.watch                     Wait until the operation is completed by calling the 'get' link and waiting until termination. Akin to '! get -w'
+  -h, --help                          help for restore
+      --name string                   Name (required)
+      --snapshot-id uuid              Snapshot Id (required)
+  -v, --version                       version for restore
+
+Global Flags:
+      --cli.show-cli-globals   Show all CLI global flags on usage text
+      --env enum               Environment to use (one of "pre-prod" or "prod") (default "prod")
+      --region enum            Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
+      --server-url uri         Manually specify the server to use
+

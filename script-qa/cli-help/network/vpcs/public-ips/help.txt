@@ -1,0 +1,18 @@
+Virtual Private Cloud (VPC) | public-ips
+
+Usage:
+  ./mgc network vpcs public-ips [flags]
+  ./mgc network vpcs public-ips [command]
+
+Commands:
+  list        List Public IPs
+
+Flags:
+  -h, --help      help for public-ips
+  -v, --version   version for public-ips
+
+Global Flags:
+      --cli.show-cli-globals   Show all CLI global flags on usage text
+
+Use "./mgc network vpcs public-ips [command] --help" for more information about a command.
+
