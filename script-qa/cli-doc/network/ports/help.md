@@ -10,6 +10,7 @@ Usage:
 ## Product catalog:
 - Commands:
 - attach      Attach Security Group
+- create      Create Port
 - delete      Delete Port
 - detach      Detach Security Group
 - get         Port Details

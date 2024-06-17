@@ -14,6 +14,7 @@ Usage:
 ## Other commands:
 - Commands:
 - attach      Attach Public IP
+- create      Create Public IP
 - delete      Delete Public IP
 - detach      Detach Public IP
 - get         Public IP Details

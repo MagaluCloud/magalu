@@ -1376,6 +1376,233 @@
      {
       "configs": {
        "additionalProperties": false,
+       "magalu.cloud/core/resolved": "true",
+       "properties": {
+        "env": {
+         "default": "prod",
+         "description": "Environment to use",
+         "enum": [
+          "prod",
+          "pre-prod"
+         ],
+         "type": "string"
+        },
+        "region": {
+         "default": "br-se1",
+         "description": "Region to reach the service",
+         "enum": [
+          "br-ne1",
+          "br-se1",
+          "br-mgl1"
+         ],
+         "type": "string"
+        },
+        "serverUrl": {
+         "description": "Manually specify the server to use",
+         "format": "uri",
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
+      "description": "Attach a volume to a virtual machine instance",
+      "isInternal": false,
+      "name": "create",
+      "parameters": {
+       "magalu.cloud/core/resolved": "true",
+       "properties": {
+        "block_storage_id": {
+         "format": "uuid",
+         "magalu.cloud/core/resolved": "true",
+         "title": "Id",
+         "type": "string"
+        },
+        "virtual_machine_id": {
+         "format": "uuid",
+         "magalu.cloud/core/resolved": "true",
+         "title": "Virtual Machine Id",
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
+      "result": {
+       "magalu.cloud/core/resolved": "true",
+       "properties": {
+        "block_storage_id": {
+         "format": "uuid",
+         "magalu.cloud/core/resolved": "true",
+         "title": "Id",
+         "type": "string"
+        },
+        "virtual_machine_id": {
+         "format": "uuid",
+         "magalu.cloud/core/resolved": "true",
+         "title": "Virtual Machine Id",
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
+      "version": ""
+     },
+     {
+      "configs": {
+       "additionalProperties": false,
+       "magalu.cloud/core/resolved": "true",
+       "properties": {
+        "env": {
+         "default": "prod",
+         "description": "Environment to use",
+         "enum": [
+          "prod",
+          "pre-prod"
+         ],
+         "type": "string"
+        },
+        "region": {
+         "default": "br-se1",
+         "description": "Region to reach the service",
+         "enum": [
+          "br-ne1",
+          "br-se1",
+          "br-mgl1"
+         ],
+         "type": "string"
+        },
+        "serverUrl": {
+         "description": "Manually specify the server to use",
+         "format": "uri",
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
+      "description": "Detach a volume from a virtual machine instance",
+      "isInternal": false,
+      "name": "delete",
+      "parameters": {
+       "magalu.cloud/core/resolved": "true",
+       "properties": {
+        "block_storage_id": {
+         "format": "uuid",
+         "magalu.cloud/core/resolved": "true",
+         "title": "Id",
+         "type": "string"
+        },
+        "virtual_machine_id": {
+         "format": "uuid",
+         "magalu.cloud/core/resolved": "true",
+         "title": "Virtual Machine Id",
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
+      "result": {
+       "magalu.cloud/core/resolved": "true",
+       "properties": {
+        "block_storage_id": {
+         "format": "uuid",
+         "magalu.cloud/core/resolved": "true",
+         "title": "Id",
+         "type": "string"
+        },
+        "virtual_machine_id": {
+         "format": "uuid",
+         "magalu.cloud/core/resolved": "true",
+         "title": "Virtual Machine Id",
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
+      "version": ""
+     },
+     {
+      "configs": {
+       "additionalProperties": false,
+       "magalu.cloud/core/resolved": "true",
+       "properties": {
+        "env": {
+         "default": "prod",
+         "description": "Environment to use",
+         "enum": [
+          "prod",
+          "pre-prod"
+         ],
+         "type": "string"
+        },
+        "region": {
+         "default": "br-se1",
+         "description": "Region to reach the service",
+         "enum": [
+          "br-ne1",
+          "br-se1",
+          "br-mgl1"
+         ],
+         "type": "string"
+        },
+        "serverUrl": {
+         "description": "Manually specify the server to use",
+         "format": "uri",
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
+      "description": "Check if a volume is attached to a virtual machine instance",
+      "isInternal": false,
+      "name": "get",
+      "parameters": {
+       "magalu.cloud/core/resolved": "true",
+       "properties": {
+        "block_storage_id": {
+         "format": "uuid",
+         "magalu.cloud/core/resolved": "true",
+         "title": "Id",
+         "type": "string"
+        },
+        "virtual_machine_id": {
+         "format": "uuid",
+         "magalu.cloud/core/resolved": "true",
+         "title": "Virtual Machine Id",
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
+      "result": {
+       "magalu.cloud/core/resolved": "true",
+       "properties": {
+        "block_storage_id": {
+         "format": "uuid",
+         "magalu.cloud/core/resolved": "true",
+         "title": "Id",
+         "type": "string"
+        },
+        "virtual_machine_id": {
+         "format": "uuid",
+         "magalu.cloud/core/resolved": "true",
+         "title": "Virtual Machine Id",
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
+      "version": ""
+     }
+    ],
+    "description": "Block Storage Volume Attachment",
+    "isInternal": true,
+    "name": "volume-attachment",
+    "version": ""
+   },
+   {
+    "children": [
+     {
+      "configs": {
+       "additionalProperties": false,
        "properties": {
         "env": {
          "default": "prod",
@@ -1553,11 +1780,13 @@
        "properties": {
         "id": {
          "format": "uuid",
+         "magalu.cloud/core/resolved": "true",
          "title": "Id",
          "type": "string"
         },
         "virtual_machine_id": {
          "format": "uuid",
+         "magalu.cloud/core/resolved": "true",
          "title": "Virtual Machine Id",
          "type": "string"
         }
@@ -1905,6 +2134,7 @@
      {
       "configs": {
        "additionalProperties": false,
+       "magalu.cloud/core/resolved": "true",
        "properties": {
         "env": {
          "default": "prod",
@@ -14828,10 +15058,12 @@
        "properties": {
         "port_id": {
          "description": "ID of the Port to attach security group",
+         "magalu.cloud/core/resolved": "true",
          "title": "port_id"
         },
         "security_group_id": {
          "description": "ID of the Security Group to attach",
+         "magalu.cloud/core/resolved": "true",
          "title": "security_group_id"
         }
        },
@@ -14842,6 +15074,116 @@
        "type": "object"
       },
       "result": {},
+      "version": "1.124.1"
+     },
+     {
+      "configs": {
+       "additionalProperties": false,
+       "magalu.cloud/core/resolved": "true",
+       "properties": {
+        "env": {
+         "default": "prod",
+         "description": "Environment to use",
+         "enum": [
+          "prod",
+          "pre-prod"
+         ],
+         "type": "string"
+        },
+        "region": {
+         "default": "br-se1",
+         "description": "Region to reach the service",
+         "enum": [
+          "br-ne1",
+          "br-se1",
+          "br-mgl1"
+         ],
+         "type": "string"
+        },
+        "serverUrl": {
+         "description": "Manually specify the server to use",
+         "format": "uri",
+         "type": "string"
+        },
+        "x-zone": {
+         "nullable": true,
+         "title": "X-Zone",
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
+      "description": "Create a Port with provided vpc_id and x-tenant-id. You can provide a list of security_groups_id or subnets",
+      "isInternal": false,
+      "name": "create",
+      "parameters": {
+       "additionalProperties": false,
+       "magalu.cloud/core/resolved": "true",
+       "properties": {
+        "has_pip": {
+         "default": true,
+         "nullable": true,
+         "title": "Has Pip",
+         "type": "boolean"
+        },
+        "has_sg": {
+         "default": true,
+         "nullable": true,
+         "title": "Has Sg",
+         "type": "boolean"
+        },
+        "name": {
+         "maxLength": 100,
+         "minLength": 5,
+         "title": "Name",
+         "type": "string"
+        },
+        "security_groups_id": {
+         "default": [],
+         "items": {
+          "type": "string"
+         },
+         "nullable": true,
+         "title": "Security Groups Id",
+         "type": "array"
+        },
+        "subnets": {
+         "default": [],
+         "items": {
+          "type": "string"
+         },
+         "nullable": true,
+         "title": "Subnets",
+         "type": "array"
+        },
+        "vpc_id": {
+         "description": "ID of the VPC to create port",
+         "title": "vpc_id"
+        }
+       },
+       "required": [
+        "name",
+        "vpc_id"
+       ],
+       "type": "object"
+      },
+      "result": {
+       "example": {
+        "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+       },
+       "magalu.cloud/core/resolved": "true",
+       "properties": {
+        "id": {
+         "title": "Id",
+         "type": "string"
+        }
+       },
+       "required": [
+        "id"
+       ],
+       "title": "PortCreateResponse",
+       "type": "object"
+      },
       "version": "1.124.1"
      },
      {
@@ -14932,6 +15274,7 @@
        "example": {
         "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
        },
+       "magalu.cloud/core/resolved": "true",
        "properties": {
         "id": {
          "title": "Id",
@@ -15509,6 +15852,245 @@
        "type": "array"
       },
       "version": "1.124.1"
+     },
+     {
+      "children": [
+       {
+        "configs": {
+         "additionalProperties": false,
+         "magalu.cloud/core/resolved": "true",
+         "properties": {
+          "env": {
+           "default": "prod",
+           "description": "Environment to use",
+           "enum": [
+            "prod",
+            "pre-prod"
+           ],
+           "type": "string"
+          },
+          "region": {
+           "default": "br-se1",
+           "description": "Region to reach the service",
+           "enum": [
+            "br-ne1",
+            "br-se1",
+            "br-mgl1"
+           ],
+           "type": "string"
+          },
+          "serverUrl": {
+           "description": "Manually specify the server to use",
+           "format": "uri",
+           "type": "string"
+          }
+         },
+         "type": "object"
+        },
+        "description": "Attach a Security Group to a Port",
+        "isInternal": false,
+        "name": "create",
+        "parameters": {
+         "magalu.cloud/core/resolved": "true",
+         "properties": {
+          "port_id": {
+           "description": "ID of the Port to attach security group",
+           "magalu.cloud/core/resolved": "true",
+           "title": "port_id"
+          },
+          "security_group_id": {
+           "description": "ID of the Security Group to attach",
+           "magalu.cloud/core/resolved": "true",
+           "title": "security_group_id"
+          }
+         },
+         "required": [
+          "security_group_id",
+          "port_id"
+         ],
+         "type": "object"
+        },
+        "result": {
+         "magalu.cloud/core/resolved": "true",
+         "properties": {
+          "port_id": {
+           "description": "ID of the Port to attach security group",
+           "magalu.cloud/core/resolved": "true",
+           "title": "port_id"
+          },
+          "security_group_id": {
+           "description": "ID of the Security Group to attach",
+           "magalu.cloud/core/resolved": "true",
+           "title": "security_group_id"
+          }
+         },
+         "required": [
+          "security_group_id",
+          "port_id"
+         ],
+         "type": "object"
+        },
+        "version": ""
+       },
+       {
+        "configs": {
+         "additionalProperties": false,
+         "magalu.cloud/core/resolved": "true",
+         "properties": {
+          "env": {
+           "default": "prod",
+           "description": "Environment to use",
+           "enum": [
+            "prod",
+            "pre-prod"
+           ],
+           "type": "string"
+          },
+          "region": {
+           "default": "br-se1",
+           "description": "Region to reach the service",
+           "enum": [
+            "br-ne1",
+            "br-se1",
+            "br-mgl1"
+           ],
+           "type": "string"
+          },
+          "serverUrl": {
+           "description": "Manually specify the server to use",
+           "format": "uri",
+           "type": "string"
+          }
+         },
+         "type": "object"
+        },
+        "description": "Detach a Security Group from a Port",
+        "isInternal": false,
+        "name": "delete",
+        "parameters": {
+         "magalu.cloud/core/resolved": "true",
+         "properties": {
+          "port_id": {
+           "description": "ID of the Port to attach security group",
+           "magalu.cloud/core/resolved": "true",
+           "title": "port_id"
+          },
+          "security_group_id": {
+           "description": "ID of the Security Group to attach",
+           "magalu.cloud/core/resolved": "true",
+           "title": "security_group_id"
+          }
+         },
+         "required": [
+          "security_group_id",
+          "port_id"
+         ],
+         "type": "object"
+        },
+        "result": {
+         "magalu.cloud/core/resolved": "true",
+         "properties": {
+          "port_id": {
+           "description": "ID of the Port to attach security group",
+           "magalu.cloud/core/resolved": "true",
+           "title": "port_id"
+          },
+          "security_group_id": {
+           "description": "ID of the Security Group to attach",
+           "magalu.cloud/core/resolved": "true",
+           "title": "security_group_id"
+          }
+         },
+         "required": [
+          "security_group_id",
+          "port_id"
+         ],
+         "type": "object"
+        },
+        "version": ""
+       },
+       {
+        "configs": {
+         "additionalProperties": false,
+         "magalu.cloud/core/resolved": "true",
+         "properties": {
+          "env": {
+           "default": "prod",
+           "description": "Environment to use",
+           "enum": [
+            "prod",
+            "pre-prod"
+           ],
+           "type": "string"
+          },
+          "region": {
+           "default": "br-se1",
+           "description": "Region to reach the service",
+           "enum": [
+            "br-ne1",
+            "br-se1",
+            "br-mgl1"
+           ],
+           "type": "string"
+          },
+          "serverUrl": {
+           "description": "Manually specify the server to use",
+           "format": "uri",
+           "type": "string"
+          }
+         },
+         "type": "object"
+        },
+        "description": "Check if a Public IP is attached to a Port",
+        "isInternal": false,
+        "name": "get",
+        "parameters": {
+         "magalu.cloud/core/resolved": "true",
+         "properties": {
+          "port_id": {
+           "description": "ID of the Port to attach security group",
+           "magalu.cloud/core/resolved": "true",
+           "title": "port_id"
+          },
+          "security_group_id": {
+           "description": "ID of the Security Group to attach",
+           "magalu.cloud/core/resolved": "true",
+           "title": "security_group_id"
+          }
+         },
+         "required": [
+          "security_group_id",
+          "port_id"
+         ],
+         "type": "object"
+        },
+        "result": {
+         "magalu.cloud/core/resolved": "true",
+         "properties": {
+          "port_id": {
+           "description": "ID of the Port to attach security group",
+           "magalu.cloud/core/resolved": "true",
+           "title": "port_id"
+          },
+          "security_group_id": {
+           "description": "ID of the Security Group to attach",
+           "magalu.cloud/core/resolved": "true",
+           "title": "security_group_id"
+          }
+         },
+         "required": [
+          "security_group_id",
+          "port_id"
+         ],
+         "type": "object"
+        },
+        "version": ""
+       }
+      ],
+      "description": "Manage the attachment between a Security Group and a Port",
+      "isInternal": true,
+      "name": "security-group-attachment",
+      "version": ""
      }
     ],
     "description": "VPC Port",
@@ -15557,10 +16139,12 @@
        "properties": {
         "port_id": {
          "description": "Id of the Port to attach the Public IP",
+         "magalu.cloud/core/resolved": "true",
          "title": "Port ID"
         },
         "public_ip_id": {
          "description": "Id of the Public IP to attach port to",
+         "magalu.cloud/core/resolved": "true",
          "title": "Public IP ID"
         }
        },
@@ -15571,6 +16155,99 @@
        "type": "object"
       },
       "result": {},
+      "version": "1.124.1"
+     },
+     {
+      "configs": {
+       "additionalProperties": false,
+       "magalu.cloud/core/resolved": "true",
+       "properties": {
+        "env": {
+         "default": "prod",
+         "description": "Environment to use",
+         "enum": [
+          "prod",
+          "pre-prod"
+         ],
+         "type": "string"
+        },
+        "region": {
+         "default": "br-se1",
+         "description": "Region to reach the service",
+         "enum": [
+          "br-ne1",
+          "br-se1",
+          "br-mgl1"
+         ],
+         "type": "string"
+        },
+        "serverUrl": {
+         "description": "Manually specify the server to use",
+         "format": "uri",
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
+      "description": "Create async Public IP in a VPC with provided vpc_id and x_tenant_id",
+      "isInternal": false,
+      "name": "create",
+      "parameters": {
+       "additionalProperties": false,
+       "magalu.cloud/core/resolved": "true",
+       "properties": {
+        "description": {
+         "default": "",
+         "nullable": true,
+         "title": "Description",
+         "type": "string"
+        },
+        "validate_quota": {
+         "default": true,
+         "description": "Validate the quota before creating the Public IP",
+         "title": "validateQuota",
+         "type": "boolean"
+        },
+        "vpc_id": {
+         "description": "Id of the VPC to create the Public IP in",
+         "title": "Vpc ID"
+        },
+        "wait": {
+         "default": true,
+         "description": "The request will be asynchronous. The wait parameter tells the API that you want the request to simulate synchronous behavior (to maintain endpoint compatibility). You can set an approximate timeout with the waitTimeout parameter",
+         "title": "wait",
+         "type": "boolean"
+        },
+        "wait_timeout": {
+         "default": 120,
+         "description": "the approximate time in seconds you want to wait when simulating the request as synchronous (only works with wait=true)",
+         "nullable": true,
+         "title": "waitTimeout",
+         "type": "integer"
+        }
+       },
+       "required": [
+        "vpc_id"
+       ],
+       "type": "object"
+      },
+      "result": {
+       "example": {
+        "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+       },
+       "magalu.cloud/core/resolved": "true",
+       "properties": {
+        "id": {
+         "title": "Id",
+         "type": "string"
+        }
+       },
+       "required": [
+        "id"
+       ],
+       "title": "PublicIpCreateResponse",
+       "type": "object"
+      },
       "version": "1.124.1"
      },
      {
@@ -15684,6 +16361,7 @@
      {
       "configs": {
        "additionalProperties": false,
+       "magalu.cloud/core/resolved": "true",
        "properties": {
         "env": {
          "default": "prod",
@@ -15938,6 +16616,245 @@
        "type": "object"
       },
       "version": "1.124.1"
+     },
+     {
+      "children": [
+       {
+        "configs": {
+         "additionalProperties": false,
+         "magalu.cloud/core/resolved": "true",
+         "properties": {
+          "env": {
+           "default": "prod",
+           "description": "Environment to use",
+           "enum": [
+            "prod",
+            "pre-prod"
+           ],
+           "type": "string"
+          },
+          "region": {
+           "default": "br-se1",
+           "description": "Region to reach the service",
+           "enum": [
+            "br-ne1",
+            "br-se1",
+            "br-mgl1"
+           ],
+           "type": "string"
+          },
+          "serverUrl": {
+           "description": "Manually specify the server to use",
+           "format": "uri",
+           "type": "string"
+          }
+         },
+         "type": "object"
+        },
+        "description": "Attach a Public IP to a Port",
+        "isInternal": false,
+        "name": "create",
+        "parameters": {
+         "magalu.cloud/core/resolved": "true",
+         "properties": {
+          "port_id": {
+           "description": "Id of the Port to attach the Public IP",
+           "magalu.cloud/core/resolved": "true",
+           "title": "Port ID"
+          },
+          "public_ip_id": {
+           "description": "Id of the Public IP to attach port to",
+           "magalu.cloud/core/resolved": "true",
+           "title": "Public IP ID"
+          }
+         },
+         "required": [
+          "public_ip_id",
+          "port_id"
+         ],
+         "type": "object"
+        },
+        "result": {
+         "magalu.cloud/core/resolved": "true",
+         "properties": {
+          "port_id": {
+           "description": "Id of the Port to attach the Public IP",
+           "magalu.cloud/core/resolved": "true",
+           "title": "Port ID"
+          },
+          "public_ip_id": {
+           "description": "Id of the Public IP to attach port to",
+           "magalu.cloud/core/resolved": "true",
+           "title": "Public IP ID"
+          }
+         },
+         "required": [
+          "public_ip_id",
+          "port_id"
+         ],
+         "type": "object"
+        },
+        "version": ""
+       },
+       {
+        "configs": {
+         "additionalProperties": false,
+         "magalu.cloud/core/resolved": "true",
+         "properties": {
+          "env": {
+           "default": "prod",
+           "description": "Environment to use",
+           "enum": [
+            "prod",
+            "pre-prod"
+           ],
+           "type": "string"
+          },
+          "region": {
+           "default": "br-se1",
+           "description": "Region to reach the service",
+           "enum": [
+            "br-ne1",
+            "br-se1",
+            "br-mgl1"
+           ],
+           "type": "string"
+          },
+          "serverUrl": {
+           "description": "Manually specify the server to use",
+           "format": "uri",
+           "type": "string"
+          }
+         },
+         "type": "object"
+        },
+        "description": "Detach a Public IP from a Port",
+        "isInternal": false,
+        "name": "delete",
+        "parameters": {
+         "magalu.cloud/core/resolved": "true",
+         "properties": {
+          "port_id": {
+           "description": "Id of the Port to attach the Public IP",
+           "magalu.cloud/core/resolved": "true",
+           "title": "Port ID"
+          },
+          "public_ip_id": {
+           "description": "Id of the Public IP to attach port to",
+           "magalu.cloud/core/resolved": "true",
+           "title": "Public IP ID"
+          }
+         },
+         "required": [
+          "public_ip_id",
+          "port_id"
+         ],
+         "type": "object"
+        },
+        "result": {
+         "magalu.cloud/core/resolved": "true",
+         "properties": {
+          "port_id": {
+           "description": "Id of the Port to attach the Public IP",
+           "magalu.cloud/core/resolved": "true",
+           "title": "Port ID"
+          },
+          "public_ip_id": {
+           "description": "Id of the Public IP to attach port to",
+           "magalu.cloud/core/resolved": "true",
+           "title": "Public IP ID"
+          }
+         },
+         "required": [
+          "public_ip_id",
+          "port_id"
+         ],
+         "type": "object"
+        },
+        "version": ""
+       },
+       {
+        "configs": {
+         "additionalProperties": false,
+         "magalu.cloud/core/resolved": "true",
+         "properties": {
+          "env": {
+           "default": "prod",
+           "description": "Environment to use",
+           "enum": [
+            "prod",
+            "pre-prod"
+           ],
+           "type": "string"
+          },
+          "region": {
+           "default": "br-se1",
+           "description": "Region to reach the service",
+           "enum": [
+            "br-ne1",
+            "br-se1",
+            "br-mgl1"
+           ],
+           "type": "string"
+          },
+          "serverUrl": {
+           "description": "Manually specify the server to use",
+           "format": "uri",
+           "type": "string"
+          }
+         },
+         "type": "object"
+        },
+        "description": "Check if a Public IP is attached to a Port",
+        "isInternal": false,
+        "name": "get",
+        "parameters": {
+         "magalu.cloud/core/resolved": "true",
+         "properties": {
+          "port_id": {
+           "description": "Id of the Port to attach the Public IP",
+           "magalu.cloud/core/resolved": "true",
+           "title": "Port ID"
+          },
+          "public_ip_id": {
+           "description": "Id of the Public IP to attach port to",
+           "magalu.cloud/core/resolved": "true",
+           "title": "Public IP ID"
+          }
+         },
+         "required": [
+          "public_ip_id",
+          "port_id"
+         ],
+         "type": "object"
+        },
+        "result": {
+         "magalu.cloud/core/resolved": "true",
+         "properties": {
+          "port_id": {
+           "description": "Id of the Port to attach the Public IP",
+           "magalu.cloud/core/resolved": "true",
+           "title": "Port ID"
+          },
+          "public_ip_id": {
+           "description": "Id of the Public IP to attach port to",
+           "magalu.cloud/core/resolved": "true",
+           "title": "Public IP ID"
+          }
+         },
+         "required": [
+          "public_ip_id",
+          "port_id"
+         ],
+         "type": "object"
+        },
+        "version": ""
+       }
+      ],
+      "description": "Manage the attachment between a Public IP and a Port",
+      "isInternal": true,
+      "name": "port-attachment",
+      "version": ""
      }
     ],
     "description": "VPC Public IPs",
@@ -16057,6 +16974,129 @@
    },
    {
     "children": [
+     {
+      "configs": {
+       "additionalProperties": false,
+       "magalu.cloud/core/resolved": "true",
+       "properties": {
+        "env": {
+         "default": "prod",
+         "description": "Environment to use",
+         "enum": [
+          "prod",
+          "pre-prod"
+         ],
+         "type": "string"
+        },
+        "region": {
+         "default": "br-se1",
+         "description": "Region to reach the service",
+         "enum": [
+          "br-ne1",
+          "br-se1",
+          "br-mgl1"
+         ],
+         "type": "string"
+        },
+        "serverUrl": {
+         "description": "Manually specify the server to use",
+         "format": "uri",
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
+      "description": "Create a Rule async, returning its ID. To monitor the creation progress, please check the status in the service message or implement polling.Either a remote_ip_prefix or a remote_group_id can be specified.With remote_ip_prefix, all IPs that match the criteria will be allowed.With remote_group_id, only the specified security group is allowed to communicatefollowing the specified protocol, direction and port_range_min/max",
+      "isInternal": false,
+      "name": "create",
+      "parameters": {
+       "additionalProperties": false,
+       "magalu.cloud/core/resolved": "true",
+       "properties": {
+        "direction": {
+         "nullable": true,
+         "title": "Direction",
+         "type": "string"
+        },
+        "ethertype": {
+         "nullable": true,
+         "title": "Ethertype",
+         "type": "string"
+        },
+        "port_range_max": {
+         "nullable": true,
+         "title": "Port Range Max",
+         "type": "integer"
+        },
+        "port_range_min": {
+         "nullable": true,
+         "title": "Port Range Min",
+         "type": "integer"
+        },
+        "protocol": {
+         "nullable": true,
+         "title": "Protocol",
+         "type": "string"
+        },
+        "remote_group_id": {
+         "nullable": true,
+         "title": "Remote Group Id",
+         "type": "string"
+        },
+        "remote_ip_prefix": {
+         "nullable": true,
+         "title": "Remote Ip Prefix",
+         "type": "string"
+        },
+        "security_group_id": {
+         "description": "Id of the Security Group",
+         "title": "Security Group ID"
+        },
+        "validate_quota": {
+         "default": true,
+         "description": "Validate the quota before creating Rule",
+         "title": "validateQuota",
+         "type": "boolean"
+        },
+        "wait": {
+         "default": true,
+         "description": "The request will be asynchronous. The wait parameter tells the API that you want the request to simulate synchronous behavior (to maintain endpoint compatibility). You can set an approximate timeout with the waitTimeout parameter",
+         "nullable": true,
+         "title": "wait",
+         "type": "boolean"
+        },
+        "wait_timeout": {
+         "default": 120,
+         "description": "the approximate time in seconds you want to wait when simulating the request as synchronous (only works with wait=true)",
+         "nullable": true,
+         "title": "waitTimeout",
+         "type": "integer"
+        }
+       },
+       "required": [
+        "security_group_id"
+       ],
+       "type": "object"
+      },
+      "result": {
+       "example": {
+        "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+       },
+       "magalu.cloud/core/resolved": "true",
+       "properties": {
+        "id": {
+         "title": "Id",
+         "type": "string"
+        }
+       },
+       "required": [
+        "id"
+       ],
+       "title": "RuleCreateResponse",
+       "type": "object"
+      },
+      "version": "1.124.1"
+     },
      {
       "configs": {
        "additionalProperties": false,
@@ -16248,6 +17288,181 @@
         "status"
        ],
        "title": "RuleResponse",
+       "type": "object"
+      },
+      "version": "1.124.1"
+     },
+     {
+      "configs": {
+       "additionalProperties": false,
+       "magalu.cloud/core/resolved": "true",
+       "properties": {
+        "env": {
+         "default": "prod",
+         "description": "Environment to use",
+         "enum": [
+          "prod",
+          "pre-prod"
+         ],
+         "type": "string"
+        },
+        "region": {
+         "default": "br-se1",
+         "description": "Region to reach the service",
+         "enum": [
+          "br-ne1",
+          "br-se1",
+          "br-mgl1"
+         ],
+         "type": "string"
+        },
+        "serverUrl": {
+         "description": "Manually specify the server to use",
+         "format": "uri",
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
+      "description": "Returns a list of rules for a provided security_group_id",
+      "isInternal": false,
+      "name": "list",
+      "parameters": {
+       "additionalProperties": false,
+       "magalu.cloud/core/resolved": "true",
+       "properties": {
+        "security_group_id": {
+         "description": "Id of the Security Group",
+         "title": "Security Group ID"
+        }
+       },
+       "required": [
+        "security_group_id"
+       ],
+       "type": "object"
+      },
+      "result": {
+       "example": {
+        "rules": [
+         {
+          "created_at": "2022-01-01 00:00:00",
+          "direction": "egress",
+          "ethertype": "IPv4",
+          "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+          "port_range_max": 8028,
+          "port_range_min": 8028,
+          "protocol": "tcp",
+          "remote_group_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+          "remote_ip_prefix": "100.94.0.0/24",
+          "security_group_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+          "status": "created"
+         }
+        ]
+       },
+       "magalu.cloud/core/resolved": "true",
+       "properties": {
+        "rules": {
+         "items": {
+          "example": {
+           "created_at": "2022-01-01 00:00:00",
+           "direction": "egress",
+           "ethertype": "IPv4",
+           "external_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+           "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+           "port_range_max": 8028,
+           "port_range_min": 8028,
+           "protocol": "tcp",
+           "remote_group_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+           "remote_ip_prefix": "100.94.0.0/24",
+           "security_group_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+           "status": "created"
+          },
+          "properties": {
+           "created_at": {
+            "format": "date-time",
+            "nullable": true,
+            "title": "Created At",
+            "type": "string"
+           },
+           "direction": {
+            "nullable": true,
+            "title": "Direction",
+            "type": "string"
+           },
+           "error": {
+            "nullable": true,
+            "title": "Error",
+            "type": "string"
+           },
+           "ethertype": {
+            "nullable": true,
+            "title": "Ethertype",
+            "type": "string"
+           },
+           "external_id": {
+            "nullable": true,
+            "title": "External Id",
+            "type": "string"
+           },
+           "id": {
+            "nullable": true,
+            "title": "Id",
+            "type": "string"
+           },
+           "port_range_max": {
+            "nullable": true,
+            "title": "Port Range Max",
+            "type": "integer"
+           },
+           "port_range_min": {
+            "nullable": true,
+            "title": "Port Range Min",
+            "type": "integer"
+           },
+           "protocol": {
+            "nullable": true,
+            "title": "Protocol",
+            "type": "string"
+           },
+           "remote_group_id": {
+            "nullable": true,
+            "title": "Remote Group Id",
+            "type": "string"
+           },
+           "remote_ip_prefix": {
+            "nullable": true,
+            "title": "Remote Ip Prefix",
+            "type": "string"
+           },
+           "security_group_id": {
+            "nullable": true,
+            "title": "Security Group Id",
+            "type": "string"
+           },
+           "status": {
+            "enum": [
+             "created",
+             "pending",
+             "error"
+            ],
+            "title": "RuleStatus",
+            "type": "string"
+           }
+          },
+          "required": [
+           "status"
+          ],
+          "title": "RuleResponse",
+          "type": "object"
+         },
+         "title": "Rules",
+         "type": "array"
+        }
+       },
+       "required": [
+        "rules"
+       ],
+       "title": "RulesList",
        "type": "object"
       },
       "version": "1.124.1"
@@ -16933,6 +18148,7 @@
        {
         "configs": {
          "additionalProperties": false,
+         "magalu.cloud/core/resolved": "true",
          "properties": {
           "env": {
            "default": "prod",
@@ -16966,6 +18182,7 @@
         "name": "create",
         "parameters": {
          "additionalProperties": false,
+         "magalu.cloud/core/resolved": "true",
          "properties": {
           "direction": {
            "nullable": true,
@@ -17036,6 +18253,7 @@
          "example": {
           "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
          },
+         "magalu.cloud/core/resolved": "true",
          "properties": {
           "id": {
            "title": "Id",
@@ -17053,6 +18271,7 @@
        {
         "configs": {
          "additionalProperties": false,
+         "magalu.cloud/core/resolved": "true",
          "properties": {
           "env": {
            "default": "prod",
@@ -17086,6 +18305,7 @@
         "name": "list",
         "parameters": {
          "additionalProperties": false,
+         "magalu.cloud/core/resolved": "true",
          "properties": {
           "security_group_id": {
            "description": "Id of the Security Group",
@@ -17115,6 +18335,7 @@
            }
           ]
          },
+         "magalu.cloud/core/resolved": "true",
          "properties": {
           "rules": {
            "items": {
@@ -18422,6 +19643,7 @@
        {
         "configs": {
          "additionalProperties": false,
+         "magalu.cloud/core/resolved": "true",
          "properties": {
           "env": {
            "default": "prod",
@@ -18460,6 +19682,7 @@
         "name": "create",
         "parameters": {
          "additionalProperties": false,
+         "magalu.cloud/core/resolved": "true",
          "properties": {
           "has_pip": {
            "default": true,
@@ -18512,6 +19735,7 @@
          "example": {
           "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
          },
+         "magalu.cloud/core/resolved": "true",
          "properties": {
           "id": {
            "title": "Id",
@@ -18866,6 +20090,7 @@
        {
         "configs": {
          "additionalProperties": false,
+         "magalu.cloud/core/resolved": "true",
          "properties": {
           "env": {
            "default": "prod",
@@ -18899,6 +20124,7 @@
         "name": "create",
         "parameters": {
          "additionalProperties": false,
+         "magalu.cloud/core/resolved": "true",
          "properties": {
           "description": {
            "default": "",
@@ -18939,6 +20165,7 @@
          "example": {
           "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
          },
+         "magalu.cloud/core/resolved": "true",
          "properties": {
           "id": {
            "title": "Id",

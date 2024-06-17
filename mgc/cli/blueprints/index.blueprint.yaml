@@ -1,2 +1,12 @@
-modules: []
+modules:
+-   description: Operations for Block Storage API
+    name: block-storage
+    path: block-storage.blueprint.yaml
+    url: https://block-storage.magalu.cloud
+    version: 1.52.0
+-   description: Operations for Network API
+    name: network
+    path: network.blueprint.yaml
+    url: https://network.magalu.cloud
+    version: 1.99.5
 version: 1.0.0

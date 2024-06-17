@@ -9,8 +9,10 @@ Usage:
 
 ## Product catalog:
 - Commands:
+- create      Create Rule
 - delete      Delete a Rule
 - get         Rule Details
+- list        List Rules
 
 ## Other commands:
 - Flags:
