@@ -17,6 +17,7 @@ Terraform Provider for Magalu Cloud
 
 ### Optional
 
+- `api_key` (String) Magalu API Key for authentication
 - `object_storage` (Attributes) Specific Object Storage configuration (see [below for nested schema](#nestedatt--object_storage))
 - `region` (String) Region
 

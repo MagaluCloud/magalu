@@ -67,6 +67,7 @@ type ConfigResult struct {
 	RefreshToken    string `json:"refresh_token"`
 	AccessKeyId     string `json:"access_key_id"`
 	SecretAccessKey string `json:"secret_access_key"`
+	ApiKey          string `json:"api_key"`
 	CurrentEnv      string `json:"current_environment"` // ignored - used just for compatibility
 }
 
@@ -413,6 +414,7 @@ func (o *Auth) writeCurrentConfig() error {
 	authResult.RefreshToken = o.refreshToken
 	authResult.AccessKeyId = o.accessKeyId
 	authResult.SecretAccessKey = o.secretAccessKey
+	authResult.ApiKey = o.apiKey
 	return o.writeConfigFile(authResult)
 }
 
