@@ -35,7 +35,7 @@ type KeyPair struct {
 
 type ObjectStorageConfig struct {
 	BucketPrefix  types.String `tfsdk:"bucket_prefix"`
-	ObjectKeyPair *KeyPair     `tfsdk:"apikey"`
+	ObjectKeyPair *KeyPair     `tfsdk:"key_pair"`
 }
 
 type ProviderConfig struct {
@@ -62,7 +62,7 @@ func (p *MgcProvider) Schema(ctx context.Context, req provider.SchemaRequest, re
 	tflog.Debug(ctx, "setting provider schema")
 
 	schemaApiKey := schema.SingleNestedAttribute{
-		MarkdownDescription: "Specific API Key configuration",
+		MarkdownDescription: "Specific Bucket Key Pair configuration",
 		Optional:            true,
 		Attributes: map[string]schema.Attribute{
 			"key_id": schema.StringAttribute{
@@ -84,7 +84,7 @@ func (p *MgcProvider) Schema(ctx context.Context, req provider.SchemaRequest, re
 				MarkdownDescription: "Bucket Prefix",
 				Optional:            true,
 			},
-			"apikey": schemaApiKey,
+			"key_pair": schemaApiKey,
 		},
 	}
 
