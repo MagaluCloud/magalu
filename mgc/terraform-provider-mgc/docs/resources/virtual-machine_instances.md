@@ -161,7 +161,7 @@ Read-Only:
 - `name` (String)
 
 <a id="nestedatt--current_network--object2--ports--ip_addresses"></a>
-### Nested Schema for `current_network.object2.ports.name`
+### Nested Schema for `current_network.object2.ports.ip_addresses`
 
 Read-Only:
 
