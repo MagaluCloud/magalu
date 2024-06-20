@@ -16231,12 +16231,14 @@
         "port_id": {
          "description": "ID of the Port to attach security group",
          "magalu.cloud/core/resolved": "true",
-         "title": "port_id"
+         "title": "port_id",
+         "type": "string"
         },
         "security_group_id": {
          "description": "ID of the Security Group to attach",
          "magalu.cloud/core/resolved": "true",
-         "title": "security_group_id"
+         "title": "security_group_id",
+         "type": "string"
         }
        },
        "required": [
@@ -16330,7 +16332,8 @@
         },
         "vpc_id": {
          "description": "ID of the VPC to create port",
-         "title": "vpc_id"
+         "title": "vpc_id",
+         "type": "string"
         }
        },
        "required": [
@@ -16500,7 +16503,8 @@
        "properties": {
         "port_id": {
          "description": "ID of the Port to delete",
-         "title": "port_id"
+         "title": "port_id",
+         "type": "string"
         }
        },
        "required": [
@@ -16641,11 +16645,13 @@
        "properties": {
         "port_id": {
          "description": "ID of the Port to detach security group",
-         "title": "port_id"
+         "title": "port_id",
+         "type": "string"
         },
         "security_group_id": {
          "description": "ID of the Security Group to detach",
-         "title": "security_group_id"
+         "title": "security_group_id",
+         "type": "string"
         }
        },
        "required": [
@@ -16695,7 +16701,8 @@
        "additionalProperties": false,
        "properties": {
         "port_id": {
-         "title": "Port Id"
+         "title": "Port Id",
+         "type": "string"
         }
        },
        "required": [
@@ -16878,7 +16885,9 @@
        "properties": {
         "port_id_list": {
          "default": [],
-         "items": {},
+         "items": {
+          "type": "string"
+         },
          "title": "Port Id List",
          "type": "array"
         }
@@ -17068,12 +17077,14 @@
           "port_id": {
            "description": "ID of the Port to attach security group",
            "magalu.cloud/core/resolved": "true",
-           "title": "port_id"
+           "title": "port_id",
+           "type": "string"
           },
           "security_group_id": {
            "description": "ID of the Security Group to attach",
            "magalu.cloud/core/resolved": "true",
-           "title": "security_group_id"
+           "title": "security_group_id",
+           "type": "string"
           }
          },
          "required": [
@@ -17088,12 +17099,14 @@
           "port_id": {
            "description": "ID of the Port to attach security group",
            "magalu.cloud/core/resolved": "true",
-           "title": "port_id"
+           "title": "port_id",
+           "type": "string"
           },
           "security_group_id": {
            "description": "ID of the Security Group to attach",
            "magalu.cloud/core/resolved": "true",
-           "title": "security_group_id"
+           "title": "security_group_id",
+           "type": "string"
           }
          },
          "required": [
@@ -17145,12 +17158,14 @@
           "port_id": {
            "description": "ID of the Port to attach security group",
            "magalu.cloud/core/resolved": "true",
-           "title": "port_id"
+           "title": "port_id",
+           "type": "string"
           },
           "security_group_id": {
            "description": "ID of the Security Group to attach",
            "magalu.cloud/core/resolved": "true",
-           "title": "security_group_id"
+           "title": "security_group_id",
+           "type": "string"
           }
          },
          "required": [
@@ -17165,12 +17180,14 @@
           "port_id": {
            "description": "ID of the Port to attach security group",
            "magalu.cloud/core/resolved": "true",
-           "title": "port_id"
+           "title": "port_id",
+           "type": "string"
           },
           "security_group_id": {
            "description": "ID of the Security Group to attach",
            "magalu.cloud/core/resolved": "true",
-           "title": "security_group_id"
+           "title": "security_group_id",
+           "type": "string"
           }
          },
          "required": [
@@ -17222,12 +17239,14 @@
           "port_id": {
            "description": "ID of the Port to attach security group",
            "magalu.cloud/core/resolved": "true",
-           "title": "port_id"
+           "title": "port_id",
+           "type": "string"
           },
           "security_group_id": {
            "description": "ID of the Security Group to attach",
            "magalu.cloud/core/resolved": "true",
-           "title": "security_group_id"
+           "title": "security_group_id",
+           "type": "string"
           }
          },
          "required": [
@@ -17242,12 +17261,14 @@
           "port_id": {
            "description": "ID of the Port to attach security group",
            "magalu.cloud/core/resolved": "true",
-           "title": "port_id"
+           "title": "port_id",
+           "type": "string"
           },
           "security_group_id": {
            "description": "ID of the Security Group to attach",
            "magalu.cloud/core/resolved": "true",
-           "title": "security_group_id"
+           "title": "security_group_id",
+           "type": "string"
           }
          },
          "required": [
@@ -17312,12 +17333,14 @@
         "port_id": {
          "description": "Id of the Port to attach the Public IP",
          "magalu.cloud/core/resolved": "true",
-         "title": "Port ID"
+         "title": "Port ID",
+         "type": "string"
         },
         "public_ip_id": {
          "description": "Id of the Public IP to attach port to",
          "magalu.cloud/core/resolved": "true",
-         "title": "Public IP ID"
+         "title": "Public IP ID",
+         "type": "string"
         }
        },
        "required": [
@@ -17382,7 +17405,8 @@
         },
         "vpc_id": {
          "description": "Id of the VPC to create the Public IP in",
-         "title": "Vpc ID"
+         "title": "Vpc ID",
+         "type": "string"
         },
         "wait": {
          "default": true,
@@ -17461,7 +17485,8 @@
        "properties": {
         "public_ip_id": {
          "description": "Id of the Public IP to delete",
-         "title": "Public IP ID"
+         "title": "Public IP ID",
+         "type": "string"
         }
        },
        "required": [
@@ -17514,11 +17539,13 @@
        "properties": {
         "port_id": {
          "description": "Id of the Port to detach the Public IP",
-         "title": "Port ID"
+         "title": "Port ID",
+         "type": "string"
         },
         "public_ip_id": {
          "description": "Id of the Public IP to detach port to",
-         "title": "Public IP ID"
+         "title": "Public IP ID",
+         "type": "string"
         }
        },
        "required": [
@@ -17570,7 +17597,8 @@
        "properties": {
         "public_ip_id": {
          "description": "Id of the Public IP to retrieve",
-         "title": "Public IP ID"
+         "title": "Public IP ID",
+         "type": "string"
         }
        },
        "required": [
@@ -17832,12 +17860,14 @@
           "port_id": {
            "description": "Id of the Port to attach the Public IP",
            "magalu.cloud/core/resolved": "true",
-           "title": "Port ID"
+           "title": "Port ID",
+           "type": "string"
           },
           "public_ip_id": {
            "description": "Id of the Public IP to attach port to",
            "magalu.cloud/core/resolved": "true",
-           "title": "Public IP ID"
+           "title": "Public IP ID",
+           "type": "string"
           }
          },
          "required": [
@@ -17852,12 +17882,14 @@
           "port_id": {
            "description": "Id of the Port to attach the Public IP",
            "magalu.cloud/core/resolved": "true",
-           "title": "Port ID"
+           "title": "Port ID",
+           "type": "string"
           },
           "public_ip_id": {
            "description": "Id of the Public IP to attach port to",
            "magalu.cloud/core/resolved": "true",
-           "title": "Public IP ID"
+           "title": "Public IP ID",
+           "type": "string"
           }
          },
          "required": [
@@ -17909,12 +17941,14 @@
           "port_id": {
            "description": "Id of the Port to attach the Public IP",
            "magalu.cloud/core/resolved": "true",
-           "title": "Port ID"
+           "title": "Port ID",
+           "type": "string"
           },
           "public_ip_id": {
            "description": "Id of the Public IP to attach port to",
            "magalu.cloud/core/resolved": "true",
-           "title": "Public IP ID"
+           "title": "Public IP ID",
+           "type": "string"
           }
          },
          "required": [
@@ -17929,12 +17963,14 @@
           "port_id": {
            "description": "Id of the Port to attach the Public IP",
            "magalu.cloud/core/resolved": "true",
-           "title": "Port ID"
+           "title": "Port ID",
+           "type": "string"
           },
           "public_ip_id": {
            "description": "Id of the Public IP to attach port to",
            "magalu.cloud/core/resolved": "true",
-           "title": "Public IP ID"
+           "title": "Public IP ID",
+           "type": "string"
           }
          },
          "required": [
@@ -17986,12 +18022,14 @@
           "port_id": {
            "description": "Id of the Port to attach the Public IP",
            "magalu.cloud/core/resolved": "true",
-           "title": "Port ID"
+           "title": "Port ID",
+           "type": "string"
           },
           "public_ip_id": {
            "description": "Id of the Public IP to attach port to",
            "magalu.cloud/core/resolved": "true",
-           "title": "Public IP ID"
+           "title": "Public IP ID",
+           "type": "string"
           }
          },
          "required": [
@@ -18006,12 +18044,14 @@
           "port_id": {
            "description": "Id of the Port to attach the Public IP",
            "magalu.cloud/core/resolved": "true",
-           "title": "Port ID"
+           "title": "Port ID",
+           "type": "string"
           },
           "public_ip_id": {
            "description": "Id of the Public IP to attach port to",
            "magalu.cloud/core/resolved": "true",
-           "title": "Public IP ID"
+           "title": "Public IP ID",
+           "type": "string"
           }
          },
          "required": [
@@ -18222,7 +18262,8 @@
         },
         "security_group_id": {
          "description": "Id of the Security Group",
-         "title": "Security Group ID"
+         "title": "Security Group ID",
+         "type": "string"
         },
         "validate_quota": {
          "default": true,
@@ -18308,7 +18349,8 @@
        "properties": {
         "rule_id": {
          "description": "Id of the Rule",
-         "title": "Rule ID"
+         "title": "Rule ID",
+         "type": "string"
         }
        },
        "required": [
@@ -18361,7 +18403,8 @@
        "properties": {
         "rule_id": {
          "description": "Id of the Rule",
-         "title": "Rule ID"
+         "title": "Rule ID",
+         "type": "string"
         }
        },
        "required": [
@@ -18505,7 +18548,8 @@
        "properties": {
         "security_group_id": {
          "description": "Id of the Security Group",
-         "title": "Security Group ID"
+         "title": "Security Group ID",
+         "type": "string"
         }
        },
        "required": [
@@ -18834,7 +18878,8 @@
        "properties": {
         "security_group_id": {
          "description": "Id of the security group to delete",
-         "title": "Security Group ID"
+         "title": "Security Group ID",
+         "type": "string"
         }
        },
        "required": [
@@ -18956,7 +19001,8 @@
        "properties": {
         "security_group_id": {
          "description": "Id of the security group to detail",
-         "title": "Security Group ID"
+         "title": "Security Group ID",
+         "type": "string"
         }
        },
        "required": [
@@ -19393,7 +19439,8 @@
           },
           "security_group_id": {
            "description": "Id of the Security Group",
-           "title": "Security Group ID"
+           "title": "Security Group ID",
+           "type": "string"
           },
           "validate_quota": {
            "default": true,
@@ -19481,7 +19528,8 @@
          "properties": {
           "security_group_id": {
            "description": "Id of the Security Group",
-           "title": "Security Group ID"
+           "title": "Security Group ID",
+           "type": "string"
           }
          },
          "required": [
@@ -19670,7 +19718,8 @@
          "properties": {
           "subnet_id": {
            "description": "Id of the Subnet to delete",
-           "title": "Subnet Id"
+           "title": "Subnet Id",
+           "type": "string"
           }
          },
          "required": [
@@ -19723,7 +19772,8 @@
          "properties": {
           "subnet_id": {
            "description": "Id of the Subnet to detail",
-           "title": "Subnet Id"
+           "title": "Subnet Id",
+           "type": "string"
           }
          },
          "required": [
@@ -19998,7 +20048,8 @@
           },
           "vpc_id": {
            "description": "Id of the VPC to create Subnet",
-           "title": "Vpc Id"
+           "title": "Vpc Id",
+           "type": "string"
           }
          },
          "required": [
@@ -20065,7 +20116,8 @@
          "properties": {
           "vpc_id": {
            "description": "Id of the VPC to list Subnets",
-           "title": "Vpc Id"
+           "title": "Vpc Id",
+           "type": "string"
           }
          },
          "required": [
@@ -20342,7 +20394,8 @@
        "properties": {
         "vpc_id": {
          "description": "ID of the VPC to delete",
-         "title": "VPC Id"
+         "title": "VPC Id",
+         "type": "string"
         }
        },
        "required": [
@@ -20540,7 +20593,8 @@
        "properties": {
         "vpc_id": {
          "description": "ID of the VPC to detail",
-         "title": "VPC Id"
+         "title": "VPC Id",
+         "type": "string"
         }
        },
        "required": [
@@ -20894,7 +20948,8 @@
           },
           "vpc_id": {
            "description": "ID of the VPC to create port",
-           "title": "vpc_id"
+           "title": "vpc_id",
+           "type": "string"
           }
          },
          "required": [
@@ -20980,13 +21035,16 @@
           },
           "port_id_list": {
            "default": [],
-           "items": {},
+           "items": {
+            "type": "string"
+           },
            "title": "Port Id List",
            "type": "array"
           },
           "vpc_id": {
            "description": "ID of VPC to list ports",
-           "title": "vpc_id"
+           "title": "vpc_id",
+           "type": "string"
           }
          },
          "required": [
@@ -21312,7 +21370,8 @@
           },
           "vpc_id": {
            "description": "Id of the VPC to create the Public IP in",
-           "title": "Vpc ID"
+           "title": "Vpc ID",
+           "type": "string"
           },
           "wait": {
            "default": true,
@@ -21391,7 +21450,8 @@
          "properties": {
           "vpc_id": {
            "description": "Id of the VPC to list the Public IPs in",
-           "title": "Vpc ID"
+           "title": "Vpc ID",
+           "type": "string"
           }
          },
          "required": [
@@ -21642,7 +21702,8 @@
          "properties": {
           "vpc_id": {
            "description": "Id of the VPC to create the Security Group in",
-           "title": "Vpc ID"
+           "title": "Vpc ID",
+           "type": "string"
           }
          },
          "required": [
@@ -21833,7 +21894,8 @@
         },
         "public_ip_id": {
          "description": "Id of the public ip to update",
-         "title": "Public Ip Id"
+         "title": "Public Ip Id",
+         "type": "string"
         },
         "status": {
          "enum": [

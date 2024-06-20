@@ -8,10 +8,9 @@ Usage:
 
 ## Product catalog:
 - Flags:
-- -h, --help                         help for list
-- --security-group-id anyValue   Security Group ID: Id of the Security Group
-- Use --security-group-id=help for more details (required)
-- -v, --version                      version for list
+- -h, --help                       help for list
+- --security-group-id string   Security Group ID: Id of the Security Group (required)
+- -v, --version                    version for list
 
 ## Other commands:
 - Global Flags:

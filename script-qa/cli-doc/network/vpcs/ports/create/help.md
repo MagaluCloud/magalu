@@ -16,8 +16,7 @@ Usage:
 - --security-groups-id array(string)   Security Groups Id (default [])
 - --subnets array(string)              Subnets (default [])
 - -v, --version                            version for create
-- --vpc-id anyValue                    vpc_id: ID of the VPC to create port
-- Use --vpc-id=help for more details (required)
+- --vpc-id string                      vpc_id: ID of the VPC to create port (required)
 
 ## Other commands:
 - Global Flags:

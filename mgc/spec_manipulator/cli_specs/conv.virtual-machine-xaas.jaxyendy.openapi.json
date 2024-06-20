@@ -3249,7 +3249,9 @@
             "anyOf": [
               {
                 "type": "array",
-                "items": {}
+                "items": {
+                  "type": "string"
+                }
               }
             ],
             "title": "Deleted Instances",
@@ -4401,7 +4403,9 @@
             "anyOf": [
               {
                 "type": "array",
-                "items": {}
+                "items": {
+                  "type": "string"
+                }
               }
             ],
             "title": "Deleted Keypairs",
@@ -5806,6 +5810,7 @@
         "type": "object",
         "properties": {
           "version": {
+            "type": "string",
             "title": "Version"
           },
           "addr": {

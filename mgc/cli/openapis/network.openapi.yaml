@@ -38,7 +38,8 @@ paths:
                 required: false
                 schema:
                     type: array
-                    items: {}
+                    items:
+                        type: string
                     title: Port Id List
                     default: []
             responses:
@@ -140,6 +141,7 @@ paths:
                 description: ID of VPC to list ports
                 required: true
                 schema:
+                    type: string
                     title: vpc_id
                     description: ID of VPC to list ports
             -   name: detailed
@@ -174,7 +176,8 @@ paths:
                 required: false
                 schema:
                     type: array
-                    items: {}
+                    items:
+                        type: string
                     title: Port Id List
                     default: []
             responses:
@@ -211,6 +214,7 @@ paths:
                 description: ID of the VPC to create port
                 required: true
                 schema:
+                    type: string
                     title: vpc_id
                     description: ID of the VPC to create port
             -   name: x-zone
@@ -262,6 +266,7 @@ paths:
                 in: path
                 required: true
                 schema:
+                    type: string
                     title: Port Id
             responses:
                 '200':
@@ -308,6 +313,7 @@ paths:
                 description: ID of the Port to delete
                 required: true
                 schema:
+                    type: string
                     title: port_id
                     description: ID of the Port to delete
             responses:
@@ -362,6 +368,7 @@ paths:
                 description: ID of the Port to attach security group
                 required: true
                 schema:
+                    type: string
                     title: port_id
                     description: ID of the Port to attach security group
             -   name: security_group_id
@@ -369,6 +376,7 @@ paths:
                 description: ID of the Security Group to attach
                 required: true
                 schema:
+                    type: string
                     title: security_group_id
                     description: ID of the Security Group to attach
             responses:
@@ -418,6 +426,7 @@ paths:
                 description: ID of the Port to detach security group
                 required: true
                 schema:
+                    type: string
                     title: port_id
                     description: ID of the Port to detach security group
             -   name: security_group_id
@@ -425,6 +434,7 @@ paths:
                 description: ID of the Security Group to detach
                 required: true
                 schema:
+                    type: string
                     title: security_group_id
                     description: ID of the Security Group to detach
             responses:
@@ -473,6 +483,7 @@ paths:
                 description: Id of the VPC to list the Public IPs in
                 required: true
                 schema:
+                    type: string
                     title: Vpc ID
                     description: Id of the VPC to list the Public IPs in
             responses:
@@ -505,6 +516,7 @@ paths:
                 description: Id of the VPC to create the Public IP in
                 required: true
                 schema:
+                    type: string
                     title: Vpc ID
                     description: Id of the VPC to create the Public IP in
             -   name: validate_quota
@@ -588,6 +600,7 @@ paths:
                 description: Id of the Public IP to retrieve
                 required: true
                 schema:
+                    type: string
                     title: Public IP ID
                     description: Id of the Public IP to retrieve
             responses:
@@ -637,6 +650,7 @@ paths:
                 description: Id of the Public IP to delete
                 required: true
                 schema:
+                    type: string
                     title: Public IP ID
                     description: Id of the Public IP to delete
             responses:
@@ -665,6 +679,7 @@ paths:
                 description: Id of the Public IP to attach port to
                 required: true
                 schema:
+                    type: string
                     title: Public IP ID
                     description: Id of the Public IP to attach port to
             -   name: port_id
@@ -672,6 +687,7 @@ paths:
                 description: Id of the Port to attach the Public IP
                 required: true
                 schema:
+                    type: string
                     title: Port ID
                     description: Id of the Port to attach the Public IP
             responses:
@@ -720,6 +736,7 @@ paths:
                 description: Id of the Public IP to detach port to
                 required: true
                 schema:
+                    type: string
                     title: Public IP ID
                     description: Id of the Public IP to detach port to
             -   name: port_id
@@ -727,6 +744,7 @@ paths:
                 description: Id of the Port to detach the Public IP
                 required: true
                 schema:
+                    type: string
                     title: Port ID
                     description: Id of the Port to detach the Public IP
             responses:
@@ -834,6 +852,7 @@ paths:
                 description: Id of the Security Group
                 required: true
                 schema:
+                    type: string
                     title: Security Group ID
                     description: Id of the Security Group
             responses:
@@ -871,6 +890,7 @@ paths:
                 description: Id of the Security Group
                 required: true
                 schema:
+                    type: string
                     title: Security Group ID
                     description: Id of the Security Group
             -   name: validate_quota
@@ -956,6 +976,7 @@ paths:
                 description: Id of the Rule
                 required: true
                 schema:
+                    type: string
                     title: Rule ID
                     description: Id of the Rule
             responses:
@@ -993,6 +1014,7 @@ paths:
                 description: Id of the Rule
                 required: true
                 schema:
+                    type: string
                     title: Rule ID
                     description: Id of the Rule
             responses:
@@ -1158,6 +1180,7 @@ paths:
                 description: Id of the VPC to create the Security Group in
                 required: true
                 schema:
+                    type: string
                     title: Vpc ID
                     description: Id of the VPC to create the Security Group in
             responses:
@@ -1270,6 +1293,7 @@ paths:
                 description: Id of the security group to detail
                 required: true
                 schema:
+                    type: string
                     title: Security Group ID
                     description: Id of the security group to detail
             responses:
@@ -1307,6 +1331,7 @@ paths:
                 description: Id of the security group to delete
                 required: true
                 schema:
+                    type: string
                     title: Security Group ID
                     description: Id of the security group to delete
             responses:
@@ -1360,6 +1385,7 @@ paths:
                 description: Id of the VPC to list Subnets
                 required: true
                 schema:
+                    type: string
                     title: Vpc Id
                     description: Id of the VPC to list Subnets
             responses:
@@ -1392,6 +1418,7 @@ paths:
                 description: Id of the VPC to create Subnet
                 required: true
                 schema:
+                    type: string
                     title: Vpc Id
                     description: Id of the VPC to create Subnet
             -   name: x-zone
@@ -1445,6 +1472,7 @@ paths:
                 description: Id of the Subnet to detail
                 required: true
                 schema:
+                    type: string
                     title: Subnet Id
                     description: Id of the Subnet to detail
             responses:
@@ -1493,6 +1521,7 @@ paths:
                 description: Id of the Subnet to delete
                 required: true
                 schema:
+                    type: string
                     title: Subnet Id
                     description: Id of the Subnet to delete
             responses:
@@ -1671,6 +1700,7 @@ paths:
                 description: ID of the VPC to detail
                 required: true
                 schema:
+                    type: string
                     title: VPC Id
                     description: ID of the VPC to detail
             responses:
@@ -1708,6 +1738,7 @@ paths:
                 description: ID of the VPC to delete
                 required: true
                 schema:
+                    type: string
                     title: VPC Id
                     description: ID of the VPC to delete
             responses:
@@ -1761,6 +1792,7 @@ paths:
                 description: Id of the public ip to update
                 required: true
                 schema:
+                    type: string
                     title: Public Ip Id
                     description: Id of the public ip to update
             requestBody:

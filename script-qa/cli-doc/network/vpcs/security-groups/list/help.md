@@ -8,10 +8,9 @@ Usage:
 
 ## Product catalog:
 - Flags:
-- -h, --help              help for list
-- -v, --version           version for list
-- --vpc-id anyValue   Vpc ID: Id of the VPC to create the Security Group in
-- Use --vpc-id=help for more details (required)
+- -h, --help            help for list
+- -v, --version         version for list
+- --vpc-id string   Vpc ID: Id of the VPC to create the Security Group in (required)
 
 ## Other commands:
 - Global Flags:

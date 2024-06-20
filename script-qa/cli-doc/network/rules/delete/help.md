@@ -8,10 +8,9 @@ Usage:
 
 ## Product catalog:
 - Flags:
-- -h, --help               help for delete
-- --rule-id anyValue   Rule ID: Id of the Rule
-- Use --rule-id=help for more details (required)
-- -v, --version            version for delete
+- -h, --help             help for delete
+- --rule-id string   Rule ID: Id of the Rule (required)
+- -v, --version          version for delete
 
 ## Other commands:
 - Global Flags:

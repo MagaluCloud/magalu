@@ -8,10 +8,9 @@ Usage:
 
 ## Product catalog:
 - Flags:
-- -h, --help                 help for delete
-- --subnet-id anyValue   Subnet Id: Id of the Subnet to delete
-- Use --subnet-id=help for more details (required)
-- -v, --version              version for delete
+- -h, --help               help for delete
+- --subnet-id string   Subnet Id: Id of the Subnet to delete (required)
+- -v, --version            version for delete
 
 ## Other commands:
 - Global Flags:

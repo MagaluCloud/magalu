@@ -48,6 +48,22 @@ func prepareSchema(xchema *base.Schema) *base.Schema {
 
 	newChema.Const = nil
 
+	// In versions 2 and 3.0, this Type is a single value, so array will only ever have one value
+	// in version 3.1, Type can be multiple values
+	//Type []string
+	forceType := true
+	if xchema.Type != nil {
+		forceType = false
+		for _, tp := range xchema.Type {
+			if tp == "null" {
+				newChema.Nullable = new(bool)
+				*newChema.Nullable = true
+				continue
+			}
+			newChema.Type = []string{tp}
+		}
+	}
+
 	// newChema.AdditionalProperties = xchema.AdditionalProperties
 	if xchema.AdditionalProperties != nil {
 		if xchema.AdditionalProperties.A != nil {
@@ -86,20 +102,6 @@ func prepareSchema(xchema *base.Schema) *base.Schema {
 
 	// 3.1 only, used to define a dialect for this schema, label is '$schema'.
 	//SchemaTypeRef string
-
-	// In versions 2 and 3.0, this Type is a single value, so array will only ever have one value
-	// in version 3.1, Type can be multiple values
-	//Type []string
-	if xchema.Type != nil {
-		for _, tp := range xchema.Type {
-			if tp == "null" {
-				newChema.Nullable = new(bool)
-				*newChema.Nullable = true
-				continue
-			}
-			newChema.Type = []string{tp}
-		}
-	}
 
 	// Schemas are resolved on demand using a SchemaProxy
 	//AllOf []*SchemaProxy
@@ -261,7 +263,6 @@ func prepareSchema(xchema *base.Schema) *base.Schema {
 		}
 	}
 	if newChema.Type != nil && newChema.Type[0] == "array" && newChema.Items == nil {
-
 		newChema.Items = &base.DynamicValue[*base.SchemaProxy, bool]{
 			A: base.CreateSchemaProxy(&base.Schema{
 				Type: []string{"string"},
@@ -269,7 +270,7 @@ func prepareSchema(xchema *base.Schema) *base.Schema {
 		}
 	}
 
-	if newAnyOf == nil && newOneOf == nil && newAllOf == nil && newChema.Type == nil {
+	if forceType && newChema.Type == nil && newChema.AnyOf == nil && newChema.OneOf == nil && newChema.AllOf == nil {
 		newChema.Type = []string{"string"}
 	}
 
