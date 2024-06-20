@@ -74,7 +74,6 @@ paths:
                 in: header
                 required: false
                 schema:
-                    type: string
                     anyOf:
                     -   type: string
                     title: X-Zone
@@ -218,7 +217,6 @@ paths:
                 in: header
                 required: false
                 schema:
-                    type: string
                     anyOf:
                     -   type: string
                     title: X-Zone
@@ -539,7 +537,6 @@ paths:
                     simulating the request as synchronous (only works with wait=true)
                 required: false
                 schema:
-                    type: integer
                     anyOf:
                     -   type: integer
                     title: waitTimeout
@@ -893,7 +890,6 @@ paths:
                     approximate timeout with the waitTimeout parameter
                 required: false
                 schema:
-                    type: boolean
                     anyOf:
                     -   type: boolean
                     title: wait
@@ -909,7 +905,6 @@ paths:
                     simulating the request as synchronous (only works with wait=true)
                 required: false
                 schema:
-                    type: integer
                     anyOf:
                     -   type: integer
                     title: waitTimeout
@@ -1195,7 +1190,6 @@ paths:
                 description: Id of the vpc to create the security group in
                 required: true
                 schema:
-                    type: string
                     anyOf:
                     -   type: string
                     title: VPC Id
@@ -1209,7 +1203,6 @@ paths:
                     approximate timeout with the waitTimeout parameter
                 required: false
                 schema:
-                    type: boolean
                     anyOf:
                     -   type: boolean
                     title: wait
@@ -1225,7 +1218,6 @@ paths:
                     simulating the request as synchronous (only works with wait=true)
                 required: false
                 schema:
-                    type: integer
                     anyOf:
                     -   type: integer
                     title: waitTimeout
@@ -1406,7 +1398,6 @@ paths:
                 in: header
                 required: false
                 schema:
-                    type: string
                     anyOf:
                     -   type: string
                     title: X-Zone
@@ -1874,7 +1865,6 @@ components:
                                 type: string
                                 title: Id
                             external_id:
-                                type: string
                                 anyOf:
                                 -   type: string
                                 title: External Id
@@ -1886,14 +1876,12 @@ components:
                                 type: string
                                 title: Name
                             created_at:
-                                type: string
                                 anyOf:
                                 -   type: string
                                     format: date-time
                                 title: Created At
                                 nullable: true
                             updated:
-                                type: string
                                 anyOf:
                                 -   type: string
                                     format: date-time
@@ -1906,7 +1894,6 @@ components:
                                 type: string
                                 title: Status
                             error:
-                                type: string
                                 anyOf:
                                 -   type: string
                                 title: Error
@@ -1956,7 +1943,6 @@ components:
                     type: string
                     title: Id
                 external_id:
-                    type: string
                     anyOf:
                     -   type: string
                     title: External Id
@@ -1968,14 +1954,12 @@ components:
                     type: string
                     title: Name
                 created_at:
-                    type: string
                     anyOf:
                     -   type: string
                         format: date-time
                     title: Created At
                     nullable: true
                 updated:
-                    type: string
                     anyOf:
                     -   type: string
                         format: date-time
@@ -1988,7 +1972,6 @@ components:
                     type: string
                     title: Status
                 error:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Error
@@ -2027,25 +2010,21 @@ components:
                     maxLength: 100
                     minLength: 5
                 description:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Description
                     nullable: true
                 status:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Status
                     nullable: true
                 mtu:
-                    type: integer
                     anyOf:
                     -   type: integer
                     title: Mtu
                     nullable: true
                 subnets:
-                    type: array
                     anyOf:
                     -   type: array
                         items:
@@ -2054,13 +2033,11 @@ components:
                     default: []
                     nullable: true
                 shared:
-                    type: boolean
                     anyOf:
                     -   type: boolean
                     title: Shared
                     nullable: true
                 tags:
-                    type: array
                     anyOf:
                     -   type: array
                         items:
@@ -2069,26 +2046,22 @@ components:
                     default: []
                     nullable: true
                 port_security_enabled:
-                    type: boolean
                     anyOf:
                     -   type: boolean
                     title: Port Security Enabled
                     nullable: true
                 router_external:
-                    type: boolean
                     anyOf:
                     -   type: boolean
                     title: Router External
                     nullable: true
                 created_at:
-                    type: string
                     anyOf:
                     -   type: string
                         format: date-time
                     title: Created At
                     nullable: true
                 updated_at:
-                    type: string
                     anyOf:
                     -   type: string
                         format: date-time
@@ -2121,21 +2094,18 @@ components:
                     maxLength: 100
                     minLength: 5
                 has_pip:
-                    type: boolean
                     anyOf:
                     -   type: boolean
                     title: Has Pip
                     default: true
                     nullable: true
                 has_sg:
-                    type: boolean
                     anyOf:
                     -   type: boolean
                     title: Has Sg
                     default: true
                     nullable: true
                 subnets:
-                    type: array
                     anyOf:
                     -   type: array
                         items:
@@ -2144,7 +2114,6 @@ components:
                     default: []
                     nullable: true
                 security_groups_id:
-                    type: array
                     anyOf:
                     -   type: array
                         items:
@@ -2206,37 +2175,31 @@ components:
             type: object
             properties:
                 id:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Id
                     nullable: true
                 name:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Name
                     nullable: true
                 description:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Description
                     nullable: true
                 is_admin_state_up:
-                    type: boolean
                     anyOf:
                     -   type: boolean
                     title: Is Admin State Up
                     nullable: true
                 vpc_id:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Vpc Id
                     nullable: true
                 is_port_security_enabled:
-                    type: boolean
                     anyOf:
                     -   type: boolean
                     title: Is Port Security Enabled
@@ -2248,20 +2211,17 @@ components:
                     title: Security Groups
                     default: []
                 public_ip:
-                    type: array
                     anyOf:
                     -   type: array
                         items:
                             type: object
                             properties:
                                 public_ip_id:
-                                    type: string
                                     anyOf:
                                     -   type: string
                                     title: Public Ip Id
                                     nullable: true
                                 public_ip:
-                                    type: string
                                     anyOf:
                                     -   type: string
                                     title: Public Ip
@@ -2294,14 +2254,12 @@ components:
                     title: Ip Address
                     default: []
                 created_at:
-                    type: string
                     anyOf:
                     -   type: string
                         format: date-time
                     title: Created At
                     nullable: true
                 updated:
-                    type: string
                     anyOf:
                     -   type: string
                         format: date-time
@@ -2329,7 +2287,6 @@ components:
             type: object
             properties:
                 id:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Id
@@ -2369,37 +2326,31 @@ components:
                         type: object
                         properties:
                             id:
-                                type: string
                                 anyOf:
                                 -   type: string
                                 title: Id
                                 nullable: true
                             name:
-                                type: string
                                 anyOf:
                                 -   type: string
                                 title: Name
                                 nullable: true
                             description:
-                                type: string
                                 anyOf:
                                 -   type: string
                                 title: Description
                                 nullable: true
                             is_admin_state_up:
-                                type: boolean
                                 anyOf:
                                 -   type: boolean
                                 title: Is Admin State Up
                                 nullable: true
                             vpc_id:
-                                type: string
                                 anyOf:
                                 -   type: string
                                 title: Vpc Id
                                 nullable: true
                             is_port_security_enabled:
-                                type: boolean
                                 anyOf:
                                 -   type: boolean
                                 title: Is Port Security Enabled
@@ -2411,20 +2362,17 @@ components:
                                 title: Security Groups
                                 default: []
                             public_ip:
-                                type: array
                                 anyOf:
                                 -   type: array
                                     items:
                                         type: object
                                         properties:
                                             public_ip_id:
-                                                type: string
                                                 anyOf:
                                                 -   type: string
                                                 title: Public Ip Id
                                                 nullable: true
                                             public_ip:
-                                                type: string
                                                 anyOf:
                                                 -   type: string
                                                 title: Public Ip
@@ -2457,14 +2405,12 @@ components:
                                 title: Ip Address
                                 default: []
                             created_at:
-                                type: string
                                 anyOf:
                                 -   type: string
                                     format: date-time
                                 title: Created At
                                 nullable: true
                             updated:
-                                type: string
                                 anyOf:
                                 -   type: string
                                     format: date-time
@@ -2519,7 +2465,6 @@ components:
                         type: object
                         properties:
                             id:
-                                type: string
                                 anyOf:
                                 -   type: string
                                 title: Id
@@ -2573,7 +2518,6 @@ components:
             type: object
             properties:
                 description:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Description
@@ -2597,63 +2541,53 @@ components:
             type: object
             properties:
                 id:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Id
                     nullable: true
                 external_id:
-                    type: string
                     anyOf:
                     -   type: string
                     title: External Id
                     nullable: true
                 vpc_id:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Vpc Id
                     nullable: true
                 description:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Description
                     nullable: true
                 public_ip:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Public Ip
                     nullable: true
                 port_id:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Port Id
                     nullable: true
                 created_at:
-                    type: string
                     anyOf:
                     -   type: string
                         format: date-time
                     title: Created At
                     nullable: true
                 updated:
-                    type: string
                     anyOf:
                     -   type: string
                         format: date-time
                     title: Updated
                     nullable: true
                 status:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Status
                     nullable: true
                 error:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Error
@@ -2685,13 +2619,11 @@ components:
             type: object
             properties:
                 public_ip_id:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Public Ip Id
                     nullable: true
                 public_ip:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Public Ip
@@ -2718,19 +2650,16 @@ components:
                     - pending
                     - error
                 public_ip:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Public Ip
                     nullable: true
                 external_id:
-                    type: string
                     anyOf:
                     -   type: string
                     title: External Id
                     nullable: true
                 error:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Error
@@ -2752,63 +2681,53 @@ components:
                         type: object
                         properties:
                             id:
-                                type: string
                                 anyOf:
                                 -   type: string
                                 title: Id
                                 nullable: true
                             external_id:
-                                type: string
                                 anyOf:
                                 -   type: string
                                 title: External Id
                                 nullable: true
                             vpc_id:
-                                type: string
                                 anyOf:
                                 -   type: string
                                 title: Vpc Id
                                 nullable: true
                             description:
-                                type: string
                                 anyOf:
                                 -   type: string
                                 title: Description
                                 nullable: true
                             public_ip:
-                                type: string
                                 anyOf:
                                 -   type: string
                                 title: Public Ip
                                 nullable: true
                             port_id:
-                                type: string
                                 anyOf:
                                 -   type: string
                                 title: Port Id
                                 nullable: true
                             created_at:
-                                type: string
                                 anyOf:
                                 -   type: string
                                     format: date-time
                                 title: Created At
                                 nullable: true
                             updated:
-                                type: string
                                 anyOf:
                                 -   type: string
                                     format: date-time
                                 title: Updated
                                 nullable: true
                             status:
-                                type: string
                                 anyOf:
                                 -   type: string
                                 title: Status
                                 nullable: true
                             error:
-                                type: string
                                 anyOf:
                                 -   type: string
                                 title: Error
@@ -2914,37 +2833,31 @@ components:
             type: object
             properties:
                 id:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Id
                     nullable: true
                 vpc_id:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Vpc Id
                     nullable: true
                 router_id:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Router Id
                     nullable: true
                 ip_address:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Ip Address
                     nullable: true
                 nic_vpc_id:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Nic Vpc Id
                     nullable: true
                 created_at:
-                    type: string
                     anyOf:
                     -   type: string
                         format: date-time
@@ -2962,44 +2875,37 @@ components:
             type: object
             properties:
                 router_interfaces:
-                    type: array
                     anyOf:
                     -   type: array
                         items:
                             type: object
                             properties:
                                 id:
-                                    type: string
                                     anyOf:
                                     -   type: string
                                     title: Id
                                     nullable: true
                                 vpc_id:
-                                    type: string
                                     anyOf:
                                     -   type: string
                                     title: Vpc Id
                                     nullable: true
                                 router_id:
-                                    type: string
                                     anyOf:
                                     -   type: string
                                     title: Router Id
                                     nullable: true
                                 ip_address:
-                                    type: string
                                     anyOf:
                                     -   type: string
                                     title: Ip Address
                                     nullable: true
                                 nic_vpc_id:
-                                    type: string
                                     anyOf:
                                     -   type: string
                                     title: Nic Vpc Id
                                     nullable: true
                                 created_at:
-                                    type: string
                                     anyOf:
                                     -   type: string
                                         format: date-time
@@ -3029,7 +2935,6 @@ components:
             type: object
             properties:
                 id:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Id
@@ -3038,13 +2943,11 @@ components:
                     type: string
                     title: Vpc Id
                 external_network:
-                    type: string
                     anyOf:
                     -   type: string
                     title: External Network
                     nullable: true
                 external_id:
-                    type: string
                     anyOf:
                     -   type: string
                     title: External Id
@@ -3053,27 +2956,23 @@ components:
                     type: boolean
                     title: Is Default
                 name:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Name
                     nullable: true
                 created_at:
-                    type: string
                     anyOf:
                     -   type: string
                         format: date-time
                     title: Created At
                     nullable: true
                 updated:
-                    type: string
                     anyOf:
                     -   type: string
                         format: date-time
                     title: Updated
                     nullable: true
                 function:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Function
@@ -3083,13 +2982,11 @@ components:
                     type: string
                     title: Status
                 error:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Error
                     nullable: true
                 zone:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Zone
@@ -3116,43 +3013,36 @@ components:
             type: object
             properties:
                 direction:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Direction
                     nullable: true
                 port_range_min:
-                    type: integer
                     anyOf:
                     -   type: integer
                     title: Port Range Min
                     nullable: true
                 port_range_max:
-                    type: integer
                     anyOf:
                     -   type: integer
                     title: Port Range Max
                     nullable: true
                 protocol:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Protocol
                     nullable: true
                 remote_ip_prefix:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Remote Ip Prefix
                     nullable: true
                 remote_group_id:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Remote Group Id
                     nullable: true
                 ethertype:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Ethertype
@@ -3181,43 +3071,36 @@ components:
             type: object
             properties:
                 security_group_id:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Security Group Id
                     nullable: true
                 direction:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Direction
                     nullable: true
                 port_range_min:
-                    type: integer
                     anyOf:
                     -   type: integer
                     title: Port Range Min
                     nullable: true
                 port_range_max:
-                    type: integer
                     anyOf:
                     -   type: integer
                     title: Port Range Max
                     nullable: true
                 protocol:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Protocol
                     nullable: true
                 remote_ip_prefix:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Remote Ip Prefix
                     nullable: true
                 remote_group_id:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Remote Group Id
@@ -3230,25 +3113,21 @@ components:
                     - pending
                     - error
                 error:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Error
                     nullable: true
                 resource_id:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Resource Id
                     nullable: true
                 external_id:
-                    type: string
                     anyOf:
                     -   type: string
                     title: External Id
                     nullable: true
                 rules_zones:
-                    type: array
                     anyOf:
                     -   type: array
                         items:
@@ -3258,7 +3137,6 @@ components:
                                     type: string
                                     title: Resource Id
                                 zone:
-                                    type: string
                                     anyOf:
                                     -   type: string
                                     title: Zone
@@ -3293,67 +3171,56 @@ components:
             type: object
             properties:
                 id:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Id
                     nullable: true
                 external_id:
-                    type: string
                     anyOf:
                     -   type: string
                     title: External Id
                     nullable: true
                 security_group_id:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Security Group Id
                     nullable: true
                 direction:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Direction
                     nullable: true
                 port_range_min:
-                    type: integer
                     anyOf:
                     -   type: integer
                     title: Port Range Min
                     nullable: true
                 port_range_max:
-                    type: integer
                     anyOf:
                     -   type: integer
                     title: Port Range Max
                     nullable: true
                 protocol:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Protocol
                     nullable: true
                 remote_ip_prefix:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Remote Ip Prefix
                     nullable: true
                 remote_group_id:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Remote Group Id
                     nullable: true
                 ethertype:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Ethertype
                     nullable: true
                 created_at:
-                    type: string
                     anyOf:
                     -   type: string
                         format: date-time
@@ -3367,7 +3234,6 @@ components:
                     - pending
                     - error
                 error:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Error
@@ -3392,37 +3258,31 @@ components:
             type: object
             properties:
                 direction:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Direction
                     nullable: true
                 port_range_min:
-                    type: integer
                     anyOf:
                     -   type: integer
                     title: Port Range Min
                     nullable: true
                 port_range_max:
-                    type: integer
                     anyOf:
                     -   type: integer
                     title: Port Range Max
                     nullable: true
                 protocol:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Protocol
                     nullable: true
                 remote_ip_prefix:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Remote Ip Prefix
                     nullable: true
                 remote_group_id:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Remote Group Id
@@ -3432,31 +3292,26 @@ components:
                     -   $ref: '#/components/schemas/RuleStatus'
                     nullable: true
                 error:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Error
                     nullable: true
                 id:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Id
                     nullable: true
                 security_group_id:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Security Group Id
                     nullable: true
                 ethertype:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Ethertype
                     nullable: true
                 created_at:
-                    type: string
                     anyOf:
                     -   type: string
                         format: date-time
@@ -3487,37 +3342,31 @@ components:
             type: object
             properties:
                 direction:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Direction
                     nullable: true
                 port_range_min:
-                    type: integer
                     anyOf:
                     -   type: integer
                     title: Port Range Min
                     nullable: true
                 port_range_max:
-                    type: integer
                     anyOf:
                     -   type: integer
                     title: Port Range Max
                     nullable: true
                 protocol:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Protocol
                     nullable: true
                 remote_ip_prefix:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Remote Ip Prefix
                     nullable: true
                 remote_group_id:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Remote Group Id
@@ -3527,19 +3376,16 @@ components:
                     -   $ref: '#/components/schemas/RuleStatus'
                     nullable: true
                 error:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Error
                     nullable: true
                 api_id:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Api Id
                     nullable: true
                 rule_zones:
-                    type: object
                     anyOf:
                     -   type: object
                         additionalProperties:
@@ -3571,7 +3417,6 @@ components:
                     type: string
                     title: Resource Id
                 zone:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Zone
@@ -3586,19 +3431,16 @@ components:
             type: object
             properties:
                 api_id:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Api Id
                     nullable: true
                 zone:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Zone
                     nullable: true
                 external_id:
-                    type: string
                     anyOf:
                     -   type: string
                     title: External Id
@@ -3608,7 +3450,6 @@ components:
                     -   $ref: '#/components/schemas/RuleStatus'
                     nullable: true
                 error:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Error
@@ -3629,67 +3470,56 @@ components:
                         type: object
                         properties:
                             id:
-                                type: string
                                 anyOf:
                                 -   type: string
                                 title: Id
                                 nullable: true
                             external_id:
-                                type: string
                                 anyOf:
                                 -   type: string
                                 title: External Id
                                 nullable: true
                             security_group_id:
-                                type: string
                                 anyOf:
                                 -   type: string
                                 title: Security Group Id
                                 nullable: true
                             direction:
-                                type: string
                                 anyOf:
                                 -   type: string
                                 title: Direction
                                 nullable: true
                             port_range_min:
-                                type: integer
                                 anyOf:
                                 -   type: integer
                                 title: Port Range Min
                                 nullable: true
                             port_range_max:
-                                type: integer
                                 anyOf:
                                 -   type: integer
                                 title: Port Range Max
                                 nullable: true
                             protocol:
-                                type: string
                                 anyOf:
                                 -   type: string
                                 title: Protocol
                                 nullable: true
                             remote_ip_prefix:
-                                type: string
                                 anyOf:
                                 -   type: string
                                 title: Remote Ip Prefix
                                 nullable: true
                             remote_group_id:
-                                type: string
                                 anyOf:
                                 -   type: string
                                 title: Remote Group Id
                                 nullable: true
                             ethertype:
-                                type: string
                                 anyOf:
                                 -   type: string
                                 title: Ethertype
                                 nullable: true
                             created_at:
-                                type: string
                                 anyOf:
                                 -   type: string
                                     format: date-time
@@ -3703,7 +3533,6 @@ components:
                                 - pending
                                 - error
                             error:
-                                type: string
                                 anyOf:
                                 -   type: string
                                 title: Error
@@ -3745,7 +3574,6 @@ components:
             type: object
             properties:
                 name:
-                    type: string
                     anyOf:
                     -   type: string
                         maxLength: 100
@@ -3753,7 +3581,6 @@ components:
                     title: Name
                     nullable: true
                 description:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Description
@@ -3797,38 +3624,32 @@ components:
             type: object
             properties:
                 id:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Id
                     nullable: true
                 vpc_id:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Vpc Id
                     nullable: true
                 name:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Name
                     nullable: true
                 description:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Description
                     nullable: true
                 created_at:
-                    type: string
                     anyOf:
                     -   type: string
                         format: date-time
                     title: Created At
                     nullable: true
                 updated:
-                    type: string
                     anyOf:
                     -   type: string
                         format: date-time
@@ -3842,74 +3663,62 @@ components:
                     - pending
                     - error
                 error:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Error
                     nullable: true
                 tenant_id:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Tenant Id
                     nullable: true
                 project_type:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Project Type
                     nullable: true
                 is_default:
-                    type: boolean
                     anyOf:
                     -   type: boolean
                     title: Is Default
                     nullable: true
                 external_id:
-                    type: string
                     anyOf:
                     -   type: string
                     title: External Id
                     nullable: true
                 rules:
-                    type: array
                     anyOf:
                     -   type: array
                         items:
                             type: object
                             properties:
                                 direction:
-                                    type: string
                                     anyOf:
                                     -   type: string
                                     title: Direction
                                     nullable: true
                                 port_range_min:
-                                    type: integer
                                     anyOf:
                                     -   type: integer
                                     title: Port Range Min
                                     nullable: true
                                 port_range_max:
-                                    type: integer
                                     anyOf:
                                     -   type: integer
                                     title: Port Range Max
                                     nullable: true
                                 protocol:
-                                    type: string
                                     anyOf:
                                     -   type: string
                                     title: Protocol
                                     nullable: true
                                 remote_ip_prefix:
-                                    type: string
                                     anyOf:
                                     -   type: string
                                     title: Remote Ip Prefix
                                     nullable: true
                                 remote_group_id:
-                                    type: string
                                     anyOf:
                                     -   type: string
                                     title: Remote Group Id
@@ -3919,31 +3728,26 @@ components:
                                     -   $ref: '#/components/schemas/RuleStatus'
                                     nullable: true
                                 error:
-                                    type: string
                                     anyOf:
                                     -   type: string
                                     title: Error
                                     nullable: true
                                 id:
-                                    type: string
                                     anyOf:
                                     -   type: string
                                     title: Id
                                     nullable: true
                                 security_group_id:
-                                    type: string
                                     anyOf:
                                     -   type: string
                                     title: Security Group Id
                                     nullable: true
                                 ethertype:
-                                    type: string
                                     anyOf:
                                     -   type: string
                                     title: Ethertype
                                     nullable: true
                                 created_at:
-                                    type: string
                                     anyOf:
                                     -   type: string
                                         format: date-time
@@ -4004,38 +3808,32 @@ components:
                         type: object
                         properties:
                             id:
-                                type: string
                                 anyOf:
                                 -   type: string
                                 title: Id
                                 nullable: true
                             vpc_id:
-                                type: string
                                 anyOf:
                                 -   type: string
                                 title: Vpc Id
                                 nullable: true
                             name:
-                                type: string
                                 anyOf:
                                 -   type: string
                                 title: Name
                                 nullable: true
                             description:
-                                type: string
                                 anyOf:
                                 -   type: string
                                 title: Description
                                 nullable: true
                             created_at:
-                                type: string
                                 anyOf:
                                 -   type: string
                                     format: date-time
                                 title: Created At
                                 nullable: true
                             updated:
-                                type: string
                                 anyOf:
                                 -   type: string
                                     format: date-time
@@ -4049,25 +3847,21 @@ components:
                                 - pending
                                 - error
                             error:
-                                type: string
                                 anyOf:
                                 -   type: string
                                 title: Error
                                 nullable: true
                             tenant_id:
-                                type: string
                                 anyOf:
                                 -   type: string
                                 title: Tenant Id
                                 nullable: true
                             project_type:
-                                type: string
                                 anyOf:
                                 -   type: string
                                 title: Project Type
                                 nullable: true
                             is_default:
-                                type: boolean
                                 anyOf:
                                 -   type: boolean
                                 title: Is Default
@@ -4108,38 +3902,32 @@ components:
             type: object
             properties:
                 id:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Id
                     nullable: true
                 vpc_id:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Vpc Id
                     nullable: true
                 name:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Name
                     nullable: true
                 description:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Description
                     nullable: true
                 created_at:
-                    type: string
                     anyOf:
                     -   type: string
                         format: date-time
                     title: Created At
                     nullable: true
                 updated:
-                    type: string
                     anyOf:
                     -   type: string
                         format: date-time
@@ -4153,25 +3941,21 @@ components:
                     - pending
                     - error
                 error:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Error
                     nullable: true
                 tenant_id:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Tenant Id
                     nullable: true
                 project_type:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Project Type
                     nullable: true
                 is_default:
-                    type: boolean
                     anyOf:
                     -   type: boolean
                     title: Is Default
@@ -4202,7 +3986,6 @@ components:
             type: object
             properties:
                 external_id:
-                    type: string
                     anyOf:
                     -   type: string
                     title: External Id
@@ -4211,56 +3994,47 @@ components:
                     type: string
                     title: Status
                 error:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Error
                     nullable: true
                 api_id:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Api Id
                     nullable: true
                 rules:
-                    type: array
                     anyOf:
                     -   type: array
                         items:
                             type: object
                             properties:
                                 direction:
-                                    type: string
                                     anyOf:
                                     -   type: string
                                     title: Direction
                                     nullable: true
                                 port_range_min:
-                                    type: integer
                                     anyOf:
                                     -   type: integer
                                     title: Port Range Min
                                     nullable: true
                                 port_range_max:
-                                    type: integer
                                     anyOf:
                                     -   type: integer
                                     title: Port Range Max
                                     nullable: true
                                 protocol:
-                                    type: string
                                     anyOf:
                                     -   type: string
                                     title: Protocol
                                     nullable: true
                                 remote_ip_prefix:
-                                    type: string
                                     anyOf:
                                     -   type: string
                                     title: Remote Ip Prefix
                                     nullable: true
                                 remote_group_id:
-                                    type: string
                                     anyOf:
                                     -   type: string
                                     title: Remote Group Id
@@ -4270,19 +4044,16 @@ components:
                                     -   $ref: '#/components/schemas/RuleStatus'
                                     nullable: true
                                 error:
-                                    type: string
                                     anyOf:
                                     -   type: string
                                     title: Error
                                     nullable: true
                                 api_id:
-                                    type: string
                                     anyOf:
                                     -   type: string
                                     title: Api Id
                                     nullable: true
                                 rule_zones:
-                                    type: object
                                     anyOf:
                                     -   type: object
                                         additionalProperties:
@@ -4311,7 +4082,6 @@ components:
                     default: []
                     nullable: true
                 security_group_zones:
-                    type: object
                     anyOf:
                     -   type: object
                         additionalProperties:
@@ -4349,7 +4119,6 @@ components:
             type: object
             properties:
                 external_id:
-                    type: string
                     anyOf:
                     -   type: string
                     title: External Id
@@ -4358,19 +4127,16 @@ components:
                     type: string
                     title: Status
                 error:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Error
                     nullable: true
                 api_id:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Api Id
                     nullable: true
                 zone:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Zone
@@ -4402,13 +4168,11 @@ components:
                     type: string
                     title: Name
                 description:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Description
                     nullable: true
                 cidr_block:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Cidr Block
@@ -4547,7 +4311,6 @@ components:
                     title: Description
                     description: The description for the subnet pool
                 address_scope_id:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Address Scope Id
@@ -4668,13 +4431,11 @@ components:
                     type: string
                     title: Vpc Id
                 name:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Name
                     nullable: true
                 description:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Description
@@ -4689,14 +4450,12 @@ components:
                     type: string
                     title: Zone
                 created_at:
-                    type: string
                     anyOf:
                     -   type: string
                         format: date-time
                     title: Created At
                     nullable: true
                 updated:
-                    type: string
                     anyOf:
                     -   type: string
                         format: date-time
@@ -4729,13 +4488,11 @@ components:
                     type: string
                     title: Vpc Id
                 name:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Name
                     nullable: true
                 description:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Description
@@ -4750,14 +4507,12 @@ components:
                     type: string
                     title: Zone
                 created_at:
-                    type: string
                     anyOf:
                     -   type: string
                         format: date-time
                     title: Created At
                     nullable: true
                 updated:
-                    type: string
                     anyOf:
                     -   type: string
                         format: date-time
@@ -4839,13 +4594,11 @@ components:
                                 type: string
                                 title: Vpc Id
                             name:
-                                type: string
                                 anyOf:
                                 -   type: string
                                 title: Name
                                 nullable: true
                             description:
-                                type: string
                                 anyOf:
                                 -   type: string
                                 title: Description
@@ -4860,14 +4613,12 @@ components:
                                 type: string
                                 title: Zone
                             created_at:
-                                type: string
                                 anyOf:
                                 -   type: string
                                     format: date-time
                                 title: Created At
                                 nullable: true
                             updated:
-                                type: string
                                 anyOf:
                                 -   type: string
                                     format: date-time
@@ -4928,7 +4679,6 @@ components:
                     type: string
                     title: Name
                 description:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Description
@@ -4943,7 +4693,6 @@ components:
             type: object
             properties:
                 id:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Id
@@ -5016,38 +4765,32 @@ components:
             type: object
             properties:
                 id:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Id
                     nullable: true
                 tenant_id:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Tenant Id
                     nullable: true
                 name:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Name
                     nullable: true
                 description:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Description
                     nullable: true
                 routers:
-                    type: array
                     anyOf:
                     -   type: array
                         items:
                             type: object
                             properties:
                                 id:
-                                    type: string
                                     anyOf:
                                     -   type: string
                                     title: Id
@@ -5056,13 +4799,11 @@ components:
                                     type: string
                                     title: Vpc Id
                                 external_network:
-                                    type: string
                                     anyOf:
                                     -   type: string
                                     title: External Network
                                     nullable: true
                                 external_id:
-                                    type: string
                                     anyOf:
                                     -   type: string
                                     title: External Id
@@ -5071,27 +4812,23 @@ components:
                                     type: boolean
                                     title: Is Default
                                 name:
-                                    type: string
                                     anyOf:
                                     -   type: string
                                     title: Name
                                     nullable: true
                                 created_at:
-                                    type: string
                                     anyOf:
                                     -   type: string
                                         format: date-time
                                     title: Created At
                                     nullable: true
                                 updated:
-                                    type: string
                                     anyOf:
                                     -   type: string
                                         format: date-time
                                     title: Updated
                                     nullable: true
                                 function:
-                                    type: string
                                     anyOf:
                                     -   type: string
                                     title: Function
@@ -5101,13 +4838,11 @@ components:
                                     type: string
                                     title: Status
                                 error:
-                                    type: string
                                     anyOf:
                                     -   type: string
                                     title: Error
                                     nullable: true
                                 zone:
-                                    type: string
                                     anyOf:
                                     -   type: string
                                     title: Zone
@@ -5134,7 +4869,6 @@ components:
                     default: []
                     nullable: true
                 networks:
-                    type: array
                     anyOf:
                     -   type: array
                         items:
@@ -5149,25 +4883,21 @@ components:
                                     maxLength: 100
                                     minLength: 5
                                 description:
-                                    type: string
                                     anyOf:
                                     -   type: string
                                     title: Description
                                     nullable: true
                                 status:
-                                    type: string
                                     anyOf:
                                     -   type: string
                                     title: Status
                                     nullable: true
                                 mtu:
-                                    type: integer
                                     anyOf:
                                     -   type: integer
                                     title: Mtu
                                     nullable: true
                                 subnets:
-                                    type: array
                                     anyOf:
                                     -   type: array
                                         items:
@@ -5176,13 +4906,11 @@ components:
                                     default: []
                                     nullable: true
                                 shared:
-                                    type: boolean
                                     anyOf:
                                     -   type: boolean
                                     title: Shared
                                     nullable: true
                                 tags:
-                                    type: array
                                     anyOf:
                                     -   type: array
                                         items:
@@ -5191,26 +4919,22 @@ components:
                                     default: []
                                     nullable: true
                                 port_security_enabled:
-                                    type: boolean
                                     anyOf:
                                     -   type: boolean
                                     title: Port Security Enabled
                                     nullable: true
                                 router_external:
-                                    type: boolean
                                     anyOf:
                                     -   type: boolean
                                     title: Router External
                                     nullable: true
                                 created_at:
-                                    type: string
                                     anyOf:
                                     -   type: string
                                         format: date-time
                                     title: Created At
                                     nullable: true
                                 updated_at:
-                                    type: string
                                     anyOf:
                                     -   type: string
                                         format: date-time
@@ -5238,7 +4962,6 @@ components:
                     default: []
                     nullable: true
                 subnets:
-                    type: array
                     anyOf:
                     -   type: array
                         items:
@@ -5247,21 +4970,18 @@ components:
                     default: []
                     nullable: true
                 created_at:
-                    type: string
                     anyOf:
                     -   type: string
                         format: date-time
                     title: Created At
                     nullable: true
                 updated:
-                    type: string
                     anyOf:
                     -   type: string
                         format: date-time
                     title: Updated
                     nullable: true
                 is_default:
-                    type: boolean
                     anyOf:
                     -   type: boolean
                     title: Is Default
@@ -5309,49 +5029,41 @@ components:
             type: object
             properties:
                 id:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Id
                     nullable: true
                 tenant_id:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Tenant Id
                     nullable: true
                 name:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Name
                     nullable: true
                 description:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Description
                     nullable: true
                 router_id:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Router Id
                     nullable: true
                 external_network:
-                    type: string
                     anyOf:
                     -   type: string
                     title: External Network
                     nullable: true
                 network_id:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Network Id
                     nullable: true
                 subnets:
-                    type: array
                     anyOf:
                     -   type: array
                         items:
@@ -5366,21 +5078,18 @@ components:
                     title: Security Groups
                     default: []
                 created_at:
-                    type: string
                     anyOf:
                     -   type: string
                         format: date-time
                     title: Created At
                     nullable: true
                 updated:
-                    type: string
                     anyOf:
                     -   type: string
                         format: date-time
                     title: Updated
                     nullable: true
                 is_default:
-                    type: boolean
                     anyOf:
                     -   type: boolean
                     title: Is Default
@@ -5405,56 +5114,47 @@ components:
             type: object
             properties:
                 vpcs:
-                    type: array
                     anyOf:
                     -   type: array
                         items:
                             type: object
                             properties:
                                 id:
-                                    type: string
                                     anyOf:
                                     -   type: string
                                     title: Id
                                     nullable: true
                                 tenant_id:
-                                    type: string
                                     anyOf:
                                     -   type: string
                                     title: Tenant Id
                                     nullable: true
                                 name:
-                                    type: string
                                     anyOf:
                                     -   type: string
                                     title: Name
                                     nullable: true
                                 description:
-                                    type: string
                                     anyOf:
                                     -   type: string
                                     title: Description
                                     nullable: true
                                 router_id:
-                                    type: string
                                     anyOf:
                                     -   type: string
                                     title: Router Id
                                     nullable: true
                                 external_network:
-                                    type: string
                                     anyOf:
                                     -   type: string
                                     title: External Network
                                     nullable: true
                                 network_id:
-                                    type: string
                                     anyOf:
                                     -   type: string
                                     title: Network Id
                                     nullable: true
                                 subnets:
-                                    type: array
                                     anyOf:
                                     -   type: array
                                         items:
@@ -5469,21 +5169,18 @@ components:
                                     title: Security Groups
                                     default: []
                                 created_at:
-                                    type: string
                                     anyOf:
                                     -   type: string
                                         format: date-time
                                     title: Created At
                                     nullable: true
                                 updated:
-                                    type: string
                                     anyOf:
                                     -   type: string
                                         format: date-time
                                     title: Updated
                                     nullable: true
                                 is_default:
-                                    type: boolean
                                     anyOf:
                                     -   type: boolean
                                     title: Is Default
@@ -5531,13 +5228,11 @@ components:
                     type: string
                     title: Name
                 description:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Description
                     nullable: true
                 subnetpool_id:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Subnetpool Id
@@ -5545,7 +5240,6 @@ components:
                         get CIDRs.             Can be used instead of 'cidr' field.
                     nullable: true
                 cidr:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Cidr

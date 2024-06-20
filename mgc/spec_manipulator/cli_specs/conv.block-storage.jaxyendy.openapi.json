@@ -1849,7 +1849,6 @@
             "title": "Name"
           },
           "status": {
-            "type": "string",
             "anyOf": [
               {
                 "$ref": "#/components/schemas/InstanceStatus"
@@ -1858,7 +1857,6 @@
             "title": "Status"
           },
           "state": {
-            "type": "string",
             "anyOf": [
               {
                 "$ref": "#/components/schemas/InstanceState"
@@ -1867,7 +1865,6 @@
             "title": "State"
           },
           "created_at": {
-            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -1881,7 +1878,6 @@
             "example": "2022-01-01T00:00:10Z"
           },
           "updated_at": {
-            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -1928,7 +1924,6 @@
             "title": "Instance"
           },
           "attached_at": {
-            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -1942,7 +1937,6 @@
             "example": "2022-01-01T00:00:10Z"
           },
           "device": {
-            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -1991,7 +1985,6 @@
                   "title": "Size"
                 },
                 "description": {
-                  "type": "string",
                   "anyOf": [
                     {
                       "type": "string"
@@ -2032,7 +2025,6 @@
                   ]
                 },
                 "created_at": {
-                  "type": "string",
                   "anyOf": [
                     {
                       "type": "string"
@@ -2046,7 +2038,6 @@
                   "example": "2022-01-01T00:00:10Z"
                 },
                 "updated_at": {
-                  "type": "string",
                   "anyOf": [
                     {
                       "type": "string"
@@ -2170,7 +2161,6 @@
             "title": "Size"
           },
           "description": {
-            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -2211,7 +2201,6 @@
             ]
           },
           "created_at": {
-            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -2225,7 +2214,6 @@
             "example": "2022-01-01T00:00:10Z"
           },
           "updated_at": {
-            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -2347,7 +2335,6 @@
         "type": "object",
         "properties": {
           "description": {
-            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -2542,7 +2529,6 @@
                 "loc": {
                   "type": "array",
                   "items": {
-                    "type": "integer",
                     "anyOf": [
                       {
                         "type": "string"
@@ -2670,7 +2656,6 @@
         "type": "object",
         "properties": {
           "name": {
-            "type": "string",
             "anyOf": [
               {
                 "type": "string",
@@ -2682,7 +2667,6 @@
             "nullable": true
           },
           "description": {
-            "type": "string",
             "anyOf": [
               {
                 "type": "string",
@@ -2737,7 +2721,6 @@
             "title": "Name"
           },
           "description": {
-            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -2782,7 +2765,6 @@
                   "title": "Size"
                 },
                 "description": {
-                  "type": "string",
                   "anyOf": [
                     {
                       "type": "string"
@@ -2815,7 +2797,6 @@
                   ]
                 },
                 "created_at": {
-                  "type": "string",
                   "anyOf": [
                     {
                       "type": "string"
@@ -2829,7 +2810,6 @@
                   "example": "2022-01-01T00:00:10Z"
                 },
                 "updated_at": {
-                  "type": "string",
                   "anyOf": [
                     {
                       "type": "string"
@@ -2921,7 +2901,6 @@
             "title": "Size"
           },
           "description": {
-            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -2954,7 +2933,6 @@
             ]
           },
           "created_at": {
-            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -2968,7 +2946,6 @@
             "example": "2022-01-01T00:00:10Z"
           },
           "updated_at": {
-            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -3142,7 +3119,6 @@
           "loc": {
             "type": "array",
             "items": {
-              "type": "integer",
               "anyOf": [
                 {
                   "type": "string"
@@ -3323,7 +3299,6 @@
             ]
           },
           "created_at": {
-            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -3337,7 +3312,6 @@
             "example": "2022-01-01T00:00:10Z"
           },
           "updated_at": {
-            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -3637,7 +3611,6 @@
                   ]
                 },
                 "created_at": {
-                  "type": "string",
                   "anyOf": [
                     {
                       "type": "string"
@@ -3651,7 +3624,6 @@
                   "example": "2022-01-01T00:00:10Z"
                 },
                 "updated_at": {
-                  "type": "string",
                   "anyOf": [
                     {
                       "type": "string"

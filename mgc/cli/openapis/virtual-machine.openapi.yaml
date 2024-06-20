@@ -2186,7 +2186,6 @@ components:
                     type: string
                     title: BackupType
                 rotation:
-                    type: integer
                     anyOf:
                     -   type: integer
                         minimum: 1
@@ -2240,13 +2239,11 @@ components:
                     - deleted
                     - error
                 size:
-                    type: integer
                     anyOf:
                     -   type: integer
                     title: Size
                     nullable: true
                 min_disk:
-                    type: integer
                     anyOf:
                     -   type: integer
                     title: Min Disk
@@ -2256,7 +2253,6 @@ components:
                     title: Created At
                     example: '2022-01-01T00:00:10Z'
                 updated_at:
-                    type: string
                     anyOf:
                     -   type: string
                         example: '2022-01-01T00:00:10Z'
@@ -2300,7 +2296,6 @@ components:
                     type: string
                     title: Ssh Key Name
                 availability_zone:
-                    type: string
                     anyOf:
                     -   type: string
                         maxLength: 255
@@ -2334,7 +2329,6 @@ components:
                         vpc:
                             id: 2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6
                 user_data:
-                    type: string
                     anyOf:
                     -   type: string
                         maxLength: 65000
@@ -2463,7 +2457,6 @@ components:
                     type: string
                     title: Name
                 platform:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Platform
@@ -2523,33 +2516,28 @@ components:
                     - importing
                     - error
                 version:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Version
                     nullable: true
                 platform:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Platform
                     nullable: true
                 release_at:
-                    type: string
                     anyOf:
                     -   type: string
                         example: '2022-01-01T00:00:10Z'
                     title: Release At
                     nullable: true
                 end_standard_support_at:
-                    type: string
                     anyOf:
                     -   type: string
                         example: '2022-01-01T00:00:10Z'
                     title: End Standard Support At
                     nullable: true
                 end_life_at:
-                    type: string
                     anyOf:
                     -   type: string
                         example: '2022-01-01T00:00:10Z'
@@ -2624,7 +2612,6 @@ components:
                     -   $ref: '#/components/schemas/Name'
                     title: Image
                 availability_zone:
-                    type: string
                     anyOf:
                     -   type: string
                         maxLength: 255
@@ -2636,7 +2623,6 @@ components:
                     -   $ref: '#/components/schemas/InstanceCreateRequestV1NetworkDefault'
                     nullable: true
                 user_data:
-                    type: string
                     anyOf:
                     -   type: string
                         maxLength: 65000
@@ -2954,7 +2940,6 @@ components:
                     type: string
                     title: Id
                 name:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Name
@@ -3019,7 +3004,6 @@ components:
                     x-mgc-transforms:
                     -   type: lowercase
                 user_data:
-                    type: string
                     anyOf:
                     -   type: string
                     title: User Data
@@ -3029,20 +3013,17 @@ components:
                     title: Created At
                     example: '2022-01-01T00:00:10Z'
                 updated_at:
-                    type: string
                     anyOf:
                     -   type: string
                         example: '2022-01-01T00:00:10Z'
                     title: Updated At
                     nullable: true
                 ssh_key_name:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Ssh Key Name
                     nullable: true
                 availability_zone:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Availability Zone
@@ -3148,7 +3129,6 @@ components:
             type: object
             properties:
                 publicIpAddress:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Publicipaddress
@@ -3157,7 +3137,6 @@ components:
                     type: string
                     title: Privateipaddress
                 ipV6Address:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Ipv6Address
@@ -3206,13 +3185,11 @@ components:
                                 - deleted
                                 - error
                             size:
-                                type: integer
                                 anyOf:
                                 -   type: integer
                                 title: Size
                                 nullable: true
                             min_disk:
-                                type: integer
                                 anyOf:
                                 -   type: integer
                                 title: Min Disk
@@ -3222,7 +3199,6 @@ components:
                                 title: Created At
                                 example: '2022-01-01T00:00:10Z'
                             updated_at:
-                                type: string
                                 anyOf:
                                 -   type: string
                                     example: '2022-01-01T00:00:10Z'
@@ -3292,33 +3268,28 @@ components:
                                 - importing
                                 - error
                             version:
-                                type: string
                                 anyOf:
                                 -   type: string
                                 title: Version
                                 nullable: true
                             platform:
-                                type: string
                                 anyOf:
                                 -   type: string
                                 title: Platform
                                 nullable: true
                             release_at:
-                                type: string
                                 anyOf:
                                 -   type: string
                                     example: '2022-01-01T00:00:10Z'
                                 title: Release At
                                 nullable: true
                             end_standard_support_at:
-                                type: string
                                 anyOf:
                                 -   type: string
                                     example: '2022-01-01T00:00:10Z'
                                 title: End Standard Support At
                                 nullable: true
                             end_life_at:
-                                type: string
                                 anyOf:
                                 -   type: string
                                     example: '2022-01-01T00:00:10Z'
@@ -3390,7 +3361,6 @@ components:
                                 type: string
                                 title: Id
                             name:
-                                type: string
                                 anyOf:
                                 -   type: string
                                 title: Name
@@ -3451,7 +3421,6 @@ components:
                                 - suspended
                                 - deleted
                             user_data:
-                                type: string
                                 anyOf:
                                 -   type: string
                                 title: User Data
@@ -3461,20 +3430,17 @@ components:
                                 title: Created At
                                 example: '2022-01-01T00:00:10Z'
                             updated_at:
-                                type: string
                                 anyOf:
                                 -   type: string
                                     example: '2022-01-01T00:00:10Z'
                                 title: Updated At
                                 nullable: true
                             ssh_key_name:
-                                type: string
                                 anyOf:
                                 -   type: string
                                 title: Ssh Key Name
                                 nullable: true
                             availability_zone:
-                                type: string
                                 anyOf:
                                 -   type: string
                                 title: Availability Zone
@@ -3556,7 +3522,6 @@ components:
                                 type: string
                                 title: Id
                             name:
-                                type: string
                                 anyOf:
                                 -   type: string
                                 title: Name
@@ -3572,7 +3537,6 @@ components:
                                 title: Created At
                                 example: '2022-01-01T00:00:10Z'
                             updated_at:
-                                type: string
                                 anyOf:
                                 -   type: string
                                     example: '2022-01-01T00:00:10Z'
@@ -3691,7 +3655,6 @@ components:
                     -   $ref: '#/components/schemas/VpcV1Expand'
                     nullable: true
                 ports:
-                    type: array
                     anyOf:
                     -   type: array
                         items:
@@ -3707,7 +3670,6 @@ components:
                                     type: object
                                     properties:
                                         publicIpAddress:
-                                            type: string
                                             anyOf:
                                             -   type: string
                                             title: Publicipaddress
@@ -3716,7 +3678,6 @@ components:
                                             type: string
                                             title: Privateipaddress
                                         ipV6Address:
-                                            type: string
                                             anyOf:
                                             -   type: string
                                             title: Ipv6Address
@@ -3756,7 +3717,6 @@ components:
                     type: object
                     properties:
                         publicIpAddress:
-                            type: string
                             anyOf:
                             -   type: string
                             title: Publicipaddress
@@ -3765,7 +3725,6 @@ components:
                             type: string
                             title: Privateipaddress
                         ipV6Address:
-                            type: string
                             anyOf:
                             -   type: string
                             title: Ipv6Address
@@ -3840,7 +3799,6 @@ components:
                     type: string
                     title: Id
                 name:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Name
@@ -3856,7 +3814,6 @@ components:
                     title: Created At
                     example: '2022-01-01T00:00:10Z'
                 updated_at:
-                    type: string
                     anyOf:
                     -   type: string
                         example: '2022-01-01T00:00:10Z'
@@ -3932,7 +3889,6 @@ components:
                     type: string
                     title: Ssh Key Name
                 availability_zone:
-                    type: string
                     anyOf:
                     -   type: string
                         maxLength: 255
@@ -3948,7 +3904,6 @@ components:
                         associate_public_ip: true
                     nullable: true
                 user_data:
-                    type: string
                     anyOf:
                     -   type: string
                         maxLength: 65000

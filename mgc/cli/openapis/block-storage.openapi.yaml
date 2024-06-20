@@ -1680,17 +1680,14 @@ components:
                     type: string
                     title: Name
                 status:
-                    type: string
                     anyOf:
                     -   $ref: '#/components/schemas/InstanceStatus'
                     title: Status
                 state:
-                    type: string
                     anyOf:
                     -   $ref: '#/components/schemas/InstanceState'
                     title: State
                 created_at:
-                    type: string
                     anyOf:
                     -   type: string
                     -   type: string
@@ -1698,7 +1695,6 @@ components:
                     title: Created At
                     example: '2022-01-01T00:00:10Z'
                 updated_at:
-                    type: string
                     anyOf:
                     -   type: string
                     -   type: string
@@ -1729,7 +1725,6 @@ components:
                     -   $ref: '#/components/schemas/IdRequest'
                     title: Instance
                 attached_at:
-                    type: string
                     anyOf:
                     -   type: string
                     -   type: string
@@ -1737,7 +1732,6 @@ components:
                     title: Attached At
                     example: '2022-01-01T00:00:10Z'
                 device:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Device
@@ -1774,7 +1768,6 @@ components:
                                 type: integer
                                 title: Size
                             description:
-                                type: string
                                 anyOf:
                                 -   type: string
                                 title: Description
@@ -1807,7 +1800,6 @@ components:
                                 - restoring_error
                                 - provisioning
                             created_at:
-                                type: string
                                 anyOf:
                                 -   type: string
                                 -   type: string
@@ -1815,7 +1807,6 @@ components:
                                 title: Created At
                                 example: '2022-01-01T00:00:10Z'
                             updated_at:
-                                type: string
                                 anyOf:
                                 -   type: string
                                 -   type: string
@@ -1903,7 +1894,6 @@ components:
                     type: integer
                     title: Size
                 description:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Description
@@ -1936,7 +1926,6 @@ components:
                     - restoring_error
                     - provisioning
                 created_at:
-                    type: string
                     anyOf:
                     -   type: string
                     -   type: string
@@ -1944,7 +1933,6 @@ components:
                     title: Created At
                     example: '2022-01-01T00:00:10Z'
                 updated_at:
-                    type: string
                     anyOf:
                     -   type: string
                     -   type: string
@@ -2037,7 +2025,6 @@ components:
             type: object
             properties:
                 description:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Description
@@ -2250,7 +2237,6 @@ components:
             type: object
             properties:
                 name:
-                    type: string
                     anyOf:
                     -   type: string
                         maxLength: 255
@@ -2258,7 +2244,6 @@ components:
                     title: Name
                     nullable: true
                 description:
-                    type: string
                     anyOf:
                     -   type: string
                         maxLength: 255
@@ -2294,7 +2279,6 @@ components:
                     type: string
                     title: Name
                 description:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Description
@@ -2327,7 +2311,6 @@ components:
                                 type: integer
                                 title: Size
                             description:
-                                type: string
                                 anyOf:
                                 -   type: string
                                 title: Description
@@ -2352,7 +2335,6 @@ components:
                                 - deleted
                                 - deleted_error
                             created_at:
-                                type: string
                                 anyOf:
                                 -   type: string
                                 -   type: string
@@ -2360,7 +2342,6 @@ components:
                                 title: Created At
                                 example: '2022-01-01T00:00:10Z'
                             updated_at:
-                                type: string
                                 anyOf:
                                 -   type: string
                                 -   type: string
@@ -2423,7 +2404,6 @@ components:
                     type: integer
                     title: Size
                 description:
-                    type: string
                     anyOf:
                     -   type: string
                     title: Description
@@ -2448,7 +2428,6 @@ components:
                     - deleted
                     - deleted_error
                 created_at:
-                    type: string
                     anyOf:
                     -   type: string
                     -   type: string
@@ -2456,7 +2435,6 @@ components:
                     title: Created At
                     example: '2022-01-01T00:00:10Z'
                 updated_at:
-                    type: string
                     anyOf:
                     -   type: string
                     -   type: string
@@ -2710,7 +2688,6 @@ components:
                     - deleted
                     - legacy
                 created_at:
-                    type: string
                     anyOf:
                     -   type: string
                     -   type: string
@@ -2718,7 +2695,6 @@ components:
                     title: Created At
                     example: '2022-01-01T00:00:10Z'
                 updated_at:
-                    type: string
                     anyOf:
                     -   type: string
                     -   type: string
@@ -2946,7 +2922,6 @@ components:
                                 - deleted
                                 - legacy
                             created_at:
-                                type: string
                                 anyOf:
                                 -   type: string
                                 -   type: string
@@ -2954,7 +2929,6 @@ components:
                                 title: Created At
                                 example: '2022-01-01T00:00:10Z'
                             updated_at:
-                                type: string
                                 anyOf:
                                 -   type: string
                                 -   type: string

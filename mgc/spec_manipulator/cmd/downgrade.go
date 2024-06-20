@@ -36,7 +36,6 @@ func prepareSchema(xchema *base.Schema) *base.Schema {
 	newChema.Enum = xchema.Enum
 	newChema.Description = xchema.Description
 
-	//temporary
 	newChema.Default = xchema.Default
 	newChema.Nullable = xchema.Nullable
 	newChema.ReadOnly = xchema.ReadOnly
@@ -48,8 +47,6 @@ func prepareSchema(xchema *base.Schema) *base.Schema {
 	newChema.Extensions = xchema.Extensions
 
 	newChema.Const = nil
-
-	hasType := ""
 
 	// newChema.AdditionalProperties = xchema.AdditionalProperties
 	if xchema.AdditionalProperties != nil {
@@ -119,7 +116,6 @@ func prepareSchema(xchema *base.Schema) *base.Schema {
 					*newChema.Nullable = true
 					continue
 				}
-				hasType = xT
 				newAllOf = append(newAllOf, base.CreateSchemaProxy(prepareSchema(xA.Schema())))
 			}
 		}
@@ -143,7 +139,6 @@ func prepareSchema(xchema *base.Schema) *base.Schema {
 					*newChema.Nullable = true
 					continue
 				}
-				hasType = xT
 				newOneOf = append(newOneOf, base.CreateSchemaProxy(prepareSchema(xO.Schema())))
 			}
 		}
@@ -160,15 +155,16 @@ func prepareSchema(xchema *base.Schema) *base.Schema {
 				newAnyOf = append(newAnyOf, xA)
 				continue
 			}
+
 			for _, xT := range xA.Schema().Type {
 				if xT == "null" {
 					newChema.Nullable = new(bool)
 					*newChema.Nullable = true
 					continue
 				}
-				hasType = xT
 				newAnyOf = append(newAnyOf, base.CreateSchemaProxy(prepareSchema(xA.Schema())))
 			}
+
 		}
 	}
 	if len(newAnyOf) > 0 {
@@ -264,10 +260,19 @@ func prepareSchema(xchema *base.Schema) *base.Schema {
 			N: 0,
 		}
 	}
+	if newChema.Type != nil && newChema.Type[0] == "array" && newChema.Items == nil {
 
-	if hasType != "" && (newChema.Type == nil) {
-		newChema.Type = []string{hasType}
+		newChema.Items = &base.DynamicValue[*base.SchemaProxy, bool]{
+			A: base.CreateSchemaProxy(&base.Schema{
+				Type: []string{"string"},
+			}),
+		}
 	}
+
+	if newAnyOf == nil && newOneOf == nil && newAllOf == nil && newChema.Type == nil {
+		newChema.Type = []string{"string"}
+	}
+
 	return newChema
 
 }
