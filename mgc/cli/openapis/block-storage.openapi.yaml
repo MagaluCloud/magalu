@@ -1680,14 +1680,17 @@ components:
                     type: string
                     title: Name
                 status:
+                    type: string
                     anyOf:
                     -   $ref: '#/components/schemas/InstanceStatus'
                     title: Status
                 state:
+                    type: string
                     anyOf:
                     -   $ref: '#/components/schemas/InstanceState'
                     title: State
                 created_at:
+                    type: string
                     anyOf:
                     -   type: string
                     -   type: string
@@ -1695,6 +1698,7 @@ components:
                     title: Created At
                     example: '2022-01-01T00:00:10Z'
                 updated_at:
+                    type: string
                     anyOf:
                     -   type: string
                     -   type: string
@@ -1725,6 +1729,7 @@ components:
                     -   $ref: '#/components/schemas/IdRequest'
                     title: Instance
                 attached_at:
+                    type: string
                     anyOf:
                     -   type: string
                     -   type: string
@@ -1732,6 +1737,7 @@ components:
                     title: Attached At
                     example: '2022-01-01T00:00:10Z'
                 device:
+                    type: string
                     anyOf:
                     -   type: string
                     title: Device
@@ -1768,6 +1774,7 @@ components:
                                 type: integer
                                 title: Size
                             description:
+                                type: string
                                 anyOf:
                                 -   type: string
                                 title: Description
@@ -1789,6 +1796,7 @@ components:
                                 - creating_pending
                                 - creating
                                 - creating_error
+                                - creating_error_quota
                                 - snapshot_deleting
                                 - snapshot_deleting_error
                                 - deleting_pending
@@ -1799,6 +1807,7 @@ components:
                                 - restoring_error
                                 - provisioning
                             created_at:
+                                type: string
                                 anyOf:
                                 -   type: string
                                 -   type: string
@@ -1806,6 +1815,7 @@ components:
                                 title: Created At
                                 example: '2022-01-01T00:00:10Z'
                             updated_at:
+                                type: string
                                 anyOf:
                                 -   type: string
                                 -   type: string
@@ -1850,17 +1860,17 @@ components:
                         example:
                             created_at: '2022-01-01T00:00:10Z'
                             description: my backup for testing
-                            id: 5eb39750-5484-4a65-9c2f-8a4d21b32887
+                            id: dd47bfda-1c3b-48a3-b316-f46eb10a45bf
                             name: My backup
                             size: 10
                             source_backup:
-                                id: 930de1c0-a67f-408c-89ec-63e69c1c9398
+                                id: 845ea7d7-e176-4a08-8f0d-3ca7aeac3137
                             state: available
                             status: completed
                             type: incremental
                             updated_at: '2022-01-01T00:00:10Z'
                             volume:
-                                id: d4be7e8f-8e74-4160-982f-f45ef792dbf1
+                                id: 71cd27ce-3162-4ab9-bbbd-738229ebc702
                     title: Backups
             title: BackupListResponse
             required:
@@ -1869,17 +1879,17 @@ components:
                 backups:
                 -   created_at: '2022-01-01T00:00:10Z'
                     description: my backup for testing
-                    id: 86a34883-82f7-4564-a01d-f2f9882362e8
+                    id: 715becb2-9000-4475-987a-ada95b222641
                     name: My backup
                     size: 10
                     source_backup:
-                        id: 86410935-3ff6-497d-8abf-f9fa61b58ad4
+                        id: 2bac80ce-8c70-4576-8f0c-f0771e715ff4
                     state: available
                     status: completed
                     type: incremental
                     updated_at: '2022-01-01T00:00:10Z'
                     volume:
-                        id: 3eaccd29-b89e-4e09-8e5b-c28d1d8651e4
+                        id: d5177c37-1438-43b9-b0a9-5973b7185c1d
         BackupResponse:
             type: object
             properties:
@@ -1893,6 +1903,7 @@ components:
                     type: integer
                     title: Size
                 description:
+                    type: string
                     anyOf:
                     -   type: string
                     title: Description
@@ -1914,6 +1925,7 @@ components:
                     - creating_pending
                     - creating
                     - creating_error
+                    - creating_error_quota
                     - snapshot_deleting
                     - snapshot_deleting_error
                     - deleting_pending
@@ -1924,6 +1936,7 @@ components:
                     - restoring_error
                     - provisioning
                 created_at:
+                    type: string
                     anyOf:
                     -   type: string
                     -   type: string
@@ -1931,6 +1944,7 @@ components:
                     title: Created At
                     example: '2022-01-01T00:00:10Z'
                 updated_at:
+                    type: string
                     anyOf:
                     -   type: string
                     -   type: string
@@ -1975,17 +1989,17 @@ components:
             example:
                 created_at: '2022-01-01T00:00:10Z'
                 description: my backup for testing
-                id: 5eb39750-5484-4a65-9c2f-8a4d21b32887
+                id: dd47bfda-1c3b-48a3-b316-f46eb10a45bf
                 name: My backup
                 size: 10
                 source_backup:
-                    id: 930de1c0-a67f-408c-89ec-63e69c1c9398
+                    id: 845ea7d7-e176-4a08-8f0d-3ca7aeac3137
                 state: available
                 status: completed
                 type: incremental
                 updated_at: '2022-01-01T00:00:10Z'
                 volume:
-                    id: d4be7e8f-8e74-4160-982f-f45ef792dbf1
+                    id: 71cd27ce-3162-4ab9-bbbd-738229ebc702
         BackupState:
             type: string
             title: BackupState
@@ -2003,6 +2017,7 @@ components:
             - creating_pending
             - creating
             - creating_error
+            - creating_error_quota
             - snapshot_deleting
             - snapshot_deleting_error
             - deleting_pending
@@ -2022,6 +2037,7 @@ components:
             type: object
             properties:
                 description:
+                    type: string
                     anyOf:
                     -   type: string
                     title: Description
@@ -2234,6 +2250,7 @@ components:
             type: object
             properties:
                 name:
+                    type: string
                     anyOf:
                     -   type: string
                         maxLength: 255
@@ -2241,6 +2258,7 @@ components:
                     title: Name
                     nullable: true
                 description:
+                    type: string
                     anyOf:
                     -   type: string
                         maxLength: 255
@@ -2276,6 +2294,7 @@ components:
                     type: string
                     title: Name
                 description:
+                    type: string
                     anyOf:
                     -   type: string
                     title: Description
@@ -2308,6 +2327,7 @@ components:
                                 type: integer
                                 title: Size
                             description:
+                                type: string
                                 anyOf:
                                 -   type: string
                                 title: Description
@@ -2332,6 +2352,7 @@ components:
                                 - deleted
                                 - deleted_error
                             created_at:
+                                type: string
                                 anyOf:
                                 -   type: string
                                 -   type: string
@@ -2339,6 +2360,7 @@ components:
                                 title: Created At
                                 example: '2022-01-01T00:00:10Z'
                             updated_at:
+                                type: string
                                 anyOf:
                                 -   type: string
                                 -   type: string
@@ -2401,6 +2423,7 @@ components:
                     type: integer
                     title: Size
                 description:
+                    type: string
                     anyOf:
                     -   type: string
                     title: Description
@@ -2425,6 +2448,7 @@ components:
                     - deleted
                     - deleted_error
                 created_at:
+                    type: string
                     anyOf:
                     -   type: string
                     -   type: string
@@ -2432,6 +2456,7 @@ components:
                     title: Created At
                     example: '2022-01-01T00:00:10Z'
                 updated_at:
+                    type: string
                     anyOf:
                     -   type: string
                     -   type: string
@@ -2471,6 +2496,7 @@ components:
                 name:
                     type: string
                     title: Name
+                    minLength: 1
             title: SnapshotRestoreRequest
             required:
             - name
@@ -2684,6 +2710,7 @@ components:
                     - deleted
                     - legacy
                 created_at:
+                    type: string
                     anyOf:
                     -   type: string
                     -   type: string
@@ -2691,6 +2718,7 @@ components:
                     title: Created At
                     example: '2022-01-01T00:00:10Z'
                 updated_at:
+                    type: string
                     anyOf:
                     -   type: string
                     -   type: string
@@ -2918,6 +2946,7 @@ components:
                                 - deleted
                                 - legacy
                             created_at:
+                                type: string
                                 anyOf:
                                 -   type: string
                                 -   type: string
@@ -2925,6 +2954,7 @@ components:
                                 title: Created At
                                 example: '2022-01-01T00:00:10Z'
                             updated_at:
+                                type: string
                                 anyOf:
                                 -   type: string
                                 -   type: string
@@ -3017,16 +3047,17 @@ tags:
     description: Operations with volume types for volumes.
 -   name: snapshots
     description: Operations with snapshots for volumes.
+$id: https://block-storage.jaxyendy.com/openapi.json
 servers:
 -   url: https://{env}/{region}/volume
     variables:
         region:
+            description: Region to reach the service
+            default: br-se1
             enum:
             - br-ne-1
             - br-se1
             - br-mgl1
-            default: br-se1
-            description: Region to reach the service
             x-mgc-transforms:
             -   type: translate
                 allowMissing: true
@@ -3036,11 +3067,11 @@ servers:
                 -   from: br-mgl1
                     to: br-se-1
         env:
+            description: Environment to use
+            default: api.magalu.cloud
             enum:
             - api.magalu.cloud
             - api.pre-prod.jaxyendy.com
-            default: api.magalu.cloud
-            description: Environment to use
             x-mgc-transforms:
             -   type: translate
                 translations:
@@ -3048,4 +3079,3 @@ servers:
                     to: api.magalu.cloud
                 -   from: pre-prod
                     to: api.pre-prod.jaxyendy.com
-$id: https://block-storage.jaxyendy.com/openapi.json

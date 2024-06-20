@@ -29,6 +29,7 @@ Database instances management. | backups
 - `created_at` (String)
 - `current_mode` (String) An enumeration.
 - `db_size` (Number)
+- `engine_id` (String)
 - `finished_at` (String)
 - `id` (String) The ID of this resource.
 - `location` (String)

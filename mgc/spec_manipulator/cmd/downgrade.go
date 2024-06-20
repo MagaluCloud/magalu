@@ -49,6 +49,8 @@ func prepareSchema(xchema *base.Schema) *base.Schema {
 
 	newChema.Const = nil
 
+	hasType := ""
+
 	// newChema.AdditionalProperties = xchema.AdditionalProperties
 	if xchema.AdditionalProperties != nil {
 		if xchema.AdditionalProperties.A != nil {
@@ -117,7 +119,7 @@ func prepareSchema(xchema *base.Schema) *base.Schema {
 					*newChema.Nullable = true
 					continue
 				}
-				// newChema.Type = []string{xT}
+				hasType = xT
 				newAllOf = append(newAllOf, base.CreateSchemaProxy(prepareSchema(xA.Schema())))
 			}
 		}
@@ -141,7 +143,7 @@ func prepareSchema(xchema *base.Schema) *base.Schema {
 					*newChema.Nullable = true
 					continue
 				}
-				// newChema.Type = []string{xT}
+				hasType = xT
 				newOneOf = append(newOneOf, base.CreateSchemaProxy(prepareSchema(xO.Schema())))
 			}
 		}
@@ -164,7 +166,7 @@ func prepareSchema(xchema *base.Schema) *base.Schema {
 					*newChema.Nullable = true
 					continue
 				}
-				// newChema.Type = []string{xT}
+				hasType = xT
 				newAnyOf = append(newAnyOf, base.CreateSchemaProxy(prepareSchema(xA.Schema())))
 			}
 		}
@@ -263,6 +265,9 @@ func prepareSchema(xchema *base.Schema) *base.Schema {
 		}
 	}
 
+	if hasType != "" && (newChema.Type == nil) {
+		newChema.Type = []string{hasType}
+	}
 	return newChema
 
 }

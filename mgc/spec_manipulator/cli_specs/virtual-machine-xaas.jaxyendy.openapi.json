@@ -3,7 +3,7 @@
   "info": {
     "title": "Internal Virtual Machine Api Product",
     "description": "Virtual Machine Api Product",
-    "version": "1.237.0"
+    "version": "1.240.0"
   },
   "paths": {
     "/v1/health": {
@@ -1779,7 +1779,7 @@
           "name": "instance name",
           "network": {
             "associate_public_ip": true,
-            "nic": {
+            "interface": {
               "security_groups": [
                 {
                   "id": "f273fbde-2ddf-4dcd-8c41-342671ac0d17"
@@ -2688,7 +2688,7 @@
               "name": "default"
             }
           },
-          "nic": {
+          "interface": {
             "anyOf": [
               {
                 "$ref": "#/components/schemas/ID"
@@ -2700,7 +2700,7 @@
                 "type": "null"
               }
             ],
-            "title": "Nic"
+            "title": "Interface"
           },
           "associate_public_ip": {
             "type": "boolean",
@@ -2711,7 +2711,7 @@
         "title": "InstanceCreateRequestV1NetworkDefault",
         "example": {
           "associate_public_ip": true,
-          "nic": {
+          "interface": {
             "security_groups": [
               {
                 "id": "f273fbde-2ddf-4dcd-8c41-342671ac0d17"

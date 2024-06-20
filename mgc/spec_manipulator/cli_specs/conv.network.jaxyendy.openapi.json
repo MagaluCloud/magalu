@@ -2,13 +2,13 @@
   "openapi": "3.0.3",
   "info": {
     "title": "vpc-api-product",
-    "description": "APIs related to the VPC product",
+    "description": "APIs referentes ao produto de VPC",
     "contact": {
       "name": "Tribo IAAS Cloud",
       "url": "https://github.com/luizalabs",
       "email": "thullyo.cunha@luizalabs.com"
     },
-    "version": "1.124.1"
+    "version": "1.125.3"
   },
   "paths": {
     "/v0/healthcheck": {
@@ -115,6 +115,7 @@
             "in": "header",
             "required": false,
             "schema": {
+              "type": "string",
               "anyOf": [
                 {
                   "type": "string"
@@ -303,6 +304,7 @@
             "in": "header",
             "required": false,
             "schema": {
+              "type": "string",
               "anyOf": [
                 {
                   "type": "string"
@@ -719,6 +721,7 @@
             "description": "the approximate time in seconds you want to wait when simulating the request as synchronous (only works with wait=true)",
             "required": false,
             "schema": {
+              "type": "integer",
               "anyOf": [
                 {
                   "type": "integer"
@@ -1195,6 +1198,7 @@
             "description": "The request will be asynchronous. The wait parameter tells the API that you want the request to simulate synchronous behavior (to maintain endpoint compatibility). You can set an approximate timeout with the waitTimeout parameter",
             "required": false,
             "schema": {
+              "type": "boolean",
               "anyOf": [
                 {
                   "type": "boolean"
@@ -1212,6 +1216,7 @@
             "description": "the approximate time in seconds you want to wait when simulating the request as synchronous (only works with wait=true)",
             "required": false,
             "schema": {
+              "type": "integer",
               "anyOf": [
                 {
                   "type": "integer"
@@ -1615,6 +1620,7 @@
             "description": "Id of the vpc to create the security group in",
             "required": true,
             "schema": {
+              "type": "string",
               "anyOf": [
                 {
                   "type": "string"
@@ -1631,6 +1637,7 @@
             "description": "The request will be asynchronous. The wait parameter tells the API that you want the request to simulate synchronous behavior (to maintain endpoint compatibility). You can set an approximate timeout with the waitTimeout parameter",
             "required": false,
             "schema": {
+              "type": "boolean",
               "anyOf": [
                 {
                   "type": "boolean"
@@ -1648,6 +1655,7 @@
             "description": "the approximate time in seconds you want to wait when simulating the request as synchronous (only works with wait=true)",
             "required": false,
             "schema": {
+              "type": "integer",
               "anyOf": [
                 {
                   "type": "integer"
@@ -1937,6 +1945,7 @@
             "in": "header",
             "required": false,
             "schema": {
+              "type": "string",
               "anyOf": [
                 {
                   "type": "string"
@@ -2547,6 +2556,7 @@
                 "loc": {
                   "type": "array",
                   "items": {
+                    "type": "integer",
                     "anyOf": [
                       {
                         "type": "string"
@@ -2630,6 +2640,7 @@
                   "title": "Id"
                 },
                 "external_id": {
+                  "type": "string",
                   "anyOf": [
                     {
                       "type": "string"
@@ -2647,6 +2658,7 @@
                   "title": "Name"
                 },
                 "created_at": {
+                  "type": "string",
                   "anyOf": [
                     {
                       "type": "string",
@@ -2657,6 +2669,7 @@
                   "nullable": true
                 },
                 "updated": {
+                  "type": "string",
                   "anyOf": [
                     {
                       "type": "string",
@@ -2675,6 +2688,7 @@
                   "title": "Status"
                 },
                 "error": {
+                  "type": "string",
                   "anyOf": [
                     {
                       "type": "string"
@@ -2742,6 +2756,7 @@
             "title": "Id"
           },
           "external_id": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -2759,6 +2774,7 @@
             "title": "Name"
           },
           "created_at": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string",
@@ -2769,6 +2785,7 @@
             "nullable": true
           },
           "updated": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string",
@@ -2787,6 +2804,7 @@
             "title": "Status"
           },
           "error": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -2836,6 +2854,7 @@
             "minLength": 5
           },
           "description": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -2845,6 +2864,7 @@
             "nullable": true
           },
           "status": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -2854,6 +2874,7 @@
             "nullable": true
           },
           "mtu": {
+            "type": "integer",
             "anyOf": [
               {
                 "type": "integer"
@@ -2863,6 +2884,7 @@
             "nullable": true
           },
           "subnets": {
+            "type": "array",
             "anyOf": [
               {
                 "type": "array",
@@ -2876,6 +2898,7 @@
             "nullable": true
           },
           "shared": {
+            "type": "boolean",
             "anyOf": [
               {
                 "type": "boolean"
@@ -2885,6 +2908,7 @@
             "nullable": true
           },
           "tags": {
+            "type": "array",
             "anyOf": [
               {
                 "type": "array",
@@ -2898,6 +2922,7 @@
             "nullable": true
           },
           "port_security_enabled": {
+            "type": "boolean",
             "anyOf": [
               {
                 "type": "boolean"
@@ -2907,6 +2932,7 @@
             "nullable": true
           },
           "router_external": {
+            "type": "boolean",
             "anyOf": [
               {
                 "type": "boolean"
@@ -2916,6 +2942,7 @@
             "nullable": true
           },
           "created_at": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string",
@@ -2926,6 +2953,7 @@
             "nullable": true
           },
           "updated_at": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string",
@@ -2969,6 +2997,7 @@
             "minLength": 5
           },
           "has_pip": {
+            "type": "boolean",
             "anyOf": [
               {
                 "type": "boolean"
@@ -2979,6 +3008,7 @@
             "nullable": true
           },
           "has_sg": {
+            "type": "boolean",
             "anyOf": [
               {
                 "type": "boolean"
@@ -2989,6 +3019,7 @@
             "nullable": true
           },
           "subnets": {
+            "type": "array",
             "anyOf": [
               {
                 "type": "array",
@@ -3002,6 +3033,7 @@
             "nullable": true
           },
           "security_groups_id": {
+            "type": "array",
             "anyOf": [
               {
                 "type": "array",
@@ -3099,6 +3131,7 @@
         "type": "object",
         "properties": {
           "id": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -3108,6 +3141,7 @@
             "nullable": true
           },
           "name": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -3117,6 +3151,7 @@
             "nullable": true
           },
           "description": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -3126,6 +3161,7 @@
             "nullable": true
           },
           "is_admin_state_up": {
+            "type": "boolean",
             "anyOf": [
               {
                 "type": "boolean"
@@ -3135,6 +3171,7 @@
             "nullable": true
           },
           "vpc_id": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -3144,6 +3181,7 @@
             "nullable": true
           },
           "is_port_security_enabled": {
+            "type": "boolean",
             "anyOf": [
               {
                 "type": "boolean"
@@ -3161,6 +3199,7 @@
             "default": []
           },
           "public_ip": {
+            "type": "array",
             "anyOf": [
               {
                 "type": "array",
@@ -3168,6 +3207,7 @@
                   "type": "object",
                   "properties": {
                     "public_ip_id": {
+                      "type": "string",
                       "anyOf": [
                         {
                           "type": "string"
@@ -3177,6 +3217,7 @@
                       "nullable": true
                     },
                     "public_ip": {
+                      "type": "string",
                       "anyOf": [
                         {
                           "type": "string"
@@ -3226,6 +3267,7 @@
             "default": []
           },
           "created_at": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string",
@@ -3236,6 +3278,7 @@
             "nullable": true
           },
           "updated": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string",
@@ -3277,6 +3320,7 @@
         "type": "object",
         "properties": {
           "id": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -3333,6 +3377,7 @@
               "type": "object",
               "properties": {
                 "id": {
+                  "type": "string",
                   "anyOf": [
                     {
                       "type": "string"
@@ -3342,6 +3387,7 @@
                   "nullable": true
                 },
                 "name": {
+                  "type": "string",
                   "anyOf": [
                     {
                       "type": "string"
@@ -3351,6 +3397,7 @@
                   "nullable": true
                 },
                 "description": {
+                  "type": "string",
                   "anyOf": [
                     {
                       "type": "string"
@@ -3360,6 +3407,7 @@
                   "nullable": true
                 },
                 "is_admin_state_up": {
+                  "type": "boolean",
                   "anyOf": [
                     {
                       "type": "boolean"
@@ -3369,6 +3417,7 @@
                   "nullable": true
                 },
                 "vpc_id": {
+                  "type": "string",
                   "anyOf": [
                     {
                       "type": "string"
@@ -3378,6 +3427,7 @@
                   "nullable": true
                 },
                 "is_port_security_enabled": {
+                  "type": "boolean",
                   "anyOf": [
                     {
                       "type": "boolean"
@@ -3395,6 +3445,7 @@
                   "default": []
                 },
                 "public_ip": {
+                  "type": "array",
                   "anyOf": [
                     {
                       "type": "array",
@@ -3402,6 +3453,7 @@
                         "type": "object",
                         "properties": {
                           "public_ip_id": {
+                            "type": "string",
                             "anyOf": [
                               {
                                 "type": "string"
@@ -3411,6 +3463,7 @@
                             "nullable": true
                           },
                           "public_ip": {
+                            "type": "string",
                             "anyOf": [
                               {
                                 "type": "string"
@@ -3460,6 +3513,7 @@
                   "default": []
                 },
                 "created_at": {
+                  "type": "string",
                   "anyOf": [
                     {
                       "type": "string",
@@ -3470,6 +3524,7 @@
                   "nullable": true
                 },
                 "updated": {
+                  "type": "string",
                   "anyOf": [
                     {
                       "type": "string",
@@ -3553,6 +3608,7 @@
               "type": "object",
               "properties": {
                 "id": {
+                  "type": "string",
                   "anyOf": [
                     {
                       "type": "string"
@@ -3636,6 +3692,7 @@
         "type": "object",
         "properties": {
           "description": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -3671,6 +3728,7 @@
         "type": "object",
         "properties": {
           "id": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -3680,6 +3738,7 @@
             "nullable": true
           },
           "external_id": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -3689,6 +3748,7 @@
             "nullable": true
           },
           "vpc_id": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -3698,6 +3758,7 @@
             "nullable": true
           },
           "description": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -3707,6 +3768,7 @@
             "nullable": true
           },
           "public_ip": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -3716,6 +3778,7 @@
             "nullable": true
           },
           "port_id": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -3725,6 +3788,7 @@
             "nullable": true
           },
           "created_at": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string",
@@ -3735,6 +3799,7 @@
             "nullable": true
           },
           "updated": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string",
@@ -3745,6 +3810,7 @@
             "nullable": true
           },
           "status": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -3754,6 +3820,7 @@
             "nullable": true
           },
           "error": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -3797,6 +3864,7 @@
         "type": "object",
         "properties": {
           "public_ip_id": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -3806,6 +3874,7 @@
             "nullable": true
           },
           "public_ip": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -3843,6 +3912,7 @@
             ]
           },
           "public_ip": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -3852,6 +3922,7 @@
             "nullable": true
           },
           "external_id": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -3861,6 +3932,7 @@
             "nullable": true
           },
           "error": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -3890,6 +3962,7 @@
               "type": "object",
               "properties": {
                 "id": {
+                  "type": "string",
                   "anyOf": [
                     {
                       "type": "string"
@@ -3899,6 +3972,7 @@
                   "nullable": true
                 },
                 "external_id": {
+                  "type": "string",
                   "anyOf": [
                     {
                       "type": "string"
@@ -3908,6 +3982,7 @@
                   "nullable": true
                 },
                 "vpc_id": {
+                  "type": "string",
                   "anyOf": [
                     {
                       "type": "string"
@@ -3917,6 +3992,7 @@
                   "nullable": true
                 },
                 "description": {
+                  "type": "string",
                   "anyOf": [
                     {
                       "type": "string"
@@ -3926,6 +4002,7 @@
                   "nullable": true
                 },
                 "public_ip": {
+                  "type": "string",
                   "anyOf": [
                     {
                       "type": "string"
@@ -3935,6 +4012,7 @@
                   "nullable": true
                 },
                 "port_id": {
+                  "type": "string",
                   "anyOf": [
                     {
                       "type": "string"
@@ -3944,6 +4022,7 @@
                   "nullable": true
                 },
                 "created_at": {
+                  "type": "string",
                   "anyOf": [
                     {
                       "type": "string",
@@ -3954,6 +4033,7 @@
                   "nullable": true
                 },
                 "updated": {
+                  "type": "string",
                   "anyOf": [
                     {
                       "type": "string",
@@ -3964,6 +4044,7 @@
                   "nullable": true
                 },
                 "status": {
+                  "type": "string",
                   "anyOf": [
                     {
                       "type": "string"
@@ -3973,6 +4054,7 @@
                   "nullable": true
                 },
                 "error": {
+                  "type": "string",
                   "anyOf": [
                     {
                       "type": "string"
@@ -4085,6 +4167,16 @@
           ]
         }
       },
+      "ResourceType": {
+        "type": "string",
+        "title": "ResourceType",
+        "enum": [
+          "security_group",
+          "rule",
+          "public_ip",
+          "security_group, rule, public_ip"
+        ]
+      },
       "RouteRequest": {
         "type": "object",
         "properties": {
@@ -4111,6 +4203,7 @@
         "type": "object",
         "properties": {
           "id": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -4120,6 +4213,7 @@
             "nullable": true
           },
           "vpc_id": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -4129,6 +4223,7 @@
             "nullable": true
           },
           "router_id": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -4138,6 +4233,7 @@
             "nullable": true
           },
           "ip_address": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -4147,6 +4243,7 @@
             "nullable": true
           },
           "nic_vpc_id": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -4156,6 +4253,7 @@
             "nullable": true
           },
           "created_at": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string",
@@ -4180,6 +4278,7 @@
         "type": "object",
         "properties": {
           "router_interfaces": {
+            "type": "array",
             "anyOf": [
               {
                 "type": "array",
@@ -4187,6 +4286,7 @@
                   "type": "object",
                   "properties": {
                     "id": {
+                      "type": "string",
                       "anyOf": [
                         {
                           "type": "string"
@@ -4196,6 +4296,7 @@
                       "nullable": true
                     },
                     "vpc_id": {
+                      "type": "string",
                       "anyOf": [
                         {
                           "type": "string"
@@ -4205,6 +4306,7 @@
                       "nullable": true
                     },
                     "router_id": {
+                      "type": "string",
                       "anyOf": [
                         {
                           "type": "string"
@@ -4214,6 +4316,7 @@
                       "nullable": true
                     },
                     "ip_address": {
+                      "type": "string",
                       "anyOf": [
                         {
                           "type": "string"
@@ -4223,6 +4326,7 @@
                       "nullable": true
                     },
                     "nic_vpc_id": {
+                      "type": "string",
                       "anyOf": [
                         {
                           "type": "string"
@@ -4232,6 +4336,7 @@
                       "nullable": true
                     },
                     "created_at": {
+                      "type": "string",
                       "anyOf": [
                         {
                           "type": "string",
@@ -4277,6 +4382,7 @@
         "type": "object",
         "properties": {
           "id": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -4290,6 +4396,7 @@
             "title": "Vpc Id"
           },
           "external_network": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -4299,6 +4406,7 @@
             "nullable": true
           },
           "external_id": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -4312,6 +4420,7 @@
             "title": "Is Default"
           },
           "name": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -4321,6 +4430,7 @@
             "nullable": true
           },
           "created_at": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string",
@@ -4331,6 +4441,7 @@
             "nullable": true
           },
           "updated": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string",
@@ -4341,6 +4452,7 @@
             "nullable": true
           },
           "function": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -4355,6 +4467,7 @@
             "title": "Status"
           },
           "error": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -4364,6 +4477,7 @@
             "nullable": true
           },
           "zone": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -4398,6 +4512,7 @@
         "type": "object",
         "properties": {
           "direction": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -4407,6 +4522,7 @@
             "nullable": true
           },
           "port_range_min": {
+            "type": "integer",
             "anyOf": [
               {
                 "type": "integer"
@@ -4416,6 +4532,7 @@
             "nullable": true
           },
           "port_range_max": {
+            "type": "integer",
             "anyOf": [
               {
                 "type": "integer"
@@ -4425,6 +4542,7 @@
             "nullable": true
           },
           "protocol": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -4434,6 +4552,7 @@
             "nullable": true
           },
           "remote_ip_prefix": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -4443,6 +4562,7 @@
             "nullable": true
           },
           "remote_group_id": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -4452,6 +4572,7 @@
             "nullable": true
           },
           "ethertype": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -4492,6 +4613,7 @@
         "type": "object",
         "properties": {
           "security_group_id": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -4501,6 +4623,7 @@
             "nullable": true
           },
           "direction": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -4510,6 +4633,7 @@
             "nullable": true
           },
           "port_range_min": {
+            "type": "integer",
             "anyOf": [
               {
                 "type": "integer"
@@ -4519,6 +4643,7 @@
             "nullable": true
           },
           "port_range_max": {
+            "type": "integer",
             "anyOf": [
               {
                 "type": "integer"
@@ -4528,6 +4653,7 @@
             "nullable": true
           },
           "protocol": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -4537,6 +4663,7 @@
             "nullable": true
           },
           "remote_ip_prefix": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -4546,6 +4673,7 @@
             "nullable": true
           },
           "remote_group_id": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -4564,6 +4692,7 @@
             ]
           },
           "error": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -4573,6 +4702,7 @@
             "nullable": true
           },
           "resource_id": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -4582,6 +4712,7 @@
             "nullable": true
           },
           "external_id": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -4591,6 +4722,7 @@
             "nullable": true
           },
           "rules_zones": {
+            "type": "array",
             "anyOf": [
               {
                 "type": "array",
@@ -4602,6 +4734,7 @@
                       "title": "Resource Id"
                     },
                     "zone": {
+                      "type": "string",
                       "anyOf": [
                         {
                           "type": "string"
@@ -4654,6 +4787,7 @@
         "type": "object",
         "properties": {
           "id": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -4663,6 +4797,7 @@
             "nullable": true
           },
           "external_id": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -4672,6 +4807,7 @@
             "nullable": true
           },
           "security_group_id": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -4681,6 +4817,7 @@
             "nullable": true
           },
           "direction": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -4690,6 +4827,7 @@
             "nullable": true
           },
           "port_range_min": {
+            "type": "integer",
             "anyOf": [
               {
                 "type": "integer"
@@ -4699,6 +4837,7 @@
             "nullable": true
           },
           "port_range_max": {
+            "type": "integer",
             "anyOf": [
               {
                 "type": "integer"
@@ -4708,6 +4847,7 @@
             "nullable": true
           },
           "protocol": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -4717,6 +4857,7 @@
             "nullable": true
           },
           "remote_ip_prefix": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -4726,6 +4867,7 @@
             "nullable": true
           },
           "remote_group_id": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -4735,6 +4877,7 @@
             "nullable": true
           },
           "ethertype": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -4744,6 +4887,7 @@
             "nullable": true
           },
           "created_at": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string",
@@ -4763,6 +4907,7 @@
             ]
           },
           "error": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -4795,6 +4940,7 @@
         "type": "object",
         "properties": {
           "direction": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -4804,6 +4950,7 @@
             "nullable": true
           },
           "port_range_min": {
+            "type": "integer",
             "anyOf": [
               {
                 "type": "integer"
@@ -4813,6 +4960,7 @@
             "nullable": true
           },
           "port_range_max": {
+            "type": "integer",
             "anyOf": [
               {
                 "type": "integer"
@@ -4822,6 +4970,7 @@
             "nullable": true
           },
           "protocol": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -4831,6 +4980,7 @@
             "nullable": true
           },
           "remote_ip_prefix": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -4840,6 +4990,7 @@
             "nullable": true
           },
           "remote_group_id": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -4857,6 +5008,7 @@
             "nullable": true
           },
           "error": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -4866,6 +5018,7 @@
             "nullable": true
           },
           "id": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -4875,6 +5028,7 @@
             "nullable": true
           },
           "security_group_id": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -4884,6 +5038,7 @@
             "nullable": true
           },
           "ethertype": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -4893,6 +5048,7 @@
             "nullable": true
           },
           "created_at": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string",
@@ -4932,6 +5088,7 @@
         "type": "object",
         "properties": {
           "direction": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -4941,6 +5098,7 @@
             "nullable": true
           },
           "port_range_min": {
+            "type": "integer",
             "anyOf": [
               {
                 "type": "integer"
@@ -4950,6 +5108,7 @@
             "nullable": true
           },
           "port_range_max": {
+            "type": "integer",
             "anyOf": [
               {
                 "type": "integer"
@@ -4959,6 +5118,7 @@
             "nullable": true
           },
           "protocol": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -4968,6 +5128,7 @@
             "nullable": true
           },
           "remote_ip_prefix": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -4977,6 +5138,7 @@
             "nullable": true
           },
           "remote_group_id": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -4994,6 +5156,7 @@
             "nullable": true
           },
           "error": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -5003,6 +5166,7 @@
             "nullable": true
           },
           "api_id": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -5012,6 +5176,7 @@
             "nullable": true
           },
           "rule_zones": {
+            "type": "object",
             "anyOf": [
               {
                 "type": "object",
@@ -5058,6 +5223,7 @@
             "title": "Resource Id"
           },
           "zone": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -5080,6 +5246,7 @@
         "type": "object",
         "properties": {
           "api_id": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -5089,6 +5256,7 @@
             "nullable": true
           },
           "zone": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -5098,6 +5266,7 @@
             "nullable": true
           },
           "external_id": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -5115,6 +5284,7 @@
             "nullable": true
           },
           "error": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -5142,6 +5312,7 @@
               "type": "object",
               "properties": {
                 "id": {
+                  "type": "string",
                   "anyOf": [
                     {
                       "type": "string"
@@ -5151,6 +5322,7 @@
                   "nullable": true
                 },
                 "external_id": {
+                  "type": "string",
                   "anyOf": [
                     {
                       "type": "string"
@@ -5160,6 +5332,7 @@
                   "nullable": true
                 },
                 "security_group_id": {
+                  "type": "string",
                   "anyOf": [
                     {
                       "type": "string"
@@ -5169,6 +5342,7 @@
                   "nullable": true
                 },
                 "direction": {
+                  "type": "string",
                   "anyOf": [
                     {
                       "type": "string"
@@ -5178,6 +5352,7 @@
                   "nullable": true
                 },
                 "port_range_min": {
+                  "type": "integer",
                   "anyOf": [
                     {
                       "type": "integer"
@@ -5187,6 +5362,7 @@
                   "nullable": true
                 },
                 "port_range_max": {
+                  "type": "integer",
                   "anyOf": [
                     {
                       "type": "integer"
@@ -5196,6 +5372,7 @@
                   "nullable": true
                 },
                 "protocol": {
+                  "type": "string",
                   "anyOf": [
                     {
                       "type": "string"
@@ -5205,6 +5382,7 @@
                   "nullable": true
                 },
                 "remote_ip_prefix": {
+                  "type": "string",
                   "anyOf": [
                     {
                       "type": "string"
@@ -5214,6 +5392,7 @@
                   "nullable": true
                 },
                 "remote_group_id": {
+                  "type": "string",
                   "anyOf": [
                     {
                       "type": "string"
@@ -5223,6 +5402,7 @@
                   "nullable": true
                 },
                 "ethertype": {
+                  "type": "string",
                   "anyOf": [
                     {
                       "type": "string"
@@ -5232,6 +5412,7 @@
                   "nullable": true
                 },
                 "created_at": {
+                  "type": "string",
                   "anyOf": [
                     {
                       "type": "string",
@@ -5251,6 +5432,7 @@
                   ]
                 },
                 "error": {
+                  "type": "string",
                   "anyOf": [
                     {
                       "type": "string"
@@ -5308,6 +5490,7 @@
         "type": "object",
         "properties": {
           "name": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string",
@@ -5319,6 +5502,7 @@
             "nullable": true
           },
           "description": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -5387,6 +5571,7 @@
         "type": "object",
         "properties": {
           "id": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -5396,6 +5581,7 @@
             "nullable": true
           },
           "vpc_id": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -5405,6 +5591,7 @@
             "nullable": true
           },
           "name": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -5414,6 +5601,7 @@
             "nullable": true
           },
           "description": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -5423,6 +5611,7 @@
             "nullable": true
           },
           "created_at": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string",
@@ -5433,6 +5622,7 @@
             "nullable": true
           },
           "updated": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string",
@@ -5452,6 +5642,7 @@
             ]
           },
           "error": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -5461,6 +5652,7 @@
             "nullable": true
           },
           "tenant_id": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -5470,6 +5662,7 @@
             "nullable": true
           },
           "project_type": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -5479,6 +5672,7 @@
             "nullable": true
           },
           "is_default": {
+            "type": "boolean",
             "anyOf": [
               {
                 "type": "boolean"
@@ -5488,6 +5682,7 @@
             "nullable": true
           },
           "external_id": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -5497,6 +5692,7 @@
             "nullable": true
           },
           "rules": {
+            "type": "array",
             "anyOf": [
               {
                 "type": "array",
@@ -5504,6 +5700,7 @@
                   "type": "object",
                   "properties": {
                     "direction": {
+                      "type": "string",
                       "anyOf": [
                         {
                           "type": "string"
@@ -5513,6 +5710,7 @@
                       "nullable": true
                     },
                     "port_range_min": {
+                      "type": "integer",
                       "anyOf": [
                         {
                           "type": "integer"
@@ -5522,6 +5720,7 @@
                       "nullable": true
                     },
                     "port_range_max": {
+                      "type": "integer",
                       "anyOf": [
                         {
                           "type": "integer"
@@ -5531,6 +5730,7 @@
                       "nullable": true
                     },
                     "protocol": {
+                      "type": "string",
                       "anyOf": [
                         {
                           "type": "string"
@@ -5540,6 +5740,7 @@
                       "nullable": true
                     },
                     "remote_ip_prefix": {
+                      "type": "string",
                       "anyOf": [
                         {
                           "type": "string"
@@ -5549,6 +5750,7 @@
                       "nullable": true
                     },
                     "remote_group_id": {
+                      "type": "string",
                       "anyOf": [
                         {
                           "type": "string"
@@ -5566,6 +5768,7 @@
                       "nullable": true
                     },
                     "error": {
+                      "type": "string",
                       "anyOf": [
                         {
                           "type": "string"
@@ -5575,6 +5778,7 @@
                       "nullable": true
                     },
                     "id": {
+                      "type": "string",
                       "anyOf": [
                         {
                           "type": "string"
@@ -5584,6 +5788,7 @@
                       "nullable": true
                     },
                     "security_group_id": {
+                      "type": "string",
                       "anyOf": [
                         {
                           "type": "string"
@@ -5593,6 +5798,7 @@
                       "nullable": true
                     },
                     "ethertype": {
+                      "type": "string",
                       "anyOf": [
                         {
                           "type": "string"
@@ -5602,6 +5808,7 @@
                       "nullable": true
                     },
                     "created_at": {
+                      "type": "string",
                       "anyOf": [
                         {
                           "type": "string",
@@ -5679,6 +5886,7 @@
               "type": "object",
               "properties": {
                 "id": {
+                  "type": "string",
                   "anyOf": [
                     {
                       "type": "string"
@@ -5688,6 +5896,7 @@
                   "nullable": true
                 },
                 "vpc_id": {
+                  "type": "string",
                   "anyOf": [
                     {
                       "type": "string"
@@ -5697,6 +5906,7 @@
                   "nullable": true
                 },
                 "name": {
+                  "type": "string",
                   "anyOf": [
                     {
                       "type": "string"
@@ -5706,6 +5916,7 @@
                   "nullable": true
                 },
                 "description": {
+                  "type": "string",
                   "anyOf": [
                     {
                       "type": "string"
@@ -5715,6 +5926,7 @@
                   "nullable": true
                 },
                 "created_at": {
+                  "type": "string",
                   "anyOf": [
                     {
                       "type": "string",
@@ -5725,6 +5937,7 @@
                   "nullable": true
                 },
                 "updated": {
+                  "type": "string",
                   "anyOf": [
                     {
                       "type": "string",
@@ -5744,6 +5957,7 @@
                   ]
                 },
                 "error": {
+                  "type": "string",
                   "anyOf": [
                     {
                       "type": "string"
@@ -5753,6 +5967,7 @@
                   "nullable": true
                 },
                 "tenant_id": {
+                  "type": "string",
                   "anyOf": [
                     {
                       "type": "string"
@@ -5762,6 +5977,7 @@
                   "nullable": true
                 },
                 "project_type": {
+                  "type": "string",
                   "anyOf": [
                     {
                       "type": "string"
@@ -5771,6 +5987,7 @@
                   "nullable": true
                 },
                 "is_default": {
+                  "type": "boolean",
                   "anyOf": [
                     {
                       "type": "boolean"
@@ -5827,6 +6044,7 @@
         "type": "object",
         "properties": {
           "id": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -5836,6 +6054,7 @@
             "nullable": true
           },
           "vpc_id": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -5845,6 +6064,7 @@
             "nullable": true
           },
           "name": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -5854,6 +6074,7 @@
             "nullable": true
           },
           "description": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -5863,6 +6084,7 @@
             "nullable": true
           },
           "created_at": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string",
@@ -5873,6 +6095,7 @@
             "nullable": true
           },
           "updated": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string",
@@ -5892,6 +6115,7 @@
             ]
           },
           "error": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -5901,6 +6125,7 @@
             "nullable": true
           },
           "tenant_id": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -5910,6 +6135,7 @@
             "nullable": true
           },
           "project_type": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -5919,6 +6145,7 @@
             "nullable": true
           },
           "is_default": {
+            "type": "boolean",
             "anyOf": [
               {
                 "type": "boolean"
@@ -5959,6 +6186,7 @@
         "type": "object",
         "properties": {
           "external_id": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -5972,6 +6200,7 @@
             "title": "Status"
           },
           "error": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -5981,6 +6210,7 @@
             "nullable": true
           },
           "api_id": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -5990,6 +6220,7 @@
             "nullable": true
           },
           "rules": {
+            "type": "array",
             "anyOf": [
               {
                 "type": "array",
@@ -5997,6 +6228,7 @@
                   "type": "object",
                   "properties": {
                     "direction": {
+                      "type": "string",
                       "anyOf": [
                         {
                           "type": "string"
@@ -6006,6 +6238,7 @@
                       "nullable": true
                     },
                     "port_range_min": {
+                      "type": "integer",
                       "anyOf": [
                         {
                           "type": "integer"
@@ -6015,6 +6248,7 @@
                       "nullable": true
                     },
                     "port_range_max": {
+                      "type": "integer",
                       "anyOf": [
                         {
                           "type": "integer"
@@ -6024,6 +6258,7 @@
                       "nullable": true
                     },
                     "protocol": {
+                      "type": "string",
                       "anyOf": [
                         {
                           "type": "string"
@@ -6033,6 +6268,7 @@
                       "nullable": true
                     },
                     "remote_ip_prefix": {
+                      "type": "string",
                       "anyOf": [
                         {
                           "type": "string"
@@ -6042,6 +6278,7 @@
                       "nullable": true
                     },
                     "remote_group_id": {
+                      "type": "string",
                       "anyOf": [
                         {
                           "type": "string"
@@ -6059,6 +6296,7 @@
                       "nullable": true
                     },
                     "error": {
+                      "type": "string",
                       "anyOf": [
                         {
                           "type": "string"
@@ -6068,6 +6306,7 @@
                       "nullable": true
                     },
                     "api_id": {
+                      "type": "string",
                       "anyOf": [
                         {
                           "type": "string"
@@ -6077,6 +6316,7 @@
                       "nullable": true
                     },
                     "rule_zones": {
+                      "type": "object",
                       "anyOf": [
                         {
                           "type": "object",
@@ -6122,6 +6362,7 @@
             "nullable": true
           },
           "security_group_zones": {
+            "type": "object",
             "anyOf": [
               {
                 "type": "object",
@@ -6180,6 +6421,7 @@
         "type": "object",
         "properties": {
           "external_id": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -6193,6 +6435,7 @@
             "title": "Status"
           },
           "error": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -6202,6 +6445,7 @@
             "nullable": true
           },
           "api_id": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -6211,6 +6455,7 @@
             "nullable": true
           },
           "zone": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -6253,6 +6498,7 @@
             "title": "Name"
           },
           "description": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -6262,6 +6508,7 @@
             "nullable": true
           },
           "cidr_block": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -6443,6 +6690,7 @@
             "description": "The description for the subnet pool"
           },
           "address_scope_id": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -6586,6 +6834,7 @@
             "title": "Vpc Id"
           },
           "name": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -6595,6 +6844,7 @@
             "nullable": true
           },
           "description": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -6616,6 +6866,7 @@
             "title": "Zone"
           },
           "created_at": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string",
@@ -6626,6 +6877,7 @@
             "nullable": true
           },
           "updated": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string",
@@ -6668,6 +6920,7 @@
             "title": "Vpc Id"
           },
           "name": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -6677,6 +6930,7 @@
             "nullable": true
           },
           "description": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -6698,6 +6952,7 @@
             "title": "Zone"
           },
           "created_at": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string",
@@ -6708,6 +6963,7 @@
             "nullable": true
           },
           "updated": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string",
@@ -6817,6 +7073,7 @@
                   "title": "Vpc Id"
                 },
                 "name": {
+                  "type": "string",
                   "anyOf": [
                     {
                       "type": "string"
@@ -6826,6 +7083,7 @@
                   "nullable": true
                 },
                 "description": {
+                  "type": "string",
                   "anyOf": [
                     {
                       "type": "string"
@@ -6847,6 +7105,7 @@
                   "title": "Zone"
                 },
                 "created_at": {
+                  "type": "string",
                   "anyOf": [
                     {
                       "type": "string",
@@ -6857,6 +7116,7 @@
                   "nullable": true
                 },
                 "updated": {
+                  "type": "string",
                   "anyOf": [
                     {
                       "type": "string",
@@ -6914,6 +7174,7 @@
           "loc": {
             "type": "array",
             "items": {
+              "type": "integer",
               "anyOf": [
                 {
                   "type": "string"
@@ -6949,6 +7210,7 @@
             "title": "Name"
           },
           "description": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -6971,6 +7233,7 @@
         "type": "object",
         "properties": {
           "id": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -7094,6 +7357,7 @@
         "type": "object",
         "properties": {
           "id": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -7103,6 +7367,7 @@
             "nullable": true
           },
           "tenant_id": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -7112,6 +7377,7 @@
             "nullable": true
           },
           "name": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -7121,6 +7387,7 @@
             "nullable": true
           },
           "description": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -7130,6 +7397,7 @@
             "nullable": true
           },
           "routers": {
+            "type": "array",
             "anyOf": [
               {
                 "type": "array",
@@ -7137,6 +7405,7 @@
                   "type": "object",
                   "properties": {
                     "id": {
+                      "type": "string",
                       "anyOf": [
                         {
                           "type": "string"
@@ -7150,6 +7419,7 @@
                       "title": "Vpc Id"
                     },
                     "external_network": {
+                      "type": "string",
                       "anyOf": [
                         {
                           "type": "string"
@@ -7159,6 +7429,7 @@
                       "nullable": true
                     },
                     "external_id": {
+                      "type": "string",
                       "anyOf": [
                         {
                           "type": "string"
@@ -7172,6 +7443,7 @@
                       "title": "Is Default"
                     },
                     "name": {
+                      "type": "string",
                       "anyOf": [
                         {
                           "type": "string"
@@ -7181,6 +7453,7 @@
                       "nullable": true
                     },
                     "created_at": {
+                      "type": "string",
                       "anyOf": [
                         {
                           "type": "string",
@@ -7191,6 +7464,7 @@
                       "nullable": true
                     },
                     "updated": {
+                      "type": "string",
                       "anyOf": [
                         {
                           "type": "string",
@@ -7201,6 +7475,7 @@
                       "nullable": true
                     },
                     "function": {
+                      "type": "string",
                       "anyOf": [
                         {
                           "type": "string"
@@ -7215,6 +7490,7 @@
                       "title": "Status"
                     },
                     "error": {
+                      "type": "string",
                       "anyOf": [
                         {
                           "type": "string"
@@ -7224,6 +7500,7 @@
                       "nullable": true
                     },
                     "zone": {
+                      "type": "string",
                       "anyOf": [
                         {
                           "type": "string"
@@ -7261,6 +7538,7 @@
             "nullable": true
           },
           "networks": {
+            "type": "array",
             "anyOf": [
               {
                 "type": "array",
@@ -7278,6 +7556,7 @@
                       "minLength": 5
                     },
                     "description": {
+                      "type": "string",
                       "anyOf": [
                         {
                           "type": "string"
@@ -7287,6 +7566,7 @@
                       "nullable": true
                     },
                     "status": {
+                      "type": "string",
                       "anyOf": [
                         {
                           "type": "string"
@@ -7296,6 +7576,7 @@
                       "nullable": true
                     },
                     "mtu": {
+                      "type": "integer",
                       "anyOf": [
                         {
                           "type": "integer"
@@ -7305,6 +7586,7 @@
                       "nullable": true
                     },
                     "subnets": {
+                      "type": "array",
                       "anyOf": [
                         {
                           "type": "array",
@@ -7318,6 +7600,7 @@
                       "nullable": true
                     },
                     "shared": {
+                      "type": "boolean",
                       "anyOf": [
                         {
                           "type": "boolean"
@@ -7327,6 +7610,7 @@
                       "nullable": true
                     },
                     "tags": {
+                      "type": "array",
                       "anyOf": [
                         {
                           "type": "array",
@@ -7340,6 +7624,7 @@
                       "nullable": true
                     },
                     "port_security_enabled": {
+                      "type": "boolean",
                       "anyOf": [
                         {
                           "type": "boolean"
@@ -7349,6 +7634,7 @@
                       "nullable": true
                     },
                     "router_external": {
+                      "type": "boolean",
                       "anyOf": [
                         {
                           "type": "boolean"
@@ -7358,6 +7644,7 @@
                       "nullable": true
                     },
                     "created_at": {
+                      "type": "string",
                       "anyOf": [
                         {
                           "type": "string",
@@ -7368,6 +7655,7 @@
                       "nullable": true
                     },
                     "updated_at": {
+                      "type": "string",
                       "anyOf": [
                         {
                           "type": "string",
@@ -7408,6 +7696,7 @@
             "nullable": true
           },
           "subnets": {
+            "type": "array",
             "anyOf": [
               {
                 "type": "array",
@@ -7421,6 +7710,7 @@
             "nullable": true
           },
           "created_at": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string",
@@ -7431,6 +7721,7 @@
             "nullable": true
           },
           "updated": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string",
@@ -7441,6 +7732,7 @@
             "nullable": true
           },
           "is_default": {
+            "type": "boolean",
             "anyOf": [
               {
                 "type": "boolean"
@@ -7504,6 +7796,7 @@
         "type": "object",
         "properties": {
           "id": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -7513,6 +7806,7 @@
             "nullable": true
           },
           "tenant_id": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -7522,6 +7816,7 @@
             "nullable": true
           },
           "name": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -7531,6 +7826,7 @@
             "nullable": true
           },
           "description": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -7540,6 +7836,7 @@
             "nullable": true
           },
           "router_id": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -7549,6 +7846,7 @@
             "nullable": true
           },
           "external_network": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -7558,6 +7856,7 @@
             "nullable": true
           },
           "network_id": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -7567,6 +7866,7 @@
             "nullable": true
           },
           "subnets": {
+            "type": "array",
             "anyOf": [
               {
                 "type": "array",
@@ -7588,6 +7888,7 @@
             "default": []
           },
           "created_at": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string",
@@ -7598,6 +7899,7 @@
             "nullable": true
           },
           "updated": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string",
@@ -7608,6 +7910,7 @@
             "nullable": true
           },
           "is_default": {
+            "type": "boolean",
             "anyOf": [
               {
                 "type": "boolean"
@@ -7641,6 +7944,7 @@
         "type": "object",
         "properties": {
           "vpcs": {
+            "type": "array",
             "anyOf": [
               {
                 "type": "array",
@@ -7648,6 +7952,7 @@
                   "type": "object",
                   "properties": {
                     "id": {
+                      "type": "string",
                       "anyOf": [
                         {
                           "type": "string"
@@ -7657,6 +7962,7 @@
                       "nullable": true
                     },
                     "tenant_id": {
+                      "type": "string",
                       "anyOf": [
                         {
                           "type": "string"
@@ -7666,6 +7972,7 @@
                       "nullable": true
                     },
                     "name": {
+                      "type": "string",
                       "anyOf": [
                         {
                           "type": "string"
@@ -7675,6 +7982,7 @@
                       "nullable": true
                     },
                     "description": {
+                      "type": "string",
                       "anyOf": [
                         {
                           "type": "string"
@@ -7684,6 +7992,7 @@
                       "nullable": true
                     },
                     "router_id": {
+                      "type": "string",
                       "anyOf": [
                         {
                           "type": "string"
@@ -7693,6 +8002,7 @@
                       "nullable": true
                     },
                     "external_network": {
+                      "type": "string",
                       "anyOf": [
                         {
                           "type": "string"
@@ -7702,6 +8012,7 @@
                       "nullable": true
                     },
                     "network_id": {
+                      "type": "string",
                       "anyOf": [
                         {
                           "type": "string"
@@ -7711,6 +8022,7 @@
                       "nullable": true
                     },
                     "subnets": {
+                      "type": "array",
                       "anyOf": [
                         {
                           "type": "array",
@@ -7732,6 +8044,7 @@
                       "default": []
                     },
                     "created_at": {
+                      "type": "string",
                       "anyOf": [
                         {
                           "type": "string",
@@ -7742,6 +8055,7 @@
                       "nullable": true
                     },
                     "updated": {
+                      "type": "string",
                       "anyOf": [
                         {
                           "type": "string",
@@ -7752,6 +8066,7 @@
                       "nullable": true
                     },
                     "is_default": {
+                      "type": "boolean",
                       "anyOf": [
                         {
                           "type": "boolean"
@@ -7820,6 +8135,7 @@
             "title": "Name"
           },
           "description": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -7829,6 +8145,7 @@
             "nullable": true
           },
           "subnetpool_id": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -7839,6 +8156,7 @@
             "nullable": true
           },
           "cidr": {
+            "type": "string",
             "anyOf": [
               {
                 "type": "string"
@@ -7862,29 +8180,5 @@
         }
       }
     }
-  },
-  "servers": [
-    {
-      "url": "https://{env}/{region}/$API_ENDPOINT_NAME",
-      "variables": {
-        "region": {
-          "enum": [
-            "br-ne-1",
-            "br-se1",
-            "br-mgl1"
-          ],
-          "default": "br-se1",
-          "description": "Region to reach the service"
-        },
-        "env": {
-          "enum": [
-            "api.magalu.cloud",
-            "api.pre-prod.jaxyendy.com"
-          ],
-          "default": "api.magalu.cloud",
-          "description": "Environment to use"
-        }
-      }
-    }
-  ]
+  }
 }

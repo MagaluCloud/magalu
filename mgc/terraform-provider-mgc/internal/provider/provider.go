@@ -79,10 +79,6 @@ func (p *MgcProvider) Schema(ctx context.Context, req provider.SchemaRequest, re
 		MarkdownDescription: "Specific Object Storage configuration",
 		Optional:            true,
 		Attributes: map[string]schema.Attribute{
-			"bucket_prefix": schema.StringAttribute{
-				MarkdownDescription: "Bucket Prefix",
-				Optional:            true,
-			},
 			"key_pair": schemaApiKey,
 		},
 	}

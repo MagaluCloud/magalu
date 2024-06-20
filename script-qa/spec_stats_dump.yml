@@ -569,6 +569,7 @@ network.openapi:
     - '#/components/schemas/PublicIpResponsePort'
     - '#/components/schemas/PublicIpStatus'
     - '#/components/schemas/QuotaModel'
+    - '#/components/schemas/ResourceType'
     - '#/components/schemas/RouteRequest'
     - '#/components/schemas/RouterInterfaceResponse'
     - '#/components/schemas/RouterInterfaceResponseList'
