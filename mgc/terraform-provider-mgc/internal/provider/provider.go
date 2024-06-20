@@ -34,8 +34,7 @@ type KeyPair struct {
 }
 
 type ObjectStorageConfig struct {
-	BucketPrefix  types.String `tfsdk:"bucket_prefix"`
-	ObjectKeyPair *KeyPair     `tfsdk:"key_pair"`
+	ObjectKeyPair *KeyPair `tfsdk:"key_pair"`
 }
 
 type ProviderConfig struct {
