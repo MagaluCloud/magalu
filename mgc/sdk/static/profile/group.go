@@ -16,9 +16,9 @@ current profile, so users can alter and switch between profiles without loosing 
 		},
 		func() []core.Descriptor {
 			return []core.Descriptor{
-				getCurrent(),
+				getGet(),
 				getCreate(),
-				getSetCurrent(),
+				getSet(),
 				getList(),
 				getDelete(),
 			}

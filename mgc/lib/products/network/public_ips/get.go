@@ -21,7 +21,7 @@ import (
 )
 
 type GetParameters struct {
-	PublicIpId string `json:"public_ip_id"`
+	PublicIpId any `json:"public_ip_id"`
 }
 
 type GetConfigs struct {

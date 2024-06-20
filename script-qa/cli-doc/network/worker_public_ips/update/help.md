@@ -8,13 +8,14 @@ Usage:
 
 ## Product catalog:
 - Flags:
-- --error string          Error
-- --external-id string    External Id
-- -h, --help                  help for update
-- --public-ip string      Public Ip
-- --public-ip-id string   Public Ip Id: Id of the public ip to update (required)
-- --status enum           PublicIpStatus (one of "created", "error" or "pending") (required)
-- -v, --version               version for update
+- --error string            Error
+- --external-id string      External Id
+- -h, --help                    help for update
+- --public-ip string        Public Ip
+- --public-ip-id anyValue   Public Ip Id: Id of the public ip to update
+- Use --public-ip-id=help for more details (required)
+- --status enum             PublicIpStatus (one of "created", "error" or "pending") (required)
+- -v, --version                 version for update
 
 ## Other commands:
 - Global Flags:

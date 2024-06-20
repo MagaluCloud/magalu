@@ -19,7 +19,6 @@ var getHead = utils.NewLazyLoader[core.Executor](func() core.Executor {
 		core.DescriptorSpec{
 			Name:        "head",
 			Description: "Get object metadata",
-			// Scopes:      core.Scopes{"object-storage.read"},
 		},
 		headObject,
 	)

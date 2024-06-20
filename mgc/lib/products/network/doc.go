@@ -3,11 +3,11 @@ Package: network
 
 # Summary
 
-# APIs referentes ao produto de VPC
+# APIs related to the VPC product
 
 # Description
 
-# APIs referentes ao produto de VPC
+# APIs related to the VPC product
 
 Version: 1.124.1
 

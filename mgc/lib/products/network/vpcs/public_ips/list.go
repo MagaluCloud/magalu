@@ -21,7 +21,7 @@ import (
 )
 
 type ListParameters struct {
-	VpcId string `json:"vpc_id"`
+	VpcId any `json:"vpc_id"`
 }
 
 type ListConfigs struct {

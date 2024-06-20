@@ -1,0 +1,51 @@
+project_name: mgc
+builds:
+  - env: [ CGO_ENABLED=0 ]
+    id: "terraform"
+    goos:
+      - linux
+    goarch:
+      - amd64
+    binary: terraform-provider-mgc
+    ldflags:
+      - -s -w -X magalu.cloud/sdk.Version={{.Version}}"
+    flags:
+      - -tags=embed release
+    main: mgc/terraform-provider-mgc/main.go
+archives:
+  - id: terraform
+    name_template: "terraform-provider-mgc_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+    format: zip
+    builds:
+      - terraform
+    files:
+      - src: "mgc/terraform-provider-mgc/user-guide.md"
+        dst: "README.md"
+      - src: "mgc/terraform-provider-mgc/docs/index.md"
+        dst: "docs/index.md"
+      - src: "mgc/terraform-provider-mgc/docs/**/*"
+        dst: "docs/resources"
+      - src: "mgc/terraform-provider-mgc/install.sh"
+        dst: "install.sh"
+  - id: terraformwin
+    name_template: "terraform-provider-mgc_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+    format: zip
+    builds:
+      - terraformwin
+    files:
+      - src: "mgc/terraform-provider-mgc/user-guide.md"
+        dst: "README.md"
+      - src: "mgc/terraform-provider-mgc/docs/index.md"
+        dst: "docs/index.md"
+      - src: "mgc/terraform-provider-mgc/docs/**/*"
+        dst: "docs/resources"
+      - src: "mgc/terraform-provider-mgc/install.sh"
+        dst: "install.sh"
+release:
+  extra_files:
+    - glob: 'mgc/terraform-provider-mgc/terraform-registry-manifest.json'
+      name_template: 'terraform-provider-{{ .ProjectName }}_{{ .Version }}_manifest.json'
+  draft: true
+  prerelease: true
+  header: |
+    ## Terraform provider ({{ .Date }})

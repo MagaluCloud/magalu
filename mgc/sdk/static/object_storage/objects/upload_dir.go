@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/fs"
 	"path/filepath"
+	"strings"
 
 	"magalu.cloud/core"
 	"magalu.cloud/core/pipeline"
@@ -31,7 +32,6 @@ var getUploadDir = utils.NewLazyLoader[core.Executor](func() core.Executor {
 		core.DescriptorSpec{
 			Name:        "upload-dir",
 			Description: "Upload a directory to a bucket",
-			// Scopes:      core.Scopes{"object-storage.write"},
 		},
 		uploadDir,
 	)
@@ -41,7 +41,7 @@ var getUploadDir = utils.NewLazyLoader[core.Executor](func() core.Executor {
 	})
 })
 
-func createObjectUploadProcessor(cfg common.Config, destination mgcSchemaPkg.URI, progressReporter *progress_report.UnitsReporter) pipeline.Processor[pipeline.WalkDirEntry, error] {
+func createObjectUploadProcessor(cfg common.Config, destination mgcSchemaPkg.URI, basePath string, progressReporter *progress_report.UnitsReporter) pipeline.Processor[pipeline.WalkDirEntry, error] {
 	return func(ctx context.Context, dirEntry pipeline.WalkDirEntry) (error, pipeline.ProcessStatus) {
 		var err error
 		defer func() { progressReporter.Report(1, 0, err) }()
@@ -56,16 +56,16 @@ func createObjectUploadProcessor(cfg common.Config, destination mgcSchemaPkg.URI
 		}
 
 		filePath := dirEntry.Path()
-		objURI := destination.JoinPath(filePath)
+		dst := destination.JoinPath((strings.TrimPrefix(filePath, basePath)))
 
 		_, err = upload(
 			ctx,
-			uploadParams{Source: mgcSchemaPkg.FilePath(filePath), Destination: mgcSchemaPkg.URI(objURI)},
+			uploadParams{Source: mgcSchemaPkg.FilePath(filePath), Destination: dst},
 			cfg,
 		)
 
 		if err != nil {
-			err = &common.ObjectError{Url: mgcSchemaPkg.URI(objURI), Err: err}
+			err = &common.ObjectError{Url: mgcSchemaPkg.URI(dst), Err: err}
 			return err, pipeline.ProcessOutput
 		}
 
@@ -81,17 +81,22 @@ func uploadDir(ctx context.Context, params uploadDirParams, cfg common.Config) (
 		return nil, core.UsageError{Err: fmt.Errorf("source cannot be empty")}
 	}
 
-	progressReportMsg := "Uploading directory: " + params.Source.String()
+	basePath, err := common.GetAbsSystemURI(mgcSchemaPkg.URI(params.Source.String()))
+	if err != nil {
+		return nil, err
+	}
+
+	progressReportMsg := "Uploading directory: " + basePath.String()
 	progressReporter := progress_report.NewUnitsReporter(ctx, progressReportMsg, 0)
 	progressReporter.Start()
 	defer progressReporter.End()
 
-	entries := pipeline.WalkDirEntries(ctx, params.Source.String(), func(path string, d fs.DirEntry, err error) error {
+	entries := pipeline.WalkDirEntries(ctx, basePath.String(), func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
 			return err
 		}
 
-		if path != params.Source.String() && path+"/" != params.Source.String() {
+		if path != basePath.String() && path+"/" != basePath.String() {
 			if d.IsDir() && params.Shallow {
 				return filepath.SkipDir
 			}
@@ -110,7 +115,7 @@ func uploadDir(ctx context.Context, params uploadDirParams, cfg common.Config) (
 	})
 
 	entries = common.ApplyFilters(ctx, entries, params.FilterParams, cancel)
-	uploadObjectsErrorChan := pipeline.ParallelProcess(ctx, cfg.Workers, entries, createObjectUploadProcessor(cfg, params.Destination, progressReporter), nil)
+	uploadObjectsErrorChan := pipeline.ParallelProcess(ctx, cfg.Workers, entries, createObjectUploadProcessor(cfg, params.Destination, basePath.String(), progressReporter), nil)
 	uploadObjectsErrorChan = pipeline.Filter(ctx, uploadObjectsErrorChan, pipeline.FilterNonNil[error]{})
 
 	objErr, err := pipeline.SliceItemConsumer[utils.MultiError](ctx, uploadObjectsErrorChan)
@@ -127,7 +132,7 @@ func uploadDir(ctx context.Context, params uploadDirParams, cfg common.Config) (
 
 	return &uploadDirResult{
 		URI: params.Destination.String(),
-		Dir: params.Source.String(),
+		Dir: basePath.String(),
 	}, nil
 }
 

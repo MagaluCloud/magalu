@@ -38,6 +38,7 @@ type ListResult struct {
 
 // any of: ListResultInstanceTypesItem0, ListResultInstanceTypesItem1
 type ListResultInstanceTypesItem struct {
+	ListResultInstanceTypesItem0 `json:",squash"` // nolint
 	ListResultInstanceTypesItem1 `json:",squash"` // nolint
 }
 

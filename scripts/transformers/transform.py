@@ -10,10 +10,7 @@ from spec_types import SpecTranformer
 from spec_version_convert import ConvertVersionTransformer
 from spec_remove_param import RemoveParamTransformer
 from spec_update_error import UpdateErrorTransformer
-from spec_remove_path import RemovePathTransformer
-from spec_remove_component import RemoveComponentTransformer
 from spec_add_security import AddSecurityTransformer
-from spec_add_parameters_type import AddParameterTypes
 from spec_fix_links import FixLinksTransformer
 from spec_create_links import CreateLinks
 from validate_openapi_specs import validate_oapi
@@ -70,11 +67,11 @@ if __name__ == "__main__":
     transformers: List[SpecTranformer] = [
         ConvertVersionTransformer(),
         UpdateErrorTransformer(),
-        RemovePathTransformer(".*xaas.*"),
-        RemoveComponentTransformer(".*(xaas|XAAS|Xaas).*"),
+        # RemovePathTransformer(".*xaas.*"),
+        # RemoveComponentTransformer(".*(xaas|XAAS|Xaas).*"),
         RemoveParamTransformer("x-tenant-id"),
         AddSecurityTransformer(args.product_name),
-        AddParameterTypes(),
+        # AddParameterTypes(),
         AddTagsBlockTransformer(),
         FixLinksTransformer(),
         CreateLinks(),

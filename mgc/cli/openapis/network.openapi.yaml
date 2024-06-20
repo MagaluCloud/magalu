@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
     title: vpc-api-product
-    description: APIs referentes ao produto de VPC
+    description: APIs related to the VPC product
     contact:
         name: Tribo IAAS Cloud
         url: https://github.com/luizalabs
@@ -26,6 +26,41 @@ paths:
             -   OAuth2:
                 - network.read
     /v0/ports:
+        get:
+            tags:
+            - port
+            summary: Details of a Port list
+            description: Return a detailed list of ports from the provided tenant_id
+            operationId: portsDetailedList
+            parameters:
+            -   name: port_id_list
+                in: query
+                required: false
+                schema:
+                    type: array
+                    items: {}
+                    title: Port Id List
+                    default: []
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/PortResponse'
+                                title: Response Portsdetailedlist
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: true
+            security:
+            -   OAuth2:
+                - network.read
         post:
             tags:
             - port
@@ -39,15 +74,16 @@ paths:
                 in: header
                 required: false
                 schema:
+                    anyOf:
+                    -   type: string
                     title: X-Zone
                     nullable: true
-                    type: string
             requestBody:
-                required: true
                 content:
                     application/json:
                         schema:
                             $ref: '#/components/schemas/PortCreateRequest'
+                required: true
             responses:
                 '200':
                     description: Successful Response
@@ -88,32 +124,69 @@ paths:
             -   OAuth2:
                 - network.write
             x-mgc-name: create-default-vpc
+    /v0/vpcs/{vpc_id}/ports:
         get:
             tags:
-            - port
-            summary: Details of a Port list
-            description: Return a detailed list of ports from the provided tenant_id
-            operationId: portsDetailedList
+            - vpc
+            summary: List Ports
+            description: Returns a list of ports for a provided vpc_id and x-tenant-id.
+                The list will be paginated, it means you can easily find what you
+                need just setting the page number(_offset) and the quantity of items
+                per page(_limit). The level of detail can also be set
+            operationId: listPorts
             parameters:
+            -   name: vpc_id
+                in: path
+                description: ID of VPC to list ports
+                required: true
+                schema:
+                    title: vpc_id
+                    description: ID of VPC to list ports
+            -   name: detailed
+                in: query
+                required: false
+                schema:
+                    type: boolean
+                    title: Detailed
+                    default: true
+            -   name: _offset
+                in: query
+                description: Page Number
+                required: false
+                schema:
+                    type: integer
+                    title: Page Number
+                    minimum: 1
+                    description: Page Number
+                    default: 1
+            -   name: _limit
+                in: query
+                description: Items Per Page
+                required: false
+                schema:
+                    type: integer
+                    title: Items Per Page
+                    minimum: 1
+                    description: Items Per Page
+                    default: 10
             -   name: port_id_list
                 in: query
                 required: false
                 schema:
                     type: array
-                    items:
-                        type: string
-                    default: []
+                    items: {}
                     title: Port Id List
+                    default: []
             responses:
                 '200':
                     description: Successful Response
                     content:
                         application/json:
                             schema:
-                                type: array
-                                items:
-                                    $ref: '#/components/schemas/PortResponse'
-                                title: Response Portsdetailedlist
+                                anyOf:
+                                -   $ref: '#/components/schemas/PortsListSimplified'
+                                -   $ref: '#/components/schemas/PortsList'
+                                title: Response Listports
                 '422':
                     description: Validation Error
                     content:
@@ -124,7 +197,7 @@ paths:
             security:
             -   OAuth2:
                 - network.read
-    /v0/vpcs/{vpc_id}/ports:
+            x-mgc-description: List VPC ports
         post:
             tags:
             - vpc
@@ -135,25 +208,25 @@ paths:
             parameters:
             -   name: vpc_id
                 in: path
+                description: ID of the VPC to create port
                 required: true
                 schema:
                     title: vpc_id
                     description: ID of the VPC to create port
-                    type: string
-                description: ID of the VPC to create port
             -   name: x-zone
                 in: header
                 required: false
                 schema:
+                    anyOf:
+                    -   type: string
                     title: X-Zone
                     nullable: true
-                    type: string
             requestBody:
-                required: true
                 content:
                     application/json:
                         schema:
                             $ref: '#/components/schemas/PortCreateRequest'
+                required: true
             responses:
                 '200':
                     description: Successful Response
@@ -177,81 +250,6 @@ paths:
             security:
             -   OAuth2:
                 - network.write
-        get:
-            tags:
-            - vpc
-            summary: List Ports
-            description: Returns a list of ports for a provided vpc_id and x-tenant-id.
-                The list will be paginated, it means you can easily find what you
-                need just setting the page number(_offset) and the quantity of items
-                per page(_limit). The level of detail can also be set
-            operationId: listPorts
-            parameters:
-            -   name: vpc_id
-                in: path
-                required: true
-                schema:
-                    title: vpc_id
-                    description: ID of VPC to list ports
-                    type: string
-                description: ID of VPC to list ports
-            -   name: detailed
-                in: query
-                required: false
-                schema:
-                    type: boolean
-                    title: Detailed
-                    default: true
-            -   name: _offset
-                in: query
-                required: false
-                schema:
-                    type: integer
-                    minimum: 1
-                    title: Page Number
-                    description: Page Number
-                    default: 1
-                description: Page Number
-            -   name: _limit
-                in: query
-                required: false
-                schema:
-                    type: integer
-                    minimum: 1
-                    title: Items Per Page
-                    description: Items Per Page
-                    default: 10
-                description: Items Per Page
-            -   name: port_id_list
-                in: query
-                required: false
-                schema:
-                    type: array
-                    items:
-                        type: string
-                    default: []
-                    title: Port Id List
-            responses:
-                '200':
-                    description: Successful Response
-                    content:
-                        application/json:
-                            schema:
-                                anyOf:
-                                -   $ref: '#/components/schemas/PortsListSimplified'
-                                -   $ref: '#/components/schemas/PortsList'
-                                title: Response Listports
-                '422':
-                    description: Validation Error
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/HTTPValidationError'
-            x-viveiro: true
-            security:
-            -   OAuth2:
-                - network.read
-            x-mgc-description: List VPC ports
     /v0/ports/{port_id}:
         get:
             tags:
@@ -265,7 +263,6 @@ paths:
                 required: true
                 schema:
                     title: Port Id
-                    type: string
             responses:
                 '200':
                     description: Successful Response
@@ -308,12 +305,11 @@ paths:
             parameters:
             -   name: port_id
                 in: path
+                description: ID of the Port to delete
                 required: true
                 schema:
                     title: port_id
                     description: ID of the Port to delete
-                    type: string
-                description: ID of the Port to delete
             responses:
                 '204':
                     description: Successful Response
@@ -363,20 +359,18 @@ paths:
             parameters:
             -   name: port_id
                 in: path
+                description: ID of the Port to attach security group
                 required: true
                 schema:
                     title: port_id
                     description: ID of the Port to attach security group
-                    type: string
-                description: ID of the Port to attach security group
             -   name: security_group_id
                 in: path
+                description: ID of the Security Group to attach
                 required: true
                 schema:
                     title: security_group_id
                     description: ID of the Security Group to attach
-                    type: string
-                description: ID of the Security Group to attach
             responses:
                 '200':
                     description: Successful Response
@@ -421,20 +415,18 @@ paths:
             parameters:
             -   name: port_id
                 in: path
+                description: ID of the Port to detach security group
                 required: true
                 schema:
                     title: port_id
                     description: ID of the Port to detach security group
-                    type: string
-                description: ID of the Port to detach security group
             -   name: security_group_id
                 in: path
+                description: ID of the Security Group to detach
                 required: true
                 schema:
                     title: security_group_id
                     description: ID of the Security Group to detach
-                    type: string
-                description: ID of the Security Group to detach
             responses:
                 '200':
                     description: Successful Response
@@ -469,6 +461,37 @@ paths:
             -   OAuth2:
                 - network.write
     /v0/vpcs/{vpc_id}/public_ips:
+        get:
+            tags:
+            - vpc
+            summary: List Public IPs
+            description: Returns a list of Public IPs for a provided vpc_id
+            operationId: ListPublicIps
+            parameters:
+            -   name: vpc_id
+                in: path
+                description: Id of the VPC to list the Public IPs in
+                required: true
+                schema:
+                    title: Vpc ID
+                    description: Id of the VPC to list the Public IPs in
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/PublicIpsList'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: true
+            security:
+            -   OAuth2:
+                - network.read
         post:
             tags:
             - vpc
@@ -479,23 +502,26 @@ paths:
             parameters:
             -   name: vpc_id
                 in: path
+                description: Id of the VPC to create the Public IP in
                 required: true
                 schema:
                     title: Vpc ID
                     description: Id of the VPC to create the Public IP in
-                    type: string
-                description: Id of the VPC to create the Public IP in
             -   name: validate_quota
                 in: query
+                description: Validate the quota before creating the Public IP
                 required: false
                 schema:
                     type: boolean
                     title: validateQuota
                     description: Validate the quota before creating the Public IP
                     default: true
-                description: Validate the quota before creating the Public IP
             -   name: wait
                 in: query
+                description: The request will be asynchronous. The wait parameter
+                    tells the API that you want the request to simulate synchronous
+                    behavior (to maintain endpoint compatibility). You can set an
+                    approximate timeout with the waitTimeout parameter
                 required: false
                 schema:
                     type: boolean
@@ -505,29 +531,26 @@ paths:
                         behavior (to maintain endpoint compatibility). You can set
                         an approximate timeout with the waitTimeout parameter
                     default: true
-                description: The request will be asynchronous. The wait parameter
-                    tells the API that you want the request to simulate synchronous
-                    behavior (to maintain endpoint compatibility). You can set an
-                    approximate timeout with the waitTimeout parameter
             -   name: wait_timeout
                 in: query
+                description: the approximate time in seconds you want to wait when
+                    simulating the request as synchronous (only works with wait=true)
                 required: false
                 schema:
+                    anyOf:
+                    -   type: integer
                     title: waitTimeout
                     description: the approximate time in seconds you want to wait
                         when simulating the request as synchronous (only works with
                         wait=true)
                     default: 120
                     nullable: true
-                    type: integer
-                description: the approximate time in seconds you want to wait when
-                    simulating the request as synchronous (only works with wait=true)
             requestBody:
-                required: true
                 content:
                     application/json:
                         schema:
                             $ref: '#/components/schemas/PublicIpCreateRequest'
+                required: true
             responses:
                 '200':
                     description: Successful Response
@@ -552,38 +575,6 @@ paths:
             -   OAuth2:
                 - network.write
             x-mgc-hidden: true
-        get:
-            tags:
-            - vpc
-            summary: List Public IPs
-            description: Returns a list of Public IPs for a provided vpc_id
-            operationId: ListPublicIps
-            parameters:
-            -   name: vpc_id
-                in: path
-                required: true
-                schema:
-                    title: Vpc ID
-                    description: Id of the VPC to list the Public IPs in
-                    type: string
-                description: Id of the VPC to list the Public IPs in
-            responses:
-                '200':
-                    description: Successful Response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/PublicIpsList'
-                '422':
-                    description: Validation Error
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/HTTPValidationError'
-            x-viveiro: true
-            security:
-            -   OAuth2:
-                - network.read
     /v0/public_ips/{public_ip_id}:
         get:
             tags:
@@ -594,12 +585,11 @@ paths:
             parameters:
             -   name: public_ip_id
                 in: path
+                description: Id of the Public IP to retrieve
                 required: true
                 schema:
                     title: Public IP ID
                     description: Id of the Public IP to retrieve
-                    type: string
-                description: Id of the Public IP to retrieve
             responses:
                 '200':
                     description: Successful Response
@@ -644,12 +634,11 @@ paths:
             parameters:
             -   name: public_ip_id
                 in: path
+                description: Id of the Public IP to delete
                 required: true
                 schema:
                     title: Public IP ID
                     description: Id of the Public IP to delete
-                    type: string
-                description: Id of the Public IP to delete
             responses:
                 '204':
                     description: Successful Response
@@ -673,20 +662,18 @@ paths:
             parameters:
             -   name: public_ip_id
                 in: path
+                description: Id of the Public IP to attach port to
                 required: true
                 schema:
                     title: Public IP ID
                     description: Id of the Public IP to attach port to
-                    type: string
-                description: Id of the Public IP to attach port to
             -   name: port_id
                 in: path
+                description: Id of the Port to attach the Public IP
                 required: true
                 schema:
                     title: Port ID
                     description: Id of the Port to attach the Public IP
-                    type: string
-                description: Id of the Port to attach the Public IP
             responses:
                 '200':
                     description: Successful Response
@@ -730,20 +717,18 @@ paths:
             parameters:
             -   name: public_ip_id
                 in: path
+                description: Id of the Public IP to detach port to
                 required: true
                 schema:
                     title: Public IP ID
                     description: Id of the Public IP to detach port to
-                    type: string
-                description: Id of the Public IP to detach port to
             -   name: port_id
                 in: path
+                description: Id of the Port to detach the Public IP
                 required: true
                 schema:
                     title: Port ID
                     description: Id of the Port to detach the Public IP
-                    type: string
-                description: Id of the Port to detach the Public IP
             responses:
                 '200':
                     description: Successful Response
@@ -811,14 +796,13 @@ paths:
             parameters:
             -   name: quota_slug
                 in: query
+                description: Service to check quota usage
                 required: true
                 schema:
                     allOf:
                     -   $ref: '#/components/schemas/SlugQuotas'
                     title: quota_slug
                     description: Service to check quota usage
-                    type: string
-                description: Service to check quota usage
             responses:
                 '200':
                     description: Successful Response
@@ -838,6 +822,38 @@ paths:
             -   OAuth2:
                 - network.read
     /v0/security_groups/{security_group_id}/rules:
+        get:
+            tags:
+            - security_group
+            summary: List Rules
+            description: Returns a list of rules for a provided security_group_id
+            operationId: listRules
+            parameters:
+            -   name: security_group_id
+                in: path
+                description: Id of the Security Group
+                required: true
+                schema:
+                    title: Security Group ID
+                    description: Id of the Security Group
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/RulesList'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: true
+            security:
+            -   OAuth2:
+                - network.read
+            x-mgc-hidden: true
         post:
             tags:
             - security_group
@@ -852,25 +868,30 @@ paths:
             parameters:
             -   name: security_group_id
                 in: path
+                description: Id of the Security Group
                 required: true
                 schema:
                     title: Security Group ID
                     description: Id of the Security Group
-                    type: string
-                description: Id of the Security Group
             -   name: validate_quota
                 in: query
+                description: Validate the quota before creating Rule
                 required: false
                 schema:
                     type: boolean
                     title: validateQuota
                     description: Validate the quota before creating Rule
                     default: true
-                description: Validate the quota before creating Rule
             -   name: wait
                 in: query
+                description: The request will be asynchronous. The wait parameter
+                    tells the API that you want the request to simulate synchronous
+                    behavior (to maintain endpoint compatibility). You can set an
+                    approximate timeout with the waitTimeout parameter
                 required: false
                 schema:
+                    anyOf:
+                    -   type: boolean
                     title: wait
                     description: The request will be asynchronous. The wait parameter
                         tells the API that you want the request to simulate synchronous
@@ -878,30 +899,26 @@ paths:
                         an approximate timeout with the waitTimeout parameter
                     default: true
                     nullable: true
-                    type: boolean
-                description: The request will be asynchronous. The wait parameter
-                    tells the API that you want the request to simulate synchronous
-                    behavior (to maintain endpoint compatibility). You can set an
-                    approximate timeout with the waitTimeout parameter
             -   name: wait_timeout
                 in: query
+                description: the approximate time in seconds you want to wait when
+                    simulating the request as synchronous (only works with wait=true)
                 required: false
                 schema:
+                    anyOf:
+                    -   type: integer
                     title: waitTimeout
                     description: the approximate time in seconds you want to wait
                         when simulating the request as synchronous (only works with
                         wait=true)
                     default: 120
                     nullable: true
-                    type: integer
-                description: the approximate time in seconds you want to wait when
-                    simulating the request as synchronous (only works with wait=true)
             requestBody:
-                required: true
                 content:
                     application/json:
                         schema:
                             $ref: '#/components/schemas/RuleCreateRequest'
+                required: true
             responses:
                 '200':
                     description: Successful Response
@@ -926,39 +943,6 @@ paths:
             -   OAuth2:
                 - network.write
             x-mgc-hidden: true
-        get:
-            tags:
-            - security_group
-            summary: List Rules
-            description: Returns a list of rules for a provided security_group_id
-            operationId: listRules
-            parameters:
-            -   name: security_group_id
-                in: path
-                required: true
-                schema:
-                    title: Security Group ID
-                    description: Id of the Security Group
-                    type: string
-                description: Id of the Security Group
-            responses:
-                '200':
-                    description: Successful Response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/RulesList'
-                '422':
-                    description: Validation Error
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/HTTPValidationError'
-            x-viveiro: true
-            security:
-            -   OAuth2:
-                - network.read
-            x-mgc-hidden: true
     /v0/rules/{rule_id}:
         get:
             tags:
@@ -969,12 +953,11 @@ paths:
             parameters:
             -   name: rule_id
                 in: path
+                description: Id of the Rule
                 required: true
                 schema:
                     title: Rule ID
                     description: Id of the Rule
-                    type: string
-                description: Id of the Rule
             responses:
                 '200':
                     description: Successful Response
@@ -1007,12 +990,11 @@ paths:
             parameters:
             -   name: rule_id
                 in: path
+                description: Id of the Rule
                 required: true
                 schema:
                     title: Rule ID
                     description: Id of the Rule
-                    type: string
-                description: Id of the Rule
             responses:
                 '204':
                     description: Successful Response
@@ -1095,15 +1077,19 @@ paths:
             parameters:
             -   name: validate_quota
                 in: query
+                description: Validate the quota before creating Security Group
                 required: false
                 schema:
                     type: boolean
                     title: validateQuota
                     description: Validate the quota before creating Security Group
                     default: true
-                description: Validate the quota before creating Security Group
             -   name: wait
                 in: query
+                description: The request will be asynchronous. The wait parameter
+                    tells the API that you want the request to simulate synchronous
+                    behavior (to maintain endpoint compatibility). You can set an
+                    approximate timeout with the waitTimeout parameter
                 required: false
                 schema:
                     type: boolean
@@ -1113,12 +1099,10 @@ paths:
                         behavior (to maintain endpoint compatibility). You can set
                         an approximate timeout with the waitTimeout parameter
                     default: true
-                description: The request will be asynchronous. The wait parameter
-                    tells the API that you want the request to simulate synchronous
-                    behavior (to maintain endpoint compatibility). You can set an
-                    approximate timeout with the waitTimeout parameter
             -   name: wait_timeout
                 in: query
+                description: the approximate time in seconds you want to wait when
+                    simulating the request as synchronous (only works with wait=true)
                 required: false
                 schema:
                     type: integer
@@ -1127,14 +1111,12 @@ paths:
                         when simulating the request as synchronous (only works with
                         wait=true)
                     default: 120
-                description: the approximate time in seconds you want to wait when
-                    simulating the request as synchronous (only works with wait=true)
             requestBody:
-                required: true
                 content:
                     application/json:
                         schema:
                             $ref: '#/components/schemas/SecurityGroupCreateRequest'
+                required: true
             responses:
                 '200':
                     description: Successful Response
@@ -1164,27 +1146,65 @@ paths:
             -   OAuth2:
                 - network.write
     /v0/vpcs/{vpc_id}/security_groups:
+        get:
+            tags:
+            - vpc
+            summary: List Security Groups
+            description: Returns a list of security groups for a provided vpc_id
+            operationId: listSecurityGroup
+            parameters:
+            -   name: vpc_id
+                in: path
+                description: Id of the VPC to create the Security Group in
+                required: true
+                schema:
+                    title: Vpc ID
+                    description: Id of the VPC to create the Security Group in
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SecurityGroupListEvent'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: true
+            x-mgc-hidden: true
+            security:
+            -   OAuth2:
+                - network.read
         post:
             tags:
             - vpc
             summary: Create Security Group
             description: Create a Security Group
             operationId: createSecurityGroupDeprecated
-            deprecated: true
             parameters:
             -   name: vpc_id
                 in: path
+                description: Id of the vpc to create the security group in
                 required: true
                 schema:
+                    anyOf:
+                    -   type: string
                     title: VPC Id
                     description: Id of the vpc to create the security group in
                     nullable: true
-                    type: string
-                description: Id of the vpc to create the security group in
             -   name: wait
                 in: query
+                description: The request will be asynchronous. The wait parameter
+                    tells the API that you want the request to simulate synchronous
+                    behavior (to maintain endpoint compatibility). You can set an
+                    approximate timeout with the waitTimeout parameter
                 required: false
                 schema:
+                    anyOf:
+                    -   type: boolean
                     title: wait
                     description: The request will be asynchronous. The wait parameter
                         tells the API that you want the request to simulate synchronous
@@ -1192,30 +1212,26 @@ paths:
                         an approximate timeout with the waitTimeout parameter
                     default: true
                     nullable: true
-                    type: boolean
-                description: The request will be asynchronous. The wait parameter
-                    tells the API that you want the request to simulate synchronous
-                    behavior (to maintain endpoint compatibility). You can set an
-                    approximate timeout with the waitTimeout parameter
             -   name: wait_timeout
                 in: query
+                description: the approximate time in seconds you want to wait when
+                    simulating the request as synchronous (only works with wait=true)
                 required: false
                 schema:
+                    anyOf:
+                    -   type: integer
                     title: waitTimeout
                     description: the approximate time in seconds you want to wait
                         when simulating the request as synchronous (only works with
                         wait=true)
                     default: 120
                     nullable: true
-                    type: integer
-                description: the approximate time in seconds you want to wait when
-                    simulating the request as synchronous (only works with wait=true)
             requestBody:
-                required: true
                 content:
                     application/json:
                         schema:
                             $ref: '#/components/schemas/SecurityGroupCreateRequest'
+                required: true
             responses:
                 '200':
                     description: Successful Response
@@ -1235,44 +1251,12 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
+            deprecated: true
             x-viveiro: true
             x-mgc-hidden: true
             security:
             -   OAuth2:
                 - network.write
-        get:
-            tags:
-            - vpc
-            summary: List Security Groups
-            description: Returns a list of security groups for a provided vpc_id
-            operationId: listSecurityGroup
-            parameters:
-            -   name: vpc_id
-                in: path
-                required: true
-                schema:
-                    title: Vpc ID
-                    description: Id of the VPC to create the Security Group in
-                    type: string
-                description: Id of the VPC to create the Security Group in
-            responses:
-                '200':
-                    description: Successful Response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/SecurityGroupListEvent'
-                '422':
-                    description: Validation Error
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/HTTPValidationError'
-            x-viveiro: true
-            x-mgc-hidden: true
-            security:
-            -   OAuth2:
-                - network.read
     /v0/security_groups/{security_group_id}:
         get:
             tags:
@@ -1283,12 +1267,11 @@ paths:
             parameters:
             -   name: security_group_id
                 in: path
+                description: Id of the security group to detail
                 required: true
                 schema:
                     title: Security Group ID
                     description: Id of the security group to detail
-                    type: string
-                description: Id of the security group to detail
             responses:
                 '200':
                     description: Successful Response
@@ -1321,12 +1304,11 @@ paths:
             parameters:
             -   name: security_group_id
                 in: path
+                description: Id of the security group to delete
                 required: true
                 schema:
                     title: Security Group ID
                     description: Id of the security group to delete
-                    type: string
-                description: Id of the security group to delete
             responses:
                 '204':
                     description: Successful Response
@@ -1375,12 +1357,11 @@ paths:
             parameters:
             -   name: vpc_id
                 in: path
+                description: Id of the VPC to list Subnets
                 required: true
                 schema:
                     title: Vpc Id
                     description: Id of the VPC to list Subnets
-                    type: string
-                description: Id of the VPC to list Subnets
             responses:
                 '200':
                     description: Successful Response
@@ -1408,25 +1389,25 @@ paths:
             parameters:
             -   name: vpc_id
                 in: path
+                description: Id of the VPC to create Subnet
                 required: true
                 schema:
                     title: Vpc Id
                     description: Id of the VPC to create Subnet
-                    type: string
-                description: Id of the VPC to create Subnet
             -   name: x-zone
                 in: header
                 required: false
                 schema:
+                    anyOf:
+                    -   type: string
                     title: X-Zone
                     nullable: true
-                    type: string
             requestBody:
-                required: true
                 content:
                     application/json:
                         schema:
                             $ref: '#/components/schemas/SubnetCreateRequest'
+                required: true
             responses:
                 '201':
                     description: Successful Response
@@ -1452,34 +1433,6 @@ paths:
                 - network.write
             x-mgc-hidden: true
     /v0/subnets/{subnet_id}:
-        delete:
-            tags:
-            - subnets
-            summary: Delete a Subnet
-            description: Delete a subnet from the provided tenant_id
-            operationId: deleteSubnet
-            parameters:
-            -   name: subnet_id
-                in: path
-                required: true
-                schema:
-                    title: Subnet Id
-                    description: Id of the Subnet to delete
-                    type: string
-                description: Id of the Subnet to delete
-            responses:
-                '204':
-                    description: Successful Response
-                '422':
-                    description: Validation Error
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/HTTPValidationError'
-            x-viveiro: true
-            security:
-            -   OAuth2:
-                - network.write
         get:
             tags:
             - subnets
@@ -1489,12 +1442,11 @@ paths:
             parameters:
             -   name: subnet_id
                 in: path
+                description: Id of the Subnet to detail
                 required: true
                 schema:
                     title: Subnet Id
                     description: Id of the Subnet to detail
-                    type: string
-                description: Id of the Subnet to detail
             responses:
                 '200':
                     description: Successful Response
@@ -1529,6 +1481,33 @@ paths:
             security:
             -   OAuth2:
                 - network.read
+        delete:
+            tags:
+            - subnets
+            summary: Delete a Subnet
+            description: Delete a subnet from the provided tenant_id
+            operationId: deleteSubnet
+            parameters:
+            -   name: subnet_id
+                in: path
+                description: Id of the Subnet to delete
+                required: true
+                schema:
+                    title: Subnet Id
+                    description: Id of the Subnet to delete
+            responses:
+                '204':
+                    description: Successful Response
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: true
+            security:
+            -   OAuth2:
+                - network.write
         patch:
             tags:
             - subnets
@@ -1543,11 +1522,11 @@ paths:
                     type: string
                     title: Subnet Id
             requestBody:
-                required: true
                 content:
                     application/json:
                         schema:
                             $ref: '#/components/schemas/SubnetPatchRequest'
+                required: true
             responses:
                 '200':
                     description: Successful Response
@@ -1616,6 +1595,29 @@ paths:
             -   OAuth2:
                 - network.write
     /v0/vpcs:
+        get:
+            tags:
+            - vpc
+            summary: List VPC
+            description: Returns a list of VPCs for a provided tenant_id
+            operationId: listVpcs
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/VpcResponseList'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: true
+            security:
+            -   OAuth2:
+                - network.read
         post:
             tags:
             - vpc
@@ -1623,11 +1625,11 @@ paths:
             description: Create a VPC
             operationId: createVpc
             requestBody:
-                required: true
                 content:
                     application/json:
                         schema:
                             $ref: '#/components/schemas/VpcCreateRequest'
+                required: true
             responses:
                 '200':
                     description: Successful Response
@@ -1656,29 +1658,6 @@ paths:
             security:
             -   OAuth2:
                 - network.write
-        get:
-            tags:
-            - vpc
-            summary: List VPC
-            description: Returns a list of VPCs for a provided tenant_id
-            operationId: listVpcs
-            responses:
-                '200':
-                    description: Successful Response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/VpcResponseList'
-                '422':
-                    description: Validation Error
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/HTTPValidationError'
-            x-viveiro: true
-            security:
-            -   OAuth2:
-                - network.read
     /v0/vpcs/{vpc_id}:
         get:
             tags:
@@ -1689,12 +1668,11 @@ paths:
             parameters:
             -   name: vpc_id
                 in: path
+                description: ID of the VPC to detail
                 required: true
                 schema:
                     title: VPC Id
                     description: ID of the VPC to detail
-                    type: string
-                description: ID of the VPC to detail
             responses:
                 '200':
                     description: Successful Response
@@ -1727,12 +1705,11 @@ paths:
             parameters:
             -   name: vpc_id
                 in: path
+                description: ID of the VPC to delete
                 required: true
                 schema:
                     title: VPC Id
                     description: ID of the VPC to delete
-                    type: string
-                description: ID of the VPC to delete
             responses:
                 '204':
                     description: Successful Response
@@ -1781,18 +1758,17 @@ paths:
             parameters:
             -   name: public_ip_id
                 in: path
+                description: Id of the public ip to update
                 required: true
                 schema:
                     title: Public Ip Id
                     description: Id of the public ip to update
-                    type: string
-                description: Id of the public ip to update
             requestBody:
-                required: true
                 content:
                     application/json:
                         schema:
                             $ref: '#/components/schemas/PublicIpUpdateRequest'
+                required: true
             responses:
                 '200':
                     description: Successful Response
@@ -1814,17 +1790,18 @@ paths:
 components:
     schemas:
         AddInterfaceRequest:
+            type: object
             properties:
                 nic_vpc_id:
                     type: string
                     title: Nic Vpc Id
-            type: object
+            title: AddInterfaceRequest
             required:
             - nic_vpc_id
-            title: AddInterfaceRequest
             example:
                 nic_vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
         DhcpPoolStr:
+            type: object
             properties:
                 start:
                     type: string
@@ -1832,12 +1809,12 @@ components:
                 end:
                     type: string
                     title: End
-            type: object
+            title: DhcpPoolStr
             required:
             - start
             - end
-            title: DhcpPoolStr
         HTTPValidationError:
+            type: object
             properties:
                 message:
                     title: Message
@@ -1845,23 +1822,23 @@ components:
                 slug:
                     title: Slug
                     type: string
-            type: object
             title: HTTPValidationError
             example:
                 message: Unauthorized
                 slug: Unauthorized
         Healthcheck:
+            type: object
             properties:
                 status:
                     type: string
                     title: Status
-            type: object
+            title: Healthcheck
             required:
             - status
-            title: Healthcheck
             example:
                 status: OK
         IpAddress:
+            type: object
             properties:
                 ip_address:
                     type: string
@@ -1869,25 +1846,84 @@ components:
                 subnet_id:
                     type: string
                     title: Subnet Id
-            type: object
+            title: IpAddress
             required:
             - ip_address
             - subnet_id
-            title: IpAddress
             example:
                 ip_address: 172.20.0.2
                 subnet_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
         ListNetworkApiResponse:
+            type: object
             properties:
                 networks:
-                    items:
-                        $ref: '#/components/schemas/NetworkApiResponse'
                     type: array
+                    items:
+                        type: object
+                        properties:
+                            id:
+                                type: string
+                                title: Id
+                            external_id:
+                                anyOf:
+                                -   type: string
+                                title: External Id
+                                nullable: true
+                            vpc_id:
+                                type: string
+                                title: Vpc Id
+                            name:
+                                type: string
+                                title: Name
+                            created_at:
+                                anyOf:
+                                -   type: string
+                                    format: date-time
+                                title: Created At
+                                nullable: true
+                            updated:
+                                anyOf:
+                                -   type: string
+                                    format: date-time
+                                title: Updated
+                                nullable: true
+                            is_default:
+                                type: boolean
+                                title: Is Default
+                            status:
+                                type: string
+                                title: Status
+                            error:
+                                anyOf:
+                                -   type: string
+                                title: Error
+                                nullable: true
+                            zone:
+                                type: string
+                                title: Zone
+                        title: NetworkApiResponse
+                        required:
+                        - id
+                        - vpc_id
+                        - name
+                        - is_default
+                        - status
+                        - zone
+                        example:
+                            created_at: '2022-01-01 00:00:00'
+                            error: 'null'
+                            external_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                            id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                            is_default: true
+                            name: vpc_name
+                            status: created
+                            updated: '2022-01-01 00:00:00'
+                            vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                            zone: a
                     title: Networks
-            type: object
+            title: ListNetworkApiResponse
             required:
             - networks
-            title: ListNetworkApiResponse
             example:
                 networks:
                 -   created_at: '2022-01-01 00:00:00'
@@ -1901,14 +1937,16 @@ components:
                     vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                     zone: a
         NetworkApiResponse:
+            type: object
             properties:
                 id:
                     type: string
                     title: Id
                 external_id:
+                    anyOf:
+                    -   type: string
                     title: External Id
                     nullable: true
-                    type: string
                 vpc_id:
                     type: string
                     title: Vpc Id
@@ -1916,15 +1954,17 @@ components:
                     type: string
                     title: Name
                 created_at:
+                    anyOf:
+                    -   type: string
+                        format: date-time
                     title: Created At
                     nullable: true
-                    type: string
-                    format: date-time
                 updated:
+                    anyOf:
+                    -   type: string
+                        format: date-time
                     title: Updated
                     nullable: true
-                    type: string
-                    format: date-time
                 is_default:
                     type: boolean
                     title: Is Default
@@ -1932,13 +1972,14 @@ components:
                     type: string
                     title: Status
                 error:
+                    anyOf:
+                    -   type: string
                     title: Error
                     nullable: true
-                    type: string
                 zone:
                     type: string
                     title: Zone
-            type: object
+            title: NetworkApiResponse
             required:
             - id
             - vpc_id
@@ -1946,7 +1987,6 @@ components:
             - is_default
             - status
             - zone
-            title: NetworkApiResponse
             example:
                 created_at: '2022-01-01 00:00:00'
                 error: 'null'
@@ -1959,67 +1999,77 @@ components:
                 vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                 zone: a
         NetworkResponse:
+            type: object
             properties:
                 id:
                     type: string
                     title: Id
                 name:
                     type: string
+                    title: Name
                     maxLength: 100
                     minLength: 5
-                    title: Name
                 description:
+                    anyOf:
+                    -   type: string
                     title: Description
                     nullable: true
-                    type: string
                 status:
+                    anyOf:
+                    -   type: string
                     title: Status
                     nullable: true
-                    type: string
                 mtu:
+                    anyOf:
+                    -   type: integer
                     title: Mtu
                     nullable: true
-                    type: integer
                 subnets:
+                    anyOf:
+                    -   type: array
+                        items:
+                            type: string
                     title: Subnets
                     default: []
                     nullable: true
-                    items:
-                        type: string
-                    type: array
                 shared:
+                    anyOf:
+                    -   type: boolean
                     title: Shared
                     nullable: true
-                    type: boolean
                 tags:
+                    anyOf:
+                    -   type: array
+                        items:
+                            type: string
                     title: Tags
                     default: []
                     nullable: true
-                    items:
-                        type: string
-                    type: array
                 port_security_enabled:
+                    anyOf:
+                    -   type: boolean
                     title: Port Security Enabled
                     nullable: true
-                    type: boolean
                 router_external:
+                    anyOf:
+                    -   type: boolean
                     title: Router External
                     nullable: true
-                    type: boolean
                 created_at:
+                    anyOf:
+                    -   type: string
+                        format: date-time
                     title: Created At
                     nullable: true
-                    type: string
-                    format: date-time
                 updated_at:
+                    anyOf:
+                    -   type: string
+                        format: date-time
                     title: Updated At
                     nullable: true
-                    type: string
-                    format: date-time
-            type: object
+            title: NetworkResponse
             required:
             - name
-            title: NetworkResponse
             example:
                 created_at: '2022-01-01 00:00:00'
                 description: network description
@@ -2036,40 +2086,44 @@ components:
                 - network_tag
                 updated_at: '2022-01-01 00:00:00'
         PortCreateRequest:
+            type: object
             properties:
                 name:
                     type: string
+                    title: Name
                     maxLength: 100
                     minLength: 5
-                    title: Name
                 has_pip:
+                    anyOf:
+                    -   type: boolean
                     title: Has Pip
                     default: true
                     nullable: true
-                    type: boolean
                 has_sg:
+                    anyOf:
+                    -   type: boolean
                     title: Has Sg
                     default: true
                     nullable: true
-                    type: boolean
                 subnets:
+                    anyOf:
+                    -   type: array
+                        items:
+                            type: string
                     title: Subnets
                     default: []
                     nullable: true
-                    items:
-                        type: string
-                    type: array
                 security_groups_id:
+                    anyOf:
+                    -   type: array
+                        items:
+                            type: string
                     title: Security Groups Id
                     default: []
                     nullable: true
-                    items:
-                        type: string
-                    type: array
-            type: object
+            title: PortCreateRequest
             required:
             - name
-            title: PortCreateRequest
             example:
                 has_pip: true
                 has_sg: true
@@ -2079,37 +2133,37 @@ components:
                 subnets:
                 - xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
         PortCreateResponse:
+            type: object
             properties:
                 id:
                     type: string
                     title: Id
-            type: object
+            title: PortCreateResponse
             required:
             - id
-            title: PortCreateResponse
             example:
                 id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
         PortDeletedAllResponse:
+            type: object
             properties:
                 deleted_ports:
+                    type: array
                     items:
+                        type: object
                         additionalProperties:
                             type: integer
-                        type: object
-                    type: array
                     title: Deleted Ports
                 deleted_public_ips:
+                    type: array
                     items:
+                        type: object
                         additionalProperties:
                             type: integer
-                        type: object
-                    type: array
                     title: Deleted Public Ips
-            type: object
+            title: PortDeletedAllResponse
             required:
             - deleted_ports
             - deleted_public_ips
-            title: PortDeletedAllResponse
             example:
                 deleted_ports:
                 -   openstack: 0
@@ -2118,61 +2172,99 @@ components:
                 -   openstack: 0
                 -   database: 0
         PortResponse:
+            type: object
             properties:
                 id:
+                    anyOf:
+                    -   type: string
                     title: Id
                     nullable: true
-                    type: string
                 name:
+                    anyOf:
+                    -   type: string
                     title: Name
                     nullable: true
-                    type: string
                 description:
+                    anyOf:
+                    -   type: string
                     title: Description
                     nullable: true
-                    type: string
                 is_admin_state_up:
+                    anyOf:
+                    -   type: boolean
                     title: Is Admin State Up
                     nullable: true
-                    type: boolean
                 vpc_id:
+                    anyOf:
+                    -   type: string
                     title: Vpc Id
                     nullable: true
-                    type: string
                 is_port_security_enabled:
+                    anyOf:
+                    -   type: boolean
                     title: Is Port Security Enabled
                     nullable: true
-                    type: boolean
                 security_groups:
+                    type: array
                     items:
                         type: string
-                    type: array
                     title: Security Groups
                     default: []
                 public_ip:
+                    anyOf:
+                    -   type: array
+                        items:
+                            type: object
+                            properties:
+                                public_ip_id:
+                                    anyOf:
+                                    -   type: string
+                                    title: Public Ip Id
+                                    nullable: true
+                                public_ip:
+                                    anyOf:
+                                    -   type: string
+                                    title: Public Ip
+                                    nullable: true
+                            title: PublicIpResponsePort
+                            example:
+                                public_ip: 100.94.5.31
+                                public_ip_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                     title: Public Ip
                     default: []
                     nullable: true
-                    items:
-                        $ref: '#/components/schemas/PublicIpResponsePort'
-                    type: array
                 ip_address:
-                    items:
-                        $ref: '#/components/schemas/IpAddress'
                     type: array
+                    items:
+                        type: object
+                        properties:
+                            ip_address:
+                                type: string
+                                title: Ip Address
+                            subnet_id:
+                                type: string
+                                title: Subnet Id
+                        title: IpAddress
+                        required:
+                        - ip_address
+                        - subnet_id
+                        example:
+                            ip_address: 172.20.0.2
+                            subnet_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                     title: Ip Address
                     default: []
                 created_at:
+                    anyOf:
+                    -   type: string
+                        format: date-time
                     title: Created At
                     nullable: true
-                    type: string
-                    format: date-time
                 updated:
+                    anyOf:
+                    -   type: string
+                        format: date-time
                     title: Updated
                     nullable: true
-                    type: string
-                    format: date-time
-            type: object
             title: PortResponse
             example:
                 created_at: '2022-01-01 00:00:00'
@@ -2192,18 +2284,33 @@ components:
                 updated: '2022-01-01 00:00:00'
                 vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
         PortSimpleResponse:
+            type: object
             properties:
                 id:
+                    anyOf:
+                    -   type: string
                     title: Id
                     nullable: true
-                    type: string
                 ip_address:
-                    items:
-                        $ref: '#/components/schemas/IpAddress'
                     type: array
+                    items:
+                        type: object
+                        properties:
+                            ip_address:
+                                type: string
+                                title: Ip Address
+                            subnet_id:
+                                type: string
+                                title: Subnet Id
+                        title: IpAddress
+                        required:
+                        - ip_address
+                        - subnet_id
+                        example:
+                            ip_address: 172.20.0.2
+                            subnet_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                     title: Ip Address
                     default: []
-            type: object
             title: PortSimpleResponse
             example:
                 id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
@@ -2211,16 +2318,126 @@ components:
                 -   ip_address: 172.20.0.2
                     subnet_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
         PortsList:
+            type: object
             properties:
                 ports:
-                    items:
-                        $ref: '#/components/schemas/PortResponse'
                     type: array
+                    items:
+                        type: object
+                        properties:
+                            id:
+                                anyOf:
+                                -   type: string
+                                title: Id
+                                nullable: true
+                            name:
+                                anyOf:
+                                -   type: string
+                                title: Name
+                                nullable: true
+                            description:
+                                anyOf:
+                                -   type: string
+                                title: Description
+                                nullable: true
+                            is_admin_state_up:
+                                anyOf:
+                                -   type: boolean
+                                title: Is Admin State Up
+                                nullable: true
+                            vpc_id:
+                                anyOf:
+                                -   type: string
+                                title: Vpc Id
+                                nullable: true
+                            is_port_security_enabled:
+                                anyOf:
+                                -   type: boolean
+                                title: Is Port Security Enabled
+                                nullable: true
+                            security_groups:
+                                type: array
+                                items:
+                                    type: string
+                                title: Security Groups
+                                default: []
+                            public_ip:
+                                anyOf:
+                                -   type: array
+                                    items:
+                                        type: object
+                                        properties:
+                                            public_ip_id:
+                                                anyOf:
+                                                -   type: string
+                                                title: Public Ip Id
+                                                nullable: true
+                                            public_ip:
+                                                anyOf:
+                                                -   type: string
+                                                title: Public Ip
+                                                nullable: true
+                                        title: PublicIpResponsePort
+                                        example:
+                                            public_ip: 100.94.5.31
+                                            public_ip_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                                title: Public Ip
+                                default: []
+                                nullable: true
+                            ip_address:
+                                type: array
+                                items:
+                                    type: object
+                                    properties:
+                                        ip_address:
+                                            type: string
+                                            title: Ip Address
+                                        subnet_id:
+                                            type: string
+                                            title: Subnet Id
+                                    title: IpAddress
+                                    required:
+                                    - ip_address
+                                    - subnet_id
+                                    example:
+                                        ip_address: 172.20.0.2
+                                        subnet_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                                title: Ip Address
+                                default: []
+                            created_at:
+                                anyOf:
+                                -   type: string
+                                    format: date-time
+                                title: Created At
+                                nullable: true
+                            updated:
+                                anyOf:
+                                -   type: string
+                                    format: date-time
+                                title: Updated
+                                nullable: true
+                        title: PortResponse
+                        example:
+                            created_at: '2022-01-01 00:00:00'
+                            description: port description
+                            id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                            ip_address:
+                            -   ip_address: 172.20.0.2
+                                subnet_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                            is_admin_state_up: true
+                            is_port_security_enabled: true
+                            name: port_name
+                            public_ip:
+                            -   public_ip: 100.94.5.31
+                                public_ip_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                            security_groups:
+                            - xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                            updated: '2022-01-01 00:00:00'
+                            vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                     title: Ports
-            type: object
+            title: PortsList
             required:
             - ports
-            title: PortsList
             example:
                 ports:
                 -   created_at: '2022-01-01 00:00:00'
@@ -2240,16 +2457,48 @@ components:
                     updated: '2022-01-01 00:00:00'
                     vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
         PortsListSimplified:
+            type: object
             properties:
                 ports_simplified:
-                    items:
-                        $ref: '#/components/schemas/PortSimpleResponse'
                     type: array
+                    items:
+                        type: object
+                        properties:
+                            id:
+                                anyOf:
+                                -   type: string
+                                title: Id
+                                nullable: true
+                            ip_address:
+                                type: array
+                                items:
+                                    type: object
+                                    properties:
+                                        ip_address:
+                                            type: string
+                                            title: Ip Address
+                                        subnet_id:
+                                            type: string
+                                            title: Subnet Id
+                                    title: IpAddress
+                                    required:
+                                    - ip_address
+                                    - subnet_id
+                                    example:
+                                        ip_address: 172.20.0.2
+                                        subnet_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                                title: Ip Address
+                                default: []
+                        title: PortSimpleResponse
+                        example:
+                            id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                            ip_address:
+                            -   ip_address: 172.20.0.2
+                                subnet_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                     title: Ports Simplified
-            type: object
+            title: PortsListSimplified
             required:
             - ports_simplified
-            title: PortsListSimplified
             example:
                 ports_simplified:
                 -   id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
@@ -2258,80 +2507,91 @@ components:
                         subnet_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
         ProjectType:
             type: string
+            title: ProjectType
             enum:
             - dbaas
             - iamaas
             - k8saas
             - default
             - mngsvc
-            title: ProjectType
         PublicIpCreateRequest:
+            type: object
             properties:
                 description:
+                    anyOf:
+                    -   type: string
                     title: Description
                     default: ''
                     nullable: true
-                    type: string
-            type: object
             title: PublicIpCreateRequest
             example:
                 description: public_ip_description
         PublicIpCreateResponse:
+            type: object
             properties:
                 id:
                     type: string
                     title: Id
-            type: object
+            title: PublicIpCreateResponse
             required:
             - id
-            title: PublicIpCreateResponse
             example:
                 id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
         PublicIpDb:
+            type: object
             properties:
                 id:
+                    anyOf:
+                    -   type: string
                     title: Id
                     nullable: true
-                    type: string
                 external_id:
+                    anyOf:
+                    -   type: string
                     title: External Id
                     nullable: true
-                    type: string
                 vpc_id:
+                    anyOf:
+                    -   type: string
                     title: Vpc Id
                     nullable: true
-                    type: string
                 description:
+                    anyOf:
+                    -   type: string
                     title: Description
                     nullable: true
-                    type: string
                 public_ip:
+                    anyOf:
+                    -   type: string
                     title: Public Ip
                     nullable: true
-                    type: string
                 port_id:
+                    anyOf:
+                    -   type: string
                     title: Port Id
                     nullable: true
-                    type: string
                 created_at:
+                    anyOf:
+                    -   type: string
+                        format: date-time
                     title: Created At
                     nullable: true
-                    type: string
-                    format: date-time
                 updated:
+                    anyOf:
+                    -   type: string
+                        format: date-time
                     title: Updated
                     nullable: true
-                    type: string
-                    format: date-time
                 status:
+                    anyOf:
+                    -   type: string
                     title: Status
                     nullable: true
-                    type: string
                 error:
+                    anyOf:
+                    -   type: string
                     title: Error
                     nullable: true
-                    type: string
-            type: object
             title: PublicIpDb
             example:
                 created_at: '2022-01-01 00:00:00'
@@ -2345,74 +2605,149 @@ components:
                 updated: '2022-01-01 00:00:00'
                 vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
         PublicIpResponseId:
+            type: object
             properties:
                 id:
                     type: string
                     title: Id
-            type: object
+            title: PublicIpResponseId
             required:
             - id
-            title: PublicIpResponseId
             example:
                 id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
         PublicIpResponsePort:
+            type: object
             properties:
                 public_ip_id:
+                    anyOf:
+                    -   type: string
                     title: Public Ip Id
                     nullable: true
-                    type: string
                 public_ip:
+                    anyOf:
+                    -   type: string
                     title: Public Ip
                     nullable: true
-                    type: string
-            type: object
             title: PublicIpResponsePort
             example:
                 public_ip: 100.94.5.31
                 public_ip_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
         PublicIpStatus:
             type: string
+            title: PublicIpStatus
             enum:
             - created
             - pending
             - error
-            title: PublicIpStatus
         PublicIpUpdateRequest:
+            type: object
             properties:
                 status:
-                    $ref: '#/components/schemas/PublicIpStatus'
+                    type: string
+                    title: PublicIpStatus
+                    enum:
+                    - created
+                    - pending
+                    - error
                 public_ip:
+                    anyOf:
+                    -   type: string
                     title: Public Ip
                     nullable: true
-                    type: string
                 external_id:
+                    anyOf:
+                    -   type: string
                     title: External Id
                     nullable: true
-                    type: string
                 error:
+                    anyOf:
+                    -   type: string
                     title: Error
                     nullable: true
-                    type: string
-            type: object
+            title: PublicIpUpdateRequest
             required:
             - status
-            title: PublicIpUpdateRequest
             example:
                 error: error
                 external_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                 public_ip: 100.94.5.31
                 status: created
         PublicIpsList:
+            type: object
             properties:
                 public_ips:
-                    items:
-                        $ref: '#/components/schemas/PublicIpDb'
                     type: array
+                    items:
+                        type: object
+                        properties:
+                            id:
+                                anyOf:
+                                -   type: string
+                                title: Id
+                                nullable: true
+                            external_id:
+                                anyOf:
+                                -   type: string
+                                title: External Id
+                                nullable: true
+                            vpc_id:
+                                anyOf:
+                                -   type: string
+                                title: Vpc Id
+                                nullable: true
+                            description:
+                                anyOf:
+                                -   type: string
+                                title: Description
+                                nullable: true
+                            public_ip:
+                                anyOf:
+                                -   type: string
+                                title: Public Ip
+                                nullable: true
+                            port_id:
+                                anyOf:
+                                -   type: string
+                                title: Port Id
+                                nullable: true
+                            created_at:
+                                anyOf:
+                                -   type: string
+                                    format: date-time
+                                title: Created At
+                                nullable: true
+                            updated:
+                                anyOf:
+                                -   type: string
+                                    format: date-time
+                                title: Updated
+                                nullable: true
+                            status:
+                                anyOf:
+                                -   type: string
+                                title: Status
+                                nullable: true
+                            error:
+                                anyOf:
+                                -   type: string
+                                title: Error
+                                nullable: true
+                        title: PublicIpDb
+                        example:
+                            created_at: '2022-01-01 00:00:00'
+                            description: port description
+                            error: error
+                            external_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                            id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                            port_ip: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                            public_ip: 100.94.5.31
+                            status: created
+                            updated: '2022-01-01 00:00:00'
+                            vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                     title: Public Ips
-            type: object
+            title: PublicIpsList
             required:
             - public_ips
-            title: PublicIpsList
             example:
                 public_ips:
                 -   created_at: '2022-01-01 00:00:00'
@@ -2426,6 +2761,7 @@ components:
                     updated: '2022-01-01 00:00:00'
                     vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
         QuotaModel:
+            type: object
             properties:
                 quota_slug:
                     type: string
@@ -2433,30 +2769,44 @@ components:
                 used:
                     type: integer
                     title: Used
-            type: object
+            title: QuotaModel
             required:
             - quota_slug
             - used
-            title: QuotaModel
             example:
                 quota_slug: public_ips
                 used: 10
         QuotaResult:
+            type: object
             properties:
                 results:
-                    items:
-                        $ref: '#/components/schemas/QuotaModel'
                     type: array
+                    items:
+                        type: object
+                        properties:
+                            quota_slug:
+                                type: string
+                                title: Quota Slug
+                            used:
+                                type: integer
+                                title: Used
+                        title: QuotaModel
+                        required:
+                        - quota_slug
+                        - used
+                        example:
+                            quota_slug: public_ips
+                            used: 10
                     title: Results
-            type: object
+            title: QuotaResult
             required:
             - results
-            title: QuotaResult
             example:
                 results:
                 -   quota_slug: public_ips
                     used: 10
         RouteRequest:
+            type: object
             properties:
                 destination:
                     type: string
@@ -2464,42 +2814,47 @@ components:
                 nexthop:
                     type: string
                     title: Nexthop
-            type: object
+            title: RouteRequest
             required:
             - destination
             - nexthop
-            title: RouteRequest
             example:
                 destination: 10.20.30.0/24
                 nexthop: 172.20.0.2
         RouterInterfaceResponse:
+            type: object
             properties:
                 id:
+                    anyOf:
+                    -   type: string
                     title: Id
                     nullable: true
-                    type: string
                 vpc_id:
+                    anyOf:
+                    -   type: string
                     title: Vpc Id
                     nullable: true
-                    type: string
                 router_id:
+                    anyOf:
+                    -   type: string
                     title: Router Id
                     nullable: true
-                    type: string
                 ip_address:
+                    anyOf:
+                    -   type: string
                     title: Ip Address
                     nullable: true
-                    type: string
                 nic_vpc_id:
+                    anyOf:
+                    -   type: string
                     title: Nic Vpc Id
                     nullable: true
-                    type: string
                 created_at:
+                    anyOf:
+                    -   type: string
+                        format: date-time
                     title: Created At
                     nullable: true
-                    type: string
-                    format: date-time
-            type: object
             title: RouterInterfaceResponse
             example:
                 created_at: '2022-01-01 00:00:00'
@@ -2509,15 +2864,56 @@ components:
                 router_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                 vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
         RouterInterfaceResponseList:
+            type: object
             properties:
                 router_interfaces:
+                    anyOf:
+                    -   type: array
+                        items:
+                            type: object
+                            properties:
+                                id:
+                                    anyOf:
+                                    -   type: string
+                                    title: Id
+                                    nullable: true
+                                vpc_id:
+                                    anyOf:
+                                    -   type: string
+                                    title: Vpc Id
+                                    nullable: true
+                                router_id:
+                                    anyOf:
+                                    -   type: string
+                                    title: Router Id
+                                    nullable: true
+                                ip_address:
+                                    anyOf:
+                                    -   type: string
+                                    title: Ip Address
+                                    nullable: true
+                                nic_vpc_id:
+                                    anyOf:
+                                    -   type: string
+                                    title: Nic Vpc Id
+                                    nullable: true
+                                created_at:
+                                    anyOf:
+                                    -   type: string
+                                        format: date-time
+                                    title: Created At
+                                    nullable: true
+                            title: RouterInterfaceResponse
+                            example:
+                                created_at: '2022-01-01 00:00:00'
+                                id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                                ip_address: 172.20.0.2
+                                nic_vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                                router_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                                vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                     title: Router Interfaces
                     default: []
                     nullable: true
-                    items:
-                        $ref: '#/components/schemas/RouterInterfaceResponse'
-                    type: array
-            type: object
             title: RouterInterfaceResponseList
             example:
                 router_interfaces:
@@ -2528,61 +2924,70 @@ components:
                     router_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                     vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
         RouterResponse:
+            type: object
             properties:
                 id:
+                    anyOf:
+                    -   type: string
                     title: Id
                     nullable: true
-                    type: string
                 vpc_id:
                     type: string
                     title: Vpc Id
                 external_network:
+                    anyOf:
+                    -   type: string
                     title: External Network
                     nullable: true
-                    type: string
                 external_id:
+                    anyOf:
+                    -   type: string
                     title: External Id
                     nullable: true
-                    type: string
                 is_default:
                     type: boolean
                     title: Is Default
                 name:
+                    anyOf:
+                    -   type: string
                     title: Name
                     nullable: true
-                    type: string
                 created_at:
+                    anyOf:
+                    -   type: string
+                        format: date-time
                     title: Created At
                     nullable: true
-                    type: string
-                    format: date-time
                 updated:
+                    anyOf:
+                    -   type: string
+                        format: date-time
                     title: Updated
                     nullable: true
-                    type: string
-                    format: date-time
                 function:
+                    anyOf:
+                    -   type: string
                     title: Function
                     default: primary
                     nullable: true
-                    type: string
                 status:
                     type: string
                     title: Status
                 error:
+                    anyOf:
+                    -   type: string
                     title: Error
                     nullable: true
-                    type: string
                 zone:
+                    anyOf:
+                    -   type: string
                     title: Zone
                     nullable: true
-                    type: string
-            type: object
+            title: RouterResponse
             required:
             - vpc_id
             - is_default
             - status
-            title: RouterResponse
             example:
                 created_at: '2022-01-01 00:00:00'
                 error: 'null'
@@ -2597,36 +3002,43 @@ components:
                 vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                 zone: a
         RuleCreateRequest:
+            type: object
             properties:
                 direction:
+                    anyOf:
+                    -   type: string
                     title: Direction
                     nullable: true
-                    type: string
                 port_range_min:
+                    anyOf:
+                    -   type: integer
                     title: Port Range Min
                     nullable: true
-                    type: integer
                 port_range_max:
+                    anyOf:
+                    -   type: integer
                     title: Port Range Max
                     nullable: true
-                    type: integer
                 protocol:
+                    anyOf:
+                    -   type: string
                     title: Protocol
                     nullable: true
-                    type: string
                 remote_ip_prefix:
+                    anyOf:
+                    -   type: string
                     title: Remote Ip Prefix
                     nullable: true
-                    type: string
                 remote_group_id:
+                    anyOf:
+                    -   type: string
                     title: Remote Group Id
                     nullable: true
-                    type: string
                 ethertype:
+                    anyOf:
+                    -   type: string
                     title: Ethertype
                     nullable: true
-                    type: string
-            type: object
             title: RuleCreateRequest
             example:
                 direction: egress
@@ -2637,71 +3049,102 @@ components:
                 remote_group_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                 remote_ip_prefix: 100.94.0.0/24
         RuleCreateResponse:
+            type: object
             properties:
                 id:
                     type: string
                     title: Id
-            type: object
+            title: RuleCreateResponse
             required:
             - id
-            title: RuleCreateResponse
             example:
                 id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
         RuleDefaultStatusEvent:
+            type: object
             properties:
                 security_group_id:
+                    anyOf:
+                    -   type: string
                     title: Security Group Id
                     nullable: true
-                    type: string
                 direction:
+                    anyOf:
+                    -   type: string
                     title: Direction
                     nullable: true
-                    type: string
                 port_range_min:
+                    anyOf:
+                    -   type: integer
                     title: Port Range Min
                     nullable: true
-                    type: integer
                 port_range_max:
+                    anyOf:
+                    -   type: integer
                     title: Port Range Max
                     nullable: true
-                    type: integer
                 protocol:
+                    anyOf:
+                    -   type: string
                     title: Protocol
                     nullable: true
-                    type: string
                 remote_ip_prefix:
+                    anyOf:
+                    -   type: string
                     title: Remote Ip Prefix
                     nullable: true
-                    type: string
                 remote_group_id:
+                    anyOf:
+                    -   type: string
                     title: Remote Group Id
                     nullable: true
-                    type: string
                 status:
-                    $ref: '#/components/schemas/RuleStatus'
+                    type: string
+                    title: RuleStatus
+                    enum:
+                    - created
+                    - pending
+                    - error
                 error:
+                    anyOf:
+                    -   type: string
                     title: Error
                     nullable: true
-                    type: string
                 resource_id:
+                    anyOf:
+                    -   type: string
                     title: Resource Id
                     nullable: true
-                    type: string
                 external_id:
+                    anyOf:
+                    -   type: string
                     title: External Id
                     nullable: true
-                    type: string
                 rules_zones:
+                    anyOf:
+                    -   type: array
+                        items:
+                            type: object
+                            properties:
+                                resource_id:
+                                    type: string
+                                    title: Resource Id
+                                zone:
+                                    anyOf:
+                                    -   type: string
+                                    title: Zone
+                                    nullable: true
+                            title: RuleZoneCreateEvent
+                            required:
+                            - resource_id
+                            example:
+                                resource_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                                zone: zone_name
                     title: Rules Zones
                     default: []
                     nullable: true
-                    items:
-                        $ref: '#/components/schemas/RuleZoneCreateEvent'
-                    type: array
-            type: object
+            title: RuleDefaultStatusEvent
             required:
             - status
-            title: RuleDefaultStatusEvent
             example:
                 direction: egress
                 error: 'null'
@@ -2717,62 +3160,79 @@ components:
                     zone: zone_name
                 status: created
         RuleResponse:
+            type: object
             properties:
                 id:
+                    anyOf:
+                    -   type: string
                     title: Id
                     nullable: true
-                    type: string
                 external_id:
+                    anyOf:
+                    -   type: string
                     title: External Id
                     nullable: true
-                    type: string
                 security_group_id:
+                    anyOf:
+                    -   type: string
                     title: Security Group Id
                     nullable: true
-                    type: string
                 direction:
+                    anyOf:
+                    -   type: string
                     title: Direction
                     nullable: true
-                    type: string
                 port_range_min:
+                    anyOf:
+                    -   type: integer
                     title: Port Range Min
                     nullable: true
-                    type: integer
                 port_range_max:
+                    anyOf:
+                    -   type: integer
                     title: Port Range Max
                     nullable: true
-                    type: integer
                 protocol:
+                    anyOf:
+                    -   type: string
                     title: Protocol
                     nullable: true
-                    type: string
                 remote_ip_prefix:
+                    anyOf:
+                    -   type: string
                     title: Remote Ip Prefix
                     nullable: true
-                    type: string
                 remote_group_id:
+                    anyOf:
+                    -   type: string
                     title: Remote Group Id
                     nullable: true
-                    type: string
                 ethertype:
+                    anyOf:
+                    -   type: string
                     title: Ethertype
                     nullable: true
-                    type: string
                 created_at:
+                    anyOf:
+                    -   type: string
+                        format: date-time
                     title: Created At
                     nullable: true
-                    type: string
-                    format: date-time
                 status:
-                    $ref: '#/components/schemas/RuleStatus'
+                    type: string
+                    title: RuleStatus
+                    enum:
+                    - created
+                    - pending
+                    - error
                 error:
+                    anyOf:
+                    -   type: string
                     title: Error
                     nullable: true
-                    type: string
-            type: object
+            title: RuleResponse
             required:
             - status
-            title: RuleResponse
             example:
                 created_at: '2022-01-01 00:00:00'
                 direction: egress
@@ -2787,56 +3247,68 @@ components:
                 security_group_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                 status: created
         RuleResponseEvent:
+            type: object
             properties:
                 direction:
+                    anyOf:
+                    -   type: string
                     title: Direction
                     nullable: true
-                    type: string
                 port_range_min:
+                    anyOf:
+                    -   type: integer
                     title: Port Range Min
                     nullable: true
-                    type: integer
                 port_range_max:
+                    anyOf:
+                    -   type: integer
                     title: Port Range Max
                     nullable: true
-                    type: integer
                 protocol:
+                    anyOf:
+                    -   type: string
                     title: Protocol
                     nullable: true
-                    type: string
                 remote_ip_prefix:
+                    anyOf:
+                    -   type: string
                     title: Remote Ip Prefix
                     nullable: true
-                    type: string
                 remote_group_id:
+                    anyOf:
+                    -   type: string
                     title: Remote Group Id
                     nullable: true
-                    type: string
                 status:
+                    anyOf:
+                    -   $ref: '#/components/schemas/RuleStatus'
                     nullable: true
-                    $ref: '#/components/schemas/RuleStatus'
                 error:
+                    anyOf:
+                    -   type: string
                     title: Error
                     nullable: true
-                    type: string
                 id:
+                    anyOf:
+                    -   type: string
                     title: Id
                     nullable: true
-                    type: string
                 security_group_id:
+                    anyOf:
+                    -   type: string
                     title: Security Group Id
                     nullable: true
-                    type: string
                 ethertype:
+                    anyOf:
+                    -   type: string
                     title: Ethertype
                     nullable: true
-                    type: string
                 created_at:
+                    anyOf:
+                    -   type: string
+                        format: date-time
                     title: Created At
                     nullable: true
-                    type: string
-                    format: date-time
-            type: object
             title: RuleResponseEvent
             example:
                 created_at: '2022-01-01 00:00:00'
@@ -2853,57 +3325,68 @@ components:
                 status: created
         RuleStatus:
             type: string
+            title: RuleStatus
             enum:
             - created
             - pending
             - error
-            title: RuleStatus
         RuleStatusEvent:
+            type: object
             properties:
                 direction:
+                    anyOf:
+                    -   type: string
                     title: Direction
                     nullable: true
-                    type: string
                 port_range_min:
+                    anyOf:
+                    -   type: integer
                     title: Port Range Min
                     nullable: true
-                    type: integer
                 port_range_max:
+                    anyOf:
+                    -   type: integer
                     title: Port Range Max
                     nullable: true
-                    type: integer
                 protocol:
+                    anyOf:
+                    -   type: string
                     title: Protocol
                     nullable: true
-                    type: string
                 remote_ip_prefix:
+                    anyOf:
+                    -   type: string
                     title: Remote Ip Prefix
                     nullable: true
-                    type: string
                 remote_group_id:
+                    anyOf:
+                    -   type: string
                     title: Remote Group Id
                     nullable: true
-                    type: string
                 status:
+                    anyOf:
+                    -   $ref: '#/components/schemas/RuleStatus'
                     nullable: true
-                    $ref: '#/components/schemas/RuleStatus'
                 error:
+                    anyOf:
+                    -   type: string
                     title: Error
                     nullable: true
-                    type: string
                 api_id:
+                    anyOf:
+                    -   type: string
                     title: Api Id
                     nullable: true
-                    type: string
                 rule_zones:
+                    anyOf:
+                    -   type: object
+                        additionalProperties:
+                            anyOf:
+                            -   $ref: '#/components/schemas/RuleZoneStatusEvent'
+                            nullable: true
                     title: Rule Zones
                     default: {}
                     nullable: true
-                    additionalProperties:
-                        nullable: true
-                        $ref: '#/components/schemas/RuleZoneStatusEvent'
-                    type: object
-            type: object
             title: RuleStatusEvent
             example:
                 api_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
@@ -2920,43 +3403,49 @@ components:
                     zone: zone_name
                 status: created
         RuleZoneCreateEvent:
+            type: object
             properties:
                 resource_id:
                     type: string
                     title: Resource Id
                 zone:
+                    anyOf:
+                    -   type: string
                     title: Zone
                     nullable: true
-                    type: string
-            type: object
+            title: RuleZoneCreateEvent
             required:
             - resource_id
-            title: RuleZoneCreateEvent
             example:
                 resource_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                 zone: zone_name
         RuleZoneStatusEvent:
+            type: object
             properties:
                 api_id:
+                    anyOf:
+                    -   type: string
                     title: Api Id
                     nullable: true
-                    type: string
                 zone:
+                    anyOf:
+                    -   type: string
                     title: Zone
                     nullable: true
-                    type: string
                 external_id:
+                    anyOf:
+                    -   type: string
                     title: External Id
                     nullable: true
-                    type: string
                 status:
+                    anyOf:
+                    -   $ref: '#/components/schemas/RuleStatus'
                     nullable: true
-                    $ref: '#/components/schemas/RuleStatus'
                 error:
+                    anyOf:
+                    -   type: string
                     title: Error
                     nullable: true
-                    type: string
-            type: object
             title: RuleZoneStatusEvent
             example:
                 api_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
@@ -2965,16 +3454,101 @@ components:
                 status: created
                 zone: zone_name
         RulesList:
+            type: object
             properties:
                 rules:
-                    items:
-                        $ref: '#/components/schemas/RuleResponse'
                     type: array
+                    items:
+                        type: object
+                        properties:
+                            id:
+                                anyOf:
+                                -   type: string
+                                title: Id
+                                nullable: true
+                            external_id:
+                                anyOf:
+                                -   type: string
+                                title: External Id
+                                nullable: true
+                            security_group_id:
+                                anyOf:
+                                -   type: string
+                                title: Security Group Id
+                                nullable: true
+                            direction:
+                                anyOf:
+                                -   type: string
+                                title: Direction
+                                nullable: true
+                            port_range_min:
+                                anyOf:
+                                -   type: integer
+                                title: Port Range Min
+                                nullable: true
+                            port_range_max:
+                                anyOf:
+                                -   type: integer
+                                title: Port Range Max
+                                nullable: true
+                            protocol:
+                                anyOf:
+                                -   type: string
+                                title: Protocol
+                                nullable: true
+                            remote_ip_prefix:
+                                anyOf:
+                                -   type: string
+                                title: Remote Ip Prefix
+                                nullable: true
+                            remote_group_id:
+                                anyOf:
+                                -   type: string
+                                title: Remote Group Id
+                                nullable: true
+                            ethertype:
+                                anyOf:
+                                -   type: string
+                                title: Ethertype
+                                nullable: true
+                            created_at:
+                                anyOf:
+                                -   type: string
+                                    format: date-time
+                                title: Created At
+                                nullable: true
+                            status:
+                                type: string
+                                title: RuleStatus
+                                enum:
+                                - created
+                                - pending
+                                - error
+                            error:
+                                anyOf:
+                                -   type: string
+                                title: Error
+                                nullable: true
+                        title: RuleResponse
+                        required:
+                        - status
+                        example:
+                            created_at: '2022-01-01 00:00:00'
+                            direction: egress
+                            ethertype: IPv4
+                            external_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                            id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                            port_range_max: 8028
+                            port_range_min: 8028
+                            protocol: tcp
+                            remote_group_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                            remote_ip_prefix: 100.94.0.0/24
+                            security_group_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                            status: created
                     title: Rules
-            type: object
+            title: RulesList
             required:
             - rules
-            title: RulesList
             example:
                 rules:
                 -   created_at: '2022-01-01 00:00:00'
@@ -2989,114 +3563,208 @@ components:
                     security_group_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                     status: created
         SecurityGroupCreateRequest:
+            type: object
             properties:
                 name:
+                    anyOf:
+                    -   type: string
+                        maxLength: 100
+                        minLength: 5
                     title: Name
                     nullable: true
-                    type: string
-                    maxLength: 100
-                    minLength: 5
                 description:
+                    anyOf:
+                    -   type: string
                     title: Description
                     default: ''
                     nullable: true
-                    type: string
-            type: object
+            title: SecurityGroupCreateRequest
             required:
             - name
-            title: SecurityGroupCreateRequest
             example:
                 description: security group description
                 name: security_group_name
         SecurityGroupCreateResponse:
+            type: object
             properties:
                 id:
                     type: string
                     title: Id
-            type: object
+            title: SecurityGroupCreateResponse
             required:
             - id
-            title: SecurityGroupCreateResponse
             example:
                 id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
         SecurityGroupDeletedAllResponse:
+            type: object
             properties:
                 deleted_security_groups:
+                    type: array
                     items:
+                        type: object
                         additionalProperties:
                             type: integer
-                        type: object
-                    type: array
                     title: Deleted Security Groups
-            type: object
+            title: SecurityGroupDeletedAllResponse
             required:
             - deleted_security_groups
-            title: SecurityGroupDeletedAllResponse
             example:
                 deleted_security_groups:
                 -   database: 0
                 -   openstack: 0
         SecurityGroupDetailEvent:
+            type: object
             properties:
                 id:
+                    anyOf:
+                    -   type: string
                     title: Id
                     nullable: true
-                    type: string
                 vpc_id:
+                    anyOf:
+                    -   type: string
                     title: Vpc Id
                     nullable: true
-                    type: string
                 name:
+                    anyOf:
+                    -   type: string
                     title: Name
                     nullable: true
-                    type: string
                 description:
+                    anyOf:
+                    -   type: string
                     title: Description
                     nullable: true
-                    type: string
                 created_at:
+                    anyOf:
+                    -   type: string
+                        format: date-time
                     title: Created At
                     nullable: true
-                    type: string
-                    format: date-time
                 updated:
+                    anyOf:
+                    -   type: string
+                        format: date-time
                     title: Updated
                     nullable: true
-                    type: string
-                    format: date-time
                 status:
-                    $ref: '#/components/schemas/SecurityGroupStatus'
+                    type: string
+                    title: SecurityGroupStatus
+                    enum:
+                    - created
+                    - pending
+                    - error
                 error:
+                    anyOf:
+                    -   type: string
                     title: Error
                     nullable: true
-                    type: string
                 tenant_id:
+                    anyOf:
+                    -   type: string
                     title: Tenant Id
                     nullable: true
-                    type: string
                 project_type:
+                    anyOf:
+                    -   type: string
                     title: Project Type
                     nullable: true
-                    type: string
                 is_default:
+                    anyOf:
+                    -   type: boolean
                     title: Is Default
                     nullable: true
-                    type: boolean
                 external_id:
+                    anyOf:
+                    -   type: string
                     title: External Id
                     nullable: true
-                    type: string
                 rules:
+                    anyOf:
+                    -   type: array
+                        items:
+                            type: object
+                            properties:
+                                direction:
+                                    anyOf:
+                                    -   type: string
+                                    title: Direction
+                                    nullable: true
+                                port_range_min:
+                                    anyOf:
+                                    -   type: integer
+                                    title: Port Range Min
+                                    nullable: true
+                                port_range_max:
+                                    anyOf:
+                                    -   type: integer
+                                    title: Port Range Max
+                                    nullable: true
+                                protocol:
+                                    anyOf:
+                                    -   type: string
+                                    title: Protocol
+                                    nullable: true
+                                remote_ip_prefix:
+                                    anyOf:
+                                    -   type: string
+                                    title: Remote Ip Prefix
+                                    nullable: true
+                                remote_group_id:
+                                    anyOf:
+                                    -   type: string
+                                    title: Remote Group Id
+                                    nullable: true
+                                status:
+                                    anyOf:
+                                    -   $ref: '#/components/schemas/RuleStatus'
+                                    nullable: true
+                                error:
+                                    anyOf:
+                                    -   type: string
+                                    title: Error
+                                    nullable: true
+                                id:
+                                    anyOf:
+                                    -   type: string
+                                    title: Id
+                                    nullable: true
+                                security_group_id:
+                                    anyOf:
+                                    -   type: string
+                                    title: Security Group Id
+                                    nullable: true
+                                ethertype:
+                                    anyOf:
+                                    -   type: string
+                                    title: Ethertype
+                                    nullable: true
+                                created_at:
+                                    anyOf:
+                                    -   type: string
+                                        format: date-time
+                                    title: Created At
+                                    nullable: true
+                            title: RuleResponseEvent
+                            example:
+                                created_at: '2022-01-01 00:00:00'
+                                direction: egress
+                                error: 'null'
+                                ethertype: IPv4
+                                id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                                port_range_max: 8028
+                                port_range_min: 8028
+                                protocol: tcp
+                                remote_group_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                                remote_ip_prefix: 100.94.0.0/24
+                                security_group_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                                status: created
                     title: Rules
                     default: []
                     nullable: true
-                    items:
-                        $ref: '#/components/schemas/RuleResponseEvent'
-                    type: array
-            type: object
+            title: SecurityGroupDetailEvent
             required:
             - status
-            title: SecurityGroupDetailEvent
             example:
                 created_at: '2022-01-01 00:00:00'
                 description: security group description
@@ -3124,16 +3792,91 @@ components:
                 updated: '2022-01-01 00:00:00'
                 vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
         SecurityGroupListEvent:
+            type: object
             properties:
                 security_groups:
-                    items:
-                        $ref: '#/components/schemas/SecurityGroupResponseEvent'
                     type: array
+                    items:
+                        type: object
+                        properties:
+                            id:
+                                anyOf:
+                                -   type: string
+                                title: Id
+                                nullable: true
+                            vpc_id:
+                                anyOf:
+                                -   type: string
+                                title: Vpc Id
+                                nullable: true
+                            name:
+                                anyOf:
+                                -   type: string
+                                title: Name
+                                nullable: true
+                            description:
+                                anyOf:
+                                -   type: string
+                                title: Description
+                                nullable: true
+                            created_at:
+                                anyOf:
+                                -   type: string
+                                    format: date-time
+                                title: Created At
+                                nullable: true
+                            updated:
+                                anyOf:
+                                -   type: string
+                                    format: date-time
+                                title: Updated
+                                nullable: true
+                            status:
+                                type: string
+                                title: SecurityGroupStatus
+                                enum:
+                                - created
+                                - pending
+                                - error
+                            error:
+                                anyOf:
+                                -   type: string
+                                title: Error
+                                nullable: true
+                            tenant_id:
+                                anyOf:
+                                -   type: string
+                                title: Tenant Id
+                                nullable: true
+                            project_type:
+                                anyOf:
+                                -   type: string
+                                title: Project Type
+                                nullable: true
+                            is_default:
+                                anyOf:
+                                -   type: boolean
+                                title: Is Default
+                                nullable: true
+                        title: SecurityGroupResponseEvent
+                        required:
+                        - status
+                        example:
+                            created_at: '2022-01-01 00:00:00'
+                            description: security group description
+                            error: 'null'
+                            id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                            is_default: true
+                            name: security_group_name
+                            project_type: default
+                            status: created
+                            tenant_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                            updated: '2022-01-01 00:00:00'
+                            vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                     title: Security Groups
-            type: object
+            title: SecurityGroupListEvent
             required:
             - security_groups
-            title: SecurityGroupListEvent
             example:
                 security_groups:
                 -   created_at: '2022-01-01 00:00:00'
@@ -3148,55 +3891,70 @@ components:
                     updated: '2022-01-01 00:00:00'
                     vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
         SecurityGroupResponseEvent:
+            type: object
             properties:
                 id:
+                    anyOf:
+                    -   type: string
                     title: Id
                     nullable: true
-                    type: string
                 vpc_id:
+                    anyOf:
+                    -   type: string
                     title: Vpc Id
                     nullable: true
-                    type: string
                 name:
+                    anyOf:
+                    -   type: string
                     title: Name
                     nullable: true
-                    type: string
                 description:
+                    anyOf:
+                    -   type: string
                     title: Description
                     nullable: true
-                    type: string
                 created_at:
+                    anyOf:
+                    -   type: string
+                        format: date-time
                     title: Created At
                     nullable: true
-                    type: string
-                    format: date-time
                 updated:
+                    anyOf:
+                    -   type: string
+                        format: date-time
                     title: Updated
                     nullable: true
-                    type: string
-                    format: date-time
                 status:
-                    $ref: '#/components/schemas/SecurityGroupStatus'
+                    type: string
+                    title: SecurityGroupStatus
+                    enum:
+                    - created
+                    - pending
+                    - error
                 error:
+                    anyOf:
+                    -   type: string
                     title: Error
                     nullable: true
-                    type: string
                 tenant_id:
+                    anyOf:
+                    -   type: string
                     title: Tenant Id
                     nullable: true
-                    type: string
                 project_type:
+                    anyOf:
+                    -   type: string
                     title: Project Type
                     nullable: true
-                    type: string
                 is_default:
+                    anyOf:
+                    -   type: boolean
                     title: Is Default
                     nullable: true
-                    type: boolean
-            type: object
+            title: SecurityGroupResponseEvent
             required:
             - status
-            title: SecurityGroupResponseEvent
             example:
                 created_at: '2022-01-01 00:00:00'
                 description: security group description
@@ -3211,47 +3969,123 @@ components:
                 vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
         SecurityGroupStatus:
             type: string
+            title: SecurityGroupStatus
             enum:
             - created
             - pending
             - error
-            title: SecurityGroupStatus
         SecurityGroupStatusEvent:
+            type: object
             properties:
                 external_id:
+                    anyOf:
+                    -   type: string
                     title: External Id
                     nullable: true
-                    type: string
                 status:
                     type: string
                     title: Status
                 error:
+                    anyOf:
+                    -   type: string
                     title: Error
                     nullable: true
-                    type: string
                 api_id:
+                    anyOf:
+                    -   type: string
                     title: Api Id
                     nullable: true
-                    type: string
                 rules:
+                    anyOf:
+                    -   type: array
+                        items:
+                            type: object
+                            properties:
+                                direction:
+                                    anyOf:
+                                    -   type: string
+                                    title: Direction
+                                    nullable: true
+                                port_range_min:
+                                    anyOf:
+                                    -   type: integer
+                                    title: Port Range Min
+                                    nullable: true
+                                port_range_max:
+                                    anyOf:
+                                    -   type: integer
+                                    title: Port Range Max
+                                    nullable: true
+                                protocol:
+                                    anyOf:
+                                    -   type: string
+                                    title: Protocol
+                                    nullable: true
+                                remote_ip_prefix:
+                                    anyOf:
+                                    -   type: string
+                                    title: Remote Ip Prefix
+                                    nullable: true
+                                remote_group_id:
+                                    anyOf:
+                                    -   type: string
+                                    title: Remote Group Id
+                                    nullable: true
+                                status:
+                                    anyOf:
+                                    -   $ref: '#/components/schemas/RuleStatus'
+                                    nullable: true
+                                error:
+                                    anyOf:
+                                    -   type: string
+                                    title: Error
+                                    nullable: true
+                                api_id:
+                                    anyOf:
+                                    -   type: string
+                                    title: Api Id
+                                    nullable: true
+                                rule_zones:
+                                    anyOf:
+                                    -   type: object
+                                        additionalProperties:
+                                            anyOf:
+                                            -   $ref: '#/components/schemas/RuleZoneStatusEvent'
+                                            nullable: true
+                                    title: Rule Zones
+                                    default: {}
+                                    nullable: true
+                            title: RuleStatusEvent
+                            example:
+                                api_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                                direction: egress
+                                error: 'null'
+                                external_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                                port_range_max: 8028
+                                port_range_min: 8028
+                                protocol: tcp
+                                remote_group_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                                remote_ip_prefix: 100.94.0.0/24
+                                rule_zones:
+                                -   resource_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                                    zone: zone_name
+                                status: created
                     title: Rules
                     default: []
                     nullable: true
-                    items:
-                        $ref: '#/components/schemas/RuleStatusEvent'
-                    type: array
                 security_group_zones:
+                    anyOf:
+                    -   type: object
+                        additionalProperties:
+                            anyOf:
+                            -   $ref: '#/components/schemas/SecurityGroupZoneStatusEvent'
+                            nullable: true
                     title: Security Group Zones
                     default: {}
                     nullable: true
-                    additionalProperties:
-                        nullable: true
-                        $ref: '#/components/schemas/SecurityGroupZoneStatusEvent'
-                    type: object
-            type: object
+            title: SecurityGroupStatusEvent
             required:
             - status
-            title: SecurityGroupStatusEvent
             example:
                 api_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                 error: 'null'
@@ -3274,30 +4108,34 @@ components:
                     zone: zone_name
                 status: created
         SecurityGroupZoneStatusEvent:
+            type: object
             properties:
                 external_id:
+                    anyOf:
+                    -   type: string
                     title: External Id
                     nullable: true
-                    type: string
                 status:
                     type: string
                     title: Status
                 error:
+                    anyOf:
+                    -   type: string
                     title: Error
                     nullable: true
-                    type: string
                 api_id:
+                    anyOf:
+                    -   type: string
                     title: Api Id
                     nullable: true
-                    type: string
                 zone:
+                    anyOf:
+                    -   type: string
                     title: Zone
                     nullable: true
-                    type: string
-            type: object
+            title: SecurityGroupZoneStatusEvent
             required:
             - status
-            title: SecurityGroupZoneStatusEvent
             example:
                 api_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                 error: error data, if any
@@ -3306,6 +4144,7 @@ components:
                 zone: zone_name
         SlugQuotas:
             type: string
+            title: SlugQuotas
             enum:
             - public_ips
             - subnets
@@ -3314,35 +4153,36 @@ components:
             - security_group_rules
             - vpcs
             - nics
-            title: SlugQuotas
         SubnetCreateRequest:
+            type: object
             properties:
                 name:
                     type: string
                     title: Name
                 description:
+                    anyOf:
+                    -   type: string
                     title: Description
                     nullable: true
-                    type: string
                 cidr_block:
+                    anyOf:
+                    -   type: string
                     title: Cidr Block
                     nullable: true
-                    type: string
                 ip_version:
                     type: integer
                     title: Ip Version
                 dns_nameservers:
+                    type: array
                     items:
                         type: string
                         format: ipvanyaddress
-                    type: array
                     title: Dns Nameservers
                     default: []
-            type: object
+            title: SubnetCreateRequest
             required:
             - name
             - ip_version
-            title: SubnetCreateRequest
             example:
                 cidr_block: 172.50.0.0/24
                 description: some_description
@@ -3351,31 +4191,32 @@ components:
                 ip_version: 4
                 name: subnet_name
         SubnetCreateResponse:
+            type: object
             properties:
                 id:
                     type: string
                     title: Id
-            type: object
+            title: SubnetCreateResponse
             required:
             - id
-            title: SubnetCreateResponse
             example:
                 id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
         SubnetPatchRequest:
+            type: object
             properties:
                 dns_nameservers:
+                    type: array
                     items:
                         type: string
                         format: ipvanyaddress
-                    type: array
                     title: Dns Nameservers
                     default: []
-            type: object
             title: SubnetPatchRequest
             example:
                 dns_nameservers:
                 - 8.8.8.8
         SubnetPoolDetailsResponse:
+            type: object
             properties:
                 id:
                     type: string
@@ -3390,9 +4231,9 @@ components:
                     type: string
                     title: Name
                 pool_prefix:
+                    type: array
                     items:
                         type: string
-                    type: array
                     title: Pool Prefix
                 min_prefix_length:
                     type: integer
@@ -3406,7 +4247,7 @@ components:
                 description:
                     type: string
                     title: Description
-            type: object
+            title: SubnetPoolDetailsResponse
             required:
             - id
             - tenant_id
@@ -3417,7 +4258,6 @@ components:
             - max_prefix_length
             - default_prefix_length
             - description
-            title: SubnetPoolDetailsResponse
             description: A Pydantic model representing the request for creating one
                 Subnet Pool.
             example:
@@ -3432,6 +4272,7 @@ components:
                 tenant_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                 vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
         SubnetPoolRequest:
+            type: object
             properties:
                 name:
                     type: string
@@ -3462,15 +4303,15 @@ components:
                     title: Description
                     description: The description for the subnet pool
                 address_scope_id:
+                    anyOf:
+                    -   type: string
                     title: Address Scope Id
                     description: The ID of the address scope for the subnet pool
                     nullable: true
-                    type: string
-            type: object
+            title: SubnetPoolRequest
             required:
             - name
             - description
-            title: SubnetPoolRequest
             description: A Pydantic model representing the request for creating one
                 Subnet Pool.
             example:
@@ -3482,6 +4323,7 @@ components:
                 name: some_subnet_pool
                 pool_prefix: 172.26.0.0/16
         SubnetPoolResponse:
+            type: object
             properties:
                 id:
                     type: string
@@ -3498,14 +4340,13 @@ components:
                 external_id:
                     type: string
                     title: External Id
-            type: object
+            title: SubnetPoolResponse
             required:
             - id
             - tenant_id
             - vpc_id
             - name
             - external_id
-            title: SubnetPoolResponse
             description: "A Pydantic model representing a response for Subnet Pool\
                 \ creation.\n\nAttributes:\n    id (str): The ID of the subnet pool.\n\
                 \    tenant_id (str): The ID of the tenant that owns the subnet pool.\n\
@@ -3519,14 +4360,50 @@ components:
                 tenant_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                 vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
         SubnetPoolsResponse:
+            type: object
             properties:
                 subnetpools:
-                    items:
-                        $ref: '#/components/schemas/SubnetPoolResponse'
                     type: array
+                    items:
+                        type: object
+                        properties:
+                            id:
+                                type: string
+                                title: Id
+                            tenant_id:
+                                type: string
+                                title: Tenant Id
+                            vpc_id:
+                                type: string
+                                title: Vpc Id
+                            name:
+                                type: string
+                                title: Name
+                            external_id:
+                                type: string
+                                title: External Id
+                        title: SubnetPoolResponse
+                        required:
+                        - id
+                        - tenant_id
+                        - vpc_id
+                        - name
+                        - external_id
+                        description: "A Pydantic model representing a response for\
+                            \ Subnet Pool creation.\n\nAttributes:\n    id (str):\
+                            \ The ID of the subnet pool.\n    tenant_id (str): The\
+                            \ ID of the tenant that owns the subnet pool.\n    vpc_id\
+                            \ (str): The ID of the VPC that the subnet pool belongs\
+                            \ to.\n    name (str): The name of the subnet pool.\n\
+                            \    external_id (str): The ID of the subnet pool in OpenStack."
+                        example:
+                            external_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                            id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                            name: some_subnet_pool
+                            tenant_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                            vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                     title: Subnetpools
                     default: []
-            type: object
             title: SubnetPoolsResponse
             description: A Pydantic model representing a list of Subnet Pools.
             example:
@@ -3537,6 +4414,7 @@ components:
                     tenant_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                     vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
         SubnetResponse:
+            type: object
             properties:
                 id:
                     type: string
@@ -3545,13 +4423,15 @@ components:
                     type: string
                     title: Vpc Id
                 name:
+                    anyOf:
+                    -   type: string
                     title: Name
                     nullable: true
-                    type: string
                 description:
+                    anyOf:
+                    -   type: string
                     title: Description
                     nullable: true
-                    type: string
                 cidr_block:
                     type: string
                     title: Cidr Block
@@ -3562,23 +4442,24 @@ components:
                     type: string
                     title: Zone
                 created_at:
+                    anyOf:
+                    -   type: string
+                        format: date-time
                     title: Created At
                     nullable: true
-                    type: string
-                    format: date-time
                 updated:
+                    anyOf:
+                    -   type: string
+                        format: date-time
                     title: Updated
                     nullable: true
-                    type: string
-                    format: date-time
-            type: object
+            title: SubnetResponse
             required:
             - id
             - vpc_id
             - cidr_block
             - ip_version
             - zone
-            title: SubnetResponse
             example:
                 cidr_block: 172.20.0.0/24
                 created_at: '2022-01-01 00:00:00'
@@ -3590,6 +4471,7 @@ components:
                 vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                 zone: a
         SubnetResponseDetail:
+            type: object
             properties:
                 id:
                     type: string
@@ -3598,13 +4480,15 @@ components:
                     type: string
                     title: Vpc Id
                 name:
+                    anyOf:
+                    -   type: string
                     title: Name
                     nullable: true
-                    type: string
                 description:
+                    anyOf:
+                    -   type: string
                     title: Description
                     nullable: true
-                    type: string
                 cidr_block:
                     type: string
                     title: Cidr Block
@@ -3615,29 +4499,42 @@ components:
                     type: string
                     title: Zone
                 created_at:
+                    anyOf:
+                    -   type: string
+                        format: date-time
                     title: Created At
                     nullable: true
-                    type: string
-                    format: date-time
                 updated:
+                    anyOf:
+                    -   type: string
+                        format: date-time
                     title: Updated
                     nullable: true
-                    type: string
-                    format: date-time
                 gateway_ip:
                     type: string
                     title: Gateway Ip
                 dns_nameservers:
+                    type: array
                     items:
                         type: string
-                    type: array
                     title: Dns Nameservers
                 dhcp_pools:
-                    items:
-                        $ref: '#/components/schemas/DhcpPoolStr'
                     type: array
+                    items:
+                        type: object
+                        properties:
+                            start:
+                                type: string
+                                title: Start
+                            end:
+                                type: string
+                                title: End
+                        title: DhcpPoolStr
+                        required:
+                        - start
+                        - end
                     title: Dhcp Pools
-            type: object
+            title: SubnetResponseDetail
             required:
             - id
             - vpc_id
@@ -3647,7 +4544,6 @@ components:
             - gateway_ip
             - dns_nameservers
             - dhcp_pools
-            title: SubnetResponseDetail
             example:
                 cidr_block: 172.20.0.0/24
                 created_at: '2022-01-01 00:00:00'
@@ -3665,25 +4561,80 @@ components:
                 vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                 zone: a
         SubnetResponseId:
+            type: object
             properties:
                 id:
                     type: string
                     title: Id
-            type: object
+            title: SubnetResponseId
             required:
             - id
-            title: SubnetResponseId
             example:
                 id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
         SubnetsResponse:
+            type: object
             properties:
                 subnets:
-                    items:
-                        $ref: '#/components/schemas/SubnetResponse'
                     type: array
+                    items:
+                        type: object
+                        properties:
+                            id:
+                                type: string
+                                title: Id
+                            vpc_id:
+                                type: string
+                                title: Vpc Id
+                            name:
+                                anyOf:
+                                -   type: string
+                                title: Name
+                                nullable: true
+                            description:
+                                anyOf:
+                                -   type: string
+                                title: Description
+                                nullable: true
+                            cidr_block:
+                                type: string
+                                title: Cidr Block
+                            ip_version:
+                                type: string
+                                title: Ip Version
+                            zone:
+                                type: string
+                                title: Zone
+                            created_at:
+                                anyOf:
+                                -   type: string
+                                    format: date-time
+                                title: Created At
+                                nullable: true
+                            updated:
+                                anyOf:
+                                -   type: string
+                                    format: date-time
+                                title: Updated
+                                nullable: true
+                        title: SubnetResponse
+                        required:
+                        - id
+                        - vpc_id
+                        - cidr_block
+                        - ip_version
+                        - zone
+                        example:
+                            cidr_block: 172.20.0.0/24
+                            created_at: '2022-01-01 00:00:00'
+                            description: vpc description
+                            id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                            ip_version: '4'
+                            name: vpc_name
+                            updated: '2022-01-01 00:00:00'
+                            vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                            zone: a
                     title: Subnets
                     default: []
-            type: object
             title: SubnetsResponse
             example:
                 subnets:
@@ -3697,6 +4648,7 @@ components:
                     vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                     zone: a
         ValidationError:
+            type: object
             properties:
                 message:
                     title: Message
@@ -3704,86 +4656,87 @@ components:
                 slug:
                     title: Slug
                     type: string
-            type: object
+            title: ValidationError
             required:
             - loc
             - msg
             - type
-            title: ValidationError
             example:
                 message: Unauthorized
                 slug: Unauthorized
         VpcCreateRequest:
+            type: object
             properties:
                 name:
                     type: string
                     title: Name
                 description:
+                    anyOf:
+                    -   type: string
                     title: Description
                     nullable: true
-                    type: string
-            type: object
+            title: VpcCreateRequest
             required:
             - name
-            title: VpcCreateRequest
             example:
                 description: DESCRIPTION
                 name: vpc_name
         VpcCreateResponse:
+            type: object
             properties:
                 id:
+                    anyOf:
+                    -   type: string
                     title: Id
                     nullable: true
-                    type: string
-            type: object
             title: VpcCreateResponse
             example:
                 id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
         VpcDeletedAllResponse:
+            type: object
             properties:
                 deleted_vpcs:
+                    type: array
                     items:
+                        type: object
                         additionalProperties:
                             type: integer
-                        type: object
-                    type: array
                     title: Deleted Vpcs
                 deleted_subnet_pools:
+                    type: array
                     items:
+                        type: object
                         additionalProperties:
                             type: integer
-                        type: object
-                    type: array
                     title: Deleted Subnet Pools
                 deleted_routers:
+                    type: array
                     items:
+                        type: object
                         additionalProperties:
                             type: integer
-                        type: object
-                    type: array
                     title: Deleted Routers
                 deleted_networks:
+                    type: array
                     items:
+                        type: object
                         additionalProperties:
                             type: integer
-                        type: object
-                    type: array
                     title: Deleted Networks
                 deleted_security_groups:
+                    type: array
                     items:
+                        type: object
                         additionalProperties:
                             type: integer
-                        type: object
-                    type: array
                     title: Deleted Security Groups
                     default: []
-            type: object
+            title: VpcDeletedAllResponse
             required:
             - deleted_vpcs
             - deleted_subnet_pools
             - deleted_routers
             - deleted_networks
-            title: VpcDeletedAllResponse
             example:
                 deleted_networks:
                 -   database: 0
@@ -3801,59 +4754,230 @@ components:
                 -   database: 0
                 -   openstack: 0
         VpcDetailsResponse:
+            type: object
             properties:
                 id:
+                    anyOf:
+                    -   type: string
                     title: Id
                     nullable: true
-                    type: string
                 tenant_id:
+                    anyOf:
+                    -   type: string
                     title: Tenant Id
                     nullable: true
-                    type: string
                 name:
+                    anyOf:
+                    -   type: string
                     title: Name
                     nullable: true
-                    type: string
                 description:
+                    anyOf:
+                    -   type: string
                     title: Description
                     nullable: true
-                    type: string
                 routers:
+                    anyOf:
+                    -   type: array
+                        items:
+                            type: object
+                            properties:
+                                id:
+                                    anyOf:
+                                    -   type: string
+                                    title: Id
+                                    nullable: true
+                                vpc_id:
+                                    type: string
+                                    title: Vpc Id
+                                external_network:
+                                    anyOf:
+                                    -   type: string
+                                    title: External Network
+                                    nullable: true
+                                external_id:
+                                    anyOf:
+                                    -   type: string
+                                    title: External Id
+                                    nullable: true
+                                is_default:
+                                    type: boolean
+                                    title: Is Default
+                                name:
+                                    anyOf:
+                                    -   type: string
+                                    title: Name
+                                    nullable: true
+                                created_at:
+                                    anyOf:
+                                    -   type: string
+                                        format: date-time
+                                    title: Created At
+                                    nullable: true
+                                updated:
+                                    anyOf:
+                                    -   type: string
+                                        format: date-time
+                                    title: Updated
+                                    nullable: true
+                                function:
+                                    anyOf:
+                                    -   type: string
+                                    title: Function
+                                    default: primary
+                                    nullable: true
+                                status:
+                                    type: string
+                                    title: Status
+                                error:
+                                    anyOf:
+                                    -   type: string
+                                    title: Error
+                                    nullable: true
+                                zone:
+                                    anyOf:
+                                    -   type: string
+                                    title: Zone
+                                    nullable: true
+                            title: RouterResponse
+                            required:
+                            - vpc_id
+                            - is_default
+                            - status
+                            example:
+                                created_at: '2022-01-01 00:00:00'
+                                error: 'null'
+                                external_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                                external_network: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                                function: primary
+                                id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                                is_default: true
+                                name: vpc_name
+                                status: created
+                                updated: '2022-01-01 00:00:00'
+                                vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                                zone: a
                     title: Routers
                     default: []
                     nullable: true
-                    items:
-                        $ref: '#/components/schemas/RouterResponse'
-                    type: array
                 networks:
+                    anyOf:
+                    -   type: array
+                        items:
+                            type: object
+                            properties:
+                                id:
+                                    type: string
+                                    title: Id
+                                name:
+                                    type: string
+                                    title: Name
+                                    maxLength: 100
+                                    minLength: 5
+                                description:
+                                    anyOf:
+                                    -   type: string
+                                    title: Description
+                                    nullable: true
+                                status:
+                                    anyOf:
+                                    -   type: string
+                                    title: Status
+                                    nullable: true
+                                mtu:
+                                    anyOf:
+                                    -   type: integer
+                                    title: Mtu
+                                    nullable: true
+                                subnets:
+                                    anyOf:
+                                    -   type: array
+                                        items:
+                                            type: string
+                                    title: Subnets
+                                    default: []
+                                    nullable: true
+                                shared:
+                                    anyOf:
+                                    -   type: boolean
+                                    title: Shared
+                                    nullable: true
+                                tags:
+                                    anyOf:
+                                    -   type: array
+                                        items:
+                                            type: string
+                                    title: Tags
+                                    default: []
+                                    nullable: true
+                                port_security_enabled:
+                                    anyOf:
+                                    -   type: boolean
+                                    title: Port Security Enabled
+                                    nullable: true
+                                router_external:
+                                    anyOf:
+                                    -   type: boolean
+                                    title: Router External
+                                    nullable: true
+                                created_at:
+                                    anyOf:
+                                    -   type: string
+                                        format: date-time
+                                    title: Created At
+                                    nullable: true
+                                updated_at:
+                                    anyOf:
+                                    -   type: string
+                                        format: date-time
+                                    title: Updated At
+                                    nullable: true
+                            title: NetworkResponse
+                            required:
+                            - name
+                            example:
+                                created_at: '2022-01-01 00:00:00'
+                                description: network description
+                                id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                                is_port_security_enabled: true
+                                is_router_external: false
+                                is_shared: false
+                                mtu: '1500'
+                                name: network_name
+                                status: ACTIVE
+                                subnet_ids:
+                                - xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                                tags:
+                                - network_tag
+                                updated_at: '2022-01-01 00:00:00'
                     title: Networks
                     default: []
                     nullable: true
-                    items:
-                        $ref: '#/components/schemas/NetworkResponse'
-                    type: array
                 subnets:
+                    anyOf:
+                    -   type: array
+                        items:
+                            type: string
                     title: Subnets
                     default: []
                     nullable: true
-                    items:
-                        type: string
-                    type: array
                 created_at:
+                    anyOf:
+                    -   type: string
+                        format: date-time
                     title: Created At
                     nullable: true
-                    type: string
-                    format: date-time
                 updated:
+                    anyOf:
+                    -   type: string
+                        format: date-time
                     title: Updated
                     nullable: true
-                    type: string
-                    format: date-time
                 is_default:
+                    anyOf:
+                    -   type: boolean
                     title: Is Default
                     nullable: true
-                    type: boolean
-            type: object
             title: VpcDetailsResponse
             example:
                 created_at: '2022-01-01 00:00:00'
@@ -3894,63 +5018,74 @@ components:
                 tenant_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                 updated: '2022-01-01 00:00:00'
         VpcResponse:
+            type: object
             properties:
                 id:
+                    anyOf:
+                    -   type: string
                     title: Id
                     nullable: true
-                    type: string
                 tenant_id:
+                    anyOf:
+                    -   type: string
                     title: Tenant Id
                     nullable: true
-                    type: string
                 name:
+                    anyOf:
+                    -   type: string
                     title: Name
                     nullable: true
-                    type: string
                 description:
+                    anyOf:
+                    -   type: string
                     title: Description
                     nullable: true
-                    type: string
                 router_id:
+                    anyOf:
+                    -   type: string
                     title: Router Id
                     nullable: true
-                    type: string
                 external_network:
+                    anyOf:
+                    -   type: string
                     title: External Network
                     nullable: true
-                    type: string
                 network_id:
+                    anyOf:
+                    -   type: string
                     title: Network Id
                     nullable: true
-                    type: string
                 subnets:
+                    anyOf:
+                    -   type: array
+                        items:
+                            type: string
                     title: Subnets
                     default: []
                     nullable: true
-                    items:
-                        type: string
-                    type: array
                 security_groups:
+                    type: array
                     items:
                         type: string
-                    type: array
                     title: Security Groups
                     default: []
                 created_at:
+                    anyOf:
+                    -   type: string
+                        format: date-time
                     title: Created At
                     nullable: true
-                    type: string
-                    format: date-time
                 updated:
+                    anyOf:
+                    -   type: string
+                        format: date-time
                     title: Updated
                     nullable: true
-                    type: string
-                    format: date-time
                 is_default:
+                    anyOf:
+                    -   type: boolean
                     title: Is Default
                     nullable: true
-                    type: boolean
-            type: object
             title: VpcResponse
             example:
                 created_at: '2022-01-01 00:00:00'
@@ -3968,15 +5103,99 @@ components:
                 tenant_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                 updated: '2022-01-01 00:00:00'
         VpcResponseList:
+            type: object
             properties:
                 vpcs:
+                    anyOf:
+                    -   type: array
+                        items:
+                            type: object
+                            properties:
+                                id:
+                                    anyOf:
+                                    -   type: string
+                                    title: Id
+                                    nullable: true
+                                tenant_id:
+                                    anyOf:
+                                    -   type: string
+                                    title: Tenant Id
+                                    nullable: true
+                                name:
+                                    anyOf:
+                                    -   type: string
+                                    title: Name
+                                    nullable: true
+                                description:
+                                    anyOf:
+                                    -   type: string
+                                    title: Description
+                                    nullable: true
+                                router_id:
+                                    anyOf:
+                                    -   type: string
+                                    title: Router Id
+                                    nullable: true
+                                external_network:
+                                    anyOf:
+                                    -   type: string
+                                    title: External Network
+                                    nullable: true
+                                network_id:
+                                    anyOf:
+                                    -   type: string
+                                    title: Network Id
+                                    nullable: true
+                                subnets:
+                                    anyOf:
+                                    -   type: array
+                                        items:
+                                            type: string
+                                    title: Subnets
+                                    default: []
+                                    nullable: true
+                                security_groups:
+                                    type: array
+                                    items:
+                                        type: string
+                                    title: Security Groups
+                                    default: []
+                                created_at:
+                                    anyOf:
+                                    -   type: string
+                                        format: date-time
+                                    title: Created At
+                                    nullable: true
+                                updated:
+                                    anyOf:
+                                    -   type: string
+                                        format: date-time
+                                    title: Updated
+                                    nullable: true
+                                is_default:
+                                    anyOf:
+                                    -   type: boolean
+                                    title: Is Default
+                                    nullable: true
+                            title: VpcResponse
+                            example:
+                                created_at: '2022-01-01 00:00:00'
+                                description: DESCRIPTION
+                                external_network: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                                id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                                is_default: true
+                                name: vpc_name
+                                network_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                                router_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                                security_groups:
+                                - xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                                subnets:
+                                - xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                                tenant_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                                updated: '2022-01-01 00:00:00'
                     title: Vpcs
                     default: []
                     nullable: true
-                    items:
-                        $ref: '#/components/schemas/VpcResponse'
-                    type: array
-            type: object
             title: VpcResponseList
             example:
                 vpcs:
@@ -3995,30 +5214,33 @@ components:
                     tenant_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                     updated: '2022-01-01 00:00:00'
         XVpcCreateRequest:
+            type: object
             properties:
                 name:
                     type: string
                     title: Name
                 description:
+                    anyOf:
+                    -   type: string
                     title: Description
                     nullable: true
-                    type: string
                 subnetpool_id:
+                    anyOf:
+                    -   type: string
                     title: Subnetpool Id
                     description: ID of SubnetPool             from which the VPC will
                         get CIDRs.             Can be used instead of 'cidr' field.
                     nullable: true
-                    type: string
                 cidr:
+                    anyOf:
+                    -   type: string
                     title: Cidr
                     description: CIDR from which VPC's subnets will get IPs            Can
                         be used instead of 'subnetpool_id' field.
                     nullable: true
-                    type: string
-            type: object
+            title: XVpcCreateRequest
             required:
             - name
-            title: XVpcCreateRequest
             description: 'XVpcCreateRequest is the equivalent of VpcCreateRequest
 
                 for XaaS routes.'
@@ -4027,6 +5249,37 @@ components:
                 description: vpc description
                 name: vpc_name
                 subnetpool_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+servers:
+-   url: https://{env}/{region}/network
+    variables:
+        region:
+            enum:
+            - br-ne-1
+            - br-se1
+            - br-mgl1
+            default: br-se1
+            description: Region to reach the service
+            x-mgc-transforms:
+            -   type: translate
+                allowMissing: true
+                translations:
+                -   from: br-ne1
+                    to: br-ne-1
+                -   from: br-mgl1
+                    to: br-se-1
+        env:
+            enum:
+            - api.magalu.cloud
+            - api.pre-prod.jaxyendy.com
+            default: api.magalu.cloud
+            description: Environment to use
+            x-mgc-transforms:
+            -   type: translate
+                translations:
+                -   from: prod
+                    to: api.magalu.cloud
+                -   from: pre-prod
+                    to: api.pre-prod.jaxyendy.com
 tags:
 -   name: healthcheck
     description: healthcheck
@@ -4062,34 +5315,3 @@ tags:
     description: worker_public_ips
     x-mgc-hidden: true
 $id: https://network.jaxyendy.com/openapi.json
-servers:
--   url: https://{env}/{region}/network
-    variables:
-        region:
-            description: Region to reach the service
-            default: br-se1
-            enum:
-            - br-ne-1
-            - br-se1
-            - br-mgl1
-            x-mgc-transforms:
-            -   type: translate
-                allowMissing: true
-                translations:
-                -   from: br-ne1
-                    to: br-ne-1
-                -   from: br-mgl1
-                    to: br-se-1
-        env:
-            description: Environment to use
-            default: api.magalu.cloud
-            enum:
-            - api.magalu.cloud
-            - api.pre-prod.jaxyendy.com
-            x-mgc-transforms:
-            -   type: translate
-                translations:
-                -   from: prod
-                    to: api.magalu.cloud
-                -   from: pre-prod
-                    to: api.pre-prod.jaxyendy.com

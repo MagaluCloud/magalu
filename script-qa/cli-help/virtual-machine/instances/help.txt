@@ -5,12 +5,11 @@ Usage:
   ./mgc virtual-machine instances [command]
 
 Commands:
-  attach      Instance Attach Port
   create      Create an instance asynchronously.
   delete      Delete a instance asynchronously
-  detach      Instance Detach Port
   get         Retrieve the details of an instance.
   list        Lists all instances in the current tenant.
+  port        port
   reboot      Reboot a running or suspended instance.
   rename      Renames an instance.
   retype      Changes a running or stopped instance machine type for another one.

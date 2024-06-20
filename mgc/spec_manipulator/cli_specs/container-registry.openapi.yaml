@@ -1,0 +1,887 @@
+openapi: 3.0.1
+info:
+  title: mcr-api-product
+  description: Magalu Container Registry product API.
+  contact:
+    name: Tribo IAAS Cloud
+    url: https://github.com/luizalabs
+    email: suporte@jaxyendy.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 0.1.0
+servers:
+  - url: https://api-mcr.pre-prod.br-ne-1.jaxyendy.com
+    description: "NE-1 pre-prod"
+  - url: https://api-mcr.team-integration.br-ne-1.jaxyendy.com
+    description: "NE-1 team-integration"
+  - url: https://api-mcr.br-ne-1.jaxyendy.com
+    description: "NE-1 prod"
+  - url: https://api-mcr.pre-prod.br-se-1.jaxyendy.com
+    description: "SE1 pre-prod"
+  - url: https://api-mcr.team-integration.br-se-1.jaxyendy.com
+    description: "SE1 team-integration"
+  - url: https://api-mcr.br-se-1.jaxyendy.com
+    description: "SE1 prod"
+paths:
+  /v0/credentials:
+    get:
+      tags:
+        - registries
+      summary: Get credentials for container registry
+      description: Return container registry user's authentication credentials.
+      operationId: getCredentials
+      security:
+        - BearerAuth:
+            - mcr.read
+        - OAuth2:
+            - mcr.read
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CredentialsResponse'
+        '400':
+          $ref: "#/components/responses/BadRequestError"
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /v0/registries:
+    post:
+      tags:
+        - registries
+      summary: Create a container registry
+      description: Creates a container registry in Magalu Cloud.
+      operationId: createRegistry
+      security:
+        - BearerAuth:
+            - mcr.write
+        - OAuth2:
+            - mcr.write
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegistryRequest'
+      responses:
+        '201':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateRegistryResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    get:
+      tags:
+        - registries
+      summary: List all container registries
+      description: List user's container registries.
+      operationId: getRegistries
+      security:
+        - BearerAuth:
+            - mcr.read
+        - OAuth2:
+            - mcr.read
+      parameters:
+        - name: _limit
+          in: query
+          required: false
+          schema:
+            minimum: 1
+            title: "Limit"
+            type: integer
+          description: Limit
+        - name: _offset
+          in: query
+          required: false
+          schema:
+            minimum: 0
+            type: integer
+          description: Offset
+        - name: _sort
+          in: query
+          required: false
+          schema:
+            default: created:asc
+            pattern: (^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$
+            type: string
+          description: Fields to use as reference to sort.
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegistriesResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /v0/registries/{registry_id}:
+    get:
+      tags:
+        - registries
+      summary: Get registry information
+      description: Show detailed information about the user's container registry.
+      operationId: getRegistry
+      security:
+        - BearerAuth:
+            - mcr.read
+        - OAuth2:
+            - mcr.read
+      parameters:
+        - name: registry_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Container Registry's UUID.
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegistryResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      tags:
+        - registries
+      summary: Delete a container registry by registry_id
+      description: Delete a container registry by uuid.
+      operationId: deleteRegistry
+      security:
+        - BearerAuth:
+            - mcr.write
+        - OAuth2:
+            - mcr.write
+      parameters:
+        - name: registry_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Container Registry's UUID.
+      responses:
+        '204':
+          description: Successful operation
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /v0/registries/{registry_id}/repositories:
+    get:
+      tags:
+        - repositories
+      summary: List all container registry repositories
+      description: List all user's repositories in the container registry.
+      operationId: getRepositories
+      security:
+        - BearerAuth:
+            - mcr.read
+        - OAuth2:
+            - mcr.read
+      parameters:
+        - name: registry_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Container Registry's UUID.
+        - name: _limit
+          in: query
+          required: false
+          schema:
+            minimum: 1
+            title: "Limit"
+            type: integer
+          description: Limit
+        - name: _offset
+          in: query
+          required: false
+          schema:
+            minimum: 0
+            type: integer
+          description: Offset
+        - name: _sort
+          in: query
+          required: false
+          schema:
+            default: created_at:desc
+            pattern: (^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$
+            type: string
+          description: Fields to use as reference to sort.
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RepositoriesResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /v0/registries/{registry_id}/repositories/{repository_name}:
+    get:
+      tags:
+        - repositories
+      summary: Get a container registry repository by repository_name
+      description: Return detailed repository's information filtered by name.
+      operationId: getRepository
+      security:
+        - BearerAuth:
+            - mcr.read
+        - OAuth2:
+            - mcr.read
+      parameters:
+        - name: registry_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Container Registry's UUID.
+        - required: true
+          name: repository_name
+          in: path
+          schema:
+            type: string
+          description: Repository's name.
+      responses:
+        '201':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RepositoryResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      tags:
+        - repositories
+      summary: Delete a container registry repository by repository_name.
+      description: Delete a repository by name.
+      operationId: deleteRepository
+      security:
+        - BearerAuth:
+            - mcr.write
+        - OAuth2:
+            - mcr.write
+      parameters:
+        - name: registry_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Container Registry's UUID.
+        - required: true
+          name: repository_name
+          in: path
+          schema:
+            type: string
+          description: Repository's name.
+      responses:
+        '204':
+          description: Successful operation
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /v0/registries/{registry_id}/repositories/{repository_name}/images:
+    get:
+      tags:
+        - images
+      summary: List images in container registry repository
+      description: List all images in container registry repository
+      operationId: getImages
+      security:
+        - BearerAuth:
+            - mcr.read
+        - OAuth2:
+            - mcr.read
+      parameters:
+        - name: registry_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Container Registry's UUID.
+        - required: true
+          name: repository_name
+          in: path
+          schema:
+            type: string
+          description: Repository's name.
+        - name: _limit
+          in: query
+          required: false
+          schema:
+            minimum: 1
+            title: Limit
+            type: integer
+          description: Limit
+        - name: _offset
+          in: query
+          required: false
+          schema:
+            minimum: 0
+            type: integer
+          description: Offset
+        - name: _sort
+          in: query
+          required: false
+          schema:
+            default: pushed_at:desc
+            pattern: (^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$
+            type: string
+          description: Fields to use as reference to sort.
+        - name: expand
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+          description: "You can get more detailed info about: ['tags_details', 'extra_attr', 'manifest_media_type', 'media_type']"
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImagesResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /v0/registries/{registry_id}/repositories/{repository_name}/images/{digest_or_tag}:
+    delete:
+      tags:
+        - images
+      summary: Delete image by digest or tag
+      description: Delete repository image by digest or tag
+      operationId: deleteImage
+      security:
+        - BearerAuth:
+            - mcr.write
+            - mcr.read
+        - OAuth2:
+            - mcr.write
+            - mcr.read
+      parameters:
+        - name: registry_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Container Registry's UUID.
+        - required: true
+          name: repository_name
+          in: path
+          schema:
+            type: string
+          description: Repository's name.
+        - name: digest_or_tag
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Digest or tag of an image
+      responses:
+        '204':
+          description: Successful operation
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    get:
+      tags:
+        - images
+      summary: Get image details
+      description: Show detailed information about the image.
+      operationId: getImage
+      security:
+        - BearerAuth:
+            - mcr.read
+        - OAuth2:
+            - mcr.read
+      parameters:
+        - name: registry_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Container Registry's UUID.
+        - name: repository_name
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Repository's name.
+        - name: digest_or_tag
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Digest or tag of an image.
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImageResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+components:
+  schemas:
+    RegistryRequest:
+      type: object
+      description: Container Registry Request Object.
+      properties:
+        name:
+          type: string
+          description: A unique, global name for the container registry. It must be written in lowercase letters and consists only of numbers and letters, up to a limit of 63 characters.
+      required:
+        - name
+      example:
+        name: cool_registry
+    CreateRegistryResponse:
+      type: object
+      description: Container Registry's creation response.
+      properties:
+        id:
+          type: string
+          description: Container Registry's UUID.
+        name:
+          type: string
+          description: A unique, global name for the container registry. It must be written in lowercase letters and consists only of numbers and letters, up to a limit of 63 characters.
+      required:
+        - id
+        - name
+      example:
+        id: 0c6bbd87-881a-4bf8-b3f6-4ff3ceacb42c
+        name: cool_registry
+    RegistriesResponse:
+      type: object
+      description: Container registry information response object.
+      required:
+        - results
+      properties:
+        results:
+          type: array
+          description: List of user registries.
+          items:
+            $ref: '#/components/schemas/RegistryResponse'
+    RegistryResponse:
+      type: object
+      description: Container Registry's response data.
+      required:
+        - id
+        - name
+        - storage_usage_bytes
+        - created_at
+        - updated_at
+      properties:
+        id:
+          type: string
+          description: Container Registry's UUID.
+        name:
+          type: string
+          description: Name of the container registry created.
+        storage_usage_bytes:
+          type: integer
+          description: Storage used in bytes.
+        created_at:
+          type: string
+          description: Date and time of creation of the container registry.
+        updated_at:
+          type: string
+          description: Date and time of the last change to the container registry.
+      example:
+        id: 0c6bbd87-881a-4bf8-b3f6-4ff3ceacb42c
+        name: cool_registry
+        storage_usage_bytes: 12345
+        created_at: "2024-05-15T19:56:47Z"
+        updated_at: "2024-05-15T19:56:47Z"
+    RepositoriesResponse:
+      type: object
+      description: Information returned about the container registry repository.
+      required:
+        - results
+      properties:
+        goal:
+          $ref: '#/components/schemas/AmountRepositoryResponse'
+        results:
+          type: array
+          description: Information about the container registry repositories.
+          items:
+            $ref: '#/components/schemas/RepositoryResponse'
+    RepositoryResponse:
+      type: object
+      description: Information about the repository.
+      required:
+        - registry_name
+        - name
+        - image_count
+        - created_at
+        - updated_at
+      properties:
+        registry_name:
+          type: string
+          description: Name of the container registry.
+        name:
+          type: string
+          description: Name of the repository.
+        image_count:
+          type: integer
+          description: Number of images in the repository.
+        created_at:
+          type: string
+          description: Date and time of creation of the repository.
+        updated_at:
+          type: string
+          description: Date and time of the last change to the repository.
+      example:
+        registry_name: cool_registry
+        name: alpine
+        image_count: 2
+        created_at: "2024-05-15T19:56:47Z"
+        updated_at: "2024-05-15T19:56:47Z"
+    CredentialsResponse:
+      type: object
+      description: User's credentials for authentication to the container registry.
+      required:
+        - username
+        - password
+        - email
+      properties:
+        username:
+          type: string
+          description: Username for authentication to the container registry.
+        password:
+          type: string
+          description: Password for authentication to the container registry.
+        email:
+          type: string
+          description: Email for authentication to the container registry.
+      example:
+        username: e3d49354-35d7-4565-b634-65d8b86aa594
+        password: 62kWa168QL!d4IVwN6wTfTYFv63=Sc1D
+        email: janedoe@email.com
+    AmountRepositoryResponse:
+      type: object
+      description: User's repositories quantity.
+      properties:
+        total:
+          type: integer
+          description: Total number of repositories for a user.
+      example:
+        total: 1
+    ImagesResponse:
+      type: object
+      description: Repository images response.
+      required:
+        - results
+      properties:
+        results:
+          type: array
+          description: List of repository images.
+          items:
+            $ref: '#/components/schemas/ImageResponse'
+    ImageResponse:
+      type: object
+      description: Repository image response data.
+      required:
+        - digest
+        - size_bytes
+        - pushed_at
+        - pulled_at
+        - tags
+      properties:
+        digest:
+          type: string
+          description: Image digest.
+        size_bytes:
+          type: integer
+          description: Image size in bytes.
+        pushed_at:
+          type: string
+          description: Date and time when the image was pushed.
+        pulled_at:
+          type: string
+          description: Date and time when the image was pulled.
+        manifest_media_type:
+          type: string
+          description: The manifest media type of the image.
+        media_type:
+          type: string
+          description: The media type of the image.
+        tags:
+          type: array
+          description: Tags of the image.
+          items:
+            type: string
+            description: Tag names.
+        tags_details:
+          type: array
+          description: Tags details of the image
+          items:
+            $ref: '#/components/schemas/ImageTagResponse'
+        extra_attr:
+          type: object
+          description: Extra attributes about the image.
+      example:
+        digest: sha256:aef9ff594b36575be6248901a4e5a9bad031f3e0fd42c33a6d2bd501dde5e955
+        size_bytes: 3552429
+        pushed_at: "2024-05-15T19:56:47Z"
+        pulled_at: "2024-05-15T19:56:47Z"
+        tags:
+          - latest
+        manifest_media_type: "application/vnd.docker.distribution.manifest.v2+json"
+        media_type: "application/vnd.docker.container.image.v1+json"
+        tags_details:
+          - name: latest
+            pushed_at: "2024-05-15T19:56:47Z"
+            pulled_at: "2024-05-15T19:56:47Z"
+            signed: false
+        extra_attr: {}
+    ImageTagResponse:
+      type: object
+      description: Tag of an image response.
+      properties:
+        name:
+          type: string
+          description: Tag name.
+        pushed_at:
+          type: string
+          description: Date and time when the tag was pushed.
+        pulled_at:
+          type: string
+          description: Date and time when the tag was pulled.
+        signed:
+          type: boolean
+          description: Boolean value indicating if the image is signed or not.
+      example:
+        name: latest
+        pushed_at: "2024-05-15T19:56:47Z"
+        pulled_at: "2024-05-15T19:56:47Z"
+        signed: false
+    Error:
+      type: object
+      required:
+        - slug
+        - message
+      description: Details regarding an error.
+      properties:
+        slug:
+          type: string
+          description: Identifier corresponding to the error type.
+        message:
+          type: string
+          description: Detailed message with information about the error.
+        detail:
+          type: object
+          description: Details about the error.
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    OAuth2:
+      flows:
+        authorizationCode:
+          authorizationUrl: 'https://idp-maas-sandbox.ipet.sh/auth/realms/master/protocol/openid-connect/auth'
+          tokenUrl: 'https://idp-maas-sandbox.ipet.sh/auth/realms/master/protocol/openid-connect/token'
+          scopes:
+            mcr.read: Read IaaS resource information
+            mcr.write: Write IaaS resource information
+      type: oauth2
+      description: OAuth2 via IDPA
+  responses:
+    InternalServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            slug: internal_server_error
+            message: "error when getting resource: timeout"
+            detail: {}
+    BadRequestError:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            slug: bad_request
+            message: "invalid param"
+            detail: {}
+    NotFoundError:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            slug: not_found
+            message: "error when getting resource: not found"
+            detail: {}
+    UnauthorizedError:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            slug: unauthorized
+            message: "invalid email on token"
+            detail: {}
+    ForbiddenError:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            slug: forbidden
+            message: "user not allowed"
+            detail: {}
+    ConflictError:
+      description: Conflict
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            slug: conflict
+            message: "resource already exists"
+            detail: {}
+    TooManyRequestsError:
+      description: Too Many Requests
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            slug: too_many_requests
+            message: "too many requests"
+            detail: {}
+tags:
+  - name: registries
+    description: Routes related to Container Registry management.
+  - name: repositories
+    description: Routes related to managing Container Registry repositories.
+  - name: images
+    description: Routes related to managing Container Registry repositories images.
+  - name: info
+    description: Routes related to mcr-api configuration information.

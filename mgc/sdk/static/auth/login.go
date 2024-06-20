@@ -107,6 +107,11 @@ func login(ctx context.Context, parameters loginParameters, _ struct{}) (*loginR
 		scopes.Add(builtIn)
 	}
 
+	// TEMPORARY
+	// IGNORE SCOPES
+	// Motive: https://chat.google.com/room/AAAA4bpKhmw/ZHDVReLMDSg/ZHDVReLMDSg?cls=10
+	ignoredScopes := core.Scopes{"mcr.read", "mcr.write"}
+
 	if parameters.Scopes == nil {
 		// Also add all available scopes by default when logging if no scope is explicitly passed in
 		allScopes, err := mgcAuthScope.ListAllAvailable(ctx)
@@ -115,7 +120,10 @@ func login(ctx context.Context, parameters loginParameters, _ struct{}) (*loginR
 		}
 
 		for _, scope := range allScopes {
-			scopes.Add(scope)
+			// READ REASON ABOVE
+			if !slices.Contains(ignoredScopes, scope) {
+				scopes.Add(scope)
+			}
 		}
 	}
 
@@ -184,7 +192,7 @@ func checkScopesAfterLogin(a *auth.Auth, desiredScopes core.Scopes) {
 		return
 	}
 
-	loginLogger().Warnw(
+	loginLogger().Debugw(
 		"login was successful but resulting scopes were not as requested. This may lead to some operations failing.",
 		"missing", missing,
 	)

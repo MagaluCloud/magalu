@@ -9,7 +9,7 @@ Resizes a database instance.
 
 Resizes a database instance.
 
-Version: 1.19.0
+Version: 1.21.2
 
 import "magalu.cloud/lib/products/dbaas/instances"
 */

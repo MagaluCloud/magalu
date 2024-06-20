@@ -8,8 +8,8 @@ Usage:
 
 ## Product catalog:
 - Flags:
-- --control.limit integer     Limit (default 50)
-- --control.offset integer    Offset (min: 0)
+- --control.limit integer     Limit (max: 2147483647) (default 50)
+- --control.offset integer    Offset (max: 2147483647)
 - --control.sort string       Sort (pattern: ^(^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$) (default "platform:asc,end_life_at:desc")
 - -h, --help                     help for list
 - -v, --version                  version for list

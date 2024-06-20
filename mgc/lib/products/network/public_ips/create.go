@@ -23,7 +23,7 @@ import (
 type CreateParameters struct {
 	Description   *string `json:"description,omitempty"`
 	ValidateQuota *bool   `json:"validate_quota,omitempty"`
-	VpcId         string  `json:"vpc_id"`
+	VpcId         any     `json:"vpc_id"`
 	Wait          *bool   `json:"wait,omitempty"`
 	WaitTimeout   *int    `json:"wait_timeout,omitempty"`
 }

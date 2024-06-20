@@ -35,12 +35,21 @@ type KeyPair struct {
 
 type ObjectStorageConfig struct {
 	BucketPrefix  types.String `tfsdk:"bucket_prefix"`
-	ObjectKeyPair *KeyPair     `tfsdk:"apikey"`
+	ObjectKeyPair *KeyPair     `tfsdk:"key_pair"`
 }
 
 type ProviderConfig struct {
 	Region        types.String         `tfsdk:"region"`
+	ApiKey        types.String         `tfsdk:"api_key"`
 	ObjectStorage *ObjectStorageConfig `tfsdk:"object_storage"`
+}
+
+type MgcApiKey struct {
+	ApiKey string
+}
+
+func (m *MgcApiKey) GetAPIKey() string {
+	return m.ApiKey
 }
 
 func (p *MgcProvider) Metadata(ctx context.Context, req provider.MetadataRequest, resp *provider.MetadataResponse) {
@@ -53,7 +62,7 @@ func (p *MgcProvider) Schema(ctx context.Context, req provider.SchemaRequest, re
 	tflog.Debug(ctx, "setting provider schema")
 
 	schemaApiKey := schema.SingleNestedAttribute{
-		MarkdownDescription: "Specific API Key configuration",
+		MarkdownDescription: "Specific Bucket Key Pair configuration",
 		Optional:            true,
 		Attributes: map[string]schema.Attribute{
 			"key_id": schema.StringAttribute{
@@ -75,7 +84,7 @@ func (p *MgcProvider) Schema(ctx context.Context, req provider.SchemaRequest, re
 				MarkdownDescription: "Bucket Prefix",
 				Optional:            true,
 			},
-			"apikey": schemaApiKey,
+			"key_pair": schemaApiKey,
 		},
 	}
 
@@ -86,9 +95,14 @@ func (p *MgcProvider) Schema(ctx context.Context, req provider.SchemaRequest, re
 				MarkdownDescription: "Region",
 				Optional:            true,
 			},
+			"api_key": schema.StringAttribute{
+				MarkdownDescription: "Magalu API Key for authentication",
+				Optional:            true,
+			},
 			"object_storage": schemaObjectStorage,
 		},
 	}
+
 }
 
 var acceptedRegions = []string{"br-ne1", "br-se1", "br-mgl1"}
@@ -109,6 +123,14 @@ func (p *MgcProvider) Configure(ctx context.Context, req provider.ConfigureReque
 		}
 		if err := p.sdk.Config().SetTempConfig("region", data.Region.String()); err != nil {
 			tflog.Error(ctx, "fail to set region")
+		}
+	}
+
+	if !data.ApiKey.IsNull() {
+		MgcApiKey := &MgcApiKey{data.ApiKey.ValueString()}
+		err := p.sdk.Auth().SetAPIKey(MgcApiKey)
+		if err != nil {
+			tflog.Error(ctx, "fail to set api key")
 		}
 	}
 

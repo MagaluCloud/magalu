@@ -34,6 +34,7 @@ type SecurityMethod int
 const (
 	BearerToken SecurityMethod = iota
 	APIKey
+	XTenantID
 )
 
 func (s SecurityMethod) String() string {
@@ -42,6 +43,8 @@ func (s SecurityMethod) String() string {
 		return "bearerauth" // these hard-coded return values comes from security requirement field on openAPI spec
 	case APIKey:
 		return "apikeyauth"
+	case XTenantID:
+		return "xaasauth"
 	}
 	return ""
 }
@@ -64,6 +67,7 @@ type ConfigResult struct {
 	RefreshToken    string `json:"refresh_token"`
 	AccessKeyId     string `json:"access_key_id"`
 	SecretAccessKey string `json:"secret_access_key"`
+	ApiKey          string `json:"api_key"`
 	CurrentEnv      string `json:"current_environment"` // ignored - used just for compatibility
 }
 
@@ -101,6 +105,7 @@ type Auth struct {
 	mgcConfig             *config.Config
 	apiKey                string
 	currentSecurityMethod string
+	xTenantID             string
 }
 
 type Tenant struct {
@@ -146,6 +151,14 @@ type APIKeyParameters struct {
 
 type APIKeyParametersList interface {
 	GetAPIKey() string
+}
+
+type XTenantIDParameters struct {
+	Key string
+}
+
+type XTenantIDParametersList interface {
+	GetXTenantID() string
 }
 
 func (e FailedRefreshAccessToken) Error() string {
@@ -230,6 +243,13 @@ func (o *Auth) ApiKey(ctx context.Context) (string, error) {
 		return "", fmt.Errorf("API Key not set")
 	}
 	return o.apiKey, nil
+}
+
+func (o *Auth) XTenantID(ctx context.Context) (string, error) {
+	if o.xTenantID == "" {
+		return "", fmt.Errorf("X Tenant ID not set")
+	}
+	return o.xTenantID, nil
 }
 
 func (o *Auth) BuiltInScopes() core.Scopes {
@@ -368,6 +388,15 @@ func (o *Auth) SetAPIKey(params APIKeyParametersList) error {
 	return o.writeCurrentConfig()
 }
 
+func (o *Auth) SetXTenantID(params XTenantIDParametersList) error {
+	err := o.setCurrentSecurityMethod(XTenantID)
+	if err != nil {
+		return err
+	}
+	o.xTenantID = params.GetXTenantID()
+	return o.writeCurrentConfig()
+}
+
 // SetCurrentSecurityMethod informs auth what method will be used.
 // The possibles methods include "bearer_token" and "api_key".
 func (o *Auth) setCurrentSecurityMethod(securityMethod SecurityMethod) error {
@@ -385,6 +414,7 @@ func (o *Auth) writeCurrentConfig() error {
 	authResult.RefreshToken = o.refreshToken
 	authResult.AccessKeyId = o.accessKeyId
 	authResult.SecretAccessKey = o.secretAccessKey
+	authResult.ApiKey = o.apiKey
 	return o.writeConfigFile(authResult)
 }
 

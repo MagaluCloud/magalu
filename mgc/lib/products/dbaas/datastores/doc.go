@@ -5,7 +5,7 @@ Package: datastores
 
 Datastores available for database instances.
 
-Version: 1.15.3
+Version: 1.21.1
 
 import "magalu.cloud/lib/products/dbaas/datastores"
 */

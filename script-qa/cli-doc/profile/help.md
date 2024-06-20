@@ -11,15 +11,15 @@ Usage:
 
 ## Product catalog:
 - Commands:
-- create         Creates a new profile
-- current        Shows current selected profile. Any changes to auth or config values will only affect this profile
-- delete         Deletes the profile with the specified name
-- list           List all available profiles
-- set-current    Sets profile to be used
+- create      Creates a new profile
+- delete      Deletes the profile with the specified name
+- get         Get current profile.
+- list        List all available profiles
+- set         Sets profile to be used
 
 ## Other commands:
 - Additional Commands:
-- select-current call "list", prompt selection and then "set-current"
+- select      call "list", prompt selection and then "set"
 
 ## Flags:
 ```bash

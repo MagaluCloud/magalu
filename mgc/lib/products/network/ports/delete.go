@@ -21,7 +21,7 @@ import (
 )
 
 type DeleteParameters struct {
-	PortId string `json:"port_id"`
+	PortId any `json:"port_id"`
 }
 
 type DeleteConfigs struct {

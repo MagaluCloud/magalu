@@ -26,7 +26,7 @@ type CreateParameters struct {
 	Name             string                            `json:"name"`
 	SecurityGroupsId *CreateParametersSecurityGroupsId `json:"security_groups_id,omitempty"`
 	Subnets          *CreateParametersSubnets          `json:"subnets,omitempty"`
-	VpcId            string                            `json:"vpc_id"`
+	VpcId            any                               `json:"vpc_id"`
 }
 
 type CreateParametersSecurityGroupsId []string

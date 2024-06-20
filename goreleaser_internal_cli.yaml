@@ -5,6 +5,8 @@ builds:
     id: "mgc"
     goos:
       - linux
+      - windows
+      - darwin
     binary: mgc
     goarch:
       - amd64
@@ -13,6 +15,19 @@ builds:
     flags:
       - -tags=embed release
     main: mgc/cli/main.go
+  - env: [ CGO_ENABLED=0 ]
+    id: "terraform"
+    goos:
+      - linux
+      - windows
+    goarch:
+      - amd64
+    binary: terraform-provider-mgc
+    ldflags:
+      - -s -w -X magalu.cloud/sdk.Version={{.Version}}"
+    flags:
+      - -tags=embed release
+    main: mgc/terraform-provider-mgc/main.go
 nfpms:
 -
   maintainer: Magalu Cloud <magalucloud.cli@luizalabs.com>
@@ -30,3 +45,6 @@ release:
   replace_existing_artifacts: true
   draft: true
   prerelease: true
+archives:
+- id: all
+  allow_different_binary_count: true

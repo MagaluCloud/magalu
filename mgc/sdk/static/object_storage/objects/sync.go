@@ -2,12 +2,9 @@ package objects
 
 import (
 	"context"
-	"crypto/md5"
-	"encoding/hex"
 	"fmt"
 	"io/fs"
 	"os"
-	"path/filepath"
 	"strings"
 	sy "sync"
 	"time"
@@ -58,8 +55,7 @@ var getSync = utils.NewLazyLoader[core.Executor](func() core.Executor {
 		core.DescriptorSpec{
 			Name:        "sync",
 			Summary:     "Synchronizes a local path with a bucket",
-			Description: "This command uploads any file from the local path to the bucket if it is not already present or has changed.",
-			// Scopes:      core.Scopes{"object-storage.read", "object-storage.write"},
+			Description: "This command uploads any file from the local path to the bucket if it is not already present or has modified time changed.",
 		},
 		sync,
 	)
@@ -71,7 +67,7 @@ var getSync = utils.NewLazyLoader[core.Executor](func() core.Executor {
 })
 
 var (
-	bucketFilesMap = make(map[string]bool)
+	allBucketFiles = make(map[string]bool)
 	uploadFiles    = &UploadCounter{}
 )
 
@@ -88,24 +84,28 @@ func sync(ctx context.Context, params syncParams, cfg common.Config) (result cor
 	ctx, cancel := context.WithCancelCause(ctx)
 	defer cancel(nil)
 
-	srcObjects := pipeline.WalkDirEntries(ctx, params.Local.String(), func(path string, d fs.DirEntry, err error) error {
+	basePath, err := common.GetAbsSystemURI(params.Local)
+	if err != nil {
+		return nil, err
+	}
+
+	srcObjects := pipeline.WalkDirEntries(ctx, basePath.String(), func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
 			return err
 		}
 		return nil
 	})
 
-	progressReporter := progress_report.NewUnitsReporter(ctx, "Sync Folder", 0)
+	progressReporter := progress_report.NewUnitsReporter(ctx, "Syncing Folder", 0)
 	progressReporter.Start()
 
-	// TODO - implement progress bar
 	defer progressReporter.End()
 
-	if params.Delete {
-		fillBucketFiles(ctx, params, cfg)
-	}
+	fillBucketFiles(ctx, params, cfg)
 
-	basePath, _ := normalizeURI(params.Local, params.Local.Path())
+	if f, _ := os.Stat(basePath.String()); !f.IsDir() {
+		return nil, fmt.Errorf("local path must be a folder")
+	}
 
 	uploadChannel := pipeline.Process(ctx, srcObjects, createObjectSyncFilePairProcessor(cfg, params.Local, params.Bucket, progressReporter, basePath), nil)
 	uploadObjectsErrorChan := pipeline.ParallelProcess(ctx, cfg.Workers, uploadChannel, createSyncObjectProcessor(cfg, progressReporter), nil)
@@ -118,41 +118,67 @@ func sync(ctx context.Context, params syncParams, cfg common.Config) (result cor
 		}
 	}
 
-	for file := range bucketFilesMap {
-		logger().Debugw("Deleting file", "file", file)
-		err := deleteFile(ctx, params.Bucket.JoinPath(file), cfg)
-		if err != nil {
-			logger().Debugw("error deleting file", "error", err)
-		}
-	}
+	deletedFiles := make([]string, 0, len(allBucketFiles))
 
-	deletedFiles := make([]string, 0, len(bucketFilesMap))
-	for key := range bucketFilesMap {
-		deletedFiles = append(deletedFiles, key)
+	if params.Delete {
+		for file := range allBucketFiles {
+			if err != nil {
+				logger().Debugw("error deleting file", "error", err)
+			}
+			deletedFiles = append(deletedFiles, file)
+		}
+		delOb := common.DeleteObjectsParams{
+			Destination: params.Bucket,
+			ToDelete:    bucketObjectsToWalkDirEntry(ctx, deletedFiles),
+			BatchSize:   params.BatchSize,
+		}
+		err = common.DeleteObjects(ctx, delOb, cfg)
+		if err != nil {
+			logger().Debugw("error deleting objects", "error", err)
+		}
 	}
 
 	return syncResult{
 		Source:        params.Local,
 		Destination:   params.Bucket,
-		FilesDeleted:  len(bucketFilesMap),
+		FilesDeleted:  len(allBucketFiles),
 		FilesUploaded: int(uploadFiles.Value()),
-		Deleted:       params.Delete,
-		DeletedFiles:  strings.Join(deletedFiles, "\n"),
+		Deleted:       len(deletedFiles) > 0,
+		DeletedFiles:  strings.Join(deletedFiles, ", "),
 	}, nil
 }
 
+func bucketObjectsToWalkDirEntry(ctx context.Context, bucketObjects []string) <-chan pipeline.WalkDirEntry {
+	out := make(chan pipeline.WalkDirEntry)
+	go func() {
+		defer close(out)
+		var err error
+		for _, obj := range bucketObjects {
+			if ctx.Err() != nil {
+				return
+			}
+			entry := pipeline.NewSimpleWalkDirEntry(obj, &common.BucketContent{
+				Key: strings.TrimPrefix(obj, "/"),
+			}, err)
+			out <- entry
+		}
+	}()
+	return out
+}
+
 func fillBucketFiles(ctx context.Context, params syncParams, cfg common.Config) {
-	logger().Debug("Deleting files")
-	listParams := listParams{
-		ListObjectsParams: common.ListObjectsParams{Destination: params.Bucket, Recursive: true, PaginationParams: common.PaginationParams{MaxItems: 99999}},
-	}
-	bucketFiles, err := List(ctx, listParams, cfg)
-	if err != nil {
-		logger().Debugw("error listing bucket files", "error", err)
-		return
-	}
-	for _, file := range bucketFiles.Contents {
-		bucketFilesMap[file.Key] = true
+	logger().Debug("Getting bucket files")
+
+	dirBucketFiles := common.ListGenerator(ctx, common.ListObjectsParams{
+		Destination: params.Bucket,
+		Recursive:   true,
+		PaginationParams: common.PaginationParams{
+			MaxItems: common.MaxBatchSize,
+		},
+	}, cfg, nil)
+
+	for file := range dirBucketFiles {
+		allBucketFiles["/"+file.Path()] = true
 	}
 }
 
@@ -170,14 +196,13 @@ func createObjectSyncFilePairProcessor(
 		if entry.DirEntry().IsDir() {
 			return syncUploadPair{}, pipeline.ProcessSkip
 		}
-
-		normalizedSource, err := normalizeURI(source, entry.Path())
+		normalizedSource, err := common.GetAbsSystemURI(mgcSchemaPkg.URI(entry.Path()))
 		if err != nil {
 			logger().Debugw("error with path", "error", err)
 			return syncUploadPair{}, pipeline.ProcessSkip
 		}
 
-		pathWithFolder := strings.TrimPrefix(entry.Path(), basePath.Path())
+		pathWithFolder := strings.TrimPrefix(entry.Path(), basePath.String())
 		normalizedDestination := destination.JoinPath(pathWithFolder)
 
 		info, err := entry.DirEntry().Info()
@@ -187,8 +212,8 @@ func createObjectSyncFilePairProcessor(
 
 		progressReporter.Report(0, 1, nil)
 
-		if bucketFilesMap[pathWithFolder] {
-			delete(bucketFilesMap, pathWithFolder)
+		if allBucketFiles[pathWithFolder] {
+			delete(allBucketFiles, pathWithFolder)
 		}
 
 		return syncUploadPair{
@@ -200,28 +225,6 @@ func createObjectSyncFilePairProcessor(
 			},
 		}, pipeline.ProcessOutput
 	}
-}
-
-func normalizeURI(uri mgcSchemaPkg.URI, path string) (mgcSchemaPkg.URI, error) {
-	if strings.HasPrefix(path, "/") {
-		return mgcSchemaPkg.URI(path), nil
-	}
-
-	currentDir, err := filepath.Abs(".")
-	if err != nil {
-		return uri, err
-	}
-
-	if strings.HasPrefix(path, "./") {
-		path = path[1:]
-	}
-
-	fullPath := filepath.Join(currentDir, path)
-	if _, err := os.Stat(fullPath); !os.IsNotExist(err) {
-		return mgcSchemaPkg.URI(fullPath), nil
-	}
-
-	return uri, fmt.Errorf("path %s does not exist", fullPath)
 }
 
 func createSyncObjectProcessor(
@@ -241,17 +244,11 @@ func createSyncObjectProcessor(
 			logger().Debugw("error getting file stats", "error", err)
 		}
 
-		if err == nil && entry.Stats.SourceLength == fileStats.SourceLength {
-			localMd5, err := getMD5FromFile(entry.Source.String())
-			if err != nil {
-				logger().Debugw("error getting md5 from file", "error", err)
-				return err, pipeline.ProcessOutput
-			}
-			if localMd5 == fileStats.Etag {
-				logger().Debug("Skipping file [%s] - no change", entry.Source)
-				return nil, pipeline.ProcessSkip
-			}
-			logger().Debug("Uploading file [%s] - changed", entry.Source)
+		isSameSize := entry.Stats.SourceLength == fileStats.SourceLength
+		isLocalOlderThenBucket := entry.Stats.SourceModTime < fileStats.SourceModTime
+		if err == nil && isSameSize && isLocalOlderThenBucket {
+			logger().Debug("Skipping file [%s] - no change", entry.Source)
+			return nil, pipeline.ProcessSkip
 		}
 
 		err = uploadFile(ctx, entry.Source, entry.Destination, cfg)
@@ -262,15 +259,6 @@ func createSyncObjectProcessor(
 		uploadFiles.Increment()
 		return nil, pipeline.ProcessOutput
 	}
-}
-
-func getMD5FromFile(path string) (string, error) {
-	data, err := os.ReadFile(path)
-	if err != nil {
-		return "", err
-	}
-	hash := md5.Sum(data)
-	return hex.EncodeToString(hash[:]), nil
 }
 
 func getFileStats(ctx context.Context, destination mgcSchemaPkg.URI, cfg common.Config) (fileSyncStats, error) {
@@ -297,20 +285,11 @@ func cleanEtag(etag string) string {
 }
 
 func uploadFile(ctx context.Context, local mgcSchemaPkg.URI, bucket mgcSchemaPkg.URI, cfg common.Config) error {
-	sourcePath := mgcSchemaPkg.FilePath("/" + local.Path())
 	_, err := upload(
 		ctx,
-		uploadParams{Source: sourcePath, Destination: bucket},
+		uploadParams{Source: mgcSchemaPkg.FilePath(local), Destination: bucket},
 		cfg,
 	)
-	return err
-}
-
-func deleteFile(ctx context.Context, destination mgcSchemaPkg.URI, cfg common.Config) error {
-	param := common.DeleteObjectParams{
-		Destination: destination,
-	}
-	_, err := deleteObject(ctx, param, cfg)
 	return err
 }
 

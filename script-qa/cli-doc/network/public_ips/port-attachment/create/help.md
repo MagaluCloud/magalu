@@ -10,8 +10,10 @@ Usage:
 - Flags:
 - --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
 - -h, --help                          help for create
-- --port-id string                Port ID: Id of the Port to attach the Public IP (required)
-- --public-ip-id string           Public IP ID: Id of the Public IP to attach port to (required)
+- --port-id anyValue              Port ID: Id of the Port to attach the Public IP
+- Use --port-id=help for more details (required)
+- --public-ip-id anyValue         Public IP ID: Id of the Public IP to attach port to
+- Use --public-ip-id=help for more details (required)
 
 ## Other commands:
 - Global Flags:

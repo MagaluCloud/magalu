@@ -21,7 +21,7 @@ import (
 )
 
 type GetParameters struct {
-	SubnetId string `json:"subnet_id"`
+	SubnetId any `json:"subnet_id"`
 }
 
 type GetConfigs struct {

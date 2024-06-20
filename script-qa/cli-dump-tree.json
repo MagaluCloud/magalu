@@ -995,14 +995,11 @@
        "properties": {
         "_limit": {
          "default": 50,
-         "exclusiveMinimum": true,
-         "minimum": 0,
          "title": " Limit",
          "type": "integer"
         },
         "_offset": {
          "default": 0,
-         "minimum": 0,
          "title": " Offset",
          "type": "integer"
         },
@@ -1843,6 +1840,48 @@
       "parameters": {
        "additionalProperties": false,
        "properties": {
+        "backup": {
+         "anyOf": [
+          {
+           "example": {
+            "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+           },
+           "properties": {
+            "id": {
+             "minLength": 1,
+             "title": "Id",
+             "type": "string"
+            }
+           },
+           "required": [
+            "id"
+           ],
+           "title": "IdRequest",
+           "type": "object"
+          },
+          {
+           "example": {
+            "name": "some_resource_name"
+           },
+           "properties": {
+            "name": {
+             "maxLength": 255,
+             "minLength": 1,
+             "title": "Name",
+             "type": "string"
+            }
+           },
+           "required": [
+            "name"
+           ],
+           "title": "Name",
+           "type": "object"
+          }
+         ],
+         "nullable": true,
+         "title": "Backup",
+         "type": "object"
+        },
         "name": {
          "maxLength": 255,
          "minLength": 1,
@@ -2076,8 +2115,6 @@
         },
         "size": {
          "description": "New volume size in GB",
-         "exclusiveMinimum": true,
-         "minimum": 0,
          "title": "Size",
          "type": "integer"
         }
@@ -2195,6 +2232,7 @@
            "updated_at": "2022-01-01T00:00:10Z"
           }
          },
+         "nullable": true,
          "properties": {
           "attached_at": {
            "anyOf": [
@@ -2250,58 +2288,40 @@
                "type": "string"
               },
               "state": {
-               "anyOf": [
-                {
-                 "enum": [
-                  "new",
-                  "running",
-                  "stopped",
-                  "suspended",
-                  "deleted"
-                 ],
-                 "title": "InstanceState",
-                 "type": "string"
-                },
-                {
-                 "type": "string"
-                }
+               "enum": [
+                "new",
+                "running",
+                "stopped",
+                "suspended",
+                "deleted"
                ],
                "title": "State",
                "type": "string"
               },
               "status": {
-               "anyOf": [
-                {
-                 "enum": [
-                  "provisioning",
-                  "creating",
-                  "creating_error",
-                  "creating_error_quota",
-                  "completed",
-                  "retyping_pending",
-                  "retyping",
-                  "retyping_confirmed",
-                  "retyping_error",
-                  "retyping_error_quota",
-                  "stopping_pending",
-                  "stopping",
-                  "suspending_pending",
-                  "suspending",
-                  "rebooting_pending",
-                  "rebooting",
-                  "starting_pending",
-                  "starting",
-                  "deleting_pending",
-                  "deleting",
-                  "deleting_error",
-                  "deleted"
-                 ],
-                 "title": "InstanceStatus",
-                 "type": "string"
-                },
-                {
-                 "type": "string"
-                }
+               "enum": [
+                "provisioning",
+                "creating",
+                "creating_error",
+                "creating_error_quota",
+                "completed",
+                "retyping_pending",
+                "retyping",
+                "retyping_confirmed",
+                "retyping_error",
+                "retyping_error_quota",
+                "stopping_pending",
+                "stopping",
+                "suspending_pending",
+                "suspending",
+                "rebooting_pending",
+                "rebooting",
+                "starting_pending",
+                "starting",
+                "deleting_pending",
+                "deleting",
+                "deleting_error",
+                "deleted"
                ],
                "title": "Status",
                "type": "string"
@@ -2358,7 +2378,6 @@
           "instance",
           "attached_at"
          ],
-         "title": "AttachmentResponse",
          "type": "object"
         },
         "created_at": {
@@ -2380,6 +2399,7 @@
           "message": "Unauthorized",
           "slug": "Unauthorized"
          },
+         "nullable": true,
          "properties": {
           "message": {
            "title": "Message",
@@ -2394,7 +2414,6 @@
           "slug",
           "message"
          ],
-         "title": "VolumeResponseError",
          "type": "object"
         },
         "id": {
@@ -2607,14 +2626,11 @@
        "properties": {
         "_limit": {
          "default": 50,
-         "exclusiveMinimum": true,
-         "minimum": 0,
          "title": " Limit",
          "type": "integer"
         },
         "_offset": {
          "default": 0,
-         "minimum": 0,
          "title": " Offset",
          "type": "integer"
         },
@@ -2714,6 +2730,7 @@
               "updated_at": "2022-01-01T00:00:10Z"
              }
             },
+            "nullable": true,
             "properties": {
              "attached_at": {
               "anyOf": [
@@ -2769,58 +2786,40 @@
                   "type": "string"
                  },
                  "state": {
-                  "anyOf": [
-                   {
-                    "enum": [
-                     "new",
-                     "running",
-                     "stopped",
-                     "suspended",
-                     "deleted"
-                    ],
-                    "title": "InstanceState",
-                    "type": "string"
-                   },
-                   {
-                    "type": "string"
-                   }
+                  "enum": [
+                   "new",
+                   "running",
+                   "stopped",
+                   "suspended",
+                   "deleted"
                   ],
                   "title": "State",
                   "type": "string"
                  },
                  "status": {
-                  "anyOf": [
-                   {
-                    "enum": [
-                     "provisioning",
-                     "creating",
-                     "creating_error",
-                     "creating_error_quota",
-                     "completed",
-                     "retyping_pending",
-                     "retyping",
-                     "retyping_confirmed",
-                     "retyping_error",
-                     "retyping_error_quota",
-                     "stopping_pending",
-                     "stopping",
-                     "suspending_pending",
-                     "suspending",
-                     "rebooting_pending",
-                     "rebooting",
-                     "starting_pending",
-                     "starting",
-                     "deleting_pending",
-                     "deleting",
-                     "deleting_error",
-                     "deleted"
-                    ],
-                    "title": "InstanceStatus",
-                    "type": "string"
-                   },
-                   {
-                    "type": "string"
-                   }
+                  "enum": [
+                   "provisioning",
+                   "creating",
+                   "creating_error",
+                   "creating_error_quota",
+                   "completed",
+                   "retyping_pending",
+                   "retyping",
+                   "retyping_confirmed",
+                   "retyping_error",
+                   "retyping_error_quota",
+                   "stopping_pending",
+                   "stopping",
+                   "suspending_pending",
+                   "suspending",
+                   "rebooting_pending",
+                   "rebooting",
+                   "starting_pending",
+                   "starting",
+                   "deleting_pending",
+                   "deleting",
+                   "deleting_error",
+                   "deleted"
                   ],
                   "title": "Status",
                   "type": "string"
@@ -2877,7 +2876,6 @@
              "instance",
              "attached_at"
             ],
-            "title": "AttachmentResponse",
             "type": "object"
            },
            "created_at": {
@@ -2899,6 +2897,7 @@
              "message": "Unauthorized",
              "slug": "Unauthorized"
             },
+            "nullable": true,
             "properties": {
              "message": {
               "title": "Message",
@@ -2913,7 +2912,6 @@
              "slug",
              "message"
             ],
-            "title": "VolumeResponseError",
             "type": "object"
            },
            "id": {
@@ -3752,6 +3750,1153 @@
        },
        "type": "object"
       },
+      "description": "Delete repository image by digest or tag",
+      "isInternal": false,
+      "name": "delete",
+      "parameters": {
+       "additionalProperties": false,
+       "properties": {
+        "digest_or_tag": {
+         "description": "Digest or tag of an image",
+         "type": "string"
+        },
+        "registry_id": {
+         "description": "Container Registry's UUID.",
+         "format": "uuid",
+         "type": "string"
+        },
+        "repository_name": {
+         "description": "Repository's name.",
+         "type": "string"
+        }
+       },
+       "required": [
+        "digest_or_tag",
+        "registry_id",
+        "repository_name"
+       ],
+       "type": "object"
+      },
+      "result": {
+       "nullable": true,
+       "type": "null"
+      },
+      "version": "0.1.0"
+     },
+     {
+      "configs": {
+       "additionalProperties": false,
+       "properties": {
+        "env": {
+         "default": "prod",
+         "description": "Environment to use",
+         "enum": [
+          "prod",
+          "pre-prod"
+         ],
+         "type": "string"
+        },
+        "region": {
+         "default": "br-se1",
+         "description": "Region to reach the service",
+         "enum": [
+          "br-ne1",
+          "br-se1",
+          "br-mgl1"
+         ],
+         "type": "string"
+        },
+        "serverUrl": {
+         "description": "Manually specify the server to use",
+         "format": "uri",
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
+      "description": "Show detailed information about the image.",
+      "isInternal": false,
+      "name": "get",
+      "parameters": {
+       "additionalProperties": false,
+       "properties": {
+        "digest_or_tag": {
+         "description": "Digest or tag of an image.",
+         "type": "string"
+        },
+        "registry_id": {
+         "description": "Container Registry's UUID.",
+         "format": "uuid",
+         "type": "string"
+        },
+        "repository_name": {
+         "description": "Repository's name.",
+         "type": "string"
+        }
+       },
+       "required": [
+        "digest_or_tag",
+        "registry_id",
+        "repository_name"
+       ],
+       "type": "object"
+      },
+      "result": {
+       "description": "Repository image response data.",
+       "example": {
+        "digest": "sha256:aef9ff594b36575be6248901a4e5a9bad031f3e0fd42c33a6d2bd501dde5e955",
+        "extra_attr": {},
+        "manifest_media_type": "application/vnd.docker.distribution.manifest.v2+json",
+        "media_type": "application/vnd.docker.container.image.v1+json",
+        "pulled_at": "2024-05-15T19:56:47Z",
+        "pushed_at": "2024-05-15T19:56:47Z",
+        "size_bytes": 3552429,
+        "tags": [
+         "latest"
+        ],
+        "tags_details": [
+         {
+          "name": "latest",
+          "pulled_at": "2024-05-15T19:56:47Z",
+          "pushed_at": "2024-05-15T19:56:47Z",
+          "signed": false
+         }
+        ]
+       },
+       "properties": {
+        "digest": {
+         "description": "Image digest.",
+         "type": "string"
+        },
+        "extra_attr": {
+         "description": "Extra attributes about the image.",
+         "type": "object"
+        },
+        "manifest_media_type": {
+         "description": "The manifest media type of the image.",
+         "type": "string"
+        },
+        "media_type": {
+         "description": "The media type of the image.",
+         "type": "string"
+        },
+        "pulled_at": {
+         "description": "Date and time when the image was pulled.",
+         "type": "string"
+        },
+        "pushed_at": {
+         "description": "Date and time when the image was pushed.",
+         "type": "string"
+        },
+        "size_bytes": {
+         "description": "Image size in bytes.",
+         "type": "integer"
+        },
+        "tags": {
+         "description": "Tags of the image.",
+         "items": {
+          "description": "Tag names.",
+          "type": "string"
+         },
+         "type": "array"
+        },
+        "tags_details": {
+         "description": "Tags details of the image",
+         "items": {
+          "description": "Tag of an image response.",
+          "example": {
+           "name": "latest",
+           "pulled_at": "2024-05-15T19:56:47Z",
+           "pushed_at": "2024-05-15T19:56:47Z",
+           "signed": false
+          },
+          "properties": {
+           "name": {
+            "description": "Tag name.",
+            "type": "string"
+           },
+           "pulled_at": {
+            "description": "Date and time when the tag was pulled.",
+            "type": "string"
+           },
+           "pushed_at": {
+            "description": "Date and time when the tag was pushed.",
+            "type": "string"
+           },
+           "signed": {
+            "description": "Boolean value indicating if the image is signed or not.",
+            "type": "boolean"
+           }
+          },
+          "type": "object"
+         },
+         "type": "array"
+        }
+       },
+       "required": [
+        "digest",
+        "size_bytes",
+        "pushed_at",
+        "pulled_at",
+        "tags"
+       ],
+       "type": "object"
+      },
+      "version": "0.1.0"
+     },
+     {
+      "configs": {
+       "additionalProperties": false,
+       "properties": {
+        "env": {
+         "default": "prod",
+         "description": "Environment to use",
+         "enum": [
+          "prod",
+          "pre-prod"
+         ],
+         "type": "string"
+        },
+        "region": {
+         "default": "br-se1",
+         "description": "Region to reach the service",
+         "enum": [
+          "br-ne1",
+          "br-se1",
+          "br-mgl1"
+         ],
+         "type": "string"
+        },
+        "serverUrl": {
+         "description": "Manually specify the server to use",
+         "format": "uri",
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
+      "description": "List all images in container registry repository",
+      "isInternal": false,
+      "name": "list",
+      "parameters": {
+       "additionalProperties": false,
+       "properties": {
+        "_limit": {
+         "description": "Limit",
+         "minimum": 1,
+         "title": "Limit",
+         "type": "integer"
+        },
+        "_offset": {
+         "description": "Offset",
+         "minimum": 0,
+         "type": "integer"
+        },
+        "_sort": {
+         "default": "pushed_at:desc",
+         "description": "Fields to use as reference to sort.",
+         "pattern": "(^[\\w-]+:(asc|desc)(,[\\w-]+:(asc|desc))*)?$",
+         "type": "string"
+        },
+        "expand": {
+         "description": "You can get more detailed info about: ['tags_details', 'extra_attr', 'manifest_media_type', 'media_type']",
+         "items": {
+          "type": "string"
+         },
+         "type": "array"
+        },
+        "registry_id": {
+         "description": "Container Registry's UUID.",
+         "format": "uuid",
+         "type": "string"
+        },
+        "repository_name": {
+         "description": "Repository's name.",
+         "type": "string"
+        }
+       },
+       "required": [
+        "registry_id",
+        "repository_name"
+       ],
+       "type": "object"
+      },
+      "result": {
+       "description": "Repository images response.",
+       "properties": {
+        "results": {
+         "description": "List of repository images.",
+         "items": {
+          "description": "Repository image response data.",
+          "example": {
+           "digest": "sha256:aef9ff594b36575be6248901a4e5a9bad031f3e0fd42c33a6d2bd501dde5e955",
+           "extra_attr": {},
+           "manifest_media_type": "application/vnd.docker.distribution.manifest.v2+json",
+           "media_type": "application/vnd.docker.container.image.v1+json",
+           "pulled_at": "2024-05-15T19:56:47Z",
+           "pushed_at": "2024-05-15T19:56:47Z",
+           "size_bytes": 3552429,
+           "tags": [
+            "latest"
+           ],
+           "tags_details": [
+            {
+             "name": "latest",
+             "pulled_at": "2024-05-15T19:56:47Z",
+             "pushed_at": "2024-05-15T19:56:47Z",
+             "signed": false
+            }
+           ]
+          },
+          "properties": {
+           "digest": {
+            "description": "Image digest.",
+            "type": "string"
+           },
+           "extra_attr": {
+            "description": "Extra attributes about the image.",
+            "type": "object"
+           },
+           "manifest_media_type": {
+            "description": "The manifest media type of the image.",
+            "type": "string"
+           },
+           "media_type": {
+            "description": "The media type of the image.",
+            "type": "string"
+           },
+           "pulled_at": {
+            "description": "Date and time when the image was pulled.",
+            "type": "string"
+           },
+           "pushed_at": {
+            "description": "Date and time when the image was pushed.",
+            "type": "string"
+           },
+           "size_bytes": {
+            "description": "Image size in bytes.",
+            "type": "integer"
+           },
+           "tags": {
+            "description": "Tags of the image.",
+            "items": {
+             "description": "Tag names.",
+             "type": "string"
+            },
+            "type": "array"
+           },
+           "tags_details": {
+            "description": "Tags details of the image",
+            "items": {
+             "description": "Tag of an image response.",
+             "example": {
+              "name": "latest",
+              "pulled_at": "2024-05-15T19:56:47Z",
+              "pushed_at": "2024-05-15T19:56:47Z",
+              "signed": false
+             },
+             "properties": {
+              "name": {
+               "description": "Tag name.",
+               "type": "string"
+              },
+              "pulled_at": {
+               "description": "Date and time when the tag was pulled.",
+               "type": "string"
+              },
+              "pushed_at": {
+               "description": "Date and time when the tag was pushed.",
+               "type": "string"
+              },
+              "signed": {
+               "description": "Boolean value indicating if the image is signed or not.",
+               "type": "boolean"
+              }
+             },
+             "type": "object"
+            },
+            "type": "array"
+           }
+          },
+          "required": [
+           "digest",
+           "size_bytes",
+           "pushed_at",
+           "pulled_at",
+           "tags"
+          ],
+          "type": "object"
+         },
+         "type": "array"
+        }
+       },
+       "required": [
+        "results"
+       ],
+       "type": "object"
+      },
+      "version": "0.1.0"
+     }
+    ],
+    "description": "Routes related to managing Container Registry repositories images.",
+    "isInternal": false,
+    "name": "images",
+    "version": "0.1.0"
+   },
+   {
+    "children": [],
+    "description": "Routes related to mcr-api configuration information.",
+    "isInternal": false,
+    "name": "info",
+    "version": "0.1.0"
+   },
+   {
+    "children": [
+     {
+      "configs": {
+       "additionalProperties": false,
+       "properties": {
+        "env": {
+         "default": "prod",
+         "description": "Environment to use",
+         "enum": [
+          "prod",
+          "pre-prod"
+         ],
+         "type": "string"
+        },
+        "region": {
+         "default": "br-se1",
+         "description": "Region to reach the service",
+         "enum": [
+          "br-ne1",
+          "br-se1",
+          "br-mgl1"
+         ],
+         "type": "string"
+        },
+        "serverUrl": {
+         "description": "Manually specify the server to use",
+         "format": "uri",
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
+      "description": "Return container registry user's authentication credentials.",
+      "isInternal": false,
+      "name": "list",
+      "parameters": {
+       "additionalProperties": false,
+       "type": "object"
+      },
+      "result": {
+       "description": "User's credentials for authentication to the container registry.",
+       "example": {
+        "email": "janedoe@email.com",
+        "password": "62kWa168QL!d4IVwN6wTfTYFv63=Sc1D",
+        "username": "e3d49354-35d7-4565-b634-65d8b86aa594"
+       },
+       "properties": {
+        "email": {
+         "description": "Email for authentication to the container registry.",
+         "type": "string"
+        },
+        "password": {
+         "description": "Password for authentication to the container registry.",
+         "type": "string"
+        },
+        "username": {
+         "description": "Username for authentication to the container registry.",
+         "type": "string"
+        }
+       },
+       "required": [
+        "username",
+        "password",
+        "email"
+       ],
+       "type": "object"
+      },
+      "version": "0.1.0"
+     },
+     {
+      "children": [
+       {
+        "configs": {
+         "additionalProperties": false,
+         "properties": {
+          "env": {
+           "default": "prod",
+           "description": "Environment to use",
+           "enum": [
+            "prod",
+            "pre-prod"
+           ],
+           "type": "string"
+          },
+          "region": {
+           "default": "br-se1",
+           "description": "Region to reach the service",
+           "enum": [
+            "br-ne1",
+            "br-se1",
+            "br-mgl1"
+           ],
+           "type": "string"
+          },
+          "serverUrl": {
+           "description": "Manually specify the server to use",
+           "format": "uri",
+           "type": "string"
+          }
+         },
+         "type": "object"
+        },
+        "description": "Creates a container registry in Magalu Cloud.",
+        "isInternal": false,
+        "name": "create",
+        "parameters": {
+         "additionalProperties": false,
+         "properties": {
+          "name": {
+           "description": "A unique, global name for the container registry. It must be written in lowercase letters and consists only of numbers and letters, up to a limit of 63 characters.",
+           "type": "string"
+          }
+         },
+         "required": [
+          "name"
+         ],
+         "type": "object"
+        },
+        "result": {
+         "description": "Container Registry's creation response.",
+         "example": {
+          "id": "0c6bbd87-881a-4bf8-b3f6-4ff3ceacb42c",
+          "name": "cool_registry"
+         },
+         "properties": {
+          "id": {
+           "description": "Container Registry's UUID.",
+           "type": "string"
+          },
+          "name": {
+           "description": "A unique, global name for the container registry. It must be written in lowercase letters and consists only of numbers and letters, up to a limit of 63 characters.",
+           "type": "string"
+          }
+         },
+         "required": [
+          "id",
+          "name"
+         ],
+         "type": "object"
+        },
+        "version": "0.1.0"
+       },
+       {
+        "configs": {
+         "additionalProperties": false,
+         "properties": {
+          "env": {
+           "default": "prod",
+           "description": "Environment to use",
+           "enum": [
+            "prod",
+            "pre-prod"
+           ],
+           "type": "string"
+          },
+          "region": {
+           "default": "br-se1",
+           "description": "Region to reach the service",
+           "enum": [
+            "br-ne1",
+            "br-se1",
+            "br-mgl1"
+           ],
+           "type": "string"
+          },
+          "serverUrl": {
+           "description": "Manually specify the server to use",
+           "format": "uri",
+           "type": "string"
+          }
+         },
+         "type": "object"
+        },
+        "description": "Delete a container registry by uuid.",
+        "isInternal": false,
+        "name": "delete",
+        "parameters": {
+         "additionalProperties": false,
+         "properties": {
+          "registry_id": {
+           "description": "Container Registry's UUID.",
+           "format": "uuid",
+           "type": "string"
+          }
+         },
+         "required": [
+          "registry_id"
+         ],
+         "type": "object"
+        },
+        "result": {
+         "nullable": true,
+         "type": "null"
+        },
+        "version": "0.1.0"
+       },
+       {
+        "configs": {
+         "additionalProperties": false,
+         "properties": {
+          "env": {
+           "default": "prod",
+           "description": "Environment to use",
+           "enum": [
+            "prod",
+            "pre-prod"
+           ],
+           "type": "string"
+          },
+          "region": {
+           "default": "br-se1",
+           "description": "Region to reach the service",
+           "enum": [
+            "br-ne1",
+            "br-se1",
+            "br-mgl1"
+           ],
+           "type": "string"
+          },
+          "serverUrl": {
+           "description": "Manually specify the server to use",
+           "format": "uri",
+           "type": "string"
+          }
+         },
+         "type": "object"
+        },
+        "description": "Show detailed information about the user's container registry.",
+        "isInternal": false,
+        "name": "get",
+        "parameters": {
+         "additionalProperties": false,
+         "properties": {
+          "registry_id": {
+           "description": "Container Registry's UUID.",
+           "format": "uuid",
+           "type": "string"
+          }
+         },
+         "required": [
+          "registry_id"
+         ],
+         "type": "object"
+        },
+        "result": {
+         "description": "Container Registry's response data.",
+         "example": {
+          "created_at": "2024-05-15T19:56:47Z",
+          "id": "0c6bbd87-881a-4bf8-b3f6-4ff3ceacb42c",
+          "name": "cool_registry",
+          "storage_usage_bytes": 12345,
+          "updated_at": "2024-05-15T19:56:47Z"
+         },
+         "properties": {
+          "created_at": {
+           "description": "Date and time of creation of the container registry.",
+           "type": "string"
+          },
+          "id": {
+           "description": "Container Registry's UUID.",
+           "type": "string"
+          },
+          "name": {
+           "description": "Name of the container registry created.",
+           "type": "string"
+          },
+          "storage_usage_bytes": {
+           "description": "Storage used in bytes.",
+           "type": "integer"
+          },
+          "updated_at": {
+           "description": "Date and time of the last change to the container registry.",
+           "type": "string"
+          }
+         },
+         "required": [
+          "id",
+          "name",
+          "storage_usage_bytes",
+          "created_at",
+          "updated_at"
+         ],
+         "type": "object"
+        },
+        "version": "0.1.0"
+       },
+       {
+        "configs": {
+         "additionalProperties": false,
+         "properties": {
+          "env": {
+           "default": "prod",
+           "description": "Environment to use",
+           "enum": [
+            "prod",
+            "pre-prod"
+           ],
+           "type": "string"
+          },
+          "region": {
+           "default": "br-se1",
+           "description": "Region to reach the service",
+           "enum": [
+            "br-ne1",
+            "br-se1",
+            "br-mgl1"
+           ],
+           "type": "string"
+          },
+          "serverUrl": {
+           "description": "Manually specify the server to use",
+           "format": "uri",
+           "type": "string"
+          }
+         },
+         "type": "object"
+        },
+        "description": "List user's container registries.",
+        "isInternal": false,
+        "name": "list",
+        "parameters": {
+         "additionalProperties": false,
+         "properties": {
+          "_limit": {
+           "description": "Limit",
+           "minimum": 1,
+           "title": "Limit",
+           "type": "integer"
+          },
+          "_offset": {
+           "description": "Offset",
+           "minimum": 0,
+           "type": "integer"
+          },
+          "_sort": {
+           "default": "created:asc",
+           "description": "Fields to use as reference to sort.",
+           "pattern": "(^[\\w-]+:(asc|desc)(,[\\w-]+:(asc|desc))*)?$",
+           "type": "string"
+          }
+         },
+         "type": "object"
+        },
+        "result": {
+         "description": "Container registry information response object.",
+         "properties": {
+          "results": {
+           "description": "List of user registries.",
+           "items": {
+            "description": "Container Registry's response data.",
+            "example": {
+             "created_at": "2024-05-15T19:56:47Z",
+             "id": "0c6bbd87-881a-4bf8-b3f6-4ff3ceacb42c",
+             "name": "cool_registry",
+             "storage_usage_bytes": 12345,
+             "updated_at": "2024-05-15T19:56:47Z"
+            },
+            "properties": {
+             "created_at": {
+              "description": "Date and time of creation of the container registry.",
+              "type": "string"
+             },
+             "id": {
+              "description": "Container Registry's UUID.",
+              "type": "string"
+             },
+             "name": {
+              "description": "Name of the container registry created.",
+              "type": "string"
+             },
+             "storage_usage_bytes": {
+              "description": "Storage used in bytes.",
+              "type": "integer"
+             },
+             "updated_at": {
+              "description": "Date and time of the last change to the container registry.",
+              "type": "string"
+             }
+            },
+            "required": [
+             "id",
+             "name",
+             "storage_usage_bytes",
+             "created_at",
+             "updated_at"
+            ],
+            "type": "object"
+           },
+           "type": "array"
+          }
+         },
+         "required": [
+          "results"
+         ],
+         "type": "object"
+        },
+        "version": "0.1.0"
+       }
+      ],
+      "description": "Routes related to Container Registry management. | registries",
+      "isInternal": false,
+      "name": "registries",
+      "version": "0.1.0"
+     }
+    ],
+    "description": "Routes related to Container Registry management.",
+    "isInternal": false,
+    "name": "registries",
+    "version": "0.1.0"
+   },
+   {
+    "children": [
+     {
+      "configs": {
+       "additionalProperties": false,
+       "properties": {
+        "env": {
+         "default": "prod",
+         "description": "Environment to use",
+         "enum": [
+          "prod",
+          "pre-prod"
+         ],
+         "type": "string"
+        },
+        "region": {
+         "default": "br-se1",
+         "description": "Region to reach the service",
+         "enum": [
+          "br-ne1",
+          "br-se1",
+          "br-mgl1"
+         ],
+         "type": "string"
+        },
+        "serverUrl": {
+         "description": "Manually specify the server to use",
+         "format": "uri",
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
+      "description": "Delete a repository by name.",
+      "isInternal": false,
+      "name": "delete",
+      "parameters": {
+       "additionalProperties": false,
+       "properties": {
+        "registry_id": {
+         "description": "Container Registry's UUID.",
+         "format": "uuid",
+         "type": "string"
+        },
+        "repository_name": {
+         "description": "Repository's name.",
+         "type": "string"
+        }
+       },
+       "required": [
+        "registry_id",
+        "repository_name"
+       ],
+       "type": "object"
+      },
+      "result": {
+       "nullable": true,
+       "type": "null"
+      },
+      "version": "0.1.0"
+     },
+     {
+      "configs": {
+       "additionalProperties": false,
+       "properties": {
+        "env": {
+         "default": "prod",
+         "description": "Environment to use",
+         "enum": [
+          "prod",
+          "pre-prod"
+         ],
+         "type": "string"
+        },
+        "region": {
+         "default": "br-se1",
+         "description": "Region to reach the service",
+         "enum": [
+          "br-ne1",
+          "br-se1",
+          "br-mgl1"
+         ],
+         "type": "string"
+        },
+        "serverUrl": {
+         "description": "Manually specify the server to use",
+         "format": "uri",
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
+      "description": "Return detailed repository's information filtered by name.",
+      "isInternal": false,
+      "name": "get",
+      "parameters": {
+       "additionalProperties": false,
+       "properties": {
+        "registry_id": {
+         "description": "Container Registry's UUID.",
+         "format": "uuid",
+         "type": "string"
+        },
+        "repository_name": {
+         "description": "Repository's name.",
+         "type": "string"
+        }
+       },
+       "required": [
+        "registry_id",
+        "repository_name"
+       ],
+       "type": "object"
+      },
+      "result": {
+       "description": "Information about the repository.",
+       "example": {
+        "created_at": "2024-05-15T19:56:47Z",
+        "image_count": 2,
+        "name": "alpine",
+        "registry_name": "cool_registry",
+        "updated_at": "2024-05-15T19:56:47Z"
+       },
+       "properties": {
+        "created_at": {
+         "description": "Date and time of creation of the repository.",
+         "type": "string"
+        },
+        "image_count": {
+         "description": "Number of images in the repository.",
+         "type": "integer"
+        },
+        "name": {
+         "description": "Name of the repository.",
+         "type": "string"
+        },
+        "registry_name": {
+         "description": "Name of the container registry.",
+         "type": "string"
+        },
+        "updated_at": {
+         "description": "Date and time of the last change to the repository.",
+         "type": "string"
+        }
+       },
+       "required": [
+        "registry_name",
+        "name",
+        "image_count",
+        "created_at",
+        "updated_at"
+       ],
+       "type": "object"
+      },
+      "version": "0.1.0"
+     },
+     {
+      "configs": {
+       "additionalProperties": false,
+       "properties": {
+        "env": {
+         "default": "prod",
+         "description": "Environment to use",
+         "enum": [
+          "prod",
+          "pre-prod"
+         ],
+         "type": "string"
+        },
+        "region": {
+         "default": "br-se1",
+         "description": "Region to reach the service",
+         "enum": [
+          "br-ne1",
+          "br-se1",
+          "br-mgl1"
+         ],
+         "type": "string"
+        },
+        "serverUrl": {
+         "description": "Manually specify the server to use",
+         "format": "uri",
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
+      "description": "List all user's repositories in the container registry.",
+      "isInternal": false,
+      "name": "list",
+      "parameters": {
+       "additionalProperties": false,
+       "properties": {
+        "_limit": {
+         "description": "Limit",
+         "minimum": 1,
+         "title": "Limit",
+         "type": "integer"
+        },
+        "_offset": {
+         "description": "Offset",
+         "minimum": 0,
+         "type": "integer"
+        },
+        "_sort": {
+         "default": "created_at:desc",
+         "description": "Fields to use as reference to sort.",
+         "pattern": "(^[\\w-]+:(asc|desc)(,[\\w-]+:(asc|desc))*)?$",
+         "type": "string"
+        },
+        "registry_id": {
+         "description": "Container Registry's UUID.",
+         "format": "uuid",
+         "type": "string"
+        }
+       },
+       "required": [
+        "registry_id"
+       ],
+       "type": "object"
+      },
+      "result": {
+       "description": "Information returned about the container registry repository.",
+       "properties": {
+        "goal": {
+         "description": "User's repositories quantity.",
+         "example": {
+          "total": 1
+         },
+         "properties": {
+          "total": {
+           "description": "Total number of repositories for a user.",
+           "type": "integer"
+          }
+         },
+         "type": "object"
+        },
+        "results": {
+         "description": "Information about the container registry repositories.",
+         "items": {
+          "description": "Information about the repository.",
+          "example": {
+           "created_at": "2024-05-15T19:56:47Z",
+           "image_count": 2,
+           "name": "alpine",
+           "registry_name": "cool_registry",
+           "updated_at": "2024-05-15T19:56:47Z"
+          },
+          "properties": {
+           "created_at": {
+            "description": "Date and time of creation of the repository.",
+            "type": "string"
+           },
+           "image_count": {
+            "description": "Number of images in the repository.",
+            "type": "integer"
+           },
+           "name": {
+            "description": "Name of the repository.",
+            "type": "string"
+           },
+           "registry_name": {
+            "description": "Name of the container registry.",
+            "type": "string"
+           },
+           "updated_at": {
+            "description": "Date and time of the last change to the repository.",
+            "type": "string"
+           }
+          },
+          "required": [
+           "registry_name",
+           "name",
+           "image_count",
+           "created_at",
+           "updated_at"
+          ],
+          "type": "object"
+         },
+         "type": "array"
+        }
+       },
+       "required": [
+        "results"
+       ],
+       "type": "object"
+      },
+      "version": "0.1.0"
+     }
+    ],
+    "description": "Routes related to managing Container Registry repositories.",
+    "isInternal": false,
+    "name": "repositories",
+    "version": "0.1.0"
+   }
+  ],
+  "description": "Magalu Container Registry product API.",
+  "isInternal": false,
+  "name": "container-registry",
+  "version": "0.1.0"
+ },
+ {
+  "children": [
+   {
+    "children": [
+     {
+      "configs": {
+       "additionalProperties": false,
+       "properties": {
+        "env": {
+         "default": "prod",
+         "description": "Environment to use",
+         "enum": [
+          "prod",
+          "pre-prod"
+         ],
+         "type": "string"
+        },
+        "region": {
+         "default": "br-se1",
+         "description": "Region to reach the service",
+         "enum": [
+          "br-ne1",
+          "br-se1",
+          "br-mgl1"
+         ],
+         "type": "string"
+        },
+        "serverUrl": {
+         "description": "Manually specify the server to use",
+         "format": "uri",
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
       "description": "Deletes a database backup.",
       "isInternal": false,
       "name": "delete",
@@ -3775,7 +4920,7 @@
        "type": "object"
       },
       "result": {},
-      "version": "1.19.0"
+      "version": "1.21.2"
      },
      {
       "configs": {
@@ -3926,7 +5071,7 @@
        "title": "BackupDetailResponse",
        "type": "object"
       },
-      "version": "1.19.0"
+      "version": "1.21.2"
      },
      {
       "configs": {
@@ -4175,13 +5320,13 @@
        "title": "BackupsResponse",
        "type": "object"
       },
-      "version": "1.19.0"
+      "version": "1.21.2"
      }
     ],
     "description": "Database backups management.",
     "isInternal": false,
     "name": "backups",
-    "version": "1.19.0"
+    "version": "1.21.2"
    },
    {
     "children": [
@@ -4274,7 +5419,7 @@
        "title": "EngineResponse",
        "type": "object"
       },
-      "version": "1.19.0"
+      "version": "1.21.2"
      },
      {
       "configs": {
@@ -4438,13 +5583,13 @@
        "title": "EnginesResponse",
        "type": "object"
       },
-      "version": "1.19.0"
+      "version": "1.21.2"
      }
     ],
     "description": "Datastores available for database instances.",
     "isInternal": true,
     "name": "datastores",
-    "version": "1.19.0"
+    "version": "1.21.2"
    },
    {
     "children": [
@@ -4537,7 +5682,7 @@
        "title": "EngineResponse",
        "type": "object"
       },
-      "version": "1.19.0"
+      "version": "1.21.2"
      },
      {
       "configs": {
@@ -4701,13 +5846,13 @@
        "title": "EnginesResponse",
        "type": "object"
       },
-      "version": "1.19.0"
+      "version": "1.21.2"
      }
     ],
     "description": "Engines available for database instances.",
     "isInternal": false,
     "name": "engines",
-    "version": "1.19.0"
+    "version": "1.21.2"
    },
    {
     "children": [
@@ -4819,7 +5964,7 @@
        "title": "FlavorResponse",
        "type": "object"
       },
-      "version": "1.19.0"
+      "version": "1.21.2"
      },
      {
       "configs": {
@@ -5003,13 +6148,13 @@
        "title": "FlavorsResponse",
        "type": "object"
       },
-      "version": "1.19.0"
+      "version": "1.21.2"
      }
     ],
     "description": "Flavors available for database instances.",
     "isInternal": false,
     "name": "flavors",
-    "version": "1.19.0"
+    "version": "1.21.2"
    },
    {
     "children": [
@@ -5052,13 +6197,13 @@
        "type": "object"
       },
       "result": {},
-      "version": "1.19.0"
+      "version": "1.21.2"
      }
     ],
     "description": "Health check.",
     "isInternal": true,
     "name": "healthcheck",
-    "version": "1.19.0"
+    "version": "1.21.2"
    },
    {
     "children": [
@@ -5140,7 +6285,7 @@
          "title": "BackupResponse",
          "type": "object"
         },
-        "version": "1.19.0"
+        "version": "1.21.2"
        },
        {
         "configs": {
@@ -5202,7 +6347,7 @@
          "type": "object"
         },
         "result": {},
-        "version": "1.19.0"
+        "version": "1.21.2"
        },
        {
         "configs": {
@@ -5359,7 +6504,7 @@
          "title": "BackupDetailResponse",
          "type": "object"
         },
-        "version": "1.19.0"
+        "version": "1.21.2"
        },
        {
         "configs": {
@@ -5616,13 +6761,13 @@
          "title": "BackupsResponse",
          "type": "object"
         },
-        "version": "1.19.0"
+        "version": "1.21.2"
        }
       ],
       "description": "Database instances management. | backups",
       "isInternal": false,
       "name": "backups",
-      "version": "1.19.0"
+      "version": "1.21.2"
      },
      {
       "configs": {
@@ -5806,7 +6951,7 @@
        "title": "InstanceResponse",
        "type": "object"
       },
-      "version": "1.19.0"
+      "version": "1.21.2"
      },
      {
       "configs": {
@@ -5862,7 +7007,7 @@
        "type": "object"
       },
       "result": {},
-      "version": "1.19.0"
+      "version": "1.21.2"
      },
      {
       "configs": {
@@ -6345,7 +7490,7 @@
        "title": "InstanceDetailResponse",
        "type": "object"
       },
-      "version": "1.19.0"
+      "version": "1.21.2"
      },
      {
       "configs": {
@@ -6915,7 +8060,7 @@
        "title": "InstancesResponse",
        "type": "object"
       },
-      "version": "1.19.0"
+      "version": "1.21.2"
      },
      {
       "configs": {
@@ -7422,7 +8567,7 @@
        "title": "InstanceDetailResponse",
        "type": "object"
       },
-      "version": "1.19.0"
+      "version": "1.21.2"
      },
      {
       "configs": {
@@ -7497,7 +8642,7 @@
        "title": "RestoreResponse",
        "type": "object"
       },
-      "version": "1.19.0"
+      "version": "1.21.2"
      },
      {
       "configs": {
@@ -7972,7 +9117,7 @@
        "title": "InstanceDetailResponse",
        "type": "object"
       },
-      "version": "1.19.0"
+      "version": "1.21.2"
      },
      {
       "configs": {
@@ -8447,7 +9592,7 @@
        "title": "InstanceDetailResponse",
        "type": "object"
       },
-      "version": "1.19.0"
+      "version": "1.21.2"
      },
      {
       "configs": {
@@ -8942,13 +10087,13 @@
        "title": "InstanceDetailResponse",
        "type": "object"
       },
-      "version": "1.19.0"
+      "version": "1.21.2"
      }
     ],
     "description": "Database instances management.",
     "isInternal": false,
     "name": "instances",
-    "version": "1.19.0"
+    "version": "1.21.2"
    },
    {
     "children": [
@@ -9030,7 +10175,7 @@
        "title": "ReplicaResponse",
        "type": "object"
       },
-      "version": "1.19.0"
+      "version": "1.21.2"
      },
      {
       "configs": {
@@ -9089,7 +10234,7 @@
        "nullable": true,
        "type": "null"
       },
-      "version": "1.19.0"
+      "version": "1.21.2"
      },
      {
       "configs": {
@@ -9348,7 +10493,7 @@
        "title": "ReplicaDetailResponse",
        "type": "object"
       },
-      "version": "1.19.0"
+      "version": "1.21.2"
      },
      {
       "configs": {
@@ -9678,7 +10823,7 @@
        "title": "ReplicasResponse",
        "type": "object"
       },
-      "version": "1.19.0"
+      "version": "1.21.2"
      },
      {
       "configs": {
@@ -9943,7 +11088,7 @@
        "title": "ReplicaDetailResponse",
        "type": "object"
       },
-      "version": "1.19.0"
+      "version": "1.21.2"
      },
      {
       "configs": {
@@ -10202,7 +11347,7 @@
        "title": "ReplicaDetailResponse",
        "type": "object"
       },
-      "version": "1.19.0"
+      "version": "1.21.2"
      },
      {
       "configs": {
@@ -10461,19 +11606,19 @@
        "title": "ReplicaDetailResponse",
        "type": "object"
       },
-      "version": "1.19.0"
+      "version": "1.21.2"
      }
     ],
     "description": "Database replicas management.",
     "isInternal": false,
     "name": "replicas",
-    "version": "1.19.0"
+    "version": "1.21.2"
    }
   ],
   "description": "DBaaS API Product.",
   "isInternal": false,
   "name": "dbaas",
-  "version": "1.19.0"
+  "version": "1.21.2"
  },
  {
   "children": [
@@ -15061,14 +16206,12 @@
         "port_id": {
          "description": "ID of the Port to attach security group",
          "magalu.cloud/core/resolved": "true",
-         "title": "port_id",
-         "type": "string"
+         "title": "port_id"
         },
         "security_group_id": {
          "description": "ID of the Security Group to attach",
          "magalu.cloud/core/resolved": "true",
-         "title": "security_group_id",
-         "type": "string"
+         "title": "security_group_id"
         }
        },
        "required": [
@@ -15162,8 +16305,7 @@
         },
         "vpc_id": {
          "description": "ID of the VPC to create port",
-         "title": "vpc_id",
-         "type": "string"
+         "title": "vpc_id"
         }
        },
        "required": [
@@ -15333,8 +16475,7 @@
        "properties": {
         "port_id": {
          "description": "ID of the Port to delete",
-         "title": "port_id",
-         "type": "string"
+         "title": "port_id"
         }
        },
        "required": [
@@ -15475,13 +16616,11 @@
        "properties": {
         "port_id": {
          "description": "ID of the Port to detach security group",
-         "title": "port_id",
-         "type": "string"
+         "title": "port_id"
         },
         "security_group_id": {
          "description": "ID of the Security Group to detach",
-         "title": "security_group_id",
-         "type": "string"
+         "title": "security_group_id"
         }
        },
        "required": [
@@ -15531,8 +16670,7 @@
        "additionalProperties": false,
        "properties": {
         "port_id": {
-         "title": "Port Id",
-         "type": "string"
+         "title": "Port Id"
         }
        },
        "required": [
@@ -15715,9 +16853,7 @@
        "properties": {
         "port_id_list": {
          "default": [],
-         "items": {
-          "type": "string"
-         },
+         "items": {},
          "title": "Port Id List",
          "type": "array"
         }
@@ -15907,14 +17043,12 @@
           "port_id": {
            "description": "ID of the Port to attach security group",
            "magalu.cloud/core/resolved": "true",
-           "title": "port_id",
-           "type": "string"
+           "title": "port_id"
           },
           "security_group_id": {
            "description": "ID of the Security Group to attach",
            "magalu.cloud/core/resolved": "true",
-           "title": "security_group_id",
-           "type": "string"
+           "title": "security_group_id"
           }
          },
          "required": [
@@ -15929,14 +17063,12 @@
           "port_id": {
            "description": "ID of the Port to attach security group",
            "magalu.cloud/core/resolved": "true",
-           "title": "port_id",
-           "type": "string"
+           "title": "port_id"
           },
           "security_group_id": {
            "description": "ID of the Security Group to attach",
            "magalu.cloud/core/resolved": "true",
-           "title": "security_group_id",
-           "type": "string"
+           "title": "security_group_id"
           }
          },
          "required": [
@@ -15988,14 +17120,12 @@
           "port_id": {
            "description": "ID of the Port to attach security group",
            "magalu.cloud/core/resolved": "true",
-           "title": "port_id",
-           "type": "string"
+           "title": "port_id"
           },
           "security_group_id": {
            "description": "ID of the Security Group to attach",
            "magalu.cloud/core/resolved": "true",
-           "title": "security_group_id",
-           "type": "string"
+           "title": "security_group_id"
           }
          },
          "required": [
@@ -16010,14 +17140,12 @@
           "port_id": {
            "description": "ID of the Port to attach security group",
            "magalu.cloud/core/resolved": "true",
-           "title": "port_id",
-           "type": "string"
+           "title": "port_id"
           },
           "security_group_id": {
            "description": "ID of the Security Group to attach",
            "magalu.cloud/core/resolved": "true",
-           "title": "security_group_id",
-           "type": "string"
+           "title": "security_group_id"
           }
          },
          "required": [
@@ -16069,14 +17197,12 @@
           "port_id": {
            "description": "ID of the Port to attach security group",
            "magalu.cloud/core/resolved": "true",
-           "title": "port_id",
-           "type": "string"
+           "title": "port_id"
           },
           "security_group_id": {
            "description": "ID of the Security Group to attach",
            "magalu.cloud/core/resolved": "true",
-           "title": "security_group_id",
-           "type": "string"
+           "title": "security_group_id"
           }
          },
          "required": [
@@ -16091,14 +17217,12 @@
           "port_id": {
            "description": "ID of the Port to attach security group",
            "magalu.cloud/core/resolved": "true",
-           "title": "port_id",
-           "type": "string"
+           "title": "port_id"
           },
           "security_group_id": {
            "description": "ID of the Security Group to attach",
            "magalu.cloud/core/resolved": "true",
-           "title": "security_group_id",
-           "type": "string"
+           "title": "security_group_id"
           }
          },
          "required": [
@@ -16163,14 +17287,12 @@
         "port_id": {
          "description": "Id of the Port to attach the Public IP",
          "magalu.cloud/core/resolved": "true",
-         "title": "Port ID",
-         "type": "string"
+         "title": "Port ID"
         },
         "public_ip_id": {
          "description": "Id of the Public IP to attach port to",
          "magalu.cloud/core/resolved": "true",
-         "title": "Public IP ID",
-         "type": "string"
+         "title": "Public IP ID"
         }
        },
        "required": [
@@ -16235,8 +17357,7 @@
         },
         "vpc_id": {
          "description": "Id of the VPC to create the Public IP in",
-         "title": "Vpc ID",
-         "type": "string"
+         "title": "Vpc ID"
         },
         "wait": {
          "default": true,
@@ -16315,8 +17436,7 @@
        "properties": {
         "public_ip_id": {
          "description": "Id of the Public IP to delete",
-         "title": "Public IP ID",
-         "type": "string"
+         "title": "Public IP ID"
         }
        },
        "required": [
@@ -16369,13 +17489,11 @@
        "properties": {
         "port_id": {
          "description": "Id of the Port to detach the Public IP",
-         "title": "Port ID",
-         "type": "string"
+         "title": "Port ID"
         },
         "public_ip_id": {
          "description": "Id of the Public IP to detach port to",
-         "title": "Public IP ID",
-         "type": "string"
+         "title": "Public IP ID"
         }
        },
        "required": [
@@ -16427,8 +17545,7 @@
        "properties": {
         "public_ip_id": {
          "description": "Id of the Public IP to retrieve",
-         "title": "Public IP ID",
-         "type": "string"
+         "title": "Public IP ID"
         }
        },
        "required": [
@@ -16690,14 +17807,12 @@
           "port_id": {
            "description": "Id of the Port to attach the Public IP",
            "magalu.cloud/core/resolved": "true",
-           "title": "Port ID",
-           "type": "string"
+           "title": "Port ID"
           },
           "public_ip_id": {
            "description": "Id of the Public IP to attach port to",
            "magalu.cloud/core/resolved": "true",
-           "title": "Public IP ID",
-           "type": "string"
+           "title": "Public IP ID"
           }
          },
          "required": [
@@ -16712,14 +17827,12 @@
           "port_id": {
            "description": "Id of the Port to attach the Public IP",
            "magalu.cloud/core/resolved": "true",
-           "title": "Port ID",
-           "type": "string"
+           "title": "Port ID"
           },
           "public_ip_id": {
            "description": "Id of the Public IP to attach port to",
            "magalu.cloud/core/resolved": "true",
-           "title": "Public IP ID",
-           "type": "string"
+           "title": "Public IP ID"
           }
          },
          "required": [
@@ -16771,14 +17884,12 @@
           "port_id": {
            "description": "Id of the Port to attach the Public IP",
            "magalu.cloud/core/resolved": "true",
-           "title": "Port ID",
-           "type": "string"
+           "title": "Port ID"
           },
           "public_ip_id": {
            "description": "Id of the Public IP to attach port to",
            "magalu.cloud/core/resolved": "true",
-           "title": "Public IP ID",
-           "type": "string"
+           "title": "Public IP ID"
           }
          },
          "required": [
@@ -16793,14 +17904,12 @@
           "port_id": {
            "description": "Id of the Port to attach the Public IP",
            "magalu.cloud/core/resolved": "true",
-           "title": "Port ID",
-           "type": "string"
+           "title": "Port ID"
           },
           "public_ip_id": {
            "description": "Id of the Public IP to attach port to",
            "magalu.cloud/core/resolved": "true",
-           "title": "Public IP ID",
-           "type": "string"
+           "title": "Public IP ID"
           }
          },
          "required": [
@@ -16852,14 +17961,12 @@
           "port_id": {
            "description": "Id of the Port to attach the Public IP",
            "magalu.cloud/core/resolved": "true",
-           "title": "Port ID",
-           "type": "string"
+           "title": "Port ID"
           },
           "public_ip_id": {
            "description": "Id of the Public IP to attach port to",
            "magalu.cloud/core/resolved": "true",
-           "title": "Public IP ID",
-           "type": "string"
+           "title": "Public IP ID"
           }
          },
          "required": [
@@ -16874,14 +17981,12 @@
           "port_id": {
            "description": "Id of the Port to attach the Public IP",
            "magalu.cloud/core/resolved": "true",
-           "title": "Port ID",
-           "type": "string"
+           "title": "Port ID"
           },
           "public_ip_id": {
            "description": "Id of the Public IP to attach port to",
            "magalu.cloud/core/resolved": "true",
-           "title": "Public IP ID",
-           "type": "string"
+           "title": "Public IP ID"
           }
          },
          "required": [
@@ -17092,8 +18197,7 @@
         },
         "security_group_id": {
          "description": "Id of the Security Group",
-         "title": "Security Group ID",
-         "type": "string"
+         "title": "Security Group ID"
         },
         "validate_quota": {
          "default": true,
@@ -17179,8 +18283,7 @@
        "properties": {
         "rule_id": {
          "description": "Id of the Rule",
-         "title": "Rule ID",
-         "type": "string"
+         "title": "Rule ID"
         }
        },
        "required": [
@@ -17233,8 +18336,7 @@
        "properties": {
         "rule_id": {
          "description": "Id of the Rule",
-         "title": "Rule ID",
-         "type": "string"
+         "title": "Rule ID"
         }
        },
        "required": [
@@ -17378,8 +18480,7 @@
        "properties": {
         "security_group_id": {
          "description": "Id of the Security Group",
-         "title": "Security Group ID",
-         "type": "string"
+         "title": "Security Group ID"
         }
        },
        "required": [
@@ -17708,8 +18809,7 @@
        "properties": {
         "security_group_id": {
          "description": "Id of the security group to delete",
-         "title": "Security Group ID",
-         "type": "string"
+         "title": "Security Group ID"
         }
        },
        "required": [
@@ -17831,8 +18931,7 @@
        "properties": {
         "security_group_id": {
          "description": "Id of the security group to detail",
-         "title": "Security Group ID",
-         "type": "string"
+         "title": "Security Group ID"
         }
        },
        "required": [
@@ -17993,7 +19092,7 @@
              "pending",
              "error"
             ],
-            "title": "RuleStatus",
+            "nullable": true,
             "type": "string"
            }
           },
@@ -18269,8 +19368,7 @@
           },
           "security_group_id": {
            "description": "Id of the Security Group",
-           "title": "Security Group ID",
-           "type": "string"
+           "title": "Security Group ID"
           },
           "validate_quota": {
            "default": true,
@@ -18358,8 +19456,7 @@
          "properties": {
           "security_group_id": {
            "description": "Id of the Security Group",
-           "title": "Security Group ID",
-           "type": "string"
+           "title": "Security Group ID"
           }
          },
          "required": [
@@ -18548,8 +19645,7 @@
          "properties": {
           "subnet_id": {
            "description": "Id of the Subnet to delete",
-           "title": "Subnet Id",
-           "type": "string"
+           "title": "Subnet Id"
           }
          },
          "required": [
@@ -18602,8 +19698,7 @@
          "properties": {
           "subnet_id": {
            "description": "Id of the Subnet to detail",
-           "title": "Subnet Id",
-           "type": "string"
+           "title": "Subnet Id"
           }
          },
          "required": [
@@ -18878,8 +19973,7 @@
           },
           "vpc_id": {
            "description": "Id of the VPC to create Subnet",
-           "title": "Vpc Id",
-           "type": "string"
+           "title": "Vpc Id"
           }
          },
          "required": [
@@ -18946,8 +20040,7 @@
          "properties": {
           "vpc_id": {
            "description": "Id of the VPC to list Subnets",
-           "title": "Vpc Id",
-           "type": "string"
+           "title": "Vpc Id"
           }
          },
          "required": [
@@ -19224,8 +20317,7 @@
        "properties": {
         "vpc_id": {
          "description": "ID of the VPC to delete",
-         "title": "VPC Id",
-         "type": "string"
+         "title": "VPC Id"
         }
        },
        "required": [
@@ -19423,8 +20515,7 @@
        "properties": {
         "vpc_id": {
          "description": "ID of the VPC to detail",
-         "title": "VPC Id",
-         "type": "string"
+         "title": "VPC Id"
         }
        },
        "required": [
@@ -19778,8 +20869,7 @@
           },
           "vpc_id": {
            "description": "ID of the VPC to create port",
-           "title": "vpc_id",
-           "type": "string"
+           "title": "vpc_id"
           }
          },
          "required": [
@@ -19865,16 +20955,13 @@
           },
           "port_id_list": {
            "default": [],
-           "items": {
-            "type": "string"
-           },
+           "items": {},
            "title": "Port Id List",
            "type": "array"
           },
           "vpc_id": {
            "description": "ID of VPC to list ports",
-           "title": "vpc_id",
-           "type": "string"
+           "title": "vpc_id"
           }
          },
          "required": [
@@ -20200,8 +21287,7 @@
           },
           "vpc_id": {
            "description": "Id of the VPC to create the Public IP in",
-           "title": "Vpc ID",
-           "type": "string"
+           "title": "Vpc ID"
           },
           "wait": {
            "default": true,
@@ -20280,8 +21366,7 @@
          "properties": {
           "vpc_id": {
            "description": "Id of the VPC to list the Public IPs in",
-           "title": "Vpc ID",
-           "type": "string"
+           "title": "Vpc ID"
           }
          },
          "required": [
@@ -20532,8 +21617,7 @@
          "properties": {
           "vpc_id": {
            "description": "Id of the VPC to create the Security Group in",
-           "title": "Vpc ID",
-           "type": "string"
+           "title": "Vpc ID"
           }
          },
          "required": [
@@ -20724,8 +21808,7 @@
         },
         "public_ip_id": {
          "description": "Id of the public ip to update",
-         "title": "Public Ip Id",
-         "type": "string"
+         "title": "Public Ip Id"
         },
         "status": {
          "enum": [
@@ -20768,7 +21851,7 @@
     "version": "1.124.1"
    }
   ],
-  "description": "APIs referentes ao produto de VPC",
+  "description": "APIs related to the VPC product",
   "isInternal": false,
   "name": "network",
   "version": "1.124.1"
@@ -21166,7 +22249,7 @@
            "type": "integer"
           },
           "region": {
-           "default": "br-ne1",
+           "default": "br-se1",
            "description": "Region to reach the service",
            "enum": [
             "br-ne1",
@@ -21283,7 +22366,7 @@
            "type": "integer"
           },
           "region": {
-           "default": "br-ne1",
+           "default": "br-se1",
            "description": "Region to reach the service",
            "enum": [
             "br-ne1",
@@ -21474,7 +22557,7 @@
          "type": "integer"
         },
         "region": {
-         "default": "br-ne1",
+         "default": "br-se1",
          "description": "Region to reach the service",
          "enum": [
           "br-ne1",
@@ -21767,7 +22850,7 @@
          "type": "integer"
         },
         "region": {
-         "default": "br-ne1",
+         "default": "br-se1",
          "description": "Region to reach the service",
          "enum": [
           "br-ne1",
@@ -21853,7 +22936,7 @@
          "type": "integer"
         },
         "region": {
-         "default": "br-ne1",
+         "default": "br-se1",
          "description": "Region to reach the service",
          "enum": [
           "br-ne1",
@@ -22031,7 +23114,7 @@
          "type": "integer"
         },
         "region": {
-         "default": "br-ne1",
+         "default": "br-se1",
          "description": "Region to reach the service",
          "enum": [
           "br-ne1",
@@ -22115,7 +23198,7 @@
          "type": "integer"
         },
         "region": {
-         "default": "br-ne1",
+         "default": "br-se1",
          "description": "Region to reach the service",
          "enum": [
           "br-ne1",
@@ -22182,7 +23265,7 @@
            "type": "integer"
           },
           "region": {
-           "default": "br-ne1",
+           "default": "br-se1",
            "description": "Region to reach the service",
            "enum": [
             "br-ne1",
@@ -22262,7 +23345,7 @@
            "type": "integer"
           },
           "region": {
-           "default": "br-ne1",
+           "default": "br-se1",
            "description": "Region to reach the service",
            "enum": [
             "br-ne1",
@@ -22328,7 +23411,7 @@
            "type": "integer"
           },
           "region": {
-           "default": "br-ne1",
+           "default": "br-se1",
            "description": "Region to reach the service",
            "enum": [
             "br-ne1",
@@ -22424,7 +23507,7 @@
            "type": "integer"
           },
           "region": {
-           "default": "br-ne1",
+           "default": "br-se1",
            "description": "Region to reach the service",
            "enum": [
             "br-ne1",
@@ -22542,7 +23625,7 @@
            "type": "integer"
           },
           "region": {
-           "default": "br-ne1",
+           "default": "br-se1",
            "description": "Region to reach the service",
            "enum": [
             "br-ne1",
@@ -22743,7 +23826,7 @@
          "type": "integer"
         },
         "region": {
-         "default": "br-ne1",
+         "default": "br-se1",
          "description": "Region to reach the service",
          "enum": [
           "br-ne1",
@@ -22836,7 +23919,7 @@
          "type": "integer"
         },
         "region": {
-         "default": "br-ne1",
+         "default": "br-se1",
          "description": "Region to reach the service",
          "enum": [
           "br-ne1",
@@ -22951,7 +24034,7 @@
          "type": "integer"
         },
         "region": {
-         "default": "br-ne1",
+         "default": "br-se1",
          "description": "Region to reach the service",
          "enum": [
           "br-ne1",
@@ -23037,7 +24120,7 @@
          "type": "integer"
         },
         "region": {
-         "default": "br-ne1",
+         "default": "br-se1",
          "description": "Region to reach the service",
          "enum": [
           "br-ne1",
@@ -23141,7 +24224,7 @@
          "type": "integer"
         },
         "region": {
-         "default": "br-ne1",
+         "default": "br-se1",
          "description": "Region to reach the service",
          "enum": [
           "br-ne1",
@@ -23233,7 +24316,7 @@
          "type": "integer"
         },
         "region": {
-         "default": "br-ne1",
+         "default": "br-se1",
          "description": "Region to reach the service",
          "enum": [
           "br-ne1",
@@ -23333,7 +24416,7 @@
          "type": "integer"
         },
         "region": {
-         "default": "br-ne1",
+         "default": "br-se1",
          "description": "Region to reach the service",
          "enum": [
           "br-ne1",
@@ -23417,7 +24500,7 @@
          "type": "integer"
         },
         "region": {
-         "default": "br-ne1",
+         "default": "br-se1",
          "description": "Region to reach the service",
          "enum": [
           "br-ne1",
@@ -23548,7 +24631,7 @@
          "type": "integer"
         },
         "region": {
-         "default": "br-ne1",
+         "default": "br-se1",
          "description": "Region to reach the service",
          "enum": [
           "br-ne1",
@@ -23629,7 +24712,7 @@
          "type": "integer"
         },
         "region": {
-         "default": "br-ne1",
+         "default": "br-se1",
          "description": "Region to reach the service",
          "enum": [
           "br-ne1",
@@ -23724,7 +24807,7 @@
          "type": "integer"
         },
         "region": {
-         "default": "br-ne1",
+         "default": "br-se1",
          "description": "Region to reach the service",
          "enum": [
           "br-ne1",
@@ -23803,7 +24886,7 @@
          "type": "integer"
         },
         "region": {
-         "default": "br-ne1",
+         "default": "br-se1",
          "description": "Region to reach the service",
          "enum": [
           "br-ne1",
@@ -23868,7 +24951,7 @@
          "type": "integer"
         },
         "region": {
-         "default": "br-ne1",
+         "default": "br-se1",
          "description": "Region to reach the service",
          "enum": [
           "br-ne1",
@@ -23891,7 +24974,7 @@
        },
        "type": "object"
       },
-      "description": "This command uploads any file from the local path to the bucket if it is not already present or has changed.",
+      "description": "This command uploads any file from the local path to the bucket if it is not already present or has modified time changed.",
       "isInternal": false,
       "name": "sync",
       "parameters": {
@@ -23969,7 +25052,7 @@
          "type": "integer"
         },
         "region": {
-         "default": "br-ne1",
+         "default": "br-se1",
          "description": "Region to reach the service",
          "enum": [
           "br-ne1",
@@ -24044,7 +25127,7 @@
          "type": "integer"
         },
         "region": {
-         "default": "br-ne1",
+         "default": "br-se1",
          "description": "Region to reach the service",
          "enum": [
           "br-ne1",
@@ -24141,7 +25224,7 @@
          "type": "integer"
         },
         "region": {
-         "default": "br-ne1",
+         "default": "br-se1",
          "description": "Region to reach the service",
          "enum": [
           "br-ne1",
@@ -24295,10 +25378,19 @@
     "configs": {
      "type": "object"
     },
-    "description": "Shows current selected profile. Any changes to auth or config values will only affect this profile",
+    "description": "Deletes the profile with the specified name",
     "isInternal": false,
-    "name": "current",
+    "name": "delete",
     "parameters": {
+     "properties": {
+      "name": {
+       "description": "Profile name",
+       "type": "string"
+      }
+     },
+     "required": [
+      "name"
+     ],
      "type": "object"
     },
     "result": {
@@ -24318,19 +25410,10 @@
     "configs": {
      "type": "object"
     },
-    "description": "Deletes the profile with the specified name",
+    "description": "Get current profile.",
     "isInternal": false,
-    "name": "delete",
+    "name": "get",
     "parameters": {
-     "properties": {
-      "name": {
-       "description": "Profile name",
-       "type": "string"
-      }
-     },
-     "required": [
-      "name"
-     ],
      "type": "object"
     },
     "result": {
@@ -24378,7 +25461,7 @@
     },
     "description": "Sets profile to be used",
     "isInternal": false,
-    "name": "set-current",
+    "name": "set",
     "parameters": {
      "properties": {
       "name": {
@@ -24453,13 +25536,13 @@
        "properties": {
         "_limit": {
          "default": 50,
-         "exclusiveMinimum": true,
+         "maximum": 2147483647,
          "title": " Limit",
          "type": "integer"
         },
         "_offset": {
          "default": 0,
-         "minimum": 0,
+         "maximum": 2147483647,
          "title": " Offset",
          "type": "integer"
         },
@@ -24644,87 +25727,6 @@
        },
        "type": "object"
       },
-      "description": "Attach new port at Instance",
-      "isInternal": false,
-      "name": "attach",
-      "parameters": {
-       "additionalProperties": false,
-       "properties": {
-        "force-authentication": {
-         "description": "Force authentication by sending the header even if this API doesn't require it",
-         "type": "boolean"
-        },
-        "id": {
-         "title": "Id",
-         "type": "string"
-        },
-        "project_type": {
-         "default": "default",
-         "enum": [
-          "dbaas",
-          "iamaas",
-          "k8saas",
-          "mngsvc",
-          "default"
-         ],
-         "title": "Project Type",
-         "type": "string"
-        }
-       },
-       "required": [
-        "id"
-       ],
-       "type": "object"
-      },
-      "result": {
-       "example": {
-        "id": "c47e974f-8002-46e9-8a63-d66505be2aa1"
-       },
-       "properties": {
-        "id": {
-         "title": "Id",
-         "type": "string"
-        }
-       },
-       "required": [
-        "id"
-       ],
-       "title": "PortID",
-       "type": "object"
-      },
-      "version": "v1"
-     },
-     {
-      "configs": {
-       "additionalProperties": false,
-       "properties": {
-        "env": {
-         "default": "prod",
-         "description": "Environment to use",
-         "enum": [
-          "prod",
-          "pre-prod"
-         ],
-         "type": "string"
-        },
-        "region": {
-         "default": "br-se1",
-         "description": "Region to reach the service",
-         "enum": [
-          "br-ne1",
-          "br-se1",
-          "br-mgl1"
-         ],
-         "type": "string"
-        },
-        "serverUrl": {
-         "description": "Manually specify the server to use",
-         "format": "uri",
-         "type": "string"
-        }
-       },
-       "type": "object"
-      },
       "description": "Create a Virtual Machine instance",
       "isInternal": false,
       "name": "create",
@@ -24832,7 +25834,6 @@
          "example": {
           "associate_public_ip": true,
           "nic": {
-           "id": "c8719fd8-7a48-4dbf-b4d8-74f71fa67422",
            "security_groups": [
             {
              "id": "f273fbde-2ddf-4dcd-8c41-342671ac0d17"
@@ -24846,6 +25847,7 @@
            "id": "2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6"
           }
          },
+         "nullable": true,
          "properties": {
           "associate_public_ip": {
            "default": true,
@@ -24853,41 +25855,57 @@
            "type": "boolean"
           },
           "nic": {
-           "properties": {
-            "id": {
-             "maxLength": 255,
-             "minLength": 1,
-             "nullable": true,
-             "title": "Id",
-             "type": "string"
-            },
-            "security_groups": {
-             "items": {
-              "example": {
-               "id": "9ec75090-2872-4f51-8111-53d05d96d2c6"
-              },
-              "properties": {
-               "id": {
-                "maxLength": 255,
-                "minLength": 1,
-                "title": "Id",
-                "type": "string"
-               }
-              },
-              "required": [
-               "id"
-              ],
-              "title": "ID",
-              "type": "object"
+           "anyOf": [
+            {
+             "example": {
+              "id": "9ec75090-2872-4f51-8111-53d05d96d2c6"
              },
-             "title": "Security Groups",
-             "type": "array"
+             "properties": {
+              "id": {
+               "maxLength": 255,
+               "minLength": 1,
+               "title": "Id",
+               "type": "string"
+              }
+             },
+             "required": [
+              "id"
+             ],
+             "title": "ID",
+             "type": "object"
+            },
+            {
+             "properties": {
+              "security_groups": {
+               "default": [],
+               "items": {
+                "example": {
+                 "id": "9ec75090-2872-4f51-8111-53d05d96d2c6"
+                },
+                "properties": {
+                 "id": {
+                  "maxLength": 255,
+                  "minLength": 1,
+                  "title": "Id",
+                  "type": "string"
+                 }
+                },
+                "required": [
+                 "id"
+                ],
+                "title": "ID",
+                "type": "object"
+               },
+               "title": "Security Groups",
+               "type": "array"
+              }
+             },
+             "title": "SecurityGroups",
+             "type": "object"
             }
-           },
-           "required": [
-            "security_groups"
            ],
-           "title": "NetworkNic",
+           "nullable": true,
+           "title": "Nic",
            "type": "object"
           },
           "vpc": {
@@ -24929,14 +25947,10 @@
              "type": "object"
             }
            ],
-           "default": {
-            "name": "default"
-           },
            "title": "Vpc",
            "type": "object"
           }
          },
-         "title": "InstanceCreateRequestV1NetworkDefault",
          "type": "object"
         },
         "ssh_key_name": {
@@ -24955,7 +25969,6 @@
         "image",
         "machine_type",
         "name",
-        "network",
         "ssh_key_name"
        ],
        "type": "object"
@@ -25068,87 +26081,6 @@
        },
        "type": "object"
       },
-      "description": "Detach a not primary port from Instance",
-      "isInternal": false,
-      "name": "detach",
-      "parameters": {
-       "additionalProperties": false,
-       "properties": {
-        "force-authentication": {
-         "description": "Force authentication by sending the header even if this API doesn't require it",
-         "type": "boolean"
-        },
-        "id": {
-         "title": "Id",
-         "type": "string"
-        },
-        "project_type": {
-         "default": "default",
-         "enum": [
-          "dbaas",
-          "iamaas",
-          "k8saas",
-          "mngsvc",
-          "default"
-         ],
-         "title": "Project Type",
-         "type": "string"
-        }
-       },
-       "required": [
-        "id"
-       ],
-       "type": "object"
-      },
-      "result": {
-       "example": {
-        "id": "c47e974f-8002-46e9-8a63-d66505be2aa1"
-       },
-       "properties": {
-        "id": {
-         "title": "Id",
-         "type": "string"
-        }
-       },
-       "required": [
-        "id"
-       ],
-       "title": "PortID",
-       "type": "object"
-      },
-      "version": "v1"
-     },
-     {
-      "configs": {
-       "additionalProperties": false,
-       "properties": {
-        "env": {
-         "default": "prod",
-         "description": "Environment to use",
-         "enum": [
-          "prod",
-          "pre-prod"
-         ],
-         "type": "string"
-        },
-        "region": {
-         "default": "br-se1",
-         "description": "Region to reach the service",
-         "enum": [
-          "br-ne1",
-          "br-se1",
-          "br-mgl1"
-         ],
-         "type": "string"
-        },
-        "serverUrl": {
-         "description": "Manually specify the server to use",
-         "format": "uri",
-         "type": "string"
-        }
-       },
-       "type": "object"
-      },
       "description": "Get a Virtual Machine instance details",
       "isInternal": false,
       "name": "get",
@@ -25219,6 +26151,7 @@
           "message": "Unauthorized",
           "slug": "Unauthorized"
          },
+         "nullable": true,
          "properties": {
           "message": {
            "title": "Message",
@@ -25233,7 +26166,6 @@
           "slug",
           "message"
          ],
-         "title": "ErrorMessageV1",
          "type": "object"
         },
         "id": {
@@ -25243,7 +26175,6 @@
         "image": {
          "anyOf": [
           {
-           "additionalProperties": true,
            "properties": {
             "id": {
              "title": "Id",
@@ -25291,7 +26222,6 @@
         "machine_type": {
          "anyOf": [
           {
-           "additionalProperties": true,
            "properties": {
             "id": {
              "title": "Id",
@@ -25434,6 +26364,7 @@
              "type": "array"
             },
             "vpc": {
+             "nullable": true,
              "properties": {
               "id": {
                "title": "Id",
@@ -25448,7 +26379,6 @@
               "id",
               "name"
              ],
-             "title": "VpcV1Expand",
              "type": "object"
             }
            },
@@ -25478,6 +26408,8 @@
         },
         "status": {
          "enum": [
+          "attaching_nic",
+          "detaching_nic",
           "attach_nic_pending",
           "detach_nic_pending",
           "provisioning",
@@ -25577,14 +26509,14 @@
         "_limit": {
          "default": 50,
          "description": "limit the number of the results",
-         "exclusiveMinimum": true,
+         "maximum": 2147483647,
          "title": " Limit",
          "type": "integer"
         },
         "_offset": {
          "default": 0,
          "description": "pagination for the results limited",
-         "minimum": 0,
+         "maximum": 2147483647,
          "title": " Offset",
          "type": "integer"
         },
@@ -25687,6 +26619,7 @@
              "message": "Unauthorized",
              "slug": "Unauthorized"
             },
+            "nullable": true,
             "properties": {
              "message": {
               "title": "Message",
@@ -25701,7 +26634,6 @@
              "slug",
              "message"
             ],
-            "title": "ErrorMessageV1",
             "type": "object"
            },
            "id": {
@@ -25711,7 +26643,6 @@
            "image": {
             "anyOf": [
              {
-              "additionalProperties": true,
               "properties": {
                "id": {
                 "title": "Id",
@@ -25759,7 +26690,6 @@
            "machine_type": {
             "anyOf": [
              {
-              "additionalProperties": true,
               "properties": {
                "id": {
                 "title": "Id",
@@ -25902,6 +26832,7 @@
                 "type": "array"
                },
                "vpc": {
+                "nullable": true,
                 "properties": {
                  "id": {
                   "title": "Id",
@@ -25916,7 +26847,6 @@
                  "id",
                  "name"
                 ],
-                "title": "VpcV1Expand",
                 "type": "object"
                }
               },
@@ -25946,6 +26876,8 @@
            },
            "status": {
             "enum": [
+             "attaching_nic",
+             "detaching_nic",
              "attach_nic_pending",
              "detach_nic_pending",
              "provisioning",
@@ -26013,6 +26945,134 @@
        "title": "ListInstanceV1Response",
        "type": "object"
       },
+      "version": "v1"
+     },
+     {
+      "children": [
+       {
+        "configs": {
+         "additionalProperties": false,
+         "properties": {
+          "env": {
+           "default": "prod",
+           "description": "Environment to use",
+           "enum": [
+            "prod",
+            "pre-prod"
+           ],
+           "type": "string"
+          },
+          "region": {
+           "default": "br-se1",
+           "description": "Region to reach the service",
+           "enum": [
+            "br-ne1",
+            "br-se1",
+            "br-mgl1"
+           ],
+           "type": "string"
+          },
+          "serverUrl": {
+           "description": "Manually specify the server to use",
+           "format": "uri",
+           "type": "string"
+          }
+         },
+         "type": "object"
+        },
+        "description": "Attach port to instance for a default project",
+        "isInternal": false,
+        "name": "attach",
+        "parameters": {
+         "additionalProperties": false,
+         "properties": {
+          "id": {
+           "description": "Instance Id",
+           "title": "Id",
+           "type": "string"
+          },
+          "port_id": {
+           "description": "Port Id",
+           "title": "Port Id",
+           "type": "string"
+          }
+         },
+         "required": [
+          "id",
+          "port_id"
+         ],
+         "type": "object"
+        },
+        "result": {
+         "nullable": true,
+         "type": "null"
+        },
+        "version": "v1"
+       },
+       {
+        "configs": {
+         "additionalProperties": false,
+         "properties": {
+          "env": {
+           "default": "prod",
+           "description": "Environment to use",
+           "enum": [
+            "prod",
+            "pre-prod"
+           ],
+           "type": "string"
+          },
+          "region": {
+           "default": "br-se1",
+           "description": "Region to reach the service",
+           "enum": [
+            "br-ne1",
+            "br-se1",
+            "br-mgl1"
+           ],
+           "type": "string"
+          },
+          "serverUrl": {
+           "description": "Manually specify the server to use",
+           "format": "uri",
+           "type": "string"
+          }
+         },
+         "type": "object"
+        },
+        "description": "Detach a non primary port from instance for a default project",
+        "isInternal": false,
+        "name": "detach",
+        "parameters": {
+         "additionalProperties": false,
+         "properties": {
+          "id": {
+           "description": "Instance Id",
+           "title": "Id",
+           "type": "string"
+          },
+          "port_id": {
+           "description": "Port Id",
+           "title": "Port Id",
+           "type": "string"
+          }
+         },
+         "required": [
+          "id",
+          "port_id"
+         ],
+         "type": "object"
+        },
+        "result": {
+         "nullable": true,
+         "type": "null"
+        },
+        "version": "v1"
+       }
+      ],
+      "description": "Operations with instances, including create, delete, start, stop, reboot and other actions. | port",
+      "isInternal": false,
+      "name": "port",
       "version": "v1"
      },
      {
@@ -26436,14 +27496,14 @@
         "_limit": {
          "default": 50,
          "description": "limit the number of the results",
-         "exclusiveMinimum": true,
+         "maximum": 2147483647,
          "title": " Limit",
          "type": "integer"
         },
         "_offset": {
          "default": 0,
          "description": "pagination for the results limited",
-         "minimum": 0,
+         "maximum": 2147483647,
          "title": " Offset",
          "type": "integer"
         },
@@ -26884,7 +27944,6 @@
           "image": {
            "anyOf": [
             {
-             "additionalProperties": true,
              "properties": {
               "id": {
                "title": "Id",
@@ -26932,7 +27991,6 @@
           "machine_type": {
            "anyOf": [
             {
-             "additionalProperties": true,
              "properties": {
               "id": {
                "title": "Id",
@@ -27075,14 +28133,14 @@
         "_limit": {
          "default": 50,
          "description": "limit the number of the results",
-         "exclusiveMinimum": true,
+         "maximum": 2147483647,
          "title": " Limit",
          "type": "integer"
         },
         "_offset": {
          "default": 0,
          "description": "pagination for the results limited",
-         "minimum": 0,
+         "maximum": 2147483647,
          "title": " Offset",
          "type": "integer"
         },
@@ -27179,7 +28237,6 @@
              "image": {
               "anyOf": [
                {
-                "additionalProperties": true,
                 "properties": {
                  "id": {
                   "title": "Id",
@@ -27227,7 +28284,6 @@
              "machine_type": {
               "anyOf": [
                {
-                "additionalProperties": true,
                 "properties": {
                  "id": {
                   "title": "Id",
@@ -27500,7 +28556,6 @@
          "example": {
           "associate_public_ip": true,
           "nic": {
-           "id": "c8719fd8-7a48-4dbf-b4d8-74f71fa67422",
            "security_groups": [
             {
              "id": "f273fbde-2ddf-4dcd-8c41-342671ac0d17"
@@ -27514,6 +28569,7 @@
            "id": "2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6"
           }
          },
+         "nullable": true,
          "properties": {
           "associate_public_ip": {
            "default": true,
@@ -27521,41 +28577,57 @@
            "type": "boolean"
           },
           "nic": {
-           "properties": {
-            "id": {
-             "maxLength": 255,
-             "minLength": 1,
-             "nullable": true,
-             "title": "Id",
-             "type": "string"
-            },
-            "security_groups": {
-             "items": {
-              "example": {
-               "id": "9ec75090-2872-4f51-8111-53d05d96d2c6"
-              },
-              "properties": {
-               "id": {
-                "maxLength": 255,
-                "minLength": 1,
-                "title": "Id",
-                "type": "string"
-               }
-              },
-              "required": [
-               "id"
-              ],
-              "title": "ID",
-              "type": "object"
+           "anyOf": [
+            {
+             "example": {
+              "id": "9ec75090-2872-4f51-8111-53d05d96d2c6"
              },
-             "title": "Security Groups",
-             "type": "array"
+             "properties": {
+              "id": {
+               "maxLength": 255,
+               "minLength": 1,
+               "title": "Id",
+               "type": "string"
+              }
+             },
+             "required": [
+              "id"
+             ],
+             "title": "ID",
+             "type": "object"
+            },
+            {
+             "properties": {
+              "security_groups": {
+               "default": [],
+               "items": {
+                "example": {
+                 "id": "9ec75090-2872-4f51-8111-53d05d96d2c6"
+                },
+                "properties": {
+                 "id": {
+                  "maxLength": 255,
+                  "minLength": 1,
+                  "title": "Id",
+                  "type": "string"
+                 }
+                },
+                "required": [
+                 "id"
+                ],
+                "title": "ID",
+                "type": "object"
+               },
+               "title": "Security Groups",
+               "type": "array"
+              }
+             },
+             "title": "SecurityGroups",
+             "type": "object"
             }
-           },
-           "required": [
-            "security_groups"
            ],
-           "title": "NetworkNic",
+           "nullable": true,
+           "title": "Nic",
            "type": "object"
           },
           "vpc": {
@@ -27597,14 +28669,10 @@
              "type": "object"
             }
            ],
-           "default": {
-            "name": "default"
-           },
            "title": "Vpc",
            "type": "object"
           }
          },
-         "title": "InstanceCreateRequestV1NetworkDefault",
          "type": "object"
         },
         "ssh_key_name": {
@@ -27623,7 +28691,6 @@
         "id",
         "machine_type",
         "name",
-        "network",
         "ssh_key_name"
        ],
        "type": "object"

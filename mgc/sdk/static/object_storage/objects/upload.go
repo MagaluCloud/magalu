@@ -26,7 +26,6 @@ var getUpload = utils.NewLazyLoader[core.Executor](func() core.Executor {
 		core.DescriptorSpec{
 			Name:        "upload",
 			Description: "Upload a file to a bucket",
-			// Scopes:      core.Scopes{"object-storage.write"},
 		},
 		upload,
 	)

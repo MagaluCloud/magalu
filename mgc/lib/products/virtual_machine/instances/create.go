@@ -56,12 +56,21 @@ type CreateParametersNetwork struct {
 	Vpc               *CreateParametersNetworkVpc `json:"vpc,omitempty"`
 }
 
+// any of: CreateParametersImage0, CreateParametersNetworkNic1
 type CreateParametersNetworkNic struct {
-	Id             *string                                  `json:"id,omitempty"`
-	SecurityGroups CreateParametersNetworkNicSecurityGroups `json:"security_groups"`
+	CreateParametersImage0      `json:",squash"` // nolint
+	CreateParametersNetworkNic1 `json:",squash"` // nolint
 }
 
-type CreateParametersNetworkNicSecurityGroups []CreateParametersImage0
+type CreateParametersNetworkNic1 struct {
+	SecurityGroups *CreateParametersNetworkNic1SecurityGroups `json:"security_groups,omitempty"`
+}
+
+type CreateParametersNetworkNic1SecurityGroupsItem struct {
+	Id string `json:"id"`
+}
+
+type CreateParametersNetworkNic1SecurityGroups []CreateParametersNetworkNic1SecurityGroupsItem
 
 // any of: CreateParametersImage0, CreateParametersImage1
 type CreateParametersNetworkVpc struct {

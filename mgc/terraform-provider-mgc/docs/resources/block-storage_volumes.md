@@ -21,6 +21,10 @@ Operations with volumes, including create, delete, extend, retype, list and othe
 - `size` (Number) Gibibytes (GiB)
 - `type` (Attributes) (see [below for nested schema](#nestedatt--type))
 
+### Optional
+
+- `backup` (Attributes) (see [below for nested schema](#nestedatt--backup))
+
 ### Read-Only
 
 - `attachment` (Attributes) (see [below for nested schema](#nestedatt--attachment))
@@ -34,6 +38,15 @@ Operations with volumes, including create, delete, extend, retype, list and othe
 
 <a id="nestedatt--type"></a>
 ### Nested Schema for `type`
+
+Optional:
+
+- `id` (String)
+- `name` (String)
+
+
+<a id="nestedatt--backup"></a>
+### Nested Schema for `backup`
 
 Optional:
 
@@ -67,30 +80,12 @@ Read-Only:
 - `created_at` (Attributes) (see [below for nested schema](#nestedatt--attachment--instance--created_at))
 - `id` (String)
 - `name` (String)
-- `state` (Attributes) (see [below for nested schema](#nestedatt--attachment--instance--state))
-- `status` (Attributes) (see [below for nested schema](#nestedatt--attachment--instance--status))
+- `state` (String)
+- `status` (String)
 - `updated_at` (Attributes) (see [below for nested schema](#nestedatt--attachment--instance--updated_at))
 
 <a id="nestedatt--attachment--instance--created_at"></a>
 ### Nested Schema for `attachment.instance.created_at`
-
-Read-Only:
-
-- `string1` (String)
-- `string2` (String)
-
-
-<a id="nestedatt--attachment--instance--state"></a>
-### Nested Schema for `attachment.instance.state`
-
-Read-Only:
-
-- `string1` (String)
-- `string2` (String)
-
-
-<a id="nestedatt--attachment--instance--status"></a>
-### Nested Schema for `attachment.instance.status`
 
 Read-Only:
 

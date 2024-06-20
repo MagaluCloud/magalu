@@ -28,7 +28,7 @@ type CreateParameters struct {
 	Protocol        *string `json:"protocol,omitempty"`
 	RemoteGroupId   *string `json:"remote_group_id,omitempty"`
 	RemoteIpPrefix  *string `json:"remote_ip_prefix,omitempty"`
-	SecurityGroupId string  `json:"security_group_id"`
+	SecurityGroupId any     `json:"security_group_id"`
 	ValidateQuota   *bool   `json:"validate_quota,omitempty"`
 	Wait            *bool   `json:"wait,omitempty"`
 	WaitTimeout     *int    `json:"wait_timeout,omitempty"`

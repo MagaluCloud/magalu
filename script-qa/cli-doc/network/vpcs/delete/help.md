@@ -8,9 +8,10 @@ Usage:
 
 ## Product catalog:
 - Flags:
-- -h, --help            help for delete
-- -v, --version         version for delete
-- --vpc-id string   VPC Id: ID of the VPC to delete (required)
+- -h, --help              help for delete
+- -v, --version           version for delete
+- --vpc-id anyValue   VPC Id: ID of the VPC to delete
+- Use --vpc-id=help for more details (required)
 
 ## Other commands:
 - Global Flags:

@@ -3,7 +3,7 @@
 set -xe
 
 PROVIDER_DIR="./mgc/terraform-provider-mgc/"
-TF_PLUGIN_DOCS="github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs@v0.16.0"
+TF_PLUGIN_DOCS="github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs@v0.19.4"
 ABSOLUTE_PATH_OAPI=$(realpath ${MGC_SDK_OPENAPI_DIR:-./mgc/cli/openapis})
 ABSOLUTE_PATH_BLUEPRINTS=$(realpath ${ABSOLUTE_PATH_BLUEPRINTS:-./mgc/cli/blueprints})
 
