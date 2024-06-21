@@ -19,7 +19,7 @@ modules:
     summary: DBaaS API Product.
     super_internal: false
     url: https://dbaas.jaxyendy.com/openapi.json
-    version: 1.21.2
+    version: 1.22.0
 -   description: APIs related to the Kubernetes product.
     name: kubernetes
     path: kubernetes.openapi.yaml
@@ -27,13 +27,13 @@ modules:
     super_internal: false
     url: https://mke.br-ne-1.com/docs/openapi-with-snippets.json
     version: 0.1.0
--   description: APIs related to the VPC product
+-   description: APIs referentes ao produto de VPC
     name: network
     path: network.openapi.yaml
-    summary: APIs related to the VPC product
+    summary: APIs referentes ao produto de VPC
     super_internal: false
     url: https://network.jaxyendy.com/openapi.json
-    version: 1.124.1
+    version: 1.125.3
 -   description: Virtual Machine Api Product
     name: virtual-machine
     path: virtual-machine.openapi.yaml

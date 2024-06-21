@@ -9,7 +9,7 @@ Replicas List.
 
 List all replicas for a given instance.
 
-Version: 1.21.2
+Version: 1.22.0
 
 import "magalu.cloud/lib/products/dbaas/replicas"
 */

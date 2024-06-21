@@ -9,7 +9,7 @@ Executor: delete
 
 Delete a VPC from the provided tenant_id
 
-Version: 1.124.1
+Version: 1.125.3
 
 import "magalu.cloud/lib/products/network/vpcs"
 */
@@ -21,7 +21,7 @@ import (
 )
 
 type DeleteParameters struct {
-	VpcId any `json:"vpc_id"`
+	VpcId string `json:"vpc_id"`
 }
 
 type DeleteConfigs struct {

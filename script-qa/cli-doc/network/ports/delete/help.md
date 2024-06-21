@@ -8,10 +8,9 @@ Usage:
 
 ## Product catalog:
 - Flags:
-- -h, --help               help for delete
-- --port-id anyValue   port_id: ID of the Port to delete
-- Use --port-id=help for more details (required)
-- -v, --version            version for delete
+- -h, --help             help for delete
+- --port-id string   port_id: ID of the Port to delete (required)
+- -v, --version          version for delete
 
 ## Other commands:
 - Global Flags:

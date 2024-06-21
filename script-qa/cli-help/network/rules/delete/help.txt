@@ -4,10 +4,9 @@ Usage:
   ./mgc network rules delete [rule-id] [flags]
 
 Flags:
-  -h, --help               help for delete
-      --rule-id anyValue   Rule ID: Id of the Rule
-                           Use --rule-id=help for more details (required)
-  -v, --version            version for delete
+  -h, --help             help for delete
+      --rule-id string   Rule ID: Id of the Rule (required)
+  -v, --version          version for delete
 
 Global Flags:
       --cli.show-cli-globals   Show all CLI global flags on usage text

@@ -8,10 +8,9 @@ Usage:
 
 ## Product catalog:
 - Flags:
-- -h, --help                    help for delete
-- --public-ip-id anyValue   Public IP ID: Id of the Public IP to delete
-- Use --public-ip-id=help for more details (required)
-- -v, --version                 version for delete
+- -h, --help                  help for delete
+- --public-ip-id string   Public IP ID: Id of the Public IP to delete (required)
+- -v, --version               version for delete
 
 ## Other commands:
 - Global Flags:

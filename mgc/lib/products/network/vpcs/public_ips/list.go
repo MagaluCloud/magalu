@@ -9,7 +9,7 @@ Executor: list
 
 Returns a list of Public IPs for a provided vpc_id
 
-Version: 1.124.1
+Version: 1.125.3
 
 import "magalu.cloud/lib/products/network/vpcs/public_ips"
 */
@@ -21,7 +21,7 @@ import (
 )
 
 type ListParameters struct {
-	VpcId any `json:"vpc_id"`
+	VpcId string `json:"vpc_id"`
 }
 
 type ListConfigs struct {

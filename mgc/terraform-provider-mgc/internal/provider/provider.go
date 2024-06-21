@@ -34,8 +34,7 @@ type KeyPair struct {
 }
 
 type ObjectStorageConfig struct {
-	BucketPrefix  types.String `tfsdk:"bucket_prefix"`
-	ObjectKeyPair *KeyPair     `tfsdk:"key_pair"`
+	ObjectKeyPair *KeyPair `tfsdk:"key_pair"`
 }
 
 type ProviderConfig struct {
@@ -80,10 +79,6 @@ func (p *MgcProvider) Schema(ctx context.Context, req provider.SchemaRequest, re
 		MarkdownDescription: "Specific Object Storage configuration",
 		Optional:            true,
 		Attributes: map[string]schema.Attribute{
-			"bucket_prefix": schema.StringAttribute{
-				MarkdownDescription: "Bucket Prefix",
-				Optional:            true,
-			},
 			"key_pair": schemaApiKey,
 		},
 	}
@@ -134,7 +129,7 @@ func (p *MgcProvider) Configure(ctx context.Context, req provider.ConfigureReque
 		}
 	}
 
-	if data.ObjectStorage != nil &&
+	if data.ObjectStorage != nil && data.ObjectStorage.ObjectKeyPair != nil &&
 		!data.ObjectStorage.ObjectKeyPair.KeyID.IsNull() &&
 		!data.ObjectStorage.ObjectKeyPair.KeySecret.IsNull() {
 		p.sdk.Config().AddTempKeyPair("apikey",

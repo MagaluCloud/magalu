@@ -1095,6 +1095,46 @@
           "204": {
             "description": "Successful Response"
           },
+          "400": {
+            "description": "Instance Not Allowed Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Instance Not Found Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Instance Validation Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
           "422": {
             "description": "Validation Error",
             "content": {
@@ -1153,6 +1193,46 @@
         "responses": {
           "204": {
             "description": "Successful Response"
+          },
+          "400": {
+            "description": "Instance Not Allowed Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Instance Not Found Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Instance Validation Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
           },
           "422": {
             "description": "Validation Error",
@@ -2483,7 +2563,7 @@
           "name": "instance name",
           "network": {
             "associate_public_ip": true,
-            "nic": {
+            "interface": {
               "security_groups": [
                 {
                   "id": "f273fbde-2ddf-4dcd-8c41-342671ac0d17"
@@ -2865,13 +2945,7 @@
               {
                 "type": "null"
               }
-            ],
-            "default": {
-              "vpc": {
-                "name": "default"
-              },
-              "associate_public_ip": true
-            }
+            ]
           },
           "user_data": {
             "anyOf": [
@@ -2905,7 +2979,7 @@
           "name": "instance name",
           "network": {
             "associate_public_ip": true,
-            "nic": {
+            "interface": {
               "security_groups": [
                 {
                   "id": "f273fbde-2ddf-4dcd-8c41-342671ac0d17"
@@ -2935,12 +3009,9 @@
                 "$ref": "#/components/schemas/Name"
               }
             ],
-            "title": "Vpc",
-            "default": {
-              "name": "default"
-            }
+            "title": "Vpc"
           },
-          "nic": {
+          "interface": {
             "anyOf": [
               {
                 "$ref": "#/components/schemas/ID"
@@ -2952,18 +3023,17 @@
                 "type": "null"
               }
             ],
-            "title": "Nic"
+            "title": "Interface"
           },
           "associate_public_ip": {
             "type": "boolean",
-            "title": "Associate Public Ip",
-            "default": true
+            "title": "Associate Public Ip"
           }
         },
         "title": "InstanceCreateRequestV1NetworkDefault",
         "example": {
           "associate_public_ip": true,
-          "nic": {
+          "interface": {
             "security_groups": [
               {
                 "id": "f273fbde-2ddf-4dcd-8c41-342671ac0d17"
@@ -4098,7 +4168,7 @@
           "name": "instance name",
           "network": {
             "associate_public_ip": true,
-            "nic": {
+            "interface": {
               "security_groups": [
                 {
                   "id": "f273fbde-2ddf-4dcd-8c41-342671ac0d17"

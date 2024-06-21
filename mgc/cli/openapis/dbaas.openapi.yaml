@@ -6,7 +6,7 @@ info:
         name: Tribo IAAS Cloud
         url: https://gitlab.luizalabs.com/cloud/dbaas/docs
         email: cloud-iaas-dbaas@luizalabs.com
-    version: 1.21.2
+    version: 1.22.0
 servers:
 -   url: https://{env}/{region}/database
     variables:
@@ -2199,6 +2199,10 @@ components:
                     type: string
                     title: Updated At
                     format: date-time
+                engine_id:
+                    type: string
+                    title: Engine Id
+                    format: uuid
             title: BackupDetailResponse
             required:
             - id
@@ -2207,6 +2211,7 @@ components:
             - status
             - mode
             - created_at
+            - engine_id
         BackupMode:
             title: BackupMode
             enum:

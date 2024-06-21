@@ -9,7 +9,7 @@ DBaaS API Product.
 
 DBaaS API Product.
 
-Version: 1.21.2
+Version: 1.22.0
 
 import "magalu.cloud/lib/products/dbaas"
 */

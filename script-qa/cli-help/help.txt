@@ -12,7 +12,7 @@ Product catalog:
   container-registry Magalu Container Registry product API.
   dbaas              DBaaS API Product.
   kubernetes         APIs related to the Kubernetes product.
-  network            APIs related to the VPC product
+  network            APIs referentes ao produto de VPC
   object-storage     Operations for Object Storage API
   profile            Profile related commands
   virtual-machine    Virtual Machine Api Product

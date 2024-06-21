@@ -9,7 +9,7 @@ Replica Stop.
 
 Stop an instance replica.
 
-Version: 1.21.2
+Version: 1.22.0
 
 import "magalu.cloud/lib/products/dbaas/replicas"
 */

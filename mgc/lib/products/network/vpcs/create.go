@@ -9,7 +9,7 @@ Executor: create
 
 # Create a VPC
 
-Version: 1.124.1
+Version: 1.125.3
 
 import "magalu.cloud/lib/products/network/vpcs"
 */

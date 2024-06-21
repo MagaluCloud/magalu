@@ -9,7 +9,7 @@ Backup Detail.
 
 Get a backup detail.
 
-Version: 1.21.2
+Version: 1.22.0
 
 import "magalu.cloud/lib/products/dbaas/backups"
 */
@@ -34,6 +34,7 @@ type GetConfigs struct {
 type GetResult struct {
 	CreatedAt  string  `json:"created_at"`
 	DbSize     *int    `json:"db_size,omitempty"`
+	EngineId   string  `json:"engine_id"`
 	FinishedAt *string `json:"finished_at,omitempty"`
 	Id         string  `json:"id"`
 	InstanceId string  `json:"instance_id"`

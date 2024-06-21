@@ -3,13 +3,13 @@ Package: network
 
 # Summary
 
-# APIs related to the VPC product
+# APIs referentes ao produto de VPC
 
 # Description
 
-# APIs related to the VPC product
+# APIs referentes ao produto de VPC
 
-Version: 1.124.1
+Version: 1.125.3
 
 import "magalu.cloud/lib/products/network"
 */

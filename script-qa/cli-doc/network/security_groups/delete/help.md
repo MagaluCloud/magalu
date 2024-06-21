@@ -8,10 +8,9 @@ Usage:
 
 ## Product catalog:
 - Flags:
-- -h, --help                         help for delete
-- --security-group-id anyValue   Security Group ID: Id of the security group to delete
-- Use --security-group-id=help for more details (required)
-- -v, --version                      version for delete
+- -h, --help                       help for delete
+- --security-group-id string   Security Group ID: Id of the security group to delete (required)
+- -v, --version                    version for delete
 
 ## Other commands:
 - Global Flags:

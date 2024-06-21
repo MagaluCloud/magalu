@@ -8,10 +8,9 @@ Usage:
 
 ## Product catalog:
 - Flags:
-- -h, --help                           help for list
-- --port-id-list array(anyValue)   Port Id List
-- Use --port-id-list=help for more details (default [])
-- -v, --version                        version for list
+- -h, --help                         help for list
+- --port-id-list array(string)   Port Id List (default [])
+- -v, --version                      version for list
 
 ## Other commands:
 - Global Flags:

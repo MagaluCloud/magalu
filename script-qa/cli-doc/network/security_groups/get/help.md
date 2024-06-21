@@ -10,8 +10,7 @@ Usage:
 - Flags:
 - --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
 - -h, --help                          help for get
-- --security-group-id anyValue    Security Group ID: Id of the security group to detail
-- Use --security-group-id=help for more details (required)
+- --security-group-id string      Security Group ID: Id of the security group to detail (required)
 - -v, --version                       version for get
 
 ## Other commands:

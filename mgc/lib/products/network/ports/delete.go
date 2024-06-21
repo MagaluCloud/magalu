@@ -9,7 +9,7 @@ Executor: delete
 
 Delete a port from the provided tenant_id
 
-Version: 1.124.1
+Version: 1.125.3
 
 import "magalu.cloud/lib/products/network/ports"
 */
@@ -21,7 +21,7 @@ import (
 )
 
 type DeleteParameters struct {
-	PortId any `json:"port_id"`
+	PortId string `json:"port_id"`
 }
 
 type DeleteConfigs struct {
