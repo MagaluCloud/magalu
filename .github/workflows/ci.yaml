@@ -34,11 +34,6 @@ jobs:
           cache-dependency-path: "**/go.sum"
           go-version: stable
       - run: go version
-      - name: Build CLI
-        env:
-          VERSION: CI
-          CHECK_RELEASE: 0
-        run: ./scripts/build_release.sh
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
