@@ -17,8 +17,7 @@ Usage:
 - --protocol string               Protocol
 - --remote-group-id string        Remote Group Id
 - --remote-ip-prefix string       Remote Ip Prefix
-- --security-group-id anyValue    Security Group ID: Id of the Security Group
-- Use --security-group-id=help for more details (required)
+- --security-group-id string      Security Group ID: Id of the Security Group (required)
 - --validate-quota                validateQuota: Validate the quota before creating Rule (default true)
 - -v, --version                       version for create
 - --wait                          The request will be asynchronous. The wait parameter tells the API that you want the request to simulate synchronous behavior (to maintain endpoint compatibility). You can set an approximate timeout with the waitTimeout parameter (default true)

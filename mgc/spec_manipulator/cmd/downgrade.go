@@ -36,7 +36,6 @@ func prepareSchema(xchema *base.Schema) *base.Schema {
 	newChema.Enum = xchema.Enum
 	newChema.Description = xchema.Description
 
-	//temporary
 	newChema.Default = xchema.Default
 	newChema.Nullable = xchema.Nullable
 	newChema.ReadOnly = xchema.ReadOnly
@@ -48,6 +47,22 @@ func prepareSchema(xchema *base.Schema) *base.Schema {
 	newChema.Extensions = xchema.Extensions
 
 	newChema.Const = nil
+
+	// In versions 2 and 3.0, this Type is a single value, so array will only ever have one value
+	// in version 3.1, Type can be multiple values
+	//Type []string
+	forceType := true
+	if xchema.Type != nil {
+		forceType = false
+		for _, tp := range xchema.Type {
+			if tp == "null" {
+				newChema.Nullable = new(bool)
+				*newChema.Nullable = true
+				continue
+			}
+			newChema.Type = []string{tp}
+		}
+	}
 
 	// newChema.AdditionalProperties = xchema.AdditionalProperties
 	if xchema.AdditionalProperties != nil {
@@ -88,20 +103,6 @@ func prepareSchema(xchema *base.Schema) *base.Schema {
 	// 3.1 only, used to define a dialect for this schema, label is '$schema'.
 	//SchemaTypeRef string
 
-	// In versions 2 and 3.0, this Type is a single value, so array will only ever have one value
-	// in version 3.1, Type can be multiple values
-	//Type []string
-	if xchema.Type != nil {
-		for _, tp := range xchema.Type {
-			if tp == "null" {
-				newChema.Nullable = new(bool)
-				*newChema.Nullable = true
-				continue
-			}
-			newChema.Type = []string{tp}
-		}
-	}
-
 	// Schemas are resolved on demand using a SchemaProxy
 	//AllOf []*SchemaProxy
 	newAllOf := []*base.SchemaProxy{}
@@ -117,7 +118,6 @@ func prepareSchema(xchema *base.Schema) *base.Schema {
 					*newChema.Nullable = true
 					continue
 				}
-				// newChema.Type = []string{xT}
 				newAllOf = append(newAllOf, base.CreateSchemaProxy(prepareSchema(xA.Schema())))
 			}
 		}
@@ -141,7 +141,6 @@ func prepareSchema(xchema *base.Schema) *base.Schema {
 					*newChema.Nullable = true
 					continue
 				}
-				// newChema.Type = []string{xT}
 				newOneOf = append(newOneOf, base.CreateSchemaProxy(prepareSchema(xO.Schema())))
 			}
 		}
@@ -158,15 +157,16 @@ func prepareSchema(xchema *base.Schema) *base.Schema {
 				newAnyOf = append(newAnyOf, xA)
 				continue
 			}
+
 			for _, xT := range xA.Schema().Type {
 				if xT == "null" {
 					newChema.Nullable = new(bool)
 					*newChema.Nullable = true
 					continue
 				}
-				// newChema.Type = []string{xT}
 				newAnyOf = append(newAnyOf, base.CreateSchemaProxy(prepareSchema(xA.Schema())))
 			}
+
 		}
 	}
 	if len(newAnyOf) > 0 {
@@ -261,6 +261,17 @@ func prepareSchema(xchema *base.Schema) *base.Schema {
 			A: xchema.ExclusiveMinimum.A,
 			N: 0,
 		}
+	}
+	if newChema.Type != nil && newChema.Type[0] == "array" && newChema.Items == nil {
+		newChema.Items = &base.DynamicValue[*base.SchemaProxy, bool]{
+			A: base.CreateSchemaProxy(&base.Schema{
+				Type: []string{"string"},
+			}),
+		}
+	}
+
+	if forceType && newChema.Type == nil && newChema.AnyOf == nil && newChema.OneOf == nil && newChema.AllOf == nil {
+		newChema.Type = []string{"string"}
 	}
 
 	return newChema

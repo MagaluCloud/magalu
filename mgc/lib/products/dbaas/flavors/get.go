@@ -9,7 +9,7 @@ Flavor detail.
 
 Returns a flavor detail.
 
-Version: 1.21.2
+Version: 1.22.0
 
 import "magalu.cloud/lib/products/dbaas/flavors"
 */

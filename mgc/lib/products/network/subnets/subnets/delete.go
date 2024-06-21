@@ -9,7 +9,7 @@ Executor: delete
 
 Delete a subnet from the provided tenant_id
 
-Version: 1.124.1
+Version: 1.125.3
 
 import "magalu.cloud/lib/products/network/subnets/subnets"
 */
@@ -21,7 +21,7 @@ import (
 )
 
 type DeleteParameters struct {
-	SubnetId any `json:"subnet_id"`
+	SubnetId string `json:"subnet_id"`
 }
 
 type DeleteConfigs struct {

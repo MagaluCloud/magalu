@@ -1092,6 +1092,46 @@
           "204": {
             "description": "Successful Response"
           },
+          "400": {
+            "description": "Instance Not Allowed Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Instance Not Found Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Instance Validation Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
           "422": {
             "description": "Validation Error",
             "content": {
@@ -1150,6 +1190,46 @@
         "responses": {
           "204": {
             "description": "Successful Response"
+          },
+          "400": {
+            "description": "Instance Not Allowed Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Instance Not Found Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Instance Validation Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
           },
           "422": {
             "description": "Validation Error",
@@ -2283,12 +2363,12 @@
           "rotation": {
             "anyOf": [
               {
-                "exclusiveMinimum": true,
-                "type": "integer"
+                "type": "integer",
+                "minimum": 1
               }
             ],
             "title": "Rotation",
-            "default": 1,
+            "default": 10,
             "nullable": true
           }
         },
@@ -2332,10 +2412,6 @@
               }
             ],
             "title": "Instance"
-          },
-          "rotation": {
-            "type": "integer",
-            "title": "Rotation"
           },
           "status": {
             "type": "string",
@@ -2399,7 +2475,6 @@
           "name",
           "backup_type",
           "instance",
-          "rotation",
           "status",
           "state",
           "created_at"
@@ -2413,7 +2488,6 @@
           },
           "min_disk": 10,
           "name": "backup name",
-          "rotation": 1,
           "size": 1000,
           "state": "available",
           "status": "completed",
@@ -2469,7 +2543,7 @@
                 ],
                 "title": "Vpc"
               },
-              "nic": {
+              "interface": {
                 "anyOf": [
                   {
                     "$ref": "#/components/schemas/ID"
@@ -2478,19 +2552,18 @@
                     "$ref": "#/components/schemas/SecurityGroups"
                   }
                 ],
-                "title": "Nic",
+                "title": "Interface",
                 "nullable": true
               },
               "associate_public_ip": {
                 "type": "boolean",
-                "title": "Associate Public Ip",
-                "default": true
+                "title": "Associate Public Ip"
               }
             },
             "title": "InstanceCreateRequestV1NetworkDefault",
             "example": {
               "associate_public_ip": true,
-              "nic": {
+              "interface": {
                 "security_groups": [
                   {
                     "id": "f273fbde-2ddf-4dcd-8c41-342671ac0d17"
@@ -2532,7 +2605,7 @@
           "name": "instance name",
           "network": {
             "associate_public_ip": true,
-            "nic": {
+            "interface": {
               "security_groups": [
                 {
                   "id": "f273fbde-2ddf-4dcd-8c41-342671ac0d17"
@@ -2982,7 +3055,7 @@
           "name": "instance name",
           "network": {
             "associate_public_ip": true,
-            "nic": {
+            "interface": {
               "security_groups": [
                 {
                   "id": "f273fbde-2ddf-4dcd-8c41-342671ac0d17"
@@ -3014,7 +3087,7 @@
             ],
             "title": "Vpc"
           },
-          "nic": {
+          "interface": {
             "anyOf": [
               {
                 "$ref": "#/components/schemas/ID"
@@ -3023,19 +3096,18 @@
                 "$ref": "#/components/schemas/SecurityGroups"
               }
             ],
-            "title": "Nic",
+            "title": "Interface",
             "nullable": true
           },
           "associate_public_ip": {
             "type": "boolean",
-            "title": "Associate Public Ip",
-            "default": true
+            "title": "Associate Public Ip"
           }
         },
         "title": "InstanceCreateRequestV1NetworkDefault",
         "example": {
           "associate_public_ip": true,
-          "nic": {
+          "interface": {
             "security_groups": [
               {
                 "id": "f273fbde-2ddf-4dcd-8c41-342671ac0d17"
@@ -3735,10 +3807,6 @@
                   ],
                   "title": "Instance"
                 },
-                "rotation": {
-                  "type": "integer",
-                  "title": "Rotation"
-                },
                 "status": {
                   "type": "string",
                   "title": "BackupStatus",
@@ -3801,7 +3869,6 @@
                 "name",
                 "backup_type",
                 "instance",
-                "rotation",
                 "status",
                 "state",
                 "created_at"
@@ -3815,7 +3882,6 @@
                 },
                 "min_disk": 10,
                 "name": "backup name",
-                "rotation": 1,
                 "size": 1000,
                 "state": "available",
                 "status": "completed",
@@ -3840,7 +3906,6 @@
               },
               "min_disk": 10,
               "name": "backup name ffff",
-              "rotation": 1,
               "size": 1000,
               "state": "available",
               "status": "completed",
@@ -4815,6 +4880,12 @@
                 "$ref": "#/components/schemas/InstanceCreateRequestV1NetworkDefault"
               }
             ],
+            "default": {
+              "vpc": {
+                "name": "default"
+              },
+              "associate_public_ip": true
+            },
             "nullable": true
           },
           "user_data": {
@@ -4843,7 +4914,7 @@
           "name": "instance name",
           "network": {
             "associate_public_ip": true,
-            "nic": {
+            "interface": {
               "security_groups": [
                 {
                   "id": "f273fbde-2ddf-4dcd-8c41-342671ac0d17"
@@ -4930,30 +5001,6 @@
     {
       "name": "snapshots",
       "description": "Operations with snapshots for instances."
-    }
-  ],
-  "servers": [
-    {
-      "url": "https://{env}/{region}/$API_ENDPOINT_NAME",
-      "variables": {
-        "region": {
-          "enum": [
-            "br-ne-1",
-            "br-se1",
-            "br-mgl1"
-          ],
-          "default": "br-se1",
-          "description": "Region to reach the service"
-        },
-        "env": {
-          "enum": [
-            "api.magalu.cloud",
-            "api.pre-prod.jaxyendy.com"
-          ],
-          "default": "api.magalu.cloud",
-          "description": "Environment to use"
-        }
-      }
     }
   ]
 }

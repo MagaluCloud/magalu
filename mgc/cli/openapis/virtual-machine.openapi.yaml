@@ -913,6 +913,30 @@ paths:
                             parameters:
                                 id: $request.path.id
                                 port_id: $request.path.id
+                '400':
+                    description: Instance Not Allowed Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '404':
+                    description: Instance Not Found Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '409':
+                    description: Instance Validation Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '500':
+                    description: Internal Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
                 '422':
                     description: Validation Error
                     content:
@@ -957,6 +981,30 @@ paths:
                             parameters:
                                 id: $request.path.id
                                 port_id: $request.path.id
+                '400':
+                    description: Instance Not Allowed Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '404':
+                    description: Instance Not Found Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '409':
+                    description: Instance Validation Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '500':
+                    description: Internal Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
                 '422':
                     description: Validation Error
                     content:
@@ -1724,7 +1772,7 @@ paths:
                             parameters:
                                 id: $response.body#/id
                         delete:
-                            operationId: delete_instance_type_v0_instance_types__instance_type_id__delete
+                            operationId: snapshots_delete_v1_snapshots__id__delete
                             description: Delete Instance Type
                             parameters:
                                 id: $response.body#/id
@@ -2139,10 +2187,10 @@ components:
                     title: BackupType
                 rotation:
                     anyOf:
-                    -   exclusiveMinimum: true
-                        type: integer
+                    -   type: integer
+                        minimum: 1
                     title: Rotation
-                    default: 1
+                    default: 10
                     nullable: true
             title: BackupRequest
             required:
@@ -2172,9 +2220,6 @@ components:
                     -   $ref: '#/components/schemas/InstanceResponseBackupV1'
                     -   $ref: '#/components/schemas/InstanceSimpleResponseBackupV1'
                     title: Instance
-                rotation:
-                    type: integer
-                    title: Rotation
                 status:
                     type: string
                     title: BackupStatus
@@ -2219,7 +2264,6 @@ components:
             - name
             - backup_type
             - instance
-            - rotation
             - status
             - state
             - created_at
@@ -2231,7 +2275,6 @@ components:
                     id: 4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a
                 min_disk: 10
                 name: backup name
-                rotation: 1
                 size: 1000
                 state: available
                 status: completed
@@ -2267,20 +2310,19 @@ components:
                             -   $ref: '#/components/schemas/ID'
                             -   $ref: '#/components/schemas/Name'
                             title: Vpc
-                        nic:
+                        interface:
                             anyOf:
                             -   $ref: '#/components/schemas/ID'
                             -   $ref: '#/components/schemas/SecurityGroups'
-                            title: Nic
+                            title: Interface
                             nullable: true
                         associate_public_ip:
                             type: boolean
                             title: Associate Public Ip
-                            default: true
                     title: InstanceCreateRequestV1NetworkDefault
                     example:
                         associate_public_ip: true
-                        nic:
+                        interface:
                             security_groups:
                             -   id: f273fbde-2ddf-4dcd-8c41-342671ac0d17
                             -   id: 02a2acf3-d6db-4424-ac97-0254cb9c329e
@@ -2306,7 +2348,7 @@ components:
                 name: instance name
                 network:
                     associate_public_ip: true
-                    nic:
+                    interface:
                         security_groups:
                         -   id: f273fbde-2ddf-4dcd-8c41-342671ac0d17
                         -   id: 02a2acf3-d6db-4424-ac97-0254cb9c329e
@@ -2602,7 +2644,7 @@ components:
                 name: instance name
                 network:
                     associate_public_ip: true
-                    nic:
+                    interface:
                         security_groups:
                         -   id: f273fbde-2ddf-4dcd-8c41-342671ac0d17
                         -   id: 02a2acf3-d6db-4424-ac97-0254cb9c329e
@@ -2618,20 +2660,19 @@ components:
                     -   $ref: '#/components/schemas/ID'
                     -   $ref: '#/components/schemas/Name'
                     title: Vpc
-                nic:
+                interface:
                     anyOf:
                     -   $ref: '#/components/schemas/ID'
                     -   $ref: '#/components/schemas/SecurityGroups'
-                    title: Nic
+                    title: Interface
                     nullable: true
                 associate_public_ip:
                     type: boolean
                     title: Associate Public Ip
-                    default: true
             title: InstanceCreateRequestV1NetworkDefault
             example:
                 associate_public_ip: true
-                nic:
+                interface:
                     security_groups:
                     -   id: f273fbde-2ddf-4dcd-8c41-342671ac0d17
                     -   id: 02a2acf3-d6db-4424-ac97-0254cb9c329e
@@ -3125,9 +3166,6 @@ components:
                                 -   $ref: '#/components/schemas/InstanceResponseBackupV1'
                                 -   $ref: '#/components/schemas/InstanceSimpleResponseBackupV1'
                                 title: Instance
-                            rotation:
-                                type: integer
-                                title: Rotation
                             status:
                                 type: string
                                 title: BackupStatus
@@ -3172,7 +3210,6 @@ components:
                         - name
                         - backup_type
                         - instance
-                        - rotation
                         - status
                         - state
                         - created_at
@@ -3184,7 +3221,6 @@ components:
                                 id: 4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a
                             min_disk: 10
                             name: backup name
-                            rotation: 1
                             size: 1000
                             state: available
                             status: completed
@@ -3202,7 +3238,6 @@ components:
                         id: 4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a
                     min_disk: 10
                     name: backup name ffff
-                    rotation: 1
                     size: 1000
                     state: available
                     status: completed
@@ -3863,6 +3898,10 @@ components:
                 network:
                     anyOf:
                     -   $ref: '#/components/schemas/InstanceCreateRequestV1NetworkDefault'
+                    default:
+                        vpc:
+                            name: default
+                        associate_public_ip: true
                     nullable: true
                 user_data:
                     anyOf:
@@ -3883,7 +3922,7 @@ components:
                 name: instance name
                 network:
                     associate_public_ip: true
-                    nic:
+                    interface:
                         security_groups:
                         -   id: f273fbde-2ddf-4dcd-8c41-342671ac0d17
                         -   id: 02a2acf3-d6db-4424-ac97-0254cb9c329e
@@ -3931,16 +3970,17 @@ tags:
     description: Operations with machine types for instances.
 -   name: snapshots
     description: Operations with snapshots for instances.
+$id: https://virtual-machine.jaxyendy.com/openapi.json
 servers:
 -   url: https://{env}/{region}/compute
     variables:
         region:
+            description: Region to reach the service
+            default: br-se1
             enum:
             - br-ne-1
             - br-se1
             - br-mgl1
-            default: br-se1
-            description: Region to reach the service
             x-mgc-transforms:
             -   type: translate
                 allowMissing: true
@@ -3950,11 +3990,11 @@ servers:
                 -   from: br-mgl1
                     to: br-se-1
         env:
+            description: Environment to use
+            default: api.magalu.cloud
             enum:
             - api.magalu.cloud
             - api.pre-prod.jaxyendy.com
-            default: api.magalu.cloud
-            description: Environment to use
             x-mgc-transforms:
             -   type: translate
                 translations:
@@ -3962,4 +4002,3 @@ servers:
                     to: api.magalu.cloud
                 -   from: pre-prod
                     to: api.pre-prod.jaxyendy.com
-$id: https://virtual-machine.jaxyendy.com/openapi.json

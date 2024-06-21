@@ -1,4 +1,4 @@
-APIs related to the VPC product
+APIs referentes ao produto de VPC
 
 Usage:
   ./mgc network [flags]

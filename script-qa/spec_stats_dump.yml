@@ -487,40 +487,10 @@ network.openapi:
       parameters:
         - x-zone
   typeless-schemas:
-    - paths./v0/vpcs/{vpc_id}/ports.get.parameters.vpc_id.schema
-    - paths./v0/vpcs/{vpc_id}/ports.post.parameters.vpc_id.schema
-    - paths./v0/ports/{port_id}.get.parameters.port_id.schema
-    - paths./v0/ports/{port_id}.delete.parameters.port_id.schema
-    - paths./v0/ports/{port_id}/attach/{security_group_id}.post.parameters.port_id.schema
-    - paths./v0/ports/{port_id}/attach/{security_group_id}.post.parameters.security_group_id.schema
     - paths./v0/ports/{port_id}/attach/{security_group_id}.post.responses.200.content.application/json.schema
-    - paths./v0/ports/{port_id}/detach/{security_group_id}.post.parameters.port_id.schema
-    - paths./v0/ports/{port_id}/detach/{security_group_id}.post.parameters.security_group_id.schema
     - paths./v0/ports/{port_id}/detach/{security_group_id}.post.responses.200.content.application/json.schema
-    - paths./v0/vpcs/{vpc_id}/public_ips.get.parameters.vpc_id.schema
-    - paths./v0/vpcs/{vpc_id}/public_ips.post.parameters.vpc_id.schema
-    - paths./v0/public_ips/{public_ip_id}.get.parameters.public_ip_id.schema
-    - paths./v0/public_ips/{public_ip_id}.delete.parameters.public_ip_id.schema
-    - paths./v0/public_ips/{public_ip_id}/attach/{port_id}.post.parameters.public_ip_id.schema
-    - paths./v0/public_ips/{public_ip_id}/attach/{port_id}.post.parameters.port_id.schema
     - paths./v0/public_ips/{public_ip_id}/attach/{port_id}.post.responses.200.content.application/json.schema
-    - paths./v0/public_ips/{public_ip_id}/detach/{port_id}.post.parameters.public_ip_id.schema
-    - paths./v0/public_ips/{public_ip_id}/detach/{port_id}.post.parameters.port_id.schema
     - paths./v0/public_ips/{public_ip_id}/detach/{port_id}.post.responses.200.content.application/json.schema
-    - paths./v0/security_groups/{security_group_id}/rules.get.parameters.security_group_id.schema
-    - paths./v0/security_groups/{security_group_id}/rules.post.parameters.security_group_id.schema
-    - paths./v0/rules/{rule_id}.get.parameters.rule_id.schema
-    - paths./v0/rules/{rule_id}.delete.parameters.rule_id.schema
-    - paths./v0/vpcs/{vpc_id}/security_groups.get.parameters.vpc_id.schema
-    - paths./v0/security_groups/{security_group_id}.get.parameters.security_group_id.schema
-    - paths./v0/security_groups/{security_group_id}.delete.parameters.security_group_id.schema
-    - paths./v0/vpcs/{vpc_id}/subnets.get.parameters.vpc_id.schema
-    - paths./v0/vpcs/{vpc_id}/subnets.post.parameters.vpc_id.schema
-    - paths./v0/subnets/{subnet_id}.get.parameters.subnet_id.schema
-    - paths./v0/subnets/{subnet_id}.delete.parameters.subnet_id.schema
-    - paths./v0/vpcs/{vpc_id}.get.parameters.vpc_id.schema
-    - paths./v0/vpcs/{vpc_id}.delete.parameters.vpc_id.schema
-    - paths./v0/worker/public_ips/{public_ip_id}.patch.parameters.public_ip_id.schema
   uneven-resources:
     port:
       DELETE:
@@ -569,6 +539,7 @@ network.openapi:
     - '#/components/schemas/PublicIpResponsePort'
     - '#/components/schemas/PublicIpStatus'
     - '#/components/schemas/QuotaModel'
+    - '#/components/schemas/ResourceType'
     - '#/components/schemas/RouteRequest'
     - '#/components/schemas/RouterInterfaceResponse'
     - '#/components/schemas/RouterInterfaceResponseList'

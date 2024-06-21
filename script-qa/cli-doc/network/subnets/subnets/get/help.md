@@ -10,8 +10,7 @@ Usage:
 - Flags:
 - --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
 - -h, --help                          help for get
-- --subnet-id anyValue            Subnet Id: Id of the Subnet to detail
-- Use --subnet-id=help for more details (required)
+- --subnet-id string              Subnet Id: Id of the Subnet to detail (required)
 - -v, --version                       version for get
 
 ## Other commands:

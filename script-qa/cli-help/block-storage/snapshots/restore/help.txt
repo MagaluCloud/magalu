@@ -17,7 +17,7 @@ Flags:
       --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
       --cli.watch                     Wait until the operation is completed by calling the 'get' link and waiting until termination. Akin to '! get -w'
   -h, --help                          help for restore
-      --name string                   Name (required)
+      --name string                   Name (min character count: 1) (required)
       --snapshot-id uuid              Snapshot Id (required)
   -v, --version                       version for restore
 

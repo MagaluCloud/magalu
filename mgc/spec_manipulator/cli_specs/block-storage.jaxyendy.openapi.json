@@ -1993,18 +1993,18 @@
             {
               "created_at": "2022-01-01T00:00:10Z",
               "description": "my backup for testing",
-              "id": "0ec17fac-4a80-4643-b40a-b4851dc60140",
+              "id": "715becb2-9000-4475-987a-ada95b222641",
               "name": "My backup",
               "size": 10,
               "source_backup": {
-                "id": "61f7f4bd-85c9-40a0-98d4-660214a89e3f"
+                "id": "2bac80ce-8c70-4576-8f0c-f0771e715ff4"
               },
               "state": "available",
               "status": "completed",
               "type": "incremental",
               "updated_at": "2022-01-01T00:00:10Z",
               "volume": {
-                "id": "bd42185b-4353-40de-9235-c3cac294ad41"
+                "id": "d5177c37-1438-43b9-b0a9-5973b7185c1d"
               }
             }
           ]
@@ -2106,18 +2106,18 @@
         "example": {
           "created_at": "2022-01-01T00:00:10Z",
           "description": "my backup for testing",
-          "id": "fe924a87-b29c-4273-884b-9d09098b8dd6",
+          "id": "dd47bfda-1c3b-48a3-b316-f46eb10a45bf",
           "name": "My backup",
           "size": 10,
           "source_backup": {
-            "id": "1b20d26f-5574-47e1-b3f4-b186b2006438"
+            "id": "845ea7d7-e176-4a08-8f0d-3ca7aeac3137"
           },
           "state": "available",
           "status": "completed",
           "type": "incremental",
           "updated_at": "2022-01-01T00:00:10Z",
           "volume": {
-            "id": "31de3679-9474-4b29-ace0-df4e1922c65d"
+            "id": "71cd27ce-3162-4ab9-bbbd-738229ebc702"
           }
         }
       },
@@ -2140,6 +2140,7 @@
           "creating_pending",
           "creating",
           "creating_error",
+          "creating_error_quota",
           "snapshot_deleting",
           "snapshot_deleting_error",
           "deleting_pending",
@@ -2625,7 +2626,8 @@
         "properties": {
           "name": {
             "type": "string",
-            "title": "Name"
+            "title": "Name",
+            "minLength": 1
           }
         },
         "title": "SnapshotRestoreRequest",

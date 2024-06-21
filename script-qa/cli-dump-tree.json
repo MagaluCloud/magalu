@@ -1331,6 +1331,7 @@
        "additionalProperties": false,
        "properties": {
         "name": {
+         "minLength": 1,
          "title": "Name",
          "type": "string"
         },
@@ -4920,7 +4921,7 @@
        "type": "object"
       },
       "result": {},
-      "version": "1.21.2"
+      "version": "1.22.0"
      },
      {
       "configs": {
@@ -4987,6 +4988,11 @@
          "minimum": 0,
          "title": "Db Size",
          "type": "integer"
+        },
+        "engine_id": {
+         "format": "uuid",
+         "title": "Engine Id",
+         "type": "string"
         },
         "finished_at": {
          "format": "date-time",
@@ -5066,12 +5072,13 @@
         "type",
         "status",
         "mode",
-        "created_at"
+        "created_at",
+        "engine_id"
        ],
        "title": "BackupDetailResponse",
        "type": "object"
       },
-      "version": "1.21.2"
+      "version": "1.22.0"
      },
      {
       "configs": {
@@ -5226,6 +5233,11 @@
             "title": "Db Size",
             "type": "integer"
            },
+           "engine_id": {
+            "format": "uuid",
+            "title": "Engine Id",
+            "type": "string"
+           },
            "finished_at": {
             "format": "date-time",
             "title": "Finished At",
@@ -5304,7 +5316,8 @@
            "type",
            "status",
            "mode",
-           "created_at"
+           "created_at",
+           "engine_id"
           ],
           "title": "BackupDetailResponse",
           "type": "object"
@@ -5320,13 +5333,13 @@
        "title": "BackupsResponse",
        "type": "object"
       },
-      "version": "1.21.2"
+      "version": "1.22.0"
      }
     ],
     "description": "Database backups management.",
     "isInternal": false,
     "name": "backups",
-    "version": "1.21.2"
+    "version": "1.22.0"
    },
    {
     "children": [
@@ -5419,7 +5432,7 @@
        "title": "EngineResponse",
        "type": "object"
       },
-      "version": "1.21.2"
+      "version": "1.22.0"
      },
      {
       "configs": {
@@ -5583,13 +5596,13 @@
        "title": "EnginesResponse",
        "type": "object"
       },
-      "version": "1.21.2"
+      "version": "1.22.0"
      }
     ],
     "description": "Datastores available for database instances.",
     "isInternal": true,
     "name": "datastores",
-    "version": "1.21.2"
+    "version": "1.22.0"
    },
    {
     "children": [
@@ -5682,7 +5695,7 @@
        "title": "EngineResponse",
        "type": "object"
       },
-      "version": "1.21.2"
+      "version": "1.22.0"
      },
      {
       "configs": {
@@ -5846,13 +5859,13 @@
        "title": "EnginesResponse",
        "type": "object"
       },
-      "version": "1.21.2"
+      "version": "1.22.0"
      }
     ],
     "description": "Engines available for database instances.",
     "isInternal": false,
     "name": "engines",
-    "version": "1.21.2"
+    "version": "1.22.0"
    },
    {
     "children": [
@@ -5964,7 +5977,7 @@
        "title": "FlavorResponse",
        "type": "object"
       },
-      "version": "1.21.2"
+      "version": "1.22.0"
      },
      {
       "configs": {
@@ -6148,13 +6161,13 @@
        "title": "FlavorsResponse",
        "type": "object"
       },
-      "version": "1.21.2"
+      "version": "1.22.0"
      }
     ],
     "description": "Flavors available for database instances.",
     "isInternal": false,
     "name": "flavors",
-    "version": "1.21.2"
+    "version": "1.22.0"
    },
    {
     "children": [
@@ -6197,13 +6210,13 @@
        "type": "object"
       },
       "result": {},
-      "version": "1.21.2"
+      "version": "1.22.0"
      }
     ],
     "description": "Health check.",
     "isInternal": true,
     "name": "healthcheck",
-    "version": "1.21.2"
+    "version": "1.22.0"
    },
    {
     "children": [
@@ -6285,7 +6298,7 @@
          "title": "BackupResponse",
          "type": "object"
         },
-        "version": "1.21.2"
+        "version": "1.22.0"
        },
        {
         "configs": {
@@ -6347,7 +6360,7 @@
          "type": "object"
         },
         "result": {},
-        "version": "1.21.2"
+        "version": "1.22.0"
        },
        {
         "configs": {
@@ -6420,6 +6433,11 @@
            "minimum": 0,
            "title": "Db Size",
            "type": "integer"
+          },
+          "engine_id": {
+           "format": "uuid",
+           "title": "Engine Id",
+           "type": "string"
           },
           "finished_at": {
            "format": "date-time",
@@ -6499,12 +6517,13 @@
           "type",
           "status",
           "mode",
-          "created_at"
+          "created_at",
+          "engine_id"
          ],
          "title": "BackupDetailResponse",
          "type": "object"
         },
-        "version": "1.21.2"
+        "version": "1.22.0"
        },
        {
         "configs": {
@@ -6667,6 +6686,11 @@
               "title": "Db Size",
               "type": "integer"
              },
+             "engine_id": {
+              "format": "uuid",
+              "title": "Engine Id",
+              "type": "string"
+             },
              "finished_at": {
               "format": "date-time",
               "title": "Finished At",
@@ -6745,7 +6769,8 @@
              "type",
              "status",
              "mode",
-             "created_at"
+             "created_at",
+             "engine_id"
             ],
             "title": "BackupDetailResponse",
             "type": "object"
@@ -6761,13 +6786,13 @@
          "title": "BackupsResponse",
          "type": "object"
         },
-        "version": "1.21.2"
+        "version": "1.22.0"
        }
       ],
       "description": "Database instances management. | backups",
       "isInternal": false,
       "name": "backups",
-      "version": "1.21.2"
+      "version": "1.22.0"
      },
      {
       "configs": {
@@ -6951,7 +6976,7 @@
        "title": "InstanceResponse",
        "type": "object"
       },
-      "version": "1.21.2"
+      "version": "1.22.0"
      },
      {
       "configs": {
@@ -7007,7 +7032,7 @@
        "type": "object"
       },
       "result": {},
-      "version": "1.21.2"
+      "version": "1.22.0"
      },
      {
       "configs": {
@@ -7490,7 +7515,7 @@
        "title": "InstanceDetailResponse",
        "type": "object"
       },
-      "version": "1.21.2"
+      "version": "1.22.0"
      },
      {
       "configs": {
@@ -8060,7 +8085,7 @@
        "title": "InstancesResponse",
        "type": "object"
       },
-      "version": "1.21.2"
+      "version": "1.22.0"
      },
      {
       "configs": {
@@ -8567,7 +8592,7 @@
        "title": "InstanceDetailResponse",
        "type": "object"
       },
-      "version": "1.21.2"
+      "version": "1.22.0"
      },
      {
       "configs": {
@@ -8642,7 +8667,7 @@
        "title": "RestoreResponse",
        "type": "object"
       },
-      "version": "1.21.2"
+      "version": "1.22.0"
      },
      {
       "configs": {
@@ -9117,7 +9142,7 @@
        "title": "InstanceDetailResponse",
        "type": "object"
       },
-      "version": "1.21.2"
+      "version": "1.22.0"
      },
      {
       "configs": {
@@ -9592,7 +9617,7 @@
        "title": "InstanceDetailResponse",
        "type": "object"
       },
-      "version": "1.21.2"
+      "version": "1.22.0"
      },
      {
       "configs": {
@@ -10087,13 +10112,13 @@
        "title": "InstanceDetailResponse",
        "type": "object"
       },
-      "version": "1.21.2"
+      "version": "1.22.0"
      }
     ],
     "description": "Database instances management.",
     "isInternal": false,
     "name": "instances",
-    "version": "1.21.2"
+    "version": "1.22.0"
    },
    {
     "children": [
@@ -10175,7 +10200,7 @@
        "title": "ReplicaResponse",
        "type": "object"
       },
-      "version": "1.21.2"
+      "version": "1.22.0"
      },
      {
       "configs": {
@@ -10234,7 +10259,7 @@
        "nullable": true,
        "type": "null"
       },
-      "version": "1.21.2"
+      "version": "1.22.0"
      },
      {
       "configs": {
@@ -10493,7 +10518,7 @@
        "title": "ReplicaDetailResponse",
        "type": "object"
       },
-      "version": "1.21.2"
+      "version": "1.22.0"
      },
      {
       "configs": {
@@ -10823,7 +10848,7 @@
        "title": "ReplicasResponse",
        "type": "object"
       },
-      "version": "1.21.2"
+      "version": "1.22.0"
      },
      {
       "configs": {
@@ -11088,7 +11113,7 @@
        "title": "ReplicaDetailResponse",
        "type": "object"
       },
-      "version": "1.21.2"
+      "version": "1.22.0"
      },
      {
       "configs": {
@@ -11347,7 +11372,7 @@
        "title": "ReplicaDetailResponse",
        "type": "object"
       },
-      "version": "1.21.2"
+      "version": "1.22.0"
      },
      {
       "configs": {
@@ -11606,19 +11631,19 @@
        "title": "ReplicaDetailResponse",
        "type": "object"
       },
-      "version": "1.21.2"
+      "version": "1.22.0"
      }
     ],
     "description": "Database replicas management.",
     "isInternal": false,
     "name": "replicas",
-    "version": "1.21.2"
+    "version": "1.22.0"
    }
   ],
   "description": "DBaaS API Product.",
   "isInternal": false,
   "name": "dbaas",
-  "version": "1.21.2"
+  "version": "1.22.0"
  },
  {
   "children": [
@@ -16156,13 +16181,13 @@
        "title": "Healthcheck",
        "type": "object"
       },
-      "version": "1.124.1"
+      "version": "1.125.3"
      }
     ],
     "description": "healthcheck",
     "isInternal": true,
     "name": "healthcheck",
-    "version": "1.124.1"
+    "version": "1.125.3"
    },
    {
     "children": [
@@ -16206,12 +16231,14 @@
         "port_id": {
          "description": "ID of the Port to attach security group",
          "magalu.cloud/core/resolved": "true",
-         "title": "port_id"
+         "title": "port_id",
+         "type": "string"
         },
         "security_group_id": {
          "description": "ID of the Security Group to attach",
          "magalu.cloud/core/resolved": "true",
-         "title": "security_group_id"
+         "title": "security_group_id",
+         "type": "string"
         }
        },
        "required": [
@@ -16221,7 +16248,7 @@
        "type": "object"
       },
       "result": {},
-      "version": "1.124.1"
+      "version": "1.125.3"
      },
      {
       "configs": {
@@ -16305,7 +16332,8 @@
         },
         "vpc_id": {
          "description": "ID of the VPC to create port",
-         "title": "vpc_id"
+         "title": "vpc_id",
+         "type": "string"
         }
        },
        "required": [
@@ -16331,7 +16359,7 @@
        "title": "PortCreateResponse",
        "type": "object"
       },
-      "version": "1.124.1"
+      "version": "1.125.3"
      },
      {
       "configs": {
@@ -16434,7 +16462,7 @@
        "title": "PortCreateResponse",
        "type": "object"
       },
-      "version": "1.124.1"
+      "version": "1.125.3"
      },
      {
       "configs": {
@@ -16475,7 +16503,8 @@
        "properties": {
         "port_id": {
          "description": "ID of the Port to delete",
-         "title": "port_id"
+         "title": "port_id",
+         "type": "string"
         }
        },
        "required": [
@@ -16487,7 +16516,7 @@
        "nullable": true,
        "type": "null"
       },
-      "version": "1.124.1"
+      "version": "1.125.3"
      },
      {
       "configs": {
@@ -16575,7 +16604,7 @@
        "title": "PortDeletedAllResponse",
        "type": "object"
       },
-      "version": "1.124.1"
+      "version": "1.125.3"
      },
      {
       "configs": {
@@ -16616,11 +16645,13 @@
        "properties": {
         "port_id": {
          "description": "ID of the Port to detach security group",
-         "title": "port_id"
+         "title": "port_id",
+         "type": "string"
         },
         "security_group_id": {
          "description": "ID of the Security Group to detach",
-         "title": "security_group_id"
+         "title": "security_group_id",
+         "type": "string"
         }
        },
        "required": [
@@ -16630,7 +16661,7 @@
        "type": "object"
       },
       "result": {},
-      "version": "1.124.1"
+      "version": "1.125.3"
      },
      {
       "configs": {
@@ -16670,7 +16701,8 @@
        "additionalProperties": false,
        "properties": {
         "port_id": {
-         "title": "Port Id"
+         "title": "Port Id",
+         "type": "string"
         }
        },
        "required": [
@@ -16812,7 +16844,7 @@
        "title": "PortResponse",
        "type": "object"
       },
-      "version": "1.124.1"
+      "version": "1.125.3"
      },
      {
       "configs": {
@@ -16853,7 +16885,9 @@
        "properties": {
         "port_id_list": {
          "default": [],
-         "items": {},
+         "items": {
+          "type": "string"
+         },
          "title": "Port Id List",
          "type": "array"
         }
@@ -16998,7 +17032,7 @@
        "title": "Response Portsdetailedlist",
        "type": "array"
       },
-      "version": "1.124.1"
+      "version": "1.125.3"
      },
      {
       "children": [
@@ -17043,12 +17077,14 @@
           "port_id": {
            "description": "ID of the Port to attach security group",
            "magalu.cloud/core/resolved": "true",
-           "title": "port_id"
+           "title": "port_id",
+           "type": "string"
           },
           "security_group_id": {
            "description": "ID of the Security Group to attach",
            "magalu.cloud/core/resolved": "true",
-           "title": "security_group_id"
+           "title": "security_group_id",
+           "type": "string"
           }
          },
          "required": [
@@ -17063,12 +17099,14 @@
           "port_id": {
            "description": "ID of the Port to attach security group",
            "magalu.cloud/core/resolved": "true",
-           "title": "port_id"
+           "title": "port_id",
+           "type": "string"
           },
           "security_group_id": {
            "description": "ID of the Security Group to attach",
            "magalu.cloud/core/resolved": "true",
-           "title": "security_group_id"
+           "title": "security_group_id",
+           "type": "string"
           }
          },
          "required": [
@@ -17120,12 +17158,14 @@
           "port_id": {
            "description": "ID of the Port to attach security group",
            "magalu.cloud/core/resolved": "true",
-           "title": "port_id"
+           "title": "port_id",
+           "type": "string"
           },
           "security_group_id": {
            "description": "ID of the Security Group to attach",
            "magalu.cloud/core/resolved": "true",
-           "title": "security_group_id"
+           "title": "security_group_id",
+           "type": "string"
           }
          },
          "required": [
@@ -17140,12 +17180,14 @@
           "port_id": {
            "description": "ID of the Port to attach security group",
            "magalu.cloud/core/resolved": "true",
-           "title": "port_id"
+           "title": "port_id",
+           "type": "string"
           },
           "security_group_id": {
            "description": "ID of the Security Group to attach",
            "magalu.cloud/core/resolved": "true",
-           "title": "security_group_id"
+           "title": "security_group_id",
+           "type": "string"
           }
          },
          "required": [
@@ -17197,12 +17239,14 @@
           "port_id": {
            "description": "ID of the Port to attach security group",
            "magalu.cloud/core/resolved": "true",
-           "title": "port_id"
+           "title": "port_id",
+           "type": "string"
           },
           "security_group_id": {
            "description": "ID of the Security Group to attach",
            "magalu.cloud/core/resolved": "true",
-           "title": "security_group_id"
+           "title": "security_group_id",
+           "type": "string"
           }
          },
          "required": [
@@ -17217,12 +17261,14 @@
           "port_id": {
            "description": "ID of the Port to attach security group",
            "magalu.cloud/core/resolved": "true",
-           "title": "port_id"
+           "title": "port_id",
+           "type": "string"
           },
           "security_group_id": {
            "description": "ID of the Security Group to attach",
            "magalu.cloud/core/resolved": "true",
-           "title": "security_group_id"
+           "title": "security_group_id",
+           "type": "string"
           }
          },
          "required": [
@@ -17243,7 +17289,7 @@
     "description": "VPC Port",
     "isInternal": false,
     "name": "ports",
-    "version": "1.124.1"
+    "version": "1.125.3"
    },
    {
     "children": [
@@ -17287,12 +17333,14 @@
         "port_id": {
          "description": "Id of the Port to attach the Public IP",
          "magalu.cloud/core/resolved": "true",
-         "title": "Port ID"
+         "title": "Port ID",
+         "type": "string"
         },
         "public_ip_id": {
          "description": "Id of the Public IP to attach port to",
          "magalu.cloud/core/resolved": "true",
-         "title": "Public IP ID"
+         "title": "Public IP ID",
+         "type": "string"
         }
        },
        "required": [
@@ -17302,7 +17350,7 @@
        "type": "object"
       },
       "result": {},
-      "version": "1.124.1"
+      "version": "1.125.3"
      },
      {
       "configs": {
@@ -17357,7 +17405,8 @@
         },
         "vpc_id": {
          "description": "Id of the VPC to create the Public IP in",
-         "title": "Vpc ID"
+         "title": "Vpc ID",
+         "type": "string"
         },
         "wait": {
          "default": true,
@@ -17395,7 +17444,7 @@
        "title": "PublicIpCreateResponse",
        "type": "object"
       },
-      "version": "1.124.1"
+      "version": "1.125.3"
      },
      {
       "configs": {
@@ -17436,7 +17485,8 @@
        "properties": {
         "public_ip_id": {
          "description": "Id of the Public IP to delete",
-         "title": "Public IP ID"
+         "title": "Public IP ID",
+         "type": "string"
         }
        },
        "required": [
@@ -17448,7 +17498,7 @@
        "nullable": true,
        "type": "null"
       },
-      "version": "1.124.1"
+      "version": "1.125.3"
      },
      {
       "configs": {
@@ -17489,11 +17539,13 @@
        "properties": {
         "port_id": {
          "description": "Id of the Port to detach the Public IP",
-         "title": "Port ID"
+         "title": "Port ID",
+         "type": "string"
         },
         "public_ip_id": {
          "description": "Id of the Public IP to detach port to",
-         "title": "Public IP ID"
+         "title": "Public IP ID",
+         "type": "string"
         }
        },
        "required": [
@@ -17503,7 +17555,7 @@
        "type": "object"
       },
       "result": {},
-      "version": "1.124.1"
+      "version": "1.125.3"
      },
      {
       "configs": {
@@ -17545,7 +17597,8 @@
        "properties": {
         "public_ip_id": {
          "description": "Id of the Public IP to retrieve",
-         "title": "Public IP ID"
+         "title": "Public IP ID",
+         "type": "string"
         }
        },
        "required": [
@@ -17623,7 +17676,7 @@
        "title": "PublicIpDb",
        "type": "object"
       },
-      "version": "1.124.1"
+      "version": "1.125.3"
      },
      {
       "configs": {
@@ -17762,7 +17815,7 @@
        "title": "PublicIpsList",
        "type": "object"
       },
-      "version": "1.124.1"
+      "version": "1.125.3"
      },
      {
       "children": [
@@ -17807,12 +17860,14 @@
           "port_id": {
            "description": "Id of the Port to attach the Public IP",
            "magalu.cloud/core/resolved": "true",
-           "title": "Port ID"
+           "title": "Port ID",
+           "type": "string"
           },
           "public_ip_id": {
            "description": "Id of the Public IP to attach port to",
            "magalu.cloud/core/resolved": "true",
-           "title": "Public IP ID"
+           "title": "Public IP ID",
+           "type": "string"
           }
          },
          "required": [
@@ -17827,12 +17882,14 @@
           "port_id": {
            "description": "Id of the Port to attach the Public IP",
            "magalu.cloud/core/resolved": "true",
-           "title": "Port ID"
+           "title": "Port ID",
+           "type": "string"
           },
           "public_ip_id": {
            "description": "Id of the Public IP to attach port to",
            "magalu.cloud/core/resolved": "true",
-           "title": "Public IP ID"
+           "title": "Public IP ID",
+           "type": "string"
           }
          },
          "required": [
@@ -17884,12 +17941,14 @@
           "port_id": {
            "description": "Id of the Port to attach the Public IP",
            "magalu.cloud/core/resolved": "true",
-           "title": "Port ID"
+           "title": "Port ID",
+           "type": "string"
           },
           "public_ip_id": {
            "description": "Id of the Public IP to attach port to",
            "magalu.cloud/core/resolved": "true",
-           "title": "Public IP ID"
+           "title": "Public IP ID",
+           "type": "string"
           }
          },
          "required": [
@@ -17904,12 +17963,14 @@
           "port_id": {
            "description": "Id of the Port to attach the Public IP",
            "magalu.cloud/core/resolved": "true",
-           "title": "Port ID"
+           "title": "Port ID",
+           "type": "string"
           },
           "public_ip_id": {
            "description": "Id of the Public IP to attach port to",
            "magalu.cloud/core/resolved": "true",
-           "title": "Public IP ID"
+           "title": "Public IP ID",
+           "type": "string"
           }
          },
          "required": [
@@ -17961,12 +18022,14 @@
           "port_id": {
            "description": "Id of the Port to attach the Public IP",
            "magalu.cloud/core/resolved": "true",
-           "title": "Port ID"
+           "title": "Port ID",
+           "type": "string"
           },
           "public_ip_id": {
            "description": "Id of the Public IP to attach port to",
            "magalu.cloud/core/resolved": "true",
-           "title": "Public IP ID"
+           "title": "Public IP ID",
+           "type": "string"
           }
          },
          "required": [
@@ -17981,12 +18044,14 @@
           "port_id": {
            "description": "Id of the Port to attach the Public IP",
            "magalu.cloud/core/resolved": "true",
-           "title": "Port ID"
+           "title": "Port ID",
+           "type": "string"
           },
           "public_ip_id": {
            "description": "Id of the Public IP to attach port to",
            "magalu.cloud/core/resolved": "true",
-           "title": "Public IP ID"
+           "title": "Public IP ID",
+           "type": "string"
           }
          },
          "required": [
@@ -18007,7 +18072,7 @@
     "description": "VPC Public IPs",
     "isInternal": false,
     "name": "public_ips",
-    "version": "1.124.1"
+    "version": "1.125.3"
    },
    {
     "children": [
@@ -18111,13 +18176,13 @@
        "title": "QuotaResult",
        "type": "object"
       },
-      "version": "1.124.1"
+      "version": "1.125.3"
      }
     ],
     "description": "VPC Quotas",
     "isInternal": true,
     "name": "quotas",
-    "version": "1.124.1"
+    "version": "1.125.3"
    },
    {
     "children": [
@@ -18197,7 +18262,8 @@
         },
         "security_group_id": {
          "description": "Id of the Security Group",
-         "title": "Security Group ID"
+         "title": "Security Group ID",
+         "type": "string"
         },
         "validate_quota": {
          "default": true,
@@ -18242,7 +18308,7 @@
        "title": "RuleCreateResponse",
        "type": "object"
       },
-      "version": "1.124.1"
+      "version": "1.125.3"
      },
      {
       "configs": {
@@ -18283,7 +18349,8 @@
        "properties": {
         "rule_id": {
          "description": "Id of the Rule",
-         "title": "Rule ID"
+         "title": "Rule ID",
+         "type": "string"
         }
        },
        "required": [
@@ -18295,7 +18362,7 @@
        "nullable": true,
        "type": "null"
       },
-      "version": "1.124.1"
+      "version": "1.125.3"
      },
      {
       "configs": {
@@ -18336,7 +18403,8 @@
        "properties": {
         "rule_id": {
          "description": "Id of the Rule",
-         "title": "Rule ID"
+         "title": "Rule ID",
+         "type": "string"
         }
        },
        "required": [
@@ -18437,7 +18505,7 @@
        "title": "RuleResponse",
        "type": "object"
       },
-      "version": "1.124.1"
+      "version": "1.125.3"
      },
      {
       "configs": {
@@ -18480,7 +18548,8 @@
        "properties": {
         "security_group_id": {
          "description": "Id of the Security Group",
-         "title": "Security Group ID"
+         "title": "Security Group ID",
+         "type": "string"
         }
        },
        "required": [
@@ -18612,13 +18681,13 @@
        "title": "RulesList",
        "type": "object"
       },
-      "version": "1.124.1"
+      "version": "1.125.3"
      }
     ],
     "description": "VPC Rules",
     "isInternal": false,
     "name": "rules",
-    "version": "1.124.1"
+    "version": "1.125.3"
    },
    {
     "children": [
@@ -18712,7 +18781,7 @@
        "title": "SecurityGroupCreateResponse",
        "type": "object"
       },
-      "version": "1.124.1"
+      "version": "1.125.3"
      },
      {
       "configs": {
@@ -18768,7 +18837,7 @@
        "title": "SecurityGroupCreateResponse",
        "type": "object"
       },
-      "version": "1.124.1"
+      "version": "1.125.3"
      },
      {
       "configs": {
@@ -18809,7 +18878,8 @@
        "properties": {
         "security_group_id": {
          "description": "Id of the security group to delete",
-         "title": "Security Group ID"
+         "title": "Security Group ID",
+         "type": "string"
         }
        },
        "required": [
@@ -18821,7 +18891,7 @@
        "nullable": true,
        "type": "null"
       },
-      "version": "1.124.1"
+      "version": "1.125.3"
      },
      {
       "configs": {
@@ -18890,7 +18960,7 @@
        "title": "SecurityGroupDeletedAllResponse",
        "type": "object"
       },
-      "version": "1.124.1"
+      "version": "1.125.3"
      },
      {
       "configs": {
@@ -18931,7 +19001,8 @@
        "properties": {
         "security_group_id": {
          "description": "Id of the security group to detail",
-         "title": "Security Group ID"
+         "title": "Security Group ID",
+         "type": "string"
         }
        },
        "required": [
@@ -19135,7 +19206,7 @@
        "title": "SecurityGroupDetailEvent",
        "type": "object"
       },
-      "version": "1.124.1"
+      "version": "1.125.3"
      },
      {
       "configs": {
@@ -19288,7 +19359,7 @@
        "title": "SecurityGroupListEvent",
        "type": "object"
       },
-      "version": "1.124.1"
+      "version": "1.125.3"
      },
      {
       "children": [
@@ -19368,7 +19439,8 @@
           },
           "security_group_id": {
            "description": "Id of the Security Group",
-           "title": "Security Group ID"
+           "title": "Security Group ID",
+           "type": "string"
           },
           "validate_quota": {
            "default": true,
@@ -19413,7 +19485,7 @@
          "title": "RuleCreateResponse",
          "type": "object"
         },
-        "version": "1.124.1"
+        "version": "1.125.3"
        },
        {
         "configs": {
@@ -19456,7 +19528,8 @@
          "properties": {
           "security_group_id": {
            "description": "Id of the Security Group",
-           "title": "Security Group ID"
+           "title": "Security Group ID",
+           "type": "string"
           }
          },
          "required": [
@@ -19588,19 +19661,19 @@
          "title": "RulesList",
          "type": "object"
         },
-        "version": "1.124.1"
+        "version": "1.125.3"
        }
       ],
       "description": "VPC Security Groups | rules",
       "isInternal": true,
       "name": "rules",
-      "version": "1.124.1"
+      "version": "1.125.3"
      }
     ],
     "description": "VPC Security Groups",
     "isInternal": false,
     "name": "security_groups",
-    "version": "1.124.1"
+    "version": "1.125.3"
    },
    {
     "children": [
@@ -19645,7 +19718,8 @@
          "properties": {
           "subnet_id": {
            "description": "Id of the Subnet to delete",
-           "title": "Subnet Id"
+           "title": "Subnet Id",
+           "type": "string"
           }
          },
          "required": [
@@ -19657,7 +19731,7 @@
          "nullable": true,
          "type": "null"
         },
-        "version": "1.124.1"
+        "version": "1.125.3"
        },
        {
         "configs": {
@@ -19698,7 +19772,8 @@
          "properties": {
           "subnet_id": {
            "description": "Id of the Subnet to detail",
-           "title": "Subnet Id"
+           "title": "Subnet Id",
+           "type": "string"
           }
          },
          "required": [
@@ -19818,7 +19893,7 @@
          "title": "SubnetResponseDetail",
          "type": "object"
         },
-        "version": "1.124.1"
+        "version": "1.125.3"
        },
        {
         "configs": {
@@ -19892,13 +19967,13 @@
          "title": "SubnetResponseId",
          "type": "object"
         },
-        "version": "1.124.1"
+        "version": "1.125.3"
        }
       ],
       "description": "VPC Subnets | subnets",
       "isInternal": false,
       "name": "subnets",
-      "version": "1.124.1"
+      "version": "1.125.3"
      },
      {
       "children": [
@@ -19973,7 +20048,8 @@
           },
           "vpc_id": {
            "description": "Id of the VPC to create Subnet",
-           "title": "Vpc Id"
+           "title": "Vpc Id",
+           "type": "string"
           }
          },
          "required": [
@@ -19999,7 +20075,7 @@
          "title": "SubnetCreateResponse",
          "type": "object"
         },
-        "version": "1.124.1"
+        "version": "1.125.3"
        },
        {
         "configs": {
@@ -20040,7 +20116,8 @@
          "properties": {
           "vpc_id": {
            "description": "Id of the VPC to list Subnets",
-           "title": "Vpc Id"
+           "title": "Vpc Id",
+           "type": "string"
           }
          },
          "required": [
@@ -20140,19 +20217,19 @@
          "title": "SubnetsResponse",
          "type": "object"
         },
-        "version": "1.124.1"
+        "version": "1.125.3"
        }
       ],
       "description": "VPC Subnets | vpcs-subnets",
       "isInternal": true,
       "name": "vpcs-subnets",
-      "version": "1.124.1"
+      "version": "1.125.3"
      }
     ],
     "description": "VPC Subnets",
     "isInternal": false,
     "name": "subnets",
-    "version": "1.124.1"
+    "version": "1.125.3"
    },
    {
     "children": [
@@ -20222,7 +20299,7 @@
        "title": "VpcCreateResponse",
        "type": "object"
       },
-      "version": "1.124.1"
+      "version": "1.125.3"
      },
      {
       "configs": {
@@ -20276,7 +20353,7 @@
        "title": "VpcCreateResponse",
        "type": "object"
       },
-      "version": "1.124.1"
+      "version": "1.125.3"
      },
      {
       "configs": {
@@ -20317,7 +20394,8 @@
        "properties": {
         "vpc_id": {
          "description": "ID of the VPC to delete",
-         "title": "VPC Id"
+         "title": "VPC Id",
+         "type": "string"
         }
        },
        "required": [
@@ -20329,7 +20407,7 @@
        "nullable": true,
        "type": "null"
       },
-      "version": "1.124.1"
+      "version": "1.125.3"
      },
      {
       "configs": {
@@ -20474,7 +20552,7 @@
        "title": "VpcDeletedAllResponse",
        "type": "object"
       },
-      "version": "1.124.1"
+      "version": "1.125.3"
      },
      {
       "configs": {
@@ -20515,7 +20593,8 @@
        "properties": {
         "vpc_id": {
          "description": "ID of the VPC to detail",
-         "title": "VPC Id"
+         "title": "VPC Id",
+         "type": "string"
         }
        },
        "required": [
@@ -20616,7 +20695,7 @@
        "title": "VpcResponse",
        "type": "object"
       },
-      "version": "1.124.1"
+      "version": "1.125.3"
      },
      {
       "configs": {
@@ -20783,7 +20862,7 @@
        "title": "VpcResponseList",
        "type": "object"
       },
-      "version": "1.124.1"
+      "version": "1.125.3"
      },
      {
       "children": [
@@ -20869,7 +20948,8 @@
           },
           "vpc_id": {
            "description": "ID of the VPC to create port",
-           "title": "vpc_id"
+           "title": "vpc_id",
+           "type": "string"
           }
          },
          "required": [
@@ -20895,7 +20975,7 @@
          "title": "PortCreateResponse",
          "type": "object"
         },
-        "version": "1.124.1"
+        "version": "1.125.3"
        },
        {
         "configs": {
@@ -20955,13 +21035,16 @@
           },
           "port_id_list": {
            "default": [],
-           "items": {},
+           "items": {
+            "type": "string"
+           },
            "title": "Port Id List",
            "type": "array"
           },
           "vpc_id": {
            "description": "ID of VPC to list ports",
-           "title": "vpc_id"
+           "title": "vpc_id",
+           "type": "string"
           }
          },
          "required": [
@@ -21224,13 +21307,13 @@
          "title": "Response Listports",
          "type": "object"
         },
-        "version": "1.124.1"
+        "version": "1.125.3"
        }
       ],
       "description": "Virtual Private Cloud (VPC) | ports",
       "isInternal": false,
       "name": "ports",
-      "version": "1.124.1"
+      "version": "1.125.3"
      },
      {
       "children": [
@@ -21287,7 +21370,8 @@
           },
           "vpc_id": {
            "description": "Id of the VPC to create the Public IP in",
-           "title": "Vpc ID"
+           "title": "Vpc ID",
+           "type": "string"
           },
           "wait": {
            "default": true,
@@ -21325,7 +21409,7 @@
          "title": "PublicIpCreateResponse",
          "type": "object"
         },
-        "version": "1.124.1"
+        "version": "1.125.3"
        },
        {
         "configs": {
@@ -21366,7 +21450,8 @@
          "properties": {
           "vpc_id": {
            "description": "Id of the VPC to list the Public IPs in",
-           "title": "Vpc ID"
+           "title": "Vpc ID",
+           "type": "string"
           }
          },
          "required": [
@@ -21473,13 +21558,13 @@
          "title": "PublicIpsList",
          "type": "object"
         },
-        "version": "1.124.1"
+        "version": "1.125.3"
        }
       ],
       "description": "Virtual Private Cloud (VPC) | public-ips",
       "isInternal": false,
       "name": "public-ips",
-      "version": "1.124.1"
+      "version": "1.125.3"
      },
      {
       "children": [
@@ -21576,7 +21661,7 @@
          "title": "SecurityGroupCreateResponse",
          "type": "object"
         },
-        "version": "1.124.1"
+        "version": "1.125.3"
        },
        {
         "configs": {
@@ -21617,7 +21702,8 @@
          "properties": {
           "vpc_id": {
            "description": "Id of the VPC to create the Security Group in",
-           "title": "Vpc ID"
+           "title": "Vpc ID",
+           "type": "string"
           }
          },
          "required": [
@@ -21738,19 +21824,19 @@
          "title": "SecurityGroupListEvent",
          "type": "object"
         },
-        "version": "1.124.1"
+        "version": "1.125.3"
        }
       ],
       "description": "Virtual Private Cloud (VPC) | security-groups",
       "isInternal": true,
       "name": "security-groups",
-      "version": "1.124.1"
+      "version": "1.125.3"
      }
     ],
     "description": "Virtual Private Cloud (VPC)",
     "isInternal": false,
     "name": "vpcs",
-    "version": "1.124.1"
+    "version": "1.125.3"
    },
    {
     "children": [
@@ -21808,7 +21894,8 @@
         },
         "public_ip_id": {
          "description": "Id of the public ip to update",
-         "title": "Public Ip Id"
+         "title": "Public Ip Id",
+         "type": "string"
         },
         "status": {
          "enum": [
@@ -21842,19 +21929,19 @@
        "title": "PublicIpResponseId",
        "type": "object"
       },
-      "version": "1.124.1"
+      "version": "1.125.3"
      }
     ],
     "description": "worker_public_ips",
     "isInternal": true,
     "name": "worker_public_ips",
-    "version": "1.124.1"
+    "version": "1.125.3"
    }
   ],
-  "description": "APIs related to the VPC product",
+  "description": "APIs referentes ao produto de VPC",
   "isInternal": false,
   "name": "network",
-  "version": "1.124.1"
+  "version": "1.125.3"
  },
  {
   "children": [
@@ -25833,7 +25920,7 @@
         "network": {
          "example": {
           "associate_public_ip": true,
-          "nic": {
+          "interface": {
            "security_groups": [
             {
              "id": "f273fbde-2ddf-4dcd-8c41-342671ac0d17"
@@ -25850,11 +25937,10 @@
          "nullable": true,
          "properties": {
           "associate_public_ip": {
-           "default": true,
            "title": "Associate Public Ip",
            "type": "boolean"
           },
-          "nic": {
+          "interface": {
            "anyOf": [
             {
              "example": {
@@ -25905,7 +25991,7 @@
             }
            ],
            "nullable": true,
-           "title": "Nic",
+           "title": "Interface",
            "type": "object"
           },
           "vpc": {
@@ -28553,9 +28639,15 @@
          "type": "string"
         },
         "network": {
+         "default": {
+          "associate_public_ip": true,
+          "vpc": {
+           "name": "default"
+          }
+         },
          "example": {
           "associate_public_ip": true,
-          "nic": {
+          "interface": {
            "security_groups": [
             {
              "id": "f273fbde-2ddf-4dcd-8c41-342671ac0d17"
@@ -28572,11 +28664,10 @@
          "nullable": true,
          "properties": {
           "associate_public_ip": {
-           "default": true,
            "title": "Associate Public Ip",
            "type": "boolean"
           },
-          "nic": {
+          "interface": {
            "anyOf": [
             {
              "example": {
@@ -28627,7 +28718,7 @@
             }
            ],
            "nullable": true,
-           "title": "Nic",
+           "title": "Interface",
            "type": "object"
           },
           "vpc": {

@@ -9,7 +9,7 @@ Executor: list
 
 # List VPC ports
 
-Version: 1.124.1
+Version: 1.125.3
 
 import "magalu.cloud/lib/products/network/vpcs/ports"
 */
@@ -25,10 +25,10 @@ type ListParameters struct {
 	Offset     *int                      `json:"_offset,omitempty"`
 	Detailed   *bool                     `json:"detailed,omitempty"`
 	PortIdList *ListParametersPortIdList `json:"port_id_list,omitempty"`
-	VpcId      any                       `json:"vpc_id"`
+	VpcId      string                    `json:"vpc_id"`
 }
 
-type ListParametersPortIdList []any
+type ListParametersPortIdList []string
 
 type ListConfigs struct {
 	Env       *string `json:"env,omitempty"`

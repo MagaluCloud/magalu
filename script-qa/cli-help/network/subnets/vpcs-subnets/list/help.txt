@@ -4,10 +4,9 @@ Usage:
   ./mgc network subnets vpcs-subnets list [vpc-id] [flags]
 
 Flags:
-  -h, --help              help for list
-  -v, --version           version for list
-      --vpc-id anyValue   Vpc Id: Id of the VPC to list Subnets
-                          Use --vpc-id=help for more details (required)
+  -h, --help            help for list
+  -v, --version         version for list
+      --vpc-id string   Vpc Id: Id of the VPC to list Subnets (required)
 
 Global Flags:
       --cli.show-cli-globals   Show all CLI global flags on usage text

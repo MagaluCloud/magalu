@@ -67,19 +67,19 @@ Optional:
 Optional:
 
 - `associate_public_ip` (Boolean)
-- `nic` (Attributes) (see [below for nested schema](#nestedatt--network--nic))
+- `interface` (Attributes) (see [below for nested schema](#nestedatt--network--interface))
 - `vpc` (Attributes) (see [below for nested schema](#nestedatt--network--vpc))
 
-<a id="nestedatt--network--nic"></a>
-### Nested Schema for `network.nic`
+<a id="nestedatt--network--interface"></a>
+### Nested Schema for `network.interface`
 
 Optional:
 
 - `id` (String)
-- `security_groups` (Attributes List) (see [below for nested schema](#nestedatt--network--nic--security_groups))
+- `security_groups` (Attributes List) (see [below for nested schema](#nestedatt--network--interface--security_groups))
 
-<a id="nestedatt--network--nic--security_groups"></a>
-### Nested Schema for `network.nic.security_groups`
+<a id="nestedatt--network--interface--security_groups"></a>
+### Nested Schema for `network.interface.security_groups`
 
 Required:
 

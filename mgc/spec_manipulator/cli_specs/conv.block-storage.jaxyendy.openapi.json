@@ -2012,6 +2012,7 @@
                     "creating_pending",
                     "creating",
                     "creating_error",
+                    "creating_error_quota",
                     "snapshot_deleting",
                     "snapshot_deleting_error",
                     "deleting_pending",
@@ -2100,18 +2101,18 @@
               "example": {
                 "created_at": "2022-01-01T00:00:10Z",
                 "description": "my backup for testing",
-                "id": "5eb39750-5484-4a65-9c2f-8a4d21b32887",
+                "id": "dd47bfda-1c3b-48a3-b316-f46eb10a45bf",
                 "name": "My backup",
                 "size": 10,
                 "source_backup": {
-                  "id": "930de1c0-a67f-408c-89ec-63e69c1c9398"
+                  "id": "845ea7d7-e176-4a08-8f0d-3ca7aeac3137"
                 },
                 "state": "available",
                 "status": "completed",
                 "type": "incremental",
                 "updated_at": "2022-01-01T00:00:10Z",
                 "volume": {
-                  "id": "d4be7e8f-8e74-4160-982f-f45ef792dbf1"
+                  "id": "71cd27ce-3162-4ab9-bbbd-738229ebc702"
                 }
               }
             },
@@ -2127,18 +2128,18 @@
             {
               "created_at": "2022-01-01T00:00:10Z",
               "description": "my backup for testing",
-              "id": "86a34883-82f7-4564-a01d-f2f9882362e8",
+              "id": "715becb2-9000-4475-987a-ada95b222641",
               "name": "My backup",
               "size": 10,
               "source_backup": {
-                "id": "86410935-3ff6-497d-8abf-f9fa61b58ad4"
+                "id": "2bac80ce-8c70-4576-8f0c-f0771e715ff4"
               },
               "state": "available",
               "status": "completed",
               "type": "incremental",
               "updated_at": "2022-01-01T00:00:10Z",
               "volume": {
-                "id": "3eaccd29-b89e-4e09-8e5b-c28d1d8651e4"
+                "id": "d5177c37-1438-43b9-b0a9-5973b7185c1d"
               }
             }
           ]
@@ -2187,6 +2188,7 @@
               "creating_pending",
               "creating",
               "creating_error",
+              "creating_error_quota",
               "snapshot_deleting",
               "snapshot_deleting_error",
               "deleting_pending",
@@ -2275,18 +2277,18 @@
         "example": {
           "created_at": "2022-01-01T00:00:10Z",
           "description": "my backup for testing",
-          "id": "5eb39750-5484-4a65-9c2f-8a4d21b32887",
+          "id": "dd47bfda-1c3b-48a3-b316-f46eb10a45bf",
           "name": "My backup",
           "size": 10,
           "source_backup": {
-            "id": "930de1c0-a67f-408c-89ec-63e69c1c9398"
+            "id": "845ea7d7-e176-4a08-8f0d-3ca7aeac3137"
           },
           "state": "available",
           "status": "completed",
           "type": "incremental",
           "updated_at": "2022-01-01T00:00:10Z",
           "volume": {
-            "id": "d4be7e8f-8e74-4160-982f-f45ef792dbf1"
+            "id": "71cd27ce-3162-4ab9-bbbd-738229ebc702"
           }
         }
       },
@@ -2309,6 +2311,7 @@
           "creating_pending",
           "creating",
           "creating_error",
+          "creating_error_quota",
           "snapshot_deleting",
           "snapshot_deleting_error",
           "deleting_pending",
@@ -2998,7 +3001,8 @@
         "properties": {
           "name": {
             "type": "string",
-            "title": "Name"
+            "title": "Name",
+            "minLength": 1
           }
         },
         "title": "SnapshotRestoreRequest",
@@ -3754,30 +3758,6 @@
     {
       "name": "snapshots",
       "description": "Operations with snapshots for volumes."
-    }
-  ],
-  "servers": [
-    {
-      "url": "https://{env}/{region}/$API_ENDPOINT_NAME",
-      "variables": {
-        "region": {
-          "enum": [
-            "br-ne-1",
-            "br-se1",
-            "br-mgl1"
-          ],
-          "default": "br-se1",
-          "description": "Region to reach the service"
-        },
-        "env": {
-          "enum": [
-            "api.magalu.cloud",
-            "api.pre-prod.jaxyendy.com"
-          ],
-          "default": "api.magalu.cloud",
-          "description": "Environment to use"
-        }
-      }
     }
   ]
 }

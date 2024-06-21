@@ -1,4 +1,3 @@
-WARN	magalu.cloud/sdk/openapi.virtual-machine.snapshots.create	ignored broken link	{"link": "delete", "error": "linked operationId=\"delete_instance_type_v0_instance_types__instance_type_id__delete\": could not resolve \"/operationIds/delete_instance_type_v0_instance_types__instance_type_id__delete\": missing field: \"delete_instance_type_v0_instance_types__instance_type_id__delete\""}
 Create a snapshot of a Virtual Machine in the current tenant which is logged in. </br>
 A Snapshot is ready for restore when it's in available state.
 

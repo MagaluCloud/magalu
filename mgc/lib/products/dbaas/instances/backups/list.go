@@ -9,7 +9,7 @@ Backups List.
 
 List all backups.
 
-Version: 1.21.2
+Version: 1.22.0
 
 import "magalu.cloud/lib/products/dbaas/instances/backups"
 */
@@ -56,6 +56,7 @@ type ListResultMetaPage struct {
 type ListResultResultsItem struct {
 	CreatedAt  string  `json:"created_at"`
 	DbSize     *int    `json:"db_size,omitempty"`
+	EngineId   string  `json:"engine_id"`
 	FinishedAt *string `json:"finished_at,omitempty"`
 	Id         string  `json:"id"`
 	InstanceId string  `json:"instance_id"`

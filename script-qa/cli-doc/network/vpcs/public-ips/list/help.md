@@ -8,10 +8,9 @@ Usage:
 
 ## Product catalog:
 - Flags:
-- -h, --help              help for list
-- -v, --version           version for list
-- --vpc-id anyValue   Vpc ID: Id of the VPC to list the Public IPs in
-- Use --vpc-id=help for more details (required)
+- -h, --help            help for list
+- -v, --version         version for list
+- --vpc-id string   Vpc ID: Id of the VPC to list the Public IPs in (required)
 
 ## Other commands:
 - Global Flags:

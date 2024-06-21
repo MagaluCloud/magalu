@@ -1,5 +1,4 @@
-# WARN	magalu.cloud/sdk/openapi.virtual-machine.snapshots.create	ignored broken link	{"link": "delete", "error": "linked operationId=\"delete_instance_type_v0_instance_types__instance_type_id__delete\": could not resolve \"/operationIds/delete_instance_type_v0_instance_types__instance_type_id__delete\": missing field: \"delete_instance_type_v0_instance_types__instance_type_id__delete\""}
-Operations with snapshots for instances.
+# Operations with snapshots for instances.
 
 ## Usage:
 ```bash

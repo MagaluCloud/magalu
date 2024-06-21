@@ -2,13 +2,13 @@
   "openapi": "3.0.3",
   "info": {
     "title": "vpc-api-product",
-    "description": "APIs related to the VPC product",
+    "description": "APIs referentes ao produto de VPC",
     "contact": {
       "name": "Tribo IAAS Cloud",
       "url": "https://github.com/luizalabs",
       "email": "thullyo.cunha@luizalabs.com"
     },
-    "version": "1.124.1"
+    "version": "1.125.3"
   },
   "paths": {
     "/v0/healthcheck": {
@@ -48,7 +48,9 @@
             "required": false,
             "schema": {
               "type": "array",
-              "items": {},
+              "items": {
+                "type": "string"
+              },
               "title": "Port Id List",
               "default": []
             }
@@ -59,6 +61,7 @@
             "description": "Tenant id of the project",
             "required": true,
             "schema": {
+              "type": "string",
               "title": "X-Tenant-Id",
               "description": "Tenant id of the project"
             }
@@ -106,6 +109,7 @@
             "description": "Tenant id of the project",
             "required": true,
             "schema": {
+              "type": "string",
               "title": "X-Tenant-Id",
               "description": "Tenant id of the project"
             }
@@ -176,6 +180,7 @@
             "description": "ID of VPC to list ports",
             "required": true,
             "schema": {
+              "type": "string",
               "title": "vpc_id",
               "description": "ID of VPC to list ports"
             }
@@ -222,7 +227,9 @@
             "required": false,
             "schema": {
               "type": "array",
-              "items": {},
+              "items": {
+                "type": "string"
+              },
               "title": "Port Id List",
               "default": []
             }
@@ -233,6 +240,7 @@
             "description": "Tenant id of the project",
             "required": true,
             "schema": {
+              "type": "string",
               "title": "X-Tenant-Id",
               "description": "Tenant id of the project"
             }
@@ -284,6 +292,7 @@
             "description": "ID of the VPC to create port",
             "required": true,
             "schema": {
+              "type": "string",
               "title": "vpc_id",
               "description": "ID of the VPC to create port"
             }
@@ -294,6 +303,7 @@
             "description": "Tenant id of the project",
             "required": true,
             "schema": {
+              "type": "string",
               "title": "X-Tenant-Id",
               "description": "Tenant id of the project"
             }
@@ -362,6 +372,7 @@
             "in": "path",
             "required": true,
             "schema": {
+              "type": "string",
               "title": "Port Id"
             }
           },
@@ -371,6 +382,7 @@
             "description": "Tenant id of the project",
             "required": true,
             "schema": {
+              "type": "string",
               "title": "X-Tenant-Id",
               "description": "Tenant id of the project"
             }
@@ -414,6 +426,7 @@
             "description": "ID of the Port to delete",
             "required": true,
             "schema": {
+              "type": "string",
               "title": "port_id",
               "description": "ID of the Port to delete"
             }
@@ -424,6 +437,7 @@
             "description": "Tenant id of the project",
             "required": true,
             "schema": {
+              "type": "string",
               "title": "X-Tenant-Id",
               "description": "Tenant id of the project"
             }
@@ -462,6 +476,7 @@
             "description": "Tenant id of the project",
             "required": true,
             "schema": {
+              "type": "string",
               "title": "X-Tenant-Id",
               "description": "Tenant id of the project"
             }
@@ -508,6 +523,7 @@
             "description": "ID of the Port to attach security group",
             "required": true,
             "schema": {
+              "type": "string",
               "title": "port_id",
               "description": "ID of the Port to attach security group"
             }
@@ -518,6 +534,7 @@
             "description": "ID of the Security Group to attach",
             "required": true,
             "schema": {
+              "type": "string",
               "title": "security_group_id",
               "description": "ID of the Security Group to attach"
             }
@@ -570,6 +587,7 @@
             "description": "ID of the Port to detach security group",
             "required": true,
             "schema": {
+              "type": "string",
               "title": "port_id",
               "description": "ID of the Port to detach security group"
             }
@@ -580,6 +598,7 @@
             "description": "ID of the Security Group to detach",
             "required": true,
             "schema": {
+              "type": "string",
               "title": "security_group_id",
               "description": "ID of the Security Group to detach"
             }
@@ -632,6 +651,7 @@
             "description": "Id of the VPC to list the Public IPs in",
             "required": true,
             "schema": {
+              "type": "string",
               "title": "Vpc ID",
               "description": "Id of the VPC to list the Public IPs in"
             }
@@ -642,6 +662,7 @@
             "description": "Tenant id of the project",
             "required": true,
             "schema": {
+              "type": "string",
               "title": "X-Tenant-Id",
               "description": "Tenant id of the project"
             }
@@ -685,6 +706,7 @@
             "description": "Id of the VPC to create the Public IP in",
             "required": true,
             "schema": {
+              "type": "string",
               "title": "Vpc ID",
               "description": "Id of the VPC to create the Public IP in"
             }
@@ -790,6 +812,7 @@
             "description": "Id of the Public IP to retrieve",
             "required": true,
             "schema": {
+              "type": "string",
               "title": "Public IP ID",
               "description": "Id of the Public IP to retrieve"
             }
@@ -800,6 +823,7 @@
             "description": "Tenant id of the project",
             "required": true,
             "schema": {
+              "type": "string",
               "title": "X-Tenant-Id",
               "description": "Tenant id of the project"
             }
@@ -843,6 +867,7 @@
             "description": "Id of the Public IP to delete",
             "required": true,
             "schema": {
+              "type": "string",
               "title": "Public IP ID",
               "description": "Id of the Public IP to delete"
             }
@@ -890,6 +915,7 @@
             "description": "Id of the Public IP to attach port to",
             "required": true,
             "schema": {
+              "type": "string",
               "title": "Public IP ID",
               "description": "Id of the Public IP to attach port to"
             }
@@ -900,6 +926,7 @@
             "description": "Id of the Port to attach the Public IP",
             "required": true,
             "schema": {
+              "type": "string",
               "title": "Port ID",
               "description": "Id of the Port to attach the Public IP"
             }
@@ -952,6 +979,7 @@
             "description": "Id of the Public IP to detach port to",
             "required": true,
             "schema": {
+              "type": "string",
               "title": "Public IP ID",
               "description": "Id of the Public IP to detach port to"
             }
@@ -962,6 +990,7 @@
             "description": "Id of the Port to detach the Public IP",
             "required": true,
             "schema": {
+              "type": "string",
               "title": "Port ID",
               "description": "Id of the Port to detach the Public IP"
             }
@@ -1014,6 +1043,7 @@
             "description": "Tenant id of the project",
             "required": true,
             "schema": {
+              "type": "string",
               "title": "X-Tenant-Id",
               "description": "Tenant id of the project"
             }
@@ -1074,6 +1104,7 @@
             "description": "Tenant id of the project",
             "required": true,
             "schema": {
+              "type": "string",
               "title": "X-Tenant-Id",
               "description": "Tenant id of the project"
             }
@@ -1120,6 +1151,7 @@
             "description": "Id of the Security Group",
             "required": true,
             "schema": {
+              "type": "string",
               "title": "Security Group ID",
               "description": "Id of the Security Group"
             }
@@ -1130,6 +1162,7 @@
             "description": "Tenant id of the project",
             "required": true,
             "schema": {
+              "type": "string",
               "title": "X-Tenant-Id",
               "description": "Tenant id of the project"
             }
@@ -1173,6 +1206,7 @@
             "description": "Id of the Security Group",
             "required": true,
             "schema": {
+              "type": "string",
               "title": "Security Group ID",
               "description": "Id of the Security Group"
             }
@@ -1283,6 +1317,7 @@
             "description": "Id of the Rule",
             "required": true,
             "schema": {
+              "type": "string",
               "title": "Rule ID",
               "description": "Id of the Rule"
             }
@@ -1293,6 +1328,7 @@
             "description": "Tenant id of the project",
             "required": true,
             "schema": {
+              "type": "string",
               "title": "X-Tenant-Id",
               "description": "Tenant id of the project"
             }
@@ -1336,6 +1372,7 @@
             "description": "Id of the Rule",
             "required": true,
             "schema": {
+              "type": "string",
               "title": "Rule ID",
               "description": "Id of the Rule"
             }
@@ -1428,6 +1465,7 @@
             "description": "Tenant id of the project",
             "required": true,
             "schema": {
+              "type": "string",
               "title": "X-Tenant-Id",
               "description": "Tenant id of the project"
             }
@@ -1561,6 +1599,7 @@
             "description": "Id of the VPC to create the Security Group in",
             "required": true,
             "schema": {
+              "type": "string",
               "title": "Vpc ID",
               "description": "Id of the VPC to create the Security Group in"
             }
@@ -1571,6 +1610,7 @@
             "description": "Tenant id of the project",
             "required": true,
             "schema": {
+              "type": "string",
               "title": "X-Tenant-Id",
               "description": "Tenant id of the project"
             }
@@ -1721,6 +1761,7 @@
             "description": "Id of the security group to detail",
             "required": true,
             "schema": {
+              "type": "string",
               "title": "Security Group ID",
               "description": "Id of the security group to detail"
             }
@@ -1731,6 +1772,7 @@
             "description": "Tenant id of the project",
             "required": true,
             "schema": {
+              "type": "string",
               "title": "X-Tenant-Id",
               "description": "Tenant id of the project"
             }
@@ -1774,6 +1816,7 @@
             "description": "Id of the security group to delete",
             "required": true,
             "schema": {
+              "type": "string",
               "title": "Security Group ID",
               "description": "Id of the security group to delete"
             }
@@ -1866,6 +1909,7 @@
             "description": "Id of the VPC to list Subnets",
             "required": true,
             "schema": {
+              "type": "string",
               "title": "Vpc Id",
               "description": "Id of the VPC to list Subnets"
             }
@@ -1876,6 +1920,7 @@
             "description": "Tenant id of the project",
             "required": true,
             "schema": {
+              "type": "string",
               "title": "X-Tenant-Id",
               "description": "Tenant id of the project"
             }
@@ -1919,6 +1964,7 @@
             "description": "Id of the VPC to create Subnet",
             "required": true,
             "schema": {
+              "type": "string",
               "title": "Vpc Id",
               "description": "Id of the VPC to create Subnet"
             }
@@ -1997,6 +2043,7 @@
             "description": "Id of the Subnet to detail",
             "required": true,
             "schema": {
+              "type": "string",
               "title": "Subnet Id",
               "description": "Id of the Subnet to detail"
             }
@@ -2007,6 +2054,7 @@
             "description": "Tenant id of the project",
             "required": true,
             "schema": {
+              "type": "string",
               "title": "X-Tenant-Id",
               "description": "Tenant id of the project"
             }
@@ -2050,6 +2098,7 @@
             "description": "Id of the Subnet to delete",
             "required": true,
             "schema": {
+              "type": "string",
               "title": "Subnet Id",
               "description": "Id of the Subnet to delete"
             }
@@ -2157,6 +2206,7 @@
             "description": "Tenant id of the project",
             "required": true,
             "schema": {
+              "type": "string",
               "title": "X-Tenant-Id",
               "description": "Tenant id of the project"
             }
@@ -2203,6 +2253,7 @@
             "description": "Tenant id of the project",
             "required": true,
             "schema": {
+              "type": "string",
               "title": "X-Tenant-Id",
               "description": "Tenant id of the project"
             }
@@ -2246,6 +2297,7 @@
             "description": "Tenant id of the project",
             "required": true,
             "schema": {
+              "type": "string",
               "title": "X-Tenant-Id",
               "description": "Tenant id of the project"
             }
@@ -2301,6 +2353,7 @@
             "description": "ID of the VPC to detail",
             "required": true,
             "schema": {
+              "type": "string",
               "title": "VPC Id",
               "description": "ID of the VPC to detail"
             }
@@ -2311,6 +2364,7 @@
             "description": "Tenant id of the project",
             "required": true,
             "schema": {
+              "type": "string",
               "title": "X-Tenant-Id",
               "description": "Tenant id of the project"
             }
@@ -2354,6 +2408,7 @@
             "description": "ID of the VPC to delete",
             "required": true,
             "schema": {
+              "type": "string",
               "title": "VPC Id",
               "description": "ID of the VPC to delete"
             }
@@ -2364,6 +2419,7 @@
             "description": "Tenant id of the project",
             "required": true,
             "schema": {
+              "type": "string",
               "title": "X-Tenant-Id",
               "description": "Tenant id of the project"
             }
@@ -2402,6 +2458,7 @@
             "description": "Tenant id of the project",
             "required": true,
             "schema": {
+              "type": "string",
               "title": "X-Tenant-Id",
               "description": "Tenant id of the project"
             }
@@ -2448,6 +2505,7 @@
             "description": "Id of the public ip to update",
             "required": true,
             "schema": {
+              "type": "string",
               "title": "Public Ip Id",
               "description": "Id of the public ip to update"
             }
@@ -2458,6 +2516,7 @@
             "description": "Tenant id of the project",
             "required": true,
             "schema": {
+              "type": "string",
               "title": "X-Tenant-Id",
               "description": "Tenant id of the project"
             }
@@ -4084,6 +4143,16 @@
             }
           ]
         }
+      },
+      "ResourceType": {
+        "type": "string",
+        "title": "ResourceType",
+        "enum": [
+          "security_group",
+          "rule",
+          "public_ip",
+          "security_group, rule, public_ip"
+        ]
       },
       "RouteRequest": {
         "type": "object",
@@ -7862,29 +7931,5 @@
         }
       }
     }
-  },
-  "servers": [
-    {
-      "url": "https://{env}/{region}/$API_ENDPOINT_NAME",
-      "variables": {
-        "region": {
-          "enum": [
-            "br-ne-1",
-            "br-se1",
-            "br-mgl1"
-          ],
-          "default": "br-se1",
-          "description": "Region to reach the service"
-        },
-        "env": {
-          "enum": [
-            "api.magalu.cloud",
-            "api.pre-prod.jaxyendy.com"
-          ],
-          "default": "api.magalu.cloud",
-          "description": "Environment to use"
-        }
-      }
-    }
-  ]
+  }
 }

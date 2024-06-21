@@ -8,15 +8,13 @@ Usage:
 
 ## Product catalog:
 - Flags:
-- --control.limit integer          Items Per Page (min: 1) (default 10)
-- --control.offset integer         Page Number (min: 1) (default 1)
-- --detailed                       Detailed (default true)
-- -h, --help                           help for list
-- --port-id-list array(anyValue)   Port Id List
-- Use --port-id-list=help for more details (default [])
-- -v, --version                        version for list
-- --vpc-id anyValue                vpc_id: ID of VPC to list ports
-- Use --vpc-id=help for more details (required)
+- --control.limit integer        Items Per Page (min: 1) (default 10)
+- --control.offset integer       Page Number (min: 1) (default 1)
+- --detailed                     Detailed (default true)
+- -h, --help                         help for list
+- --port-id-list array(string)   Port Id List (default [])
+- -v, --version                      version for list
+- --vpc-id string                vpc_id: ID of VPC to list ports (required)
 
 ## Other commands:
 - Global Flags:

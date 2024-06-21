@@ -4,10 +4,9 @@ Usage:
   ./mgc network ports list [flags]
 
 Flags:
-  -h, --help                           help for list
-      --port-id-list array(anyValue)   Port Id List
-                                       Use --port-id-list=help for more details (default [])
-  -v, --version                        version for list
+  -h, --help                         help for list
+      --port-id-list array(string)   Port Id List (default [])
+  -v, --version                      version for list
 
 Global Flags:
       --cli.show-cli-globals   Show all CLI global flags on usage text

@@ -8,7 +8,7 @@
       "url": "https://gitlab.luizalabs.com/cloud/dbaas/docs",
       "email": "cloud-iaas-dbaas@luizalabs.com"
     },
-    "version": "1.21.2"
+    "version": "1.22.0"
   },
   "servers": [
     {
@@ -2770,6 +2770,11 @@
             "type": "string",
             "title": "Updated At",
             "format": "date-time"
+          },
+          "engine_id": {
+            "type": "string",
+            "title": "Engine Id",
+            "format": "uuid"
           }
         },
         "title": "BackupDetailResponse",
@@ -2779,7 +2784,8 @@
           "type",
           "status",
           "mode",
-          "created_at"
+          "created_at",
+          "engine_id"
         ]
       },
       "BackupMode": {

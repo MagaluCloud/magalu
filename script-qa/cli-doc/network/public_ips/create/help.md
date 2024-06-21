@@ -13,8 +13,7 @@ Usage:
 - -h, --help                          help for create
 - --validate-quota                validateQuota: Validate the quota before creating the Public IP (default true)
 - -v, --version                       version for create
-- --vpc-id anyValue               Vpc ID: Id of the VPC to create the Public IP in
-- Use --vpc-id=help for more details (required)
+- --vpc-id string                 Vpc ID: Id of the VPC to create the Public IP in (required)
 - --wait                          The request will be asynchronous. The wait parameter tells the API that you want the request to simulate synchronous behavior (to maintain endpoint compatibility). You can set an approximate timeout with the waitTimeout parameter (default true)
 - --wait-timeout integer          waitTimeout: the approximate time in seconds you want to wait when simulating the request as synchronous (only works with wait=true) (default 120)
 
