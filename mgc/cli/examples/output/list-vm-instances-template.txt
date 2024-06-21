@@ -1,8 +1,0 @@
-{{- if not .instances}}
-There are no available instances!
-{{- else}}
-These are the instances:
-{{range .instances}}Name is '{{.name}}' and ID is '{{.id}}'
-{{end}}
-{{- end}}
-By the way, this template is defined in a file!

@@ -33,3 +33,5 @@ mgc/spec_manipulator/spec_manipulator
 cli_specs/specs.go.tmp
 mgc/cli/openapis/block-storage.openapi.yaml
 mgc/spec_manipulator/specs
+
+venv
