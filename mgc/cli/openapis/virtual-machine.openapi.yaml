@@ -1772,7 +1772,7 @@ paths:
                             parameters:
                                 id: $response.body#/id
                         delete:
-                            operationId: delete_instance_type_v0_instance_types__instance_type_id__delete
+                            operationId: snapshots_delete_v1_snapshots__id__delete
                             description: Delete Instance Type
                             parameters:
                                 id: $response.body#/id

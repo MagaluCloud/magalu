@@ -129,7 +129,7 @@ func (p *MgcProvider) Configure(ctx context.Context, req provider.ConfigureReque
 		}
 	}
 
-	if data.ObjectStorage != nil &&
+	if data.ObjectStorage != nil && data.ObjectStorage.ObjectKeyPair != nil &&
 		!data.ObjectStorage.ObjectKeyPair.KeyID.IsNull() &&
 		!data.ObjectStorage.ObjectKeyPair.KeySecret.IsNull() {
 		p.sdk.Config().AddTempKeyPair("apikey",
