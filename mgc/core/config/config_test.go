@@ -9,14 +9,13 @@ import (
 	"github.com/spf13/afero"
 	"magalu.cloud/core/profile_manager"
 	"magalu.cloud/core/utils"
-	"magalu.cloud/testing/fs_test_helper"
 )
 
 type testCaseConfig struct {
 	name       string
 	run        func(c *Config) error
-	expectedFs []fs_test_helper.TestFsEntry
-	providedFs []fs_test_helper.TestFsEntry
+	expectedFs []utils.TestFsEntry
+	providedFs []utils.TestFsEntry
 }
 
 func setupWithoutFile(path string) (*Config, afero.Fs) {
@@ -413,9 +412,9 @@ func TestGet(t *testing.T) {
 	})
 }
 
-func deleteTest(name string, key string, expected any, provided []fs_test_helper.TestFsEntry, expectedfs []fs_test_helper.TestFsEntry) testCaseConfig {
-	provided = fs_test_helper.AutoMkdirAll(provided)
-	expectedfs = fs_test_helper.AutoMkdirAll(expectedfs)
+func deleteTest(name string, key string, expected any, provided []utils.TestFsEntry, expectedfs []utils.TestFsEntry) testCaseConfig {
+	provided = utils.AutoMkdirAll(provided)
+	expectedfs = utils.AutoMkdirAll(expectedfs)
 	return testCaseConfig{
 		name:       fmt.Sprintf("Config.DeleteWithFile(%q)", name),
 		providedFs: provided,
@@ -426,9 +425,9 @@ func deleteTest(name string, key string, expected any, provided []fs_test_helper
 	}
 }
 
-func getTest(name string, key string, expected any, provided []fs_test_helper.TestFsEntry, expectedfs []fs_test_helper.TestFsEntry) testCaseConfig {
-	provided = fs_test_helper.AutoMkdirAll(provided)
-	expectedfs = fs_test_helper.AutoMkdirAll(expectedfs)
+func getTest(name string, key string, expected any, provided []utils.TestFsEntry, expectedfs []utils.TestFsEntry) testCaseConfig {
+	provided = utils.AutoMkdirAll(provided)
+	expectedfs = utils.AutoMkdirAll(expectedfs)
 	return testCaseConfig{
 		name:       fmt.Sprintf("Config.Get(%q)", name),
 		providedFs: provided,
@@ -447,9 +446,9 @@ func getTest(name string, key string, expected any, provided []fs_test_helper.Te
 	}
 }
 
-func setTest(name string, key string, expected any, provided []fs_test_helper.TestFsEntry, expectedfs []fs_test_helper.TestFsEntry) testCaseConfig {
-	provided = fs_test_helper.AutoMkdirAll(provided)
-	expectedfs = fs_test_helper.AutoMkdirAll(expectedfs)
+func setTest(name string, key string, expected any, provided []utils.TestFsEntry, expectedfs []utils.TestFsEntry) testCaseConfig {
+	provided = utils.AutoMkdirAll(provided)
+	expectedfs = utils.AutoMkdirAll(expectedfs)
 	return testCaseConfig{
 		name:       fmt.Sprintf("Config.SetWithFile(%q)", name),
 		providedFs: provided,
@@ -464,13 +463,13 @@ func setTest(name string, key string, expected any, provided []fs_test_helper.Te
 func TestConfigManagerWithFile(t *testing.T) {
 	tests := []testCaseConfig{
 		deleteTest("test1", "foo", nil,
-			[]fs_test_helper.TestFsEntry{
+			[]utils.TestFsEntry{
 				{
 					Path: "/default/cli.yaml",
 					Mode: utils.FILE_PERMISSION,
 					Data: []byte(`foo: bar`),
 				},
-			}, []fs_test_helper.TestFsEntry{
+			}, []utils.TestFsEntry{
 				{
 					Path: "/default/cli.yaml",
 					Mode: utils.FILE_PERMISSION,
@@ -479,13 +478,13 @@ func TestConfigManagerWithFile(t *testing.T) {
 				},
 			}),
 		deleteTest("test2", "foo", nil,
-			[]fs_test_helper.TestFsEntry{
+			[]utils.TestFsEntry{
 				{
 					Path: "/default/cli.yaml",
 					Mode: utils.FILE_PERMISSION,
 					Data: []byte(`foo:`),
 				},
-			}, []fs_test_helper.TestFsEntry{
+			}, []utils.TestFsEntry{
 				{
 					Path: "/default/cli.yaml",
 					Mode: utils.FILE_PERMISSION,
@@ -493,13 +492,13 @@ func TestConfigManagerWithFile(t *testing.T) {
 				},
 			}),
 		deleteTest("test3", "foo", nil,
-			[]fs_test_helper.TestFsEntry{
+			[]utils.TestFsEntry{
 				{
 					Path: "/default/cli.yaml",
 					Mode: utils.FILE_PERMISSION,
 					Data: []byte{},
 				},
-			}, []fs_test_helper.TestFsEntry{
+			}, []utils.TestFsEntry{
 				{
 					Path: "/default/cli.yaml",
 					Mode: utils.FILE_PERMISSION,
@@ -507,13 +506,13 @@ func TestConfigManagerWithFile(t *testing.T) {
 				},
 			}),
 		deleteTest("withoutFile3", "foo", nil,
-			[]fs_test_helper.TestFsEntry{
+			[]utils.TestFsEntry{
 				{
 					Path: "/default/cli.yaml",
 					Mode: utils.FILE_PERMISSION,
 					Data: []byte(`""`),
 				},
-			}, []fs_test_helper.TestFsEntry{
+			}, []utils.TestFsEntry{
 				{
 					Path: "/default/cli.yaml",
 					Mode: utils.FILE_PERMISSION,
@@ -522,13 +521,13 @@ func TestConfigManagerWithFile(t *testing.T) {
 			}),
 
 		getTest("test1", "foo", "bar",
-			[]fs_test_helper.TestFsEntry{
+			[]utils.TestFsEntry{
 				{
 					Path: "/default/cli.yaml",
 					Mode: utils.FILE_PERMISSION,
 					Data: []byte(`foo: bar`),
 				},
-			}, []fs_test_helper.TestFsEntry{
+			}, []utils.TestFsEntry{
 				{
 					Path: "/default/cli.yaml",
 					Mode: utils.FILE_PERMISSION,
@@ -536,13 +535,13 @@ func TestConfigManagerWithFile(t *testing.T) {
 				},
 			}),
 		getTest("test2", "foo", nil,
-			[]fs_test_helper.TestFsEntry{
+			[]utils.TestFsEntry{
 				{
 					Path: "/default/cli.yaml",
 					Mode: utils.FILE_PERMISSION,
 					Data: []byte(`foo`),
 				},
-			}, []fs_test_helper.TestFsEntry{
+			}, []utils.TestFsEntry{
 				{
 					Path: "/default/cli.yaml",
 					Mode: utils.FILE_PERMISSION,
@@ -550,13 +549,13 @@ func TestConfigManagerWithFile(t *testing.T) {
 				},
 			}),
 		getTest("test3", "foo", nil,
-			[]fs_test_helper.TestFsEntry{
+			[]utils.TestFsEntry{
 				{
 					Path: "/default/cli.yaml",
 					Mode: utils.FILE_PERMISSION,
 					Data: []byte(`""`),
 				},
-			}, []fs_test_helper.TestFsEntry{
+			}, []utils.TestFsEntry{
 				{
 					Path: "/default/cli.yaml",
 					Mode: utils.FILE_PERMISSION,
@@ -564,13 +563,13 @@ func TestConfigManagerWithFile(t *testing.T) {
 				},
 			}),
 		setTest("test1", "foo", "woo",
-			[]fs_test_helper.TestFsEntry{
+			[]utils.TestFsEntry{
 				{
 					Path: "/default/cli.yaml",
 					Mode: utils.FILE_PERMISSION,
 					Data: []byte(`foo: bar`),
 				},
-			}, []fs_test_helper.TestFsEntry{
+			}, []utils.TestFsEntry{
 				{
 					Path: "/default/cli.yaml",
 					Mode: utils.FILE_PERMISSION,
@@ -580,13 +579,13 @@ func TestConfigManagerWithFile(t *testing.T) {
 			}),
 
 		setTest("test2", "foo", "woo",
-			[]fs_test_helper.TestFsEntry{
+			[]utils.TestFsEntry{
 				{
 					Path: "/default/cli.yaml",
 					Mode: utils.FILE_PERMISSION,
 					Data: []byte(`foo:`),
 				},
-			}, []fs_test_helper.TestFsEntry{
+			}, []utils.TestFsEntry{
 				{
 					Path: "/default/cli.yaml",
 					Mode: utils.FILE_PERMISSION,
@@ -595,13 +594,13 @@ func TestConfigManagerWithFile(t *testing.T) {
 				},
 			}),
 		setTest("test3", "foo", "woo",
-			[]fs_test_helper.TestFsEntry{
+			[]utils.TestFsEntry{
 				{
 					Path: "/default/cli.yaml",
 					Mode: utils.FILE_PERMISSION,
 					Data: []byte(`""`),
 				},
-			}, []fs_test_helper.TestFsEntry{
+			}, []utils.TestFsEntry{
 				{
 					Path: "/default/cli.yaml",
 					Mode: utils.FILE_PERMISSION,
@@ -610,13 +609,13 @@ func TestConfigManagerWithFile(t *testing.T) {
 				},
 			}),
 		setTest("test1", "foo", "woo",
-			[]fs_test_helper.TestFsEntry{
+			[]utils.TestFsEntry{
 				{
 					Path: "/default/",
 					Mode: utils.DIR_PERMISSION,
 					Data: []byte{},
 				},
-			}, []fs_test_helper.TestFsEntry{
+			}, []utils.TestFsEntry{
 				{
 					Path: "/default/cli.yaml",
 					Mode: utils.FILE_PERMISSION,
@@ -629,7 +628,7 @@ func TestConfigManagerWithFile(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 
 			m, fs := profile_manager.NewInMemoryProfileManager()
-			fs_err := fs_test_helper.PrepareFs(fs, tc.providedFs)
+			fs_err := utils.PrepareFs(fs, tc.providedFs)
 
 			if fs_err != nil {
 				t.Errorf("could not prepare provided FS: %s", fs_err.Error())
@@ -641,7 +640,7 @@ func TestConfigManagerWithFile(t *testing.T) {
 				t.Errorf("expected err == nil, found: %v", run_error)
 			}
 
-			fs_err = fs_test_helper.CheckFs(fs, tc.expectedFs)
+			fs_err = utils.CheckFs(fs, tc.expectedFs)
 
 			if fs_err != nil {
 				t.Errorf("unexpected FS state: %s", fs_err.Error())
