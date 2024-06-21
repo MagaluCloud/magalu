@@ -55,26 +55,26 @@ type RestoreParametersMachineType1 struct {
 }
 
 type RestoreParametersNetwork struct {
-	AssociatePublicIp *bool                        `json:"associate_public_ip,omitempty"`
-	Nic               *RestoreParametersNetworkNic `json:"nic,omitempty"`
-	Vpc               *RestoreParametersNetworkVpc `json:"vpc,omitempty"`
+	AssociatePublicIp *bool                              `json:"associate_public_ip,omitempty"`
+	Interface         *RestoreParametersNetworkInterface `json:"interface,omitempty"`
+	Vpc               *RestoreParametersNetworkVpc       `json:"vpc,omitempty"`
 }
 
-// any of: RestoreParametersMachineType0, RestoreParametersNetworkNic1
-type RestoreParametersNetworkNic struct {
-	RestoreParametersMachineType0 `json:",squash"` // nolint
-	RestoreParametersNetworkNic1  `json:",squash"` // nolint
+// any of: RestoreParametersMachineType0, RestoreParametersNetworkInterface1
+type RestoreParametersNetworkInterface struct {
+	RestoreParametersMachineType0      `json:",squash"` // nolint
+	RestoreParametersNetworkInterface1 `json:",squash"` // nolint
 }
 
-type RestoreParametersNetworkNic1 struct {
-	SecurityGroups *RestoreParametersNetworkNic1SecurityGroups `json:"security_groups,omitempty"`
+type RestoreParametersNetworkInterface1 struct {
+	SecurityGroups *RestoreParametersNetworkInterface1SecurityGroups `json:"security_groups,omitempty"`
 }
 
-type RestoreParametersNetworkNic1SecurityGroupsItem struct {
+type RestoreParametersNetworkInterface1SecurityGroupsItem struct {
 	Id string `json:"id"`
 }
 
-type RestoreParametersNetworkNic1SecurityGroups []RestoreParametersNetworkNic1SecurityGroupsItem
+type RestoreParametersNetworkInterface1SecurityGroups []RestoreParametersNetworkInterface1SecurityGroupsItem
 
 // any of: RestoreParametersMachineType0, RestoreParametersMachineType1
 type RestoreParametersNetworkVpc struct {

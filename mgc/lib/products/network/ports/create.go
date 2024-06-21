@@ -9,7 +9,7 @@ Executor: create
 
 Create a Port with provided vpc_id and x-tenant-id. You can provide a list of security_groups_id or subnets
 
-Version: 1.124.1
+Version: 1.125.3
 
 import "magalu.cloud/lib/products/network/ports"
 */
@@ -26,7 +26,7 @@ type CreateParameters struct {
 	Name             string                            `json:"name"`
 	SecurityGroupsId *CreateParametersSecurityGroupsId `json:"security_groups_id,omitempty"`
 	Subnets          *CreateParametersSubnets          `json:"subnets,omitempty"`
-	VpcId            any                               `json:"vpc_id"`
+	VpcId            string                            `json:"vpc_id"`
 }
 
 type CreateParametersSecurityGroupsId []string

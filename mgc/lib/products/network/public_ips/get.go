@@ -9,7 +9,7 @@ Executor: get
 
 # Return a Public IP details
 
-Version: 1.124.1
+Version: 1.125.3
 
 import "magalu.cloud/lib/products/network/public_ips"
 */
@@ -21,7 +21,7 @@ import (
 )
 
 type GetParameters struct {
-	PublicIpId any `json:"public_ip_id"`
+	PublicIpId string `json:"public_ip_id"`
 }
 
 type GetConfigs struct {

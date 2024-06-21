@@ -9,7 +9,7 @@ Database instance details.
 
 Returns a database instance detail.
 
-Version: 1.21.2
+Version: 1.22.0
 
 import "magalu.cloud/lib/products/dbaas/instances"
 */

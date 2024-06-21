@@ -9,7 +9,7 @@ Executor: list
 
 Returns a list of rules for a provided security_group_id
 
-Version: 1.124.1
+Version: 1.125.3
 
 import "magalu.cloud/lib/products/network/rules"
 */
@@ -21,7 +21,7 @@ import (
 )
 
 type ListParameters struct {
-	SecurityGroupId any `json:"security_group_id"`
+	SecurityGroupId string `json:"security_group_id"`
 }
 
 type ListConfigs struct {

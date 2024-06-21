@@ -9,7 +9,7 @@ Executor: detach
 
 Detach a Security Group to a Port with provided port_id, security_group_id, x-tenant-id of an specific project type
 
-Version: 1.124.1
+Version: 1.125.3
 
 import "magalu.cloud/lib/products/network/ports"
 */
@@ -21,8 +21,8 @@ import (
 )
 
 type DetachParameters struct {
-	PortId          any `json:"port_id"`
-	SecurityGroupId any `json:"security_group_id"`
+	PortId          string `json:"port_id"`
+	SecurityGroupId string `json:"security_group_id"`
 }
 
 type DetachConfigs struct {

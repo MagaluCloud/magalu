@@ -51,26 +51,26 @@ type CreateParametersMachineType struct {
 }
 
 type CreateParametersNetwork struct {
-	AssociatePublicIp *bool                       `json:"associate_public_ip,omitempty"`
-	Nic               *CreateParametersNetworkNic `json:"nic,omitempty"`
-	Vpc               *CreateParametersNetworkVpc `json:"vpc,omitempty"`
+	AssociatePublicIp *bool                             `json:"associate_public_ip,omitempty"`
+	Interface         *CreateParametersNetworkInterface `json:"interface,omitempty"`
+	Vpc               *CreateParametersNetworkVpc       `json:"vpc,omitempty"`
 }
 
-// any of: CreateParametersImage0, CreateParametersNetworkNic1
-type CreateParametersNetworkNic struct {
-	CreateParametersImage0      `json:",squash"` // nolint
-	CreateParametersNetworkNic1 `json:",squash"` // nolint
+// any of: CreateParametersImage0, CreateParametersNetworkInterface1
+type CreateParametersNetworkInterface struct {
+	CreateParametersImage0            `json:",squash"` // nolint
+	CreateParametersNetworkInterface1 `json:",squash"` // nolint
 }
 
-type CreateParametersNetworkNic1 struct {
-	SecurityGroups *CreateParametersNetworkNic1SecurityGroups `json:"security_groups,omitempty"`
+type CreateParametersNetworkInterface1 struct {
+	SecurityGroups *CreateParametersNetworkInterface1SecurityGroups `json:"security_groups,omitempty"`
 }
 
-type CreateParametersNetworkNic1SecurityGroupsItem struct {
+type CreateParametersNetworkInterface1SecurityGroupsItem struct {
 	Id string `json:"id"`
 }
 
-type CreateParametersNetworkNic1SecurityGroups []CreateParametersNetworkNic1SecurityGroupsItem
+type CreateParametersNetworkInterface1SecurityGroups []CreateParametersNetworkInterface1SecurityGroupsItem
 
 // any of: CreateParametersImage0, CreateParametersImage1
 type CreateParametersNetworkVpc struct {

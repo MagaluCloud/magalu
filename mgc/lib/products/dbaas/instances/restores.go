@@ -9,7 +9,7 @@ Backup restore.
 
 Restores a backup for an instance asynchronously.
 
-Version: 1.21.2
+Version: 1.22.0
 
 import "magalu.cloud/lib/products/dbaas/instances"
 */

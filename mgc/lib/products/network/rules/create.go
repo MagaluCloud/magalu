@@ -9,7 +9,7 @@ Executor: create
 
 Create a Rule async, returning its ID. To monitor the creation progress, please check the status in the service message or implement polling.Either a remote_ip_prefix or a remote_group_id can be specified.With remote_ip_prefix, all IPs that match the criteria will be allowed.With remote_group_id, only the specified security group is allowed to communicatefollowing the specified protocol, direction and port_range_min/max
 
-Version: 1.124.1
+Version: 1.125.3
 
 import "magalu.cloud/lib/products/network/rules"
 */
@@ -28,7 +28,7 @@ type CreateParameters struct {
 	Protocol        *string `json:"protocol,omitempty"`
 	RemoteGroupId   *string `json:"remote_group_id,omitempty"`
 	RemoteIpPrefix  *string `json:"remote_ip_prefix,omitempty"`
-	SecurityGroupId any     `json:"security_group_id"`
+	SecurityGroupId string  `json:"security_group_id"`
 	ValidateQuota   *bool   `json:"validate_quota,omitempty"`
 	Wait            *bool   `json:"wait,omitempty"`
 	WaitTimeout     *int    `json:"wait_timeout,omitempty"`
