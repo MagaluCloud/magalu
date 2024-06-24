@@ -3,6 +3,7 @@ package profile
 import (
 	"context"
 	"errors"
+	"os"
 
 	"magalu.cloud/core"
 	"magalu.cloud/core/profile_manager"
@@ -36,6 +37,11 @@ func setProfile(ctx context.Context, params setCurrentParams, _ struct{}) (*prof
 	p, err := m.Get(params.Name)
 	if err != nil {
 		return nil, ProfileError{Name: params.Name, Err: err}
+	}
+
+	_, err = os.Stat(p.Dir())
+	if err != nil {
+		return nil, ProfileError{Name: params.Name, Err: errors.New("profile does not exist")}
 	}
 
 	err = m.SetCurrent(p)
