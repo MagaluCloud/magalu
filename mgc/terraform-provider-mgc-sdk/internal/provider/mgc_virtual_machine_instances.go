@@ -478,8 +478,8 @@ func (r *vmInstances) Delete(ctx context.Context, req resource.DeleteRequest, re
 		sdkVmInstances.DeleteConfigs{Env: config.Env(), Region: config.Region()})
 	if err != nil {
 		resp.Diagnostics.AddError(
-			"Error Reading VM",
-			"Could not read VM ID "+data.ID.ValueString()+": "+err.Error(),
+			"Error Deleting VM",
+			"Could not delete VM ID "+data.ID.ValueString()+": "+err.Error(),
 		)
 		return
 	}
@@ -556,6 +556,7 @@ func (r *vmInstances) getMachineTypeID(name string, config Config) (*vmInstances
 	if err != nil {
 		return nil, fmt.Errorf("could not load machine-type list, unexpected error: " + err.Error())
 	}
+
 	for _, x := range machineTypeList.InstanceTypes {
 		if x.Name == name {
 			machineType.Disk = types.NumberValue(new(big.Float).SetInt64(int64(x.Disk)))

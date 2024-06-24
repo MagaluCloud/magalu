@@ -3,12 +3,17 @@ package provider
 import (
 	"context"
 	"fmt"
+	"time"
 
 	"github.com/hashicorp/terraform-plugin-framework/resource"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	mgcSdk "magalu.cloud/lib"
 
+	sdkVmSnapshots "magalu.cloud/lib/products/virtual_machine/snapshots"
 	"magalu.cloud/sdk"
 )
 
@@ -25,7 +30,8 @@ func NewVirtualMachineSnapshotsResource() resource.Resource {
 
 // orderResource is the resource implementation.
 type vmSnapshots struct {
-	sdkClient *mgcSdk.Client
+	sdkClient   *mgcSdk.Client
+	vmSnapshots sdkVmSnapshots.Service
 }
 
 // Metadata returns the resource type name.
@@ -53,28 +59,135 @@ func (r *vmSnapshots) Configure(ctx context.Context, req resource.ConfigureReque
 	}
 
 	r.sdkClient = mgcSdk.NewClient(sdk)
+
+	r.vmSnapshots = sdkVmSnapshots.NewService(ctx, r.sdkClient)
 }
 
 // vmSnapshotsResourceModel maps de resource schema data.
 type vmSnapshotsResourceModel struct {
-	ID   types.String `tfsdk:"id"`
-	Name types.String `tfsdk:"name"`
+	Region             types.String `tfsdk:"region"`
+	Env                types.String `tfsdk:"env"`
+	ID                 types.String `tfsdk:"id"`
+	Name               types.String `tfsdk:"name"`
+	VirtualMachineName types.String `tfsdk:"virtual_machine_name"`
+	UpdatedAt          types.String `tfsdk:"updated_at"`
+	CreatedAt          types.String `tfsdk:"created_at"`
 }
 
 // Schema defines the schema for the resource.
 func (r *vmSnapshots) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
+	resp.Schema = schema.Schema{
+		Attributes: map[string]schema.Attribute{
+			"region": schema.StringAttribute{
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.UseStateForUnknown(),
+				},
+				Optional: true,
+			},
+			"env": schema.StringAttribute{
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.UseStateForUnknown(),
+				},
+				Optional: true,
+			},
+			"id": schema.StringAttribute{
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.UseStateForUnknown(),
+				},
+				Computed: true,
+			},
+			"name": schema.StringAttribute{
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.UseStateForUnknown(),
+				},
+				Computed: true,
+			},
+			"virtual_machine_name": schema.StringAttribute{
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.UseStateForUnknown(),
+				},
+				Required: true,
+			},
+		},
+	}
 }
 
 func (r *vmSnapshots) ModifyPlan(ctx context.Context, req resource.ModifyPlanRequest, resp *resource.ModifyPlanResponse) {
 	//do nothing
 }
 
+func (r *vmSnapshots) getVmSnapshot(id string, config Config) (sdkVmSnapshots.GetResult, error) {
+	getResult, err := r.vmSnapshots.Get(
+		sdkVmSnapshots.GetParameters{
+			Id: id,
+		},
+		sdkVmSnapshots.GetConfigs{Env: config.Env(), Region: config.Region()})
+	if err != nil {
+		return sdkVmSnapshots.GetResult{}, err
+	}
+	return getResult, nil
+}
+
 // Read refreshes the Terraform state with the latest data.
 func (r *vmSnapshots) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	data := &vmSnapshotsResourceModel{}
+	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
+	config := NewConfig(data.Region.ValueStringPointer(), data.Env.ValueStringPointer())
+
+	getResult, err := r.getVmSnapshot(data.ID.ValueString(), config)
+	if err != nil {
+		resp.Diagnostics.AddError(
+			"Error Reading VM",
+			"Could not read VM ID "+data.ID.ValueString()+": "+err.Error(),
+		)
+		return
+	}
+
+	data.ID = types.StringValue(getResult.Id)
+	data.Name = types.StringValue(*getResult.Name)
+
+	// Save updated data into Terraform state
+	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
 // Create creates the resource and sets the initial Terraform state.
 func (r *vmSnapshots) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	plan := &vmSnapshotsResourceModel{}
+	diags := req.Plan.Get(ctx, &plan)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	config := NewConfig(plan.Region.ValueStringPointer(), plan.Env.ValueStringPointer())
+
+	createParams := sdkVmSnapshots.CreateParameters{
+		Name: plan.Name.ValueString(),
+		VirtualMachine: sdkVmSnapshots.CreateParametersVirtualMachine{
+			CreateParametersVirtualMachine1: sdkVmSnapshots.CreateParametersVirtualMachine1{
+				Name: plan.VirtualMachineName.ValueString(),
+			},
+		},
+	}
+
+	result, err := r.vmSnapshots.Create(createParams, sdkVmSnapshots.CreateConfigs{Env: config.Env(), Region: config.Region()})
+	if err != nil {
+		resp.Diagnostics.AddError(
+			"Error Creating VM Snapshot",
+			"Could not create VM Snapshot: "+err.Error(),
+		)
+	}
+
+	plan.Name = types.StringValue(plan.Name.ValueString())
+	plan.ID = types.StringValue(result.Id)
+
+	plan.CreatedAt = types.StringValue(time.Now().Format(time.RFC850))
+	plan.UpdatedAt = types.StringValue(time.Now().Format(time.RFC850))
+	// Set state to fully populated data
+	diags = resp.State.Set(ctx, plan)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
 }
 
 // Update updates the resource and sets the updated Terraform state on success.
@@ -83,5 +196,24 @@ func (r *vmSnapshots) Update(ctx context.Context, req resource.UpdateRequest, re
 
 // Delete deletes the resource and removes the Terraform state on success.
 func (r *vmSnapshots) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	var data vmSnapshotsResourceModel
+
+	// Read Terraform prior state data into the model
+	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
+
+	config := NewConfig(data.Region.ValueStringPointer(), data.Env.ValueStringPointer())
+
+	err := r.vmSnapshots.Delete(
+		sdkVmSnapshots.DeleteParameters{
+			Id: data.ID.ValueString(),
+		},
+		sdkVmSnapshots.DeleteConfigs{Env: config.Env(), Region: config.Region()})
+	if err != nil {
+		resp.Diagnostics.AddError(
+			"Error deleting VM Snapshot",
+			"Could not delete VM Snapshot "+data.ID.ValueString()+": "+err.Error(),
+		)
+		return
+	}
 
 }
