@@ -110,7 +110,7 @@ func login(ctx context.Context, parameters loginParameters, _ struct{}) (*loginR
 	// TEMPORARY
 	// IGNORE SCOPES
 	// Motive: https://chat.google.com/room/AAAA4bpKhmw/ZHDVReLMDSg/ZHDVReLMDSg?cls=10
-	ignoredScopes := core.Scopes{"mcr.read", "mcr.write"}
+	ignoredScopes := core.Scopes{}
 
 	if parameters.Scopes == nil {
 		// Also add all available scopes by default when logging if no scope is explicitly passed in
