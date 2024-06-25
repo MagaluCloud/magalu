@@ -1,7 +1,6 @@
 from typing import Any, Callable, Dict, Hashable
 import argparse
 import yaml
-from transformers.validate_openapi_specs import validate_oapi
 
 OAPISchema = Dict[str, Any]
 
@@ -217,6 +216,7 @@ SUPPORTED_SCHEMA_CUSTOMIZATIONS = {
     "minimum": check_is_number,
     "exclusiveMinimum": check_is_bool,
     "example": check_any,
+    "default": check_any,
 }
 
 
@@ -583,6 +583,5 @@ if __name__ == "__main__":
     validate_oapi_customizations(base, extra)
 
     merge_dict(base, extra, args.override, [])
-    validate_oapi(base)
 
     save_external(base, args.output or args.base)
