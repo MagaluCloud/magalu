@@ -35,3 +35,4 @@ mgc/cli/openapis/block-storage.openapi.yaml
 mgc/spec_manipulator/specs
 
 venv
+/mgc/cli/default
