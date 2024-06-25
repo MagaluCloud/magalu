@@ -36,29 +36,10 @@ type ListConfigs struct {
 	ServerUrl *string `json:"serverUrl,omitempty"`
 }
 
-// any of: ListResult0, ListResult1
+// any of: , ListResult1
 type ListResult struct {
-	ListResult0 `json:",squash"` // nolint
 	ListResult1 `json:",squash"` // nolint
 }
-
-type ListResult0 struct {
-	PortsSimplified ListResult0PortsSimplified `json:"ports_simplified"`
-}
-
-type ListResult0PortsSimplifiedItem struct {
-	Id        *string                                  `json:"id,omitempty"`
-	IpAddress *ListResult0PortsSimplifiedItemIpAddress `json:"ip_address,omitempty"`
-}
-
-type ListResult0PortsSimplifiedItemIpAddressItem struct {
-	IpAddress string `json:"ip_address"`
-	SubnetId  string `json:"subnet_id"`
-}
-
-type ListResult0PortsSimplifiedItemIpAddress []ListResult0PortsSimplifiedItemIpAddressItem
-
-type ListResult0PortsSimplified []ListResult0PortsSimplifiedItem
 
 type ListResult1 struct {
 	Ports ListResult1Ports `json:"ports"`

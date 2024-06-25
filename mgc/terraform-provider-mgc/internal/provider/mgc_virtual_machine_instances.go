@@ -289,14 +289,14 @@ func (r *vmInstances) Create(ctx context.Context, req resource.CreateRequest, re
 		return
 	}
 	// Get image and machine type ID
-	imageID, err := r.getImageID(plan.Image.Name.ValueString())
-	if err != nil {
-		resp.Diagnostics.AddError(
-			"Error creating vm",
-			"Could not load image list",
-		)
-		return
-	}
+	// imageID, err := r.getImageID(plan.Image.Name.ValueString())
+	// if err != nil {
+	// 	resp.Diagnostics.AddError(
+	// 		"Error creating vm",
+	// 		"Could not load image list",
+	// 	)
+	// 	return
+	// }
 
 	machineType, err := r.getMachineTypeID(plan.MachineType.Name.ValueString())
 	if err != nil {
@@ -319,31 +319,25 @@ func (r *vmInstances) Create(ctx context.Context, req resource.CreateRequest, re
 			CreateParametersImage1: sdkVmInstances.CreateParametersImage1{
 				Name: plan.Image.Name.ValueString(),
 			},
-			CreateParametersImage0: sdkVmInstances.CreateParametersImage0{
-				Id: imageID,
-			},
 		},
 		MachineType: sdkVmInstances.CreateParametersMachineType{
 			CreateParametersImage1: sdkVmInstances.CreateParametersImage1{
 				Name: plan.MachineType.Name.ValueString(),
 			},
-			CreateParametersImage0: sdkVmInstances.CreateParametersImage0{
-				Id: machineType.ID.ValueString(),
-			},
 		},
-		Network: sdkVmInstances.CreateParametersNetwork{
+		Network: &sdkVmInstances.CreateParametersNetwork{
 			AssociatePublicIp: plan.Network.AssociatePublicIP.ValueBoolPointer(),
 		},
 	}
 
 	if !plan.Network.VPC.ID.IsNull() && plan.Network.VPC.ID.ValueString() != "" {
 		createParams.Network.Vpc = &sdkVmInstances.CreateParametersNetworkVpc{
-			CreateParametersImage0: sdkVmInstances.CreateParametersImage0{
-				Id: plan.Network.VPC.ID.ValueString(),
+			CreateParametersImage1: sdkVmInstances.CreateParametersImage1{
+				Name: plan.Network.VPC.Name.ValueString(),
 			},
 		}
 	} else if !plan.Network.VPC.Name.IsNull() && plan.Network.VPC.Name.ValueString() != "" {
-		vpcId, err := r.getVpcID(plan.Network.VPC.Name.ValueString())
+		// vpcId, err := r.getVpcID(plan.Network.VPC.Name.ValueString())
 		if err != nil {
 			resp.Diagnostics.AddError(
 				"Error creating vm",
@@ -353,9 +347,6 @@ func (r *vmInstances) Create(ctx context.Context, req resource.CreateRequest, re
 		}
 		if strings.Contains(plan.Network.VPC.Name.ValueString(), plan.Network.VPC.Name.ValueString()) {
 			createParams.Network.Vpc = &sdkVmInstances.CreateParametersNetworkVpc{
-				CreateParametersImage0: sdkVmInstances.CreateParametersImage0{
-					Id: vpcId,
-				},
 				CreateParametersImage1: sdkVmInstances.CreateParametersImage1{
 					Name: plan.Network.VPC.Name.ValueString(),
 				},
@@ -413,9 +404,6 @@ func (r *vmInstances) Update(ctx context.Context, req resource.UpdateRequest, re
 	err = r.vmInstances.Retype(sdkVmInstances.RetypeParameters{
 		Id: data.ID.ValueString(),
 		MachineType: sdkVmInstances.RetypeParametersMachineType{
-			RetypeParametersMachineType0: sdkVmInstances.RetypeParametersMachineType0{
-				Id: machineType.ID.ValueString(),
-			},
 			RetypeParametersMachineType1: sdkVmInstances.RetypeParametersMachineType1{
 				Name: data.MachineType.Name.ValueString(),
 			},

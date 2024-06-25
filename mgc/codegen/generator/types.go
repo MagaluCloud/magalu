@@ -316,6 +316,9 @@ func (t *generatorTemplateTypes) addObjectAlternatives(objDef *generatorTemplate
 	objDef.Doc += doc + ": "
 
 	for i, childRef := range schemaRefs {
+		if i != len(schemaRefs)-1 {
+			continue
+		}
 		if childRef == nil || childRef.Value == nil {
 			continue
 		}

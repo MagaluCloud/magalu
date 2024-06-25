@@ -25,28 +25,22 @@ type CreateParameters struct {
 	Image            CreateParametersImage       `json:"image"`
 	MachineType      CreateParametersMachineType `json:"machine_type"`
 	Name             string                      `json:"name"`
-	Network          CreateParametersNetwork     `json:"network"`
+	Network          *CreateParametersNetwork    `json:"network,omitempty"`
 	SshKeyName       string                      `json:"ssh_key_name"`
 	UserData         *string                     `json:"user_data,omitempty"`
 }
 
-// any of: CreateParametersImage0, CreateParametersImage1
+// any of: , CreateParametersImage1
 type CreateParametersImage struct {
-	CreateParametersImage0 `json:",squash"` // nolint
 	CreateParametersImage1 `json:",squash"` // nolint
-}
-
-type CreateParametersImage0 struct {
-	Id string `json:"id"`
 }
 
 type CreateParametersImage1 struct {
 	Name string `json:"name"`
 }
 
-// any of: CreateParametersImage0, CreateParametersImage1
+// any of: , CreateParametersImage1
 type CreateParametersMachineType struct {
-	CreateParametersImage0 `json:",squash"` // nolint
 	CreateParametersImage1 `json:",squash"` // nolint
 }
 
@@ -56,9 +50,8 @@ type CreateParametersNetwork struct {
 	Vpc               *CreateParametersNetworkVpc       `json:"vpc,omitempty"`
 }
 
-// any of: CreateParametersImage0, CreateParametersNetworkInterface1
+// any of: , CreateParametersNetworkInterface1
 type CreateParametersNetworkInterface struct {
-	CreateParametersImage0            `json:",squash"` // nolint
 	CreateParametersNetworkInterface1 `json:",squash"` // nolint
 }
 
@@ -72,9 +65,8 @@ type CreateParametersNetworkInterface1SecurityGroupsItem struct {
 
 type CreateParametersNetworkInterface1SecurityGroups []CreateParametersNetworkInterface1SecurityGroupsItem
 
-// any of: CreateParametersImage0, CreateParametersImage1
+// any of: , CreateParametersImage1
 type CreateParametersNetworkVpc struct {
-	CreateParametersImage0 `json:",squash"` // nolint
 	CreateParametersImage1 `json:",squash"` // nolint
 }
 

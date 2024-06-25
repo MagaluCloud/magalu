@@ -59,19 +59,9 @@ type GetResultAttachment struct {
 	Instance   GetResultAttachmentInstance `json:"instance"`
 }
 
-// any of: GetResultAttachmentInstance0, GetResultAttachmentInstance1
+// any of: , GetResultAttachmentInstance1
 type GetResultAttachmentInstance struct {
-	GetResultAttachmentInstance0 `json:",squash"` // nolint
 	GetResultAttachmentInstance1 `json:",squash"` // nolint
-}
-
-type GetResultAttachmentInstance0 struct {
-	CreatedAt string `json:"created_at"`
-	Id        string `json:"id"`
-	Name      string `json:"name"`
-	State     string `json:"state"`
-	Status    string `json:"status"`
-	UpdatedAt string `json:"updated_at"`
 }
 
 type GetResultAttachmentInstance1 struct {
@@ -83,10 +73,9 @@ type GetResultError struct {
 	Slug    string `json:"slug"`
 }
 
-// any of: GetResultAttachmentInstance1, GetResultType1
+// any of: , GetResultType1
 type GetResultType struct {
-	GetResultAttachmentInstance1 `json:",squash"` // nolint
-	GetResultType1               `json:",squash"` // nolint
+	GetResultType1 `json:",squash"` // nolint
 }
 
 type GetResultType1 struct {

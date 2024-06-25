@@ -52,14 +52,9 @@ type GetResult struct {
 	Volume      GetResultVolume `json:"volume"`
 }
 
-// any of: GetResultVolume0, GetResultVolume1
+// any of: , GetResultVolume1
 type GetResultVolume struct {
-	GetResultVolume0 `json:",squash"` // nolint
 	GetResultVolume1 `json:",squash"` // nolint
-}
-
-type GetResultVolume0 struct {
-	Id string `json:"id"`
 }
 
 type GetResultVolume1 struct {

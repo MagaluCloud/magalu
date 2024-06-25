@@ -42,23 +42,17 @@ type CreateParameters struct {
 	Type   CreateParametersType    `json:"type"`
 }
 
-// any of: CreateParametersBackup0, CreateParametersBackup1
+// any of: , CreateParametersBackup1
 type CreateParametersBackup struct {
-	CreateParametersBackup0 `json:",squash"` // nolint
 	CreateParametersBackup1 `json:",squash"` // nolint
-}
-
-type CreateParametersBackup0 struct {
-	Id string `json:"id"`
 }
 
 type CreateParametersBackup1 struct {
 	Name string `json:"name"`
 }
 
-// any of: CreateParametersBackup0, CreateParametersBackup1
+// any of: , CreateParametersBackup1
 type CreateParametersType struct {
-	CreateParametersBackup0 `json:",squash"` // nolint
 	CreateParametersBackup1 `json:",squash"` // nolint
 }
 

@@ -57,14 +57,9 @@ type GetResultInstance struct {
 	MachineType GetResultInstanceMachineType `json:"machine_type"`
 }
 
-// any of: GetResultInstanceImage0, GetResultInstanceImage1
+// any of: , GetResultInstanceImage1
 type GetResultInstanceImage struct {
-	GetResultInstanceImage0 `json:",squash"` // nolint
 	GetResultInstanceImage1 `json:",squash"` // nolint
-}
-
-type GetResultInstanceImage0 struct {
-	Id string `json:"id"`
 }
 
 type GetResultInstanceImage1 struct {
@@ -73,14 +68,9 @@ type GetResultInstanceImage1 struct {
 	Platform *string `json:"platform,omitempty"`
 }
 
-// any of: GetResultInstanceMachineType0, GetResultInstanceMachineType1
+// any of: , GetResultInstanceMachineType1
 type GetResultInstanceMachineType struct {
-	GetResultInstanceMachineType0 `json:",squash"` // nolint
 	GetResultInstanceMachineType1 `json:",squash"` // nolint
-}
-
-type GetResultInstanceMachineType0 struct {
-	Id string `json:"id"`
 }
 
 type GetResultInstanceMachineType1 struct {

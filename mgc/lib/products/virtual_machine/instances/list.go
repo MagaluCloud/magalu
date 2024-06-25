@@ -60,14 +60,9 @@ type ListResultInstancesItemError struct {
 	Slug    string `json:"slug"`
 }
 
-// any of: ListResultInstancesItemImage0, ListResultInstancesItemImage1
+// any of: , ListResultInstancesItemImage1
 type ListResultInstancesItemImage struct {
-	ListResultInstancesItemImage0 `json:",squash"` // nolint
 	ListResultInstancesItemImage1 `json:",squash"` // nolint
-}
-
-type ListResultInstancesItemImage0 struct {
-	Id string `json:"id"`
 }
 
 type ListResultInstancesItemImage1 struct {
@@ -76,14 +71,9 @@ type ListResultInstancesItemImage1 struct {
 	Platform *string `json:"platform,omitempty"`
 }
 
-// any of: ListResultInstancesItemMachineType0, ListResultInstancesItemMachineType1
+// any of: , ListResultInstancesItemMachineType1
 type ListResultInstancesItemMachineType struct {
-	ListResultInstancesItemMachineType0 `json:",squash"` // nolint
 	ListResultInstancesItemMachineType1 `json:",squash"` // nolint
-}
-
-type ListResultInstancesItemMachineType0 struct {
-	Id string `json:"id"`
 }
 
 type ListResultInstancesItemMachineType1 struct {
@@ -94,21 +84,10 @@ type ListResultInstancesItemMachineType1 struct {
 	Vcpus int    `json:"vcpus"`
 }
 
-// any of: ListResultInstancesItemNetwork0, ListResultInstancesItemNetwork1
+// any of: , ListResultInstancesItemNetwork1
 type ListResultInstancesItemNetwork struct {
-	ListResultInstancesItemNetwork0 `json:",squash"` // nolint
 	ListResultInstancesItemNetwork1 `json:",squash"` // nolint
 }
-
-type ListResultInstancesItemNetwork0 struct {
-	Ports ListResultInstancesItemNetwork0Ports `json:"ports"`
-}
-
-type ListResultInstancesItemNetwork0PortsItem struct {
-	Id string `json:"id"`
-}
-
-type ListResultInstancesItemNetwork0Ports []ListResultInstancesItemNetwork0PortsItem
 
 type ListResultInstancesItemNetwork1 struct {
 	Ports *ListResultInstancesItemNetwork1Ports `json:"ports,omitempty"`

@@ -60,14 +60,9 @@ type ListResultSnapshotsItemInstance struct {
 	MachineType ListResultSnapshotsItemInstanceMachineType `json:"machine_type"`
 }
 
-// any of: ListResultSnapshotsItemInstanceImage0, ListResultSnapshotsItemInstanceImage1
+// any of: , ListResultSnapshotsItemInstanceImage1
 type ListResultSnapshotsItemInstanceImage struct {
-	ListResultSnapshotsItemInstanceImage0 `json:",squash"` // nolint
 	ListResultSnapshotsItemInstanceImage1 `json:",squash"` // nolint
-}
-
-type ListResultSnapshotsItemInstanceImage0 struct {
-	Id string `json:"id"`
 }
 
 type ListResultSnapshotsItemInstanceImage1 struct {
@@ -76,14 +71,9 @@ type ListResultSnapshotsItemInstanceImage1 struct {
 	Platform *string `json:"platform,omitempty"`
 }
 
-// any of: ListResultSnapshotsItemInstanceMachineType0, ListResultSnapshotsItemInstanceMachineType1
+// any of: , ListResultSnapshotsItemInstanceMachineType1
 type ListResultSnapshotsItemInstanceMachineType struct {
-	ListResultSnapshotsItemInstanceMachineType0 `json:",squash"` // nolint
 	ListResultSnapshotsItemInstanceMachineType1 `json:",squash"` // nolint
-}
-
-type ListResultSnapshotsItemInstanceMachineType0 struct {
-	Id string `json:"id"`
 }
 
 type ListResultSnapshotsItemInstanceMachineType1 struct {
