@@ -75,6 +75,8 @@ paths:
                         reboot:
                             description: Reboot a Virtual Machine instance
                             operationId: reboot_instance_v1_instances__id__reboot_post
+                            parameters:
+                                id: $request.path.id
                         start:
                             description: Start a Virtual Machine instance
                             operationId: start_instance_v1_instances__id__start_post
