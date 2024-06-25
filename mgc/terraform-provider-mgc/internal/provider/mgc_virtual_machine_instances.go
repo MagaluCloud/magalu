@@ -497,24 +497,24 @@ func (r *vmInstances) setValuesFromServer(data *vmInstancesResourceModel, server
 	}
 }
 
-func (r *vmInstances) getImageID(name string) (string, error) {
-	var imageID string
-	imageList, err := r.vmImages.List(sdkVmImages.ListParameters{}, sdkVmImages.ListConfigs{})
-	if err != nil {
-		return "", fmt.Errorf("could not load image list")
-	}
-	for _, x := range imageList.Images {
-		if strings.Contains(x.Name, name) {
-			imageID = x.Id
-			break
-		}
-	}
+// func (r *vmInstances) getImageID(name string) (string, error) {
+// 	var imageID string
+// 	imageList, err := r.vmImages.List(sdkVmImages.ListParameters{}, sdkVmImages.ListConfigs{})
+// 	if err != nil {
+// 		return "", fmt.Errorf("could not load image list")
+// 	}
+// 	for _, x := range imageList.Images {
+// 		if strings.Contains(x.Name, name) {
+// 			imageID = x.Id
+// 			break
+// 		}
+// 	}
 
-	if imageID == "" {
-		return "", fmt.Errorf("could not found image ID with name: " + name)
-	}
-	return imageID, nil
-}
+// 	if imageID == "" {
+// 		return "", fmt.Errorf("could not found image ID with name: " + name)
+// 	}
+// 	return imageID, nil
+// }
 
 func (r *vmInstances) getMachineTypeID(name string) (*vmInstancesMachineTypeModel, error) {
 	machineType := vmInstancesMachineTypeModel{}
@@ -548,24 +548,24 @@ func (r *vmInstances) setValuesFromMachineType(data *vmInstancesResourceModel, s
 	data.MachineType.VCPUs = server.VCPUs
 }
 
-func (r *vmInstances) getVpcID(name string) (string, error) {
-	var vpcID string
-	vpcs, err := r.nwVPCs.List(sdkNetworkVPCs.ListConfigs{})
-	if err != nil {
-		return "", fmt.Errorf("could not load vpc list")
-	}
-	for _, x := range *vpcs.Vpcs {
-		if strings.Contains(*x.Name, name) {
-			vpcID = *x.Id
-			break
-		}
-	}
+// func (r *vmInstances) getVpcID(name string) (string, error) {
+// 	var vpcID string
+// 	vpcs, err := r.nwVPCs.List(sdkNetworkVPCs.ListConfigs{})
+// 	if err != nil {
+// 		return "", fmt.Errorf("could not load vpc list")
+// 	}
+// 	for _, x := range *vpcs.Vpcs {
+// 		if strings.Contains(*x.Name, name) {
+// 			vpcID = *x.Id
+// 			break
+// 		}
+// 	}
 
-	if vpcID == "" {
-		return "", fmt.Errorf("could not found vpc ID with name: " + name)
-	}
-	return vpcID, nil
-}
+// 	if vpcID == "" {
+// 		return "", fmt.Errorf("could not found vpc ID with name: " + name)
+// 	}
+// 	return vpcID, nil
+// }
 
 func (r *vmInstances) getVmStatus(id string) (*sdkVmInstances.GetResult, error) {
 	getResult := &sdkVmInstances.GetResult{}
