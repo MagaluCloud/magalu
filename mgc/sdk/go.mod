@@ -1,9 +1,10 @@
 module magalu.cloud/sdk
 
-go 1.21.4
+go 1.22.3
 
 require (
 	github.com/PaesslerAG/gval v1.2.2
+	github.com/geffersonFerraz/brazilian-words-sorter v1.0.0
 	github.com/getkin/kin-openapi v0.118.0
 	github.com/go-openapi/jsonpointer v0.20.0
 	github.com/google/uuid v1.4.0

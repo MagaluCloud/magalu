@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 
+	bws "github.com/geffersonFerraz/brazilian-words-sorter"
 	"go.uber.org/zap"
 	"magalu.cloud/core"
 	"magalu.cloud/core/utils"
@@ -97,8 +98,9 @@ func create(ctx context.Context, params createParams, cfg common.Config) (*creat
 	}
 
 	if params.IsPrefix {
-		sufix := common.GetRandomWords(3, "-")
-		params.BucketName = common.BucketName(fmt.Sprintf("%s-%s", params.BucketName.String(), sufix))
+
+		bwords := bws.BrazilianWords(3, "-")
+		params.BucketName = common.BucketName(fmt.Sprintf("%s-%s", params.BucketName.String(), bwords.Sort()))
 	}
 
 	req, err := newCreateRequest(ctx, cfg, params.BucketName, params.ACLPermissions)

@@ -6,10 +6,12 @@ import (
 	"slices"
 	"strings"
 
+	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/provider"
 	"github.com/hashicorp/terraform-plugin-framework/provider/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
+	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	mgcSdk "magalu.cloud/sdk"
@@ -39,6 +41,7 @@ type ObjectStorageConfig struct {
 
 type ProviderConfig struct {
 	Region        types.String         `tfsdk:"region"`
+	Env           types.String         `tfsdk:"env"`
 	ApiKey        types.String         `tfsdk:"api_key"`
 	ObjectStorage *ObjectStorageConfig `tfsdk:"object_storage"`
 }
@@ -89,6 +92,16 @@ func (p *MgcProvider) Schema(ctx context.Context, req provider.SchemaRequest, re
 			"region": schema.StringAttribute{
 				MarkdownDescription: "Region",
 				Optional:            true,
+				Validators: []validator.String{
+					stringvalidator.OneOf("br-ne1", "br-se1", "br-mgl1"),
+				},
+			},
+			"env": schema.StringAttribute{
+				MarkdownDescription: "Environment",
+				Optional:            true,
+				Validators: []validator.String{
+					stringvalidator.OneOf("prod", "pre-prod"),
+				},
 			},
 			"api_key": schema.StringAttribute{
 				MarkdownDescription: "Magalu API Key for authentication",
@@ -99,8 +112,6 @@ func (p *MgcProvider) Schema(ctx context.Context, req provider.SchemaRequest, re
 	}
 
 }
-
-var acceptedRegions = []string{"br-ne1", "br-se1", "br-mgl1"}
 
 func (p *MgcProvider) Configure(ctx context.Context, req provider.ConfigureRequest, resp *provider.ConfigureResponse) {
 	tflog.Info(ctx, "configuring MGC provider")
@@ -113,11 +124,14 @@ func (p *MgcProvider) Configure(ctx context.Context, req provider.ConfigureReque
 	}
 
 	if !data.Region.IsNull() {
-		if !slices.Contains(acceptedRegions, data.Region.ValueString()) {
-			tflog.Error(ctx, "invalid region. Valid options: "+strings.Join(acceptedRegions, ", "))
-		}
 		if err := p.sdk.Config().SetTempConfig("region", data.Region.String()); err != nil {
 			tflog.Error(ctx, "fail to set region")
+		}
+	}
+
+	if !data.Env.IsNull() {
+		if err := p.sdk.Config().SetTempConfig("env", data.Env.String()); err != nil {
+			tflog.Error(ctx, "fail to set env")
 		}
 	}
 
@@ -146,6 +160,10 @@ func (p *MgcProvider) Resources(ctx context.Context) []func() resource.Resource 
 
 	root := p.sdk.Group()
 	resources, err := collectGroupResources(ctx, p.sdk, root, []string{providerTypeName})
+	// Add manually the provider resource
+	resources = append(resources, NewVirtualMachineInstancesResource)
+	resources = append(resources, NewVirtualMachineSnapshotsResource)
+
 	if err != nil {
 		tflog.Error(ctx, fmt.Sprintf("An error occurred while generating the provider resource list: %v", err))
 	}
@@ -211,7 +229,18 @@ func collectGroupResources(
 		return resources, err
 	}
 
-	resourceName := tfName(strings.Join(path, "_"))
+	strResourceName := strings.Join(path, "_")
+
+	// IGNORE THIS MODULES - they are be replaced by the new resources
+	ignoredTFModules := []string{"mgc_virtual-machine_instances", "mgc_virtual-machine_snapshots"}
+	if slices.Contains(ignoredTFModules, strResourceName) {
+		tflog.Debug(ctx, fmt.Sprintf("resource %q is ignored", strResourceName), debugMap)
+		return resources, nil
+	}
+	// END IGNORE
+
+	resourceName := tfName(strResourceName)
+
 	tflog.Debug(ctx, fmt.Sprintf("found resource %q", resourceName), debugMap)
 
 	res, err := newMgcResource(ctx, sdk, resourceName, mgcName(group.Name()), group.Description(), create, read, update, delete, list)

@@ -1,6 +1,6 @@
 module magalu.cloud/codegen
 
-go 1.21.4
+go 1.22.3
 
 require (
 	github.com/spf13/afero v1.11.0
@@ -20,6 +20,7 @@ require (
 	github.com/containerd/console v1.0.3 // indirect
 	github.com/dustin/go-humanize v1.0.1 // indirect
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
+	github.com/geffersonFerraz/brazilian-words-sorter v1.0.0 // indirect
 	github.com/getkin/kin-openapi v0.118.0 // indirect
 	github.com/go-openapi/jsonpointer v0.20.0 // indirect
 	github.com/go-openapi/swag v0.22.4 // indirect

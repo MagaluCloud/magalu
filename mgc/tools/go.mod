@@ -1,6 +1,6 @@
 module magalu.cloud/tools
 
-go 1.21.4
+go 1.22.3
 
 require (
 	github.com/invopop/yaml v0.1.0

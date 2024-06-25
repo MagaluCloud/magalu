@@ -1,16 +1,19 @@
 module magalu.cloud/terraform-provider-mgc
 
-go 1.21.4
+go 1.22.3
 
 require (
+	github.com/geffersonFerraz/brazilian-words-sorter v1.0.0
 	github.com/getkin/kin-openapi v0.118.0
 	github.com/go-test/deep v1.1.0
 	github.com/hashicorp/terraform-plugin-framework v1.9.0
+	github.com/hashicorp/terraform-plugin-framework-validators v0.12.0
 	github.com/hashicorp/terraform-plugin-go v0.23.0
 	github.com/hashicorp/terraform-plugin-log v0.9.0
 	github.com/stoewer/go-strcase v1.3.0
-	magalu.cloud/core v0.0.0-unversioned
-	magalu.cloud/sdk v0.0.0-unversioned
+	magalu.cloud/core v0.19.3
+	magalu.cloud/lib v0.0.0-00010101000000-000000000000
+	magalu.cloud/sdk v0.19.3
 )
 
 require (
@@ -88,3 +91,5 @@ replace magalu.cloud/core => ../core
 replace magalu.cloud/sdk => ../sdk
 
 replace magalu.cloud/testing/fs_test_helper => ../testing/fs_test_helper
+
+replace magalu.cloud/lib => ../lib

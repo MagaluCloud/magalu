@@ -1,6 +1,6 @@
 module magalu.cloud/testing/fs_test_helper
 
-go 1.21.4
+go 1.22.3
 
 replace magalu.cloud/core => ../../core
 
