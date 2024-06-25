@@ -74,7 +74,10 @@ type vmSnapshotsResourceModel struct {
 
 // Schema defines the schema for the resource.
 func (r *vmSnapshots) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
+	description := "Operations with snapshots for instances."
 	resp.Schema = schema.Schema{
+		Description:         description,
+		MarkdownDescription: description,
 		Attributes: map[string]schema.Attribute{
 			"region": schema.StringAttribute{
 				PlanModifiers: []planmodifier.String{

@@ -3,12 +3,12 @@
 page_title: "mgc_virtual_machine_snapshots Resource - terraform-provider-mgc"
 subcategory: ""
 description: |-
-
+  Operations with snapshots for instances.
 ---
 
 # mgc_virtual_machine_snapshots (Resource)
 
-
+Operations with snapshots for instances.
 
 
 

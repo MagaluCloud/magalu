@@ -3,12 +3,12 @@
 page_title: "mgc_virtual_machine_instances Resource - terraform-provider-mgc"
 subcategory: ""
 description: |-
-
+  Operations with instances, including create, delete, start, stop, reboot and other actions.
 ---
 
 # mgc_virtual_machine_instances (Resource)
 
-
+Operations with instances, including create, delete, start, stop, reboot and other actions.
 
 
 

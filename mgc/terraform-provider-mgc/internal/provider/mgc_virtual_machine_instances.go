@@ -109,7 +109,10 @@ type vmInstancesMachineTypeModel struct {
 
 // Schema defines the schema for the resource.
 func (r *vmInstances) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
+	description := "Operations with instances, including create, delete, start, stop, reboot and other actions."
 	resp.Schema = schema.Schema{
+		Description:         description,
+		MarkdownDescription: description,
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				PlanModifiers: []planmodifier.String{
