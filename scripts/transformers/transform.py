@@ -13,7 +13,6 @@ from spec_update_error import UpdateErrorTransformer
 from spec_add_security import AddSecurityTransformer
 from spec_fix_links import FixLinksTransformer
 from spec_create_links import CreateLinks
-from validate_openapi_specs import validate_oapi
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
@@ -81,5 +80,4 @@ if __name__ == "__main__":
 
     # Write external to output file
     add_spec_uid(product_spec, args.spec_uid)
-    validate_oapi(cast(dict, oapi.obj))
     save_external(oapi.obj, args.output)

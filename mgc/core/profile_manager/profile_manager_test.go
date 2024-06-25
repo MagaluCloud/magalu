@@ -12,18 +12,17 @@ import (
 
 	"github.com/spf13/afero"
 	"magalu.cloud/core/utils"
-	"magalu.cloud/testing/fs_test_helper"
 )
 
 type testCaseProfileManager struct {
 	name          string
 	expectedError error
-	expectedFs    []fs_test_helper.TestFsEntry
-	providedFs    []fs_test_helper.TestFsEntry
+	expectedFs    []utils.TestFsEntry
+	providedFs    []utils.TestFsEntry
 	run           func(m *ProfileManager) error
 }
 
-func checkFs(afs afero.Fs, expected []fs_test_helper.TestFsEntry) (err error) {
+func checkFs(afs afero.Fs, expected []utils.TestFsEntry) (err error) {
 	existingFiles := 0
 	err = afero.Walk(afs, "/", func(path string, info fs.FileInfo, e error) (err error) {
 		if e != nil {
@@ -32,7 +31,7 @@ func checkFs(afs afero.Fs, expected []fs_test_helper.TestFsEntry) (err error) {
 		if path == "/" {
 			return nil
 		}
-		fsEntry, err := fs_test_helper.FindFsEntry(path, expected)
+		fsEntry, err := utils.FindFsEntry(path, expected)
 		if err != nil {
 			return
 		}
@@ -79,8 +78,8 @@ func createProfileManagerGetTest(name string, expectedError error) testCaseProfi
 	}
 }
 
-func createProfileManagerCurrentTest(testName string, profileName string, provided []fs_test_helper.TestFsEntry) testCaseProfileManager {
-	provided = fs_test_helper.AutoMkdirAll(provided)
+func createProfileManagerCurrentTest(testName string, profileName string, provided []utils.TestFsEntry) testCaseProfileManager {
+	provided = utils.AutoMkdirAll(provided)
 	return testCaseProfileManager{
 		name:       fmt.Sprintf("ProfileManager.Current()==%q[%s]", profileName, testName),
 		providedFs: provided,
@@ -95,9 +94,9 @@ func createProfileManagerCurrentTest(testName string, profileName string, provid
 	}
 }
 
-func createProfileManagerSetCurrentTest(testName string, profileName string, provided []fs_test_helper.TestFsEntry, expected []fs_test_helper.TestFsEntry) testCaseProfileManager {
-	provided = fs_test_helper.AutoMkdirAll(provided)
-	expected = fs_test_helper.AutoMkdirAll(fs_test_helper.MergeFsEntries(expected, provided))
+func createProfileManagerSetCurrentTest(testName string, profileName string, provided []utils.TestFsEntry, expected []utils.TestFsEntry) testCaseProfileManager {
+	provided = utils.AutoMkdirAll(provided)
+	expected = utils.AutoMkdirAll(utils.MergeFsEntries(expected, provided))
 	return testCaseProfileManager{
 		name:       fmt.Sprintf("ProfileManager.SetCurrent(%q)[%s]", profileName, testName),
 		providedFs: provided,
@@ -112,9 +111,9 @@ func createProfileManagerSetCurrentTest(testName string, profileName string, pro
 	}
 }
 
-func createProfileManagerCreateTest(testName string, profileName string, expectedError error, provided []fs_test_helper.TestFsEntry, expected []fs_test_helper.TestFsEntry) testCaseProfileManager {
-	provided = fs_test_helper.AutoMkdirAll(provided)
-	expected = fs_test_helper.AutoMkdirAll(fs_test_helper.MergeFsEntries(expected, provided))
+func createProfileManagerCreateTest(testName string, profileName string, expectedError error, provided []utils.TestFsEntry, expected []utils.TestFsEntry) testCaseProfileManager {
+	provided = utils.AutoMkdirAll(provided)
+	expected = utils.AutoMkdirAll(utils.MergeFsEntries(expected, provided))
 	return testCaseProfileManager{
 		name:          fmt.Sprintf("ProfileManager.Create(%q)[%s]", profileName, testName),
 		providedFs:    provided,
@@ -133,9 +132,9 @@ func createProfileManagerCreateTest(testName string, profileName string, expecte
 	}
 }
 
-func createProfileManagerDeleteTest(testName string, profileName string, expectedError error, provided []fs_test_helper.TestFsEntry, expected []fs_test_helper.TestFsEntry) testCaseProfileManager {
-	provided = fs_test_helper.AutoMkdirAll(provided)
-	expected = fs_test_helper.AutoMkdirAll(expected)
+func createProfileManagerDeleteTest(testName string, profileName string, expectedError error, provided []utils.TestFsEntry, expected []utils.TestFsEntry) testCaseProfileManager {
+	provided = utils.AutoMkdirAll(provided)
+	expected = utils.AutoMkdirAll(expected)
 	return testCaseProfileManager{
 		name:          fmt.Sprintf("ProfileManager.Delete(%q)[%s]", profileName, testName),
 		providedFs:    provided,
@@ -151,8 +150,8 @@ func createProfileManagerDeleteTest(testName string, profileName string, expecte
 	}
 }
 
-func createProfileManagerListTest(testName string, profileNames []string, provided []fs_test_helper.TestFsEntry) testCaseProfileManager {
-	provided = fs_test_helper.AutoMkdirAll(provided)
+func createProfileManagerListTest(testName string, profileNames []string, provided []utils.TestFsEntry) testCaseProfileManager {
+	provided = utils.AutoMkdirAll(provided)
 	slices.Sort(profileNames)
 	return testCaseProfileManager{
 		name:       fmt.Sprintf("ProfileManager.List()=%v[%s]", profileNames, testName),
@@ -175,9 +174,9 @@ func createProfileManagerListTest(testName string, profileNames []string, provid
 	}
 }
 
-func createProfileManagerCopyTest(testName string, srcName string, dstName string, expectedError error, provided []fs_test_helper.TestFsEntry, expected []fs_test_helper.TestFsEntry) testCaseProfileManager {
-	provided = fs_test_helper.AutoMkdirAll(provided)
-	expected = fs_test_helper.AutoMkdirAll(fs_test_helper.MergeFsEntries(provided, expected))
+func createProfileManagerCopyTest(testName string, srcName string, dstName string, expectedError error, provided []utils.TestFsEntry, expected []utils.TestFsEntry) testCaseProfileManager {
+	provided = utils.AutoMkdirAll(provided)
+	expected = utils.AutoMkdirAll(utils.MergeFsEntries(provided, expected))
 	return testCaseProfileManager{
 		name:          fmt.Sprintf("ProfileManager.Copy(%q,%q)[%s]", srcName, dstName, testName),
 		providedFs:    provided,
@@ -210,14 +209,14 @@ func TestProfileManager(t *testing.T) {
 		createProfileManagerGetTest("*+&le", errorInvalidName),
 		// Current()
 		createProfileManagerCurrentTest("empty-fs", defaultProfileName, nil),
-		createProfileManagerCurrentTest("empty-file", defaultProfileName, []fs_test_helper.TestFsEntry{
+		createProfileManagerCurrentTest("empty-file", defaultProfileName, []utils.TestFsEntry{
 			{
 				Path: path.Join(dir, currentProfileNameFile),
 				Mode: utils.FILE_PERMISSION,
 				Data: []byte(""),
 			},
 		}),
-		createProfileManagerCurrentTest("provided", "a-profile-name", []fs_test_helper.TestFsEntry{
+		createProfileManagerCurrentTest("provided", "a-profile-name", []utils.TestFsEntry{
 			{
 				Path: path.Join(dir, currentProfileNameFile),
 				Mode: utils.FILE_PERMISSION,
@@ -225,7 +224,7 @@ func TestProfileManager(t *testing.T) {
 			},
 		}),
 		// SetCurrent()
-		createProfileManagerSetCurrentTest("empty-fs", defaultProfileName, nil, []fs_test_helper.TestFsEntry{
+		createProfileManagerSetCurrentTest("empty-fs", defaultProfileName, nil, []utils.TestFsEntry{
 			{
 				Path: path.Join(dir, currentProfileNameFile),
 				Mode: utils.FILE_PERMISSION,
@@ -233,13 +232,13 @@ func TestProfileManager(t *testing.T) {
 			},
 		}),
 		createProfileManagerSetCurrentTest("provided", "other-name",
-			[]fs_test_helper.TestFsEntry{
+			[]utils.TestFsEntry{
 				{
 					Path: path.Join(dir, currentProfileNameFile),
 					Mode: utils.FILE_PERMISSION,
 					Data: []byte("a-profile-name"),
 				},
-			}, []fs_test_helper.TestFsEntry{
+			}, []utils.TestFsEntry{
 				{
 					Path: path.Join(dir, currentProfileNameFile),
 					Mode: utils.FILE_PERMISSION,
@@ -248,19 +247,19 @@ func TestProfileManager(t *testing.T) {
 			},
 		),
 		// Create()
-		createProfileManagerCreateTest("empty-fs", defaultProfileName, nil, nil, []fs_test_helper.TestFsEntry{
+		createProfileManagerCreateTest("empty-fs", defaultProfileName, nil, nil, []utils.TestFsEntry{
 			{
 				Path: path.Join(dir, defaultProfileName),
 				Mode: utils.DIR_PERMISSION | fs.ModeDir,
 			},
 		}),
 		createProfileManagerCreateTest("other-profile", "a-profile-name", nil,
-			[]fs_test_helper.TestFsEntry{
+			[]utils.TestFsEntry{
 				{
 					Path: path.Join(dir, "other-name"),
 					Mode: utils.DIR_PERMISSION | fs.ModeDir,
 				},
-			}, []fs_test_helper.TestFsEntry{
+			}, []utils.TestFsEntry{
 				{
 					Path: path.Join(dir, "a-profile-name"),
 					Mode: utils.DIR_PERMISSION | fs.ModeDir,
@@ -268,7 +267,7 @@ func TestProfileManager(t *testing.T) {
 			},
 		),
 		createProfileManagerCreateTest("existing-profile", "existing-profile", errorProfileAlreadyExists,
-			[]fs_test_helper.TestFsEntry{
+			[]utils.TestFsEntry{
 				{
 					Path: path.Join(dir, "existing-profile"),
 					Mode: utils.DIR_PERMISSION | fs.ModeDir,
@@ -280,12 +279,12 @@ func TestProfileManager(t *testing.T) {
 		createProfileManagerDeleteTest("empty-fs", defaultProfileName, errorDeleteCurrentNotAllowed, nil, nil),
 		createProfileManagerDeleteTest("missing-profile", "a-profile-name", nil, nil, nil),
 		createProfileManagerDeleteTest("existing-profile", "existing-name", nil,
-			[]fs_test_helper.TestFsEntry{
+			[]utils.TestFsEntry{
 				{
 					Path: path.Join(dir, "existing-name"),
 					Mode: utils.DIR_PERMISSION | fs.ModeDir,
 				},
-			}, []fs_test_helper.TestFsEntry{
+			}, []utils.TestFsEntry{
 				{
 					Path: dir,
 					Mode: utils.DIR_PERMISSION | fs.ModeDir,
@@ -293,13 +292,13 @@ func TestProfileManager(t *testing.T) {
 			},
 		),
 		createProfileManagerDeleteTest("existing-profile-with-files", "existing-name", nil,
-			[]fs_test_helper.TestFsEntry{
+			[]utils.TestFsEntry{
 				{
 					Path: path.Join(dir, "existing-name/some-file"),
 					Mode: utils.FILE_PERMISSION,
 					Data: []byte("some contents"),
 				},
-			}, []fs_test_helper.TestFsEntry{
+			}, []utils.TestFsEntry{
 				{
 					Path: dir,
 					Mode: utils.DIR_PERMISSION | fs.ModeDir,
@@ -308,14 +307,14 @@ func TestProfileManager(t *testing.T) {
 		),
 		// List()
 		createProfileManagerListTest("empty-fs", []string{defaultProfileName}, nil),
-		createProfileManagerListTest("missing-current", []string{"a-profile-name"}, []fs_test_helper.TestFsEntry{
+		createProfileManagerListTest("missing-current", []string{"a-profile-name"}, []utils.TestFsEntry{
 			{
 				Path: path.Join(dir, currentProfileNameFile),
 				Mode: utils.FILE_PERMISSION,
 				Data: []byte("a-profile-name"),
 			},
 		}),
-		createProfileManagerListTest("existing-current-should-not-duplicate", []string{"a-profile-name"}, []fs_test_helper.TestFsEntry{
+		createProfileManagerListTest("existing-current-should-not-duplicate", []string{"a-profile-name"}, []utils.TestFsEntry{
 			{
 				Path: path.Join(dir, currentProfileNameFile),
 				Mode: utils.FILE_PERMISSION,
@@ -326,7 +325,7 @@ func TestProfileManager(t *testing.T) {
 				Mode: utils.DIR_PERMISSION | fs.ModeDir,
 			},
 		}),
-		createProfileManagerListTest("multiple", []string{defaultProfileName, "a-profile-name", "other-name"}, []fs_test_helper.TestFsEntry{
+		createProfileManagerListTest("multiple", []string{defaultProfileName, "a-profile-name", "other-name"}, []utils.TestFsEntry{
 			{
 				Path: path.Join(dir, currentProfileNameFile),
 				Mode: utils.FILE_PERMISSION,
@@ -344,7 +343,7 @@ func TestProfileManager(t *testing.T) {
 		// Copy()
 		createProfileManagerCopyTest("empty-fs", defaultProfileName, "a-profile-name", nil, nil, nil),
 		createProfileManagerCopyTest("copy", defaultProfileName, "a-profile-name", nil,
-			[]fs_test_helper.TestFsEntry{
+			[]utils.TestFsEntry{
 				{
 					Path: path.Join(dir, defaultProfileName, "some-file"),
 					Mode: utils.FILE_PERMISSION,
@@ -356,7 +355,7 @@ func TestProfileManager(t *testing.T) {
 					Data: []byte("other-contents-here"),
 				},
 			},
-			[]fs_test_helper.TestFsEntry{
+			[]utils.TestFsEntry{
 				{
 					Path: path.Join(dir, "a-profile-name", "some-file"),
 					Mode: utils.FILE_PERMISSION,
@@ -376,7 +375,7 @@ func TestProfileManager(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			fs := afero.NewMemMapFs()
 			m := &ProfileManager{dir, fs}
-			err := fs_test_helper.PrepareFs(fs, tc.providedFs)
+			err := utils.PrepareFs(fs, tc.providedFs)
 			if err != nil {
 				t.Errorf("could not prepare provided FS: %s", err.Error())
 			}

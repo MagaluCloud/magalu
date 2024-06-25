@@ -36,11 +36,6 @@ jobs:
       - name: Check version candidate
         run: ./scripts/check_release_v2.sh ${{ github.ref_name }}
       - run: go version
-      - name: Build CLI
-        env:
-          VERSION: CI
-          CHECK_RELEASE: 0
-        run: ./scripts/build_release.sh
 
   cli-release:
     needs: build

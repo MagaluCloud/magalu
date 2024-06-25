@@ -13,7 +13,6 @@ import (
 	mgcHttpPkg "magalu.cloud/core/http"
 	"magalu.cloud/core/profile_manager"
 	"magalu.cloud/core/utils"
-	"magalu.cloud/testing/fs_test_helper"
 )
 
 var dummyConfigResult *ConfigResult = &ConfigResult{
@@ -64,15 +63,15 @@ func (o mockTransport) RoundTrip(*http.Request) (*http.Response, error) {
 type testCaseAuth struct {
 	name           string
 	transport      mockTransport
-	expectedFs     []fs_test_helper.TestFsEntry
-	providedFs     []fs_test_helper.TestFsEntry
+	expectedFs     []utils.TestFsEntry
+	providedFs     []utils.TestFsEntry
 	run            func(a *Auth) error
 	envAccessToken string
 }
 
-func setTokens(name string, expected_error error, access_token string, refresh_token string, transport mockTransport, provided []fs_test_helper.TestFsEntry, expected []fs_test_helper.TestFsEntry) testCaseAuth {
-	provided = fs_test_helper.AutoMkdirAll(provided)
-	expected = fs_test_helper.AutoMkdirAll(expected)
+func setTokens(name string, expected_error error, access_token string, refresh_token string, transport mockTransport, provided []utils.TestFsEntry, expected []utils.TestFsEntry) testCaseAuth {
+	provided = utils.AutoMkdirAll(provided)
+	expected = utils.AutoMkdirAll(expected)
 	return testCaseAuth{
 		name:       fmt.Sprintf("Auth.Set(%q)", name),
 		transport:  transport,
@@ -95,9 +94,9 @@ func setTokens(name string, expected_error error, access_token string, refresh_t
 	}
 }
 
-func setAccessKey(name string, expected_error error, acess_key_id string, secret_access_key string, transport mockTransport, provided []fs_test_helper.TestFsEntry, expected []fs_test_helper.TestFsEntry) testCaseAuth {
-	provided = fs_test_helper.AutoMkdirAll(provided)
-	expected = fs_test_helper.AutoMkdirAll(expected)
+func setAccessKey(name string, expected_error error, acess_key_id string, secret_access_key string, transport mockTransport, provided []utils.TestFsEntry, expected []utils.TestFsEntry) testCaseAuth {
+	provided = utils.AutoMkdirAll(provided)
+	expected = utils.AutoMkdirAll(expected)
 	return testCaseAuth{
 		name:       fmt.Sprintf("Auth.SetAccessKey(%q)", name),
 		providedFs: provided,
@@ -113,9 +112,9 @@ func setAccessKey(name string, expected_error error, acess_key_id string, secret
 	}
 }
 
-func requestAuthTokenWithAuthorizationCode(name string, transport mockTransport, verifier *codeVerifier, expectedErr bool, provided []fs_test_helper.TestFsEntry, expected []fs_test_helper.TestFsEntry) testCaseAuth {
-	provided = fs_test_helper.AutoMkdirAll(provided)
-	expected = fs_test_helper.AutoMkdirAll(expected)
+func requestAuthTokenWithAuthorizationCode(name string, transport mockTransport, verifier *codeVerifier, expectedErr bool, provided []utils.TestFsEntry, expected []utils.TestFsEntry) testCaseAuth {
+	provided = utils.AutoMkdirAll(provided)
+	expected = utils.AutoMkdirAll(expected)
 	return testCaseAuth{
 		name:       fmt.Sprintf("Auth.RequestAuth(%q)", name),
 		transport:  transport,
@@ -135,9 +134,9 @@ func requestAuthTokenWithAuthorizationCode(name string, transport mockTransport,
 	}
 }
 
-func doRefreshAccessToken(name string, transport mockTransport, expectedErr bool, expectedResult string, provided []fs_test_helper.TestFsEntry, expected []fs_test_helper.TestFsEntry) testCaseAuth {
-	provided = fs_test_helper.AutoMkdirAll(provided)
-	expected = fs_test_helper.AutoMkdirAll(expected)
+func doRefreshAccessToken(name string, transport mockTransport, expectedErr bool, expectedResult string, provided []utils.TestFsEntry, expected []utils.TestFsEntry) testCaseAuth {
+	provided = utils.AutoMkdirAll(provided)
+	expected = utils.AutoMkdirAll(expected)
 	return testCaseAuth{
 		name:       fmt.Sprintf("Auth.DoRefreshAccessToken(%q)", name),
 		transport:  transport,
@@ -159,9 +158,9 @@ func doRefreshAccessToken(name string, transport mockTransport, expectedErr bool
 	}
 }
 
-func validateAccessToken(name string, transport mockTransport, expectedErr bool, provided []fs_test_helper.TestFsEntry, expected []fs_test_helper.TestFsEntry) testCaseAuth {
-	provided = fs_test_helper.AutoMkdirAll(provided)
-	expected = fs_test_helper.AutoMkdirAll(expected)
+func validateAccessToken(name string, transport mockTransport, expectedErr bool, provided []utils.TestFsEntry, expected []utils.TestFsEntry) testCaseAuth {
+	provided = utils.AutoMkdirAll(provided)
+	expected = utils.AutoMkdirAll(expected)
 	return testCaseAuth{
 		name:       fmt.Sprintf("Auth.ValidateAccess(%q)", name),
 		providedFs: provided,
@@ -180,9 +179,9 @@ func validateAccessToken(name string, transport mockTransport, expectedErr bool,
 	}
 }
 
-func selectTenant(name string, transport mockTransport, expectedResult *TokenExchangeResult, expectedErr bool, provided []fs_test_helper.TestFsEntry, expected []fs_test_helper.TestFsEntry) testCaseAuth {
-	provided = fs_test_helper.AutoMkdirAll(provided)
-	expected = fs_test_helper.AutoMkdirAll(expected)
+func selectTenant(name string, transport mockTransport, expectedResult *TokenExchangeResult, expectedErr bool, provided []utils.TestFsEntry, expected []utils.TestFsEntry) testCaseAuth {
+	provided = utils.AutoMkdirAll(provided)
+	expected = utils.AutoMkdirAll(expected)
 	return testCaseAuth{
 		name:       fmt.Sprintf("Auth.SelectTenant(%q)", name),
 		transport:  transport,
@@ -205,9 +204,9 @@ func selectTenant(name string, transport mockTransport, expectedResult *TokenExc
 	}
 }
 
-func listTenants(name string, transport mockTransport, expectedTenants []*Tenant, expectedErr bool, provided []fs_test_helper.TestFsEntry, expected []fs_test_helper.TestFsEntry) testCaseAuth {
-	provided = fs_test_helper.AutoMkdirAll(provided)
-	expected = fs_test_helper.AutoMkdirAll(expected)
+func listTenants(name string, transport mockTransport, expectedTenants []*Tenant, expectedErr bool, provided []utils.TestFsEntry, expected []utils.TestFsEntry) testCaseAuth {
+	provided = utils.AutoMkdirAll(provided)
+	expected = utils.AutoMkdirAll(expected)
 	return testCaseAuth{
 		name:       fmt.Sprintf("Auth.ListTenants(%q)", name),
 		transport:  transport,
@@ -230,9 +229,9 @@ func listTenants(name string, transport mockTransport, expectedTenants []*Tenant
 	}
 }
 
-func newAuth(name string, envAccessToken string, expectedConfig *ConfigResult, provided []fs_test_helper.TestFsEntry, expected []fs_test_helper.TestFsEntry) testCaseAuth {
-	provided = fs_test_helper.AutoMkdirAll(provided)
-	expected = fs_test_helper.AutoMkdirAll(expected)
+func newAuth(name string, envAccessToken string, expectedConfig *ConfigResult, provided []utils.TestFsEntry, expected []utils.TestFsEntry) testCaseAuth {
+	provided = utils.AutoMkdirAll(provided)
+	expected = utils.AutoMkdirAll(expected)
 	return testCaseAuth{
 		name:           fmt.Sprintf("Auth.NewAuth(%q)", name),
 		providedFs:     provided,
@@ -257,13 +256,13 @@ func TestAuthManager(t *testing.T) {
 	tests := []testCaseAuth{
 
 		setTokens("Valid token", nil, "access-token", "refresh-token", mockTransport{},
-			[]fs_test_helper.TestFsEntry{
+			[]utils.TestFsEntry{
 				{
 					Path: "/default/auth.yaml",
 					Mode: utils.FILE_PERMISSION,
 					Data: []byte{},
 				},
-			}, []fs_test_helper.TestFsEntry{
+			}, []utils.TestFsEntry{
 				{
 					Path: "/default/auth.yaml",
 					Mode: utils.FILE_PERMISSION,
@@ -283,13 +282,13 @@ secret_access_key: ""
 				},
 			}),
 		setTokens("Valid token without auth file", nil, "access-token", "refresh-token", mockTransport{},
-			[]fs_test_helper.TestFsEntry{
+			[]utils.TestFsEntry{
 				{
 					Path: "/default/",
 					Mode: utils.DIR_PERMISSION,
 					Data: []byte{},
 				},
-			}, []fs_test_helper.TestFsEntry{
+			}, []utils.TestFsEntry{
 				{
 					Path: "/default/auth.yaml",
 					Mode: utils.FILE_PERMISSION,
@@ -309,12 +308,12 @@ secret_access_key: ""
 				},
 			}),
 		setAccessKey("Valid keys", nil, "MyAccessKeyIdTest", "MySecretAccessKeyTeste", mockTransport{},
-			[]fs_test_helper.TestFsEntry{
+			[]utils.TestFsEntry{
 				{
 					Path: "/default/auth.yaml",
 					Mode: utils.FILE_PERMISSION,
 				},
-			}, []fs_test_helper.TestFsEntry{
+			}, []utils.TestFsEntry{
 				{
 					Path: "/default/auth.yaml",
 					Mode: utils.FILE_PERMISSION,
@@ -334,12 +333,12 @@ secret_access_key: MySecretAccessKeyTeste
 				},
 			}),
 		setAccessKey("Valid keys without auth file", nil, "MyAccessKeyIdTest", "MySecretAccessKeyTeste", mockTransport{},
-			[]fs_test_helper.TestFsEntry{
+			[]utils.TestFsEntry{
 				{
 					Path: "/default/",
 					Mode: utils.DIR_PERMISSION,
 				},
-			}, []fs_test_helper.TestFsEntry{
+			}, []utils.TestFsEntry{
 				{
 					Path: "/default/auth.yaml",
 					Mode: utils.FILE_PERMISSION,
@@ -359,13 +358,13 @@ secret_access_key: MySecretAccessKeyTeste
 				},
 			}),
 		requestAuthTokenWithAuthorizationCode("Code verifier == nil", mockTransport{}, nil, true,
-			[]fs_test_helper.TestFsEntry{
+			[]utils.TestFsEntry{
 				{
 					Path: "/default/auth.yaml",
 					Mode: utils.FILE_PERMISSION,
 					Data: []byte(``),
 				},
-			}, []fs_test_helper.TestFsEntry{
+			}, []utils.TestFsEntry{
 				{
 					Path: "/default/auth.yaml",
 					Mode: utils.FILE_PERMISSION,
@@ -385,13 +384,13 @@ secret_access_key: MySecretAccessKeyTeste
 			},
 			&codeVerifier{},
 			true,
-			[]fs_test_helper.TestFsEntry{
+			[]utils.TestFsEntry{
 				{
 					Path: "/default/auth.yaml",
 					Mode: utils.FILE_PERMISSION,
 					Data: []byte{},
 				},
-			}, []fs_test_helper.TestFsEntry{
+			}, []utils.TestFsEntry{
 				{
 					Path: "/default/auth.yaml",
 					Mode: utils.FILE_PERMISSION,
@@ -414,13 +413,13 @@ secret_access_key: MySecretAccessKeyTeste
 			},
 			&codeVerifier{},
 			false,
-			[]fs_test_helper.TestFsEntry{
+			[]utils.TestFsEntry{
 				{
 					Path: "/default/auth.yaml",
 					Mode: utils.FILE_PERMISSION,
 					Data: []byte{},
 				},
-			}, []fs_test_helper.TestFsEntry{
+			}, []utils.TestFsEntry{
 				{
 					Path: "/default/auth.yaml",
 					Mode: utils.FILE_PERMISSION,
@@ -449,13 +448,13 @@ secret_access_key: ""
 			},
 			&codeVerifier{},
 			false,
-			[]fs_test_helper.TestFsEntry{
+			[]utils.TestFsEntry{
 				{
 					Path: "/default/",
 					Mode: utils.DIR_PERMISSION,
 					Data: []byte{},
 				},
-			}, []fs_test_helper.TestFsEntry{
+			}, []utils.TestFsEntry{
 				{
 					Path: "/default/auth.yaml",
 					Mode: utils.FILE_PERMISSION,
@@ -481,13 +480,13 @@ secret_access_key: ""
 			},
 			&codeVerifier{},
 			true,
-			[]fs_test_helper.TestFsEntry{
+			[]utils.TestFsEntry{
 				{
 					Path: "/default/auth.yaml",
 					Mode: utils.FILE_PERMISSION,
 					Data: []byte{},
 				},
-			}, []fs_test_helper.TestFsEntry{
+			}, []utils.TestFsEntry{
 				{
 					Path: "/default/auth.yaml",
 					Mode: utils.FILE_PERMISSION,
@@ -506,13 +505,13 @@ secret_access_key: ""
 			},
 			&codeVerifier{},
 			true,
-			[]fs_test_helper.TestFsEntry{
+			[]utils.TestFsEntry{
 				{
 					Path: "/default/auth.yaml",
 					Mode: utils.FILE_PERMISSION,
 					Data: []byte{},
 				},
-			}, []fs_test_helper.TestFsEntry{
+			}, []utils.TestFsEntry{
 				{
 					Path: "/default/auth.yaml",
 					Mode: utils.FILE_PERMISSION,
@@ -530,13 +529,13 @@ secret_access_key: ""
 				shouldReturnError: true,
 			},
 			true,
-			[]fs_test_helper.TestFsEntry{
+			[]utils.TestFsEntry{
 				{
 					Path: "/default/auth.yaml",
 					Mode: utils.FILE_PERMISSION,
 					Data: []byte{},
 				},
-			}, []fs_test_helper.TestFsEntry{
+			}, []utils.TestFsEntry{
 				{
 					Path: "/default/auth.yaml",
 					Mode: utils.FILE_PERMISSION,
@@ -555,13 +554,13 @@ secret_access_key: ""
 				responseBody: io.NopCloser(bytes.NewBuffer([]byte(`{`))),
 			},
 			true,
-			[]fs_test_helper.TestFsEntry{
+			[]utils.TestFsEntry{
 				{
 					Path: "/default/auth.yaml",
 					Mode: utils.FILE_PERMISSION,
 					Data: []byte{},
 				},
-			}, []fs_test_helper.TestFsEntry{
+			}, []utils.TestFsEntry{
 				{
 					Path: "/default/auth.yaml",
 					Mode: utils.FILE_PERMISSION,
@@ -580,13 +579,13 @@ secret_access_key: ""
 				responseBody: io.NopCloser(bytes.NewBuffer([]byte{})),
 			},
 			true,
-			[]fs_test_helper.TestFsEntry{
+			[]utils.TestFsEntry{
 				{
 					Path: "/default/auth.yaml",
 					Mode: utils.FILE_PERMISSION,
 					Data: []byte{},
 				},
-			}, []fs_test_helper.TestFsEntry{
+			}, []utils.TestFsEntry{
 				{
 					Path: "/default/auth.yaml",
 					Mode: utils.FILE_PERMISSION,
@@ -607,13 +606,13 @@ secret_access_key: ""
 							}`))),
 			},
 			false,
-			[]fs_test_helper.TestFsEntry{
+			[]utils.TestFsEntry{
 				{
 					Path: "/default/auth.yaml",
 					Mode: utils.FILE_PERMISSION,
 					Data: []byte{},
 				},
-			}, []fs_test_helper.TestFsEntry{
+			}, []utils.TestFsEntry{
 				{
 					Path: "/default/auth.yaml",
 					Mode: utils.FILE_PERMISSION,
@@ -630,13 +629,13 @@ secret_access_key: ""
 			mockTransport{
 				shouldReturnError: true,
 			}, true, "access-token",
-			[]fs_test_helper.TestFsEntry{
+			[]utils.TestFsEntry{
 				{
 					Path: "/default/auth.yaml",
 					Mode: utils.FILE_PERMISSION,
 					Data: dummyConfigResultYaml,
 				},
-			}, []fs_test_helper.TestFsEntry{
+			}, []utils.TestFsEntry{
 				{
 					Path: "/default/auth.yaml",
 					Mode: utils.FILE_PERMISSION,
@@ -659,13 +658,13 @@ secret_access_key: ""
 											"refresh_token": "rf-token"
 										}`))),
 			}, false, "ac-token",
-			[]fs_test_helper.TestFsEntry{
+			[]utils.TestFsEntry{
 				{
 					Path: "/default/auth.yaml",
 					Mode: utils.FILE_PERMISSION,
 					Data: dummyConfigResultYaml,
 				},
-			}, []fs_test_helper.TestFsEntry{
+			}, []utils.TestFsEntry{
 				{
 					Path: "/default/auth.yaml",
 					Mode: utils.FILE_PERMISSION,
@@ -690,13 +689,13 @@ secret_access_key: ""
 				statusCode:   http.StatusBadRequest,
 				responseBody: io.NopCloser(bytes.NewBuffer([]byte{})),
 			}, true, "",
-			[]fs_test_helper.TestFsEntry{
+			[]utils.TestFsEntry{
 				{
 					Path: "/default/auth.yaml",
 					Mode: utils.FILE_PERMISSION,
 					Data: dummyConfigResultYaml,
 				},
-			}, []fs_test_helper.TestFsEntry{
+			}, []utils.TestFsEntry{
 				{
 					Path: "/default/auth.yaml",
 					Mode: utils.FILE_PERMISSION,
@@ -715,13 +714,13 @@ secret_access_key: ""
 				statusCode:   http.StatusOK,
 				responseBody: io.NopCloser(bytes.NewBuffer([]byte(`{`))),
 			}, true, "",
-			[]fs_test_helper.TestFsEntry{
+			[]utils.TestFsEntry{
 				{
 					Path: "/default/auth.yaml",
 					Mode: utils.FILE_PERMISSION,
 					Data: dummyConfigResultYaml,
 				},
-			}, []fs_test_helper.TestFsEntry{
+			}, []utils.TestFsEntry{
 				{
 					Path: "/default/auth.yaml",
 					Mode: utils.FILE_PERMISSION,
@@ -742,13 +741,13 @@ secret_access_key: ""
 		// 	},
 		// 	nil,
 		// 	true,
-		// 	[]fs_test_helper.TestFsEntry{
+		// 	[]utils.TestFsEntry{
 		// 		{
 		// 			Path: "/default/auth.yaml",
 		// 			Mode: utils.FILE_PERMISSION,
 		// 			Data: dummyConfigResultYaml,
 		// 		},
-		// 	}, []fs_test_helper.TestFsEntry{
+		// 	}, []utils.TestFsEntry{
 		// 		{
 		// 			Path: "/default/auth.yaml",
 		// 			Mode: utils.FILE_PERMISSION,
@@ -780,13 +779,13 @@ secret_access_key: ""
 		// 				Scope:        []string{"test"},
 		// 			},
 		// 			false,
-		// 			[]fs_test_helper.TestFsEntry{
+		// 			[]utils.TestFsEntry{
 		// 				{
 		// 					Path: "/default/auth.yaml",
 		// 					Mode: utils.FILE_PERMISSION,
 		// 					Data: dummyConfigResultYamlRealToken,
 		// 				},
-		// 			}, []fs_test_helper.TestFsEntry{
+		// 			}, []utils.TestFsEntry{
 		// 				{
 		// 					Path: "/default/auth.yaml",
 		// 					Mode: utils.FILE_PERMISSION,
@@ -809,13 +808,13 @@ secret_access_key: ""
 		// 				statusCode:   http.StatusOK,
 		// 				responseBody: io.NopCloser(bytes.NewBuffer([]byte(`[]`))),
 		// 			}, []*Tenant{}, false,
-		// 			[]fs_test_helper.TestFsEntry{
+		// 			[]utils.TestFsEntry{
 		// 				{
 		// 					Path: "/default/auth.yaml",
 		// 					Mode: utils.FILE_PERMISSION,
 		// 					Data: dummyConfigResultYaml,
 		// 				},
-		// 			}, []fs_test_helper.TestFsEntry{
+		// 			}, []utils.TestFsEntry{
 		// 				{
 		// 					Path: "/default/auth.yaml",
 		// 					Mode: utils.FILE_PERMISSION,
@@ -830,13 +829,13 @@ secret_access_key: ""
 		// }),
 		newAuth("empty auth file", "",
 			&ConfigResult{},
-			[]fs_test_helper.TestFsEntry{
+			[]utils.TestFsEntry{
 				{
 					Path: "/default/auth.yaml",
 					Mode: utils.FILE_PERMISSION,
 					Data: []byte{},
 				},
-			}, []fs_test_helper.TestFsEntry{
+			}, []utils.TestFsEntry{
 				{
 					Path: "/default/auth.yaml",
 					Mode: utils.FILE_PERMISSION,
@@ -851,13 +850,13 @@ secret_access_key: ""
 			}),
 		newAuth("non empty auth file", "",
 			dummyConfigResult,
-			[]fs_test_helper.TestFsEntry{
+			[]utils.TestFsEntry{
 				{
 					Path: "/default/auth.yaml",
 					Mode: utils.FILE_PERMISSION,
 					Data: dummyConfigResultYaml,
 				},
-			}, []fs_test_helper.TestFsEntry{
+			}, []utils.TestFsEntry{
 				{
 					Path: "/default/auth.yaml",
 					Mode: utils.FILE_PERMISSION,
@@ -875,13 +874,13 @@ secret_access_key: ""
 				AccessToken:  "env-access-token",
 				RefreshToken: dummyConfigResult.RefreshToken,
 			},
-			[]fs_test_helper.TestFsEntry{
+			[]utils.TestFsEntry{
 				{
 					Path: "/default/auth.yaml",
 					Mode: utils.FILE_PERMISSION,
 					Data: dummyConfigResultYaml,
 				},
-			}, []fs_test_helper.TestFsEntry{
+			}, []utils.TestFsEntry{
 				{
 					Path: "/default/auth.yaml",
 					Mode: utils.FILE_PERMISSION,
@@ -918,13 +917,13 @@ secret_access_key: ""
 		// 				{UUID: "1", Name: "jon doe", Email: "jon.doe@profusion.mobi", IsManaged: false, IsDelegated: false},
 		// 				{UUID: "2", Name: "jon smith", Email: "jon.smith@profusion.mobi", IsManaged: false, IsDelegated: false},
 		// 			}, false,
-		// 			[]fs_test_helper.TestFsEntry{
+		// 			[]utils.TestFsEntry{
 		// 				{
 		// 					Path: "/default/auth.yaml",
 		// 					Mode: utils.FILE_PERMISSION,
 		// 					Data: dummyConfigResultYaml,
 		// 				},
-		// 			}, []fs_test_helper.TestFsEntry{
+		// 			}, []utils.TestFsEntry{
 		// 				{
 		// 					Path: "/default/auth.yaml",
 		// 					Mode: utils.FILE_PERMISSION,
@@ -940,13 +939,13 @@ secret_access_key: ""
 		listTenants("request ended with err", mockTransport{
 			shouldReturnError: true,
 		}, nil, true,
-			[]fs_test_helper.TestFsEntry{
+			[]utils.TestFsEntry{
 				{
 					Path: "/default/auth.yaml",
 					Mode: utils.FILE_PERMISSION,
 					Data: dummyConfigResultYaml,
 				},
-			}, []fs_test_helper.TestFsEntry{
+			}, []utils.TestFsEntry{
 				{
 					Path: "/default/auth.yaml",
 					Mode: utils.FILE_PERMISSION,
@@ -963,13 +962,13 @@ secret_access_key: ""
 			statusCode:   http.StatusBadRequest,
 			responseBody: io.NopCloser(bytes.NewBuffer([]byte{})),
 		}, nil, true,
-			[]fs_test_helper.TestFsEntry{
+			[]utils.TestFsEntry{
 				{
 					Path: "/default/auth.yaml",
 					Mode: utils.FILE_PERMISSION,
 					Data: dummyConfigResultYaml,
 				},
-			}, []fs_test_helper.TestFsEntry{
+			}, []utils.TestFsEntry{
 				{
 					Path: "/default/auth.yaml",
 					Mode: utils.FILE_PERMISSION,
@@ -987,13 +986,13 @@ secret_access_key: ""
 			statusCode:   http.StatusOK,
 			responseBody: io.NopCloser(bytes.NewBuffer([]byte(`{`))),
 		}, nil, true,
-			[]fs_test_helper.TestFsEntry{
+			[]utils.TestFsEntry{
 				{
 					Path: "/default/auth.yaml",
 					Mode: utils.FILE_PERMISSION,
 					Data: dummyConfigResultYaml,
 				},
-			}, []fs_test_helper.TestFsEntry{
+			}, []utils.TestFsEntry{
 				{
 					Path: "/default/auth.yaml",
 					Mode: utils.FILE_PERMISSION,
@@ -1013,13 +1012,13 @@ secret_access_key: ""
 			},
 			nil,
 			true,
-			[]fs_test_helper.TestFsEntry{
+			[]utils.TestFsEntry{
 				{
 					Path: "/default/auth.yaml",
 					Mode: utils.FILE_PERMISSION,
 					Data: dummyConfigResultYaml,
 				},
-			}, []fs_test_helper.TestFsEntry{
+			}, []utils.TestFsEntry{
 				{
 					Path: "/default/auth.yaml",
 					Mode: utils.FILE_PERMISSION,
@@ -1039,13 +1038,13 @@ secret_access_key: ""
 			},
 			nil,
 			true,
-			[]fs_test_helper.TestFsEntry{
+			[]utils.TestFsEntry{
 				{
 					Path: "/default/auth.yaml",
 					Mode: utils.FILE_PERMISSION,
 					Data: dummyConfigResultYaml,
 				},
-			}, []fs_test_helper.TestFsEntry{
+			}, []utils.TestFsEntry{
 				{
 					Path: "/default/auth.yaml",
 					Mode: utils.FILE_PERMISSION,
@@ -1067,7 +1066,7 @@ secret_access_key: ""
 			if err != nil {
 				t.Errorf("could not set env")
 			}
-			fs_err := fs_test_helper.PrepareFs(fs, tc.providedFs)
+			fs_err := utils.PrepareFs(fs, tc.providedFs)
 			if fs_err != nil {
 				t.Errorf("could not prepare provided FS: %s", fs_err.Error())
 			}
@@ -1083,7 +1082,7 @@ secret_access_key: ""
 				t.Errorf("expected err == nil, found: %v", run_error)
 			}
 
-			fs_err = fs_test_helper.CheckFs(fs, tc.expectedFs)
+			fs_err = utils.CheckFs(fs, tc.expectedFs)
 
 			if fs_err != nil {
 				t.Errorf("unexpected FS state: %s", fs_err.Error())

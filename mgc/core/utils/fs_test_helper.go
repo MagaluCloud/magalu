@@ -1,4 +1,4 @@
-package fs_test_helper
+package utils
 
 import (
 	"bytes"
@@ -6,7 +6,6 @@ import (
 	"io/fs"
 
 	"github.com/spf13/afero"
-	"magalu.cloud/core/utils"
 )
 
 type TestFsEntry struct {
@@ -110,7 +109,7 @@ func AutoMkdirAll(entries []TestFsEntry) (expanded []TestFsEntry) {
 				knownPaths[d] = true
 				expanded = append(expanded, TestFsEntry{
 					Path: d,
-					Mode: fs.ModeDir | utils.DIR_PERMISSION,
+					Mode: fs.ModeDir | DIR_PERMISSION,
 					Data: nil,
 				})
 			}

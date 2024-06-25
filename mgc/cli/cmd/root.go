@@ -14,8 +14,11 @@ import (
 	"github.com/stoewer/go-strcase"
 )
 
-const loggerConfigKey = "logging"
-const defaultRegion = "br-se1"
+const (
+	loggerConfigKey     = "logging"
+	defaultRegion       = "br-se1"
+	defaultOutputFormat = "yaml"
+)
 
 var argParser = &osArgParser{}
 
@@ -132,6 +135,7 @@ can generate a command line on-demand for Rest manipulation`,
 	}
 
 	setDefaultRegion(sdk)
+	setDefaultOutputFormat(sdk)
 
 	err = rootCmd.Execute()
 	if err == nil && loadErr != nil {
@@ -166,6 +170,22 @@ func setDefaultRegion(sdk *mgcSdk.Sdk) {
 		err = sdk.Config().Set("region", region)
 		if err != nil {
 			logger().Debugw("failed to set region in config", "error", err)
+			return
+		}
+	}
+}
+
+func setDefaultOutputFormat(sdk *mgcSdk.Sdk) {
+	var outputFormat string
+	err := sdk.Config().Get("defaultOutput", &outputFormat)
+	if err != nil {
+		logger().Debugw("failed to get output format from config", "error", err)
+		return
+	}
+	if outputFormat == "" {
+		err = sdk.Config().Set("defaultOutput", defaultOutputFormat)
+		if err != nil {
+			logger().Debugw("failed to set output format in config", "error", err)
 			return
 		}
 	}

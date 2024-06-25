@@ -685,7 +685,10 @@ paths:
                     title: Expand
                     description: 'You can get more detailed info about: [''image'',
                         ''machine-type'', ''network''] '
-                    default: []
+                    default:
+                    - network
+                    - image
+                    - machine-type
             responses:
                 '200':
                     description: Successful Response

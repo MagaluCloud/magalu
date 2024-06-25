@@ -12,21 +12,20 @@ import (
 	"github.com/spf13/afero"
 
 	"magalu.cloud/core/utils"
-	"magalu.cloud/testing/fs_test_helper"
 )
 
 type testCaseProfile struct {
 	name          string
 	expectedData  []byte
 	expectedError error
-	expectedFs    []fs_test_helper.TestFsEntry
-	providedFs    []fs_test_helper.TestFsEntry
+	expectedFs    []utils.TestFsEntry
+	providedFs    []utils.TestFsEntry
 	run           func(p *Profile) ([]byte, error)
 }
 
-func createProfileWriteTest(testName, name string, data []byte, expectedError error, provided, expected []fs_test_helper.TestFsEntry) testCaseProfile {
-	provided = fs_test_helper.AutoMkdirAll(provided)
-	expected = fs_test_helper.AutoMkdirAll(expected)
+func createProfileWriteTest(testName, name string, data []byte, expectedError error, provided, expected []utils.TestFsEntry) testCaseProfile {
+	provided = utils.AutoMkdirAll(provided)
+	expected = utils.AutoMkdirAll(expected)
 	return testCaseProfile{
 		name:          fmt.Sprintf("profile.Write(%q)[%s]", name, testName),
 		expectedError: expectedError,
@@ -38,8 +37,8 @@ func createProfileWriteTest(testName, name string, data []byte, expectedError er
 	}
 }
 
-func createProfileReadTest(testName, name string, expectedData []byte, expectedError error, provided []fs_test_helper.TestFsEntry) testCaseProfile {
-	provided = fs_test_helper.AutoMkdirAll(provided)
+func createProfileReadTest(testName, name string, expectedData []byte, expectedError error, provided []utils.TestFsEntry) testCaseProfile {
+	provided = utils.AutoMkdirAll(provided)
 	return testCaseProfile{
 		name:          fmt.Sprintf("profile.Read(%q)[%s]", name, testName),
 		expectedData:  expectedData,
@@ -52,9 +51,9 @@ func createProfileReadTest(testName, name string, expectedData []byte, expectedE
 	}
 }
 
-func createDeleteProfileTest(testName, name string, expectedError error, provided, expected []fs_test_helper.TestFsEntry) testCaseProfile {
-	provided = fs_test_helper.AutoMkdirAll(provided)
-	expected = fs_test_helper.AutoMkdirAll(expected)
+func createDeleteProfileTest(testName, name string, expectedError error, provided, expected []utils.TestFsEntry) testCaseProfile {
+	provided = utils.AutoMkdirAll(provided)
+	expected = utils.AutoMkdirAll(expected)
 	return testCaseProfile{
 		name:          fmt.Sprintf("profile.Delete(%q)[%s]", name, testName),
 		expectedError: expectedError,
@@ -74,7 +73,7 @@ func TestProfile(t *testing.T) {
 
 	tests := []testCaseProfile{
 		// Write()
-		createProfileWriteTest("empty-fs", "test", []byte("test"), nil, nil, []fs_test_helper.TestFsEntry{
+		createProfileWriteTest("empty-fs", "test", []byte("test"), nil, nil, []utils.TestFsEntry{
 			{
 				Path: path.Join(dir, "profile/test"),
 				Mode: utils.FILE_PERMISSION,
@@ -82,14 +81,14 @@ func TestProfile(t *testing.T) {
 			},
 		}),
 		createProfileWriteTest("existing file", "test", []byte("updated test"), nil,
-			[]fs_test_helper.TestFsEntry{
+			[]utils.TestFsEntry{
 				{
 					Path: path.Join(dir, "profile/test"),
 					Mode: utils.FILE_PERMISSION,
 					Data: []byte("test"),
 				},
 			},
-			[]fs_test_helper.TestFsEntry{
+			[]utils.TestFsEntry{
 				{
 					Path: path.Join(dir, "profile/test"),
 					Mode: utils.FILE_PERMISSION,
@@ -98,14 +97,14 @@ func TestProfile(t *testing.T) {
 			},
 		),
 		createProfileWriteTest("new file", "other-test", []byte("other-test"), nil,
-			[]fs_test_helper.TestFsEntry{
+			[]utils.TestFsEntry{
 				{
 					Path: path.Join(dir, "profile/test"),
 					Mode: utils.FILE_PERMISSION,
 					Data: []byte("test"),
 				},
 			},
-			[]fs_test_helper.TestFsEntry{
+			[]utils.TestFsEntry{
 				{
 					Path: path.Join(dir, "profile/test"),
 					Mode: utils.FILE_PERMISSION,
@@ -121,7 +120,7 @@ func TestProfile(t *testing.T) {
 		// Read()
 		createProfileReadTest("empty-fs", "test", nil, afero.ErrFileNotFound, nil),
 		createProfileReadTest("existing file", "test", []byte("test"), nil,
-			[]fs_test_helper.TestFsEntry{
+			[]utils.TestFsEntry{
 				{
 					Path: path.Join(dir, "profile/test"),
 					Mode: utils.FILE_PERMISSION,
@@ -132,14 +131,14 @@ func TestProfile(t *testing.T) {
 		// Delete()
 		createDeleteProfileTest("empty-fs", "test", nil, nil, nil),
 		createDeleteProfileTest("existing file", "test", nil,
-			[]fs_test_helper.TestFsEntry{
+			[]utils.TestFsEntry{
 				{
 					Path: path.Join(dir, "profile/test"),
 					Mode: utils.FILE_PERMISSION,
 					Data: []byte("test"),
 				},
 			},
-			[]fs_test_helper.TestFsEntry{
+			[]utils.TestFsEntry{
 				{
 					Path: path.Join(dir, "profile"),
 					Mode: utils.DIR_PERMISSION | fs.ModeDir,
@@ -158,7 +157,7 @@ func TestProfile(t *testing.T) {
 				t.Errorf("ProfileManager.Get() failed: %s", err.Error())
 			}
 
-			err = fs_test_helper.PrepareFs(fs, tc.providedFs)
+			err = utils.PrepareFs(fs, tc.providedFs)
 			if err != nil {
 				t.Errorf("could not prepare provided FS: %s", err.Error())
 			}

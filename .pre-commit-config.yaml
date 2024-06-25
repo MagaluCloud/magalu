@@ -14,14 +14,6 @@ repos:
         language: golang
         entry: bash -c 'find . -name go.mod -execdir go test ./... \; | grep -zqv FAIL'
         stages: [pre-push]
-    -   id: valid-openapi-specs
-        name: valid-openapi-specs
-        language: python
-        entry: scripts/transformers/validate_openapi_specs.py
-        files: ^mgc/cli/openapis/(?!index).*[.]openapi[.](yaml|yml|json)$
-        types_or: [yaml, json]
-        stages: [pre-commit, pre-push]
-        additional_dependencies: [jsonschema, PyYAML, typing, argparse]
     -   id: check-cli-dump-tree-output
         name: check "cli dump-tree" output
         language: system

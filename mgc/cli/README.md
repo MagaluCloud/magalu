@@ -14,10 +14,6 @@ authenticate, configure and control the cloud resource
 
 See [DEVELOPMENT.md](./DEVELOPMENT.md)
 
-## Running
-
-See [RUNNING.md](./RUNNING.md)
-
 ## OpenAPI
 
 See [sdk/openapi/README.md](../sdk/openapi/README.md)
