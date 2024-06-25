@@ -79,18 +79,6 @@ func (r *vmSnapshots) Schema(_ context.Context, _ resource.SchemaRequest, resp *
 		Description:         description,
 		MarkdownDescription: description,
 		Attributes: map[string]schema.Attribute{
-			"region": schema.StringAttribute{
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.UseStateForUnknown(),
-				},
-				Optional: true,
-			},
-			"env": schema.StringAttribute{
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.UseStateForUnknown(),
-				},
-				Optional: true,
-			},
 			"id": schema.StringAttribute{
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.UseStateForUnknown(),
@@ -101,13 +89,14 @@ func (r *vmSnapshots) Schema(_ context.Context, _ resource.SchemaRequest, resp *
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.UseStateForUnknown(),
 				},
-				Computed: true,
+				Required: true,
 			},
 			"virtual_machine_name": schema.StringAttribute{
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.UseStateForUnknown(),
 				},
-				Required: true,
+				MarkdownDescription: "The final_name of the virtual machine.",
+				Required:            true,
 			},
 		},
 	}

@@ -17,14 +17,9 @@ Operations with snapshots for instances.
 
 ### Required
 
-- `virtual_machine_name` (String)
-
-### Optional
-
-- `env` (String)
-- `region` (String)
+- `name` (String)
+- `virtual_machine_name` (String) The final_name of the virtual machine.
 
 ### Read-Only
 
 - `id` (String) The ID of this resource.
-- `name` (String)
