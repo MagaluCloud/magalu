@@ -80,8 +80,6 @@ type vmInstancesResourceModel struct {
 	Name         types.String                `tfsdk:"name"`
 	NameIsPrefix types.Bool                  `tfsdk:"name_is_prefix"`
 	FinalName    types.String                `tfsdk:"final_name"`
-	Region       types.String                `tfsdk:"region"`
-	Env          types.String                `tfsdk:"env"`
 	UpdatedAt    types.String                `tfsdk:"updated_at"`
 	CreatedAt    types.String                `tfsdk:"created_at"`
 	SshKeyName   types.String                `tfsdk:"ssh_key_name"`
@@ -113,18 +111,6 @@ type vmInstancesMachineTypeModel struct {
 func (r *vmInstances) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		Attributes: map[string]schema.Attribute{
-			"region": schema.StringAttribute{
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.UseStateForUnknown(),
-				},
-				Optional: true,
-			},
-			"env": schema.StringAttribute{
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.UseStateForUnknown(),
-				},
-				Optional: true,
-			},
 			"id": schema.StringAttribute{
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.UseStateForUnknown(),
@@ -275,9 +261,8 @@ func (r *vmInstances) ModifyPlan(ctx context.Context, req resource.ModifyPlanReq
 func (r *vmInstances) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
 	data := &vmInstancesResourceModel{}
 	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
-	config := NewConfig(data.Region.ValueStringPointer(), data.Env.ValueStringPointer())
 
-	getResult, err := r.getVmStatus(data.ID.ValueString(), config)
+	getResult, err := r.getVmStatus(data.ID.ValueString())
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Error Reading VM",
@@ -288,7 +273,6 @@ func (r *vmInstances) Read(ctx context.Context, req resource.ReadRequest, resp *
 
 	data.ID = types.StringValue(getResult.Id)
 	r.setValuesFromServer(data, getResult)
-
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
@@ -301,10 +285,8 @@ func (r *vmInstances) Create(ctx context.Context, req resource.CreateRequest, re
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	config := NewConfig(plan.Region.ValueStringPointer(), plan.Env.ValueStringPointer())
-
 	// Get image and machine type ID
-	imageID, err := r.getImageID(plan.Image.Name.ValueString(), config)
+	imageID, err := r.getImageID(plan.Image.Name.ValueString())
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Error creating vm",
@@ -313,7 +295,7 @@ func (r *vmInstances) Create(ctx context.Context, req resource.CreateRequest, re
 		return
 	}
 
-	machineType, err := r.getMachineTypeID(plan.MachineType.Name.ValueString(), config)
+	machineType, err := r.getMachineTypeID(plan.MachineType.Name.ValueString())
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Error creating vm",
@@ -358,7 +340,7 @@ func (r *vmInstances) Create(ctx context.Context, req resource.CreateRequest, re
 			},
 		}
 	} else if !plan.Network.VPC.Name.IsNull() && plan.Network.VPC.Name.ValueString() != "" {
-		vpcId, err := r.getVpcID(plan.Network.VPC.Name.ValueString(), config)
+		vpcId, err := r.getVpcID(plan.Network.VPC.Name.ValueString())
 		if err != nil {
 			resp.Diagnostics.AddError(
 				"Error creating vm",
@@ -378,7 +360,7 @@ func (r *vmInstances) Create(ctx context.Context, req resource.CreateRequest, re
 		}
 	}
 
-	result, err := r.vmInstances.Create(createParams, sdkVmInstances.CreateConfigs{Env: config.Env(), Region: config.Region()})
+	result, err := r.vmInstances.Create(createParams, sdkVmInstances.CreateConfigs{})
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Error creating vm",
@@ -387,7 +369,7 @@ func (r *vmInstances) Create(ctx context.Context, req resource.CreateRequest, re
 		return
 	}
 
-	getResult, err := r.getVmStatus(result.Id, config)
+	getResult, err := r.getVmStatus(result.Id)
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Error Reading VM",
@@ -416,9 +398,7 @@ func (r *vmInstances) Update(ctx context.Context, req resource.UpdateRequest, re
 	data := &vmInstancesResourceModel{}
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
 
-	config := NewConfig(data.Region.ValueStringPointer(), data.Env.ValueStringPointer())
-
-	machineType, err := r.getMachineTypeID(data.MachineType.Name.ValueString(), config)
+	machineType, err := r.getMachineTypeID(data.MachineType.Name.ValueString())
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Error creating vm",
@@ -437,7 +417,7 @@ func (r *vmInstances) Update(ctx context.Context, req resource.UpdateRequest, re
 				Name: data.MachineType.Name.ValueString(),
 			},
 		},
-	}, sdkVmInstances.RetypeConfigs{Env: config.Env(), Region: config.Region()})
+	}, sdkVmInstances.RetypeConfigs{})
 
 	if err != nil {
 		resp.Diagnostics.AddError(
@@ -447,7 +427,7 @@ func (r *vmInstances) Update(ctx context.Context, req resource.UpdateRequest, re
 		return
 	}
 
-	getResult, err := r.getVmStatus(data.ID.ValueString(), config)
+	getResult, err := r.getVmStatus(data.ID.ValueString())
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Error Reading VM",
@@ -470,14 +450,12 @@ func (r *vmInstances) Delete(ctx context.Context, req resource.DeleteRequest, re
 	// Read Terraform prior state data into the model
 	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
 
-	config := NewConfig(data.Region.ValueStringPointer(), data.Env.ValueStringPointer())
-
 	err := r.vmInstances.Delete(
 		sdkVmInstances.DeleteParameters{
 			DeletePublicIp: data.Network.DeletePublicIP.ValueBoolPointer(),
 			Id:             data.ID.ValueString(),
 		},
-		sdkVmInstances.DeleteConfigs{Env: config.Env(), Region: config.Region()})
+		sdkVmInstances.DeleteConfigs{})
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Error Deleting VM",
@@ -488,7 +466,7 @@ func (r *vmInstances) Delete(ctx context.Context, req resource.DeleteRequest, re
 
 }
 
-func (r *vmInstances) setValuesFromServer(data *vmInstancesResourceModel, server *sdkVmInstances.GetResult) error {
+func (r *vmInstances) setValuesFromServer(data *vmInstancesResourceModel, server *sdkVmInstances.GetResult) {
 	data.State = types.StringValue(server.State)
 	data.Status = types.StringValue(server.Status)
 	data.MachineType.ID = types.StringValue(server.MachineType.Id)
@@ -526,14 +504,11 @@ func (r *vmInstances) setValuesFromServer(data *vmInstancesResourceModel, server
 		}
 
 	}
-	return nil
 }
 
-func (r *vmInstances) getImageID(name string, config Config) (string, error) {
+func (r *vmInstances) getImageID(name string) (string, error) {
 	var imageID string
-	imageList, err := r.vmImages.List(sdkVmImages.ListParameters{},
-		sdkVmImages.ListConfigs{Env: config.Env(), Region: config.Region()},
-	)
+	imageList, err := r.vmImages.List(sdkVmImages.ListParameters{}, sdkVmImages.ListConfigs{})
 	if err != nil {
 		return "", fmt.Errorf("could not load image list")
 	}
@@ -550,11 +525,9 @@ func (r *vmInstances) getImageID(name string, config Config) (string, error) {
 	return imageID, nil
 }
 
-func (r *vmInstances) getMachineTypeID(name string, config Config) (*vmInstancesMachineTypeModel, error) {
-	machineType := &vmInstancesMachineTypeModel{}
-	machineTypeList, err := r.vmMachineTypes.List(sdkVmMachineTypes.ListParameters{},
-		sdkVmMachineTypes.ListConfigs{Env: config.Env(), Region: config.Region()},
-	)
+func (r *vmInstances) getMachineTypeID(name string) (*vmInstancesMachineTypeModel, error) {
+	machineType := vmInstancesMachineTypeModel{}
+	machineTypeList, err := r.vmMachineTypes.List(sdkVmMachineTypes.ListParameters{}, sdkVmMachineTypes.ListConfigs{})
 	if err != nil {
 		return nil, fmt.Errorf("could not load machine-type list, unexpected error: " + err.Error())
 	}
@@ -570,10 +543,10 @@ func (r *vmInstances) getMachineTypeID(name string, config Config) (*vmInstances
 		}
 	}
 
-	if machineType == nil {
+	if machineType.ID.ValueString() == "" {
 		return nil, fmt.Errorf("could not found machine-type ID with name: " + name)
 	}
-	return machineType, nil
+	return &machineType, nil
 }
 
 func (r *vmInstances) setValuesFromMachineType(data *vmInstancesResourceModel, server *vmInstancesMachineTypeModel) {
@@ -584,9 +557,9 @@ func (r *vmInstances) setValuesFromMachineType(data *vmInstancesResourceModel, s
 	data.MachineType.VCPUs = server.VCPUs
 }
 
-func (r *vmInstances) getVpcID(name string, config Config) (string, error) {
+func (r *vmInstances) getVpcID(name string) (string, error) {
 	var vpcID string
-	vpcs, err := r.nwVPCs.List(sdkNetworkVPCs.ListConfigs{Env: config.Env(), Region: config.Region()})
+	vpcs, err := r.nwVPCs.List(sdkNetworkVPCs.ListConfigs{})
 	if err != nil {
 		return "", fmt.Errorf("could not load vpc list")
 	}
@@ -603,7 +576,7 @@ func (r *vmInstances) getVpcID(name string, config Config) (string, error) {
 	return vpcID, nil
 }
 
-func (r *vmInstances) getVmStatus(id string, config Config) (*sdkVmInstances.GetResult, error) {
+func (r *vmInstances) getVmStatus(id string) (*sdkVmInstances.GetResult, error) {
 	getResult := &sdkVmInstances.GetResult{}
 	expand := &sdkVmInstances.GetParametersExpand{"network"}
 
@@ -611,9 +584,6 @@ func (r *vmInstances) getVmStatus(id string, config Config) (*sdkVmInstances.Get
 	startTime := time.Now()
 	getParam := sdkVmInstances.GetParameters{Id: id, Expand: expand}
 	getConfigParam := sdkVmInstances.GetConfigs{}
-	if config != nil {
-		getConfigParam = sdkVmInstances.GetConfigs{Env: config.Env(), Region: config.Region()}
-	}
 	var err error
 	for {
 		elapsed := time.Since(startTime)

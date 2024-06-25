@@ -65,8 +65,6 @@ func (r *vmSnapshots) Configure(ctx context.Context, req resource.ConfigureReque
 
 // vmSnapshotsResourceModel maps de resource schema data.
 type vmSnapshotsResourceModel struct {
-	Region             types.String `tfsdk:"region"`
-	Env                types.String `tfsdk:"env"`
 	ID                 types.String `tfsdk:"id"`
 	Name               types.String `tfsdk:"name"`
 	VirtualMachineName types.String `tfsdk:"virtual_machine_name"`
@@ -116,12 +114,12 @@ func (r *vmSnapshots) ModifyPlan(ctx context.Context, req resource.ModifyPlanReq
 	//do nothing
 }
 
-func (r *vmSnapshots) getVmSnapshot(id string, config Config) (sdkVmSnapshots.GetResult, error) {
+func (r *vmSnapshots) getVmSnapshot(id string) (sdkVmSnapshots.GetResult, error) {
 	getResult, err := r.vmSnapshots.Get(
 		sdkVmSnapshots.GetParameters{
 			Id: id,
 		},
-		sdkVmSnapshots.GetConfigs{Env: config.Env(), Region: config.Region()})
+		sdkVmSnapshots.GetConfigs{})
 	if err != nil {
 		return sdkVmSnapshots.GetResult{}, err
 	}
@@ -132,9 +130,8 @@ func (r *vmSnapshots) getVmSnapshot(id string, config Config) (sdkVmSnapshots.Ge
 func (r *vmSnapshots) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
 	data := &vmSnapshotsResourceModel{}
 	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
-	config := NewConfig(data.Region.ValueStringPointer(), data.Env.ValueStringPointer())
 
-	getResult, err := r.getVmSnapshot(data.ID.ValueString(), config)
+	getResult, err := r.getVmSnapshot(data.ID.ValueString())
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Error Reading VM",
@@ -158,7 +155,6 @@ func (r *vmSnapshots) Create(ctx context.Context, req resource.CreateRequest, re
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	config := NewConfig(plan.Region.ValueStringPointer(), plan.Env.ValueStringPointer())
 
 	createParams := sdkVmSnapshots.CreateParameters{
 		Name: plan.Name.ValueString(),
@@ -169,7 +165,7 @@ func (r *vmSnapshots) Create(ctx context.Context, req resource.CreateRequest, re
 		},
 	}
 
-	result, err := r.vmSnapshots.Create(createParams, sdkVmSnapshots.CreateConfigs{Env: config.Env(), Region: config.Region()})
+	result, err := r.vmSnapshots.Create(createParams, sdkVmSnapshots.CreateConfigs{})
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Error Creating VM Snapshot",
@@ -201,13 +197,11 @@ func (r *vmSnapshots) Delete(ctx context.Context, req resource.DeleteRequest, re
 	// Read Terraform prior state data into the model
 	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
 
-	config := NewConfig(data.Region.ValueStringPointer(), data.Env.ValueStringPointer())
-
 	err := r.vmSnapshots.Delete(
 		sdkVmSnapshots.DeleteParameters{
 			Id: data.ID.ValueString(),
 		},
-		sdkVmSnapshots.DeleteConfigs{Env: config.Env(), Region: config.Region()})
+		sdkVmSnapshots.DeleteConfigs{})
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Error deleting VM Snapshot",
