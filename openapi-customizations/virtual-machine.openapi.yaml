@@ -12,7 +12,7 @@ paths:
         post:
             x-mgc-description: Create a Virtual Machine instance
             responses:
-                '201':
+                "201":
                     links:
                         get:
                             description: Read Virtual Machine instance
@@ -56,6 +56,13 @@ paths:
                                 id: $response.body#/id
     /v1/instances/{id}:
         get:
+            parameters:
+                -   name: id
+                -   name: expand
+                    in: query
+                    schema:
+                        type: array
+                        default: [network, image, machine-type]
             x-mgc-description: Get a Virtual Machine instance details
             x-mgc-wait-termination:
                 maxRetries: 30
@@ -68,8 +75,6 @@ paths:
                         reboot:
                             description: Reboot a Virtual Machine instance
                             operationId: reboot_instance_v1_instances__id__reboot_post
-                            parameters:
-                                id: $request.path.id
                         start:
                             description: Start a Virtual Machine instance
                             operationId: start_instance_v1_instances__id__start_post

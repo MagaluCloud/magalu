@@ -26174,7 +26174,11 @@
        "additionalProperties": false,
        "properties": {
         "expand": {
-         "default": [],
+         "default": [
+          "network",
+          "image",
+          "machine-type"
+         ],
          "description": "You can get more detailed info about: ['image', 'machine-type', 'network'] ",
          "items": {
           "type": "string"
