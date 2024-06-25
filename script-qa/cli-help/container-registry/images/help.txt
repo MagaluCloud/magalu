@@ -1,0 +1,20 @@
+Routes related to managing Container Registry repositories images.
+
+Usage:
+  ./mgc container-registry images [flags]
+  ./mgc container-registry images [command]
+
+Commands:
+  delete      Delete image by digest or tag
+  get         Get image details
+  list        List images in container registry repository
+
+Flags:
+  -h, --help      help for images
+  -v, --version   version for images
+
+Global Flags:
+      --cli.show-cli-globals   Show all CLI global flags on usage text
+
+Use "./mgc container-registry images [command] --help" for more information about a command.
+
