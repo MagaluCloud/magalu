@@ -146,14 +146,14 @@
           }
         },
         "x-viveiro": true,
-        "x-mgc-output-flag": "table=BACKUP_TYPE:$.backups[*].backup_type,CREATED_AT:$.backups[*].created_at',  ID:$.backups[*].id,INSTANCE:$.backups[*].instance,DISK:$.backups[*].min_disk,NAME:$.backups[*].name, ROTATION:$.backups[*].rotation,SIZE:$.backups[*].size,STATE:$.backups[*].state,STATUS:$.backups[*].status,UPDATED_AT:$.backups[*].updated_at"
+        "x-mgc-output-flag": "table=BACKUP_TYPE:$.backups[*].backup_type,CREATED_AT:$.backups[*].created_at',  ID:$.backups[*].id,INSTANCE:$.backups[*].instance,DISK:$.backups[*].min_disk,NAME:$.backups[*].name, SIZE:$.backups[*].size,STATE:$.backups[*].state,STATUS:$.backups[*].status,UPDATED_AT:$.backups[*].updated_at"
       },
       "post": {
         "tags": [
           "backups"
         ],
         "summary": "Create a backup of a virtual machine asynchronously.",
-        "description": "create a backup from instance",
+        "description": "Create a backup of a Virtual Machine with the current tenant which is logged in.\n\nA Backup is ready for restore when it's in completed status.\n\n#### Rules\n- It's possible to create a maximum of 100 backups per virtual machine.\n- In case quota reached, choose a backup to remove.\n- You can inform ID or Name from a Virtual Machine if both informed the priority will be ID.\n- It's only possible to create a backup of a valid virtual machine.\n- Each backup must have a unique name. It's not possible to create backups with the same name.",
         "operationId": "create_backup_v1_backups_post",
         "parameters": [
           {
@@ -348,15 +348,15 @@
           }
         },
         "x-viveiro": true,
-        "x-mgc-output-flag": "table=BACKUP_TYPE:$.backups[].backup_type,CREATED_AT:$.backups[].created_at',  ID:$.backups[].id,INSTANCE:$.backups[].instance,DISK:$.backups[].min_disk,NAME:$.backups[].name, ROTATION:$.backups[].rotation,SIZE:$.backups[].size,STATE:$.backups[].state,STATUS:$.backups[].status,UPDATED_AT:$.backups[*].updated_at"
+        "x-mgc-output-flag": "table=BACKUP_TYPE:$.backups[].backup_type,CREATED_AT:$.backups[].created_at',  ID:$.backups[].id,INSTANCE:$.backups[].instance,DISK:$.backups[].min_disk,NAME:$.backups[].name, SIZE:$.backups[].size,STATE:$.backups[].state,STATUS:$.backups[].status,UPDATED_AT:$.backups[*].updated_at"
       },
-      "post": {
+      "delete": {
         "tags": [
           "backups"
         ],
-        "summary": "Restore a backup to a virtual machine",
-        "description": "Restore a backup of a Virtual Machine with the current tenant which is logged in. \u003c/br\u003e\nA Backup is ready for restore when it's in completed status.\n\n#### Notes\n- You can verify the status of backup using the backup list command.\n- Use machine-types list to see all machine types available.\n\n#### Rules\n- To restore a backup you have to inform the new virtual machine information.\n- You can choose a machine-type that has a disk equal or larger\nthan the minimum disk of the backup.",
-        "operationId": "restore_backup_v1_backups__id__post",
+        "summary": "Delete a backup of a virtual machine asynchronously.",
+        "description": "delete a backup from instance",
+        "operationId": "delete_backup_v1_backups__id__delete",
         "parameters": [
           {
             "name": "id",
@@ -378,26 +378,9 @@
             }
           }
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/BackupRestoreRequestDefault"
-              }
-            }
-          },
-          "required": true
-        },
         "responses": {
-          "202": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CreateResponse"
-                }
-              }
-            }
+          "204": {
+            "description": "Successful Response"
           },
           "400": {
             "description": "Snapshot Not Allowed Exception",
@@ -452,14 +435,16 @@
         },
         "x-viveiro": true,
         "x-mgc-output-flag": "table=ID:$.id"
-      },
-      "delete": {
+      }
+    },
+    "/v1/backups/{id}/restore": {
+      "post": {
         "tags": [
           "backups"
         ],
-        "summary": "Delete a backup of a virtual machine asynchronously.",
-        "description": "delete a backup from instance",
-        "operationId": "delete_backup_v1_backups__id__delete",
+        "summary": "Restore a backup to a virtual machine",
+        "description": "Restore a backup of a Virtual Machine with the current tenant which is logged in. \u003c/br\u003e\nA Backup is ready for restore when it's in completed status.\n\n#### Notes\n- You can verify the status of backup using the backup list command.\n- Use machine-types list to see all machine types available.\n\n#### Rules\n- To restore a backup you have to inform the new virtual machine information.\n- You can choose a machine-type that has a disk equal or larger\nthan the minimum disk of the backup.",
+        "operationId": "restore_backup_v1_backups__id__restore_post",
         "parameters": [
           {
             "name": "id",
@@ -481,9 +466,26 @@
             }
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BackupRestoreRequestDefault"
+              }
+            }
+          },
+          "required": true
+        },
         "responses": {
-          "204": {
-            "description": "Successful Response"
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateResponse"
+                }
+              }
+            }
           },
           "400": {
             "description": "Snapshot Not Allowed Exception",
@@ -2355,33 +2357,15 @@
               }
             ],
             "title": "Virtual Machine"
-          },
-          "backup_type": {
-            "type": "string",
-            "title": "BackupType"
-          },
-          "rotation": {
-            "anyOf": [
-              {
-                "type": "integer",
-                "minimum": 1
-              }
-            ],
-            "title": "Rotation",
-            "default": 10,
-            "nullable": true
           }
         },
         "title": "BackupRequest",
         "required": [
           "name",
-          "virtual_machine",
-          "backup_type"
+          "virtual_machine"
         ],
         "example": {
-          "backup_type": "daily",
           "name": "backup name",
-          "rotation": 1,
           "virtual_machine": {
             "id": "4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a"
           }
@@ -2418,6 +2402,7 @@
             "title": "BackupStatus",
             "enum": [
               "provisioning",
+              "restoring",
               "creating",
               "completed",
               "error",
@@ -2541,7 +2526,10 @@
                     "$ref": "#/components/schemas/Name"
                   }
                 ],
-                "title": "Vpc"
+                "title": "Vpc",
+                "default": {
+                  "name": "default"
+                }
               },
               "interface": {
                 "anyOf": [
@@ -2557,7 +2545,8 @@
               },
               "associate_public_ip": {
                 "type": "boolean",
-                "title": "Associate Public Ip"
+                "title": "Associate Public Ip",
+                "default": true
               }
             },
             "title": "InstanceCreateRequestV1NetworkDefault",
@@ -2638,16 +2627,13 @@
         "title": "BackupStatus",
         "enum": [
           "provisioning",
+          "restoring",
           "creating",
           "completed",
           "error",
           "deleting",
           "deleted"
         ]
-      },
-      "BackupType": {
-        "type": "string",
-        "title": "BackupType"
       },
       "CreateResponse": {
         "type": "object",
@@ -3023,6 +3009,12 @@
                 "$ref": "#/components/schemas/InstanceCreateRequestV1NetworkDefault"
               }
             ],
+            "default": {
+              "vpc": {
+                "name": "default"
+              },
+              "associate_public_ip": true
+            },
             "nullable": true
           },
           "user_data": {
@@ -3085,7 +3077,10 @@
                 "$ref": "#/components/schemas/Name"
               }
             ],
-            "title": "Vpc"
+            "title": "Vpc",
+            "default": {
+              "name": "default"
+            }
           },
           "interface": {
             "anyOf": [
@@ -3101,7 +3096,8 @@
           },
           "associate_public_ip": {
             "type": "boolean",
-            "title": "Associate Public Ip"
+            "title": "Associate Public Ip",
+            "default": true
           }
         },
         "title": "InstanceCreateRequestV1NetworkDefault",
@@ -3812,6 +3808,7 @@
                   "title": "BackupStatus",
                   "enum": [
                     "provisioning",
+                    "restoring",
                     "creating",
                     "completed",
                     "error",

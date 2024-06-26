@@ -11,12 +11,18 @@ Usage:
 - --control.expand enum
 - Instance extra attributes or relations to show with the main query. When available, more than one value
 - can be informed using commas. e.g: '--control.expand="replicas"' (must be "replicas")
-- --control.limit integer     Limit (range: 1 - 25) (default 10)
-- --control.offset integer   Offset (min: 0)
-- --exchange string          Exchange (default "dbaas-internal")
-- -h, --help                     help for list
-- --status enum              InstanceStatusResponse: An enumeration. (one of "ACTIVE", "BACKING_UP", "CREATING", "DELETED", "DELETING", "ERROR", "ERROR_DELETING", "MAINTENANCE", "PENDING", "REBOOT", "RESIZING", "RESTORING", "STARTING", "STOPPED" or "STOPPING")
-- -v, --version                  version for list
+- --control.limit integer      Limit (range: 1 - 25) (default 10)
+- --control.offset integer    Offset (min: 0)
+- --engine-id uuid            Engine Id
+- --exchange string           Exchange (default "dbaas-internal")
+- -h, --help                      help for list
+- --status enum               InstanceStatusResponse: An enumeration. (one of "ACTIVE", "BACKING_UP", "CREATING", "DELETED", "DELETING", "ERROR", "ERROR_DELETING", "MAINTENANCE", "PENDING", "REBOOT", "RESIZING", "RESTORING", "STARTING", "STOPPED" or "STOPPING")
+- -v, --version                   version for list
+- --volume.size integer       Volume.Size
+- --volume.size-gt integer    Volume.Size  Gt
+- --volume.size-gte integer   Volume.Size  Gte
+- --volume.size-lt integer    Volume.Size  Lt
+- --volume.size-lte integer   Volume.Size  Lte
 
 ## Other commands:
 - Global Flags:

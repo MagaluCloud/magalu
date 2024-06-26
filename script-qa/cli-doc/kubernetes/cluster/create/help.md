@@ -8,10 +8,12 @@ Usage:
 
 ## Product catalog:
 - Examples:
-- ./mgc kubernetes cluster create --description="This is an example cluster." --enabled-bastion=false --enabled-server-group=false --name="cluster-example" --node-pools='[{"auto_scale":{"max_replicas":5,"min_replicas":2},"flavor":"cloud-k8s.gp1.small","name":"nodepool-example","replicas":3,"tags":["tag-value1"],"taints":[{"effect":"NoSchedule","key":"example-key","value":"valor1"}]}]' --param.version="v1.28.5" --zone="br-region-zone"
+- ./mgc kubernetes cluster create --allowed-cidrs='["192.168.1.0/24","10.0.0.0/16"]' --description="This is an example cluster." --enabled-bastion=false --enabled-server-group=false --name="cluster-example" --node-pools='[{"auto_scale":{"max_replicas":5,"min_replicas":2},"flavor":"cloud-k8s.gp1.small","name":"nodepool-example","replicas":3,"tags":["tag-value1"],"taints":[{"effect":"NoSchedule","key":"example-key","value":"valor1"}]}]' --param.version="v1.28.5" --zone="br-region-zone"
 
 ## Other commands:
 - Flags:
+- --allowed-cidrs array(string)   List of allowed CIDR blocks for API server access.
+- 
 - --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
 - --description string            A brief description of the Kubernetes cluster.
 - 

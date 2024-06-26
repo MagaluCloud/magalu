@@ -260,7 +260,8 @@ paths:
                     :\"nodepool-example\",\"flavor\":\"cloud-k8s.gp1.small\",\"replicas\"\
                     :3,\"tags\":[\"tag-value1\"],\"taints\":[{\"key\":\"example-key\"\
                     ,\"value\":\"valor1\",\"effect\":\"NoSchedule\"}],\"auto_scale\"\
-                    :{\"min_replicas\":2,\"max_replicas\":5}}]}'"
+                    :{\"min_replicas\":2,\"max_replicas\":5}}],\"allowed_cidrs\":[\"\
+                    192.168.1.0/24\",\"10.0.0.0/16\"]}'"
             -   lang: Shell + Httpie
                 source: "echo '{\"name\":\"cluster-example\",\"version\":\"v1.28.5\"\
                     ,\"description\":\"This is an example cluster.\",\"zone\":\"br-region-zone\"\
@@ -268,8 +269,9 @@ paths:
                     :[{\"name\":\"nodepool-example\",\"flavor\":\"cloud-k8s.gp1.small\"\
                     ,\"replicas\":3,\"tags\":[\"tag-value1\"],\"taints\":[{\"key\"\
                     :\"example-key\",\"value\":\"valor1\",\"effect\":\"NoSchedule\"\
-                    }],\"auto_scale\":{\"min_replicas\":2,\"max_replicas\":5}}]}'\
-                    \ |  \\\n  http POST https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters\
+                    }],\"auto_scale\":{\"min_replicas\":2,\"max_replicas\":5}}],\"\
+                    allowed_cidrs\":[\"192.168.1.0/24\",\"10.0.0.0/16\"]}' |  \\\n\
+                    \  http POST https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters\
                     \ \\\n  Authorization:'Bearer REPLACE_BEARER_TOKEN' \\\n  content-type:application/json\
                     \ \\\n  x-tenant-id:SOME_STRING_VALUE"
             -   lang: Go + Native
@@ -285,7 +287,8 @@ paths:
                     :3,\\\"tags\\\":[\\\"tag-value1\\\"],\\\"taints\\\":[{\\\"key\\\
                     \":\\\"example-key\\\",\\\"value\\\":\\\"valor1\\\",\\\"effect\\\
                     \":\\\"NoSchedule\\\"}],\\\"auto_scale\\\":{\\\"min_replicas\\\
-                    \":2,\\\"max_replicas\\\":5}}]}\")\n\n\treq, _ := http.NewRequest(\"\
+                    \":2,\\\"max_replicas\\\":5}}],\\\"allowed_cidrs\\\":[\\\"192.168.1.0/24\\\
+                    \",\\\"10.0.0.0/16\\\"]}\")\n\n\treq, _ := http.NewRequest(\"\
                     POST\", url, payload)\n\n\treq.Header.Add(\"content-type\", \"\
                     application/json\")\n\treq.Header.Add(\"x-tenant-id\", \"SOME_STRING_VALUE\"\
                     )\n\treq.Header.Add(\"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\"\
@@ -303,8 +306,9 @@ paths:
                     \",\\\"replicas\\\":3,\\\"tags\\\":[\\\"tag-value1\\\"],\\\"taints\\\
                     \":[{\\\"key\\\":\\\"example-key\\\",\\\"value\\\":\\\"valor1\\\
                     \",\\\"effect\\\":\\\"NoSchedule\\\"}],\\\"auto_scale\\\":{\\\"\
-                    min_replicas\\\":2,\\\"max_replicas\\\":5}}]}\"\n\nheaders = {\n\
-                    \    'content-type': \"application/json\",\n    'x-tenant-id':\
+                    min_replicas\\\":2,\\\"max_replicas\\\":5}}],\\\"allowed_cidrs\\\
+                    \":[\\\"192.168.1.0/24\\\",\\\"10.0.0.0/16\\\"]}\"\n\nheaders\
+                    \ = {\n    'content-type': \"application/json\",\n    'x-tenant-id':\
                     \ \"SOME_STRING_VALUE\",\n    'Authorization': \"Bearer REPLACE_BEARER_TOKEN\"\
                     \n    }\n\nconn.request(\"POST\", \"/v0/clusters\", payload, headers)\n\
                     \nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"\
@@ -326,7 +330,8 @@ paths:
                     \      flavor: 'cloud-k8s.gp1.small',\n      replicas: 3,\n  \
                     \    tags: ['tag-value1'],\n      taints: [{key: 'example-key',\
                     \ value: 'valor1', effect: 'NoSchedule'}],\n      auto_scale:\
-                    \ {min_replicas: 2, max_replicas: 5}\n    }\n  ]\n}));\nreq.end();"
+                    \ {min_replicas: 2, max_replicas: 5}\n    }\n  ],\n  allowed_cidrs:\
+                    \ ['192.168.1.0/24', '10.0.0.0/16']\n}));\nreq.end();"
             -   lang: Ruby + Native
                 source: 'require ''uri''
 
@@ -354,7 +359,7 @@ paths:
                     request["Authorization"] = ''Bearer REPLACE_BEARER_TOKEN''
 
                     request.body = "{\"name\":\"cluster-example\",\"version\":\"v1.28.5\",\"description\":\"This
-                    is an example cluster.\",\"zone\":\"br-region-zone\",\"enabled_bastion\":false,\"enabled_server_group\":false,\"node_pools\":[{\"name\":\"nodepool-example\",\"flavor\":\"cloud-k8s.gp1.small\",\"replicas\":3,\"tags\":[\"tag-value1\"],\"taints\":[{\"key\":\"example-key\",\"value\":\"valor1\",\"effect\":\"NoSchedule\"}],\"auto_scale\":{\"min_replicas\":2,\"max_replicas\":5}}]}"
+                    is an example cluster.\",\"zone\":\"br-region-zone\",\"enabled_bastion\":false,\"enabled_server_group\":false,\"node_pools\":[{\"name\":\"nodepool-example\",\"flavor\":\"cloud-k8s.gp1.small\",\"replicas\":3,\"tags\":[\"tag-value1\"],\"taints\":[{\"key\":\"example-key\",\"value\":\"valor1\",\"effect\":\"NoSchedule\"}],\"auto_scale\":{\"min_replicas\":2,\"max_replicas\":5}}],\"allowed_cidrs\":[\"192.168.1.0/24\",\"10.0.0.0/16\"]}"
 
 
                     response = http.request(request)
@@ -2250,6 +2255,16 @@ components:
                         auto_scale:
                             min_replicas: 2
                             max_replicas: 5
+                allowed_cidrs:
+                    type: array
+                    items:
+                        type: string
+                    description: 'List of allowed CIDR blocks for API server access.
+
+                        '
+                    example:
+                    - 192.168.1.0/24
+                    - 10.0.0.0/16
             required:
             - name
             - enabled_bastion
@@ -2269,6 +2284,16 @@ components:
                     example: 10113826-624a-4801-900f-6a5742433411
                 status:
                     $ref: '#/components/schemas/SingleStatus'
+                allowed_cidrs:
+                    type: array
+                    items:
+                        type: string
+                    description: 'List of allowed CIDR blocks for API server access.
+
+                        '
+                    example:
+                    - 192.168.1.0/24
+                    - 10.0.0.0/16
             required:
             - name
             - id
@@ -2411,6 +2436,16 @@ components:
                     description: Set of nodes in a Kubernetes cluster.
                 addons:
                     $ref: '#/components/schemas/Addons'
+                allowed_cidrs:
+                    type: array
+                    items:
+                        type: string
+                    description: 'List of allowed CIDR blocks for API server access.
+
+                        '
+                    example:
+                    - 192.168.1.0/24
+                    - 10.0.0.0/16
             required:
             - name
             - id

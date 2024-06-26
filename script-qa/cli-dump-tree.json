@@ -4921,7 +4921,7 @@
        "type": "object"
       },
       "result": {},
-      "version": "1.22.0"
+      "version": "1.23.0"
      },
      {
       "configs": {
@@ -5078,7 +5078,7 @@
        "title": "BackupDetailResponse",
        "type": "object"
       },
-      "version": "1.22.0"
+      "version": "1.23.0"
      },
      {
       "configs": {
@@ -5333,13 +5333,13 @@
        "title": "BackupsResponse",
        "type": "object"
       },
-      "version": "1.22.0"
+      "version": "1.23.0"
      }
     ],
     "description": "Database backups management.",
     "isInternal": false,
     "name": "backups",
-    "version": "1.22.0"
+    "version": "1.23.0"
    },
    {
     "children": [
@@ -5432,7 +5432,7 @@
        "title": "EngineResponse",
        "type": "object"
       },
-      "version": "1.22.0"
+      "version": "1.23.0"
      },
      {
       "configs": {
@@ -5596,13 +5596,13 @@
        "title": "EnginesResponse",
        "type": "object"
       },
-      "version": "1.22.0"
+      "version": "1.23.0"
      }
     ],
     "description": "Datastores available for database instances.",
     "isInternal": true,
     "name": "datastores",
-    "version": "1.22.0"
+    "version": "1.23.0"
    },
    {
     "children": [
@@ -5695,7 +5695,7 @@
        "title": "EngineResponse",
        "type": "object"
       },
-      "version": "1.22.0"
+      "version": "1.23.0"
      },
      {
       "configs": {
@@ -5859,13 +5859,13 @@
        "title": "EnginesResponse",
        "type": "object"
       },
-      "version": "1.22.0"
+      "version": "1.23.0"
      }
     ],
     "description": "Engines available for database instances.",
     "isInternal": false,
     "name": "engines",
-    "version": "1.22.0"
+    "version": "1.23.0"
    },
    {
     "children": [
@@ -5977,7 +5977,7 @@
        "title": "FlavorResponse",
        "type": "object"
       },
-      "version": "1.22.0"
+      "version": "1.23.0"
      },
      {
       "configs": {
@@ -6028,6 +6028,11 @@
          "minimum": 0,
          "title": "Offset",
          "type": "integer"
+        },
+        "engine_id": {
+         "format": "uuid",
+         "title": "Engine Id",
+         "type": "string"
         },
         "status": {
          "default": "ACTIVE",
@@ -6161,13 +6166,13 @@
        "title": "FlavorsResponse",
        "type": "object"
       },
-      "version": "1.22.0"
+      "version": "1.23.0"
      }
     ],
     "description": "Flavors available for database instances.",
     "isInternal": false,
     "name": "flavors",
-    "version": "1.22.0"
+    "version": "1.23.0"
    },
    {
     "children": [
@@ -6210,13 +6215,13 @@
        "type": "object"
       },
       "result": {},
-      "version": "1.22.0"
+      "version": "1.23.0"
      }
     ],
     "description": "Health check.",
     "isInternal": true,
     "name": "healthcheck",
-    "version": "1.22.0"
+    "version": "1.23.0"
    },
    {
     "children": [
@@ -6298,7 +6303,7 @@
          "title": "BackupResponse",
          "type": "object"
         },
-        "version": "1.22.0"
+        "version": "1.23.0"
        },
        {
         "configs": {
@@ -6360,7 +6365,7 @@
          "type": "object"
         },
         "result": {},
-        "version": "1.22.0"
+        "version": "1.23.0"
        },
        {
         "configs": {
@@ -6523,7 +6528,7 @@
          "title": "BackupDetailResponse",
          "type": "object"
         },
-        "version": "1.22.0"
+        "version": "1.23.0"
        },
        {
         "configs": {
@@ -6786,13 +6791,13 @@
          "title": "BackupsResponse",
          "type": "object"
         },
-        "version": "1.22.0"
+        "version": "1.23.0"
        }
       ],
       "description": "Database instances management. | backups",
       "isInternal": false,
       "name": "backups",
-      "version": "1.22.0"
+      "version": "1.23.0"
      },
      {
       "configs": {
@@ -6976,7 +6981,7 @@
        "title": "InstanceResponse",
        "type": "object"
       },
-      "version": "1.22.0"
+      "version": "1.23.0"
      },
      {
       "configs": {
@@ -7032,7 +7037,7 @@
        "type": "object"
       },
       "result": {},
-      "version": "1.22.0"
+      "version": "1.23.0"
      },
      {
       "configs": {
@@ -7515,7 +7520,7 @@
        "title": "InstanceDetailResponse",
        "type": "object"
       },
-      "version": "1.22.0"
+      "version": "1.23.0"
      },
      {
       "configs": {
@@ -7574,6 +7579,11 @@
          "title": "Offset",
          "type": "integer"
         },
+        "engine_id": {
+         "format": "uuid",
+         "title": "Engine Id",
+         "type": "string"
+        },
         "exchange": {
          "default": "dbaas-internal",
          "title": "Exchange",
@@ -7600,6 +7610,26 @@
          ],
          "title": "InstanceStatusResponse",
          "type": "string"
+        },
+        "volume.size": {
+         "title": "Volume.Size",
+         "type": "integer"
+        },
+        "volume.size__gt": {
+         "title": "Volume.Size  Gt",
+         "type": "integer"
+        },
+        "volume.size__gte": {
+         "title": "Volume.Size  Gte",
+         "type": "integer"
+        },
+        "volume.size__lt": {
+         "title": "Volume.Size  Lt",
+         "type": "integer"
+        },
+        "volume.size__lte": {
+         "title": "Volume.Size  Lte",
+         "type": "integer"
         }
        },
        "type": "object"
@@ -8085,7 +8115,7 @@
        "title": "InstancesResponse",
        "type": "object"
       },
-      "version": "1.22.0"
+      "version": "1.23.0"
      },
      {
       "configs": {
@@ -8592,7 +8622,7 @@
        "title": "InstanceDetailResponse",
        "type": "object"
       },
-      "version": "1.22.0"
+      "version": "1.23.0"
      },
      {
       "configs": {
@@ -8667,7 +8697,7 @@
        "title": "RestoreResponse",
        "type": "object"
       },
-      "version": "1.22.0"
+      "version": "1.23.0"
      },
      {
       "configs": {
@@ -9142,7 +9172,7 @@
        "title": "InstanceDetailResponse",
        "type": "object"
       },
-      "version": "1.22.0"
+      "version": "1.23.0"
      },
      {
       "configs": {
@@ -9617,7 +9647,7 @@
        "title": "InstanceDetailResponse",
        "type": "object"
       },
-      "version": "1.22.0"
+      "version": "1.23.0"
      },
      {
       "configs": {
@@ -10112,13 +10142,13 @@
        "title": "InstanceDetailResponse",
        "type": "object"
       },
-      "version": "1.22.0"
+      "version": "1.23.0"
      }
     ],
     "description": "Database instances management.",
     "isInternal": false,
     "name": "instances",
-    "version": "1.22.0"
+    "version": "1.23.0"
    },
    {
     "children": [
@@ -10200,7 +10230,7 @@
        "title": "ReplicaResponse",
        "type": "object"
       },
-      "version": "1.22.0"
+      "version": "1.23.0"
      },
      {
       "configs": {
@@ -10259,7 +10289,7 @@
        "nullable": true,
        "type": "null"
       },
-      "version": "1.22.0"
+      "version": "1.23.0"
      },
      {
       "configs": {
@@ -10518,7 +10548,7 @@
        "title": "ReplicaDetailResponse",
        "type": "object"
       },
-      "version": "1.22.0"
+      "version": "1.23.0"
      },
      {
       "configs": {
@@ -10848,7 +10878,7 @@
        "title": "ReplicasResponse",
        "type": "object"
       },
-      "version": "1.22.0"
+      "version": "1.23.0"
      },
      {
       "configs": {
@@ -11113,7 +11143,7 @@
        "title": "ReplicaDetailResponse",
        "type": "object"
       },
-      "version": "1.22.0"
+      "version": "1.23.0"
      },
      {
       "configs": {
@@ -11372,7 +11402,7 @@
        "title": "ReplicaDetailResponse",
        "type": "object"
       },
-      "version": "1.22.0"
+      "version": "1.23.0"
      },
      {
       "configs": {
@@ -11631,19 +11661,19 @@
        "title": "ReplicaDetailResponse",
        "type": "object"
       },
-      "version": "1.22.0"
+      "version": "1.23.0"
      }
     ],
     "description": "Database replicas management.",
     "isInternal": false,
     "name": "replicas",
-    "version": "1.22.0"
+    "version": "1.23.0"
    }
   ],
   "description": "DBaaS API Product.",
   "isInternal": false,
   "name": "dbaas",
-  "version": "1.22.0"
+  "version": "1.23.0"
  },
  {
   "children": [
@@ -12643,6 +12673,17 @@
       "parameters": {
        "additionalProperties": false,
        "properties": {
+        "allowed_cidrs": {
+         "description": "List of allowed CIDR blocks for API server access.\n",
+         "example": [
+          "192.168.1.0/24",
+          "10.0.0.0/16"
+         ],
+         "items": {
+          "type": "string"
+         },
+         "type": "array"
+        },
         "description": {
          "default": "",
          "description": "A brief description of the Kubernetes cluster.\n",
@@ -12811,6 +12852,17 @@
       "result": {
        "description": "Object of the cluster response request.",
        "properties": {
+        "allowed_cidrs": {
+         "description": "List of allowed CIDR blocks for API server access.\n",
+         "example": [
+          "192.168.1.0/24",
+          "10.0.0.0/16"
+         ],
+         "items": {
+          "type": "string"
+         },
+         "type": "array"
+        },
         "id": {
          "description": "Cluster's UUID.",
          "example": "10113826-624a-4801-900f-6a5742433411",
@@ -12979,6 +13031,17 @@
           "secrets"
          ],
          "type": "object"
+        },
+        "allowed_cidrs": {
+         "description": "List of allowed CIDR blocks for API server access.\n",
+         "example": [
+          "192.168.1.0/24",
+          "10.0.0.0/16"
+         ],
+         "items": {
+          "type": "string"
+         },
+         "type": "array"
         },
         "controlplane": {
          "description": "Object of the node pool response.",
@@ -25918,6 +25981,12 @@
          "type": "string"
         },
         "network": {
+         "default": {
+          "associate_public_ip": true,
+          "vpc": {
+           "name": "default"
+          }
+         },
          "example": {
           "associate_public_ip": true,
           "interface": {
@@ -25937,6 +26006,7 @@
          "nullable": true,
          "properties": {
           "associate_public_ip": {
+           "default": true,
            "title": "Associate Public Ip",
            "type": "boolean"
           },
@@ -26033,6 +26103,9 @@
              "type": "object"
             }
            ],
+           "default": {
+            "name": "default"
+           },
            "title": "Vpc",
            "type": "object"
           }
@@ -28668,6 +28741,7 @@
          "nullable": true,
          "properties": {
           "associate_public_ip": {
+           "default": true,
            "title": "Associate Public Ip",
            "type": "boolean"
           },
@@ -28764,6 +28838,9 @@
              "type": "object"
             }
            ],
+           "default": {
+            "name": "default"
+           },
            "title": "Vpc",
            "type": "object"
           }

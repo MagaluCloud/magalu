@@ -3,7 +3,7 @@
   "info": {
     "title": "Internal Virtual Machine Api Product",
     "description": "Virtual Machine Api Product",
-    "version": "1.240.0"
+    "version": "1.245.0"
   },
   "paths": {
     "/v1/health": {
@@ -1508,6 +1508,52 @@
           }
         }
       }
+    },
+    "/v1/internal/snapshots/{id}": {
+      "patch": {
+        "tags": [
+          "snapshots"
+        ],
+        "summary": "Update snapshot",
+        "description": "Internal route for update a snapshot using its internal id",
+        "operationId": "worker_update_snapshot_v1_internal_snapshots__id__patch",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WorkerUpdateInternalRequestV1"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -1516,7 +1562,14 @@
         "type": "object",
         "properties": {
           "external_backup_id": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "External Backup Id"
           },
           "status": {
@@ -1546,9 +1599,7 @@
         },
         "title": "BackupPatchRequest",
         "required": [
-          "external_backup_id",
-          "status",
-          "state"
+          "status"
         ],
         "example": {
           "error": "some error occurred to create backup",
@@ -1576,34 +1627,15 @@
               }
             ],
             "title": "Virtual Machine"
-          },
-          "backup_type": {
-            "$ref": "#/components/schemas/BackupType"
-          },
-          "rotation": {
-            "anyOf": [
-              {
-                "type": "integer",
-                "minimum": 1
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Rotation",
-            "default": 10
           }
         },
         "title": "BackupRequest",
         "required": [
           "name",
-          "virtual_machine",
-          "backup_type"
+          "virtual_machine"
         ],
         "example": {
-          "backup_type": "daily",
           "name": "backup name",
-          "rotation": 1,
           "virtual_machine": {
             "id": "4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a"
           }
@@ -1812,17 +1844,13 @@
         "title": "BackupStatus",
         "enum": [
           "provisioning",
+          "restoring",
           "creating",
           "completed",
           "error",
           "deleting",
           "deleted"
         ]
-      },
-      "BackupType": {
-        "type": "string",
-        "title": "BackupType",
-        "const": "daily"
       },
       "CreateResponse": {
         "type": "object",
@@ -4831,6 +4859,71 @@
         "title": "WorkerImageUpdateRequest",
         "example": {
           "error": "some_error",
+          "status": "created"
+        }
+      },
+      "WorkerUpdateInternalRequestV1": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SnapshotStatusV1"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error"
+          },
+          "size": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Size"
+          },
+          "state": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SnapshotStateV1"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "urp_snapshot_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Urp Snapshot Id"
+          }
+        },
+        "title": "WorkerUpdateInternalRequestV1",
+        "required": [
+          "urp_snapshot_id"
+        ],
+        "example": {
           "status": "created"
         }
       },

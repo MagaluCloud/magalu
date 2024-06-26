@@ -104,7 +104,7 @@ paths:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
             x-mgc-output-flag: table=BACKUP_TYPE:$.backups[*].backup_type,CREATED_AT:$.backups[*].created_at',  ID:$.backups[*].id,INSTANCE:$.backups[*].instance,DISK:$.backups[*].min_disk,NAME:$.backups[*].name,
-                ROTATION:$.backups[*].rotation,SIZE:$.backups[*].size,STATE:$.backups[*].state,STATUS:$.backups[*].status,UPDATED_AT:$.backups[*].updated_at
+                SIZE:$.backups[*].size,STATE:$.backups[*].state,STATUS:$.backups[*].status,UPDATED_AT:$.backups[*].updated_at
             security:
             -   OAuth2:
                 - virtual-machine.read
@@ -112,7 +112,26 @@ paths:
             tags:
             - backups
             summary: Create a backup of a virtual machine asynchronously.
-            description: create a backup from instance
+            description: 'Create a backup of a Virtual Machine with the current tenant
+                which is logged in.
+
+
+                A Backup is ready for restore when it''s in completed status.
+
+
+                #### Rules
+
+                - It''s possible to create a maximum of 100 backups per virtual machine.
+
+                - In case quota reached, choose a backup to remove.
+
+                - You can inform ID or Name from a Virtual Machine if both informed
+                the priority will be ID.
+
+                - It''s only possible to create a backup of a valid virtual machine.
+
+                - Each backup must have a unique name. It''s not possible to create
+                backups with the same name.'
             operationId: create_backup_v1_backups_post
             requestBody:
                 content:
@@ -240,35 +259,16 @@ paths:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
             x-mgc-output-flag: table=BACKUP_TYPE:$.backups[].backup_type,CREATED_AT:$.backups[].created_at',  ID:$.backups[].id,INSTANCE:$.backups[].instance,DISK:$.backups[].min_disk,NAME:$.backups[].name,
-                ROTATION:$.backups[].rotation,SIZE:$.backups[].size,STATE:$.backups[].state,STATUS:$.backups[].status,UPDATED_AT:$.backups[*].updated_at
+                SIZE:$.backups[].size,STATE:$.backups[].state,STATUS:$.backups[].status,UPDATED_AT:$.backups[*].updated_at
             security:
             -   OAuth2:
                 - virtual-machine.read
-        post:
+        delete:
             tags:
             - backups
-            summary: Restore a backup to a virtual machine
-            description: 'Restore a backup of a Virtual Machine with the current tenant
-                which is logged in. </br>
-
-                A Backup is ready for restore when it''s in completed status.
-
-
-                #### Notes
-
-                - You can verify the status of backup using the backup list command.
-
-                - Use machine-types list to see all machine types available.
-
-
-                #### Rules
-
-                - To restore a backup you have to inform the new virtual machine information.
-
-                - You can choose a machine-type that has a disk equal or larger
-
-                than the minimum disk of the backup.'
-            operationId: restore_backup_v1_backups__id__post
+            summary: Delete a backup of a virtual machine asynchronously.
+            description: delete a backup from instance
+            operationId: delete_backup_v1_backups__id__delete
             parameters:
             -   name: id
                 in: path
@@ -277,19 +277,9 @@ paths:
                     type: string
                     title: Id
                     format: uuid
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/BackupRestoreRequestDefault'
-                required: true
             responses:
-                '202':
+                '204':
                     description: Successful Response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/CreateResponse'
                 '400':
                     description: Snapshot Not Allowed Exception
                     content:
@@ -325,12 +315,32 @@ paths:
             security:
             -   OAuth2:
                 - virtual-machine.write
-        delete:
+    /v1/backups/{id}/restore:
+        post:
             tags:
             - backups
-            summary: Delete a backup of a virtual machine asynchronously.
-            description: delete a backup from instance
-            operationId: delete_backup_v1_backups__id__delete
+            summary: Restore a backup to a virtual machine
+            description: 'Restore a backup of a Virtual Machine with the current tenant
+                which is logged in. </br>
+
+                A Backup is ready for restore when it''s in completed status.
+
+
+                #### Notes
+
+                - You can verify the status of backup using the backup list command.
+
+                - Use machine-types list to see all machine types available.
+
+
+                #### Rules
+
+                - To restore a backup you have to inform the new virtual machine information.
+
+                - You can choose a machine-type that has a disk equal or larger
+
+                than the minimum disk of the backup.'
+            operationId: restore_backup_v1_backups__id__restore_post
             parameters:
             -   name: id
                 in: path
@@ -339,9 +349,19 @@ paths:
                     type: string
                     title: Id
                     format: uuid
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/BackupRestoreRequestDefault'
+                required: true
             responses:
-                '204':
+                '202':
                     description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CreateResponse'
                 '400':
                     description: Snapshot Not Allowed Exception
                     content:
@@ -2185,25 +2205,12 @@ components:
                     -   $ref: '#/components/schemas/ID'
                     -   $ref: '#/components/schemas/Name'
                     title: Virtual Machine
-                backup_type:
-                    type: string
-                    title: BackupType
-                rotation:
-                    anyOf:
-                    -   type: integer
-                        minimum: 1
-                    title: Rotation
-                    default: 10
-                    nullable: true
             title: BackupRequest
             required:
             - name
             - virtual_machine
-            - backup_type
             example:
-                backup_type: daily
                 name: backup name
-                rotation: 1
                 virtual_machine:
                     id: 4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a
         BackupResponse:
@@ -2228,6 +2235,7 @@ components:
                     title: BackupStatus
                     enum:
                     - provisioning
+                    - restoring
                     - creating
                     - completed
                     - error
@@ -2313,6 +2321,8 @@ components:
                             -   $ref: '#/components/schemas/ID'
                             -   $ref: '#/components/schemas/Name'
                             title: Vpc
+                            default:
+                                name: default
                         interface:
                             anyOf:
                             -   $ref: '#/components/schemas/ID'
@@ -2322,6 +2332,7 @@ components:
                         associate_public_ip:
                             type: boolean
                             title: Associate Public Ip
+                            default: true
                     title: InstanceCreateRequestV1NetworkDefault
                     example:
                         associate_public_ip: true
@@ -2372,14 +2383,12 @@ components:
             title: BackupStatus
             enum:
             - provisioning
+            - restoring
             - creating
             - completed
             - error
             - deleting
             - deleted
-        BackupType:
-            type: string
-            title: BackupType
         CreateResponse:
             type: object
             properties:
@@ -2624,6 +2633,10 @@ components:
                 network:
                     anyOf:
                     -   $ref: '#/components/schemas/InstanceCreateRequestV1NetworkDefault'
+                    default:
+                        vpc:
+                            name: default
+                        associate_public_ip: true
                     nullable: true
                 user_data:
                     anyOf:
@@ -2663,6 +2676,8 @@ components:
                     -   $ref: '#/components/schemas/ID'
                     -   $ref: '#/components/schemas/Name'
                     title: Vpc
+                    default:
+                        name: default
                 interface:
                     anyOf:
                     -   $ref: '#/components/schemas/ID'
@@ -2672,6 +2687,7 @@ components:
                 associate_public_ip:
                     type: boolean
                     title: Associate Public Ip
+                    default: true
             title: InstanceCreateRequestV1NetworkDefault
             example:
                 associate_public_ip: true
@@ -3174,6 +3190,7 @@ components:
                                 title: BackupStatus
                                 enum:
                                 - provisioning
+                                - restoring
                                 - creating
                                 - completed
                                 - error

@@ -53,9 +53,10 @@ block-storage.openapi:
   xof-single-item:
     - components.schemas.AttachmentMachine.status
     - components.schemas.AttachmentMachine.state
-    - components.schemas.AttachmentResponse.device
+    - components.schemas.AttachmentResponseV1.device
     - components.schemas.BackupResponse.description
     - components.schemas.BackupResponse.source_backup
+    - components.schemas.CreateAttachmentRequest.device
     - components.schemas.CreateBackup.description
     - components.schemas.CreateBackup.type
     - components.schemas.PatchResourceRequest.name
@@ -304,6 +305,7 @@ kubernetes.openapi:
               - message
               - state
             non-computed:
+              - allowed_cidrs
               - description
               - enabled_bastion
               - enabled_server_group
@@ -766,9 +768,7 @@ virtual-machine.openapi:
             computed:
               - id
             non-computed:
-              - backup_type
               - name
-              - rotation
               - virtual_machine
     - POST /v1/instances:
         - '201':
@@ -799,7 +799,6 @@ virtual-machine.openapi:
   unused-components:
     - '#/components/schemas/BackupState'
     - '#/components/schemas/BackupStatus'
-    - '#/components/schemas/BackupType'
     - '#/components/schemas/ImageReqMin'
     - '#/components/schemas/ImageResponseExternalV1'
     - '#/components/schemas/ImageV1Status'
@@ -811,7 +810,6 @@ virtual-machine.openapi:
     - '#/components/schemas/PortV1Expand'
     - '#/components/schemas/ValidationError'
   xof-single-item:
-    - components.schemas.BackupRequest.rotation
     - components.schemas.BackupResponse.size
     - components.schemas.BackupResponse.min_disk
     - components.schemas.BackupResponse.updated_at

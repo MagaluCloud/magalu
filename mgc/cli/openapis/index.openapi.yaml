@@ -19,7 +19,7 @@ modules:
     summary: DBaaS API Product.
     super_internal: false
     url: https://dbaas.jaxyendy.com/openapi.json
-    version: 1.22.0
+    version: 1.23.0
 -   description: APIs related to the Kubernetes product.
     name: kubernetes
     path: kubernetes.openapi.yaml

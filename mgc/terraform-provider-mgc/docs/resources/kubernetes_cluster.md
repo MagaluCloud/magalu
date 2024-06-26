@@ -28,6 +28,7 @@ The name must follow the following rules:
 
 ### Optional
 
+- `allowed_cidrs` (List of String) List of allowed CIDR blocks for API server access.
 - `description` (String) A brief description of the Kubernetes cluster.
 - `enabled_server_group` (Boolean) Enables the use of a server group with anti-affinity policy during the creation of the cluster and its node pools.
 - `version` (String) The native Kubernetes version of the cluster.

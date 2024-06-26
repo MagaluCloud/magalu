@@ -8,7 +8,7 @@
       "url": "https://gitlab.luizalabs.com/cloud/dbaas/docs",
       "email": "cloud-iaas-dbaas@luizalabs.com"
     },
-    "version": "1.22.0"
+    "version": "1.23.0"
   },
   "servers": [
     {
@@ -665,6 +665,16 @@
             }
           },
           {
+            "name": "engine_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "Engine Id",
+              "format": "uuid"
+            }
+          },
+          {
             "name": "x-tenant-id",
             "in": "header",
             "description": "Tenant unique identifier.",
@@ -814,6 +824,61 @@
             "required": false,
             "schema": {
               "$ref": "#/components/schemas/InstanceStatusResponse"
+            }
+          },
+          {
+            "name": "engine_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "Engine Id",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "volume.size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "title": "Volume.Size"
+            }
+          },
+          {
+            "name": "volume.size__gt",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "title": "Volume.Size  Gt"
+            }
+          },
+          {
+            "name": "volume.size__gte",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "title": "Volume.Size  Gte"
+            }
+          },
+          {
+            "name": "volume.size__lt",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "title": "Volume.Size  Lt"
+            }
+          },
+          {
+            "name": "volume.size__lte",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "title": "Volume.Size  Lte"
             }
           },
           {
@@ -3352,7 +3417,6 @@
           "UNKNOWN",
           "VERIFY_RESIZE",
           "CREATING",
-          "CREATING_BACKUP",
           "CREATING_MACHINE",
           "CREATING_NETWORK",
           "CREATING_PROJECT",

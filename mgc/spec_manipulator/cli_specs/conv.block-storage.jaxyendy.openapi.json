@@ -11,6 +11,164 @@
     "version": "v1"
   },
   "paths": {
+    "/v1/attachments": {
+      "post": {
+        "tags": [
+          "attachments"
+        ],
+        "summary": "Attach a volume to a instance",
+        "description": "Attach a Volume to a Virtual Machine instance for the currently\n authenticated tenant.\n\nThe Volume attachment will be completed when the Volume status returns to\n\"completed\", and the state becomes \"in-use\".\n\n#### Rules\n- The Volume and the Virtual Machine must belong to the same tenant.\n- Both the Volume and Virtual Machine must have the status \"completed\".\n- The Volume's state must be \"available\".\n- The Virtual Machine's state must be \"stopped\" or \"running\".\n\n#### Notes\n- Verify the state and status of your Volume using the\n **block-storage volume get --id [uuid]** command.\n- Verify the state and status of your Virtual Machine using the\n**virtual-machine instances get --id [uuid]** command\".",
+        "operationId": "create_attachment_v1_v1_attachments_post",
+        "parameters": [
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAttachmentRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 404 Create Attachment V1 V1 Attachments Post"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 409 Create Attachment V1 V1 Attachments Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 422 Create Attachment V1 V1 Attachments Post"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": true
+      }
+    },
+    "/v1/attachments/{id}": {
+      "delete": {
+        "tags": [
+          "attachments"
+        ],
+        "summary": "Delete an attachment",
+        "description": "Detach a Volume from a Virtual Machine instance for the\n currently authenticated tenant.\n\nThe Volume detachment will be completed when the Volume state returns to\n \"available,\" and the status becomes \"completed\".\n\n#### Rules\n- The Volume and the Virtual Machine must belong to the same tenant.\n- Both the Volume and Virtual Machine must have the status \"completed\".\n- The Volume's state must be \"in-use\".\n- The Virtual Machine's state must be \"stopped\".\n\n#### Notes\n- Verify the state and status of your Volume using the\n **block-storage volume get --id [uuid]** command.\n- Verify the state and status of your Virtual Machine using the\n **virtual-machine instances get --id [uuid]** command.\n- Ensure that any file systems on the device within your operating system are\n unmounted before detaching the Volume.\n\n#### Troubleshooting\n- A failure during detachment can result in the Volume becoming stuck in the\n busy state. If this occurs, detachment may be delayed indefinitely until you\n unmount the Volume, force detachment, reboot the instance, or perform all\n three.",
+        "operationId": "delete_attachment_v1_v1_attachments__id__delete",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Id",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 404 Delete Attachment V1 V1 Attachments  Id  Delete"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 409 Delete Attachment V1 V1 Attachments  Id  Delete"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 422 Delete Attachment V1 V1 Attachments  Id  Delete"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": true
+      }
+    },
     "/v1/backups": {
       "get": {
         "tags": [
@@ -1909,7 +2067,7 @@
           "updated_at": "2022-01-01T00:00:10Z"
         }
       },
-      "AttachmentResponse": {
+      "AttachmentResponseV1": {
         "type": "object",
         "properties": {
           "instance": {
@@ -1946,7 +2104,7 @@
             "nullable": true
           }
         },
-        "title": "AttachmentResponse",
+        "title": "AttachmentResponseV1",
         "required": [
           "instance",
           "attached_at"
@@ -2101,18 +2259,18 @@
               "example": {
                 "created_at": "2022-01-01T00:00:10Z",
                 "description": "my backup for testing",
-                "id": "dd47bfda-1c3b-48a3-b316-f46eb10a45bf",
+                "id": "86529bc7-8ed7-4470-bd72-0c2b99ac15c6",
                 "name": "My backup",
                 "size": 10,
                 "source_backup": {
-                  "id": "845ea7d7-e176-4a08-8f0d-3ca7aeac3137"
+                  "id": "1d7ea722-ffd0-4710-9057-e733feffe2af"
                 },
                 "state": "available",
                 "status": "completed",
                 "type": "incremental",
                 "updated_at": "2022-01-01T00:00:10Z",
                 "volume": {
-                  "id": "71cd27ce-3162-4ab9-bbbd-738229ebc702"
+                  "id": "cc941fdf-5635-430b-a78c-09cfa416de96"
                 }
               }
             },
@@ -2128,18 +2286,18 @@
             {
               "created_at": "2022-01-01T00:00:10Z",
               "description": "my backup for testing",
-              "id": "715becb2-9000-4475-987a-ada95b222641",
+              "id": "bb9782a5-a2b3-4938-88bb-98fb91a1a0be",
               "name": "My backup",
               "size": 10,
               "source_backup": {
-                "id": "2bac80ce-8c70-4576-8f0c-f0771e715ff4"
+                "id": "2948fe71-40b4-44c5-ac0b-60395ca7ea14"
               },
               "state": "available",
               "status": "completed",
               "type": "incremental",
               "updated_at": "2022-01-01T00:00:10Z",
               "volume": {
-                "id": "d5177c37-1438-43b9-b0a9-5973b7185c1d"
+                "id": "c76d0a2c-0037-430b-971d-3333f673ba30"
               }
             }
           ]
@@ -2277,18 +2435,18 @@
         "example": {
           "created_at": "2022-01-01T00:00:10Z",
           "description": "my backup for testing",
-          "id": "dd47bfda-1c3b-48a3-b316-f46eb10a45bf",
+          "id": "86529bc7-8ed7-4470-bd72-0c2b99ac15c6",
           "name": "My backup",
           "size": 10,
           "source_backup": {
-            "id": "845ea7d7-e176-4a08-8f0d-3ca7aeac3137"
+            "id": "1d7ea722-ffd0-4710-9057-e733feffe2af"
           },
           "state": "available",
           "status": "completed",
           "type": "incremental",
           "updated_at": "2022-01-01T00:00:10Z",
           "volume": {
-            "id": "71cd27ce-3162-4ab9-bbbd-738229ebc702"
+            "id": "cc941fdf-5635-430b-a78c-09cfa416de96"
           }
         }
       },
@@ -2330,6 +2488,68 @@
           "full",
           "incremental"
         ]
+      },
+      "CreateAttachmentRequest": {
+        "type": "object",
+        "properties": {
+          "volume": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "title": "Id",
+                "minLength": 1
+              }
+            },
+            "title": "IdRequest",
+            "required": [
+              "id"
+            ],
+            "example": {
+              "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+            }
+          },
+          "instance": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "title": "Id",
+                "minLength": 1
+              }
+            },
+            "title": "IdRequest",
+            "required": [
+              "id"
+            ],
+            "example": {
+              "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+            }
+          },
+          "device": {
+            "anyOf": [
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Device",
+            "nullable": true
+          }
+        },
+        "title": "CreateAttachmentRequest",
+        "required": [
+          "volume",
+          "instance"
+        ],
+        "example": {
+          "device": "/dev/vdc",
+          "instance": {
+            "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+          },
+          "volume": {
+            "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+          }
+        }
       },
       "CreateBackup": {
         "type": "object",
@@ -3346,7 +3566,7 @@
           "attachment": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/AttachmentResponse"
+                "$ref": "#/components/schemas/AttachmentResponseV1"
               }
             ],
             "nullable": true
@@ -3658,7 +3878,7 @@
                 "attachment": {
                   "anyOf": [
                     {
-                      "$ref": "#/components/schemas/AttachmentResponse"
+                      "$ref": "#/components/schemas/AttachmentResponseV1"
                     }
                   ],
                   "nullable": true
