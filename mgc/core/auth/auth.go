@@ -40,7 +40,7 @@ const (
 func (s SecurityMethod) String() string {
 	switch s {
 	case BearerToken:
-		return "bearerauth" // these hard-coded return values comes from security requirement field on openAPI spec
+		return "bearerauth"
 	case APIKey:
 		return "apikeyauth"
 	case XTenantID:
@@ -67,8 +67,7 @@ type ConfigResult struct {
 	RefreshToken    string `json:"refresh_token"`
 	AccessKeyId     string `json:"access_key_id"`
 	SecretAccessKey string `json:"secret_access_key"`
-	ApiKey          string `json:"api_key"`
-	CurrentEnv      string `json:"current_environment"` // ignored - used just for compatibility
+	CurrentEnv      string `json:"current_environment"`
 }
 
 type Config struct {
@@ -144,7 +143,6 @@ type FailedRefreshAccessToken struct {
 	Message string
 }
 
-// APIKeyParameters
 type APIKeyParameters struct {
 	Key string
 }
@@ -247,7 +245,7 @@ func (o *Auth) ApiKey(ctx context.Context) (string, error) {
 
 func (o *Auth) XTenantID(ctx context.Context) (string, error) {
 	if o.xTenantID == "" {
-		return "", fmt.Errorf("X Tenant ID not set")
+		return "", fmt.Errorf("x Tenant ID not set")
 	}
 	return o.xTenantID, nil
 }
@@ -414,7 +412,6 @@ func (o *Auth) writeCurrentConfig() error {
 	authResult.RefreshToken = o.refreshToken
 	authResult.AccessKeyId = o.accessKeyId
 	authResult.SecretAccessKey = o.secretAccessKey
-	authResult.ApiKey = o.apiKey
 	return o.writeConfigFile(authResult)
 }
 
@@ -510,7 +507,7 @@ func (o *Auth) ValidateAccessToken(ctx context.Context) error {
 
 	resp, err := o.httpClient.Do(r)
 	if err != nil {
-		return fmt.Errorf("Could not validate Access Token: %w", err)
+		return fmt.Errorf("could not validate Access Token: %w", err)
 	}
 
 	if resp.StatusCode != http.StatusOK {
