@@ -18,7 +18,6 @@ import (
 var dummyConfigResult *ConfigResult = &ConfigResult{
 	AccessToken:  "access-token",
 	RefreshToken: "refresh-token",
-	ApiKey:       "api-key",
 	CurrentEnv:   "test",
 }
 

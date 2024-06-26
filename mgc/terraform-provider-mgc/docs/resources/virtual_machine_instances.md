@@ -65,7 +65,7 @@ Read-Only:
 
 Required:
 
-- `associate_public_ip` (Boolean, Sensitive)
+- `associate_public_ip` (Boolean)
 
 Optional:
 

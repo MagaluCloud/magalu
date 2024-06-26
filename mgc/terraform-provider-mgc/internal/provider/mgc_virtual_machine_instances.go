@@ -210,8 +210,7 @@ func (r *vmInstances) Schema(_ context.Context, _ resource.SchemaRequest, resp *
 						Default:  booldefault.StaticBool(true),
 					},
 					"associate_public_ip": schema.BoolAttribute{
-						Required:  true,
-						Sensitive: true,
+						Required: true,
 					},
 					"ipv6": schema.StringAttribute{
 						PlanModifiers: []planmodifier.String{
@@ -258,10 +257,10 @@ func (r *vmInstances) Schema(_ context.Context, _ resource.SchemaRequest, resp *
 }
 
 func (r *vmInstances) ModifyPlan(ctx context.Context, req resource.ModifyPlanRequest, resp *resource.ModifyPlanResponse) {
-	//do nothing
+	resp.RequiresReplace = []path.Path{path.Root("network").AtName("associate_public_ip")}
 }
 func (r *vmInstances) ModifyPlanResponse(ctx context.Context, req resource.ModifyPlanRequest, resp *resource.ModifyPlanResponse) {
-	resp.RequiresReplace.Append(path.Root("network.associate_public_ip"))
+	// nothing
 }
 
 // Read refreshes the Terraform state with the latest data.
