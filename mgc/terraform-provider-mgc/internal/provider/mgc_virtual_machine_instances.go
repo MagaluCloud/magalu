@@ -7,6 +7,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
@@ -258,6 +259,9 @@ func (r *vmInstances) Schema(_ context.Context, _ resource.SchemaRequest, resp *
 
 func (r *vmInstances) ModifyPlan(ctx context.Context, req resource.ModifyPlanRequest, resp *resource.ModifyPlanResponse) {
 	//do nothing
+}
+func (r *vmInstances) ModifyPlanResponse(ctx context.Context, req resource.ModifyPlanRequest, resp *resource.ModifyPlanResponse) {
+	resp.RequiresReplace.Append(path.Root("network.associate_public_ip"))
 }
 
 // Read refreshes the Terraform state with the latest data.
