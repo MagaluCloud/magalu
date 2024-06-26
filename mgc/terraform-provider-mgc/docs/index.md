@@ -18,9 +18,14 @@ Terraform Provider for Magalu Cloud
 ### Optional
 
 - `api_key` (String) Magalu API Key for authentication
-- `env` (String) Environment
+Optionally you can set the environment variable MGC_API_KEY to override this value.
+- `env` (String) Environment. Options: prod / pre-prod
+Default is prod.
+Optionally you can set the environment variable MGC_ENV to override this value.
 - `object_storage` (Attributes) Specific Object Storage configuration (see [below for nested schema](#nestedatt--object_storage))
-- `region` (String) Region
+- `region` (String) Region. Options: br-ne1 / br-se1
+Default is br-se1.
+Optionally you can set the environment variable MGC_REGION to override this value.
 
 <a id="nestedatt--object_storage"></a>
 ### Nested Schema for `object_storage`
@@ -35,4 +40,6 @@ Optional:
 Required:
 
 - `key_id` (String) API Key ID
+Optionally you can set the environment variable MGC_OBJ_KEY_ID to override this value.
 - `key_secret` (String) API Key Secret
+Optionally you can set the environment variable MGC_OBJ_KEY_SECRET to override this value.

@@ -3,6 +3,7 @@ package provider
 import (
 	"context"
 	"fmt"
+	"os"
 	"slices"
 	"strings"
 
@@ -68,11 +69,11 @@ func (p *MgcProvider) Schema(ctx context.Context, req provider.SchemaRequest, re
 		Optional:            true,
 		Attributes: map[string]schema.Attribute{
 			"key_id": schema.StringAttribute{
-				MarkdownDescription: "API Key ID",
+				MarkdownDescription: "API Key ID\nOptionally you can set the environment variable MGC_OBJ_KEY_ID to override this value.",
 				Required:            true,
 			},
 			"key_secret": schema.StringAttribute{
-				MarkdownDescription: "API Key Secret",
+				MarkdownDescription: "API Key Secret\nOptionally you can set the environment variable MGC_OBJ_KEY_SECRET to override this value.",
 				Required:            true,
 			},
 		},
@@ -90,21 +91,21 @@ func (p *MgcProvider) Schema(ctx context.Context, req provider.SchemaRequest, re
 		Description: "Terraform Provider for Magalu Cloud",
 		Attributes: map[string]schema.Attribute{
 			"region": schema.StringAttribute{
-				MarkdownDescription: "Region",
+				MarkdownDescription: "Region. Options: br-ne1 / br-se1\nDefault is br-se1.\nOptionally you can set the environment variable MGC_REGION to override this value.",
 				Optional:            true,
 				Validators: []validator.String{
 					stringvalidator.OneOf("br-ne1", "br-se1", "br-mgl1"),
 				},
 			},
 			"env": schema.StringAttribute{
-				MarkdownDescription: "Environment",
+				MarkdownDescription: "Environment. Options: prod / pre-prod\nDefault is prod.\nOptionally you can set the environment variable MGC_ENV to override this value.",
 				Optional:            true,
 				Validators: []validator.String{
 					stringvalidator.OneOf("prod", "pre-prod"),
 				},
 			},
 			"api_key": schema.StringAttribute{
-				MarkdownDescription: "Magalu API Key for authentication",
+				MarkdownDescription: "Magalu API Key for authentication\nOptionally you can set the environment variable MGC_API_KEY to override this value.",
 				Optional:            true,
 			},
 			"object_storage": schemaObjectStorage,
@@ -123,34 +124,71 @@ func (p *MgcProvider) Configure(ctx context.Context, req provider.ConfigureReque
 		tflog.Error(ctx, "fail to get configs from provider")
 	}
 
-	if !data.Region.IsNull() {
-		if err := p.sdk.Config().SetTempConfig("region", data.Region.String()); err != nil {
+	// REGION
+	if !data.Region.IsNull() || os.Getenv("MGC_REGION") != "" {
+		region := os.Getenv("MGC_REGION")
+		if region == "" && !data.Region.IsNull() {
+			region = data.Region.ValueString()
+		}
+		if err := p.sdk.Config().SetTempConfig("region", region); err != nil {
 			tflog.Error(ctx, "fail to set region")
 		}
-	}
+	} else {
+		if err := p.sdk.Config().SetTempConfig("region", "br-se1"); err != nil {
+			tflog.Error(ctx, "fail to set region")
+		}
+	} //END REGION
 
+	// ENV
 	if !data.Env.IsNull() {
-		if err := p.sdk.Config().SetTempConfig("env", data.Env.String()); err != nil {
+		env := os.Getenv("MGC_ENV")
+		if env == "" && !data.Env.IsNull() {
+			env = data.Env.String()
+		}
+		if err := p.sdk.Config().SetTempConfig("env", env); err != nil {
 			tflog.Error(ctx, "fail to set env")
 		}
-	}
+	} // END ENV
 
-	if !data.ApiKey.IsNull() {
-		MgcApiKey := &MgcApiKey{data.ApiKey.ValueString()}
-		err := p.sdk.Auth().SetAPIKey(MgcApiKey)
+	// API KEY
+	if !data.ApiKey.IsNull() || os.Getenv("MGC_API_KEY") != "" {
+		apiKey := MgcApiKey{}
+		apiKey.ApiKey = os.Getenv("MGC_API_KEY")
+
+		if apiKey.ApiKey == "" && !data.ApiKey.IsNull() {
+			apiKey.ApiKey = data.ApiKey.ValueString()
+		}
+
+		err := p.sdk.Auth().SetAPIKey(&apiKey)
 		if err != nil {
 			tflog.Error(ctx, "fail to set api key")
 		}
+	} // END API KEY
+
+	// KEY PAIR OBJECT STORAGE
+	keyId := ""
+	keySecret := ""
+	if os.Getenv("MGC_OBJ_KEY_ID") != "" && os.Getenv("MGC_OBJ_KEY_SECRET") != "" {
+		keyId = os.Getenv("MGC_OBJ_KEY_ID")
+		keySecret = os.Getenv("MGC_OBJ_KEY_SECRET")
 	}
 
-	if data.ObjectStorage != nil && data.ObjectStorage.ObjectKeyPair != nil &&
+	if keyId == "" &&
+		keySecret == "" &&
+		data.ObjectStorage != nil &&
+		data.ObjectStorage.ObjectKeyPair != nil &&
 		!data.ObjectStorage.ObjectKeyPair.KeyID.IsNull() &&
 		!data.ObjectStorage.ObjectKeyPair.KeySecret.IsNull() {
-		p.sdk.Config().AddTempKeyPair("apikey",
-			data.ObjectStorage.ObjectKeyPair.KeyID.ValueString(),
-			data.ObjectStorage.ObjectKeyPair.KeySecret.ValueString(),
-		)
+		keyId = data.ObjectStorage.ObjectKeyPair.KeyID.ValueString()
+		keySecret = data.ObjectStorage.ObjectKeyPair.KeySecret.ValueString()
 	}
+	if keyId != "" && keySecret != "" {
+		p.sdk.Config().AddTempKeyPair("apikey",
+			keyId,
+			keySecret,
+		)
+		tflog.Debug(ctx, "setting object storage key pair")
+	} // END KEY PAIR
 	resp.DataSourceData = p.sdk
 	resp.ResourceData = p.sdk
 }
