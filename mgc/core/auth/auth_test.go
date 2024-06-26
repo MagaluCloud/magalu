@@ -18,7 +18,6 @@ import (
 var dummyConfigResult *ConfigResult = &ConfigResult{
 	AccessToken:  "access-token",
 	RefreshToken: "refresh-token",
-	ApiKey:       "api-key",
 	CurrentEnv:   "test",
 }
 
@@ -268,7 +267,6 @@ func TestAuthManager(t *testing.T) {
 					Mode: utils.FILE_PERMISSION,
 					Data: []byte(`access_key_id: ""
 access_token: access-token
-api_key: ""
 current_environment: ""
 refresh_token: refresh-token
 secret_access_key: ""
@@ -294,7 +292,6 @@ secret_access_key: ""
 					Mode: utils.FILE_PERMISSION,
 					Data: []byte(`access_key_id: ""
 access_token: access-token
-api_key: ""
 current_environment: ""
 refresh_token: refresh-token
 secret_access_key: ""
@@ -319,7 +316,6 @@ secret_access_key: ""
 					Mode: utils.FILE_PERMISSION,
 					Data: []byte(`access_key_id: MyAccessKeyIdTest
 access_token: ""
-api_key: ""
 current_environment: ""
 refresh_token: ""
 secret_access_key: MySecretAccessKeyTeste
@@ -344,7 +340,6 @@ secret_access_key: MySecretAccessKeyTeste
 					Mode: utils.FILE_PERMISSION,
 					Data: []byte(`access_key_id: MyAccessKeyIdTest
 access_token: ""
-api_key: ""
 current_environment: ""
 refresh_token: ""
 secret_access_key: MySecretAccessKeyTeste
@@ -425,7 +420,6 @@ secret_access_key: MySecretAccessKeyTeste
 					Mode: utils.FILE_PERMISSION,
 					Data: []byte(`access_key_id: ""
 access_token: ac-token
-api_key: ""
 current_environment: ""
 refresh_token: rf-token
 secret_access_key: ""
@@ -460,7 +454,6 @@ secret_access_key: ""
 					Mode: utils.FILE_PERMISSION,
 					Data: []byte(`access_key_id: ""
 access_token: ac-token
-api_key: ""
 current_environment: ""
 refresh_token: rf-token
 secret_access_key: ""
@@ -670,7 +663,6 @@ secret_access_key: ""
 					Mode: utils.FILE_PERMISSION,
 					Data: []byte(`access_key_id: ""
 access_token: ac-token
-api_key: ""
 current_environment: ""
 refresh_token: rf-token
 secret_access_key: ""
