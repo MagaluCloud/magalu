@@ -121,7 +121,6 @@ func (r *vmInstances) Schema(_ context.Context, _ resource.SchemaRequest, resp *
 				Computed: true,
 			},
 			"name_is_prefix": schema.BoolAttribute{
-
 				Optional: true,
 				Computed: true,
 				Default:  booldefault.StaticBool(false),
@@ -210,7 +209,8 @@ func (r *vmInstances) Schema(_ context.Context, _ resource.SchemaRequest, resp *
 						Default:  booldefault.StaticBool(true),
 					},
 					"associate_public_ip": schema.BoolAttribute{
-						Required: true,
+						Required:  true,
+						Sensitive: true,
 					},
 					"ipv6": schema.StringAttribute{
 						PlanModifiers: []planmodifier.String{
@@ -288,15 +288,6 @@ func (r *vmInstances) Create(ctx context.Context, req resource.CreateRequest, re
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	// Get image and machine type ID
-	// imageID, err := r.getImageID(plan.Image.Name.ValueString())
-	// if err != nil {
-	// 	resp.Diagnostics.AddError(
-	// 		"Error creating vm",
-	// 		"Could not load image list",
-	// 	)
-	// 	return
-	// }
 
 	machineType, err := r.getMachineTypeID(plan.MachineType.Name.ValueString())
 	if err != nil {
@@ -384,40 +375,44 @@ func (r *vmInstances) Create(ctx context.Context, req resource.CreateRequest, re
 	if resp.Diagnostics.HasError() {
 		return
 	}
-
 }
 
 // Update updates the resource and sets the updated Terraform state on success.
 func (r *vmInstances) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
 	data := &vmInstancesResourceModel{}
+	currState := &vmInstancesResourceModel{}
+	req.State.Get(ctx, currState)
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
-
 	machineType, err := r.getMachineTypeID(data.MachineType.Name.ValueString())
+
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Error creating vm",
-			"Could not load machine-type list, unexpected error: "+err.Error(),
+			"Could not found machine-type or load machine-type list, unexpected error: "+err.Error(),
 		)
 		return
 	}
 
-	err = r.vmInstances.Retype(sdkVmInstances.RetypeParameters{
-		Id: data.ID.ValueString(),
-		MachineType: sdkVmInstances.RetypeParametersMachineType{
-			RetypeParametersMachineType1: sdkVmInstances.RetypeParametersMachineType1{
-				Name: data.MachineType.Name.ValueString(),
+	if !currState.MachineType.ID.Equal(machineType.ID) {
+		err = r.vmInstances.Retype(sdkVmInstances.RetypeParameters{
+			Id: data.ID.ValueString(),
+			MachineType: sdkVmInstances.RetypeParametersMachineType{
+				RetypeParametersMachineType1: sdkVmInstances.RetypeParametersMachineType1{
+					Name: data.MachineType.Name.ValueString(),
+				},
 			},
-		},
-	}, sdkVmInstances.RetypeConfigs{})
+		}, sdkVmInstances.RetypeConfigs{})
 
-	if err != nil {
-		resp.Diagnostics.AddError(
-			"Error Reading VM",
-			"Could not update VM machine-type "+data.ID.ValueString()+": "+err.Error(),
-		)
-		return
+		if err != nil {
+			resp.Diagnostics.AddError(
+				"Error on Update VM",
+				"Could not update VM machine-type "+data.ID.ValueString()+": "+err.Error(),
+			)
+			return
+		}
 	}
 
+	data.UpdatedAt = types.StringValue(time.Now().Format(time.RFC850))
 	getResult, err := r.getVmStatus(data.ID.ValueString())
 	if err != nil {
 		resp.Diagnostics.AddError(
@@ -429,7 +424,6 @@ func (r *vmInstances) Update(ctx context.Context, req resource.UpdateRequest, re
 
 	r.setValuesFromServer(data, getResult)
 	r.setValuesFromMachineType(data, machineType)
-	data.UpdatedAt = types.StringValue(time.Now().Format(time.RFC850))
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
@@ -454,7 +448,6 @@ func (r *vmInstances) Delete(ctx context.Context, req resource.DeleteRequest, re
 		)
 		return
 	}
-
 }
 
 func (r *vmInstances) setValuesFromServer(data *vmInstancesResourceModel, server *sdkVmInstances.GetResult) {
@@ -497,25 +490,6 @@ func (r *vmInstances) setValuesFromServer(data *vmInstancesResourceModel, server
 	}
 }
 
-// func (r *vmInstances) getImageID(name string) (string, error) {
-// 	var imageID string
-// 	imageList, err := r.vmImages.List(sdkVmImages.ListParameters{}, sdkVmImages.ListConfigs{})
-// 	if err != nil {
-// 		return "", fmt.Errorf("could not load image list")
-// 	}
-// 	for _, x := range imageList.Images {
-// 		if strings.Contains(x.Name, name) {
-// 			imageID = x.Id
-// 			break
-// 		}
-// 	}
-
-// 	if imageID == "" {
-// 		return "", fmt.Errorf("could not found image ID with name: " + name)
-// 	}
-// 	return imageID, nil
-// }
-
 func (r *vmInstances) getMachineTypeID(name string) (*vmInstancesMachineTypeModel, error) {
 	machineType := vmInstancesMachineTypeModel{}
 	machineTypeList, err := r.vmMachineTypes.List(sdkVmMachineTypes.ListParameters{}, sdkVmMachineTypes.ListConfigs{})
@@ -547,25 +521,6 @@ func (r *vmInstances) setValuesFromMachineType(data *vmInstancesResourceModel, s
 	data.MachineType.RAM = server.RAM
 	data.MachineType.VCPUs = server.VCPUs
 }
-
-// func (r *vmInstances) getVpcID(name string) (string, error) {
-// 	var vpcID string
-// 	vpcs, err := r.nwVPCs.List(sdkNetworkVPCs.ListConfigs{})
-// 	if err != nil {
-// 		return "", fmt.Errorf("could not load vpc list")
-// 	}
-// 	for _, x := range *vpcs.Vpcs {
-// 		if strings.Contains(*x.Name, name) {
-// 			vpcID = *x.Id
-// 			break
-// 		}
-// 	}
-
-// 	if vpcID == "" {
-// 		return "", fmt.Errorf("could not found vpc ID with name: " + name)
-// 	}
-// 	return vpcID, nil
-// }
 
 func (r *vmInstances) getVmStatus(id string) (*sdkVmInstances.GetResult, error) {
 	getResult := &sdkVmInstances.GetResult{}

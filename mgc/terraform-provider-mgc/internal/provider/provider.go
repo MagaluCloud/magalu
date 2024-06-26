@@ -230,9 +230,10 @@ func collectGroupResources(
 	}
 
 	strResourceName := strings.Join(path, "_")
+	strResourceName = strings.Replace(strResourceName, "-", "_", -1)
 
 	// IGNORE THIS MODULES - they are be replaced by the new resources
-	ignoredTFModules := []string{"mgc_virtual-machine_instances", "mgc_virtual-machine_snapshots"}
+	ignoredTFModules := []string{"mgc_virtual_machine_instances", "mgc_virtual_machine_snapshots"}
 	if slices.Contains(ignoredTFModules, strResourceName) {
 		tflog.Debug(ctx, fmt.Sprintf("resource %q is ignored", strResourceName), debugMap)
 		return resources, nil
