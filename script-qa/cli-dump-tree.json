@@ -1841,48 +1841,6 @@
       "parameters": {
        "additionalProperties": false,
        "properties": {
-        "backup": {
-         "anyOf": [
-          {
-           "example": {
-            "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-           },
-           "properties": {
-            "id": {
-             "minLength": 1,
-             "title": "Id",
-             "type": "string"
-            }
-           },
-           "required": [
-            "id"
-           ],
-           "title": "IdRequest",
-           "type": "object"
-          },
-          {
-           "example": {
-            "name": "some_resource_name"
-           },
-           "properties": {
-            "name": {
-             "maxLength": 255,
-             "minLength": 1,
-             "title": "Name",
-             "type": "string"
-            }
-           },
-           "required": [
-            "name"
-           ],
-           "title": "Name",
-           "type": "object"
-          }
-         ],
-         "nullable": true,
-         "title": "Backup",
-         "type": "object"
-        },
         "name": {
          "maxLength": 255,
          "minLength": 1,

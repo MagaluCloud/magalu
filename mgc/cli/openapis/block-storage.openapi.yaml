@@ -143,6 +143,7 @@ paths:
                 \ tenant.\n\n#### Notes\n- Use the **expand** argument to obtain additional\
                 \ details about the\n Volume used to create each Backup."
             operationId: list_backups_v1_backups_get
+            x-mgc-hidden: true
             parameters:
             -   name: _limit
                 in: query
@@ -224,6 +225,7 @@ paths:
                         schema:
                             $ref: '#/components/schemas/CreateBackup'
                 required: true
+            x-mgc-hidden: true
             responses:
                 '202':
                     description: Successful Response
@@ -267,6 +269,7 @@ paths:
             tags:
             - backups
             summary: Get a Backup
+            x-mgc-hidden: true
             description: "Retrieve details of a Backup for the currently authenticated\
                 \ tenant.\n\n#### Notes\n- Use the **expand** argument to obtain additional\
                 \ details about the Volume\n used to create the Backup.\n- Utilize\
@@ -324,6 +327,7 @@ paths:
             tags:
             - backups
             summary: Delete a Backup
+            x-mgc-hidden: true
             description: "Delete a Backup for the currently authenticated tenant.\n\
                 \n#### Rules\n- The Backup's status must be \"completed\".\n- The\
                 \ Backup's state must be \"available\".\n\n\n#### Notes\n- Utilize\
@@ -376,6 +380,7 @@ paths:
             tags:
             - backups
             summary: Patch a Backup
+            x-mgc-hidden: true
             description: "Patches a Backup for the currently authenticated tenant.\n\
                 \n#### Rules\n- The Backup name must be unique; otherwise, renaming\
                 \ will not be allowed.\n- The Backup's state must be available.\n\n\
@@ -2760,20 +2765,12 @@ components:
                     -   $ref: '#/components/schemas/IdRequest'
                     -   $ref: '#/components/schemas/Name'
                     title: Type
-                backup:
-                    anyOf:
-                    -   $ref: '#/components/schemas/IdRequest'
-                    -   $ref: '#/components/schemas/Name'
-                    title: Backup
-                    nullable: true
             title: VolumeCreateRequestV1
             required:
             - name
             - size
             - type
             example:
-                backup:
-                    name: my_backup_name
                 name: volume name
                 size: 10
                 type:

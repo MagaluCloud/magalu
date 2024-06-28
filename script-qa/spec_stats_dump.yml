@@ -29,7 +29,6 @@ block-storage.openapi:
             computed:
               - id
             non-computed:
-              - backup
               - name
               - size
               - type
