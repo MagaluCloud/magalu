@@ -27,7 +27,7 @@ paths:
   /v0/credentials:
     get:
       tags:
-        - registries
+        - credentials
       summary: Get credentials for container registry
       description: Return container registry user's authentication credentials.
       operationId: getCredentials
@@ -877,11 +877,11 @@ components:
             message: "too many requests"
             detail: {}
 tags:
+  - name: credentials
+    description: Routes related to credentials to login to Docker.
   - name: registries
-    description: Routes related to Container Registry management.
+    description: Routes related to creation, listing and deletion of registries.
   - name: repositories
-    description: Routes related to managing Container Registry repositories.
+    description: Routes related to listing and deletion of repositories.
   - name: images
-    description: Routes related to managing Container Registry repositories images.
-  - name: info
-    description: Routes related to mcr-api configuration information.
+    description: Routes related to listing and deletion of images.

@@ -1,4 +1,4 @@
-# Routes related to Container Registry management.
+# Routes related to creation, listing and deletion of registries.
 
 ## Usage:
 ```bash
@@ -9,8 +9,10 @@ Usage:
 
 ## Product catalog:
 - Commands:
-- list        Get credentials for container registry
-- registries  registries
+- create      Create a container registry
+- delete      Delete a container registry by registry_id
+- get         Get registry information
+- list        List all container registries
 
 ## Other commands:
 - Flags:

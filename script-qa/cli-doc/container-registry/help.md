@@ -9,10 +9,10 @@ Usage:
 
 ## Product catalog:
 - Commands:
-- images       Routes related to managing Container Registry repositories images.
-- info         Routes related to mcr-api configuration information.
-- registries   Routes related to Container Registry management.
-- repositories Routes related to managing Container Registry repositories.
+- credentials  Routes related to credentials to login to Docker.
+- images       Routes related to listing and deletion of images.
+- registries   Routes related to creation, listing and deletion of registries.
+- repositories Routes related to listing and deletion of repositories.
 
 ## Other commands:
 - Flags:

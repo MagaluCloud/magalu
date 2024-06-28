@@ -1,4 +1,4 @@
-# Return container registry user's authentication credentials.
+# List user's container registries.
 
 ## Usage:
 ```bash
@@ -8,8 +8,11 @@ Usage:
 
 ## Product catalog:
 - Flags:
-- -h, --help      help for list
-- -v, --version   version for list
+- --control.limit integer    Limit (min: 1)
+- --control.offset integer   Offset (min: 0)
+- --control.sort string      Fields to use as reference to sort. (pattern: (^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$) (default "created:asc")
+- -h, --help                     help for list
+- -v, --version                  version for list
 
 ## Other commands:
 - Global Flags:

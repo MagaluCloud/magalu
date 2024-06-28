@@ -1,7 +1,7 @@
 Creates a container registry in Magalu Cloud.
 
 Usage:
-  ./mgc container-registry registries registries create [flags]
+  ./mgc container-registry registries create [flags]
 
 Flags:
       --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")

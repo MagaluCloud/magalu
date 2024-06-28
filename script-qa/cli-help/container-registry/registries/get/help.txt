@@ -1,7 +1,7 @@
 Show detailed information about the user's container registry.
 
 Usage:
-  ./mgc container-registry registries registries get [registry-id] [flags]
+  ./mgc container-registry registries get [registry-id] [flags]
 
 Flags:
       --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")

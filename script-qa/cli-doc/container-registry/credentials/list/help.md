@@ -1,16 +1,15 @@
-# Delete a container registry by uuid.
+# Return container registry user's authentication credentials.
 
 ## Usage:
 ```bash
 Usage:
-  ./mgc container-registry registries registries delete [registry-id] [flags]
+  ./mgc container-registry credentials list [flags]
 ```
 
 ## Product catalog:
 - Flags:
-- -h, --help               help for delete
-- --registry-id uuid   Container Registry's UUID. (required)
-- -v, --version            version for delete
+- -h, --help      help for list
+- -v, --version   version for list
 
 ## Other commands:
 - Global Flags:

@@ -1,7 +1,7 @@
 Delete a container registry by uuid.
 
 Usage:
-  ./mgc container-registry registries registries delete [registry-id] [flags]
+  ./mgc container-registry registries delete [registry-id] [flags]
 
 Flags:
   -h, --help               help for delete

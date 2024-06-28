@@ -74,16 +74,13 @@ container-registry.openapi:
             non-computed:
               - name
   missing-crud:
+    - credentials:
+        - post
+        - delete
     - repositories:
         - post
     - images:
         - post
-  uneven-resources:
-    registries:
-      GET:
-        expected_prefix: /v0/registries
-        uneven:
-          - /v0/credentials
 dbaas.openapi:
   computed-variables:
     - POST /v1/instances:

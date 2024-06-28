@@ -1,18 +1,16 @@
-# List user's container registries.
+# Delete a container registry by uuid.
 
 ## Usage:
 ```bash
 Usage:
-  ./mgc container-registry registries registries list [flags]
+  ./mgc container-registry registries delete [registry-id] [flags]
 ```
 
 ## Product catalog:
 - Flags:
-- --control.limit integer    Limit (min: 1)
-- --control.offset integer   Offset (min: 0)
-- --control.sort string      Fields to use as reference to sort. (pattern: (^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$) (default "created:asc")
-- -h, --help                     help for list
-- -v, --version                  version for list
+- -h, --help               help for delete
+- --registry-id uuid   Container Registry's UUID. (required)
+- -v, --version            version for delete
 
 ## Other commands:
 - Global Flags:

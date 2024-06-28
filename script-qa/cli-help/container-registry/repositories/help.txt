@@ -1,4 +1,4 @@
-Routes related to managing Container Registry repositories.
+Routes related to listing and deletion of repositories.
 
 Usage:
   ./mgc container-registry repositories [flags]

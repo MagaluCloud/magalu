@@ -3751,6 +3751,82 @@
        },
        "type": "object"
       },
+      "description": "Return container registry user's authentication credentials.",
+      "isInternal": false,
+      "name": "list",
+      "parameters": {
+       "additionalProperties": false,
+       "type": "object"
+      },
+      "result": {
+       "description": "User's credentials for authentication to the container registry.",
+       "example": {
+        "email": "janedoe@email.com",
+        "password": "62kWa168QL!d4IVwN6wTfTYFv63=Sc1D",
+        "username": "e3d49354-35d7-4565-b634-65d8b86aa594"
+       },
+       "properties": {
+        "email": {
+         "description": "Email for authentication to the container registry.",
+         "type": "string"
+        },
+        "password": {
+         "description": "Password for authentication to the container registry.",
+         "type": "string"
+        },
+        "username": {
+         "description": "Username for authentication to the container registry.",
+         "type": "string"
+        }
+       },
+       "required": [
+        "username",
+        "password",
+        "email"
+       ],
+       "type": "object"
+      },
+      "version": "0.1.0"
+     }
+    ],
+    "description": "Routes related to credentials to login to Docker.",
+    "isInternal": false,
+    "name": "credentials",
+    "version": "0.1.0"
+   },
+   {
+    "children": [
+     {
+      "configs": {
+       "additionalProperties": false,
+       "properties": {
+        "env": {
+         "default": "prod",
+         "description": "Environment to use",
+         "enum": [
+          "prod",
+          "pre-prod"
+         ],
+         "type": "string"
+        },
+        "region": {
+         "default": "br-se1",
+         "description": "Region to reach the service",
+         "enum": [
+          "br-ne1",
+          "br-se1",
+          "br-mgl1"
+         ],
+         "type": "string"
+        },
+        "serverUrl": {
+         "description": "Manually specify the server to use",
+         "format": "uri",
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
       "description": "Delete repository image by digest or tag",
       "isInternal": false,
       "name": "delete",
@@ -4139,16 +4215,9 @@
       "version": "0.1.0"
      }
     ],
-    "description": "Routes related to managing Container Registry repositories images.",
+    "description": "Routes related to listing and deletion of images.",
     "isInternal": false,
     "name": "images",
-    "version": "0.1.0"
-   },
-   {
-    "children": [],
-    "description": "Routes related to mcr-api configuration information.",
-    "isInternal": false,
-    "name": "info",
     "version": "0.1.0"
    },
    {
@@ -4184,380 +4253,304 @@
        },
        "type": "object"
       },
-      "description": "Return container registry user's authentication credentials.",
+      "description": "Creates a container registry in Magalu Cloud.",
       "isInternal": false,
-      "name": "list",
+      "name": "create",
       "parameters": {
        "additionalProperties": false,
-       "type": "object"
-      },
-      "result": {
-       "description": "User's credentials for authentication to the container registry.",
-       "example": {
-        "email": "janedoe@email.com",
-        "password": "62kWa168QL!d4IVwN6wTfTYFv63=Sc1D",
-        "username": "e3d49354-35d7-4565-b634-65d8b86aa594"
-       },
        "properties": {
-        "email": {
-         "description": "Email for authentication to the container registry.",
-         "type": "string"
-        },
-        "password": {
-         "description": "Password for authentication to the container registry.",
-         "type": "string"
-        },
-        "username": {
-         "description": "Username for authentication to the container registry.",
+        "name": {
+         "description": "A unique, global name for the container registry. It must be written in lowercase letters and consists only of numbers and letters, up to a limit of 63 characters.",
          "type": "string"
         }
        },
        "required": [
-        "username",
-        "password",
-        "email"
+        "name"
+       ],
+       "type": "object"
+      },
+      "result": {
+       "description": "Container Registry's creation response.",
+       "example": {
+        "id": "0c6bbd87-881a-4bf8-b3f6-4ff3ceacb42c",
+        "name": "cool_registry"
+       },
+       "properties": {
+        "id": {
+         "description": "Container Registry's UUID.",
+         "type": "string"
+        },
+        "name": {
+         "description": "A unique, global name for the container registry. It must be written in lowercase letters and consists only of numbers and letters, up to a limit of 63 characters.",
+         "type": "string"
+        }
+       },
+       "required": [
+        "id",
+        "name"
        ],
        "type": "object"
       },
       "version": "0.1.0"
      },
      {
-      "children": [
-       {
-        "configs": {
-         "additionalProperties": false,
-         "properties": {
-          "env": {
-           "default": "prod",
-           "description": "Environment to use",
-           "enum": [
-            "prod",
-            "pre-prod"
-           ],
-           "type": "string"
-          },
-          "region": {
-           "default": "br-se1",
-           "description": "Region to reach the service",
-           "enum": [
-            "br-ne1",
-            "br-se1",
-            "br-mgl1"
-           ],
-           "type": "string"
-          },
-          "serverUrl": {
-           "description": "Manually specify the server to use",
-           "format": "uri",
-           "type": "string"
-          }
-         },
-         "type": "object"
-        },
-        "description": "Creates a container registry in Magalu Cloud.",
-        "isInternal": false,
-        "name": "create",
-        "parameters": {
-         "additionalProperties": false,
-         "properties": {
-          "name": {
-           "description": "A unique, global name for the container registry. It must be written in lowercase letters and consists only of numbers and letters, up to a limit of 63 characters.",
-           "type": "string"
-          }
-         },
-         "required": [
-          "name"
+      "configs": {
+       "additionalProperties": false,
+       "properties": {
+        "env": {
+         "default": "prod",
+         "description": "Environment to use",
+         "enum": [
+          "prod",
+          "pre-prod"
          ],
-         "type": "object"
+         "type": "string"
         },
-        "result": {
-         "description": "Container Registry's creation response.",
-         "example": {
-          "id": "0c6bbd87-881a-4bf8-b3f6-4ff3ceacb42c",
-          "name": "cool_registry"
-         },
-         "properties": {
-          "id": {
-           "description": "Container Registry's UUID.",
-           "type": "string"
-          },
-          "name": {
-           "description": "A unique, global name for the container registry. It must be written in lowercase letters and consists only of numbers and letters, up to a limit of 63 characters.",
-           "type": "string"
-          }
-         },
-         "required": [
-          "id",
-          "name"
+        "region": {
+         "default": "br-se1",
+         "description": "Region to reach the service",
+         "enum": [
+          "br-ne1",
+          "br-se1",
+          "br-mgl1"
          ],
-         "type": "object"
+         "type": "string"
         },
-        "version": "0.1.0"
+        "serverUrl": {
+         "description": "Manually specify the server to use",
+         "format": "uri",
+         "type": "string"
+        }
        },
-       {
-        "configs": {
-         "additionalProperties": false,
-         "properties": {
-          "env": {
-           "default": "prod",
-           "description": "Environment to use",
-           "enum": [
-            "prod",
-            "pre-prod"
-           ],
-           "type": "string"
-          },
-          "region": {
-           "default": "br-se1",
-           "description": "Region to reach the service",
-           "enum": [
-            "br-ne1",
-            "br-se1",
-            "br-mgl1"
-           ],
-           "type": "string"
-          },
-          "serverUrl": {
-           "description": "Manually specify the server to use",
-           "format": "uri",
-           "type": "string"
-          }
-         },
-         "type": "object"
-        },
-        "description": "Delete a container registry by uuid.",
-        "isInternal": false,
-        "name": "delete",
-        "parameters": {
-         "additionalProperties": false,
-         "properties": {
-          "registry_id": {
-           "description": "Container Registry's UUID.",
-           "format": "uuid",
-           "type": "string"
-          }
-         },
-         "required": [
-          "registry_id"
-         ],
-         "type": "object"
-        },
-        "result": {
-         "nullable": true,
-         "type": "null"
-        },
-        "version": "0.1.0"
-       },
-       {
-        "configs": {
-         "additionalProperties": false,
-         "properties": {
-          "env": {
-           "default": "prod",
-           "description": "Environment to use",
-           "enum": [
-            "prod",
-            "pre-prod"
-           ],
-           "type": "string"
-          },
-          "region": {
-           "default": "br-se1",
-           "description": "Region to reach the service",
-           "enum": [
-            "br-ne1",
-            "br-se1",
-            "br-mgl1"
-           ],
-           "type": "string"
-          },
-          "serverUrl": {
-           "description": "Manually specify the server to use",
-           "format": "uri",
-           "type": "string"
-          }
-         },
-         "type": "object"
-        },
-        "description": "Show detailed information about the user's container registry.",
-        "isInternal": false,
-        "name": "get",
-        "parameters": {
-         "additionalProperties": false,
-         "properties": {
-          "registry_id": {
-           "description": "Container Registry's UUID.",
-           "format": "uuid",
-           "type": "string"
-          }
-         },
-         "required": [
-          "registry_id"
-         ],
-         "type": "object"
-        },
-        "result": {
-         "description": "Container Registry's response data.",
-         "example": {
-          "created_at": "2024-05-15T19:56:47Z",
-          "id": "0c6bbd87-881a-4bf8-b3f6-4ff3ceacb42c",
-          "name": "cool_registry",
-          "storage_usage_bytes": 12345,
-          "updated_at": "2024-05-15T19:56:47Z"
-         },
-         "properties": {
-          "created_at": {
-           "description": "Date and time of creation of the container registry.",
-           "type": "string"
-          },
-          "id": {
-           "description": "Container Registry's UUID.",
-           "type": "string"
-          },
-          "name": {
-           "description": "Name of the container registry created.",
-           "type": "string"
-          },
-          "storage_usage_bytes": {
-           "description": "Storage used in bytes.",
-           "type": "integer"
-          },
-          "updated_at": {
-           "description": "Date and time of the last change to the container registry.",
-           "type": "string"
-          }
-         },
-         "required": [
-          "id",
-          "name",
-          "storage_usage_bytes",
-          "created_at",
-          "updated_at"
-         ],
-         "type": "object"
-        },
-        "version": "0.1.0"
-       },
-       {
-        "configs": {
-         "additionalProperties": false,
-         "properties": {
-          "env": {
-           "default": "prod",
-           "description": "Environment to use",
-           "enum": [
-            "prod",
-            "pre-prod"
-           ],
-           "type": "string"
-          },
-          "region": {
-           "default": "br-se1",
-           "description": "Region to reach the service",
-           "enum": [
-            "br-ne1",
-            "br-se1",
-            "br-mgl1"
-           ],
-           "type": "string"
-          },
-          "serverUrl": {
-           "description": "Manually specify the server to use",
-           "format": "uri",
-           "type": "string"
-          }
-         },
-         "type": "object"
-        },
-        "description": "List user's container registries.",
-        "isInternal": false,
-        "name": "list",
-        "parameters": {
-         "additionalProperties": false,
-         "properties": {
-          "_limit": {
-           "description": "Limit",
-           "minimum": 1,
-           "title": "Limit",
-           "type": "integer"
-          },
-          "_offset": {
-           "description": "Offset",
-           "minimum": 0,
-           "type": "integer"
-          },
-          "_sort": {
-           "default": "created:asc",
-           "description": "Fields to use as reference to sort.",
-           "pattern": "(^[\\w-]+:(asc|desc)(,[\\w-]+:(asc|desc))*)?$",
-           "type": "string"
-          }
-         },
-         "type": "object"
-        },
-        "result": {
-         "description": "Container registry information response object.",
-         "properties": {
-          "results": {
-           "description": "List of user registries.",
-           "items": {
-            "description": "Container Registry's response data.",
-            "example": {
-             "created_at": "2024-05-15T19:56:47Z",
-             "id": "0c6bbd87-881a-4bf8-b3f6-4ff3ceacb42c",
-             "name": "cool_registry",
-             "storage_usage_bytes": 12345,
-             "updated_at": "2024-05-15T19:56:47Z"
-            },
-            "properties": {
-             "created_at": {
-              "description": "Date and time of creation of the container registry.",
-              "type": "string"
-             },
-             "id": {
-              "description": "Container Registry's UUID.",
-              "type": "string"
-             },
-             "name": {
-              "description": "Name of the container registry created.",
-              "type": "string"
-             },
-             "storage_usage_bytes": {
-              "description": "Storage used in bytes.",
-              "type": "integer"
-             },
-             "updated_at": {
-              "description": "Date and time of the last change to the container registry.",
-              "type": "string"
-             }
-            },
-            "required": [
-             "id",
-             "name",
-             "storage_usage_bytes",
-             "created_at",
-             "updated_at"
-            ],
-            "type": "object"
-           },
-           "type": "array"
-          }
-         },
-         "required": [
-          "results"
-         ],
-         "type": "object"
-        },
-        "version": "0.1.0"
-       }
-      ],
-      "description": "Routes related to Container Registry management. | registries",
+       "type": "object"
+      },
+      "description": "Delete a container registry by uuid.",
       "isInternal": false,
-      "name": "registries",
+      "name": "delete",
+      "parameters": {
+       "additionalProperties": false,
+       "properties": {
+        "registry_id": {
+         "description": "Container Registry's UUID.",
+         "format": "uuid",
+         "type": "string"
+        }
+       },
+       "required": [
+        "registry_id"
+       ],
+       "type": "object"
+      },
+      "result": {
+       "nullable": true,
+       "type": "null"
+      },
+      "version": "0.1.0"
+     },
+     {
+      "configs": {
+       "additionalProperties": false,
+       "properties": {
+        "env": {
+         "default": "prod",
+         "description": "Environment to use",
+         "enum": [
+          "prod",
+          "pre-prod"
+         ],
+         "type": "string"
+        },
+        "region": {
+         "default": "br-se1",
+         "description": "Region to reach the service",
+         "enum": [
+          "br-ne1",
+          "br-se1",
+          "br-mgl1"
+         ],
+         "type": "string"
+        },
+        "serverUrl": {
+         "description": "Manually specify the server to use",
+         "format": "uri",
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
+      "description": "Show detailed information about the user's container registry.",
+      "isInternal": false,
+      "name": "get",
+      "parameters": {
+       "additionalProperties": false,
+       "properties": {
+        "registry_id": {
+         "description": "Container Registry's UUID.",
+         "format": "uuid",
+         "type": "string"
+        }
+       },
+       "required": [
+        "registry_id"
+       ],
+       "type": "object"
+      },
+      "result": {
+       "description": "Container Registry's response data.",
+       "example": {
+        "created_at": "2024-05-15T19:56:47Z",
+        "id": "0c6bbd87-881a-4bf8-b3f6-4ff3ceacb42c",
+        "name": "cool_registry",
+        "storage_usage_bytes": 12345,
+        "updated_at": "2024-05-15T19:56:47Z"
+       },
+       "properties": {
+        "created_at": {
+         "description": "Date and time of creation of the container registry.",
+         "type": "string"
+        },
+        "id": {
+         "description": "Container Registry's UUID.",
+         "type": "string"
+        },
+        "name": {
+         "description": "Name of the container registry created.",
+         "type": "string"
+        },
+        "storage_usage_bytes": {
+         "description": "Storage used in bytes.",
+         "type": "integer"
+        },
+        "updated_at": {
+         "description": "Date and time of the last change to the container registry.",
+         "type": "string"
+        }
+       },
+       "required": [
+        "id",
+        "name",
+        "storage_usage_bytes",
+        "created_at",
+        "updated_at"
+       ],
+       "type": "object"
+      },
+      "version": "0.1.0"
+     },
+     {
+      "configs": {
+       "additionalProperties": false,
+       "properties": {
+        "env": {
+         "default": "prod",
+         "description": "Environment to use",
+         "enum": [
+          "prod",
+          "pre-prod"
+         ],
+         "type": "string"
+        },
+        "region": {
+         "default": "br-se1",
+         "description": "Region to reach the service",
+         "enum": [
+          "br-ne1",
+          "br-se1",
+          "br-mgl1"
+         ],
+         "type": "string"
+        },
+        "serverUrl": {
+         "description": "Manually specify the server to use",
+         "format": "uri",
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
+      "description": "List user's container registries.",
+      "isInternal": false,
+      "name": "list",
+      "parameters": {
+       "additionalProperties": false,
+       "properties": {
+        "_limit": {
+         "description": "Limit",
+         "minimum": 1,
+         "title": "Limit",
+         "type": "integer"
+        },
+        "_offset": {
+         "description": "Offset",
+         "minimum": 0,
+         "type": "integer"
+        },
+        "_sort": {
+         "default": "created:asc",
+         "description": "Fields to use as reference to sort.",
+         "pattern": "(^[\\w-]+:(asc|desc)(,[\\w-]+:(asc|desc))*)?$",
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
+      "result": {
+       "description": "Container registry information response object.",
+       "properties": {
+        "results": {
+         "description": "List of user registries.",
+         "items": {
+          "description": "Container Registry's response data.",
+          "example": {
+           "created_at": "2024-05-15T19:56:47Z",
+           "id": "0c6bbd87-881a-4bf8-b3f6-4ff3ceacb42c",
+           "name": "cool_registry",
+           "storage_usage_bytes": 12345,
+           "updated_at": "2024-05-15T19:56:47Z"
+          },
+          "properties": {
+           "created_at": {
+            "description": "Date and time of creation of the container registry.",
+            "type": "string"
+           },
+           "id": {
+            "description": "Container Registry's UUID.",
+            "type": "string"
+           },
+           "name": {
+            "description": "Name of the container registry created.",
+            "type": "string"
+           },
+           "storage_usage_bytes": {
+            "description": "Storage used in bytes.",
+            "type": "integer"
+           },
+           "updated_at": {
+            "description": "Date and time of the last change to the container registry.",
+            "type": "string"
+           }
+          },
+          "required": [
+           "id",
+           "name",
+           "storage_usage_bytes",
+           "created_at",
+           "updated_at"
+          ],
+          "type": "object"
+         },
+         "type": "array"
+        }
+       },
+       "required": [
+        "results"
+       ],
+       "type": "object"
+      },
       "version": "0.1.0"
      }
     ],
-    "description": "Routes related to Container Registry management.",
+    "description": "Routes related to creation, listing and deletion of registries.",
     "isInternal": false,
     "name": "registries",
     "version": "0.1.0"
@@ -4852,7 +4845,7 @@
       "version": "0.1.0"
      }
     ],
-    "description": "Routes related to managing Container Registry repositories.",
+    "description": "Routes related to listing and deletion of repositories.",
     "isInternal": false,
     "name": "repositories",
     "version": "0.1.0"
