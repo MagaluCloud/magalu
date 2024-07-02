@@ -9,14 +9,13 @@ import (
 	mgcSdk "magalu.cloud/sdk"
 )
 
-const outputFlag = "cli.output"
-const defaultFormatter = "json"
+const outputFlag = "output"
+const defaultFormatter = "yaml"
 const helpFormatter = "help"
 
 type OutputFormatter interface {
-	Format(value any, options string) error
+	Format(value any, options string, isRaw bool) error
 	Description() string
-	// TODO: maybe add a way to explain the options? like a json schema
 }
 
 var outputFormatters = map[string]OutputFormatter{}

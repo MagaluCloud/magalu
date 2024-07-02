@@ -9,7 +9,7 @@ import (
 
 type templateFileOutputFormatter struct{}
 
-func (*templateFileOutputFormatter) Format(value any, options string) error {
+func (*templateFileOutputFormatter) Format(value any, options string, isRaw bool) error {
 	filename := options
 	text, err := os.ReadFile(filename)
 	if err != nil {

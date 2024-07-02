@@ -32,7 +32,7 @@ func newDumpTreeCmd(sdk *mgcSdk.Sdk) *cobra.Command {
 				return err
 			}
 
-			return formatter.Format(tree["children"], options)
+			return formatter.Format(tree["children"], options, getRawOutputFlag(cmd))
 		},
 	}
 }

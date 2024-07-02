@@ -9,7 +9,7 @@ import (
 
 type templateOutputFormatter struct{}
 
-func (*templateOutputFormatter) Format(value any, options string) error {
+func (*templateOutputFormatter) Format(value any, options string, isRaw bool) error {
 	text := options
 	tmpl, err := utils.NewTemplate(text)
 	if err != nil {

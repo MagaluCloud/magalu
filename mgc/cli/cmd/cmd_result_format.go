@@ -18,7 +18,7 @@ func formatResult(sdk *mgcSdk.Sdk, cmd *cobra.Command, result core.Result) error
 	}
 
 	if resultWithValue, ok := core.ResultAs[core.ResultWithValue](result); ok {
-		return handleResultWithValue(resultWithValue, output)
+		return handleResultWithValue(resultWithValue, output, cmd)
 	}
 
 	return fmt.Errorf("unsupported result: %T %+v", result, result)
@@ -47,7 +47,7 @@ func handleResultWithReader(reader io.Reader, outFile string) (err error) {
 	return nil
 }
 
-func handleResultWithValue(result core.ResultWithValue, output string) (err error) {
+func handleResultWithValue(result core.ResultWithValue, output string, cmd *cobra.Command) (err error) {
 	value := result.Value()
 	if value == nil {
 		return nil
@@ -70,7 +70,7 @@ func handleResultWithValue(result core.ResultWithValue, output string) (err erro
 	if err != nil {
 		return err
 	}
-	return formatter.Format(value, options)
+	return formatter.Format(value, options, getRawOutputFlag(cmd))
 }
 
 func handleSimpleResultValue(value core.Value, output string) error {
@@ -81,5 +81,5 @@ func handleSimpleResultValue(value core.Value, output string) error {
 		return err
 	}
 
-	return formatter.Format(value, options)
+	return formatter.Format(value, options, true)
 }

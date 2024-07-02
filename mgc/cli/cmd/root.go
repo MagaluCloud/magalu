@@ -63,9 +63,9 @@ can generate a command line on-demand for Rest manipulation`,
 	addWaitTerminationFlag(rootCmd)
 	addRetryUntilFlag(rootCmd)
 	addBypassConfirmationFlag(rootCmd)
-	addHideProgressFlag(rootCmd)
 	addShowInternalFlag(rootCmd)
 	addShowHiddenFlag(rootCmd)
+	addRawOutputFlag(rootCmd)
 
 	rootCmd.PersistentFlags().VisitAll(func(f *pflag.Flag) { f.Hidden = true })
 
@@ -128,7 +128,7 @@ can generate a command line on-demand for Rest manipulation`,
 
 	rootCmd.SetArgs(mainArgs)
 
-	if !getHideProgressFlag(rootCmd) {
+	if !getRawOutputFlag(rootCmd) {
 		pb = progress_bar.New()
 		go pb.Render()
 		defer pb.Finalize()

@@ -17,7 +17,8 @@ const (
 
 type yamlOutputFormatter struct{}
 
-func (*yamlOutputFormatter) Format(value any, options string) error {
+func (*yamlOutputFormatter) Format(value any, options string, isRaw bool) error {
+
 	var indent int
 	fmt.Sscanf(options, "%d", &indent)
 	if indent < 1 {
@@ -26,6 +27,11 @@ func (*yamlOutputFormatter) Format(value any, options string) error {
 
 	yamlBytes, err := yaml.MarshalWithOptions(value, yaml.Indent(indent))
 	if err != nil {
+		return err
+	}
+
+	if isRaw {
+		_, err = fmt.Println(string(yamlBytes))
 		return err
 	}
 

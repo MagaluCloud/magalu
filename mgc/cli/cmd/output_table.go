@@ -850,7 +850,7 @@ func renderWriterWithFormat(writer table.Writer, format tableRenderFormat) strin
 	return writer.Render()
 }
 
-func (f *tableOutputFormatter) Format(val any, options string) (err error) {
+func (f *tableOutputFormatter) Format(val any, options string, isRaw bool) (err error) {
 	var tableOptions *tableOptions
 	if options != "" {
 		tableOptions, err = tableOptionsFromString(options, val)

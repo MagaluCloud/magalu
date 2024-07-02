@@ -11,6 +11,7 @@ import (
 	"magalu.cloud/core"
 	"magalu.cloud/core/progress_report"
 	mgcSdk "magalu.cloud/sdk"
+	"magalu.cloud/sdk/openapi"
 )
 
 func handleExecutorResult(ctx context.Context, sdk *mgcSdk.Sdk, cmd *cobra.Command, result core.Result, err error) error {
@@ -144,11 +145,11 @@ func handleExecutor(
 	parameters core.Parameters,
 	configs core.Configs,
 ) (core.Result, error) {
+	ctx = openapi.WithRawOutputFlag(ctx, getRawOutputFlag(cmd))
 	result, err := handleExecutorPre(ctx, sdk, cmd, exec, parameters, configs)
 	err = handleExecutorResult(ctx, sdk, cmd, result, err)
 	if err != nil {
 		return nil, err
 	}
-
 	return result, err
 }

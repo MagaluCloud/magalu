@@ -10,7 +10,7 @@ import (
 
 type jsonpathFileOutputFormatter struct{}
 
-func (*jsonpathFileOutputFormatter) Format(value any, options string) error {
+func (*jsonpathFileOutputFormatter) Format(value any, options string, isRaw bool) error {
 	filename := options
 	path, err := os.ReadFile(filename)
 	if err != nil {

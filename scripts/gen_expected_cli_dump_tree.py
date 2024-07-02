@@ -9,7 +9,7 @@ import sys
 
 
 def gen_cli_dump_tree(cli: str) -> Iterator[list[str]]:
-    args = [cli, "dump-tree", "-o", "json"]
+    args = [cli, "dump-tree", "-o", "json", "--raw"]
     with subprocess.Popen(args, stdout=subprocess.PIPE, encoding="utf-8") as p:
         tree = json.load(p.stdout)
         assert isinstance(tree, list)

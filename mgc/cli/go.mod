@@ -11,7 +11,7 @@ require (
 
 require (
 	github.com/erikgeiser/promptkit v0.9.0
-	github.com/fatih/color v1.14.1
+	github.com/fatih/color v1.16.0
 	github.com/getkin/kin-openapi v0.118.0
 	github.com/invopop/yaml v0.2.0
 	github.com/jedib0t/go-pretty/v6 v6.4.8
@@ -63,7 +63,7 @@ require (
 	github.com/magiconair/properties v1.8.7 // indirect
 	github.com/mailru/easyjson v0.7.7 // indirect
 	github.com/mattn/go-colorable v0.1.13
-	github.com/mattn/go-isatty v0.0.19 // indirect
+	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/mattn/go-localereader v0.0.1 // indirect
 	github.com/mattn/go-runewidth v0.0.15 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
@@ -72,6 +72,7 @@ require (
 	github.com/muesli/cancelreader v0.2.2 // indirect
 	github.com/muesli/reflow v0.3.0 // indirect
 	github.com/muesli/termenv v0.15.2 // indirect
+	github.com/neilotoole/jsoncolor v0.7.1
 	github.com/pelletier/go-toml/v2 v2.2.2 // indirect
 	github.com/perimeterx/marshmallow v1.1.5 // indirect
 	github.com/pkg/browser v0.0.0-20210911075715-681adbf594b8 // indirect
