@@ -61,9 +61,19 @@ type ListResultVolumesItemAttachment struct {
 	Instance   ListResultVolumesItemAttachmentInstance `json:"instance"`
 }
 
-// any of: , ListResultVolumesItemAttachmentInstance1
+// any of: ListResultVolumesItemAttachmentInstance0, ListResultVolumesItemAttachmentInstance1
 type ListResultVolumesItemAttachmentInstance struct {
+	ListResultVolumesItemAttachmentInstance0 `json:",squash"` // nolint
 	ListResultVolumesItemAttachmentInstance1 `json:",squash"` // nolint
+}
+
+type ListResultVolumesItemAttachmentInstance0 struct {
+	CreatedAt string `json:"created_at"`
+	Id        string `json:"id"`
+	Name      string `json:"name"`
+	State     string `json:"state"`
+	Status    string `json:"status"`
+	UpdatedAt string `json:"updated_at"`
 }
 
 type ListResultVolumesItemAttachmentInstance1 struct {
@@ -75,9 +85,10 @@ type ListResultVolumesItemError struct {
 	Slug    string `json:"slug"`
 }
 
-// any of: , ListResultVolumesItemType1
+// any of: ListResultVolumesItemAttachmentInstance1, ListResultVolumesItemType1
 type ListResultVolumesItemType struct {
-	ListResultVolumesItemType1 `json:",squash"` // nolint
+	ListResultVolumesItemAttachmentInstance1 `json:",squash"` // nolint
+	ListResultVolumesItemType1               `json:",squash"` // nolint
 }
 
 type ListResultVolumesItemType1 struct {

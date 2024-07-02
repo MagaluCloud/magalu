@@ -3,11 +3,11 @@ Executor: list
 
 # Summary
 
-# Get credentials for container registry
+# List all container registries
 
 # Description
 
-Return container registry user's authentication credentials.
+List user's container registries.
 
 Version: 0.1.0
 
@@ -20,20 +20,36 @@ import (
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
 
+type ListParameters struct {
+	Limit  *int    `json:"_limit,omitempty"`
+	Offset *int    `json:"_offset,omitempty"`
+	Sort   *string `json:"_sort,omitempty"`
+}
+
 type ListConfigs struct {
 	Env       *string `json:"env,omitempty"`
 	Region    *string `json:"region,omitempty"`
 	ServerUrl *string `json:"serverUrl,omitempty"`
 }
 
-// User's credentials for authentication to the container registry.
+// Container registry information response object.
 type ListResult struct {
-	Email    string `json:"email"`
-	Password string `json:"password"`
-	Username string `json:"username"`
+	Results ListResultResults `json:"results"`
 }
 
+// Container Registry's response data.
+type ListResultResultsItem struct {
+	CreatedAt         string `json:"created_at"`
+	Id                string `json:"id"`
+	Name              string `json:"name"`
+	StorageUsageBytes int    `json:"storage_usage_bytes"`
+	UpdatedAt         string `json:"updated_at"`
+}
+
+type ListResultResults []ListResultResultsItem
+
 func (s *service) List(
+	parameters ListParameters,
 	configs ListConfigs,
 ) (
 	result ListResult,
@@ -45,6 +61,9 @@ func (s *service) List(
 	}
 
 	var p mgcCore.Parameters
+	if p, err = mgcHelpers.ConvertParameters[ListParameters](parameters); err != nil {
+		return
+	}
 
 	var c mgcCore.Configs
 	if c, err = mgcHelpers.ConvertConfigs[ListConfigs](configs); err != nil {

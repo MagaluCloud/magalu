@@ -3,7 +3,7 @@ Package: repositories
 
 # Description
 
-Routes related to managing Container Registry repositories.
+Routes related to listing and deletion of repositories.
 
 Version: 0.1.0
 

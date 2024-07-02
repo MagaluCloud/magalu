@@ -3,17 +3,17 @@ Executor: create
 
 # Summary
 
-Replica Create.
+# Create a container registry
 
 # Description
 
-Creates a new replica for an instance asynchronously.
+Creates a container registry in Magalu Cloud.
 
-Version: 1.23.0
+Version: 0.1.0
 
-import "magalu.cloud/lib/products/dbaas/replicas"
+import "magalu.cloud/lib/products/container_registry/registries"
 */
-package replicas
+package registries
 
 import (
 	mgcCore "magalu.cloud/core"
@@ -21,10 +21,7 @@ import (
 )
 
 type CreateParameters struct {
-	Exchange *string `json:"exchange,omitempty"`
-	FlavorId *string `json:"flavor_id,omitempty"`
-	Name     string  `json:"name"`
-	SourceId string  `json:"source_id"`
+	Name string `json:"name"`
 }
 
 type CreateConfigs struct {
@@ -33,8 +30,10 @@ type CreateConfigs struct {
 	ServerUrl *string `json:"serverUrl,omitempty"`
 }
 
+// Container Registry's creation response.
 type CreateResult struct {
-	Id string `json:"id"`
+	Id   string `json:"id"`
+	Name string `json:"name"`
 }
 
 func (s *service) Create(
@@ -44,7 +43,7 @@ func (s *service) Create(
 	result CreateResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("Create", mgcCore.RefPath("/dbaas/replicas/create"), s.client, s.ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Create", mgcCore.RefPath("/container-registry/registries/create"), s.client, s.ctx)
 	if err != nil {
 		return
 	}

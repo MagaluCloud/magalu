@@ -3,7 +3,7 @@
   "info": {
     "title": "Internal Virtual Machine Api Product",
     "description": "Virtual Machine Api Product",
-    "version": "1.245.0"
+    "version": "1.249.0"
   },
   "paths": {
     "/v1/health": {
@@ -1552,6 +1552,2584 @@
           }
         }
       }
+    },
+    "/v1/xaas/backups": {
+      "get": {
+        "tags": [
+          "xaas backups"
+        ],
+        "summary": "Lists all backups in the current tenant.",
+        "description": "List Virtual Machine backups in the current tenant which is logged in.\n\n#### Notes\n- You can use the **extend** argument to get more details from the inner objects\nlike image or type.",
+        "operationId": "list_backups_v1_xaas_v1_xaas_backups_get",
+        "parameters": [
+          {
+            "name": "project_type",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ProjectType"
+            }
+          },
+          {
+            "name": "_limit",
+            "in": "query",
+            "description": "limit the number of the results",
+            "required": false,
+            "schema": {
+              "exclusiveMinimum": false,
+              "type": "integer",
+              "title": " Limit",
+              "maximum": 2147483647,
+              "description": "limit the number of the results",
+              "default": 50
+            }
+          },
+          {
+            "name": "_offset",
+            "in": "query",
+            "description": "pagination for the results limited",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "title": " Offset",
+              "maximum": 2147483647,
+              "description": "pagination for the results limited",
+              "default": 0
+            }
+          },
+          {
+            "name": "_sort",
+            "in": "query",
+            "description": "order of the results using informed fields",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": " Sort",
+              "pattern": "^(^[\\w-]+:(asc|desc)(,[\\w-]+:(asc|desc))*)?$",
+              "description": "order of the results using informed fields",
+              "default": "created_at:asc"
+            }
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "You can get more detailed info about: ['instance'] ",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "title": "Expand",
+              "description": "You can get more detailed info about: ['instance'] ",
+              "default": []
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListBackupResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Backup Not Allowed Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Instance Not Found Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Backup Validation Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": true,
+        "x-mgc-output-flag": "table=BACKUP_TYPE:$.backups[*].backup_type,CREATED_AT:$.backups[*].created_at',  ID:$.backups[*].id,INSTANCE:$.backups[*].instance,DISK:$.backups[*].min_disk,NAME:$.backups[*].name, SIZE:$.backups[*].size,STATE:$.backups[*].state,STATUS:$.backups[*].status,UPDATED_AT:$.backups[*].updated_at"
+      },
+      "post": {
+        "tags": [
+          "xaas backups"
+        ],
+        "summary": "Create a backup of a virtual machine asynchronously.",
+        "description": "Create a backup of a Virtual Machine with the current tenant which is logged in.\n\nA Backup is ready for restore when it's in completed status.\n\n#### Rules\n- It's possible to create a maximum of 100 backups per virtual machine.\n- In case quota reached, choose a backup to remove.\n- You can inform ID or Name from a Virtual Machine if both informed the priority will be ID.\n- It's only possible to create a backup of a valid virtual machine.\n- Each backup must have a unique name. It's not possible to create backups with the same name.",
+        "operationId": "create_backup_v1_xaas_v1_xaas_backups_post",
+        "parameters": [
+          {
+            "name": "project_type",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ProjectType"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BackupRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Backup Not Allowed Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Instance Not Found Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Backup Validation Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": true,
+        "x-mgc-output-flag": "table=ID:$.id"
+      }
+    },
+    "/v1/xaas/backups/{id}": {
+      "get": {
+        "tags": [
+          "xaas backups"
+        ],
+        "summary": "Retrieve the details of a backup.",
+        "description": "Get a backup details for the current tenant which is logged in.\n\n#### Notes\n- You can use the backup list command to retrieve all backups,\nso you can get the id of the backup that you want to get details.\n\n- You can use the **expand** argument to get more details from the object\nlike instance.",
+        "operationId": "details_backup_v1_xaas_v1_xaas_backups__id__get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Id"
+            }
+          },
+          {
+            "name": "project_type",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ProjectType"
+            }
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "You can get more detailed info about: ['instance'] ",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "title": "Expand",
+              "description": "You can get more detailed info about: ['instance'] ",
+              "default": []
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BackupResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Backup Not Allowed Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Instance Not Found Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Backup Validation Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": true,
+        "x-mgc-output-flag": "table=BACKUP_TYPE:$.backups[].backup_type,CREATED_AT:$.backups[].created_at',  ID:$.backups[].id,INSTANCE:$.backups[].instance,DISK:$.backups[].min_disk,NAME:$.backups[].name, SIZE:$.backups[].size,STATE:$.backups[].state,STATUS:$.backups[].status,UPDATED_AT:$.backups[*].updated_at"
+      },
+      "delete": {
+        "tags": [
+          "xaas backups"
+        ],
+        "summary": "Delete a backup of a virtual machine asynchronously.",
+        "description": "Delete a backup from instance",
+        "operationId": "delete_backup_v1_xaas_v1_xaas_backups__id__delete",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Id",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "project_type",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ProjectType"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "400": {
+            "description": "Backup Not Allowed Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Instance Not Found Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Backup Validation Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": true,
+        "x-mgc-output-flag": "table=ID:$.id"
+      }
+    },
+    "/v1/xaas/backups/{id}/rename": {
+      "patch": {
+        "tags": [
+          "xaas backups"
+        ],
+        "summary": "Renames a backup",
+        "description": "Renames a backup with the id provided in the current tenant which is logged in.\n\n#### Rules\n- You can use the backup list command to retrieve all backups, so you can get the id of\nthe backup that you want to rename.\n- A Backup can only renamed when it's in completed status.\n- Each backup must have a unique name.",
+        "operationId": "rename_backup_v1_xaas_v1_xaas_backups__id__rename_patch",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Id"
+            }
+          },
+          {
+            "name": "project_type",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ProjectTypeAll"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BackupRenameRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "400": {
+            "description": "Backup Not Allowed Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Instance Not Found Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Backup Validation Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": false
+      }
+    },
+    "/v1/xaas/backups/{id}/restore": {
+      "post": {
+        "tags": [
+          "xaas backups"
+        ],
+        "summary": "Restore a backup to a virtual machine",
+        "description": "Restore a backup of a Virtual Machine with the current tenant which is logged in. \u003c/br\u003e\nA Backup is ready for restore when it's in completed status.\n\n#### Notes\n- You can verify the status of backup using the backup list command.\n- Use machine-types list to see all machine types available.\n\n#### Rules\n- To restore a backup you have to inform the new virtual machine information.\n- You can choose a machine-type that has a disk equal or larger\nthan the minimum disk of the backup.",
+        "operationId": "restore_backup_v1_xaas_v1_xaas_backups__id__restore_post",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Id",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "project_type",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ProjectType"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BackupRestoreRequestDefault"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Backup Not Allowed Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Instance Not Found Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Backup Validation Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": true,
+        "x-mgc-output-flag": "table=ID:$.id"
+      }
+    },
+    "/v1/xaas/images": {
+      "get": {
+        "tags": [
+          "xaas images"
+        ],
+        "summary": "Retrieves all images available in the region.",
+        "description": "Retrieve a list of images allowed for the current tenant which is logged in.",
+        "operationId": "list_images_v1_xaas_v1_xaas_images_get",
+        "parameters": [
+          {
+            "name": "_limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "exclusiveMinimum": false,
+              "type": "integer",
+              "title": " Limit",
+              "maximum": 2147483647,
+              "default": 50
+            }
+          },
+          {
+            "name": "_offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "title": " Offset",
+              "maximum": 2147483647,
+              "default": 0
+            }
+          },
+          {
+            "name": "_sort",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": " Sort",
+              "pattern": "^(^[\\w-]+:(asc|desc)(,[\\w-]+:(asc|desc))*)?$",
+              "default": "platform:asc,end_life_at:desc"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListImageExternalV1"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": true,
+        "x-mgc-output-flag": "table=ID:$.images[*].id,NAME:$.images[*].name,VERSION:$.images[*].version,PLATFORM:$.images[*].platform,END_STANDARD_SUPPORT_AT:$.images[*].end_standard_support_at,STATUS:$.images[*].status"
+      }
+    },
+    "/v1/xaas/instances": {
+      "get": {
+        "tags": [
+          "xaas instances"
+        ],
+        "summary": "Lists all instances in the current tenant for xaas project",
+        "description": "List Virtual Machine instances in the current tenant which is logged in.\n\n#### Notes\n- You can use the **extend** argument to get more details from the inner objects\nlike image or type.",
+        "operationId": "list_instances_v1_v1_xaas_instances_get",
+        "parameters": [
+          {
+            "name": "project_type",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ProjectType"
+            }
+          },
+          {
+            "name": "_limit",
+            "in": "query",
+            "description": "limit the number of the results",
+            "required": false,
+            "schema": {
+              "exclusiveMinimum": false,
+              "type": "integer",
+              "title": " Limit",
+              "maximum": 2147483647,
+              "description": "limit the number of the results",
+              "default": 50
+            }
+          },
+          {
+            "name": "_offset",
+            "in": "query",
+            "description": "pagination for the results limited",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "title": " Offset",
+              "maximum": 2147483647,
+              "description": "pagination for the results limited",
+              "default": 0
+            }
+          },
+          {
+            "name": "_sort",
+            "in": "query",
+            "description": "order of the results using informed fields",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": " Sort",
+              "pattern": "^(^[\\w-]+:(asc|desc)(,[\\w-]+:(asc|desc))*)?$",
+              "description": "order of the results using informed fields",
+              "default": "created_at:asc"
+            }
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "You can get more detailed info about: ['image', 'machine-type', 'network'] ",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "title": "Expand",
+              "description": "You can get more detailed info about: ['image', 'machine-type', 'network'] ",
+              "default": []
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListInstanceV1Response"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Instance Not Allowed Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Instance Not Found Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Instance Validation Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "xaas instances"
+        ],
+        "summary": "Create a instance asynchronously in a xaas project",
+        "description": "Creates a Virtual Machine instance in the current tenant which is logged in.\n\nAn instance is ready for you to use when it's in the running state.\n\n#### Notes\n- For the image data, you can use the virtual-machine images list command\n        to list all available images.\n- For the machine type data, you can use the virtual-machine machine-types\n        list command to list all available machine types.\n- You can verify the state of your instance using the virtual-machine get\ncommand.\n\n#### Rules\n\n- If you don't specify a VPC, the default VPC will be used. When the\ndefault VPC is not available, the command will fail.\n- If you don't specify an network interface, an default network interface\nwill be created.\n- You can either specify an image id or an image name. If you specify\nboth, the image id will be used.\n- You can either specify a machine type id or a machine type name. If\nyou specify both, the machine type id will be used.\n- You can either specify an VPC id or an VPC name. If you specify both,\nthe VPC id will be used.\n- The user data must be a Base64 encoded string.",
+        "operationId": "instance_create_v1_v1_xaas_instances_post",
+        "parameters": [
+          {
+            "name": "project_type",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ProjectType"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InstanceCreateRequestV1Xaas"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/xaas/instances/{id}": {
+      "get": {
+        "tags": [
+          "xaas instances"
+        ],
+        "summary": "Retrieve the details of an instance in a xaas project",
+        "description": "Get an instance details for the current tenant which is logged in.\n\n#### Notes\n- You can use the virtual-machine list command to retrieve all instances,\nso you can get the id of the instance that you want to get details.\n\n- You can use the **expand** argument to get more details from the inner objects\nlike image or type.",
+        "operationId": "instance_details_v1_v1_xaas_instances__id__get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Id"
+            }
+          },
+          {
+            "name": "project_type",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ProjectType"
+            }
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "You can get more detailed info about: ['image', 'machine-type', 'network'] ",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "title": "Expand",
+              "description": "You can get more detailed info about: ['image', 'machine-type', 'network'] ",
+              "default": []
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InstanceV1Response"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Instance Not Allowed Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Instance Not Found Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Instance Validation Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "xaas instances"
+        ],
+        "summary": "Delete a instance asynchronously in a xaas project",
+        "description": "Deletes permanently an instance with the id provided in the current tenant\nwhich is logged in.\n\n#### Notes\n- You can use the virtual-machine list command to retrieve all instances, so\n- you can get the id of the instance that you want to delete.\n\n#### Result\n- The attached ports will be deleted as well.\u003c/li\u003e\n- The attached volumes will be detached.\u003c/li\u003e",
+        "operationId": "instance_delete_v1_v1_xaas_instances__id__delete",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Id",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "project_type",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ProjectType"
+            }
+          },
+          {
+            "name": "delete_public_ip",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "title": "Delete Public Ip",
+              "default": false
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "400": {
+            "description": "Instance Not Allowed Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Instance Not Found Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Instance Validation Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/xaas/instances/{id}/port/{port_id}/attach": {
+      "post": {
+        "tags": [
+          "xaas instances"
+        ],
+        "summary": "Attach port to instance",
+        "description": "Attach port to instance for a XaaS project",
+        "operationId": "instance_attach_port_v1_xaas_instances__id__port__port_id__attach_post",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Id"
+            }
+          },
+          {
+            "name": "port_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Port Id"
+            }
+          },
+          {
+            "name": "project_type",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ProjectType"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": false
+      }
+    },
+    "/v1/xaas/instances/{id}/port/{port_id}/detach": {
+      "post": {
+        "tags": [
+          "xaas instances"
+        ],
+        "summary": "Detach a non primary port from instance",
+        "description": "Detach a non primary port from instance for a XaaS project",
+        "operationId": "instance_detach_port_v1_xaas_instances__id__port__port_id__detach_post",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Id"
+            }
+          },
+          {
+            "name": "port_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Port Id"
+            }
+          },
+          {
+            "name": "project_type",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ProjectType"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": false
+      }
+    },
+    "/v1/xaas/instances/{id}/reboot": {
+      "post": {
+        "tags": [
+          "xaas instances"
+        ],
+        "summary": "Starts a running or suspended instance.",
+        "description": "Reboots a Virtual Machine instance with the id provided in the current tenant which is logged in.\n#### Notes\n- You can use the virtual-machine list command to retrieve all instances, so you can get the id\nof the instance that you want to reboot.\n\n#### Rules\n- The instance must be in the running state.",
+        "operationId": "reboot_instance_xaas_v1_xaas_instances__id__reboot_post",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Id",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "project_type",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ProjectType"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": false
+      }
+    },
+    "/v1/xaas/instances/{id}/retype": {
+      "post": {
+        "tags": [
+          "xaas instances"
+        ],
+        "summary": "Changes a running or stopped instance machine type for another one.",
+        "description": "Changes a Virtual Machine instance machine type with the id provided in the current tenant\nwhich is logged in.\n\n#### Notes\n- You can use the virtual-machine list command to retrieve all instances, so you can get\nthe id of the instance that you want to change the machine type.\n\n#### Rules\n- The instance must be in the running or stopped state.\n- The new machine type must be compatible with the current machine type.\n- The new machine type must be available in the same region as the current machine type.\n- You must provide either the machine type id or the machine type name, if you provide both,\nthe machine type id will be used.",
+        "operationId": "retype_instance_xaas_v1_xaas_instances__id__retype_post",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Id",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "project_type",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ProjectType"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InstanceRetypeRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "400": {
+            "description": "Instance Not Allowed Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Instance Not Found Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Instance Validation Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": false
+      }
+    },
+    "/v1/xaas/instances/{id}/start": {
+      "post": {
+        "tags": [
+          "xaas instances"
+        ],
+        "summary": "Starts a running or suspended instance.",
+        "description": "Starts a Virtual Machine instance with the id provided in the current\ntenant which is logged in.\n#### Notes\n- You can use the virtual-machine list command to retrieve all instances,\nso you can get the id of the instance that you want to start.\n#### Rules\n- The instance must be in the stopped or suspended states.",
+        "operationId": "start_instance_xaas_v1_xaas_instances__id__start_post",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Id",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "project_type",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ProjectType"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": false
+      }
+    },
+    "/v1/xaas/instances/{id}/stop": {
+      "post": {
+        "tags": [
+          "xaas instances"
+        ],
+        "summary": "Stops a running instance.",
+        "description": "Stops a Virtual Machine instance with the id provided in the current tenant which is logged in.\n#### Notes\n- You can use the virtual-machine list command to retrieve all instances, so you can get the id of\nthe instance that you want to stop.\n\n#### Rules\n- The instance must be in the running state.",
+        "operationId": "stop_instance_xaas_v1_xaas_instances__id__stop_post",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Id",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "project_type",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ProjectType"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": false
+      }
+    },
+    "/v1/xaas/instances/{id}/suspend": {
+      "post": {
+        "tags": [
+          "xaas instances"
+        ],
+        "summary": "Suspends a running instance.",
+        "description": "Suspends a Virtual Machine instance with the id provided in the current tenant which is logged in.\n\n#### Notes\n- You can use the virtual-machine list command to retrieve all instances, so you can get the id of\nthe instance that you want to suspend.\n\n#### Rules\n- The instance must be in the running state.",
+        "operationId": "suspend_instance_xaas_v1_xaas_instances__id__suspend_post",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Id",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "project_type",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ProjectType"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": false
+      }
+    },
+    "/v1/xaas/keypairs": {
+      "get": {
+        "tags": [
+          "xaas keypairs"
+        ],
+        "summary": "List Keypairs Xaas",
+        "description": "Returns a list of keypairs from a provided tenant_id",
+        "operationId": "list_keypairs_xaas_v1_xaas_keypairs_get",
+        "parameters": [
+          {
+            "name": "project_type",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ProjectType"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KeypairsListResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": false
+      },
+      "post": {
+        "tags": [
+          "xaas keypairs"
+        ],
+        "summary": "Create Keypair Xaas",
+        "description": "Create a keypair",
+        "operationId": "create_keypair_xaas_v1_xaas_keypairs_post",
+        "parameters": [
+          {
+            "name": "project_type",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ProjectType"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/KeypairRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KeypairResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": false
+      },
+      "delete": {
+        "tags": [
+          "xaas keypairs"
+        ],
+        "summary": "Keypair Delete All Xaas",
+        "description": "Delete all keypairs froma tenant ID",
+        "operationId": "keypair_delete_all_xaas_v1_xaas_keypairs_delete",
+        "parameters": [
+          {
+            "name": "project_type",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ProjectType"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KeypairDeletedAllResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/xaas/keypairs/{keypair_name}": {
+      "delete": {
+        "tags": [
+          "xaas keypairs"
+        ],
+        "summary": "Delete Keypair Xaas",
+        "description": "Delete a keypair",
+        "operationId": "delete_keypair_xaas_v1_xaas_keypairs__keypair_name__delete",
+        "parameters": [
+          {
+            "name": "keypair_name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Keypair Name"
+            }
+          },
+          {
+            "name": "project_type",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ProjectType"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": false
+      }
+    },
+    "/v1/xaas/machine-types": {
+      "get": {
+        "tags": [
+          "xaas machine-types"
+        ],
+        "summary": "Retrieves all machine-types available in the region.",
+        "description": "Retrieves a list of machine types allowed for the current tenant which is logged in.",
+        "operationId": "list_instance_types_v1_xaas_v1_xaas_machine_types_get",
+        "parameters": [
+          {
+            "name": "_limit",
+            "in": "query",
+            "description": "limit the number of the results",
+            "required": false,
+            "schema": {
+              "exclusiveMinimum": false,
+              "type": "integer",
+              "title": " Limit",
+              "maximum": 2147483647,
+              "description": "limit the number of the results",
+              "default": 50
+            }
+          },
+          {
+            "name": "_offset",
+            "in": "query",
+            "description": "pagination for the results limited",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "title": " Offset",
+              "maximum": 2147483647,
+              "description": "pagination for the results limited",
+              "default": 0
+            }
+          },
+          {
+            "name": "_sort",
+            "in": "query",
+            "description": "order of the results using informed fields",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": " Sort",
+              "pattern": "^(^[\\w-]+:(asc|desc)(,[\\w-]+:(asc|desc))*)?$",
+              "description": "order of the results using informed fields",
+              "default": "created_at:asc"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InstanceTypesV1ListResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/xaas/snapshots": {
+      "get": {
+        "tags": [
+          "xaas snapshots"
+        ],
+        "summary": "Lists all snapshots in the current tenant.",
+        "description": "List all snapshots in the current tenant which is logged in.\n\n#### Notes\n- You can use the **expand** argument to get more details from the inner objects\nlike image and machine types.",
+        "operationId": "list_snapshots_v1_xaas_v1_xaas_snapshots_get",
+        "parameters": [
+          {
+            "name": "project_type",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ProjectType"
+            }
+          },
+          {
+            "name": "_limit",
+            "in": "query",
+            "description": "limit the number of the results",
+            "required": false,
+            "schema": {
+              "exclusiveMinimum": false,
+              "type": "integer",
+              "title": " Limit",
+              "maximum": 2147483647,
+              "description": "limit the number of the results",
+              "default": 50
+            }
+          },
+          {
+            "name": "_offset",
+            "in": "query",
+            "description": "pagination for the results limited",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "title": " Offset",
+              "maximum": 2147483647,
+              "description": "pagination for the results limited",
+              "default": 0
+            }
+          },
+          {
+            "name": "_sort",
+            "in": "query",
+            "description": "order of the results using informed fields",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": " Sort",
+              "pattern": "^(^[\\w-]+:(asc|desc)(,[\\w-]+:(asc|desc))*)?$",
+              "description": "order of the results using informed fields",
+              "default": "created_at:asc"
+            }
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "You can get more detailed info about: ['image', 'machine-type'] ",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "title": "Expand",
+              "description": "You can get more detailed info about: ['image', 'machine-type'] ",
+              "default": []
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListSnapshotResponseV1"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Instance Not Allowed Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Instance Not Found Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Instance Validation Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": false
+      },
+      "post": {
+        "tags": [
+          "xaas snapshots"
+        ],
+        "summary": "Create a snapshot of a virtual machine asynchronously.",
+        "description": "Create a snapshot of a Virtual Machine in the current tenant which is logged in. \u003c/br\u003e\nA Snapshot is ready for restore when it's in available state.\n\n#### Notes\n- You can verify the state of snapshot using the snapshot get command,\n- To create a snapshot it's mandatory inform a valid and unique name.\n\n#### Rules\n- It's only possible to create a snapshot of a valid virtual machine.\n- It's not possible to create 2 snapshots with the same name.\n- You can inform ID or Name from a Virtual Machine if both informed the priority will be ID.",
+        "operationId": "snapshot_create_v1_xaas_v1_xaas_snapshots_post",
+        "parameters": [
+          {
+            "name": "project_type",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ProjectType"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SnapshotCreateRequestV1"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Instance Not Allowed Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Instance Not Found Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Instance Validation Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": false
+      }
+    },
+    "/v1/xaas/snapshots/{id}": {
+      "get": {
+        "tags": [
+          "xaas snapshots"
+        ],
+        "summary": "Retrieve the details of an snapshot.",
+        "description": "Get an snapshot details for the current tenant which is logged in.\n\n#### Notes\n- You can use the snapshots list command to retrieve all snapshots,\nso you can get the id of the snapshot that you want to get details.\n\n- You can use the **expand** argument to get more details from the inner objects\nlike image or type.",
+        "operationId": "snapshot_details_v1_xaas_v1_xaas_snapshots__id__get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Id"
+            }
+          },
+          {
+            "name": "project_type",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ProjectType"
+            }
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "You can get more detailed info about: ['image', 'machine-type'] ",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "title": "Expand",
+              "description": "You can get more detailed info about: ['image', 'machine-type'] ",
+              "default": []
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SnapshotResponseV1"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Instance Not Allowed Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Instance Not Found Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Instance Validation Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": false
+      },
+      "post": {
+        "tags": [
+          "xaas snapshots"
+        ],
+        "summary": "Restore a snapshot to a virtual machine",
+        "description": "Restore a snapshot of a Virtual Machine with the current tenant which is logged in. \u003c/br\u003e\nA Snapshot is ready for restore when it's in available state.\n\n#### Notes\n- You can verify the state of snapshot using the snapshot list command.\n- Use machine-types list to see all machine types available.\n\n#### Rules\n- To restore a snapshot  you have to inform the new virtual machine information.\n- You can choose a machine-type that has a disk equal or larger\nthan the original virtual machine type.",
+        "operationId": "restore_snapshot_v1_xaas_v1_xaas_snapshots__id__post",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Id"
+            }
+          },
+          {
+            "name": "project_type",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ProjectType"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SnapshotRestoreRequestV1Xaas"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Instance Not Allowed Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Instance Not Found Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Instance Validation Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": false
+      },
+      "delete": {
+        "tags": [
+          "xaas snapshots"
+        ],
+        "summary": "Delete a Snapshot asynchronously",
+        "description": "Deletes an snapshot with the id provided in the current tenant\nwhich is logged in.\n\n#### Notes\n- You can use the Snapshots list command to retrieve all snapshots, so\n- you can get the id of the snapshot that you want to delete.",
+        "operationId": "snapshots_delete_xaas_v1_xaas_snapshots__id__delete",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Id",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "project_type",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ProjectType"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "400": {
+            "description": "Instance Not Allowed Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Instance Not Found Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Instance Validation Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": false
+      }
+    },
+    "/v1/xaas/snapshots/{id}/rename": {
+      "patch": {
+        "tags": [
+          "xaas snapshots"
+        ],
+        "summary": "Renames a snapshot",
+        "description": "Renames a Snapshot with the id provided in the current tenant which is logged in.\n\n#### Notes\n- You can use the snapshots list command to retrieve all snapshots, so you can get the id of\nthe snapshot that you want to rename.",
+        "operationId": "rename_snapshot_xaas_v1_xaas_snapshots__id__rename_patch",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Id"
+            }
+          },
+          {
+            "name": "project_type",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ProjectType"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SnapshotRenameRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "400": {
+            "description": "Instance Not Allowed Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Instance Not Found Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Instance Validation Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": false
+      }
     }
   },
   "components": {
@@ -1578,7 +4156,10 @@
               "completed",
               "error",
               "deleting",
-              "deleted"
+              "deleted",
+              "pending_copy",
+              "copying",
+              "copy_error"
             ]
           },
           "state": {
@@ -1608,6 +4189,24 @@
           "external_backup_id": "4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a",
           "state": "new",
           "status": "creating"
+        }
+      },
+      "BackupRenameRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "maxLength": 255,
+            "minLength": 1
+          }
+        },
+        "title": "BackupRenameRequest",
+        "required": [
+          "name"
+        ],
+        "example": {
+          "name": "new backup name"
         }
       },
       "BackupRequest": {
@@ -1679,7 +4278,10 @@
               "completed",
               "error",
               "deleting",
-              "deleted"
+              "deleted",
+              "pending_copy",
+              "copying",
+              "copy_error"
             ]
           },
           "state": {
@@ -1904,7 +4506,10 @@
           "completed",
           "error",
           "deleting",
-          "deleted"
+          "deleted",
+          "pending_copy",
+          "copying",
+          "copy_error"
         ]
       },
       "CreateResponse": {
@@ -3272,6 +5877,168 @@
           }
         }
       },
+      "InstanceCreateRequestV1NetworkXaas": {
+        "type": "object",
+        "properties": {
+          "vpc": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ID"
+              },
+              {
+                "$ref": "#/components/schemas/Name"
+              }
+            ],
+            "title": "Vpc",
+            "default": {
+              "name": "default"
+            }
+          },
+          "interface": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ID"
+              },
+              {
+                "$ref": "#/components/schemas/SecurityGroups"
+              }
+            ],
+            "title": "Interface",
+            "nullable": true
+          },
+          "associate_public_ip": {
+            "type": "boolean",
+            "title": "Associate Public Ip",
+            "default": false
+          }
+        },
+        "title": "InstanceCreateRequestV1NetworkXaas",
+        "example": {
+          "associate_public_ip": true,
+          "interface": {
+            "security_groups": [
+              {
+                "id": "f273fbde-2ddf-4dcd-8c41-342671ac0d17"
+              },
+              {
+                "id": "02a2acf3-d6db-4424-ac97-0254cb9c329e"
+              }
+            ]
+          },
+          "vpc": {
+            "id": "2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6"
+          }
+        }
+      },
+      "InstanceCreateRequestV1Xaas": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "maxLength": 255,
+            "minLength": 1
+          },
+          "machine_type": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ID"
+              },
+              {
+                "$ref": "#/components/schemas/Name"
+              }
+            ],
+            "title": "Machine Type"
+          },
+          "ssh_key_name": {
+            "type": "string",
+            "title": "Ssh Key Name"
+          },
+          "image": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ID"
+              },
+              {
+                "$ref": "#/components/schemas/Name"
+              }
+            ],
+            "title": "Image"
+          },
+          "availability_zone": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 255,
+                "minLength": 1
+              }
+            ],
+            "title": "Availability Zone",
+            "nullable": true
+          },
+          "network": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/InstanceCreateRequestV1NetworkXaas"
+              }
+            ],
+            "default": {
+              "vpc": {
+                "name": "default"
+              },
+              "associate_public_ip": false
+            },
+            "nullable": true
+          },
+          "user_data": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 65000,
+                "minLength": 1
+              }
+            ],
+            "title": "User Data",
+            "nullable": true
+          }
+        },
+        "title": "InstanceCreateRequestV1Xaas",
+        "required": [
+          "name",
+          "machine_type",
+          "ssh_key_name",
+          "image"
+        ],
+        "example": {
+          "availability_zone": "br-regiao-1a",
+          "image": {
+            "id": "2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6"
+          },
+          "machine_type": {
+            "id": "2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6"
+          },
+          "name": "instance name",
+          "network": {
+            "associate_public_ip": false,
+            "interface": {
+              "id": "c8719fd8-7a48-4dbf-b4d8-74f71fa67422",
+              "security_groups": [
+                {
+                  "id": "f273fbde-2ddf-4dcd-8c41-342671ac0d17"
+                },
+                {
+                  "id": "02a2acf3-d6db-4424-ac97-0254cb9c329e"
+                }
+              ]
+            },
+            "vpc": {
+              "id": "2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6"
+            }
+          },
+          "ssh_key_name": "keypair_name_here",
+          "user_data": "some_base64_script"
+        }
+      },
       "InstanceDeletedAllResponse": {
         "type": "object",
         "properties": {
@@ -4583,7 +7350,10 @@
                     "completed",
                     "error",
                     "deleting",
-                    "deleted"
+                    "deleted",
+                    "pending_copy",
+                    "copying",
+                    "copy_error"
                   ]
                 },
                 "state": {
@@ -5813,6 +8583,140 @@
           "updated_at": "2022-06-11T18:33:12Z"
         }
       },
+      "SnapshotRestoreRequestV1Xaas": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "maxLength": 255,
+            "minLength": 1
+          },
+          "machine_type": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ID"
+              },
+              {
+                "$ref": "#/components/schemas/Name"
+              }
+            ],
+            "title": "Machine Type"
+          },
+          "ssh_key_name": {
+            "type": "string",
+            "title": "Ssh Key Name"
+          },
+          "availability_zone": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 255,
+                "minLength": 1
+              }
+            ],
+            "title": "Availability Zone",
+            "nullable": true
+          },
+          "network": {
+            "type": "object",
+            "properties": {
+              "vpc": {
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/ID"
+                  },
+                  {
+                    "$ref": "#/components/schemas/Name"
+                  }
+                ],
+                "title": "Vpc",
+                "default": {
+                  "name": "default"
+                }
+              },
+              "interface": {
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/ID"
+                  },
+                  {
+                    "$ref": "#/components/schemas/SecurityGroups"
+                  }
+                ],
+                "title": "Interface",
+                "nullable": true
+              },
+              "associate_public_ip": {
+                "type": "boolean",
+                "title": "Associate Public Ip",
+                "default": false
+              }
+            },
+            "title": "InstanceCreateRequestV1NetworkXaas",
+            "example": {
+              "associate_public_ip": true,
+              "interface": {
+                "security_groups": [
+                  {
+                    "id": "f273fbde-2ddf-4dcd-8c41-342671ac0d17"
+                  },
+                  {
+                    "id": "02a2acf3-d6db-4424-ac97-0254cb9c329e"
+                  }
+                ]
+              },
+              "vpc": {
+                "id": "2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6"
+              }
+            }
+          },
+          "user_data": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 65000,
+                "minLength": 1
+              }
+            ],
+            "title": "User Data",
+            "nullable": true
+          }
+        },
+        "title": "SnapshotRestoreRequestV1Xaas",
+        "required": [
+          "name",
+          "machine_type",
+          "ssh_key_name",
+          "network"
+        ],
+        "example": {
+          "availability_zone": "br-regiao-1a",
+          "machine_type": {
+            "id": "4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a"
+          },
+          "name": "instance name",
+          "network": {
+            "associate_public_ip": false,
+            "interface": {
+              "id": "c8719fd8-7a48-4dbf-b4d8-74f71fa67422",
+              "security_groups": [
+                {
+                  "id": "f273fbde-2ddf-4dcd-8c41-342671ac0d17"
+                },
+                {
+                  "id": "02a2acf3-d6db-4424-ac97-0254cb9c329e"
+                }
+              ]
+            },
+            "vpc": {
+              "id": "2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6"
+            }
+          },
+          "ssh_key_name": "keypair_name_here",
+          "user_data": "some_base64_script"
+        }
+      },
       "SnapshotStateV1": {
         "type": "string",
         "title": "SnapshotStateV1",
@@ -6140,7 +9044,10 @@
               "completed",
               "error",
               "deleting",
-              "deleted"
+              "deleted",
+              "pending_copy",
+              "copying",
+              "copy_error"
             ]
           },
           "state": {

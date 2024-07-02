@@ -9,7 +9,7 @@ backups
 
 Database instances management. | backups
 
-Version: 1.22.0
+Version: 1.23.0
 
 import "magalu.cloud/lib/products/dbaas/instances/backups"
 */

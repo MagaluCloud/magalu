@@ -35,6 +35,13 @@ modules:
     url: https://network.jaxyendy.com/openapi.json
     version: 1.125.3
 -   description: Virtual Machine Api Product
+    name: virtual-machine-xaas
+    path: virtual-machine-xaas.openapi.yaml
+    summary: Virtual Machine Api Product
+    super_internal: true
+    url: https://virtual-machine.jaxyendy.com/internal/v1/openapi.json
+    version: 1.249.0
+-   description: Virtual Machine Api Product
     name: virtual-machine
     path: virtual-machine.openapi.yaml
     summary: Virtual Machine Api Product

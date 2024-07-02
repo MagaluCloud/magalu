@@ -758,6 +758,133 @@ network.openapi:
     - components.schemas.XVpcCreateRequest.description
     - components.schemas.XVpcCreateRequest.subnetpool_id
     - components.schemas.XVpcCreateRequest.cidr
+virtual-machine-xaas.openapi:
+  computed-variables:
+    - POST /v1/internal/images:
+        - '201':
+            computed:
+              - id
+            non-computed:
+              - end_life_at
+              - end_standard_support_at
+              - image_id
+              - image_url
+              - internal
+              - min_disk
+              - min_ram
+              - min_vcpu
+              - name
+              - platform
+              - release_at
+              - sku
+              - status
+              - version
+    - POST /v1/internal/instance_types:
+        - '201':
+            computed:
+              - status
+            non-computed:
+              - disk
+              - gpu
+              - gpu_model
+              - id
+              - internal
+              - name
+              - ram
+              - sku
+              - vcpus
+    - POST /v1/xaas/backups:
+        - '202':
+            computed:
+              - id
+            non-computed:
+              - name
+              - project_type
+              - virtual_machine
+    - POST /v1/xaas/instances:
+        - '201':
+            computed:
+              - id
+            non-computed:
+              - associate_public_ip
+              - availability_zone
+              - image
+              - interface
+              - machine_type
+              - name
+              - project_type
+              - ssh_key_name
+              - user_data
+              - vpc
+    - POST /v1/xaas/snapshots:
+        - '202':
+            computed:
+              - id
+            non-computed:
+              - name
+              - project_type
+              - virtual_machine
+  missing-crud:
+    - healthchecks:
+        - post
+        - delete
+    - backups:
+        - get
+        - post
+        - delete
+    - diagnostics:
+        - post
+        - delete
+    - keypairs:
+        - get
+    - machine-types:
+        - post
+        - delete
+    - snapshots:
+        - get
+        - post
+        - delete
+    - xaas images:
+        - post
+        - delete
+    - xaas machine-types:
+        - post
+        - delete
+  uneven-resources:
+    backups:
+      PATCH:
+        - /v1/internal/backups/urp/{external_backup_id}
+        - /v1/internal/backups/{id}
+    images:
+      PATCH:
+        expected_prefix: /v1/internal/images/{id}
+        uneven:
+          - /v1/internal/images/urp/{urp_id}
+    instances:
+      GET:
+        - /v1/instances/internal/urp/{id}
+        - /v1/instances/internal/{id}
+        - /v1/internal/instances/urp/{id}
+        - /v1/internal/instances/{id}
+      PATCH:
+        - /v1/internal/instances/urp/{urp_id}
+        - /v1/internal/instances/{id}
+    snapshots:
+      PATCH:
+        - /v1/internal/snapshots/urp/{urp_id}
+        - /v1/internal/snapshots/{id}
+  unused-components:
+    - '#/components/schemas/ValidationError'
+  xof-single-item:
+    - paths./v1/instances/internal/urp/{id}.get.parameters.project_type.schema
+    - paths./v1/instances/internal/{id}.get.parameters.project_type.schema
+    - paths./v1/internal/instances/diagnostics.get.parameters.project_type.schema
+    - paths./v1/internal/instances/urp/{id}.get.parameters.project_type.schema
+    - paths./v1/internal/instances/{id}.get.parameters.project_type.schema
+    - paths./v1/internal/instances/{id}.post.parameters.project_type.schema
+    - paths./v1/internal/instances/{id}.delete.parameters.project_type.schema
+    - paths./v1/internal/instances/{id}/ports/{port_id}.delete.parameters.project_type.schema
+    - components.schemas.ImageRequestV1.status
 virtual-machine.openapi:
   computed-variables:
     - POST /v1/backups:

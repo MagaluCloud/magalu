@@ -4486,7 +4486,7 @@
          "type": "integer"
         },
         "_sort": {
-         "default": "created:asc",
+         "default": "created_at:asc",
          "description": "Fields to use as reference to sort.",
          "pattern": "(^[\\w-]+:(asc|desc)(,[\\w-]+:(asc|desc))*)?$",
          "type": "string"

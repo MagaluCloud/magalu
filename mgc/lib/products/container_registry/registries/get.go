@@ -3,17 +3,17 @@ Executor: get
 
 # Summary
 
-Flavor detail.
+# Get registry information
 
 # Description
 
-Returns a flavor detail.
+Show detailed information about the user's container registry.
 
-Version: 1.23.0
+Version: 0.1.0
 
-import "magalu.cloud/lib/products/dbaas/flavors"
+import "magalu.cloud/lib/products/container_registry/registries"
 */
-package flavors
+package registries
 
 import (
 	mgcCore "magalu.cloud/core"
@@ -21,7 +21,7 @@ import (
 )
 
 type GetParameters struct {
-	FlavorId string `json:"flavor_id"`
+	RegistryId string `json:"registry_id"`
 }
 
 type GetConfigs struct {
@@ -30,17 +30,13 @@ type GetConfigs struct {
 	ServerUrl *string `json:"serverUrl,omitempty"`
 }
 
+// Container Registry's response data.
 type GetResult struct {
-	FamilyDescription string `json:"family_description"`
-	FamilySlug        string `json:"family_slug"`
+	CreatedAt         string `json:"created_at"`
 	Id                string `json:"id"`
-	Label             string `json:"label"`
 	Name              string `json:"name"`
-	Ram               string `json:"ram"`
-	Size              string `json:"size"`
-	SkuReplica        string `json:"sku_replica"`
-	SkuSource         string `json:"sku_source"`
-	Vcpu              string `json:"vcpu"`
+	StorageUsageBytes int    `json:"storage_usage_bytes"`
+	UpdatedAt         string `json:"updated_at"`
 }
 
 func (s *service) Get(
@@ -50,7 +46,7 @@ func (s *service) Get(
 	result GetResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("Get", mgcCore.RefPath("/dbaas/flavors/get"), s.client, s.ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Get", mgcCore.RefPath("/container-registry/registries/get"), s.client, s.ctx)
 	if err != nil {
 		return
 	}

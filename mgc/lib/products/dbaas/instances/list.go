@@ -9,7 +9,7 @@ List all database instances.
 
 Returns a list of database instances for a x-tenant-id.
 
-Version: 1.22.0
+Version: 1.23.0
 
 import "magalu.cloud/lib/products/dbaas/instances"
 */
@@ -21,11 +21,17 @@ import (
 )
 
 type ListParameters struct {
-	Expand   *string `json:"_expand,omitempty"`
-	Limit    *int    `json:"_limit,omitempty"`
-	Offset   *int    `json:"_offset,omitempty"`
-	Exchange *string `json:"exchange,omitempty"`
-	Status   *string `json:"status,omitempty"`
+	Expand        *string `json:"_expand,omitempty"`
+	Limit         *int    `json:"_limit,omitempty"`
+	Offset        *int    `json:"_offset,omitempty"`
+	EngineId      *string `json:"engine_id,omitempty"`
+	Exchange      *string `json:"exchange,omitempty"`
+	Status        *string `json:"status,omitempty"`
+	Volumesize    *int    `json:"volume.size,omitempty"`
+	VolumesizeGt  *int    `json:"volume.size__gt,omitempty"`
+	VolumesizeGte *int    `json:"volume.size__gte,omitempty"`
+	VolumesizeLt  *int    `json:"volume.size__lt,omitempty"`
+	VolumesizeLte *int    `json:"volume.size__lte,omitempty"`
 }
 
 type ListConfigs struct {

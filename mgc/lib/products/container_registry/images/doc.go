@@ -3,7 +3,7 @@ Package: images
 
 # Description
 
-Routes related to managing Container Registry repositories images.
+Routes related to listing and deletion of images.
 
 Version: 0.1.0
 

@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"slices"
+	"strings"
 
 	"github.com/stoewer/go-strcase"
 	mgcSchemaPkg "magalu.cloud/core/schema"
@@ -276,6 +277,8 @@ func (t *generatorTemplateTypes) addObject(name string, schema *mgcSchemaPkg.Sch
 	for _, k := range keys {
 		propRef := schema.Properties[k]
 		fieldName := strcase.UpperCamelCase(k)
+		// MOVE IT TO ANOTHER PLACE - PLEASE
+		fieldName = strings.Replace(fieldName, ".", "", -1)
 		var fieldType string
 		fieldType, err = t.addSchemaRef(name+fieldName, propRef, slices.Contains(schema.Required, k))
 		if err != nil {
@@ -316,9 +319,9 @@ func (t *generatorTemplateTypes) addObjectAlternatives(objDef *generatorTemplate
 	objDef.Doc += doc + ": "
 
 	for i, childRef := range schemaRefs {
-		if i != len(schemaRefs)-1 {
-			continue
-		}
+		// if i != len(schemaRefs)-1 {
+		// 	continue
+		// }
 		if childRef == nil || childRef.Value == nil {
 			continue
 		}

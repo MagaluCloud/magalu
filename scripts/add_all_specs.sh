@@ -24,8 +24,8 @@ echo "KUBERNETES"
 $BASEDIR/add_specs.sh virtual-machine compute mgc/spec_manipulator/cli_specs/conv.virtual-machine.jaxyendy.openapi.json https://virtual-machine.jaxyendy.com/openapi.json
 echo "VIRTUAL MACHINE"
 
-# # $BASEDIR/add_specs.sh virtual-machine-xaas compute-xaas mgc/spec_manipulator/cli_specs/virtual-machine-xaas.jaxyendy.openapi.json https://virtual-machine.jaxyendy.com/internal/v1/openapi.json
-# # echo "VIRTUAL MACHINE XAAS"
+$BASEDIR/add_specs.sh virtual-machine-xaas compute-xaas mgc/spec_manipulator/cli_specs/virtual-machine-xaas.jaxyendy.openapi.json https://virtual-machine.jaxyendy.com/internal/v1/openapi.json true
+echo "VIRTUAL MACHINE XAAS"
 
 $BASEDIR/add_specs.sh network network mgc/spec_manipulator/cli_specs/conv.network.jaxyendy.openapi.json https://network.jaxyendy.com/openapi.json
 echo "NETWORK"

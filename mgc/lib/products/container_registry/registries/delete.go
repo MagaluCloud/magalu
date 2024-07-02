@@ -3,17 +3,17 @@ Executor: delete
 
 # Summary
 
-Deletes a replica instance.
+Delete a container registry by registry_id
 
 # Description
 
-Deletes a replica instance.
+Delete a container registry by uuid.
 
-Version: 1.23.0
+Version: 0.1.0
 
-import "magalu.cloud/lib/products/dbaas/replicas"
+import "magalu.cloud/lib/products/container_registry/registries"
 */
-package replicas
+package registries
 
 import (
 	mgcCore "magalu.cloud/core"
@@ -21,8 +21,7 @@ import (
 )
 
 type DeleteParameters struct {
-	Exchange  *string `json:"exchange,omitempty"`
-	ReplicaId string  `json:"replica_id"`
+	RegistryId string `json:"registry_id"`
 }
 
 type DeleteConfigs struct {
@@ -37,7 +36,7 @@ func (s *service) Delete(
 ) (
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("Delete", mgcCore.RefPath("/dbaas/replicas/delete"), s.client, s.ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Delete", mgcCore.RefPath("/container-registry/registries/delete"), s.client, s.ctx)
 	if err != nil {
 		return
 	}
@@ -60,7 +59,7 @@ func (s *service) DeleteConfirmPrompt(
 	parameters DeleteParameters,
 	configs DeleteConfigs,
 ) (message string) {
-	e, err := mgcHelpers.ResolveExecutor("Delete", mgcCore.RefPath("/dbaas/replicas/delete"), s.client)
+	e, err := mgcHelpers.ResolveExecutor("Delete", mgcCore.RefPath("/container-registry/registries/delete"), s.client)
 	if err != nil {
 		return
 	}
