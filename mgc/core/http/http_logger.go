@@ -1,6 +1,7 @@
 package http
 
 import (
+	"bytes"
 	"encoding/json"
 	"errors"
 	"io"
@@ -114,11 +115,14 @@ func (t *ClientLogger) logResponse(log *zap.SugaredLogger, req *http.Request, re
 		return
 	}
 	log = log.With("headers", LogHttpHeaders(resp.Header))
+	respBody, _ := io.ReadAll(resp.Body)
 	if err != nil {
 		log.Debugw("response with error", "status", resp.Status, "error", err)
 	} else {
-		log.Debugw("response", "status", resp.Status)
+		log.Debugw("response", "status", resp.Status, "body", string(respBody))
 	}
+
+	resp.Body = io.NopCloser(bytes.NewBuffer(respBody))
 }
 
 type LogRequest http.Request
