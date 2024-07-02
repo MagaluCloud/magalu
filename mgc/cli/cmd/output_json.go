@@ -20,7 +20,7 @@ func (*jsonOutputFormatter) Format(value any, options string, isRaw bool) error 
 		}
 		return enc.Encode(value)
 	}
-	out := colorable.NewColorable(os.Stdout) // needed for Windows
+	out := colorable.NewColorable(os.Stdout)
 	enc := jsonColor.NewEncoder(out)
 
 	if options == "compact" {
@@ -30,14 +30,10 @@ func (*jsonOutputFormatter) Format(value any, options string, isRaw bool) error 
 	}
 
 	clrs := jsonColor.DefaultColors()
-    // Update colors based on provided settings
-    clrs.Bool = jsonColor.Color("\x1b[95m") // FgHiMagenta for boolean
-    clrs.Number = jsonColor.Color("\x1b[95m") // FgHiMagenta for number
-    clrs.Key = jsonColor.Color("\x1b[96m") // FgHiCyan for map keys
-    // Assuming Anchor and Alias are not directly supported by jsoncolor, so we'll skip these
-    clrs.String = jsonColor.Color("\x1b[92m") // FgHiGreen for strings
-    // Reset color is not needed here as jsoncolor handles it
-
+	clrs.Bool = jsonColor.Color("\x1b[95m")
+	clrs.Number = jsonColor.Color("\x1b[95m")
+	clrs.Key = jsonColor.Color("\x1b[96m")
+	clrs.String = jsonColor.Color("\x1b[92m")
 
 	enc.SetColors(clrs)
 

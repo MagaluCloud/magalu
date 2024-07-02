@@ -20,7 +20,7 @@ type yamlOutputFormatter struct{}
 func (*yamlOutputFormatter) Format(value any, options string, isRaw bool) error {
 
 	var indent int
-	fmt.Sscanf(options, "%d", &indent)
+	_, _ = fmt.Sscanf(options, "%d", &indent)
 	if indent < 1 {
 		indent = defaultIndent
 	}
