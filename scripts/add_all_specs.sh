@@ -12,7 +12,7 @@ set -xe
 $BASEDIR/add_specs.sh block-storage volume mgc/spec_manipulator/cli_specs/conv.block-storage.jaxyendy.openapi.json https://block-storage.jaxyendy.com/openapi.json
 echo "BLOCK-STORAGE"
 
-$BASEDIR/add_specs.sh dbaas database mgc/spec_manipulator/cli_specs/database.jaxyendy.openapi.json https://dbaas.jaxyendy.com/openapi.json
+$BASEDIR/add_specs.sh dbaas database mgc/spec_manipulator/cli_specs/database.jaxyendy.openapi.yaml https://dbaas.jaxyendy.com/openapi.json
 echo "DATABASE"
 
 $BASEDIR/add_specs.sh kubernetes kubernetes mgc/spec_manipulator/cli_specs/kubernetes.jaxyendy.openapi.json https://mke.br-ne-1.com/docs/openapi-with-snippets.json

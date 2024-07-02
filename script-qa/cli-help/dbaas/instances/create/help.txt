@@ -4,29 +4,27 @@ Usage:
   ./mgc dbaas instances create [flags]
 
 Examples:
-  ./mgc dbaas instances create --datastore-id="063f3994-b6c2-4c37-96c9-bab8d82d36f7" --flavor-id="8bbe8e01-40c8-4d2b-80e8-189debc44b1c" --name="dbaas-name" --password="dbaas-password" --user="dbaas-user" --volume.size=30 --volume.type="CLOUD_NVME"
+  ./mgc dbaas instances create --volume.size=30
 
 Flags:
-      --backup-retention-days integer   Backup Retention Days (min: 1) (default 7)
-      --backup-start-at time            Backup Start At (default "04:00:00")
+      --backup-retention-days integer   Backup Retention Days: The number of days that a particular backup is kept until its deletion. (default 7)
+      --backup-start-at time            Backup Start At: Start time (UTC timezone) which is allowed to start the automated backup process. (default "04:00:00")
       --cli.list-links enum[=table]     List all available links for this command (one of "json", "table" or "yaml")
-      --cli.watch                       Wait until the operation is completed by calling the 'get' link and waiting until termination. Akin to '! get -w'
-      --datastore-id uuid               Datastore Id
+      --datastore-id uuid               Datastore Id (Deprecated): **Deprecated**: This property is being deprecated in favor of 'engine_id'. Please update your requests to use 'engine_id' for improved functionality and future compatibility.
+                                        
       --engine-id uuid                  Engine Id
-      --exchange string                 Exchange (default "dbaas-internal")
       --flavor-id uuid                  Flavor Id (required)
   -h, --help                            help for create
       --name string                     Name (max character count: 100) (required)
-      --parameters array(object)        Parameters
-                                        Use --parameters=help for more details (default [])
+      --parameters array(object)        Use --parameters=help for more details (default [])
       --password string                 Password (max character count: 50) (required)
       --user string                     User (max character count: 25) (required)
   -v, --version                         version for create
-      --volume object                   InstanceVolumeRequest (properties: size and type)
+      --volume object                   Instance Volume Request (properties: size and type)
                                         Use --volume=help for more details (required)
-      --volume.size integer             InstanceVolumeRequest: Size (range: 10 - 50000)
+      --volume.size integer             Instance Volume Request: The size of the volume (in GiB). (range: 10 - 50000)
                                         This is the same as '--volume=size:integer'.
-      --volume.type enum                InstanceVolumeRequest: An enumeration. (one of "CLOUD_HDD", "CLOUD_NVME" or "CLOUD_NVME_15K")
+      --volume.type enum                Instance Volume Request: The type of the volume. (one of "CLOUD_HDD", "CLOUD_NVME" or "CLOUD_NVME_15K")
                                         This is the same as '--volume=type:enum'. (default "CLOUD_NVME_15K")
 
 Global Flags:

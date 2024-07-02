@@ -8,10 +8,9 @@ Usage:
 
 ## Product catalog:
 - Flags:
-- --backup-id uuid     Backup Id (required)
-- --exchange string    Exchange (default "dbaas-internal")
+- --backup-id uuid     Value referring to backup Id. (required)
 - -h, --help               help for delete
-- --instance-id uuid   Instance Id (required)
+- --instance-id uuid   Value referring to instance Id. (required)
 - -v, --version            version for delete
 
 ## Other commands:

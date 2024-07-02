@@ -73,7 +73,7 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/ListBackupResponse'
                 '400':
-                    description: Snapshot Not Allowed Exception
+                    description: Backup Not Allowed Exception
                     content:
                         application/json:
                             schema:
@@ -85,7 +85,7 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/ExceptionModel'
                 '409':
-                    description: Snapshot Validation Exception
+                    description: Backup Validation Exception
                     content:
                         application/json:
                             schema:
@@ -147,7 +147,7 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/CreateResponse'
                 '400':
-                    description: Snapshot Not Allowed Exception
+                    description: Backup Not Allowed Exception
                     content:
                         application/json:
                             schema:
@@ -159,7 +159,7 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/ExceptionModel'
                 '409':
-                    description: Snapshot Validation Exception
+                    description: Backup Validation Exception
                     content:
                         application/json:
                             schema:
@@ -228,7 +228,7 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/BackupResponse'
                 '400':
-                    description: Snapshot Not Allowed Exception
+                    description: Backup Not Allowed Exception
                     content:
                         application/json:
                             schema:
@@ -240,7 +240,7 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/ExceptionModel'
                 '409':
-                    description: Snapshot Validation Exception
+                    description: Backup Validation Exception
                     content:
                         application/json:
                             schema:
@@ -281,7 +281,7 @@ paths:
                 '204':
                     description: Successful Response
                 '400':
-                    description: Snapshot Not Allowed Exception
+                    description: Backup Not Allowed Exception
                     content:
                         application/json:
                             schema:
@@ -293,7 +293,7 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/ExceptionModel'
                 '409':
-                    description: Snapshot Validation Exception
+                    description: Backup Validation Exception
                     content:
                         application/json:
                             schema:
@@ -312,6 +312,134 @@ paths:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
             x-mgc-output-flag: table=ID:$.id
+            security:
+            -   OAuth2:
+                - virtual-machine.write
+    /v1/backups/{id}/copy:
+        post:
+            tags:
+            - backups
+            summary: Copy a backup of a virtual machine asynchronously.
+            description: Copy a backup region
+            operationId: copy_backup_region_v1_backups__id__copy_post
+            parameters:
+            -   name: id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Id
+                    format: uuid
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/BackupCopyRequest'
+                required: true
+            responses:
+                '204':
+                    description: Successful Response
+                '400':
+                    description: Backup Not Allowed Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '404':
+                    description: Instance Not Found Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '409':
+                    description: Backup Validation Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '500':
+                    description: Internal Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: true
+            security:
+            -   OAuth2:
+                - virtual-machine.write
+    /v1/backups/{id}/rename:
+        patch:
+            tags:
+            - backups
+            summary: Renames a backup
+            description: 'Renames a backup with the id provided in the current tenant
+                which is logged in.
+
+
+                #### Rules
+
+                - You can use the backup list command to retrieve all backups, so
+                you can get the id of
+
+                the backup that you want to rename.
+
+                - A Backup can only renamed when it''s in completed status.
+
+                - Each backup must have a unique name.'
+            operationId: rename_backup_v1_backups__id__rename_patch
+            parameters:
+            -   name: id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Id
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/BackupRenameRequest'
+                required: true
+            responses:
+                '204':
+                    description: Successful Response
+                '400':
+                    description: Backup Not Allowed Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '404':
+                    description: Instance Not Found Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '409':
+                    description: Backup Validation Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '500':
+                    description: Internal Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: true
             security:
             -   OAuth2:
                 - virtual-machine.write
@@ -363,7 +491,7 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/CreateResponse'
                 '400':
-                    description: Snapshot Not Allowed Exception
+                    description: Backup Not Allowed Exception
                     content:
                         application/json:
                             schema:
@@ -375,7 +503,7 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/ExceptionModel'
                 '409':
-                    description: Snapshot Validation Exception
+                    description: Backup Validation Exception
                     content:
                         application/json:
                             schema:
@@ -2192,6 +2320,33 @@ paths:
                 - virtual-machine.write
 components:
     schemas:
+        BackupCopyRequest:
+            type: object
+            properties:
+                region:
+                    anyOf:
+                    -   $ref: '#/components/schemas/ID'
+                    -   $ref: '#/components/schemas/Name'
+                    title: Region
+            title: BackupCopyRequest
+            required:
+            - region
+            example:
+                region:
+                    id: dest_region
+        BackupRenameRequest:
+            type: object
+            properties:
+                name:
+                    type: string
+                    title: Name
+                    maxLength: 255
+                    minLength: 1
+            title: BackupRenameRequest
+            required:
+            - name
+            example:
+                name: new backup name
         BackupRequest:
             type: object
             properties:
@@ -2241,6 +2396,9 @@ components:
                     - error
                     - deleting
                     - deleted
+                    - pending_copy
+                    - copying
+                    - copy_error
                 state:
                     type: string
                     title: BackupState
@@ -2389,6 +2547,9 @@ components:
             - error
             - deleting
             - deleted
+            - pending_copy
+            - copying
+            - copy_error
         CreateResponse:
             type: object
             properties:
@@ -3196,6 +3357,9 @@ components:
                                 - error
                                 - deleting
                                 - deleted
+                                - pending_copy
+                                - copying
+                                - copy_error
                             state:
                                 type: string
                                 title: BackupState

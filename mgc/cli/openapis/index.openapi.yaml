@@ -33,7 +33,7 @@ modules:
     summary: APIs referentes ao produto de VPC
     super_internal: false
     url: https://network.jaxyendy.com/openapi.json
-    version: 1.125.3
+    version: 1.126.1
 -   description: Virtual Machine Api Product
     name: virtual-machine
     path: virtual-machine.openapi.yaml

@@ -3,7 +3,7 @@
   "info": {
     "title": "Internal Virtual Machine Api Product",
     "description": "Virtual Machine Api Product",
-    "version": "1.245.0"
+    "version": "1.249.0"
   },
   "paths": {
     "/v1/health": {
@@ -1578,7 +1578,10 @@
               "completed",
               "error",
               "deleting",
-              "deleted"
+              "deleted",
+              "pending_copy",
+              "copying",
+              "copy_error"
             ]
           },
           "state": {
@@ -1608,6 +1611,24 @@
           "external_backup_id": "4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a",
           "state": "new",
           "status": "creating"
+        }
+      },
+      "BackupRenameRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "maxLength": 255,
+            "minLength": 1
+          }
+        },
+        "title": "BackupRenameRequest",
+        "required": [
+          "name"
+        ],
+        "example": {
+          "name": "new backup name"
         }
       },
       "BackupRequest": {
@@ -1679,7 +1700,10 @@
               "completed",
               "error",
               "deleting",
-              "deleted"
+              "deleted",
+              "pending_copy",
+              "copying",
+              "copy_error"
             ]
           },
           "state": {
@@ -1904,7 +1928,10 @@
           "completed",
           "error",
           "deleting",
-          "deleted"
+          "deleted",
+          "pending_copy",
+          "copying",
+          "copy_error"
         ]
       },
       "CreateResponse": {
@@ -4583,7 +4610,10 @@
                     "completed",
                     "error",
                     "deleting",
-                    "deleted"
+                    "deleted",
+                    "pending_copy",
+                    "copying",
+                    "copy_error"
                   ]
                 },
                 "state": {
@@ -6140,7 +6170,10 @@
               "completed",
               "error",
               "deleting",
-              "deleted"
+              "deleted",
+              "pending_copy",
+              "copying",
+              "copy_error"
             ]
           },
           "state": {

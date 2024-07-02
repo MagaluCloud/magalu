@@ -10,10 +10,9 @@ Usage:
 - Flags:
 - --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
 - --cli.watch                     Wait until the operation is completed by calling the 'get' link and waiting until termination. Akin to '! get -w'
-- --exchange string               Exchange (default "dbaas-internal")
 - --flavor-id uuid                Flavor Id (required)
 - -h, --help                          help for resize
-- --replica-id uuid               Replica Id (required)
+- --replica-id uuid               Value referring to replica Id. (required)
 - -v, --version                       version for resize
 
 ## Other commands:

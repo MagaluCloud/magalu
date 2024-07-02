@@ -8,7 +8,7 @@ Usage:
 
 ## Product catalog:
 - Flags:
-- --engine-id uuid   Value referring to Engine Id. (required)
+- --engine-id uuid   Datastore Id (Deprecated): Value referring to datastore Id. (required)
 - -h, --help             help for get
 - -v, --version          version for get
 

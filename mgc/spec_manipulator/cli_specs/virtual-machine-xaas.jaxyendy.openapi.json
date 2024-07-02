@@ -3,7 +3,7 @@
   "info": {
     "title": "Internal Virtual Machine Api Product",
     "description": "Virtual Machine Api Product",
-    "version": "1.245.0"
+    "version": "1.249.0"
   },
   "paths": {
     "/v1/health": {
@@ -1608,6 +1608,24 @@
           "status": "creating"
         }
       },
+      "BackupRenameRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "maxLength": 255,
+            "minLength": 1
+          }
+        },
+        "title": "BackupRenameRequest",
+        "required": [
+          "name"
+        ],
+        "example": {
+          "name": "new backup name"
+        }
+      },
       "BackupRequest": {
         "type": "object",
         "properties": {
@@ -1849,7 +1867,10 @@
           "completed",
           "error",
           "deleting",
-          "deleted"
+          "deleted",
+          "pending_copy",
+          "copying",
+          "copy_error"
         ]
       },
       "CreateResponse": {

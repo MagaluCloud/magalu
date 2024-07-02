@@ -310,40 +310,30 @@ func (t *generatorTemplateTypes) addObject(name string, schema *mgcSchemaPkg.Sch
 }
 
 func (t *generatorTemplateTypes) addObjectAlternatives(objDef *generatorTemplateTypeDefinition, name string, doc string, schemaRefs mgcSchemaPkg.SchemaRefs) (err error) {
-	if objDef.Doc != "" {
-		objDef.Doc += "\n"
+	for _, schemaref := range schemaRefs {
+		schema := schemaref.Value
+		keys := make([]string, 0, len(schema.Properties))
+		for k := range schema.Properties {
+			keys = append(keys, k)
+		}
+		slices.Sort(keys)
+		for _, k := range keys {
+			propRef := schema.Properties[k]
+			fieldName := strcase.UpperCamelCase(k)
+			var fieldType string
+			fieldType, err = t.addSchemaRef(name+fieldName, propRef, slices.Contains(schema.Required, k))
+			if err != nil {
+				err = &utils.ChainedError{Name: k, Err: err}
+				return
+			}
+
+			objDef.Fields = append(objDef.Fields, generatorTemplateTypeField{
+				Name: fieldName,
+				Type: fieldType,
+				Tag:  buildFieldTag(k, slices.Contains(schema.Required, k)),
+			})
+		}
 	}
-	objDef.Doc += doc + ": "
-
-	for i, childRef := range schemaRefs {
-		if i != len(schemaRefs)-1 {
-			continue
-		}
-		if childRef == nil || childRef.Value == nil {
-			continue
-		}
-		var childSignature string
-		k := fmt.Sprint(i)
-
-		// always create pointer types for alternatives
-		childSignature, err = t.addSchemaRef(name+k, childRef, true)
-		if err != nil {
-			err = &utils.ChainedError{Name: k, Err: err}
-			return
-		}
-
-		objDef.Fields = append(objDef.Fields, generatorTemplateTypeField{
-			Type:    childSignature,
-			Tag:     `json:",squash"`,
-			Comment: "nolint",
-		})
-
-		if i != 0 {
-			objDef.Doc += ", "
-		}
-		objDef.Doc += childSignature
-	}
-
 	return
 }
 

@@ -8,9 +8,8 @@ Usage:
 
 ## Product catalog:
 - Flags:
-- --backup-id uuid                Backup Id (required)
+- --backup-id uuid                Value referring to backup Id. (required)
 - --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-- --exchange string               Exchange (default "dbaas-internal")
 - -h, --help                          help for get
 - -v, --version                       version for get
 

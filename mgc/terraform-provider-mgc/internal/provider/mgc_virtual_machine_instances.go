@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"math/big"
-	"strings"
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -92,12 +91,13 @@ type vmInstancesResourceModel struct {
 }
 
 type networkVmInstancesModel struct {
-	IPV6              types.String       `tfsdk:"ipv6"`
-	PrivateAddress    types.String       `tfsdk:"private_address"`
-	PublicIpAddress   types.String       `tfsdk:"public_address"`
-	DeletePublicIP    types.Bool         `tfsdk:"delete_public_ip"`
-	AssociatePublicIP types.Bool         `tfsdk:"associate_public_ip"`
-	VPC               genericIDNameModel `tfsdk:"vpc"`
+	IPV6              types.String   `tfsdk:"ipv6"`
+	PrivateAddress    types.String   `tfsdk:"private_address"`
+	PublicIpAddress   types.String   `tfsdk:"public_address"`
+	DeletePublicIP    types.Bool     `tfsdk:"delete_public_ip"`
+	AssociatePublicIP types.Bool     `tfsdk:"associate_public_ip"`
+	VPC               genericIDModel `tfsdk:"vpc"`
+	Interface         genericIDModel `tfsdk:"interface"`
 }
 
 type vmInstancesMachineTypeModel struct {
@@ -230,6 +230,19 @@ func (r *vmInstances) Schema(_ context.Context, _ resource.SchemaRequest, resp *
 						},
 						Computed: true,
 					},
+					"interface": schema.SingleNestedAttribute{
+						Required: false,
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"id": schema.StringAttribute{
+								PlanModifiers: []planmodifier.String{
+									stringplanmodifier.UseStateForUnknown(),
+								},
+								Optional: true,
+								Computed: true,
+							},
+						},
+					},
 					"vpc": schema.SingleNestedAttribute{
 						Required: false,
 						Optional: true,
@@ -324,29 +337,29 @@ func (r *vmInstances) Create(ctx context.Context, req resource.CreateRequest, re
 		},
 	}
 
-	if !plan.Network.VPC.ID.IsNull() && plan.Network.VPC.ID.ValueString() != "" {
-		createParams.Network.Vpc = &sdkVmInstances.CreateParametersNetworkVpc{
-			CreateParametersImage1: sdkVmInstances.CreateParametersImage1{
-				Name: plan.Network.VPC.Name.ValueString(),
-			},
-		}
-	} else if !plan.Network.VPC.Name.IsNull() && plan.Network.VPC.Name.ValueString() != "" {
-		// vpcId, err := r.getVpcID(plan.Network.VPC.Name.ValueString())
-		if err != nil {
-			resp.Diagnostics.AddError(
-				"Error creating vm",
-				"Could not load vpc list",
-			)
-			return
-		}
-		if strings.Contains(plan.Network.VPC.Name.ValueString(), plan.Network.VPC.Name.ValueString()) {
-			createParams.Network.Vpc = &sdkVmInstances.CreateParametersNetworkVpc{
-				CreateParametersImage1: sdkVmInstances.CreateParametersImage1{
-					Name: plan.Network.VPC.Name.ValueString(),
-				},
-			}
-		}
-	}
+	// if !plan.Network.VPC.ID.IsNull() && plan.Network.VPC.ID.ValueString() != "" {
+	// 	createParams.Network.Vpc = &sdkVmInstances.CreateParametersNetworkVpc{
+	// 		CreateParametersImage1: sdkVmInstances.CreateParametersImage1{
+	// 			Name: plan.Network.VPC.Name.ValueString(),
+	// 		},
+	// 	}
+	// } else if !plan.Network.VPC.Name.IsNull() && plan.Network.VPC.Name.ValueString() != "" {
+	// 	// vpcId, err := r.getVpcID(plan.Network.VPC.Name.ValueString())
+	// 	if err != nil {
+	// 		resp.Diagnostics.AddError(
+	// 			"Error creating vm",
+	// 			"Could not load vpc list",
+	// 		)
+	// 		return
+	// 	}
+	// 	if strings.Contains(plan.Network.VPC.Name.ValueString(), plan.Network.VPC.Name.ValueString()) {
+	// 		createParams.Network.Vpc = &sdkVmInstances.CreateParametersNetworkVpc{
+	// 			CreateParametersImage1: sdkVmInstances.CreateParametersImage1{
+	// 				Name: plan.Network.VPC.Name.ValueString(),
+	// 			},
+	// 		}
+	// 	}
+	// }
 
 	result, err := r.vmInstances.Create(createParams, sdkVmInstances.CreateConfigs{})
 	if err != nil {
@@ -463,10 +476,10 @@ func (r *vmInstances) setValuesFromServer(data *vmInstancesResourceModel, server
 
 	data.Image.ID = types.StringValue(server.Image.Id)
 
-	data.Network.VPC = genericIDNameModel{
-		ID:   types.StringValue(""),
-		Name: types.StringValue(""),
-	}
+	// data.Network.VPC = genericIDNameModel{
+	// 	ID:   types.StringValue(""),
+	// 	Name: types.StringValue(""),
+	// }
 
 	data.Network.IPV6 = types.StringValue("")
 	data.Network.PrivateAddress = types.StringValue("")
@@ -475,10 +488,10 @@ func (r *vmInstances) setValuesFromServer(data *vmInstancesResourceModel, server
 	if server.Network.GetResultNetwork1.Ports != nil && len(*server.Network.GetResultNetwork1.Ports) > 0 {
 		ports := (*server.Network.GetResultNetwork1.Ports)[0]
 
-		data.Network.VPC = genericIDNameModel{
-			ID:   types.StringValue(server.Network.GetResultNetwork1.Vpc.Id),
-			Name: types.StringValue(server.Network.GetResultNetwork1.Vpc.Name),
-		}
+		// data.Network.VPC = genericIDNameModel{
+		// 	ID:   types.StringValue(server.Network.GetResultNetwork1.Vpc.Id),
+		// 	Name: types.StringValue(server.Network.GetResultNetwork1.Vpc.Name),
+		// }
 
 		data.Network.PrivateAddress = types.StringValue(ports.IpAddresses.PrivateIpAddress)
 

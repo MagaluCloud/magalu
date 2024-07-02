@@ -4,21 +4,19 @@ Usage:
   ./mgc dbaas instances resize [instance-id] [flags]
 
 Examples:
-  ./mgc dbaas instances resize --volume.size=30 --volume.type="CLOUD_NVME"
+  ./mgc dbaas instances resize --volume.size=30
 
 Flags:
       --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-      --cli.watch                     Wait until the operation is completed by calling the 'get' link and waiting until termination. Akin to '! get -w'
-      --exchange string               Exchange (default "dbaas-internal")
       --flavor-id uuid                Flavor Id
   -h, --help                          help for resize
-      --instance-id uuid              Instance Id (required)
+      --instance-id uuid              Value referring to instance Id. (required)
   -v, --version                       version for resize
-      --volume object                 InstanceVolumeRequest (properties: size and type)
+      --volume object                 Instance Volume Request (properties: size and type)
                                       Use --volume=help for more details
-      --volume.size integer           InstanceVolumeRequest: Size (range: 10 - 50000)
+      --volume.size integer           Instance Volume Request: The size of the volume (in GiB). (range: 10 - 50000)
                                       This is the same as '--volume=size:integer'.
-      --volume.type enum              InstanceVolumeRequest: An enumeration. (one of "CLOUD_HDD", "CLOUD_NVME" or "CLOUD_NVME_15K")
+      --volume.type enum              Instance Volume Request: The type of the volume. (one of "CLOUD_HDD", "CLOUD_NVME" or "CLOUD_NVME_15K")
                                       This is the same as '--volume=type:enum'. (default "CLOUD_NVME_15K")
 
 Global Flags:

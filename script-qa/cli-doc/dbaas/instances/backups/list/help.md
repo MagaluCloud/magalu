@@ -8,14 +8,13 @@ Usage:
 
 ## Product catalog:
 - Flags:
-- --control.limit integer     Limit (range: 1 - 50) (default 10)
-- --control.offset integer   Offset (min: 0)
-- --exchange string          Exchange (default "dbaas-internal")
+- --control.limit integer    The maximum number of items per page. (range: 1 - 50) (default 10)
+- --control.offset integer   The number of items to skip before starting to collect the result set. (min: 0)
 - -h, --help                     help for list
-- --instance-id uuid         Instance Id (required)
-- --mode enum                BackupMode: An enumeration. (one of "FULL" or "INCREMENTAL")
-- --status enum              BackupStatusResponse: An enumeration. (one of "CREATED", "CREATING", "DELETED", "DELETING", "ERROR", "ERROR_DELETING" or "PENDING")
-- --type enum                BackupType: An enumeration. (one of "AUTOMATED" or "ON_DEMAND")
+- --instance-id uuid         Value referring to instance Id. (required)
+- --mode enum                Value referring to backup mode. (one of "FULL" or "INCREMENTAL")
+- --status enum              Value referring to backup status. (one of "CREATED", "CREATING", "DELETED", "DELETING", "ERROR", "ERROR_DELETING" or "PENDING")
+- --type enum                Value referring to backup type. (one of "AUTOMATED" or "ON_DEMAND")
 - -v, --version                  version for list
 
 ## Other commands:

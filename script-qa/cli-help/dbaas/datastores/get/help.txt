@@ -1,10 +1,12 @@
-Returns a engine detail.
+**Deprecated**: This endpoint is being phased out. Please use the `/v1/engines/{engine_id}` endpoint to retrieve the list of available engines instead.
+
+Returns a datastore detail. It is recommended to update your integration to use the newer `/v1/engines/{engine_id}` endpoint for improved functionality and future compatibility.
 
 Usage:
   ./mgc dbaas datastores get [engine-id] [flags]
 
 Flags:
-      --engine-id uuid   Value referring to Engine Id. (required)
+      --engine-id uuid   Datastore Id (Deprecated): Value referring to datastore Id. (required)
   -h, --help             help for get
   -v, --version          version for get
 

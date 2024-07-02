@@ -9,7 +9,6 @@ Usage:
 ## Product catalog:
 - Flags:
 - --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-- --exchange string               Exchange (default "dbaas-internal")
 - --flavor-id uuid                Flavor Id
 - -h, --help                          help for create
 - --name string                   Name (max character count: 255) (required)

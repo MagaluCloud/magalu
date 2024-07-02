@@ -9,9 +9,8 @@ Usage:
 ## Product catalog:
 - Flags:
 - --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-- --exchange string               Exchange (default "dbaas-internal")
 - -h, --help                          help for get
-- --replica-id uuid               Replica Id (required)
+- --replica-id uuid               Value referring to replica Id. (required)
 - -v, --version                       version for get
 
 ## Other commands:
