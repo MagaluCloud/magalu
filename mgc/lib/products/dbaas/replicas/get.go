@@ -9,7 +9,7 @@ Replica Detail.
 
 Get an instance replica detail.
 
-Version: 1.22.0
+Version: 1.23.0
 
 import "magalu.cloud/lib/products/dbaas/replicas"
 */
@@ -21,8 +21,7 @@ import (
 )
 
 type GetParameters struct {
-	Exchange  *string `json:"exchange,omitempty"`
-	ReplicaId string  `json:"replica_id"`
+	ReplicaId string `json:"replica_id"`
 }
 
 type GetConfigs struct {

@@ -36,12 +36,7 @@ type ListResult struct {
 	InstanceTypes ListResultInstanceTypes `json:"instance_types"`
 }
 
-// any of: , ListResultInstanceTypesItem1
 type ListResultInstanceTypesItem struct {
-	ListResultInstanceTypesItem1 `json:",squash"` // nolint
-}
-
-type ListResultInstanceTypesItem1 struct {
 	Disk   int    `json:"disk"`
 	Gpu    *int   `json:"gpu,omitempty"`
 	Id     string `json:"id"`

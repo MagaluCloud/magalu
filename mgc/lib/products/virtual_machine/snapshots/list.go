@@ -60,25 +60,15 @@ type ListResultSnapshotsItemInstance struct {
 	MachineType ListResultSnapshotsItemInstanceMachineType `json:"machine_type"`
 }
 
-// any of: , ListResultSnapshotsItemInstanceImage1
 type ListResultSnapshotsItemInstanceImage struct {
-	ListResultSnapshotsItemInstanceImage1 `json:",squash"` // nolint
-}
-
-type ListResultSnapshotsItemInstanceImage1 struct {
 	Id       string  `json:"id"`
 	Name     string  `json:"name"`
 	Platform *string `json:"platform,omitempty"`
 }
 
-// any of: , ListResultSnapshotsItemInstanceMachineType1
 type ListResultSnapshotsItemInstanceMachineType struct {
-	ListResultSnapshotsItemInstanceMachineType1 `json:",squash"` // nolint
-}
-
-type ListResultSnapshotsItemInstanceMachineType1 struct {
-	Disk  int    `json:"disk"`
 	Id    string `json:"id"`
+	Disk  int    `json:"disk"`
 	Name  string `json:"name"`
 	Ram   int    `json:"ram"`
 	Vcpus int    `json:"vcpus"`

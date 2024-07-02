@@ -9,7 +9,7 @@ List all database instances.
 
 Returns a list of database instances for a x-tenant-id.
 
-Version: 1.22.0
+Version: 1.23.0
 
 import "magalu.cloud/lib/products/dbaas/instances"
 */
@@ -21,11 +21,16 @@ import (
 )
 
 type ListParameters struct {
-	Expand   *string `json:"_expand,omitempty"`
-	Limit    *int    `json:"_limit,omitempty"`
-	Offset   *int    `json:"_offset,omitempty"`
-	Exchange *string `json:"exchange,omitempty"`
-	Status   *string `json:"status,omitempty"`
+	Expand        *string `json:"_expand,omitempty"`
+	Limit         *int    `json:"_limit,omitempty"`
+	Offset        *int    `json:"_offset,omitempty"`
+	EngineId      *string `json:"engine_id,omitempty"`
+	Status        *string `json:"status,omitempty"`
+	Volumesize    *int    `json:"volume.size,omitempty"`
+	VolumesizeGt  *int    `json:"volume.size__gt,omitempty"`
+	VolumesizeGte *int    `json:"volume.size__gte,omitempty"`
+	VolumesizeLt  *int    `json:"volume.size__lt,omitempty"`
+	VolumesizeLte *int    `json:"volume.size__lte,omitempty"`
 }
 
 type ListConfigs struct {
@@ -52,23 +57,23 @@ type ListResultMetaPage struct {
 }
 
 type ListResultResultsItem struct {
-	Addresses           ListResultResultsItemAddresses  `json:"addresses"`
-	BackupRetentionDays int                             `json:"backup_retention_days"`
-	BackupStartAt       string                          `json:"backup_start_at"`
-	CreatedAt           string                          `json:"created_at"`
-	DatastoreId         string                          `json:"datastore_id"`
-	EngineId            string                          `json:"engine_id"`
-	FinishedAt          *string                         `json:"finished_at,omitempty"`
-	FlavorId            string                          `json:"flavor_id"`
-	Generation          string                          `json:"generation"`
-	Id                  string                          `json:"id"`
-	Name                string                          `json:"name"`
-	Parameters          ListResultResultsItemParameters `json:"parameters"`
-	Replicas            *ListResultResultsItemReplicas  `json:"replicas,omitempty"`
-	StartedAt           *string                         `json:"started_at,omitempty"`
-	Status              string                          `json:"status"`
-	UpdatedAt           *string                         `json:"updated_at,omitempty"`
-	Volume              ListResultResultsItemVolume     `json:"volume"`
+	Addresses           ListResultResultsItemAddresses          `json:"addresses"`
+	BackupRetentionDays int                                     `json:"backup_retention_days"`
+	BackupStartAt       string                                  `json:"backup_start_at"`
+	CreatedAt           string                                  `json:"created_at"`
+	DatastoreId         string                                  `json:"datastore_id"`
+	EngineId            string                                  `json:"engine_id"`
+	FinishedAt          *string                                 `json:"finished_at,omitempty"`
+	FlavorId            string                                  `json:"flavor_id"`
+	Generation          string                                  `json:"generation"`
+	Id                  string                                  `json:"id"`
+	Name                string                                  `json:"name"`
+	Parameters          ListResultResultsItemParameters         `json:"parameters"`
+	Replicas            *ListResultResultsItemReplicas          `json:"replicas,omitempty"`
+	StartedAt           *string                                 `json:"started_at,omitempty"`
+	Status              string                                  `json:"status"`
+	UpdatedAt           *string                                 `json:"updated_at,omitempty"`
+	Volume              ListResultResultsItemReplicasItemVolume `json:"volume"`
 }
 
 type ListResultResultsItemAddressesItem struct {
@@ -128,11 +133,6 @@ type ListResultResultsItemReplicasItemVolume struct {
 }
 
 type ListResultResultsItemReplicas []ListResultResultsItemReplicasItem
-
-type ListResultResultsItemVolume struct {
-	Size int    `json:"size"`
-	Type string `json:"type"`
-}
 
 type ListResultResults []ListResultResultsItem
 

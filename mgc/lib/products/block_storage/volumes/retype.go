@@ -42,12 +42,8 @@ type RetypeParameters struct {
 	NewType RetypeParametersNewType `json:"new_type"`
 }
 
-// any of: , RetypeParametersNewType1
 type RetypeParametersNewType struct {
-	RetypeParametersNewType1 `json:",squash"` // nolint
-}
-
-type RetypeParametersNewType1 struct {
+	Id   string `json:"id"`
 	Name string `json:"name"`
 }
 

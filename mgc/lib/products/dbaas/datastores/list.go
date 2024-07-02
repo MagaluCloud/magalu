@@ -3,13 +3,15 @@ Executor: list
 
 # Summary
 
-List available engines.
+List available datastores (Deprecated).
 
 # Description
 
-Returns a list of available datastore.
+**Deprecated**: This endpoint is being phased out. Please use the `/v1/engines` endpoint to retrieve the list of available engines instead.
 
-Version: 1.21.1
+Returns a list of available datastores. It is recommended to update your integration to use the newer `/v1/engines` endpoint for improved functionality and future compatibility.
+
+Version: 1.23.0
 
 import "magalu.cloud/lib/products/dbaas/datastores"
 */

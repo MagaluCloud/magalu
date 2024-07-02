@@ -9,7 +9,7 @@ Executor: list
 
 # List VPC ports
 
-Version: 1.125.3
+Version: 1.126.1
 
 import "magalu.cloud/lib/products/network/vpcs/ports"
 */
@@ -36,46 +36,56 @@ type ListConfigs struct {
 	ServerUrl *string `json:"serverUrl,omitempty"`
 }
 
-// any of: , ListResult1
 type ListResult struct {
-	ListResult1 `json:",squash"` // nolint
+	PortsSimplified ListResultPortsSimplified `json:"ports_simplified"`
+	Ports           ListResultPorts           `json:"ports"`
 }
 
-type ListResult1 struct {
-	Ports ListResult1Ports `json:"ports"`
+type ListResultPortsSimplifiedItem struct {
+	Id        *string                                 `json:"id,omitempty"`
+	IpAddress *ListResultPortsSimplifiedItemIpAddress `json:"ip_address,omitempty"`
 }
 
-type ListResult1PortsItem struct {
-	CreatedAt             *string                             `json:"created_at,omitempty"`
-	Description           *string                             `json:"description,omitempty"`
-	Id                    *string                             `json:"id,omitempty"`
-	IpAddress             *ListResult1PortsItemIpAddress      `json:"ip_address,omitempty"`
-	IsAdminStateUp        *bool                               `json:"is_admin_state_up,omitempty"`
-	IsPortSecurityEnabled *bool                               `json:"is_port_security_enabled,omitempty"`
-	Name                  *string                             `json:"name,omitempty"`
-	PublicIp              *ListResult1PortsItemPublicIp       `json:"public_ip,omitempty"`
-	SecurityGroups        *ListResult1PortsItemSecurityGroups `json:"security_groups,omitempty"`
-	Updated               *string                             `json:"updated,omitempty"`
-	VpcId                 *string                             `json:"vpc_id,omitempty"`
-}
-
-type ListResult1PortsItemIpAddressItem struct {
+type ListResultPortsSimplifiedItemIpAddressItem struct {
 	IpAddress string `json:"ip_address"`
 	SubnetId  string `json:"subnet_id"`
 }
 
-type ListResult1PortsItemIpAddress []ListResult1PortsItemIpAddressItem
+type ListResultPortsSimplifiedItemIpAddress []ListResultPortsSimplifiedItemIpAddressItem
 
-type ListResult1PortsItemPublicIpItem struct {
+type ListResultPortsSimplified []ListResultPortsSimplifiedItem
+
+type ListResultPortsItem struct {
+	CreatedAt             *string                            `json:"created_at,omitempty"`
+	Description           *string                            `json:"description,omitempty"`
+	Id                    *string                            `json:"id,omitempty"`
+	IpAddress             *ListResultPortsItemIpAddress      `json:"ip_address,omitempty"`
+	IsAdminStateUp        *bool                              `json:"is_admin_state_up,omitempty"`
+	IsPortSecurityEnabled *bool                              `json:"is_port_security_enabled,omitempty"`
+	Name                  *string                            `json:"name,omitempty"`
+	PublicIp              *ListResultPortsItemPublicIp       `json:"public_ip,omitempty"`
+	SecurityGroups        *ListResultPortsItemSecurityGroups `json:"security_groups,omitempty"`
+	Updated               *string                            `json:"updated,omitempty"`
+	VpcId                 *string                            `json:"vpc_id,omitempty"`
+}
+
+type ListResultPortsItemIpAddressItem struct {
+	IpAddress string `json:"ip_address"`
+	SubnetId  string `json:"subnet_id"`
+}
+
+type ListResultPortsItemIpAddress []ListResultPortsItemIpAddressItem
+
+type ListResultPortsItemPublicIpItem struct {
 	PublicIp   *string `json:"public_ip,omitempty"`
 	PublicIpId *string `json:"public_ip_id,omitempty"`
 }
 
-type ListResult1PortsItemPublicIp []ListResult1PortsItemPublicIpItem
+type ListResultPortsItemPublicIp []ListResultPortsItemPublicIpItem
 
-type ListResult1PortsItemSecurityGroups []string
+type ListResultPortsItemSecurityGroups []string
 
-type ListResult1Ports []ListResult1PortsItem
+type ListResultPorts []ListResultPortsItem
 
 func (s *service) List(
 	parameters ListParameters,

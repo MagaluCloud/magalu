@@ -9,7 +9,7 @@ Starts a database instance.
 
 Starts a database instance.
 
-Version: 1.22.0
+Version: 1.23.0
 
 import "magalu.cloud/lib/products/dbaas/instances"
 */
@@ -21,8 +21,7 @@ import (
 )
 
 type StartParameters struct {
-	Exchange   *string `json:"exchange,omitempty"`
-	InstanceId string  `json:"instance_id"`
+	InstanceId string `json:"instance_id"`
 }
 
 type StartConfigs struct {
@@ -32,23 +31,23 @@ type StartConfigs struct {
 }
 
 type StartResult struct {
-	Addresses           StartResultAddresses  `json:"addresses"`
-	BackupRetentionDays int                   `json:"backup_retention_days"`
-	BackupStartAt       string                `json:"backup_start_at"`
-	CreatedAt           string                `json:"created_at"`
-	DatastoreId         string                `json:"datastore_id"`
-	EngineId            string                `json:"engine_id"`
-	FinishedAt          *string               `json:"finished_at,omitempty"`
-	FlavorId            string                `json:"flavor_id"`
-	Generation          string                `json:"generation"`
-	Id                  string                `json:"id"`
-	Name                string                `json:"name"`
-	Parameters          StartResultParameters `json:"parameters"`
-	Replicas            *StartResultReplicas  `json:"replicas,omitempty"`
-	StartedAt           *string               `json:"started_at,omitempty"`
-	Status              string                `json:"status"`
-	UpdatedAt           *string               `json:"updated_at,omitempty"`
-	Volume              StartResultVolume     `json:"volume"`
+	Addresses           StartResultAddresses          `json:"addresses"`
+	BackupRetentionDays int                           `json:"backup_retention_days"`
+	BackupStartAt       string                        `json:"backup_start_at"`
+	CreatedAt           string                        `json:"created_at"`
+	DatastoreId         string                        `json:"datastore_id"`
+	EngineId            string                        `json:"engine_id"`
+	FinishedAt          *string                       `json:"finished_at,omitempty"`
+	FlavorId            string                        `json:"flavor_id"`
+	Generation          string                        `json:"generation"`
+	Id                  string                        `json:"id"`
+	Name                string                        `json:"name"`
+	Parameters          StartResultParameters         `json:"parameters"`
+	Replicas            *StartResultReplicas          `json:"replicas,omitempty"`
+	StartedAt           *string                       `json:"started_at,omitempty"`
+	Status              string                        `json:"status"`
+	UpdatedAt           *string                       `json:"updated_at,omitempty"`
+	Volume              StartResultReplicasItemVolume `json:"volume"`
 }
 
 type StartResultAddressesItem struct {
@@ -108,11 +107,6 @@ type StartResultReplicasItemVolume struct {
 }
 
 type StartResultReplicas []StartResultReplicasItem
-
-type StartResultVolume struct {
-	Size int    `json:"size"`
-	Type string `json:"type"`
-}
 
 func (s *service) Start(
 	parameters StartParameters,

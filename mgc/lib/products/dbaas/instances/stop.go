@@ -9,7 +9,7 @@ Stops a database instance.
 
 Stops a database instance.
 
-Version: 1.22.0
+Version: 1.23.0
 
 import "magalu.cloud/lib/products/dbaas/instances"
 */
@@ -21,8 +21,7 @@ import (
 )
 
 type StopParameters struct {
-	Exchange   *string `json:"exchange,omitempty"`
-	InstanceId string  `json:"instance_id"`
+	InstanceId string `json:"instance_id"`
 }
 
 type StopConfigs struct {
@@ -32,23 +31,23 @@ type StopConfigs struct {
 }
 
 type StopResult struct {
-	Addresses           StopResultAddresses  `json:"addresses"`
-	BackupRetentionDays int                  `json:"backup_retention_days"`
-	BackupStartAt       string               `json:"backup_start_at"`
-	CreatedAt           string               `json:"created_at"`
-	DatastoreId         string               `json:"datastore_id"`
-	EngineId            string               `json:"engine_id"`
-	FinishedAt          *string              `json:"finished_at,omitempty"`
-	FlavorId            string               `json:"flavor_id"`
-	Generation          string               `json:"generation"`
-	Id                  string               `json:"id"`
-	Name                string               `json:"name"`
-	Parameters          StopResultParameters `json:"parameters"`
-	Replicas            *StopResultReplicas  `json:"replicas,omitempty"`
-	StartedAt           *string              `json:"started_at,omitempty"`
-	Status              string               `json:"status"`
-	UpdatedAt           *string              `json:"updated_at,omitempty"`
-	Volume              StopResultVolume     `json:"volume"`
+	Addresses           StopResultAddresses          `json:"addresses"`
+	BackupRetentionDays int                          `json:"backup_retention_days"`
+	BackupStartAt       string                       `json:"backup_start_at"`
+	CreatedAt           string                       `json:"created_at"`
+	DatastoreId         string                       `json:"datastore_id"`
+	EngineId            string                       `json:"engine_id"`
+	FinishedAt          *string                      `json:"finished_at,omitempty"`
+	FlavorId            string                       `json:"flavor_id"`
+	Generation          string                       `json:"generation"`
+	Id                  string                       `json:"id"`
+	Name                string                       `json:"name"`
+	Parameters          StopResultParameters         `json:"parameters"`
+	Replicas            *StopResultReplicas          `json:"replicas,omitempty"`
+	StartedAt           *string                      `json:"started_at,omitempty"`
+	Status              string                       `json:"status"`
+	UpdatedAt           *string                      `json:"updated_at,omitempty"`
+	Volume              StopResultReplicasItemVolume `json:"volume"`
 }
 
 type StopResultAddressesItem struct {
@@ -108,11 +107,6 @@ type StopResultReplicasItemVolume struct {
 }
 
 type StopResultReplicas []StopResultReplicasItem
-
-type StopResultVolume struct {
-	Size int    `json:"size"`
-	Type string `json:"type"`
-}
 
 func (s *service) Stop(
 	parameters StopParameters,

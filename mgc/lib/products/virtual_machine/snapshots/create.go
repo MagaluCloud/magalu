@@ -35,12 +35,8 @@ type CreateParameters struct {
 	VirtualMachine CreateParametersVirtualMachine `json:"virtual_machine"`
 }
 
-// any of: , CreateParametersVirtualMachine1
 type CreateParametersVirtualMachine struct {
-	CreateParametersVirtualMachine1 `json:",squash"` // nolint
-}
-
-type CreateParametersVirtualMachine1 struct {
+	Id   string `json:"id"`
 	Name string `json:"name"`
 }
 

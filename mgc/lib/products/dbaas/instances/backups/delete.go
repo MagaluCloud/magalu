@@ -9,7 +9,7 @@ Delete Backup.
 
 Deletes a database backup.
 
-Version: 1.22.0
+Version: 1.23.0
 
 import "magalu.cloud/lib/products/dbaas/instances/backups"
 */
@@ -21,9 +21,8 @@ import (
 )
 
 type DeleteParameters struct {
-	BackupId   string  `json:"backup_id"`
-	Exchange   *string `json:"exchange,omitempty"`
-	InstanceId string  `json:"instance_id"`
+	BackupId   string `json:"backup_id"`
+	InstanceId string `json:"instance_id"`
 }
 
 type DeleteConfigs struct {

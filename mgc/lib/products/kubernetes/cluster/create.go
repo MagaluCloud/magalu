@@ -21,14 +21,17 @@ import (
 )
 
 type CreateParameters struct {
-	Description        *string                   `json:"description,omitempty"`
-	EnabledBastion     bool                      `json:"enabled_bastion"`
-	EnabledServerGroup *bool                     `json:"enabled_server_group,omitempty"`
-	Name               string                    `json:"name"`
-	NodePools          CreateParametersNodePools `json:"node_pools"`
-	Version            *string                   `json:"version,omitempty"`
-	Zone               *string                   `json:"zone,omitempty"`
+	AllowedCidrs       *CreateParametersAllowedCidrs `json:"allowed_cidrs,omitempty"`
+	Description        *string                       `json:"description,omitempty"`
+	EnabledBastion     bool                          `json:"enabled_bastion"`
+	EnabledServerGroup *bool                         `json:"enabled_server_group,omitempty"`
+	Name               string                        `json:"name"`
+	NodePools          CreateParametersNodePools     `json:"node_pools"`
+	Version            *string                       `json:"version,omitempty"`
+	Zone               *string                       `json:"zone,omitempty"`
 }
+
+type CreateParametersAllowedCidrs []string
 
 // Object of the node pool request
 type CreateParametersNodePoolsItem struct {
@@ -67,10 +70,13 @@ type CreateConfigs struct {
 
 // Object of the cluster response request.
 type CreateResult struct {
-	Id     string             `json:"id"`
-	Name   string             `json:"name"`
-	Status CreateResultStatus `json:"status"`
+	AllowedCidrs *CreateResultAllowedCidrs `json:"allowed_cidrs,omitempty"`
+	Id           string                    `json:"id"`
+	Name         string                    `json:"name"`
+	Status       CreateResultStatus        `json:"status"`
 }
+
+type CreateResultAllowedCidrs []string
 
 // Details about the status of the Kubernetes cluster or node.
 

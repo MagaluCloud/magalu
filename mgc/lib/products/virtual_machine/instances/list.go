@@ -60,55 +60,32 @@ type ListResultInstancesItemError struct {
 	Slug    string `json:"slug"`
 }
 
-// any of: , ListResultInstancesItemImage1
 type ListResultInstancesItemImage struct {
-	ListResultInstancesItemImage1 `json:",squash"` // nolint
-}
-
-type ListResultInstancesItemImage1 struct {
 	Id       string  `json:"id"`
 	Name     string  `json:"name"`
 	Platform *string `json:"platform,omitempty"`
 }
 
-// any of: , ListResultInstancesItemMachineType1
 type ListResultInstancesItemMachineType struct {
-	ListResultInstancesItemMachineType1 `json:",squash"` // nolint
-}
-
-type ListResultInstancesItemMachineType1 struct {
-	Disk  int    `json:"disk"`
 	Id    string `json:"id"`
+	Disk  int    `json:"disk"`
 	Name  string `json:"name"`
 	Ram   int    `json:"ram"`
 	Vcpus int    `json:"vcpus"`
 }
 
-// any of: , ListResultInstancesItemNetwork1
 type ListResultInstancesItemNetwork struct {
-	ListResultInstancesItemNetwork1 `json:",squash"` // nolint
+	Ports ListResultInstancesItemNetworkPorts `json:"ports"`
+	Vpc   *ListResultInstancesItemNetworkVpc  `json:"vpc,omitempty"`
 }
 
-type ListResultInstancesItemNetwork1 struct {
-	Ports *ListResultInstancesItemNetwork1Ports `json:"ports,omitempty"`
-	Vpc   *ListResultInstancesItemNetwork1Vpc   `json:"vpc,omitempty"`
+type ListResultInstancesItemNetworkPortsItem struct {
+	Id string `json:"id"`
 }
 
-type ListResultInstancesItemNetwork1PortsItem struct {
-	Id          string                                              `json:"id"`
-	IpAddresses ListResultInstancesItemNetwork1PortsItemIpAddresses `json:"ipAddresses"`
-	Name        string                                              `json:"name"`
-}
+type ListResultInstancesItemNetworkPorts []ListResultInstancesItemNetworkPortsItem
 
-type ListResultInstancesItemNetwork1PortsItemIpAddresses struct {
-	IpV6address      *string `json:"ipV6Address,omitempty"`
-	PrivateIpAddress string  `json:"privateIpAddress"`
-	PublicIpAddress  *string `json:"publicIpAddress,omitempty"`
-}
-
-type ListResultInstancesItemNetwork1Ports []ListResultInstancesItemNetwork1PortsItem
-
-type ListResultInstancesItemNetwork1Vpc struct {
+type ListResultInstancesItemNetworkVpc struct {
 	Id   string `json:"id"`
 	Name string `json:"name"`
 }

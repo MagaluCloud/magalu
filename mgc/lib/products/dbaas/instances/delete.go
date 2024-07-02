@@ -9,7 +9,7 @@ Deletes a database instance.
 
 Deletes a database instance.
 
-Version: 1.22.0
+Version: 1.23.0
 
 import "magalu.cloud/lib/products/dbaas/instances"
 */
@@ -21,8 +21,7 @@ import (
 )
 
 type DeleteParameters struct {
-	Exchange   *string `json:"exchange,omitempty"`
-	InstanceId string  `json:"instance_id"`
+	InstanceId string `json:"instance_id"`
 }
 
 type DeleteConfigs struct {

@@ -61,13 +61,13 @@ type ListResultVolumesItemAttachment struct {
 	Instance   ListResultVolumesItemAttachmentInstance `json:"instance"`
 }
 
-// any of: , ListResultVolumesItemAttachmentInstance1
 type ListResultVolumesItemAttachmentInstance struct {
-	ListResultVolumesItemAttachmentInstance1 `json:",squash"` // nolint
-}
-
-type ListResultVolumesItemAttachmentInstance1 struct {
-	Id string `json:"id"`
+	CreatedAt string `json:"created_at"`
+	Id        string `json:"id"`
+	Name      string `json:"name"`
+	State     string `json:"state"`
+	Status    string `json:"status"`
+	UpdatedAt string `json:"updated_at"`
 }
 
 type ListResultVolumesItemError struct {
@@ -75,20 +75,15 @@ type ListResultVolumesItemError struct {
 	Slug    string `json:"slug"`
 }
 
-// any of: , ListResultVolumesItemType1
 type ListResultVolumesItemType struct {
-	ListResultVolumesItemType1 `json:",squash"` // nolint
+	Id       string                        `json:"id"`
+	DiskType string                        `json:"disk_type"`
+	Iops     ListResultVolumesItemTypeIops `json:"iops"`
+	Name     string                        `json:"name"`
+	Status   string                        `json:"status"`
 }
 
-type ListResultVolumesItemType1 struct {
-	DiskType string                         `json:"disk_type"`
-	Id       string                         `json:"id"`
-	Iops     ListResultVolumesItemType1Iops `json:"iops"`
-	Name     string                         `json:"name"`
-	Status   string                         `json:"status"`
-}
-
-type ListResultVolumesItemType1Iops struct {
+type ListResultVolumesItemTypeIops struct {
 	Read  int `json:"read"`
 	Write int `json:"write"`
 }

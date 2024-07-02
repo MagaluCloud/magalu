@@ -33,6 +33,7 @@ type GetConfigs struct {
 // Object of the cluster response request by uuid.
 type GetResult struct {
 	Addons        *GetResultAddons        `json:"addons,omitempty"`
+	AllowedCidrs  *GetResultAllowedCidrs  `json:"allowed_cidrs,omitempty"`
 	Controlplane  *GetResultControlplane  `json:"controlplane,omitempty"`
 	CreatedAt     *string                 `json:"created_at,omitempty"`
 	Description   *string                 `json:"description,omitempty"`
@@ -56,6 +57,8 @@ type GetResultAddons struct {
 	Secrets     string `json:"secrets"`
 	Volume      string `json:"volume"`
 }
+
+type GetResultAllowedCidrs []string
 
 // Object of the node pool response.
 type GetResultControlplane struct {

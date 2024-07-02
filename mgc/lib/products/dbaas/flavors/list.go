@@ -7,9 +7,9 @@ List available flavors.
 
 # Description
 
-Returns a list of available flavors. A flavor is a hardware template that defines the size of RAM and vcpu.
+Returns a list of available flavors. A flavor is a hardware template that defines the size of RAM and vCPU.
 
-Version: 1.22.0
+Version: 1.23.0
 
 import "magalu.cloud/lib/products/dbaas/flavors"
 */
@@ -21,9 +21,10 @@ import (
 )
 
 type ListParameters struct {
-	Limit  *int    `json:"_limit,omitempty"`
-	Offset *int    `json:"_offset,omitempty"`
-	Status *string `json:"status,omitempty"`
+	Limit    *int    `json:"_limit,omitempty"`
+	Offset   *int    `json:"_offset,omitempty"`
+	EngineId *string `json:"engine_id,omitempty"`
+	Status   *string `json:"status,omitempty"`
 }
 
 type ListConfigs struct {

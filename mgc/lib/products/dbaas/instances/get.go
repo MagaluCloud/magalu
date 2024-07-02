@@ -9,7 +9,7 @@ Database instance details.
 
 Returns a database instance detail.
 
-Version: 1.22.0
+Version: 1.23.0
 
 import "magalu.cloud/lib/products/dbaas/instances"
 */
@@ -22,7 +22,6 @@ import (
 
 type GetParameters struct {
 	Expand     *string `json:"_expand,omitempty"`
-	Exchange   *string `json:"exchange,omitempty"`
 	InstanceId string  `json:"instance_id"`
 }
 
@@ -33,23 +32,23 @@ type GetConfigs struct {
 }
 
 type GetResult struct {
-	Addresses           GetResultAddresses  `json:"addresses"`
-	BackupRetentionDays int                 `json:"backup_retention_days"`
-	BackupStartAt       string              `json:"backup_start_at"`
-	CreatedAt           string              `json:"created_at"`
-	DatastoreId         string              `json:"datastore_id"`
-	EngineId            string              `json:"engine_id"`
-	FinishedAt          *string             `json:"finished_at,omitempty"`
-	FlavorId            string              `json:"flavor_id"`
-	Generation          string              `json:"generation"`
-	Id                  string              `json:"id"`
-	Name                string              `json:"name"`
-	Parameters          GetResultParameters `json:"parameters"`
-	Replicas            *GetResultReplicas  `json:"replicas,omitempty"`
-	StartedAt           *string             `json:"started_at,omitempty"`
-	Status              string              `json:"status"`
-	UpdatedAt           *string             `json:"updated_at,omitempty"`
-	Volume              GetResultVolume     `json:"volume"`
+	Addresses           GetResultAddresses          `json:"addresses"`
+	BackupRetentionDays int                         `json:"backup_retention_days"`
+	BackupStartAt       string                      `json:"backup_start_at"`
+	CreatedAt           string                      `json:"created_at"`
+	DatastoreId         string                      `json:"datastore_id"`
+	EngineId            string                      `json:"engine_id"`
+	FinishedAt          *string                     `json:"finished_at,omitempty"`
+	FlavorId            string                      `json:"flavor_id"`
+	Generation          string                      `json:"generation"`
+	Id                  string                      `json:"id"`
+	Name                string                      `json:"name"`
+	Parameters          GetResultParameters         `json:"parameters"`
+	Replicas            *GetResultReplicas          `json:"replicas,omitempty"`
+	StartedAt           *string                     `json:"started_at,omitempty"`
+	Status              string                      `json:"status"`
+	UpdatedAt           *string                     `json:"updated_at,omitempty"`
+	Volume              GetResultReplicasItemVolume `json:"volume"`
 }
 
 type GetResultAddressesItem struct {
@@ -110,11 +109,6 @@ type GetResultReplicasItemVolume struct {
 
 type GetResultReplicas []GetResultReplicasItem
 
-type GetResultVolume struct {
-	Size int    `json:"size"`
-	Type string `json:"type"`
-}
-
 func (s *service) Get(
 	parameters GetParameters,
 	configs GetConfigs,
@@ -138,44 +132,6 @@ func (s *service) Get(
 	}
 
 	r, err := exec.Execute(ctx, p, c)
-	if err != nil {
-		return
-	}
-	return mgcHelpers.ConvertResult[GetResult](r)
-}
-
-func (s *service) GetUntilTermination(
-	parameters GetParameters,
-	configs GetConfigs,
-) (
-	result GetResult,
-	err error,
-) {
-	e, ctx, err := mgcHelpers.PrepareExecutor("Get", mgcCore.RefPath("/dbaas/instances/get"), s.client, s.ctx)
-	if err != nil {
-		return
-	}
-
-	exec, ok := e.(mgcCore.TerminatorExecutor)
-	if !ok {
-		// Not expected, but let's fallback
-		return s.Get(
-			parameters,
-			configs,
-		)
-	}
-
-	var p mgcCore.Parameters
-	if p, err = mgcHelpers.ConvertParameters[GetParameters](parameters); err != nil {
-		return
-	}
-
-	var c mgcCore.Configs
-	if c, err = mgcHelpers.ConvertConfigs[GetConfigs](configs); err != nil {
-		return
-	}
-
-	r, err := exec.ExecuteUntilTermination(ctx, p, c)
 	if err != nil {
 		return
 	}

@@ -55,19 +55,14 @@ type ListResultSnapshotsItem struct {
 	Volume      ListResultSnapshotsItemVolume `json:"volume"`
 }
 
-// any of: , ListResultSnapshotsItemVolume1
 type ListResultSnapshotsItemVolume struct {
-	ListResultSnapshotsItemVolume1 `json:",squash"` // nolint
+	Id   string                            `json:"id"`
+	Name string                            `json:"name"`
+	Size int                               `json:"size"`
+	Type ListResultSnapshotsItemVolumeType `json:"type"`
 }
 
-type ListResultSnapshotsItemVolume1 struct {
-	Id   string                             `json:"id"`
-	Name string                             `json:"name"`
-	Size int                                `json:"size"`
-	Type ListResultSnapshotsItemVolume1Type `json:"type"`
-}
-
-type ListResultSnapshotsItemVolume1Type struct {
+type ListResultSnapshotsItemVolumeType struct {
 	Id   string `json:"id"`
 	Name string `json:"name"`
 }

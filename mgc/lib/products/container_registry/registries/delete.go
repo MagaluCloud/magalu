@@ -3,17 +3,17 @@ Executor: delete
 
 # Summary
 
-Delete Backup.
+Delete a container registry by registry_id
 
 # Description
 
-Deletes a database backup.
+Delete a container registry by uuid.
 
-Version: 1.23.0
+Version: 0.1.0
 
-import "magalu.cloud/lib/products/dbaas/backups"
+import "magalu.cloud/lib/products/container_registry/registries"
 */
-package backups
+package registries
 
 import (
 	mgcCore "magalu.cloud/core"
@@ -21,7 +21,7 @@ import (
 )
 
 type DeleteParameters struct {
-	BackupId string `json:"backup_id"`
+	RegistryId string `json:"registry_id"`
 }
 
 type DeleteConfigs struct {
@@ -30,16 +30,13 @@ type DeleteConfigs struct {
 	ServerUrl *string `json:"serverUrl,omitempty"`
 }
 
-type DeleteResult any
-
 func (s *service) Delete(
 	parameters DeleteParameters,
 	configs DeleteConfigs,
 ) (
-	result DeleteResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("Delete", mgcCore.RefPath("/dbaas/backups/delete"), s.client, s.ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Delete", mgcCore.RefPath("/container-registry/registries/delete"), s.client, s.ctx)
 	if err != nil {
 		return
 	}
@@ -54,18 +51,15 @@ func (s *service) Delete(
 		return
 	}
 
-	r, err := exec.Execute(ctx, p, c)
-	if err != nil {
-		return
-	}
-	return mgcHelpers.ConvertResult[DeleteResult](r)
+	_, err = exec.Execute(ctx, p, c)
+	return
 }
 
 func (s *service) DeleteConfirmPrompt(
 	parameters DeleteParameters,
 	configs DeleteConfigs,
 ) (message string) {
-	e, err := mgcHelpers.ResolveExecutor("Delete", mgcCore.RefPath("/dbaas/backups/delete"), s.client)
+	e, err := mgcHelpers.ResolveExecutor("Delete", mgcCore.RefPath("/container-registry/registries/delete"), s.client)
 	if err != nil {
 		return
 	}

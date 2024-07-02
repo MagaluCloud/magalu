@@ -9,7 +9,7 @@ Resizes a database instance.
 
 Resizes a database instance.
 
-Version: 1.22.0
+Version: 1.23.0
 
 import "magalu.cloud/lib/products/dbaas/instances"
 */
@@ -21,7 +21,6 @@ import (
 )
 
 type ResizeParameters struct {
-	Exchange   *string                 `json:"exchange,omitempty"`
 	FlavorId   *string                 `json:"flavor_id,omitempty"`
 	InstanceId string                  `json:"instance_id"`
 	Volume     *ResizeParametersVolume `json:"volume,omitempty"`
@@ -39,23 +38,23 @@ type ResizeConfigs struct {
 }
 
 type ResizeResult struct {
-	Addresses           ResizeResultAddresses  `json:"addresses"`
-	BackupRetentionDays int                    `json:"backup_retention_days"`
-	BackupStartAt       string                 `json:"backup_start_at"`
-	CreatedAt           string                 `json:"created_at"`
-	DatastoreId         string                 `json:"datastore_id"`
-	EngineId            string                 `json:"engine_id"`
-	FinishedAt          *string                `json:"finished_at,omitempty"`
-	FlavorId            string                 `json:"flavor_id"`
-	Generation          string                 `json:"generation"`
-	Id                  string                 `json:"id"`
-	Name                string                 `json:"name"`
-	Parameters          ResizeResultParameters `json:"parameters"`
-	Replicas            *ResizeResultReplicas  `json:"replicas,omitempty"`
-	StartedAt           *string                `json:"started_at,omitempty"`
-	Status              string                 `json:"status"`
-	UpdatedAt           *string                `json:"updated_at,omitempty"`
-	Volume              ResizeResultVolume     `json:"volume"`
+	Addresses           ResizeResultAddresses          `json:"addresses"`
+	BackupRetentionDays int                            `json:"backup_retention_days"`
+	BackupStartAt       string                         `json:"backup_start_at"`
+	CreatedAt           string                         `json:"created_at"`
+	DatastoreId         string                         `json:"datastore_id"`
+	EngineId            string                         `json:"engine_id"`
+	FinishedAt          *string                        `json:"finished_at,omitempty"`
+	FlavorId            string                         `json:"flavor_id"`
+	Generation          string                         `json:"generation"`
+	Id                  string                         `json:"id"`
+	Name                string                         `json:"name"`
+	Parameters          ResizeResultParameters         `json:"parameters"`
+	Replicas            *ResizeResultReplicas          `json:"replicas,omitempty"`
+	StartedAt           *string                        `json:"started_at,omitempty"`
+	Status              string                         `json:"status"`
+	UpdatedAt           *string                        `json:"updated_at,omitempty"`
+	Volume              ResizeResultReplicasItemVolume `json:"volume"`
 }
 
 type ResizeResultAddressesItem struct {
@@ -115,11 +114,6 @@ type ResizeResultReplicasItemVolume struct {
 }
 
 type ResizeResultReplicas []ResizeResultReplicasItem
-
-type ResizeResultVolume struct {
-	Size int    `json:"size"`
-	Type string `json:"type"`
-}
 
 func (s *service) Resize(
 	parameters ResizeParameters,

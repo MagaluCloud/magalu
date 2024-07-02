@@ -37,12 +37,8 @@ type RetypeParameters struct {
 	MachineType RetypeParametersMachineType `json:"machine_type"`
 }
 
-// any of: , RetypeParametersMachineType1
 type RetypeParametersMachineType struct {
-	RetypeParametersMachineType1 `json:",squash"` // nolint
-}
-
-type RetypeParametersMachineType1 struct {
+	Id   string `json:"id"`
 	Name string `json:"name"`
 }
 

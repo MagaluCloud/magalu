@@ -9,7 +9,7 @@ Replicas List.
 
 List all replicas for a given instance.
 
-Version: 1.22.0
+Version: 1.23.0
 
 import "magalu.cloud/lib/products/dbaas/replicas"
 */
@@ -23,7 +23,6 @@ import (
 type ListParameters struct {
 	Limit    *int    `json:"_limit,omitempty"`
 	Offset   *int    `json:"_offset,omitempty"`
-	Exchange *string `json:"exchange,omitempty"`
 	SourceId *string `json:"source_id,omitempty"`
 }
 

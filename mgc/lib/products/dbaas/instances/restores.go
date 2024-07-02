@@ -9,7 +9,7 @@ Backup restore.
 
 Restores a backup for an instance asynchronously.
 
-Version: 1.22.0
+Version: 1.23.0
 
 import "magalu.cloud/lib/products/dbaas/instances"
 */
@@ -21,9 +21,8 @@ import (
 )
 
 type RestoresParameters struct {
-	BackupId   string  `json:"backup_id"`
-	Exchange   *string `json:"exchange,omitempty"`
-	InstanceId string  `json:"instance_id"`
+	BackupId   string `json:"backup_id"`
+	InstanceId string `json:"instance_id"`
 }
 
 type RestoresConfigs struct {

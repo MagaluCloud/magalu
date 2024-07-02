@@ -40,12 +40,8 @@ type RestoreParameters struct {
 	UserData         *string                      `json:"user_data,omitempty"`
 }
 
-// any of: , RestoreParametersMachineType1
 type RestoreParametersMachineType struct {
-	RestoreParametersMachineType1 `json:",squash"` // nolint
-}
-
-type RestoreParametersMachineType1 struct {
+	Id   string `json:"id"`
 	Name string `json:"name"`
 }
 
@@ -55,24 +51,20 @@ type RestoreParametersNetwork struct {
 	Vpc               *RestoreParametersNetworkVpc       `json:"vpc,omitempty"`
 }
 
-// any of: , RestoreParametersNetworkInterface1
 type RestoreParametersNetworkInterface struct {
-	RestoreParametersNetworkInterface1 `json:",squash"` // nolint
+	Id             string                                           `json:"id"`
+	SecurityGroups *RestoreParametersNetworkInterfaceSecurityGroups `json:"security_groups,omitempty"`
 }
 
-type RestoreParametersNetworkInterface1 struct {
-	SecurityGroups *RestoreParametersNetworkInterface1SecurityGroups `json:"security_groups,omitempty"`
-}
-
-type RestoreParametersNetworkInterface1SecurityGroupsItem struct {
+type RestoreParametersNetworkInterfaceSecurityGroupsItem struct {
 	Id string `json:"id"`
 }
 
-type RestoreParametersNetworkInterface1SecurityGroups []RestoreParametersNetworkInterface1SecurityGroupsItem
+type RestoreParametersNetworkInterfaceSecurityGroups []RestoreParametersNetworkInterfaceSecurityGroupsItem
 
-// any of: , RestoreParametersMachineType1
 type RestoreParametersNetworkVpc struct {
-	RestoreParametersMachineType1 `json:",squash"` // nolint
+	Id   string `json:"id"`
+	Name string `json:"name"`
 }
 
 type RestoreConfigs struct {

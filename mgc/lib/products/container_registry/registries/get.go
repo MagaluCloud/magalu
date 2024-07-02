@@ -3,17 +3,17 @@ Executor: get
 
 # Summary
 
-Backup Detail.
+# Get registry information
 
 # Description
 
-Get a backup detail.
+Show detailed information about the user's container registry.
 
-Version: 1.23.0
+Version: 0.1.0
 
-import "magalu.cloud/lib/products/dbaas/backups"
+import "magalu.cloud/lib/products/container_registry/registries"
 */
-package backups
+package registries
 
 import (
 	mgcCore "magalu.cloud/core"
@@ -21,7 +21,7 @@ import (
 )
 
 type GetParameters struct {
-	BackupId string `json:"backup_id"`
+	RegistryId string `json:"registry_id"`
 }
 
 type GetConfigs struct {
@@ -30,21 +30,13 @@ type GetConfigs struct {
 	ServerUrl *string `json:"serverUrl,omitempty"`
 }
 
+// Container Registry's response data.
 type GetResult struct {
-	CreatedAt  string  `json:"created_at"`
-	DbSize     *int    `json:"db_size,omitempty"`
-	EngineId   string  `json:"engine_id"`
-	FinishedAt *string `json:"finished_at,omitempty"`
-	Id         string  `json:"id"`
-	InstanceId string  `json:"instance_id"`
-	Location   *string `json:"location,omitempty"`
-	Mode       string  `json:"mode"`
-	Name       *string `json:"name,omitempty"`
-	Size       *int    `json:"size,omitempty"`
-	StartedAt  *string `json:"started_at,omitempty"`
-	Status     string  `json:"status"`
-	Type       string  `json:"type"`
-	UpdatedAt  *string `json:"updated_at,omitempty"`
+	CreatedAt         string `json:"created_at"`
+	Id                string `json:"id"`
+	Name              string `json:"name"`
+	StorageUsageBytes int    `json:"storage_usage_bytes"`
+	UpdatedAt         string `json:"updated_at"`
 }
 
 func (s *service) Get(
@@ -54,7 +46,7 @@ func (s *service) Get(
 	result GetResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("Get", mgcCore.RefPath("/dbaas/backups/get"), s.client, s.ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Get", mgcCore.RefPath("/container-registry/registries/get"), s.client, s.ctx)
 	if err != nil {
 		return
 	}

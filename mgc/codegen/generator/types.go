@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"slices"
+	"strings"
 
 	"github.com/stoewer/go-strcase"
 	mgcSchemaPkg "magalu.cloud/core/schema"
@@ -275,7 +276,7 @@ func (t *generatorTemplateTypes) addObject(name string, schema *mgcSchemaPkg.Sch
 	slices.Sort(keys)
 	for _, k := range keys {
 		propRef := schema.Properties[k]
-		fieldName := strcase.UpperCamelCase(k)
+		fieldName := removeChars(strcase.UpperCamelCase(k), ".")
 		var fieldType string
 		fieldType, err = t.addSchemaRef(name+fieldName, propRef, slices.Contains(schema.Required, k))
 		if err != nil {
@@ -309,6 +310,13 @@ func (t *generatorTemplateTypes) addObject(name string, schema *mgcSchemaPkg.Sch
 	return def.Name, nil
 }
 
+func removeChars(s string, chars string) string {
+	for _, c := range chars {
+		s = strings.ReplaceAll(s, string(c), "")
+	}
+	return s
+}
+
 func (t *generatorTemplateTypes) addObjectAlternatives(objDef *generatorTemplateTypeDefinition, name string, doc string, schemaRefs mgcSchemaPkg.SchemaRefs) (err error) {
 	for _, schemaref := range schemaRefs {
 		schema := schemaref.Value
@@ -318,8 +326,18 @@ func (t *generatorTemplateTypes) addObjectAlternatives(objDef *generatorTemplate
 		}
 		slices.Sort(keys)
 		for _, k := range keys {
+			skip := false
+			for _, field := range objDef.Fields {
+				if strcase.UpperCamelCase(field.Name) == strcase.UpperCamelCase(k) {
+					skip = true
+					continue
+				}
+			}
+			if skip {
+				continue
+			}
 			propRef := schema.Properties[k]
-			fieldName := strcase.UpperCamelCase(k)
+			fieldName := removeChars(strcase.UpperCamelCase(k), ".")
 			var fieldType string
 			fieldType, err = t.addSchemaRef(name+fieldName, propRef, slices.Contains(schema.Required, k))
 			if err != nil {

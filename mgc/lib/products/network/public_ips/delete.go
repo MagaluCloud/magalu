@@ -9,7 +9,7 @@ Executor: delete
 
 Delete a Public IP from the provided tenant_id
 
-Version: 1.125.3
+Version: 1.126.1
 
 import "magalu.cloud/lib/products/network/public_ips"
 */
