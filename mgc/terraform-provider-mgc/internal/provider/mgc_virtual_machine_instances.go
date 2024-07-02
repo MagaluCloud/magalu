@@ -3,7 +3,6 @@ package provider
 import (
 	"context"
 	"fmt"
-	"math/big"
 	"strings"
 	"time"
 
@@ -456,17 +455,17 @@ func (r *vmInstances) Delete(ctx context.Context, req resource.DeleteRequest, re
 func (r *vmInstances) setValuesFromServer(data *vmInstancesResourceModel, server *sdkVmInstances.GetResult) {
 	data.State = types.StringValue(server.State)
 	data.Status = types.StringValue(server.Status)
-	data.MachineType.ID = types.StringValue(server.MachineType.Id)
-	data.MachineType.Name = types.StringValue(server.MachineType.Name)
-	data.MachineType.Disk = types.NumberValue(new(big.Float).SetInt64(int64(server.MachineType.Disk)))
-	data.MachineType.RAM = types.NumberValue(new(big.Float).SetInt64(int64(server.MachineType.Ram)))
+	// data.MachineType.ID = types.StringValue(server.MachineType.Id)
+	// data.MachineType.Name = types.StringValue(server.MachineType.Name)
+	// data.MachineType.Disk = types.NumberValue(new(big.Float).SetInt64(int64(server.MachineType.Disk)))
+	// data.MachineType.RAM = types.NumberValue(new(big.Float).SetInt64(int64(server.MachineType.Ram)))
 
-	data.Image.ID = types.StringValue(server.Image.Id)
+	// data.Image.ID = types.StringValue(server.Image.Id)
 
-	data.Network.VPC = genericIDNameModel{
-		ID:   types.StringValue(""),
-		Name: types.StringValue(""),
-	}
+	// data.Network.VPC = genericIDNameModel{
+	// 	ID:   types.StringValue(""),
+	// 	Name: types.StringValue(""),
+	// }
 
 	data.Network.IPV6 = types.StringValue("")
 	data.Network.PrivateAddress = types.StringValue("")
@@ -495,21 +494,21 @@ func (r *vmInstances) setValuesFromServer(data *vmInstancesResourceModel, server
 
 func (r *vmInstances) getMachineTypeID(name string) (*vmInstancesMachineTypeModel, error) {
 	machineType := vmInstancesMachineTypeModel{}
-	machineTypeList, err := r.vmMachineTypes.List(sdkVmMachineTypes.ListParameters{}, sdkVmMachineTypes.ListConfigs{})
-	if err != nil {
-		return nil, fmt.Errorf("could not load machine-type list, unexpected error: " + err.Error())
-	}
+	// machineTypeList, err := r.vmMachineTypes.List(sdkVmMachineTypes.ListParameters{}, sdkVmMachineTypes.ListConfigs{})
+	// if err != nil {
+	// 	return nil, fmt.Errorf("could not load machine-type list, unexpected error: " + err.Error())
+	// }
 
-	for _, x := range machineTypeList.InstanceTypes {
-		if x.Name == name {
-			machineType.Disk = types.NumberValue(new(big.Float).SetInt64(int64(x.Disk)))
-			machineType.ID = types.StringValue(x.Id)
-			machineType.Name = types.StringValue(x.Name)
-			machineType.RAM = types.NumberValue(new(big.Float).SetInt64(int64(x.Ram)))
-			machineType.VCPUs = types.NumberValue(new(big.Float).SetInt64(int64(x.Vcpus)))
-			break
-		}
-	}
+	// for _, x := range machineTypeList.InstanceTypes {
+	// 	// if x.Name == name {
+	// 	// 	machineType.Disk = types.NumberValue(new(big.Float).SetInt64(int64(x.Disk)))
+	// 	// 	machineType.ID = types.StringValue(x.Id)
+	// 	// 	machineType.Name = types.StringValue(x.Name)
+	// 	// 	machineType.RAM = types.NumberValue(new(big.Float).SetInt64(int64(x.Ram)))
+	// 	// 	machineType.VCPUs = types.NumberValue(new(big.Float).SetInt64(int64(x.Vcpus)))
+	// 	// 	break
+	// 	// }
+	// }
 
 	if machineType.ID.ValueString() == "" {
 		return nil, fmt.Errorf("could not found machine-type ID with name: " + name)
