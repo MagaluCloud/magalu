@@ -7,12 +7,14 @@ import (
 	"strings"
 	"time"
 
+	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/boolplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 
 	bws "github.com/geffersonFerraz/brazilian-words-sorter"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -178,6 +180,9 @@ func (r *vmInstances) Schema(_ context.Context, _ resource.SchemaRequest, resp *
 						Required: true,
 					},
 				},
+				Validators: []validator.Object{
+					objectvalidator.IsRequired(),
+				},
 			},
 			"machine_type": schema.SingleNestedBlock{
 				Attributes: map[string]schema.Attribute{
@@ -199,6 +204,9 @@ func (r *vmInstances) Schema(_ context.Context, _ resource.SchemaRequest, resp *
 					"vcpus": schema.NumberAttribute{
 						Computed: true,
 					},
+				},
+				Validators: []validator.Object{
+					objectvalidator.IsRequired(),
 				},
 			},
 			"network": schema.SingleNestedBlock{
