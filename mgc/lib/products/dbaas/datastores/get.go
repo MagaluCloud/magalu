@@ -3,13 +3,15 @@ Executor: get
 
 # Summary
 
-Engine detail.
+Datastore detail (Deprecated).
 
 # Description
 
-Returns a engine detail.
+**Deprecated**: This endpoint is being phased out. Please use the `/v1/engines/{engine_id}` endpoint to retrieve the list of available engines instead.
 
-Version: 1.21.1
+Returns a datastore detail. It is recommended to update your integration to use the newer `/v1/engines/{engine_id}` endpoint for improved functionality and future compatibility.
+
+Version: 1.23.0
 
 import "magalu.cloud/lib/products/dbaas/datastores"
 */

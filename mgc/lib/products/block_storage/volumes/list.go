@@ -61,23 +61,21 @@ type ListResultVolumesItemAttachment struct {
 	Instance   ListResultVolumesItemAttachmentInstance `json:"instance"`
 }
 
-// any of: ListResultVolumesItemAttachmentInstance0, ListResultVolumesItemAttachmentInstance1
+// any of: ListResultVolumesItemAttachmentInstance
 type ListResultVolumesItemAttachmentInstance struct {
-	ListResultVolumesItemAttachmentInstance0 `json:",squash"` // nolint
-	ListResultVolumesItemAttachmentInstance1 `json:",squash"` // nolint
+	CreatedAt string                                       `json:"created_at"`
+	DiskType  *string                                      `json:"disk_type,omitempty"`
+	Id        string                                       `json:"id"`
+	Iops      *ListResultVolumesItemAttachmentInstanceIops `json:"iops,omitempty"`
+	Name      string                                       `json:"name"`
+	State     string                                       `json:"state"`
+	Status    string                                       `json:"status"`
+	UpdatedAt string                                       `json:"updated_at"`
 }
 
-type ListResultVolumesItemAttachmentInstance0 struct {
-	CreatedAt string `json:"created_at"`
-	Id        string `json:"id"`
-	Name      string `json:"name"`
-	State     string `json:"state"`
-	Status    string `json:"status"`
-	UpdatedAt string `json:"updated_at"`
-}
-
-type ListResultVolumesItemAttachmentInstance1 struct {
-	Id string `json:"id"`
+type ListResultVolumesItemAttachmentInstanceIops struct {
+	Read  int `json:"read"`
+	Write int `json:"write"`
 }
 
 type ListResultVolumesItemError struct {
@@ -85,23 +83,13 @@ type ListResultVolumesItemError struct {
 	Slug    string `json:"slug"`
 }
 
-// any of: ListResultVolumesItemAttachmentInstance1, ListResultVolumesItemType1
+// any of: ListResultVolumesItemType
 type ListResultVolumesItemType struct {
-	ListResultVolumesItemAttachmentInstance1 `json:",squash"` // nolint
-	ListResultVolumesItemType1               `json:",squash"` // nolint
-}
-
-type ListResultVolumesItemType1 struct {
-	DiskType string                         `json:"disk_type"`
-	Id       string                         `json:"id"`
-	Iops     ListResultVolumesItemType1Iops `json:"iops"`
-	Name     string                         `json:"name"`
-	Status   string                         `json:"status"`
-}
-
-type ListResultVolumesItemType1Iops struct {
-	Read  int `json:"read"`
-	Write int `json:"write"`
+	DiskType *string                                      `json:"disk_type,omitempty"`
+	Id       string                                       `json:"id"`
+	Iops     *ListResultVolumesItemAttachmentInstanceIops `json:"iops,omitempty"`
+	Name     *string                                      `json:"name,omitempty"`
+	Status   *string                                      `json:"status,omitempty"`
 }
 
 type ListResultVolumes []ListResultVolumesItem

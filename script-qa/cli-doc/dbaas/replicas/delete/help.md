@@ -8,9 +8,8 @@ Usage:
 
 ## Product catalog:
 - Flags:
-- --exchange string   Exchange (default "dbaas-internal")
 - -h, --help              help for delete
-- --replica-id uuid   Replica Id (required)
+- --replica-id uuid   Database Replica Id: Database Replica Unique Id (required)
 - -v, --version           version for delete
 
 ## Other commands:

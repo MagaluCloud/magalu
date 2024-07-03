@@ -60,76 +60,43 @@ type ListResultInstancesItemError struct {
 	Slug    string `json:"slug"`
 }
 
-// any of: ListResultInstancesItemImage0, ListResultInstancesItemImage1
+// any of: ListResultInstancesItemImage
 type ListResultInstancesItemImage struct {
-	ListResultInstancesItemImage0 `json:",squash"` // nolint
-	ListResultInstancesItemImage1 `json:",squash"` // nolint
-}
-
-type ListResultInstancesItemImage0 struct {
-	Id string `json:"id"`
-}
-
-type ListResultInstancesItemImage1 struct {
 	Id       string  `json:"id"`
-	Name     string  `json:"name"`
+	Name     *string `json:"name,omitempty"`
 	Platform *string `json:"platform,omitempty"`
 }
 
-// any of: ListResultInstancesItemMachineType0, ListResultInstancesItemMachineType1
+// any of: ListResultInstancesItemMachineType
 type ListResultInstancesItemMachineType struct {
-	ListResultInstancesItemMachineType0 `json:",squash"` // nolint
-	ListResultInstancesItemMachineType1 `json:",squash"` // nolint
+	Disk  *int    `json:"disk,omitempty"`
+	Id    string  `json:"id"`
+	Name  *string `json:"name,omitempty"`
+	Ram   *int    `json:"ram,omitempty"`
+	Vcpus *int    `json:"vcpus,omitempty"`
 }
 
-type ListResultInstancesItemMachineType0 struct {
-	Id string `json:"id"`
-}
-
-type ListResultInstancesItemMachineType1 struct {
-	Disk  int    `json:"disk"`
-	Id    string `json:"id"`
-	Name  string `json:"name"`
-	Ram   int    `json:"ram"`
-	Vcpus int    `json:"vcpus"`
-}
-
-// any of: ListResultInstancesItemNetwork0, ListResultInstancesItemNetwork1
+// any of: ListResultInstancesItemNetwork
 type ListResultInstancesItemNetwork struct {
-	ListResultInstancesItemNetwork0 `json:",squash"` // nolint
-	ListResultInstancesItemNetwork1 `json:",squash"` // nolint
+	Ports *ListResultInstancesItemNetworkPorts `json:"ports"`
+	Vpc   *ListResultInstancesItemNetworkVpc   `json:"vpc,omitempty"`
 }
 
-type ListResultInstancesItemNetwork0 struct {
-	Ports ListResultInstancesItemNetwork0Ports `json:"ports"`
+type ListResultInstancesItemNetworkPortsItem struct {
+	Id          string                                             `json:"id"`
+	IpAddresses ListResultInstancesItemNetworkPortsItemIpAddresses `json:"ipAddresses"`
+	Name        string                                             `json:"name"`
 }
 
-type ListResultInstancesItemNetwork0PortsItem struct {
-	Id string `json:"id"`
-}
-
-type ListResultInstancesItemNetwork0Ports []ListResultInstancesItemNetwork0PortsItem
-
-type ListResultInstancesItemNetwork1 struct {
-	Ports *ListResultInstancesItemNetwork1Ports `json:"ports,omitempty"`
-	Vpc   *ListResultInstancesItemNetwork1Vpc   `json:"vpc,omitempty"`
-}
-
-type ListResultInstancesItemNetwork1PortsItem struct {
-	Id          string                                              `json:"id"`
-	IpAddresses ListResultInstancesItemNetwork1PortsItemIpAddresses `json:"ipAddresses"`
-	Name        string                                              `json:"name"`
-}
-
-type ListResultInstancesItemNetwork1PortsItemIpAddresses struct {
+type ListResultInstancesItemNetworkPortsItemIpAddresses struct {
 	IpV6address      *string `json:"ipV6Address,omitempty"`
 	PrivateIpAddress string  `json:"privateIpAddress"`
 	PublicIpAddress  *string `json:"publicIpAddress,omitempty"`
 }
 
-type ListResultInstancesItemNetwork1Ports []ListResultInstancesItemNetwork1PortsItem
+type ListResultInstancesItemNetworkPorts []ListResultInstancesItemNetworkPortsItem
 
-type ListResultInstancesItemNetwork1Vpc struct {
+type ListResultInstancesItemNetworkVpc struct {
 	Id   string `json:"id"`
 	Name string `json:"name"`
 }

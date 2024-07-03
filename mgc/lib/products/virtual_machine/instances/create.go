@@ -30,24 +30,16 @@ type CreateParameters struct {
 	UserData         *string                     `json:"user_data,omitempty"`
 }
 
-// any of: CreateParametersImage0, CreateParametersImage1
+// any of: CreateParametersImage
 type CreateParametersImage struct {
-	CreateParametersImage0 `json:",squash"` // nolint
-	CreateParametersImage1 `json:",squash"` // nolint
+	Id   string  `json:"id"`
+	Name *string `json:"name,omitempty"`
 }
 
-type CreateParametersImage0 struct {
-	Id string `json:"id"`
-}
-
-type CreateParametersImage1 struct {
-	Name string `json:"name"`
-}
-
-// any of: CreateParametersImage0, CreateParametersImage1
+// any of: CreateParametersMachineType
 type CreateParametersMachineType struct {
-	CreateParametersImage0 `json:",squash"` // nolint
-	CreateParametersImage1 `json:",squash"` // nolint
+	Id   string  `json:"id"`
+	Name *string `json:"name,omitempty"`
 }
 
 type CreateParametersNetwork struct {
@@ -56,26 +48,24 @@ type CreateParametersNetwork struct {
 	Vpc               *CreateParametersNetworkVpc       `json:"vpc,omitempty"`
 }
 
-// any of: CreateParametersImage0, CreateParametersNetworkInterface1
+// any of: CreateParametersNetworkInterface
 type CreateParametersNetworkInterface struct {
-	CreateParametersImage0            `json:",squash"` // nolint
-	CreateParametersNetworkInterface1 `json:",squash"` // nolint
+	Id             string                                          `json:"id"`
+	Name           *string                                         `json:"name,omitempty"`
+	SecurityGroups *CreateParametersNetworkInterfaceSecurityGroups `json:"security_groups,omitempty"`
 }
 
-type CreateParametersNetworkInterface1 struct {
-	SecurityGroups *CreateParametersNetworkInterface1SecurityGroups `json:"security_groups,omitempty"`
-}
-
-type CreateParametersNetworkInterface1SecurityGroupsItem struct {
+type CreateParametersNetworkInterfaceSecurityGroupsItem struct {
 	Id string `json:"id"`
 }
 
-type CreateParametersNetworkInterface1SecurityGroups []CreateParametersNetworkInterface1SecurityGroupsItem
+type CreateParametersNetworkInterfaceSecurityGroups []CreateParametersNetworkInterfaceSecurityGroupsItem
 
-// any of: CreateParametersImage0, CreateParametersImage1
+// any of: CreateParametersNetworkVpc
 type CreateParametersNetworkVpc struct {
-	CreateParametersImage0 `json:",squash"` // nolint
-	CreateParametersImage1 `json:",squash"` // nolint
+	Id             string                                          `json:"id"`
+	Name           *string                                         `json:"name,omitempty"`
+	SecurityGroups *CreateParametersNetworkInterfaceSecurityGroups `json:"security_groups,omitempty"`
 }
 
 type CreateConfigs struct {

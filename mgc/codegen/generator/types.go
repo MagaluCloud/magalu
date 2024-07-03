@@ -6,6 +6,7 @@ import (
 	"slices"
 	"strings"
 
+	"github.com/getkin/kin-openapi/openapi3"
 	"github.com/stoewer/go-strcase"
 	mgcSchemaPkg "magalu.cloud/core/schema"
 	"magalu.cloud/core/utils"
@@ -253,21 +254,23 @@ func (t *generatorTemplateTypes) addObject(name string, schema *mgcSchemaPkg.Sch
 
 	// TODO: try to reduce number of generated structs by identifying the same fields
 	var def *generatorTemplateTypeDefinition
-	if def = t.ByName[name]; def != nil {
-		return def.Name, nil
-	}
-	if def = t.BySchema[schema]; def != nil {
-		return def.Name, nil
+	def = t.ByName[name]
+
+	if def == nil {
+		def = t.BySchema[schema]
 	}
 
 	fieldCount := len(schema.Properties) + len(schema.AnyOf) + len(schema.OneOf)
-	def = &generatorTemplateTypeDefinition{
-		Name:   name,
-		Doc:    schema.Description,
-		Kind:   generatorTemplateTypeKindStruct,
-		Fields: make([]generatorTemplateTypeField, 0, fieldCount),
+	if def == nil {
+		def = &generatorTemplateTypeDefinition{
+			Name:   name,
+			Doc:    schema.Description,
+			Kind:   generatorTemplateTypeKindStruct,
+			Fields: make([]generatorTemplateTypeField, 0, fieldCount),
+		}
+
+		t.add(def, schema)
 	}
-	t.add(def, schema)
 
 	keys := make([]string, 0, len(schema.Properties))
 	for k := range schema.Properties {
@@ -276,9 +279,14 @@ func (t *generatorTemplateTypes) addObject(name string, schema *mgcSchemaPkg.Sch
 	slices.Sort(keys)
 	for _, k := range keys {
 		propRef := schema.Properties[k]
-		fieldName := strcase.UpperCamelCase(k)
-		// MOVE IT TO ANOTHER PLACE - PLEASE
-		fieldName = strings.Replace(fieldName, ".", "", -1)
+		fieldName := removeChars(strcase.UpperCamelCase(k), ".")
+
+		for _, f := range def.Fields {
+			if f.Name == fieldName {
+				return def.Name, nil
+			}
+		}
+
 		var fieldType string
 		fieldType, err = t.addSchemaRef(name+fieldName, propRef, slices.Contains(schema.Required, k))
 		if err != nil {
@@ -291,6 +299,7 @@ func (t *generatorTemplateTypes) addObject(name string, schema *mgcSchemaPkg.Sch
 			Type: fieldType,
 			Tag:  buildFieldTag(k, slices.Contains(schema.Required, k)),
 		})
+
 	}
 
 	if len(schema.OneOf) > 0 {
@@ -312,40 +321,46 @@ func (t *generatorTemplateTypes) addObject(name string, schema *mgcSchemaPkg.Sch
 	return def.Name, nil
 }
 
+func removeChars(s string, chars string) string {
+	for _, c := range chars {
+		s = strings.ReplaceAll(s, string(c), "")
+	}
+	return s
+}
+
 func (t *generatorTemplateTypes) addObjectAlternatives(objDef *generatorTemplateTypeDefinition, name string, doc string, schemaRefs mgcSchemaPkg.SchemaRefs) (err error) {
 	if objDef.Doc != "" {
 		objDef.Doc += "\n"
 	}
 	objDef.Doc += doc + ": "
 
+	schema := &openapi3.Schema{}
+	schema.Properties = make(map[string]*mgcSchemaPkg.SchemaRef)
+
 	for i, childRef := range schemaRefs {
-		// if i != len(schemaRefs)-1 {
-		// 	continue
-		// }
 		if childRef == nil || childRef.Value == nil {
 			continue
 		}
-		var childSignature string
-		k := fmt.Sprint(i)
-
-		// always create pointer types for alternatives
-		childSignature, err = t.addSchemaRef(name+k, childRef, true)
-		if err != nil {
-			err = &utils.ChainedError{Name: k, Err: err}
-			return
+		if i == 0 {
+			schema = childRef.Value
 		}
 
-		objDef.Fields = append(objDef.Fields, generatorTemplateTypeField{
-			Type:    childSignature,
-			Tag:     `json:",squash"`,
-			Comment: "nolint",
-		})
-
-		if i != 0 {
-			objDef.Doc += ", "
+		for k, v := range childRef.Value.Properties {
+			schema.Properties[k] = v
 		}
-		objDef.Doc += childSignature
+
 	}
+
+	var childSignature string
+
+	// always create pointer types for alternatives
+	childSignature, err = t.addSchema(name, (*mgcSchemaPkg.Schema)(schema), true)
+	if err != nil {
+		err = &utils.ChainedError{Name: name, Err: err}
+		return
+	}
+
+	objDef.Doc += childSignature
 
 	return
 }

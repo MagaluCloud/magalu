@@ -3,13 +3,13 @@ package provider
 import (
 	"context"
 	"fmt"
-	"strings"
+	"math/big"
 	"time"
 
-	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/boolplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 
@@ -91,12 +91,13 @@ type vmInstancesResourceModel struct {
 }
 
 type networkVmInstancesModel struct {
-	IPV6              types.String       `tfsdk:"ipv6"`
-	PrivateAddress    types.String       `tfsdk:"private_address"`
-	PublicIpAddress   types.String       `tfsdk:"public_address"`
-	DeletePublicIP    types.Bool         `tfsdk:"delete_public_ip"`
-	AssociatePublicIP types.Bool         `tfsdk:"associate_public_ip"`
-	VPC               genericIDNameModel `tfsdk:"vpc"`
+	IPV6              types.String        `tfsdk:"ipv6"`
+	PrivateAddress    types.String        `tfsdk:"private_address"`
+	PublicIpAddress   types.String        `tfsdk:"public_address"`
+	DeletePublicIP    types.Bool          `tfsdk:"delete_public_ip"`
+	AssociatePublicIP types.Bool          `tfsdk:"associate_public_ip"`
+	VPC               *genericIDNameModel `tfsdk:"vpc"`
+	Interface         *genericIDModel     `tfsdk:"interface"`
 }
 
 type vmInstancesMachineTypeModel struct {
@@ -158,35 +159,31 @@ func (r *vmInstances) Schema(_ context.Context, _ resource.SchemaRequest, resp *
 			"status": schema.StringAttribute{
 				Computed: true,
 			},
-			"image": schema.SingleNestedAttribute{
-				Required: true,
+		},
+		Blocks: map[string]schema.Block{
+			"image": schema.SingleNestedBlock{
 				Attributes: map[string]schema.Attribute{
 					"id": schema.StringAttribute{
 						Computed: true,
-						Optional: true,
 					},
 					"name": schema.StringAttribute{
 						PlanModifiers: []planmodifier.String{
 							stringplanmodifier.UseStateForUnknown(),
 						},
-						Optional: true,
-						Computed: true,
+						Required: true,
 					},
 				},
 			},
-			"machine_type": schema.SingleNestedAttribute{
-				Required: true,
+			"machine_type": schema.SingleNestedBlock{
 				Attributes: map[string]schema.Attribute{
 					"id": schema.StringAttribute{
-						Optional: true,
 						Computed: true,
 					},
 					"name": schema.StringAttribute{
 						PlanModifiers: []planmodifier.String{
 							stringplanmodifier.UseStateForUnknown(),
 						},
-						Optional: true,
-						Computed: true,
+						Required: true,
 					},
 					"disk": schema.NumberAttribute{
 						Computed: true,
@@ -199,17 +196,52 @@ func (r *vmInstances) Schema(_ context.Context, _ resource.SchemaRequest, resp *
 					},
 				},
 			},
-			"network": schema.SingleNestedAttribute{
-				Required: false,
-				Optional: true,
+			"network": schema.SingleNestedBlock{
+				Blocks: map[string]schema.Block{
+					"vpc": schema.SingleNestedBlock{
+						Attributes: map[string]schema.Attribute{
+							"id": schema.StringAttribute{
+								PlanModifiers: []planmodifier.String{
+									stringplanmodifier.UseStateForUnknown(),
+								},
+								Optional: true,
+								Computed: true,
+							},
+							"name": schema.StringAttribute{
+								PlanModifiers: []planmodifier.String{
+									stringplanmodifier.UseStateForUnknown(),
+								},
+								Optional: true,
+								Computed: true,
+							},
+						},
+					},
+					"interface": schema.SingleNestedBlock{
+						Attributes: map[string]schema.Attribute{
+							"id": schema.StringAttribute{
+								PlanModifiers: []planmodifier.String{
+									stringplanmodifier.UseStateForUnknown(),
+								},
+								Optional: true,
+								Computed: true,
+							},
+						},
+					},
+				},
 				Attributes: map[string]schema.Attribute{
 					"delete_public_ip": schema.BoolAttribute{
+						PlanModifiers: []planmodifier.Bool{
+							boolplanmodifier.UseStateForUnknown(),
+						},
+						Default:  booldefault.StaticBool(true),
 						Optional: true,
 						Computed: true,
-						Default:  booldefault.StaticBool(true),
 					},
 					"associate_public_ip": schema.BoolAttribute{
 						Required: true,
+						PlanModifiers: []planmodifier.Bool{
+							boolplanmodifier.RequiresReplace(),
+						},
 					},
 					"ipv6": schema.StringAttribute{
 						PlanModifiers: []planmodifier.String{
@@ -229,26 +261,6 @@ func (r *vmInstances) Schema(_ context.Context, _ resource.SchemaRequest, resp *
 						},
 						Computed: true,
 					},
-					"vpc": schema.SingleNestedAttribute{
-						Required: false,
-						Optional: true,
-						Attributes: map[string]schema.Attribute{
-							"id": schema.StringAttribute{
-								PlanModifiers: []planmodifier.String{
-									stringplanmodifier.UseStateForUnknown(),
-								},
-								Optional: true,
-								Computed: true,
-							},
-							"name": schema.StringAttribute{
-								PlanModifiers: []planmodifier.String{
-									stringplanmodifier.UseStateForUnknown(),
-								},
-								Optional: true,
-								Computed: true,
-							},
-						},
-					},
 				},
 			},
 		},
@@ -256,7 +268,7 @@ func (r *vmInstances) Schema(_ context.Context, _ resource.SchemaRequest, resp *
 }
 
 func (r *vmInstances) ModifyPlan(ctx context.Context, req resource.ModifyPlanRequest, resp *resource.ModifyPlanResponse) {
-	resp.RequiresReplace = []path.Path{path.Root("network").AtName("associate_public_ip")}
+	// resp.RequiresReplace = []path.Path{path.Root("network").AtName("associate_public_ip")}
 }
 func (r *vmInstances) ModifyPlanResponse(ctx context.Context, req resource.ModifyPlanRequest, resp *resource.ModifyPlanResponse) {
 	// nothing
@@ -264,7 +276,7 @@ func (r *vmInstances) ModifyPlanResponse(ctx context.Context, req resource.Modif
 
 // Read refreshes the Terraform state with the latest data.
 func (r *vmInstances) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	data := &vmInstancesResourceModel{}
+	data := vmInstancesResourceModel{}
 	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
 
 	getResult, err := r.getVmStatus(data.ID.ValueString())
@@ -277,75 +289,61 @@ func (r *vmInstances) Read(ctx context.Context, req resource.ReadRequest, resp *
 	}
 
 	data.ID = types.StringValue(getResult.Id)
-	r.setValuesFromServer(data, getResult)
+	data = r.setValuesFromServer(data, getResult)
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
 // Create creates the resource and sets the initial Terraform state.
 func (r *vmInstances) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	plan := &vmInstancesResourceModel{}
-	diags := req.Plan.Get(ctx, &plan)
-	resp.Diagnostics.Append(diags...)
+	plan := vmInstancesResourceModel{}
+
+	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
+
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	machineType, err := r.getMachineTypeID(plan.MachineType.Name.ValueString())
-	if err != nil {
-		resp.Diagnostics.AddError(
-			"Error creating vm",
-			"Could not load machine-type list, unexpected error: "+err.Error(),
-		)
-		return
+	state := plan
+
+	state.FinalName = types.StringValue(state.Name.ValueString())
+
+	if state.NameIsPrefix.ValueBool() {
+		bwords := bws.BrazilianWords(3, "-")
+		state.FinalName = types.StringValue(state.Name.ValueString() + "-" + bwords.Sort())
 	}
 
-	bwords := bws.BrazilianWords(3, "-")
-	if plan.NameIsPrefix.ValueBool() && plan.FinalName.ValueString() == "" {
-		plan.FinalName = types.StringValue(plan.Name.ValueString() + "-" + bwords.Sort())
+	if state.Network.DeletePublicIP.IsNull() {
+		state.Network.DeletePublicIP = types.BoolValue(true)
+	}
+
+	if state.Network.AssociatePublicIP.IsNull() {
+		state.Network.AssociatePublicIP = types.BoolValue(false)
 	}
 
 	createParams := sdkVmInstances.CreateParameters{
-		Name:       plan.FinalName.ValueString(),
-		SshKeyName: plan.SshKeyName.ValueString(),
+		Name:       state.FinalName.ValueString(),
+		SshKeyName: state.SshKeyName.ValueString(),
 		Image: sdkVmInstances.CreateParametersImage{
-			CreateParametersImage1: sdkVmInstances.CreateParametersImage1{
-				Name: plan.Image.Name.ValueString(),
-			},
+			Name: state.Image.Name.ValueStringPointer(),
 		},
 		MachineType: sdkVmInstances.CreateParametersMachineType{
-			CreateParametersImage1: sdkVmInstances.CreateParametersImage1{
-				Name: plan.MachineType.Name.ValueString(),
-			},
+			Name: state.MachineType.Name.ValueStringPointer(),
 		},
-		Network: &sdkVmInstances.CreateParametersNetwork{
-			AssociatePublicIp: plan.Network.AssociatePublicIP.ValueBoolPointer(),
-		},
+		Network: &sdkVmInstances.CreateParametersNetwork{},
 	}
 
-	if !plan.Network.VPC.ID.IsNull() && plan.Network.VPC.ID.ValueString() != "" {
+	if state.Network.VPC != nil && state.Network.VPC.ID.ValueString() != "" {
 		createParams.Network.Vpc = &sdkVmInstances.CreateParametersNetworkVpc{
-			CreateParametersImage1: sdkVmInstances.CreateParametersImage1{
-				Name: plan.Network.VPC.Name.ValueString(),
-			},
-		}
-	} else if !plan.Network.VPC.Name.IsNull() && plan.Network.VPC.Name.ValueString() != "" {
-		// vpcId, err := r.getVpcID(plan.Network.VPC.Name.ValueString())
-		if err != nil {
-			resp.Diagnostics.AddError(
-				"Error creating vm",
-				"Could not load vpc list",
-			)
-			return
-		}
-		if strings.Contains(plan.Network.VPC.Name.ValueString(), plan.Network.VPC.Name.ValueString()) {
-			createParams.Network.Vpc = &sdkVmInstances.CreateParametersNetworkVpc{
-				CreateParametersImage1: sdkVmInstances.CreateParametersImage1{
-					Name: plan.Network.VPC.Name.ValueString(),
-				},
-			}
+			Id: state.Network.VPC.ID.ValueString(),
 		}
 	}
+
+	if state.Network.Interface != nil && state.Network.Interface.ID.ValueString() != "" {
+		createParams.Network.Interface.Id = state.Network.Interface.ID.ValueString()
+	}
+
+	createParams.Network.AssociatePublicIp = state.Network.AssociatePublicIP.ValueBoolPointer()
 
 	result, err := r.vmInstances.Create(createParams, sdkVmInstances.CreateConfigs{})
 	if err != nil {
@@ -364,16 +362,15 @@ func (r *vmInstances) Create(ctx context.Context, req resource.CreateRequest, re
 		)
 		return
 	}
-	plan.ID = types.StringValue(result.Id)
+	state.ID = types.StringValue(result.Id)
 
-	r.setValuesFromServer(plan, getResult)
-	r.setValuesFromMachineType(plan, machineType)
+	state = r.setValuesFromServer(state, getResult)
 
-	plan.CreatedAt = types.StringValue(time.Now().Format(time.RFC850))
-	plan.UpdatedAt = types.StringValue(time.Now().Format(time.RFC850))
+	state.CreatedAt = types.StringValue(time.Now().Format(time.RFC850))
+	state.UpdatedAt = types.StringValue(time.Now().Format(time.RFC850))
+
 	// Set state to fully populated data
-	diags = resp.State.Set(ctx, plan)
-	resp.Diagnostics.Append(diags...)
+	resp.Diagnostics.Append(resp.State.Set(ctx, state)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
@@ -381,7 +378,7 @@ func (r *vmInstances) Create(ctx context.Context, req resource.CreateRequest, re
 
 // Update updates the resource and sets the updated Terraform state on success.
 func (r *vmInstances) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	data := &vmInstancesResourceModel{}
+	data := vmInstancesResourceModel{}
 	currState := &vmInstancesResourceModel{}
 	req.State.Get(ctx, currState)
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
@@ -399,9 +396,7 @@ func (r *vmInstances) Update(ctx context.Context, req resource.UpdateRequest, re
 		err = r.vmInstances.Retype(sdkVmInstances.RetypeParameters{
 			Id: data.ID.ValueString(),
 			MachineType: sdkVmInstances.RetypeParametersMachineType{
-				RetypeParametersMachineType1: sdkVmInstances.RetypeParametersMachineType1{
-					Name: data.MachineType.Name.ValueString(),
-				},
+				Id: machineType.ID.ValueString(),
 			},
 		}, sdkVmInstances.RetypeConfigs{})
 
@@ -424,8 +419,7 @@ func (r *vmInstances) Update(ctx context.Context, req resource.UpdateRequest, re
 		return
 	}
 
-	r.setValuesFromServer(data, getResult)
-	r.setValuesFromMachineType(data, machineType)
+	data = r.setValuesFromServer(data, getResult)
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
@@ -450,36 +444,36 @@ func (r *vmInstances) Delete(ctx context.Context, req resource.DeleteRequest, re
 		)
 		return
 	}
+	r.checkVmIsNotFound(data.ID.ValueString())
 }
 
-func (r *vmInstances) setValuesFromServer(data *vmInstancesResourceModel, server *sdkVmInstances.GetResult) {
+func (r *vmInstances) setValuesFromServer(data vmInstancesResourceModel, server *sdkVmInstances.GetResult) vmInstancesResourceModel {
+	data.ID = types.StringValue(server.Id)
+	data.FinalName = types.StringValue(*server.Name)
 	data.State = types.StringValue(server.State)
 	data.Status = types.StringValue(server.Status)
-	// data.MachineType.ID = types.StringValue(server.MachineType.Id)
-	// data.MachineType.Name = types.StringValue(server.MachineType.Name)
-	// data.MachineType.Disk = types.NumberValue(new(big.Float).SetInt64(int64(server.MachineType.Disk)))
-	// data.MachineType.RAM = types.NumberValue(new(big.Float).SetInt64(int64(server.MachineType.Ram)))
+	data.MachineType.ID = types.StringValue(server.MachineType.Id)
+	data.MachineType.Name = types.StringValue(*server.MachineType.Name)
+	data.MachineType.Disk = types.NumberValue(new(big.Float).SetInt64(int64(*server.MachineType.Disk)))
+	data.MachineType.RAM = types.NumberValue(new(big.Float).SetInt64(int64(*server.MachineType.Ram)))
+	data.MachineType.VCPUs = types.NumberValue(new(big.Float).SetInt64(int64(*server.MachineType.Vcpus)))
 
-	// data.Image.ID = types.StringValue(server.Image.Id)
+	data.Image.Name = types.StringValue(*server.Image.Name)
+	data.Image.ID = types.StringValue(server.Image.Id)
 
-	// data.Network.VPC = genericIDNameModel{
-	// 	ID:   types.StringValue(""),
-	// 	Name: types.StringValue(""),
-	// }
+	if vpc := data.Network.VPC; vpc != nil {
+		vpc.ID = types.StringValue(server.Network.Vpc.Id)
+		vpc.Name = types.StringValue(server.Network.Vpc.Name)
+	}
 
 	data.Network.IPV6 = types.StringValue("")
 	data.Network.PrivateAddress = types.StringValue("")
 	data.Network.PublicIpAddress = types.StringValue("")
 
-	if server.Network.GetResultNetwork1.Ports != nil && len(*server.Network.GetResultNetwork1.Ports) > 0 {
-		ports := (*server.Network.GetResultNetwork1.Ports)[0]
+	if server.Network.Ports != nil && len(*server.Network.Ports) > 0 {
+		ports := (*server.Network.Ports)[0]
 
-		data.Network.VPC = genericIDNameModel{
-			ID:   types.StringValue(server.Network.GetResultNetwork1.Vpc.Id),
-			Name: types.StringValue(server.Network.GetResultNetwork1.Vpc.Name),
-		}
-
-		data.Network.PrivateAddress = types.StringValue(ports.IpAddresses.PrivateIpAddress)
+		data.Network.PrivateAddress = types.StringValue(ports.Id)
 
 		if ports.IpAddresses.IpV6address != nil {
 			data.Network.IPV6 = types.StringValue(*ports.IpAddresses.IpV6address)
@@ -490,6 +484,7 @@ func (r *vmInstances) setValuesFromServer(data *vmInstancesResourceModel, server
 		}
 
 	}
+	return data
 }
 
 func (r *vmInstances) getMachineTypeID(name string) (*vmInstancesMachineTypeModel, error) {
@@ -516,17 +511,9 @@ func (r *vmInstances) getMachineTypeID(name string) (*vmInstancesMachineTypeMode
 	return &machineType, nil
 }
 
-func (r *vmInstances) setValuesFromMachineType(data *vmInstancesResourceModel, server *vmInstancesMachineTypeModel) {
-	data.MachineType.Disk = server.Disk
-	data.MachineType.ID = server.ID
-	data.MachineType.Name = server.Name
-	data.MachineType.RAM = server.RAM
-	data.MachineType.VCPUs = server.VCPUs
-}
-
 func (r *vmInstances) getVmStatus(id string) (*sdkVmInstances.GetResult, error) {
 	getResult := &sdkVmInstances.GetResult{}
-	expand := &sdkVmInstances.GetParametersExpand{"network"}
+	expand := &sdkVmInstances.GetParametersExpand{"network", "machine-type", "image"}
 
 	duration := 5 * time.Minute
 	startTime := time.Now()
@@ -551,6 +538,33 @@ func (r *vmInstances) getVmStatus(id string) (*sdkVmInstances.GetResult, error) 
 		if getResult.Status == "completed" {
 			return getResult, nil
 		}
-		time.Sleep(1 * time.Second)
+		time.Sleep(3 * time.Second)
+	}
+}
+
+func (r *vmInstances) checkVmIsNotFound(id string) {
+	getResult := &sdkVmInstances.GetResult{}
+
+	duration := 5 * time.Minute
+	startTime := time.Now()
+	getParam := sdkVmInstances.GetParameters{Id: id}
+	getConfigParam := sdkVmInstances.GetConfigs{}
+	var err error
+	for {
+		elapsed := time.Since(startTime)
+		remaining := duration - elapsed
+		if remaining <= 0 {
+			if getResult.Status != "" {
+				return
+			}
+			return
+		}
+
+		*getResult, err = r.vmInstances.Get(getParam, getConfigParam)
+		if err != nil {
+			return
+		}
+
+		time.Sleep(3 * time.Second)
 	}
 }

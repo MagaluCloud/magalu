@@ -21,9 +21,8 @@ import (
 )
 
 type ResizeParameters struct {
-	Exchange  *string `json:"exchange,omitempty"`
-	FlavorId  string  `json:"flavor_id"`
-	ReplicaId string  `json:"replica_id"`
+	FlavorId  string `json:"flavor_id"`
+	ReplicaId string `json:"replica_id"`
 }
 
 type ResizeConfigs struct {

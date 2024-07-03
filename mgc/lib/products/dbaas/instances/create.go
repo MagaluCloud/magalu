@@ -25,7 +25,6 @@ type CreateParameters struct {
 	BackupStartAt       *string                     `json:"backup_start_at,omitempty"`
 	DatastoreId         *string                     `json:"datastore_id,omitempty"`
 	EngineId            *string                     `json:"engine_id,omitempty"`
-	Exchange            *string                     `json:"exchange,omitempty"`
 	FlavorId            string                      `json:"flavor_id"`
 	Name                string                      `json:"name"`
 	Parameters          *CreateParametersParameters `json:"parameters,omitempty"`

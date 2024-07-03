@@ -17,15 +17,15 @@ Operations with instances, including create, delete, start, stop, reboot and oth
 
 ### Required
 
-- `image` (Attributes) (see [below for nested schema](#nestedatt--image))
-- `machine_type` (Attributes) (see [below for nested schema](#nestedatt--machine_type))
 - `name` (String)
 - `ssh_key_name` (String)
 
 ### Optional
 
+- `image` (Block, Optional) (see [below for nested schema](#nestedblock--image))
+- `machine_type` (Block, Optional) (see [below for nested schema](#nestedblock--machine_type))
 - `name_is_prefix` (Boolean)
-- `network` (Attributes) (see [below for nested schema](#nestedatt--network))
+- `network` (Block, Optional) (see [below for nested schema](#nestedblock--network))
 
 ### Read-Only
 
@@ -36,31 +36,34 @@ Operations with instances, including create, delete, start, stop, reboot and oth
 - `status` (String)
 - `updated_at` (String)
 
-<a id="nestedatt--image"></a>
+<a id="nestedblock--image"></a>
 ### Nested Schema for `image`
 
-Optional:
+Required:
 
-- `id` (String)
 - `name` (String)
 
-
-<a id="nestedatt--machine_type"></a>
-### Nested Schema for `machine_type`
-
-Optional:
+Read-Only:
 
 - `id` (String)
+
+
+<a id="nestedblock--machine_type"></a>
+### Nested Schema for `machine_type`
+
+Required:
+
 - `name` (String)
 
 Read-Only:
 
 - `disk` (Number)
+- `id` (String)
 - `ram` (Number)
 - `vcpus` (Number)
 
 
-<a id="nestedatt--network"></a>
+<a id="nestedblock--network"></a>
 ### Nested Schema for `network`
 
 Required:
@@ -70,7 +73,8 @@ Required:
 Optional:
 
 - `delete_public_ip` (Boolean)
-- `vpc` (Attributes) (see [below for nested schema](#nestedatt--network--vpc))
+- `interface` (Block, Optional) (see [below for nested schema](#nestedblock--network--interface))
+- `vpc` (Block, Optional) (see [below for nested schema](#nestedblock--network--vpc))
 
 Read-Only:
 
@@ -78,7 +82,15 @@ Read-Only:
 - `private_address` (String)
 - `public_address` (String)
 
-<a id="nestedatt--network--vpc"></a>
+<a id="nestedblock--network--interface"></a>
+### Nested Schema for `network.interface`
+
+Optional:
+
+- `id` (String)
+
+
+<a id="nestedblock--network--vpc"></a>
 ### Nested Schema for `network.vpc`
 
 Optional:

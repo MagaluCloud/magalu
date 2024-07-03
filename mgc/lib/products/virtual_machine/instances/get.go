@@ -54,76 +54,43 @@ type GetResultError struct {
 	Slug    string `json:"slug"`
 }
 
-// any of: GetResultImage0, GetResultImage1
+// any of: GetResultImage
 type GetResultImage struct {
-	GetResultImage0 `json:",squash"` // nolint
-	GetResultImage1 `json:",squash"` // nolint
-}
-
-type GetResultImage0 struct {
-	Id string `json:"id"`
-}
-
-type GetResultImage1 struct {
 	Id       string  `json:"id"`
-	Name     string  `json:"name"`
+	Name     *string `json:"name,omitempty"`
 	Platform *string `json:"platform,omitempty"`
 }
 
-// any of: GetResultMachineType0, GetResultMachineType1
+// any of: GetResultMachineType
 type GetResultMachineType struct {
-	GetResultMachineType0 `json:",squash"` // nolint
-	GetResultMachineType1 `json:",squash"` // nolint
+	Disk  *int    `json:"disk,omitempty"`
+	Id    string  `json:"id"`
+	Name  *string `json:"name,omitempty"`
+	Ram   *int    `json:"ram,omitempty"`
+	Vcpus *int    `json:"vcpus,omitempty"`
 }
 
-type GetResultMachineType0 struct {
-	Id string `json:"id"`
-}
-
-type GetResultMachineType1 struct {
-	Disk  int    `json:"disk"`
-	Id    string `json:"id"`
-	Name  string `json:"name"`
-	Ram   int    `json:"ram"`
-	Vcpus int    `json:"vcpus"`
-}
-
-// any of: GetResultNetwork0, GetResultNetwork1
+// any of: GetResultNetwork
 type GetResultNetwork struct {
-	GetResultNetwork0 `json:",squash"` // nolint
-	GetResultNetwork1 `json:",squash"` // nolint
+	Ports *GetResultNetworkPorts `json:"ports"`
+	Vpc   *GetResultNetworkVpc   `json:"vpc,omitempty"`
 }
 
-type GetResultNetwork0 struct {
-	Ports GetResultNetwork0Ports `json:"ports"`
+type GetResultNetworkPortsItem struct {
+	Id          string                               `json:"id"`
+	IpAddresses GetResultNetworkPortsItemIpAddresses `json:"ipAddresses"`
+	Name        string                               `json:"name"`
 }
 
-type GetResultNetwork0PortsItem struct {
-	Id string `json:"id"`
-}
-
-type GetResultNetwork0Ports []GetResultNetwork0PortsItem
-
-type GetResultNetwork1 struct {
-	Ports *GetResultNetwork1Ports `json:"ports,omitempty"`
-	Vpc   *GetResultNetwork1Vpc   `json:"vpc,omitempty"`
-}
-
-type GetResultNetwork1PortsItem struct {
-	Id          string                                `json:"id"`
-	IpAddresses GetResultNetwork1PortsItemIpAddresses `json:"ipAddresses"`
-	Name        string                                `json:"name"`
-}
-
-type GetResultNetwork1PortsItemIpAddresses struct {
+type GetResultNetworkPortsItemIpAddresses struct {
 	IpV6address      *string `json:"ipV6Address,omitempty"`
 	PrivateIpAddress string  `json:"privateIpAddress"`
 	PublicIpAddress  *string `json:"publicIpAddress,omitempty"`
 }
 
-type GetResultNetwork1Ports []GetResultNetwork1PortsItem
+type GetResultNetworkPorts []GetResultNetworkPortsItem
 
-type GetResultNetwork1Vpc struct {
+type GetResultNetworkVpc struct {
 	Id   string `json:"id"`
 	Name string `json:"name"`
 }

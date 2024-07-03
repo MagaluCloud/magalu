@@ -59,13 +59,8 @@ type GetResultAttachment struct {
 	Instance   GetResultAttachmentInstance `json:"instance"`
 }
 
-// any of: GetResultAttachmentInstance0, GetResultAttachmentInstance1
+// any of: GetResultAttachmentInstance
 type GetResultAttachmentInstance struct {
-	GetResultAttachmentInstance0 `json:",squash"` // nolint
-	GetResultAttachmentInstance1 `json:",squash"` // nolint
-}
-
-type GetResultAttachmentInstance0 struct {
 	CreatedAt string `json:"created_at"`
 	Id        string `json:"id"`
 	Name      string `json:"name"`
@@ -74,30 +69,21 @@ type GetResultAttachmentInstance0 struct {
 	UpdatedAt string `json:"updated_at"`
 }
 
-type GetResultAttachmentInstance1 struct {
-	Id string `json:"id"`
-}
-
 type GetResultError struct {
 	Message string `json:"message"`
 	Slug    string `json:"slug"`
 }
 
-// any of: GetResultAttachmentInstance1, GetResultType1
+// any of: GetResultType
 type GetResultType struct {
-	GetResultAttachmentInstance1 `json:",squash"` // nolint
-	GetResultType1               `json:",squash"` // nolint
-}
-
-type GetResultType1 struct {
-	DiskType string             `json:"disk_type"`
+	DiskType *string            `json:"disk_type,omitempty"`
 	Id       string             `json:"id"`
-	Iops     GetResultType1Iops `json:"iops"`
-	Name     string             `json:"name"`
-	Status   string             `json:"status"`
+	Iops     *GetResultTypeIops `json:"iops,omitempty"`
+	Name     *string            `json:"name,omitempty"`
+	Status   *string            `json:"status,omitempty"`
 }
 
-type GetResultType1Iops struct {
+type GetResultTypeIops struct {
 	Read  int `json:"read"`
 	Write int `json:"write"`
 }

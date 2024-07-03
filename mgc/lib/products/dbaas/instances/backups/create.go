@@ -21,9 +21,8 @@ import (
 )
 
 type CreateParameters struct {
-	Exchange   *string `json:"exchange,omitempty"`
-	InstanceId string  `json:"instance_id"`
-	Mode       string  `json:"mode"`
+	InstanceId string `json:"instance_id"`
+	Mode       string `json:"mode"`
 }
 
 type CreateConfigs struct {

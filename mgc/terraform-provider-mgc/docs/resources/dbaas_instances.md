@@ -25,23 +25,22 @@ Database instances management.
 
 ### Optional
 
-- `backup_retention_days` (Number)
-- `backup_start_at` (String)
-- `datastore_id` (String)
+- `backup_retention_days` (Number) The number of days that a particular backup is kept until its deletion.
+- `backup_start_at` (String) Start time (UTC timezone) which is allowed to start the automated backup process.
+- `datastore_id` (String) **Deprecated**: This property is being deprecated in favor of `engine_id`. Please update your requests to use `engine_id` for improved functionality and future compatibility.
 - `engine_id` (String)
-- `exchange` (String)
 - `parameters` (Attributes List) (see [below for nested schema](#nestedatt--parameters))
-- `status` (String) An enumeration.
+- `status` (String)
 
 ### Read-Only
 
 - `addresses` (Attributes List) (see [below for nested schema](#nestedatt--addresses))
 - `created_at` (String)
-- `current_status` (String) An enumeration.
+- `current_status` (String)
 - `current_volume` (Attributes) (see [below for nested schema](#nestedatt--current_volume))
 - `finished_at` (String)
-- `generation` (String) An enumeration.
-- `id` (String) The ID of this resource.
+- `generation` (String) Current database instance generation
+- `id` (String) Value referring to instance Id.
 - `replicas` (Attributes List) (see [below for nested schema](#nestedatt--replicas))
 - `started_at` (String)
 - `updated_at` (String)
@@ -51,11 +50,11 @@ Database instances management.
 
 Required:
 
-- `size` (Number)
+- `size` (Number) The size of the volume (in GiB).
 
 Optional:
 
-- `type` (String) An enumeration.
+- `type` (String) The type of the volume.
 
 
 <a id="nestedatt--parameters"></a>
@@ -63,8 +62,8 @@ Optional:
 
 Required:
 
-- `name` (String) An enumeration.
-- `value` (Attributes) (see [below for nested schema](#nestedatt--parameters--value))
+- `name` (String) Database parameter name.
+- `value` (Attributes) Database parameter value. (see [below for nested schema](#nestedatt--parameters--value))
 
 <a id="nestedatt--parameters--value"></a>
 ### Nested Schema for `parameters.value`
@@ -83,9 +82,9 @@ Optional:
 
 Read-Only:
 
-- `access` (String) An enumeration.
+- `access` (String) Determine if the IP can be accessed from the internet.
 - `address` (String)
-- `type` (String) An enumeration.
+- `type` (String)
 
 
 <a id="nestedatt--current_volume"></a>
@@ -93,8 +92,8 @@ Read-Only:
 
 Read-Only:
 
-- `size` (Number)
-- `type` (String) An enumeration.
+- `size` (Number) The size of the volume (in GiB).
+- `type` (String) The type of the volume.
 
 
 <a id="nestedatt--replicas"></a>
@@ -104,17 +103,18 @@ Read-Only:
 
 - `addresses` (Attributes List) (see [below for nested schema](#nestedatt--replicas--addresses))
 - `created_at` (String)
-- `datastore_id` (String)
-- `engine_id` (String)
+- `datastore_id` (String) Datastore unique identifier (Deprecated).
+**Deprecated**: This property is being deprecated in favor of `engine_id`. Please update your requests to use `engine_id` for improved functionality and future compatibility.
+- `engine_id` (String) Engine unique identifier.
 - `finished_at` (String)
 - `flavor_id` (String)
-- `generation` (String) An enumeration.
+- `generation` (String) Current database instance generation
 - `id` (String)
 - `name` (String)
 - `parameters` (Attributes List) (see [below for nested schema](#nestedatt--replicas--parameters))
 - `source_id` (String)
 - `started_at` (String)
-- `status` (String) An enumeration.
+- `status` (String)
 - `updated_at` (String)
 - `volume` (Attributes) (see [below for nested schema](#nestedatt--replicas--volume))
 
@@ -123,9 +123,9 @@ Read-Only:
 
 Read-Only:
 
-- `access` (String) An enumeration.
+- `access` (String)
 - `address` (String)
-- `type` (String) An enumeration.
+- `type` (String)
 
 
 <a id="nestedatt--replicas--parameters"></a>
@@ -133,8 +133,8 @@ Read-Only:
 
 Read-Only:
 
-- `name` (String) An enumeration.
-- `value` (Attributes) (see [below for nested schema](#nestedatt--replicas--parameters--value))
+- `name` (String) Database parameter name.
+- `value` (Attributes) Database parameter value. (see [below for nested schema](#nestedatt--replicas--parameters--value))
 
 <a id="nestedatt--replicas--parameters--value"></a>
 ### Nested Schema for `replicas.parameters.value`
@@ -153,5 +153,5 @@ Read-Only:
 
 Read-Only:
 
-- `size` (Number)
-- `type` (String) An enumeration.
+- `size` (Number) The size of the volume (in GiB).
+- `type` (String) The type of the volume.

@@ -36,30 +36,15 @@ import (
 )
 
 type CreateParameters struct {
-	Backup *CreateParametersBackup `json:"backup,omitempty"`
-	Name   string                  `json:"name"`
-	Size   int                     `json:"size"`
-	Type   CreateParametersType    `json:"type"`
+	Name string               `json:"name"`
+	Size int                  `json:"size"`
+	Type CreateParametersType `json:"type"`
 }
 
-// any of: CreateParametersBackup0, CreateParametersBackup1
-type CreateParametersBackup struct {
-	CreateParametersBackup0 `json:",squash"` // nolint
-	CreateParametersBackup1 `json:",squash"` // nolint
-}
-
-type CreateParametersBackup0 struct {
-	Id string `json:"id"`
-}
-
-type CreateParametersBackup1 struct {
-	Name string `json:"name"`
-}
-
-// any of: CreateParametersBackup0, CreateParametersBackup1
+// any of: CreateParametersType
 type CreateParametersType struct {
-	CreateParametersBackup0 `json:",squash"` // nolint
-	CreateParametersBackup1 `json:",squash"` // nolint
+	Id   string  `json:"id"`
+	Name *string `json:"name,omitempty"`
 }
 
 type CreateConfigs struct {
@@ -69,7 +54,15 @@ type CreateConfigs struct {
 }
 
 type CreateResult struct {
-	Id string `json:"id"`
+	Id   string            `json:"id"`
+	Name *string           `json:"name,omitempty"`
+	Size *int              `json:"size,omitempty"`
+	Type *CreateResultType `json:"type,omitempty"`
+}
+
+type CreateResultType struct {
+	Id   string `json:"id"`
+	Name string `json:"name"`
 }
 
 func (s *service) Create(

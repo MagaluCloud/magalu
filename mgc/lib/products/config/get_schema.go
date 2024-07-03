@@ -24,43 +24,43 @@ type GetSchemaParameters struct {
 }
 
 type GetSchemaResult struct {
-	AdditionalProperties *GetSchemaResultAdditionalProperties `json:"additionalProperties,omitempty"`
-	AllOf                *GetSchemaResultAllOf                `json:"allOf,omitempty"`
-	AllowEmptyValue      *bool                                `json:"allowEmptyValue,omitempty"`
-	AnyOf                *GetSchemaResultAnyOf                `json:"anyOf,omitempty"`
-	Default              *GetSchemaResultDefault              `json:"default,omitempty"`
-	Deprecated           *bool                                `json:"deprecated,omitempty"`
-	Description          *string                              `json:"description,omitempty"`
-	Discriminator        *GetSchemaResultDiscriminator        `json:"discriminator,omitempty"`
-	Enum                 *GetSchemaResultEnum                 `json:"enum,omitempty"`
-	Example              *GetSchemaResultExample              `json:"example,omitempty"`
-	ExclusiveMax         *bool                                `json:"exclusiveMax,omitempty"`
-	ExclusiveMin         *bool                                `json:"exclusiveMin,omitempty"`
-	Extensions           *GetSchemaResultExtensions           `json:"extensions,omitempty"`
-	ExternalDocs         *GetSchemaResultExternalDocs         `json:"externalDocs,omitempty"`
-	Format               *string                              `json:"format,omitempty"`
-	Items                *GetSchemaResultItems                `json:"items,omitempty"`
-	Max                  *float64                             `json:"max,omitempty"`
-	MaxItems             *int                                 `json:"maxItems,omitempty"`
-	MaxLength            *int                                 `json:"maxLength,omitempty"`
-	MaxProps             *int                                 `json:"maxProps,omitempty"`
-	Min                  *float64                             `json:"min,omitempty"`
-	MinItems             *int                                 `json:"minItems,omitempty"`
-	MinLength            *int                                 `json:"minLength,omitempty"`
-	MinProps             *int                                 `json:"minProps,omitempty"`
-	MultipleOf           *float64                             `json:"multipleOf,omitempty"`
-	Not                  *GetSchemaResultNot                  `json:"not,omitempty"`
-	Nullable             *bool                                `json:"nullable,omitempty"`
-	OneOf                *GetSchemaResultOneOf                `json:"oneOf,omitempty"`
-	Pattern              *string                              `json:"pattern,omitempty"`
-	Properties           *GetSchemaResultProperties           `json:"properties,omitempty"`
-	ReadOnly             *bool                                `json:"readOnly,omitempty"`
-	Required             *GetSchemaResultRequired             `json:"required,omitempty"`
-	Title                *string                              `json:"title,omitempty"`
-	Type                 *string                              `json:"type,omitempty"`
-	UniqueItems          *bool                                `json:"uniqueItems,omitempty"`
-	WriteOnly            *bool                                `json:"writeOnly,omitempty"`
-	Xml                  *GetSchemaResultXml                  `json:"xml,omitempty"`
+	AllOf                *GetSchemaResultAdditionalPropertiesSchemaValueAllOf         `json:"allOf,omitempty"`
+	AllowEmptyValue      *bool                                                        `json:"allowEmptyValue,omitempty"`
+	AnyOf                *GetSchemaResultAdditionalPropertiesSchemaValueAnyOf         `json:"anyOf,omitempty"`
+	Default              *GetSchemaResultAdditionalPropertiesSchemaValueDefault       `json:"default,omitempty"`
+	Deprecated           *bool                                                        `json:"deprecated,omitempty"`
+	Description          *string                                                      `json:"description,omitempty"`
+	Discriminator        *GetSchemaResultAdditionalPropertiesSchemaValueDiscriminator `json:"discriminator,omitempty"`
+	Enum                 *GetSchemaResultAdditionalPropertiesSchemaValueEnum          `json:"enum,omitempty"`
+	Example              *GetSchemaResultAdditionalPropertiesSchemaValueExample       `json:"example,omitempty"`
+	ExclusiveMax         *bool                                                        `json:"exclusiveMax,omitempty"`
+	ExclusiveMin         *bool                                                        `json:"exclusiveMin,omitempty"`
+	Extensions           *GetSchemaResultAdditionalPropertiesSchemaValueExtensions    `json:"extensions,omitempty"`
+	ExternalDocs         *GetSchemaResultAdditionalPropertiesSchemaValueExternalDocs  `json:"externalDocs,omitempty"`
+	Format               *string                                                      `json:"format,omitempty"`
+	Items                *GetSchemaResultAdditionalPropertiesSchemaValueItems         `json:"items,omitempty"`
+	Max                  *float64                                                     `json:"max,omitempty"`
+	MaxItems             *int                                                         `json:"maxItems,omitempty"`
+	MaxLength            *int                                                         `json:"maxLength,omitempty"`
+	MaxProps             *int                                                         `json:"maxProps,omitempty"`
+	Min                  *float64                                                     `json:"min,omitempty"`
+	MinItems             *int                                                         `json:"minItems,omitempty"`
+	MinLength            *int                                                         `json:"minLength,omitempty"`
+	MinProps             *int                                                         `json:"minProps,omitempty"`
+	MultipleOf           *float64                                                     `json:"multipleOf,omitempty"`
+	Not                  *GetSchemaResultAdditionalPropertiesSchemaValueNot           `json:"not,omitempty"`
+	Nullable             *bool                                                        `json:"nullable,omitempty"`
+	OneOf                *GetSchemaResultAdditionalPropertiesSchemaValueOneOf         `json:"oneOf,omitempty"`
+	Pattern              *string                                                      `json:"pattern,omitempty"`
+	Properties           *GetSchemaResultAdditionalPropertiesSchemaValueProperties    `json:"properties,omitempty"`
+	ReadOnly             *bool                                                        `json:"readOnly,omitempty"`
+	Required             *GetSchemaResultAdditionalPropertiesSchemaValueRequired      `json:"required,omitempty"`
+	Title                *string                                                      `json:"title,omitempty"`
+	Type                 *string                                                      `json:"type,omitempty"`
+	UniqueItems          *bool                                                        `json:"uniqueItems,omitempty"`
+	WriteOnly            *bool                                                        `json:"writeOnly,omitempty"`
+	Xml                  *GetSchemaResultAdditionalPropertiesSchemaValueXml           `json:"xml,omitempty"`
+	AdditionalProperties *GetSchemaResultAdditionalProperties                         `json:"additionalProperties,omitempty"`
 }
 
 type GetSchemaResultAdditionalProperties struct {
@@ -73,102 +73,102 @@ type GetSchemaResultAdditionalPropertiesSchema struct {
 	Value *GetSchemaResult `json:"value,omitempty"`
 }
 
-type GetSchemaResultAllOfItem struct {
+type GetSchemaResultAdditionalPropertiesSchemaValueAllOfItem struct {
 	Ref   *string          `json:"ref,omitempty"`
 	Value *GetSchemaResult `json:"value,omitempty"`
 }
 
-type GetSchemaResultAllOf []*GetSchemaResultAllOfItem
+type GetSchemaResultAdditionalPropertiesSchemaValueAllOf []*GetSchemaResultAdditionalPropertiesSchemaValueAllOfItem
 
-type GetSchemaResultAnyOfItem struct {
+type GetSchemaResultAdditionalPropertiesSchemaValueAnyOfItem struct {
 	Ref   *string          `json:"ref,omitempty"`
 	Value *GetSchemaResult `json:"value,omitempty"`
 }
 
-type GetSchemaResultAnyOf []*GetSchemaResultAnyOfItem
+type GetSchemaResultAdditionalPropertiesSchemaValueAnyOf []*GetSchemaResultAdditionalPropertiesSchemaValueAnyOfItem
 
-// any of: *bool, *string, *float64, *int, *GetSchemaResultDefault4, *GetSchemaResultDefault5
-type GetSchemaResultDefault any
+// any of: *bool, *string, *float64, *int, *GetSchemaResultAdditionalPropertiesSchemaValueDefault4, *GetSchemaResultAdditionalPropertiesSchemaValueDefault5
+type GetSchemaResultAdditionalPropertiesSchemaValueDefault any
 
-type GetSchemaResultDefault4 []any
+type GetSchemaResultAdditionalPropertiesSchemaValueDefault4 []any
 
-type GetSchemaResultDefault5 struct {
+type GetSchemaResultAdditionalPropertiesSchemaValueDefault5 struct {
 }
 
-type GetSchemaResultDiscriminator struct {
-	Extensions   *GetSchemaResultDiscriminatorExtensions `json:"extensions,omitempty"`
-	Mapping      *GetSchemaResultDiscriminatorMapping    `json:"mapping,omitempty"`
-	PropertyName *string                                 `json:"propertyName,omitempty"`
+type GetSchemaResultAdditionalPropertiesSchemaValueDiscriminator struct {
+	Extensions   *GetSchemaResultAdditionalPropertiesSchemaValueDiscriminatorExtensions `json:"extensions,omitempty"`
+	Mapping      *GetSchemaResultAdditionalPropertiesSchemaValueDiscriminatorMapping    `json:"mapping,omitempty"`
+	PropertyName *string                                                                `json:"propertyName,omitempty"`
 }
 
-type GetSchemaResultDiscriminatorExtensions struct {
+type GetSchemaResultAdditionalPropertiesSchemaValueDiscriminatorExtensions struct {
 }
 
-type GetSchemaResultDiscriminatorMapping struct {
+type GetSchemaResultAdditionalPropertiesSchemaValueDiscriminatorMapping struct {
 }
 
-// any of: *bool, *string, *float64, *int, *GetSchemaResultEnumItem4, *GetSchemaResultEnumItem5
-type GetSchemaResultEnumItem any
+// any of: *bool, *string, *float64, *int, *GetSchemaResultAdditionalPropertiesSchemaValueEnumItem4, *GetSchemaResultAdditionalPropertiesSchemaValueEnumItem5
+type GetSchemaResultAdditionalPropertiesSchemaValueEnumItem any
 
-type GetSchemaResultEnumItem4 []any
+type GetSchemaResultAdditionalPropertiesSchemaValueEnumItem4 []any
 
-type GetSchemaResultEnumItem5 struct {
+type GetSchemaResultAdditionalPropertiesSchemaValueEnumItem5 struct {
 }
 
-type GetSchemaResultEnum []*GetSchemaResultEnumItem
+type GetSchemaResultAdditionalPropertiesSchemaValueEnum []*GetSchemaResultAdditionalPropertiesSchemaValueEnumItem
 
-// any of: *bool, *string, *float64, *int, *GetSchemaResultExample4, *GetSchemaResultExample5
-type GetSchemaResultExample any
+// any of: *bool, *string, *float64, *int, *GetSchemaResultAdditionalPropertiesSchemaValueExample4, *GetSchemaResultAdditionalPropertiesSchemaValueExample5
+type GetSchemaResultAdditionalPropertiesSchemaValueExample any
 
-type GetSchemaResultExample4 []any
+type GetSchemaResultAdditionalPropertiesSchemaValueExample4 []any
 
-type GetSchemaResultExample5 struct {
+type GetSchemaResultAdditionalPropertiesSchemaValueExample5 struct {
 }
 
-type GetSchemaResultExtensions struct {
+type GetSchemaResultAdditionalPropertiesSchemaValueExtensions struct {
 }
 
-type GetSchemaResultExternalDocs struct {
-	Description *string                                `json:"description,omitempty"`
-	Extensions  *GetSchemaResultExternalDocsExtensions `json:"extensions,omitempty"`
-	Url         *string                                `json:"url,omitempty"`
+type GetSchemaResultAdditionalPropertiesSchemaValueExternalDocs struct {
+	Description *string                                                               `json:"description,omitempty"`
+	Extensions  *GetSchemaResultAdditionalPropertiesSchemaValueExternalDocsExtensions `json:"extensions,omitempty"`
+	Url         *string                                                               `json:"url,omitempty"`
 }
 
-type GetSchemaResultExternalDocsExtensions struct {
+type GetSchemaResultAdditionalPropertiesSchemaValueExternalDocsExtensions struct {
 }
 
-type GetSchemaResultItems struct {
+type GetSchemaResultAdditionalPropertiesSchemaValueItems struct {
 	Ref   *string          `json:"ref,omitempty"`
 	Value *GetSchemaResult `json:"value,omitempty"`
 }
 
-type GetSchemaResultNot struct {
+type GetSchemaResultAdditionalPropertiesSchemaValueNot struct {
 	Ref   *string          `json:"ref,omitempty"`
 	Value *GetSchemaResult `json:"value,omitempty"`
 }
 
-type GetSchemaResultOneOfItem struct {
+type GetSchemaResultAdditionalPropertiesSchemaValueOneOfItem struct {
 	Ref   *string          `json:"ref,omitempty"`
 	Value *GetSchemaResult `json:"value,omitempty"`
 }
 
-type GetSchemaResultOneOf []*GetSchemaResultOneOfItem
+type GetSchemaResultAdditionalPropertiesSchemaValueOneOf []*GetSchemaResultAdditionalPropertiesSchemaValueOneOfItem
 
-type GetSchemaResultProperties struct {
+type GetSchemaResultAdditionalPropertiesSchemaValueProperties struct {
 }
 
-type GetSchemaResultRequired []string
+type GetSchemaResultAdditionalPropertiesSchemaValueRequired []string
 
-type GetSchemaResultXml struct {
-	Attribute  *bool                         `json:"attribute,omitempty"`
-	Extensions *GetSchemaResultXmlExtensions `json:"extensions,omitempty"`
-	Name       *string                       `json:"name,omitempty"`
-	Namespace  *string                       `json:"namespace,omitempty"`
-	Prefix     *string                       `json:"prefix,omitempty"`
-	Wrapped    *bool                         `json:"wrapped,omitempty"`
+type GetSchemaResultAdditionalPropertiesSchemaValueXml struct {
+	Attribute  *bool                                                        `json:"attribute,omitempty"`
+	Extensions *GetSchemaResultAdditionalPropertiesSchemaValueXmlExtensions `json:"extensions,omitempty"`
+	Name       *string                                                      `json:"name,omitempty"`
+	Namespace  *string                                                      `json:"namespace,omitempty"`
+	Prefix     *string                                                      `json:"prefix,omitempty"`
+	Wrapped    *bool                                                        `json:"wrapped,omitempty"`
 }
 
-type GetSchemaResultXmlExtensions struct {
+type GetSchemaResultAdditionalPropertiesSchemaValueXmlExtensions struct {
 }
 
 func (s *service) GetSchema(

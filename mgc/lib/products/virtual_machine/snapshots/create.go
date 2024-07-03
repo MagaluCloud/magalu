@@ -35,19 +35,18 @@ type CreateParameters struct {
 	VirtualMachine CreateParametersVirtualMachine `json:"virtual_machine"`
 }
 
-// any of: CreateParametersVirtualMachine0, CreateParametersVirtualMachine1
+// any of: CreateParametersVirtualMachine
 type CreateParametersVirtualMachine struct {
-	CreateParametersVirtualMachine0 `json:",squash"` // nolint
-	CreateParametersVirtualMachine1 `json:",squash"` // nolint
+	Id             string                                        `json:"id"`
+	Name           *string                                       `json:"name,omitempty"`
+	SecurityGroups *CreateParametersVirtualMachineSecurityGroups `json:"security_groups,omitempty"`
 }
 
-type CreateParametersVirtualMachine0 struct {
+type CreateParametersVirtualMachineSecurityGroupsItem struct {
 	Id string `json:"id"`
 }
 
-type CreateParametersVirtualMachine1 struct {
-	Name string `json:"name"`
-}
+type CreateParametersVirtualMachineSecurityGroups []CreateParametersVirtualMachineSecurityGroupsItem
 
 type CreateConfigs struct {
 	Env       *string `json:"env,omitempty"`

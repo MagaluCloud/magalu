@@ -65,11 +65,11 @@ func (r *vmSnapshots) Configure(ctx context.Context, req resource.ConfigureReque
 
 // vmSnapshotsResourceModel maps de resource schema data.
 type vmSnapshotsResourceModel struct {
-	ID                 types.String `tfsdk:"id"`
-	Name               types.String `tfsdk:"name"`
-	VirtualMachineName types.String `tfsdk:"virtual_machine_name"`
-	UpdatedAt          types.String `tfsdk:"updated_at"`
-	CreatedAt          types.String `tfsdk:"created_at"`
+	ID               types.String `tfsdk:"id"`
+	Name             types.String `tfsdk:"name"`
+	VirtualMachineID types.String `tfsdk:"virtual_machine_id"`
+	UpdatedAt        types.String `tfsdk:"updated_at"`
+	CreatedAt        types.String `tfsdk:"created_at"`
 }
 
 // Schema defines the schema for the resource.
@@ -91,11 +91,11 @@ func (r *vmSnapshots) Schema(_ context.Context, _ resource.SchemaRequest, resp *
 				},
 				Required: true,
 			},
-			"virtual_machine_name": schema.StringAttribute{
+			"virtual_machine_id": schema.StringAttribute{
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.UseStateForUnknown(),
 				},
-				MarkdownDescription: "The final_name of the virtual machine.",
+				MarkdownDescription: "The id of the virtual machine.",
 				Required:            true,
 			},
 			"updated_at": schema.StringAttribute{
@@ -163,9 +163,7 @@ func (r *vmSnapshots) Create(ctx context.Context, req resource.CreateRequest, re
 	createParams := sdkVmSnapshots.CreateParameters{
 		Name: plan.Name.ValueString(),
 		VirtualMachine: sdkVmSnapshots.CreateParametersVirtualMachine{
-			CreateParametersVirtualMachine1: sdkVmSnapshots.CreateParametersVirtualMachine1{
-				Name: plan.VirtualMachineName.ValueString(),
-			},
+			Id: plan.VirtualMachineID.ValueString(),
 		},
 	}
 

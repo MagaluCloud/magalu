@@ -21,7 +21,6 @@ import (
 )
 
 type CreateParameters struct {
-	Exchange *string `json:"exchange,omitempty"`
 	FlavorId *string `json:"flavor_id,omitempty"`
 	Name     string  `json:"name"`
 	SourceId string  `json:"source_id"`

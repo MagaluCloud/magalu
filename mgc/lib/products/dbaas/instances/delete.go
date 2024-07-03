@@ -21,8 +21,7 @@ import (
 )
 
 type DeleteParameters struct {
-	Exchange   *string `json:"exchange,omitempty"`
-	InstanceId string  `json:"instance_id"`
+	InstanceId string `json:"instance_id"`
 }
 
 type DeleteConfigs struct {

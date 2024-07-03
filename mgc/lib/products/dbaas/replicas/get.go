@@ -21,8 +21,7 @@ import (
 )
 
 type GetParameters struct {
-	Exchange  *string `json:"exchange,omitempty"`
-	ReplicaId string  `json:"replica_id"`
+	ReplicaId string `json:"replica_id"`
 }
 
 type GetConfigs struct {

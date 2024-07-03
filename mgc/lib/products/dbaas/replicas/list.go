@@ -23,7 +23,6 @@ import (
 type ListParameters struct {
 	Limit    *int    `json:"_limit,omitempty"`
 	Offset   *int    `json:"_offset,omitempty"`
-	Exchange *string `json:"exchange,omitempty"`
 	SourceId *string `json:"source_id,omitempty"`
 }
 

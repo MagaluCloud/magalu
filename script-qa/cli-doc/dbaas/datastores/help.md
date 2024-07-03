@@ -9,8 +9,8 @@ Usage:
 
 ## Product catalog:
 - Commands:
-- get         Engine detail.
-- list        List available engines.
+- get         Datastore detail (Deprecated).
+- list        List available datastores (Deprecated).
 
 ## Other commands:
 - Flags:

@@ -2,7 +2,6 @@ package generator
 
 import (
 	_ "embed"
-	"fmt"
 	"path"
 	"strings"
 	"text/template"
@@ -79,10 +78,6 @@ func generateTypes(exec core.Executor, execGoName string) (t *templateTypes, err
 			err = &utils.ChainedError{Name: "result", Err: err}
 			return
 		}
-	}
-
-	for _, x := range t.Types.Definitions {
-		fmt.Println(x.Name)
 	}
 
 	return

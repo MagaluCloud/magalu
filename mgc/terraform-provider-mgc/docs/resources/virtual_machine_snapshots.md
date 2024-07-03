@@ -18,7 +18,7 @@ Operations with snapshots for instances.
 ### Required
 
 - `name` (String)
-- `virtual_machine_name` (String) The final_name of the virtual machine.
+- `virtual_machine_id` (String) The id of the virtual machine.
 
 ### Read-Only
 

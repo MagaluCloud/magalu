@@ -25,7 +25,6 @@ type ListParameters struct {
 	Limit         *int    `json:"_limit,omitempty"`
 	Offset        *int    `json:"_offset,omitempty"`
 	EngineId      *string `json:"engine_id,omitempty"`
-	Exchange      *string `json:"exchange,omitempty"`
 	Status        *string `json:"status,omitempty"`
 	Volumesize    *int    `json:"volume.size,omitempty"`
 	VolumesizeGt  *int    `json:"volume.size__gt,omitempty"`
@@ -58,23 +57,23 @@ type ListResultMetaPage struct {
 }
 
 type ListResultResultsItem struct {
-	Addresses           ListResultResultsItemAddresses  `json:"addresses"`
-	BackupRetentionDays int                             `json:"backup_retention_days"`
-	BackupStartAt       string                          `json:"backup_start_at"`
-	CreatedAt           string                          `json:"created_at"`
-	DatastoreId         string                          `json:"datastore_id"`
-	EngineId            string                          `json:"engine_id"`
-	FinishedAt          *string                         `json:"finished_at,omitempty"`
-	FlavorId            string                          `json:"flavor_id"`
-	Generation          string                          `json:"generation"`
-	Id                  string                          `json:"id"`
-	Name                string                          `json:"name"`
-	Parameters          ListResultResultsItemParameters `json:"parameters"`
-	Replicas            *ListResultResultsItemReplicas  `json:"replicas,omitempty"`
-	StartedAt           *string                         `json:"started_at,omitempty"`
-	Status              string                          `json:"status"`
-	UpdatedAt           *string                         `json:"updated_at,omitempty"`
-	Volume              ListResultResultsItemVolume     `json:"volume"`
+	Addresses           ListResultResultsItemAddresses          `json:"addresses"`
+	BackupRetentionDays int                                     `json:"backup_retention_days"`
+	BackupStartAt       string                                  `json:"backup_start_at"`
+	CreatedAt           string                                  `json:"created_at"`
+	DatastoreId         string                                  `json:"datastore_id"`
+	EngineId            string                                  `json:"engine_id"`
+	FinishedAt          *string                                 `json:"finished_at,omitempty"`
+	FlavorId            string                                  `json:"flavor_id"`
+	Generation          string                                  `json:"generation"`
+	Id                  string                                  `json:"id"`
+	Name                string                                  `json:"name"`
+	Parameters          ListResultResultsItemParameters         `json:"parameters"`
+	Replicas            *ListResultResultsItemReplicas          `json:"replicas,omitempty"`
+	StartedAt           *string                                 `json:"started_at,omitempty"`
+	Status              string                                  `json:"status"`
+	UpdatedAt           *string                                 `json:"updated_at,omitempty"`
+	Volume              ListResultResultsItemReplicasItemVolume `json:"volume"`
 }
 
 type ListResultResultsItemAddressesItem struct {
@@ -134,11 +133,6 @@ type ListResultResultsItemReplicasItemVolume struct {
 }
 
 type ListResultResultsItemReplicas []ListResultResultsItemReplicasItem
-
-type ListResultResultsItemVolume struct {
-	Size int    `json:"size"`
-	Type string `json:"type"`
-}
 
 type ListResultResults []ListResultResultsItem
 

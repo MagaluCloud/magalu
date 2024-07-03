@@ -7,7 +7,7 @@ List available flavors.
 
 # Description
 
-Returns a list of available flavors. A flavor is a hardware template that defines the size of RAM and vcpu.
+Returns a list of available flavors. A flavor is a hardware template that defines the size of RAM and vCPU.
 
 Version: 1.23.0
 

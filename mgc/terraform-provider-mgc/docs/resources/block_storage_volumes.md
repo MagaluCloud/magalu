@@ -21,10 +21,6 @@ Operations with volumes, including create, delete, extend, retype, list and othe
 - `size` (Number) Gibibytes (GiB)
 - `type` (Attributes) (see [below for nested schema](#nestedatt--type))
 
-### Optional
-
-- `backup` (Attributes) (see [below for nested schema](#nestedatt--backup))
-
 ### Read-Only
 
 - `attachment` (Attributes) (see [below for nested schema](#nestedatt--attachment))
@@ -38,15 +34,6 @@ Operations with volumes, including create, delete, extend, retype, list and othe
 
 <a id="nestedatt--type"></a>
 ### Nested Schema for `type`
-
-Optional:
-
-- `id` (String)
-- `name` (String)
-
-
-<a id="nestedatt--backup"></a>
-### Nested Schema for `backup`
 
 Optional:
 
