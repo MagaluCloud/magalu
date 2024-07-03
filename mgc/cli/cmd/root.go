@@ -1,7 +1,9 @@
 package cmd
 
 import (
+	"fmt"
 	"regexp"
+	"runtime"
 	"slices"
 	"strings"
 
@@ -32,9 +34,14 @@ func normalizeFlagName(f *pflag.FlagSet, name string) pflag.NormalizedName {
 func Execute() (err error) {
 	sdk := &mgcSdk.Sdk{}
 
+	vv := fmt.Sprintf("\nVersion: %s\nSO: %s/%s",
+		mgcSdk.Version,
+		runtime.GOOS,
+		runtime.GOARCH)
+
 	rootCmd := &cobra.Command{
 		Use:     argParser.FullProgramPath(),
-		Version: mgcSdk.Version,
+		Version: vv,
 		Short:   "CLI tool for OpenAPI integration",
 		Long: `This CLI is a dynamic processor of OpenAPI files that
 can generate a command line on-demand for Rest manipulation`,
