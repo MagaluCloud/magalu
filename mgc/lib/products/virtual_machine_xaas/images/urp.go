@@ -12,7 +12,7 @@ Internal route for update status of a image when receive a update from URP.
 ### Note
 This route is used only for internal proposes.
 
-Version: 1.249.0
+Version: 1.249.1
 
 import "magalu.cloud/lib/products/virtual_machine_xaas/images"
 */

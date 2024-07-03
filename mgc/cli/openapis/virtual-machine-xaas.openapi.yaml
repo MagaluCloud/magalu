@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
     title: Internal Virtual Machine Api Product
     description: Virtual Machine Api Product
-    version: 1.249.0
+    version: 1.249.1
 paths:
     /v1/health:
         get:

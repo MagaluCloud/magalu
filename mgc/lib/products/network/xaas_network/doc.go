@@ -5,7 +5,7 @@ Package: xaas_network
 
 xaas_network
 
-Version: 1.124.1
+Version: 1.126.1
 
 import "magalu.cloud/lib/products/network/xaas_network"
 */

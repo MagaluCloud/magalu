@@ -19,7 +19,7 @@ This internal method is for create a new flavor (instance type)
 
 	2 - number of gpu cores this flavor will use.
 
-Version: 1.249.0
+Version: 1.249.1
 
 import "magalu.cloud/lib/products/virtual_machine_xaas/instance_types"
 */

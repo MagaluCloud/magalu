@@ -12,7 +12,7 @@ Delete a existing keypair direct on urp using a informed tenant id.
 ### Note
 This route is used only for internal proposes.
 
-Version: 1.249.0
+Version: 1.249.1
 
 import "magalu.cloud/lib/products/virtual_machine_xaas/keypairs"
 */

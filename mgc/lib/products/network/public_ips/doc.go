@@ -5,8 +5,6 @@ Package: public_ips
 
 # VPC Public IPs
 
-Version: 1.126.1
-
 import "magalu.cloud/lib/products/network/public_ips"
 */
 package publicIps

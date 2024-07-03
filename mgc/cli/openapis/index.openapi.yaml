@@ -40,7 +40,7 @@ modules:
     summary: Virtual Machine Api Product
     super_internal: false
     url: https://virtual-machine.jaxyendy.com/internal/v1/openapi.json
-    version: 1.249.0
+    version: 1.249.1
 -   description: Virtual Machine Api Product
     name: virtual-machine
     path: virtual-machine.openapi.yaml

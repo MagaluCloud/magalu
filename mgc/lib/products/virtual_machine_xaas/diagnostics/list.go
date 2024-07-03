@@ -11,7 +11,7 @@ Get a list of instances informing a tenant ID.
 
 This route only list instances inserted on virtual machine database.
 
-Version: 1.249.0
+Version: 1.249.1
 
 import "magalu.cloud/lib/products/virtual_machine_xaas/diagnostics"
 */

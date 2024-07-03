@@ -33,6 +33,168 @@
         }
       }
     },
+    "/v0/internal/conciliator": {
+      "post": {
+        "tags": [
+          "backoffice_conciliator"
+        ],
+        "summary": "Start conciliator",
+        "description": "Start conciliator validation",
+        "operationId": "InternalStartConciliator",
+        "parameters": [
+          {
+            "name": "resource-type",
+            "in": "header",
+            "description": "Resources to start the conciliator",
+            "required": false,
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/ResourceType"
+                }
+              ],
+              "title": "Resource Type",
+              "description": "Resources to start the conciliator",
+              "default": "security_group, rule, public_ip"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "description": "Tenant id of the project",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id",
+              "description": "Tenant id of the project"
+            }
+          },
+          {
+            "name": "skip",
+            "in": "header",
+            "description": "Number of tenants to skip",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "title": "Skip",
+              "description": "Number of tenants to skip",
+              "default": 0
+            }
+          },
+          {
+            "name": "limit",
+            "in": "header",
+            "description": "Limit of tenants",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "title": "Limit of tenants",
+              "description": "Limit of tenants"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": false
+      }
+    },
+    "/v0/xaas/vpcs/{vpc_id}/networks": {
+      "get": {
+        "tags": [
+          "xaas_network"
+        ],
+        "summary": "List network by VPC",
+        "description": "Returns a list of networks inside a specific VPC",
+        "operationId": "getNetworksByVPC",
+        "parameters": [
+          {
+            "name": "vpc_id",
+            "in": "path",
+            "description": "Id of the VPC",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "VPC ID",
+              "description": "Id of the VPC"
+            }
+          },
+          {
+            "name": "project_type",
+            "in": "query",
+            "description": "Project type to list Networks",
+            "required": true,
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/ProjectType"
+                }
+              ],
+              "title": "project_type",
+              "description": "Project type to list Networks"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "description": "Tenant id of the project",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id",
+              "description": "Tenant id of the project"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListNetworkApiResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": false,
+        "x-mgc-hidden": true
+      }
+    },
     "/v0/ports": {
       "get": {
         "tags": [
@@ -636,6 +798,460 @@
         "x-viveiro": true
       }
     },
+    "/v0/xaas/ports/all": {
+      "delete": {
+        "tags": [
+          "xaas_port"
+        ],
+        "summary": "Delete Port Xaas All",
+        "description": "Delete all ports of VPCs for a provided tenant_id of an project type",
+        "operationId": "deleteAllXaasPorts",
+        "parameters": [
+          {
+            "name": "project_type",
+            "in": "query",
+            "description": "Project type to delete all ports",
+            "required": true,
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/ProjectType"
+                }
+              ],
+              "title": "project_type",
+              "description": "Project type to delete all ports"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "description": "Tenant id of the project",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id",
+              "description": "Tenant id of the project"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PortDeletedAllResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": false,
+        "x-mgc-hidden": true
+      }
+    },
+    "/v0/xaas/vpcs/{vpc_id}/ports": {
+      "post": {
+        "tags": [
+          "xaas_port"
+        ],
+        "summary": "Create Port Xaas",
+        "description": "Create a Port on an xaas project with provided vpc_id and x-tenant-id. You can provide a list of security_groups_id or subnets",
+        "operationId": "createPortXaas",
+        "parameters": [
+          {
+            "name": "vpc_id",
+            "in": "path",
+            "description": "ID of the VPC to create port",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "vpc_id",
+              "description": "ID of the VPC to create port"
+            }
+          },
+          {
+            "name": "project_type",
+            "in": "query",
+            "description": "Project type to create port",
+            "required": true,
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/ProjectType"
+                }
+              ],
+              "title": "project_type",
+              "description": "Project type to create port"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "description": "Tenant id of the project",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id",
+              "description": "Tenant id of the project"
+            }
+          },
+          {
+            "name": "x-zone",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                }
+              ],
+              "title": "X-Zone",
+              "nullable": true
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PortCreateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PortCreateResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": false,
+        "x-mgc-hidden": true
+      }
+    },
+    "/v0/xaas/ports/{port_id}/attach/{security_group_id}": {
+      "post": {
+        "tags": [
+          "xaas_port"
+        ],
+        "summary": "Attach XAAS Security Group",
+        "description": "XAAS attach a Security Group to a Port with provided port_id, security_group_id, x-tenant-id of an specific project type",
+        "operationId": "attachXaasSecurityGroup",
+        "parameters": [
+          {
+            "name": "port_id",
+            "in": "path",
+            "description": "ID of the Port to attach security group",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "port_id",
+              "description": "ID of the Port to attach security group"
+            }
+          },
+          {
+            "name": "security_group_id",
+            "in": "path",
+            "description": "ID of the Security Group to attach",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "security_group_id",
+              "description": "ID of the Security Group to attach"
+            }
+          },
+          {
+            "name": "project_type",
+            "in": "query",
+            "description": "Project type to attach security group",
+            "required": true,
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/ProjectType"
+                }
+              ],
+              "title": "project_type",
+              "description": "Project type to attach security group"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": false,
+        "x-mgc-hidden": true
+      }
+    },
+    "/v0/xaas/ports/{port_id}/detach/{security_group_id}": {
+      "post": {
+        "tags": [
+          "xaas_port"
+        ],
+        "summary": "Detach XAAS Security Group",
+        "description": "XAAS detach a Security Group to a Port with provided port_id, security_group_id, x-tenant-id of an specific project type",
+        "operationId": "detachXaasSecurityGroup",
+        "parameters": [
+          {
+            "name": "port_id",
+            "in": "path",
+            "description": "ID of the Port to detach security group",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "port_id",
+              "description": "ID of the Port to detach security group"
+            }
+          },
+          {
+            "name": "security_group_id",
+            "in": "path",
+            "description": "ID of the Security Group to detach",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "security_group_id",
+              "description": "ID of the Security Group to detach"
+            }
+          },
+          {
+            "name": "project_type",
+            "in": "query",
+            "description": "Project type to detach security group",
+            "required": true,
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/ProjectType"
+                }
+              ],
+              "title": "project_type",
+              "description": "Project type to detach security group"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": false,
+        "x-mgc-hidden": true
+      }
+    },
+    "/v0/xaas/ports/{port_id}": {
+      "get": {
+        "tags": [
+          "xaas_port"
+        ],
+        "summary": "XaaS Port Details",
+        "description": "Return a port details from the provided tenant_id from a xaas project",
+        "operationId": "xaasPortDetails",
+        "parameters": [
+          {
+            "name": "port_id",
+            "in": "path",
+            "description": "ID of the Port to detail",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "port_id",
+              "description": "ID of the Port to detail"
+            }
+          },
+          {
+            "name": "project_type",
+            "in": "query",
+            "description": "Project type to detail port",
+            "required": true,
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/ProjectType"
+                }
+              ],
+              "title": "project_type",
+              "description": "Project type to detail port"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "description": "Tenant id of the project",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id",
+              "description": "Tenant id of the project"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PortResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": false,
+        "x-mgc-hidden": true
+      },
+      "delete": {
+        "tags": [
+          "xaas_port"
+        ],
+        "summary": "Delete Port Xaas",
+        "description": "Delete a port from the provided tenant_id from an xaas project",
+        "operationId": "deletePortXaas",
+        "parameters": [
+          {
+            "name": "port_id",
+            "in": "path",
+            "description": "ID of the Port to delete",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "port_id",
+              "description": "ID of the Port to delete"
+            }
+          },
+          {
+            "name": "project_type",
+            "in": "query",
+            "description": "Project type to delete port",
+            "required": true,
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/ProjectType"
+                }
+              ],
+              "title": "project_type",
+              "description": "Project type to delete port"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": false,
+        "x-mgc-hidden": true
+      }
+    },
     "/v0/vpcs/{vpc_id}/public_ips": {
       "get": {
         "tags": [
@@ -1074,6 +1690,549 @@
         "x-viveiro": true
       }
     },
+    "/v0/xaas/vpcs/{vpc_id}/public_ips": {
+      "get": {
+        "tags": [
+          "xaas_public_ip"
+        ],
+        "summary": "List Public IPs XaaS",
+        "description": "Returns a list of Public IPs for a provided vpc_id",
+        "operationId": "XaasListPublicIps",
+        "parameters": [
+          {
+            "name": "vpc_id",
+            "in": "path",
+            "description": "Id of the VPC to list the Public IPs in",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Vpc ID",
+              "description": "Id of the VPC to list the Public IPs in"
+            }
+          },
+          {
+            "name": "project_type",
+            "in": "query",
+            "description": "Project type to list public ip",
+            "required": true,
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/ProjectType"
+                }
+              ],
+              "title": "project_type",
+              "description": "Project type to list public ip"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "description": "Tenant id of the project",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id",
+              "description": "Tenant id of the project"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicIpsList"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": true
+      },
+      "post": {
+        "tags": [
+          "xaas_public_ip"
+        ],
+        "summary": "Create Public IP XaaS",
+        "description": "Create async Public IP in a VPC with provided vpc_id and x_tenant_id for XaaS",
+        "operationId": "createXaaSPublicIp",
+        "parameters": [
+          {
+            "name": "vpc_id",
+            "in": "path",
+            "description": "Id of the VPC to create the Public IP in",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Vpc ID",
+              "description": "Id of the VPC to create the Public IP in"
+            }
+          },
+          {
+            "name": "project_type",
+            "in": "query",
+            "description": "Project type to list public ip",
+            "required": true,
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/ProjectType"
+                }
+              ],
+              "title": "project_type",
+              "description": "Project type to list public ip"
+            }
+          },
+          {
+            "name": "validate_quota",
+            "in": "query",
+            "description": "Validate the quota before creating the Public IP",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "title": "validateQuota",
+              "description": "Validate the quota before creating the Public IP",
+              "default": true
+            }
+          },
+          {
+            "name": "wait",
+            "in": "query",
+            "description": "The request will be asynchronous. The wait parameter tells the API that you want the request to simulate synchronous behavior (to maintain endpoint compatibility). You can set an approximate timeout with the waitTimeout parameter",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "title": "wait",
+              "description": "The request will be asynchronous. The wait parameter tells the API that you want the request to simulate synchronous behavior (to maintain endpoint compatibility). You can set an approximate timeout with the waitTimeout parameter",
+              "default": true
+            }
+          },
+          {
+            "name": "wait_timeout",
+            "in": "query",
+            "description": "the approximate time in seconds you want to wait when simulating the request as synchronous (only works with wait=true)",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                }
+              ],
+              "title": "waitTimeout",
+              "description": "the approximate time in seconds you want to wait when simulating the request as synchronous (only works with wait=true)",
+              "default": 120,
+              "nullable": true
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PublicIpCreateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicIpCreateResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": true
+      }
+    },
+    "/v0/xaas/public_ips": {
+      "get": {
+        "tags": [
+          "xaas_public_ip"
+        ],
+        "summary": "Tenant's public IP list XaaS",
+        "description": "Return a tenant's public ip list",
+        "operationId": "tenantXaasListPublicIps",
+        "parameters": [
+          {
+            "name": "project_type",
+            "in": "query",
+            "description": "Project type to list tenant's public ip",
+            "required": true,
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/ProjectType"
+                }
+              ],
+              "title": "project_type",
+              "description": "Project type to list tenant's public ip"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "description": "Tenant id of the project",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id",
+              "description": "Tenant id of the project"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicIpsList"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": true
+      }
+    },
+    "/v0/xaas/public_ips/{public_ip_id}": {
+      "get": {
+        "tags": [
+          "xaas_public_ip"
+        ],
+        "summary": "Public IP Details XaaS",
+        "description": "Return a Public IP XaaS details",
+        "operationId": "publicIpXaaSDetails",
+        "parameters": [
+          {
+            "name": "public_ip_id",
+            "in": "path",
+            "description": "Id of the Public IP to retrieve",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Public IP ID",
+              "description": "Id of the Public IP to retrieve"
+            }
+          },
+          {
+            "name": "project_type",
+            "in": "query",
+            "description": "Project type to delete tenant's public ip",
+            "required": true,
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/ProjectType"
+                }
+              ],
+              "title": "project_type",
+              "description": "Project type to delete tenant's public ip"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "description": "Tenant id of the project",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id",
+              "description": "Tenant id of the project"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicIpDb"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": true
+      },
+      "delete": {
+        "tags": [
+          "xaas_public_ip"
+        ],
+        "summary": "Delete Public IP XaaS",
+        "description": "Delete a Public IP from the provided tenant_id for xaas",
+        "operationId": "deleteXaaSPublicIp",
+        "parameters": [
+          {
+            "name": "public_ip_id",
+            "in": "path",
+            "description": "Id of the Public IP to delete",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Public IP ID",
+              "description": "Id of the Public IP to delete"
+            }
+          },
+          {
+            "name": "project_type",
+            "in": "query",
+            "description": "Project type to delete tenant's public ip",
+            "required": true,
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/ProjectType"
+                }
+              ],
+              "title": "project_type",
+              "description": "Project type to delete tenant's public ip"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": true
+      }
+    },
+    "/v0/xaas/public_ips/{public_ip_id}/attach/{port_id}": {
+      "post": {
+        "tags": [
+          "xaas_public_ip"
+        ],
+        "summary": "Attach Public IP XaaS",
+        "description": "Attach a Public IP to a Port",
+        "operationId": "attachXaaSPublicIp",
+        "parameters": [
+          {
+            "name": "public_ip_id",
+            "in": "path",
+            "description": "Id of the Public IP to attach port to",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Public IP ID",
+              "description": "Id of the Public IP to attach port to"
+            }
+          },
+          {
+            "name": "port_id",
+            "in": "path",
+            "description": "Id of the Port to attach the Public IP",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Port ID",
+              "description": "Id of the Port to attach the Public IP"
+            }
+          },
+          {
+            "name": "project_type",
+            "in": "query",
+            "description": "Project type to delete tenant's public ip",
+            "required": true,
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/ProjectType"
+                }
+              ],
+              "title": "project_type",
+              "description": "Project type to delete tenant's public ip"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": true
+      }
+    },
+    "/v0/xaas/public_ips/{public_ip_id}/detach/{port_id}": {
+      "post": {
+        "tags": [
+          "xaas_public_ip"
+        ],
+        "summary": "Detach Public IP",
+        "description": "Detach a Public IP to a Port",
+        "operationId": "detachXaaSPublicIp",
+        "parameters": [
+          {
+            "name": "public_ip_id",
+            "in": "path",
+            "description": "Id of the Public IP to detach port to",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Public IP ID",
+              "description": "Id of the Public IP to detach port to"
+            }
+          },
+          {
+            "name": "port_id",
+            "in": "path",
+            "description": "Id of the Port to detach the Public IP",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Port ID",
+              "description": "Id of the Port to detach the Public IP"
+            }
+          },
+          {
+            "name": "project_type",
+            "in": "query",
+            "description": "Project type to delete tenant's public ip",
+            "required": true,
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/ProjectType"
+                }
+              ],
+              "title": "project_type",
+              "description": "Project type to delete tenant's public ip"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": true
+      }
+    },
     "/v0/usage": {
       "get": {
         "tags": [
@@ -1403,6 +2562,412 @@
           }
         },
         "x-viveiro": true
+      }
+    },
+    "/v0/xaas/security_groups/{security_group_id}/rules": {
+      "get": {
+        "tags": [
+          "xaas_rule"
+        ],
+        "summary": "List Rules",
+        "description": "Returns a list of rules for a provided security_group_id",
+        "operationId": "listRulesXaas",
+        "parameters": [
+          {
+            "name": "security_group_id",
+            "in": "path",
+            "description": "Id of the Security Group",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Security Group ID",
+              "description": "Id of the Security Group"
+            }
+          },
+          {
+            "name": "project_type",
+            "in": "query",
+            "description": "Project type to create rule",
+            "required": true,
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/ProjectType"
+                }
+              ],
+              "title": "project_type",
+              "description": "Project type to create rule"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "description": "Tenant id of the project",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id",
+              "description": "Tenant id of the project"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RulesList"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": false,
+        "x-mgc-hidden": true
+      },
+      "post": {
+        "tags": [
+          "xaas_rule"
+        ],
+        "summary": "Create Rule",
+        "description": "Create a Rule async, returning its ID. To monitor the creation progress, please check the status in the service message or implement polling.Either a remote_ip_prefix or a remote_group_id can be specified.With remote_ip_prefix, all IPs that match the criteria will be allowed.With remote_group_id, only the specified security group is allowed to communicatefollowing the specified protocol, direction and port_range_min/max",
+        "operationId": "createRuleXaas",
+        "parameters": [
+          {
+            "name": "security_group_id",
+            "in": "path",
+            "description": "Id of the Security Group",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Security Group ID",
+              "description": "Id of the Security Group"
+            }
+          },
+          {
+            "name": "project_type",
+            "in": "query",
+            "description": "Project type to create rule",
+            "required": true,
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/ProjectType"
+                }
+              ],
+              "title": "project_type",
+              "description": "Project type to create rule"
+            }
+          },
+          {
+            "name": "wait",
+            "in": "query",
+            "description": "The request will be asynchronous. The wait parameter tells the API that you want the request to simulate synchronous behavior (to maintain endpoint compatibility). You can set an approximate timeout with the waitTimeout parameter",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                }
+              ],
+              "title": "wait",
+              "description": "The request will be asynchronous. The wait parameter tells the API that you want the request to simulate synchronous behavior (to maintain endpoint compatibility). You can set an approximate timeout with the waitTimeout parameter",
+              "default": true,
+              "nullable": true
+            }
+          },
+          {
+            "name": "wait_timeout",
+            "in": "query",
+            "description": "the approximate time in seconds you want to wait when simulating the request as synchronous (only works with wait=true)",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                }
+              ],
+              "title": "waitTimeout",
+              "description": "the approximate time in seconds you want to wait when simulating the request as synchronous (only works with wait=true)",
+              "default": 120,
+              "nullable": true
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RuleCreateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RuleCreateResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": false,
+        "x-mgc-hidden": true
+      }
+    },
+    "/v0/xaas/rules/{rule_id}": {
+      "get": {
+        "tags": [
+          "xaas_rule"
+        ],
+        "summary": "Rule Details",
+        "description": "Return a rule details",
+        "operationId": "ruleDetailsXaas",
+        "parameters": [
+          {
+            "name": "rule_id",
+            "in": "path",
+            "description": "Id of the Rule",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Rule ID",
+              "description": "Id of the Rule"
+            }
+          },
+          {
+            "name": "project_type",
+            "in": "query",
+            "description": "Project type to create rule",
+            "required": true,
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/ProjectType"
+                }
+              ],
+              "title": "project_type",
+              "description": "Project type to create rule"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "description": "Tenant id of the project",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id",
+              "description": "Tenant id of the project"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RuleResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": false,
+        "x-mgc-hidden": true
+      },
+      "delete": {
+        "tags": [
+          "xaas_rule"
+        ],
+        "summary": "Delete a Rule",
+        "description": "Delete a rule from the provided tenant_id",
+        "operationId": "deleteRuleXaas",
+        "parameters": [
+          {
+            "name": "rule_id",
+            "in": "path",
+            "description": "Id of the Rule",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Rule ID",
+              "description": "Id of the Rule"
+            }
+          },
+          {
+            "name": "project_type",
+            "in": "query",
+            "description": "Project type to create rule",
+            "required": true,
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/ProjectType"
+                }
+              ],
+              "title": "project_type",
+              "description": "Project type to create rule"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": false,
+        "x-mgc-hidden": true
+      },
+      "patch": {
+        "tags": [
+          "xaas_rule"
+        ],
+        "summary": "Update Async Rule",
+        "description": "Update async creation of Rule",
+        "operationId": "updateAsyncRule",
+        "parameters": [
+          {
+            "name": "rule_id",
+            "in": "path",
+            "description": "Id of the Rule",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Rule ID",
+              "description": "Id of the Rule"
+            }
+          },
+          {
+            "name": "project_type",
+            "in": "query",
+            "description": "Project type to create rule",
+            "required": true,
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/ProjectType"
+                }
+              ],
+              "title": "project_type",
+              "description": "Project type to create rule"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "description": "Tenant id of the project",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id",
+              "description": "Tenant id of the project"
+            }
+          },
+          {
+            "name": "x-request-id",
+            "in": "header",
+            "description": "Request id of Rule to update",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Request-Id",
+              "description": "Request id of Rule to update"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RuleDefaultStatusEvent"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": false,
+        "x-mgc-hidden": true
       }
     },
     "/v0/security_groups/default": {
@@ -1894,6 +3459,1037 @@
         "x-mgc-hidden": true
       }
     },
+    "/v0/xaas/security_groups/default": {
+      "post": {
+        "tags": [
+          "xaas_security_group"
+        ],
+        "summary": "Create Security Group Default",
+        "description": "Create a Security Group Default",
+        "operationId": "createSecurityGroupDefaultXaas",
+        "parameters": [
+          {
+            "name": "project_type",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ProjectType"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SecurityGroupCreateResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": false,
+        "x-mgc-hidden": true
+      }
+    },
+    "/v0/xaas/security_groups": {
+      "get": {
+        "tags": [
+          "xaas_security_group"
+        ],
+        "summary": "List Security Groups",
+        "description": "Returns a list of security groups for a provided tenant_id",
+        "operationId": "listSecurityGroupXaas",
+        "parameters": [
+          {
+            "name": "project_type",
+            "in": "query",
+            "description": "Project type to list Security Groups",
+            "required": true,
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/ProjectType"
+                }
+              ],
+              "title": "project_type",
+              "description": "Project type to list Security Groups"
+            }
+          },
+          {
+            "name": "x-zone",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                }
+              ],
+              "title": "X-Zone",
+              "nullable": true
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "description": "Tenant id of the project",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id",
+              "description": "Tenant id of the project"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/XaasSecurityGroupListEvent"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": false,
+        "x-mgc-hidden": true
+      },
+      "post": {
+        "tags": [
+          "xaas_security_group"
+        ],
+        "summary": "Create Security Group",
+        "description": "Create a Security Group async, returning its ID. To monitor the creation progress, please check the status in the service message or implement polling.",
+        "operationId": "createSecurityGroupXaas",
+        "parameters": [
+          {
+            "name": "project_type",
+            "in": "query",
+            "description": "Project type to create Security Group",
+            "required": true,
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/ProjectType"
+                }
+              ],
+              "title": "project_type",
+              "description": "Project type to create Security Group"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SecurityGroupCreateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SecurityGroupCreateResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": false,
+        "x-mgc-hidden": true
+      }
+    },
+    "/v0/xaas/vpcs/{vpc_id}/security_groups": {
+      "get": {
+        "tags": [
+          "xaas_security_group"
+        ],
+        "summary": "List Security Groups",
+        "description": "Returns a list of security groups for a provided vpc_id",
+        "operationId": "listSecurityGroupXaasDeprecated",
+        "parameters": [
+          {
+            "name": "project_type",
+            "in": "query",
+            "description": "Project type to list Security Groups",
+            "required": true,
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/ProjectType"
+                }
+              ],
+              "title": "project_type",
+              "description": "Project type to list Security Groups"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "description": "Tenant id of the project",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id",
+              "description": "Tenant id of the project"
+            }
+          },
+          {
+            "name": "x-zone",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                }
+              ],
+              "title": "X-Zone",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/XaasSecurityGroupListEvent"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": false,
+        "x-mgc-hidden": true
+      },
+      "post": {
+        "tags": [
+          "xaas_security_group"
+        ],
+        "summary": "Create Security Group",
+        "description": "Create a Security Group",
+        "operationId": "createSecurityGroupXaasDeprecated",
+        "parameters": [
+          {
+            "name": "vpc_id",
+            "in": "path",
+            "description": "Id of the vpc to create the security group in",
+            "required": true,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                }
+              ],
+              "title": "VPC Id",
+              "description": "Id of the vpc to create the security group in",
+              "nullable": true
+            }
+          },
+          {
+            "name": "project_type",
+            "in": "query",
+            "description": "Project type to create Security Group",
+            "required": true,
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/ProjectType"
+                }
+              ],
+              "title": "project_type",
+              "description": "Project type to create Security Group"
+            }
+          },
+          {
+            "name": "wait",
+            "in": "query",
+            "description": "The request will be asynchronous. The wait parameter tells the API that you want the request to simulate synchronous behavior (to maintain endpoint compatibility). You can set an approximate timeout with the waitTimeout parameter",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                }
+              ],
+              "title": "wait",
+              "description": "The request will be asynchronous. The wait parameter tells the API that you want the request to simulate synchronous behavior (to maintain endpoint compatibility). You can set an approximate timeout with the waitTimeout parameter",
+              "default": true,
+              "nullable": true
+            }
+          },
+          {
+            "name": "wait_timeout",
+            "in": "query",
+            "description": "the approximate time in seconds you want to wait when simulating the request as synchronous (only works with wait=true)",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                }
+              ],
+              "title": "waitTimeout",
+              "description": "the approximate time in seconds you want to wait when simulating the request as synchronous (only works with wait=true)",
+              "default": 120,
+              "nullable": true
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SecurityGroupCreateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SecurityGroupCreateResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": true,
+        "x-viveiro": false,
+        "x-mgc-hidden": true
+      }
+    },
+    "/v0/xaas/security_groups/{security_group_id}": {
+      "get": {
+        "tags": [
+          "xaas_security_group"
+        ],
+        "summary": "Security Group Details",
+        "description": "Return a security group details",
+        "operationId": "securityGroupDetailsXaas",
+        "parameters": [
+          {
+            "name": "security_group_id",
+            "in": "path",
+            "description": "Id of the Security Group to detail",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "securityGroupId",
+              "description": "Id of the Security Group to detail"
+            }
+          },
+          {
+            "name": "project_type",
+            "in": "query",
+            "description": "Project type to detail Security Group",
+            "required": true,
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/ProjectType"
+                }
+              ],
+              "title": "project_type",
+              "description": "Project type to detail Security Group"
+            }
+          },
+          {
+            "name": "x-zone",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                }
+              ],
+              "title": "X-Zone",
+              "nullable": true
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "description": "Tenant id of the project",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id",
+              "description": "Tenant id of the project"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SecurityGroupDetailEvent"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": false,
+        "x-mgc-hidden": true
+      },
+      "delete": {
+        "tags": [
+          "xaas_security_group"
+        ],
+        "summary": "Delete a security group",
+        "description": "Delete a security group from the provided tenant_id",
+        "operationId": "deleteSecurityGroupXaas",
+        "parameters": [
+          {
+            "name": "security_group_id",
+            "in": "path",
+            "description": "Id of the Security Group to delete",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "securityGroupId",
+              "description": "Id of the Security Group to delete"
+            }
+          },
+          {
+            "name": "project_type",
+            "in": "query",
+            "description": "Project type to delete Security Group",
+            "required": true,
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/ProjectType"
+                }
+              ],
+              "title": "project_type",
+              "description": "Project type to delete Security Group"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": false,
+        "x-mgc-hidden": true
+      },
+      "patch": {
+        "tags": [
+          "xaas_security_group"
+        ],
+        "summary": "Update Async Security Group",
+        "description": "Update async creation of Security Group",
+        "operationId": "updateAsyncSecurityGroup",
+        "parameters": [
+          {
+            "name": "security_group_id",
+            "in": "path",
+            "description": "Id of the async Security Group to update",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "securityGroupId",
+              "description": "Id of the async Security Group to update"
+            }
+          },
+          {
+            "name": "project_type",
+            "in": "query",
+            "description": "Project type to update Security Group",
+            "required": true,
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/ProjectType"
+                }
+              ],
+              "title": "project_type",
+              "description": "Project type to update Security Group"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "description": "Tenant id of the project",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id",
+              "description": "Tenant id of the project"
+            }
+          },
+          {
+            "name": "x-request-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Request-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SecurityGroupStatusEvent"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": false,
+        "x-mgc-hidden": true
+      }
+    },
+    "/v0/xaas/security_groups_all": {
+      "delete": {
+        "tags": [
+          "xaas_security_group"
+        ],
+        "summary": "Delete all security groups xaas",
+        "description": "Delete all security groups from the provided tenant_id xaas",
+        "operationId": "deleteAllSecurityGroupsXaas",
+        "parameters": [
+          {
+            "name": "project_type",
+            "in": "query",
+            "description": "Project type to delete all Security Groups",
+            "required": true,
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/ProjectType"
+                }
+              ],
+              "title": "project_type",
+              "description": "Project type to delete all Security Groups"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SecurityGroupDeletedAllResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": false,
+        "x-mgc-hidden": true
+      }
+    },
+    "/v0/xaas/vpcs/{vpc_id}/subnetpools": {
+      "get": {
+        "tags": [
+          "xaas_subnetpools"
+        ],
+        "summary": "List Subnet Pools by VPC",
+        "description": "Returns a list of subnet pools inside a specific VPC",
+        "operationId": "getSubnetPoolsByVPC",
+        "parameters": [
+          {
+            "name": "vpc_id",
+            "in": "path",
+            "description": "Id of the VPC to list the Subnet Pools",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Vpc Id",
+              "description": "Id of the VPC to list the Subnet Pools"
+            }
+          },
+          {
+            "name": "project_type",
+            "in": "query",
+            "description": "Project type to list Subnet Pools by VPC",
+            "required": true,
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/ProjectType"
+                }
+              ],
+              "title": "project_type",
+              "description": "Project type to list Subnet Pools by VPC"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "description": "Tenant id of the project",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id",
+              "description": "Tenant id of the project"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubnetPoolsResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": false,
+        "x-mgc-hidden": true
+      },
+      "post": {
+        "tags": [
+          "xaas_subnetpools"
+        ],
+        "summary": "Create a Subnet Pool in a VPC",
+        "description": "Create a Subnet Pool",
+        "operationId": "createSubnetPoolInVPC",
+        "parameters": [
+          {
+            "name": "vpc_id",
+            "in": "path",
+            "description": "Id of the VPC to create the Subnet Pool",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "VPC Id",
+              "description": "Id of the VPC to create the Subnet Pool"
+            }
+          },
+          {
+            "name": "project_type",
+            "in": "query",
+            "description": "Project type to create Subnet Pool",
+            "required": true,
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/ProjectType"
+                }
+              ],
+              "title": "project_type",
+              "description": "Project type to create Subnet Pool"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubnetPoolRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubnetPoolResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": false,
+        "x-mgc-hidden": true
+      }
+    },
+    "/v0/xaas/subnetpools": {
+      "get": {
+        "tags": [
+          "xaas_subnetpools"
+        ],
+        "summary": "List Subnet Pools by Tenant",
+        "description": "Returns a list of Subnet Pools for the current tenant's project",
+        "operationId": "listSubnetPoolsByTenant",
+        "parameters": [
+          {
+            "name": "project_type",
+            "in": "query",
+            "description": "Project type to list Subnet Pools",
+            "required": true,
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/ProjectType"
+                }
+              ],
+              "title": "project_type",
+              "description": "Project type to list Subnet Pools"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "description": "Tenant id of the project",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id",
+              "description": "Tenant id of the project"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubnetPoolsResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": false,
+        "x-mgc-hidden": true
+      }
+    },
+    "/v0/xaas/subnetpools/{subnetpool_id}": {
+      "get": {
+        "tags": [
+          "xaas_subnetpools"
+        ],
+        "summary": "Get Subnet Pool by ID",
+        "description": "Get details of a specific Subnet Pool",
+        "operationId": "getDetailedSubnetPool",
+        "parameters": [
+          {
+            "name": "subnetpool_id",
+            "in": "path",
+            "description": "Id of the Subnet Pool to get details",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "subnetpoolId",
+              "description": "Id of the Subnet Pool to get details"
+            }
+          },
+          {
+            "name": "project_type",
+            "in": "query",
+            "description": "Project type to detail Subnet Pool",
+            "required": true,
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/ProjectType"
+                }
+              ],
+              "title": "project_type",
+              "description": "Project type to detail Subnet Pool"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubnetPoolDetailsResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": false,
+        "x-mgc-hidden": true
+      },
+      "delete": {
+        "tags": [
+          "xaas_subnetpools"
+        ],
+        "summary": "Delete Subnet Pool by ID",
+        "description": "Delete one Subnet Pool by ID",
+        "operationId": "deleteSubnetPoolByID",
+        "parameters": [
+          {
+            "name": "subnetpool_id",
+            "in": "path",
+            "description": "Id of the Subnet Pool to delete",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "subnetpoolId",
+              "description": "Id of the Subnet Pool to delete"
+            }
+          },
+          {
+            "name": "project_type",
+            "in": "query",
+            "description": "Project type to delete Subnet Pool",
+            "required": true,
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/ProjectType"
+                }
+              ],
+              "title": "project_type",
+              "description": "Project type to delete Subnet Pool"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": false,
+        "x-mgc-hidden": true
+      }
+    },
     "/v0/vpcs/{vpc_id}/subnets": {
       "get": {
         "tags": [
@@ -2192,6 +4788,77 @@
         "x-viveiro": true
       }
     },
+    "/v0/xaas/vpcs/{vpc_id}/subnets": {
+      "get": {
+        "tags": [
+          "xaas_subnets"
+        ],
+        "summary": "List XAAS Subnets",
+        "description": "Returns a list of XAAS subnets from the provided vpc_id",
+        "operationId": "listXAASSubnets",
+        "parameters": [
+          {
+            "name": "vpc_id",
+            "in": "path",
+            "description": "Id of the VPC to list Subnets",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "VPC Id",
+              "description": "Id of the VPC to list Subnets"
+            }
+          },
+          {
+            "name": "project_type",
+            "in": "query",
+            "description": "Project type to list Subnets",
+            "required": true,
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/ProjectType"
+                }
+              ],
+              "title": "project_type",
+              "description": "Project type to list Subnets"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubnetsResponseXAAS"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": false,
+        "x-mgc-hidden": true
+      }
+    },
     "/v0/vpcs/default": {
       "post": {
         "tags": [
@@ -2471,6 +5138,644 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/VpcDeletedAllResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": false,
+        "x-mgc-hidden": true
+      }
+    },
+    "/v0/xaas/vpcs": {
+      "get": {
+        "tags": [
+          "xaas_vpc"
+        ],
+        "summary": "List VPC with project type",
+        "description": "Returns a list of VPCs for a provided tenant_id of an project type",
+        "operationId": "listVpcsProjectType",
+        "parameters": [
+          {
+            "name": "project_type",
+            "in": "query",
+            "description": "Project type to list VPCs",
+            "required": true,
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/ProjectType"
+                }
+              ],
+              "title": "project_type",
+              "description": "Project type to list VPCs"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "description": "Tenant id of the project",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id",
+              "description": "Tenant id of the project"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VpcResponseList"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": false,
+        "x-mgc-hidden": true
+      },
+      "post": {
+        "tags": [
+          "xaas_vpc"
+        ],
+        "summary": "Create Vpc Xaas",
+        "description": "Create a VPC for a provided tenant_id of an project type",
+        "operationId": "create_vpc_xaas_v0_xaas_vpcs_post",
+        "parameters": [
+          {
+            "name": "project_type",
+            "in": "query",
+            "description": "Project type to create VPC",
+            "required": true,
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/ProjectType"
+                }
+              ],
+              "title": "project_type",
+              "description": "Project type to create VPC"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "description": "Tenant id of the project",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id",
+              "description": "Tenant id of the project"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/XVpcCreateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VpcCreateResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": false,
+        "x-mgc-hidden": true
+      }
+    },
+    "/v0/xaas/vpcs/{vpc_id}": {
+      "get": {
+        "tags": [
+          "xaas_vpc"
+        ],
+        "summary": "VPC with project type details",
+        "description": "Return a VPC details",
+        "operationId": "vpcProjectTypeDetails",
+        "parameters": [
+          {
+            "name": "vpc_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Vpc Id"
+            }
+          },
+          {
+            "name": "project_type",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ProjectType"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VpcDetailsResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": false,
+        "x-mgc-hidden": true
+      }
+    },
+    "/v0/xaas/vpcs/all": {
+      "delete": {
+        "tags": [
+          "xaas_vpc"
+        ],
+        "summary": "Delete Vpc Xaas All",
+        "description": "Delete all of VPCs for a provided tenant_id of an project type",
+        "operationId": "deleteAllVpcsXaas",
+        "parameters": [
+          {
+            "name": "project_type",
+            "in": "query",
+            "description": "Project type to delete all VPCs",
+            "required": true,
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/ProjectType"
+                }
+              ],
+              "title": "project_type",
+              "description": "Project type to delete all VPCs"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "description": "Tenant id of the project",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id",
+              "description": "Tenant id of the project"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VpcDeletedAllResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": false,
+        "x-mgc-hidden": true
+      }
+    },
+    "/v0/xaas/vpcs/{vpc_id}/add_route": {
+      "post": {
+        "tags": [
+          "xaas_vpc"
+        ],
+        "summary": "Add Route on VPCs Primary Router",
+        "description": "Create a static route for VPCs Primary Router",
+        "operationId": "addVpcPrimaryRouterRoute",
+        "parameters": [
+          {
+            "name": "vpc_id",
+            "in": "path",
+            "description": "Id of the VPC to create route",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "VPC Id",
+              "description": "Id of the VPC to create route"
+            }
+          },
+          {
+            "name": "project_type",
+            "in": "query",
+            "description": "Project type to create route",
+            "required": true,
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/ProjectType"
+                }
+              ],
+              "title": "project_type",
+              "description": "Project type to create route"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RouteRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": false,
+        "x-mgc-hidden": true
+      }
+    },
+    "/v0/xaas/vpcs/{vpc_id}/delete_route": {
+      "post": {
+        "tags": [
+          "xaas_vpc"
+        ],
+        "summary": "Delete Route on VPCs primary Router",
+        "description": "Delete a static route for VPCs primary Router",
+        "operationId": "delVpcsPrimaryRouterRoute",
+        "parameters": [
+          {
+            "name": "vpc_id",
+            "in": "path",
+            "description": "Id of the VPC to delete route",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "VPC Id",
+              "description": "Id of the VPC to delete route"
+            }
+          },
+          {
+            "name": "project_type",
+            "in": "query",
+            "description": "Project type to delete route",
+            "required": true,
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/ProjectType"
+                }
+              ],
+              "title": "project_type",
+              "description": "Project type to delete route"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RouteRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": false,
+        "x-mgc-hidden": true
+      }
+    },
+    "/v0/xaas/vpcs/{vpc_id}/add_interface": {
+      "post": {
+        "tags": [
+          "xaas_vpc"
+        ],
+        "summary": "Add Router interface on VPCs primary router",
+        "description": "Create a Router interface on VPCs primary router",
+        "operationId": "addVpcsPrimaryRouterInterface",
+        "parameters": [
+          {
+            "name": "vpc_id",
+            "in": "path",
+            "description": "Id of the VPC to add interface",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "VPC Id",
+              "description": "Id of the VPC to add interface"
+            }
+          },
+          {
+            "name": "project_type",
+            "in": "query",
+            "description": "Project type to add interface",
+            "required": true,
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/ProjectType"
+                }
+              ],
+              "title": "project_type",
+              "description": "Project type to add interface"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddInterfaceRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RouterInterfaceResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": false,
+        "x-mgc-hidden": true
+      }
+    },
+    "/v0/xaas/vpcs/{vpc_id}/delete_interface/{interface_id}": {
+      "delete": {
+        "tags": [
+          "xaas_vpc"
+        ],
+        "summary": "Delete router interface on VPCs primary router",
+        "description": "Delete a router interface on VPCs primary router",
+        "operationId": "delVpcsPrimaryRouterInterface",
+        "parameters": [
+          {
+            "name": "vpc_id",
+            "in": "path",
+            "description": "Id of the VPC to delete interface",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "VPC Id",
+              "description": "Id of the VPC to delete interface"
+            }
+          },
+          {
+            "name": "interface_id",
+            "in": "path",
+            "description": "Id of the interface to delete",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Interface Id",
+              "description": "Id of the interface to delete"
+            }
+          },
+          {
+            "name": "project_type",
+            "in": "query",
+            "description": "Project type to delete interface",
+            "required": true,
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/ProjectType"
+                }
+              ],
+              "title": "project_type",
+              "description": "Project type to delete interface"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": false,
+        "x-mgc-hidden": true
+      }
+    },
+    "/v0/xaas/vpcs/{vpc_id}/interfaces": {
+      "get": {
+        "tags": [
+          "xaas_vpc"
+        ],
+        "summary": "List Router interfaces from a VPCs primary Router",
+        "description": "Returns a Router Interface's list from a VPCs primary Router",
+        "operationId": "listVpcsPrimaryRouterInterfaces",
+        "parameters": [
+          {
+            "name": "vpc_id",
+            "in": "path",
+            "description": "Id of the VPC to list interfaces",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "VPC Id",
+              "description": "Id of the VPC to list interfaces"
+            }
+          },
+          {
+            "name": "project_type",
+            "in": "query",
+            "description": "Project type to list interfaces",
+            "required": true,
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/ProjectType"
+                }
+              ],
+              "title": "project_type",
+              "description": "Project type to list interfaces"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "description": "Tenant id of the project",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id",
+              "description": "Tenant id of the project"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RouterInterfaceResponseList"
                 }
               }
             }
@@ -6869,6 +10174,120 @@
           "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
         }
       },
+      "SubnetResponseXAAS": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "vpc_id": {
+            "type": "string",
+            "title": "Vpc Id"
+          },
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Name",
+            "nullable": true
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Description",
+            "nullable": true
+          },
+          "cidr": {
+            "type": "string",
+            "title": "Cidr"
+          },
+          "ethertype": {
+            "type": "string",
+            "title": "Ethertype"
+          },
+          "created_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              }
+            ],
+            "title": "Created At",
+            "nullable": true
+          },
+          "updated": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              }
+            ],
+            "title": "Updated",
+            "nullable": true
+          },
+          "subnetpool_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Subnetpool Id",
+            "nullable": true
+          },
+          "external_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              }
+            ],
+            "title": "External Id",
+            "nullable": true
+          },
+          "cidr_block": {
+            "type": "string",
+            "title": "Cidr Block"
+          },
+          "ip_version": {
+            "type": "string",
+            "title": "Ip Version"
+          },
+          "zone": {
+            "type": "string",
+            "title": "Zone"
+          }
+        },
+        "title": "SubnetResponseXAAS",
+        "required": [
+          "id",
+          "vpc_id",
+          "cidr",
+          "ethertype",
+          "cidr_block",
+          "ip_version",
+          "zone"
+        ],
+        "example": {
+          "cidr": "172.20.0.0/24",
+          "cidr_block": "[ATENÇÃO] - Este campo futuramente substituirá 'cidr'",
+          "created_at": "2022-01-01 00:00:00",
+          "description": "vpc description",
+          "ethertype": "4",
+          "external_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+          "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+          "ip_version": "[ATENÇÃO] - Este campo futuramente substituirá 'ethertype'",
+          "name": "vpc_name",
+          "subnetpool_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+          "updated": "2022-01-01 00:00:00",
+          "vpc_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+          "zone": "a"
+        }
+      },
       "SubnetsResponse": {
         "type": "object",
         "properties": {
@@ -6970,6 +10389,150 @@
               "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
               "ip_version": "4",
               "name": "vpc_name",
+              "updated": "2022-01-01 00:00:00",
+              "vpc_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+              "zone": "a"
+            }
+          ]
+        }
+      },
+      "SubnetsResponseXAAS": {
+        "type": "object",
+        "properties": {
+          "subnets": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "title": "Id"
+                },
+                "vpc_id": {
+                  "type": "string",
+                  "title": "Vpc Id"
+                },
+                "name": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    }
+                  ],
+                  "title": "Name",
+                  "nullable": true
+                },
+                "description": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    }
+                  ],
+                  "title": "Description",
+                  "nullable": true
+                },
+                "cidr": {
+                  "type": "string",
+                  "title": "Cidr"
+                },
+                "ethertype": {
+                  "type": "string",
+                  "title": "Ethertype"
+                },
+                "created_at": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  ],
+                  "title": "Created At",
+                  "nullable": true
+                },
+                "updated": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  ],
+                  "title": "Updated",
+                  "nullable": true
+                },
+                "subnetpool_id": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    }
+                  ],
+                  "title": "Subnetpool Id",
+                  "nullable": true
+                },
+                "external_id": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    }
+                  ],
+                  "title": "External Id",
+                  "nullable": true
+                },
+                "cidr_block": {
+                  "type": "string",
+                  "title": "Cidr Block"
+                },
+                "ip_version": {
+                  "type": "string",
+                  "title": "Ip Version"
+                },
+                "zone": {
+                  "type": "string",
+                  "title": "Zone"
+                }
+              },
+              "title": "SubnetResponseXAAS",
+              "required": [
+                "id",
+                "vpc_id",
+                "cidr",
+                "ethertype",
+                "cidr_block",
+                "ip_version",
+                "zone"
+              ],
+              "example": {
+                "cidr": "172.20.0.0/24",
+                "cidr_block": "[ATENÇÃO] - Este campo futuramente substituirá 'cidr'",
+                "created_at": "2022-01-01 00:00:00",
+                "description": "vpc description",
+                "ethertype": "4",
+                "external_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+                "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+                "ip_version": "[ATENÇÃO] - Este campo futuramente substituirá 'ethertype'",
+                "name": "vpc_name",
+                "subnetpool_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+                "updated": "2022-01-01 00:00:00",
+                "vpc_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+                "zone": "a"
+              }
+            },
+            "title": "Subnets",
+            "default": []
+          }
+        },
+        "title": "SubnetsResponseXAAS",
+        "example": {
+          "subnets": [
+            {
+              "cidr": "172.20.0.0/24",
+              "cidr_block": "[ATENÇÃO] - Este campo futuramente substituirá 'cidr'",
+              "created_at": "2022-01-01 00:00:00",
+              "description": "vpc description",
+              "ethertype": "4",
+              "external_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+              "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+              "ip_version": "[ATENÇÃO] - Este campo futuramente substituirá 'ethertype'",
+              "name": "vpc_name",
+              "subnetpool_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
               "updated": "2022-01-01 00:00:00",
               "vpc_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
               "zone": "a"
@@ -7928,6 +11491,303 @@
           "description": "vpc description",
           "name": "vpc_name",
           "subnetpool_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+        }
+      },
+      "XaasSecurityGroupListEvent": {
+        "type": "object",
+        "properties": {
+          "security_groups": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    }
+                  ],
+                  "title": "Id",
+                  "nullable": true
+                },
+                "vpc_id": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    }
+                  ],
+                  "title": "Vpc Id",
+                  "nullable": true
+                },
+                "name": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    }
+                  ],
+                  "title": "Name",
+                  "nullable": true
+                },
+                "description": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    }
+                  ],
+                  "title": "Description",
+                  "nullable": true
+                },
+                "created_at": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  ],
+                  "title": "Created At",
+                  "nullable": true
+                },
+                "updated": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  ],
+                  "title": "Updated",
+                  "nullable": true
+                },
+                "status": {
+                  "type": "string",
+                  "title": "SecurityGroupStatus",
+                  "enum": [
+                    "created",
+                    "pending",
+                    "error"
+                  ]
+                },
+                "error": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    }
+                  ],
+                  "title": "Error",
+                  "nullable": true
+                },
+                "tenant_id": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    }
+                  ],
+                  "title": "Tenant Id",
+                  "nullable": true
+                },
+                "project_type": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    }
+                  ],
+                  "title": "Project Type",
+                  "nullable": true
+                },
+                "is_default": {
+                  "anyOf": [
+                    {
+                      "type": "boolean"
+                    }
+                  ],
+                  "title": "Is Default",
+                  "nullable": true
+                },
+                "external_id": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    }
+                  ],
+                  "title": "External Id",
+                  "nullable": true
+                }
+              },
+              "title": "XaasSecurityGroupResponseEvent",
+              "required": [
+                "status"
+              ],
+              "example": {
+                "created_at": "2022-01-01 00:00:00",
+                "description": "security group description",
+                "error": "null",
+                "external_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+                "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+                "is_default": true,
+                "name": "security_group_name",
+                "project_type": "default",
+                "status": "created",
+                "tenant_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+                "updated": "2022-01-01 00:00:00",
+                "vpc_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+              }
+            },
+            "title": "Security Groups"
+          }
+        },
+        "title": "XaasSecurityGroupListEvent",
+        "required": [
+          "security_groups"
+        ],
+        "example": {
+          "security_groups": [
+            {
+              "created_at": "2022-01-01 00:00:00",
+              "description": "security group description",
+              "error": "null",
+              "external_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+              "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+              "is_default": true,
+              "name": "security_group_name",
+              "project_type": "default",
+              "status": "created",
+              "tenant_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+              "updated": "2022-01-01 00:00:00",
+              "vpc_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+            }
+          ]
+        }
+      },
+      "XaasSecurityGroupResponseEvent": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Id",
+            "nullable": true
+          },
+          "vpc_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Vpc Id",
+            "nullable": true
+          },
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Name",
+            "nullable": true
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Description",
+            "nullable": true
+          },
+          "created_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              }
+            ],
+            "title": "Created At",
+            "nullable": true
+          },
+          "updated": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              }
+            ],
+            "title": "Updated",
+            "nullable": true
+          },
+          "status": {
+            "type": "string",
+            "title": "SecurityGroupStatus",
+            "enum": [
+              "created",
+              "pending",
+              "error"
+            ]
+          },
+          "error": {
+            "anyOf": [
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Error",
+            "nullable": true
+          },
+          "tenant_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Tenant Id",
+            "nullable": true
+          },
+          "project_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Project Type",
+            "nullable": true
+          },
+          "is_default": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              }
+            ],
+            "title": "Is Default",
+            "nullable": true
+          },
+          "external_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              }
+            ],
+            "title": "External Id",
+            "nullable": true
+          }
+        },
+        "title": "XaasSecurityGroupResponseEvent",
+        "required": [
+          "status"
+        ],
+        "example": {
+          "created_at": "2022-01-01 00:00:00",
+          "description": "security group description",
+          "error": "null",
+          "external_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+          "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+          "is_default": true,
+          "name": "security_group_name",
+          "project_type": "default",
+          "status": "created",
+          "tenant_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+          "updated": "2022-01-01 00:00:00",
+          "vpc_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
         }
       }
     }

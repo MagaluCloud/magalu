@@ -12,7 +12,7 @@ Internal list all instance types this route will return even the internal instan
 ### Note
 This route is used only for internal proposes.
 
-Version: 1.249.0
+Version: 1.249.1
 
 import "magalu.cloud/lib/products/virtual_machine_xaas/instance_types"
 */

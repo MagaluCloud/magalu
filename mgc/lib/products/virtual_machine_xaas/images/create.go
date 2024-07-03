@@ -12,7 +12,7 @@ Register a URP Image on Virtual Machine DB.
 ### Note
 The Image on URP need to be public and protected.
 
-Version: 1.249.0
+Version: 1.249.1
 
 import "magalu.cloud/lib/products/virtual_machine_xaas/images"
 */

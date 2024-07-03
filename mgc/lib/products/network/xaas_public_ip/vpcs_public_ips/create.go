@@ -9,7 +9,7 @@ Executor: create
 
 Create async Public IP in a VPC with provided vpc_id and x_tenant_id for XaaS
 
-Version: 1.124.1
+Version: 1.126.1
 
 import "magalu.cloud/lib/products/network/xaas_public_ip/vpcs_public_ips"
 */
