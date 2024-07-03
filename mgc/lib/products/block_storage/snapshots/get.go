@@ -52,11 +52,12 @@ type GetResult struct {
 	Volume      GetResultVolume `json:"volume"`
 }
 
+// any of: GetResultVolume
 type GetResultVolume struct {
-	Id   string              `json:"id"`
-	Name string              `json:"name"`
-	Size int                 `json:"size"`
-	Type GetResultVolumeType `json:"type"`
+	Id   string               `json:"id"`
+	Name *string              `json:"name,omitempty"`
+	Size *int                 `json:"size,omitempty"`
+	Type *GetResultVolumeType `json:"type,omitempty"`
 }
 
 type GetResultVolumeType struct {

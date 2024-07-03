@@ -44,7 +44,15 @@ type RestoreConfigs struct {
 }
 
 type RestoreResult struct {
-	Id string `json:"id"`
+	Id   string             `json:"id"`
+	Name *string            `json:"name,omitempty"`
+	Size *int               `json:"size,omitempty"`
+	Type *RestoreResultType `json:"type,omitempty"`
+}
+
+type RestoreResultType struct {
+	Id   string `json:"id"`
+	Name string `json:"name"`
 }
 
 func (s *service) Restore(

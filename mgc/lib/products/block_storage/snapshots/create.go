@@ -41,9 +41,10 @@ type CreateParameters struct {
 	Volume      CreateParametersVolume `json:"volume"`
 }
 
+// any of: CreateParametersVolume
 type CreateParametersVolume struct {
-	Id   string `json:"id"`
-	Name string `json:"name"`
+	Id   string  `json:"id"`
+	Name *string `json:"name,omitempty"`
 }
 
 type CreateConfigs struct {

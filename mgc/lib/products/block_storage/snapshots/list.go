@@ -55,11 +55,12 @@ type ListResultSnapshotsItem struct {
 	Volume      ListResultSnapshotsItemVolume `json:"volume"`
 }
 
+// any of: ListResultSnapshotsItemVolume
 type ListResultSnapshotsItemVolume struct {
-	Id   string                            `json:"id"`
-	Name string                            `json:"name"`
-	Size int                               `json:"size"`
-	Type ListResultSnapshotsItemVolumeType `json:"type"`
+	Id   string                             `json:"id"`
+	Name *string                            `json:"name,omitempty"`
+	Size *int                               `json:"size,omitempty"`
+	Type *ListResultSnapshotsItemVolumeType `json:"type,omitempty"`
 }
 
 type ListResultSnapshotsItemVolumeType struct {

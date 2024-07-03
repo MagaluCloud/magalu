@@ -3,6 +3,7 @@ module magalu.cloud/codegen
 go 1.22.3
 
 require (
+	github.com/getkin/kin-openapi v0.118.0
 	github.com/spf13/afero v1.11.0
 	github.com/spf13/cobra v1.7.0
 	github.com/stoewer/go-strcase v1.3.0
@@ -21,7 +22,6 @@ require (
 	github.com/dustin/go-humanize v1.0.1 // indirect
 	github.com/fsnotify/fsnotify v1.7.0 // indirect
 	github.com/geffersonFerraz/brazilian-words-sorter v1.0.0 // indirect
-	github.com/getkin/kin-openapi v0.118.0 // indirect
 	github.com/go-openapi/jsonpointer v0.20.0 // indirect
 	github.com/go-openapi/swag v0.23.0 // indirect
 	github.com/golang-jwt/jwt/v5 v5.2.0 // indirect

@@ -37,10 +37,18 @@ type RetypeParameters struct {
 	MachineType RetypeParametersMachineType `json:"machine_type"`
 }
 
+// any of: RetypeParametersMachineType
 type RetypeParametersMachineType struct {
-	Id   string `json:"id"`
-	Name string `json:"name"`
+	Id             string                                     `json:"id"`
+	Name           *string                                    `json:"name,omitempty"`
+	SecurityGroups *RetypeParametersMachineTypeSecurityGroups `json:"security_groups,omitempty"`
 }
+
+type RetypeParametersMachineTypeSecurityGroupsItem struct {
+	Id string `json:"id"`
+}
+
+type RetypeParametersMachineTypeSecurityGroups []RetypeParametersMachineTypeSecurityGroupsItem
 
 type RetypeConfigs struct {
 	Env       *string `json:"env,omitempty"`

@@ -22,21 +22,21 @@ Database replicas management.
 
 ### Optional
 
-- `exchange` (String)
 - `flavor_id` (String)
 
 ### Read-Only
 
 - `addresses` (Attributes List) (see [below for nested schema](#nestedatt--addresses))
 - `created_at` (String)
-- `datastore_id` (String)
-- `engine_id` (String)
+- `datastore_id` (String) Datastore unique identifier (Deprecated).
+**Deprecated**: This property is being deprecated in favor of `engine_id`. Please update your requests to use `engine_id` for improved functionality and future compatibility.
+- `engine_id` (String) Engine unique identifier.
 - `finished_at` (String)
-- `generation` (String) An enumeration.
-- `id` (String) The ID of this resource.
+- `generation` (String) Current database instance generation
+- `id` (String) Database Replica Unique Id
 - `parameters` (Attributes List) (see [below for nested schema](#nestedatt--parameters))
 - `started_at` (String)
-- `status` (String) An enumeration.
+- `status` (String)
 - `updated_at` (String)
 - `volume` (Attributes) (see [below for nested schema](#nestedatt--volume))
 
@@ -45,9 +45,9 @@ Database replicas management.
 
 Read-Only:
 
-- `access` (String) An enumeration.
+- `access` (String)
 - `address` (String)
-- `type` (String) An enumeration.
+- `type` (String)
 
 
 <a id="nestedatt--parameters"></a>
@@ -55,8 +55,8 @@ Read-Only:
 
 Read-Only:
 
-- `name` (String) An enumeration.
-- `value` (Attributes) (see [below for nested schema](#nestedatt--parameters--value))
+- `name` (String) Database parameter name.
+- `value` (Attributes) Database parameter value. (see [below for nested schema](#nestedatt--parameters--value))
 
 <a id="nestedatt--parameters--value"></a>
 ### Nested Schema for `parameters.value`
@@ -75,5 +75,5 @@ Read-Only:
 
 Read-Only:
 
-- `size` (Number)
-- `type` (String) An enumeration.
+- `size` (Number) The size of the volume (in GiB).
+- `type` (String) The type of the volume.

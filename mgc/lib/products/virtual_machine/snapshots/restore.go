@@ -40,10 +40,18 @@ type RestoreParameters struct {
 	UserData         *string                      `json:"user_data,omitempty"`
 }
 
+// any of: RestoreParametersMachineType
 type RestoreParametersMachineType struct {
-	Id   string `json:"id"`
-	Name string `json:"name"`
+	Id             string                                      `json:"id"`
+	Name           *string                                     `json:"name,omitempty"`
+	SecurityGroups *RestoreParametersMachineTypeSecurityGroups `json:"security_groups,omitempty"`
 }
+
+type RestoreParametersMachineTypeSecurityGroupsItem struct {
+	Id string `json:"id"`
+}
+
+type RestoreParametersMachineTypeSecurityGroups []RestoreParametersMachineTypeSecurityGroupsItem
 
 type RestoreParametersNetwork struct {
 	AssociatePublicIp *bool                              `json:"associate_public_ip,omitempty"`
@@ -51,20 +59,18 @@ type RestoreParametersNetwork struct {
 	Vpc               *RestoreParametersNetworkVpc       `json:"vpc,omitempty"`
 }
 
+// any of: RestoreParametersNetworkInterface
 type RestoreParametersNetworkInterface struct {
-	Id             string                                           `json:"id"`
-	SecurityGroups *RestoreParametersNetworkInterfaceSecurityGroups `json:"security_groups,omitempty"`
+	Id             string                                      `json:"id"`
+	Name           *string                                     `json:"name,omitempty"`
+	SecurityGroups *RestoreParametersMachineTypeSecurityGroups `json:"security_groups,omitempty"`
 }
 
-type RestoreParametersNetworkInterfaceSecurityGroupsItem struct {
-	Id string `json:"id"`
-}
-
-type RestoreParametersNetworkInterfaceSecurityGroups []RestoreParametersNetworkInterfaceSecurityGroupsItem
-
+// any of: RestoreParametersNetworkVpc
 type RestoreParametersNetworkVpc struct {
-	Id   string `json:"id"`
-	Name string `json:"name"`
+	Id             string                                      `json:"id"`
+	Name           *string                                     `json:"name,omitempty"`
+	SecurityGroups *RestoreParametersMachineTypeSecurityGroups `json:"security_groups,omitempty"`
 }
 
 type RestoreConfigs struct {

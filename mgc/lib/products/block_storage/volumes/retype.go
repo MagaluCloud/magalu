@@ -42,9 +42,18 @@ type RetypeParameters struct {
 	NewType RetypeParametersNewType `json:"new_type"`
 }
 
+// any of: RetypeParametersNewType
 type RetypeParametersNewType struct {
-	Id   string `json:"id"`
-	Name string `json:"name"`
+	DiskType *string                      `json:"disk_type,omitempty"`
+	Id       string                       `json:"id"`
+	Iops     *RetypeParametersNewTypeIops `json:"iops,omitempty"`
+	Name     *string                      `json:"name,omitempty"`
+	Status   *string                      `json:"status,omitempty"`
+}
+
+type RetypeParametersNewTypeIops struct {
+	Read  int `json:"read"`
+	Write int `json:"write"`
 }
 
 type RetypeConfigs struct {

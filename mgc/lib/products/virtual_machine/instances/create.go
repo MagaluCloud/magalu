@@ -30,14 +30,16 @@ type CreateParameters struct {
 	UserData         *string                     `json:"user_data,omitempty"`
 }
 
+// any of: CreateParametersImage
 type CreateParametersImage struct {
-	Id   string `json:"id"`
-	Name string `json:"name"`
+	Id   string  `json:"id"`
+	Name *string `json:"name,omitempty"`
 }
 
+// any of: CreateParametersMachineType
 type CreateParametersMachineType struct {
-	Id   string `json:"id"`
-	Name string `json:"name"`
+	Id   string  `json:"id"`
+	Name *string `json:"name,omitempty"`
 }
 
 type CreateParametersNetwork struct {
@@ -46,8 +48,10 @@ type CreateParametersNetwork struct {
 	Vpc               *CreateParametersNetworkVpc       `json:"vpc,omitempty"`
 }
 
+// any of: CreateParametersNetworkInterface
 type CreateParametersNetworkInterface struct {
 	Id             string                                          `json:"id"`
+	Name           *string                                         `json:"name,omitempty"`
 	SecurityGroups *CreateParametersNetworkInterfaceSecurityGroups `json:"security_groups,omitempty"`
 }
 
@@ -57,9 +61,11 @@ type CreateParametersNetworkInterfaceSecurityGroupsItem struct {
 
 type CreateParametersNetworkInterfaceSecurityGroups []CreateParametersNetworkInterfaceSecurityGroupsItem
 
+// any of: CreateParametersNetworkVpc
 type CreateParametersNetworkVpc struct {
-	Id   string `json:"id"`
-	Name string `json:"name"`
+	Id             string                                          `json:"id"`
+	Name           *string                                         `json:"name,omitempty"`
+	SecurityGroups *CreateParametersNetworkInterfaceSecurityGroups `json:"security_groups,omitempty"`
 }
 
 type CreateConfigs struct {

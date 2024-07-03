@@ -36,6 +36,7 @@ type ListResult struct {
 	InstanceTypes ListResultInstanceTypes `json:"instance_types"`
 }
 
+// any of: ListResultInstanceTypesItem
 type ListResultInstanceTypesItem struct {
 	Disk   int    `json:"disk"`
 	Gpu    *int   `json:"gpu,omitempty"`

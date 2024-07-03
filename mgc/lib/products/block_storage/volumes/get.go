@@ -59,6 +59,7 @@ type GetResultAttachment struct {
 	Instance   GetResultAttachmentInstance `json:"instance"`
 }
 
+// any of: GetResultAttachmentInstance
 type GetResultAttachmentInstance struct {
 	CreatedAt string `json:"created_at"`
 	Id        string `json:"id"`
@@ -73,12 +74,13 @@ type GetResultError struct {
 	Slug    string `json:"slug"`
 }
 
+// any of: GetResultType
 type GetResultType struct {
-	Id       string            `json:"id"`
-	DiskType string            `json:"disk_type"`
-	Iops     GetResultTypeIops `json:"iops"`
-	Name     string            `json:"name"`
-	Status   string            `json:"status"`
+	DiskType *string            `json:"disk_type,omitempty"`
+	Id       string             `json:"id"`
+	Iops     *GetResultTypeIops `json:"iops,omitempty"`
+	Name     *string            `json:"name,omitempty"`
+	Status   *string            `json:"status,omitempty"`
 }
 
 type GetResultTypeIops struct {

@@ -36,24 +36,11 @@ type ListConfigs struct {
 	ServerUrl *string `json:"serverUrl,omitempty"`
 }
 
+// any of: ListResult
 type ListResult struct {
+	Ports           *ListResultPorts          `json:"ports,omitempty"`
 	PortsSimplified ListResultPortsSimplified `json:"ports_simplified"`
-	Ports           ListResultPorts           `json:"ports"`
 }
-
-type ListResultPortsSimplifiedItem struct {
-	Id        *string                                 `json:"id,omitempty"`
-	IpAddress *ListResultPortsSimplifiedItemIpAddress `json:"ip_address,omitempty"`
-}
-
-type ListResultPortsSimplifiedItemIpAddressItem struct {
-	IpAddress string `json:"ip_address"`
-	SubnetId  string `json:"subnet_id"`
-}
-
-type ListResultPortsSimplifiedItemIpAddress []ListResultPortsSimplifiedItemIpAddressItem
-
-type ListResultPortsSimplified []ListResultPortsSimplifiedItem
 
 type ListResultPortsItem struct {
 	CreatedAt             *string                            `json:"created_at,omitempty"`
@@ -86,6 +73,20 @@ type ListResultPortsItemPublicIp []ListResultPortsItemPublicIpItem
 type ListResultPortsItemSecurityGroups []string
 
 type ListResultPorts []ListResultPortsItem
+
+type ListResultPortsSimplifiedItem struct {
+	Id        *string                                 `json:"id,omitempty"`
+	IpAddress *ListResultPortsSimplifiedItemIpAddress `json:"ip_address,omitempty"`
+}
+
+type ListResultPortsSimplifiedItemIpAddressItem struct {
+	IpAddress string `json:"ip_address"`
+	SubnetId  string `json:"subnet_id"`
+}
+
+type ListResultPortsSimplifiedItemIpAddress []ListResultPortsSimplifiedItemIpAddressItem
+
+type ListResultPortsSimplified []ListResultPortsSimplifiedItem
 
 func (s *service) List(
 	parameters ListParameters,

@@ -61,13 +61,21 @@ type ListResultVolumesItemAttachment struct {
 	Instance   ListResultVolumesItemAttachmentInstance `json:"instance"`
 }
 
+// any of: ListResultVolumesItemAttachmentInstance
 type ListResultVolumesItemAttachmentInstance struct {
-	CreatedAt string `json:"created_at"`
-	Id        string `json:"id"`
-	Name      string `json:"name"`
-	State     string `json:"state"`
-	Status    string `json:"status"`
-	UpdatedAt string `json:"updated_at"`
+	CreatedAt string                                       `json:"created_at"`
+	DiskType  *string                                      `json:"disk_type,omitempty"`
+	Id        string                                       `json:"id"`
+	Iops      *ListResultVolumesItemAttachmentInstanceIops `json:"iops,omitempty"`
+	Name      string                                       `json:"name"`
+	State     string                                       `json:"state"`
+	Status    string                                       `json:"status"`
+	UpdatedAt string                                       `json:"updated_at"`
+}
+
+type ListResultVolumesItemAttachmentInstanceIops struct {
+	Read  int `json:"read"`
+	Write int `json:"write"`
 }
 
 type ListResultVolumesItemError struct {
@@ -75,17 +83,13 @@ type ListResultVolumesItemError struct {
 	Slug    string `json:"slug"`
 }
 
+// any of: ListResultVolumesItemType
 type ListResultVolumesItemType struct {
-	Id       string                        `json:"id"`
-	DiskType string                        `json:"disk_type"`
-	Iops     ListResultVolumesItemTypeIops `json:"iops"`
-	Name     string                        `json:"name"`
-	Status   string                        `json:"status"`
-}
-
-type ListResultVolumesItemTypeIops struct {
-	Read  int `json:"read"`
-	Write int `json:"write"`
+	DiskType *string                                      `json:"disk_type,omitempty"`
+	Id       string                                       `json:"id"`
+	Iops     *ListResultVolumesItemAttachmentInstanceIops `json:"iops,omitempty"`
+	Name     *string                                      `json:"name,omitempty"`
+	Status   *string                                      `json:"status,omitempty"`
 }
 
 type ListResultVolumes []ListResultVolumesItem

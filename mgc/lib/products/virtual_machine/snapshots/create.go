@@ -35,10 +35,18 @@ type CreateParameters struct {
 	VirtualMachine CreateParametersVirtualMachine `json:"virtual_machine"`
 }
 
+// any of: CreateParametersVirtualMachine
 type CreateParametersVirtualMachine struct {
-	Id   string `json:"id"`
-	Name string `json:"name"`
+	Id             string                                        `json:"id"`
+	Name           *string                                       `json:"name,omitempty"`
+	SecurityGroups *CreateParametersVirtualMachineSecurityGroups `json:"security_groups,omitempty"`
 }
+
+type CreateParametersVirtualMachineSecurityGroupsItem struct {
+	Id string `json:"id"`
+}
+
+type CreateParametersVirtualMachineSecurityGroups []CreateParametersVirtualMachineSecurityGroupsItem
 
 type CreateConfigs struct {
 	Env       *string `json:"env,omitempty"`

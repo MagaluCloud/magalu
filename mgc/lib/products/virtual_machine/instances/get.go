@@ -54,27 +54,38 @@ type GetResultError struct {
 	Slug    string `json:"slug"`
 }
 
+// any of: GetResultImage
 type GetResultImage struct {
 	Id       string  `json:"id"`
-	Name     string  `json:"name"`
+	Name     *string `json:"name,omitempty"`
 	Platform *string `json:"platform,omitempty"`
 }
 
+// any of: GetResultMachineType
 type GetResultMachineType struct {
-	Id    string `json:"id"`
-	Disk  int    `json:"disk"`
-	Name  string `json:"name"`
-	Ram   int    `json:"ram"`
-	Vcpus int    `json:"vcpus"`
+	Disk  *int    `json:"disk,omitempty"`
+	Id    string  `json:"id"`
+	Name  *string `json:"name,omitempty"`
+	Ram   *int    `json:"ram,omitempty"`
+	Vcpus *int    `json:"vcpus,omitempty"`
 }
 
+// any of: GetResultNetwork
 type GetResultNetwork struct {
-	Ports GetResultNetworkPorts `json:"ports"`
-	Vpc   *GetResultNetworkVpc  `json:"vpc,omitempty"`
+	Ports *GetResultNetworkPorts `json:"ports"`
+	Vpc   *GetResultNetworkVpc   `json:"vpc,omitempty"`
 }
 
 type GetResultNetworkPortsItem struct {
-	Id string `json:"id"`
+	Id          string                               `json:"id"`
+	IpAddresses GetResultNetworkPortsItemIpAddresses `json:"ipAddresses"`
+	Name        string                               `json:"name"`
+}
+
+type GetResultNetworkPortsItemIpAddresses struct {
+	IpV6address      *string `json:"ipV6Address,omitempty"`
+	PrivateIpAddress string  `json:"privateIpAddress"`
+	PublicIpAddress  *string `json:"publicIpAddress,omitempty"`
 }
 
 type GetResultNetworkPorts []GetResultNetworkPortsItem
