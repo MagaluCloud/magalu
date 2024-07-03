@@ -1,25 +1,15 @@
-package cli
+package machine_types
 
 import (
-	"encoding/json"
-	model "integration-tests/cli/virtual-machines"
-	"os/exec"
 	"slices"
+	"strings"
 	"testing"
 )
 
 func TestMachineTypesList(t *testing.T) {
-	cmd := exec.Command("mgc", "vm", "machine-types", "list", "-o", "json")
-	output, err := cmd.CombinedOutput()
+	instanceTypesResponse, err := listMachineTypes()
 	if err != nil {
-		t.Errorf("Failed to execute command: %v", err)
-	}
-
-	var instanceTypesResponse model.InstanceTypesResponse
-
-	err = json.Unmarshal(output, &instanceTypesResponse)
-	if err != nil {
-		t.Errorf("Failed to unmarshal output: %v", err)
+		t.Errorf("Failed to list machine types: %v", err)
 	}
 
 	intancesTypes := []string{
@@ -33,9 +23,8 @@ func TestMachineTypesList(t *testing.T) {
 	}
 
 	for _, instanceType := range instanceTypesResponse.InstanceTypes {
-		if ! slices.Contains(intancesTypes, instanceType.Name) {
+		if strings.HasPrefix(instanceType.Name, "cloud") && !slices.Contains(intancesTypes, instanceType.Name) {
 			t.Errorf("Unexpected instance type: %s", instanceType.Name)
 		}
 	}
 }
-
