@@ -87,7 +87,15 @@ Read-Only:
 
 Optional:
 
-- `id` (String)
+- `security_groups` (Block, Optional) (see [below for nested schema](#nestedblock--network--interface--security_groups))
+
+<a id="nestedblock--network--interface--security_groups"></a>
+### Nested Schema for `network.interface.security_groups`
+
+Optional:
+
+- `id` (List of String)
+
 
 
 <a id="nestedblock--network--vpc"></a>

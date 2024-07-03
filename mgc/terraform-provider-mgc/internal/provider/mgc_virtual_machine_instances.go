@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"math/big"
+	"strings"
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -91,13 +92,17 @@ type vmInstancesResourceModel struct {
 }
 
 type networkVmInstancesModel struct {
-	IPV6              types.String        `tfsdk:"ipv6"`
-	PrivateAddress    types.String        `tfsdk:"private_address"`
-	PublicIpAddress   types.String        `tfsdk:"public_address"`
-	DeletePublicIP    types.Bool          `tfsdk:"delete_public_ip"`
-	AssociatePublicIP types.Bool          `tfsdk:"associate_public_ip"`
-	VPC               *genericIDNameModel `tfsdk:"vpc"`
-	Interface         *genericIDModel     `tfsdk:"interface"`
+	IPV6              types.String                          `tfsdk:"ipv6"`
+	PrivateAddress    types.String                          `tfsdk:"private_address"`
+	PublicIpAddress   types.String                          `tfsdk:"public_address"`
+	DeletePublicIP    types.Bool                            `tfsdk:"delete_public_ip"`
+	AssociatePublicIP types.Bool                            `tfsdk:"associate_public_ip"`
+	VPC               *genericIDNameModel                   `tfsdk:"vpc"`
+	Interface         *vmInstancesNetworkSecurityGroupModel `tfsdk:"interface"`
+}
+
+type vmInstancesNetworkSecurityGroupModel struct {
+	SecurityGroups []genericIDModel `tfsdk:"security_groups"`
 }
 
 type vmInstancesMachineTypeModel struct {
@@ -217,13 +222,14 @@ func (r *vmInstances) Schema(_ context.Context, _ resource.SchemaRequest, resp *
 						},
 					},
 					"interface": schema.SingleNestedBlock{
-						Attributes: map[string]schema.Attribute{
-							"id": schema.StringAttribute{
-								PlanModifiers: []planmodifier.String{
-									stringplanmodifier.UseStateForUnknown(),
+						Blocks: map[string]schema.Block{
+							"security_groups": schema.SingleNestedBlock{
+								Attributes: map[string]schema.Attribute{
+									"id": schema.ListAttribute{
+										Optional:    true,
+										ElementType: types.StringType,
+									},
 								},
-								Optional: true,
-								Computed: true,
 							},
 						},
 					},
@@ -339,8 +345,17 @@ func (r *vmInstances) Create(ctx context.Context, req resource.CreateRequest, re
 		}
 	}
 
-	if state.Network.Interface != nil && state.Network.Interface.ID.ValueString() != "" {
-		createParams.Network.Interface.Id = state.Network.Interface.ID.ValueString()
+	if state.Network.Interface != nil && len(state.Network.Interface.SecurityGroups) > 0 {
+		var ids []string
+		for _, sg := range state.Network.Interface.SecurityGroups {
+			ids = append(ids, sg.ID.ValueString())
+		}
+
+		createParams.Network.Interface.SecurityGroups = &sdkVmInstances.CreateParametersNetworkInterfaceSecurityGroups{
+			sdkVmInstances.CreateParametersNetworkInterfaceSecurityGroupsItem{
+				Id: strings.Join(ids, ","),
+			},
+		}
 	}
 
 	createParams.Network.AssociatePublicIp = state.Network.AssociatePublicIP.ValueBoolPointer()
