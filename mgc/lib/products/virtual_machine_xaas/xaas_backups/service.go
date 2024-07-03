@@ -1,7 +1,7 @@
 /*
-import "magalu.cloud/lib/products/virtual_machine_xaas/images"
+import "magalu.cloud/lib/products/virtual_machine_xaas/xaas_backups"
 */
-package images
+package xaasBackups
 
 import (
 	"context"
@@ -17,10 +17,10 @@ type service struct {
 type Service interface {
 	Create(parameters CreateParameters, configs CreateConfigs) (result CreateResult, err error)
 	Delete(parameters DeleteParameters, configs DeleteConfigs) (err error)
+	Get(parameters GetParameters, configs GetConfigs) (result GetResult, err error)
 	List(parameters ListParameters, configs ListConfigs) (result ListResult, err error)
 	Rename(parameters RenameParameters, configs RenameConfigs) (err error)
-	Update(parameters UpdateParameters, configs UpdateConfigs) (err error)
-	Urp(parameters UrpParameters, configs UrpConfigs) (err error)
+	Restore(parameters RestoreParameters, configs RestoreConfigs) (result RestoreResult, err error)
 }
 
 func NewService(ctx context.Context, client *mgcClient.Client) Service {

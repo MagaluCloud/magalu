@@ -3,20 +3,20 @@ Executor: urp
 
 # Summary
 
-# Update Images From Urp
+# Worker Update Snapshot Urp
 
 # Description
 
-Internal route for update status of a image when receive a update from URP.
+Internal route for update status of a snapshot when receive a update from URP.
 
 ### Note
 This route is used only for internal proposes.
 
 Version: 1.249.0
 
-import "magalu.cloud/lib/products/virtual_machine_xaas/images"
+import "magalu.cloud/lib/products/virtual_machine_xaas/snapshots"
 */
-package images
+package snapshots
 
 import (
 	mgcCore "magalu.cloud/core"
@@ -25,6 +25,8 @@ import (
 
 type UrpParameters struct {
 	Error  *string `json:"error,omitempty"`
+	Size   *int    `json:"size,omitempty"`
+	State  *string `json:"state,omitempty"`
 	Status *string `json:"status,omitempty"`
 	UrpId  string  `json:"urp_id"`
 }
@@ -41,7 +43,7 @@ func (s *service) Urp(
 ) (
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("Urp", mgcCore.RefPath("/virtual-machine-xaas/images/urp"), s.client, s.ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Urp", mgcCore.RefPath("/virtual-machine-xaas/snapshots/urp"), s.client, s.ctx)
 	if err != nil {
 		return
 	}

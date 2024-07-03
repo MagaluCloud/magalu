@@ -9,7 +9,7 @@ Executor: update
 
 # Update backup status
 
-Version: 1.230.0
+Version: 1.249.0
 
 import "magalu.cloud/lib/products/virtual_machine_xaas/backups"
 */
@@ -22,8 +22,10 @@ import (
 
 type UpdateParameters struct {
 	Error            *string `json:"error,omitempty"`
-	ExternalBackupId string  `json:"external_backup_id"`
+	ExternalBackupId *string `json:"external_backup_id,omitempty"`
 	Id               string  `json:"id"`
+	ProjectType      string  `json:"project_type"`
+	State            *string `json:"state,omitempty"`
 	Status           string  `json:"status"`
 }
 

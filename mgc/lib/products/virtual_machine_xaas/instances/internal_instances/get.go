@@ -12,7 +12,7 @@ This route is to get a detailed information for a instance but adding the urp id
 ### Note
 This route is used only for internal proposes.
 
-Version: 1.230.0
+Version: 1.249.0
 
 import "magalu.cloud/lib/products/virtual_machine_xaas/instances/internal_instances"
 */
@@ -50,38 +50,20 @@ type GetResult struct {
 	UserData         *string              `json:"user_data,omitempty"`
 }
 
-// any of: GetResultImage0, GetResultImage1
+// any of: GetResultImage
 type GetResultImage struct {
-	GetResultImage0 `json:",squash"` // nolint
-	GetResultImage1 `json:",squash"` // nolint
-}
-
-type GetResultImage0 struct {
-	Id string `json:"id"`
-}
-
-type GetResultImage1 struct {
 	Id       string  `json:"id"`
-	Name     string  `json:"name"`
+	Name     *string `json:"name,omitempty"`
 	Platform *string `json:"platform,omitempty"`
 }
 
-// any of: GetResultMachineType0, GetResultMachineType1
+// any of: GetResultMachineType
 type GetResultMachineType struct {
-	GetResultMachineType0 `json:",squash"` // nolint
-	GetResultMachineType1 `json:",squash"` // nolint
-}
-
-type GetResultMachineType0 struct {
-	Id string `json:"id"`
-}
-
-type GetResultMachineType1 struct {
-	Disk  int    `json:"disk"`
-	Id    string `json:"id"`
-	Name  string `json:"name"`
-	Ram   int    `json:"ram"`
-	Vcpus int    `json:"vcpus"`
+	Disk  *int    `json:"disk,omitempty"`
+	Id    string  `json:"id"`
+	Name  *string `json:"name,omitempty"`
+	Ram   *int    `json:"ram,omitempty"`
+	Vcpus *int    `json:"vcpus,omitempty"`
 }
 
 type GetResultNetwork struct {

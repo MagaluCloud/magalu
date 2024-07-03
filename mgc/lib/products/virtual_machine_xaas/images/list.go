@@ -9,7 +9,7 @@ Executor: list
 
 Retrieve a list of images allowed for the current tenant which is logged in.
 
-Version: 1.230.0
+Version: 1.249.0
 
 import "magalu.cloud/lib/products/virtual_machine_xaas/images"
 */
@@ -19,6 +19,10 @@ import (
 	mgcCore "magalu.cloud/core"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
+
+type ListParameters struct {
+	Deleted *bool `json:"deleted,omitempty"`
+}
 
 type ListConfigs struct {
 	Env       *string `json:"env,omitempty"`
@@ -35,6 +39,7 @@ type ListResultImagesItem struct {
 	EndStandardSupportAt *string `json:"end_standard_support_at,omitempty"`
 	Id                   string  `json:"id"`
 	Internal             bool    `json:"internal"`
+	IsApproved           bool    `json:"is_approved"`
 	MinDisk              int     `json:"min_disk"`
 	MinRam               int     `json:"min_ram"`
 	MinVcpu              int     `json:"min_vcpu"`
@@ -49,6 +54,7 @@ type ListResultImagesItem struct {
 type ListResultImages []ListResultImagesItem
 
 func (s *service) List(
+	parameters ListParameters,
 	configs ListConfigs,
 ) (
 	result ListResult,
@@ -60,6 +66,9 @@ func (s *service) List(
 	}
 
 	var p mgcCore.Parameters
+	if p, err = mgcHelpers.ConvertParameters[ListParameters](parameters); err != nil {
+		return
+	}
 
 	var c mgcCore.Configs
 	if c, err = mgcHelpers.ConvertConfigs[ListConfigs](configs); err != nil {

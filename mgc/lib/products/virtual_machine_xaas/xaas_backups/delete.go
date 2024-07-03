@@ -3,22 +3,17 @@ Executor: delete
 
 # Summary
 
-# Delete Instance Type V1
+Delete a backup of a virtual machine asynchronously.
 
 # Description
 
-Remove a instance type from virtual machine DB.
-
-### Note
-This route only remove the instance type from virtual machine DB.
-
-Needs to remove the flavor from URP after use this route.
+# Delete a backup from instance
 
 Version: 1.249.0
 
-import "magalu.cloud/lib/products/virtual_machine_xaas/instance_types"
+import "magalu.cloud/lib/products/virtual_machine_xaas/xaas_backups"
 */
-package instanceTypes
+package xaasBackups
 
 import (
 	mgcCore "magalu.cloud/core"
@@ -26,7 +21,8 @@ import (
 )
 
 type DeleteParameters struct {
-	Id string `json:"id"`
+	Id          string `json:"id"`
+	ProjectType string `json:"project_type"`
 }
 
 type DeleteConfigs struct {
@@ -41,7 +37,7 @@ func (s *service) Delete(
 ) (
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("Delete", mgcCore.RefPath("/virtual-machine-xaas/instance types/delete"), s.client, s.ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Delete", mgcCore.RefPath("/virtual-machine-xaas/xaas backups/delete"), s.client, s.ctx)
 	if err != nil {
 		return
 	}
@@ -64,7 +60,7 @@ func (s *service) DeleteConfirmPrompt(
 	parameters DeleteParameters,
 	configs DeleteConfigs,
 ) (message string) {
-	e, err := mgcHelpers.ResolveExecutor("Delete", mgcCore.RefPath("/virtual-machine-xaas/instance types/delete"), s.client)
+	e, err := mgcHelpers.ResolveExecutor("Delete", mgcCore.RefPath("/virtual-machine-xaas/xaas backups/delete"), s.client)
 	if err != nil {
 		return
 	}

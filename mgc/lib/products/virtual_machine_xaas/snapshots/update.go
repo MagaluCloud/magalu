@@ -3,16 +3,13 @@ Executor: update
 
 # Summary
 
-# Worker Update Snapshot Urp
+# Update snapshot
 
 # Description
 
-Internal route for update status of a snapshot when receive a update from URP.
+# Internal route for update a snapshot using its internal id
 
-### Note
-This route is used only for internal proposes.
-
-Version: 1.230.0
+Version: 1.249.0
 
 import "magalu.cloud/lib/products/virtual_machine_xaas/snapshots"
 */
@@ -24,11 +21,12 @@ import (
 )
 
 type UpdateParameters struct {
-	Error  *string `json:"error,omitempty"`
-	Size   *int    `json:"size,omitempty"`
-	State  *string `json:"state,omitempty"`
-	Status *string `json:"status,omitempty"`
-	UrpId  string  `json:"urp_id"`
+	Error         *string `json:"error,omitempty"`
+	Id            string  `json:"id"`
+	Size          *int    `json:"size,omitempty"`
+	State         *string `json:"state,omitempty"`
+	Status        *string `json:"status,omitempty"`
+	UrpSnapshotId *string `json:"urp_snapshot_id"`
 }
 
 type UpdateConfigs struct {

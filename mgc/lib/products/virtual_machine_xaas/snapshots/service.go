@@ -16,6 +16,7 @@ type service struct {
 
 type Service interface {
 	Update(parameters UpdateParameters, configs UpdateConfigs) (err error)
+	Urp(parameters UrpParameters, configs UrpConfigs) (err error)
 }
 
 func NewService(ctx context.Context, client *mgcClient.Client) Service {

@@ -3,17 +3,23 @@ Executor: rename
 
 # Summary
 
-# Update Image Name
+# Renames a backup
 
 # Description
 
-# Update image name
+Renames a backup with the id provided in the current tenant which is logged in.
+
+#### Rules
+- You can use the backup list command to retrieve all backups, so you can get the id of
+the backup that you want to rename.
+- A Backup can only renamed when it's in completed status.
+- Each backup must have a unique name.
 
 Version: 1.249.0
 
-import "magalu.cloud/lib/products/virtual_machine_xaas/images"
+import "magalu.cloud/lib/products/virtual_machine_xaas/xaas_backups"
 */
-package images
+package xaasBackups
 
 import (
 	mgcCore "magalu.cloud/core"
@@ -21,8 +27,9 @@ import (
 )
 
 type RenameParameters struct {
-	Id   string `json:"id"`
-	Name string `json:"name"`
+	Id          string `json:"id"`
+	Name        string `json:"name"`
+	ProjectType string `json:"project_type"`
 }
 
 type RenameConfigs struct {
@@ -37,7 +44,7 @@ func (s *service) Rename(
 ) (
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("Rename", mgcCore.RefPath("/virtual-machine-xaas/images/rename"), s.client, s.ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Rename", mgcCore.RefPath("/virtual-machine-xaas/xaas backups/rename"), s.client, s.ctx)
 	if err != nil {
 		return
 	}

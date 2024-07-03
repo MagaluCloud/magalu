@@ -12,7 +12,7 @@ This route is to get a detailed information for a instance but adding the urp id
 ### Note
 This route is used only for internal proposes.
 
-Version: 1.230.0
+Version: 1.249.0
 
 import "magalu.cloud/lib/products/virtual_machine_xaas/instances/instances_internal"
 */
@@ -50,38 +50,20 @@ type UrpResult struct {
 	UserData         *string              `json:"user_data,omitempty"`
 }
 
-// any of: UrpResultImage0, UrpResultImage1
+// any of: UrpResultImage
 type UrpResultImage struct {
-	UrpResultImage0 `json:",squash"` // nolint
-	UrpResultImage1 `json:",squash"` // nolint
-}
-
-type UrpResultImage0 struct {
-	Id string `json:"id"`
-}
-
-type UrpResultImage1 struct {
 	Id       string  `json:"id"`
-	Name     string  `json:"name"`
+	Name     *string `json:"name,omitempty"`
 	Platform *string `json:"platform,omitempty"`
 }
 
-// any of: UrpResultMachineType0, UrpResultMachineType1
+// any of: UrpResultMachineType
 type UrpResultMachineType struct {
-	UrpResultMachineType0 `json:",squash"` // nolint
-	UrpResultMachineType1 `json:",squash"` // nolint
-}
-
-type UrpResultMachineType0 struct {
-	Id string `json:"id"`
-}
-
-type UrpResultMachineType1 struct {
-	Disk  int    `json:"disk"`
-	Id    string `json:"id"`
-	Name  string `json:"name"`
-	Ram   int    `json:"ram"`
-	Vcpus int    `json:"vcpus"`
+	Disk  *int    `json:"disk,omitempty"`
+	Id    string  `json:"id"`
+	Name  *string `json:"name,omitempty"`
+	Ram   *int    `json:"ram,omitempty"`
+	Vcpus *int    `json:"vcpus,omitempty"`
 }
 
 type UrpResultNetwork struct {

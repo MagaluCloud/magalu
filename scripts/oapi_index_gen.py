@@ -68,7 +68,7 @@ def load_mods(
         name = match.group("name")
         full_mods[filename] = data
         description = info.get("x-mgc-description", info.get("description", ""))
-        internal = ("internal" in filename) or ("internal" in url)
+        internal = False #("internal" in filename) or ("internal" in url)
         mods.append(
             IndexModule(
                 name=name,
