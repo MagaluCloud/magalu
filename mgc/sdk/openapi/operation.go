@@ -378,7 +378,6 @@ func addQueryParam(qValues *url.Values, param *openapi3.Parameter, val core.Valu
 }
 
 func addHeaderParam(req *http.Request, param *openapi3.Parameter, val core.Value) {
-	// TODO: handle complex types passed on val
 	req.Header.Set(param.Name, fmt.Sprintf("%v", val))
 }
 
@@ -433,6 +432,9 @@ func (o *operation) configureRequest(
 	configs core.Configs,
 ) {
 	_, _ = o.parameters.forEachWithValue(configs, configLocations, func(externalName string, parameter *openapi3.Parameter, value any) (run bool, err error) {
+		if value == nil {
+			return true, nil
+		}
 		switch parameter.In {
 		case openapi3.ParameterInHeader:
 			addHeaderParam(req, parameter, value)
