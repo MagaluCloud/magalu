@@ -2765,10 +2765,7 @@
                     "$ref": "#/components/schemas/Name"
                   }
                 ],
-                "title": "Vpc",
-                "default": {
-                  "name": "default"
-                }
+                "title": "Vpc"
               },
               "interface": {
                 "anyOf": [
@@ -3251,12 +3248,6 @@
                 "$ref": "#/components/schemas/InstanceCreateRequestV1NetworkDefault"
               }
             ],
-            "default": {
-              "vpc": {
-                "name": "default"
-              },
-              "associate_public_ip": true
-            },
             "nullable": true
           },
           "user_data": {
@@ -3319,10 +3310,7 @@
                 "$ref": "#/components/schemas/Name"
               }
             ],
-            "title": "Vpc",
-            "default": {
-              "name": "default"
-            }
+            "title": "Vpc"
           },
           "interface": {
             "anyOf": [
@@ -5122,12 +5110,6 @@
                 "$ref": "#/components/schemas/InstanceCreateRequestV1NetworkDefault"
               }
             ],
-            "default": {
-              "vpc": {
-                "name": "default"
-              },
-              "associate_public_ip": true
-            },
             "nullable": true
           },
           "user_data": {

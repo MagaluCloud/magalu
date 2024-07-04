@@ -25,7 +25,7 @@ Flags:
                                                   This is the same as '--machine-type=name:string'.
       --name string                               Name (between 1 and 255 characters) (required)
       --network object                            (properties: associate_public_ip, interface and vpc)
-                                                  Use --network=help for more details (default {"associate_public_ip":true,"vpc":{"name":"default"}})
+                                                  Use --network=help for more details
       --network.associate-public-ip boolean       network's associate_public_ip property: Associate Public Ip
                                                   This is the same as '--network=associate_public_ip:boolean'. (default true)
       --network.interface object                  network's interface property: Interface (at least one of: single property: id or single property: security_groups)
@@ -38,7 +38,7 @@ Flags:
                                                   This is the same as '--network.interface=security_groups:array'. (default [])
       --network.vpc object                        network's vpc property: Vpc (at least one of: single property: id or single property: name)
                                                   Use --network.vpc=help for more details
-                                                  This is the same as '--network=vpc:object'. (default {"name":"default"})
+                                                  This is the same as '--network=vpc:object'.
       --network.vpc.id string                     Vpc: Id (between 1 and 255 characters)
                                                   This is the same as '--network.vpc=id:string'.
       --network.vpc.name string                   Vpc: Name (between 1 and 255 characters)

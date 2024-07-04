@@ -17,91 +17,175 @@ Operations with instances, including create, delete, start, stop, reboot and oth
 
 ### Required
 
+- `image` (Attributes) (see [below for nested schema](#nestedatt--image))
+- `machine_type` (Attributes) (see [below for nested schema](#nestedatt--machine_type))
 - `name` (String)
 - `ssh_key_name` (String)
 
 ### Optional
 
-- `image` (Block, Optional) (see [below for nested schema](#nestedblock--image))
-- `machine_type` (Block, Optional) (see [below for nested schema](#nestedblock--machine_type))
-- `name_is_prefix` (Boolean)
-- `network` (Block, Optional) (see [below for nested schema](#nestedblock--network))
+- `availability_zone` (String)
+- `delete_public_ip` (Boolean)
+- `network` (Attributes) (see [below for nested schema](#nestedatt--network))
+- `user_data` (String)
 
 ### Read-Only
 
 - `created_at` (String)
-- `final_name` (String)
+- `current_image` (Attributes) (see [below for nested schema](#nestedatt--current_image))
+- `current_machine_type` (Attributes) (see [below for nested schema](#nestedatt--current_machine_type))
+- `current_name` (String)
+- `current_network` (Attributes) (see [below for nested schema](#nestedatt--current_network))
+- `current_ssh_key_name` (String)
+- `error` (Attributes) (see [below for nested schema](#nestedatt--error))
 - `id` (String) The ID of this resource.
 - `state` (String)
 - `status` (String)
 - `updated_at` (String)
 
-<a id="nestedblock--image"></a>
+<a id="nestedatt--image"></a>
 ### Nested Schema for `image`
-
-Required:
-
-- `name` (String)
-
-Read-Only:
-
-- `id` (String)
-
-
-<a id="nestedblock--machine_type"></a>
-### Nested Schema for `machine_type`
-
-Required:
-
-- `name` (String)
-
-Read-Only:
-
-- `disk` (Number)
-- `id` (String)
-- `ram` (Number)
-- `vcpus` (Number)
-
-
-<a id="nestedblock--network"></a>
-### Nested Schema for `network`
-
-Required:
-
-- `associate_public_ip` (Boolean)
 
 Optional:
 
-- `delete_public_ip` (Boolean)
-- `interface` (Block, Optional) (see [below for nested schema](#nestedblock--network--interface))
-- `vpc` (Block, Optional) (see [below for nested schema](#nestedblock--network--vpc))
+- `id` (String)
+- `name` (String)
 
-Read-Only:
 
-- `ipv6` (String)
-- `private_address` (String)
-- `public_address` (String)
+<a id="nestedatt--machine_type"></a>
+### Nested Schema for `machine_type`
 
-<a id="nestedblock--network--interface"></a>
+Optional:
+
+- `id` (String)
+- `name` (String)
+
+
+<a id="nestedatt--network"></a>
+### Nested Schema for `network`
+
+Optional:
+
+- `associate_public_ip` (Boolean)
+- `interface` (Attributes) (see [below for nested schema](#nestedatt--network--interface))
+- `vpc` (Attributes) (see [below for nested schema](#nestedatt--network--vpc))
+
+<a id="nestedatt--network--interface"></a>
 ### Nested Schema for `network.interface`
 
 Optional:
 
-- `security_groups` (Block, Optional) (see [below for nested schema](#nestedblock--network--interface--security_groups))
+- `id` (String)
+- `security_groups` (Attributes List) (see [below for nested schema](#nestedatt--network--interface--security_groups))
 
-<a id="nestedblock--network--interface--security_groups"></a>
+<a id="nestedatt--network--interface--security_groups"></a>
 ### Nested Schema for `network.interface.security_groups`
 
-Optional:
+Required:
 
-- `id` (List of String)
+- `id` (String)
 
 
 
-<a id="nestedblock--network--vpc"></a>
+<a id="nestedatt--network--vpc"></a>
 ### Nested Schema for `network.vpc`
 
 Optional:
 
 - `id` (String)
 - `name` (String)
+
+
+
+<a id="nestedatt--current_image"></a>
+### Nested Schema for `current_image`
+
+Read-Only:
+
+- `id` (String)
+- `name` (String)
+- `platform` (String)
+
+
+<a id="nestedatt--current_machine_type"></a>
+### Nested Schema for `current_machine_type`
+
+Read-Only:
+
+- `disk` (Number)
+- `id` (String)
+- `name` (String)
+- `ram` (Number)
+- `vcpus` (Number)
+
+
+<a id="nestedatt--current_network"></a>
+### Nested Schema for `current_network`
+
+Read-Only:
+
+- `object1` (Attributes) (see [below for nested schema](#nestedatt--current_network--object1))
+- `object2` (Attributes) (see [below for nested schema](#nestedatt--current_network--object2))
+
+<a id="nestedatt--current_network--object1"></a>
+### Nested Schema for `current_network.object1`
+
+Read-Only:
+
+- `ports` (Attributes List) (see [below for nested schema](#nestedatt--current_network--object1--ports))
+
+<a id="nestedatt--current_network--object1--ports"></a>
+### Nested Schema for `current_network.object1.ports`
+
+Read-Only:
+
+- `id` (String)
+
+
+
+<a id="nestedatt--current_network--object2"></a>
+### Nested Schema for `current_network.object2`
+
+Read-Only:
+
+- `ports` (Attributes List) (see [below for nested schema](#nestedatt--current_network--object2--ports))
+- `vpc` (Attributes) (see [below for nested schema](#nestedatt--current_network--object2--vpc))
+
+<a id="nestedatt--current_network--object2--ports"></a>
+### Nested Schema for `current_network.object2.ports`
+
+Read-Only:
+
+- `id` (String)
+- `ip_addresses` (Attributes) (see [below for nested schema](#nestedatt--current_network--object2--ports--ip_addresses))
+- `name` (String)
+
+<a id="nestedatt--current_network--object2--ports--ip_addresses"></a>
+### Nested Schema for `current_network.object2.ports.ip_addresses`
+
+Read-Only:
+
+- `ip_v6address` (String)
+- `private_ip_address` (String)
+- `public_ip_address` (String)
+
+
+
+<a id="nestedatt--current_network--object2--vpc"></a>
+### Nested Schema for `current_network.object2.vpc`
+
+Read-Only:
+
+- `id` (String)
+- `name` (String)
+
+
+
+
+<a id="nestedatt--error"></a>
+### Nested Schema for `error`
+
+Read-Only:
+
+- `message` (String)
+- `slug` (String)
