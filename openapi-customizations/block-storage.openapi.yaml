@@ -36,13 +36,6 @@ servers:
                   - from: pre-prod
                     to: api.pre-prod.jaxyendy.com
 paths:
-    /v1/volumes/{id}:
-        get:
-            x-mgc-wait-termination:
-                maxRetries: 10
-                interval: 5s
-                jsonPathQuery: $.result.status == "completed" || $.result.status == "deleted"
-                errorJsonPathQuery: contains($.result.status, "error")
     /v1/volumes/{id}/retype:
         post:
             responses:

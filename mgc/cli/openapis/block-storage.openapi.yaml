@@ -940,12 +940,6 @@ paths:
             security:
             -   OAuth2:
                 - block-storage.read
-            x-mgc-wait-termination:
-                maxRetries: 10
-                interval: 5s
-                jsonPathQuery: $.result.status == "completed" || $.result.status ==
-                    "deleted"
-                errorJsonPathQuery: contains($.result.status, "error")
         delete:
             tags:
             - volumes
