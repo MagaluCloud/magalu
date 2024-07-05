@@ -2479,8 +2479,6 @@ components:
                             -   $ref: '#/components/schemas/ID'
                             -   $ref: '#/components/schemas/Name'
                             title: Vpc
-                            default:
-                                name: default
                         interface:
                             anyOf:
                             -   $ref: '#/components/schemas/ID'
@@ -2794,10 +2792,6 @@ components:
                 network:
                     anyOf:
                     -   $ref: '#/components/schemas/InstanceCreateRequestV1NetworkDefault'
-                    default:
-                        vpc:
-                            name: default
-                        associate_public_ip: true
                     nullable: true
                 user_data:
                     anyOf:
@@ -2837,8 +2831,6 @@ components:
                     -   $ref: '#/components/schemas/ID'
                     -   $ref: '#/components/schemas/Name'
                     title: Vpc
-                    default:
-                        name: default
                 interface:
                     anyOf:
                     -   $ref: '#/components/schemas/ID'
@@ -4082,10 +4074,6 @@ components:
                 network:
                     anyOf:
                     -   $ref: '#/components/schemas/InstanceCreateRequestV1NetworkDefault'
-                    default:
-                        vpc:
-                            name: default
-                        associate_public_ip: true
                     nullable: true
                 user_data:
                     anyOf:

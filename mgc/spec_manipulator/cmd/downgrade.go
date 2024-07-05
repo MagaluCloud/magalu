@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"slices"
 	"strings"
 
 	"github.com/pb33f/libopenapi"
@@ -93,7 +94,11 @@ func prepareSchema(xchema *base.Schema) *base.Schema {
 		propMap := orderedmap.New[string, *base.SchemaProxy]()
 
 		for prop := xchema.Properties.Oldest(); prop != nil; prop = prop.Next() {
-			propMap.Set(prop.Key, base.CreateSchemaProxy(prepareSchema(prop.Value.Schema())))
+			preparedSchema := prepareSchema(prop.Value.Schema())
+			if preparedSchema.Title == "InstanceCreateRequestV1NetworkDefault" {
+				preparedSchema.Default = nil
+			}
+			propMap.Set(prop.Key, base.CreateSchemaProxy(preparedSchema))
 		}
 
 		newChema.Properties = propMap
@@ -148,13 +153,16 @@ func prepareSchema(xchema *base.Schema) *base.Schema {
 	if len(newOneOf) > 0 {
 		newChema.OneOf = newOneOf
 	}
-
 	//AnyOf         []*SchemaProxy
+	ignoreRefDefault := []string{"#/components/schemas/InstanceCreateRequestV1NetworkDefault"} // "#/components/schemas/ID
 	newAnyOf := []*base.SchemaProxy{}
 	if xchema.AnyOf != nil {
 		for _, xA := range xchema.AnyOf {
 			if xA.IsReference() {
 				newAnyOf = append(newAnyOf, xA)
+				if slices.Contains(ignoreRefDefault, xA.GetReference()) {
+					newChema.Default = nil
+				}
 				continue
 			}
 

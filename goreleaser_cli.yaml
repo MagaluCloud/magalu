@@ -34,17 +34,10 @@ archives:
   - id: mgc
     builds:
       - mgc
-    files:
-      - src: "mgc/cli/RUNNING.md"
-        dst: "README.md"
   - id: mgcwin
     format: zip
     builds:
       - mgcwin
-    files:
-      - src: "mgc/cli/RUNNING.md"
-        dst: "README.md"
-
 nfpms:
 -
   maintainer: Magalu Cloud <magalucloud.cli@luizalabs.com>

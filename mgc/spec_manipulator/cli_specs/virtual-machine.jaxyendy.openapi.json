@@ -3233,10 +3233,7 @@
                 "$ref": "#/components/schemas/Name"
               }
             ],
-            "title": "Vpc",
-            "default": {
-              "name": "default"
-            }
+            "title": "Vpc"
           },
           "interface": {
             "anyOf": [
