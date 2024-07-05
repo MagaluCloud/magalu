@@ -199,9 +199,10 @@ func (p *MgcProvider) Resources(ctx context.Context) []func() resource.Resource 
 	root := p.sdk.Group()
 	resources, err := collectGroupResources(ctx, p.sdk, root, []string{providerTypeName})
 	// Add manually the provider resource
-	resources = append(resources, NewVirtualMachineInstancesResource)
-	resources = append(resources, NewVirtualMachineSnapshotsResource)
-
+	if os.Getenv("USE_NEW_MODULES") == "1" {
+		resources = append(resources, NewVirtualMachineInstancesResource)
+		resources = append(resources, NewVirtualMachineSnapshotsResource)
+	}
 	if err != nil {
 		tflog.Error(ctx, fmt.Sprintf("An error occurred while generating the provider resource list: %v", err))
 	}
@@ -271,10 +272,17 @@ func collectGroupResources(
 	strResourceName = strings.Replace(strResourceName, "-", "_", -1)
 
 	// IGNORE THIS MODULES - they are be replaced by the new resources
-	ignoredTFModules := []string{"mgc_virtual_machine_instances", "mgc_virtual_machine_snapshots"}
-	if slices.Contains(ignoredTFModules, strResourceName) {
-		tflog.Debug(ctx, fmt.Sprintf("resource %q is ignored", strResourceName), debugMap)
-		return resources, nil
+	ignoredTFModules := []string{}
+	if os.Getenv("USE_NEW_MODULES") == "1" {
+		ignoredTFModules = append(ignoredTFModules,
+			"mgc_virtual_machine_instances",
+			"mgc_virtual_machine_snapshots",
+		)
+
+		if slices.Contains(ignoredTFModules, strResourceName) {
+			tflog.Debug(ctx, fmt.Sprintf("resource %q is ignored", strResourceName), debugMap)
+			return resources, nil
+		}
 	}
 	// END IGNORE
 

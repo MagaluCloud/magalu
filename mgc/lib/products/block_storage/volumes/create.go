@@ -36,16 +36,9 @@ import (
 )
 
 type CreateParameters struct {
-	Backup *CreateParametersBackup `json:"backup,omitempty"`
-	Name   string                  `json:"name"`
-	Size   int                     `json:"size"`
-	Type   CreateParametersType    `json:"type"`
-}
-
-// any of: CreateParametersBackup
-type CreateParametersBackup struct {
-	Id   string  `json:"id"`
-	Name *string `json:"name,omitempty"`
+	Name string               `json:"name"`
+	Size int                  `json:"size"`
+	Type CreateParametersType `json:"type"`
 }
 
 // any of: CreateParametersType

@@ -25852,12 +25852,6 @@
          "type": "string"
         },
         "network": {
-         "default": {
-          "associate_public_ip": true,
-          "vpc": {
-           "name": "default"
-          }
-         },
          "example": {
           "associate_public_ip": true,
           "interface": {
@@ -25974,9 +25968,6 @@
              "type": "object"
             }
            ],
-           "default": {
-            "name": "default"
-           },
            "title": "Vpc",
            "type": "object"
           }
@@ -28587,12 +28578,6 @@
          "type": "string"
         },
         "network": {
-         "default": {
-          "associate_public_ip": true,
-          "vpc": {
-           "name": "default"
-          }
-         },
          "example": {
           "associate_public_ip": true,
           "interface": {
@@ -28709,9 +28694,6 @@
              "type": "object"
             }
            ],
-           "default": {
-            "name": "default"
-           },
            "title": "Vpc",
            "type": "object"
           }
