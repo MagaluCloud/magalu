@@ -1,0 +1,11 @@
+Get the current Object Storage credentials
+
+Usage:
+  ./mgc object-storage key-pair current [flags]
+
+Flags:
+  -h, --help   help for current
+
+Global Flags:
+      --cli.show-cli-globals   Show all CLI global flags on usage text
+

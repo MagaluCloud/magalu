@@ -1,0 +1,12 @@
+Revoke credentials used in Object Storage requests
+
+Usage:
+  ./mgc object-storage key-pair revoke [uuid] [flags]
+
+Flags:
+  -h, --help          help for revoke
+      --uuid string   UUID of key pair to revoke (required)
+
+Global Flags:
+      --cli.show-cli-globals   Show all CLI global flags on usage text
+
