@@ -13,8 +13,8 @@ Usage:
 
 ## Other commands:
 - Commands:
-- api-key     Manage credentials to use Object Storage
 - buckets     Bucket operations for Object Storage API
+- key-pair    Manage credentials to use Object Storage
 - objects     Object operations for Object Storage API
 
 ## Flags:

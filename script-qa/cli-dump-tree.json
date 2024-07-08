@@ -21882,382 +21882,6 @@
    {
     "children": [
      {
-      "configs": {
-       "type": "object"
-      },
-      "description": "Change current Object Storage credential",
-      "isInternal": true,
-      "name": "add",
-      "parameters": {
-       "properties": {
-        "keyId": {
-         "description": "ID of api key to use",
-         "type": "string"
-        },
-        "keySecret": {
-         "description": "Secret of api key to use",
-         "type": "string"
-        }
-       },
-       "required": [
-        "keyId",
-        "keySecret"
-       ],
-       "type": "object"
-      },
-      "result": {
-       "properties": {
-        "description": {
-         "type": "string"
-        },
-        "end_validity": {
-         "type": "string"
-        },
-        "key_pair_id": {
-         "type": "string"
-        },
-        "key_pair_secret": {
-         "type": "string"
-        },
-        "name": {
-         "type": "string"
-        },
-        "revoked_at": {
-         "type": "string"
-        },
-        "start_validity": {
-         "type": "string"
-        },
-        "tenant_name": {
-         "type": "string"
-        },
-        "uuid": {
-         "type": "string"
-        }
-       },
-       "required": [
-        "uuid",
-        "name",
-        "description",
-        "key_pair_id",
-        "key_pair_secret",
-        "start_validity"
-       ],
-       "type": "object"
-      },
-      "version": ""
-     },
-     {
-      "configs": {
-       "type": "object"
-      },
-      "description": "Create new credentials used for Object Storage requests",
-      "isInternal": false,
-      "name": "create",
-      "parameters": {
-       "properties": {
-        "description": {
-         "description": "Description of new api key",
-         "type": "string"
-        },
-        "expiration": {
-         "description": "Date to expire new api",
-         "example": "2024-11-07 (YYYY-MM-DD)",
-         "type": "string"
-        },
-        "name": {
-         "description": "Name of new api key",
-         "type": "string"
-        }
-       },
-       "required": [
-        "name"
-       ],
-       "type": "object"
-      },
-      "result": {
-       "properties": {
-        "used": {
-         "type": "boolean"
-        },
-        "uuid": {
-         "type": "string"
-        }
-       },
-       "type": "object"
-      },
-      "version": ""
-     },
-     {
-      "configs": {
-       "type": "object"
-      },
-      "description": "Get the current Object Storage credentials",
-      "isInternal": false,
-      "name": "current",
-      "parameters": {
-       "type": "object"
-      },
-      "result": {
-       "properties": {
-        "description": {
-         "type": "string"
-        },
-        "end_validity": {
-         "type": "string"
-        },
-        "key_pair_id": {
-         "type": "string"
-        },
-        "key_pair_secret": {
-         "type": "string"
-        },
-        "name": {
-         "type": "string"
-        },
-        "revoked_at": {
-         "type": "string"
-        },
-        "start_validity": {
-         "type": "string"
-        },
-        "tenant_name": {
-         "type": "string"
-        },
-        "uuid": {
-         "type": "string"
-        }
-       },
-       "required": [
-        "uuid",
-        "name",
-        "description",
-        "key_pair_id",
-        "key_pair_secret",
-        "start_validity"
-       ],
-       "type": "object"
-      },
-      "version": ""
-     },
-     {
-      "configs": {
-       "type": "object"
-      },
-      "description": "Get details about a specific key",
-      "isInternal": false,
-      "name": "get",
-      "parameters": {
-       "properties": {
-        "uuid": {
-         "type": "string"
-        }
-       },
-       "required": [
-        "uuid"
-       ],
-       "type": "object"
-      },
-      "result": {
-       "properties": {
-        "description": {
-         "type": "string"
-        },
-        "end_validity": {
-         "type": "string"
-        },
-        "key_pair_id": {
-         "type": "string"
-        },
-        "key_pair_secret": {
-         "type": "string"
-        },
-        "name": {
-         "type": "string"
-        },
-        "revoked_at": {
-         "type": "string"
-        },
-        "start_validity": {
-         "type": "string"
-        },
-        "tenant_name": {
-         "type": "string"
-        },
-        "uuid": {
-         "type": "string"
-        }
-       },
-       "required": [
-        "uuid",
-        "name",
-        "description",
-        "key_pair_id",
-        "key_pair_secret",
-        "start_validity"
-       ],
-       "type": "object"
-      },
-      "version": ""
-     },
-     {
-      "configs": {
-       "type": "object"
-      },
-      "description": "List valid Object Storage credentials",
-      "isInternal": false,
-      "name": "list",
-      "parameters": {
-       "type": "object"
-      },
-      "result": {
-       "items": {
-        "properties": {
-         "description": {
-          "type": "string"
-         },
-         "end_validity": {
-          "type": "string"
-         },
-         "key_pair_id": {
-          "type": "string"
-         },
-         "key_pair_secret": {
-          "type": "string"
-         },
-         "name": {
-          "type": "string"
-         },
-         "revoked_at": {
-          "type": "string"
-         },
-         "start_validity": {
-          "type": "string"
-         },
-         "tenant_name": {
-          "type": "string"
-         },
-         "uuid": {
-          "type": "string"
-         }
-        },
-        "required": [
-         "uuid",
-         "name",
-         "description",
-         "key_pair_id",
-         "key_pair_secret",
-         "start_validity"
-        ],
-        "type": "object"
-       },
-       "type": "array"
-      },
-      "version": ""
-     },
-     {
-      "configs": {
-       "type": "object"
-      },
-      "description": "Revoke credentials used in Object Storage requests",
-      "isInternal": false,
-      "name": "revoke",
-      "parameters": {
-       "properties": {
-        "uuid": {
-         "description": "UUID of api key to revoke",
-         "type": "string"
-        }
-       },
-       "required": [
-        "uuid"
-       ],
-       "type": "object"
-      },
-      "result": {
-       "properties": {
-        "uuid": {
-         "description": "UUID of api key to revoke",
-         "type": "string"
-        }
-       },
-       "required": [
-        "uuid"
-       ],
-       "type": "object"
-      },
-      "version": ""
-     },
-     {
-      "configs": {
-       "type": "object"
-      },
-      "description": "Change current Object Storage credential to selected",
-      "isInternal": false,
-      "name": "set",
-      "parameters": {
-       "properties": {
-        "uuid": {
-         "description": "UUID of api key to select",
-         "type": "string"
-        }
-       },
-       "required": [
-        "uuid"
-       ],
-       "type": "object"
-      },
-      "result": {
-       "properties": {
-        "description": {
-         "type": "string"
-        },
-        "end_validity": {
-         "type": "string"
-        },
-        "key_pair_id": {
-         "type": "string"
-        },
-        "key_pair_secret": {
-         "type": "string"
-        },
-        "name": {
-         "type": "string"
-        },
-        "revoked_at": {
-         "type": "string"
-        },
-        "start_validity": {
-         "type": "string"
-        },
-        "tenant_name": {
-         "type": "string"
-        },
-        "uuid": {
-         "type": "string"
-        }
-       },
-       "required": [
-        "uuid",
-        "name",
-        "description",
-        "key_pair_id",
-        "key_pair_secret",
-        "start_validity"
-       ],
-       "type": "object"
-      },
-      "version": ""
-     }
-    ],
-    "description": "",
-    "isInternal": false,
-    "name": "api-key",
-    "version": ""
-   },
-   {
-    "children": [
-     {
       "children": [
        {
         "configs": {
@@ -23511,6 +23135,382 @@
     "description": "Bucket operations for Object Storage API",
     "isInternal": false,
     "name": "buckets",
+    "version": ""
+   },
+   {
+    "children": [
+     {
+      "configs": {
+       "type": "object"
+      },
+      "description": "Change current Object Storage credential",
+      "isInternal": true,
+      "name": "add",
+      "parameters": {
+       "properties": {
+        "keyId": {
+         "description": "ID of key pair to use",
+         "type": "string"
+        },
+        "keySecret": {
+         "description": "Secret of key pair to use",
+         "type": "string"
+        }
+       },
+       "required": [
+        "keyId",
+        "keySecret"
+       ],
+       "type": "object"
+      },
+      "result": {
+       "properties": {
+        "description": {
+         "type": "string"
+        },
+        "end_validity": {
+         "type": "string"
+        },
+        "key_pair_id": {
+         "type": "string"
+        },
+        "key_pair_secret": {
+         "type": "string"
+        },
+        "name": {
+         "type": "string"
+        },
+        "revoked_at": {
+         "type": "string"
+        },
+        "start_validity": {
+         "type": "string"
+        },
+        "tenant_name": {
+         "type": "string"
+        },
+        "uuid": {
+         "type": "string"
+        }
+       },
+       "required": [
+        "uuid",
+        "name",
+        "description",
+        "key_pair_id",
+        "key_pair_secret",
+        "start_validity"
+       ],
+       "type": "object"
+      },
+      "version": ""
+     },
+     {
+      "configs": {
+       "type": "object"
+      },
+      "description": "Create new credentials used for Object Storage requests",
+      "isInternal": false,
+      "name": "create",
+      "parameters": {
+       "properties": {
+        "description": {
+         "description": "Description of new key pair",
+         "type": "string"
+        },
+        "expiration": {
+         "description": "Date to expire new key pair",
+         "example": "2024-11-07 (YYYY-MM-DD)",
+         "type": "string"
+        },
+        "name": {
+         "description": "Name of new key pair",
+         "type": "string"
+        }
+       },
+       "required": [
+        "name"
+       ],
+       "type": "object"
+      },
+      "result": {
+       "properties": {
+        "used": {
+         "type": "boolean"
+        },
+        "uuid": {
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
+      "version": ""
+     },
+     {
+      "configs": {
+       "type": "object"
+      },
+      "description": "Get the current Object Storage credentials",
+      "isInternal": false,
+      "name": "current",
+      "parameters": {
+       "type": "object"
+      },
+      "result": {
+       "properties": {
+        "description": {
+         "type": "string"
+        },
+        "end_validity": {
+         "type": "string"
+        },
+        "key_pair_id": {
+         "type": "string"
+        },
+        "key_pair_secret": {
+         "type": "string"
+        },
+        "name": {
+         "type": "string"
+        },
+        "revoked_at": {
+         "type": "string"
+        },
+        "start_validity": {
+         "type": "string"
+        },
+        "tenant_name": {
+         "type": "string"
+        },
+        "uuid": {
+         "type": "string"
+        }
+       },
+       "required": [
+        "uuid",
+        "name",
+        "description",
+        "key_pair_id",
+        "key_pair_secret",
+        "start_validity"
+       ],
+       "type": "object"
+      },
+      "version": ""
+     },
+     {
+      "configs": {
+       "type": "object"
+      },
+      "description": "Get details about a specific key",
+      "isInternal": false,
+      "name": "get",
+      "parameters": {
+       "properties": {
+        "uuid": {
+         "type": "string"
+        }
+       },
+       "required": [
+        "uuid"
+       ],
+       "type": "object"
+      },
+      "result": {
+       "properties": {
+        "description": {
+         "type": "string"
+        },
+        "end_validity": {
+         "type": "string"
+        },
+        "key_pair_id": {
+         "type": "string"
+        },
+        "key_pair_secret": {
+         "type": "string"
+        },
+        "name": {
+         "type": "string"
+        },
+        "revoked_at": {
+         "type": "string"
+        },
+        "start_validity": {
+         "type": "string"
+        },
+        "tenant_name": {
+         "type": "string"
+        },
+        "uuid": {
+         "type": "string"
+        }
+       },
+       "required": [
+        "uuid",
+        "name",
+        "description",
+        "key_pair_id",
+        "key_pair_secret",
+        "start_validity"
+       ],
+       "type": "object"
+      },
+      "version": ""
+     },
+     {
+      "configs": {
+       "type": "object"
+      },
+      "description": "List valid Object Storage credentials",
+      "isInternal": false,
+      "name": "list",
+      "parameters": {
+       "type": "object"
+      },
+      "result": {
+       "items": {
+        "properties": {
+         "description": {
+          "type": "string"
+         },
+         "end_validity": {
+          "type": "string"
+         },
+         "key_pair_id": {
+          "type": "string"
+         },
+         "key_pair_secret": {
+          "type": "string"
+         },
+         "name": {
+          "type": "string"
+         },
+         "revoked_at": {
+          "type": "string"
+         },
+         "start_validity": {
+          "type": "string"
+         },
+         "tenant_name": {
+          "type": "string"
+         },
+         "uuid": {
+          "type": "string"
+         }
+        },
+        "required": [
+         "uuid",
+         "name",
+         "description",
+         "key_pair_id",
+         "key_pair_secret",
+         "start_validity"
+        ],
+        "type": "object"
+       },
+       "type": "array"
+      },
+      "version": ""
+     },
+     {
+      "configs": {
+       "type": "object"
+      },
+      "description": "Revoke credentials used in Object Storage requests",
+      "isInternal": false,
+      "name": "revoke",
+      "parameters": {
+       "properties": {
+        "uuid": {
+         "description": "UUID of key pair to revoke",
+         "type": "string"
+        }
+       },
+       "required": [
+        "uuid"
+       ],
+       "type": "object"
+      },
+      "result": {
+       "properties": {
+        "uuid": {
+         "description": "UUID of key pair to revoke",
+         "type": "string"
+        }
+       },
+       "required": [
+        "uuid"
+       ],
+       "type": "object"
+      },
+      "version": ""
+     },
+     {
+      "configs": {
+       "type": "object"
+      },
+      "description": "Change current Object Storage credential to selected",
+      "isInternal": false,
+      "name": "set",
+      "parameters": {
+       "properties": {
+        "uuid": {
+         "description": "UUID of key pair to select",
+         "type": "string"
+        }
+       },
+       "required": [
+        "uuid"
+       ],
+       "type": "object"
+      },
+      "result": {
+       "properties": {
+        "description": {
+         "type": "string"
+        },
+        "end_validity": {
+         "type": "string"
+        },
+        "key_pair_id": {
+         "type": "string"
+        },
+        "key_pair_secret": {
+         "type": "string"
+        },
+        "name": {
+         "type": "string"
+        },
+        "revoked_at": {
+         "type": "string"
+        },
+        "start_validity": {
+         "type": "string"
+        },
+        "tenant_name": {
+         "type": "string"
+        },
+        "uuid": {
+         "type": "string"
+        }
+       },
+       "required": [
+        "uuid",
+        "name",
+        "description",
+        "key_pair_id",
+        "key_pair_secret",
+        "start_validity"
+       ],
+       "type": "object"
+      },
+      "version": ""
+     }
+    ],
+    "description": "",
+    "isInternal": false,
+    "name": "key-pair",
     "version": ""
    },
    {

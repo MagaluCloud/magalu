@@ -3,8 +3,8 @@ package object_storage
 import (
 	"magalu.cloud/core"
 	"magalu.cloud/core/utils"
-	"magalu.cloud/sdk/static/object_storage/api_key"
 	"magalu.cloud/sdk/static/object_storage/buckets"
+	api_key "magalu.cloud/sdk/static/object_storage/key_pair"
 	"magalu.cloud/sdk/static/object_storage/objects"
 )
 
