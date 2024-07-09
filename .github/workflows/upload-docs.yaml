@@ -23,7 +23,7 @@ jobs:
              mgc object api-key add ${{ secrets.MGC_KEY_ID }} ${{ secrets.MGC_KEY_SECRET }}
           - name: Upload docs
             run: |
-             mgc object objects upload-dir ./script-qa s3://magalucloud-docs
+             mgc object objects sync ./mgc/cli/docs s3://magalucloud-docs --delete
           - name: Set Public Read Permissions
             run: |
               mgc object objects list magalucloud-docs --recursive -o json --raw | jq -r '.Contents[].Key' | while read -r key; do

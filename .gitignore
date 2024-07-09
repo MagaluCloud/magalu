@@ -38,3 +38,4 @@ venv
 /mgc/cli/default
 
 cli-dump-tree.json
+spec_stats_dump.yml
