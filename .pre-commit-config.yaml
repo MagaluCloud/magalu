@@ -5,7 +5,7 @@ repos:
     -   id: spec-stats
         name: spec-stats
         language: python
-        entry: bash -c 'python3 ./scripts/spec_stats.py ./mgc/cli/openapis -o ./script-qa/spec_stats_dump.yml'
+        entry: bash -c 'python3 ./scripts/spec_stats.py ./mgc/cli/openapis -o ./spec_stats_dump.yml'
         types_or: [python, yaml]
         stages: [pre-commit, pre-push]
         additional_dependencies: [jsonschema, PyYAML, typing, argparse]
