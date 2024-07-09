@@ -6,7 +6,7 @@ BASEDIR=$(dirname $0)
 ROOTDIR=$(builtin cd $BASEDIR/..; pwd)
 MGCDIR=${MGCDIR:-"mgc/cli/"}
 DUMP_TREE="script-qa/cli-dump-tree.json"
-OUT_DIR="script-qa/cli-doc"
+OUT_DIR="mgc/cli/docs"
 
 set -xe
 cd $MGCDIR
