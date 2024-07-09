@@ -65,13 +65,19 @@ repos:
     hooks:
     -   id: trailing-whitespace
         stages: [pre-commit, pre-push]
-        exclude: ^script-qa/
+        exclude: >
+         (?x)(
+            ^mgc/sdk/version.txt|
+            ^script-qa/
+            ^mgc/cli/docs/
+          )
     -   id: end-of-file-fixer
         stages: [pre-commit, pre-push]
         exclude: >
           (?x)(
             ^mgc/sdk/version.txt|
             ^script-qa/
+            ^mgc/cli/docs/
           )
     -   id: check-yaml
         stages: [pre-commit, pre-push]
