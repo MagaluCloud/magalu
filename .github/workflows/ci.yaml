@@ -31,8 +31,9 @@ jobs:
         with:
           cache-dependency-path: "**/go.sum"
           go-version: stable
-      - name: "Pre-commit"
+      - name: "Go Imports"
         run: go install golang.org/x/tools/cmd/goimports@latest
       - uses: pre-commit/action@v3.0.0
+        name: "Pre-commit run"
         with:
           extra_args: --show-diff-on-failure --color=always --hook-stage push --all-files
