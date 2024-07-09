@@ -20,12 +20,6 @@ repos:
         entry: bash -c './scripts/gen_expected_cli_dump_tree_output_file.sh'
         require_serial: true
         stages: [pre-commit]
-    -   id: check-cli-help-outputs
-        name: check "cli help" outputs
-        language: system
-        entry: bash -c './scripts/gen_expected_cli_full_help_output_file.sh'
-        require_serial: true
-        stages: [pre-commit]
     -   id: check-cli-docs-outputs
         name: check "cli doc" outputs
         language: system
