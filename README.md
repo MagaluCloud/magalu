@@ -1,17 +1,13 @@
 ```
- __       __                                __                   ______   __                            __         ______   _______   __    __
-/  \     /  |                              /  |                 /      \ /  |                          /  |       /      \ /       \ /  |  /  |
-$$  \   /$$ |  ______    ______    ______  $$ | __    __       /$$$$$$  |$$ |  ______   __    __   ____$$ |      /$$$$$$  |$$$$$$$  |$$ | /$$/
-$$$  \ /$$$ | /      \  /      \  /      \ $$ |/  |  /  |      $$ |  $$/ $$ | /      \ /  |  /  | /    $$ |      $$ \__$$/ $$ |  $$ |$$ |/$$/
-$$$$  /$$$$ | $$$$$$  |/$$$$$$  | $$$$$$  |$$ |$$ |  $$ |      $$ |      $$ |/$$$$$$  |$$ |  $$ |/$$$$$$$ |      $$      \ $$ |  $$ |$$  $$<
-$$ $$ $$/$$ | /    $$ |$$ |  $$ | /    $$ |$$ |$$ |  $$ |      $$ |   __ $$ |$$ |  $$ |$$ |  $$ |$$ |  $$ |       $$$$$$  |$$ |  $$ |$$$$$  \
-$$ |$$$/ $$ |/$$$$$$$ |$$ \__$$ |/$$$$$$$ |$$ |$$ \__$$ |      $$ \__/  |$$ |$$ \__$$ |$$ \__$$ |$$ \__$$ |      /  \__$$ |$$ |__$$ |$$ |$$  \
-$$ | $/  $$ |$$    $$ |$$    $$ |$$    $$ |$$ |$$    $$/       $$    $$/ $$ |$$    $$/ $$    $$/ $$    $$ |      $$    $$/ $$    $$/ $$ | $$  |
-$$/      $$/  $$$$$$$/  $$$$$$$ | $$$$$$$/ $$/  $$$$$$/         $$$$$$/  $$/  $$$$$$/   $$$$$$/   $$$$$$$/        $$$$$$/  $$$$$$$/  $$/   $$/
-                       /  \__$$ |
-                       $$    $$/
-                        $$$$$$/
+><<       ><<   ><<<<       ><<          ><< <<  ><<<<<    ><<   ><<  
+>< ><<   ><<< ><    ><<  ><<   ><<     ><<    ><<><<   ><< ><<  ><<   
+><< ><< > ><<><<        ><<             ><<      ><<    ><<><< ><<    
+><<  ><<  ><<><<        ><<               ><<    ><<    ><<>< ><      
+><<   ><  ><<><<   ><<<<><<                  ><< ><<    ><<><<  ><<   
+><<       ><< ><<    ><  ><<   ><<     ><<    ><<><<   ><< ><<   ><<  
+><<       ><<  ><<<<<      ><<<<         ><< <<  ><<<<<    ><<     ><<
 ```
+
 # MGC SDK
 
 This repository holds the SDKs developed for Magalu Cloud (MGC). Each subdirectory
@@ -39,7 +35,6 @@ install, visit the official link with the instructions.
 
 There are some utility scripts written in [Python](https://www.python.org/downloads/).
 For this, [Poetry](https://python-poetry.org/) is used. Check [Poetry.md](Poetry.md) for instructions.
-
 
 ## Running the CLI
 
@@ -72,17 +67,18 @@ lint, formatting, tests, commit messages and others. This tool depends on
 Python as well. On pre-commit we enforce:
 
 * On `commit-msg` for all commits:
-    * [Conventional commit](https://www.conventionalcommits.org/en/v1.0.0/) pattern
+  * [Conventional commit](https://www.conventionalcommits.org/en/v1.0.0/) pattern
     with [commitzen](https://github.com/commitizen/cz-cli)
 * On `pre-commit` for Go files:
-    * Complete set of [golangci-lint](https://golangci-lint.run/): `errcheck`,
+  * Complete set of [golangci-lint](https://golangci-lint.run/): `errcheck`,
     `gosimple`, `govet`, `ineffasign`, `staticcheck`, `unused`
 * On `pre-commit` for Python files:
-    * `flake8` and `black` enforcing pep code styles
+  * `flake8` and `black` enforcing pep code styles
 
 #### Installation
 
 #### Mac
+
 ```sh
 brew install pre-commit
 ```
