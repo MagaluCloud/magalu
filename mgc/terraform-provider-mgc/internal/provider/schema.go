@@ -903,5 +903,8 @@ func (n tfName) asDesired() tfName {
 }
 
 func (n tfName) asCurrent() tfName {
+	if strings.HasPrefix(string(n), "current_") {
+		return n
+	}
 	return "current_" + n
 }
