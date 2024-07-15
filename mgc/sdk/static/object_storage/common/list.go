@@ -88,6 +88,7 @@ type BucketContent struct {
 	Key          string `xml:"Key"`
 	LastModified string `xml:"LastModified"`
 	ContentSize  int64  `xml:"Size"`
+	StorageClass string `xml:"StorageClass"`
 }
 
 type BucketContentDirEntry = *pipeline.SimpleWalkDirEntry[*BucketContent]

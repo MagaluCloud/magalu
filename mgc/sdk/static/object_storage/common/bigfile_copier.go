@@ -23,6 +23,7 @@ type bigFileCopier struct {
 	uploadId         string
 	progressReporter *progress_report.BytesReporter
 	version          string
+	storageClass     string
 }
 
 var _ copier = (*bigFileCopier)(nil)
