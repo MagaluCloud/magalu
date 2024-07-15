@@ -787,7 +787,7 @@ func (o *operation) Execute(
 		if resultWithValue, ok := core.ResultAs[core.ResultWithValue](result); ok {
 			result = core.NewResultWithOriginalSource(result.Source(), core.NewResultWithDefaultOutputOptions(resultWithValue, o.outputFlag))
 		}
-	} else if body, _ := io.ReadAll(resp.Body); len(body) == 0 && !isRawOuput {
+	} else if resp.ContentLength <= 0 && (resp.Body == nil || resp.StatusCode == http.StatusNoContent) && !isRawOuput {
 		_ = spinnerInfo.Stop()
 		logger.Debug("no output flag specified")
 		pterm.DefaultBasicText.Println(pterm.LightGreen("✅ Operation executed successfully"))

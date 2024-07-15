@@ -19,6 +19,7 @@ require (
 	go.uber.org/zap v1.25.0
 	golang.org/x/exp v0.0.0-20230905200255-921286631fa9
 	golang.org/x/term v0.16.0
+	gopkg.in/yaml.v3 v3.0.1
 	moul.io/zapfilter v1.7.0
 )
 
@@ -34,7 +35,6 @@ require (
 	github.com/sourcegraph/conc v0.3.0 // indirect
 	github.com/xo/terminfo v0.0.0-20220910002029-abceb7e1c41e // indirect
 	golang.org/x/xerrors v0.0.0-20220907171357-04be3eba64a2 // indirect
-	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
 require (
