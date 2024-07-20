@@ -33,7 +33,7 @@ func getCurrent(ctx context.Context) (*apiKeysResult, error) {
 
 	id, secretKey := auth.AccessKeyPair()
 	if id == "" && secretKey == "" {
-		fmt.Print("🔓 No current key pair set! \n\n")
+		fmt.Print("🔓 No current API key set! \n\n")
 		return &apiKeysResult{}, nil
 	}
 
@@ -49,6 +49,6 @@ func getCurrent(ctx context.Context) (*apiKeysResult, error) {
 		}
 	}
 
-	currentLogger().Warnw("unable to find a key in key pair list that matches the current KeyPairID", "keyPairId", id)
+	currentLogger().Warnw("unable to find a key in api-key list that matches the current KeyPairID", "keyPairId", id)
 	return &apiKeysResult{KeyPairID: id, KeyPairSecret: secretKey}, nil
 }

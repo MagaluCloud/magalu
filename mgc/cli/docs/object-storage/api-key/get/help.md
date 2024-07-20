@@ -1,14 +1,15 @@
-# List valid Object Storage credentials
+# Get details about a specific key
 
 ## Usage:
 ```bash
 Usage:
-  ./mgc object-storage key-pair list [flags]
+  ./mgc object-storage api-key get [uuid] [flags]
 ```
 
 ## Product catalog:
 - Flags:
-- -h, --help   help for list
+- -h, --help          help for get
+- --uuid string    (required)
 
 ## Other commands:
 - Global Flags:

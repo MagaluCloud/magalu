@@ -10,7 +10,7 @@ import (
 )
 
 type selectParams struct {
-	UUID string `json:"uuid" jsonschema_description:"UUID of key pair to select" mgc:"positional"`
+	UUID string `json:"uuid" jsonschema_description:"UUID of api key to select" mgc:"positional"`
 }
 
 var getSetCurrent = utils.NewLazyLoader[core.Executor](func() core.Executor {
@@ -23,7 +23,7 @@ var getSetCurrent = utils.NewLazyLoader[core.Executor](func() core.Executor {
 	)
 
 	return core.NewExecuteResultOutputOptions(executor, func(exec core.Executor, result core.Result) string {
-		return "template=Keys changed successfully\nTenant=\"{{.tenant_name}}\"\nKeyPair=\"{{.name}}\"\n{{if .description}}Description=\"{{.description}}\"{{- else}}{{end}}\n"
+		return "template=Keys changed successfully\nTenant=\"{{.tenant_name}}\"\nApiKey=\"{{.name}}\"\n{{if .description}}Description=\"{{.description}}\"{{- else}}{{end}}\n"
 	})
 })
 

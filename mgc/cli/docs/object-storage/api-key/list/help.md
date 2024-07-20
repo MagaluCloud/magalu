@@ -1,14 +1,14 @@
-# Get the current Object Storage credentials
+# List valid Object Storage credentials
 
 ## Usage:
 ```bash
 Usage:
-  ./mgc object-storage key-pair current [flags]
+  ./mgc object-storage api-key list [flags]
 ```
 
 ## Product catalog:
 - Flags:
-- -h, --help   help for current
+- -h, --help   help for list
 
 ## Other commands:
 - Global Flags:

@@ -3,8 +3,8 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc object-storage key-pair [flags]
-  ./mgc object-storage key-pair [command]
+  ./mgc object-storage api-key [flags]
+  ./mgc object-storage api-key [command]
 ```
 
 ## Product catalog:
@@ -23,6 +23,6 @@ Usage:
 ## Flags:
 ```bash
 Flags:
-  -h, --help   help for key-pair
+  -h, --help   help for api-key
 ```
 
