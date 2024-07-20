@@ -8,7 +8,7 @@ Usage:
 
 ## Product catalog:
 - Examples:
-- ./mgc object-storage objects upload-dir --dst="my-bucket/dir/" --src="path/to/folder"
+- ./mgc object-storage objects upload-dir --dst="my-bucket/dir/" --src="path/to/folder" --storage-class="cold"
 
 ## Other commands:
 - Flags:
@@ -18,6 +18,7 @@ Usage:
 - -h, --help                   help for upload-dir
 - --shallow                Don't upload subdirectories
 - --src directory          Source directory path for upload (required)
+- --storage-class enum     Type of Storage in which to store object (one of "", "cold", "cold_instant", "glacier_ir" or "standard") (default "")
 
 ## Flags:
 ```bash

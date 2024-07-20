@@ -321,7 +321,12 @@ func collectGroupResources(
 }
 
 func (p *MgcProvider) DataSources(ctx context.Context) []func() datasource.DataSource {
-	return nil
+	tflog.Info(ctx, "configuring MGC provider data sources")
+
+	var dataSources []func() datasource.DataSource
+	dataSources = append(dataSources, NewDataSourceKubernetesClusterKubeConfig)
+
+	return dataSources
 }
 
 func New(version string, commit string, date string) func() provider.Provider {

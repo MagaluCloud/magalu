@@ -18,7 +18,7 @@ type Service interface {
 	Create(parameters CreateParameters, configs CreateConfigs) (result CreateResult, err error)
 	Delete(parameters DeleteParameters, configs DeleteConfigs) (err error)
 	Get(parameters GetParameters, configs GetConfigs) (result GetResult, err error)
-	Kubeconfig(parameters KubeconfigParameters, configs KubeconfigConfigs) (err error)
+	Kubeconfig(parameters KubeconfigParameters, configs KubeconfigConfigs) (string, error)
 	List(configs ListConfigs) (result ListResult, err error)
 }
 

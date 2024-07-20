@@ -8,13 +8,14 @@ Usage:
 
 ## Product catalog:
 - Examples:
-- ./mgc object-storage objects upload --dst="my-bucket/dir/file.txt" --src="./file.txt"
+- ./mgc object-storage objects upload --dst="my-bucket/dir/file.txt" --src="./file.txt" --storage-class="cold"
 
 ## Other commands:
 - Flags:
-- --dst uri    Full destination path in the bucket with desired filename (required)
-- -h, --help       help for upload
-- --src file   Source file path to be uploaded (required)
+- --dst uri              Full destination path in the bucket with desired filename (required)
+- -h, --help                 help for upload
+- --src file             Source file path to be uploaded (required)
+- --storage-class enum   Type of Storage in which to store object (one of "", "cold", "cold_instant", "glacier_ir" or "standard") (default "")
 
 ## Flags:
 ```bash
