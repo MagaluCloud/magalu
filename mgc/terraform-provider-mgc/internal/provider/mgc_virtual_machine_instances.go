@@ -27,18 +27,15 @@ import (
 	"magalu.cloud/sdk"
 )
 
-// Ensure the implementation satisfies the expected interfaces.
 var (
 	_ resource.Resource              = &vmInstances{}
 	_ resource.ResourceWithConfigure = &vmInstances{}
 )
 
-// NewOrderResource is a helper function to simplify the provider implementation.
 func NewVirtualMachineInstancesResource() resource.Resource {
 	return &vmInstances{}
 }
 
-// orderResource is the resource implementation.
 type vmInstances struct {
 	sdkClient      *mgcSdk.Client
 	vmInstances    sdkVmInstances.Service
@@ -47,15 +44,11 @@ type vmInstances struct {
 	nwVPCs         sdkNetworkVPCs.Service
 }
 
-// Metadata returns the resource type name.
 func (r *vmInstances) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
 	resp.TypeName = req.ProviderTypeName + "_virtual_machine_instances"
 }
 
-// Configure adds the provider configured client to the resource.
 func (r *vmInstances) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
-	// Add a nil check when handling ProviderData because Terraform
-	// sets that data after it calls the ConfigureProvider RPC.
 	if req.ProviderData == nil {
 		return
 	}
@@ -77,7 +70,6 @@ func (r *vmInstances) Configure(ctx context.Context, req resource.ConfigureReque
 	r.nwVPCs = sdkNetworkVPCs.NewService(ctx, r.sdkClient)
 }
 
-// vmInstancesResourceModel maps de resource schema data.
 type vmInstancesResourceModel struct {
 	ID           types.String                `tfsdk:"id"`
 	Name         types.String                `tfsdk:"name"`
@@ -115,7 +107,6 @@ type vmInstancesMachineTypeModel struct {
 	VCPUs types.Number `tfsdk:"vcpus"`
 }
 
-// Schema defines the schema for the resource.
 func (r *vmInstances) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	description := "Operations with instances, including create, delete, start, stop, reboot and other actions."
 	resp.Schema = schema.Schema{
@@ -166,9 +157,7 @@ func (r *vmInstances) Schema(_ context.Context, _ resource.SchemaRequest, resp *
 			"status": schema.StringAttribute{
 				Computed: true,
 			},
-		},
-		Blocks: map[string]schema.Block{
-			"image": schema.SingleNestedBlock{
+			"image": schema.SingleNestedAttribute{
 				Attributes: map[string]schema.Attribute{
 					"id": schema.StringAttribute{
 						Computed: true,
@@ -184,7 +173,7 @@ func (r *vmInstances) Schema(_ context.Context, _ resource.SchemaRequest, resp *
 					objectvalidator.IsRequired(),
 				},
 			},
-			"machine_type": schema.SingleNestedBlock{
+			"machine_type": schema.SingleNestedAttribute{
 				Attributes: map[string]schema.Attribute{
 					"id": schema.StringAttribute{
 						Computed: true,
@@ -209,39 +198,7 @@ func (r *vmInstances) Schema(_ context.Context, _ resource.SchemaRequest, resp *
 					objectvalidator.IsRequired(),
 				},
 			},
-			"network": schema.SingleNestedBlock{
-				Blocks: map[string]schema.Block{
-					"vpc": schema.SingleNestedBlock{
-						Attributes: map[string]schema.Attribute{
-							"id": schema.StringAttribute{
-								PlanModifiers: []planmodifier.String{
-									stringplanmodifier.UseStateForUnknown(),
-								},
-								Optional: true,
-								Computed: true,
-							},
-							"name": schema.StringAttribute{
-								PlanModifiers: []planmodifier.String{
-									stringplanmodifier.UseStateForUnknown(),
-								},
-								Optional: true,
-								Computed: true,
-							},
-						},
-					},
-					"interface": schema.SingleNestedBlock{
-						Blocks: map[string]schema.Block{
-							"security_groups": schema.SingleNestedBlock{
-								Attributes: map[string]schema.Attribute{
-									"id": schema.ListAttribute{
-										Optional:    true,
-										ElementType: types.StringType,
-									},
-								},
-							},
-						},
-					},
-				},
+			"network": schema.SingleNestedAttribute{
 				Attributes: map[string]schema.Attribute{
 					"delete_public_ip": schema.BoolAttribute{
 						PlanModifiers: []planmodifier.Bool{
@@ -275,6 +232,36 @@ func (r *vmInstances) Schema(_ context.Context, _ resource.SchemaRequest, resp *
 						},
 						Computed: true,
 					},
+					"vpc": schema.SingleNestedAttribute{
+						Attributes: map[string]schema.Attribute{
+							"id": schema.StringAttribute{
+								PlanModifiers: []planmodifier.String{
+									stringplanmodifier.UseStateForUnknown(),
+								},
+								Optional: true,
+								Computed: true,
+							},
+							"name": schema.StringAttribute{
+								PlanModifiers: []planmodifier.String{
+									stringplanmodifier.UseStateForUnknown(),
+								},
+								Optional: true,
+								Computed: true,
+							},
+						},
+					},
+					"interface": schema.SingleNestedAttribute{
+						Attributes: map[string]schema.Attribute{
+							"security_groups": schema.SingleNestedAttribute{
+								Attributes: map[string]schema.Attribute{
+									"id": schema.ListAttribute{
+										Optional:    true,
+										ElementType: types.StringType,
+									},
+								},
+							},
+						},
+					},
 				},
 			},
 		},
@@ -282,13 +269,10 @@ func (r *vmInstances) Schema(_ context.Context, _ resource.SchemaRequest, resp *
 }
 
 func (r *vmInstances) ModifyPlan(ctx context.Context, req resource.ModifyPlanRequest, resp *resource.ModifyPlanResponse) {
-	// resp.RequiresReplace = []path.Path{path.Root("network").AtName("associate_public_ip")}
 }
 func (r *vmInstances) ModifyPlanResponse(ctx context.Context, req resource.ModifyPlanRequest, resp *resource.ModifyPlanResponse) {
-	// nothing
 }
 
-// Read refreshes the Terraform state with the latest data.
 func (r *vmInstances) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
 	data := vmInstancesResourceModel{}
 	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
@@ -304,11 +288,9 @@ func (r *vmInstances) Read(ctx context.Context, req resource.ReadRequest, resp *
 
 	data.ID = types.StringValue(getResult.Id)
 	data = r.setValuesFromServer(data, getResult)
-	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-// Create creates the resource and sets the initial Terraform state.
 func (r *vmInstances) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
 	plan := vmInstancesResourceModel{}
 
@@ -392,14 +374,12 @@ func (r *vmInstances) Create(ctx context.Context, req resource.CreateRequest, re
 	state.CreatedAt = types.StringValue(time.Now().Format(time.RFC850))
 	state.UpdatedAt = types.StringValue(time.Now().Format(time.RFC850))
 
-	// Set state to fully populated data
 	resp.Diagnostics.Append(resp.State.Set(ctx, state)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 }
 
-// Update updates the resource and sets the updated Terraform state on success.
 func (r *vmInstances) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
 	data := vmInstancesResourceModel{}
 	currState := &vmInstancesResourceModel{}
@@ -443,15 +423,12 @@ func (r *vmInstances) Update(ctx context.Context, req resource.UpdateRequest, re
 	}
 
 	data = r.setValuesFromServer(data, getResult)
-	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-// Delete deletes the resource and removes the Terraform state on success.
 func (r *vmInstances) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
 	var data vmInstancesResourceModel
 
-	// Read Terraform prior state data into the model
 	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
 
 	err := r.vmInstances.Delete(
