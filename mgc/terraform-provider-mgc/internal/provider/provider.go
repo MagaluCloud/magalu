@@ -195,7 +195,8 @@ func (p *MgcProvider) Resources(ctx context.Context) []func() resource.Resource 
 
 	resources = append(resources,
 		NewVirtualMachineInstancesResource,
-		NewVirtualMachineSnapshotsResource)
+		NewVirtualMachineSnapshotsResource,
+		NewVolumeAttachResource)
 
 	if err != nil {
 		tflog.Error(ctx, fmt.Sprintf("An error occurred while generating the provider resource list: %v", err))
@@ -263,6 +264,7 @@ func collectGroupResources(
 	ignoredTFModules := []string{
 		"mgc_virtual_machine_instances",
 		"mgc_virtual_machine_snapshots",
+		"mgc_block_storage_volume_attachment",
 	}
 
 	if slices.Contains(ignoredTFModules, strResourceName) {

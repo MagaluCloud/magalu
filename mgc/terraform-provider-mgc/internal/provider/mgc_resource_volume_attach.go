@@ -30,7 +30,7 @@ func NewVolumeAttachResource() resource.Resource {
 }
 
 func (r *VolumeAttach) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_volume_attachment"
+	resp.TypeName = req.ProviderTypeName + "_block_storage_volume_attachment"
 }
 
 func (r *VolumeAttach) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
@@ -61,12 +61,10 @@ func (r *VolumeAttach) Schema(ctx context.Context, req resource.SchemaRequest, r
 			"block_storage_id": schema.StringAttribute{
 				Description: "The ID of the block storage volume to attach.",
 				Required:    true,
-				Computed:    true,
 			},
 			"virtual_machine_id": schema.StringAttribute{
 				Description: "The ID of the virtual machine to attach the volume to.",
 				Required:    true,
-				Computed:    true,
 			},
 		},
 	}
@@ -97,6 +95,12 @@ func (r *VolumeAttach) Create(ctx context.Context, req resource.CreateRequest, r
 		resp.Diagnostics.AddError("Failed to attach volume in pooling", err.Error())
 		return
 	}
+
+	diags = resp.State.Set(ctx, &model)
+	resp.Diagnostics.Append(diags...)
+	if diags.HasError() {
+		return
+	}
 }
 
 func (r *VolumeAttach) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
@@ -120,8 +124,13 @@ func (r *VolumeAttach) Read(ctx context.Context, req resource.ReadRequest, resp 
 		return
 	}
 
+	if result.Attachment == nil {
+		resp.Diagnostics.AddWarning("Volume is not attached to any virtual machine", "")
+		model.VirtualMachineID = types.StringValue("")
+	} else {
+		model.VirtualMachineID = types.StringValue(result.Attachment.Instance.Id)
+	}
 	model.BlockStorageID = types.StringValue(result.Id)
-	model.VirtualMachineID = types.StringValue(result.Attachment.Instance.Id)
 
 	resp.State.Set(ctx, &model)
 }
@@ -151,6 +160,12 @@ func (r *VolumeAttach) Update(ctx context.Context, req resource.UpdateRequest, r
 		resp.Diagnostics.AddError("Failed to attach volume in pooling", err.Error())
 		return
 	}
+
+	diags = resp.State.Set(ctx, &model)
+	resp.Diagnostics.Append(diags...)
+	if diags.HasError() {
+		return
+	}
 }
 
 func (r *VolumeAttach) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
@@ -163,7 +178,7 @@ func (r *VolumeAttach) Delete(ctx context.Context, req resource.DeleteRequest, r
 	}
 
 	err := r.blockStorageVolumes.Detach(sdkVolumes.DetachParameters{
-		Id: model.BlockStorageID.String(),
+		Id: model.BlockStorageID.ValueString(),
 	}, sdkVolumes.DetachConfigs{})
 
 	if err != nil {
