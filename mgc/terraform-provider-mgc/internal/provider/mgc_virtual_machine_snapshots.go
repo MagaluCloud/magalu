@@ -17,32 +17,25 @@ import (
 	"magalu.cloud/sdk"
 )
 
-// Ensure the implementation satisfies the expected interfaces.
 var (
 	_ resource.Resource              = &vmSnapshots{}
 	_ resource.ResourceWithConfigure = &vmSnapshots{}
 )
 
-// NewOrderResource is a helper function to simplify the provider implementation.
 func NewVirtualMachineSnapshotsResource() resource.Resource {
 	return &vmSnapshots{}
 }
 
-// orderResource is the resource implementation.
 type vmSnapshots struct {
 	sdkClient   *mgcSdk.Client
 	vmSnapshots sdkVmSnapshots.Service
 }
 
-// Metadata returns the resource type name.
 func (r *vmSnapshots) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
 	resp.TypeName = req.ProviderTypeName + "_virtual_machine_snapshots"
 }
 
-// Configure adds the provider configured client to the resource.
 func (r *vmSnapshots) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
-	// Add a nil check when handling ProviderData because Terraform
-	// sets that data after it calls the ConfigureProvider RPC.
 	if req.ProviderData == nil {
 
 		return
@@ -63,7 +56,6 @@ func (r *vmSnapshots) Configure(ctx context.Context, req resource.ConfigureReque
 	r.vmSnapshots = sdkVmSnapshots.NewService(ctx, r.sdkClient)
 }
 
-// vmSnapshotsResourceModel maps de resource schema data.
 type vmSnapshotsResourceModel struct {
 	ID               types.String `tfsdk:"id"`
 	Name             types.String `tfsdk:"name"`
@@ -72,7 +64,6 @@ type vmSnapshotsResourceModel struct {
 	CreatedAt        types.String `tfsdk:"created_at"`
 }
 
-// Schema defines the schema for the resource.
 func (r *vmSnapshots) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	description := "Operations with snapshots for instances."
 	resp.Schema = schema.Schema{
@@ -130,7 +121,6 @@ func (r *vmSnapshots) getVmSnapshot(id string) (sdkVmSnapshots.GetResult, error)
 	return getResult, nil
 }
 
-// Read refreshes the Terraform state with the latest data.
 func (r *vmSnapshots) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
 	data := &vmSnapshotsResourceModel{}
 	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
@@ -147,11 +137,9 @@ func (r *vmSnapshots) Read(ctx context.Context, req resource.ReadRequest, resp *
 	data.ID = types.StringValue(getResult.Id)
 	data.Name = types.StringValue(*getResult.Name)
 
-	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-// Create creates the resource and sets the initial Terraform state.
 func (r *vmSnapshots) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
 	plan := &vmSnapshotsResourceModel{}
 	diags := req.Plan.Get(ctx, &plan)
@@ -180,7 +168,6 @@ func (r *vmSnapshots) Create(ctx context.Context, req resource.CreateRequest, re
 
 	plan.CreatedAt = types.StringValue(time.Now().Format(time.RFC850))
 	plan.UpdatedAt = types.StringValue(time.Now().Format(time.RFC850))
-	// Set state to fully populated data
 	diags = resp.State.Set(ctx, plan)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
@@ -188,15 +175,12 @@ func (r *vmSnapshots) Create(ctx context.Context, req resource.CreateRequest, re
 	}
 }
 
-// Update updates the resource and sets the updated Terraform state on success.
 func (r *vmSnapshots) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
 }
 
-// Delete deletes the resource and removes the Terraform state on success.
 func (r *vmSnapshots) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
 	var data vmSnapshotsResourceModel
 
-	// Read Terraform prior state data into the model
 	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
 
 	err := r.vmSnapshots.Delete(
