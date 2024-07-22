@@ -158,6 +158,7 @@ func (r *vmInstances) Schema(_ context.Context, _ resource.SchemaRequest, resp *
 				Computed: true,
 			},
 			"image": schema.SingleNestedAttribute{
+				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"id": schema.StringAttribute{
 						Computed: true,
@@ -174,6 +175,7 @@ func (r *vmInstances) Schema(_ context.Context, _ resource.SchemaRequest, resp *
 				},
 			},
 			"machine_type": schema.SingleNestedAttribute{
+				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"id": schema.StringAttribute{
 						Computed: true,
@@ -199,6 +201,7 @@ func (r *vmInstances) Schema(_ context.Context, _ resource.SchemaRequest, resp *
 				},
 			},
 			"network": schema.SingleNestedAttribute{
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"delete_public_ip": schema.BoolAttribute{
 						PlanModifiers: []planmodifier.Bool{
@@ -233,6 +236,7 @@ func (r *vmInstances) Schema(_ context.Context, _ resource.SchemaRequest, resp *
 						Computed: true,
 					},
 					"vpc": schema.SingleNestedAttribute{
+						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"id": schema.StringAttribute{
 								PlanModifiers: []planmodifier.String{
@@ -251,8 +255,10 @@ func (r *vmInstances) Schema(_ context.Context, _ resource.SchemaRequest, resp *
 						},
 					},
 					"interface": schema.SingleNestedAttribute{
+						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"security_groups": schema.SingleNestedAttribute{
+								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"id": schema.ListAttribute{
 										Optional:    true,

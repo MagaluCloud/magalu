@@ -124,7 +124,6 @@ func (p *MgcProvider) Configure(ctx context.Context, req provider.ConfigureReque
 		tflog.Error(ctx, "fail to get configs from provider")
 	}
 
-	// REGION
 	if !data.Region.IsNull() || os.Getenv("MGC_REGION") != "" {
 		region := os.Getenv("MGC_REGION")
 		if region == "" && !data.Region.IsNull() {
@@ -137,9 +136,7 @@ func (p *MgcProvider) Configure(ctx context.Context, req provider.ConfigureReque
 		if err := p.sdk.Config().SetTempConfig("region", "br-se1"); err != nil {
 			tflog.Error(ctx, "fail to set region")
 		}
-	} //END REGION
-
-	// ENV
+	}
 	if !data.Env.IsNull() {
 		env := os.Getenv("MGC_ENV")
 		if env == "" && !data.Env.IsNull() {
@@ -148,9 +145,7 @@ func (p *MgcProvider) Configure(ctx context.Context, req provider.ConfigureReque
 		if err := p.sdk.Config().SetTempConfig("env", env); err != nil {
 			tflog.Error(ctx, "fail to set env")
 		}
-	} // END ENV
-
-	// API KEY
+	}
 	if !data.ApiKey.IsNull() || os.Getenv("MGC_API_KEY") != "" {
 		apiKey := MgcApiKey{}
 		apiKey.ApiKey = os.Getenv("MGC_API_KEY")
@@ -163,9 +158,8 @@ func (p *MgcProvider) Configure(ctx context.Context, req provider.ConfigureReque
 		if err != nil {
 			tflog.Error(ctx, "fail to set api key")
 		}
-	} // END API KEY
+	}
 
-	// KEY PAIR OBJECT STORAGE
 	keyId := ""
 	keySecret := ""
 	if os.Getenv("MGC_OBJ_KEY_ID") != "" && os.Getenv("MGC_OBJ_KEY_SECRET") != "" {
@@ -188,7 +182,7 @@ func (p *MgcProvider) Configure(ctx context.Context, req provider.ConfigureReque
 			keySecret,
 		)
 		tflog.Debug(ctx, "setting object storage key pair")
-	} // END KEY PAIR
+	}
 	resp.DataSourceData = p.sdk
 	resp.ResourceData = p.sdk
 }
@@ -198,11 +192,11 @@ func (p *MgcProvider) Resources(ctx context.Context) []func() resource.Resource 
 
 	root := p.sdk.Group()
 	resources, err := collectGroupResources(ctx, p.sdk, root, []string{providerTypeName})
-	// Add manually the provider resource
-	if os.Getenv("USE_NEW_MODULES") == "1" {
-		resources = append(resources, NewVirtualMachineInstancesResource)
-		resources = append(resources, NewVirtualMachineSnapshotsResource)
-	}
+
+	resources = append(resources,
+		NewVirtualMachineInstancesResource,
+		NewVirtualMachineSnapshotsResource)
+
 	if err != nil {
 		tflog.Error(ctx, fmt.Sprintf("An error occurred while generating the provider resource list: %v", err))
 	}
@@ -216,7 +210,6 @@ func collectGroupResources(
 	group mgcSdk.Grouper,
 	path []string,
 ) ([]func() resource.Resource, error) {
-	// TODO: We should check if the version is correct in the Configuration call or Resource
 	debugMap := map[string]any{"path": path}
 	tflog.Debug(ctx, "Collecting resources", debugMap)
 	var resources []func() resource.Resource
@@ -236,10 +229,6 @@ func collectGroupResources(
 			resources = append(resources, childResources...)
 			return true, err
 		} else if exec, ok := child.(mgcSdk.Executor); ok {
-			// TODO: see how this stands in practice
-			// some resources have more than one action and we're de-duplicating them,
-			// resulting in get-X + get-Y...
-			// maybe something to check with scripts/spec_stats.py
 			switch exec.Name() {
 			case "create":
 				tflog.Debug(ctx, "found create operation", debugMap)
@@ -271,20 +260,15 @@ func collectGroupResources(
 	strResourceName := strings.Join(path, "_")
 	strResourceName = strings.Replace(strResourceName, "-", "_", -1)
 
-	// IGNORE THIS MODULES - they are be replaced by the new resources
-	ignoredTFModules := []string{}
-	if os.Getenv("USE_NEW_MODULES") == "1" {
-		ignoredTFModules = append(ignoredTFModules,
-			"mgc_virtual_machine_instances",
-			"mgc_virtual_machine_snapshots",
-		)
-
-		if slices.Contains(ignoredTFModules, strResourceName) {
-			tflog.Debug(ctx, fmt.Sprintf("resource %q is ignored", strResourceName), debugMap)
-			return resources, nil
-		}
+	ignoredTFModules := []string{
+		"mgc_virtual_machine_instances",
+		"mgc_virtual_machine_snapshots",
 	}
-	// END IGNORE
+
+	if slices.Contains(ignoredTFModules, strResourceName) {
+		tflog.Debug(ctx, fmt.Sprintf("resource %q is ignored", strResourceName), debugMap)
+		return resources, nil
+	}
 
 	resourceName := tfName(strResourceName)
 
