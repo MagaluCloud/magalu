@@ -3,13 +3,13 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc object-storage key-pair revoke [uuid] [flags]
+  ./mgc object-storage api-key revoke [uuid] [flags]
 ```
 
 ## Product catalog:
 - Flags:
 - -h, --help          help for revoke
-- --uuid string   UUID of key pair to revoke (required)
+- --uuid string   UUID of api key to revoke (required)
 
 ## Other commands:
 - Global Flags:

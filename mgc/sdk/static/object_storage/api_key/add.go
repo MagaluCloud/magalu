@@ -10,8 +10,8 @@ import (
 )
 
 type addParams struct {
-	KeyPairID     string `json:"keyId" jsonschema_description:"ID of key pair to use" mgc:"positional"`
-	KeyPairSecret string `json:"keySecret" jsonschema_description:"Secret of key pair to use" mgc:"positional"`
+	KeyPairID     string `json:"keyId" jsonschema_description:"ID of api key to use" mgc:"positional"`
+	KeyPairSecret string `json:"keySecret" jsonschema_description:"Secret of api key to use" mgc:"positional"`
 }
 
 var getAdd = utils.NewLazyLoader[core.Executor](func() core.Executor {

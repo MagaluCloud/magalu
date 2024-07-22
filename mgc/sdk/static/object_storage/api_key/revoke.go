@@ -13,7 +13,7 @@ import (
 )
 
 type revokeParams struct {
-	UUID string `json:"uuid" jsonschema_description:"UUID of key pair to revoke" mgc:"positional"`
+	UUID string `json:"uuid" jsonschema_description:"UUID of api key to revoke" mgc:"positional"`
 }
 
 var getRevoke = utils.NewLazyLoader[core.Executor](func() core.Executor {
@@ -26,7 +26,7 @@ var getRevoke = utils.NewLazyLoader[core.Executor](func() core.Executor {
 		revoke,
 	)
 
-	msg := "This operation will permanently revoke the key apir {{.parameters.uuid}}. Do you wish to continue?"
+	msg := "This operation will permanently revoke the api-key {{.parameters.uuid}}. Do you wish to continue?"
 
 	cExecutor := core.NewConfirmableExecutor(
 		exec,
@@ -34,7 +34,7 @@ var getRevoke = utils.NewLazyLoader[core.Executor](func() core.Executor {
 	)
 
 	return core.NewExecuteResultOutputOptions(cExecutor, func(exec core.Executor, result core.Result) string {
-		return "template=Key pair {{.uuid}} revoked!\n"
+		return "template=Api-key {{.uuid}} revoked!\n"
 	})
 })
 

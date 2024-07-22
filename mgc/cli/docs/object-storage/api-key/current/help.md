@@ -1,15 +1,14 @@
-# Get details about a specific key
+# Get the current Object Storage credentials
 
 ## Usage:
 ```bash
 Usage:
-  ./mgc object-storage key-pair get [uuid] [flags]
+  ./mgc object-storage api-key current [flags]
 ```
 
 ## Product catalog:
 - Flags:
-- -h, --help          help for get
-- --uuid string    (required)
+- -h, --help   help for current
 
 ## Other commands:
 - Global Flags:

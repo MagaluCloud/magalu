@@ -15,9 +15,9 @@ import (
 )
 
 type createParams struct {
-	KeyPairName        string  `json:"name" jsonschema:"description=Name of new key pair" mgc:"positional"`
-	KeyPairDescription *string `json:"description,omitempty" jsonschema:"description=Description of new key pair" mgc:"positional"`
-	KeyPairExpiration  *string `json:"expiration,omitempty" jsonschema:"description=Date to expire new key pair,example=2024-11-07 (YYYY-MM-DD)" mgc:"positional"`
+	ApiKeyName        string  `json:"name" jsonschema:"description=Name of new api key" mgc:"positional"`
+	ApiKeyDescription *string `json:"description,omitempty" jsonschema:"description=Description of new api key" mgc:"positional"`
+	ApiKeyExpiration  *string `json:"expiration,omitempty" jsonschema:"description=Date to expire new api,example=2024-11-07 (YYYY-MM-DD)" mgc:"positional"`
 }
 
 var getCreate = utils.NewLazyLoader[core.Executor](func() core.Executor {
@@ -53,32 +53,32 @@ func create(ctx context.Context, parameter createParams, _ struct{}) (*apiKeyRes
 		return nil, err
 	}
 
-	if parameter.KeyPairDescription == nil {
-		parameter.KeyPairDescription = new(string)
-		*parameter.KeyPairDescription = "created from CLI"
+	if parameter.ApiKeyDescription == nil {
+		parameter.ApiKeyDescription = new(string)
+		*parameter.ApiKeyDescription = "created from CLI"
 	}
 
-	if parameter.KeyPairExpiration == nil {
-		parameter.KeyPairExpiration = new(string)
-		*parameter.KeyPairExpiration = ""
+	if parameter.ApiKeyExpiration == nil {
+		parameter.ApiKeyExpiration = new(string)
+		*parameter.ApiKeyExpiration = ""
 	} else {
-		if _, err = time.Parse(time.DateOnly, *parameter.KeyPairExpiration); err != nil {
-			*parameter.KeyPairExpiration = ""
+		if _, err = time.Parse(time.DateOnly, *parameter.ApiKeyExpiration); err != nil {
+			*parameter.ApiKeyExpiration = ""
 		}
 	}
 
 	const reason = "permission to read and write at object-storage"
 
 	newApi := &createApiKey{
-		Name:        parameter.KeyPairName,
-		Description: *parameter.KeyPairDescription,
+		Name:        parameter.ApiKeyName,
+		Description: *parameter.ApiKeyDescription,
 		TenantID:    currentTenantID,
 		ScopesList: []scopesObjectStorage{
 			{ID: config.ObjectStoreScopeIDs[0], RequestReason: reason},
 			{ID: config.ObjectStoreScopeIDs[1], RequestReason: reason},
 		},
 		StartValidity: time.Now().Format(time.DateOnly),
-		EndValidity:   *parameter.KeyPairExpiration,
+		EndValidity:   *parameter.ApiKeyExpiration,
 	}
 	var buf bytes.Buffer
 	err = json.NewEncoder(&buf).Encode(newApi)
