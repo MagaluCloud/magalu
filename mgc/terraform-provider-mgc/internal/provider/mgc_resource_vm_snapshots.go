@@ -3,6 +3,7 @@ package provider
 import (
 	"context"
 	"fmt"
+	"sync"
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -18,8 +19,9 @@ import (
 )
 
 var (
-	_ resource.Resource              = &vmSnapshots{}
-	_ resource.ResourceWithConfigure = &vmSnapshots{}
+	_                      resource.Resource              = &vmSnapshots{}
+	_                      resource.ResourceWithConfigure = &vmSnapshots{}
+	snapshotsResourceMutex                                = &sync.Mutex{}
 )
 
 func NewVirtualMachineSnapshotsResource() resource.Resource {
@@ -117,6 +119,9 @@ func (r *vmSnapshots) getVmSnapshot(id string) (sdkVmSnapshots.GetResult, error)
 }
 
 func (r *vmSnapshots) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	snapshotsResourceMutex.Lock()
+	defer snapshotsResourceMutex.Unlock()
+
 	data := &vmSnapshotsResourceModel{}
 	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
 
@@ -136,6 +141,9 @@ func (r *vmSnapshots) Read(ctx context.Context, req resource.ReadRequest, resp *
 }
 
 func (r *vmSnapshots) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	snapshotsResourceMutex.Lock()
+	defer snapshotsResourceMutex.Unlock()
+
 	plan := &vmSnapshotsResourceModel{}
 	diags := req.Plan.Get(ctx, &plan)
 	resp.Diagnostics.Append(diags...)
@@ -174,6 +182,8 @@ func (r *vmSnapshots) Update(ctx context.Context, req resource.UpdateRequest, re
 }
 
 func (r *vmSnapshots) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	snapshotsResourceMutex.Lock()
+	defer snapshotsResourceMutex.Unlock()
 	var data vmSnapshotsResourceModel
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)

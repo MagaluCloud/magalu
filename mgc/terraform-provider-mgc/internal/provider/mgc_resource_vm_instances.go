@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"math/big"
+	"sync"
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
@@ -27,8 +28,9 @@ import (
 )
 
 var (
-	_ resource.Resource              = &vmInstances{}
-	_ resource.ResourceWithConfigure = &vmInstances{}
+	_               resource.Resource              = &vmInstances{}
+	_               resource.ResourceWithConfigure = &vmInstances{}
+	vmResourceMutex                                = &sync.Mutex{}
 )
 
 func NewVirtualMachineInstancesResource() resource.Resource {
@@ -310,6 +312,8 @@ func (r *vmInstances) ModifyPlanResponse(ctx context.Context, req resource.Modif
 }
 
 func (r *vmInstances) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	vmResourceMutex.Lock()
+	defer vmResourceMutex.Unlock()
 	data := vmInstancesResourceModel{}
 	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
 
@@ -328,6 +332,8 @@ func (r *vmInstances) Read(ctx context.Context, req resource.ReadRequest, resp *
 }
 
 func (r *vmInstances) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	vmResourceMutex.Lock()
+	defer vmResourceMutex.Unlock()
 	plan := vmInstancesResourceModel{}
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
@@ -416,6 +422,8 @@ func (r *vmInstances) Create(ctx context.Context, req resource.CreateRequest, re
 }
 
 func (r *vmInstances) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	vmResourceMutex.Lock()
+	defer vmResourceMutex.Unlock()
 	data := vmInstancesResourceModel{}
 	currState := &vmInstancesResourceModel{}
 	req.State.Get(ctx, currState)
@@ -462,6 +470,8 @@ func (r *vmInstances) Update(ctx context.Context, req resource.UpdateRequest, re
 }
 
 func (r *vmInstances) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	vmResourceMutex.Lock()
+	defer vmResourceMutex.Unlock()
 	var data vmInstancesResourceModel
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
