@@ -28,6 +28,7 @@ Database instances management. | backups
 - `engine_id` (String)
 - `finished_at` (String)
 - `id` (String) Value referring to backup Id.
+- `instance` (Attributes) This response object provides details about a database instance associated with a backup.  It is provided only if the originating database instance of the backup is not deleted.  If the originating instance is deleted, no instance details will be provided. (see [below for nested schema](#nestedatt--instance))
 - `location` (String)
 - `name` (String)
 - `size` (Number) Backup file size in kilobytes (1024 kilobytes = 1 megabyte).
@@ -35,3 +36,11 @@ Database instances management. | backups
 - `status` (String) An enumeration.
 - `type` (String) An enumeration.
 - `updated_at` (String)
+
+<a id="nestedatt--instance"></a>
+### Nested Schema for `instance`
+
+Read-Only:
+
+- `id` (String) Database instance unique identifier.
+- `name` (String) Database instance unique name.

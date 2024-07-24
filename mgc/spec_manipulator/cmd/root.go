@@ -20,7 +20,7 @@ var (
 
 const (
 	VIPER_FILE = "specs.yaml"
-	SPEC_DIR   = "cli_specs"
+	SPEC_DIR   = "mgc/spec_manipulator/cli_specs"
 )
 
 // Execute executes the root command.

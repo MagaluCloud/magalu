@@ -6,7 +6,7 @@ info:
         name: Tribo IAAS Cloud
         url: https://gitlab.luizalabs.com/cloud/dbaas/docs
         email: cloud-iaas-dbaas@luizalabs.com
-    version: 1.23.0
+    version: 1.25.0
 tags:
 -   name: datastores
     description: Datastores available for database instances.
@@ -1756,9 +1756,17 @@ components:
                     type: string
                     format: uuid
                 instance_id:
-                    title: Instance Id
+                    deprecated: true
+                    title: Instance Id (Deprecated)
                     type: string
                     format: uuid
+                    description: '**Deprecated**: This property is being deprecated
+                        in favor of `instance`. Please update your requests to use
+                        `instance` for improved functionality and future compatibility.
+
+                        '
+                instance:
+                    $ref: '#/components/schemas/BackupInstanceDetailResponse'
                 name:
                     title: Name
                     type: string
@@ -1850,6 +1858,30 @@ components:
                     title: Id
                     type: string
                     format: uuid
+        BackupInstanceDetailResponse:
+            title: Instance Detail Response
+            description: 'This response object provides details about a database instance
+                associated with a backup.  It is provided only if the originating
+                database instance of the backup is not deleted.  If the originating
+                instance is deleted, no instance details will be provided.
+
+                '
+            required:
+            - id
+            - name
+            type: object
+            properties:
+                id:
+                    title: Id
+                    description: Database instance unique identifier.
+                    type: string
+                    format: uuid
+                name:
+                    title: Name
+                    description: Database instance unique name.
+                    type: string
+                    maxLength: 100
+                    example: mydbinstance
         FlavorsResponse:
             title: Flavors Response
             required:
