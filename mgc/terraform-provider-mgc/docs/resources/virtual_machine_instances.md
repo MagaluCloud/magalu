@@ -17,35 +17,35 @@ Operations with instances, including create, delete, start, stop, reboot and oth
 
 ### Required
 
-- `image` (Attributes) (see [below for nested schema](#nestedatt--image))
-- `machine_type` (Attributes) (see [below for nested schema](#nestedatt--machine_type))
-- `name` (String)
-- `ssh_key_name` (String)
+- `image` (Attributes) The image used to create the virtual machine instance. (see [below for nested schema](#nestedatt--image))
+- `machine_type` (Attributes) The machine type of the virtual machine instance. (see [below for nested schema](#nestedatt--machine_type))
+- `name` (String) The name of the virtual machine instance.
+- `ssh_key_name` (String) The name of the SSH key associated with the virtual machine instance.
 
 ### Optional
 
-- `name_is_prefix` (Boolean)
-- `network` (Attributes) (see [below for nested schema](#nestedatt--network))
+- `name_is_prefix` (Boolean) Indicates whether the provided name is a prefix or the exact name of the virtual machine instance.
+- `network` (Attributes) The network configuration of the virtual machine instance. (see [below for nested schema](#nestedatt--network))
 
 ### Read-Only
 
-- `created_at` (String)
-- `final_name` (String)
-- `id` (String) The ID of this resource.
-- `state` (String)
-- `status` (String)
-- `updated_at` (String)
+- `created_at` (String) The timestamp when the virtual machine instance was created.
+- `final_name` (String) The final name of the virtual machine instance after applying any naming conventions or modifications.
+- `id` (String) The unique identifier of the virtual machine instance.
+- `state` (String) The current state of the virtual machine instance.
+- `status` (String) The status of the virtual machine instance.
+- `updated_at` (String) The timestamp when the virtual machine instance was last updated.
 
 <a id="nestedatt--image"></a>
 ### Nested Schema for `image`
 
 Required:
 
-- `name` (String)
+- `name` (String) The name of the image.
 
 Read-Only:
 
-- `id` (String)
+- `id` (String) The unique identifier of the image.
 
 
 <a id="nestedatt--machine_type"></a>
@@ -53,14 +53,14 @@ Read-Only:
 
 Required:
 
-- `name` (String)
+- `name` (String) The name of the machine type.
 
 Read-Only:
 
-- `disk` (Number)
-- `id` (String)
-- `ram` (Number)
-- `vcpus` (Number)
+- `disk` (Number) The disk size of the machine type.
+- `id` (String) The unique identifier of the machine type.
+- `ram` (Number) The RAM size of the machine type.
+- `vcpus` (Number) The number of virtual CPUs of the machine type.
 
 
 <a id="nestedatt--network"></a>
@@ -68,33 +68,33 @@ Read-Only:
 
 Required:
 
-- `associate_public_ip` (Boolean)
+- `associate_public_ip` (Boolean) Indicates whether to associate a public IP address with the virtual machine instance.
 
 Optional:
 
-- `delete_public_ip` (Boolean)
-- `interface` (Attributes) (see [below for nested schema](#nestedatt--network--interface))
-- `vpc` (Attributes) (see [below for nested schema](#nestedatt--network--vpc))
+- `delete_public_ip` (Boolean) Indicates whether to delete the public IP address associated with the virtual machine instance.
+- `interface` (Attributes) The network interface configuration of the virtual machine instance. (see [below for nested schema](#nestedatt--network--interface))
+- `vpc` (Attributes) The VPC (Virtual Private Cloud) associated with the virtual machine instance. (see [below for nested schema](#nestedatt--network--vpc))
 
 Read-Only:
 
-- `ipv6` (String)
-- `private_address` (String)
-- `public_address` (String)
+- `ipv6` (String) The IPv6 address of the virtual machine instance.
+- `private_address` (String) The private IP address of the virtual machine instance.
+- `public_address` (String) The public IP address of the virtual machine instance.
 
 <a id="nestedatt--network--interface"></a>
 ### Nested Schema for `network.interface`
 
 Optional:
 
-- `security_groups` (Attributes) (see [below for nested schema](#nestedatt--network--interface--security_groups))
+- `security_groups` (Attributes List) The security groups associated with the network interface. (see [below for nested schema](#nestedatt--network--interface--security_groups))
 
 <a id="nestedatt--network--interface--security_groups"></a>
 ### Nested Schema for `network.interface.security_groups`
 
 Optional:
 
-- `id` (List of String)
+- `id` (String) The unique identifier of the security group.
 
 
 
@@ -103,5 +103,5 @@ Optional:
 
 Optional:
 
-- `id` (String)
-- `name` (String)
+- `id` (String) The unique identifier of the VPC.
+- `name` (String) The name of the VPC.

@@ -15,6 +15,11 @@ import (
 	"magalu.cloud/sdk"
 )
 
+const (
+	AttachVolumeTimeout         = 5 * time.Minute
+	AttachVolumeCompletedStatus = "completed"
+)
+
 type VolumeAttach struct {
 	sdkClient           *mgcSdk.Client
 	blockStorageVolumes sdkVolumes.Service
@@ -82,14 +87,14 @@ func (r *VolumeAttach) Create(ctx context.Context, req resource.CreateRequest, r
 	err := r.blockStorageVolumes.Attach(sdkVolumes.AttachParameters{
 		Id:               model.BlockStorageID.ValueString(),
 		VirtualMachineId: model.VirtualMachineID.ValueString(),
-	}, sdkVolumes.AttachConfigs{})
+	}, GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVolumes.AttachConfigs{}))
 
 	if err != nil {
 		resp.Diagnostics.AddError("Failed to attach volume", err.Error())
 		return
 	}
 
-	err = r.waitForVolumeAvailability(model.BlockStorageID.ValueString(), "in-use", "completed")
+	err = r.waitForVolumeAvailability(model.BlockStorageID.ValueString(), AttachVolumeCompletedStatus)
 
 	if err != nil {
 		resp.Diagnostics.AddError("Failed to attach volume in pooling", err.Error())
@@ -117,7 +122,7 @@ func (r *VolumeAttach) Read(ctx context.Context, req resource.ReadRequest, resp 
 	result, err := r.blockStorageVolumes.Get(sdkVolumes.GetParameters{
 		Id:     model.BlockStorageID.ValueString(),
 		Expand: &expand,
-	}, sdkVolumes.GetConfigs{})
+	}, GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVolumes.GetConfigs{}))
 
 	if err != nil {
 		resp.Diagnostics.AddError("Failed to get volume", err.Error())
@@ -147,14 +152,14 @@ func (r *VolumeAttach) Update(ctx context.Context, req resource.UpdateRequest, r
 	err := r.blockStorageVolumes.Attach(sdkVolumes.AttachParameters{
 		Id:               model.BlockStorageID.ValueString(),
 		VirtualMachineId: model.VirtualMachineID.ValueString(),
-	}, sdkVolumes.AttachConfigs{})
+	}, GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVolumes.AttachConfigs{}))
 
 	if err != nil {
 		resp.Diagnostics.AddError("Failed to attach volume", err.Error())
 		return
 	}
 
-	err = r.waitForVolumeAvailability(model.BlockStorageID.ValueString(), "in-use", "completed")
+	err = r.waitForVolumeAvailability(model.BlockStorageID.ValueString(), AttachVolumeCompletedStatus)
 
 	if err != nil {
 		resp.Diagnostics.AddError("Failed to attach volume in pooling", err.Error())
@@ -179,14 +184,14 @@ func (r *VolumeAttach) Delete(ctx context.Context, req resource.DeleteRequest, r
 
 	err := r.blockStorageVolumes.Detach(sdkVolumes.DetachParameters{
 		Id: model.BlockStorageID.ValueString(),
-	}, sdkVolumes.DetachConfigs{})
+	}, GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVolumes.DetachConfigs{}))
 
 	if err != nil {
 		resp.Diagnostics.AddError("Failed to detach volume", err.Error())
 		return
 	}
 
-	err = r.waitForVolumeAvailability(model.BlockStorageID.ValueString(), "available", "completed")
+	err = r.waitForVolumeAvailability(model.BlockStorageID.ValueString(), AttachVolumeCompletedStatus)
 
 	if err != nil {
 		resp.Diagnostics.AddError("Failed to detach volume in pooling", err.Error())
@@ -194,16 +199,16 @@ func (r *VolumeAttach) Delete(ctx context.Context, req resource.DeleteRequest, r
 	}
 }
 
-func (r *VolumeAttach) waitForVolumeAvailability(volumeID string, expedtedState, expetedStatus string) (err error) {
-	for startTime := time.Now(); time.Since(startTime) < 5*time.Minute; {
+func (r *VolumeAttach) waitForVolumeAvailability(volumeID string, expetedStatus string) (err error) {
+	for startTime := time.Now(); time.Since(startTime) < AttachVolumeTimeout; {
 		time.Sleep(10 * time.Second)
 		getResult, err := r.blockStorageVolumes.Get(sdkVolumes.GetParameters{
 			Id: volumeID,
-		}, sdkVolumes.GetConfigs{})
+		}, GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVolumes.GetConfigs{}))
 		if err != nil {
 			return err
 		}
-		if getResult.State == expedtedState && getResult.Status == expetedStatus {
+		if getResult.Status == expetedStatus {
 			break
 		}
 	}

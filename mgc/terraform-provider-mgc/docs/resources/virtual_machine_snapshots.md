@@ -17,11 +17,11 @@ Operations with snapshots for instances.
 
 ### Required
 
-- `name` (String)
-- `virtual_machine_id` (String) The id of the virtual machine.
+- `name` (String) The name of the snapshot.
+- `virtual_machine_id` (String) The ID of the virtual machine.
 
 ### Read-Only
 
-- `created_at` (String)
-- `id` (String) The ID of this resource.
-- `updated_at` (String)
+- `created_at` (String) The timestamp when the snapshot was created.
+- `id` (String) The ID of the snapshot.
+- `updated_at` (String) The timestamp when the snapshot was last updated.

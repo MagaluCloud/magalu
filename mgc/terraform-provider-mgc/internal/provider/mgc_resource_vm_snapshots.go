@@ -71,35 +71,30 @@ func (r *vmSnapshots) Schema(_ context.Context, _ resource.SchemaRequest, resp *
 		MarkdownDescription: description,
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.UseStateForUnknown(),
-				},
-				Computed: true,
+				Description:   "The ID of the snapshot.",
+				PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()},
+				Computed:      true,
 			},
 			"name": schema.StringAttribute{
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.UseStateForUnknown(),
-				},
-				Required: true,
+				Description:   "The name of the snapshot.",
+				PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()},
+				Required:      true,
 			},
 			"virtual_machine_id": schema.StringAttribute{
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.UseStateForUnknown(),
-				},
-				MarkdownDescription: "The id of the virtual machine.",
+				Description:         "The ID of the virtual machine.",
+				PlanModifiers:       []planmodifier.String{stringplanmodifier.UseStateForUnknown()},
+				MarkdownDescription: "The ID of the virtual machine.",
 				Required:            true,
 			},
 			"updated_at": schema.StringAttribute{
-				Computed: true,
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.UseStateForUnknown(),
-				},
+				Description:   "The timestamp when the snapshot was last updated.",
+				Computed:      true,
+				PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()},
 			},
 			"created_at": schema.StringAttribute{
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.UseStateForUnknown(),
-				},
-				Computed: true,
+				Description:   "The timestamp when the snapshot was created.",
+				PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()},
+				Computed:      true,
 			},
 		},
 	}
@@ -114,7 +109,7 @@ func (r *vmSnapshots) getVmSnapshot(id string) (sdkVmSnapshots.GetResult, error)
 		sdkVmSnapshots.GetParameters{
 			Id: id,
 		},
-		sdkVmSnapshots.GetConfigs{})
+		GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVmSnapshots.GetConfigs{}))
 	if err != nil {
 		return sdkVmSnapshots.GetResult{}, err
 	}
@@ -155,7 +150,7 @@ func (r *vmSnapshots) Create(ctx context.Context, req resource.CreateRequest, re
 		},
 	}
 
-	result, err := r.vmSnapshots.Create(createParams, sdkVmSnapshots.CreateConfigs{})
+	result, err := r.vmSnapshots.Create(createParams, GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVmSnapshots.CreateConfigs{}))
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Error Creating VM Snapshot",
@@ -187,7 +182,7 @@ func (r *vmSnapshots) Delete(ctx context.Context, req resource.DeleteRequest, re
 		sdkVmSnapshots.DeleteParameters{
 			Id: data.ID.ValueString(),
 		},
-		sdkVmSnapshots.DeleteConfigs{})
+		GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVmSnapshots.DeleteConfigs{}))
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Error deleting VM Snapshot",

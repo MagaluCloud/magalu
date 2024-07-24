@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"math/big"
-	"strings"
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
@@ -114,56 +113,68 @@ func (r *vmInstances) Schema(_ context.Context, _ resource.SchemaRequest, resp *
 		MarkdownDescription: description,
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
+				Description: "The unique identifier of the virtual machine instance.",
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.UseStateForUnknown(),
 				},
 				Computed: true,
 			},
 			"name_is_prefix": schema.BoolAttribute{
-				Optional: true,
-				Computed: true,
-				Default:  booldefault.StaticBool(false),
+				Description: "Indicates whether the provided name is a prefix or the exact name of the virtual machine instance.",
+				Optional:    true,
+				Computed:    true,
+				Default:     booldefault.StaticBool(false),
 			},
 			"name": schema.StringAttribute{
+				Description: "The name of the virtual machine instance.",
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.UseStateForUnknown(),
 				},
 				Required: true,
 			},
 			"final_name": schema.StringAttribute{
+				Description: "The final name of the virtual machine instance after applying any naming conventions or modifications.",
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.UseStateForUnknown(),
 				},
 				Computed: true,
 			},
 			"updated_at": schema.StringAttribute{
-				Computed: true,
+				Description: "The timestamp when the virtual machine instance was last updated.",
+				Computed:    true,
 			},
 			"created_at": schema.StringAttribute{
+				Description: "The timestamp when the virtual machine instance was created.",
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.UseStateForUnknown(),
 				},
 				Computed: true,
 			},
 			"ssh_key_name": schema.StringAttribute{
+				Description: "The name of the SSH key associated with the virtual machine instance.",
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.UseStateForUnknown(),
 				},
 				Required: true,
 			},
 			"state": schema.StringAttribute{
-				Computed: true,
+				Description: "The current state of the virtual machine instance.",
+				Computed:    true,
 			},
 			"status": schema.StringAttribute{
-				Computed: true,
+				Description: "The status of the virtual machine instance.",
+				Computed:    true,
 			},
 			"image": schema.SingleNestedAttribute{
-				Required: true,
+				Description: "The image used to create the virtual machine instance.",
+				Required:    true,
 				Attributes: map[string]schema.Attribute{
 					"id": schema.StringAttribute{
-						Computed: true,
+						Description: "The unique identifier of the image.",
+						Computed:    true,
 					},
 					"name": schema.StringAttribute{
+						Description: "The name of the image.",
 						PlanModifiers: []planmodifier.String{
 							stringplanmodifier.UseStateForUnknown(),
 						},
@@ -175,25 +186,31 @@ func (r *vmInstances) Schema(_ context.Context, _ resource.SchemaRequest, resp *
 				},
 			},
 			"machine_type": schema.SingleNestedAttribute{
-				Required: true,
+				Description: "The machine type of the virtual machine instance.",
+				Required:    true,
 				Attributes: map[string]schema.Attribute{
 					"id": schema.StringAttribute{
-						Computed: true,
+						Description: "The unique identifier of the machine type.",
+						Computed:    true,
 					},
 					"name": schema.StringAttribute{
+						Description: "The name of the machine type.",
 						PlanModifiers: []planmodifier.String{
 							stringplanmodifier.UseStateForUnknown(),
 						},
 						Required: true,
 					},
 					"disk": schema.NumberAttribute{
-						Computed: true,
+						Description: "The disk size of the machine type.",
+						Computed:    true,
 					},
 					"ram": schema.NumberAttribute{
-						Computed: true,
+						Description: "The RAM size of the machine type.",
+						Computed:    true,
 					},
 					"vcpus": schema.NumberAttribute{
-						Computed: true,
+						Description: "The number of virtual CPUs of the machine type.",
+						Computed:    true,
 					},
 				},
 				Validators: []validator.Object{
@@ -201,9 +218,11 @@ func (r *vmInstances) Schema(_ context.Context, _ resource.SchemaRequest, resp *
 				},
 			},
 			"network": schema.SingleNestedAttribute{
-				Optional: true,
+				Description: "The network configuration of the virtual machine instance.",
+				Optional:    true,
 				Attributes: map[string]schema.Attribute{
 					"delete_public_ip": schema.BoolAttribute{
+						Description: "Indicates whether to delete the public IP address associated with the virtual machine instance.",
 						PlanModifiers: []planmodifier.Bool{
 							boolplanmodifier.UseStateForUnknown(),
 						},
@@ -212,33 +231,39 @@ func (r *vmInstances) Schema(_ context.Context, _ resource.SchemaRequest, resp *
 						Computed: true,
 					},
 					"associate_public_ip": schema.BoolAttribute{
-						Required: true,
+						Description: "Indicates whether to associate a public IP address with the virtual machine instance.",
+						Required:    true,
 						PlanModifiers: []planmodifier.Bool{
 							boolplanmodifier.RequiresReplace(),
 						},
 					},
 					"ipv6": schema.StringAttribute{
+						Description: "The IPv6 address of the virtual machine instance.",
 						PlanModifiers: []planmodifier.String{
 							stringplanmodifier.UseStateForUnknown(),
 						},
 						Computed: true,
 					},
 					"private_address": schema.StringAttribute{
+						Description: "The private IP address of the virtual machine instance.",
 						PlanModifiers: []planmodifier.String{
 							stringplanmodifier.UseStateForUnknown(),
 						},
 						Computed: true,
 					},
 					"public_address": schema.StringAttribute{
+						Description: "The public IP address of the virtual machine instance.",
 						PlanModifiers: []planmodifier.String{
 							stringplanmodifier.UseStateForUnknown(),
 						},
 						Computed: true,
 					},
 					"vpc": schema.SingleNestedAttribute{
-						Optional: true,
+						Description: "The VPC (Virtual Private Cloud) associated with the virtual machine instance.",
+						Optional:    true,
 						Attributes: map[string]schema.Attribute{
 							"id": schema.StringAttribute{
+								Description: "The unique identifier of the VPC.",
 								PlanModifiers: []planmodifier.String{
 									stringplanmodifier.UseStateForUnknown(),
 								},
@@ -246,6 +271,7 @@ func (r *vmInstances) Schema(_ context.Context, _ resource.SchemaRequest, resp *
 								Computed: true,
 							},
 							"name": schema.StringAttribute{
+								Description: "The name of the VPC.",
 								PlanModifiers: []planmodifier.String{
 									stringplanmodifier.UseStateForUnknown(),
 								},
@@ -255,14 +281,18 @@ func (r *vmInstances) Schema(_ context.Context, _ resource.SchemaRequest, resp *
 						},
 					},
 					"interface": schema.SingleNestedAttribute{
-						Optional: true,
+						Description: "The network interface configuration of the virtual machine instance.",
+						Optional:    true,
 						Attributes: map[string]schema.Attribute{
-							"security_groups": schema.SingleNestedAttribute{
-								Optional: true,
-								Attributes: map[string]schema.Attribute{
-									"id": schema.ListAttribute{
-										Optional:    true,
-										ElementType: types.StringType,
+							"security_groups": schema.ListNestedAttribute{
+								Description: "The security groups associated with the network interface.",
+								Optional:    true,
+								NestedObject: schema.NestedAttributeObject{
+									Attributes: map[string]schema.Attribute{
+										"id": schema.StringAttribute{
+											Description: "The unique identifier of the security group.",
+											Optional:    true,
+										},
 									},
 								},
 							},
@@ -342,21 +372,20 @@ func (r *vmInstances) Create(ctx context.Context, req resource.CreateRequest, re
 	}
 
 	if state.Network.Interface != nil && len(state.Network.Interface.SecurityGroups) > 0 {
-		var ids []string
+		var items []sdkVmInstances.CreateParametersNetworkInterfaceSecurityGroupsItem
 		for _, sg := range state.Network.Interface.SecurityGroups {
-			ids = append(ids, sg.ID.ValueString())
+			items = append(items, sdkVmInstances.CreateParametersNetworkInterfaceSecurityGroupsItem{
+				Id: sg.ID.ValueString(),
+			})
 		}
-
-		createParams.Network.Interface.SecurityGroups = &sdkVmInstances.CreateParametersNetworkInterfaceSecurityGroups{
-			sdkVmInstances.CreateParametersNetworkInterfaceSecurityGroupsItem{
-				Id: strings.Join(ids, ","),
-			},
-		}
+		vmInstancesNetworkInterfaceSecurityGroups := sdkVmInstances.CreateParametersNetworkInterfaceSecurityGroups(items)
+		createParams.Network.Interface = &sdkVmInstances.CreateParametersNetworkInterface{}
+		createParams.Network.Interface.SecurityGroups = &vmInstancesNetworkInterfaceSecurityGroups
 	}
 
 	createParams.Network.AssociatePublicIp = state.Network.AssociatePublicIP.ValueBoolPointer()
 
-	result, err := r.vmInstances.Create(createParams, sdkVmInstances.CreateConfigs{})
+	result, err := r.vmInstances.Create(createParams, GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVmInstances.CreateConfigs{}))
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Error creating vm",
@@ -407,7 +436,7 @@ func (r *vmInstances) Update(ctx context.Context, req resource.UpdateRequest, re
 			MachineType: sdkVmInstances.RetypeParametersMachineType{
 				Id: machineType.ID.ValueString(),
 			},
-		}, sdkVmInstances.RetypeConfigs{})
+		}, GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVmInstances.RetypeConfigs{}))
 
 		if err != nil {
 			resp.Diagnostics.AddError(
@@ -442,7 +471,7 @@ func (r *vmInstances) Delete(ctx context.Context, req resource.DeleteRequest, re
 			DeletePublicIp: data.Network.DeletePublicIP.ValueBoolPointer(),
 			Id:             data.ID.ValueString(),
 		},
-		sdkVmInstances.DeleteConfigs{})
+		GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVmInstances.DeleteConfigs{}))
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Error Deleting VM",
@@ -495,7 +524,7 @@ func (r *vmInstances) setValuesFromServer(data vmInstancesResourceModel, server 
 
 func (r *vmInstances) getMachineTypeID(name string) (*vmInstancesMachineTypeModel, error) {
 	machineType := vmInstancesMachineTypeModel{}
-	machineTypeList, err := r.vmMachineTypes.List(sdkVmMachineTypes.ListParameters{}, sdkVmMachineTypes.ListConfigs{})
+	machineTypeList, err := r.vmMachineTypes.List(sdkVmMachineTypes.ListParameters{}, GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVmMachineTypes.ListConfigs{}))
 	if err != nil {
 		return nil, fmt.Errorf("could not load machine-type list, unexpected error: " + err.Error())
 	}
@@ -524,7 +553,6 @@ func (r *vmInstances) getVmStatus(id string) (*sdkVmInstances.GetResult, error) 
 	duration := 5 * time.Minute
 	startTime := time.Now()
 	getParam := sdkVmInstances.GetParameters{Id: id, Expand: expand}
-	getConfigParam := sdkVmInstances.GetConfigs{}
 	var err error
 	for {
 		elapsed := time.Since(startTime)
@@ -536,7 +564,7 @@ func (r *vmInstances) getVmStatus(id string) (*sdkVmInstances.GetResult, error) 
 			return getResult, fmt.Errorf("timeout to read VM ID")
 		}
 
-		*getResult, err = r.vmInstances.Get(getParam, getConfigParam)
+		*getResult, err = r.vmInstances.Get(getParam, GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVmInstances.GetConfigs{}))
 		if err != nil {
 			return getResult, err
 		}
@@ -554,7 +582,6 @@ func (r *vmInstances) checkVmIsNotFound(id string) {
 	duration := 5 * time.Minute
 	startTime := time.Now()
 	getParam := sdkVmInstances.GetParameters{Id: id}
-	getConfigParam := sdkVmInstances.GetConfigs{}
 	var err error
 	for {
 		elapsed := time.Since(startTime)
@@ -566,7 +593,7 @@ func (r *vmInstances) checkVmIsNotFound(id string) {
 			return
 		}
 
-		*getResult, err = r.vmInstances.Get(getParam, getConfigParam)
+		*getResult, err = r.vmInstances.Get(getParam, GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVmInstances.GetConfigs{}))
 		if err != nil {
 			return
 		}
