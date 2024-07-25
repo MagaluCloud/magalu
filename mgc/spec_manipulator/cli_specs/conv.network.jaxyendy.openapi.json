@@ -8,7 +8,7 @@
       "url": "https://github.com/luizalabs",
       "email": "thullyo.cunha@luizalabs.com"
     },
-    "version": "1.126.1"
+    "version": "1.128.0"
   },
   "paths": {
     "/v0/healthcheck": {
@@ -31,6 +31,198 @@
             }
           }
         }
+      }
+    },
+    "/v0/internal/conciliator": {
+      "post": {
+        "tags": [
+          "backoffice_conciliator"
+        ],
+        "summary": "Start conciliator",
+        "description": "Start conciliator validation",
+        "operationId": "InternalStartConciliator",
+        "parameters": [
+          {
+            "name": "resource-type",
+            "in": "header",
+            "description": "Resources to start the conciliator",
+            "required": false,
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/ResourceType"
+                }
+              ],
+              "title": "Resource Type",
+              "description": "Resources to start the conciliator",
+              "default": "security_group, rule, public_ip"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "description": "Tenant id of the project",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id",
+              "description": "Tenant id of the project"
+            }
+          },
+          {
+            "name": "skip",
+            "in": "header",
+            "description": "Number of tenants to skip",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "title": "Skip",
+              "description": "Number of tenants to skip",
+              "default": 0
+            }
+          },
+          {
+            "name": "limit",
+            "in": "header",
+            "description": "Limit of tenants",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "title": "Limit of tenants",
+              "description": "Limit of tenants"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": false
+      }
+    },
+    "/v0/interconnections/{vpc_id}": {
+      "post": {
+        "tags": [
+          "interconnections"
+        ],
+        "summary": "Create Interconnections",
+        "operationId": "create_interconnections_v0_interconnections__vpc_id__post",
+        "parameters": [
+          {
+            "name": "vpc_id",
+            "in": "path",
+            "description": "Id of the VPC to create OVN Interconnect",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "VPC Id",
+              "description": "Id of the VPC to create OVN Interconnect"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "description": "Tenant id of the project",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id",
+              "description": "Tenant id of the project"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": false,
+        "x-mgc-hidden": true
+      },
+      "delete": {
+        "tags": [
+          "interconnections"
+        ],
+        "summary": "Delete Interconnections",
+        "operationId": "delete_interconnections_v0_interconnections__vpc_id__delete",
+        "parameters": [
+          {
+            "name": "vpc_id",
+            "in": "path",
+            "description": "Id of the VPC to create OVN Interconnect",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "VPC Id",
+              "description": "Id of the VPC to create OVN Interconnect"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "description": "Tenant id of the project",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id",
+              "description": "Tenant id of the project"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": false,
+        "x-mgc-hidden": true
       }
     },
     "/v0/ports": {
@@ -542,10 +734,12 @@
           {
             "name": "x-tenant-id",
             "in": "header",
+            "description": "Tenant id of the project",
             "required": true,
             "schema": {
               "type": "string",
-              "title": "X-Tenant-Id"
+              "title": "X-Tenant-Id",
+              "description": "Tenant id of the project"
             }
           }
         ],
@@ -606,10 +800,12 @@
           {
             "name": "x-tenant-id",
             "in": "header",
+            "description": "Tenant id of the project",
             "required": true,
             "schema": {
               "type": "string",
-              "title": "X-Tenant-Id"
+              "title": "X-Tenant-Id",
+              "description": "Tenant id of the project"
             }
           }
         ],
@@ -755,10 +951,12 @@
           {
             "name": "x-tenant-id",
             "in": "header",
+            "description": "Tenant id of the project",
             "required": true,
             "schema": {
               "type": "string",
-              "title": "X-Tenant-Id"
+              "title": "X-Tenant-Id",
+              "description": "Tenant id of the project"
             }
           }
         ],
@@ -875,10 +1073,12 @@
           {
             "name": "x-tenant-id",
             "in": "header",
+            "description": "Tenant id of the project",
             "required": true,
             "schema": {
               "type": "string",
-              "title": "X-Tenant-Id"
+              "title": "X-Tenant-Id",
+              "description": "Tenant id of the project"
             }
           }
         ],
@@ -934,10 +1134,12 @@
           {
             "name": "x-tenant-id",
             "in": "header",
+            "description": "Tenant id of the project",
             "required": true,
             "schema": {
               "type": "string",
-              "title": "X-Tenant-Id"
+              "title": "X-Tenant-Id",
+              "description": "Tenant id of the project"
             }
           }
         ],
@@ -998,10 +1200,12 @@
           {
             "name": "x-tenant-id",
             "in": "header",
+            "description": "Tenant id of the project",
             "required": true,
             "schema": {
               "type": "string",
-              "title": "X-Tenant-Id"
+              "title": "X-Tenant-Id",
+              "description": "Tenant id of the project"
             }
           }
         ],
@@ -1260,10 +1464,12 @@
           {
             "name": "x-tenant-id",
             "in": "header",
+            "description": "Tenant id of the project",
             "required": true,
             "schema": {
               "type": "string",
-              "title": "X-Tenant-Id"
+              "title": "X-Tenant-Id",
+              "description": "Tenant id of the project"
             }
           }
         ],
@@ -1380,10 +1586,12 @@
           {
             "name": "x-tenant-id",
             "in": "header",
+            "description": "Tenant id of the project",
             "required": true,
             "schema": {
               "type": "string",
-              "title": "X-Tenant-Id"
+              "title": "X-Tenant-Id",
+              "description": "Tenant id of the project"
             }
           }
         ],
@@ -1417,10 +1625,12 @@
           {
             "name": "x-tenant-id",
             "in": "header",
+            "description": "Tenant id of the project",
             "required": true,
             "schema": {
               "type": "string",
-              "title": "X-Tenant-Id"
+              "title": "X-Tenant-Id",
+              "description": "Tenant id of the project"
             }
           }
         ],
@@ -1542,10 +1752,12 @@
           {
             "name": "x-tenant-id",
             "in": "header",
+            "description": "Tenant id of the project",
             "required": true,
             "schema": {
               "type": "string",
-              "title": "X-Tenant-Id"
+              "title": "X-Tenant-Id",
+              "description": "Tenant id of the project"
             }
           }
         ],
@@ -1702,10 +1914,12 @@
           {
             "name": "x-tenant-id",
             "in": "header",
+            "description": "Tenant id of the project",
             "required": true,
             "schema": {
               "type": "string",
-              "title": "X-Tenant-Id"
+              "title": "X-Tenant-Id",
+              "description": "Tenant id of the project"
             }
           }
         ],
@@ -1824,10 +2038,12 @@
           {
             "name": "x-tenant-id",
             "in": "header",
+            "description": "Tenant id of the project",
             "required": true,
             "schema": {
               "type": "string",
-              "title": "X-Tenant-Id"
+              "title": "X-Tenant-Id",
+              "description": "Tenant id of the project"
             }
           }
         ],
@@ -1861,10 +2077,12 @@
           {
             "name": "x-tenant-id",
             "in": "header",
+            "description": "Tenant id of the project to delete all security groups",
             "required": true,
             "schema": {
               "type": "string",
-              "title": "X-Tenant-Id"
+              "title": "X-Tenant-Id",
+              "description": "Tenant id of the project to delete all security groups"
             }
           }
         ],
@@ -1892,6 +2110,52 @@
         },
         "x-viveiro": false,
         "x-mgc-hidden": true
+      }
+    },
+    "/v0/subnetpools": {
+      "get": {
+        "tags": [
+          "subnetpools"
+        ],
+        "summary": "List Subnet Pools by Tenant",
+        "description": "Returns a list of Subnet Pools for the current tenant's project",
+        "operationId": "listSubnetPoolsByTenant",
+        "parameters": [
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "description": "Tenant id of the project",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id",
+              "description": "Tenant id of the project"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubnetPoolsResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": true
       }
     },
     "/v0/vpcs/{vpc_id}/subnets": {
@@ -1972,10 +2236,12 @@
           {
             "name": "x-tenant-id",
             "in": "header",
+            "description": "Tenant id of the project",
             "required": true,
             "schema": {
               "type": "string",
-              "title": "X-Tenant-Id"
+              "title": "X-Tenant-Id",
+              "description": "Tenant id of the project"
             }
           },
           {
@@ -2106,10 +2372,12 @@
           {
             "name": "x-tenant-id",
             "in": "header",
+            "description": "Tenant id of the project",
             "required": true,
             "schema": {
               "type": "string",
-              "title": "X-Tenant-Id"
+              "title": "X-Tenant-Id",
+              "description": "Tenant id of the project"
             }
           }
         ],
@@ -2150,10 +2418,12 @@
           {
             "name": "x-tenant-id",
             "in": "header",
+            "description": "Tenant id of the project",
             "required": true,
             "schema": {
               "type": "string",
-              "title": "X-Tenant-Id"
+              "title": "X-Tenant-Id",
+              "description": "Tenant id of the project"
             }
           }
         ],
@@ -6404,9 +6674,15 @@
           ]
         }
       },
-      "SubnetPoolDetailsResponse": {
+      "SubnetPoolResponse": {
         "type": "object",
         "properties": {
+          "cidr": {
+            "type": "string",
+            "title": "Cidr",
+            "description": "The CIDR notation for the subnet pool.",
+            "default": "172.26.0.0/16"
+          },
           "id": {
             "type": "string",
             "title": "Id"
@@ -6415,168 +6691,43 @@
             "type": "string",
             "title": "Tenant Id"
           },
-          "vpc_id": {
-            "type": "string",
-            "title": "Vpc Id"
-          },
           "name": {
             "type": "string",
             "title": "Name"
           },
-          "pool_prefix": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "title": "Pool Prefix"
-          },
-          "min_prefix_length": {
-            "type": "integer",
-            "title": "Min Prefix Length"
-          },
-          "max_prefix_length": {
-            "type": "integer",
-            "title": "Max Prefix Length"
-          },
-          "default_prefix_length": {
-            "type": "integer",
-            "title": "Default Prefix Length"
-          },
           "description": {
-            "type": "string",
-            "title": "Description"
-          }
-        },
-        "title": "SubnetPoolDetailsResponse",
-        "required": [
-          "id",
-          "tenant_id",
-          "vpc_id",
-          "name",
-          "pool_prefix",
-          "min_prefix_length",
-          "max_prefix_length",
-          "default_prefix_length",
-          "description"
-        ],
-        "description": "A Pydantic model representing the request for creating one Subnet Pool.",
-        "example": {
-          "default_prefix_length": 26,
-          "description": "some description",
-          "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-          "max_prefix_length": 28,
-          "min_prefix_length": 24,
-          "name": "some_subnet_pool",
-          "pool_prefix": [
-            "172.26.0.0/16"
-          ],
-          "tenant_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-          "vpc_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-        }
-      },
-      "SubnetPoolRequest": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string",
-            "title": "Name",
-            "description": "The name of the subnet pool."
-          },
-          "pool_prefix": {
-            "type": "string",
-            "title": "Pool Prefix",
-            "description": "The CIDR notation prefix for the subnet pool.",
-            "default": "172.26.0.0/16"
-          },
-          "min_prefix_length": {
-            "type": "integer",
-            "title": "Min Prefix Length",
-            "description": "The minimum prefix length for a subnet in the pool.",
-            "default": 24
-          },
-          "max_prefix_length": {
-            "type": "integer",
-            "title": "Max Prefix Length",
-            "description": "The maximum prefix length for a subnet in the pool.",
-            "default": 28
-          },
-          "default_prefix_length": {
-            "type": "integer",
-            "title": "Default Prefix Length",
-            "description": "The default prefix length for a subnet in the pool.",
-            "default": 26
-          },
-          "description": {
-            "type": "string",
-            "title": "Description",
-            "description": "The description for the subnet pool"
-          },
-          "address_scope_id": {
             "anyOf": [
               {
                 "type": "string"
               }
             ],
-            "title": "Address Scope Id",
-            "description": "The ID of the address scope for the subnet pool",
+            "title": "Description",
             "nullable": true
-          }
-        },
-        "title": "SubnetPoolRequest",
-        "required": [
-          "name",
-          "description"
-        ],
-        "description": "A Pydantic model representing the request for creating one Subnet Pool.",
-        "example": {
-          "address_scope_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-          "default_prefix_length": 26,
-          "description": "some description",
-          "max_prefix_length": 28,
-          "min_prefix_length": 24,
-          "name": "some_subnet_pool",
-          "pool_prefix": "172.26.0.0/16"
-        }
-      },
-      "SubnetPoolResponse": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "title": "Id"
-          },
-          "tenant_id": {
-            "type": "string",
-            "title": "Tenant Id"
-          },
-          "vpc_id": {
-            "type": "string",
-            "title": "Vpc Id"
-          },
-          "name": {
-            "type": "string",
-            "title": "Name"
           },
           "external_id": {
-            "type": "string",
-            "title": "External Id"
+            "anyOf": [
+              {
+                "type": "string"
+              }
+            ],
+            "title": "External Id",
+            "nullable": true
           }
         },
         "title": "SubnetPoolResponse",
         "required": [
           "id",
           "tenant_id",
-          "vpc_id",
-          "name",
-          "external_id"
+          "name"
         ],
         "description": "A Pydantic model representing a response for Subnet Pool creation.\n\nAttributes:\n    id (str): The ID of the subnet pool.\n    tenant_id (str): The ID of the tenant that owns the subnet pool.\n    vpc_id (str): The ID of the VPC that the subnet pool belongs to.\n    name (str): The name of the subnet pool.\n    external_id (str): The ID of the subnet pool in OpenStack.",
         "example": {
+          "cidr": "172.26.0.0/16",
+          "description": "subnet pool description",
           "external_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
           "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
           "name": "some_subnet_pool",
-          "tenant_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-          "vpc_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+          "tenant_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
         }
       },
       "SubnetPoolsResponse": {
@@ -6587,6 +6738,12 @@
             "items": {
               "type": "object",
               "properties": {
+                "cidr": {
+                  "type": "string",
+                  "title": "Cidr",
+                  "description": "The CIDR notation for the subnet pool.",
+                  "default": "172.26.0.0/16"
+                },
                 "id": {
                   "type": "string",
                   "title": "Id"
@@ -6595,34 +6752,43 @@
                   "type": "string",
                   "title": "Tenant Id"
                 },
-                "vpc_id": {
-                  "type": "string",
-                  "title": "Vpc Id"
-                },
                 "name": {
                   "type": "string",
                   "title": "Name"
                 },
+                "description": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    }
+                  ],
+                  "title": "Description",
+                  "nullable": true
+                },
                 "external_id": {
-                  "type": "string",
-                  "title": "External Id"
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    }
+                  ],
+                  "title": "External Id",
+                  "nullable": true
                 }
               },
               "title": "SubnetPoolResponse",
               "required": [
                 "id",
                 "tenant_id",
-                "vpc_id",
-                "name",
-                "external_id"
+                "name"
               ],
               "description": "A Pydantic model representing a response for Subnet Pool creation.\n\nAttributes:\n    id (str): The ID of the subnet pool.\n    tenant_id (str): The ID of the tenant that owns the subnet pool.\n    vpc_id (str): The ID of the VPC that the subnet pool belongs to.\n    name (str): The name of the subnet pool.\n    external_id (str): The ID of the subnet pool in OpenStack.",
               "example": {
+                "cidr": "172.26.0.0/16",
+                "description": "subnet pool description",
                 "external_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
                 "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
                 "name": "some_subnet_pool",
-                "tenant_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-                "vpc_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+                "tenant_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
               }
             },
             "title": "Subnetpools",
@@ -6634,11 +6800,10 @@
         "example": {
           "subnetpools": [
             {
-              "external_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+              "cidr": "172.26.0.0/16",
+              "description": "subnet pool description",
               "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-              "name": "some_subnet_pool",
-              "tenant_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-              "vpc_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+              "name": "some_subnet_pool"
             }
           ]
         }

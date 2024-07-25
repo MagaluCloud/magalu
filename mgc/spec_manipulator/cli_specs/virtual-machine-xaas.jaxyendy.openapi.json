@@ -3,7 +3,7 @@
   "info": {
     "title": "Internal Virtual Machine Api Product",
     "description": "Virtual Machine Api Product",
-    "version": "1.254.3"
+    "version": "1.255.0"
   },
   "paths": {
     "/v1/health": {
@@ -676,7 +676,7 @@
           "images"
         ],
         "summary": "Update Image Status",
-        "description": "Update image status",
+        "description": "Update image status.",
         "operationId": "update_image_status_v1_internal_images__id__patch",
         "parameters": [
           {
@@ -732,7 +732,7 @@
           "images"
         ],
         "summary": "Update Image Name",
-        "description": "Update image name",
+        "description": "Update image nam.",
         "operationId": "update_image_name_v1_internal_images__id__rename_patch",
         "parameters": [
           {
@@ -921,7 +921,7 @@
         "tags": [
           "instances"
         ],
-        "summary": "Delete all instances associated with a tenant",
+        "summary": "Delete all instances associated with a tenant.",
         "description": "Internal route to delete all instances associated with a tenant.\n\n### Note\nThis route is used only for internal proposes.",
         "operationId": "instance_delete_all_v1_v1_internal_instances_delete",
         "parameters": [
@@ -1762,7 +1762,7 @@
         "tags": [
           "snapshots"
         ],
-        "summary": "Update snapshot",
+        "summary": "Update snapshot.",
         "description": "Internal route for update a snapshot using its internal id",
         "operationId": "worker_update_snapshot_v1_internal_snapshots__id__patch",
         "parameters": [
@@ -4447,6 +4447,52 @@
             }
           ]
         }
+      },
+      "NICRequest": {
+        "type": "object",
+        "properties": {
+          "instance": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ID"
+              },
+              {
+                "$ref": "#/components/schemas/Name"
+              }
+            ],
+            "title": "Instance"
+          },
+          "network": {
+            "$ref": "#/components/schemas/NICRequestInterfaceField"
+          }
+        },
+        "title": "NICRequest",
+        "required": [
+          "instance",
+          "network"
+        ],
+        "example": {
+          "instance": {
+            "id": "c47e974f-8002-46e9-8a63-d66505be2aa1"
+          },
+          "network": {
+            "interface": {
+              "id": "31dcb3ea-9320-4122-8fea-3a3b06114ca1"
+            }
+          }
+        }
+      },
+      "NICRequestInterfaceField": {
+        "type": "object",
+        "properties": {
+          "interface": {
+            "$ref": "#/components/schemas/ID"
+          }
+        },
+        "title": "NICRequestInterfaceField",
+        "required": [
+          "interface"
+        ]
       },
       "Name": {
         "type": "object",

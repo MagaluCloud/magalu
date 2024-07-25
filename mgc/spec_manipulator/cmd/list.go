@@ -12,7 +12,7 @@ var listSpecsCmd = &cobra.Command{
 	Short:  "List all available specs",
 	Hidden: true,
 	Run: func(cmd *cobra.Command, args []string) {
-		_ = verificarEAtualizarDiretorio(SPEC_DIR)
+		_ = verificarEAtualizarDiretorio(currentDir())
 
 		currentConfig, err := loadList()
 
