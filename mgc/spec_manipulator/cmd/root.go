@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 	"os"
+	"path"
 	"path/filepath"
 
 	"github.com/spf13/cobra"
@@ -20,8 +21,18 @@ var (
 
 const (
 	VIPER_FILE = "specs.yaml"
-	SPEC_DIR   = "mgc/spec_manipulator/cli_specs"
+	SPEC_DIR   = "cli_specs"
 )
+
+var currentDir = func() string {
+	ex, err := os.Executable()
+	if err != nil {
+		panic(err)
+	}
+	exPath := filepath.Dir(ex)
+
+	return path.Join(exPath, SPEC_DIR)
+}
 
 // Execute executes the root command.
 func Execute() error {

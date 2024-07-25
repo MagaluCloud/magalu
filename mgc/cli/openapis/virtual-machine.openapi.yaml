@@ -105,6 +105,7 @@ paths:
             x-viveiro: true
             x-mgc-output-flag: table=BACKUP_TYPE:$.backups[*].backup_type,CREATED_AT:$.backups[*].created_at',  ID:$.backups[*].id,INSTANCE:$.backups[*].instance,DISK:$.backups[*].min_disk,NAME:$.backups[*].name,
                 SIZE:$.backups[*].size,STATE:$.backups[*].state,STATUS:$.backups[*].status,UPDATED_AT:$.backups[*].updated_at
+            x-mgc-hidden: true
             security:
             -   OAuth2:
                 - virtual-machine.read
@@ -178,6 +179,7 @@ paths:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
             x-mgc-output-flag: table=ID:$.id
+            x-mgc-hidden: true
             security:
             -   OAuth2:
                 - virtual-machine.write
@@ -260,6 +262,7 @@ paths:
             x-viveiro: true
             x-mgc-output-flag: table=BACKUP_TYPE:$.backups[].backup_type,CREATED_AT:$.backups[].created_at',  ID:$.backups[].id,INSTANCE:$.backups[].instance,DISK:$.backups[].min_disk,NAME:$.backups[].name,
                 SIZE:$.backups[].size,STATE:$.backups[].state,STATUS:$.backups[].status,UPDATED_AT:$.backups[*].updated_at
+            x-mgc-hidden: true
             security:
             -   OAuth2:
                 - virtual-machine.read
@@ -312,6 +315,7 @@ paths:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
             x-mgc-output-flag: table=ID:$.id
+            x-mgc-hidden: true
             security:
             -   OAuth2:
                 - virtual-machine.write
@@ -370,6 +374,7 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
+            x-mgc-hidden: true
             security:
             -   OAuth2:
                 - virtual-machine.write
@@ -440,6 +445,7 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
+            x-mgc-hidden: true
             security:
             -   OAuth2:
                 - virtual-machine.write
@@ -522,6 +528,7 @@ paths:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
             x-mgc-output-flag: table=ID:$.id
+            x-mgc-hidden: true
             security:
             -   OAuth2:
                 - virtual-machine.write
@@ -529,9 +536,8 @@ paths:
         get:
             tags:
             - images
-            summary: Retrieves all images available in the region.
-            description: Retrieve a list of images allowed for the current tenant
-                which is logged in.
+            summary: Retrieves all images.
+            description: Retrieve a list of images allowed for the current region.
             operationId: list_images_v1_v1_images_get
             parameters:
             -   name: _limit
@@ -581,7 +587,7 @@ paths:
         get:
             tags:
             - instances
-            summary: Lists all instances in the current tenant.
+            summary: List all instances.
             description: 'List Virtual Machine instances in the current tenant which
                 is logged in.
 
@@ -684,7 +690,7 @@ paths:
         post:
             tags:
             - instances
-            summary: Create an instance asynchronously.
+            summary: Create an instance.
             description: "Creates a Virtual Machine instance in the current tenant\
                 \ which is logged in.\n\nAn instance is ready for you to use when\
                 \ it's in the running state.\n\n#### Notes\n- For the image data,\
@@ -793,11 +799,112 @@ paths:
             -   OAuth2:
                 - virtual-machine.write
             x-mgc-description: Create a Virtual Machine instance
+    /v1/instances/network-interface/attach:
+        post:
+            tags:
+            - instances
+            summary: Attach network interface to an instance.
+            description: Attach network interface to an instance for a default project.
+            operationId: instance_attach_port_v1_instances_network_interface_attach_post
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/NICRequest'
+                required: true
+            responses:
+                '204':
+                    description: Successful Response
+                '400':
+                    description: Instance Not Allowed Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '404':
+                    description: Instance Not Found Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '409':
+                    description: Instance Validation Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '500':
+                    description: Internal Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: true
+            security:
+            -   OAuth2:
+                - virtual-machine.write
+    /v1/instances/network-interface/detach:
+        post:
+            tags:
+            - instances
+            summary: Detach a non primary network interface from an instance.
+            description: Detach a non primary network interface from an instance for
+                a default project
+            operationId: instance_detach_port_v1_instances_network_interface_detach_post
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/NICRequest'
+                required: true
+            responses:
+                '204':
+                    description: Successful Response
+                '400':
+                    description: Instance Not Allowed Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '404':
+                    description: Instance Not Found Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '409':
+                    description: Instance Validation Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '500':
+                    description: Internal Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: true
+            security:
+            -   OAuth2:
+                - virtual-machine.write
     /v1/instances/{id}:
         get:
             tags:
             - instances
-            summary: Retrieve the details of an instance.
+            summary: Retrieve the details of a specific instance.
             description: 'Get an instance details for the current tenant which is
                 logged in.
 
@@ -873,8 +980,7 @@ paths:
                                 id: $request.path.id
                         update/machine_type:
                             operationId: retype_instance_v1_instances__id__retype_post
-                            description: Changes a running or stopped instance machine
-                                type for another one.
+                            description: Changes an instance machine-type.
                             parameters:
                                 id: $request.path.id
                             x-mgc-hidden: true
@@ -956,7 +1062,7 @@ paths:
         delete:
             tags:
             - instances
-            summary: Delete a instance asynchronously
+            summary: Delete an instance.
             description: 'Deletes permanently an instance with the id provided in
                 the current tenant
 
@@ -1030,147 +1136,11 @@ paths:
             -   OAuth2:
                 - virtual-machine.write
             x-mgc-description: Delete a Virtual Machine instance
-    /v1/instances/{id}/port/{port_id}/attach:
-        post:
-            tags:
-            - instances
-            summary: Attach port to instance
-            description: Attach port to instance for a default project
-            operationId: instance_attach_port_v1_instances__id__port__port_id__attach_post
-            parameters:
-            -   name: id
-                in: path
-                description: Instance Id
-                required: true
-                schema:
-                    type: string
-                    title: Id
-                    description: Instance Id
-            -   name: port_id
-                in: path
-                description: Port Id
-                required: true
-                schema:
-                    type: string
-                    title: Port Id
-                    description: Port Id
-            responses:
-                '204':
-                    description: Successful Response
-                    links:
-                        detach:
-                            operationId: instance_detach_port_v1_instances__id__port__port_id__detach_post
-                            description: Detach a non primary port from instance
-                            parameters:
-                                id: $request.path.id
-                                port_id: $request.path.id
-                '400':
-                    description: Instance Not Allowed Exception
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ExceptionModel'
-                '404':
-                    description: Instance Not Found Exception
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ExceptionModel'
-                '409':
-                    description: Instance Validation Exception
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ExceptionModel'
-                '500':
-                    description: Internal Exception
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ExceptionModel'
-                '422':
-                    description: Validation Error
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/HTTPValidationError'
-            x-viveiro: true
-            security:
-            -   OAuth2:
-                - virtual-machine.write
-    /v1/instances/{id}/port/{port_id}/detach:
-        post:
-            tags:
-            - instances
-            summary: Detach a non primary port from instance
-            description: Detach a non primary port from instance for a default project
-            operationId: instance_detach_port_v1_instances__id__port__port_id__detach_post
-            parameters:
-            -   name: id
-                in: path
-                description: Instance Id
-                required: true
-                schema:
-                    type: string
-                    title: Id
-                    description: Instance Id
-            -   name: port_id
-                in: path
-                description: Port Id
-                required: true
-                schema:
-                    type: string
-                    title: Port Id
-                    description: Port Id
-            responses:
-                '204':
-                    description: Successful Response
-                    links:
-                        attach:
-                            operationId: instance_attach_port_v1_instances__id__port__port_id__attach_post
-                            description: Attach port to instance
-                            parameters:
-                                id: $request.path.id
-                                port_id: $request.path.id
-                '400':
-                    description: Instance Not Allowed Exception
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ExceptionModel'
-                '404':
-                    description: Instance Not Found Exception
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ExceptionModel'
-                '409':
-                    description: Instance Validation Exception
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ExceptionModel'
-                '500':
-                    description: Internal Exception
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ExceptionModel'
-                '422':
-                    description: Validation Error
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/HTTPValidationError'
-            x-viveiro: true
-            security:
-            -   OAuth2:
-                - virtual-machine.write
     /v1/instances/{id}/reboot:
         post:
             tags:
             - instances
-            summary: Reboot a running or suspended instance.
+            summary: Reboot an instance.
             description: 'Reboots a Virtual Machine instance with the id provided
                 in the current tenant which is logged in.
 
@@ -1184,7 +1154,7 @@ paths:
 
                 #### Rules
 
-                - The instance must be in the running state.'
+                - The instance must be in the running or suspend state.'
             operationId: reboot_instance_v1_instances__id__reboot_post
             parameters:
             -   name: id
@@ -1354,8 +1324,7 @@ paths:
         post:
             tags:
             - instances
-            summary: Changes a running or stopped instance machine type for another
-                one.
+            summary: Changes an instance machine-type.
             description: 'Changes a Virtual Machine instance machine type with the
                 id provided in the current tenant
 
@@ -1392,7 +1361,7 @@ paths:
                 schema:
                     type: string
                     title: Id
-                    format: uuid
+                    format: uuid4
             requestBody:
                 content:
                     application/json:
@@ -1481,7 +1450,7 @@ paths:
         post:
             tags:
             - instances
-            summary: Starts a running or suspended instance.
+            summary: Starts an instance.
             description: 'Starts a Virtual Machine instance with the id provided in
                 the current tenant which is logged in.
 
@@ -1558,7 +1527,7 @@ paths:
         post:
             tags:
             - instances
-            summary: Stops a running instance.
+            summary: Stops an instance.
             description: 'Stops a Virtual Machine instance with the id provided in
                 the current tenant which is logged in.
 
@@ -1636,7 +1605,7 @@ paths:
         post:
             tags:
             - instances
-            summary: Suspends a running instance.
+            summary: Suspends instance.
             description: 'Suspends a Virtual Machine instance with the id provided
                 in the current tenant which is logged in.
 
@@ -1715,7 +1684,7 @@ paths:
         get:
             tags:
             - machine-types
-            summary: Retrieves all machine-types available in the region.
+            summary: Retrieves all machine-types.
             description: Retrieves a list of machine types allowed for the current
                 tenant which is logged in.
             operationId: list_instance_types_v1_v1_machine_types_get
@@ -1875,7 +1844,7 @@ paths:
         post:
             tags:
             - snapshots
-            summary: Create a snapshot of a virtual machine asynchronously.
+            summary: Create a snapshot of a virtual machine.
             description: 'Create a snapshot of a Virtual Machine in the current tenant
                 which is logged in. </br>
 
@@ -1919,7 +1888,7 @@ paths:
                                 id: $response.body#/id
                         restore:
                             operationId: restore_snapshot_v1_v1_snapshots__id__post
-                            description: Restore a snapshot to a virtual machine
+                            description: Restore a snapshot to a virtual machine.
                             parameters:
                                 id: $response.body#/id
                         delete:
@@ -2017,17 +1986,17 @@ paths:
                     links:
                         restore:
                             operationId: restore_snapshot_v1_v1_snapshots__id__post
-                            description: Restore a snapshot to a virtual machine
+                            description: Restore a snapshot to a virtual machine.
                             parameters:
                                 id: $request.path.id
                         delete:
                             operationId: snapshots_delete_v1_snapshots__id__delete
-                            description: Delete a Snapshot asynchronously
+                            description: Delete a Snapshot.
                             parameters:
                                 id: $request.path.id
                         rename:
                             operationId: rename_snapshot_v1_snapshots__id__rename_patch
-                            description: Renames a snapshot
+                            description: Renames a snapshot.
                             parameters:
                                 id: $request.path.id
                         update/name:
@@ -2075,7 +2044,7 @@ paths:
         post:
             tags:
             - snapshots
-            summary: Restore a snapshot to a virtual machine
+            summary: Restore a snapshot to a virtual machine.
             description: 'Restore a snapshot of a Virtual Machine with the current
                 tenant which is logged in. </br>
 
@@ -2126,12 +2095,12 @@ paths:
                                 id: $request.path.id
                         delete:
                             operationId: snapshots_delete_v1_snapshots__id__delete
-                            description: Delete a Snapshot asynchronously
+                            description: Delete a Snapshot.
                             parameters:
                                 id: $request.path.id
                         rename:
                             operationId: rename_snapshot_v1_snapshots__id__rename_patch
-                            description: Renames a snapshot
+                            description: Renames a snapshot.
                             parameters:
                                 id: $request.path.id
                 '400':
@@ -2173,7 +2142,7 @@ paths:
         delete:
             tags:
             - snapshots
-            summary: Delete a Snapshot asynchronously
+            summary: Delete a Snapshot.
             description: 'Deletes an snapshot with the id provided in the current
                 tenant
 
@@ -2236,7 +2205,7 @@ paths:
         patch:
             tags:
             - snapshots
-            summary: Renames a snapshot
+            summary: Renames a snapshot.
             description: 'Renames a Snapshot with the id provided in the current tenant
                 which is logged in.
 
@@ -2276,12 +2245,12 @@ paths:
                                 jsonPathQuery: $.result.name == $.owner.parameters.name
                         restore:
                             operationId: restore_snapshot_v1_v1_snapshots__id__post
-                            description: Restore a snapshot to a virtual machine
+                            description: Restore a snapshot to a virtual machine.
                             parameters:
                                 id: $request.path.id
                         delete:
                             operationId: snapshots_delete_v1_snapshots__id__delete
-                            description: Delete a Snapshot asynchronously
+                            description: Delete a Snapshot.
                             parameters:
                                 id: $request.path.id
                 '400':
@@ -2479,6 +2448,8 @@ components:
                             -   $ref: '#/components/schemas/ID'
                             -   $ref: '#/components/schemas/Name'
                             title: Vpc
+                            default:
+                                name: default
                         interface:
                             anyOf:
                             -   $ref: '#/components/schemas/ID'
@@ -2776,7 +2747,7 @@ components:
                     title: Machine Type
                 ssh_key_name:
                     type: string
-                    title: Ssh Key Name
+                    title: Ssh key Name
                 image:
                     anyOf:
                     -   $ref: '#/components/schemas/ID'
@@ -2798,7 +2769,7 @@ components:
                     -   type: string
                         maxLength: 65000
                         minLength: 1
-                    title: User Data
+                    title: Used to perform automated configuration tasks.
                     nullable: true
             title: InstanceCreateRequestV1Default
             required:
@@ -2831,6 +2802,8 @@ components:
                     -   $ref: '#/components/schemas/ID'
                     -   $ref: '#/components/schemas/Name'
                     title: Vpc
+                    default:
+                        name: default
                 interface:
                     anyOf:
                     -   $ref: '#/components/schemas/ID'
@@ -2937,11 +2910,11 @@ components:
             type: object
             properties:
                 id:
-                    type: string
+                    anyOf:
+                    -   type: string
                     title: Id
+                    nullable: true
             title: InstanceSimpleResponseBackupV1
-            required:
-            - id
             example:
                 instance:
                     id: 4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a
@@ -3169,6 +3142,7 @@ components:
                     title: InstanceV1State
                     enum:
                     - new
+                    - error
                     - running
                     - stopped
                     - suspended
@@ -3244,6 +3218,7 @@ components:
             title: InstanceV1State
             enum:
             - new
+            - error
             - running
             - stopped
             - suspended
@@ -3592,6 +3567,7 @@ components:
                                 title: InstanceV1State
                                 enum:
                                 - new
+                                - error
                                 - running
                                 - stopped
                                 - suspended
@@ -3790,6 +3766,62 @@ components:
                     state: available
                     status: completed
                     updated_at: '2022-06-11T18:33:12Z'
+        NICRequest:
+            type: object
+            properties:
+                instance:
+                    anyOf:
+                    -   $ref: '#/components/schemas/ID'
+                    -   $ref: '#/components/schemas/Name'
+                    title: Instance
+                network:
+                    type: object
+                    properties:
+                        interface:
+                            type: object
+                            properties:
+                                id:
+                                    type: string
+                                    title: Id
+                                    maxLength: 255
+                                    minLength: 1
+                            title: ID
+                            required:
+                            - id
+                            example:
+                                id: 9ec75090-2872-4f51-8111-53d05d96d2c6
+                    title: NICRequestInterfaceField
+                    required:
+                    - interface
+            title: NICRequest
+            required:
+            - instance
+            - network
+            example:
+                instance:
+                    id: c47e974f-8002-46e9-8a63-d66505be2aa1
+                network:
+                    interface:
+                        id: 31dcb3ea-9320-4122-8fea-3a3b06114ca1
+        NICRequestInterfaceField:
+            type: object
+            properties:
+                interface:
+                    type: object
+                    properties:
+                        id:
+                            type: string
+                            title: Id
+                            maxLength: 255
+                            minLength: 1
+                    title: ID
+                    required:
+                    - id
+                    example:
+                        id: 9ec75090-2872-4f51-8111-53d05d96d2c6
+            title: NICRequestInterfaceField
+            required:
+            - interface
         Name:
             type: object
             properties:

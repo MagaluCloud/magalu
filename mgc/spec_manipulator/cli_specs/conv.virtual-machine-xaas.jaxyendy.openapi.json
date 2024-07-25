@@ -3,7 +3,7 @@
   "info": {
     "title": "Internal Virtual Machine Api Product",
     "description": "Virtual Machine Api Product",
-    "version": "1.249.0"
+    "version": "1.255.0"
   },
   "paths": {
     "/v1/health": {
@@ -177,6 +177,253 @@
         },
         "deprecated": true,
         "x-viveiro": true
+      }
+    },
+    "/v1/internal/backups": {
+      "get": {
+        "tags": [
+          "backups"
+        ],
+        "summary": "Lists all backups in the current tenant.",
+        "description": "Lists all the virtual machine backups of the current logged-in tenant\n    filtered by the project type specified.\n\n    #### Notes\n    - You can use the **expand** argument to get more details from the inner objects\n    like image or type.",
+        "operationId": "list_backups_internal_v1_internal_backups_get",
+        "parameters": [
+          {
+            "name": "project_type",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ProjectTypeAll"
+            }
+          },
+          {
+            "name": "_limit",
+            "in": "query",
+            "description": "limit the number of the results",
+            "required": false,
+            "schema": {
+              "exclusiveMinimum": false,
+              "type": "integer",
+              "title": " Limit",
+              "maximum": 2147483647,
+              "description": "limit the number of the results",
+              "default": 50
+            }
+          },
+          {
+            "name": "_offset",
+            "in": "query",
+            "description": "pagination for the results limited",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "title": " Offset",
+              "maximum": 2147483647,
+              "description": "pagination for the results limited",
+              "default": 0
+            }
+          },
+          {
+            "name": "_sort",
+            "in": "query",
+            "description": "order of the results using informed fields",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": " Sort",
+              "pattern": "^(^[\\w-]+:(asc|desc)(,[\\w-]+:(asc|desc))*)?$",
+              "description": "order of the results using informed fields",
+              "default": "created_at:asc"
+            }
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "You can get more detailed info about: ['instance'] ",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "title": "Expand",
+              "description": "You can get more detailed info about: ['instance'] ",
+              "default": []
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListBackupResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Backup Not Allowed Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Instance Not Found Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Backup Validation Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": false
+      },
+      "post": {
+        "tags": [
+          "backups"
+        ],
+        "summary": "Create a backup of a copy",
+        "description": "Create a backup of a Virtual Machine with the current tenant which is logged in.\n\nA Backup is ready for restore when it's in completed status.\n\n#### Rules\n- It's possible to create a maximum of 100 backups per virtual machine.\n- In case quota reached, choose a backup to remove.\n- You can inform ID or Name from a Virtual Machine if both informed the priority will be ID.\n- It's only possible to create a backup of a valid virtual machine.\n- Each backup must have a unique name. It's not possible to create backups with the same name.",
+        "operationId": "create_backup_internal_v1_internal_backups_post",
+        "parameters": [
+          {
+            "name": "project_type",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ProjectTypeAll"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BackupInternalRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Backup Not Allowed Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Instance Not Found Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Backup Validation Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": false
       }
     },
     "/v1/internal/backups/urp/{external_backup_id}": {
@@ -428,7 +675,7 @@
           "images"
         ],
         "summary": "Update Image Status",
-        "description": "Update image status",
+        "description": "Update image status.",
         "operationId": "update_image_status_v1_internal_images__id__patch",
         "parameters": [
           {
@@ -484,7 +731,7 @@
           "images"
         ],
         "summary": "Update Image Name",
-        "description": "Update image name",
+        "description": "Update image nam.",
         "operationId": "update_image_name_v1_internal_images__id__rename_patch",
         "parameters": [
           {
@@ -673,7 +920,7 @@
         "tags": [
           "instances"
         ],
-        "summary": "Delete all instances associated with a tenant",
+        "summary": "Delete all instances associated with a tenant.",
         "description": "Internal route to delete all instances associated with a tenant.\n\n### Note\nThis route is used only for internal proposes.",
         "operationId": "instance_delete_all_v1_v1_internal_instances_delete",
         "parameters": [
@@ -1512,7 +1759,7 @@
         "tags": [
           "snapshots"
         ],
-        "summary": "Update snapshot",
+        "summary": "Update snapshot.",
         "description": "Internal route for update a snapshot using its internal id",
         "operationId": "worker_update_snapshot_v1_internal_snapshots__id__patch",
         "parameters": [
@@ -1556,6 +1803,49 @@
   },
   "components": {
     "schemas": {
+      "BackupInternalRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "maxLength": 255,
+            "minLength": 1
+          },
+          "backup_url": {
+            "type": "string",
+            "title": "Backup Url",
+            "maxLength": 2083,
+            "minLength": 1,
+            "format": "uri"
+          },
+          "origin_region": {
+            "type": "string",
+            "title": "Origin Region",
+            "maxLength": 255,
+            "minLength": 1
+          },
+          "origin_backup_id": {
+            "type": "string",
+            "title": "Origin Backup Id",
+            "maxLength": 255,
+            "minLength": 1
+          }
+        },
+        "title": "BackupInternalRequest",
+        "required": [
+          "name",
+          "backup_url",
+          "origin_region",
+          "origin_backup_id"
+        ],
+        "example": {
+          "backup_url": "https://urlbackup.com/copy.qcow2",
+          "name": "backup name",
+          "origin_backup_id": "dd8f944c-1b22-4c1e-b52f-c52cc9b4a202",
+          "origin_region": "br-ne1"
+        }
+      },
       "BackupPatchRequest": {
         "type": "object",
         "properties": {
@@ -3588,14 +3878,16 @@
         "type": "object",
         "properties": {
           "id": {
-            "type": "string",
-            "title": "Id"
+            "anyOf": [
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Id",
+            "nullable": true
           }
         },
         "title": "InstanceSimpleResponseBackupV1",
-        "required": [
-          "id"
-        ],
         "example": {
           "instance": {
             "id": "4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a",
@@ -4266,6 +4558,7 @@
             "title": "InstanceV1State",
             "enum": [
               "new",
+              "error",
               "running",
               "stopped",
               "suspended",
@@ -4378,6 +4671,7 @@
         "title": "InstanceV1State",
         "enum": [
           "new",
+          "error",
           "running",
           "stopped",
           "suspended",
@@ -5105,6 +5399,7 @@
                   "title": "InstanceV1State",
                   "enum": [
                     "new",
+                    "error",
                     "running",
                     "stopped",
                     "suspended",
@@ -5406,6 +5701,91 @@
             }
           ]
         }
+      },
+      "NICRequest": {
+        "type": "object",
+        "properties": {
+          "instance": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ID"
+              },
+              {
+                "$ref": "#/components/schemas/Name"
+              }
+            ],
+            "title": "Instance"
+          },
+          "network": {
+            "type": "object",
+            "properties": {
+              "interface": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "title": "Id",
+                    "maxLength": 255,
+                    "minLength": 1
+                  }
+                },
+                "title": "ID",
+                "required": [
+                  "id"
+                ],
+                "example": {
+                  "id": "9ec75090-2872-4f51-8111-53d05d96d2c6"
+                }
+              }
+            },
+            "title": "NICRequestInterfaceField",
+            "required": [
+              "interface"
+            ]
+          }
+        },
+        "title": "NICRequest",
+        "required": [
+          "instance",
+          "network"
+        ],
+        "example": {
+          "instance": {
+            "id": "c47e974f-8002-46e9-8a63-d66505be2aa1"
+          },
+          "network": {
+            "interface": {
+              "id": "31dcb3ea-9320-4122-8fea-3a3b06114ca1"
+            }
+          }
+        }
+      },
+      "NICRequestInterfaceField": {
+        "type": "object",
+        "properties": {
+          "interface": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "title": "Id",
+                "maxLength": 255,
+                "minLength": 1
+              }
+            },
+            "title": "ID",
+            "required": [
+              "id"
+            ],
+            "example": {
+              "id": "9ec75090-2872-4f51-8111-53d05d96d2c6"
+            }
+          }
+        },
+        "title": "NICRequestInterfaceField",
+        "required": [
+          "interface"
+        ]
       },
       "Name": {
         "type": "object",

@@ -30,7 +30,7 @@ type modules struct {
 
 // prepareToGoCmd is a hidden command that prepares all available specs to golang
 func runPrepare(cmd *cobra.Command, args []string) {
-	_ = verificarEAtualizarDiretorio(SPEC_DIR)
+	_ = verificarEAtualizarDiretorio(currentDir())
 
 	currentConfig, err := loadList()
 
@@ -39,7 +39,7 @@ func runPrepare(cmd *cobra.Command, args []string) {
 		return
 	}
 
-	finalFile := filepath.Join(SPEC_DIR, "specs.go.tmp")
+	finalFile := filepath.Join(currentDir(), "specs.go.tmp")
 	newFileSpecs, err := os.OpenFile(finalFile, os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
 		fmt.Println(err)
@@ -72,12 +72,12 @@ func runPrepare(cmd *cobra.Command, args []string) {
 
 	for _, v := range currentConfig {
 		fileStringBase64 := ""
-		fmt.Println(filepath.Join(SPEC_DIR, v.File))
+		fmt.Println(filepath.Join(currentDir(), v.File))
 		//read file and convert to string and save in new generate a new go file
 		if !v.Enabled {
 			fileStringBase64 = ""
 		} else {
-			file := filepath.Join(SPEC_DIR, v.File)
+			file := filepath.Join(currentDir(), v.File)
 			fileBytes, err := os.ReadFile(file)
 			if err != nil {
 				fmt.Println(err)
@@ -205,7 +205,7 @@ func runPrepare(cmd *cobra.Command, args []string) {
 
 			fileStringBase64 = b64.StdEncoding.EncodeToString(fileBytes)
 
-			err = os.WriteFile(filepath.Join(SPEC_DIR, v.File), fileBytes, 0644)
+			err = os.WriteFile(filepath.Join(currentDir(), v.File), fileBytes, 0644)
 			if err != nil {
 				fmt.Println(err)
 				return

@@ -12,7 +12,7 @@ var downloadSpecsCmd = &cobra.Command{
 	Short:  "Download all available specs",
 	Hidden: true,
 	Run: func(cmd *cobra.Command, args []string) {
-		_ = verificarEAtualizarDiretorio(SPEC_DIR)
+		_ = verificarEAtualizarDiretorio(currentDir())
 
 		currentConfig, err := loadList()
 
@@ -22,9 +22,7 @@ var downloadSpecsCmd = &cobra.Command{
 		}
 
 		for _, v := range currentConfig {
-			// _ = removerArquivosOld(filepath.Join(SPEC_DIR))
-			// _ = verificarERenomearArquivo(filepath.Join(SPEC_DIR, v.File))
-			_ = getAndSaveFile(v.Url, filepath.Join(SPEC_DIR, v.File))
+			_ = getAndSaveFile(v.Url, filepath.Join(currentDir(), v.File))
 		}
 		runPrepare(cmd, args)
 
