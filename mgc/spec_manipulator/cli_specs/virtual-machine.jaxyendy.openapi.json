@@ -748,8 +748,8 @@
         "tags": [
           "images"
         ],
-        "summary": "Retrieves all images available in the region.",
-        "description": "Retrieve a list of images allowed for the current tenant which is logged in.",
+        "summary": "Retrieves all images.",
+        "description": "Retrieve a list of images allowed for the current region.",
         "operationId": "list_images_v1_v1_images_get",
         "parameters": [
           {
@@ -819,7 +819,7 @@
         "tags": [
           "instances"
         ],
-        "summary": "Lists all instances in the current tenant.",
+        "summary": "List all instances.",
         "description": "List Virtual Machine instances in the current tenant which is logged in.\n\n#### Notes\n- You can use the **extend** argument to get more details from the inner objects\nlike image or type.",
         "operationId": "list_instances_v1_v1_instances_get",
         "parameters": [
@@ -958,7 +958,7 @@
         "tags": [
           "instances"
         ],
-        "summary": "Create an instance asynchronously.",
+        "summary": "Create an instance.",
         "description": "Creates a Virtual Machine instance in the current tenant which is logged in.\n\nAn instance is ready for you to use when it's in the running state.\n\n#### Notes\n- For the image data, you can use the virtual-machine images list command\n        to list all available images.\n- For the machine type data, you can use the virtual-machine machine-types\n        list command to list all available machine types.\n- You can verify the state of your instance using the virtual-machine get\ncommand.\n\n#### Rules\n\n- If you don't specify a VPC, the default VPC will be used. When the\ndefault VPC is not available, the command will fail.\n- If you don't specify an network interface, an default network interface\nwill be created.\n- You can either specify an image id or an image name. If you specify\nboth, the image id will be used.\n- You can either specify a machine type id or a machine type name. If\nyou specify both, the machine type id will be used.\n- You can either specify an VPC id or an VPC name. If you specify both,\nthe VPC id will be used.\n- The user data must be a Base64 encoded string.",
         "operationId": "instance_create_v1_v1_instances_post",
         "parameters": [
@@ -1048,12 +1048,186 @@
         "x-mgc-output-flag": "table=ID:$.id"
       }
     },
+    "/v1/instances/network-interface/attach": {
+      "post": {
+        "tags": [
+          "instances"
+        ],
+        "summary": "Attach network interface to an instance.",
+        "description": "Attach network interface to an instance for a default project.",
+        "operationId": "instance_attach_port_v1_instances_network_interface_attach_post",
+        "parameters": [
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NICRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "400": {
+            "description": "Instance Not Allowed Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Instance Not Found Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Instance Validation Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": true
+      }
+    },
+    "/v1/instances/network-interface/detach": {
+      "post": {
+        "tags": [
+          "instances"
+        ],
+        "summary": "Detach a non primary network interface from an instance.",
+        "description": "Detach a non primary network interface from an instance for a default project",
+        "operationId": "instance_detach_port_v1_instances_network_interface_detach_post",
+        "parameters": [
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NICRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "400": {
+            "description": "Instance Not Allowed Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Instance Not Found Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Instance Validation Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": true
+      }
+    },
     "/v1/instances/{id}": {
       "get": {
         "tags": [
           "instances"
         ],
-        "summary": "Retrieve the details of an instance.",
+        "summary": "Retrieve the details of a specific instance.",
         "description": "Get an instance details for the current tenant which is logged in.\n\n#### Notes\n- You can use the virtual-machine list command to retrieve all instances,\nso you can get the id of the instance that you want to get details.\n\n- You can use the **expand** argument to get more details from the inner objects\nlike image or type.",
         "operationId": "instance_details_v1_v1_instances__id__get",
         "parameters": [
@@ -1160,7 +1334,7 @@
         "tags": [
           "instances"
         ],
-        "summary": "Delete a instance asynchronously",
+        "summary": "Delete an instance.",
         "description": "Deletes permanently an instance with the id provided in the current tenant\nwhich is logged in.\n\n#### Notes\n- You can use the virtual-machine list command to retrieve all instances, so\n- you can get the id of the instance that you want to delete.\n\n#### Result\n- The attached ports will be deleted as well.\u003c/li\u003e\n- The attached volumes will be detached.\u003c/li\u003e",
         "operationId": "instance_delete_v1_v1_instances__id__delete",
         "parameters": [
@@ -1252,211 +1426,13 @@
         "x-viveiro": true
       }
     },
-    "/v1/instances/{id}/port/{port_id}/attach": {
-      "post": {
-        "tags": [
-          "instances"
-        ],
-        "summary": "Attach port to instance",
-        "description": "Attach port to instance for a default project",
-        "operationId": "instance_attach_port_v1_instances__id__port__port_id__attach_post",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "Instance Id",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Id",
-              "description": "Instance Id"
-            }
-          },
-          {
-            "name": "port_id",
-            "in": "path",
-            "description": "Port Id",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Port Id",
-              "description": "Port Id"
-            }
-          },
-          {
-            "name": "x-tenant-id",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "X-Tenant-Id"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Successful Response"
-          },
-          "400": {
-            "description": "Instance Not Allowed Exception",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ExceptionModel"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Instance Not Found Exception",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ExceptionModel"
-                }
-              }
-            }
-          },
-          "409": {
-            "description": "Instance Validation Exception",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ExceptionModel"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Exception",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ExceptionModel"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "x-viveiro": true
-      }
-    },
-    "/v1/instances/{id}/port/{port_id}/detach": {
-      "post": {
-        "tags": [
-          "instances"
-        ],
-        "summary": "Detach a non primary port from instance",
-        "description": "Detach a non primary port from instance for a default project",
-        "operationId": "instance_detach_port_v1_instances__id__port__port_id__detach_post",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "Instance Id",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Id",
-              "description": "Instance Id"
-            }
-          },
-          {
-            "name": "port_id",
-            "in": "path",
-            "description": "Port Id",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Port Id",
-              "description": "Port Id"
-            }
-          },
-          {
-            "name": "x-tenant-id",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "X-Tenant-Id"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Successful Response"
-          },
-          "400": {
-            "description": "Instance Not Allowed Exception",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ExceptionModel"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Instance Not Found Exception",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ExceptionModel"
-                }
-              }
-            }
-          },
-          "409": {
-            "description": "Instance Validation Exception",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ExceptionModel"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Exception",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ExceptionModel"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "x-viveiro": true
-      }
-    },
     "/v1/instances/{id}/reboot": {
       "post": {
         "tags": [
           "instances"
         ],
-        "summary": "Reboot a running or suspended instance.",
-        "description": "Reboots a Virtual Machine instance with the id provided in the current tenant which is logged in.\n#### Notes\n- You can use the virtual-machine list command to retrieve all instances, so you can get the id\nof the instance that you want to reboot.\n\n#### Rules\n- The instance must be in the running state.",
+        "summary": "Reboot an instance.",
+        "description": "Reboots a Virtual Machine instance with the id provided in the current tenant which is logged in.\n#### Notes\n- You can use the virtual-machine list command to retrieve all instances, so you can get the id\nof the instance that you want to reboot.\n\n#### Rules\n- The instance must be in the running or suspend state.",
         "operationId": "reboot_instance_v1_instances__id__reboot_post",
         "parameters": [
           {
@@ -1599,7 +1575,7 @@
         "tags": [
           "instances"
         ],
-        "summary": "Changes a running or stopped instance machine type for another one.",
+        "summary": "Changes an instance machine-type.",
         "description": "Changes a Virtual Machine instance machine type with the id provided in the current tenant\nwhich is logged in.\n\n#### Notes\n- You can use the virtual-machine list command to retrieve all instances, so you can get\nthe id of the instance that you want to change the machine type.\n\n#### Rules\n- The instance must be in the running or stopped state.\n- The new machine type must be compatible with the current machine type.\n- The new machine type must be available in the same region as the current machine type.\n- You must provide either the machine type id or the machine type name, if you provide both,\nthe machine type id will be used.",
         "operationId": "retype_instance_v1_instances__id__retype_post",
         "parameters": [
@@ -1697,7 +1673,7 @@
         "tags": [
           "instances"
         ],
-        "summary": "Starts a running or suspended instance.",
+        "summary": "Starts an instance.",
         "description": "Starts a Virtual Machine instance with the id provided in the current tenant which is logged in.\n#### Notes\n- You can use the virtual-machine list command to retrieve all instances,\nso you can get the id of the instance that you want to start.\n\n#### Rules\n- The instance must be in the stopped or suspended states.",
         "operationId": "start_instance_v1_instances__id__start_post",
         "parameters": [
@@ -1745,7 +1721,7 @@
         "tags": [
           "instances"
         ],
-        "summary": "Stops a running instance.",
+        "summary": "Stops an instance.",
         "description": "Stops a Virtual Machine instance with the id provided in the current tenant which is logged in.\n#### Notes\n- You can use the virtual-machine list command to retrieve all instances, so you can get the id of\nthe instance that you want to stop.\n\n#### Rules\n- The instance must be in the running state.",
         "operationId": "stop_instance_v1_instances__id__stop_post",
         "parameters": [
@@ -1793,7 +1769,7 @@
         "tags": [
           "instances"
         ],
-        "summary": "Suspends a running instance.",
+        "summary": "Suspends instance.",
         "description": "Suspends a Virtual Machine instance with the id provided in the current tenant which is logged in.\n\n#### Notes\n- You can use the virtual-machine list command to retrieve all instances, so you can get the id of\nthe instance that you want to suspend.\n\n#### Rules\n- The instance must be in the running state.",
         "operationId": "suspend_instance_v1_instances__id__suspend_post",
         "parameters": [
@@ -1841,7 +1817,7 @@
         "tags": [
           "machine-types"
         ],
-        "summary": "Retrieves all machine-types available in the region.",
+        "summary": "Retrieves all machine-types.",
         "description": "Retrieves a list of machine types allowed for the current tenant which is logged in.",
         "operationId": "list_instance_types_v1_v1_machine_types_get",
         "parameters": [
@@ -2057,7 +2033,7 @@
         "tags": [
           "snapshots"
         ],
-        "summary": "Create a snapshot of a virtual machine asynchronously.",
+        "summary": "Create a snapshot of a virtual machine.",
         "description": "Create a snapshot of a Virtual Machine in the current tenant which is logged in. \u003c/br\u003e\nA Snapshot is ready for restore when it's in available state.\n\n#### Notes\n- You can verify the state of snapshot using the snapshot get command,\n- To create a snapshot it's mandatory inform a valid and unique name.\n\n#### Rules\n- It's only possible to create a snapshot of a valid virtual machine.\n- It's not possible to create 2 snapshots with the same name.\n- You can inform ID or Name from a Virtual Machine if both informed the priority will be ID.",
         "operationId": "snapshot_create_v1_v1_snapshots_post",
         "parameters": [
@@ -2259,7 +2235,7 @@
         "tags": [
           "snapshots"
         ],
-        "summary": "Restore a snapshot to a virtual machine",
+        "summary": "Restore a snapshot to a virtual machine.",
         "description": "Restore a snapshot of a Virtual Machine with the current tenant which is logged in. \u003c/br\u003e\nA Snapshot is ready for restore when it's in available state.\n\n#### Notes\n- You can verify the state of snapshot using the snapshot list command.\n- Use machine-types list to see all machine types available.\n\n#### Rules\n- To restore a snapshot  you have to inform the new virtual machine information.\n- You can choose a machine-type that has a disk equal or larger\nthan the original virtual machine type.",
         "operationId": "restore_snapshot_v1_v1_snapshots__id__post",
         "parameters": [
@@ -2362,7 +2338,7 @@
         "tags": [
           "snapshots"
         ],
-        "summary": "Delete a Snapshot asynchronously",
+        "summary": "Delete a Snapshot.",
         "description": "Deletes an snapshot with the id provided in the current tenant\nwhich is logged in.\n\n#### Notes\n- You can use the Snapshots list command to retrieve all snapshots, so\n- you can get the id of the snapshot that you want to delete.",
         "operationId": "snapshots_delete_v1_snapshots__id__delete",
         "parameters": [
@@ -2449,7 +2425,7 @@
         "tags": [
           "snapshots"
         ],
-        "summary": "Renames a snapshot",
+        "summary": "Renames a snapshot.",
         "description": "Renames a Snapshot with the id provided in the current tenant which is logged in.\n\n#### Notes\n- You can use the snapshots list command to retrieve all snapshots, so you can get the id of\nthe snapshot that you want to rename.",
         "operationId": "rename_snapshot_v1_snapshots__id__rename_patch",
         "parameters": [
@@ -3136,7 +3112,7 @@
           },
           "ssh_key_name": {
             "type": "string",
-            "title": "Ssh Key Name"
+            "title": "Ssh key Name"
           },
           "image": {
             "anyOf": [
@@ -3189,7 +3165,7 @@
                 "type": "null"
               }
             ],
-            "title": "User Data"
+            "title": "Used to perform automated configuration tasks."
           }
         },
         "title": "InstanceCreateRequestV1Default",
@@ -4076,6 +4052,52 @@
             }
           ]
         }
+      },
+      "NICRequest": {
+        "type": "object",
+        "properties": {
+          "instance": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ID"
+              },
+              {
+                "$ref": "#/components/schemas/Name"
+              }
+            ],
+            "title": "Instance"
+          },
+          "network": {
+            "$ref": "#/components/schemas/NICRequestInterfaceField"
+          }
+        },
+        "title": "NICRequest",
+        "required": [
+          "instance",
+          "network"
+        ],
+        "example": {
+          "instance": {
+            "id": "c47e974f-8002-46e9-8a63-d66505be2aa1"
+          },
+          "network": {
+            "interface": {
+              "id": "31dcb3ea-9320-4122-8fea-3a3b06114ca1"
+            }
+          }
+        }
+      },
+      "NICRequestInterfaceField": {
+        "type": "object",
+        "properties": {
+          "interface": {
+            "$ref": "#/components/schemas/ID"
+          }
+        },
+        "title": "NICRequestInterfaceField",
+        "required": [
+          "interface"
+        ]
       },
       "Name": {
         "type": "object",

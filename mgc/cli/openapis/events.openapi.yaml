@@ -1,0 +1,566 @@
+openapi: 3.0.3
+info:
+    title: Cloud Events Consult API
+    description: "# Consult API\n\nWith the continued growth of the distributed architecture\
+        \ in Magalu\nCloud, everyone should have the ability to audit all (or important)\n\
+        events triggered by users or internal systems. This capability is\nessential\
+        \ not only for visualizing and tracking changes requested by\ninternal developers\
+        \ but also for those made by tenant users. Our\ninitial approach was to create\
+        \ a \"broker\" (i.e., an event system and a\nconsultation API) that could\
+        \ store all these events. All events are\nexposed using the CloudEvent specification.\n\
+        \nThat API is a internal and External (filtered by Tenant ID) usage.\n\n##\
+        \ About CloudSpec\nInfo about the spec: https://cloudevents.io/\n\n### The\
+        \ cloud spec fields used today ([Spec](https://github.com/cloudevents/spec/blob/main/cloudevents/spec.md)):\n\
+        - id: The request id to track.\n- source: Identifies the context of this event.\n\
+        - type: The “action” or type of the event. SHOULD be prefixed with a reverse-DNS\
+        \ name.\n- specversion: The version of the CloudEvents specification which\
+        \ the event uses. Today is 1.0.\n- subject: Identifies the subject of the\
+        \ event in the context of the producer. e.g: source\n  is https://virtual-machine.pre-prod.br-se-1.jaxyendy.com/v1/instances/cddd202a-7017-4d80-b702-6c49ad89ae99/start\
+        \ and\n  the subject is the instance id.\n- data: Open field with the raw\
+        \ event.\n- time: ISO8601 date of the event.\n- authid: An unique identifier\
+        \ of the principal that triggered the occurrence.\n- authtype: An enum representing\
+        \ the type of principal that triggered the occurrence, e.g: tenant, api_key\
+        \ or\n  unauthenticated, system_api_key.\n\n#### Internal Extensions:\n- product:\
+        \ Identifies the product formal name, e.g: default, dbass, xaas\n- region:\
+        \ The physical region of the event\n- tenantid: Identification of the tenant.\n\
+        ## How to Auth\nTo use the API a token is needed, and both grant_types **client_credentials**\
+        \ and **authorization_code** tokens can be used.\n\nFollow [this guide](https://magazine.atlassian.net/wiki/spaces/CLOUD/pages/4230643732/Client+Credentials)\
+        \ to learn how to authenticate via **client credentials**.\n\nFollow [this\
+        \ guide](https://magazine.atlassian.net/wiki/spaces/CLOUD/pages/4253385090/Authorization+Code)\
+        \ to learn how to authenticate via **authorization code**.\n"
+    version: 0.8.0
+paths:
+    /metrics:
+        get:
+            summary: Metrics
+            description: Endpoint that serves Prometheus metrics.
+            operationId: metrics_metrics_get
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema: {}
+            security:
+            -   OAuth2:
+                - events.read
+    /v0/events:
+        get:
+            tags:
+            - events
+            summary: List Event
+            description: '# Events List
+
+
+                To basic event query you can use this parameters _limit=50&_offset=0
+
+                In the response you will see some information about your filter:
+
+
+                - limit is the limit of events on your requests;
+
+                - offset is the initial point to get n to limit events;
+
+                - count is the amount of events that your filter has in the database;
+
+                - total is the total number of events that you have in this list.
+
+
+                So, in this interface you can control the filters to make some queries.
+
+
+                To better understanding let me explain something first<br>
+
+                We have some exacts fields, and some contains fields, and both at
+                the same time 😀.
+
+
+                Exact fields are the fields that the values you pass to filter something
+                needs to be exactly the same that the values on
+
+                database
+
+
+                Contains fields are the fields that you just need to pass one part
+                of the value and you can reach the full values.
+
+
+                And both is type example: If you pass `instance` you will get the
+                events registered with `instance` or
+
+                `instances` on the type field.
+
+
+                `id`, `time`, `tenantid` are only exacts fields
+
+
+                `type`, `source` and `product_type` are "like" operation.
+
+
+                `authid` and `region` are not implemented yet.'
+            operationId: list_event
+            parameters:
+            -   name: _limit
+                in: query
+                required: false
+                schema:
+                    type: integer
+                    title: ' Limit'
+                    maximum: 2147483647
+                    minimum: 0
+                    default: 50
+            -   name: _offset
+                in: query
+                required: false
+                schema:
+                    type: integer
+                    title: ' Offset'
+                    maximum: 2147483647
+                    minimum: 0
+                    default: 0
+            -   name: id
+                in: query
+                required: false
+                schema:
+                    title: Id
+                    nullable: true
+                    type: string
+            -   name: source__like
+                in: query
+                required: false
+                schema:
+                    title: Source  Like
+                    nullable: true
+                    type: string
+            -   name: time
+                in: query
+                required: false
+                schema:
+                    title: Time
+                    nullable: true
+                    type: string
+                    format: date-time
+            -   name: type__like
+                in: query
+                required: false
+                schema:
+                    title: Type  Like
+                    nullable: true
+                    type: string
+            -   name: product__like
+                in: query
+                required: false
+                schema:
+                    title: Product  Like
+                    nullable: true
+                    type: string
+            -   name: authid
+                in: query
+                required: false
+                schema:
+                    title: Authid
+                    nullable: true
+                    type: string
+            -   name: tenantid
+                in: query
+                required: false
+                schema:
+                    title: Tenantid
+                    nullable: true
+                    type: string
+            -   name: X-Tenant-ID
+                in: header
+                required: false
+                schema:
+                    title: X-Tenant-Id
+            -   name: data
+                in: query
+                description: The raw data event
+                required: false
+                schema:
+                    type: object
+                    title: Raw Data
+                    additionalProperties:
+                        type: string
+                    default: {}
+                    example:
+                        data.tenant_id: 00000000-0000-0000-0000-000000000000
+                        data.machine_type.name: cloud-bs1.xsmall
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ListPaginatorResponse_Event_'
+                '500':
+                    description: Internal Server Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPResponseError'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            security:
+            -   HTTPBearerDry: []
+    /internal/v0/events:
+        post:
+            tags:
+            - internal
+            summary: Create Internal Event
+            description: 'Create an Event using the old format, only used for some
+                internal systems, for integration please use: /events/'
+            operationId: create_internal_event_internal_v0_events_post
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/InternalEvent'
+                required: true
+            responses:
+                '201':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/InternalEvent'
+                '409':
+                    description: Conflict
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPResponseError'
+                '500':
+                    description: Internal Server Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPResponseError'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            security:
+            -   OAuth2:
+                - events.write
+components:
+    schemas:
+        Event:
+            type: object
+            properties:
+                id:
+                    type: string
+                    title: Id
+                    description: Identifies the event.
+                    example: 00000000-00000000-00000000-00000000
+                source:
+                    type: string
+                    title: Source
+                    description: Identifies the context in which the event occurred.
+                    example: https://api.com/v1/instances/00000000-00000000-00000000-00000000
+                type:
+                    type: string
+                    title: Type
+                    description: The value describing the type of event related to
+                        the originating occurrence.
+                    example: cloud.magalu.compute.instance.create
+                specversion:
+                    type: string
+                    title: Specversion
+                    description: Version of the CloudEvents specification which the
+                        event uses.
+                    default: '1.0'
+                subject:
+                    type: string
+                    title: Subject
+                    description: Identifies the subject of the event, in context of
+                        the event producer (identified by source)
+                    example: instance/00000000-00000000-00000000-00000000
+                time:
+                    type: string
+                    title: Time
+                    format: date-time
+                    description: Timestamp of when the occurrence happened.
+                    example: '2024-07-16T22:50:00'
+                authid:
+                    type: string
+                    title: Authid
+                    description: A unique identifier of the principal that triggered
+                        the occurrence.
+                    example: 00000000-00000000-00000000-00000000
+                authtype:
+                    type: string
+                    title: Authtype
+                    description: An enum representing the type of principal that triggered
+                        the occurrence.
+                    example: tenant
+                product:
+                    type: string
+                    title: Product
+                    description: The identification in which producer type an event
+                        occur
+                    example: default
+                region:
+                    title: Region
+                    description: The physical region of the event
+                    nullable: true
+                    type: string
+                tenantid:
+                    type: string
+                    title: Tenantid
+                    description: ID of the tenant which requested the change
+                    example: 00000000-00000000-00000000-00000000
+                data:
+                    type: object
+                    title: Raw event
+                    description: The raw event about the occurrence
+            title: Event
+            required:
+            - id
+            - source
+            - type
+            - subject
+            - time
+            - authid
+            - authtype
+            - product
+            - tenantid
+            - data
+            description: Represent all the fields available in event output, following
+                the Cloud Events Spec.
+        HTTPResponseError:
+            type: object
+            properties:
+                message:
+                    title: Message
+                    type: string
+                slug:
+                    title: Slug
+                    type: string
+            title: HTTPResponseError
+            required:
+            - detail
+            - message
+            example:
+                message: Unauthorized
+                slug: Unauthorized
+        HTTPValidationError:
+            type: object
+            properties:
+                message:
+                    title: Message
+                    type: string
+                slug:
+                    title: Slug
+                    type: string
+            title: HTTPValidationError
+            example:
+                message: Unauthorized
+                slug: Unauthorized
+        InternalEvent:
+            type: object
+            properties:
+                id:
+                    type: string
+                    title: Id
+                    format: uuid
+                    description: Identifies the event.
+                    example: 00000000-00000000-00000000-00000000
+                specversion:
+                    type: string
+                    title: Specversion
+                    description: Version of the CloudEvents specification which the
+                        event uses.
+                    default: '1.0'
+                project_tenant_id:
+                    type: string
+                    title: Project Tenant Id
+                    format: uuid
+                    description: A unique identifier of the principal that triggered
+                        the occurrence.
+                    example: 00000000-00000000-00000000-00000000
+                project_type:
+                    type: string
+                    title: Project Type
+                    description: The identification in which producer type an event
+                        occur
+                    example: default
+                type:
+                    type: string
+                    title: Type
+                    description: The value describing the type of event related to
+                        the originating occurrence.
+                    example: instance
+                product:
+                    type: string
+                    title: Product
+                    description: The identification in which producer product an event
+                        occur
+                    example: compute
+                source:
+                    type: string
+                    title: Source
+                    minLength: 1
+                    format: uri
+                    description: Identifies the context in which the event occurred.
+                    example: https://api.com/v1/instances/00000000-00000000-00000000-00000000
+                action_tenant_id:
+                    type: string
+                    title: Action Tenant Id
+                    format: uuid
+                    description: ID of the tenant which requested the change
+                    example: 00000000-00000000-00000000-00000000
+                action:
+                    type: string
+                    title: Action
+                    description: The value describing the action of event related
+                        to the event.
+                    example: create
+                time:
+                    type: string
+                    title: Time
+                    format: date-time
+                    description: Timestamp of when the occurrence happened.
+                    example: '2024-07-16T22:50:00'
+                data:
+                    type: object
+                    title: Raw event
+                    description: The raw event about the occurrence
+            title: InternalEvent
+            required:
+            - id
+            - project_tenant_id
+            - project_type
+            - type
+            - product
+            - source
+            - action_tenant_id
+            - action
+            - time
+            - data
+        ListPaginatorResponse_Event_:
+            type: object
+            properties:
+                meta:
+                    $ref: '#/components/schemas/PaginatorResponse'
+                results:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/Event'
+                    title: Results
+            title: ListPaginatorResponse[Event]
+            required:
+            - meta
+            - results
+        PaginatorResponse:
+            type: object
+            properties:
+                limit:
+                    type: integer
+                    title: Limit
+                    maximum: 2147483647
+                    minimum: 0
+                    description: Number of items per page
+                    default: 50
+                offset:
+                    type: integer
+                    title: Offset
+                    maximum: 2147483647
+                    minimum: 0
+                    description: Offset for pagination
+                    default: 0
+                count:
+                    type: integer
+                    title: Count
+                    description: The number of items on the current page.
+                total:
+                    type: integer
+                    title: Total
+                    description: The total number of items available across all pages.
+            title: PaginatorResponse
+            required:
+            - count
+            - total
+        ValidationError:
+            type: object
+            properties:
+                message:
+                    title: Message
+                    type: string
+                slug:
+                    title: Slug
+                    type: string
+            title: ValidationError
+            required:
+            - loc
+            - msg
+            - type
+            example:
+                message: Unauthorized
+                slug: Unauthorized
+    securitySchemes:
+        HTTPBearerDry:
+            type: http
+            description: '## How to Auth
+
+                To use the API a token is needed, and both grant_types **client_credentials**
+                and **authorization_code** tokens can be used.
+
+
+                Follow [this guide](https://magazine.atlassian.net/wiki/spaces/CLOUD/pages/4230643732/Client+Credentials)
+                to learn how to authenticate via **client credentials**.
+
+
+                Follow [this guide](https://magazine.atlassian.net/wiki/spaces/CLOUD/pages/4253385090/Authorization+Code)
+                to learn how to authenticate via **authorization code**.
+
+                ### Where?
+
+                Generate Token using OAuth2 API: https://autoseg-idp.luizalabs.com
+
+
+                ## Auth status: **Active 🟢**'
+            scheme: bearer
+tags:
+-   name: events
+    description: events
+-   name: internal
+    description: internal
+$id: https://events-consult-api.jaxyendy.com/
+servers:
+-   url: https://{env}/{region}/events-consult-api
+    variables:
+        region:
+            description: Region to reach the service
+            default: br-se1
+            enum:
+            - br-ne-1
+            - br-se1
+            - br-mgl1
+            x-mgc-transforms:
+            -   type: translate
+                allowMissing: true
+                translations:
+                -   from: br-ne1
+                    to: br-ne-1
+                -   from: br-mgl1
+                    to: br-se-1
+        env:
+            description: Environment to use
+            default: api.magalu.cloud
+            enum:
+            - api.magalu.cloud
+            - api.pre-prod.jaxyendy.com
+            x-mgc-transforms:
+            -   type: translate
+                translations:
+                -   from: prod
+                    to: api.magalu.cloud
+                -   from: pre-prod
+                    to: api.pre-prod.jaxyendy.com
