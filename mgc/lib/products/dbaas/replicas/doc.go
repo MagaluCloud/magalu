@@ -5,7 +5,7 @@ Package: replicas
 
 Database replicas management.
 
-Version: 1.23.0
+Version: 1.25.0
 
 import "magalu.cloud/lib/products/dbaas/replicas"
 */

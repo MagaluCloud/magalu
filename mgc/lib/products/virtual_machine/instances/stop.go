@@ -3,7 +3,7 @@ Executor: stop
 
 # Summary
 
-Stops a running instance.
+Stops an instance.
 
 # Description
 

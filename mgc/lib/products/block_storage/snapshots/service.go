@@ -20,7 +20,6 @@ type Service interface {
 	Get(parameters GetParameters, configs GetConfigs) (result GetResult, err error)
 	List(parameters ListParameters, configs ListConfigs) (result ListResult, err error)
 	Rename(parameters RenameParameters, configs RenameConfigs) (err error)
-	Restore(parameters RestoreParameters, configs RestoreConfigs) (result RestoreResult, err error)
 }
 
 func NewService(ctx context.Context, client *mgcClient.Client) Service {

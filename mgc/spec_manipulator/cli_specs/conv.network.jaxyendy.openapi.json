@@ -8,7 +8,7 @@
       "url": "https://github.com/luizalabs",
       "email": "thullyo.cunha@luizalabs.com"
     },
-    "version": "1.126.1"
+    "version": "1.128.0"
   },
   "paths": {
     "/v0/healthcheck": {
@@ -179,6 +179,234 @@
                 }
               }
             }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": false,
+        "x-mgc-hidden": true
+      }
+    },
+    "/v0/interconnections/{vpc_id}": {
+      "post": {
+        "tags": [
+          "interconnections"
+        ],
+        "summary": "Create Interconnections",
+        "operationId": "create_interconnections_v0_interconnections__vpc_id__post",
+        "parameters": [
+          {
+            "name": "vpc_id",
+            "in": "path",
+            "description": "Id of the VPC to create OVN Interconnect",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "VPC Id",
+              "description": "Id of the VPC to create OVN Interconnect"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "description": "Tenant id of the project",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id",
+              "description": "Tenant id of the project"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": false,
+        "x-mgc-hidden": true
+      },
+      "delete": {
+        "tags": [
+          "interconnections"
+        ],
+        "summary": "Delete Interconnections",
+        "operationId": "delete_interconnections_v0_interconnections__vpc_id__delete",
+        "parameters": [
+          {
+            "name": "vpc_id",
+            "in": "path",
+            "description": "Id of the VPC to create OVN Interconnect",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "VPC Id",
+              "description": "Id of the VPC to create OVN Interconnect"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "description": "Tenant id of the project",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id",
+              "description": "Tenant id of the project"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": false,
+        "x-mgc-hidden": true
+      }
+    },
+    "/v0/xaas/interconnections/{vpc_id}/attach": {
+      "post": {
+        "tags": [
+          "interconnections"
+        ],
+        "summary": "Attach Xaas Interconnections",
+        "operationId": "attach_xaas_interconnections_v0_xaas_interconnections__vpc_id__attach_post",
+        "parameters": [
+          {
+            "name": "vpc_id",
+            "in": "path",
+            "description": "Id of the VPC to create OVN Interconnect",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "VPC Id",
+              "description": "Id of the VPC to create OVN Interconnect"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "description": "Tenant id of the project",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id",
+              "description": "Tenant id of the project"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateOvnIcXaasRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": false,
+        "x-mgc-hidden": true
+      }
+    },
+    "/v0/xaas/interconnections/{vpc_id}/detach": {
+      "post": {
+        "tags": [
+          "interconnections"
+        ],
+        "summary": "Detach Xaas Interconnections",
+        "operationId": "detach_xaas_interconnections_v0_xaas_interconnections__vpc_id__detach_post",
+        "parameters": [
+          {
+            "name": "vpc_id",
+            "in": "path",
+            "description": "Id of the VPC to create OVN Interconnect",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "VPC Id",
+              "description": "Id of the VPC to create OVN Interconnect"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "description": "Tenant id of the project",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id",
+              "description": "Tenant id of the project"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteOvnIcXaasRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Successful Response"
           },
           "422": {
             "description": "Validation Error",
@@ -1010,10 +1238,12 @@
           {
             "name": "x-tenant-id",
             "in": "header",
+            "description": "Tenant id of the project",
             "required": true,
             "schema": {
               "type": "string",
-              "title": "X-Tenant-Id"
+              "title": "X-Tenant-Id",
+              "description": "Tenant id of the project"
             }
           }
         ],
@@ -1090,10 +1320,12 @@
           {
             "name": "x-tenant-id",
             "in": "header",
+            "description": "Tenant id of the project",
             "required": true,
             "schema": {
               "type": "string",
-              "title": "X-Tenant-Id"
+              "title": "X-Tenant-Id",
+              "description": "Tenant id of the project"
             }
           }
         ],
@@ -1230,10 +1462,12 @@
           {
             "name": "x-tenant-id",
             "in": "header",
+            "description": "Tenant id of the project",
             "required": true,
             "schema": {
               "type": "string",
-              "title": "X-Tenant-Id"
+              "title": "X-Tenant-Id",
+              "description": "Tenant id of the project"
             }
           }
         ],
@@ -1851,10 +2085,12 @@
           {
             "name": "x-tenant-id",
             "in": "header",
+            "description": "Tenant id of the project",
             "required": true,
             "schema": {
               "type": "string",
-              "title": "X-Tenant-Id"
+              "title": "X-Tenant-Id",
+              "description": "Tenant id of the project"
             }
           }
         ],
@@ -2062,10 +2298,12 @@
           {
             "name": "x-tenant-id",
             "in": "header",
+            "description": "Tenant id of the project",
             "required": true,
             "schema": {
               "type": "string",
-              "title": "X-Tenant-Id"
+              "title": "X-Tenant-Id",
+              "description": "Tenant id of the project"
             }
           }
         ],
@@ -2136,10 +2374,12 @@
           {
             "name": "x-tenant-id",
             "in": "header",
+            "description": "Tenant id of the project",
             "required": true,
             "schema": {
               "type": "string",
-              "title": "X-Tenant-Id"
+              "title": "X-Tenant-Id",
+              "description": "Tenant id of the project"
             }
           }
         ],
@@ -2215,10 +2455,12 @@
           {
             "name": "x-tenant-id",
             "in": "header",
+            "description": "Tenant id of the project",
             "required": true,
             "schema": {
               "type": "string",
-              "title": "X-Tenant-Id"
+              "title": "X-Tenant-Id",
+              "description": "Tenant id of the project"
             }
           }
         ],
@@ -2723,10 +2965,12 @@
           {
             "name": "x-tenant-id",
             "in": "header",
+            "description": "Tenant id of the project",
             "required": true,
             "schema": {
               "type": "string",
-              "title": "X-Tenant-Id"
+              "title": "X-Tenant-Id",
+              "description": "Tenant id of the project"
             }
           }
         ],
@@ -2875,10 +3119,12 @@
           {
             "name": "x-tenant-id",
             "in": "header",
+            "description": "Tenant id of the project",
             "required": true,
             "schema": {
               "type": "string",
-              "title": "X-Tenant-Id"
+              "title": "X-Tenant-Id",
+              "description": "Tenant id of the project"
             }
           }
         ],
@@ -3505,10 +3751,12 @@
           {
             "name": "x-tenant-id",
             "in": "header",
+            "description": "Tenant id of the project",
             "required": true,
             "schema": {
               "type": "string",
-              "title": "X-Tenant-Id"
+              "title": "X-Tenant-Id",
+              "description": "Tenant id of the project"
             }
           }
         ],
@@ -3639,10 +3887,12 @@
           {
             "name": "x-tenant-id",
             "in": "header",
+            "description": "Tenant id of the project",
             "required": true,
             "schema": {
               "type": "string",
-              "title": "X-Tenant-Id"
+              "title": "X-Tenant-Id",
+              "description": "Tenant id of the project"
             }
           }
         ],
@@ -3833,10 +4083,12 @@
           {
             "name": "x-tenant-id",
             "in": "header",
+            "description": "Tenant id of the project",
             "required": true,
             "schema": {
               "type": "string",
-              "title": "X-Tenant-Id"
+              "title": "X-Tenant-Id",
+              "description": "Tenant id of the project"
             }
           }
         ],
@@ -4000,10 +4252,12 @@
           {
             "name": "x-tenant-id",
             "in": "header",
+            "description": "Tenant id of the project",
             "required": true,
             "schema": {
               "type": "string",
-              "title": "X-Tenant-Id"
+              "title": "X-Tenant-Id",
+              "description": "Tenant id of the project"
             }
           }
         ],
@@ -4136,10 +4390,12 @@
           {
             "name": "x-tenant-id",
             "in": "header",
+            "description": "Tenant id of the project",
             "required": true,
             "schema": {
               "type": "string",
-              "title": "X-Tenant-Id"
+              "title": "X-Tenant-Id",
+              "description": "Tenant id of the project"
             }
           }
         ],
@@ -4169,41 +4425,15 @@
         "x-mgc-hidden": true
       }
     },
-    "/v0/xaas/vpcs/{vpc_id}/subnetpools": {
+    "/v0/subnetpools": {
       "get": {
         "tags": [
-          "xaas_subnetpools"
+          "subnetpools"
         ],
-        "summary": "List Subnet Pools by VPC",
-        "description": "Returns a list of subnet pools inside a specific VPC",
-        "operationId": "getSubnetPoolsByVPC",
+        "summary": "List Subnet Pools by Tenant",
+        "description": "Returns a list of Subnet Pools for the current tenant's project",
+        "operationId": "listSubnetPoolsByTenant",
         "parameters": [
-          {
-            "name": "vpc_id",
-            "in": "path",
-            "description": "Id of the VPC to list the Subnet Pools",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Vpc Id",
-              "description": "Id of the VPC to list the Subnet Pools"
-            }
-          },
-          {
-            "name": "project_type",
-            "in": "query",
-            "description": "Project type to list Subnet Pools by VPC",
-            "required": true,
-            "schema": {
-              "allOf": [
-                {
-                  "$ref": "#/components/schemas/ProjectType"
-                }
-              ],
-              "title": "project_type",
-              "description": "Project type to list Subnet Pools by VPC"
-            }
-          },
           {
             "name": "x-tenant-id",
             "in": "header",
@@ -4238,87 +4468,7 @@
             }
           }
         },
-        "x-viveiro": false,
-        "x-mgc-hidden": true
-      },
-      "post": {
-        "tags": [
-          "xaas_subnetpools"
-        ],
-        "summary": "Create a Subnet Pool in a VPC",
-        "description": "Create a Subnet Pool",
-        "operationId": "createSubnetPoolInVPC",
-        "parameters": [
-          {
-            "name": "vpc_id",
-            "in": "path",
-            "description": "Id of the VPC to create the Subnet Pool",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "VPC Id",
-              "description": "Id of the VPC to create the Subnet Pool"
-            }
-          },
-          {
-            "name": "project_type",
-            "in": "query",
-            "description": "Project type to create Subnet Pool",
-            "required": true,
-            "schema": {
-              "allOf": [
-                {
-                  "$ref": "#/components/schemas/ProjectType"
-                }
-              ],
-              "title": "project_type",
-              "description": "Project type to create Subnet Pool"
-            }
-          },
-          {
-            "name": "x-tenant-id",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "X-Tenant-Id"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/SubnetPoolRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "201": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SubnetPoolResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "x-viveiro": false,
-        "x-mgc-hidden": true
+        "x-viveiro": true
       }
     },
     "/v0/xaas/subnetpools": {
@@ -4328,7 +4478,7 @@
         ],
         "summary": "List Subnet Pools by Tenant",
         "description": "Returns a list of Subnet Pools for the current tenant's project",
-        "operationId": "listSubnetPoolsByTenant",
+        "operationId": "listSubnetPoolsByTenantXaas",
         "parameters": [
           {
             "name": "project_type",
@@ -4367,139 +4517,6 @@
                 }
               }
             }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "x-viveiro": false,
-        "x-mgc-hidden": true
-      }
-    },
-    "/v0/xaas/subnetpools/{subnetpool_id}": {
-      "get": {
-        "tags": [
-          "xaas_subnetpools"
-        ],
-        "summary": "Get Subnet Pool by ID",
-        "description": "Get details of a specific Subnet Pool",
-        "operationId": "getDetailedSubnetPool",
-        "parameters": [
-          {
-            "name": "subnetpool_id",
-            "in": "path",
-            "description": "Id of the Subnet Pool to get details",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "subnetpoolId",
-              "description": "Id of the Subnet Pool to get details"
-            }
-          },
-          {
-            "name": "project_type",
-            "in": "query",
-            "description": "Project type to detail Subnet Pool",
-            "required": true,
-            "schema": {
-              "allOf": [
-                {
-                  "$ref": "#/components/schemas/ProjectType"
-                }
-              ],
-              "title": "project_type",
-              "description": "Project type to detail Subnet Pool"
-            }
-          },
-          {
-            "name": "x-tenant-id",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "X-Tenant-Id"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SubnetPoolDetailsResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "x-viveiro": false,
-        "x-mgc-hidden": true
-      },
-      "delete": {
-        "tags": [
-          "xaas_subnetpools"
-        ],
-        "summary": "Delete Subnet Pool by ID",
-        "description": "Delete one Subnet Pool by ID",
-        "operationId": "deleteSubnetPoolByID",
-        "parameters": [
-          {
-            "name": "subnetpool_id",
-            "in": "path",
-            "description": "Id of the Subnet Pool to delete",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "subnetpoolId",
-              "description": "Id of the Subnet Pool to delete"
-            }
-          },
-          {
-            "name": "project_type",
-            "in": "query",
-            "description": "Project type to delete Subnet Pool",
-            "required": true,
-            "schema": {
-              "allOf": [
-                {
-                  "$ref": "#/components/schemas/ProjectType"
-                }
-              ],
-              "title": "project_type",
-              "description": "Project type to delete Subnet Pool"
-            }
-          },
-          {
-            "name": "x-tenant-id",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "X-Tenant-Id"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Successful Response"
           },
           "422": {
             "description": "Validation Error",
@@ -5483,10 +5500,12 @@
           {
             "name": "x-tenant-id",
             "in": "header",
+            "description": "Tenant id of the project",
             "required": true,
             "schema": {
               "type": "string",
-              "title": "X-Tenant-Id"
+              "title": "X-Tenant-Id",
+              "description": "Tenant id of the project"
             }
           }
         ],
@@ -5562,10 +5581,12 @@
           {
             "name": "x-tenant-id",
             "in": "header",
+            "description": "Tenant id of the project",
             "required": true,
             "schema": {
               "type": "string",
-              "title": "X-Tenant-Id"
+              "title": "X-Tenant-Id",
+              "description": "Tenant id of the project"
             }
           }
         ],
@@ -5636,10 +5657,12 @@
           {
             "name": "x-tenant-id",
             "in": "header",
+            "description": "Tenant id of the project",
             "required": true,
             "schema": {
               "type": "string",
-              "title": "X-Tenant-Id"
+              "title": "X-Tenant-Id",
+              "description": "Tenant id of the project"
             }
           }
         ],
@@ -5728,10 +5751,12 @@
           {
             "name": "x-tenant-id",
             "in": "header",
+            "description": "Tenant id of the project",
             "required": true,
             "schema": {
               "type": "string",
-              "title": "X-Tenant-Id"
+              "title": "X-Tenant-Id",
+              "description": "Tenant id of the project"
             }
           }
         ],
@@ -5913,6 +5938,52 @@
         "example": {
           "nic_vpc_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
         }
+      },
+      "CreateOvnIcXaasRequest": {
+        "type": "object",
+        "properties": {
+          "project_type": {
+            "type": "string",
+            "title": "Project Type"
+          },
+          "router_name": {
+            "type": "string",
+            "title": "Router Name"
+          },
+          "ovn_ic_agent": {
+            "type": "string",
+            "title": "Ovn Ic Agent"
+          }
+        },
+        "title": "CreateOvnIcXaasRequest",
+        "required": [
+          "project_type",
+          "router_name",
+          "ovn_ic_agent"
+        ]
+      },
+      "DeleteOvnIcXaasRequest": {
+        "type": "object",
+        "properties": {
+          "project_type": {
+            "type": "string",
+            "title": "Project Type"
+          },
+          "router_name": {
+            "type": "string",
+            "title": "Router Name"
+          },
+          "ovn_ic_agent": {
+            "type": "string",
+            "title": "Ovn Ic Agent"
+          }
+        },
+        "title": "DeleteOvnIcXaasRequest",
+        "required": [
+          "project_type",
+          "router_name",
+          "ovn_ic_agent"
+        ]
       },
       "DhcpPoolStr": {
         "type": "object",
@@ -9787,7 +9858,7 @@
           "tenant_id",
           "name"
         ],
-        "description": "A Pydantic model representing a response for Subnet Pool creation.\n\nAttributes:\n    id (str): The ID of the subnet pool.\n    tenant_id (str): The ID of the tenant that owns the subnet pool.\n    vpc_id (str): The ID of the VPC that the subnet pool belongs to.\n    name (str): The name of the subnet pool.\n    external_id (str): The ID of the subnet pool in OpenStack.",
+        "description": "A Pydantic model representing a response for Subnet Pool creation.",
         "example": {
           "cidr": "172.26.0.0/16",
           "description": "subnet pool description",
@@ -9848,7 +9919,7 @@
                 "tenant_id",
                 "name"
               ],
-              "description": "A Pydantic model representing a response for Subnet Pool creation.\n\nAttributes:\n    id (str): The ID of the subnet pool.\n    tenant_id (str): The ID of the tenant that owns the subnet pool.\n    vpc_id (str): The ID of the VPC that the subnet pool belongs to.\n    name (str): The name of the subnet pool.\n    external_id (str): The ID of the subnet pool in OpenStack.",
+              "description": "A Pydantic model representing a response for Subnet Pool creation.",
               "example": {
                 "cidr": "172.26.0.0/16",
                 "description": "subnet pool description",

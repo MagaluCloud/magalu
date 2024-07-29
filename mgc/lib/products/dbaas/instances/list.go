@@ -9,7 +9,7 @@ List all database instances.
 
 Returns a list of database instances for a x-tenant-id.
 
-Version: 1.23.0
+Version: 1.25.0
 
 import "magalu.cloud/lib/products/dbaas/instances"
 */

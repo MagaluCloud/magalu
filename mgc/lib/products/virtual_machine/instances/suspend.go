@@ -3,7 +3,7 @@ Executor: suspend
 
 # Summary
 
-Suspends a running instance.
+Suspends instance.
 
 # Description
 

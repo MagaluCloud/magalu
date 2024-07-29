@@ -3,11 +3,20 @@ Executor: delete
 
 # Summary
 
-# Delete a instance asynchronously
+Delete an instance.
 
 # Description
 
-# Delete a Virtual Machine instance
+Deletes permanently an instance with the id provided in the current tenant
+which is logged in.
+
+#### Notes
+- You can use the virtual-machine list command to retrieve all instances, so
+- you can get the id of the instance that you want to delete.
+
+#### Result
+- The attached ports will be deleted as well.</li>
+- The attached volumes will be detached.</li>
 
 Version: v1
 

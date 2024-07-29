@@ -9,7 +9,7 @@ Executor: list
 
 Returns a list of Public IPs for a provided vpc_id
 
-Version: 1.126.1
+Version: 1.128.0
 
 import "magalu.cloud/lib/products/network/xaas_public_ip/vpcs_public_ips"
 */

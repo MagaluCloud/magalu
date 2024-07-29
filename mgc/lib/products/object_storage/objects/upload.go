@@ -15,8 +15,9 @@ import (
 )
 
 type UploadParameters struct {
-	Dst string `json:"dst"`
-	Src string `json:"src"`
+	Dst          string  `json:"dst"`
+	Src          string  `json:"src"`
+	StorageClass *string `json:"storage_class,omitempty"`
 }
 
 type UploadConfigs struct {

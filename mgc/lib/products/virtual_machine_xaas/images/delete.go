@@ -14,7 +14,7 @@ This route only remove the image from virtual machine DB.
 
 Needs to remove the image from URP after use this route.
 
-Version: 1.249.1
+Version: 1.255.1
 
 import "magalu.cloud/lib/products/virtual_machine_xaas/images"
 */

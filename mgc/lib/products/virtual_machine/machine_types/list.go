@@ -3,7 +3,7 @@ Executor: list
 
 # Summary
 
-Retrieves all machine-types available in the region.
+Retrieves all machine-types.
 
 # Description
 

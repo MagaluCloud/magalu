@@ -3,7 +3,7 @@ Executor: restore
 
 # Summary
 
-# Restore a snapshot to a virtual machine
+Restore a snapshot to a virtual machine.
 
 # Description
 

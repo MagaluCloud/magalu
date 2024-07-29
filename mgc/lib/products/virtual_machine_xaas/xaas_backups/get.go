@@ -16,7 +16,7 @@ so you can get the id of the backup that you want to get details.
 - You can use the **expand** argument to get more details from the object
 like instance.
 
-Version: 1.249.1
+Version: 1.255.1
 
 import "magalu.cloud/lib/products/virtual_machine_xaas/xaas_backups"
 */
@@ -56,7 +56,7 @@ type GetResult struct {
 
 // any of: GetResultInstance
 type GetResultInstance struct {
-	Id          string                       `json:"id"`
+	Id          *string                      `json:"id"`
 	Image       GetResultInstanceImage       `json:"image"`
 	MachineType GetResultInstanceMachineType `json:"machine_type"`
 	Name        string                       `json:"name"`

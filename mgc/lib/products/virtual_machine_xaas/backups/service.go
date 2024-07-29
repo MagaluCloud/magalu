@@ -15,6 +15,8 @@ type service struct {
 }
 
 type Service interface {
+	Create(parameters CreateParameters, configs CreateConfigs) (result CreateResult, err error)
+	List(parameters ListParameters, configs ListConfigs) (result ListResult, err error)
 	Update(parameters UpdateParameters, configs UpdateConfigs) (err error)
 	Urp(parameters UrpParameters, configs UrpConfigs) (err error)
 }

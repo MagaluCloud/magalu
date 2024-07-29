@@ -9,7 +9,7 @@ vpcs-ports
 
 port | vpcs-ports
 
-Version: 1.126.1
+Version: 1.128.0
 
 import "magalu.cloud/lib/products/network/port/vpcs_ports"
 */

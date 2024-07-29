@@ -288,7 +288,8 @@
             }
           }
         },
-        "x-viveiro": true
+        "x-viveiro": true,
+        "x-mgc-hidden": true
       },
       "post": {
         "tags": [
@@ -367,6 +368,86 @@
                     "$ref": "#/components/schemas/ErrorResponse"
                   },
                   "title": "Response 422 Create Backup V1 Backups Post"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": true,
+        "x-mgc-hidden": true
+      }
+    },
+    "/v1/backups/copy": {
+      "post": {
+        "tags": [
+          "backups"
+        ],
+        "summary": "Copy backup cross region",
+        "description": "Copy a backup cross region for the currently authenticated tenant.\n\n#### Rules\n- The copy only be accepted when the destiny region is different from origin region.\n- The copy only be accepted if the backup's name in destiny region is different from input name.\n- The copy only be accepted if the user has access to destiny region.\n\n#### Notes\n- Utilize the **block-storage backups list** command to retrieve a list of\n all Backups and obtain the ID of the Backup you wish to copy across different region.",
+        "operationId": "copy_backup_cross_region_v1_backups_copy_post",
+        "parameters": [
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CopyBackupCrossRegionRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 404 Copy Backup Cross Region V1 Backups Copy Post"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 409 Copy Backup Cross Region V1 Backups Copy Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 422 Copy Backup Cross Region V1 Backups Copy Post"
                 }
               }
             }
@@ -471,7 +552,8 @@
             }
           }
         },
-        "x-viveiro": true
+        "x-viveiro": true,
+        "x-mgc-hidden": true
       },
       "delete": {
         "tags": [
@@ -548,7 +630,8 @@
             }
           }
         },
-        "x-viveiro": true
+        "x-viveiro": true,
+        "x-mgc-hidden": true
       },
       "patch": {
         "tags": [
@@ -635,7 +718,8 @@
             }
           }
         },
-        "x-viveiro": true
+        "x-viveiro": true,
+        "x-mgc-hidden": true
       }
     },
     "/v1/snapshots": {
@@ -2061,6 +2145,38 @@
           }
         }
       },
+      "BackupIdRequest": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 255,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Id"
+          },
+          "name": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 255,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name"
+          }
+        },
+        "title": "BackupIdRequest"
+      },
       "BackupListResponse": {
         "type": "object",
         "properties": {
@@ -2081,18 +2197,22 @@
             {
               "created_at": "2022-01-01T00:00:10Z",
               "description": "my backup for testing",
-              "id": "3a7e01a7-9020-43f0-bc5c-8b1dbdf3b6b4",
+              "error": {
+                "message": "You have reached the limit of allowed backups. Please, remove unused backups or contact support to increase your quota.",
+                "slug": "creating_error_quota"
+              },
+              "id": "b916a4b4-f409-4a73-804b-16e90a782047",
               "name": "My backup",
               "size": 10,
               "source_backup": {
-                "id": "1d5756b4-5334-454c-912e-a4bdc2c65828"
+                "id": "7c0eb1b2-1294-43e3-92a0-d48bd124f9d9"
               },
               "state": "available",
               "status": "completed",
               "type": "incremental",
               "updated_at": "2022-01-01T00:00:10Z",
               "volume": {
-                "id": "d2beb7d7-152d-48fd-ae42-c1204fb3a40b"
+                "id": "f69ccf36-e893-4681-bba1-9eaeff8b58e8"
               }
             }
           ]
@@ -2183,6 +2303,16 @@
                 "type": "null"
               }
             ]
+          },
+          "error": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/BackupResponseError"
+              },
+              {
+                "type": "null"
+              }
+            ]
           }
         },
         "title": "BackupResponse",
@@ -2200,19 +2330,45 @@
         "example": {
           "created_at": "2022-01-01T00:00:10Z",
           "description": "my backup for testing",
-          "id": "93ef0dd4-7cfe-4937-93a5-3b7d887de3f1",
+          "error": {
+            "message": "You have reached the limit of allowed backups. Please, remove unused backups or contact support to increase your quota.",
+            "slug": "creating_error_quota"
+          },
+          "id": "b916a4b4-f409-4a73-804b-16e90a782047",
           "name": "My backup",
           "size": 10,
           "source_backup": {
-            "id": "2524135e-bd1f-4490-91ed-c23de5619c97"
+            "id": "7c0eb1b2-1294-43e3-92a0-d48bd124f9d9"
           },
           "state": "available",
           "status": "completed",
           "type": "incremental",
           "updated_at": "2022-01-01T00:00:10Z",
           "volume": {
-            "id": "be39316a-282b-4daa-86d4-3511c4f333d9"
+            "id": "f69ccf36-e893-4681-bba1-9eaeff8b58e8"
           }
+        }
+      },
+      "BackupResponseError": {
+        "type": "object",
+        "properties": {
+          "slug": {
+            "type": "string",
+            "title": "Slug"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          }
+        },
+        "title": "BackupResponseError",
+        "required": [
+          "slug",
+          "message"
+        ],
+        "example": {
+          "message": "You have reached the limit of allowed backups. Please, remove unused backups or contact support to increase your quota.",
+          "slug": "creating_error_quota"
         }
       },
       "BackupState": {
@@ -2229,21 +2385,20 @@
         "title": "BackupStatus",
         "enum": [
           "completed",
-          "snapshot_creating",
-          "snapshot_creating_error",
-          "creating_pending",
           "creating",
           "creating_error",
           "creating_error_quota",
-          "snapshot_deleting",
-          "snapshot_deleting_error",
+          "uploading",
+          "uploading_error_quota",
+          "uploading_error",
           "deleting_pending",
           "deleting_error",
           "deleting",
           "restoring_pending",
           "restoring",
           "restoring_error",
-          "provisioning"
+          "provisioning",
+          "copying"
         ]
       },
       "BackupType": {
@@ -2253,6 +2408,31 @@
           "full",
           "incremental"
         ]
+      },
+      "CopyBackupCrossRegionRequest": {
+        "type": "object",
+        "properties": {
+          "destiny_region": {
+            "type": "string",
+            "title": "Destiny Region",
+            "maxLength": 255,
+            "minLength": 1
+          },
+          "backup": {
+            "$ref": "#/components/schemas/BackupIdRequest"
+          }
+        },
+        "title": "CopyBackupCrossRegionRequest",
+        "required": [
+          "destiny_region",
+          "backup"
+        ],
+        "example": {
+          "backup": {
+            "name": "backup-tomato"
+          },
+          "destiny_region": "br-ne1"
+        }
       },
       "CreateAttachmentRequest": {
         "type": "object",
@@ -2330,7 +2510,6 @@
         },
         "title": "CreateBackup",
         "required": [
-          "description",
           "volume",
           "name"
         ],
@@ -3019,6 +3198,20 @@
               }
             ],
             "title": "Backup"
+          },
+          "snapshot": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/IdRequest"
+              },
+              {
+                "$ref": "#/components/schemas/Name"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Snapshot"
           }
         },
         "title": "VolumeCreateRequestV1",

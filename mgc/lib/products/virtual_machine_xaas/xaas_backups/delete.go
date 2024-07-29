@@ -9,7 +9,7 @@ Delete a backup of a virtual machine asynchronously.
 
 # Delete a backup from instance
 
-Version: 1.249.1
+Version: 1.255.1
 
 import "magalu.cloud/lib/products/virtual_machine_xaas/xaas_backups"
 */

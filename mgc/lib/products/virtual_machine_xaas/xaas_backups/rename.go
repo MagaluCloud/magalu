@@ -15,7 +15,7 @@ the backup that you want to rename.
 - A Backup can only renamed when it's in completed status.
 - Each backup must have a unique name.
 
-Version: 1.249.1
+Version: 1.255.1
 
 import "magalu.cloud/lib/products/virtual_machine_xaas/xaas_backups"
 */

@@ -3,7 +3,7 @@ Executor: rename
 
 # Summary
 
-# Renames a snapshot
+Renames a snapshot.
 
 # Description
 

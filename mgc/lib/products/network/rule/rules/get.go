@@ -9,7 +9,7 @@ Executor: get
 
 # Return a rule details
 
-Version: 1.126.1
+Version: 1.128.0
 
 import "magalu.cloud/lib/products/network/rule/rules"
 */

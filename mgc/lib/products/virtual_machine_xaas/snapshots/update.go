@@ -3,13 +3,13 @@ Executor: update
 
 # Summary
 
-# Update snapshot
+Update snapshot.
 
 # Description
 
 # Internal route for update a snapshot using its internal id
 
-Version: 1.249.1
+Version: 1.255.1
 
 import "magalu.cloud/lib/products/virtual_machine_xaas/snapshots"
 */

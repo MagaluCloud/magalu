@@ -30,32 +30,30 @@ type KubeconfigConfigs struct {
 	ServerUrl *string `json:"serverUrl,omitempty"`
 }
 
-func (s *service) Kubeconfig(parameters KubeconfigParameters, configs KubeconfigConfigs) (string, error) {
+func (s *service) Kubeconfig(
+	parameters KubeconfigParameters,
+	configs KubeconfigConfigs,
+) (
+	err error,
+) {
 	exec, ctx, err := mgcHelpers.PrepareExecutor("Kubeconfig", mgcCore.RefPath("/kubernetes/cluster/kubeconfig"), s.client, s.ctx)
 	if err != nil {
-		return "", err
+		return
 	}
 
 	var p mgcCore.Parameters
 	if p, err = mgcHelpers.ConvertParameters[KubeconfigParameters](parameters); err != nil {
-		return "", err
+		return
 	}
 
 	var c mgcCore.Configs
 	if c, err = mgcHelpers.ConvertConfigs[KubeconfigConfigs](configs); err != nil {
-		return "", err
+		return
 	}
 
-	result, err := exec.Execute(ctx, p, c)
-
-	if err != nil {
-		return "", err
-	}
-
-	output, err := mgcHelpers.ConvertResultReader[string](result)
-	if err != nil {
-		return "", err
-	}
-
-	return output, nil
+	_, err = exec.Execute(ctx, p, c)
+	return
 }
+
+// TODO: links
+// TODO: related

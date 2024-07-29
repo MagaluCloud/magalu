@@ -9,7 +9,7 @@ subnets
 
 subnets | subnets
 
-Version: 1.126.1
+Version: 1.128.0
 
 import "magalu.cloud/lib/products/network/subnets/subnets"
 */

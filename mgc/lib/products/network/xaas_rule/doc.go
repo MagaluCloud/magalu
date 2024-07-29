@@ -5,7 +5,7 @@ Package: xaas_rule
 
 xaas_rule
 
-Version: 1.126.1
+Version: 1.128.0
 
 import "magalu.cloud/lib/products/network/xaas_rule"
 */

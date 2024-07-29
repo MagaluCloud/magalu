@@ -6,7 +6,7 @@ info:
         name: Tribo IAAS Cloud
         url: https://github.com/luizalabs
         email: thullyo.cunha@luizalabs.com
-    version: 1.126.1
+    version: 1.128.0
 paths:
     /v0/healthcheck:
         get:
@@ -125,6 +125,161 @@ paths:
                 - network.read
             -   XaasAuth:
                 - network.read
+    /v0/interconnections/{vpc_id}:
+        post:
+            tags:
+            - interconnections
+            summary: Create Interconnections
+            operationId: create_interconnections_v0_interconnections__vpc_id__post
+            parameters:
+            -   name: vpc_id
+                in: path
+                description: Id of the VPC to create OVN Interconnect
+                required: true
+                schema:
+                    type: string
+                    title: VPC Id
+                    description: Id of the VPC to create OVN Interconnect
+            responses:
+                '201':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema: {}
+                    links:
+                        delete:
+                            operationId: delete_interconnections_v0_interconnections__vpc_id__delete
+                            description: Delete Interconnections
+                            parameters:
+                                vpc_id: $request.path.vpc_id
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: false
+            x-mgc-hidden: true
+            security:
+            -   OAuth2:
+                - network.write
+        delete:
+            tags:
+            - interconnections
+            summary: Delete Interconnections
+            operationId: delete_interconnections_v0_interconnections__vpc_id__delete
+            parameters:
+            -   name: vpc_id
+                in: path
+                description: Id of the VPC to create OVN Interconnect
+                required: true
+                schema:
+                    type: string
+                    title: VPC Id
+                    description: Id of the VPC to create OVN Interconnect
+            responses:
+                '204':
+                    description: Successful Response
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: false
+            x-mgc-hidden: true
+            security:
+            -   OAuth2:
+                - network.write
+    /v0/xaas/interconnections/{vpc_id}/attach:
+        post:
+            tags:
+            - interconnections
+            summary: Attach Xaas Interconnections
+            operationId: attach_xaas_interconnections_v0_xaas_interconnections__vpc_id__attach_post
+            parameters:
+            -   name: vpc_id
+                in: path
+                description: Id of the VPC to create OVN Interconnect
+                required: true
+                schema:
+                    type: string
+                    title: VPC Id
+                    description: Id of the VPC to create OVN Interconnect
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/CreateOvnIcXaasRequest'
+                required: true
+            responses:
+                '201':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema: {}
+                    links:
+                        detach:
+                            operationId: detach_xaas_interconnections_v0_xaas_interconnections__vpc_id__detach_post
+                            description: Detach Xaas Interconnections
+                            parameters:
+                                vpc_id: $request.path.vpc_id
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: false
+            x-mgc-hidden: true
+            security:
+            -   OAuth2:
+                - network.write
+            -   XaasAuth:
+                - network.write
+    /v0/xaas/interconnections/{vpc_id}/detach:
+        post:
+            tags:
+            - interconnections
+            summary: Detach Xaas Interconnections
+            operationId: detach_xaas_interconnections_v0_xaas_interconnections__vpc_id__detach_post
+            parameters:
+            -   name: vpc_id
+                in: path
+                description: Id of the VPC to create OVN Interconnect
+                required: true
+                schema:
+                    type: string
+                    title: VPC Id
+                    description: Id of the VPC to create OVN Interconnect
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/DeleteOvnIcXaasRequest'
+                required: true
+            responses:
+                '204':
+                    description: Successful Response
+                    links:
+                        attach:
+                            operationId: attach_xaas_interconnections_v0_xaas_interconnections__vpc_id__attach_post
+                            description: Attach Xaas Interconnections
+                            parameters:
+                                vpc_id: $request.path.vpc_id
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: false
+            x-mgc-hidden: true
+            security:
+            -   OAuth2:
+                - network.write
+            -   XaasAuth:
+                - network.write
     /v0/ports:
         get:
             tags:
@@ -3003,31 +3158,13 @@ paths:
                 - network.write
             -   XaasAuth:
                 - network.write
-    /v0/xaas/vpcs/{vpc_id}/subnetpools:
+    /v0/subnetpools:
         get:
             tags:
-            - xaas_subnetpools
-            summary: List Subnet Pools by VPC
-            description: Returns a list of subnet pools inside a specific VPC
-            operationId: getSubnetPoolsByVPC
-            parameters:
-            -   name: vpc_id
-                in: path
-                description: Id of the VPC to list the Subnet Pools
-                required: true
-                schema:
-                    type: string
-                    title: Vpc Id
-                    description: Id of the VPC to list the Subnet Pools
-            -   name: project_type
-                in: query
-                description: Project type to list Subnet Pools by VPC
-                required: true
-                schema:
-                    allOf:
-                    -   $ref: '#/components/schemas/ProjectType'
-                    title: project_type
-                    description: Project type to list Subnet Pools by VPC
+            - subnetpools
+            summary: List Subnet Pools by Tenant
+            description: Returns a list of Subnet Pools for the current tenant's project
+            operationId: listSubnetPoolsByTenant
             responses:
                 '200':
                     description: Successful Response
@@ -3041,76 +3178,17 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
-            x-viveiro: false
-            x-mgc-hidden: true
+            x-viveiro: true
             security:
             -   OAuth2:
                 - network.read
-            -   XaasAuth:
-                - network.read
-        post:
-            tags:
-            - xaas_subnetpools
-            summary: Create a Subnet Pool in a VPC
-            description: Create a Subnet Pool
-            operationId: createSubnetPoolInVPC
-            parameters:
-            -   name: vpc_id
-                in: path
-                description: Id of the VPC to create the Subnet Pool
-                required: true
-                schema:
-                    type: string
-                    title: VPC Id
-                    description: Id of the VPC to create the Subnet Pool
-            -   name: project_type
-                in: query
-                description: Project type to create Subnet Pool
-                required: true
-                schema:
-                    allOf:
-                    -   $ref: '#/components/schemas/ProjectType'
-                    title: project_type
-                    description: Project type to create Subnet Pool
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/SubnetPoolRequest'
-                required: true
-            responses:
-                '201':
-                    description: Successful Response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/SubnetPoolResponse'
-                    links:
-                        list:
-                            operationId: getSubnetPoolsByVPC
-                            description: List Subnet Pools by VPC
-                            parameters:
-                                vpc_id: $request.path.vpc_id
-                '422':
-                    description: Validation Error
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/HTTPValidationError'
-            x-viveiro: false
-            x-mgc-hidden: true
-            security:
-            -   OAuth2:
-                - network.write
-            -   XaasAuth:
-                - network.write
     /v0/xaas/subnetpools:
         get:
             tags:
             - xaas_subnetpools
             summary: List Subnet Pools by Tenant
             description: Returns a list of Subnet Pools for the current tenant's project
-            operationId: listSubnetPoolsByTenant
+            operationId: listSubnetPoolsByTenantXaas
             parameters:
             -   name: project_type
                 in: query
@@ -3141,97 +3219,6 @@ paths:
                 - network.read
             -   XaasAuth:
                 - network.read
-    /v0/xaas/subnetpools/{subnetpool_id}:
-        get:
-            tags:
-            - xaas_subnetpools
-            summary: Get Subnet Pool by ID
-            description: Get details of a specific Subnet Pool
-            operationId: getDetailedSubnetPool
-            parameters:
-            -   name: subnetpool_id
-                in: path
-                description: Id of the Subnet Pool to get details
-                required: true
-                schema:
-                    type: string
-                    title: subnetpoolId
-                    description: Id of the Subnet Pool to get details
-            -   name: project_type
-                in: query
-                description: Project type to detail Subnet Pool
-                required: true
-                schema:
-                    allOf:
-                    -   $ref: '#/components/schemas/ProjectType'
-                    title: project_type
-                    description: Project type to detail Subnet Pool
-            responses:
-                '200':
-                    description: Successful Response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/SubnetPoolDetailsResponse'
-                    links:
-                        delete:
-                            operationId: deleteSubnetPoolByID
-                            description: Delete Subnet Pool by ID
-                            parameters:
-                                subnetpool_id: $response.body#/id
-                '422':
-                    description: Validation Error
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/HTTPValidationError'
-            x-viveiro: false
-            x-mgc-hidden: true
-            security:
-            -   OAuth2:
-                - network.read
-            -   XaasAuth:
-                - network.read
-        delete:
-            tags:
-            - xaas_subnetpools
-            summary: Delete Subnet Pool by ID
-            description: Delete one Subnet Pool by ID
-            operationId: deleteSubnetPoolByID
-            parameters:
-            -   name: subnetpool_id
-                in: path
-                description: Id of the Subnet Pool to delete
-                required: true
-                schema:
-                    type: string
-                    title: subnetpoolId
-                    description: Id of the Subnet Pool to delete
-            -   name: project_type
-                in: query
-                description: Project type to delete Subnet Pool
-                required: true
-                schema:
-                    allOf:
-                    -   $ref: '#/components/schemas/ProjectType'
-                    title: project_type
-                    description: Project type to delete Subnet Pool
-            responses:
-                '204':
-                    description: Successful Response
-                '422':
-                    description: Validation Error
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/HTTPValidationError'
-            x-viveiro: false
-            x-mgc-hidden: true
-            security:
-            -   OAuth2:
-                - network.write
-            -   XaasAuth:
-                - network.write
     /v0/vpcs/{vpc_id}/subnets:
         get:
             tags:
@@ -4241,6 +4228,40 @@ components:
             - nic_vpc_id
             example:
                 nic_vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        CreateOvnIcXaasRequest:
+            type: object
+            properties:
+                project_type:
+                    type: string
+                    title: Project Type
+                router_name:
+                    type: string
+                    title: Router Name
+                ovn_ic_agent:
+                    type: string
+                    title: Ovn Ic Agent
+            title: CreateOvnIcXaasRequest
+            required:
+            - project_type
+            - router_name
+            - ovn_ic_agent
+        DeleteOvnIcXaasRequest:
+            type: object
+            properties:
+                project_type:
+                    type: string
+                    title: Project Type
+                router_name:
+                    type: string
+                    title: Router Name
+                ovn_ic_agent:
+                    type: string
+                    title: Ovn Ic Agent
+            title: DeleteOvnIcXaasRequest
+            required:
+            - project_type
+            - router_name
+            - ovn_ic_agent
         DhcpPoolStr:
             type: object
             properties:
@@ -6664,150 +6685,47 @@ components:
             example:
                 dns_nameservers:
                 - 8.8.8.8
-        SubnetPoolDetailsResponse:
-            type: object
-            properties:
-                id:
-                    type: string
-                    title: Id
-                tenant_id:
-                    type: string
-                    title: Tenant Id
-                vpc_id:
-                    type: string
-                    title: Vpc Id
-                name:
-                    type: string
-                    title: Name
-                pool_prefix:
-                    type: array
-                    items:
-                        type: string
-                    title: Pool Prefix
-                min_prefix_length:
-                    type: integer
-                    title: Min Prefix Length
-                max_prefix_length:
-                    type: integer
-                    title: Max Prefix Length
-                default_prefix_length:
-                    type: integer
-                    title: Default Prefix Length
-                description:
-                    type: string
-                    title: Description
-            title: SubnetPoolDetailsResponse
-            required:
-            - id
-            - tenant_id
-            - vpc_id
-            - name
-            - pool_prefix
-            - min_prefix_length
-            - max_prefix_length
-            - default_prefix_length
-            - description
-            description: A Pydantic model representing the request for creating one
-                Subnet Pool.
-            example:
-                default_prefix_length: 26
-                description: some description
-                id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-                max_prefix_length: 28
-                min_prefix_length: 24
-                name: some_subnet_pool
-                pool_prefix:
-                - 172.26.0.0/16
-                tenant_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-                vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-        SubnetPoolRequest:
-            type: object
-            properties:
-                name:
-                    type: string
-                    title: Name
-                    description: The name of the subnet pool.
-                pool_prefix:
-                    type: string
-                    title: Pool Prefix
-                    description: The CIDR notation prefix for the subnet pool.
-                    default: 172.26.0.0/16
-                min_prefix_length:
-                    type: integer
-                    title: Min Prefix Length
-                    description: The minimum prefix length for a subnet in the pool.
-                    default: 24
-                max_prefix_length:
-                    type: integer
-                    title: Max Prefix Length
-                    description: The maximum prefix length for a subnet in the pool.
-                    default: 28
-                default_prefix_length:
-                    type: integer
-                    title: Default Prefix Length
-                    description: The default prefix length for a subnet in the pool.
-                    default: 26
-                description:
-                    type: string
-                    title: Description
-                    description: The description for the subnet pool
-                address_scope_id:
-                    anyOf:
-                    -   type: string
-                    title: Address Scope Id
-                    description: The ID of the address scope for the subnet pool
-                    nullable: true
-            title: SubnetPoolRequest
-            required:
-            - name
-            - description
-            description: A Pydantic model representing the request for creating one
-                Subnet Pool.
-            example:
-                address_scope_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-                default_prefix_length: 26
-                description: some description
-                max_prefix_length: 28
-                min_prefix_length: 24
-                name: some_subnet_pool
-                pool_prefix: 172.26.0.0/16
         SubnetPoolResponse:
             type: object
             properties:
+                cidr:
+                    type: string
+                    title: Cidr
+                    description: The CIDR notation for the subnet pool.
+                    default: 172.26.0.0/16
                 id:
                     type: string
                     title: Id
                 tenant_id:
                     type: string
                     title: Tenant Id
-                vpc_id:
-                    type: string
-                    title: Vpc Id
                 name:
                     type: string
                     title: Name
+                description:
+                    anyOf:
+                    -   type: string
+                    title: Description
+                    nullable: true
                 external_id:
-                    type: string
+                    anyOf:
+                    -   type: string
                     title: External Id
+                    nullable: true
             title: SubnetPoolResponse
             required:
             - id
             - tenant_id
-            - vpc_id
             - name
-            - external_id
-            description: "A Pydantic model representing a response for Subnet Pool\
-                \ creation.\n\nAttributes:\n    id (str): The ID of the subnet pool.\n\
-                \    tenant_id (str): The ID of the tenant that owns the subnet pool.\n\
-                \    vpc_id (str): The ID of the VPC that the subnet pool belongs\
-                \ to.\n    name (str): The name of the subnet pool.\n    external_id\
-                \ (str): The ID of the subnet pool in OpenStack."
+            description: A Pydantic model representing a response for Subnet Pool
+                creation.
             example:
+                cidr: 172.26.0.0/16
+                description: subnet pool description
                 external_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                 id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                 name: some_subnet_pool
                 tenant_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-                vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
         SubnetPoolsResponse:
             type: object
             properties:
@@ -6816,52 +6734,54 @@ components:
                     items:
                         type: object
                         properties:
+                            cidr:
+                                type: string
+                                title: Cidr
+                                description: The CIDR notation for the subnet pool.
+                                default: 172.26.0.0/16
                             id:
                                 type: string
                                 title: Id
                             tenant_id:
                                 type: string
                                 title: Tenant Id
-                            vpc_id:
-                                type: string
-                                title: Vpc Id
                             name:
                                 type: string
                                 title: Name
+                            description:
+                                anyOf:
+                                -   type: string
+                                title: Description
+                                nullable: true
                             external_id:
-                                type: string
+                                anyOf:
+                                -   type: string
                                 title: External Id
+                                nullable: true
                         title: SubnetPoolResponse
                         required:
                         - id
                         - tenant_id
-                        - vpc_id
                         - name
-                        - external_id
-                        description: "A Pydantic model representing a response for\
-                            \ Subnet Pool creation.\n\nAttributes:\n    id (str):\
-                            \ The ID of the subnet pool.\n    tenant_id (str): The\
-                            \ ID of the tenant that owns the subnet pool.\n    vpc_id\
-                            \ (str): The ID of the VPC that the subnet pool belongs\
-                            \ to.\n    name (str): The name of the subnet pool.\n\
-                            \    external_id (str): The ID of the subnet pool in OpenStack."
+                        description: A Pydantic model representing a response for
+                            Subnet Pool creation.
                         example:
+                            cidr: 172.26.0.0/16
+                            description: subnet pool description
                             external_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                             id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                             name: some_subnet_pool
                             tenant_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-                            vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                     title: Subnetpools
                     default: []
             title: SubnetPoolsResponse
             description: A Pydantic model representing a list of Subnet Pools.
             example:
                 subnetpools:
-                -   external_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                -   cidr: 172.26.0.0/16
+                    description: subnet pool description
                     id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                     name: some_subnet_pool
-                    tenant_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-                    vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
         SubnetResponse:
             type: object
             properties:
@@ -8075,6 +7995,8 @@ tags:
     description: backoffice_conciliator
 -   name: healthcheck
     description: healthcheck
+-   name: interconnections
+    description: interconnections
 -   name: port
     description: port
 -   name: public_ip
@@ -8085,6 +8007,8 @@ tags:
     description: rule
 -   name: security_group
     description: security_group
+-   name: subnetpools
+    description: subnetpools
 -   name: subnets
     description: subnets
 -   name: vpc

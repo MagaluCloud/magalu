@@ -9,7 +9,7 @@ List available flavors.
 
 Returns a list of available flavors. A flavor is a hardware template that defines the size of RAM and vCPU.
 
-Version: 1.23.0
+Version: 1.25.0
 
 import "magalu.cloud/lib/products/dbaas/flavors"
 */

@@ -9,7 +9,7 @@ Executor: detach
 
 # Detach a Public IP to a Port
 
-Version: 1.126.1
+Version: 1.128.0
 
 import "magalu.cloud/lib/products/network/xaas_public_ip/public_ips"
 */

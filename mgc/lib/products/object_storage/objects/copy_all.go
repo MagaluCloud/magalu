@@ -15,9 +15,10 @@ import (
 )
 
 type CopyAllParameters struct {
-	Dst    string                   `json:"dst"`
-	Filter *CopyAllParametersFilter `json:"filter,omitempty"`
-	Src    string                   `json:"src"`
+	Dst          string                   `json:"dst"`
+	Filter       *CopyAllParametersFilter `json:"filter,omitempty"`
+	Src          string                   `json:"src"`
+	StorageClass *string                  `json:"storage_class,omitempty"`
 }
 
 type CopyAllParametersFilterItem struct {
@@ -35,9 +36,10 @@ type CopyAllConfigs struct {
 }
 
 type CopyAllResult struct {
-	Dst    string               `json:"dst"`
-	Filter *CopyAllResultFilter `json:"filter,omitempty"`
-	Src    string               `json:"src"`
+	Dst          string               `json:"dst"`
+	Filter       *CopyAllResultFilter `json:"filter,omitempty"`
+	Src          string               `json:"src"`
+	StorageClass *string              `json:"storage_class,omitempty"`
 }
 
 type CopyAllResultFilterItem struct {

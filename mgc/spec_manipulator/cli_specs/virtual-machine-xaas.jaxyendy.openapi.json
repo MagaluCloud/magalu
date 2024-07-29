@@ -3,7 +3,7 @@
   "info": {
     "title": "Internal Virtual Machine Api Product",
     "description": "Virtual Machine Api Product",
-    "version": "1.249.1"
+    "version": "1.255.1"
   },
   "paths": {
     "/v1/health": {
@@ -2486,8 +2486,8 @@
         "tags": [
           "xaas images"
         ],
-        "summary": "Retrieves all images available in the region.",
-        "description": "Retrieve a list of images allowed for the current tenant which is logged in.",
+        "summary": "Retrieves all images.",
+        "description": "Retrieve a list of images allowed for the current region.",
         "operationId": "list_images_v1_xaas_v1_xaas_images_get",
         "parameters": [
           {
@@ -2758,6 +2758,116 @@
         }
       }
     },
+    "/v1/xaas/instances/network-interface/attach": {
+      "post": {
+        "tags": [
+          "xaas instances"
+        ],
+        "summary": "Attach network interface to an instance.",
+        "description": "Attach network interface to an instance for a XaaS project.",
+        "operationId": "instance_attach_port_v1_xaas_instances_network_interface_attach_post",
+        "parameters": [
+          {
+            "name": "project_type",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ProjectType"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NICRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": false
+      }
+    },
+    "/v1/xaas/instances/network-interface/detach": {
+      "post": {
+        "tags": [
+          "xaas instances"
+        ],
+        "summary": "Detach a non primary network interface from an instance.",
+        "description": "Detach a non primary network interface from an instance for a XaaS project.",
+        "operationId": "instance_detach_port_v1_xaas_instances_network_interface_detach_post",
+        "parameters": [
+          {
+            "name": "project_type",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ProjectType"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NICRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": false
+      }
+    },
     "/v1/xaas/instances/{id}": {
       "get": {
         "tags": [
@@ -2975,132 +3085,6 @@
         }
       }
     },
-    "/v1/xaas/instances/{id}/port/{port_id}/attach": {
-      "post": {
-        "tags": [
-          "xaas instances"
-        ],
-        "summary": "Attach port to instance",
-        "description": "Attach port to instance for a XaaS project",
-        "operationId": "instance_attach_port_v1_xaas_instances__id__port__port_id__attach_post",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Id"
-            }
-          },
-          {
-            "name": "port_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Port Id"
-            }
-          },
-          {
-            "name": "project_type",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "$ref": "#/components/schemas/ProjectType"
-            }
-          },
-          {
-            "name": "x-tenant-id",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "X-Tenant-Id"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Successful Response"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "x-viveiro": false
-      }
-    },
-    "/v1/xaas/instances/{id}/port/{port_id}/detach": {
-      "post": {
-        "tags": [
-          "xaas instances"
-        ],
-        "summary": "Detach a non primary port from instance",
-        "description": "Detach a non primary port from instance for a XaaS project",
-        "operationId": "instance_detach_port_v1_xaas_instances__id__port__port_id__detach_post",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Id"
-            }
-          },
-          {
-            "name": "port_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Port Id"
-            }
-          },
-          {
-            "name": "project_type",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "$ref": "#/components/schemas/ProjectType"
-            }
-          },
-          {
-            "name": "x-tenant-id",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "X-Tenant-Id"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Successful Response"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "x-viveiro": false
-      }
-    },
     "/v1/xaas/instances/{id}/reboot": {
       "post": {
         "tags": [
@@ -3172,7 +3156,7 @@
             "schema": {
               "type": "string",
               "title": "Id",
-              "format": "uuid"
+              "format": "uuid4"
             }
           },
           {
@@ -5726,7 +5710,7 @@
           },
           "ssh_key_name": {
             "type": "string",
-            "title": "Ssh Key Name"
+            "title": "Ssh key Name"
           },
           "image": {
             "anyOf": [
@@ -5779,7 +5763,7 @@
                 "type": "null"
               }
             ],
-            "title": "User Data"
+            "title": "Used to perform automated configuration tasks."
           }
         },
         "title": "InstanceCreateRequestV1Xaas",

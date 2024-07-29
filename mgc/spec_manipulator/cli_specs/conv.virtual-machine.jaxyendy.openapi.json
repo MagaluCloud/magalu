@@ -636,199 +636,6 @@
         "x-mgc-hidden": true
       }
     },
-    "/v1/backups/{id}/copy": {
-      "post": {
-        "tags": [
-          "backups"
-        ],
-        "summary": "Copy a backup of a virtual machine asynchronously.",
-        "description": "Copy a backup region",
-        "operationId": "copy_backup_region_v1_backups__id__copy_post",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Id",
-              "format": "uuid"
-            }
-          },
-          {
-            "name": "x-tenant-id",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "X-Tenant-Id"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/BackupCopyRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "204": {
-            "description": "Successful Response"
-          },
-          "400": {
-            "description": "Backup Not Allowed Exception",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ExceptionModel"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Instance Not Found Exception",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ExceptionModel"
-                }
-              }
-            }
-          },
-          "409": {
-            "description": "Backup Validation Exception",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ExceptionModel"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Exception",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ExceptionModel"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "x-viveiro": true
-      }
-    },
-    "/v1/backups/{id}/rename": {
-      "patch": {
-        "tags": [
-          "backups"
-        ],
-        "summary": "Renames a backup",
-        "description": "Renames a backup with the id provided in the current tenant which is logged in.\n\n#### Rules\n- You can use the backup list command to retrieve all backups, so you can get the id of\nthe backup that you want to rename.\n- A Backup can only renamed when it's in completed status.\n- Each backup must have a unique name.",
-        "operationId": "rename_backup_v1_backups__id__rename_patch",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Id"
-            }
-          },
-          {
-            "name": "x-tenant-id",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "X-Tenant-Id"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/BackupRenameRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "204": {
-            "description": "Successful Response"
-          },
-          "400": {
-            "description": "Backup Not Allowed Exception",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ExceptionModel"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Instance Not Found Exception",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ExceptionModel"
-                }
-              }
-            }
-          },
-          "409": {
-            "description": "Backup Validation Exception",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ExceptionModel"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Exception",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ExceptionModel"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "x-viveiro": true
-      }
-    },
     "/v1/backups/{id}/restore": {
       "post": {
         "tags": [
@@ -2941,7 +2748,10 @@
                     "$ref": "#/components/schemas/Name"
                   }
                 ],
-                "title": "Vpc"
+                "title": "Vpc",
+                "default": {
+                  "name": "default"
+                }
               },
               "interface": {
                 "anyOf": [
@@ -3486,7 +3296,10 @@
                 "$ref": "#/components/schemas/Name"
               }
             ],
-            "title": "Vpc"
+            "title": "Vpc",
+            "default": {
+              "name": "default"
+            }
           },
           "interface": {
             "anyOf": [

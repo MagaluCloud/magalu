@@ -46,6 +46,7 @@ type ListResult struct {
 type ListResultSnapshotsItem struct {
 	CreatedAt   string                        `json:"created_at"`
 	Description *string                       `json:"description"`
+	Error       *ListResultSnapshotsItemError `json:"error,omitempty"`
 	Id          string                        `json:"id"`
 	Name        string                        `json:"name"`
 	Size        int                           `json:"size"`
@@ -53,6 +54,11 @@ type ListResultSnapshotsItem struct {
 	Status      string                        `json:"status"`
 	UpdatedAt   string                        `json:"updated_at"`
 	Volume      ListResultSnapshotsItemVolume `json:"volume"`
+}
+
+type ListResultSnapshotsItemError struct {
+	Message string `json:"message"`
+	Slug    string `json:"slug"`
 }
 
 // any of: ListResultSnapshotsItemVolume

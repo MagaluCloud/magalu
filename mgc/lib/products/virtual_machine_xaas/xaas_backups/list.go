@@ -13,7 +13,7 @@ List Virtual Machine backups in the current tenant which is logged in.
 - You can use the **extend** argument to get more details from the inner objects
 like image or type.
 
-Version: 1.249.1
+Version: 1.255.1
 
 import "magalu.cloud/lib/products/virtual_machine_xaas/xaas_backups"
 */
@@ -59,7 +59,7 @@ type ListResultBackupsItem struct {
 
 // any of: ListResultBackupsItemInstance
 type ListResultBackupsItemInstance struct {
-	Id          string                                   `json:"id"`
+	Id          *string                                  `json:"id"`
 	Image       ListResultBackupsItemInstanceImage       `json:"image"`
 	MachineType ListResultBackupsItemInstanceMachineType `json:"machine_type"`
 	Name        string                                   `json:"name"`

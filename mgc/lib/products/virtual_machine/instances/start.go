@@ -3,7 +3,7 @@ Executor: start
 
 # Summary
 
-Starts a running or suspended instance.
+Starts an instance.
 
 # Description
 

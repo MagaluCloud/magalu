@@ -32,6 +32,7 @@ type HeadResult struct {
 	ContentType   string `json:"ContentType"`
 	ETag          string `json:"ETag"`
 	LastModified  string `json:"LastModified"`
+	StorageClass  string `json:"StorageClass"`
 }
 
 func (s *service) Head(
