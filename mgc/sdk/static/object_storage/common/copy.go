@@ -25,15 +25,17 @@ func copyAllLogger() *zap.SugaredLogger {
 }
 
 type CopyObjectParams struct {
-	Source      mgcSchemaPkg.URI `json:"src" jsonschema:"description=Path of the object in a bucket to be copied,example=bucket1/file.txt" mgc:"positional"`
-	Destination mgcSchemaPkg.URI `json:"dst" jsonschema:"description=Full destination path in the bucket with desired filename,example=bucket2/dir/file.txt" mgc:"positional"`
-	Version     string           `json:"obj_version,omitempty" jsonschema:"description=Version of the object to be copied"`
+	Source       mgcSchemaPkg.URI `json:"src" jsonschema:"description=Path of the object in a bucket to be copied,example=bucket1/file.txt" mgc:"positional"`
+	Destination  mgcSchemaPkg.URI `json:"dst" jsonschema:"description=Full destination path in the bucket with desired filename,example=bucket2/dir/file.txt" mgc:"positional"`
+	Version      string           `json:"obj_version,omitempty" jsonschema:"description=Version of the object to be copied"`
+	StorageClass string           `json:"storage_class,omitempty" jsonschema:"description=Copy objects to other storage classes,example=cold,enum=,enum=standard,enum=cold,enum=glacier_ir,enum=cold_instant,default="`
 }
 
 type CopyAllObjectsParams struct {
-	Source      mgcSchemaPkg.URI `json:"src" jsonschema:"description=Path of objects in a bucket to be copied,example=bucket1" mgc:"positional"`
-	Destination mgcSchemaPkg.URI `json:"dst" jsonschema:"description=Full destination path in the bucket,example=bucket2/dir/" mgc:"positional"`
-	Filters     `json:",squash"` // nolint
+	Source       mgcSchemaPkg.URI `json:"src" jsonschema:"description=Path of objects in a bucket to be copied,example=bucket1" mgc:"positional"`
+	Destination  mgcSchemaPkg.URI `json:"dst" jsonschema:"description=Full destination path in the bucket,example=bucket2/dir/" mgc:"positional"`
+	StorageClass string           `json:"storage_class,omitempty" jsonschema:"description=Copy objects to other storage classes,example=cold,enum=,enum=standard,enum=cold,enum=glacier_ir,enum=cold_instant,default="`
+	Filters      `json:",squash"` // nolint
 }
 
 type copier interface {
@@ -74,8 +76,8 @@ func createObjectCopyProcessor(cfg Config, params CopyAllObjectsParams, progress
 		var err error
 
 		defer func() { progressReporter.Report(1, 0, err) }()
-
-		objURI := rootURI.JoinPath(dirEntry.Path())
+		path := dirEntry.Path()
+		objURI := rootURI.JoinPath(path)
 
 		if dirEntry.Err() != nil {
 			err = &ObjectError{Url: mgcSchemaPkg.URI(objURI), Err: dirEntry.Err()}
@@ -89,7 +91,7 @@ func createObjectCopyProcessor(cfg Config, params CopyAllObjectsParams, progress
 		}
 
 		copyAllLogger().Infow("Copying object", "uri", objURI)
-		err = CopySingleFile(ctx, cfg, objURI, params.Destination.JoinPath(dirEntry.Path()))
+		err = CopySingleFile(ctx, cfg, objURI, params.Destination.JoinPath(dirEntry.Path()), params.StorageClass)
 		if err != nil {
 			return err, pipeline.ProcessAbort
 		}
@@ -142,7 +144,7 @@ func CopyMultipleFiles(ctx context.Context, cfg Config, params CopyAllObjectsPar
 	return nil
 }
 
-func CopySingleFile(ctx context.Context, cfg Config, src mgcSchemaPkg.URI, dst mgcSchemaPkg.URI) error {
+func CopySingleFile(ctx context.Context, cfg Config, src mgcSchemaPkg.URI, dst mgcSchemaPkg.URI, storageClass string) error {
 	if dst.IsRoot() {
 		dst = dst.JoinPath(src.Filename())
 	}
@@ -150,6 +152,10 @@ func CopySingleFile(ctx context.Context, cfg Config, src mgcSchemaPkg.URI, dst m
 	req, err := newCopyRequest(ctx, cfg, src, dst, "")
 	if err != nil {
 		return err
+	}
+
+	if storageClass != "" {
+		req.Header.Set("X-Amz-Storage-Class", storageClass)
 	}
 
 	resp, err := SendRequest(ctx, req)
@@ -160,7 +166,7 @@ func CopySingleFile(ctx context.Context, cfg Config, src mgcSchemaPkg.URI, dst m
 	return ExtractErr(resp, req)
 }
 
-func NewCopier(ctx context.Context, cfg Config, src mgcSchemaPkg.URI, dst mgcSchemaPkg.URI, version string) (copier, error) {
+func NewCopier(ctx context.Context, cfg Config, src mgcSchemaPkg.URI, dst mgcSchemaPkg.URI, version string, storageClass string) (copier, error) {
 	metadata, err := HeadFile(ctx, cfg, src, version)
 	if err != nil {
 		return nil, err
@@ -170,17 +176,19 @@ func NewCopier(ctx context.Context, cfg Config, src mgcSchemaPkg.URI, dst mgcSch
 
 	if totalCopyParts > 1 {
 		return &bigFileCopier{
-			cfg:        cfg,
-			src:        src,
-			dst:        dst,
-			fileSize:   metadata.ContentLength,
-			totalParts: totalCopyParts,
+			cfg:          cfg,
+			src:          src,
+			dst:          dst,
+			fileSize:     metadata.ContentLength,
+			totalParts:   totalCopyParts,
+			storageClass: storageClass,
 		}, nil
 	} else {
 		return &smallFileCopier{
-			cfg: cfg,
-			src: src,
-			dst: dst,
+			cfg:          cfg,
+			src:          src,
+			dst:          dst,
+			storageClass: storageClass,
 		}, nil
 	}
 }

@@ -15,6 +15,7 @@ type HeadObjectResponse struct {
 	ContentLength int64
 	ETag          string
 	ContentType   string
+	StorageClass  string
 }
 
 func newHeadRequest(ctx context.Context, cfg Config, dst mgcSchemaPkg.URI, version string) (*http.Request, error) {

@@ -45,7 +45,7 @@ func copy(ctx context.Context, p common.CopyObjectParams, cfg common.Config) (re
 		fullDstPath = fullDstPath.JoinPath(fileName)
 	}
 
-	copier, err := common.NewCopier(ctx, cfg, p.Source, fullDstPath, p.Version)
+	copier, err := common.NewCopier(ctx, cfg, p.Source, fullDstPath, p.Version, p.StorageClass)
 	if err != nil {
 		return nil, err
 	}

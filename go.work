@@ -7,5 +7,4 @@ use (
 	./mgc/lib
 	./mgc/sdk
 	./mgc/spec_manipulator
-	./mgc/terraform-provider-mgc
 )

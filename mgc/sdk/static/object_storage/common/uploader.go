@@ -19,7 +19,7 @@ type uploader interface {
 	Upload(context.Context) error
 }
 
-func NewUploader(cfg Config, src mgcSchemaPkg.FilePath, dst mgcSchemaPkg.URI) (uploader, error) {
+func NewUploader(cfg Config, src mgcSchemaPkg.FilePath, dst mgcSchemaPkg.URI, storageClass string) (uploader, error) {
 	fileInfo, err := os.Stat(src.String())
 	if err != nil {
 		return nil, fmt.Errorf("error reading object: %w", err)
@@ -35,20 +35,22 @@ func NewUploader(cfg Config, src mgcSchemaPkg.FilePath, dst mgcSchemaPkg.URI) (u
 
 	if chunkN > 1 {
 		return &bigFileUploader{
-			cfg:      cfg,
-			dst:      dst,
-			mimeType: mimeType,
-			fileInfo: fileInfo,
-			filePath: src,
-			workerN:  cfg.Workers,
+			cfg:          cfg,
+			dst:          dst,
+			mimeType:     mimeType,
+			fileInfo:     fileInfo,
+			filePath:     src,
+			workerN:      cfg.Workers,
+			storageClass: storageClass,
 		}, nil
 	} else {
 		return &smallFileUploader{
-			cfg:      cfg,
-			dst:      dst,
-			mimeType: mimeType,
-			fileInfo: fileInfo,
-			filePath: src,
+			cfg:          cfg,
+			dst:          dst,
+			mimeType:     mimeType,
+			fileInfo:     fileInfo,
+			filePath:     src,
+			storageClass: storageClass,
 		}, nil
 	}
 }

@@ -19,6 +19,7 @@ type uploadDirParams struct {
 	Source         mgcSchemaPkg.DirPath `json:"src" jsonschema:"description=Source directory path for upload,example=path/to/folder" mgc:"positional"`
 	Destination    mgcSchemaPkg.URI     `json:"dst" jsonschema:"description=Full destination path in the bucket,example=my-bucket/dir/" mgc:"positional"`
 	Shallow        bool                 `json:"shallow,omitempty" jsonschema:"description=Don't upload subdirectories,default=false"`
+	StorageClass   string               `json:"storage_class,omitempty" jsonschema:"description=Type of Storage in which to store object,example=cold,enum=,enum=standard,enum=cold,enum=glacier_ir,enum=cold_instant,default="`
 	common.Filters `json:",squash"`     // nolint
 }
 
@@ -41,7 +42,7 @@ var getUploadDir = utils.NewLazyLoader[core.Executor](func() core.Executor {
 	})
 })
 
-func createObjectUploadProcessor(cfg common.Config, destination mgcSchemaPkg.URI, basePath string, progressReporter *progress_report.UnitsReporter) pipeline.Processor[pipeline.WalkDirEntry, error] {
+func createObjectUploadProcessor(cfg common.Config, destination mgcSchemaPkg.URI, basePath string, storageClass string, progressReporter *progress_report.UnitsReporter) pipeline.Processor[pipeline.WalkDirEntry, error] {
 	return func(ctx context.Context, dirEntry pipeline.WalkDirEntry) (error, pipeline.ProcessStatus) {
 		var err error
 		defer func() { progressReporter.Report(1, 0, err) }()
@@ -60,7 +61,7 @@ func createObjectUploadProcessor(cfg common.Config, destination mgcSchemaPkg.URI
 
 		_, err = upload(
 			ctx,
-			uploadParams{Source: mgcSchemaPkg.FilePath(filePath), Destination: dst},
+			uploadParams{Source: mgcSchemaPkg.FilePath(filePath), Destination: dst, StorageClass: storageClass},
 			cfg,
 		)
 
@@ -115,7 +116,7 @@ func uploadDir(ctx context.Context, params uploadDirParams, cfg common.Config) (
 	})
 
 	entries = common.ApplyFilters(ctx, entries, params.FilterParams, cancel)
-	uploadObjectsErrorChan := pipeline.ParallelProcess(ctx, cfg.Workers, entries, createObjectUploadProcessor(cfg, params.Destination, basePath.String(), progressReporter), nil)
+	uploadObjectsErrorChan := pipeline.ParallelProcess(ctx, cfg.Workers, entries, createObjectUploadProcessor(cfg, params.Destination, basePath.String(), params.StorageClass, progressReporter), nil)
 	uploadObjectsErrorChan = pipeline.Filter(ctx, uploadObjectsErrorChan, pipeline.FilterNonNil[error]{})
 
 	objErr, err := pipeline.SliceItemConsumer[utils.MultiError](ctx, uploadObjectsErrorChan)

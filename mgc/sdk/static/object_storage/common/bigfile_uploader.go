@@ -55,13 +55,14 @@ type completionRequest struct {
 }
 
 type bigFileUploader struct {
-	cfg      Config
-	dst      mgcSchemaPkg.URI
-	mimeType string
-	fileInfo fs.FileInfo
-	filePath mgcSchemaPkg.FilePath
-	workerN  int
-	uploadId string
+	cfg          Config
+	dst          mgcSchemaPkg.URI
+	mimeType     string
+	fileInfo     fs.FileInfo
+	filePath     mgcSchemaPkg.FilePath
+	workerN      int
+	uploadId     string
+	storageClass string
 }
 
 var _ uploader = (*bigFileUploader)(nil)
@@ -73,6 +74,11 @@ func (u *bigFileUploader) newPreparationRequest(ctx context.Context) (*http.Requ
 	}
 	req.Method = http.MethodPost
 	req.Header.Set("Content-Type", "application/octet-stream")
+
+	if u.storageClass != "" {
+		req.Header.Set("X-Amz-Storage-Class", u.storageClass)
+	}
+
 	q := req.URL.Query()
 	q.Set("uploads", "")
 	req.URL.RawQuery = q.Encode()

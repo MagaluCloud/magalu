@@ -12,8 +12,9 @@ import (
 )
 
 type uploadParams struct {
-	Source      mgcSchemaPkg.FilePath `json:"src" jsonschema:"description=Source file path to be uploaded,example=./file.txt" mgc:"positional"`
-	Destination mgcSchemaPkg.URI      `json:"dst" jsonschema:"description=Full destination path in the bucket with desired filename,example=my-bucket/dir/file.txt" mgc:"positional"`
+	Source       mgcSchemaPkg.FilePath `json:"src" jsonschema:"description=Source file path to be uploaded,example=./file.txt" mgc:"positional"`
+	Destination  mgcSchemaPkg.URI      `json:"dst" jsonschema:"description=Full destination path in the bucket with desired filename,example=my-bucket/dir/file.txt" mgc:"positional"`
+	StorageClass string                `json:"storage_class,omitempty" jsonschema:"description=Type of Storage in which to store object,example=cold,enum=,enum=standard,enum=cold,enum=glacier_ir,enum=cold_instant,default="`
 }
 
 type uploadTemplateResult struct {
@@ -46,7 +47,7 @@ func upload(ctx context.Context, params uploadParams, cfg common.Config) (*uploa
 		fullDstPath = fullDstPath.JoinPath(fileName)
 	}
 
-	uploader, err := common.NewUploader(cfg, params.Source, fullDstPath)
+	uploader, err := common.NewUploader(cfg, params.Source, fullDstPath, params.StorageClass)
 	if err != nil {
 		return nil, err
 	}

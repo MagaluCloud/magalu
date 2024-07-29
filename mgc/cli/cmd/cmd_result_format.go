@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
+	"gopkg.in/yaml.v3"
 	"magalu.cloud/core"
 	mgcSdk "magalu.cloud/sdk"
 )
@@ -14,7 +15,7 @@ func formatResult(sdk *mgcSdk.Sdk, cmd *cobra.Command, result core.Result) error
 	output := getOutputFor(sdk, cmd, result)
 
 	if resultWithReader, ok := core.ResultAs[core.ResultWithReader](result); ok {
-		return handleResultWithReader(resultWithReader.Reader(), output)
+		return handleResultWithReader(resultWithReader.Reader(), output, cmd)
 	}
 
 	if resultWithValue, ok := core.ResultAs[core.ResultWithValue](result); ok {
@@ -24,25 +25,32 @@ func formatResult(sdk *mgcSdk.Sdk, cmd *cobra.Command, result core.Result) error
 	return fmt.Errorf("unsupported result: %T %+v", result, result)
 }
 
-func handleResultWithReader(reader io.Reader, outFile string) (err error) {
+func handleResultWithReader(reader io.Reader, outFile string, cmd *cobra.Command) (err error) {
 	if closer, ok := reader.(io.Closer); ok {
 		defer closer.Close()
 	}
 
-	var writer io.WriteCloser
-	if outFile == "" || outFile == "-" {
-		writer = os.Stdout
-	} else {
-		writer, err = os.OpenFile(outFile, os.O_WRONLY|os.O_TRUNC|os.O_CREATE, 0644)
+	if outFile == "yaml" {
+		yamlOutputFormatter := yamlOutputFormatter{}
+		outputObject := make(map[string]interface{})
+		outputBytes, err := io.ReadAll(reader)
 		if err != nil {
-			return err
+			return fmt.Errorf("error reading from reader: %w", err)
 		}
+		err = yaml.Unmarshal(outputBytes, outputObject)
+		if err != nil {
+			return fmt.Errorf("error unmarshaling YAML: %w", err)
+		}
+		err = yamlOutputFormatter.Format(outputObject, "", getRawOutputFlag(cmd))
+		if err != nil {
+			return fmt.Errorf("error formatting YAML output: %w", err)
+		}
+		return nil
 	}
 
-	n, err := io.Copy(writer, reader)
-	defer writer.Close()
+	_, err = io.Copy(os.Stdout, reader)
 	if err != nil {
-		return fmt.Errorf("Wrote %d bytes. Error: %w\n", n, err)
+		return fmt.Errorf("error copying reader to stdout: %w", err)
 	}
 	return nil
 }

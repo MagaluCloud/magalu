@@ -34,29 +34,11 @@ archives:
     format: zip
     builds:
       - terraform
-    files:
-      - src: "mgc/terraform-provider-mgc/user-guide.md"
-        dst: "README.md"
-      - src: "mgc/terraform-provider-mgc/docs/index.md"
-        dst: "docs/index.md"
-      - src: "mgc/terraform-provider-mgc/docs/**/*"
-        dst: "docs/resources"
-      - src: "mgc/terraform-provider-mgc/install.sh"
-        dst: "install.sh"
   - id: terraformwin
     name_template: "terraform-provider-mgc_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
     format: zip
     builds:
       - terraformwin
-    files:
-      - src: "mgc/terraform-provider-mgc/user-guide.md"
-        dst: "README.md"
-      - src: "mgc/terraform-provider-mgc/docs/index.md"
-        dst: "docs/index.md"
-      - src: "mgc/terraform-provider-mgc/docs/**/*"
-        dst: "docs/resources"
-      - src: "mgc/terraform-provider-mgc/install.sh"
-        dst: "install.sh"
 checksum:
   extra_files:
     - glob: 'mgc/terraform-provider-mgc/terraform-registry-manifest.json'

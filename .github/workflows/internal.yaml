@@ -1,4 +1,4 @@
-name: MGC DEV RELEASE(MANUAL)
+name: Internal Release
 
 on:
   workflow_dispatch:

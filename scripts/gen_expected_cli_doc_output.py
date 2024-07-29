@@ -62,7 +62,7 @@ def gen_help_output(path: list[str]) -> str:
 
 
 def gen_output_h_flag(path: list[str]) -> str:
-    cmd = path + ["-h"]
+    cmd = path + ["-h"] + ["--raw"]
     return gen_output(cmd)
 
 

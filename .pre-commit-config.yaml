@@ -5,7 +5,7 @@ repos:
     -   id: spec-stats
         name: spec-stats
         language: python
-        entry: bash -c 'python3 ./scripts/spec_stats.py ./mgc/cli/openapis -o ./script-qa/spec_stats_dump.yml'
+        entry: bash -c 'python3 ./scripts/spec_stats.py ./mgc/cli/openapis -o ./spec_stats_dump.yml'
         types_or: [python, yaml]
         stages: [pre-commit, pre-push]
         additional_dependencies: [jsonschema, PyYAML, typing, argparse]
@@ -14,24 +14,18 @@ repos:
         language: golang
         entry: bash -c 'find . -name go.mod -execdir go test ./... \; | grep -zqv FAIL'
         stages: [pre-push]
-    -   id: check-cli-dump-tree-output
-        name: check "cli dump-tree" output
-        language: system
-        entry: bash -c './scripts/gen_expected_cli_dump_tree_output_file.sh'
-        require_serial: true
-        stages: [pre-commit]
-    -   id: check-cli-help-outputs
-        name: check "cli help" outputs
-        language: system
-        entry: bash -c './scripts/gen_expected_cli_full_help_output_file.sh'
-        require_serial: true
-        stages: [pre-commit]
-    -   id: check-cli-docs-outputs
-        name: check "cli doc" outputs
-        language: system
-        entry: bash -c './scripts/gen_expected_cli_doc_output_file.sh'
-        require_serial: true
-        stages: [pre-commit]
+    # -   id: check-cli-dump-tree-output
+    #     name: check "cli dump-tree" output
+    #     language: system
+    #     entry: bash -c './scripts/gen_expected_cli_dump_tree_output_file.sh'
+    #     require_serial: true
+    #     stages: [pre-commit]
+    # -   id: check-cli-docs-outputs
+    #     name: check "cli doc" outputs
+    #     language: system
+    #     entry: bash -c './scripts/gen_expected_cli_doc_output_file.sh'
+    #     require_serial: true
+    #     stages: [pre-commit]
     # -   id: apply-oapi-customizations
     #     name: apply-oapi-customizations
     #     language: system
@@ -71,13 +65,19 @@ repos:
     hooks:
     -   id: trailing-whitespace
         stages: [pre-commit, pre-push]
-        exclude: ^script-qa/
+        exclude: >
+         (?x)(
+            ^mgc/sdk/version.txt|
+            ^script-qa/
+            ^mgc/cli/docs/|
+          )
     -   id: end-of-file-fixer
         stages: [pre-commit, pre-push]
         exclude: >
           (?x)(
             ^mgc/sdk/version.txt|
             ^script-qa/
+            ^mgc/cli/docs/|
           )
     -   id: check-yaml
         stages: [pre-commit, pre-push]

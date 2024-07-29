@@ -1,12 +1,11 @@
 #!/bin/bash
+
 me=$(basename "$0")
 echo "RUNNING $me"
 
-BASEDIR=$(dirname $0)
-ROOTDIR=$(builtin cd $BASEDIR/..; pwd)
 MGCDIR=${MGCDIR:-"mgc/cli/"}
-DUMP_TREE="script-qa/cli-dump-tree.json"
-OUT_DIR="script-qa/cli-doc"
+DUMP_TREE="mgc/cli/cli-dump-tree.json"
+OUT_DIR="mgc/cli/docs"
 
 set -xe
 cd $MGCDIR

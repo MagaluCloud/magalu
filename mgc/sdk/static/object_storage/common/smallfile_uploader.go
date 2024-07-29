@@ -11,11 +11,12 @@ import (
 )
 
 type smallFileUploader struct {
-	cfg      Config
-	dst      mgcSchemaPkg.URI
-	mimeType string
-	fileInfo fs.FileInfo
-	filePath mgcSchemaPkg.FilePath
+	cfg          Config
+	dst          mgcSchemaPkg.URI
+	mimeType     string
+	fileInfo     fs.FileInfo
+	filePath     mgcSchemaPkg.FilePath
+	storageClass string
 }
 
 var _ uploader = (*smallFileUploader)(nil)
@@ -45,6 +46,10 @@ func (u *smallFileUploader) Upload(ctx context.Context) error {
 	}
 
 	req.Header.Set("Content-Type", u.mimeType)
+
+	if u.storageClass != "" {
+		req.Header.Set("X-Amz-Storage-Class", u.storageClass)
+	}
 
 	resp, err := SendRequest(ctx, req)
 	if err != nil {

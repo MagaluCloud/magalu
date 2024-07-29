@@ -1,4 +1,4 @@
-name: MGC RELEASE(MANUAL)
+name: Release CLI and Terraform
 
 on:
   workflow_dispatch:

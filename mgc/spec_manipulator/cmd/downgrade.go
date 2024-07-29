@@ -292,7 +292,7 @@ var downgradeSpecCmd = &cobra.Command{
 	Hidden: true,
 	Run: func(cmd *cobra.Command, args []string) {
 		// runPrepare(cmd, args)
-		_ = verificarEAtualizarDiretorio(SPEC_DIR)
+		_ = verificarEAtualizarDiretorio(currentDir())
 
 		currentConfig, err := loadList()
 
@@ -302,7 +302,7 @@ var downgradeSpecCmd = &cobra.Command{
 		}
 
 		for _, v := range currentConfig {
-			file := filepath.Join(SPEC_DIR, v.File)
+			file := filepath.Join(currentDir(), v.File)
 			fileBytes, err := os.ReadFile(file)
 			if err != nil {
 				fmt.Println(err)
@@ -385,7 +385,7 @@ var downgradeSpecCmd = &cobra.Command{
 				panic(fmt.Sprintf("cannot re-render document: %d errors reported", len(errs)))
 			}
 
-			_ = os.WriteFile(filepath.Join(SPEC_DIR, "conv."+v.File), fileBytes, 0644)
+			_ = os.WriteFile(filepath.Join(currentDir(), "conv."+v.File), fileBytes, 0644)
 		}
 	},
 }
