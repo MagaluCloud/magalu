@@ -194,6 +194,7 @@ func (p *MgcProvider) Resources(ctx context.Context) []func() resource.Resource 
 	resources, err := collectGroupResources(ctx, p.sdk, root, []string{providerTypeName})
 
 	resources = append(resources,
+		NewObjectStorageBucketsResource,
 		NewVirtualMachineInstancesResource,
 		NewVirtualMachineSnapshotsResource,
 		NewVolumeAttachResource)
@@ -262,6 +263,7 @@ func collectGroupResources(
 	strResourceName = strings.Replace(strResourceName, "-", "_", -1)
 
 	ignoredTFModules := []string{
+		"mgc_object_storage_buckets",
 		"mgc_virtual_machine_instances",
 		"mgc_virtual_machine_snapshots",
 		"mgc_block_storage_volume_attachment",
