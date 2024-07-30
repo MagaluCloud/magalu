@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"os"
 	"regexp"
 	"runtime"
 	"slices"
@@ -20,6 +21,7 @@ const (
 	loggerConfigKey     = "logging"
 	defaultRegion       = "br-se1"
 	defaultOutputFormat = "yaml"
+	apiKeyEnvVar        = "MGC_API_KEY"
 )
 
 var argParser = &osArgParser{}
@@ -73,7 +75,7 @@ can generate a command line on-demand for Rest manipulation`,
 	addShowInternalFlag(rootCmd)
 	addShowHiddenFlag(rootCmd)
 	addRawOutputFlag(rootCmd)
-
+	addApiKeyFlag(rootCmd)
 	rootCmd.PersistentFlags().VisitAll(func(f *pflag.Flag) { f.Hidden = true })
 
 	rootCmd.InitDefaultHelpFlag()
@@ -92,6 +94,11 @@ can generate a command line on-demand for Rest manipulation`,
 		if err == nil || len(args) == 0 {
 			break
 		}
+
+		if strings.HasPrefix(err.Error(), "flag needs an argument:") {
+			break
+		}
+
 		flag, found := strings.CutPrefix(err.Error(), "unknown flag: ")
 		if found && len(flag) > 0 {
 			skipTo := slices.IndexFunc(args, func(arg string) bool {
@@ -143,6 +150,8 @@ can generate a command line on-demand for Rest manipulation`,
 
 	setDefaultRegion(sdk)
 	setDefaultOutputFormat(sdk)
+	setApiKey(rootCmd, sdk)
+	setKeyPair(sdk)
 
 	err = rootCmd.Execute()
 	if err == nil && loadErr != nil {
@@ -151,6 +160,32 @@ can generate a command line on-demand for Rest manipulation`,
 
 	err = showHelpForError(rootCmd, mainArgs, err) // since we SilenceUsage and SilenceErrors
 	return err
+}
+
+func setKeyPair(sdk *mgcSdk.Sdk) {
+	objId := os.Getenv("MGC_OBJ_KEY_ID")
+	objKey := os.Getenv("MGC_OBJ_KEY_SECRET")
+
+	if objId != "" && objKey != "" {
+		sdk.Config().AddTempKeyPair("apikey",
+			objId,
+			objKey,
+		)
+	}
+}
+
+func setApiKey(rootCmd *cobra.Command, sdk *mgcSdk.Sdk) {
+	if key := getApiKeyFlag(rootCmd); key != "" {
+		apiKeyParameters := APIKeyParameters{
+			Key: key,
+		}
+		_ = sdk.Auth().SetAPIKey(apiKeyParameters)
+	} else if key := os.Getenv(apiKeyEnvVar); key != "" {
+		apiKeyParameters := APIKeyParameters{
+			Key: key,
+		}
+		_ = sdk.Auth().SetAPIKey(apiKeyParameters)
+	}
 }
 
 func getLastFlag(s string) string {
