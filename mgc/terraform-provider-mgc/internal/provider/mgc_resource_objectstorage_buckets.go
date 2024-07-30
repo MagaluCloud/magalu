@@ -3,7 +3,6 @@ package provider
 import (
 	"context"
 	"fmt"
-	"sync"
 
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -13,10 +12,6 @@ import (
 
 	sdkBuckets "magalu.cloud/lib/products/object_storage/buckets"
 	"magalu.cloud/sdk"
-)
-
-var (
-	bucketResourceMutex = &sync.Mutex{}
 )
 
 type ObjectStorageBucket struct {
@@ -173,8 +168,6 @@ func (r *objectStorageBuckets) Schema(ctx context.Context, req resource.SchemaRe
 }
 
 func (r *objectStorageBuckets) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	bucketResourceMutex.Lock()
-	defer bucketResourceMutex.Unlock()
 	var model ObjectStorageBucket
 	diags := req.Plan.Get(ctx, &model)
 
@@ -230,8 +223,6 @@ func convertGrants(grants []Grant) []sdkBuckets.CreateParametersGrantFullControl
 }
 
 func (r *objectStorageBuckets) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	bucketResourceMutex.Lock()
-	defer bucketResourceMutex.Unlock()
 	var model ObjectStorageBucket
 	diags := req.State.Get(ctx, &model)
 
@@ -248,8 +239,6 @@ func (r *objectStorageBuckets) Update(ctx context.Context, req resource.UpdateRe
 }
 
 func (r *objectStorageBuckets) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	bucketResourceMutex.Lock()
-	defer bucketResourceMutex.Unlock()
 	var model ObjectStorageBucket
 	diags := req.State.Get(ctx, &model)
 

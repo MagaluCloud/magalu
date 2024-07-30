@@ -3,7 +3,6 @@ package provider
 import (
 	"context"
 	"fmt"
-	"sync"
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -19,10 +18,6 @@ import (
 const (
 	AttachVolumeTimeout         = 5 * time.Minute
 	AttachVolumeCompletedStatus = "completed"
-)
-
-var (
-	volumeAttachMutex = &sync.Mutex{}
 )
 
 type VolumeAttach struct {
@@ -81,8 +76,6 @@ func (r *VolumeAttach) Schema(ctx context.Context, req resource.SchemaRequest, r
 }
 
 func (r *VolumeAttach) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	volumeAttachMutex.Lock()
-	defer volumeAttachMutex.Unlock()
 	var model VolumeAttachResourceModel
 	diags := req.Plan.Get(ctx, &model)
 
@@ -116,8 +109,6 @@ func (r *VolumeAttach) Create(ctx context.Context, req resource.CreateRequest, r
 }
 
 func (r *VolumeAttach) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	volumeAttachMutex.Lock()
-	defer volumeAttachMutex.Unlock()
 	var model VolumeAttachResourceModel
 	diags := req.State.Get(ctx, &model)
 
@@ -150,8 +141,6 @@ func (r *VolumeAttach) Read(ctx context.Context, req resource.ReadRequest, resp 
 }
 
 func (r *VolumeAttach) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	volumeAttachMutex.Lock()
-	defer volumeAttachMutex.Unlock()
 	var model VolumeAttachResourceModel
 	diags := req.Plan.Get(ctx, &model)
 
@@ -185,8 +174,6 @@ func (r *VolumeAttach) Update(ctx context.Context, req resource.UpdateRequest, r
 }
 
 func (r *VolumeAttach) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	volumeAttachMutex.Lock()
-	defer volumeAttachMutex.Unlock()
 	var model VolumeAttachResourceModel
 	diags := req.State.Get(ctx, &model)
 
