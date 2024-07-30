@@ -8,6 +8,8 @@ block-storage:
   - bs
   - blocks
   - blst
+  - block
+  - volumes
 config:
   - conf
 dbaas:
@@ -19,4 +21,9 @@ kubernetes:
   - kub
 object-storage:
   - object
+  - objects
   - objs
+  - os
+container-registry:
+  - cr
+  - registry
