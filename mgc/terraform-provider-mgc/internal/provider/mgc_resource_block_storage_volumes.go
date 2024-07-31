@@ -3,7 +3,6 @@ package provider
 import (
 	"context"
 	"fmt"
-	"sync"
 	"time"
 
 	bws "github.com/geffersonFerraz/brazilian-words-sorter"
@@ -22,9 +21,8 @@ import (
 
 // Ensure the implementation satisfies the expected interfaces.
 var (
-	_                     resource.Resource              = &bsVolumes{}
-	_                     resource.ResourceWithConfigure = &bsVolumes{}
-	bsVolumeResourceMutex                                = &sync.Mutex{}
+	_ resource.Resource              = &bsVolumes{}
+	_ resource.ResourceWithConfigure = &bsVolumes{}
 )
 
 // NewOrderResource is a helper function to simplify the provider implementation.
@@ -214,9 +212,6 @@ func (r *bsVolumes) setValuesFromServer(ctx context.Context, result sdkBlockStor
 
 // Read refreshes the Terraform state with the latest data.
 func (r *bsVolumes) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	bsVolumeResourceMutex.Lock()
-	defer bsVolumeResourceMutex.Unlock()
-
 	plan := &bsVolumesResourceModel{}
 	resp.Diagnostics.Append(req.State.Get(ctx, &plan)...)
 
@@ -240,9 +235,6 @@ func (r *bsVolumes) Read(ctx context.Context, req resource.ReadRequest, resp *re
 
 // Create creates the resource and sets the initial Terraform state.
 func (r *bsVolumes) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	bsVolumeResourceMutex.Lock()
-	defer bsVolumeResourceMutex.Unlock()
-
 	plan := &bsVolumesResourceModel{}
 	diags := req.Plan.Get(ctx, &plan)
 	resp.Diagnostics.Append(diags...)
@@ -303,8 +295,6 @@ func (r *bsVolumes) Create(ctx context.Context, req resource.CreateRequest, resp
 
 // Update updates the resource and sets the updated Terraform state on success.
 func (r *bsVolumes) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	bsVolumeResourceMutex.Lock()
-	defer bsVolumeResourceMutex.Unlock()
 	data := bsVolumesResourceModel{}
 	currState := &bsVolumesResourceModel{}
 
@@ -338,8 +328,6 @@ func (r *bsVolumes) Update(ctx context.Context, req resource.UpdateRequest, resp
 
 // Delete deletes the resource and removes the Terraform state on success.
 func (r *bsVolumes) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	bsVolumeResourceMutex.Lock()
-	defer bsVolumeResourceMutex.Unlock()
 	var data vmSnapshotsResourceModel
 	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
 	// UNCOMMENT THE FOLLOWING LINE TO DELETE THE RESOURCE

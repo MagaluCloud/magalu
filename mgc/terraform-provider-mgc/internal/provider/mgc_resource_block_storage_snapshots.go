@@ -3,7 +3,6 @@ package provider
 import (
 	"context"
 	"fmt"
-	"sync"
 	"time"
 
 	bws "github.com/geffersonFerraz/brazilian-words-sorter"
@@ -24,8 +23,6 @@ import (
 var (
 	_ resource.Resource              = &bsSnapshots{}
 	_ resource.ResourceWithConfigure = &bsSnapshots{}
-
-	bsVolumeSnapshotResourceMutex = &sync.Mutex{}
 )
 
 // NewOrderResource is a helper function to simplify the provider implementation.
@@ -177,9 +174,6 @@ func (r *bsSnapshots) setValuesFromServer(ctx context.Context, result sdkBlockSt
 
 // Read refreshes the Terraform state with the latest data.
 func (r *bsSnapshots) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	bsVolumeSnapshotResourceMutex.Lock()
-	defer bsVolumeSnapshotResourceMutex.Unlock()
-
 	data := &bsSnapshotsResourceModel{}
 	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
 
@@ -204,9 +198,6 @@ func (r *bsSnapshots) Read(ctx context.Context, req resource.ReadRequest, resp *
 
 // Create creates the resource and sets the initial Terraform state.
 func (r *bsSnapshots) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	bsVolumeSnapshotResourceMutex.Lock()
-	defer bsVolumeSnapshotResourceMutex.Unlock()
-
 	plan := &bsSnapshotsResourceModel{}
 	diags := req.Plan.Get(ctx, &plan)
 	resp.Diagnostics.Append(diags...)
@@ -272,9 +263,6 @@ func (r *bsSnapshots) Update(ctx context.Context, req resource.UpdateRequest, re
 
 // Delete deletes the resource and removes the Terraform state on success.
 func (r *bsSnapshots) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	bsVolumeSnapshotResourceMutex.Lock()
-	defer bsVolumeSnapshotResourceMutex.Unlock()
-
 	var data bsSnapshotsResourceModel
 	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
 
