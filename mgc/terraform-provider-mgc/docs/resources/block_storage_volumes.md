@@ -3,12 +3,12 @@
 page_title: "mgc_block_storage_volumes Resource - terraform-provider-mgc"
 subcategory: ""
 description: |-
-  Operations with volumes, including create, delete, extend, retype, list and other actions.
+  Block storage volumes are storage devices that can be attached to virtual machines. They are used to store data and can be detached and attached to other virtual machines.
 ---
 
 # mgc_block_storage_volumes (Resource)
 
-Operations with volumes, including create, delete, extend, retype, list and other actions.
+Block storage volumes are storage devices that can be attached to virtual machines. They are used to store data and can be detached and attached to other virtual machines.
 
 
 
@@ -17,123 +17,41 @@ Operations with volumes, including create, delete, extend, retype, list and othe
 
 ### Required
 
-- `name` (String)
-- `size` (Number) Gibibytes (GiB)
-- `type` (Attributes) (see [below for nested schema](#nestedatt--type))
+- `name` (String) The name of the block storage.
+- `size` (Number) The size of the block storage in GB.
+- `type` (Attributes) The type of the block storage. (see [below for nested schema](#nestedatt--type))
+
+### Optional
+
+- `name_is_prefix` (Boolean) Indicates whether the provided name is a prefix or the exact name of the block storage.
 
 ### Read-Only
 
-- `attachment` (Attributes) (see [below for nested schema](#nestedatt--attachment))
-- `created_at` (Attributes) (see [below for nested schema](#nestedatt--created_at))
-- `current_type` (Attributes) (see [below for nested schema](#nestedatt--current_type))
-- `error` (Attributes) (see [below for nested schema](#nestedatt--error))
-- `id` (String) The ID of this resource.
-- `state` (String)
-- `status` (String)
-- `updated_at` (Attributes) (see [below for nested schema](#nestedatt--updated_at))
+- `created_at` (String) The timestamp when the block storage was created.
+- `final_name` (String) The final name of the block storage after applying any naming conventions or modifications.
+- `id` (String) The unique identifier of the block storage.
+- `state` (String) The current state of the virtual machine instance.
+- `status` (String) The status of the virtual machine instance.
+- `updated_at` (String) The timestamp when the block storage was last updated.
 
 <a id="nestedatt--type"></a>
 ### Nested Schema for `type`
 
-Optional:
+Required:
 
-- `id` (String)
-- `name` (String)
-
-
-<a id="nestedatt--attachment"></a>
-### Nested Schema for `attachment`
+- `name` (String) The name of the block storage type.
 
 Read-Only:
 
-- `attached_at` (Attributes) (see [below for nested schema](#nestedatt--attachment--attached_at))
-- `device` (String)
-- `instance` (Attributes) (see [below for nested schema](#nestedatt--attachment--instance))
+- `disk_type` (String) The disk type of the block storage.
+- `id` (String) The unique identifier of the block storage type.
+- `iops` (Attributes) The IOPS of the block storage type. (see [below for nested schema](#nestedatt--type--iops))
+- `status` (String) The status of the block storage type.
 
-<a id="nestedatt--attachment--attached_at"></a>
-### Nested Schema for `attachment.attached_at`
-
-Read-Only:
-
-- `string1` (String)
-- `string2` (String)
-
-
-<a id="nestedatt--attachment--instance"></a>
-### Nested Schema for `attachment.instance`
+<a id="nestedatt--type--iops"></a>
+### Nested Schema for `type.iops`
 
 Read-Only:
 
-- `created_at` (Attributes) (see [below for nested schema](#nestedatt--attachment--instance--created_at))
-- `id` (String)
-- `name` (String)
-- `state` (String)
-- `status` (String)
-- `updated_at` (Attributes) (see [below for nested schema](#nestedatt--attachment--instance--updated_at))
-
-<a id="nestedatt--attachment--instance--created_at"></a>
-### Nested Schema for `attachment.instance.created_at`
-
-Read-Only:
-
-- `string1` (String)
-- `string2` (String)
-
-
-<a id="nestedatt--attachment--instance--updated_at"></a>
-### Nested Schema for `attachment.instance.updated_at`
-
-Read-Only:
-
-- `string1` (String)
-- `string2` (String)
-
-
-
-
-<a id="nestedatt--created_at"></a>
-### Nested Schema for `created_at`
-
-Read-Only:
-
-- `string1` (String)
-- `string2` (String)
-
-
-<a id="nestedatt--current_type"></a>
-### Nested Schema for `current_type`
-
-Read-Only:
-
-- `disk_type` (String)
-- `id` (String)
-- `iops` (Attributes) (see [below for nested schema](#nestedatt--current_type--iops))
-- `name` (String)
-- `status` (String)
-
-<a id="nestedatt--current_type--iops"></a>
-### Nested Schema for `current_type.iops`
-
-Read-Only:
-
-- `read` (Number)
-- `write` (Number)
-
-
-
-<a id="nestedatt--error"></a>
-### Nested Schema for `error`
-
-Read-Only:
-
-- `message` (String)
-- `slug` (String)
-
-
-<a id="nestedatt--updated_at"></a>
-### Nested Schema for `updated_at`
-
-Read-Only:
-
-- `string1` (String)
-- `string2` (String)
+- `read` (Number) The read IOPS of the block storage type.
+- `write` (Number) The write IOPS of the block storage type.

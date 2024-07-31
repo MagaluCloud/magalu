@@ -150,6 +150,7 @@ func (r *bsVolumes) Schema(_ context.Context, _ resource.SchemaRequest, resp *re
 				Computed:    true,
 			},
 			"type": schema.SingleNestedAttribute{
+				Required:    true,
 				Description: "The type of the block storage.",
 				Attributes: map[string]schema.Attribute{
 					"name": schema.StringAttribute{
@@ -169,6 +170,7 @@ func (r *bsVolumes) Schema(_ context.Context, _ resource.SchemaRequest, resp *re
 						Computed:    true,
 					},
 					"iops": schema.SingleNestedAttribute{
+						Computed:    true,
 						Description: "The IOPS of the block storage type.",
 						Attributes: map[string]schema.Attribute{
 							"read": schema.NumberAttribute{

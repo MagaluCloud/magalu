@@ -146,6 +146,7 @@ func (r *bsSnapshots) Schema(_ context.Context, _ resource.SchemaRequest, resp *
 				Computed:    true,
 			},
 			"volume": schema.SingleNestedAttribute{
+				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"id": schema.StringAttribute{
 						Description: "ID of block storage volume",
