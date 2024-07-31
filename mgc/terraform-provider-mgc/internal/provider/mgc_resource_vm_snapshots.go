@@ -18,8 +18,8 @@ import (
 )
 
 var (
-	_                      resource.Resource              = &vmSnapshots{}
-	_                      resource.ResourceWithConfigure = &vmSnapshots{}
+	_ resource.Resource              = &vmSnapshots{}
+	_ resource.ResourceWithConfigure = &vmSnapshots{}
 )
 
 func NewVirtualMachineSnapshotsResource() resource.Resource {
