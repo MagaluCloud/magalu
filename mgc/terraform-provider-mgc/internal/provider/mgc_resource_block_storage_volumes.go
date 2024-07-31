@@ -3,9 +3,15 @@ package provider
 import (
 	"context"
 	"fmt"
+	"sync"
 	"time"
 
+	bws "github.com/geffersonFerraz/brazilian-words-sorter"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	mgcSdk "magalu.cloud/lib"
@@ -16,8 +22,9 @@ import (
 
 // Ensure the implementation satisfies the expected interfaces.
 var (
-	_ resource.Resource              = &bsVolumes{}
-	_ resource.ResourceWithConfigure = &bsVolumes{}
+	_                     resource.Resource              = &bsVolumes{}
+	_                     resource.ResourceWithConfigure = &bsVolumes{}
+	bsVolumeResourceMutex                                = &sync.Mutex{}
 )
 
 // NewOrderResource is a helper function to simplify the provider implementation.
@@ -55,20 +62,21 @@ func (r *bsVolumes) Configure(ctx context.Context, req resource.ConfigureRequest
 	}
 
 	r.sdkClient = mgcSdk.NewClient(sdk)
-
 	r.bsVolumes = sdkBlockStorageVolumes.NewService(ctx, r.sdkClient)
 }
 
 // vmSnapshotsResourceModel maps de resource schema data.
 type bsVolumesResourceModel struct {
-	ID        types.String `tfsdk:"id"`
-	Name      types.String `tfsdk:"name"`
-	Size      types.Int64  `tfsdk:"size"`
-	Type      bsVolumeType `tfsdk:"type"`
-	State     types.String `tfsdk:"state"`
-	Status    types.String `tfsdk:"status"`
-	UpdatedAt types.String `tfsdk:"updated_at"`
-	CreatedAt types.String `tfsdk:"created_at"`
+	ID           types.String `tfsdk:"id"`
+	Name         types.String `tfsdk:"name"`
+	NameIsPrefix types.Bool   `tfsdk:"name_is_prefix"`
+	FinalName    types.String `tfsdk:"final_name"`
+	UpdatedAt    types.String `tfsdk:"updated_at"`
+	CreatedAt    types.String `tfsdk:"created_at"`
+	Size         types.Int64  `tfsdk:"size"`
+	Type         bsVolumeType `tfsdk:"type"`
+	State        types.String `tfsdk:"state"`
+	Status       types.String `tfsdk:"status"`
 }
 
 type bsVolumeType struct {
@@ -86,8 +94,98 @@ type bsVolumeTypeIops struct {
 
 // Schema defines the schema for the resource.
 func (r *bsVolumes) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
-	// YOUR CODE HERE
-	// description := "change here"
+	description := "Block storage volumes are storage devices that can be attached to virtual machines. They are used to store data and can be detached and attached to other virtual machines."
+	resp.Schema = schema.Schema{
+		Description:         description,
+		MarkdownDescription: description,
+		Attributes: map[string]schema.Attribute{
+			"id": schema.StringAttribute{
+				Description: "The unique identifier of the block storage.",
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.UseStateForUnknown(),
+				},
+				Computed: true,
+			},
+			"name_is_prefix": schema.BoolAttribute{
+				Description: "Indicates whether the provided name is a prefix or the exact name of the block storage.",
+				Optional:    true,
+				Computed:    true,
+				Default:     booldefault.StaticBool(false),
+			},
+			"name": schema.StringAttribute{
+				Description: "The name of the block storage.",
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.UseStateForUnknown(),
+				},
+				Required: true,
+			},
+			"final_name": schema.StringAttribute{
+				Description: "The final name of the block storage after applying any naming conventions or modifications.",
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.UseStateForUnknown(),
+				},
+				Computed: true,
+			},
+			"size": schema.NumberAttribute{
+				Description: "The size of the block storage in GB.",
+				Required:    true,
+			},
+			"updated_at": schema.StringAttribute{
+				Description: "The timestamp when the block storage was last updated.",
+				Computed:    true,
+			},
+			"created_at": schema.StringAttribute{
+				Description: "The timestamp when the block storage was created.",
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.UseStateForUnknown(),
+				},
+				Computed: true,
+			},
+			"state": schema.StringAttribute{
+				Description: "The current state of the virtual machine instance.",
+				Computed:    true,
+			},
+			"status": schema.StringAttribute{
+				Description: "The status of the virtual machine instance.",
+				Computed:    true,
+			},
+			"type": schema.SingleNestedAttribute{
+				Description: "The type of the block storage.",
+				Attributes: map[string]schema.Attribute{
+					"name": schema.StringAttribute{
+						Description: "The name of the block storage type.",
+						Required:    true,
+					},
+					"disk_type": schema.StringAttribute{
+						Description: "The disk type of the block storage.",
+						Computed:    true,
+					},
+					"id": schema.StringAttribute{
+						Description: "The unique identifier of the block storage type.",
+						Computed:    true,
+					},
+					"status": schema.StringAttribute{
+						Description: "The status of the block storage type.",
+						Computed:    true,
+					},
+					"iops": schema.SingleNestedAttribute{
+						Description: "The IOPS of the block storage type.",
+						Attributes: map[string]schema.Attribute{
+							"read": schema.NumberAttribute{
+								Description: "The read IOPS of the block storage type.",
+								Computed:    true,
+							},
+							"write": schema.NumberAttribute{
+								Description: "The write IOPS of the block storage type.",
+								Computed:    true,
+							},
+						},
+					},
+				},
+			},
+		},
+	}
+
 }
 
 func (r *bsVolumes) ModifyPlan(ctx context.Context, req resource.ModifyPlanRequest, resp *resource.ModifyPlanResponse) {
@@ -114,12 +212,25 @@ func (r *bsVolumes) setValuesFromServer(ctx context.Context, result sdkBlockStor
 
 // Read refreshes the Terraform state with the latest data.
 func (r *bsVolumes) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	plan := &vmSnapshotsResourceModel{}
+	bsVolumeResourceMutex.Lock()
+	defer bsVolumeResourceMutex.Unlock()
+
+	plan := &bsVolumesResourceModel{}
 	resp.Diagnostics.Append(req.State.Get(ctx, &plan)...)
 
-	_, _ = r.bsVolumes.Get(sdkBlockStorageVolumes.GetParameters{
+	getResult, err := r.bsVolumes.Get(sdkBlockStorageVolumes.GetParameters{
 		Id: plan.ID.ValueString(),
 	}, sdkBlockStorageVolumes.GetConfigs{})
+
+	if err != nil {
+		resp.Diagnostics.AddError(
+			"Error Reading block storage",
+			"Could not read BS ID "+plan.ID.ValueString()+": "+err.Error(),
+		)
+		return
+	}
+	plan.ID = types.StringValue(getResult.Id)
+	r.setValuesFromServer(ctx, getResult, plan)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
@@ -127,19 +238,62 @@ func (r *bsVolumes) Read(ctx context.Context, req resource.ReadRequest, resp *re
 
 // Create creates the resource and sets the initial Terraform state.
 func (r *bsVolumes) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	plan := &vmSnapshotsResourceModel{}
+	bsVolumeResourceMutex.Lock()
+	defer bsVolumeResourceMutex.Unlock()
+
+	plan := &bsVolumesResourceModel{}
 	diags := req.Plan.Get(ctx, &plan)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	// YOUR CODE HERE
 
-	plan.CreatedAt = types.StringValue(time.Now().Format(time.RFC850))
-	plan.UpdatedAt = types.StringValue(time.Now().Format(time.RFC850))
+	state := plan
+
+	state.FinalName = types.StringValue(state.Name.ValueString())
+
+	if state.NameIsPrefix.ValueBool() {
+		bwords := bws.BrazilianWords(3, "-")
+		state.FinalName = types.StringValue(state.Name.ValueString() + "-" + bwords.Sort())
+	}
+
+	// Create the block storage
+	createResult, err := r.bsVolumes.Create(sdkBlockStorageVolumes.CreateParameters{
+		Name: state.FinalName.ValueString(),
+		Size: int(state.Size.ValueInt64()),
+		Type: sdkBlockStorageVolumes.CreateParametersType{
+			Name: state.Type.Name.ValueStringPointer(),
+		},
+	}, sdkBlockStorageVolumes.CreateConfigs{})
+
+	if err != nil {
+		resp.Diagnostics.AddError(
+			"Error creating vm",
+			"Could not create virtual-machine, unexpected error: "+err.Error(),
+		)
+		return
+	}
+
+	state.ID = types.StringValue(createResult.Id)
+
+	getCreatedResource, err := r.bsVolumes.Get(sdkBlockStorageVolumes.GetParameters{
+		Id:     state.ID.ValueString(),
+		Expand: &sdkBlockStorageVolumes.GetParametersExpand{"type"},
+	}, sdkBlockStorageVolumes.GetConfigs{})
+	if err != nil {
+		resp.Diagnostics.AddError(
+			"Error Reading BS",
+			"Could not read BS ID "+state.ID.ValueString()+": "+err.Error(),
+		)
+		return
+	}
+
+	r.setValuesFromServer(ctx, getCreatedResource, state)
+
+	state.CreatedAt = types.StringValue(time.Now().Format(time.RFC850))
+	state.UpdatedAt = types.StringValue(time.Now().Format(time.RFC850))
 	// Set state to fully populated data
-	diags = resp.State.Set(ctx, plan)
-	resp.Diagnostics.Append(diags...)
+	resp.Diagnostics.Append(resp.State.Set(ctx, state)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
@@ -147,25 +301,58 @@ func (r *bsVolumes) Create(ctx context.Context, req resource.CreateRequest, resp
 
 // Update updates the resource and sets the updated Terraform state on success.
 func (r *bsVolumes) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	// YOUR CODE HERE
+	bsVolumeResourceMutex.Lock()
+	defer bsVolumeResourceMutex.Unlock()
+	data := bsVolumesResourceModel{}
+	currState := &bsVolumesResourceModel{}
+
+	req.State.Get(ctx, currState)
+	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
+
+	if data.Type.Name.ValueString() != currState.Type.Name.ValueString() {
+		// retype
+		err := r.bsVolumes.Retype(sdkBlockStorageVolumes.RetypeParameters{}, sdkBlockStorageVolumes.RetypeConfigs{})
+		if err != nil {
+			resp.Diagnostics.AddError(
+				"Error to retype the block storage volume",
+				"Could not retype, unexpected error: "+err.Error(),
+			)
+			return
+		}
+	}
+
+	if data.Size.ValueInt64() > currState.Size.ValueInt64() {
+		err := r.bsVolumes.Extend(sdkBlockStorageVolumes.ExtendParameters{}, sdkBlockStorageVolumes.ExtendConfigs{})
+		if err != nil {
+			resp.Diagnostics.AddError(
+				"Error to resize the block storage volume",
+				"Could not resize, unexpected error: "+err.Error(),
+			)
+			return
+		}
+	}
+
 }
 
 // Delete deletes the resource and removes the Terraform state on success.
 func (r *bsVolumes) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	bsVolumeResourceMutex.Lock()
+	defer bsVolumeResourceMutex.Unlock()
 	var data vmSnapshotsResourceModel
 	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
 	// UNCOMMENT THE FOLLOWING LINE TO DELETE THE RESOURCE
-	// err := r.vmSnapshots.Delete(
-	// 	sdkVmSnapshots.DeleteParameters{
-	// 		Id: data.ID.ValueString(),
-	// 	},
-	// 	sdkVmSnapshots.DeleteConfigs{})
-	// if err != nil {
-	// 	resp.Diagnostics.AddError(
-	// 		"Error deleting VM Snapshot",
-	// 		"Could not delete VM Snapshot "+data.ID.ValueString()+": "+err.Error(),
-	// 	)
-	// 	return
-	// }
+	err := r.bsVolumes.Delete(
+		sdkBlockStorageVolumes.DeleteParameters{
+			Id: data.ID.ValueString(),
+		},
+		sdkBlockStorageVolumes.DeleteConfigs{},
+	)
+	if err != nil {
+		resp.Diagnostics.AddError(
+			"Error deleting block storage volume",
+			"Could not delete block storage volume "+data.ID.ValueString()+": "+err.Error(),
+		)
+		return
+	}
 
 }
