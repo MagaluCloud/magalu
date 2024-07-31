@@ -79,6 +79,7 @@ type bsSnapshotsResourceModel struct {
 	Volume       bsSnapshotsVolumeIDModel `tfsdk:"volume"`
 	State        types.String             `tfsdk:"state"`
 	Status       types.String             `tfsdk:"status"`
+	Size         types.Int64              `tfsdk:"size"`
 }
 
 type bsSnapshotsVolumeIDModel struct {
@@ -117,7 +118,7 @@ func (r *bsSnapshots) Schema(_ context.Context, _ resource.SchemaRequest, resp *
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.UseStateForUnknown(),
 				},
-				Optional: true,
+				Required: true,
 			},
 			"final_name": schema.StringAttribute{
 				Description: "The final name of the volume snapshot after applying any naming conventions or modifications.",
@@ -143,6 +144,10 @@ func (r *bsSnapshots) Schema(_ context.Context, _ resource.SchemaRequest, resp *
 			},
 			"status": schema.StringAttribute{
 				Description: "The status of the virtual machine instance.",
+				Computed:    true,
+			},
+			"size": schema.NumberAttribute{
+				Description: "The size of the snapshot in GB.",
 				Computed:    true,
 			},
 			"volume": schema.SingleNestedAttribute{
@@ -237,6 +242,20 @@ func (r *bsSnapshots) Create(ctx context.Context, req resource.CreateRequest, re
 	state.ID = types.StringValue(createResult.Id)
 	state.CreatedAt = types.StringValue(time.Now().Format(time.RFC850))
 	state.UpdatedAt = types.StringValue(time.Now().Format(time.RFC850))
+
+	getCreatedResource, err := r.bsSnapshots.Get(sdkBlockStorageSnapshots.GetParameters{
+		Id: state.ID.ValueString(),
+	}, sdkBlockStorageSnapshots.GetConfigs{})
+
+	if err != nil {
+		resp.Diagnostics.AddError(
+			"Error Reading BS",
+			"Could not read BS ID "+state.ID.ValueString()+": "+err.Error(),
+		)
+		return
+	}
+
+	state.Size = types.Int64Value(int64(getCreatedResource.Size))
 
 	// Set state to fully populated data
 	diags = resp.State.Set(ctx, plan)
