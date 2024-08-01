@@ -27,7 +27,7 @@ require (
 	atomicgo.dev/cursor v0.2.0 // indirect
 	atomicgo.dev/keyboard v0.2.9 // indirect
 	atomicgo.dev/schedule v0.1.0 // indirect
-	github.com/geffersonFerraz/brazilian-words-sorter v1.0.0 // indirect
+	github.com/geffersonFerraz/brazilian-words-sorter v1.0.1 // indirect
 	github.com/gookit/color v1.5.4 // indirect
 	github.com/lithammer/fuzzysearch v1.1.8 // indirect
 	github.com/sagikazarmark/locafero v0.6.0 // indirect

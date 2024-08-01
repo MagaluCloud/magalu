@@ -98,7 +98,6 @@ func create(ctx context.Context, params createParams, cfg common.Config) (*creat
 	}
 
 	if params.IsPrefix {
-
 		bwords := bws.BrazilianWords(3, "-")
 		params.BucketName = common.BucketName(fmt.Sprintf("%s-%s", params.BucketName.String(), bwords.Sort()))
 	}
