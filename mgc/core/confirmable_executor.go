@@ -9,7 +9,7 @@ import (
 	"magalu.cloud/core/utils"
 )
 
-const defaultPromptMessage = "This action requires confirmation from the user."
+const defaultPromptMessage = "Are you sure you want to proceed with the operation?"
 
 type UserDeniedConfirmationError struct {
 	Prompt string
