@@ -84,11 +84,6 @@ type bsVolumeType struct {
 	Status   types.String `tfsdk:"status"`
 }
 
-type bsVolumeTypeIops struct {
-	Read  types.Int64 `tfsdk:"read"`
-	Write types.Int64 `tfsdk:"write"`
-}
-
 // Schema defines the schema for the resource.
 func (r *bsVolumes) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	description := "Block storage volumes are storage devices that can be attached to virtual machines. They are used to store data and can be detached and attached to other virtual machines."
