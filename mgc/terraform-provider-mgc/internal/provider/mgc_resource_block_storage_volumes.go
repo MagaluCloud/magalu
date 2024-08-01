@@ -78,16 +78,15 @@ type bsVolumesResourceModel struct {
 }
 
 type bsVolumeType struct {
-	DiskType types.String     `tfsdk:"disk_type"`
-	Id       types.String     `tfsdk:"id"`
-	Iops     bsVolumeTypeIops `tfsdk:"iops"`
-	Name     types.String     `tfsdk:"name"`
-	Status   types.String     `tfsdk:"status"`
+	DiskType types.String `tfsdk:"disk_type"`
+	Id       types.String `tfsdk:"id"`
+	Name     types.String `tfsdk:"name"`
+	Status   types.String `tfsdk:"status"`
 }
 
 type bsVolumeTypeIops struct {
 	Read  types.Int64 `tfsdk:"read"`
-	Write int         `tfsdk:"write"`
+	Write types.Int64 `tfsdk:"write"`
 }
 
 // Schema defines the schema for the resource.
@@ -124,7 +123,7 @@ func (r *bsVolumes) Schema(_ context.Context, _ resource.SchemaRequest, resp *re
 				},
 				Computed: true,
 			},
-			"size": schema.NumberAttribute{
+			"size": schema.Int64Attribute{
 				Description: "The size of the block storage in GB.",
 				Required:    true,
 			},
@@ -167,20 +166,6 @@ func (r *bsVolumes) Schema(_ context.Context, _ resource.SchemaRequest, resp *re
 						Description: "The status of the block storage type.",
 						Computed:    true,
 					},
-					"iops": schema.SingleNestedAttribute{
-						Computed:    true,
-						Description: "The IOPS of the block storage type.",
-						Attributes: map[string]schema.Attribute{
-							"read": schema.NumberAttribute{
-								Description: "The read IOPS of the block storage type.",
-								Computed:    true,
-							},
-							"write": schema.NumberAttribute{
-								Description: "The write IOPS of the block storage type.",
-								Computed:    true,
-							},
-						},
-					},
 				},
 			},
 		},
@@ -192,21 +177,18 @@ func (r *bsVolumes) ModifyPlan(ctx context.Context, req resource.ModifyPlanReque
 	//do nothing
 }
 
-func (r *bsVolumes) setValuesFromServer(ctx context.Context, result sdkBlockStorageVolumes.GetResult, state *bsVolumesResourceModel) {
+func (r *bsVolumes) setValuesFromServer(result sdkBlockStorageVolumes.GetResult, state *bsVolumesResourceModel) {
 	state.ID = types.StringValue(result.Id)
-	state.Name = types.StringValue(result.Name)
+	state.FinalName = types.StringValue(result.Name)
 	state.Size = types.Int64Value(int64(result.Size))
 	state.State = types.StringValue(result.State)
 	state.Status = types.StringValue(result.Status)
+
 	state.Type = bsVolumeType{
 		DiskType: types.StringPointerValue(result.Type.DiskType),
 		Id:       types.StringValue(result.Type.Id),
 		Name:     types.StringPointerValue(result.Type.Name),
 		Status:   types.StringPointerValue(result.Type.Status),
-		Iops: bsVolumeTypeIops{
-			Read:  types.Int64Value(int64(result.Type.Iops.Read)),
-			Write: int(result.Type.Iops.Write),
-		},
 	}
 }
 
@@ -216,7 +198,8 @@ func (r *bsVolumes) Read(ctx context.Context, req resource.ReadRequest, resp *re
 	resp.Diagnostics.Append(req.State.Get(ctx, &plan)...)
 
 	getResult, err := r.bsVolumes.Get(sdkBlockStorageVolumes.GetParameters{
-		Id: plan.ID.ValueString(),
+		Id:     plan.ID.ValueString(),
+		Expand: &sdkBlockStorageVolumes.GetParametersExpand{"volume_type"},
 	}, sdkBlockStorageVolumes.GetConfigs{})
 
 	if err != nil {
@@ -227,7 +210,7 @@ func (r *bsVolumes) Read(ctx context.Context, req resource.ReadRequest, resp *re
 		return
 	}
 	plan.ID = types.StringValue(getResult.Id)
-	r.setValuesFromServer(ctx, getResult, plan)
+	r.setValuesFromServer(getResult, plan)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
@@ -251,7 +234,6 @@ func (r *bsVolumes) Create(ctx context.Context, req resource.CreateRequest, resp
 		state.FinalName = types.StringValue(state.Name.ValueString() + "-" + bwords.Sort())
 	}
 
-	// Create the block storage
 	createResult, err := r.bsVolumes.Create(sdkBlockStorageVolumes.CreateParameters{
 		Name: state.FinalName.ValueString(),
 		Size: int(state.Size.ValueInt64()),
@@ -272,7 +254,7 @@ func (r *bsVolumes) Create(ctx context.Context, req resource.CreateRequest, resp
 
 	getCreatedResource, err := r.bsVolumes.Get(sdkBlockStorageVolumes.GetParameters{
 		Id:     state.ID.ValueString(),
-		Expand: &sdkBlockStorageVolumes.GetParametersExpand{"type"},
+		Expand: &sdkBlockStorageVolumes.GetParametersExpand{"volume_type"},
 	}, sdkBlockStorageVolumes.GetConfigs{})
 	if err != nil {
 		resp.Diagnostics.AddError(
@@ -282,7 +264,7 @@ func (r *bsVolumes) Create(ctx context.Context, req resource.CreateRequest, resp
 		return
 	}
 
-	r.setValuesFromServer(ctx, getCreatedResource, state)
+	r.setValuesFromServer(getCreatedResource, state)
 
 	state.CreatedAt = types.StringValue(time.Now().Format(time.RFC850))
 	state.UpdatedAt = types.StringValue(time.Now().Format(time.RFC850))
@@ -323,14 +305,12 @@ func (r *bsVolumes) Update(ctx context.Context, req resource.UpdateRequest, resp
 			return
 		}
 	}
-
 }
 
 // Delete deletes the resource and removes the Terraform state on success.
 func (r *bsVolumes) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var data vmSnapshotsResourceModel
+	var data bsVolumesResourceModel
 	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
-	// UNCOMMENT THE FOLLOWING LINE TO DELETE THE RESOURCE
 	err := r.bsVolumes.Delete(
 		sdkBlockStorageVolumes.DeleteParameters{
 			Id: data.ID.ValueString(),

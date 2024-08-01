@@ -19,7 +19,7 @@ var createLogger = utils.NewLazyLoader(func() *zap.SugaredLogger {
 
 type createParams struct {
 	BucketName            common.BucketName `json:"bucket" jsonschema:"description=Name of the bucket to be created" mgc:"positional"`
-	IsPrefix              bool              `json:"bucket_is_prefix" jsonschema:"description=Use bucket name as prefix value to generate a unique bucket name,default=false" mgc:"hidden"`
+	IsPrefix              bool              `json:"bucket_is_prefix" jsonschema:"description=Use bucket name as prefix value to generate a unique bucket name,default=false"`
 	EnableVersioning      bool              `json:"enable_versioning,omitempty" jsonschema:"description=Enable versioning for this bucket,default=true"`
 	common.ACLPermissions `json:",squash"`  // nolint
 }
@@ -98,7 +98,6 @@ func create(ctx context.Context, params createParams, cfg common.Config) (*creat
 	}
 
 	if params.IsPrefix {
-
 		bwords := bws.BrazilianWords(3, "-")
 		params.BucketName = common.BucketName(fmt.Sprintf("%s-%s", params.BucketName.String(), bwords.Sort()))
 	}

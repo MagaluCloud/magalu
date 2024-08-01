@@ -45,13 +45,4 @@ Read-Only:
 
 - `disk_type` (String) The disk type of the block storage.
 - `id` (String) The unique identifier of the block storage type.
-- `iops` (Attributes) The IOPS of the block storage type. (see [below for nested schema](#nestedatt--type--iops))
 - `status` (String) The status of the block storage type.
-
-<a id="nestedatt--type--iops"></a>
-### Nested Schema for `type.iops`
-
-Read-Only:
-
-- `read` (Number) The read IOPS of the block storage type.
-- `write` (Number) The write IOPS of the block storage type.

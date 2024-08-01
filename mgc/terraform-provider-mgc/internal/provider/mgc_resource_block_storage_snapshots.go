@@ -143,7 +143,7 @@ func (r *bsSnapshots) Schema(_ context.Context, _ resource.SchemaRequest, resp *
 				Description: "The status of the virtual machine instance.",
 				Computed:    true,
 			},
-			"size": schema.NumberAttribute{
+			"size": schema.Int64Attribute{
 				Description: "The size of the snapshot in GB.",
 				Computed:    true,
 			},
@@ -164,9 +164,9 @@ func (r *bsSnapshots) ModifyPlan(ctx context.Context, req resource.ModifyPlanReq
 	//do nothing
 }
 
-func (r *bsSnapshots) setValuesFromServer(ctx context.Context, result sdkBlockStorageSnapshots.GetResult, state *bsSnapshotsResourceModel) {
+func (r *bsSnapshots) setValuesFromServer(result sdkBlockStorageSnapshots.GetResult, state *bsSnapshotsResourceModel) {
 	state.ID = types.StringValue(result.Id)
-	state.Name = types.StringValue(result.Name)
+	state.FinalName = types.StringValue(result.Name)
 	state.State = types.StringValue(result.State)
 	state.Status = types.StringValue(result.Status)
 
@@ -190,7 +190,7 @@ func (r *bsSnapshots) Read(ctx context.Context, req resource.ReadRequest, resp *
 		return
 	}
 
-	r.setValuesFromServer(ctx, result, data)
+	r.setValuesFromServer(result, data)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -245,6 +245,9 @@ func (r *bsSnapshots) Create(ctx context.Context, req resource.CreateRequest, re
 		)
 		return
 	}
+	r.checkStatusIsCreating(state.ID.ValueString())
+
+	r.setValuesFromServer(getCreatedResource, state)
 
 	state.Size = types.Int64Value(int64(getCreatedResource.Size))
 
@@ -278,4 +281,33 @@ func (r *bsSnapshots) Delete(ctx context.Context, req resource.DeleteRequest, re
 		return
 	}
 
+}
+
+func (r *bsSnapshots) checkStatusIsCreating(id string) {
+	getResult := &sdkBlockStorageSnapshots.GetResult{}
+
+	duration := 5 * time.Minute
+	startTime := time.Now()
+	getParam := sdkBlockStorageSnapshots.GetParameters{Id: id}
+	var err error
+	for {
+		elapsed := time.Since(startTime)
+		remaining := duration - elapsed
+		if remaining <= 0 {
+			if getResult.Status != "" {
+				return
+			}
+			return
+		}
+
+		*getResult, err = r.bsSnapshots.Get(getParam, sdkBlockStorageSnapshots.GetConfigs{})
+		if err != nil {
+			return
+		}
+		if getResult.State == "available" {
+			return
+		}
+
+		time.Sleep(3 * time.Second)
+	}
 }
