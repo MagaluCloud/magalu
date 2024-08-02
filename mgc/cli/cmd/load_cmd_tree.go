@@ -299,7 +299,7 @@ func addAction(
 		Short:             exec.Summary(),
 		Long:              exec.Description(),
 		Version:           exec.Version(),
-		GroupID:           "catalog",
+		GroupID:           exec.GroupID(),
 		Annotations:       make(map[string]string),
 
 		RunE: func(cmd *cobra.Command, args []string) error {
@@ -359,7 +359,7 @@ func addGroup(
 		Short:   group.Summary(),
 		Long:    group.Description(),
 		Version: group.Version(),
-		GroupID: "catalog",
+		GroupID: group.GroupID(),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			return cmd.Help()
 		},

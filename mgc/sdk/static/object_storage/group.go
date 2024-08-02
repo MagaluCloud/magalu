@@ -12,7 +12,7 @@ var GetGroup = utils.NewLazyLoader(func() core.Grouper {
 	return core.NewStaticGroup(
 		core.DescriptorSpec{
 			Name:        "object-storage",
-			Summary:     "Operations for Object Storage API",
+			Summary:     "Operations for Object Storage",
 			Description: `Create and manage Buckets and Objects via the Object Storage API`,
 		},
 		func() []core.Descriptor {
