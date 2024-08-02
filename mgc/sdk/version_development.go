@@ -28,5 +28,5 @@ var Version = func() string {
 			return fmt.Sprintf("%s-%s-%s%s", version, vcs, rev, status)
 		}
 	}
-	return version + "dev"
+	return version + " dev"
 }()

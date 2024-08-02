@@ -12,6 +12,7 @@ import (
 
 func main() {
 	defer panicRecover()
+	mgcSdk.SetUserAgent("MgcCLI")
 
 	err := cmd.Execute()
 	if err != nil {

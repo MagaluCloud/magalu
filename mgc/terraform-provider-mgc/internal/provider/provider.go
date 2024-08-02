@@ -323,6 +323,7 @@ func (p *MgcProvider) DataSources(ctx context.Context) []func() datasource.DataS
 
 func New(version string, commit string, date string) func() provider.Provider {
 	sdk := mgcSdk.NewSdk()
+	mgcSdk.SetUserAgent("MgcTF")
 
 	return func() provider.Provider {
 		return &MgcProvider{
