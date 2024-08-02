@@ -9,7 +9,7 @@ import (
 	"magalu.cloud/core/utils"
 )
 
-const defaultPromptMessage = "⚠️ This action cannot be undone. Proceed?"
+const defaultPromptMessage = "This action cannot be undone. Proceed?"
 
 type UserDeniedConfirmationError struct {
 	Prompt string
