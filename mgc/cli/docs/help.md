@@ -10,7 +10,7 @@ Usage:
 
 ## Product catalog:
 - Product catalog:
-- auth               Actions with ID Magalu to log in, refresh tokens, change tenants and others
+- auth               Actions with ID Magalu to log in, API Keys, refresh tokens, change tenants and others
 - block-storage      Block Storage API Product Documentation
 - config             Manage Configuration values
 - container-registry Magalu Container Registry product API.
