@@ -9,6 +9,7 @@ Usage:
 ## Product catalog:
 - Flags:
 - --bucket string                 Name of the bucket to be created (required)
+- --bucket-is-prefix              Use bucket name as prefix value to generate a unique bucket name (required)
 - --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
 - --enable-versioning             Enable versioning for this bucket (default true)
 - --grant-write array(object)     Allows grantees to create objects in the bucket

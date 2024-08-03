@@ -4,15 +4,12 @@ of HTTP requests using the MgcSDK. Authentication is done via Magalu Cloud accou
 
 ## Usage:
 ```bash
-You can alse authenticate your CLI with
+Usage:
+  ./mgc auth [flags]
+  ./mgc auth [command]
 ```
 
 ## Product catalog:
-- Usage:
-- ./mgc auth [flags]
-- ./mgc auth [command]
-
-## Other commands:
 - Commands:
 - access-token Retrieve the access token used in the APIs
 - api-key      Manage your ID Magalu API keys
@@ -20,9 +17,13 @@ You can alse authenticate your CLI with
 - login        Authenticate with Magalu Cloud
 - tenant       Manage Tenants
 
+## Other commands:
+- Flags:
+- -h, --help   help for auth
+
 ## Flags:
 ```bash
-Flags:
-  -h, --help   help for auth
+Global Flags:
+      --cli.show-cli-globals   Show all CLI global flags on usage text
 ```
 

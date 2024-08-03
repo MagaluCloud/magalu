@@ -420,11 +420,35 @@ func (r *vmInstances) Update(ctx context.Context, req resource.UpdateRequest, re
 	currState := &vmInstancesResourceModel{}
 	req.State.Get(ctx, currState)
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
+
+	// RENAME
+	if !currState.Name.Equal(data.Name) {
+		data.FinalName = types.StringValue(data.Name.ValueString())
+
+		if data.NameIsPrefix.ValueBool() {
+			bwords := bws.BrazilianWords(3, "-")
+			data.FinalName = types.StringValue(data.Name.ValueString() + "-" + bwords.Sort())
+		}
+		err := r.vmInstances.Rename(sdkVmInstances.RenameParameters{
+			Id:   data.ID.ValueString(),
+			Name: data.FinalName.ValueString(),
+		}, GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVmInstances.RenameConfigs{}))
+
+		if err != nil {
+			resp.Diagnostics.AddError(
+				"Error to rename vm",
+				"Could not rename the vm instance, unexpected error: "+err.Error(),
+			)
+			return
+		}
+	}
+
+	// RETYPE
 	machineType, err := r.getMachineTypeID(data.MachineType.Name.ValueString())
 
 	if err != nil {
 		resp.Diagnostics.AddError(
-			"Error creating vm",
+			"Error to retype vm",
 			"Could not found machine-type or load machine-type list, unexpected error: "+err.Error(),
 		)
 		return
@@ -508,7 +532,7 @@ func (r *vmInstances) setValuesFromServer(data vmInstancesResourceModel, server 
 	if server.Network.Ports != nil && len(*server.Network.Ports) > 0 {
 		ports := (*server.Network.Ports)[0]
 
-		data.Network.PrivateAddress = types.StringValue(ports.Id)
+		data.Network.PrivateAddress = types.StringValue(ports.IpAddresses.PrivateIpAddress)
 
 		if ports.IpAddresses.IpV6address != nil {
 			data.Network.IPV6 = types.StringValue(*ports.IpAddresses.IpV6address)

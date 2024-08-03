@@ -42,6 +42,12 @@ type contextKey string
 
 var ctxWrappedKey contextKey = "magalu.cloud/sdk/SdkWrapped"
 
+var currentUserAgent string = "MgcSDK"
+
+func SetUserAgent(userAgent string) {
+	currentUserAgent = userAgent
+}
+
 func NewSdk() *Sdk {
 	return &Sdk{}
 }
@@ -156,7 +162,7 @@ func (o *Sdk) Group() core.Grouper {
 }
 
 func newHttpTransport() http.RoundTripper {
-	userAgent := "MgcSDK/" + Version
+	userAgent := currentUserAgent + "/" + Version
 
 	// To avoid creating a transport with zero values, we leverage
 	// DefaultTransport (exemple: `Proxy: ProxyFromEnvironment`)
