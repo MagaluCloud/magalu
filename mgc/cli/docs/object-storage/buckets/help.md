@@ -13,6 +13,7 @@ Usage:
 - create      Create a new Bucket
 - delete      Delete an existing Bucket
 - list        List all existing Buckets
+- policy      Policy-related commands
 - public-url  Get bucket public url
 - versioning  Manage bucket versioning
 
