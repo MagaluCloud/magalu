@@ -1,5 +1,12 @@
-# This CLI is a dynamic processor of OpenAPI files that
-can generate a command line on-demand for Rest manipulation
+# ███╗   ███╗ ██████╗  ██████╗     ██████╗██╗     ██╗
+	████╗ ████║██╔════╝ ██╔════╝    ██╔════╝██║     ██║
+	██╔████╔██║██║  ███╗██║         ██║     ██║     ██║
+	██║╚██╔╝██║██║   ██║██║         ██║     ██║     ██║
+	██║ ╚═╝ ██║╚██████╔╝╚██████╗    ╚██████╗███████╗██║
+	╚═╝     ╚═╝ ╚═════╝  ╚═════╝     ╚═════╝╚══════╝╚═╝
+       
+Magalu Cloud CLI is a command-line interface for the Magalu Cloud. 
+It allows you to interact with the Magalu Cloud to manage your resources.
 
 ## Usage:
 ```bash

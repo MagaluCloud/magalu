@@ -44,9 +44,18 @@ func Execute() (err error) {
 	rootCmd := &cobra.Command{
 		Use:     argParser.FullProgramPath(),
 		Version: vv,
-		Short:   "CLI tool for OpenAPI integration",
-		Long: `This CLI is a dynamic processor of OpenAPI files that
-can generate a command line on-demand for Rest manipulation`,
+		Short:   "Magalu Cloud CLI",
+		Long: `
+	███╗   ███╗ ██████╗  ██████╗     ██████╗██╗     ██╗
+	████╗ ████║██╔════╝ ██╔════╝    ██╔════╝██║     ██║
+	██╔████╔██║██║  ███╗██║         ██║     ██║     ██║
+	██║╚██╔╝██║██║   ██║██║         ██║     ██║     ██║
+	██║ ╚═╝ ██║╚██████╔╝╚██████╗    ╚██████╗███████╗██║
+	╚═╝     ╚═╝ ╚═════╝  ╚═════╝     ╚═════╝╚══════╝╚═╝
+       
+Magalu Cloud CLI is a command-line interface for the Magalu Cloud. 
+It allows you to interact with the Magalu Cloud to manage your resources.
+`,
 		SilenceErrors: true,
 		SilenceUsage:  true,
 		RunE: func(cmd *cobra.Command, args []string) error {
