@@ -13,6 +13,7 @@ type DescriptorSpec struct {
 	IsInternal   *bool  `json:"isInternal,omitempty"`
 	Scopes       Scopes `json:"scopes"`
 	Observations string `json:"observation,omitempty"`
+	GroupID      string `json:"groupId,omitempty"`
 }
 
 func (d *DescriptorSpec) Validate() error {
@@ -35,10 +36,18 @@ type Descriptor interface {
 	IsInternal() bool
 	Scopes() Scopes
 	DescriptorSpec() DescriptorSpec
+	GroupID() string
 }
 
 type SimpleDescriptor struct {
 	Spec DescriptorSpec
+}
+
+func (d *SimpleDescriptor) GroupID() string {
+	if d.Spec.GroupID == "" {
+		return "catalog"
+	}
+	return d.Spec.GroupID
 }
 
 func (d *SimpleDescriptor) Name() string {

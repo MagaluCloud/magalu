@@ -53,7 +53,27 @@ func getGroupNames(name string) (fileName string, goName string) {
 	return
 }
 
+var step1ok = []string{"/auth", "/block_storage", "/config", "/container_registry", "/dbaas", "/kubernetes", "/network"}
+var step1 = []string{"/object-storage", "/profile", "/virtual-machine", "/virtual_machine_xaas"}
+
 func generateGroup(dirname string, relPath string, refPath core.RefPath, group core.Grouper, ctx *GeneratorContext) (err error) {
+	can_continue := true // refPath == ""
+	fmt.Println(refPath)
+
+	for _, step := range step1 {
+		if can_continue {
+			break
+		}
+		can_continue = strings.HasPrefix(string(refPath), step)
+		if can_continue {
+			break
+		}
+	}
+
+	if !can_continue {
+		return
+	}
+
 	groupDirName, groupGoName := getGroupNames(group.Name())
 	p := path.Join(dirname, groupDirName)
 	err = createDir(ctx, p)
@@ -115,19 +135,17 @@ func generateGroup(dirname string, relPath string, refPath core.RefPath, group c
 		}
 	})
 
-	defer func() {
-		if len(serviceTemplateData.ExecutorsData) > 0 {
-			err = templateWrite(
-				ctx,
-				path.Join(p, "service.go"),
-				serviceTemplate,
-				serviceTemplateData,
-			)
-			if err != nil {
-				return
-			}
+	if len(serviceTemplateData.ExecutorsData) > 0 {
+		err = templateWrite(
+			ctx,
+			path.Join(p, "service.go"),
+			serviceTemplate,
+			serviceTemplateData,
+		)
+		if err != nil {
+			return
 		}
-	}()
+	}
 
 	return
 }

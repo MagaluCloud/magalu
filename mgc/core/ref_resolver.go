@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"strings"
+	"sync"
 
 	"github.com/getkin/kin-openapi/openapi3"
 	"github.com/go-openapi/jsonpointer"
@@ -217,6 +218,7 @@ func (r *MultiRefPathResolver) Add(url string, docResolver RefPathResolver) erro
 type DocumentRefPathResolver struct {
 	cache   map[RefPath]any // JSON Pointer string => resolved value
 	getRoot func() (any, error)
+	mutexl  *sync.Mutex
 }
 
 var _ RefPathResolver = (*DocumentRefPathResolver)(nil)
@@ -226,6 +228,7 @@ func NewDocumentRefPathResolver(getRoot utils.LoadWithError[any]) *DocumentRefPa
 	return &DocumentRefPathResolver{
 		cache:   map[RefPath]any{},
 		getRoot: getRoot,
+		mutexl:  &sync.Mutex{},
 	}
 }
 
@@ -251,9 +254,12 @@ func (r *DocumentRefPathResolver) ResolvePath(path RefPath) (result any, err err
 	}
 
 	var ok bool
+	r.mutexl.Lock()
 	if result, ok = r.cache[path]; ok {
+		r.mutexl.Unlock()
 		return
 	}
+	r.mutexl.Unlock()
 
 	url, _ := path.SplitUrl()
 	if url != "" {
@@ -274,11 +280,13 @@ func (r *DocumentRefPathResolver) ResolvePath(path RefPath) (result any, err err
 	}
 
 	if err == nil {
+		r.mutexl.Lock()
 		r.cache[path] = result
 	} else {
 		err = &RefPathResolveError{path, err}
 	}
 
+	r.mutexl.Unlock()
 	return
 }
 

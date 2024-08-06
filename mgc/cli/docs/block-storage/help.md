@@ -9,7 +9,7 @@ Usage:
 
 ## Product catalog:
 - Aliases:
-- block-storage, bs, blocks, blst
+- block-storage, bs, blocks, blst, block, volumes
 
 ## Other commands:
 - Commands:

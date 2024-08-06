@@ -9,7 +9,7 @@ Usage:
 
 ## Product catalog:
 - Aliases:
-- object-storage, object, objs
+- object-storage, object, objects, objs, os
 
 ## Other commands:
 - Commands:

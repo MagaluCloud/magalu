@@ -490,9 +490,10 @@ func (o *operation) forEachSecurityRequirement(cb func(scheme string, scopes []s
 					if !run {
 						return false, nil
 					}
-				} else {
-					o.logger.Infow("ignored unsupported security scheme", "scheme", scheme, "scopes", scopes)
 				}
+				// } else {
+				// 	o.logger.Debugw("ignored unsupported security scheme", "scheme", scheme, "scopes", scopes)
+				// }
 			}
 		}
 	}
