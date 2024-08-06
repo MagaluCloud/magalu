@@ -9,7 +9,7 @@ Backup Detail.
 
 Get a backup detail.
 
-Version: 1.25.0
+Version: 1.26.1
 
 import "magalu.cloud/lib/products/dbaas/instances/backups"
 */

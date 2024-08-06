@@ -53,9 +53,9 @@ func getGroupNames(name string) (fileName string, goName string) {
 	return
 }
 
-var step11 = []string{"auth", "block_storage", "config", "container_registry", "dbaas", "kubernetes", "network"}
-var step1 = []string{"virtual-machine-xaas"}
-var step13 = []string{"object-storage", "profile", "virtual-machine"}
+var step1 = []string{"auth", "block_storage", "config", "container_registry", "dbaas", "kubernetes", "object-storage", "profile", "virtual-machine"}
+var step2problem = []string{"network"}
+var step1problem = []string{"virtual-machine-xaas"}
 
 func generateGroup(dirname string, relPath string, refPath core.RefPath, group core.Grouper, ctx *GeneratorContext) (err error) {
 	can_continue := refPath == ""

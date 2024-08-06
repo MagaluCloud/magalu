@@ -5,7 +5,7 @@ Package: healthcheck
 
 healthcheck
 
-Version: 1.128.0
+Version: 1.130.0
 
 import "magalu.cloud/lib/products/network/healthcheck"
 */
