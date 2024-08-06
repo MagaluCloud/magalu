@@ -16,7 +16,7 @@ so you can get the id of the backup that you want to get details.
 - You can use the **expand** argument to get more details from the object
 like instance.
 
-Version: 1.255.1
+Version: 1.258.0
 
 import "magalu.cloud/lib/products/virtual_machine_xaas/xaas_backups"
 */

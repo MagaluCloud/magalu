@@ -5,7 +5,7 @@ Package: xaas images
 
 xaas images
 
-Version: 1.255.1
+Version: 1.258.0
 
 import "magalu.cloud/lib/products/virtual_machine_xaas/xaas_images"
 */

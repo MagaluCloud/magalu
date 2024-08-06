@@ -9,7 +9,7 @@ Update snapshot.
 
 # Internal route for update a snapshot using its internal id
 
-Version: 1.255.1
+Version: 1.258.0
 
 import "magalu.cloud/lib/products/virtual_machine_xaas/snapshots"
 */

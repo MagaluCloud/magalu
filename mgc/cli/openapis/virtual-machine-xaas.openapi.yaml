@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
     title: Internal Virtual Machine Api Product
     description: Virtual Machine Api Product
-    version: 1.255.1
+    version: 1.258.0
 paths:
     /v1/health:
         get:
@@ -2238,7 +2238,7 @@ paths:
                                 xaas project
                             parameters:
                                 id: $response.body#/id
-                        delete:
+                        delete-id:
                             operationId: instance_delete_v1_v1_xaas_instances__id__delete
                             description: Delete a instance asynchronously in a xaas
                                 project
@@ -2270,6 +2270,81 @@ paths:
                             description: Suspends a running instance.
                             parameters:
                                 id: $response.body#/id
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            security:
+            -   OAuth2:
+                - virtual-machine-xaas.write
+            -   XaasAuth:
+                - virtual-machine-xaas.write
+    /v1/xaas/instances/:
+        delete:
+            tags:
+            - xaas instances
+            summary: Delete all instances by tenant asynchronously in a xaas project
+            description: 'Deletes permanently all instances from the current tenant
+
+                which is logged in.
+
+
+                #### Notes
+
+                - You can use the virtual-machine list command to retrieve all instances,
+                so
+
+                - you will know which instances will be deleted.
+
+
+                #### Result
+
+                - The attached ports will be deleted as well.</li>
+
+                - The attached volumes will be detached.</li>'
+            operationId: all_instances_delete_v1_v1_xaas_instances__delete
+            parameters:
+            -   name: project_type
+                in: query
+                required: true
+                schema:
+                    $ref: '#/components/schemas/ProjectType'
+            -   name: delete_public_ip
+                in: query
+                required: false
+                schema:
+                    type: boolean
+                    title: Delete Public Ip
+                    default: false
+            responses:
+                '204':
+                    description: Successful Response
+                '400':
+                    description: Instance Not Allowed Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '404':
+                    description: Instance Not Found Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '409':
+                    description: Instance Validation Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '500':
+                    description: Internal Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
                 '422':
                     description: Validation Error
                     content:
@@ -2404,7 +2479,7 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/InstanceV1Response'
                     links:
-                        delete:
+                        delete-id:
                             operationId: instance_delete_v1_v1_xaas_instances__id__delete
                             description: Delete a instance asynchronously in a xaas
                                 project
@@ -2603,7 +2678,7 @@ paths:
                                 xaas project
                             parameters:
                                 id: $request.path.id
-                        delete:
+                        delete-id:
                             operationId: instance_delete_v1_v1_xaas_instances__id__delete
                             description: Delete a instance asynchronously in a xaas
                                 project
@@ -2710,7 +2785,7 @@ paths:
                                 interval: 5s
                                 maxRetries: 10
                                 jsonPathQuery: $.result.machine_type == $.owner.parameters.machine_type
-                        delete:
+                        delete-id:
                             operationId: instance_delete_v1_v1_xaas_instances__id__delete
                             description: Delete a instance asynchronously in a xaas
                                 project
@@ -2815,7 +2890,7 @@ paths:
                                 xaas project
                             parameters:
                                 id: $request.path.id
-                        delete:
+                        delete-id:
                             operationId: instance_delete_v1_v1_xaas_instances__id__delete
                             description: Delete a instance asynchronously in a xaas
                                 project
@@ -2897,7 +2972,7 @@ paths:
                                 xaas project
                             parameters:
                                 id: $request.path.id
-                        delete:
+                        delete-id:
                             operationId: instance_delete_v1_v1_xaas_instances__id__delete
                             description: Delete a instance asynchronously in a xaas
                                 project
@@ -2980,7 +3055,7 @@ paths:
                                 xaas project
                             parameters:
                                 id: $request.path.id
-                        delete:
+                        delete-id:
                             operationId: instance_delete_v1_v1_xaas_instances__id__delete
                             description: Delete a instance asynchronously in a xaas
                                 project
@@ -3815,6 +3890,9 @@ components:
                     maxLength: 2083
                     minLength: 1
                     format: uri
+                min_disk:
+                    type: integer
+                    title: Min Disk
                 origin_region:
                     type: string
                     title: Origin Region
@@ -3829,6 +3907,7 @@ components:
             required:
             - name
             - backup_url
+            - min_disk
             - origin_region
             - origin_backup_id
             example:

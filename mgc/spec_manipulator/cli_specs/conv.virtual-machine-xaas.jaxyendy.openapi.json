@@ -3,7 +3,7 @@
   "info": {
     "title": "Internal Virtual Machine Api Product",
     "description": "Virtual Machine Api Product",
-    "version": "1.255.1"
+    "version": "1.258.0"
   },
   "paths": {
     "/v1/health": {
@@ -670,6 +670,40 @@
       }
     },
     "/v1/internal/images/{id}": {
+      "delete": {
+        "tags": [
+          "images"
+        ],
+        "summary": "Delete Image V1",
+        "description": "Delete a register image from Virtual Machine DB.\n\n### Note\nThis route only remove the image from virtual machine DB. \n\nNeeds to remove the image from URP after use this route.",
+        "operationId": "delete_image_v1_v1_internal_images__image_id__delete",
+        "parameters": [
+          {
+            "name": "image_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Image Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
       "patch": {
         "tags": [
           "images"
@@ -779,42 +813,6 @@
           }
         },
         "x-viveiro": false
-      }
-    },
-    "/v1/internal/images/{image_id}": {
-      "delete": {
-        "tags": [
-          "images"
-        ],
-        "summary": "Delete Image V1",
-        "description": "Delete a register image from Virtual Machine DB.\n\n### Note\nThis route only remove the image from virtual machine DB. \n\nNeeds to remove the image from URP after use this route.",
-        "operationId": "delete_image_v1_v1_internal_images__image_id__delete",
-        "parameters": [
-          {
-            "name": "image_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Image Id"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Successful Response"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
       }
     },
     "/v1/internal/instance_types": {
@@ -2752,6 +2750,100 @@
         }
       }
     },
+    "/v1/xaas/instances/": {
+      "delete": {
+        "tags": [
+          "xaas instances"
+        ],
+        "summary": "Delete all instances by tenant asynchronously in a xaas project",
+        "description": "Deletes permanently all instances from the current tenant\nwhich is logged in.\n\n#### Notes\n- You can use the virtual-machine list command to retrieve all instances, so\n- you will know which instances will be deleted.\n\n#### Result\n- The attached ports will be deleted as well.\u003c/li\u003e\n- The attached volumes will be detached.\u003c/li\u003e",
+        "operationId": "all_instances_delete_v1_v1_xaas_instances__delete",
+        "parameters": [
+          {
+            "name": "project_type",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ProjectType"
+            }
+          },
+          {
+            "name": "delete_public_ip",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "title": "Delete Public Ip",
+              "default": false
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "400": {
+            "description": "Instance Not Allowed Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Instance Not Found Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Instance Validation Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/xaas/instances/network-interface/attach": {
       "post": {
         "tags": [
@@ -4381,6 +4473,10 @@
             "minLength": 1,
             "format": "uri"
           },
+          "min_disk": {
+            "type": "integer",
+            "title": "Min Disk"
+          },
           "origin_region": {
             "type": "string",
             "title": "Origin Region",
@@ -4398,6 +4494,7 @@
         "required": [
           "name",
           "backup_url",
+          "min_disk",
           "origin_region",
           "origin_backup_id"
         ],

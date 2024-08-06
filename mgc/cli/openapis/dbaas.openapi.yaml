@@ -6,7 +6,7 @@ info:
         name: Tribo IAAS Cloud
         url: https://gitlab.luizalabs.com/cloud/dbaas/docs
         email: cloud-iaas-dbaas@luizalabs.com
-    version: 1.25.0
+    version: 1.26.1
 tags:
 -   name: datastores
     description: Datastores available for database instances.
@@ -84,7 +84,7 @@ paths:
 
                 '
             parameters:
-            -   $ref: '#/components/parameters/engine_id_path'
+            -   $ref: '#/components/parameters/engine_id'
             responses:
                 '200':
                     description: Successful Response.
@@ -154,7 +154,7 @@ paths:
             summary: Engine detail.
             description: Returns a engine detail.
             parameters:
-            -   $ref: '#/components/parameters/engine_id_path'
+            -   $ref: '#/components/parameters/engine_id'
             responses:
                 '200':
                     description: Successful Response.
@@ -992,6 +992,7 @@ paths:
             -   $ref: '#/components/parameters/backup_type'
             -   $ref: '#/components/parameters/backup_mode'
             -   $ref: '#/components/parameters/backup_status'
+            -   $ref: '#/components/parameters/instance_id_query'
             responses:
                 '200':
                     description: Successful Response.
@@ -1590,7 +1591,17 @@ components:
                 format: uuid
             example: f21999cb-302f-48f7-b584-6a84748e112c
             description: Value referring to instance Id.
-        engine_id_path:
+        instance_id_query:
+            name: instance_id
+            in: query
+            required: false
+            schema:
+                title: Instance Id
+                type: string
+                format: uuid
+            example: f21999cb-302f-48f7-b584-6a84748e112c
+            description: Value referring to instance Id.
+        engine_id:
             name: engine_id
             in: path
             required: true
@@ -1605,6 +1616,15 @@ components:
                     '
             example: 7a11cfc5-f9f8-4fa2-a418-94a423f6a51f
             description: Value referring to datastore Id.
+        engine_id_query:
+            name: engine_id
+            in: query
+            required: false
+            schema:
+                format: uuid
+                title: Engine Id
+                type: string
+            description: Value referring to engine Id.
         instance_expand:
             name: _expand
             in: query
@@ -1649,8 +1669,7 @@ components:
             name: status
             in: query
             schema:
-                allOf:
-                -   $ref: '#/components/schemas/EngineStatus'
+                $ref: '#/components/schemas/EngineStatus'
             description: Value referring to engine status.
         flavor_status:
             name: status
@@ -1687,11 +1706,34 @@ components:
     schemas:
         MetaResponse:
             properties:
+                filters:
+                    items:
+                        $ref: '#/components/schemas/FieldValueResponse'
+                    title: Filters
+                    type: array
+                    description: Data filters use in the current request pagination.
                 page:
                     $ref: '#/components/schemas/PageResponse'
             required:
             - page
+            - filters
             title: Meta Response
+            type: object
+            description: Page details about the current request pagination.
+        FieldValueResponse:
+            properties:
+                field:
+                    title: Field
+                    type: string
+                    description: The field name used to filter the response.
+                value:
+                    title: Value
+                    type: string
+                    description: The field value used to filter the response.
+            required:
+            - field
+            - value
+            title: FieldValueResponse
             type: object
         PageResponse:
             properties:

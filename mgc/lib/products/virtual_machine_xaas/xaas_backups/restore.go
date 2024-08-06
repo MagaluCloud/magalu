@@ -19,7 +19,7 @@ A Backup is ready for restore when it's in completed status.
 - You can choose a machine-type that has a disk equal or larger
 than the minimum disk of the backup.
 
-Version: 1.255.1
+Version: 1.258.0
 
 import "magalu.cloud/lib/products/virtual_machine_xaas/xaas_backups"
 */

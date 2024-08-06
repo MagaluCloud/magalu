@@ -1231,10 +1231,12 @@
           {
             "name": "id",
             "in": "path",
+            "description": "Instance id - for help use ./mgc virtual-machines instances list .",
             "required": true,
             "schema": {
               "type": "string",
-              "title": "Id"
+              "title": "Id",
+              "description": "Instance id - for help use ./mgc virtual-machines instances list ."
             }
           },
           {
@@ -1338,20 +1340,24 @@
           {
             "name": "id",
             "in": "path",
+            "description": "Instance id - for help use ./mgc virtual-machines instances list .",
             "required": true,
             "schema": {
               "type": "string",
               "title": "Id",
-              "format": "uuid"
+              "format": "uuid",
+              "description": "Instance id - for help use ./mgc virtual-machines instances list ."
             }
           },
           {
             "name": "delete_public_ip",
             "in": "query",
+            "description": "Flag default value false.",
             "required": false,
             "schema": {
               "type": "boolean",
               "title": "Delete Public Ip",
+              "description": "Flag default value false.",
               "default": false
             }
           },
@@ -1435,11 +1441,13 @@
           {
             "name": "id",
             "in": "path",
+            "description": "Instance id - for help use ./mgc virtual-machines instances list .",
             "required": true,
             "schema": {
               "type": "string",
               "title": "Id",
-              "format": "uuid"
+              "format": "uuid",
+              "description": "Instance id - for help use ./mgc virtual-machines instances list ."
             }
           },
           {
@@ -1483,10 +1491,12 @@
           {
             "name": "id",
             "in": "path",
+            "description": "Instance id - for help use ./mgc virtual-machines instances list .",
             "required": true,
             "schema": {
               "type": "string",
-              "title": "Id"
+              "title": "Id",
+              "description": "Instance id - for help use ./mgc virtual-machines instances list ."
             }
           },
           {
@@ -1579,11 +1589,13 @@
           {
             "name": "id",
             "in": "path",
+            "description": "Instance id - for help use ./mgc virtual-machines instances list .",
             "required": true,
             "schema": {
               "type": "string",
               "title": "Id",
-              "format": "uuid4"
+              "format": "uuid",
+              "description": "Instance id - for help use ./mgc virtual-machines instances list ."
             }
           },
           {
@@ -1677,11 +1689,13 @@
           {
             "name": "id",
             "in": "path",
+            "description": "Instance id - for help use ./mgc virtual-machines instances list .",
             "required": true,
             "schema": {
               "type": "string",
               "title": "Id",
-              "format": "uuid"
+              "format": "uuid",
+              "description": "Instance id - for help use ./mgc virtual-machines instances list ."
             }
           },
           {
@@ -1725,11 +1739,13 @@
           {
             "name": "id",
             "in": "path",
+            "description": "Instance id - for help use ./mgc virtual-machines instances list .",
             "required": true,
             "schema": {
               "type": "string",
               "title": "Id",
-              "format": "uuid"
+              "format": "uuid",
+              "description": "Instance id - for help use ./mgc virtual-machines instances list ."
             }
           },
           {
@@ -1773,11 +1789,13 @@
           {
             "name": "id",
             "in": "path",
+            "description": "Instance id - for help use ./mgc virtual-machines instances list .",
             "required": true,
             "schema": {
               "type": "string",
               "title": "Id",
-              "format": "uuid"
+              "format": "uuid",
+              "description": "Instance id - for help use ./mgc virtual-machines instances list ."
             }
           },
           {
@@ -3953,7 +3971,8 @@
             "type": "string",
             "title": "Name",
             "maxLength": 255,
-            "minLength": 1
+            "minLength": 1,
+            "description": "New name"
           }
         },
         "title": "IntanceUpdateRequest",
