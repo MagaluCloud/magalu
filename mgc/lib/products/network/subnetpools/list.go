@@ -3,11 +3,11 @@ Executor: list
 
 # Summary
 
-List Subnet Pools by Tenant
+# List Subnet Pools by Tenant
 
 # Description
 
-Returns a list of Subnet Pools for the current tenant's project
+# Returns a list of Subnet Pools for the current tenant's project
 
 Version: 1.130.0
 
@@ -16,14 +16,13 @@ import "magalu.cloud/lib/products/network/subnetpools"
 package subnetpools
 
 import (
-
 	mgcCore "magalu.cloud/core"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
 
 type ListConfigs struct {
-	Env *string `json:"env,omitempty"`
-	Region *string `json:"region,omitempty"`
+	Env       *string `json:"env,omitempty"`
+	Region    *string `json:"region,omitempty"`
 	ServerUrl *string `json:"serverUrl,omitempty"`
 }
 
@@ -33,20 +32,13 @@ type ListResult struct {
 }
 
 // A Pydantic model representing a response for Subnet Pool creation.
-
-Attributes:
-    id (str): The ID of the subnet pool.
-    tenant_id (str): The ID of the tenant that owns the subnet pool.
-    vpc_id (str): The ID of the VPC that the subnet pool belongs to.
-    name (str): The name of the subnet pool.
-    external_id (str): The ID of the subnet pool in OpenStack.
 type ListResultSubnetpoolsItem struct {
-	Cidr *string `json:"cidr,omitempty"`
+	Cidr        *string `json:"cidr,omitempty"`
 	Description *string `json:"description,omitempty"`
-	ExternalId *string `json:"external_id,omitempty"`
-	Id string `json:"id"`
-	Name string `json:"name"`
-	TenantId string `json:"tenant_id"`
+	ExternalId  *string `json:"external_id,omitempty"`
+	Id          string  `json:"id"`
+	Name        string  `json:"name"`
+	TenantId    string  `json:"tenant_id"`
 }
 
 type ListResultSubnetpools []ListResultSubnetpoolsItem

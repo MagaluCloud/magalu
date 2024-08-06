@@ -24,7 +24,6 @@ type GetSchemaParameters struct {
 }
 
 type GetSchemaResult struct {
-	AdditionalProperties *GetSchemaResultAdditionalProperties                         `json:"additionalProperties,omitempty"`
 	AllOf                *GetSchemaResultAdditionalPropertiesSchemaValueAllOf         `json:"allOf,omitempty"`
 	AllowEmptyValue      *bool                                                        `json:"allowEmptyValue,omitempty"`
 	AnyOf                *GetSchemaResultAdditionalPropertiesSchemaValueAnyOf         `json:"anyOf,omitempty"`
