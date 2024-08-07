@@ -18,6 +18,7 @@ func (*jsonOutputFormatter) Format(value any, options string, isRaw bool) error 
 		} else {
 			enc.SetIndent("", " ")
 		}
+		enc.SetEscapeHTML(false)
 		return enc.Encode(value)
 	}
 	out := colorable.NewColorable(os.Stdout)
@@ -36,6 +37,7 @@ func (*jsonOutputFormatter) Format(value any, options string, isRaw bool) error 
 	clrs.String = jsonColor.Color("\x1b[92m")
 
 	enc.SetColors(clrs)
+	enc.SetEscapeHTML(false)
 
 	return enc.Encode(value)
 }
