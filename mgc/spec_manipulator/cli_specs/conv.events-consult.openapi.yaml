@@ -47,8 +47,7 @@
                   "type": "string"
                 }
               ],
-              "title": "Id",
-              "nullable": true
+              "title": "Id"
             }
           },
           {
@@ -61,8 +60,7 @@
                   "type": "string"
                 }
               ],
-              "title": "Source  Like",
-              "nullable": true
+              "title": "Source  Like"
             }
           },
           {
@@ -76,8 +74,7 @@
                   "format": "date-time"
                 }
               ],
-              "title": "Time",
-              "nullable": true
+              "title": "Time"
             }
           },
           {
@@ -90,8 +87,7 @@
                   "type": "string"
                 }
               ],
-              "title": "Type  Like",
-              "nullable": true
+              "title": "Type  Like"
             }
           },
           {
@@ -104,8 +100,7 @@
                   "type": "string"
                 }
               ],
-              "title": "Product  Like",
-              "nullable": true
+              "title": "Product  Like"
             }
           },
           {
@@ -118,8 +113,7 @@
                   "type": "string"
                 }
               ],
-              "title": "Authid",
-              "nullable": true
+              "title": "Authid"
             }
           },
           {
@@ -132,8 +126,7 @@
                   "type": "string"
                 }
               ],
-              "title": "Tenantid",
-              "nullable": true
+              "title": "Tenantid"
             }
           },
           {

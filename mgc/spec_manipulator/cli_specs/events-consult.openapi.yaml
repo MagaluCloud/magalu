@@ -47,9 +47,6 @@
               "anyOf": [
                 {
                   "type": "string"
-                },
-                {
-                  "type": "null"
                 }
               ],
               "title": "Id"
@@ -63,9 +60,6 @@
               "anyOf": [
                 {
                   "type": "string"
-                },
-                {
-                  "type": "null"
                 }
               ],
               "title": "Source  Like"
@@ -80,9 +74,6 @@
                 {
                   "type": "string",
                   "format": "date-time"
-                },
-                {
-                  "type": "null"
                 }
               ],
               "title": "Time"
@@ -96,9 +87,6 @@
               "anyOf": [
                 {
                   "type": "string"
-                },
-                {
-                  "type": "null"
                 }
               ],
               "title": "Type  Like"
@@ -112,9 +100,6 @@
               "anyOf": [
                 {
                   "type": "string"
-                },
-                {
-                  "type": "null"
                 }
               ],
               "title": "Product  Like"
@@ -128,9 +113,6 @@
               "anyOf": [
                 {
                   "type": "string"
-                },
-                {
-                  "type": "null"
                 }
               ],
               "title": "Authid"
@@ -144,9 +126,6 @@
               "anyOf": [
                 {
                   "type": "string"
-                },
-                {
-                  "type": "null"
                 }
               ],
               "title": "Tenantid"

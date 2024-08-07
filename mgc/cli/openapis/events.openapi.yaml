@@ -35,7 +35,6 @@ paths:
                     anyOf:
                     -   type: string
                     title: Id
-                    nullable: true
             -   name: source__like
                 in: query
                 required: false
@@ -43,7 +42,6 @@ paths:
                     anyOf:
                     -   type: string
                     title: Source  Like
-                    nullable: true
             -   name: time
                 in: query
                 required: false
@@ -52,7 +50,6 @@ paths:
                     -   type: string
                         format: date-time
                     title: Time
-                    nullable: true
             -   name: type__like
                 in: query
                 required: false
@@ -60,7 +57,6 @@ paths:
                     anyOf:
                     -   type: string
                     title: Type  Like
-                    nullable: true
             -   name: product__like
                 in: query
                 required: false
@@ -68,7 +64,6 @@ paths:
                     anyOf:
                     -   type: string
                     title: Product  Like
-                    nullable: true
             -   name: authid
                 in: query
                 required: false
@@ -76,7 +71,6 @@ paths:
                     anyOf:
                     -   type: string
                     title: Authid
-                    nullable: true
             -   name: tenantid
                 in: query
                 required: false
@@ -84,7 +78,6 @@ paths:
                     anyOf:
                     -   type: string
                     title: Tenantid
-                    nullable: true
             -   name: X-Tenant-ID
                 in: header
                 required: false
