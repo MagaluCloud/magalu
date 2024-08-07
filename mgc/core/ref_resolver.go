@@ -233,6 +233,7 @@ func NewDocumentRefPathResolver(getRoot utils.LoadWithError[any]) *DocumentRefPa
 }
 
 func (r *DocumentRefPathResolver) Resolve(ref string) (result any, err error) {
+
 	path := RefPath(ref)
 	err = path.Validate()
 	if err != nil {
@@ -254,12 +255,9 @@ func (r *DocumentRefPathResolver) ResolvePath(path RefPath) (result any, err err
 	}
 
 	var ok bool
-	r.mutexl.Lock()
 	if result, ok = r.cache[path]; ok {
-		r.mutexl.Unlock()
 		return
 	}
-	r.mutexl.Unlock()
 
 	url, _ := path.SplitUrl()
 	if url != "" {
@@ -280,13 +278,11 @@ func (r *DocumentRefPathResolver) ResolvePath(path RefPath) (result any, err err
 	}
 
 	if err == nil {
-		r.mutexl.Lock()
 		r.cache[path] = result
 	} else {
 		err = &RefPathResolveError{path, err}
 	}
 
-	r.mutexl.Unlock()
 	return
 }
 

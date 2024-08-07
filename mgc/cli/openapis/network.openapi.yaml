@@ -6,7 +6,7 @@ info:
         name: Tribo IAAS Cloud
         url: https://github.com/luizalabs
         email: thullyo.cunha@luizalabs.com
-    version: 1.126.1
+    version: 1.130.0
 paths:
     /v0/healthcheck:
         get:
@@ -25,6 +25,127 @@ paths:
             security:
             -   OAuth2:
                 - network.read
+    /v0/internal/conciliator:
+        post:
+            tags:
+            - backoffice_conciliator
+            summary: Start conciliator
+            description: Start conciliator validation
+            operationId: InternalStartConciliator
+            parameters:
+            -   name: resource-type
+                in: header
+                description: Resources to start the conciliator
+                required: false
+                schema:
+                    allOf:
+                    -   $ref: '#/components/schemas/ResourceType'
+                    title: Resource Type
+                    description: Resources to start the conciliator
+                    default: security_group, rule, public_ip
+            -   name: skip
+                in: header
+                description: Number of tenants to skip
+                required: false
+                schema:
+                    type: integer
+                    title: Skip
+                    description: Number of tenants to skip
+                    default: 0
+            -   name: limit
+                in: header
+                description: Limit of tenants
+                required: false
+                schema:
+                    type: integer
+                    title: Limit of tenants
+                    description: Limit of tenants
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema: {}
+                '204':
+                    description: No Content
+                '500':
+                    description: Internal Server Error
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: false
+            security:
+            -   OAuth2:
+                - network.write
+    /v0/interconnections/{vpc_id}:
+        post:
+            tags:
+            - interconnections
+            summary: Create Interconnections
+            operationId: create_interconnections_v0_interconnections__vpc_id__post
+            parameters:
+            -   name: vpc_id
+                in: path
+                description: Id of the VPC to create OVN Interconnect
+                required: true
+                schema:
+                    type: string
+                    title: VPC Id
+                    description: Id of the VPC to create OVN Interconnect
+            responses:
+                '201':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema: {}
+                    links:
+                        delete:
+                            operationId: delete_interconnections_v0_interconnections__vpc_id__delete
+                            description: Delete Interconnections
+                            parameters:
+                                vpc_id: $request.path.vpc_id
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: false
+            x-mgc-hidden: true
+            security:
+            -   OAuth2:
+                - network.write
+        delete:
+            tags:
+            - interconnections
+            summary: Delete Interconnections
+            operationId: delete_interconnections_v0_interconnections__vpc_id__delete
+            parameters:
+            -   name: vpc_id
+                in: path
+                description: Id of the VPC to create OVN Interconnect
+                required: true
+                schema:
+                    type: string
+                    title: VPC Id
+                    description: Id of the VPC to create OVN Interconnect
+            responses:
+                '204':
+                    description: Successful Response
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: false
+            x-mgc-hidden: true
+            security:
+            -   OAuth2:
+                - network.write
     /v0/ports:
         get:
             tags:
@@ -124,11 +245,10 @@ paths:
             security:
             -   OAuth2:
                 - network.write
-            x-mgc-name: create-default-vpc
     /v0/vpcs/{vpc_id}/ports:
         get:
             tags:
-            - vpc
+            - port
             summary: List Ports
             description: Returns a list of ports for a provided vpc_id and x-tenant-id.
                 The list will be paginated, it means you can easily find what you
@@ -200,10 +320,9 @@ paths:
             security:
             -   OAuth2:
                 - network.read
-            x-mgc-description: List VPC ports
         post:
             tags:
-            - vpc
+            - port
             summary: Create Port
             description: Create a Port with provided vpc_id and x-tenant-id. You can
                 provide a list of security_groups_id or subnets
@@ -473,7 +592,7 @@ paths:
     /v0/vpcs/{vpc_id}/public_ips:
         get:
             tags:
-            - vpc
+            - public_ip
             summary: List Public IPs
             description: Returns a list of Public IPs for a provided vpc_id
             operationId: ListPublicIps
@@ -505,7 +624,7 @@ paths:
                 - network.read
         post:
             tags:
-            - vpc
+            - public_ip
             summary: Create Public IP
             description: Create async Public IP in a VPC with provided vpc_id and
                 x_tenant_id
@@ -586,7 +705,6 @@ paths:
             security:
             -   OAuth2:
                 - network.write
-            x-mgc-hidden: true
     /v0/public_ips/{public_ip_id}:
         get:
             tags:
@@ -842,7 +960,7 @@ paths:
     /v0/security_groups/{security_group_id}/rules:
         get:
             tags:
-            - security_group
+            - rule
             summary: List Rules
             description: Returns a list of rules for a provided security_group_id
             operationId: listRules
@@ -872,10 +990,9 @@ paths:
             security:
             -   OAuth2:
                 - network.read
-            x-mgc-hidden: true
         post:
             tags:
-            - security_group
+            - rule
             summary: Create Rule
             description: Create a Rule async, returning its ID. To monitor the creation
                 progress, please check the status in the service message or implement
@@ -962,7 +1079,6 @@ paths:
             security:
             -   OAuth2:
                 - network.write
-            x-mgc-hidden: true
     /v0/rules/{rule_id}:
         get:
             tags:
@@ -989,9 +1105,9 @@ paths:
                     links:
                         delete:
                             operationId: deleteRule
-                            description: Delete Rule
+                            description: Delete a Rule
                             parameters:
-                                rule_id: $request.path.rule_id
+                                rule_id: $response.body#/id
                 '422':
                     description: Validation Error
                     content:
@@ -1170,7 +1286,7 @@ paths:
     /v0/vpcs/{vpc_id}/security_groups:
         get:
             tags:
-            - vpc
+            - security_group
             summary: List Security Groups
             description: Returns a list of security groups for a provided vpc_id
             operationId: listSecurityGroup
@@ -1203,7 +1319,7 @@ paths:
                 - network.read
         post:
             tags:
-            - vpc
+            - security_group
             summary: Create Security Group
             description: Create a Security Group
             operationId: createSecurityGroupDeprecated
@@ -1372,6 +1488,30 @@ paths:
             security:
             -   OAuth2:
                 - network.write
+    /v0/subnetpools:
+        get:
+            tags:
+            - subnetpools
+            summary: List Subnet Pools by Tenant
+            description: Returns a list of Subnet Pools for the current tenant's project
+            operationId: listSubnetPoolsByTenant
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SubnetPoolsResponse'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: true
+            security:
+            -   OAuth2:
+                - network.read
     /v0/vpcs/{vpc_id}/subnets:
         get:
             tags:
@@ -1405,7 +1545,6 @@ paths:
             security:
             -   OAuth2:
                 - network.read
-            x-mgc-hidden: true
         post:
             tags:
             - subnets
@@ -1458,7 +1597,6 @@ paths:
             security:
             -   OAuth2:
                 - network.write
-            x-mgc-hidden: true
     /v0/subnets/{subnet_id}:
         get:
             tags:
@@ -3075,11 +3213,11 @@ components:
                     title: Remote Group Id
                     nullable: true
                 ethertype:
-                    anyOf:
-                    -   type: string
+                    type: string
                     title: Ethertype
-                    nullable: true
             title: RuleCreateRequest
+            required:
+            - ethertype
             example:
                 direction: egress
                 ethertype: IPv4
@@ -4255,138 +4393,38 @@ components:
             example:
                 dns_nameservers:
                 - 8.8.8.8
-        SubnetPoolDetailsResponse:
-            type: object
-            properties:
-                id:
-                    type: string
-                    title: Id
-                tenant_id:
-                    type: string
-                    title: Tenant Id
-                vpc_id:
-                    type: string
-                    title: Vpc Id
-                name:
-                    type: string
-                    title: Name
-                pool_prefix:
-                    type: array
-                    items:
-                        type: string
-                    title: Pool Prefix
-                min_prefix_length:
-                    type: integer
-                    title: Min Prefix Length
-                max_prefix_length:
-                    type: integer
-                    title: Max Prefix Length
-                default_prefix_length:
-                    type: integer
-                    title: Default Prefix Length
-                description:
-                    type: string
-                    title: Description
-            title: SubnetPoolDetailsResponse
-            required:
-            - id
-            - tenant_id
-            - vpc_id
-            - name
-            - pool_prefix
-            - min_prefix_length
-            - max_prefix_length
-            - default_prefix_length
-            - description
-            description: A Pydantic model representing the request for creating one
-                Subnet Pool.
-            example:
-                default_prefix_length: 26
-                description: some description
-                id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-                max_prefix_length: 28
-                min_prefix_length: 24
-                name: some_subnet_pool
-                pool_prefix:
-                - 172.26.0.0/16
-                tenant_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-                vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-        SubnetPoolRequest:
-            type: object
-            properties:
-                name:
-                    type: string
-                    title: Name
-                    description: The name of the subnet pool.
-                pool_prefix:
-                    type: string
-                    title: Pool Prefix
-                    description: The CIDR notation prefix for the subnet pool.
-                    default: 172.26.0.0/16
-                min_prefix_length:
-                    type: integer
-                    title: Min Prefix Length
-                    description: The minimum prefix length for a subnet in the pool.
-                    default: 24
-                max_prefix_length:
-                    type: integer
-                    title: Max Prefix Length
-                    description: The maximum prefix length for a subnet in the pool.
-                    default: 28
-                default_prefix_length:
-                    type: integer
-                    title: Default Prefix Length
-                    description: The default prefix length for a subnet in the pool.
-                    default: 26
-                description:
-                    type: string
-                    title: Description
-                    description: The description for the subnet pool
-                address_scope_id:
-                    anyOf:
-                    -   type: string
-                    title: Address Scope Id
-                    description: The ID of the address scope for the subnet pool
-                    nullable: true
-            title: SubnetPoolRequest
-            required:
-            - name
-            - description
-            description: A Pydantic model representing the request for creating one
-                Subnet Pool.
-            example:
-                address_scope_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-                default_prefix_length: 26
-                description: some description
-                max_prefix_length: 28
-                min_prefix_length: 24
-                name: some_subnet_pool
-                pool_prefix: 172.26.0.0/16
         SubnetPoolResponse:
             type: object
             properties:
+                cidr:
+                    type: string
+                    title: Cidr
+                    description: The CIDR notation for the subnet pool.
+                    default: 172.26.0.0/16
                 id:
                     type: string
                     title: Id
                 tenant_id:
                     type: string
                     title: Tenant Id
-                vpc_id:
-                    type: string
-                    title: Vpc Id
                 name:
                     type: string
                     title: Name
+                description:
+                    anyOf:
+                    -   type: string
+                    title: Description
+                    nullable: true
                 external_id:
-                    type: string
+                    anyOf:
+                    -   type: string
                     title: External Id
+                    nullable: true
             title: SubnetPoolResponse
             required:
             - id
             - tenant_id
-            - vpc_id
             - name
-            - external_id
             description: "A Pydantic model representing a response for Subnet Pool\
                 \ creation.\n\nAttributes:\n    id (str): The ID of the subnet pool.\n\
                 \    tenant_id (str): The ID of the tenant that owns the subnet pool.\n\
@@ -4394,11 +4432,12 @@ components:
                 \ to.\n    name (str): The name of the subnet pool.\n    external_id\
                 \ (str): The ID of the subnet pool in OpenStack."
             example:
+                cidr: 172.26.0.0/16
+                description: subnet pool description
                 external_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                 id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                 name: some_subnet_pool
                 tenant_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-                vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
         SubnetPoolsResponse:
             type: object
             properties:
@@ -4407,28 +4446,35 @@ components:
                     items:
                         type: object
                         properties:
+                            cidr:
+                                type: string
+                                title: Cidr
+                                description: The CIDR notation for the subnet pool.
+                                default: 172.26.0.0/16
                             id:
                                 type: string
                                 title: Id
                             tenant_id:
                                 type: string
                                 title: Tenant Id
-                            vpc_id:
-                                type: string
-                                title: Vpc Id
                             name:
                                 type: string
                                 title: Name
+                            description:
+                                anyOf:
+                                -   type: string
+                                title: Description
+                                nullable: true
                             external_id:
-                                type: string
+                                anyOf:
+                                -   type: string
                                 title: External Id
+                                nullable: true
                         title: SubnetPoolResponse
                         required:
                         - id
                         - tenant_id
-                        - vpc_id
                         - name
-                        - external_id
                         description: "A Pydantic model representing a response for\
                             \ Subnet Pool creation.\n\nAttributes:\n    id (str):\
                             \ The ID of the subnet pool.\n    tenant_id (str): The\
@@ -4437,22 +4483,22 @@ components:
                             \ to.\n    name (str): The name of the subnet pool.\n\
                             \    external_id (str): The ID of the subnet pool in OpenStack."
                         example:
+                            cidr: 172.26.0.0/16
+                            description: subnet pool description
                             external_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                             id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                             name: some_subnet_pool
                             tenant_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-                            vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                     title: Subnetpools
                     default: []
             title: SubnetPoolsResponse
             description: A Pydantic model representing a list of Subnet Pools.
             example:
                 subnetpools:
-                -   external_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                -   cidr: 172.26.0.0/16
+                    description: subnet pool description
                     id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                     name: some_subnet_pool
-                    tenant_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-                    vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
         SubnetResponse:
             type: object
             properties:
@@ -5290,39 +5336,30 @@ components:
                 name: vpc_name
                 subnetpool_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 tags:
+-   name: backoffice_conciliator
+    description: backoffice_conciliator
 -   name: healthcheck
     description: healthcheck
-    x-mgc-hidden: true
+-   name: interconnections
+    description: interconnections
 -   name: port
     description: port
-    x-mgc-name: ports
-    x-mgc-description: VPC Port
 -   name: public_ip
     description: public_ip
-    x-mgc-name: public_ips
-    x-mgc-description: VPC Public IPs
 -   name: quotas
     description: quotas
-    x-mgc-description: VPC Quotas
-    x-mgc-hidden: true
 -   name: rule
     description: rule
-    x-mgc-name: rules
-    x-mgc-description: VPC Rules
 -   name: security_group
     description: security_group
-    x-mgc-name: security_groups
-    x-mgc-description: VPC Security Groups
+-   name: subnetpools
+    description: subnetpools
 -   name: subnets
     description: subnets
-    x-mgc-description: VPC Subnets
 -   name: vpc
     description: vpc
-    x-mgc-name: vpcs
-    x-mgc-description: Virtual Private Cloud (VPC)
 -   name: worker_public_ips
     description: worker_public_ips
-    x-mgc-hidden: true
 $id: https://network.jaxyendy.com/openapi.json
 servers:
 -   url: https://{env}/{region}/network

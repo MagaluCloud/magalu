@@ -8,7 +8,7 @@
       "url": "https://github.com/luizalabs",
       "email": "thullyo.cunha@luizalabs.com"
     },
-    "version": "1.128.0"
+    "version": "1.130.0"
   },
   "paths": {
     "/v0/healthcheck": {
@@ -4265,18 +4265,14 @@
             "title": "Remote Group Id"
           },
           "ethertype": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "string",
             "title": "Ethertype"
           }
         },
         "title": "RuleCreateRequest",
+        "required": [
+          "ethertype"
+        ],
         "example": {
           "direction": "egress",
           "ethertype": "IPv4",

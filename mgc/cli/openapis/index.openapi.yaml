@@ -19,7 +19,14 @@ modules:
     summary: DBaaS API Product.
     super_internal: false
     url: https://dbaas.jaxyendy.com/openapi.json
-    version: 1.25.0
+    version: 1.26.1
+-   description: Cloud Events API Product.
+    name: events
+    path: events.openapi.yaml
+    summary: Cloud Events API Product.
+    super_internal: false
+    url: https://events-consult.jaxyendy.com/openapi-cli.json
+    version: 0.12.0
 -   description: APIs related to the Kubernetes product.
     name: kubernetes
     path: kubernetes.openapi.yaml
@@ -33,7 +40,7 @@ modules:
     summary: APIs referentes ao produto de VPC
     super_internal: false
     url: https://network.jaxyendy.com/openapi.json
-    version: 1.126.1
+    version: 1.130.0
 -   description: Virtual Machine Api Product
     name: virtual-machine
     path: virtual-machine.openapi.yaml

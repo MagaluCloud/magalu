@@ -924,10 +924,14 @@ paths:
             parameters:
             -   name: id
                 in: path
+                description: Instance id - for help use ./mgc virtual-machines instances
+                    list .
                 required: true
                 schema:
                     type: string
                     title: Id
+                    description: Instance id - for help use ./mgc virtual-machines
+                        instances list .
             -   name: expand
                 in: query
                 description: 'You can get more detailed info about: [''image'', ''machine-type'',
@@ -1086,17 +1090,23 @@ paths:
             parameters:
             -   name: id
                 in: path
+                description: Instance id - for help use ./mgc virtual-machines instances
+                    list .
                 required: true
                 schema:
                     type: string
                     title: Id
                     format: uuid
+                    description: Instance id - for help use ./mgc virtual-machines
+                        instances list .
             -   name: delete_public_ip
                 in: query
+                description: Flag default value false.
                 required: false
                 schema:
                     type: boolean
                     title: Delete Public Ip
+                    description: Flag default value false.
                     default: false
             responses:
                 '204':
@@ -1159,11 +1169,15 @@ paths:
             parameters:
             -   name: id
                 in: path
+                description: Instance id - for help use ./mgc virtual-machines instances
+                    list .
                 required: true
                 schema:
                     type: string
                     title: Id
                     format: uuid
+                    description: Instance id - for help use ./mgc virtual-machines
+                        instances list .
             responses:
                 '204':
                     description: Successful Response
@@ -1233,10 +1247,14 @@ paths:
             parameters:
             -   name: id
                 in: path
+                description: Instance id - for help use ./mgc virtual-machines instances
+                    list .
                 required: true
                 schema:
                     type: string
                     title: Id
+                    description: Instance id - for help use ./mgc virtual-machines
+                        instances list .
             requestBody:
                 content:
                     application/json:
@@ -1357,11 +1375,15 @@ paths:
             parameters:
             -   name: id
                 in: path
+                description: Instance id - for help use ./mgc virtual-machines instances
+                    list .
                 required: true
                 schema:
                     type: string
                     title: Id
-                    format: uuid4
+                    format: uuid
+                    description: Instance id - for help use ./mgc virtual-machines
+                        instances list .
             requestBody:
                 content:
                     application/json:
@@ -1468,11 +1490,15 @@ paths:
             parameters:
             -   name: id
                 in: path
+                description: Instance id - for help use ./mgc virtual-machines instances
+                    list .
                 required: true
                 schema:
                     type: string
                     title: Id
                     format: uuid
+                    description: Instance id - for help use ./mgc virtual-machines
+                        instances list .
             responses:
                 '204':
                     description: Successful Response
@@ -1546,11 +1572,15 @@ paths:
             parameters:
             -   name: id
                 in: path
+                description: Instance id - for help use ./mgc virtual-machines instances
+                    list .
                 required: true
                 schema:
                     type: string
                     title: Id
                     format: uuid
+                    description: Instance id - for help use ./mgc virtual-machines
+                        instances list .
             responses:
                 '204':
                     description: Successful Response
@@ -1625,11 +1655,15 @@ paths:
             parameters:
             -   name: id
                 in: path
+                description: Instance id - for help use ./mgc virtual-machines instances
+                    list .
                 required: true
                 schema:
                     type: string
                     title: Id
                     format: uuid
+                    description: Instance id - for help use ./mgc virtual-machines
+                        instances list .
             responses:
                 '204':
                     description: Successful Response
@@ -3267,6 +3301,7 @@ components:
                     title: Name
                     maxLength: 255
                     minLength: 1
+                    description: New name
             title: IntanceUpdateRequest
             required:
             - name

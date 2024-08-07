@@ -137,18 +137,6 @@ func runPrepare(cmd *cobra.Command, args []string) {
 				panic(fmt.Sprintf("cannot create v3 model from document: %d errors reported", len(errors)))
 			}
 
-			for pair := docModel.Model.Components.Schemas.Oldest(); pair != nil; pair = pair.Next() {
-				if strings.Contains(strings.ToLower(pair.Key), "xaas") {
-					toRemove = append(toRemove, pair.Key)
-				}
-			}
-
-			for _, key := range toRemove {
-				docModel.Model.Components.Schemas.Delete(key)
-			}
-
-			fmt.Printf("Total COMPONENT removed: %v\n", len(toRemove))
-
 			//todo - remove from py
 			// svar := orderedmap.New[string, *v3.ServerVariable]()
 			// svar.Set("region", &v3.ServerVariable{

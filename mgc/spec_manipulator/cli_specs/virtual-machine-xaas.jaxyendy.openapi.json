@@ -3,7 +3,7 @@
   "info": {
     "title": "Internal Virtual Machine Api Product",
     "description": "Virtual Machine Api Product",
-    "version": "1.255.0"
+    "version": "1.258.0"
   },
   "paths": {
     "/v1/health": {
@@ -1822,6 +1822,10 @@
             "minLength": 1,
             "format": "uri"
           },
+          "min_disk": {
+            "type": "integer",
+            "title": "Min Disk"
+          },
           "origin_region": {
             "type": "string",
             "title": "Origin Region",
@@ -1839,6 +1843,7 @@
         "required": [
           "name",
           "backup_url",
+          "min_disk",
           "origin_region",
           "origin_backup_id"
         ],

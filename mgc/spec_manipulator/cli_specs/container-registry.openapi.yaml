@@ -55,6 +55,35 @@ paths:
           $ref: '#/components/responses/TooManyRequestsError'
         '500':
           $ref: '#/components/responses/InternalServerError'
+  /v0/credentials/password:
+    post:
+      tags:
+        - credentials
+      summary: Reset password
+      description: Reset container registry user's password.
+      operationId: resetPassword
+      security:
+        - BearerAuth:
+            - mcr.write
+        - OAuth2:
+            - mcr.write
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CredentialsResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
   /v0/registries:
     post:
       tags:

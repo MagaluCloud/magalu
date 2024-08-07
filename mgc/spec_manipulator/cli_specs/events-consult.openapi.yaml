@@ -1,0 +1,479 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Cloud Events Consult API",
+    "description": "Cloud Events API Product.",
+    "version": "0.12.0"
+  },
+  "paths": {
+    "/v0/events": {
+      "get": {
+        "tags": [
+          "events"
+        ],
+        "summary": "Lists all cloud events.",
+        "description": "Lists all cloud events emitted by other products.",
+        "operationId": "list_event",
+        "parameters": [
+          {
+            "name": "_limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "title": " Limit",
+              "maximum": 2147483647,
+              "minimum": 0,
+              "default": 50
+            }
+          },
+          {
+            "name": "_offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "title": " Offset",
+              "maximum": 2147483647,
+              "minimum": 0,
+              "default": 0
+            }
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Id"
+            }
+          },
+          {
+            "name": "source__like",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Source  Like"
+            }
+          },
+          {
+            "name": "time",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Time"
+            }
+          },
+          {
+            "name": "type__like",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Type  Like"
+            }
+          },
+          {
+            "name": "product__like",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Product  Like"
+            }
+          },
+          {
+            "name": "authid",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authid"
+            }
+          },
+          {
+            "name": "tenantid",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Tenantid"
+            }
+          },
+          {
+            "name": "X-Tenant-ID",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "title": "X-Tenant-Id"
+            }
+          },
+          {
+            "name": "data",
+            "in": "query",
+            "description": "The raw data event",
+            "required": false,
+            "schema": {
+              "type": "object",
+              "title": "Raw Data",
+              "additionalProperties": {
+                "type": "string"
+              },
+              "default": {},
+              "example": {
+                "data.tenant_id": "00000000-0000-0000-0000-000000000000",
+                "data.machine_type.name": "cloud-bs1.xsmall"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListPaginatorResponse_Event_"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPResponseError"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "evt:event-tr"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Event": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "examples": [
+              "00000000-00000000-00000000-00000000"
+            ],
+            "title": "Id",
+            "description": "Identifies the event."
+          },
+          "source": {
+            "type": "string",
+            "examples": [
+              "https://api.com/v1/instances/00000000-00000000-00000000-00000000"
+            ],
+            "title": "Source",
+            "description": "Identifies the context in which the event occurred."
+          },
+          "type": {
+            "type": "string",
+            "examples": [
+              "cloud.magalu.compute.instance.create"
+            ],
+            "title": "Type",
+            "description": "The value describing the type of event related to the originating occurrence."
+          },
+          "specversion": {
+            "type": "string",
+            "title": "Specversion",
+            "description": "Version of the CloudEvents specification which the event uses.",
+            "default": "1.0"
+          },
+          "subject": {
+            "type": "string",
+            "examples": [
+              "instance/00000000-00000000-00000000-00000000"
+            ],
+            "title": "Subject",
+            "description": "Identifies the subject of the event, in context of the event producer (identified by source)"
+          },
+          "time": {
+            "type": "string",
+            "examples": [
+              "2024-07-16T22:50:00"
+            ],
+            "title": "Time",
+            "format": "date-time",
+            "description": "Timestamp of when the occurrence happened."
+          },
+          "authid": {
+            "type": "string",
+            "examples": [
+              "00000000-00000000-00000000-00000000"
+            ],
+            "title": "Authid",
+            "description": "A unique identifier of the principal that triggered the occurrence."
+          },
+          "authtype": {
+            "type": "string",
+            "examples": [
+              "tenant",
+              "unauthenticated",
+              "client_credentials"
+            ],
+            "title": "Authtype",
+            "description": "An enum representing the type of principal that triggered the occurrence."
+          },
+          "product": {
+            "type": "string",
+            "examples": [
+              "default",
+              "dbaas"
+            ],
+            "title": "Product",
+            "description": "The identification in which producer type an event occur"
+          },
+          "region": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Region",
+            "description": "The physical region of the event"
+          },
+          "tenantid": {
+            "type": "string",
+            "examples": [
+              "00000000-00000000-00000000-00000000"
+            ],
+            "title": "Tenantid",
+            "description": "ID of the tenant which requested the change"
+          },
+          "data": {
+            "type": "object",
+            "title": "Raw event",
+            "description": "The raw event about the occurrence"
+          }
+        },
+        "title": "Event",
+        "required": [
+          "id",
+          "source",
+          "type",
+          "subject",
+          "time",
+          "authid",
+          "authtype",
+          "product",
+          "tenantid",
+          "data"
+        ],
+        "description": "Represent all the fields available in event output, following the Cloud Events Spec."
+      },
+      "HTTPResponseError": {
+        "type": "object",
+        "properties": {
+          "detail": {
+            "type": "string",
+            "title": "Detail"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          }
+        },
+        "title": "HTTPResponseError",
+        "required": [
+          "detail",
+          "message"
+        ]
+      },
+      "HTTPValidationError": {
+        "type": "object",
+        "properties": {
+          "detail": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "title": "Detail"
+          }
+        },
+        "title": "HTTPValidationError"
+      },
+      "ListPaginatorResponse_Event_": {
+        "type": "object",
+        "properties": {
+          "meta": {
+            "$ref": "#/components/schemas/PaginatorResponse"
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Event"
+            },
+            "title": "Results"
+          }
+        },
+        "title": "ListPaginatorResponse[Event]",
+        "required": [
+          "meta",
+          "results"
+        ]
+      },
+      "PaginatorResponse": {
+        "type": "object",
+        "properties": {
+          "limit": {
+            "type": "integer",
+            "title": "Limit",
+            "maximum": 2147483647,
+            "minimum": 0,
+            "description": "Number of items per page",
+            "default": 50
+          },
+          "offset": {
+            "type": "integer",
+            "title": "Offset",
+            "maximum": 2147483647,
+            "minimum": 0,
+            "description": "Offset for pagination",
+            "default": 0
+          },
+          "count": {
+            "type": "integer",
+            "title": "Count",
+            "description": "The number of items on the current page."
+          },
+          "total": {
+            "type": "integer",
+            "title": "Total",
+            "description": "The total number of items available across all pages."
+          }
+        },
+        "title": "PaginatorResponse",
+        "required": [
+          "count",
+          "total"
+        ]
+      },
+      "ValidationError": {
+        "type": "object",
+        "properties": {
+          "loc": {
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          }
+        },
+        "title": "ValidationError",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ]
+      }
+    },
+    "securitySchemes": {
+      "HTTPBearerDry": {
+        "type": "http",
+        "description": "## How to Auth\nTo use the API a token is needed, and both grant_types **client_credentials** and **authorization_code** tokens can be used.\n\nFollow [this guide](https://magazine.atlassian.net/wiki/spaces/CLOUD/pages/4230643732/Client+Credentials) to learn how to authenticate via **client credentials**.\n\nFollow [this guide](https://magazine.atlassian.net/wiki/spaces/CLOUD/pages/4253385090/Authorization+Code) to learn how to authenticate via **authorization code**.\n### Where?\nGenerate Token using OAuth2 API: https://autoseg-idp.luizalabs.com\n\n## Auth status: **Active 🟢**",
+        "scheme": "bearer"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "events",
+      "description": "Endpoints related to listing cloud events emitted by other products."
+    }
+  ]
+}
