@@ -14,7 +14,6 @@ Usage:
 - get         Retrieve the details of a snapshot
 - list        List snapshots in the current tenant
 - rename      Rename a snapshot
-- restore     Restore a snapshot to a new volume
 
 ## Other commands:
 - Flags:

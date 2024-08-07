@@ -8,9 +8,9 @@ Usage:
 
 ## Product catalog:
 - Flags:
-- --delete-public-ip   Delete Public Ip
+- --delete-public-ip   Delete Public Ip: Flag default value false.
 - -h, --help               help for delete
-- --id uuid            Id (required)
+- --id uuid            Instance id - for help use ./mgc virtual-machines instances list . (required)
 - -v, --version            version for delete
 
 ## Other commands:

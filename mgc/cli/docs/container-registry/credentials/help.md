@@ -10,6 +10,7 @@ Usage:
 ## Product catalog:
 - Commands:
 - list        Get credentials for container registry
+- password    Reset password
 
 ## Other commands:
 - Flags:

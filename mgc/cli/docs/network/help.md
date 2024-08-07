@@ -9,12 +9,18 @@ Usage:
 
 ## Product catalog:
 - Commands:
-- ports           VPC Port
-- public-ips      VPC Public IPs
-- rules           VPC Rules
-- security-groups VPC Security Groups
-- subnets         VPC Subnets
-- vpcs            Virtual Private Cloud (VPC)
+- backoffice-conciliator backoffice_conciliator
+- healthcheck            healthcheck
+- interconnections       interconnections
+- port                   port
+- public-ip              public_ip
+- quotas                 quotas
+- rule                   rule
+- security-group         security_group
+- subnetpools            subnetpools
+- subnets                subnets
+- vpc                    vpc
+- worker-public-ips      worker_public_ips
 
 ## Other commands:
 - Flags:

@@ -13,6 +13,7 @@ Usage:
 
 ## Other commands:
 - Commands:
+- backups      Operations with backups for volumes.
 - snapshots    Operations with snapshots for volumes.
 - volume-types Operations with volume types for volumes.
 - volumes      Operations with volumes, including create, delete, extend, retype, list and other actions.

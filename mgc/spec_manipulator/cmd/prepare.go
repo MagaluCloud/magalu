@@ -122,14 +122,14 @@ func runPrepare(cmd *cobra.Command, args []string) {
 
 			fmt.Printf("Total PATH removed: %v\n", len(toRemove))
 
-			toRemove = []string{}
+			// toRemove = []string{}
 
 			_, document, _, errs := document.RenderAndReload()
 			if len(errors) > 0 {
 				panic(fmt.Sprintf("cannot re-render document: %d errors reported", len(errs)))
 			}
 
-			docModel, errors = document.BuildV3Model()
+			_, errors = document.BuildV3Model()
 			if len(errors) > 0 {
 				for i := range errors {
 					fmt.Printf("error: %e\n", errors[i])
