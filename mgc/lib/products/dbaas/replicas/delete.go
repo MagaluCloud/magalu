@@ -9,7 +9,7 @@ Deletes a replica instance.
 
 Deletes a replica instance.
 
-Version: 1.23.0
+Version: 1.26.1
 
 import "magalu.cloud/lib/products/dbaas/replicas"
 */

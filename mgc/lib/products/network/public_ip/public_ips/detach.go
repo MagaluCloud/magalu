@@ -9,7 +9,7 @@ Executor: detach
 
 # Detach a Public IP to a Port
 
-Version: 1.124.1
+Version: 1.130.0
 
 import "magalu.cloud/lib/products/network/public_ip/public_ips"
 */
@@ -21,8 +21,8 @@ import (
 )
 
 type DetachParameters struct {
-	PortId     any `json:"port_id"`
-	PublicIpId any `json:"public_ip_id"`
+	PortId     string `json:"port_id"`
+	PublicIpId string `json:"public_ip_id"`
 }
 
 type DetachConfigs struct {

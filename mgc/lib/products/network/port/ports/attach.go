@@ -9,7 +9,7 @@ Executor: attach
 
 Attach a Security Group to a Port with provided port_id, security_group_id, x-tenant-id of an specific project type
 
-Version: 1.124.1
+Version: 1.130.0
 
 import "magalu.cloud/lib/products/network/port/ports"
 */
@@ -21,8 +21,8 @@ import (
 )
 
 type AttachParameters struct {
-	PortId          any `json:"port_id"`
-	SecurityGroupId any `json:"security_group_id"`
+	PortId          string `json:"port_id"`
+	SecurityGroupId string `json:"security_group_id"`
 }
 
 type AttachConfigs struct {

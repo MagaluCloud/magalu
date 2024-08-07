@@ -15,10 +15,11 @@ import (
 )
 
 type UploadDirParameters struct {
-	Dst     string                     `json:"dst"`
-	Filter  *UploadDirParametersFilter `json:"filter,omitempty"`
-	Shallow *bool                      `json:"shallow,omitempty"`
-	Src     string                     `json:"src"`
+	Dst          string                     `json:"dst"`
+	Filter       *UploadDirParametersFilter `json:"filter,omitempty"`
+	Shallow      *bool                      `json:"shallow,omitempty"`
+	Src          string                     `json:"src"`
+	StorageClass *string                    `json:"storage_class,omitempty"`
 }
 
 type UploadDirParametersFilterItem struct {

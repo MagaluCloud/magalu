@@ -9,7 +9,7 @@ Package: network
 
 # APIs referentes ao produto de VPC
 
-Version: 1.126.1
+Version: 1.130.0
 
 import "magalu.cloud/lib/products/network"
 */

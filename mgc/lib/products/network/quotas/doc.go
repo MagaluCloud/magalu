@@ -5,7 +5,7 @@ Package: quotas
 
 quotas
 
-Version: 1.124.1
+Version: 1.130.0
 
 import "magalu.cloud/lib/products/network/quotas"
 */

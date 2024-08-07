@@ -9,7 +9,7 @@ Backup Detail.
 
 Get a backup detail.
 
-Version: 1.23.0
+Version: 1.26.1
 
 import "magalu.cloud/lib/products/dbaas/backups"
 */
@@ -31,20 +31,28 @@ type GetConfigs struct {
 }
 
 type GetResult struct {
-	CreatedAt  string  `json:"created_at"`
-	DbSize     *int    `json:"db_size,omitempty"`
-	EngineId   string  `json:"engine_id"`
-	FinishedAt *string `json:"finished_at,omitempty"`
-	Id         string  `json:"id"`
-	InstanceId string  `json:"instance_id"`
-	Location   *string `json:"location,omitempty"`
-	Mode       string  `json:"mode"`
-	Name       *string `json:"name,omitempty"`
-	Size       *int    `json:"size,omitempty"`
-	StartedAt  *string `json:"started_at,omitempty"`
-	Status     string  `json:"status"`
-	Type       string  `json:"type"`
-	UpdatedAt  *string `json:"updated_at,omitempty"`
+	CreatedAt  string             `json:"created_at"`
+	DbSize     *int               `json:"db_size,omitempty"`
+	EngineId   string             `json:"engine_id"`
+	FinishedAt *string            `json:"finished_at,omitempty"`
+	Id         string             `json:"id"`
+	Instance   *GetResultInstance `json:"instance,omitempty"`
+	InstanceId string             `json:"instance_id"`
+	Location   *string            `json:"location,omitempty"`
+	Mode       string             `json:"mode"`
+	Name       *string            `json:"name,omitempty"`
+	Size       *int               `json:"size,omitempty"`
+	StartedAt  *string            `json:"started_at,omitempty"`
+	Status     string             `json:"status"`
+	Type       string             `json:"type"`
+	UpdatedAt  *string            `json:"updated_at,omitempty"`
+}
+
+// This response object provides details about a database instance associated with a backup.  It is provided only if the originating database instance of the backup is not deleted.  If the originating instance is deleted, no instance details will be provided.
+
+type GetResultInstance struct {
+	Id   string `json:"id"`
+	Name string `json:"name"`
 }
 
 func (s *service) Get(

@@ -9,7 +9,7 @@ Executor: get
 
 # Return a VPC details
 
-Version: 1.124.1
+Version: 1.130.0
 
 import "magalu.cloud/lib/products/network/vpc"
 */
@@ -21,7 +21,7 @@ import (
 )
 
 type GetParameters struct {
-	VpcId any `json:"vpc_id"`
+	VpcId string `json:"vpc_id"`
 }
 
 type GetConfigs struct {

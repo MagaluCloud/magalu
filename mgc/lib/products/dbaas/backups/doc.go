@@ -5,7 +5,7 @@ Package: backups
 
 Database backups management.
 
-Version: 1.23.0
+Version: 1.26.1
 
 import "magalu.cloud/lib/products/dbaas/backups"
 */

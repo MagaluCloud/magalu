@@ -5,7 +5,7 @@ Package: security_group
 
 security_group
 
-Version: 1.124.1
+Version: 1.130.0
 
 import "magalu.cloud/lib/products/network/security_group"
 */

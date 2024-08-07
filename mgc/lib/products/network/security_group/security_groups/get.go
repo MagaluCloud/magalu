@@ -9,7 +9,7 @@ Executor: get
 
 # Return a security group details
 
-Version: 1.124.1
+Version: 1.130.0
 
 import "magalu.cloud/lib/products/network/security_group/security_groups"
 */
@@ -21,7 +21,7 @@ import (
 )
 
 type GetParameters struct {
-	SecurityGroupId any `json:"security_group_id"`
+	SecurityGroupId string `json:"security_group_id"`
 }
 
 type GetConfigs struct {

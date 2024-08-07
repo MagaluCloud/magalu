@@ -3,9 +3,9 @@ Package: subnets
 
 # Description
 
-# VPC Subnets
+subnets
 
-Version: 1.126.1
+Version: 1.130.0
 
 import "magalu.cloud/lib/products/network/subnets"
 */

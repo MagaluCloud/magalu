@@ -9,7 +9,7 @@ Executor: create
 
 Create async Public IP in a VPC with provided vpc_id and x_tenant_id
 
-Version: 1.124.1
+Version: 1.130.0
 
 import "magalu.cloud/lib/products/network/public_ip/vpcs_public_ips"
 */
@@ -23,7 +23,7 @@ import (
 type CreateParameters struct {
 	Description   *string `json:"description,omitempty"`
 	ValidateQuota *bool   `json:"validate_quota,omitempty"`
-	VpcId         any     `json:"vpc_id"`
+	VpcId         string  `json:"vpc_id"`
 	Wait          *bool   `json:"wait,omitempty"`
 	WaitTimeout   *int    `json:"wait_timeout,omitempty"`
 }

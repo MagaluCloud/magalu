@@ -9,7 +9,7 @@ Executor: delete
 
 Delete a Public IP from the provided tenant_id
 
-Version: 1.124.1
+Version: 1.130.0
 
 import "magalu.cloud/lib/products/network/public_ip/public_ips"
 */
@@ -21,7 +21,7 @@ import (
 )
 
 type DeleteParameters struct {
-	PublicIpId any `json:"public_ip_id"`
+	PublicIpId string `json:"public_ip_id"`
 }
 
 type DeleteConfigs struct {

@@ -3,7 +3,7 @@ Executor: get
 
 # Summary
 
-Retrieve the details of an instance.
+Retrieve the details of a specific instance.
 
 # Description
 

@@ -3,7 +3,7 @@ Executor: retype
 
 # Summary
 
-Changes a running or stopped instance machine type for another one.
+Changes an instance machine-type.
 
 # Description
 

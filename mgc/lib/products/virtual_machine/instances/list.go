@@ -3,7 +3,7 @@ Executor: list
 
 # Summary
 
-Lists all instances in the current tenant.
+List all instances.
 
 # Description
 

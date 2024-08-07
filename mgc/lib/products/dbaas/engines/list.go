@@ -9,7 +9,7 @@ List available engines.
 
 Returns a list of available engines.
 
-Version: 1.23.0
+Version: 1.26.1
 
 import "magalu.cloud/lib/products/dbaas/engines"
 */
@@ -37,9 +37,18 @@ type ListResult struct {
 	Results ListResultResults `json:"results"`
 }
 
+// Page details about the current request pagination.
 type ListResultMeta struct {
-	Page ListResultMetaPage `json:"page"`
+	Filters ListResultMetaFilters `json:"filters"`
+	Page    ListResultMetaPage    `json:"page"`
 }
+
+type ListResultMetaFiltersItem struct {
+	Field string `json:"field"`
+	Value string `json:"value"`
+}
+
+type ListResultMetaFilters []ListResultMetaFiltersItem
 
 type ListResultMetaPage struct {
 	Count    int `json:"count"`

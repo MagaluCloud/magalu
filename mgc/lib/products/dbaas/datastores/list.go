@@ -11,7 +11,7 @@ List available datastores (Deprecated).
 
 Returns a list of available datastores. It is recommended to update your integration to use the newer `/v1/engines` endpoint for improved functionality and future compatibility.
 
-Version: 1.23.0
+Version: 1.26.1
 
 import "magalu.cloud/lib/products/dbaas/datastores"
 */
@@ -39,9 +39,18 @@ type ListResult struct {
 	Results ListResultResults `json:"results"`
 }
 
+// Page details about the current request pagination.
 type ListResultMeta struct {
-	Page ListResultMetaPage `json:"page"`
+	Filters ListResultMetaFilters `json:"filters"`
+	Page    ListResultMetaPage    `json:"page"`
 }
+
+type ListResultMetaFiltersItem struct {
+	Field string `json:"field"`
+	Value string `json:"value"`
+}
+
+type ListResultMetaFilters []ListResultMetaFiltersItem
 
 type ListResultMetaPage struct {
 	Count    int `json:"count"`

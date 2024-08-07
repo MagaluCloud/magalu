@@ -15,9 +15,10 @@ import (
 )
 
 type CopyParameters struct {
-	Dst        string  `json:"dst"`
-	ObjVersion *string `json:"obj_version,omitempty"`
-	Src        string  `json:"src"`
+	Dst          string  `json:"dst"`
+	ObjVersion   *string `json:"obj_version,omitempty"`
+	Src          string  `json:"src"`
+	StorageClass *string `json:"storage_class,omitempty"`
 }
 
 type CopyConfigs struct {

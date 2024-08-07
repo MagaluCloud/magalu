@@ -9,7 +9,7 @@ Executor: delete
 
 Delete a rule from the provided tenant_id
 
-Version: 1.124.1
+Version: 1.130.0
 
 import "magalu.cloud/lib/products/network/rule/rules"
 */
@@ -21,7 +21,7 @@ import (
 )
 
 type DeleteParameters struct {
-	RuleId any `json:"rule_id"`
+	RuleId string `json:"rule_id"`
 }
 
 type DeleteConfigs struct {

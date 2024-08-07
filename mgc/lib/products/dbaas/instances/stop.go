@@ -9,7 +9,7 @@ Stops a database instance.
 
 Stops a database instance.
 
-Version: 1.23.0
+Version: 1.26.1
 
 import "magalu.cloud/lib/products/dbaas/instances"
 */

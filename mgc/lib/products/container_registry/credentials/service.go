@@ -16,6 +16,7 @@ type service struct {
 
 type Service interface {
 	List(configs ListConfigs) (result ListResult, err error)
+	Password(configs PasswordConfigs) (result PasswordResult, err error)
 }
 
 func NewService(ctx context.Context, client *mgcClient.Client) Service {

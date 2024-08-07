@@ -5827,7 +5827,7 @@
           "tenant_id",
           "name"
         ],
-        "description": "A Pydantic model representing a response for Subnet Pool creation.\n\nAttributes:\n    id (str): The ID of the subnet pool.\n    tenant_id (str): The ID of the tenant that owns the subnet pool.\n    vpc_id (str): The ID of the VPC that the subnet pool belongs to.\n    name (str): The name of the subnet pool.\n    external_id (str): The ID of the subnet pool in OpenStack.",
+        "description": "A Pydantic model representing a response for Subnet Pool creation.",
         "example": {
           "cidr": "172.26.0.0/16",
           "description": "subnet pool description",

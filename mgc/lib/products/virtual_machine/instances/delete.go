@@ -3,7 +3,7 @@ Executor: delete
 
 # Summary
 
-# Delete a instance asynchronously
+Delete an instance.
 
 # Description
 

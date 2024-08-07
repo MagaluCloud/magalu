@@ -9,7 +9,7 @@ Delete Backup.
 
 Deletes a database backup.
 
-Version: 1.23.0
+Version: 1.26.1
 
 import "magalu.cloud/lib/products/dbaas/backups"
 */

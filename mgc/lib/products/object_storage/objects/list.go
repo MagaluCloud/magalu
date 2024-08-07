@@ -51,6 +51,7 @@ type ListResultContentsItem struct {
 	ContentSize  int    `json:"ContentSize"`
 	Key          string `json:"Key"`
 	LastModified string `json:"LastModified"`
+	StorageClass string `json:"StorageClass"`
 }
 
 type ListResultContents []ListResultContentsItem

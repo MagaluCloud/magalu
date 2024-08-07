@@ -3,7 +3,7 @@ Executor: create
 
 # Summary
 
-Create a snapshot of a virtual machine asynchronously.
+Create a snapshot of a virtual machine.
 
 # Description
 

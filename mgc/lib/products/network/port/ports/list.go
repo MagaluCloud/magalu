@@ -9,7 +9,7 @@ Executor: list
 
 Return a detailed list of ports from the provided tenant_id
 
-Version: 1.124.1
+Version: 1.130.0
 
 import "magalu.cloud/lib/products/network/port/ports"
 */
@@ -24,7 +24,7 @@ type ListParameters struct {
 	PortIdList *ListParametersPortIdList `json:"port_id_list,omitempty"`
 }
 
-type ListParametersPortIdList []any
+type ListParametersPortIdList []string
 
 type ListConfigs struct {
 	Env       *string `json:"env,omitempty"`

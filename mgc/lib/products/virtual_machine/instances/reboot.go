@@ -3,7 +3,7 @@ Executor: reboot
 
 # Summary
 
-Reboot a running or suspended instance.
+Reboot an instance.
 
 # Description
 
@@ -13,7 +13,7 @@ Reboots a Virtual Machine instance with the id provided in the current tenant wh
 of the instance that you want to reboot.
 
 #### Rules
-- The instance must be in the running state.
+- The instance must be in the running or suspend state.
 
 Version: v1
 

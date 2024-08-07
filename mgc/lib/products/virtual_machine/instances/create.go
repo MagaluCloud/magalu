@@ -3,7 +3,7 @@ Executor: create
 
 # Summary
 
-Create an instance asynchronously.
+Create an instance.
 
 # Description
 

@@ -9,7 +9,7 @@ Executor: delete
 
 Delete a subnet from the provided tenant_id
 
-Version: 1.126.1
+Version: 1.130.0
 
 import "magalu.cloud/lib/products/network/subnets/subnets"
 */
