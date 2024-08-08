@@ -3,7 +3,7 @@ Package: object-storage
 
 # Summary
 
-# Operations for Object Storage API
+# Operations for Object Storage
 
 # Description
 

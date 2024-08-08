@@ -9,7 +9,7 @@ Backups List.
 
 List all backups.
 
-Version: 1.25.0
+Version: 1.26.1
 
 import "magalu.cloud/lib/products/dbaas/backups"
 */
@@ -21,11 +21,12 @@ import (
 )
 
 type ListParameters struct {
-	Limit  *int    `json:"_limit,omitempty"`
-	Offset *int    `json:"_offset,omitempty"`
-	Mode   *string `json:"mode,omitempty"`
-	Status *string `json:"status,omitempty"`
-	Type   *string `json:"type,omitempty"`
+	Limit      *int    `json:"_limit,omitempty"`
+	Offset     *int    `json:"_offset,omitempty"`
+	InstanceId *string `json:"instance_id,omitempty"`
+	Mode       *string `json:"mode,omitempty"`
+	Status     *string `json:"status,omitempty"`
+	Type       *string `json:"type,omitempty"`
 }
 
 type ListConfigs struct {
@@ -39,9 +40,18 @@ type ListResult struct {
 	Results ListResultResults `json:"results"`
 }
 
+// Page details about the current request pagination.
 type ListResultMeta struct {
-	Page ListResultMetaPage `json:"page"`
+	Filters ListResultMetaFilters `json:"filters"`
+	Page    ListResultMetaPage    `json:"page"`
 }
+
+type ListResultMetaFiltersItem struct {
+	Field string `json:"field"`
+	Value string `json:"value"`
+}
+
+type ListResultMetaFilters []ListResultMetaFiltersItem
 
 type ListResultMetaPage struct {
 	Count    int `json:"count"`

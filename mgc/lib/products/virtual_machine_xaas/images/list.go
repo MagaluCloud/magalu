@@ -9,7 +9,7 @@ Executor: list
 
 Retrieve a list of images allowed for the current tenant which is logged in.
 
-Version: 1.255.1
+Version: 1.258.0
 
 import "magalu.cloud/lib/products/virtual_machine_xaas/images"
 */

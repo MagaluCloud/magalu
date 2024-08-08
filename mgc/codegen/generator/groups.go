@@ -53,69 +53,88 @@ func getGroupNames(name string) (fileName string, goName string) {
 	return
 }
 
+var step1 = []string{"auth", "block_storage", "config", "container_registry", "dbaas", "kubernetes", "object-storage", "profile", "virtual-machine"}
+var step2problem = []string{"network"}
+var step1problem = []string{"virtual-machine-xaas"}
+
 func generateGroup(dirname string, relPath string, refPath core.RefPath, group core.Grouper, ctx *GeneratorContext) (err error) {
-	groupDirName, groupGoName := getGroupNames(group.Name())
-	p := path.Join(dirname, groupDirName)
-	err = createDir(ctx, p)
-	if err != nil {
-		return
+	can_continue := refPath == ""
+
+	for _, step := range step1 {
+		if can_continue {
+			break
+		}
+		xpp := strings.Split(string(refPath), "/")
+		can_continue = xpp[1] == step
+		if can_continue {
+			break
+		}
 	}
 
-	groupTemplateData := &groupTemplateData{
-		ModuleName:     ctx.ModuleName,
-		PackageName:    groupGoName,
-		PackageImport:  path.Join(ctx.ModuleName, relPath, groupDirName),
-		DescriptorSpec: group.DescriptorSpec(),
-	}
+	if can_continue {
+		fmt.Println(refPath)
 
-	serviceTemplateData := &serviceTemplateData{
-		ModuleName:     ctx.ModuleName,
-		PackageName:    groupGoName,
-		PackageImport:  path.Join(ctx.ModuleName, relPath, groupDirName),
-		DescriptorSpec: group.DescriptorSpec(),
-		ExecutorsData:  []executorTemplateData{},
-	}
-
-	err = templateWrite(
-		ctx,
-		path.Join(p, "doc.go"),
-		groupTemplate,
-		groupTemplateData,
-	)
-	if err != nil {
-		return
-	}
-
-	childRelPath := path.Join(relPath, groupDirName)
-	_, err = group.VisitChildren(func(child core.Descriptor) (run bool, err error) {
-		if child.IsInternal() {
-			return true, nil
+		groupDirName, groupGoName := getGroupNames(group.Name())
+		p := path.Join(dirname, groupDirName)
+		err = createDir(ctx, p)
+		if err != nil {
+			return
 		}
 
-		childRefPath := refPath.Add(child.Name())
-		switch c := child.(type) {
-		case core.Grouper:
-			err = generateGroup(p, childRelPath, childRefPath, c, ctx)
-			if err != nil {
-				return false, &utils.ChainedError{Name: child.Name(), Err: err}
-			}
-			return true, nil
-
-		case core.Executor:
-			execData, err := generateExecutor(p, groupTemplateData, childRefPath, c, ctx)
-			if err != nil {
-				return false, &utils.ChainedError{Name: child.Name(), Err: err}
-			}
-			serviceTemplateData.ClientImport = ctx.ModuleName
-			serviceTemplateData.ExecutorsData = append(serviceTemplateData.ExecutorsData, execData)
-			return true, nil
-
-		default:
-			return false, &utils.ChainedError{Name: child.Name(), Err: fmt.Errorf("child %v not group/executor", child)}
+		groupTemplateData := &groupTemplateData{
+			ModuleName:     ctx.ModuleName,
+			PackageName:    groupGoName,
+			PackageImport:  path.Join(ctx.ModuleName, relPath, groupDirName),
+			DescriptorSpec: group.DescriptorSpec(),
 		}
-	})
 
-	defer func() {
+		serviceTemplateData := &serviceTemplateData{
+			ModuleName:     ctx.ModuleName,
+			PackageName:    groupGoName,
+			PackageImport:  path.Join(ctx.ModuleName, relPath, groupDirName),
+			DescriptorSpec: group.DescriptorSpec(),
+			ExecutorsData:  []executorTemplateData{},
+		}
+
+		err = templateWrite(
+			ctx,
+			path.Join(p, "doc.go"),
+			groupTemplate,
+			groupTemplateData,
+		)
+		if err != nil {
+			return
+		}
+
+		childRelPath := path.Join(relPath, groupDirName)
+		_, err = group.VisitChildren(func(child core.Descriptor) (run bool, err error) {
+			if child.IsInternal() {
+				return true, nil
+			}
+
+			childRefPath := refPath.Add(child.Name())
+			switch c := child.(type) {
+			case core.Grouper:
+				err = generateGroup(p, childRelPath, childRefPath, c, ctx)
+				if err != nil {
+					return false, &utils.ChainedError{Name: child.Name(), Err: err}
+				}
+				return true, nil
+
+			case core.Executor:
+				execData, err := generateExecutor(p, groupTemplateData, childRefPath, c, ctx)
+				if err != nil {
+					return false, &utils.ChainedError{Name: child.Name(), Err: err}
+				}
+				serviceTemplateData.ClientImport = ctx.ModuleName
+				serviceTemplateData.ExecutorsData = append(serviceTemplateData.ExecutorsData, execData)
+				return true, nil
+
+			default:
+				return false, &utils.ChainedError{Name: child.Name(), Err: fmt.Errorf("child %v not group/executor", child)}
+			}
+		})
+
 		if len(serviceTemplateData.ExecutorsData) > 0 {
 			err = templateWrite(
 				ctx,
@@ -127,8 +146,7 @@ func generateGroup(dirname string, relPath string, refPath core.RefPath, group c
 				return
 			}
 		}
-	}()
-
+	}
 	return
 }
 

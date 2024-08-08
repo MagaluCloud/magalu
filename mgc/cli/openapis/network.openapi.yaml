@@ -6,7 +6,7 @@ info:
         name: Tribo IAAS Cloud
         url: https://github.com/luizalabs
         email: thullyo.cunha@luizalabs.com
-    version: 1.128.0
+    version: 1.130.0
 paths:
     /v0/healthcheck:
         get:
@@ -1434,7 +1434,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
-            x-viveiro: true
+            x-viveiro: false
             security:
             -   OAuth2:
                 - network.read
@@ -1528,7 +1528,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
-            x-viveiro: true
+            x-viveiro: false
             security:
             -   OAuth2:
                 - network.write
@@ -1564,7 +1564,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
-            x-viveiro: true
+            x-viveiro: false
             security:
             -   OAuth2:
                 - network.read
@@ -1626,7 +1626,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
-            x-viveiro: true
+            x-viveiro: false
             security:
             -   OAuth2:
                 - network.read
@@ -1665,7 +1665,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
-            x-viveiro: true
+            x-viveiro: false
             security:
             -   OAuth2:
                 - network.write
@@ -1733,7 +1733,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
-            x-viveiro: true
+            x-viveiro: false
             security:
             -   OAuth2:
                 - network.write
@@ -1801,7 +1801,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
-            x-viveiro: true
+            x-viveiro: false
             security:
             -   OAuth2:
                 - network.write
@@ -5505,11 +5505,11 @@ components:
                     title: Remote Group Id
                     nullable: true
                 ethertype:
-                    anyOf:
-                    -   type: string
+                    type: string
                     title: Ethertype
-                    nullable: true
             title: RuleCreateRequest
+            required:
+            - ethertype
             example:
                 direction: egress
                 ethertype: IPv4
@@ -6717,8 +6717,12 @@ components:
             - id
             - tenant_id
             - name
-            description: A Pydantic model representing a response for Subnet Pool
-                creation.
+            description: "A Pydantic model representing a response for Subnet Pool\
+                \ creation.\n\nAttributes:\n    id (str): The ID of the subnet pool.\n\
+                \    tenant_id (str): The ID of the tenant that owns the subnet pool.\n\
+                \    vpc_id (str): The ID of the VPC that the subnet pool belongs\
+                \ to.\n    name (str): The name of the subnet pool.\n    external_id\
+                \ (str): The ID of the subnet pool in OpenStack."
             example:
                 cidr: 172.26.0.0/16
                 description: subnet pool description
@@ -6763,8 +6767,13 @@ components:
                         - id
                         - tenant_id
                         - name
-                        description: A Pydantic model representing a response for
-                            Subnet Pool creation.
+                        description: "A Pydantic model representing a response for\
+                            \ Subnet Pool creation.\n\nAttributes:\n    id (str):\
+                            \ The ID of the subnet pool.\n    tenant_id (str): The\
+                            \ ID of the tenant that owns the subnet pool.\n    vpc_id\
+                            \ (str): The ID of the VPC that the subnet pool belongs\
+                            \ to.\n    name (str): The name of the subnet pool.\n\
+                            \    external_id (str): The ID of the subnet pool in OpenStack."
                         example:
                             cidr: 172.26.0.0/16
                             description: subnet pool description

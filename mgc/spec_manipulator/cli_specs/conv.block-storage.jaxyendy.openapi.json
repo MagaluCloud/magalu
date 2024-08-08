@@ -2266,7 +2266,8 @@
                       "$ref": "#/components/schemas/IdResponse"
                     }
                   ],
-                  "title": "Volume"
+                  "title": "Volume",
+                  "nullable": true
                 },
                 "type": {
                   "type": "string",
@@ -2312,18 +2313,18 @@
                   "message": "You have reached the limit of allowed backups. Please, remove unused backups or contact support to increase your quota.",
                   "slug": "creating_error_quota"
                 },
-                "id": "b916a4b4-f409-4a73-804b-16e90a782047",
+                "id": "dcfcdfb6-3d22-47eb-bc33-4d04099a5484",
                 "name": "My backup",
                 "size": 10,
                 "source_backup": {
-                  "id": "7c0eb1b2-1294-43e3-92a0-d48bd124f9d9"
+                  "id": "02d8be04-da92-42fe-ae50-3986e94fd7b6"
                 },
                 "state": "available",
                 "status": "completed",
                 "type": "incremental",
                 "updated_at": "2022-01-01T00:00:10Z",
                 "volume": {
-                  "id": "f69ccf36-e893-4681-bba1-9eaeff8b58e8"
+                  "id": "3e3a29d6-8e94-419f-83bc-05320d557512"
                 }
               }
             },
@@ -2343,18 +2344,18 @@
                 "message": "You have reached the limit of allowed backups. Please, remove unused backups or contact support to increase your quota.",
                 "slug": "creating_error_quota"
               },
-              "id": "b916a4b4-f409-4a73-804b-16e90a782047",
+              "id": "dcfcdfb6-3d22-47eb-bc33-4d04099a5484",
               "name": "My backup",
               "size": 10,
               "source_backup": {
-                "id": "7c0eb1b2-1294-43e3-92a0-d48bd124f9d9"
+                "id": "02d8be04-da92-42fe-ae50-3986e94fd7b6"
               },
               "state": "available",
               "status": "completed",
               "type": "incremental",
               "updated_at": "2022-01-01T00:00:10Z",
               "volume": {
-                "id": "f69ccf36-e893-4681-bba1-9eaeff8b58e8"
+                "id": "3e3a29d6-8e94-419f-83bc-05320d557512"
               }
             }
           ]
@@ -2449,7 +2450,8 @@
                 "$ref": "#/components/schemas/IdResponse"
               }
             ],
-            "title": "Volume"
+            "title": "Volume",
+            "nullable": true
           },
           "type": {
             "type": "string",
@@ -2495,18 +2497,18 @@
             "message": "You have reached the limit of allowed backups. Please, remove unused backups or contact support to increase your quota.",
             "slug": "creating_error_quota"
           },
-          "id": "b916a4b4-f409-4a73-804b-16e90a782047",
+          "id": "dcfcdfb6-3d22-47eb-bc33-4d04099a5484",
           "name": "My backup",
           "size": 10,
           "source_backup": {
-            "id": "7c0eb1b2-1294-43e3-92a0-d48bd124f9d9"
+            "id": "02d8be04-da92-42fe-ae50-3986e94fd7b6"
           },
           "state": "available",
           "status": "completed",
           "type": "incremental",
           "updated_at": "2022-01-01T00:00:10Z",
           "volume": {
-            "id": "f69ccf36-e893-4681-bba1-9eaeff8b58e8"
+            "id": "3e3a29d6-8e94-419f-83bc-05320d557512"
           }
         }
       },

@@ -8,7 +8,7 @@
       "url": "https://github.com/luizalabs",
       "email": "thullyo.cunha@luizalabs.com"
     },
-    "version": "1.128.0"
+    "version": "1.130.0"
   },
   "paths": {
     "/v0/healthcheck": {
@@ -1957,7 +1957,7 @@
             }
           }
         },
-        "x-viveiro": true
+        "x-viveiro": false
       },
       "post": {
         "tags": [
@@ -2078,7 +2078,7 @@
             }
           }
         },
-        "x-viveiro": true
+        "x-viveiro": false
       }
     },
     "/v0/xaas/public_ips": {
@@ -2138,7 +2138,7 @@
             }
           }
         },
-        "x-viveiro": true
+        "x-viveiro": false
       }
     },
     "/v0/xaas/public_ips/{public_ip_id}": {
@@ -2208,7 +2208,7 @@
             }
           }
         },
-        "x-viveiro": true
+        "x-viveiro": false
       },
       "delete": {
         "tags": [
@@ -2269,7 +2269,7 @@
             }
           }
         },
-        "x-viveiro": true
+        "x-viveiro": false
       }
     },
     "/v0/xaas/public_ips/{public_ip_id}/attach/{port_id}": {
@@ -2347,7 +2347,7 @@
             }
           }
         },
-        "x-viveiro": true
+        "x-viveiro": false
       }
     },
     "/v0/xaas/public_ips/{public_ip_id}/detach/{port_id}": {
@@ -2425,7 +2425,7 @@
             }
           }
         },
-        "x-viveiro": true
+        "x-viveiro": false
       }
     },
     "/v0/usage": {
@@ -7349,18 +7349,14 @@
             "title": "Remote Group Id"
           },
           "ethertype": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "string",
             "title": "Ethertype"
           }
         },
         "title": "RuleCreateRequest",
+        "required": [
+          "ethertype"
+        ],
         "example": {
           "direction": "egress",
           "ethertype": "IPv4",
@@ -8911,7 +8907,7 @@
           "tenant_id",
           "name"
         ],
-        "description": "A Pydantic model representing a response for Subnet Pool creation.",
+        "description": "A Pydantic model representing a response for Subnet Pool creation.\n\nAttributes:\n    id (str): The ID of the subnet pool.\n    tenant_id (str): The ID of the tenant that owns the subnet pool.\n    vpc_id (str): The ID of the VPC that the subnet pool belongs to.\n    name (str): The name of the subnet pool.\n    external_id (str): The ID of the subnet pool in OpenStack.",
         "example": {
           "cidr": "172.26.0.0/16",
           "description": "subnet pool description",

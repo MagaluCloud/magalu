@@ -18,7 +18,7 @@ A Backup is ready for restore when it's in completed status.
 - It's only possible to create a backup of a valid virtual machine.
 - Each backup must have a unique name. It's not possible to create backups with the same name.
 
-Version: 1.255.1
+Version: 1.258.0
 
 import "magalu.cloud/lib/products/virtual_machine_xaas/xaas_backups"
 */

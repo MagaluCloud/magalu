@@ -3,7 +3,7 @@ Package: auth
 
 # Summary
 
-# Actions with ID Magalu to log in, refresh tokens, change tenants and others
+# Actions with ID Magalu to log in, API Keys, refresh tokens, change tenants and others
 
 # Description
 

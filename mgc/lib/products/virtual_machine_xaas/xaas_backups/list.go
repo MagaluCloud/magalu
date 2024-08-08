@@ -13,7 +13,7 @@ List Virtual Machine backups in the current tenant which is logged in.
 - You can use the **extend** argument to get more details from the inner objects
 like image or type.
 
-Version: 1.255.1
+Version: 1.258.0
 
 import "magalu.cloud/lib/products/virtual_machine_xaas/xaas_backups"
 */

@@ -3,8 +3,8 @@ module magalu.cloud/lib
 go 1.22.3
 
 require (
-	magalu.cloud/core v0.20.0
-	magalu.cloud/sdk v0.20.0
+	magalu.cloud/core v0.23.0
+	magalu.cloud/sdk v0.23.0
 )
 
 require (
@@ -17,7 +17,7 @@ require (
 	github.com/containerd/console v1.0.3 // indirect
 	github.com/dustin/go-humanize v1.0.1 // indirect
 	github.com/fsnotify/fsnotify v1.7.0 // indirect
-	github.com/geffersonFerraz/brazilian-words-sorter v1.0.0 // indirect
+	github.com/geffersonFerraz/brazilian-words-sorter v1.1.0 // indirect
 	github.com/getkin/kin-openapi v0.118.0 // indirect
 	github.com/go-openapi/jsonpointer v0.20.0 // indirect
 	github.com/go-openapi/swag v0.23.0 // indirect

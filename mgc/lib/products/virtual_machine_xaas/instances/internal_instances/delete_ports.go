@@ -9,7 +9,7 @@ Executor: delete-ports
 
 # Delete a not primary port
 
-Version: 1.255.1
+Version: 1.258.0
 
 import "magalu.cloud/lib/products/virtual_machine_xaas/instances/internal_instances"
 */
