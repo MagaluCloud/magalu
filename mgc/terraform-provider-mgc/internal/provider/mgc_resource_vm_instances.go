@@ -18,7 +18,7 @@ import (
 	bws "github.com/geffersonFerraz/brazilian-words-sorter"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	mgcSdk "magalu.cloud/lib"
-	sdkNetworkVPCs "magalu.cloud/lib/products/network/vpcs"
+	sdkNetworkVPCs "magalu.cloud/lib/products/network/vpc"
 	sdkVmImages "magalu.cloud/lib/products/virtual_machine/images"
 	sdkVmInstances "magalu.cloud/lib/products/virtual_machine/instances"
 	sdkVmMachineTypes "magalu.cloud/lib/products/virtual_machine/machine_types"
