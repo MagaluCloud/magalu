@@ -194,6 +194,7 @@ func (p *MgcProvider) Resources(ctx context.Context) []func() resource.Resource 
 	resources, err := collectGroupResources(ctx, p.sdk, root, []string{providerTypeName})
 
 	resources = append(resources,
+		NewK8sClusterResource,
 		NewObjectStorageBucketsResource,
 		NewVirtualMachineInstancesResource,
 		NewVirtualMachineSnapshotsResource,
@@ -271,6 +272,7 @@ func collectGroupResources(
 		"mgc_block_storage_volume_attachment",
 		"mgc_block_storage_snapshots",
 		"mgc_block_storage_volumes",
+		"mgc_kubernetes_cluster",
 	}
 
 	if slices.Contains(ignoredTFModules, strResourceName) {
@@ -316,7 +318,10 @@ func (p *MgcProvider) DataSources(ctx context.Context) []func() datasource.DataS
 	tflog.Info(ctx, "configuring MGC provider data sources")
 
 	var dataSources []func() datasource.DataSource
-	dataSources = append(dataSources, NewDataSourceKubernetesClusterKubeConfig)
+	dataSources = append(dataSources,
+		NewDataSourceKubernetesClusterKubeConfig,
+		NewDataSourceKubernetesCluster,
+	)
 
 	return dataSources
 }

@@ -6,8 +6,8 @@ require (
 	github.com/geffersonFerraz/brazilian-words-sorter v1.1.0
 	github.com/getkin/kin-openapi v0.118.0
 	github.com/go-test/deep v1.1.0
-	github.com/hashicorp/terraform-plugin-framework v1.9.0
-	github.com/hashicorp/terraform-plugin-framework-validators v0.12.0
+	github.com/hashicorp/terraform-plugin-framework v1.11.0
+	github.com/hashicorp/terraform-plugin-framework-validators v0.13.0
 	github.com/hashicorp/terraform-plugin-go v0.23.0
 	github.com/hashicorp/terraform-plugin-log v0.9.0
 	github.com/stoewer/go-strcase v1.3.0
