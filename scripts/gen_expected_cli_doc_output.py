@@ -45,6 +45,7 @@ def gen_cli_paths(cli: str, tree: Any) -> Iterator[list[str]]:
 
 
 def gen_output(cmd: list[str]) -> str:
+    cmd = cmd + ["--raw"]
     logger.debug("running %s", cmd)
     return subprocess.run(
         cmd,
@@ -62,7 +63,7 @@ def gen_help_output(path: list[str]) -> str:
 
 
 def gen_output_h_flag(path: list[str]) -> str:
-    cmd = path + ["-h"] + ["--raw"]
+    cmd = path + ["-h"]
     return gen_output(cmd)
 
 
