@@ -9,20 +9,14 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
-	"github.com/hashicorp/terraform-plugin-framework/attr"
-	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/boolplanmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64planmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	mgcSdk "magalu.cloud/lib"
 	sdkCluster "magalu.cloud/lib/products/kubernetes/cluster"
 	"magalu.cloud/sdk"
@@ -33,29 +27,16 @@ const (
 )
 
 type KubernetesClusterCreateResourceModel struct {
-	Name               types.String `tfsdk:"name"`
-	AsyncCreation      types.Bool   `tfsdk:"async_creation"`
-	NodePools          types.List   `tfsdk:"node_pools"` // Deprecated
-	AllowedCidrs       types.List   `tfsdk:"allowed_cidrs"`
-	Description        types.String `tfsdk:"description"`
-	EnabledServerGroup types.Bool   `tfsdk:"enabled_server_group"`
-	Version            types.String `tfsdk:"version"`
-	CreatedAt          types.String `tfsdk:"created_at"`
-	ID                 types.String `tfsdk:"id"`
-	EnabledBastion     types.Bool   `tfsdk:"enabled_bastion"` // Deprecated
-	Zone               types.String `tfsdk:"zone"`
-}
-
-type NodePoolCreatedResource struct {
-	Name      types.String `tfsdk:"name"`
-	Replicas  types.Int64  `tfsdk:"replicas"`
-	Flavor    types.String `tfsdk:"flavor"`
-	AutoScale types.Object `tfsdk:"auto_scale"`
-	Tags      types.List   `tfsdk:"tags"`
-	Taints    types.List   `tfsdk:"taints"`
-	ID        types.String `tfsdk:"id"`
-	CreatedAt types.String `tfsdk:"created_at"`
-	UpdatedAt types.String `tfsdk:"updated_at"`
+	Name               types.String   `tfsdk:"name"`
+	AsyncCreation      types.Bool     `tfsdk:"async_creation"`
+	AllowedCidrs       []types.String `tfsdk:"allowed_cidrs"`
+	Description        types.String   `tfsdk:"description"`
+	EnabledServerGroup types.Bool     `tfsdk:"enabled_server_group"`
+	Version            types.String   `tfsdk:"version"`
+	CreatedAt          types.String   `tfsdk:"created_at"`
+	ID                 types.String   `tfsdk:"id"`
+	EnabledBastion     types.Bool     `tfsdk:"enabled_bastion"` // Deprecated
+	Zone               types.String   `tfsdk:"zone"`
 }
 
 type k8sClusterResource struct {
@@ -91,7 +72,7 @@ func (r *k8sClusterResource) Configure(ctx context.Context, req resource.Configu
 }
 
 func (r *k8sClusterResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
-	nameRule := regexp.MustCompile(`^[a-z]([-a-z0-9]*[a-z0-9])?$`)
+	nameRule := regexp.MustCompile(`^[a-z]([-a-z0-9]{0,61}[a-z0-9])?$`)
 	resp.Schema = schema.Schema{
 		Description: "Kubernetes cluster resource in MGC",
 		Attributes: map[string]schema.Attribute{
@@ -119,110 +100,6 @@ func (r *k8sClusterResource) Schema(_ context.Context, _ resource.SchemaRequest,
 				Validators: []validator.String{
 					stringvalidator.LengthAtMost(63),
 					stringvalidator.RegexMatches(nameRule, "must contain only lowercase alphanumeric characters or '-'"),
-				},
-			},
-			"node_pools": schema.ListNestedAttribute{
-				Description:        "An array representing a set of nodes within a Kubernetes cluster.",
-				Optional:           true,
-				DeprecationMessage: "This field is deprecated and will be removed in a future version. Create node pools in a separately resource.",
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{
-						"flavor": schema.StringAttribute{
-							Description: "Flavor name. Definition of the CPU, RAM, and storage capacity of the nodes.",
-							Required:    true,
-						},
-						"name": schema.StringAttribute{
-							Description: "Name of the node pool. Must be unique and follow naming rules.",
-							Required:    true,
-							Validators: []validator.String{
-								stringvalidator.LengthAtMost(63),
-								stringvalidator.RegexMatches(nameRule, "must contain only lowercase alphanumeric characters or '-'"),
-							},
-						},
-						"replicas": schema.Int64Attribute{
-							Description: "Number of replicas of the nodes in the node pool.",
-							Required:    true,
-						},
-						"auto_scale": schema.SingleNestedAttribute{
-							Description: "Object specifying properties for updating workload resources in the Kubernetes cluster.",
-							Optional:    true,
-							Computed:    true,
-							PlanModifiers: []planmodifier.Object{
-								objectplanmodifier.UseStateForUnknown(),
-							},
-							Attributes: map[string]schema.Attribute{
-								"max_replicas": schema.Int64Attribute{
-									Description: "Maximum number of replicas for autoscaling.",
-									Optional:    true,
-									Computed:    true,
-									PlanModifiers: []planmodifier.Int64{
-										int64planmodifier.UseStateForUnknown(),
-									},
-								},
-								"min_replicas": schema.Int64Attribute{
-									Description: "Minimum number of replicas for autoscaling.",
-									Optional:    true,
-									Computed:    true,
-									PlanModifiers: []planmodifier.Int64{
-										int64planmodifier.UseStateForUnknown(),
-									},
-								},
-							},
-						},
-						"tags": schema.ListAttribute{
-							Description: "List of tags applied to the node pool.",
-							Optional:    true,
-							ElementType: types.StringType,
-						},
-						"taints": schema.ListNestedAttribute{
-							Description: "Property associating a set of nodes.",
-							Optional:    true,
-							Computed:    true,
-							PlanModifiers: []planmodifier.List{
-								listplanmodifier.UseStateForUnknown(),
-							},
-							NestedObject: schema.NestedAttributeObject{
-								Attributes: map[string]schema.Attribute{
-									"effect": schema.StringAttribute{
-										Description: "The effect of the taint on pods that do not tolerate the taint.",
-										Optional:    true,
-										Computed:    true,
-										PlanModifiers: []planmodifier.String{
-											stringplanmodifier.UseStateForUnknown(),
-										},
-									},
-									"key": schema.StringAttribute{
-										Description: "Key of the taint to be applied to the node.",
-										Optional:    true,
-										Computed:    true,
-										PlanModifiers: []planmodifier.String{
-											stringplanmodifier.UseStateForUnknown(),
-										},
-									},
-									"value": schema.StringAttribute{
-										Description: "Value corresponding to the taint key.",
-										Optional:    true,
-										Computed:    true,
-										PlanModifiers: []planmodifier.String{
-											stringplanmodifier.UseStateForUnknown(),
-										},
-									},
-								},
-							},
-						},
-						"created_at": schema.StringAttribute{
-							Description: "Date of creation of the Kubernetes Node.",
-							Computed:    true,
-						},
-						"updated_at": schema.StringAttribute{
-							Description: "Date of the last change to the Kubernetes Node.",
-							Computed:    true,
-						},
-						"id": schema.StringAttribute{
-							Description: "Node pool's UUID.",
-							Computed:    true,
-						},
-					},
 				},
 			},
 			"allowed_cidrs": schema.ListAttribute{
@@ -287,12 +164,17 @@ func (r *k8sClusterResource) Read(ctx context.Context, req resource.ReadRequest,
 		return
 	}
 
-	out := ConvertSDKCreateResultToTerraformModel(&cluster)
+	out := ConvertSDKCreateResultToTerraformCreateClsuterModel(&cluster)
 	out.EnabledBastion = data.EnabledBastion
 	out.AsyncCreation = data.AsyncCreation
 	out.EnabledServerGroup = data.EnabledServerGroup
 	out.Zone = data.Zone
-	resp.State.Set(ctx, &out)
+	diags = resp.State.Set(ctx, &out)
+	resp.Diagnostics.Append(diags...)
+	if diags.HasError() {
+		resp.Diagnostics = diags
+		return
+	}
 }
 
 func (r *k8sClusterResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
@@ -302,37 +184,7 @@ func (r *k8sClusterResource) Create(ctx context.Context, req resource.CreateRequ
 		return
 	}
 
-	var np []NodePoolCreatedResource
-	diags := data.NodePools.ElementsAs(ctx, &np, false)
-	if diags.HasError() {
-		resp.Diagnostics = diags
-		return
-	}
-
-	createNP := []sdkCluster.CreateParametersNodePoolsItem{}
-	if len(np) > 0 {
-		for _, n := range np {
-			var as AutoScale
-			diags = n.AutoScale.As(ctx, &as, basetypes.ObjectAsOptions{
-				UnhandledNullAsEmpty:    true,
-				UnhandledUnknownAsEmpty: true,
-			})
-			if diags.HasError() {
-				resp.Diagnostics = diags
-				return
-			}
-
-			var t []Taint
-			diags = n.Taints.ElementsAs(ctx, &t, false)
-			if diags.HasError() {
-				resp.Diagnostics = diags
-				return
-			}
-			createNP = append(createNP, ConvertTerraformNodePoolToSDKNodePool(n, as, t))
-		}
-	}
-
-	param := convertTerraformModelToSDKCreateParameters(ctx, &data, createNP)
+	param := convertTerraformModelToSDKCreateParameters(&data)
 	cluster, err := r.k8sCluster.Create(*param,
 		GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkCluster.CreateConfigs{}))
 	if err != nil {
@@ -351,12 +203,17 @@ func (r *k8sClusterResource) Create(ctx context.Context, req resource.CreateRequ
 		return
 	}
 
-	newState := ConvertSDKCreateResultToTerraformModel(&createdCluster)
+	newState := ConvertSDKCreateResultToTerraformCreateClsuterModel(&createdCluster)
 	newState.EnabledBastion = data.EnabledBastion
 	newState.AsyncCreation = data.AsyncCreation
 	newState.EnabledServerGroup = data.EnabledServerGroup
 	newState.Zone = data.Zone
-	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
+	diags := resp.State.Set(ctx, &newState)
+	resp.Diagnostics.Append(diags...)
+	if diags.HasError() {
+		resp.Diagnostics = diags
+		return
+	}
 }
 
 func (r *k8sClusterResource) GetClusterPooling(ctx context.Context, clusterId string, isAssync bool) (sdkCluster.GetResult, error) {
@@ -391,7 +248,7 @@ func (r *k8sClusterResource) Update(ctx context.Context, req resource.UpdateRequ
 }
 
 func (r *k8sClusterResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var data KubernetesClusterResourceModel
+	var data KubernetesClusterCreateResourceModel
 	diags := req.State.Get(ctx, &data)
 
 	if diags.HasError() {
@@ -411,12 +268,10 @@ func (r *k8sClusterResource) Delete(ctx context.Context, req resource.DeleteRequ
 	}
 }
 
-func convertTerraformModelToSDKCreateParameters(ctx context.Context, data *KubernetesClusterCreateResourceModel, nd []sdkCluster.CreateParametersNodePoolsItem) *sdkCluster.CreateParameters {
-	ac := createAllowedCidrs(ctx, data)
-
+func convertTerraformModelToSDKCreateParameters(data *KubernetesClusterCreateResourceModel) *sdkCluster.CreateParameters {
+	ac := createAllowedCidrs(data)
 	return &sdkCluster.CreateParameters{
-		NodePools:          nd,
-		AllowedCidrs:       &ac,
+		AllowedCidrs:       ac,
 		Description:        data.Description.ValueStringPointer(),
 		Name:               data.Name.ValueString(),
 		Version:            data.Version.ValueStringPointer(),
@@ -426,111 +281,39 @@ func convertTerraformModelToSDKCreateParameters(ctx context.Context, data *Kuber
 	}
 }
 
-func createAllowedCidrs(ctx context.Context, data *KubernetesClusterCreateResourceModel) sdkCluster.CreateParametersAllowedCidrs {
+func createAllowedCidrs(data *KubernetesClusterCreateResourceModel) *sdkCluster.CreateParametersAllowedCidrs {
 	allowedCidrs := []string{}
-	data.AllowedCidrs.ElementsAs(ctx, &allowedCidrs, false)
+	for _, c := range data.AllowedCidrs {
+		allowedCidrs = append(allowedCidrs, c.ValueString())
+	}
 	ac := sdkCluster.CreateParametersAllowedCidrs(allowedCidrs)
-	return ac
+
+	if len(ac) == 0 {
+		return nil
+	}
+
+	return &ac
 }
 
-func convertGetResultToTerraformModel(ctx context.Context, data *sdkCluster.GetResult) (rsult *KubernetesClusterCreateResourceModel, diags diag.Diagnostics) {
-	// attrTypes := map[string]attr.Type{
-	// 	"name":     types.StringType,
-	// 	"replicas": types.Int64Type,
-	// 	"flavor":   types.StringType,
-	// 	"auto_scale": types.ObjectType{
-	// 		AttrTypes: map[string]attr.Type{
-	// 			"enabled":  types.BoolType,
-	// 			"min_size": types.Int64Type,
-	// 			"max_size": types.Int64Type,
-	// 		},
-	// 	},
-	// 	"tags": types.ListType{
-	// 		ElemType: types.StringType,
-	// 	},
-	// 	"taints": types.ListType{
-	// 		ElemType: types.ObjectType{
-	// 			AttrTypes: map[string]attr.Type{
-	// 				"key":    types.StringType,
-	// 				"value":  types.StringType,
-	// 				"effect": types.StringType,
-	// 			},
-	// 		},
-	// 	},
-	// 	"id":         types.StringType,
-	// 	"created_at": types.StringType,
-	// 	"updated_at": types.StringType,
-	// }
-
-	np := []types.Object{}
-	for _, n := range *data.NodePools {
-		as, diag := convertAutoScaleToObjectValue((*sdkCluster.CreateParametersNodePoolsItemAutoScale)(&n.AutoScale))
-		diags = append(diags, diag...)
-
-		tags, diag := types.ListValueFrom(ctx, types.StringType, n.Tags)
-		diags = append(diags, diag...)
-
-		taints, diag := convertTaintsToList(ctx, n.Taints)
-		types.ListValueMust(types.ObjectType{}, taints)
-
-		attrValues := map[string]attr.Value{
-			"name":       types.StringValue(n.Name),
-			"replicas":   types.Int64Value(int64(n.Replicas)),
-			"flavor":     types.StringValue(n.InstanceTemplate.Flavor.Name),
-			"auto_scale": as,
-			"tags":       tags,
-			"taints":     types.ListValueFrom(ctx, types.ObjectType{}, taints),
-			"id":         types.StringValue(n.Id),
-			"created_at": types.StringValue(*n.CreatedAt),
-			"updated_at": types.StringValue(*n.UpdatedAt),
-		}
-
-		np = append(np)
-	}
-	return _, diags
-}
-
-func convertAutoScaleToObjectValue(data *sdkCluster.CreateParametersNodePoolsItemAutoScale) (types.Object, diag.Diagnostics) {
-	attributeTypes := map[string]attr.Type{
-		"max_replicas": types.Int64Type,
-		"min_replicas": types.Int64Type,
+func ConvertSDKCreateResultToTerraformCreateClsuterModel(sdkResult *sdkCluster.GetResult) *KubernetesClusterCreateResourceModel {
+	if sdkResult == nil {
+		return nil
 	}
 
-	attributeValues := map[string]attr.Value{
-		"max_replicas": types.Int64Value(int64(data.MaxReplicas)),
-		"min_replicas": types.Int64Value(int64(data.MinReplicas)),
+	tfModel := &KubernetesClusterCreateResourceModel{
+		Name:      types.StringValue(sdkResult.Name),
+		ID:        types.StringValue(sdkResult.Id),
+		CreatedAt: types.StringValue(*sdkResult.CreatedAt),
+		Version:   types.StringValue(sdkResult.Version),
 	}
 
-	obj, diag := types.ObjectValue(attributeTypes, attributeValues)
-	if diag.HasError() {
-		return types.ObjectNull(map[string]attr.Type{}), diag
+	if sdkResult.Description != nil {
+		tfModel.Description = types.StringValue(*sdkResult.Description)
 	}
 
-	return obj, diag
-}
-
-func convertTaintsToList(ctx context.Context, data *sdkCluster.GetResultNodePoolsItemTaints) (objs []types.Object, diag diag.Diagnostics) {
-	attributeTypes := map[string]attr.Type{
-		"effect": types.StringType,
-		"key":    types.StringType,
-		"value":  types.StringType,
+	if sdkResult.AllowedCidrs != nil {
+		tfModel.AllowedCidrs = convertStringSliceToTypesStringSlice(*sdkResult.AllowedCidrs)
 	}
 
-	for _, t := range *data {
-		obj, diags := types.ObjectValue(attributeTypes, map[string]attr.Value{
-			"effect": types.StringValue(t.Effect),
-			"key":    types.StringValue(t.Key),
-			"value":  types.StringValue(t.Value),
-		})
-		diag.Append(diags...)
-		objs = append(objs, obj)
-	}
-	return
-}
-
-func convertStringArrayToListType(data *[]string) (tags []types.String) {
-	for _, t := range *data {
-		tags = append(tags, types.StringValue(t))
-	}
-	return
+	return tfModel
 }
