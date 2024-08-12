@@ -55,3 +55,10 @@ jaxyendy:
       tf: false
       sdk: true
       enabled: true
+    - url: http://globaldb-public-api.pre-prod.mgl1.br.jaxyendy.com/openapi.json
+      file: globaldb.openapi.yaml
+      menu: ssh
+      cli: false
+      tf: false
+      sdk: true
+      enabled: false

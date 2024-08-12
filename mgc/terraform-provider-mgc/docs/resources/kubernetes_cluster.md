@@ -24,13 +24,13 @@ The name must follow the following rules:
   - must contain only lowercase alphanumeric characters or '-'
   - must start with an alphabetic character
   - must end with an alphanumeric character
-- `node_pools` (Attributes List) An array representing a set of nodes within a Kubernetes cluster. (see [below for nested schema](#nestedatt--node_pools))
 
 ### Optional
 
 - `allowed_cidrs` (List of String) List of allowed CIDR blocks for API server access.
 - `description` (String) A brief description of the Kubernetes cluster.
 - `enabled_server_group` (Boolean) Enables the use of a server group with anti-affinity policy during the creation of the cluster and its node pools.
+- `node_pools` (Attributes List) An array representing a set of nodes within a Kubernetes cluster. (see [below for nested schema](#nestedatt--node_pools))
 - `version` (String) The native Kubernetes version of the cluster.
 Please specify the Kubernetes version using the standard "vX.Y.Z" format.
 - `zone` (String) Identifier of the zone where the Kubernetes cluster will be located.

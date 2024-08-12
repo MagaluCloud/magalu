@@ -2265,7 +2265,6 @@ components:
             required:
             - name
             - enabled_bastion
-            - node_pools
             description: Request object for the creation of a Kubernetes cluster.
         CreateClusterResponse:
             type: object
