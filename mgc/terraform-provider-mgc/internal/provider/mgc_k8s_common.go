@@ -1,7 +1,9 @@
 package provider
 
 import (
+	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	sdkCluster "magalu.cloud/lib/products/kubernetes/cluster"
 )
 
@@ -129,11 +131,27 @@ func ConvertSDKCreateResultToTerraformModel(sdkResult *sdkCluster.GetResult) *Ku
 	// }
 
 	if sdkResult.AllowedCidrs != nil {
-		tfModel.AllowedCidrs = convertStringSliceToTypesStringSlice(*sdkResult.AllowedCidrs)
+		tfModel.AllowedCidrs = convertStringValueSliceToListValue(convertStringSliceToTypesStringSlice(*sdkResult.AllowedCidrs))
 	}
 
 	return tfModel
 
+}
+
+func convertStringValueSliceToListValue(stringValues []basetypes.StringValue) basetypes.ListValue {
+	// Crie um slice de types.String
+	stringSlice := make([]attr.Value, len(stringValues))
+	for i, sv := range stringValues {
+		stringSlice[i] = sv
+	}
+
+	// Crie o ListValue
+	listValue := basetypes.NewListValueMust(
+		types.StringType,
+		stringSlice,
+	)
+
+	return listValue
 }
 
 func ConvertSDKGetResultToTerraformModel(sdkResult *sdkCluster.GetResult) *KubernetesClusterResourceModel {
@@ -399,7 +417,6 @@ func convertSDKNodePoolsTaintsToTerraformTaints(sdkTaints sdkCluster.GetResultNo
 	return tfTaints
 }
 
-
 func ConvertTerraformNodePoolToSDKNodePool(tfNodePool NodePoolCreatedResource, as AutoScale, ts []Taint) sdkCluster.CreateParametersNodePoolsItem {
 	sdkNodePool := &sdkCluster.CreateParametersNodePoolsItem{
 		Name:     tfNodePool.Name.ValueString(),
@@ -414,10 +431,10 @@ func ConvertTerraformNodePoolToSDKNodePool(tfNodePool NodePoolCreatedResource, a
 		}
 	}
 
-	if len(tfNodePool.Tags) > 0 {
-		tags := make(sdkCluster.CreateParametersNodePoolsItemTags, len(tfNodePool.Tags))
-		for i, tag := range tfNodePool.Tags {
-			tags[i] = tag.ValueString()
+	if !tfNodePool.Tags.IsNull() {
+		tags := make(sdkCluster.CreateParametersNodePoolsItemTags, len(tfNodePool.Tags.Elements()))
+		for i, tag := range tfNodePool.Tags.Elements() {
+			tags[i] = tag.String()
 		}
 		sdkNodePool.Tags = &tags
 	}

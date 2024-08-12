@@ -332,7 +332,7 @@ func (r *k8sClusterResource) Create(ctx context.Context, req resource.CreateRequ
 		}
 	}
 
-	param := convertTerraformModelToSDKCreateParameters(&data, createNP)
+	param := convertTerraformModelToSDKCreateParameters(ctx, &data, createNP)
 	cluster, err := r.k8sCluster.Create(*param,
 		GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkCluster.CreateConfigs{}))
 	if err != nil {
@@ -411,8 +411,8 @@ func (r *k8sClusterResource) Delete(ctx context.Context, req resource.DeleteRequ
 	}
 }
 
-func convertTerraformModelToSDKCreateParameters(data *KubernetesClusterCreateResourceModel, nd []sdkCluster.CreateParametersNodePoolsItem) *sdkCluster.CreateParameters {
-	ac := createAllowedCidrs(data)
+func convertTerraformModelToSDKCreateParameters(ctx context.Context, data *KubernetesClusterCreateResourceModel, nd []sdkCluster.CreateParametersNodePoolsItem) *sdkCluster.CreateParameters {
+	ac := createAllowedCidrs(ctx, data)
 
 	return &sdkCluster.CreateParameters{
 		NodePools:          nd,
@@ -434,33 +434,33 @@ func createAllowedCidrs(ctx context.Context, data *KubernetesClusterCreateResour
 }
 
 func convertGetResultToTerraformModel(ctx context.Context, data *sdkCluster.GetResult) (rsult *KubernetesClusterCreateResourceModel, diags diag.Diagnostics) {
-	attrTypes := map[string]attr.Type{
-		"name":     types.StringType,
-		"replicas": types.Int64Type,
-		"flavor":   types.StringType,
-		"auto_scale": types.ObjectType{
-			AttrTypes: map[string]attr.Type{
-				"enabled":  types.BoolType,
-				"min_size": types.Int64Type,
-				"max_size": types.Int64Type,
-			},
-		},
-		"tags": types.ListType{
-			ElemType: types.StringType,
-		},
-		"taints": types.ListType{
-			ElemType: types.ObjectType{
-				AttrTypes: map[string]attr.Type{
-					"key":    types.StringType,
-					"value":  types.StringType,
-					"effect": types.StringType,
-				},
-			},
-		},
-		"id":         types.StringType,
-		"created_at": types.StringType,
-		"updated_at": types.StringType,
-	}
+	// attrTypes := map[string]attr.Type{
+	// 	"name":     types.StringType,
+	// 	"replicas": types.Int64Type,
+	// 	"flavor":   types.StringType,
+	// 	"auto_scale": types.ObjectType{
+	// 		AttrTypes: map[string]attr.Type{
+	// 			"enabled":  types.BoolType,
+	// 			"min_size": types.Int64Type,
+	// 			"max_size": types.Int64Type,
+	// 		},
+	// 	},
+	// 	"tags": types.ListType{
+	// 		ElemType: types.StringType,
+	// 	},
+	// 	"taints": types.ListType{
+	// 		ElemType: types.ObjectType{
+	// 			AttrTypes: map[string]attr.Type{
+	// 				"key":    types.StringType,
+	// 				"value":  types.StringType,
+	// 				"effect": types.StringType,
+	// 			},
+	// 		},
+	// 	},
+	// 	"id":         types.StringType,
+	// 	"created_at": types.StringType,
+	// 	"updated_at": types.StringType,
+	// }
 
 	np := []types.Object{}
 	for _, n := range *data.NodePools {
@@ -473,30 +473,21 @@ func convertGetResultToTerraformModel(ctx context.Context, data *sdkCluster.GetR
 		taints, diag := convertTaintsToList(ctx, n.Taints)
 		types.ListValueMust(types.ObjectType{}, taints)
 
-		types.
-
 		attrValues := map[string]attr.Value{
 			"name":       types.StringValue(n.Name),
 			"replicas":   types.Int64Value(int64(n.Replicas)),
 			"flavor":     types.StringValue(n.InstanceTemplate.Flavor.Name),
 			"auto_scale": as,
 			"tags":       tags,
-			"taints": types.ListType{
-				ElemType: types.ObjectType{
-					AttrTypes: map[string]attr.Type{
-						"key":    types.StringType,
-						"value":  types.StringType,
-						"effect": types.StringType,
-					},
-				},
-			},
-			"id":         types.StringType,
-			"created_at": types.StringType,
-			"updated_at": types.StringType,
+			"taints":     types.ListValueFrom(ctx, types.ObjectType{}, taints),
+			"id":         types.StringValue(n.Id),
+			"created_at": types.StringValue(*n.CreatedAt),
+			"updated_at": types.StringValue(*n.UpdatedAt),
 		}
 
 		np = append(np)
 	}
+	return _, diags
 }
 
 func convertAutoScaleToObjectValue(data *sdkCluster.CreateParametersNodePoolsItemAutoScale) (types.Object, diag.Diagnostics) {
