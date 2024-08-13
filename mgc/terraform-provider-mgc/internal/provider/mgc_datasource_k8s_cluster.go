@@ -41,25 +41,6 @@ type KubernetesCluster struct {
 	UpdatedAt                  types.String   `tfsdk:"updated_at"`
 }
 
-type NodePool struct {
-	Flavor      types.String   `tfsdk:"flavor"`
-	Name        types.String   `tfsdk:"name"`
-	Replicas    types.Int64    `tfsdk:"replicas"`
-	MaxReplicas types.Int64    `tfsdk:"max_replicas"`
-	MinReplicas types.Int64    `tfsdk:"min_replicas"`
-	Tags        []types.String `tfsdk:"tags"`
-	CreatedAt   types.String   `tfsdk:"created_at"`
-	UpdatedAt   types.String   `tfsdk:"updated_at"`
-	ID          types.String   `tfsdk:"id"`
-	Taints      []Taint        `tfsdk:"taints"`
-}
-
-type Taint struct {
-	Effect types.String `tfsdk:"effect"`
-	Key    types.String `tfsdk:"key"`
-	Value  types.String `tfsdk:"value"`
-}
-
 type Controlplane struct {
 	MaxReplicas    types.Int64    `tfsdk:"max_replicas"`
 	MinReplicas    types.Int64    `tfsdk:"min_replicas"`
@@ -135,7 +116,7 @@ func (d *DataSourceKubernetesCluster) Schema(ctx context.Context, req datasource
 				Computed:    true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
-						"flavor": schema.StringAttribute{
+						"flavor_name": schema.StringAttribute{
 							Description: "Definition of the CPU, RAM, and storage capacity of the nodes.",
 							Computed:    true,
 						},
@@ -398,7 +379,7 @@ func (d *DataSourceKubernetesCluster) Read(ctx context.Context, req datasource.R
 
 	cluster, err := d.cluster.Get(cluster.GetParameters{
 		ClusterId: data.ID.ValueString(),
-	}, cluster.GetConfigs{})
+	}, GetConfigsFromTags(d.sdkClient.Sdk().Config().Get, cluster.GetConfigs{}))
 	if err != nil {
 		resp.Diagnostics.AddError("Failed to get cluster", err.Error())
 		return
@@ -481,49 +462,6 @@ func convertToKubernetesCluster(getResult *cluster.GetResult) *KubernetesCluster
 	}
 
 	return kubernetesCluster
-}
-
-func convertToNodePool(np *cluster.GetResultNodePoolsItem) NodePool {
-	if np == nil {
-		return NodePool{}
-	}
-
-	nodePool := NodePool{
-		Name:        types.StringValue(np.Name),
-		Replicas:    types.Int64Value(int64(np.Replicas)),
-		MaxReplicas: types.Int64Value(int64(np.AutoScale.MaxReplicas)),
-		MinReplicas: types.Int64Value(int64(np.AutoScale.MinReplicas)),
-		CreatedAt:   types.StringPointerValue(np.CreatedAt),
-		UpdatedAt:   types.StringPointerValue(np.UpdatedAt),
-		ID:          types.StringValue(np.Id),
-	}
-
-	// Convert Flavor
-	if np.InstanceTemplate.Flavor.Name != "" {
-		nodePool.Flavor = types.StringValue(np.InstanceTemplate.Flavor.Name)
-	}
-
-	// Convert Tags
-	if np.Tags != nil {
-		nodePool.Tags = make([]types.String, len(*np.Tags))
-		for i, tag := range *np.Tags {
-			nodePool.Tags[i] = types.StringPointerValue(tag)
-		}
-	}
-
-	// Convert Taints
-	if np.Taints != nil {
-		nodePool.Taints = make([]Taint, len(*np.Taints))
-		for i, taint := range *np.Taints {
-			nodePool.Taints[i] = Taint{
-				Effect: types.StringValue(taint.Effect),
-				Key:    types.StringValue(taint.Key),
-				Value:  types.StringValue(taint.Value),
-			}
-		}
-	}
-
-	return nodePool
 }
 
 func convertToControlplane(cp *cluster.GetResultControlplane) *Controlplane {

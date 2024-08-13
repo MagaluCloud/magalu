@@ -13,6 +13,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/boolplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -82,6 +83,7 @@ func (r *k8sClusterResource) Schema(_ context.Context, _ resource.SchemaRequest,
 				DeprecationMessage: "This field is deprecated and will be removed in a future version.",
 				PlanModifiers: []planmodifier.Bool{
 					boolplanmodifier.UseStateForUnknown(),
+					boolplanmodifier.RequiresReplace(),
 				},
 			},
 			"async_creation": schema.BoolAttribute{
@@ -89,6 +91,7 @@ func (r *k8sClusterResource) Schema(_ context.Context, _ resource.SchemaRequest,
 				Optional:    true,
 				PlanModifiers: []planmodifier.Bool{
 					boolplanmodifier.UseStateForUnknown(),
+					boolplanmodifier.RequiresReplace(),
 				},
 			},
 			"name": schema.StringAttribute{
@@ -106,10 +109,16 @@ func (r *k8sClusterResource) Schema(_ context.Context, _ resource.SchemaRequest,
 				Description: "List of allowed CIDR blocks for API server access.",
 				Optional:    true,
 				ElementType: types.StringType,
+				PlanModifiers: []planmodifier.List{
+					listplanmodifier.RequiresReplace(),
+				},
 			},
 			"description": schema.StringAttribute{
 				Description: "A brief description of the Kubernetes cluster.",
 				Optional:    true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplace(),
+				},
 			},
 			"enabled_server_group": schema.BoolAttribute{
 				Description: "Enables the use of a server group with anti-affinity policy during the creation of the cluster and its node pools.",
@@ -118,11 +127,15 @@ func (r *k8sClusterResource) Schema(_ context.Context, _ resource.SchemaRequest,
 				Default:     booldefault.StaticBool(true),
 				PlanModifiers: []planmodifier.Bool{
 					boolplanmodifier.UseStateForUnknown(),
+					boolplanmodifier.RequiresReplace(),
 				},
 			},
 			"version": schema.StringAttribute{
 				Description: "The native Kubernetes version of the cluster. Use the standard \"vX.Y.Z\" format.",
 				Optional:    true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplace(),
+				},
 			},
 			"created_at": schema.StringAttribute{
 				Description: "Creation date of the Kubernetes cluster.",
@@ -136,11 +149,15 @@ func (r *k8sClusterResource) Schema(_ context.Context, _ resource.SchemaRequest,
 				Computed:    true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.UseStateForUnknown(),
+					stringplanmodifier.RequiresReplace(),
 				},
 			},
 			"zone": schema.StringAttribute{
 				Description: "Identifier of the zone where the Kubernetes cluster is located.",
 				Optional:    true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplace(),
+				},
 			},
 		},
 	}
@@ -266,6 +283,33 @@ func (r *k8sClusterResource) Delete(ctx context.Context, req resource.DeleteRequ
 		resp.Diagnostics.AddError("Failed to delete Kubernetes cluster", err.Error())
 		return
 	}
+
+	r.deleteClusterPooling(data.ID.ValueString())
+}
+
+func (r *k8sClusterResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+	clusterId := req.ID
+
+	if clusterId == "" {
+		resp.Diagnostics.AddError("Invalid import ID", "The ID must be provided")
+		return
+	}
+
+	param := sdkCluster.GetParameters{
+		ClusterId: clusterId,
+	}
+
+	cluster, err := r.k8sCluster.Get(param,
+		GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkCluster.GetConfigs{}))
+	if err != nil {
+		resp.Diagnostics.AddError("Failed to get Kubernetes cluster", err.Error())
+		return
+	}
+
+	out := ConvertSDKCreateResultToTerraformCreateClsuterModel(&cluster)
+
+	diags := resp.State.Set(ctx, &out)
+	resp.Diagnostics.Append(diags...)
 }
 
 func convertTerraformModelToSDKCreateParameters(data *KubernetesClusterCreateResourceModel) *sdkCluster.CreateParameters {
@@ -316,4 +360,16 @@ func ConvertSDKCreateResultToTerraformCreateClsuterModel(sdkResult *sdkCluster.G
 	}
 
 	return tfModel
+}
+
+func (r *k8sClusterResource) deleteClusterPooling(clusterId string) {
+	for startTime := time.Now(); time.Since(startTime) < ClusterPoolingTimeout; {
+		time.Sleep(30 * time.Second)
+		_, err := r.k8sCluster.Get(sdkCluster.GetParameters{
+			ClusterId: clusterId,
+		}, GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkCluster.GetConfigs{}))
+		if err != nil {
+			continue
+		}
+	}
 }

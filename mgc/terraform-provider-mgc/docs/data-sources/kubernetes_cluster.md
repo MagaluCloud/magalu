@@ -89,7 +89,7 @@ Read-Only:
 Read-Only:
 
 - `created_at` (String) Date of creation of the Kubernetes Node.
-- `flavor` (String) Definition of the CPU, RAM, and storage capacity of the nodes.
+- `flavor_name` (String) Definition of the CPU, RAM, and storage capacity of the nodes.
 - `id` (String) Node pool's UUID.
 - `max_replicas` (Number) Maximum number of replicas for autoscaling.
 - `min_replicas` (Number) Minimum number of replicas for autoscaling.
