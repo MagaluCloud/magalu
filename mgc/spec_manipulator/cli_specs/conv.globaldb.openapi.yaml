@@ -4,40 +4,6 @@
     "title": "GlobalDB API",
     "version": "0.1.0"
   },
-  "servers": [
-    {
-      "url": "https://api-mke.pre-prod.br-ne-1.jaxyendy.com",
-      "description": "NE-1 pre-prod"
-    },
-    {
-      "url": "https://api-mke.team-integration.br-ne-1.jaxyendy.com",
-      "description": "NE-1 team-integration"
-    },
-    {
-      "url": "https://api-mke.br-ne-1.jaxyendy.com",
-      "description": "NE-1 prod"
-    },
-    {
-      "url": "https://api-mke.br-se1-pre-prod.jaxyendy.com",
-      "description": "SE1 pre-prod"
-    },
-    {
-      "url": "https://api-mke.br-se1-team-integration.jaxyendy.com",
-      "description": "SE1 team-integration"
-    },
-    {
-      "url": "https://api-mke.br-se1-prod.jaxyendy.com",
-      "description": "SE1 prod"
-    },
-    {
-      "url": "https://api-mke.pre-prod.se1.br.jaxyendy.com",
-      "description": "SE1-BLU pre-prod"
-    },
-    {
-      "url": "https://api-mke.prod.se1.br.jaxyendy.com",
-      "description": "SE1-BLU prod"
-    }
-  ],
   "paths": {
     "/v0/ssh-keys": {
       "get": {
@@ -116,7 +82,9 @@
         },
         "security": [
           {
-            "OAuth2": []
+            "OAuth2": [
+              "gdb:ssh-pkey-r"
+            ]
           }
         ]
       },
@@ -172,7 +140,9 @@
         },
         "security": [
           {
-            "OAuth2": []
+            "OAuth2": [
+              "gdb:ssh-pkey-w"
+            ]
           }
         ]
       }
@@ -230,7 +200,9 @@
         },
         "security": [
           {
-            "OAuth2": []
+            "OAuth2": [
+              "gdb:ssh-pkey-r"
+            ]
           }
         ]
       },
@@ -286,7 +258,9 @@
         },
         "security": [
           {
-            "OAuth2": []
+            "OAuth2": [
+              "gdb:ssh-pkey-w"
+            ]
           }
         ]
       }
@@ -510,8 +484,30 @@
           "password": {
             "tokenUrl": "https://idpa-api-preprod.luizalabs.com/oauth/token",
             "scopes": {
+              "openid": "Default OpenID scope.",
+              "usr:user-standing:admin": "This scope allow the caller to do ANYthing as ANY tenant in the APIfor tenant routes and to interact with creating global resources, as quotas.",
+              "usr:user-standing:quota-write": "This scope allow the caller to write (create, update, delete) specific quotas overrides for ANY tenant.",
+              "usr:user-standing:tenant-region-read": "This scope allow the caller to read the data (access, block) for ANY user within regions.",
+              "usr:user-standing:tenant-region-write": "This scope allow the caller to write (create, update, delete)the data (allow or deny access and block) for ANY user within regions.",
+              "usr:user-standing:tenant-quota-read": " This scope allow the caller to read tenant quotas for ANY quota and ANY tenant.",
+              "usr:user-standing:tenant-quota-write": "This scope allow the caller to write (create, update, delete) tenant quotas overrides for ANY quota and ANY tenant.",
+              "usr:user-standing:tenant-sshpubkey-write": "This scope allow the caller to write (create, update, delete) SSH Public Keys for ANY tenant.",
+              "usr:user-standing:tenant-sshpubkey-read": "This scope allow the caller to read SSH Public Keys of ANY tenant.",
+              "usr:user-standing:tenant-restricted:sshpubkey-read": "This scope allow the caller to read SSH Public Keys for ONE specific tenant, which is determined by the token. This scope needs tenant owner consent.",
+              "usr:user-standing:tenant-restricted:sshpubkey-write": "This scope allow the caller to write (create, update, delete) SSH Public Keys for ONE specific tenant, which is determined by the token. This scope needs tenant owner consent.",
+              "usr:user-standing:tenant-restricted:sign-terms": "This scope allow the caller to sign the terms of use and privacy policy for ONE specific tenant, which is determined by the token. This scope needs tenant owner consent.",
+              "usr:user-standing:tenant-user-data": "This scope allow the caller to read tenant user general data (signatures, blocks) for ANY tenant.",
+              "usr:user-standing:tenant-restricted:user-data": "This scope allow the caller to read tenant user general data (signatures, blocks) for ONE specific tenant, which is determined by the token.",
+              "usr:user-standing:block-read": "This scope allow the caller to read tenant user blocks for ANY tenant.",
+              "usr:user-standing:block-write": "This scope allow the caller to create tenant user blocks for ANY tenant.",
+              "usr:user-standing:onboarding-write": "This scope allow the caller to register the onboarding for ANY tenant.",
+              "usr:user-standing:tenant-ppp-read": "This scope allow the caller to read per-product-policies of ANY tenant.",
+              "usr:user-standing:tenant-ppp-write": "This scope allow the caller to register and update per-product-policies for ANY tenant.",
+              "usr:user-standing:bucket-read": "This scope allow the caller to read buckets.",
+              "usr:user-standing:bucket-write": "This scope allow the caller to create buckets.",
               "gdb:ssh-pkey-w": "This scope allow the caller to write (create, update, delete) SSH Public Keys for ANY tenant, on public GlobalDB",
-              "gdb:ssh-pkey-r": "This scope allow the caller to read SSH Public Keys of ANY tenant, on public GlobalDB"
+              "gdb:ssh-pkey-r": "This scope allow the caller to read SSH Public Keys of ANY tenant, on public GlobalDB",
+              "gdb:admin": "This scope allow the caller to do ANYthing as ANY tenant in the API, on public GlobalDB"
             }
           }
         }

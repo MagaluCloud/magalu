@@ -41,6 +41,13 @@ modules:
     super_internal: false
     url: https://network.jaxyendy.com/openapi.json
     version: 1.130.0
+-   description: ''
+    name: ssh
+    path: ssh.openapi.yaml
+    summary: ''
+    super_internal: false
+    url: https://globaldb.jaxyendy.com/openapi-cli.json
+    version: 0.1.0
 -   description: Virtual Machine Api Product
     name: virtual-machine
     path: virtual-machine.openapi.yaml

@@ -24,6 +24,7 @@ Usage:
 - kubernetes         APIs related to the Kubernetes product.
 - network            APIs referentes ao produto de VPC
 - object-storage     Operations for Object Storage
+- ssh
 - virtual-machine    Virtual Machine Api Product
 
 ## Other commands:
