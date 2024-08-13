@@ -1,4 +1,4 @@
-package provider
+package resources
 
 import (
 	"context"
@@ -15,6 +15,7 @@ import (
 
 	sdkVmSnapshots "magalu.cloud/lib/products/virtual_machine/snapshots"
 	"magalu.cloud/sdk"
+	tfutil "magalu.cloud/terraform-provider-mgc/internal/tfutil"
 )
 
 var (
@@ -109,7 +110,7 @@ func (r *vmSnapshots) getVmSnapshot(id string) (sdkVmSnapshots.GetResult, error)
 		sdkVmSnapshots.GetParameters{
 			Id: id,
 		},
-		GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVmSnapshots.GetConfigs{}))
+		tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVmSnapshots.GetConfigs{}))
 	if err != nil {
 		return sdkVmSnapshots.GetResult{}, err
 	}
@@ -151,7 +152,7 @@ func (r *vmSnapshots) Create(ctx context.Context, req resource.CreateRequest, re
 		},
 	}
 
-	result, err := r.vmSnapshots.Create(createParams, GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVmSnapshots.CreateConfigs{}))
+	result, err := r.vmSnapshots.Create(createParams, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVmSnapshots.CreateConfigs{}))
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Error Creating VM Snapshot",
@@ -183,7 +184,7 @@ func (r *vmSnapshots) Delete(ctx context.Context, req resource.DeleteRequest, re
 		sdkVmSnapshots.DeleteParameters{
 			Id: data.ID.ValueString(),
 		},
-		GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVmSnapshots.DeleteConfigs{}))
+		tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVmSnapshots.DeleteConfigs{}))
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Error deleting VM Snapshot",

@@ -15,6 +15,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
+	datasources "magalu.cloud/terraform-provider-mgc/internal/datasources"
+	resources "magalu.cloud/terraform-provider-mgc/internal/resources"
+
 	mgcSdk "magalu.cloud/sdk"
 )
 
@@ -191,23 +194,23 @@ func (p *MgcProvider) Resources(ctx context.Context) []func() resource.Resource 
 	tflog.Info(ctx, "configuring MGC provider resources")
 
 	root := p.sdk.Group()
-	resources, err := collectGroupResources(ctx, p.sdk, root, []string{providerTypeName})
+	rsrc, err := collectGroupResources(ctx, p.sdk, root, []string{providerTypeName})
 
-	resources = append(resources,
-		NewNewNodePoolResource,
-		NewK8sClusterResource,
-		NewObjectStorageBucketsResource,
-		NewVirtualMachineInstancesResource,
-		NewVirtualMachineSnapshotsResource,
-		NewVolumeAttachResource,
-		NewBlockStorageSnapshotsResource,
-		NewBlockStorageVolumesResource)
+	rsrc = append(rsrc,
+		resources.NewNewNodePoolResource,
+		resources.NewK8sClusterResource,
+		resources.NewObjectStorageBucketsResource,
+		resources.NewVirtualMachineInstancesResource,
+		resources.NewVirtualMachineSnapshotsResource,
+		resources.NewVolumeAttachResource,
+		resources.NewBlockStorageSnapshotsResource,
+		resources.NewBlockStorageVolumesResource)
 
 	if err != nil {
 		tflog.Error(ctx, fmt.Sprintf("An error occurred while generating the provider resource list: %v", err))
 	}
 
-	return resources
+	return rsrc
 }
 
 func collectGroupResources(
@@ -321,12 +324,12 @@ func (p *MgcProvider) DataSources(ctx context.Context) []func() datasource.DataS
 
 	var dataSources []func() datasource.DataSource
 	dataSources = append(dataSources,
-		NewDataSourceKubernetesClusterKubeConfig,
-		NewDataSourceKubernetesCluster,
-		NewDataSourceKubernetesFlavor,
-		NewDataSourceKubernetesVersion,
-		NewDataSourceKubernetesNodepool,
-		NewDataSourceKubernetesNode,
+		datasources.NewDataSourceKubernetesClusterKubeConfig,
+		datasources.NewDataSourceKubernetesCluster,
+		datasources.NewDataSourceKubernetesFlavor,
+		datasources.NewDataSourceKubernetesVersion,
+		datasources.NewDataSourceKubernetesNodepool,
+		datasources.NewDataSourceKubernetesNode,
 	)
 
 	return dataSources

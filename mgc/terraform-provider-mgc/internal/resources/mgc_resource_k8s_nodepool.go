@@ -1,4 +1,4 @@
-package provider
+package resources
 
 import (
 	"context"
@@ -15,6 +15,7 @@ import (
 	mgcSdk "magalu.cloud/lib"
 	sdkNodepool "magalu.cloud/lib/products/kubernetes/nodepool"
 	"magalu.cloud/sdk"
+	tfutil "magalu.cloud/terraform-provider-mgc/internal/tfutil"
 )
 
 type NewNodePoolResource struct {
@@ -134,7 +135,7 @@ func (r *NewNodePoolResource) Schema(_ context.Context, req resource.SchemaReque
 }
 
 func (r *NewNodePoolResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var data NodePoolCreate
+	var data tfutil.NodePoolCreate
 	diags := req.State.Get(ctx, &data)
 	if diags.HasError() {
 		resp.Diagnostics = diags
@@ -143,18 +144,18 @@ func (r *NewNodePoolResource) Read(ctx context.Context, req resource.ReadRequest
 	nodepool, err := r.sdkNodepool.Get(sdkNodepool.GetParameters{
 		ClusterId:  data.ClusterID.ValueString(),
 		NodePoolId: data.ID.ValueString(),
-	}, GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkNodepool.GetConfigs{}))
+	}, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkNodepool.GetConfigs{}))
 
 	if err != nil {
 		resp.Diagnostics.AddError("Failed to get node pool", err.Error())
 		return
 	}
-	data.NodePool = convertToNodePoolGet(&nodepool)
+	data.NodePool = tfutil.ConvertToNodePoolGet(&nodepool)
 	resp.Diagnostics.Append(resp.State.Set(ctx, data)...)
 }
 
 func (r *NewNodePoolResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var data NodePoolCreate
+	var data tfutil.NodePoolCreate
 	diags := req.Config.Get(ctx, &data)
 	if diags.HasError() {
 		resp.Diagnostics = diags
@@ -177,7 +178,7 @@ func (r *NewNodePoolResource) Create(ctx context.Context, req resource.CreateReq
 		Tags:   &tags,
 		Taints: convertTaintsNP(data.Taints),
 	},
-		GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkNodepool.CreateConfigs{}))
+		tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkNodepool.CreateConfigs{}))
 
 	if err != nil {
 		resp.Diagnostics.AddError("Failed to create node pool", err.Error())
@@ -186,19 +187,19 @@ func (r *NewNodePoolResource) Create(ctx context.Context, req resource.CreateReq
 
 	r.waitNodePoolCreation(nodepool.Id, data.ClusterID.ValueString())
 
-	data.NodePool = convertToNodePoolCreate(&nodepool)
+	data.NodePool = tfutil.ConvertToNodePoolCreate(&nodepool)
 	resp.Diagnostics.Append(resp.State.Set(ctx, data)...)
 }
 
 func (r *NewNodePoolResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var data NodePoolCreate
+	var data tfutil.NodePoolCreate
 	diags := req.Config.Get(ctx, &data)
 	if diags.HasError() {
 		resp.Diagnostics = diags
 		return
 	}
 
-	var state NodePoolCreate
+	var state tfutil.NodePoolCreate
 	diags = req.State.Get(ctx, &state)
 	if diags.HasError() {
 		resp.Diagnostics = diags
@@ -215,13 +216,13 @@ func (r *NewNodePoolResource) Update(ctx context.Context, req resource.UpdateReq
 			MinReplicas: int(data.MinReplicas.ValueInt64()),
 		},
 	},
-		GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkNodepool.UpdateConfigs{}))
+		tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkNodepool.UpdateConfigs{}))
 
 	if err != nil {
 		resp.Diagnostics.AddError("Failed to update node pool", err.Error())
 		return
 	}
-	data.NodePool = convertToNodePoolUpdate(&nodepool)
+	data.NodePool = tfutil.ConvertToNodePoolUpdate(&nodepool)
 
 	r.waitNodePoolCreation(data.ID.ValueString(), data.ClusterID.ValueString())
 
@@ -229,7 +230,7 @@ func (r *NewNodePoolResource) Update(ctx context.Context, req resource.UpdateReq
 }
 
 func (r *NewNodePoolResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var data NodePoolCreate
+	var data tfutil.NodePoolCreate
 	diags := req.State.Get(ctx, &data)
 	if diags.HasError() {
 		resp.Diagnostics = diags
@@ -240,7 +241,7 @@ func (r *NewNodePoolResource) Delete(ctx context.Context, req resource.DeleteReq
 		ClusterId:  data.ClusterID.ValueString(),
 		NodePoolId: data.ID.ValueString(),
 	},
-		GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkNodepool.DeleteConfigs{}))
+		tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkNodepool.DeleteConfigs{}))
 
 	if err != nil {
 		resp.Diagnostics.AddError("Failed to delete node pool", err.Error())
@@ -249,7 +250,7 @@ func (r *NewNodePoolResource) Delete(ctx context.Context, req resource.DeleteReq
 }
 
 func (r *NewNodePoolResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
-	var data NodePoolCreate
+	var data tfutil.NodePoolCreate
 	ids := strings.Split(req.ID, ",")
 	if len(ids) != 2 {
 		resp.Diagnostics.AddError("Invalid import ID", "Expected format: cluster_id,node_pool_id")
@@ -259,18 +260,18 @@ func (r *NewNodePoolResource) ImportState(ctx context.Context, req resource.Impo
 	nodepool, err := r.sdkNodepool.Get(sdkNodepool.GetParameters{
 		ClusterId:  ids[0],
 		NodePoolId: ids[1],
-	}, GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkNodepool.GetConfigs{}))
+	}, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkNodepool.GetConfigs{}))
 
 	if err != nil {
 		resp.Diagnostics.AddError("Failed to get node pool", err.Error())
 		return
 	}
 
-	data.NodePool = convertToNodePoolGet(&nodepool)
+	data.NodePool = tfutil.ConvertToNodePoolGet(&nodepool)
 	resp.Diagnostics.Append(resp.State.Set(ctx, data)...)
 }
 
-func convertTaintsNP(taints *[]Taint) *sdkNodepool.CreateParametersTaints {
+func convertTaintsNP(taints *[]tfutil.Taint) *sdkNodepool.CreateParametersTaints {
 	if taints == nil {
 		return nil
 	}
@@ -304,7 +305,7 @@ func (r *NewNodePoolResource) waitNodePoolCreation(nodepoolid, clusterId string)
 		nodepool, err := r.sdkNodepool.Get(sdkNodepool.GetParameters{
 			ClusterId:  clusterId,
 			NodePoolId: nodepoolid,
-		}, GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkNodepool.GetConfigs{}))
+		}, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkNodepool.GetConfigs{}))
 
 		if err != nil {
 			continue

@@ -1,4 +1,4 @@
-package provider
+package datasources
 
 import (
 	"context"
@@ -9,6 +9,7 @@ import (
 	mgcSdk "magalu.cloud/lib"
 	sdkNodepool "magalu.cloud/lib/products/kubernetes/nodepool"
 	"magalu.cloud/sdk"
+	tfutil "magalu.cloud/terraform-provider-mgc/internal/tfutil"
 )
 
 type FlattenedGetResult struct {
@@ -33,7 +34,7 @@ type FlattenedGetResult struct {
 	StatusState                types.String   `tfsdk:"status_state"`
 	StatusMessages             []types.String `tfsdk:"status_messages"`
 	Tags                       types.List     `tfsdk:"tags"`
-	Taints                     []Taint        `tfsdk:"taints"`
+	Taints                     []tfutil.Taint `tfsdk:"taints"`
 	Zone                       types.List     `tfsdk:"zone"`
 }
 
@@ -198,7 +199,7 @@ func (r *DataSourceKubernetesNodepool) Read(ctx context.Context, req datasource.
 	sdkOutput, err := r.nodepool.Get(sdkNodepool.GetParameters{
 		ClusterId:  data.ClusterID.ValueString(),
 		NodePoolId: data.ID.ValueString(),
-	}, GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkNodepool.GetConfigs{}))
+	}, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkNodepool.GetConfigs{}))
 	if err != nil {
 		resp.Diagnostics.AddError("Failed to get nodepool", err.Error())
 		return
@@ -266,9 +267,9 @@ func ConvertGetResultToFlattened(ctx context.Context, original *sdkNodepool.GetR
 	}
 
 	if original.Taints != nil {
-		flattened.Taints = make([]Taint, len(*original.Taints))
+		flattened.Taints = make([]tfutil.Taint, len(*original.Taints))
 		for i, taint := range *original.Taints {
-			flattened.Taints[i] = Taint{
+			flattened.Taints[i] = tfutil.Taint{
 				Effect: types.StringValue(taint.Effect),
 				Key:    types.StringValue(taint.Key),
 				Value:  types.StringValue(taint.Value),

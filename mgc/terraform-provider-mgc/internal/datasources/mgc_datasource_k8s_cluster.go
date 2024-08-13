@@ -1,4 +1,4 @@
-package provider
+package datasources
 
 import (
 	"context"
@@ -10,35 +10,36 @@ import (
 	mgcSdk "magalu.cloud/lib"
 	"magalu.cloud/lib/products/kubernetes/cluster"
 	"magalu.cloud/sdk"
+	tfutil "magalu.cloud/terraform-provider-mgc/internal/tfutil"
 )
 
 type KubernetesCluster struct {
-	ID                         types.String   `tfsdk:"id"`
-	Name                       types.String   `tfsdk:"name"`
-	EnabledBastion             types.Bool     `tfsdk:"enabled_bastion"`
-	NodePools                  []NodePool     `tfsdk:"node_pools"`
-	AllowedCIDRs               []types.String `tfsdk:"allowed_cidrs"`
-	Description                types.String   `tfsdk:"description"`
-	EnabledServerGroup         types.Bool     `tfsdk:"enabled_server_group"`
-	Version                    types.String   `tfsdk:"version"`
-	Zone                       types.String   `tfsdk:"zone"`
-	AddonsLoadbalance          types.String   `tfsdk:"addons_loadbalance"`
-	AddonsSecrets              types.String   `tfsdk:"addons_secrets"`
-	AddonsVolume               types.String   `tfsdk:"addons_volume"`
-	Controlplane               *Controlplane  `tfsdk:"controlplane"`
-	CreatedAt                  types.String   `tfsdk:"created_at"`
-	KubeAPIDisableAPIServerFIP types.Bool     `tfsdk:"kube_api_disable_api_server_fip"`
-	KubeAPIFixedIP             types.String   `tfsdk:"kube_api_fixed_ip"`
-	KubeAPIFloatingIP          types.String   `tfsdk:"kube_api_floating_ip"`
-	KubeAPIPort                types.Int64    `tfsdk:"kube_api_port"`
-	CIDR                       types.String   `tfsdk:"cidr"`
-	ClusterName                types.String   `tfsdk:"cluster_name"`
-	SubnetID                   types.String   `tfsdk:"subnet_id"`
-	ProjectID                  types.String   `tfsdk:"project_id"`
-	Region                     types.String   `tfsdk:"region"`
-	Message                    types.String   `tfsdk:"message"`
-	State                      types.String   `tfsdk:"state"`
-	UpdatedAt                  types.String   `tfsdk:"updated_at"`
+	ID                         types.String      `tfsdk:"id"`
+	Name                       types.String      `tfsdk:"name"`
+	EnabledBastion             types.Bool        `tfsdk:"enabled_bastion"`
+	NodePools                  []tfutil.NodePool `tfsdk:"node_pools"`
+	AllowedCIDRs               []types.String    `tfsdk:"allowed_cidrs"`
+	Description                types.String      `tfsdk:"description"`
+	EnabledServerGroup         types.Bool        `tfsdk:"enabled_server_group"`
+	Version                    types.String      `tfsdk:"version"`
+	Zone                       types.String      `tfsdk:"zone"`
+	AddonsLoadbalance          types.String      `tfsdk:"addons_loadbalance"`
+	AddonsSecrets              types.String      `tfsdk:"addons_secrets"`
+	AddonsVolume               types.String      `tfsdk:"addons_volume"`
+	Controlplane               *Controlplane     `tfsdk:"controlplane"`
+	CreatedAt                  types.String      `tfsdk:"created_at"`
+	KubeAPIDisableAPIServerFIP types.Bool        `tfsdk:"kube_api_disable_api_server_fip"`
+	KubeAPIFixedIP             types.String      `tfsdk:"kube_api_fixed_ip"`
+	KubeAPIFloatingIP          types.String      `tfsdk:"kube_api_floating_ip"`
+	KubeAPIPort                types.Int64       `tfsdk:"kube_api_port"`
+	CIDR                       types.String      `tfsdk:"cidr"`
+	ClusterName                types.String      `tfsdk:"cluster_name"`
+	SubnetID                   types.String      `tfsdk:"subnet_id"`
+	ProjectID                  types.String      `tfsdk:"project_id"`
+	Region                     types.String      `tfsdk:"region"`
+	Message                    types.String      `tfsdk:"message"`
+	State                      types.String      `tfsdk:"state"`
+	UpdatedAt                  types.String      `tfsdk:"updated_at"`
 }
 
 type Controlplane struct {
@@ -58,7 +59,7 @@ type Controlplane struct {
 	StatusMessages []types.String `tfsdk:"status_messages"`
 	State          types.String   `tfsdk:"state"`
 	Tags           []types.String `tfsdk:"tags"`
-	Taints         []Taint        `tfsdk:"taints"`
+	Taints         []tfutil.Taint `tfsdk:"taints"`
 	UpdatedAt      types.String   `tfsdk:"updated_at"`
 	Zone           []types.String `tfsdk:"zone"`
 }
@@ -379,7 +380,7 @@ func (d *DataSourceKubernetesCluster) Read(ctx context.Context, req datasource.R
 
 	cluster, err := d.cluster.Get(cluster.GetParameters{
 		ClusterId: data.ID.ValueString(),
-	}, GetConfigsFromTags(d.sdkClient.Sdk().Config().Get, cluster.GetConfigs{}))
+	}, tfutil.GetConfigsFromTags(d.sdkClient.Sdk().Config().Get, cluster.GetConfigs{}))
 	if err != nil {
 		resp.Diagnostics.AddError("Failed to get cluster", err.Error())
 		return
@@ -450,9 +451,9 @@ func convertToKubernetesCluster(getResult *cluster.GetResult) *KubernetesCluster
 
 	// Convert NodePools
 	if getResult.NodePools != nil {
-		kubernetesCluster.NodePools = make([]NodePool, len(*getResult.NodePools))
+		kubernetesCluster.NodePools = make([]tfutil.NodePool, len(*getResult.NodePools))
 		for i, np := range *getResult.NodePools {
-			kubernetesCluster.NodePools[i] = convertToNodePool(&np)
+			kubernetesCluster.NodePools[i] = tfutil.ConvertToNodePool(&np)
 		}
 	}
 
@@ -514,9 +515,9 @@ func convertToControlplane(cp *cluster.GetResultControlplane) *Controlplane {
 
 	// Convert Taints
 	if cp.Taints != nil {
-		controlplane.Taints = make([]Taint, len(*cp.Taints))
+		controlplane.Taints = make([]tfutil.Taint, len(*cp.Taints))
 		for i, taint := range *cp.Taints {
-			controlplane.Taints[i] = Taint{
+			controlplane.Taints[i] = tfutil.Taint{
 				Effect: types.StringValue(taint.Effect),
 				Key:    types.StringValue(taint.Key),
 				Value:  types.StringValue(taint.Value),

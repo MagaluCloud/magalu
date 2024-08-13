@@ -1,4 +1,4 @@
-package provider
+package resources
 
 import (
 	"context"
@@ -22,6 +22,7 @@ import (
 	sdkVmImages "magalu.cloud/lib/products/virtual_machine/images"
 	sdkVmInstances "magalu.cloud/lib/products/virtual_machine/instances"
 	sdkVmMachineTypes "magalu.cloud/lib/products/virtual_machine/machine_types"
+	tfutil "magalu.cloud/terraform-provider-mgc/internal/tfutil"
 
 	"magalu.cloud/sdk"
 )
@@ -81,7 +82,7 @@ type vmInstancesResourceModel struct {
 	Status       types.String                `tfsdk:"status"`
 	Network      networkVmInstancesModel     `tfsdk:"network"`
 	MachineType  vmInstancesMachineTypeModel `tfsdk:"machine_type"`
-	Image        genericIDNameModel          `tfsdk:"image"`
+	Image        tfutil.GenericIDNameModel   `tfsdk:"image"`
 }
 
 type networkVmInstancesModel struct {
@@ -90,12 +91,12 @@ type networkVmInstancesModel struct {
 	PublicIpAddress   types.String                          `tfsdk:"public_address"`
 	DeletePublicIP    types.Bool                            `tfsdk:"delete_public_ip"`
 	AssociatePublicIP types.Bool                            `tfsdk:"associate_public_ip"`
-	VPC               *genericIDNameModel                   `tfsdk:"vpc"`
+	VPC               *tfutil.GenericIDNameModel            `tfsdk:"vpc"`
 	Interface         *vmInstancesNetworkSecurityGroupModel `tfsdk:"interface"`
 }
 
 type vmInstancesNetworkSecurityGroupModel struct {
-	SecurityGroups []genericIDModel `tfsdk:"security_groups"`
+	SecurityGroups []tfutil.GenericIDModel `tfsdk:"security_groups"`
 }
 
 type vmInstancesMachineTypeModel struct {
@@ -385,7 +386,7 @@ func (r *vmInstances) Create(ctx context.Context, req resource.CreateRequest, re
 
 	createParams.Network.AssociatePublicIp = state.Network.AssociatePublicIP.ValueBoolPointer()
 
-	result, err := r.vmInstances.Create(createParams, GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVmInstances.CreateConfigs{}))
+	result, err := r.vmInstances.Create(createParams, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVmInstances.CreateConfigs{}))
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Error creating vm",
@@ -432,7 +433,7 @@ func (r *vmInstances) Update(ctx context.Context, req resource.UpdateRequest, re
 		err := r.vmInstances.Rename(sdkVmInstances.RenameParameters{
 			Id:   data.ID.ValueString(),
 			Name: data.FinalName.ValueString(),
-		}, GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVmInstances.RenameConfigs{}))
+		}, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVmInstances.RenameConfigs{}))
 
 		if err != nil {
 			resp.Diagnostics.AddError(
@@ -460,7 +461,7 @@ func (r *vmInstances) Update(ctx context.Context, req resource.UpdateRequest, re
 			MachineType: sdkVmInstances.RetypeParametersMachineType{
 				Id: machineType.ID.ValueString(),
 			},
-		}, GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVmInstances.RetypeConfigs{}))
+		}, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVmInstances.RetypeConfigs{}))
 
 		if err != nil {
 			resp.Diagnostics.AddError(
@@ -495,7 +496,7 @@ func (r *vmInstances) Delete(ctx context.Context, req resource.DeleteRequest, re
 			DeletePublicIp: data.Network.DeletePublicIP.ValueBoolPointer(),
 			Id:             data.ID.ValueString(),
 		},
-		GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVmInstances.DeleteConfigs{}))
+		tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVmInstances.DeleteConfigs{}))
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Error Deleting VM",
@@ -548,7 +549,7 @@ func (r *vmInstances) setValuesFromServer(data vmInstancesResourceModel, server 
 
 func (r *vmInstances) getMachineTypeID(name string) (*vmInstancesMachineTypeModel, error) {
 	machineType := vmInstancesMachineTypeModel{}
-	machineTypeList, err := r.vmMachineTypes.List(sdkVmMachineTypes.ListParameters{}, GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVmMachineTypes.ListConfigs{}))
+	machineTypeList, err := r.vmMachineTypes.List(sdkVmMachineTypes.ListParameters{}, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVmMachineTypes.ListConfigs{}))
 	if err != nil {
 		return nil, fmt.Errorf("could not load machine-type list, unexpected error: " + err.Error())
 	}
@@ -588,7 +589,7 @@ func (r *vmInstances) getVmStatus(id string) (*sdkVmInstances.GetResult, error) 
 			return getResult, fmt.Errorf("timeout to read VM ID")
 		}
 
-		*getResult, err = r.vmInstances.Get(getParam, GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVmInstances.GetConfigs{}))
+		*getResult, err = r.vmInstances.Get(getParam, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVmInstances.GetConfigs{}))
 		if err != nil {
 			return getResult, err
 		}
@@ -617,7 +618,7 @@ func (r *vmInstances) checkVmIsNotFound(id string) {
 			return
 		}
 
-		*getResult, err = r.vmInstances.Get(getParam, GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVmInstances.GetConfigs{}))
+		*getResult, err = r.vmInstances.Get(getParam, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVmInstances.GetConfigs{}))
 		if err != nil {
 			return
 		}

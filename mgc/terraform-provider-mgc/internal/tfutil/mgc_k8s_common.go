@@ -1,4 +1,4 @@
-package provider
+package tfutil
 
 import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -30,7 +30,7 @@ type Taint struct {
 	Value  types.String `tfsdk:"value"`
 }
 
-func convertToNodePool(np *cluster.GetResultNodePoolsItem) NodePool {
+func ConvertToNodePool(np *cluster.GetResultNodePoolsItem) NodePool {
 	if np == nil {
 		return NodePool{}
 	}
@@ -77,7 +77,7 @@ func convertToNodePool(np *cluster.GetResultNodePoolsItem) NodePool {
 	return nodePool
 }
 
-func convertToNodePoolGet(np *sdkNodepool.GetResult) NodePool {
+func ConvertToNodePoolGet(np *sdkNodepool.GetResult) NodePool {
 	if np == nil {
 		return NodePool{}
 	}
@@ -123,7 +123,7 @@ func convertToNodePoolGet(np *sdkNodepool.GetResult) NodePool {
 	return nodePool
 }
 
-func convertStringSliceToTypesStringSlice(input []string) []types.String {
+func ConvertStringSliceToTypesStringSlice(input []string) []types.String {
 	result := make([]types.String, len(input))
 	for i, v := range input {
 		result[i] = types.StringValue(v)
@@ -131,7 +131,7 @@ func convertStringSliceToTypesStringSlice(input []string) []types.String {
 	return result
 }
 
-func convertToNodePoolCreate(np *sdkNodepool.CreateResult) NodePool {
+func ConvertToNodePoolCreate(np *sdkNodepool.CreateResult) NodePool {
 	if np == nil {
 		return NodePool{}
 	}
@@ -177,7 +177,7 @@ func convertToNodePoolCreate(np *sdkNodepool.CreateResult) NodePool {
 	return nodePool
 }
 
-func convertToNodePoolUpdate(np *sdkNodepool.UpdateResult) NodePool {
+func ConvertToNodePoolUpdate(np *sdkNodepool.UpdateResult) NodePool {
 	if np == nil {
 		return NodePool{}
 	}

@@ -1,4 +1,4 @@
-package provider
+package datasources
 
 import (
 	"context"
@@ -9,6 +9,7 @@ import (
 	mgcSdk "magalu.cloud/lib"
 	sdkNodepool "magalu.cloud/lib/products/kubernetes/flavor"
 	"magalu.cloud/sdk"
+	tfutil "magalu.cloud/terraform-provider-mgc/internal/tfutil"
 )
 
 type ListResultResultsItem struct {
@@ -108,7 +109,7 @@ func resourceListResultResultsItemBastionItemSchema() schema.NestedAttributeObje
 }
 
 func (r *DataSourceKubernetesFlavor) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
-	result, err := r.nodepool.List(GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkNodepool.ListConfigs{}))
+	result, err := r.nodepool.List(tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkNodepool.ListConfigs{}))
 
 	if err != nil || result.Results == nil {
 		resp.Diagnostics.AddError("Failed to list flavors", "Error: call to list flavors failed")

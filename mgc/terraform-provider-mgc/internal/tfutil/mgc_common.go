@@ -1,12 +1,12 @@
-package provider
+package tfutil
 
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
-type genericIDNameModel struct {
+type GenericIDNameModel struct {
 	Name types.String `tfsdk:"name"`
 	ID   types.String `tfsdk:"id"`
 }
 
-type genericIDModel struct {
+type GenericIDModel struct {
 	ID types.String `tfsdk:"id"`
 }

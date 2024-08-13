@@ -1,4 +1,4 @@
-package provider
+package datasources
 
 import (
 	"context"
@@ -9,6 +9,7 @@ import (
 	mgcSdk "magalu.cloud/lib"
 	sdkNodepool "magalu.cloud/lib/products/kubernetes/nodepool"
 	"magalu.cloud/sdk"
+	tfutil "magalu.cloud/terraform-provider-mgc/internal/tfutil"
 )
 
 type NodesDataSourceModel struct {
@@ -18,38 +19,38 @@ type NodesDataSourceModel struct {
 }
 
 type NodesResultFlat struct {
-	ID                             types.String  `tfsdk:"id"`
-	ClusterName                    types.String  `tfsdk:"cluster_name"`
-	CreatedAt                      types.String  `tfsdk:"created_at"`
-	Flavor                         types.String  `tfsdk:"flavor"`
-	Name                           types.String  `tfsdk:"name"`
-	Namespace                      types.String  `tfsdk:"namespace"`
-	NodeImage                      types.String  `tfsdk:"node_image"`
-	NodepoolName                   types.String  `tfsdk:"nodepool_name"`
-	Zone                           types.String  `tfsdk:"zone"`
-	Addresses                      []AddressItem `tfsdk:"addresses"`
-	StatusMessage                  types.String  `tfsdk:"status_message"`
-	StatusState                    types.String  `tfsdk:"status_state"`
-	InfrastructureArchitecture     types.String  `tfsdk:"infrastructure_architecture"`
-	InfrastructureContainerRuntime types.String  `tfsdk:"infrastructure_container_runtime"`
-	InfrastructureKernelVersion    types.String  `tfsdk:"infrastructure_kernel_version"`
-	InfrastructureKubeProxyVersion types.String  `tfsdk:"infrastructure_kube_proxy_version"`
-	InfrastructureKubeletVersion   types.String  `tfsdk:"infrastructure_kubelet_version"`
-	InfrastructureOperatingSystem  types.String  `tfsdk:"infrastructure_operating_system"`
-	InfrastructureOsImage          types.String  `tfsdk:"infrastructure_os_image"`
-	AllocatableCPU                 types.String  `tfsdk:"allocatable_cpu"`
-	AllocatableEphemeralStorage    types.String  `tfsdk:"allocatable_ephemeral_storage"`
-	AllocatableHugepages1Gi        types.String  `tfsdk:"allocatable_hugepages_1gi"`
-	AllocatableHugepages2Mi        types.String  `tfsdk:"allocatable_hugepages_2mi"`
-	AllocatableMemory              types.String  `tfsdk:"allocatable_memory"`
-	AllocatablePods                types.String  `tfsdk:"allocatable_pods"`
-	CapacityCPU                    types.String  `tfsdk:"capacity_cpu"`
-	CapacityEphemeralStorage       types.String  `tfsdk:"capacity_ephemeral_storage"`
-	CapacityHugepages1Gi           types.String  `tfsdk:"capacity_hugepages_1gi"`
-	CapacityHugepages2Mi           types.String  `tfsdk:"capacity_hugepages_2mi"`
-	CapacityMemory                 types.String  `tfsdk:"capacity_memory"`
-	CapacityPods                   types.String  `tfsdk:"capacity_pods"`
-	Taints                         []Taint       `tfsdk:"taints"`
+	ID                             types.String   `tfsdk:"id"`
+	ClusterName                    types.String   `tfsdk:"cluster_name"`
+	CreatedAt                      types.String   `tfsdk:"created_at"`
+	Flavor                         types.String   `tfsdk:"flavor"`
+	Name                           types.String   `tfsdk:"name"`
+	Namespace                      types.String   `tfsdk:"namespace"`
+	NodeImage                      types.String   `tfsdk:"node_image"`
+	NodepoolName                   types.String   `tfsdk:"nodepool_name"`
+	Zone                           types.String   `tfsdk:"zone"`
+	Addresses                      []AddressItem  `tfsdk:"addresses"`
+	StatusMessage                  types.String   `tfsdk:"status_message"`
+	StatusState                    types.String   `tfsdk:"status_state"`
+	InfrastructureArchitecture     types.String   `tfsdk:"infrastructure_architecture"`
+	InfrastructureContainerRuntime types.String   `tfsdk:"infrastructure_container_runtime"`
+	InfrastructureKernelVersion    types.String   `tfsdk:"infrastructure_kernel_version"`
+	InfrastructureKubeProxyVersion types.String   `tfsdk:"infrastructure_kube_proxy_version"`
+	InfrastructureKubeletVersion   types.String   `tfsdk:"infrastructure_kubelet_version"`
+	InfrastructureOperatingSystem  types.String   `tfsdk:"infrastructure_operating_system"`
+	InfrastructureOsImage          types.String   `tfsdk:"infrastructure_os_image"`
+	AllocatableCPU                 types.String   `tfsdk:"allocatable_cpu"`
+	AllocatableEphemeralStorage    types.String   `tfsdk:"allocatable_ephemeral_storage"`
+	AllocatableHugepages1Gi        types.String   `tfsdk:"allocatable_hugepages_1gi"`
+	AllocatableHugepages2Mi        types.String   `tfsdk:"allocatable_hugepages_2mi"`
+	AllocatableMemory              types.String   `tfsdk:"allocatable_memory"`
+	AllocatablePods                types.String   `tfsdk:"allocatable_pods"`
+	CapacityCPU                    types.String   `tfsdk:"capacity_cpu"`
+	CapacityEphemeralStorage       types.String   `tfsdk:"capacity_ephemeral_storage"`
+	CapacityHugepages1Gi           types.String   `tfsdk:"capacity_hugepages_1gi"`
+	CapacityHugepages2Mi           types.String   `tfsdk:"capacity_hugepages_2mi"`
+	CapacityMemory                 types.String   `tfsdk:"capacity_memory"`
+	CapacityPods                   types.String   `tfsdk:"capacity_pods"`
+	Taints                         []tfutil.Taint `tfsdk:"taints"`
 }
 
 type AddressItem struct {
@@ -277,7 +278,7 @@ func (d *DataSourceKubernetesNode) Read(ctx context.Context, req datasource.Read
 	node, err := d.nodepool.Nodes(sdkNodepool.NodesParameters{
 		ClusterId:  data.ClusterID.ValueString(),
 		NodePoolId: data.NodepoolID.ValueString(),
-	}, GetConfigsFromTags(d.sdkClient.Sdk().Config().Get, sdkNodepool.NodesConfigs{}))
+	}, tfutil.GetConfigsFromTags(d.sdkClient.Sdk().Config().Get, sdkNodepool.NodesConfigs{}))
 	if err != nil {
 		resp.Diagnostics.AddError("Failed to get node", err.Error())
 		return
@@ -354,10 +355,10 @@ func convertAddresses(addresses sdkNodepool.NodesResultResultsItemAddresses) []A
 	return result
 }
 
-func convertTaints(taints sdkNodepool.NodesResultResultsItemTaints) []Taint {
-	result := make([]Taint, len(taints))
+func convertTaints(taints sdkNodepool.NodesResultResultsItemTaints) []tfutil.Taint {
+	result := make([]tfutil.Taint, len(taints))
 	for i, taint := range taints {
-		result[i] = Taint{
+		result[i] = tfutil.Taint{
 			Effect: types.StringValue(taint.Effect),
 			Key:    types.StringValue(taint.Key),
 			Value:  types.StringValue(taint.Value),
