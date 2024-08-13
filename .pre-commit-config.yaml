@@ -49,12 +49,12 @@ repos:
         entry: bash -c './scripts/oapi_check_links.sh'
         stages: [pre-commit]
         require_serial: true
-    -   id: blueprint-index-gen
-        name: blueprint-index-gen
-        language: system
-        entry: bash -c './scripts/blueprint_index_gen.sh'
-        stages: [pre-commit]
-        require_serial: true
+    # -   id: blueprint-index-gen
+    #     name: blueprint-index-gen
+    #     language: system
+    #     entry: bash -c './scripts/blueprint_index_gen.sh'
+    #     stages: [pre-commit]
+    #     require_serial: true
     # -   id: codegen-lib
     #     name: codegen-lib
     #     language: system

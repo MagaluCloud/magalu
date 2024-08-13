@@ -2166,8 +2166,7 @@
         },
         "required": [
           "name",
-          "enabled_bastion",
-          "node_pools"
+          "enabled_bastion"
         ],
         "description": "Request object for the creation of a Kubernetes cluster."
       },

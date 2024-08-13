@@ -26,7 +26,7 @@ type CreateParameters struct {
 	EnabledBastion     bool                          `json:"enabled_bastion"`
 	EnabledServerGroup *bool                         `json:"enabled_server_group,omitempty"`
 	Name               string                        `json:"name"`
-	NodePools          CreateParametersNodePools     `json:"node_pools"`
+	NodePools          *CreateParametersNodePools    `json:"node_pools,omitempty"`
 	Version            *string                       `json:"version,omitempty"`
 	Zone               *string                       `json:"zone,omitempty"`
 }

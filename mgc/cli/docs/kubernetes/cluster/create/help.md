@@ -31,7 +31,7 @@ Usage:
 - (required)
 - --node-pools array(object)      An array representing a set of nodes within a Kubernetes cluster.
 - 
-- Use --node-pools=help for more details (required)
+- Use --node-pools=help for more details
 - --param.version string          The native Kubernetes version of the cluster.
 - Please specify the Kubernetes version using the standard "vX.Y.Z" format.
 - (default "v1.30.2")
