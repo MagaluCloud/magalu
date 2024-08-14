@@ -18,6 +18,7 @@ BRANCH="$(git rev-parse --abbrev-ref HEAD)"
 ## Only generate if we're on a Git tag
 # if ! git describe --tags --exact-match HEAD >/dev/null 2>&1; then
 #     if [[ "$VERSION" != "" ]]; then
+        (rm -rf $LIBDIR/products)
         (cd $ROOTDIR/mgc/codegen; go build -tags "embed release" -o codegen; ./codegen $LIBDIR)
         (cd $LIBDIR; go mod tidy)
 #     fi
