@@ -24,7 +24,6 @@ The API Key authenticates with the main Magalu services, while the Key Pair ID a
 				getGet(),
 				getList(),
 				getRevoke(),
-				getCurrentApiKey(),
 			}
 		},
 	)

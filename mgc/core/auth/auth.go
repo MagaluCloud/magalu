@@ -377,21 +377,21 @@ func (o *Auth) UnsetAccessKey() error {
 	return o.writeCurrentConfig()
 }
 
-func (o *Auth) SetAPIKey(params APIKeyParametersList) error {
+func (o *Auth) SetAPIKey(apiKey string) error {
 	err := o.setCurrentSecurityMethod(APIKey)
 	if err != nil {
 		return err
 	}
-	o.apiKey = params.GetAPIKey()
+	o.apiKey = apiKey
 	return o.writeCurrentConfig()
 }
 
-func (o *Auth) SetXTenantID(params XTenantIDParametersList) error {
+func (o *Auth) SetXTenantID(tenantId string) error {
 	err := o.setCurrentSecurityMethod(XTenantID)
 	if err != nil {
 		return err
 	}
-	o.xTenantID = params.GetXTenantID()
+	o.xTenantID = tenantId
 	return o.writeCurrentConfig()
 }
 

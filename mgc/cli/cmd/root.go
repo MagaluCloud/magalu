@@ -190,15 +190,13 @@ func setKeyPair(sdk *mgcSdk.Sdk) {
 
 func setApiKey(rootCmd *cobra.Command, sdk *mgcSdk.Sdk) {
 	if key := getApiKeyFlag(rootCmd); key != "" {
-		apiKeyParameters := APIKeyParameters{
-			Key: key,
-		}
-		_ = sdk.Auth().SetAPIKey(apiKeyParameters)
-	} else if key := os.Getenv(apiKeyEnvVar); key != "" {
-		apiKeyParameters := APIKeyParameters{
-			Key: key,
-		}
-		_ = sdk.Auth().SetAPIKey(apiKeyParameters)
+		_ = sdk.Auth().SetAPIKey(key)
+		return
+	}
+
+	if key := os.Getenv(apiKeyEnvVar); key != "" {
+		_ = sdk.Auth().SetAPIKey(key)
+		return
 	}
 }
 

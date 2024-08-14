@@ -16,7 +16,6 @@ type service struct {
 
 type Service interface {
 	Create(parameters CreateParameters) (result CreateResult, err error)
-	Current() (result CurrentResult, err error)
 	Get(parameters GetParameters) (result GetResult, err error)
 	List(parameters ListParameters) (result ListResult, err error)
 	Revoke(parameters RevokeParameters) (result RevokeResult, err error)

@@ -13,6 +13,8 @@ func isHeaderSensitive(canonicalKey string) bool {
 	switch canonicalKey {
 	case "Authorization":
 		return true
+	case "X-Api-Key":
+		return true
 	default:
 		return false
 	}

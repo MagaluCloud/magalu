@@ -9,6 +9,7 @@ import (
 	"github.com/spf13/cobra"
 	"magalu.cloud/cli/ui"
 	"magalu.cloud/core"
+	"magalu.cloud/core/auth"
 	"magalu.cloud/core/progress_report"
 	mgcSdk "magalu.cloud/sdk"
 	"magalu.cloud/sdk/openapi"
@@ -43,6 +44,10 @@ func checkScopes(sdk *mgcSdk.Sdk, exec core.Executor) error {
 		if !slices.Contains(currentScopes, scope) {
 			missing.Add(scope)
 		}
+	}
+
+	if a.CurrentSecurityMethod() != auth.BearerToken.String() {
+		return nil
 	}
 
 	if k, s := a.AccessKeyPair(); (k == "" || s == "") && len(missing) > 0 {

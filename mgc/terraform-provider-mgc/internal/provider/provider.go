@@ -150,14 +150,13 @@ func (p *MgcProvider) Configure(ctx context.Context, req provider.ConfigureReque
 		}
 	}
 	if !data.ApiKey.IsNull() || os.Getenv("MGC_API_KEY") != "" {
-		apiKey := MgcApiKey{}
-		apiKey.ApiKey = os.Getenv("MGC_API_KEY")
+		apiKey := os.Getenv("MGC_API_KEY")
 
-		if apiKey.ApiKey == "" && !data.ApiKey.IsNull() {
-			apiKey.ApiKey = data.ApiKey.ValueString()
+		if apiKey == "" && !data.ApiKey.IsNull() {
+			apiKey = data.ApiKey.ValueString()
 		}
 
-		err := p.sdk.Auth().SetAPIKey(&apiKey)
+		err := p.sdk.Auth().SetAPIKey(apiKey)
 		if err != nil {
 			tflog.Error(ctx, "fail to set api key")
 		}
