@@ -24,6 +24,7 @@ type GetSchemaParameters struct {
 }
 
 type GetSchemaResult struct {
+	AdditionalProperties *GetSchemaResultAdditionalProperties                         `json:"additionalProperties,omitempty"`
 	AllOf                *GetSchemaResultAdditionalPropertiesSchemaValueAllOf         `json:"allOf,omitempty"`
 	AllowEmptyValue      *bool                                                        `json:"allowEmptyValue,omitempty"`
 	AnyOf                *GetSchemaResultAdditionalPropertiesSchemaValueAnyOf         `json:"anyOf,omitempty"`
@@ -60,7 +61,6 @@ type GetSchemaResult struct {
 	UniqueItems          *bool                                                        `json:"uniqueItems,omitempty"`
 	WriteOnly            *bool                                                        `json:"writeOnly,omitempty"`
 	Xml                  *GetSchemaResultAdditionalPropertiesSchemaValueXml           `json:"xml,omitempty"`
-	AdditionalProperties *GetSchemaResultAdditionalProperties                         `json:"additionalProperties,omitempty"`
 }
 
 type GetSchemaResultAdditionalProperties struct {

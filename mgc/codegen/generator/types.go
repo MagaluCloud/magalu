@@ -294,6 +294,12 @@ func (t *generatorTemplateTypes) addObject(name string, schema *mgcSchemaPkg.Sch
 			return
 		}
 
+		for _, f := range def.Fields {
+			if f.Name == fieldName {
+				return def.Name, nil
+			}
+		}
+
 		def.Fields = append(def.Fields, generatorTemplateTypeField{
 			Name: fieldName,
 			Type: fieldType,

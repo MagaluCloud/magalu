@@ -19,6 +19,7 @@ Key Pair Secret: Works with Key Pair ID for Object Storage authentication.
 ```bash
 Commands:
   create      Create a new API Key
+  current     Retrieve the api-key used in the APIs
   get         Get a specific API key by its ID
   list        List your account API keys
   revoke      Revoke an API key by its ID
