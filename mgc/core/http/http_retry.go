@@ -2,10 +2,14 @@ package http
 
 import (
 	"bytes"
+	"errors"
 	"io"
 	"net/http"
 	"os"
+	"syscall"
 	"time"
+
+	"golang.org/x/sys/unix"
 )
 
 type ClientRetryer struct {
@@ -72,16 +76,27 @@ func (r *ClientRetryer) RoundTrip(req *http.Request) (*http.Response, error) {
 		res, err = r.Transport.RoundTrip(reqCopy)
 
 		if err != nil {
+			var sysErr *os.SyscallError
+
 			if os.IsTimeout(err) {
-				logger().Debug("Request timeout, retrying...", "attempt", i+1, "")
+				logger().Debug("\n\n\nRequest timeout, retrying...\n\n\n", "attempt", i+1, "")
 				time.Sleep(waitBeforeRetry)
 				waitBeforeRetry = waitBeforeRetry * 2
 				continue
 			}
+
+			if errors.As(err, &sysErr) {
+				if sysErr.Err == syscall.ECONNRESET || sysErr.Err == unix.ECONNRESET {
+					logger().Debug("\n\n\nConn reset by peer! THIS IS A SERVER PROBLEM!!!\n\n\n", "attempt", i+1, "")
+					time.Sleep(waitBeforeRetry)
+					waitBeforeRetry = waitBeforeRetry * 2
+					continue
+				}
+			}
 			return res, err
 		}
 		if res.StatusCode >= 500 {
-			logger().Debug("Server responded with fail, retrying...", "attempt", i+1, "status code", res.StatusCode, "")
+			logger().Debug("\n\n\nServer responded with fail, retrying...\n\n\n", "attempt", i+1, "status code", res.StatusCode, "")
 			time.Sleep(waitBeforeRetry)
 			waitBeforeRetry = waitBeforeRetry * 2
 			continue

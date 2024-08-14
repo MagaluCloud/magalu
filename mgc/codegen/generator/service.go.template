@@ -19,7 +19,11 @@ type Service interface {
 
 
 	{{- range .ExecutorsData }}
-	{{ .GoName }}( {{- if .Types.Parameters }}	parameters {{ .Types.Parameters }}, {{- end }} {{- if .Types.Configs }} configs {{ .Types.Configs }},{{- end }}) ({{- if .Types.Result }} result {{ .Types.Result }},{{- end}} err error,)
+		{{- if eq .GoName "Kubeconfig" }}
+    	Kubeconfig(parameters KubeconfigParameters, configs KubeconfigConfigs) (string, error)
+    	{{- else }}
+		{{ .GoName }}( {{- if .Types.Parameters }}	parameters {{ .Types.Parameters }}, {{- end }} {{- if .Types.Configs }} configs {{ .Types.Configs }},{{- end }}) ({{- if .Types.Result }} result {{ .Types.Result }},{{- end}} err error,)
+		{{- end }}
 	{{- end }}
 }
 
