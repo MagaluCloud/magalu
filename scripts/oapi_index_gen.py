@@ -67,7 +67,6 @@ def load_mods(
         name = match.group("name")
         full_mods[filename] = data
         description = info.get("x-mgc-description", info.get("description", ""))
-        setInternal = False
         mods.append(
             IndexModule(
                 name=name,
@@ -75,7 +74,7 @@ def load_mods(
                 path=relpath,
                 description=description,
                 version=info.get("version", ""),
-                summary=info.get("summary", description)
+                summary=info.get("summary", description),
             )
         )
     return full_mods, mods
