@@ -2246,16 +2246,6 @@
           "kube_api_server": {
             "$ref": "#/components/schemas/KubeApiServer"
           },
-          "tags": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "description": "Items from the list of tags applied to the Kubernetes cluster.",
-              "nullable": true,
-              "example": "tag-example"
-            },
-            "description": "List of tags applied to the Kubernetes cluster."
-          },
           "description": {
             "type": "string",
             "description": "Description of the Kubernetes cluster.",
@@ -2310,16 +2300,6 @@
             "type": "string",
             "description": "Native Kubernetes version of the cluster.",
             "example": "v1.22.9"
-          },
-          "tags": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "description": "Items from the list of tags applied to the Kubernetes cluster.",
-              "nullable": true,
-              "example": "tag-example"
-            },
-            "description": "List of tags applied to the Kubernetes cluster."
           },
           "description": {
             "type": "string",

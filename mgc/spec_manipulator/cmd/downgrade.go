@@ -361,6 +361,8 @@ var downgradeSpecCmd = &cobra.Command{
 				}
 			}
 
+			docModel.Model.Components.SecuritySchemes = nil
+
 			_, document, _, errs := document.RenderAndReload()
 			if len(errors) > 0 {
 				panic(fmt.Sprintf("cannot re-render document: %d errors reported", len(errs)))

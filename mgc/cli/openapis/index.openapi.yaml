@@ -3,49 +3,48 @@ modules:
     name: block-storage
     path: block-storage.openapi.yaml
     summary: Block Storage API Product Documentation
-    super_internal: false
     url: https://block-storage.jaxyendy.com/openapi.json
     version: v1
 -   description: Magalu Container Registry product API.
     name: container-registry
     path: container-registry.openapi.yaml
     summary: Magalu Container Registry product API.
-    super_internal: false
     url: https://container-registry.jaxyendy.com/openapi.json
     version: 0.1.0
 -   description: DBaaS API Product.
     name: dbaas
     path: dbaas.openapi.yaml
     summary: DBaaS API Product.
-    super_internal: false
     url: https://dbaas.jaxyendy.com/openapi.json
     version: 1.26.1
 -   description: Cloud Events API Product.
     name: events
     path: events.openapi.yaml
     summary: Cloud Events API Product.
-    super_internal: false
     url: https://events-consult.jaxyendy.com/openapi-cli.json
     version: 0.12.0
 -   description: APIs related to the Kubernetes product.
     name: kubernetes
     path: kubernetes.openapi.yaml
     summary: APIs related to the Kubernetes product.
-    super_internal: false
     url: https://mke.br-ne-1.com/docs/openapi-with-snippets.json
     version: 0.1.0
 -   description: APIs referentes ao produto de VPC
     name: network
     path: network.openapi.yaml
     summary: APIs referentes ao produto de VPC
-    super_internal: false
     url: https://network.jaxyendy.com/openapi.json
-    version: 1.130.0
+    version: 1.131.0
+-   description: ''
+    name: ssh
+    path: ssh.openapi.yaml
+    summary: ''
+    url: https://globaldb.jaxyendy.com/openapi-cli.json
+    version: 0.1.0
 -   description: Virtual Machine Api Product
     name: virtual-machine
     path: virtual-machine.openapi.yaml
     summary: Virtual Machine Api Product
-    super_internal: false
     url: https://virtual-machine.jaxyendy.com/openapi.json
     version: v1
 version: 1.0.0

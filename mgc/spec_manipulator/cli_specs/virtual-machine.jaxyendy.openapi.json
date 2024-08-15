@@ -867,7 +867,7 @@
           {
             "name": "expand",
             "in": "query",
-            "description": "You can get more detailed info about: ['image', 'machine-type', 'network'] ",
+            "description": "You can get more detailed info about: ['image', 'machine-type', 'machine-types', 'network'] ",
             "required": false,
             "schema": {
               "type": "array",
@@ -875,7 +875,7 @@
                 "type": "string"
               },
               "title": "Expand",
-              "description": "You can get more detailed info about: ['image', 'machine-type', 'network'] ",
+              "description": "You can get more detailed info about: ['image', 'machine-type', 'machine-types', 'network'] ",
               "default": []
             }
           },
@@ -1245,7 +1245,7 @@
           {
             "name": "expand",
             "in": "query",
-            "description": "You can get more detailed info about: ['image', 'machine-type', 'network'] ",
+            "description": "You can get more detailed info about: ['image', 'machine-type', 'machine-types', 'network'] ",
             "required": false,
             "schema": {
               "type": "array",
@@ -1253,7 +1253,7 @@
                 "type": "string"
               },
               "title": "Expand",
-              "description": "You can get more detailed info about: ['image', 'machine-type', 'network'] ",
+              "description": "You can get more detailed info about: ['image', 'machine-type', 'machine-types', 'network'] ",
               "default": []
             }
           },
@@ -1438,7 +1438,7 @@
           "instances"
         ],
         "summary": "Reboot an instance.",
-        "description": "Reboots a Virtual Machine instance with the id provided in the current tenant which is logged in.\n#### Notes\n- You can use the virtual-machine list command to retrieve all instances, so you can get the id\nof the instance that you want to reboot.\n\n#### Rules\n- The instance must be in the running or suspend state.",
+        "description": "Reboots a Virtual Machine instance with the id provided in the current tenant which is logged in.\n\n#### Notes\n- You can use the virtual-machine list command to retrieve all instances, so you can get the id\nof the instance that you want to reboot.\n\n#### Rules\n- The instance must be in the running or suspend state.",
         "operationId": "reboot_instance_v1_instances__id__reboot_post",
         "parameters": [
           {
@@ -1912,7 +1912,7 @@
         "tags": [
           "snapshots"
         ],
-        "summary": "Lists all snapshots in the current tenant.",
+        "summary": "Lists all snapshots.",
         "description": "List all snapshots in the current tenant which is logged in.\n\n#### Notes\n- You can use the **expand** argument to get more details from the inner objects\nlike image and machine types.",
         "operationId": "list_snapshots_v1_v1_snapshots_get",
         "parameters": [
@@ -2051,7 +2051,7 @@
         "tags": [
           "snapshots"
         ],
-        "summary": "Create a snapshot of a virtual machine.",
+        "summary": "Create a snapshot of an instance.",
         "description": "Create a snapshot of a Virtual Machine in the current tenant which is logged in. \u003c/br\u003e\nA Snapshot is ready for restore when it's in available state.\n\n#### Notes\n- You can verify the state of snapshot using the snapshot get command,\n- To create a snapshot it's mandatory inform a valid and unique name.\n\n#### Rules\n- It's only possible to create a snapshot of a valid virtual machine.\n- It's not possible to create 2 snapshots with the same name.\n- You can inform ID or Name from a Virtual Machine if both informed the priority will be ID.",
         "operationId": "snapshot_create_v1_v1_snapshots_post",
         "parameters": [
@@ -2253,8 +2253,8 @@
         "tags": [
           "snapshots"
         ],
-        "summary": "Restore a snapshot to a virtual machine.",
-        "description": "Restore a snapshot of a Virtual Machine with the current tenant which is logged in. \u003c/br\u003e\nA Snapshot is ready for restore when it's in available state.\n\n#### Notes\n- You can verify the state of snapshot using the snapshot list command.\n- Use machine-types list to see all machine types available.\n\n#### Rules\n- To restore a snapshot  you have to inform the new virtual machine information.\n- You can choose a machine-type that has a disk equal or larger\nthan the original virtual machine type.",
+        "summary": "Restore a snapshot to an instance.",
+        "description": "Restore a snapshot of an instance with the current tenant which is logged in. \u003c/br\u003e\n\n#### Notes\n- You can check the snapshot state using snapshot list command.\n- Use \"machine-types list\" to see all machine types available.\n\n#### Rules\n- A Snapshot is ready to restore when it's in available state.\n- To restore a snapshot you have to inform the new instance settings.\n- You must choose a machine-type that has a disk equal or larger\nthan the original instance.",
         "operationId": "restore_snapshot_v1_v1_snapshots__id__post",
         "parameters": [
           {
@@ -2541,15 +2541,7 @@
         "type": "object",
         "properties": {
           "region": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/ID"
-              },
-              {
-                "$ref": "#/components/schemas/Name"
-              }
-            ],
-            "title": "Region"
+            "$ref": "#/components/schemas/Regions"
           }
         },
         "title": "BackupCopyRequest",
@@ -2557,9 +2549,7 @@
           "region"
         ],
         "example": {
-          "region": {
-            "id": "dest_region"
-          }
+          "region": "br-ne-1"
         }
       },
       "BackupRenameRequest": {
@@ -2589,7 +2579,7 @@
             "maxLength": 255,
             "minLength": 1
           },
-          "virtual_machine": {
+          "instance": {
             "anyOf": [
               {
                 "$ref": "#/components/schemas/ID"
@@ -2598,19 +2588,19 @@
                 "$ref": "#/components/schemas/Name"
               }
             ],
-            "title": "Virtual Machine"
+            "title": "Instance"
           }
         },
         "title": "BackupRequest",
         "required": [
           "name",
-          "virtual_machine"
+          "instance"
         ],
         "example": {
-          "name": "backup name",
-          "virtual_machine": {
+          "instance": {
             "id": "4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a"
-          }
+          },
+          "name": "backup name"
         }
       },
       "BackupResponse": {
@@ -3500,7 +3490,7 @@
       "InstanceTypesV1ListResponse": {
         "type": "object",
         "properties": {
-          "instance_types": {
+          "machine_types": {
             "type": "array",
             "items": {
               "anyOf": [
@@ -3512,15 +3502,15 @@
                 }
               ]
             },
-            "title": "Instance Types"
+            "title": "Machine Types"
           }
         },
         "title": "InstanceTypesV1ListResponse",
         "required": [
-          "instance_types"
+          "machine_types"
         ],
         "example": {
-          "instance_types": [
+          "machine_types": [
             {
               "disk": 10,
               "gpu": 1,
@@ -3860,6 +3850,7 @@
           "deleting_pending",
           "deleting",
           "deleting_error",
+          "deleting_network_error",
           "deleted"
         ]
       },
@@ -4220,6 +4211,15 @@
           "ipAddresses"
         ]
       },
+      "Regions": {
+        "type": "string",
+        "title": "Regions",
+        "enum": [
+          "br-se1",
+          "br-se-1",
+          "br-ne-1"
+        ]
+      },
       "SecurityGroups": {
         "type": "object",
         "properties": {
@@ -4243,7 +4243,7 @@
             "maxLength": 255,
             "minLength": 1
           },
-          "virtual_machine": {
+          "instance": {
             "anyOf": [
               {
                 "$ref": "#/components/schemas/ID"
@@ -4252,19 +4252,19 @@
                 "$ref": "#/components/schemas/Name"
               }
             ],
-            "title": "Virtual Machine"
+            "title": "Instance"
           }
         },
         "title": "SnapshotCreateRequestV1",
         "required": [
           "name",
-          "virtual_machine"
+          "instance"
         ],
         "example": {
-          "name": "snapshot name",
-          "virtual_machine": {
+          "instance": {
             "id": "4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a"
-          }
+          },
+          "name": "snapshot name"
         }
       },
       "SnapshotRenameRequest": {

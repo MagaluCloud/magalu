@@ -634,7 +634,7 @@ paths:
             -   name: expand
                 in: query
                 description: 'You can get more detailed info about: [''image'', ''machine-type'',
-                    ''network''] '
+                    ''machine-types'', ''network''] '
                 required: false
                 schema:
                     type: array
@@ -642,7 +642,7 @@ paths:
                         type: string
                     title: Expand
                     description: 'You can get more detailed info about: [''image'',
-                        ''machine-type'', ''network''] '
+                        ''machine-type'', ''machine-types'', ''network''] '
                     default: []
             responses:
                 '200':
@@ -935,7 +935,7 @@ paths:
             -   name: expand
                 in: query
                 description: 'You can get more detailed info about: [''image'', ''machine-type'',
-                    ''network''] '
+                    ''machine-types'', ''network''] '
                 required: false
                 schema:
                     type: array
@@ -943,7 +943,7 @@ paths:
                         type: string
                     title: Expand
                     description: 'You can get more detailed info about: [''image'',
-                        ''machine-type'', ''network''] '
+                        ''machine-type'', ''machine-types'', ''network''] '
                     default:
                     - network
                     - image
@@ -1153,6 +1153,7 @@ paths:
             summary: Reboot an instance.
             description: 'Reboots a Virtual Machine instance with the id provided
                 in the current tenant which is logged in.
+
 
                 #### Notes
 
@@ -1776,7 +1777,7 @@ paths:
         get:
             tags:
             - snapshots
-            summary: Lists all snapshots in the current tenant.
+            summary: Lists all snapshots.
             description: 'List all snapshots in the current tenant which is logged
                 in.
 
@@ -1878,7 +1879,7 @@ paths:
         post:
             tags:
             - snapshots
-            summary: Create a snapshot of a virtual machine.
+            summary: Create a snapshot of an instance.
             description: 'Create a snapshot of a Virtual Machine in the current tenant
                 which is logged in. </br>
 
@@ -1922,7 +1923,7 @@ paths:
                                 id: $response.body#/id
                         restore:
                             operationId: restore_snapshot_v1_v1_snapshots__id__post
-                            description: Restore a snapshot to a virtual machine.
+                            description: Restore a snapshot to an instance.
                             parameters:
                                 id: $response.body#/id
                         delete:
@@ -2020,7 +2021,7 @@ paths:
                     links:
                         restore:
                             operationId: restore_snapshot_v1_v1_snapshots__id__post
-                            description: Restore a snapshot to a virtual machine.
+                            description: Restore a snapshot to an instance.
                             parameters:
                                 id: $request.path.id
                         delete:
@@ -2078,28 +2079,27 @@ paths:
         post:
             tags:
             - snapshots
-            summary: Restore a snapshot to a virtual machine.
-            description: 'Restore a snapshot of a Virtual Machine with the current
-                tenant which is logged in. </br>
-
-                A Snapshot is ready for restore when it''s in available state.
+            summary: Restore a snapshot to an instance.
+            description: 'Restore a snapshot of an instance with the current tenant
+                which is logged in. </br>
 
 
                 #### Notes
 
-                - You can verify the state of snapshot using the snapshot list command.
+                - You can check the snapshot state using snapshot list command.
 
-                - Use machine-types list to see all machine types available.
+                - Use "machine-types list" to see all machine types available.
 
 
                 #### Rules
 
-                - To restore a snapshot  you have to inform the new virtual machine
-                information.
+                - A Snapshot is ready to restore when it''s in available state.
 
-                - You can choose a machine-type that has a disk equal or larger
+                - To restore a snapshot you have to inform the new instance settings.
 
-                than the original virtual machine type.'
+                - You must choose a machine-type that has a disk equal or larger
+
+                than the original instance.'
             operationId: restore_snapshot_v1_v1_snapshots__id__post
             parameters:
             -   name: id
@@ -2279,7 +2279,7 @@ paths:
                                 jsonPathQuery: $.result.name == $.owner.parameters.name
                         restore:
                             operationId: restore_snapshot_v1_v1_snapshots__id__post
-                            description: Restore a snapshot to a virtual machine.
+                            description: Restore a snapshot to an instance.
                             parameters:
                                 id: $request.path.id
                         delete:
@@ -2327,16 +2327,17 @@ components:
             type: object
             properties:
                 region:
-                    anyOf:
-                    -   $ref: '#/components/schemas/ID'
-                    -   $ref: '#/components/schemas/Name'
-                    title: Region
+                    type: string
+                    title: Regions
+                    enum:
+                    - br-se1
+                    - br-se-1
+                    - br-ne-1
             title: BackupCopyRequest
             required:
             - region
             example:
-                region:
-                    id: dest_region
+                region: br-ne-1
         BackupRenameRequest:
             type: object
             properties:
@@ -2358,19 +2359,19 @@ components:
                     title: Name
                     maxLength: 255
                     minLength: 1
-                virtual_machine:
+                instance:
                     anyOf:
                     -   $ref: '#/components/schemas/ID'
                     -   $ref: '#/components/schemas/Name'
-                    title: Virtual Machine
+                    title: Instance
             title: BackupRequest
             required:
             - name
-            - virtual_machine
+            - instance
             example:
-                name: backup name
-                virtual_machine:
+                instance:
                     id: 4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a
+                name: backup name
         BackupResponse:
             type: object
             properties:
@@ -3000,18 +3001,18 @@ components:
         InstanceTypesV1ListResponse:
             type: object
             properties:
-                instance_types:
+                machine_types:
                     type: array
                     items:
                         anyOf:
                         -   $ref: '#/components/schemas/InstanceTypesV1PortalResponse'
                         -   $ref: '#/components/schemas/InstanceTypesV1Response'
-                    title: Instance Types
+                    title: Machine Types
             title: InstanceTypesV1ListResponse
             required:
-            - instance_types
+            - machine_types
             example:
-                instance_types:
+                machine_types:
                 -   disk: 10
                     gpu: 1
                     id: 3a4dc05b-eb10-42ec-8c0c-848e06f7aded
@@ -3168,6 +3169,7 @@ components:
                     - deleting_pending
                     - deleting
                     - deleting_error
+                    - deleting_network_error
                     - deleted
                     x-mgc-transforms:
                     -   type: lowercase
@@ -3292,6 +3294,7 @@ components:
             - deleting_pending
             - deleting
             - deleting_error
+            - deleting_network_error
             - deleted
         IntanceUpdateRequest:
             type: object
@@ -3596,6 +3599,7 @@ components:
                                 - deleting_pending
                                 - deleting
                                 - deleting_error
+                                - deleting_network_error
                                 - deleted
                             state:
                                 type: string
@@ -3980,6 +3984,13 @@ components:
             - id
             - name
             - ipAddresses
+        Regions:
+            type: string
+            title: Regions
+            enum:
+            - br-se1
+            - br-se-1
+            - br-ne-1
         SecurityGroups:
             type: object
             properties:
@@ -4009,19 +4020,19 @@ components:
                     title: Name
                     maxLength: 255
                     minLength: 1
-                virtual_machine:
+                instance:
                     anyOf:
                     -   $ref: '#/components/schemas/ID'
                     -   $ref: '#/components/schemas/Name'
-                    title: Virtual Machine
+                    title: Instance
             title: SnapshotCreateRequestV1
             required:
             - name
-            - virtual_machine
+            - instance
             example:
-                name: snapshot name
-                virtual_machine:
+                instance:
                     id: 4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a
+                name: snapshot name
         SnapshotRenameRequest:
             type: object
             properties:

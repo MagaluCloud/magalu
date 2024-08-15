@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"slices"
+	"strings"
 
 	"github.com/spf13/cobra"
 	"magalu.cloud/cli/ui"
@@ -75,6 +76,14 @@ func handleExecutorPre(
 
 	if err := exec.ParametersSchema().VisitJSON(parameters); err != nil {
 		return nil, core.UsageError{Err: err}
+	}
+
+	//remove x-tenant-id from required and always set here: operation.go/setSecurityHeader
+	for i, item := range exec.ConfigsSchema().Required {
+		if strings.ToLower(item) == "x-tenant-id" {
+			exec.ConfigsSchema().Required = append(exec.ConfigsSchema().Required[:i], exec.ConfigsSchema().Required[i+1:]...)
+			break
+		}
 	}
 
 	if err := exec.ConfigsSchema().VisitJSON(configs); err != nil {

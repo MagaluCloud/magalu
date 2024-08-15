@@ -9,12 +9,12 @@ Usage:
 
 ## Product catalog:
 - Commands:
-- create      Create a snapshot of a virtual machine.
+- create      Create a snapshot of an instance.
 - delete      Delete a Snapshot.
 - get         Retrieve the details of an snapshot.
-- list        Lists all snapshots in the current tenant.
+- list        Lists all snapshots.
 - rename      Renames a snapshot.
-- restore     Restore a snapshot to a virtual machine.
+- restore     Restore a snapshot to an instance.
 
 ## Other commands:
 - Flags:

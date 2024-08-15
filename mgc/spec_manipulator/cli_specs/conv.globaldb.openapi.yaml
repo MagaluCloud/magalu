@@ -4,40 +4,6 @@
     "title": "GlobalDB API",
     "version": "0.1.0"
   },
-  "servers": [
-    {
-      "url": "https://api-mke.pre-prod.br-ne-1.jaxyendy.com",
-      "description": "NE-1 pre-prod"
-    },
-    {
-      "url": "https://api-mke.team-integration.br-ne-1.jaxyendy.com",
-      "description": "NE-1 team-integration"
-    },
-    {
-      "url": "https://api-mke.br-ne-1.jaxyendy.com",
-      "description": "NE-1 prod"
-    },
-    {
-      "url": "https://api-mke.br-se1-pre-prod.jaxyendy.com",
-      "description": "SE1 pre-prod"
-    },
-    {
-      "url": "https://api-mke.br-se1-team-integration.jaxyendy.com",
-      "description": "SE1 team-integration"
-    },
-    {
-      "url": "https://api-mke.br-se1-prod.jaxyendy.com",
-      "description": "SE1 prod"
-    },
-    {
-      "url": "https://api-mke.pre-prod.se1.br.jaxyendy.com",
-      "description": "SE1-BLU pre-prod"
-    },
-    {
-      "url": "https://api-mke.prod.se1.br.jaxyendy.com",
-      "description": "SE1-BLU prod"
-    }
-  ],
   "paths": {
     "/v0/ssh-keys": {
       "get": {
@@ -501,20 +467,6 @@
           "msg",
           "type"
         ]
-      }
-    },
-    "securitySchemes": {
-      "OAuth2": {
-        "type": "oauth2",
-        "flows": {
-          "password": {
-            "tokenUrl": "https://idpa-api-preprod.luizalabs.com/oauth/token",
-            "scopes": {
-              "gdb:ssh-pkey-w": "This scope allow the caller to write (create, update, delete) SSH Public Keys for ANY tenant, on public GlobalDB",
-              "gdb:ssh-pkey-r": "This scope allow the caller to read SSH Public Keys of ANY tenant, on public GlobalDB"
-            }
-          }
-        }
       }
     }
   }

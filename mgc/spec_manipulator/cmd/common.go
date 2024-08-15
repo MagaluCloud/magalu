@@ -156,6 +156,7 @@ func loadList() ([]specList, error) {
 				CLI:     vv["cli"].(bool),
 				TF:      vv["tf"].(bool),
 				SDK:     vv["sdk"].(bool),
+				DEV:     vv["dev"].(bool),
 			})
 		}
 

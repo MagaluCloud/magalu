@@ -16,6 +16,7 @@ type specList struct {
 	CLI     bool   `json:"cli"`
 	TF      bool   `json:"tf"`
 	SDK     bool   `json:"sdk"`
+	DEV     bool   `json:"dev"`
 }
 
 func interfaceToMap(i interface{}) (map[string]interface{}, bool) {

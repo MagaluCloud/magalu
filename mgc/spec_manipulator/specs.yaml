@@ -6,6 +6,7 @@ jaxyendy:
       tf: true
       sdk: true
       enabled: true
+      dev: false
     - url: https://block-storage.br-ne-1.jaxyendy.com/v1/openapi.json
       file: block-storage.jaxyendy.openapi.json
       menu: block-storage
@@ -13,6 +14,7 @@ jaxyendy:
       tf: true
       sdk: true
       enabled: true
+      dev: false
     - url: https://dbaas.br-ne-1.jaxyendy.com/v1/cli/openapi.yaml
       file: database.jaxyendy.openapi.yaml
       menu: database
@@ -20,6 +22,7 @@ jaxyendy:
       tf: true
       sdk: true
       enabled: true
+      dev: false
     - url: https://mke.br-ne-1.jaxyendy.com/docs/openapi-with-snippets.json
       file: kubernetes.jaxyendy.openapi.json
       menu: kubernetes
@@ -27,6 +30,7 @@ jaxyendy:
       tf: true
       sdk: true
       enabled: true
+      dev: false
     - url: https://virtual-machine.br-ne-1.jaxyendy.com/v1/openapi.json
       file: virtual-machine.jaxyendy.openapi.json
       menu: virtual-machine
@@ -34,6 +38,7 @@ jaxyendy:
       tf: true
       sdk: true
       enabled: true
+      dev: false
     - url: https://virtual-machine.br-ne-1.jaxyendy.com/internal/v1/openapi.json
       file: virtual-machine-xaas.jaxyendy.openapi.json
       menu: virtual-machine-xaas
@@ -41,6 +46,7 @@ jaxyendy:
       tf: false
       sdk: true
       enabled: true
+      dev: false
     - url: https://mcr.br-ne-1.jaxyendy.com/docs/openapi.yaml
       file: container-registry.openapi.yaml
       menu: container-registry
@@ -48,6 +54,7 @@ jaxyendy:
       tf: false
       sdk: true
       enabled: true
+      dev: false
     - url: https://events-consult-api.br-ne-1.jaxyendy.com/openapi-cli.json
       file: events-consult.openapi.yaml
       menu: events
@@ -55,6 +62,7 @@ jaxyendy:
       tf: false
       sdk: true
       enabled: true
+      dev: false
     - url: http://globaldb-public-api.pre-prod.mgl1.br.jaxyendy.com/openapi.json
       file: globaldb.openapi.yaml
       menu: ssh
@@ -62,3 +70,4 @@ jaxyendy:
       tf: false
       sdk: true
       enabled: false
+      dev: true

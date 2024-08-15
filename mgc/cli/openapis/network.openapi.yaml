@@ -6,7 +6,7 @@ info:
         name: Tribo IAAS Cloud
         url: https://github.com/luizalabs
         email: thullyo.cunha@luizalabs.com
-    version: 1.130.0
+    version: 1.131.0
 paths:
     /v0/healthcheck:
         get:

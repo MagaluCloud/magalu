@@ -1,18 +1,18 @@
-# Restore a snapshot of a Virtual Machine with the current tenant which is logged in. </br>
-A Snapshot is ready for restore when it's in available state.
+# Restore a snapshot of an instance with the current tenant which is logged in. </br>
 
 ## Usage:
 ```bash
 #### Notes
-- You can verify the state of snapshot using the snapshot list command.
-- Use machine-types list to see all machine types available.
+- You can check the snapshot state using snapshot list command.
+- Use "machine-types list" to see all machine types available.
 ```
 
 ## Product catalog:
 - #### Rules
-- - To restore a snapshot  you have to inform the new virtual machine information.
-- - You can choose a machine-type that has a disk equal or larger
-- than the original virtual machine type.
+- - A Snapshot is ready to restore when it's in available state.
+- - To restore a snapshot you have to inform the new instance settings.
+- - You must choose a machine-type that has a disk equal or larger
+- than the original instance.
 
 ## Other commands:
 - Usage:

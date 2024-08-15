@@ -2,7 +2,6 @@ package openapi
 
 import (
 	"fmt"
-	"os"
 
 	"github.com/invopop/yaml"
 	"magalu.cloud/core"
@@ -12,9 +11,8 @@ import (
 
 type indexModuleSpec struct {
 	core.DescriptorSpec
-	Url           string
-	Path          string
-	SuperInternal bool `json:"super_internal,omitempty"`
+	Url  string
+	Path string
 }
 
 type indexFileSpec struct {
@@ -49,31 +47,19 @@ func NewSource(loader dataloader.Loader, extensionPrefix *string) *core.SimpleGr
 			if index.Version != indexVersion {
 				return nil, fmt.Errorf("unsupported %q version %q, expected %q", indexFileName, index.Version, indexVersion)
 			}
-
-			var finalIndexModule []indexModuleSpec
-			if os.Getenv("IGNORE_SUPER_HIDDEN") == "true" {
-				finalIndexModule = index.Modules
-			} else {
-				for _, mod := range index.Modules {
-					if !mod.SuperInternal {
-						finalIndexModule = append(finalIndexModule, mod)
-					}
-				}
-			}
-
-			modules = make([]core.Grouper, len(finalIndexModule))
+			modules = make([]core.Grouper, len(index.Modules))
 			refResolver := core.NewMultiRefPathResolver()
-			for i := range finalIndexModule {
+			for i := range index.Modules {
 				var module core.Grouper
 				module, err = newModule(
-					&finalIndexModule[i],
+					&index.Modules[i],
 					extensionPrefix,
 					loader,
 					logger(),
 					refResolver,
 				)
 				if err != nil {
-					err = &utils.ChainedError{Name: finalIndexModule[i].Path, Err: err}
+					err = &utils.ChainedError{Name: index.Modules[i].Path, Err: err}
 					return
 				}
 				modules[i] = module

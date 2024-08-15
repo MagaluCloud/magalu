@@ -36,6 +36,10 @@ echo "REGISTRY"
 $BASEDIR/add_specs.sh events events mgc/spec_manipulator/cli_specs/conv.events-consult.openapi.yaml https://events-consult.jaxyendy.com/openapi-cli.json
 echo "EVENTS"
 
-# $BASEDIR/add_specs.sh ssh ssh mgc/spec_manipulator/cli_specs/conv.globaldb.openapi.yaml https://globaldb.jaxyendy.com/openapi-cli.json
-# echo "SSH1"
+$BASEDIR/add_specs_without_region.sh ssh profile mgc/spec_manipulator/cli_specs/conv.globaldb.openapi.yaml https://globaldb.jaxyendy.com/openapi-cli.json
+echo "SSH1"
 
+
+
+# EXAMPLE
+# $BASEDIR/SCRIPT.sh NOME_NO_MENU URL_PATH LOCAL_DA_SPEC BULLSHIT

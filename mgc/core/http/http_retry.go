@@ -8,8 +8,6 @@ import (
 	"os"
 	"syscall"
 	"time"
-
-	"golang.org/x/sys/unix"
 )
 
 type ClientRetryer struct {
@@ -86,7 +84,7 @@ func (r *ClientRetryer) RoundTrip(req *http.Request) (*http.Response, error) {
 			}
 
 			if errors.As(err, &sysErr) {
-				if sysErr.Err == syscall.ECONNRESET || sysErr.Err == unix.ECONNRESET {
+				if sysErr.Err == syscall.ECONNRESET {
 					logger().Debug("\n\n\nConn reset by peer! THIS IS A SERVER PROBLEM!!!\n\n\n", "attempt", i+1, "")
 					time.Sleep(waitBeforeRetry)
 					waitBeforeRetry = waitBeforeRetry * 2

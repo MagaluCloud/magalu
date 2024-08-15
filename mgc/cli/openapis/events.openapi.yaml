@@ -403,29 +403,6 @@ components:
             example:
                 message: Unauthorized
                 slug: Unauthorized
-    securitySchemes:
-        HTTPBearerDry:
-            type: http
-            description: '## How to Auth
-
-                To use the API a token is needed, and both grant_types **client_credentials**
-                and **authorization_code** tokens can be used.
-
-
-                Follow [this guide](https://magazine.atlassian.net/wiki/spaces/CLOUD/pages/4230643732/Client+Credentials)
-                to learn how to authenticate via **client credentials**.
-
-
-                Follow [this guide](https://magazine.atlassian.net/wiki/spaces/CLOUD/pages/4253385090/Authorization+Code)
-                to learn how to authenticate via **authorization code**.
-
-                ### Where?
-
-                Generate Token using OAuth2 API: https://autoseg-idp.luizalabs.com
-
-
-                ## Auth status: **Active 🟢**'
-            scheme: bearer
 tags:
 -   name: events
     description: Endpoints related to listing cloud events emitted by other products.
