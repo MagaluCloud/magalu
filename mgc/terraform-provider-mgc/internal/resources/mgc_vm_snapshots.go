@@ -147,7 +147,7 @@ func (r *vmSnapshots) Create(ctx context.Context, req resource.CreateRequest, re
 
 	createParams := sdkVmSnapshots.CreateParameters{
 		Name: plan.Name.ValueString(),
-		VirtualMachine: sdkVmSnapshots.CreateParametersVirtualMachine{
+		Instance: sdkVmSnapshots.CreateParametersInstance{
 			Id: plan.VirtualMachineID.ValueString(),
 		},
 	}

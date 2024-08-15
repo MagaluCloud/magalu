@@ -40,7 +40,6 @@ type ListResultResultsItem struct {
 	ProjectId     *string                             `json:"project_id,omitempty"`
 	Region        *string                             `json:"region,omitempty"`
 	Status        *ListResultResultsItemStatus        `json:"status,omitempty"`
-	Tags          *ListResultResultsItemTags          `json:"tags,omitempty"`
 	Version       *string                             `json:"version,omitempty"`
 }
 
@@ -58,8 +57,6 @@ type ListResultResultsItemStatus struct {
 	Message string `json:"message"`
 	State   string `json:"state"`
 }
-
-type ListResultResultsItemTags []*string
 
 type ListResultResults []ListResultResultsItem
 

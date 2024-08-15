@@ -9,7 +9,7 @@ Executor: list
 
 # Check api status
 
-Version: 1.130.0
+Version: 1.131.0
 
 import "magalu.cloud/lib/products/network/healthcheck"
 */

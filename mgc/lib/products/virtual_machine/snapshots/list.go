@@ -3,7 +3,7 @@ Executor: list
 
 # Summary
 
-Lists all snapshots in the current tenant.
+Lists all snapshots.
 
 # Description
 

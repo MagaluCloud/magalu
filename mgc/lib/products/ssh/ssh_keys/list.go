@@ -3,17 +3,13 @@ Executor: list
 
 # Summary
 
-Retrieves all machine-types.
+# List Ssh Keys
 
-# Description
+Version: 0.1.0
 
-Retrieves a list of machine types allowed for the current tenant which is logged in.
-
-Version: v1
-
-import "magalu.cloud/lib/products/virtual_machine/machine_types"
+import "magalu.cloud/lib/products/ssh/ssh_keys"
 */
-package machineTypes
+package sshKeys
 
 import (
 	mgcCore "magalu.cloud/core"
@@ -27,28 +23,23 @@ type ListParameters struct {
 }
 
 type ListConfigs struct {
+	XTenantId string  `json:"X-Tenant-ID"`
 	Env       *string `json:"env,omitempty"`
-	Region    *string `json:"region,omitempty"`
 	ServerUrl *string `json:"serverUrl,omitempty"`
 }
 
 type ListResult struct {
-	MachineTypes ListResultMachineTypes `json:"machine_types"`
+	Results ListResultResults `json:"results"`
 }
 
-// any of: ListResultMachineTypesItem
-type ListResultMachineTypesItem struct {
-	Disk   int    `json:"disk"`
-	Gpu    *int   `json:"gpu,omitempty"`
-	Id     string `json:"id"`
-	Name   string `json:"name"`
-	Ram    int    `json:"ram"`
-	Sku    string `json:"sku"`
-	Status string `json:"status"`
-	Vcpus  int    `json:"vcpus"`
+type ListResultResultsItem struct {
+	Id      string `json:"id"`
+	Key     string `json:"key"`
+	KeyType string `json:"key_type"`
+	Name    string `json:"name"`
 }
 
-type ListResultMachineTypes []ListResultMachineTypesItem
+type ListResultResults []ListResultResultsItem
 
 func (s *service) List(
 	parameters ListParameters,
@@ -57,7 +48,7 @@ func (s *service) List(
 	result ListResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("List", mgcCore.RefPath("/virtual-machine/machine-types/list"), s.client, s.ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("List", mgcCore.RefPath("/ssh/ssh_keys/list"), s.client, s.ctx)
 	if err != nil {
 		return
 	}

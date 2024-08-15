@@ -554,7 +554,7 @@ func (r *vmInstances) getMachineTypeID(name string) (*vmInstancesMachineTypeMode
 		return nil, fmt.Errorf("could not load machine-type list, unexpected error: " + err.Error())
 	}
 
-	for _, x := range machineTypeList.InstanceTypes {
+	for _, x := range machineTypeList.MachineTypes {
 		if x.Name == name {
 			machineType.Disk = types.NumberValue(new(big.Float).SetInt64(int64(x.Disk)))
 			machineType.ID = types.StringValue(x.Id)

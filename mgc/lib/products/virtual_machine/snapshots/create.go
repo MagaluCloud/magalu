@@ -3,7 +3,7 @@ Executor: create
 
 # Summary
 
-Create a snapshot of a virtual machine.
+Create a snapshot of an instance.
 
 # Description
 
@@ -31,22 +31,22 @@ import (
 )
 
 type CreateParameters struct {
-	Name           string                         `json:"name"`
-	VirtualMachine CreateParametersVirtualMachine `json:"virtual_machine"`
+	Instance CreateParametersInstance `json:"instance"`
+	Name     string                   `json:"name"`
 }
 
-// any of: CreateParametersVirtualMachine
-type CreateParametersVirtualMachine struct {
-	Id             string                                        `json:"id"`
-	Name           *string                                       `json:"name,omitempty"`
-	SecurityGroups *CreateParametersVirtualMachineSecurityGroups `json:"security_groups,omitempty"`
+// any of: CreateParametersInstance
+type CreateParametersInstance struct {
+	Id             string                                  `json:"id"`
+	Name           *string                                 `json:"name,omitempty"`
+	SecurityGroups *CreateParametersInstanceSecurityGroups `json:"security_groups,omitempty"`
 }
 
-type CreateParametersVirtualMachineSecurityGroupsItem struct {
+type CreateParametersInstanceSecurityGroupsItem struct {
 	Id string `json:"id"`
 }
 
-type CreateParametersVirtualMachineSecurityGroups []CreateParametersVirtualMachineSecurityGroupsItem
+type CreateParametersInstanceSecurityGroups []CreateParametersInstanceSecurityGroupsItem
 
 type CreateConfigs struct {
 	Env       *string `json:"env,omitempty"`

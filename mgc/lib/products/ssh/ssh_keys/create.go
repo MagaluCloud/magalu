@@ -3,17 +3,13 @@ Executor: create
 
 # Summary
 
-# Create VPC
+# Create Ssh Key
 
-# Description
+Version: 0.1.0
 
-# Create a VPC
-
-Version: 1.131.0
-
-import "magalu.cloud/lib/products/network/vpc"
+import "magalu.cloud/lib/products/ssh/ssh_keys"
 */
-package vpc
+package sshKeys
 
 import (
 	mgcCore "magalu.cloud/core"
@@ -21,18 +17,21 @@ import (
 )
 
 type CreateParameters struct {
-	Description *string `json:"description,omitempty"`
-	Name        string  `json:"name"`
+	Key  string `json:"key"`
+	Name string `json:"name"`
 }
 
 type CreateConfigs struct {
+	XTenantId string  `json:"X-Tenant-ID"`
 	Env       *string `json:"env,omitempty"`
-	Region    *string `json:"region,omitempty"`
 	ServerUrl *string `json:"serverUrl,omitempty"`
 }
 
 type CreateResult struct {
-	Id *string `json:"id,omitempty"`
+	Id      string `json:"id"`
+	Key     string `json:"key"`
+	KeyType string `json:"key_type"`
+	Name    string `json:"name"`
 }
 
 func (s *service) Create(
@@ -42,7 +41,7 @@ func (s *service) Create(
 	result CreateResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("Create", mgcCore.RefPath("/network/vpc/create"), s.client, s.ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Create", mgcCore.RefPath("/ssh/ssh_keys/create"), s.client, s.ctx)
 	if err != nil {
 		return
 	}

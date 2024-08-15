@@ -9,7 +9,7 @@ Executor: attach
 
 Attach a Security Group to a Port with provided port_id, security_group_id, x-tenant-id of an specific project type
 
-Version: 1.130.0
+Version: 1.131.0
 
 import "magalu.cloud/lib/products/network/port/ports"
 */

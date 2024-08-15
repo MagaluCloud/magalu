@@ -45,7 +45,6 @@ type GetResult struct {
 	ProjectId     *string                 `json:"project_id,omitempty"`
 	Region        string                  `json:"region"`
 	Status        *GetResultStatus        `json:"status,omitempty"`
-	Tags          *GetResultTags          `json:"tags,omitempty"`
 	UpdatedAt     *string                 `json:"updated_at,omitempty"`
 	Version       string                  `json:"version"`
 }
@@ -182,8 +181,6 @@ type GetResultStatus struct {
 	Message string `json:"message"`
 	State   string `json:"state"`
 }
-
-type GetResultTags []*string
 
 func (s *service) Get(
 	parameters GetParameters,

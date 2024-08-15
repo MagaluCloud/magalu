@@ -9,7 +9,7 @@ security-groups-rules
 
 rule | security-groups-rules
 
-Version: 1.130.0
+Version: 1.131.0
 
 import "magalu.cloud/lib/products/network/rule/security_groups_rules"
 */
