@@ -81,7 +81,7 @@ func loadChild(sdk *mgcSdk.Sdk, cmd *cobra.Command, cmdDesc core.Descriptor, chi
 
 func loadAllGrouperChildren(sdk *mgcSdk.Sdk, cmd *cobra.Command, cmdGrouper core.Grouper) error {
 	_, err := cmdGrouper.VisitChildren(func(child core.Descriptor) (run bool, err error) {
-		if child.IsInternal() && !getShowInternalFlag(cmd.Root()) {
+		if child.IsInternal() {
 			return true, nil
 		}
 
