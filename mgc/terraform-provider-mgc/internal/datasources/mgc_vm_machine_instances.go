@@ -1,0 +1,143 @@
+package datasources
+
+import (
+	"context"
+
+	"github.com/hashicorp/terraform-plugin-framework/datasource"
+	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
+
+	"github.com/hashicorp/terraform-plugin-framework/types"
+	mgcSdk "magalu.cloud/lib"
+	sdkVMInstances "magalu.cloud/lib/products/virtual_machine/instances"
+	"magalu.cloud/sdk"
+)
+
+var _ datasource.DataSource = &DataSourceVmInstances{}
+
+type DataSourceVmInstances struct {
+	sdkClient   *mgcSdk.Client
+	vmInstances sdkVMInstances.Service
+}
+
+type VMInstanceModel struct {
+	ID            types.String `tfsdk:"id"`
+	Name          types.String `tfsdk:"name"`
+	PublicIPV4    types.String `tfsdk:"public_ipv4"`
+	PublicIPV6    types.String `tfsdk:"public_ipv6"`
+	PrivateIPV4   types.String `tfsdk:"private_ipv4"`
+	SshKeyName    types.String `tfsdk:"ssh_key_name"`
+	Status        types.String `tfsdk:"status"`
+	State         types.String `tfsdk:"state"`
+	ImageID       types.String `tfsdk:"image_id"`
+	MachineTypeID types.String `tfsdk:"machine_type_id"`
+}
+
+type VMInstancesModel struct {
+	Instances []VMInstanceModel `tfsdk:"instances"`
+}
+
+func NewDataSourceVmInstances() datasource.DataSource {
+	return &DataSourceVmInstances{}
+}
+
+func (r *DataSourceVmInstances) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_virtual_machine_instances"
+}
+
+func (r *DataSourceVmInstances) Configure(ctx context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
+	if req.ProviderData == nil {
+		return
+	}
+
+	sdk, ok := req.ProviderData.(*sdk.Sdk)
+
+	if !ok {
+		resp.Diagnostics.AddError(
+			"Unexpected Data Source Configure Type",
+			"Expected provider config, got: %T. Please report this issue to the provider developers.",
+		)
+		return
+	}
+
+	r.sdkClient = mgcSdk.NewClient(sdk)
+	r.vmInstances = sdkVMInstances.NewService(ctx, r.sdkClient)
+}
+
+func (r *DataSourceVmInstances) Schema(_ context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
+	resp.Schema = schema.Schema{
+		Attributes: map[string]schema.Attribute{
+			"machine_types": schema.ListNestedAttribute{
+				Computed:    true,
+				Description: "List of available VM machine-types.",
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"id": schema.BoolAttribute{
+							Computed:    true,
+							Description: "ID of machine-type.",
+						},
+						"name": schema.StringAttribute{
+							Computed:    true,
+							Description: "Name of type.",
+						},
+						"disk": schema.Int64Attribute{
+							Computed:    true,
+							Description: "Disk",
+						},
+						"ram": schema.Int64Attribute{
+							Computed:    true,
+							Description: "Ram",
+						},
+						"vcpu": schema.Int64Attribute{
+							Computed:    true,
+							Description: "VCpu",
+						},
+						"gpu": schema.Int64Attribute{
+							Computed:    true,
+							Description: "GPU",
+						},
+					},
+				},
+			},
+		},
+	}
+	resp.Schema.Description = "Get the available virtual-machine images."
+}
+
+func (r *DataSourceVmInstances) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
+	var data VMInstancesModel
+
+	resp.Diagnostics.Append(req.Config.Get(ctx, &data)...)
+
+	sdkOutput, err := r.vmInstances.List(sdkVMInstances.ListParameters{}, sdkVMInstances.ListConfigs{})
+	if err != nil {
+		resp.Diagnostics.AddError("Failed to get versions", err.Error())
+		return
+	}
+
+	for _, instance := range sdkOutput.Instances {
+		privateIpAddress := ""
+		publicIpv6Adress := ""
+		publicIpv4Adress := ""
+
+		for _, port := range *instance.Network.Ports {
+			privateIpAddress = port.IpAddresses.PrivateIpAddress
+			publicIpv4Adress = *port.IpAddresses.PublicIpAddress
+			publicIpv6Adress = *port.IpAddresses.IpV6address
+		}
+
+		data.Instances = append(data.Instances, VMInstanceModel{
+			ID:            types.StringValue(instance.Id),
+			Name:          types.StringValue(*instance.Name),
+			PublicIPV4:    types.StringValue(publicIpv4Adress),
+			PublicIPV6:    types.StringValue(publicIpv6Adress),
+			PrivateIPV4:   types.StringValue(privateIpAddress),
+			SshKeyName:    types.StringValue(*instance.SshKeyName),
+			Status:        types.StringValue(instance.Status),
+			State:         types.StringValue(instance.State),
+			ImageID:       types.StringValue(instance.Image.Id),
+			MachineTypeID: types.StringValue(instance.MachineType.Id),
+		})
+	}
+
+	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
+}
