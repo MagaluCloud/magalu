@@ -287,7 +287,6 @@ func DefaultTransport() http.RoundTripper {
 				log.Fatal("Erro ao analisar a URL do proxy:", err)
 			}
 			defaultTransport.Proxy = http.ProxyURL(proxyURL)
-			fmt.Println("Using proxy server: ", proxyURL)
 		}
 	}
 	return defaultTransport
