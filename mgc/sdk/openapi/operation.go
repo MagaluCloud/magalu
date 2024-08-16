@@ -565,9 +565,12 @@ func (o *operation) setSecurityHeader(ctx context.Context, paramValues core.Para
 		if err == nil {
 			req.Header.Set("x-tenant-id", xTenantID)
 		}
-		xTenantID, err = auth.CurrentTenantID()
-		if err == nil {
-			req.Header.Set("x-tenant-id", xTenantID)
+
+		if xTenantID == "" {
+			xTenantID, err = auth.CurrentTenantID()
+			if err == nil {
+				req.Header.Set("x-tenant-id", xTenantID)
+			}
 		}
 
 		switch auth.CurrentSecurityMethod() {
