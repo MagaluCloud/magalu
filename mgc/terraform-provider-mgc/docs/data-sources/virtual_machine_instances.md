@@ -17,16 +17,20 @@ Get the available virtual-machine images.
 
 ### Read-Only
 
-- `machine_types` (Attributes List) List of available VM machine-types. (see [below for nested schema](#nestedatt--machine_types))
+- `instances` (Attributes List) List of available VM instances. (see [below for nested schema](#nestedatt--instances))
 
-<a id="nestedatt--machine_types"></a>
-### Nested Schema for `machine_types`
+<a id="nestedatt--instances"></a>
+### Nested Schema for `instances`
 
 Read-Only:
 
-- `disk` (Number) Disk
-- `gpu` (Number) GPU
 - `id` (Boolean) ID of machine-type.
+- `image_id` (String) Image ID of instance
+- `machine_type_id` (String) Machine type ID of instance
 - `name` (String) Name of type.
-- `ram` (Number) Ram
-- `vcpu` (Number) VCpu
+- `private_ipv4` (String) Private IPV4
+- `public_ipv4` (String) Public IPV4.
+- `public_ipv6` (String) Public IPV6.
+- `ssh_key_name` (String) SSH Key name
+- `state` (String) State of instance
+- `status` (String) Status of instance.

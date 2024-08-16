@@ -66,11 +66,21 @@ func (r *DataSourceVmInstances) Configure(ctx context.Context, req datasource.Co
 func (r *DataSourceVmInstances) Schema(_ context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		Attributes: map[string]schema.Attribute{
-			"machine_types": schema.ListNestedAttribute{
+			"instances": schema.ListNestedAttribute{
 				Computed:    true,
-				Description: "List of available VM machine-types.",
+				Description: "List of available VM instances.",
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
+						// ID            types.String `tfsdk:"id"`
+						// Name          types.String `tfsdk:"name"`
+						// PublicIPV4    types.String `tfsdk:"public_ipv4"`
+						// PublicIPV6    types.String `tfsdk:"public_ipv6"`
+						// PrivateIPV4   types.String `tfsdk:"private_ipv4"`
+						// SshKeyName    types.String `tfsdk:"ssh_key_name"`
+						// Status        types.String `tfsdk:"status"`
+						// State         types.String `tfsdk:"state"`
+						// ImageID       types.String `tfsdk:"image_id"`
+						// MachineTypeID types.String `tfsdk:"machine_type_id"`
 						"id": schema.BoolAttribute{
 							Computed:    true,
 							Description: "ID of machine-type.",
@@ -79,21 +89,37 @@ func (r *DataSourceVmInstances) Schema(_ context.Context, req datasource.SchemaR
 							Computed:    true,
 							Description: "Name of type.",
 						},
-						"disk": schema.Int64Attribute{
+						"public_ipv4": schema.StringAttribute{
 							Computed:    true,
-							Description: "Disk",
+							Description: "Public IPV4.",
 						},
-						"ram": schema.Int64Attribute{
+						"public_ipv6": schema.StringAttribute{
 							Computed:    true,
-							Description: "Ram",
+							Description: "Public IPV6.",
 						},
-						"vcpu": schema.Int64Attribute{
+						"private_ipv4": schema.StringAttribute{
 							Computed:    true,
-							Description: "VCpu",
+							Description: "Private IPV4",
 						},
-						"gpu": schema.Int64Attribute{
+						"ssh_key_name": schema.StringAttribute{
 							Computed:    true,
-							Description: "GPU",
+							Description: "SSH Key name",
+						},
+						"status": schema.StringAttribute{
+							Computed:    true,
+							Description: "Status of instance.",
+						},
+						"state": schema.StringAttribute{
+							Computed:    true,
+							Description: "State of instance",
+						},
+						"image_id": schema.StringAttribute{
+							Computed:    true,
+							Description: "Image ID of instance",
+						},
+						"machine_type_id": schema.StringAttribute{
+							Computed:    true,
+							Description: "Machine type ID of instance",
 						},
 					},
 				},
