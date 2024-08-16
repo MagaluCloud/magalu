@@ -6,12 +6,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"log"
 	"mime"
 	"mime/multipart"
 	"net/http"
-	"net/url"
-	"os"
 	"strings"
 	"time"
 
@@ -256,38 +253,11 @@ func ExtractErr(resp *http.Response, req *http.Request) error {
 
 var defaultTransport *http.Transport
 
-func checkProxyServerIsOn(s string) bool {
-	r, err := http.NewRequest("CONNECT", s, nil)
-	if err != nil {
-		return false
-	}
-	res, err := http.DefaultClient.Do(r)
-
-	if err != nil {
-		return false
-	}
-
-	return res.StatusCode == 200
-}
-
 func DefaultTransport() http.RoundTripper {
 	if defaultTransport == nil {
 		defaultTransport = (http.DefaultTransport).(*http.Transport)
 		defaultTransport.MaxIdleConns = 10
 		defaultTransport.IdleConnTimeout = 30 * time.Second
-		if proxy := os.Getenv("MGC_USE_PROXY"); proxy != "" {
-
-			if !checkProxyServerIsOn(proxy) {
-				fmt.Println("The variable MGC_USE_PROXY isn't empty, however the configuration is invalid or the proxy server is down!")
-				return defaultTransport
-			}
-
-			proxyURL, err := url.Parse(proxy)
-			if err != nil {
-				log.Fatal("Erro ao analisar a URL do proxy:", err)
-			}
-			defaultTransport.Proxy = http.ProxyURL(proxyURL)
-		}
 	}
 	return defaultTransport
 }
