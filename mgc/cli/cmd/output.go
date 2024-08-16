@@ -32,12 +32,8 @@ func addOutputFlag(cmd *cobra.Command) {
 	cmd.Root().PersistentFlags().StringP(
 		outputFlag,
 		"o",
-		"",
-		fmt.Sprintf(
-			`If the result is plain data types, it's the output format.
-One of %s, use 'help' to know more details.
-Otherwise it's the file name to save to, use '-' to write to stdout (default)`,
-			strings.Join(getOutputFormats(), "|")))
+		"yaml",
+		`Change the ouput format. Use '--output=help' to know more details.`)
 }
 
 func getOutputFlag(cmd *cobra.Command) string {

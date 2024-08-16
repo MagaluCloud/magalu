@@ -37,7 +37,6 @@ Usage:
 ```bash
 Other commands:
   completion         Generate the autocompletion script for the specified shell
-  dump-tree          Print command tree
   help               Help about any command
 ```
 

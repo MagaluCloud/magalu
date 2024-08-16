@@ -10,6 +10,7 @@ func addShowHiddenFlag(cmd *cobra.Command) {
 		false,
 		"Show hidden flags",
 	)
+	cmd.Root().PersistentFlags().Lookup(showHiddenFlag).Hidden = true
 }
 
 func getShowHiddenFlag(cmd *cobra.Command) bool {
