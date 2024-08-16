@@ -26,7 +26,7 @@ Usage:
 - --debug                    Display detailed log information at the debug level
 - --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 - -o, --output string            Change the ouput format. Use '--output=help' to know more details. (default "yaml")
-- --raw                      Output raw data, without any formatting or coloring
+- -r, --raw                      Output raw data, without any formatting or coloring
 - --region enum              Region to reach the service (one of "br-mgl-1", "br-ne-1" or "br-se-1") (default "br-ne-1")
 - --server-url uri           Manually specify the server to use
 

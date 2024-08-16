@@ -24,7 +24,7 @@ Usage:
 - --limit integer            Limit of tenants
 - --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 - -o, --output string            Change the ouput format. Use '--output=help' to know more details. (default "yaml")
-- --raw                      Output raw data, without any formatting or coloring
+- -r, --raw                      Output raw data, without any formatting or coloring
 - --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
 - --resource-type enum       Resource Type: Resources to start the conciliator (one of "public_ip", "rule", "security_group" or "security_group, rule, public_ip") (default "security_group, rule, public_ip")
 - --server-url uri           Manually specify the server to use

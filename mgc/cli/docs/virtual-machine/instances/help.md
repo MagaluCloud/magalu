@@ -38,6 +38,6 @@ Global Flags:
       --debug                    Display detailed log information at the debug level
       --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
   -o, --output string            Change the ouput format. Use '--output=help' to know more details. (default "yaml")
-      --raw                      Output raw data, without any formatting or coloring
+  -r, --raw                      Output raw data, without any formatting or coloring
 ```
 
