@@ -86,13 +86,15 @@ It allows you to interact with the Magalu Cloud to manage your resources.
 	addWaitTerminationFlag(rootCmd)
 	addRetryUntilFlag(rootCmd)
 	addBypassConfirmationFlag(rootCmd)
+	addShowInternalFlag(rootCmd)
+	addShowHiddenFlag(rootCmd)
 	addRawOutputFlag(rootCmd)
 	addApiKeyFlag(rootCmd)
-	addShowHiddenFlag(rootCmd)
 	rootCmd.PersistentFlags().VisitAll(func(f *pflag.Flag) { f.Hidden = true })
 
 	rootCmd.InitDefaultHelpFlag()
 	rootCmd.InitDefaultVersionFlag()
+	addShowCliGlobalFlags(rootCmd)
 
 	// Immediately parse flags for root command because we'll access the global flags prior
 	// to calling Execute (which is when Cobra parses the flags)
@@ -135,7 +137,9 @@ It allows you to interact with the Magalu Cloud to manage your resources.
 		return err
 	}
 
-	rootCmd.PersistentFlags().VisitAll(func(f *pflag.Flag) { f.Hidden = false })
+	if getShowCliGlobalFlags(rootCmd) {
+		rootCmd.PersistentFlags().VisitAll(func(f *pflag.Flag) { f.Hidden = false })
+	}
 
 	rootCmd.AddCommand(newDumpTreeCmd(sdk))
 
