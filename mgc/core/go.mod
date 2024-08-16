@@ -1,6 +1,6 @@
 module magalu.cloud/core
 
-go 1.22.3
+go 1.22.6
 
 require (
 	github.com/Masterminds/semver/v3 v3.2.1

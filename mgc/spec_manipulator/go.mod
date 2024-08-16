@@ -1,6 +1,6 @@
 module spec_manipulator
 
-go 1.22.3
+go 1.22.6
 
 require (
 	github.com/pb33f/libopenapi v0.16.7
