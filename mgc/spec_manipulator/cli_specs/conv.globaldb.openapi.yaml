@@ -82,7 +82,9 @@
         },
         "security": [
           {
-            "OAuth2": []
+            "OAuth2": [
+              "gdb:ssh-pkey-r"
+            ]
           }
         ]
       },
@@ -138,7 +140,9 @@
         },
         "security": [
           {
-            "OAuth2": []
+            "OAuth2": [
+              "gdb:ssh-pkey-w"
+            ]
           }
         ]
       }
@@ -196,7 +200,9 @@
         },
         "security": [
           {
-            "OAuth2": []
+            "OAuth2": [
+              "gdb:ssh-pkey-r"
+            ]
           }
         ]
       },
@@ -252,7 +258,9 @@
         },
         "security": [
           {
-            "OAuth2": []
+            "OAuth2": [
+              "gdb:ssh-pkey-w"
+            ]
           }
         ]
       }

@@ -3,8 +3,9 @@ package cmd
 import "github.com/spf13/cobra"
 
 func addRawOutputFlag(cmd *cobra.Command) {
-	cmd.PersistentFlags().Bool(
+	cmd.PersistentFlags().BoolP(
 		"raw",
+		"r",
 		false,
 		"Output raw data, without any formatting or coloring",
 	)
