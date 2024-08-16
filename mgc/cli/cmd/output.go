@@ -33,7 +33,7 @@ func addOutputFlag(cmd *cobra.Command) {
 		outputFlag,
 		"o",
 		"yaml",
-		`Change the ouput format. Use '--output=help' to know more details.`)
+		`Change the output format. Use '--output=help' to know more details.`)
 }
 
 func getOutputFlag(cmd *cobra.Command) string {
