@@ -20,14 +20,6 @@ type OutputFormatter interface {
 
 var outputFormatters = map[string]OutputFormatter{}
 
-func getOutputFormats() []string {
-	keys := make([]string, 0, len(outputFormatters))
-	for k := range outputFormatters {
-		keys = append(keys, k)
-	}
-	return keys
-}
-
 func addOutputFlag(cmd *cobra.Command) {
 	cmd.Root().PersistentFlags().StringP(
 		outputFlag,
