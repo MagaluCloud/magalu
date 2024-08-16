@@ -4,7 +4,6 @@ builds:
     id: "terraform"
     goos:
       - linux
-      - windows
     goarch:
       - amd64
     binary: terraform-provider-mgc
