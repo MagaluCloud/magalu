@@ -1900,7 +1900,7 @@
           }
         },
         "x-viveiro": true,
-        "x-mgc-output-flag": "table=ID:$.instance_types[*].id,NAME:$.instance_types[*].name,STATUS:$.instance_types[*].status,VCPUS:$.instance_types[*].vcpus,RAM:$.instance_types[*].ram,DISK:$.instance_types[*].disk,GPU:$.instance_types[*].gpu"
+        "x-mgc-output-flag": "remove=$.machine_types[*].sku|$.machine_types[*].status"
       }
     },
     "/v1/snapshots": {
@@ -3636,10 +3636,6 @@
           "status": {
             "type": "string",
             "title": "Status"
-          },
-          "sku": {
-            "type": "string",
-            "title": "Sku"
           }
         },
         "title": "InstanceTypesV1PortalResponse",
@@ -3649,8 +3645,7 @@
           "vcpus",
           "ram",
           "disk",
-          "status",
-          "sku"
+          "status"
         ],
         "example": {
           "disk": 10,
@@ -3694,10 +3689,6 @@
           "status": {
             "type": "string",
             "title": "Status"
-          },
-          "sku": {
-            "type": "string",
-            "title": "Sku"
           }
         },
         "title": "InstanceTypesV1Response",
@@ -3707,8 +3698,7 @@
           "vcpus",
           "ram",
           "disk",
-          "status",
-          "sku"
+          "status"
         ],
         "example": {
           "disk": 10,
