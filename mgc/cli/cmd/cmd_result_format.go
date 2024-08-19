@@ -105,12 +105,11 @@ func handleResultWithValue(result core.ResultWithValue, output string, cmd *cobr
 
 	fieldsToRemove := strings.Split(remove, "|")
 
-	fmt.Println(fieldsToRemove)
-
 	value := result.Value()
 	if value == nil {
 		return nil
 	}
+
 	for _, path := range fieldsToRemove {
 		value = removeProperty(value, path)
 	}

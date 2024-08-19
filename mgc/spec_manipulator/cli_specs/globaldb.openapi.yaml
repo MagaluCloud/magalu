@@ -6,12 +6,77 @@
   },
   "paths": {
     "/v0/ssh-keys": {
+      "post": {
+        "tags": [
+          "ssh_keys"
+        ],
+        "summary": "Create Ssh Key",
+        "operationId": "create_ssh_key",
+        "security": [
+          {
+            "OAuth2PasswordBearer": [
+              "gdb:ssh-pkey-w"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-Tenant-ID",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SSHPubKeyPublicInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SSHPubKeyPublicOutput"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
       "get": {
         "tags": [
           "ssh_keys"
         ],
         "summary": "List Ssh Keys",
         "operationId": "list_ssh_keys",
+        "security": [
+          {
+            "OAuth2PasswordBearer": [
+              "gdb:ssh-pkey-r"
+            ]
+          }
+        ],
         "parameters": [
           {
             "name": "_limit",
@@ -19,8 +84,8 @@
             "required": false,
             "schema": {
               "type": "integer",
-              "title": " Limit",
-              "default": 50
+              "default": 50,
+              "title": " Limit"
             }
           },
           {
@@ -29,8 +94,8 @@
             "required": false,
             "schema": {
               "type": "integer",
-              "title": " Offset",
-              "default": 0
+              "default": 0,
+              "title": " Offset"
             }
           },
           {
@@ -55,8 +120,8 @@
             "required": true,
             "schema": {
               "type": "string",
-              "title": "X-Tenant-Id",
-              "format": "uuid"
+              "format": "uuid",
+              "title": "X-Tenant-Id"
             }
           }
         ],
@@ -81,72 +146,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "OAuth2": [
-              "gdb:ssh-pkey-r"
-            ]
-          }
-        ]
-      },
-      "post": {
-        "tags": [
-          "ssh_keys"
-        ],
-        "summary": "Create Ssh Key",
-        "operationId": "create_ssh_key",
-        "parameters": [
-          {
-            "name": "X-Tenant-ID",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "X-Tenant-Id",
-              "format": "uuid"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/SSHPubKeyPublicInput"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "201": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SSHPubKeyPublicOutput"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "OAuth2": [
-             "gdb:ssh-pkey-w" 
-            ]
-          }
-        ]
+        }
       }
     },
     "/v0/ssh-keys/{key_id}": {
@@ -156,6 +156,13 @@
         ],
         "summary": "Get Ssh Key",
         "operationId": "get_ssh_key",
+        "security": [
+          {
+            "OAuth2PasswordBearer": [
+              "gdb:ssh-pkey-r"
+            ]
+          }
+        ],
         "parameters": [
           {
             "name": "key_id",
@@ -163,8 +170,8 @@
             "required": true,
             "schema": {
               "type": "string",
-              "title": "Key Id",
-              "format": "uuid"
+              "format": "uuid",
+              "title": "Key Id"
             }
           },
           {
@@ -173,8 +180,8 @@
             "required": true,
             "schema": {
               "type": "string",
-              "title": "X-Tenant-Id",
-              "format": "uuid"
+              "format": "uuid",
+              "title": "X-Tenant-Id"
             }
           }
         ],
@@ -199,14 +206,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "OAuth2": [
-              "gdb:ssh-pkey-r"
-            ]
-          }
-        ]
+        }
       },
       "delete": {
         "tags": [
@@ -214,6 +214,13 @@
         ],
         "summary": "Delete Ssh Key",
         "operationId": "delete_ssh_key",
+        "security": [
+          {
+            "OAuth2PasswordBearer": [
+              "gdb:ssh-pkey-w"
+            ]
+          }
+        ],
         "parameters": [
           {
             "name": "key_id",
@@ -221,8 +228,8 @@
             "required": true,
             "schema": {
               "type": "string",
-              "title": "Key Id",
-              "format": "uuid"
+              "format": "uuid",
+              "title": "Key Id"
             }
           },
           {
@@ -231,8 +238,8 @@
             "required": true,
             "schema": {
               "type": "string",
-              "title": "X-Tenant-Id",
-              "format": "uuid"
+              "format": "uuid",
+              "title": "X-Tenant-Id"
             }
           }
         ],
@@ -257,14 +264,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "OAuth2": [
-              "gdb:ssh-pkey-w"
-            ]
-          }
-        ]
+        }
       }
     },
     "/healthcheck": {
@@ -304,45 +304,44 @@
   "components": {
     "schemas": {
       "HTTPValidationError": {
-        "type": "object",
         "properties": {
           "detail": {
-            "type": "array",
             "items": {
               "$ref": "#/components/schemas/ValidationError"
             },
+            "type": "array",
             "title": "Detail"
           }
         },
+        "type": "object",
         "title": "HTTPValidationError"
       },
       "SSHPubKeyPublicInput": {
-        "type": "object",
         "properties": {
           "name": {
             "type": "string",
-            "title": "The SSH Key name",
-            "maxLength": 45
+            "maxLength": 45,
+            "title": "The SSH Key name"
           },
           "key": {
             "type": "string",
-            "title": "The SSH public key data",
-            "maxLength": 16384
+            "maxLength": 16384,
+            "title": "The SSH public key data"
           }
         },
-        "title": "SSHPubKeyPublicInput",
+        "type": "object",
         "required": [
           "name",
           "key"
-        ]
+        ],
+        "title": "SSHPubKeyPublicInput"
       },
       "SSHPubKeyPublicOutput": {
-        "type": "object",
         "properties": {
           "id": {
             "type": "string",
-            "title": "Id",
             "format": "uuid",
+            "title": "Id",
             "example": "d77c8402-ef4b-41b0-9cef-b116edf174ab"
           },
           "name": {
@@ -361,35 +360,34 @@
             "example": "ssh-rsa"
           }
         },
-        "title": "SSHPubKeyPublicOutput",
+        "type": "object",
         "required": [
           "id",
           "name",
           "key",
           "key_type"
-        ]
+        ],
+        "title": "SSHPubKeyPublicOutput"
       },
       "SSHPubKeyPublicOutputList": {
-        "type": "object",
         "properties": {
           "results": {
-            "type": "array",
             "items": {
               "$ref": "#/components/schemas/SSHPubKeyPublicOutput"
             },
+            "type": "array",
             "title": "Results"
           }
         },
-        "title": "SSHPubKeyPublicOutputList",
+        "type": "object",
         "required": [
           "results"
-        ]
+        ],
+        "title": "SSHPubKeyPublicOutputList"
       },
       "ValidationError": {
-        "type": "object",
         "properties": {
           "loc": {
-            "type": "array",
             "items": {
               "anyOf": [
                 {
@@ -400,6 +398,7 @@
                 }
               ]
             },
+            "type": "array",
             "title": "Location"
           },
           "msg": {
@@ -411,24 +410,47 @@
             "title": "Error Type"
           }
         },
-        "title": "ValidationError",
+        "type": "object",
         "required": [
           "loc",
           "msg",
           "type"
-        ]
+        ],
+        "title": "ValidationError"
       }
     },
     "securitySchemes": {
-      "OAuth2": {
+      "OAuth2PasswordBearer": {
         "type": "oauth2",
         "flows": {
           "password": {
-            "tokenUrl": "https://idpa-api-preprod.luizalabs.com/oauth/token",
             "scopes": {
+              "openid": "Default OpenID scope.",
+              "usr:user-standing:admin": "This scope allow the caller to do ANYthing as ANY tenant in the APIfor tenant routes and to interact with creating global resources, as quotas.",
+              "usr:user-standing:quota-write": "This scope allow the caller to write (create, update, delete) specific quotas overrides for ANY tenant.",
+              "usr:user-standing:tenant-region-read": "This scope allow the caller to read the data (access, block) for ANY user within regions.",
+              "usr:user-standing:tenant-region-write": "This scope allow the caller to write (create, update, delete)the data (allow or deny access and block) for ANY user within regions.",
+              "usr:user-standing:tenant-quota-read": " This scope allow the caller to read tenant quotas for ANY quota and ANY tenant.",
+              "usr:user-standing:tenant-quota-write": "This scope allow the caller to write (create, update, delete) tenant quotas overrides for ANY quota and ANY tenant.",
+              "usr:user-standing:tenant-sshpubkey-write": "This scope allow the caller to write (create, update, delete) SSH Public Keys for ANY tenant.",
+              "usr:user-standing:tenant-sshpubkey-read": "This scope allow the caller to read SSH Public Keys of ANY tenant.",
+              "usr:user-standing:tenant-restricted:sshpubkey-read": "This scope allow the caller to read SSH Public Keys for ONE specific tenant, which is determined by the token. This scope needs tenant owner consent.",
+              "usr:user-standing:tenant-restricted:sshpubkey-write": "This scope allow the caller to write (create, update, delete) SSH Public Keys for ONE specific tenant, which is determined by the token. This scope needs tenant owner consent.",
+              "usr:user-standing:tenant-restricted:sign-terms": "This scope allow the caller to sign the terms of use and privacy policy for ONE specific tenant, which is determined by the token. This scope needs tenant owner consent.",
+              "usr:user-standing:tenant-user-data": "This scope allow the caller to read tenant user general data (signatures, blocks) for ANY tenant.",
+              "usr:user-standing:tenant-restricted:user-data": "This scope allow the caller to read tenant user general data (signatures, blocks) for ONE specific tenant, which is determined by the token.",
+              "usr:user-standing:block-read": "This scope allow the caller to read tenant user blocks for ANY tenant.",
+              "usr:user-standing:block-write": "This scope allow the caller to create tenant user blocks for ANY tenant.",
+              "usr:user-standing:onboarding-write": "This scope allow the caller to register the onboarding for ANY tenant.",
+              "usr:user-standing:tenant-ppp-read": "This scope allow the caller to read per-product-policies of ANY tenant.",
+              "usr:user-standing:tenant-ppp-write": "This scope allow the caller to register and update per-product-policies for ANY tenant.",
+              "usr:user-standing:bucket-read": "This scope allow the caller to read buckets.",
+              "usr:user-standing:bucket-write": "This scope allow the caller to create buckets.",
               "gdb:ssh-pkey-w": "This scope allow the caller to write (create, update, delete) SSH Public Keys for ANY tenant, on public GlobalDB",
-              "gdb:ssh-pkey-r": "This scope allow the caller to read SSH Public Keys of ANY tenant, on public GlobalDB"
-            }
+              "gdb:ssh-pkey-r": "This scope allow the caller to read SSH Public Keys of ANY tenant, on public GlobalDB",
+              "gdb:admin": "This scope allow the caller to do ANYthing as ANY tenant in the API, on public GlobalDB"
+            },
+            "tokenUrl": "https://idpa-api-preprod.luizalabs.com/oauth/token"
           }
         }
       }

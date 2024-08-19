@@ -6,12 +6,77 @@
   },
   "paths": {
     "/v0/ssh-keys": {
+      "post": {
+        "tags": [
+          "ssh_keys"
+        ],
+        "summary": "Create Ssh Key",
+        "operationId": "create_ssh_key",
+        "security": [
+          {
+            "OAuth2PasswordBearer": [
+              "gdb:ssh-pkey-w"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-Tenant-ID",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SSHPubKeyPublicInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SSHPubKeyPublicOutput"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
       "get": {
         "tags": [
           "ssh_keys"
         ],
         "summary": "List Ssh Keys",
         "operationId": "list_ssh_keys",
+        "security": [
+          {
+            "OAuth2PasswordBearer": [
+              "gdb:ssh-pkey-r"
+            ]
+          }
+        ],
         "parameters": [
           {
             "name": "_limit",
@@ -79,72 +144,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "OAuth2": [
-              "gdb:ssh-pkey-r"
-            ]
-          }
-        ]
-      },
-      "post": {
-        "tags": [
-          "ssh_keys"
-        ],
-        "summary": "Create Ssh Key",
-        "operationId": "create_ssh_key",
-        "parameters": [
-          {
-            "name": "X-Tenant-ID",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "X-Tenant-Id",
-              "format": "uuid"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/SSHPubKeyPublicInput"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "201": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SSHPubKeyPublicOutput"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "OAuth2": [
-              "gdb:ssh-pkey-w"
-            ]
-          }
-        ]
+        }
       }
     },
     "/v0/ssh-keys/{key_id}": {
@@ -154,6 +154,13 @@
         ],
         "summary": "Get Ssh Key",
         "operationId": "get_ssh_key",
+        "security": [
+          {
+            "OAuth2PasswordBearer": [
+              "gdb:ssh-pkey-r"
+            ]
+          }
+        ],
         "parameters": [
           {
             "name": "key_id",
@@ -197,14 +204,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "OAuth2": [
-              "gdb:ssh-pkey-r"
-            ]
-          }
-        ]
+        }
       },
       "delete": {
         "tags": [
@@ -212,6 +212,13 @@
         ],
         "summary": "Delete Ssh Key",
         "operationId": "delete_ssh_key",
+        "security": [
+          {
+            "OAuth2PasswordBearer": [
+              "gdb:ssh-pkey-w"
+            ]
+          }
+        ],
         "parameters": [
           {
             "name": "key_id",
@@ -255,14 +262,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "OAuth2": [
-              "gdb:ssh-pkey-w"
-            ]
-          }
-        ]
+        }
       }
     },
     "/healthcheck": {

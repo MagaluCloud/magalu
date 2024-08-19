@@ -3,7 +3,7 @@
   "info": {
     "title": "Cloud Events Consult API",
     "description": "Cloud Events API Product.",
-    "version": "0.12.0"
+    "version": "0.13.0"
   },
   "paths": {
     "/v0/events": {
@@ -442,10 +442,18 @@
       }
     },
     "securitySchemes": {
-      "HTTPBearerDry": {
-        "type": "http",
-        "description": "## How to Auth\nTo use the API a token is needed, and both grant_types **client_credentials** and **authorization_code** tokens can be used.\n\nFollow [this guide](https://magazine.atlassian.net/wiki/spaces/CLOUD/pages/4230643732/Client+Credentials) to learn how to authenticate via **client credentials**.\n\nFollow [this guide](https://magazine.atlassian.net/wiki/spaces/CLOUD/pages/4253385090/Authorization+Code) to learn how to authenticate via **authorization code**.\n### Where?\nGenerate Token using OAuth2 API: https://autoseg-idp.luizalabs.com\n\n## Auth status: **Active 🟢**",
-        "scheme": "bearer"
+      "OAuth2": {
+        "type": "oauth2",
+        "description": "OAuth2/OIDC via IDP",
+        "flows": {
+          "authorizationCode": {
+            "authorizationUrl": "https://autoseg-idp.luizalabs.com/oauth/auth",
+            "tokenUrl": "https://autoseg-idp.luizalabs.com/oauth/token",
+            "scopes": {
+              "evt:event-tr": "Permissão de leitura de consumo de serviços."
+            }
+          }
+        }
       }
     }
   },

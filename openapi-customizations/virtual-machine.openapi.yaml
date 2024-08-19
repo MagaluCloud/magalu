@@ -401,6 +401,9 @@ paths:
                             parameters:
                                 id: $request.path.id
                             x-mgc-hidden: true
+    /v1/machine-types:
+        get:
+            x-mgc-output-flag: table=ID:$.instance_types[*].id,NAME:$.instance_types[*].name,STATUS:$.instance_types[*].status,VCPUS:$.instance_types[*].vcpus,RAM:$.instance_types[*].ram,DISK:$.instance_types[*].disk,GPU:$.instance_types[*].gpu
 components:
     schemas:
         InstanceV1Response:
