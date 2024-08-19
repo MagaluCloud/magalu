@@ -10,6 +10,7 @@ import (
 	mgcSdk "magalu.cloud/lib"
 	sdkVMInstances "magalu.cloud/lib/products/virtual_machine/instances"
 	"magalu.cloud/sdk"
+	"magalu.cloud/terraform-provider-mgc/internal/tfutil"
 )
 
 var _ datasource.DataSource = &DataSourceVmInstances{}
@@ -71,16 +72,6 @@ func (r *DataSourceVmInstances) Schema(_ context.Context, req datasource.SchemaR
 				Description: "List of available VM instances.",
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
-						// ID            types.String `tfsdk:"id"`
-						// Name          types.String `tfsdk:"name"`
-						// PublicIPV4    types.String `tfsdk:"public_ipv4"`
-						// PublicIPV6    types.String `tfsdk:"public_ipv6"`
-						// PrivateIPV4   types.String `tfsdk:"private_ipv4"`
-						// SshKeyName    types.String `tfsdk:"ssh_key_name"`
-						// Status        types.String `tfsdk:"status"`
-						// State         types.String `tfsdk:"state"`
-						// ImageID       types.String `tfsdk:"image_id"`
-						// MachineTypeID types.String `tfsdk:"machine_type_id"`
 						"id": schema.BoolAttribute{
 							Computed:    true,
 							Description: "ID of machine-type.",
@@ -134,7 +125,8 @@ func (r *DataSourceVmInstances) Read(ctx context.Context, req datasource.ReadReq
 
 	resp.Diagnostics.Append(req.Config.Get(ctx, &data)...)
 
-	sdkOutput, err := r.vmInstances.List(sdkVMInstances.ListParameters{}, sdkVMInstances.ListConfigs{})
+	sdkOutput, err := r.vmInstances.List(sdkVMInstances.ListParameters{},
+		tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVMInstances.ListConfigs{}))
 	if err != nil {
 		resp.Diagnostics.AddError("Failed to get versions", err.Error())
 		return

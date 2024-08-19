@@ -10,6 +10,7 @@ import (
 	mgcSdk "magalu.cloud/lib"
 	sdkVMMachineTypes "magalu.cloud/lib/products/virtual_machine/machine_types"
 	"magalu.cloud/sdk"
+	"magalu.cloud/terraform-provider-mgc/internal/tfutil"
 )
 
 var _ datasource.DataSource = &DataSourceVmMachineType{}
@@ -106,7 +107,8 @@ func (r *DataSourceVmMachineType) Read(ctx context.Context, req datasource.ReadR
 
 	resp.Diagnostics.Append(req.Config.Get(ctx, &data)...)
 
-	sdkOutput, err := r.vmMachineTypes.List(sdkVMMachineTypes.ListParameters{}, sdkVMMachineTypes.ListConfigs{})
+	sdkOutput, err := r.vmMachineTypes.List(sdkVMMachineTypes.ListParameters{},
+		tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVMMachineTypes.ListConfigs{}))
 	if err != nil {
 		resp.Diagnostics.AddError("Failed to get versions", err.Error())
 		return

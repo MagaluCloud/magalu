@@ -204,7 +204,7 @@ func (p *MgcProvider) Resources(ctx context.Context) []func() resource.Resource 
 		resources.NewVolumeAttachResource,
 		resources.NewBlockStorageSnapshotsResource,
 		resources.NewBlockStorageVolumesResource,
-		resources.NewSshKeysResource,
+		// resources.NewSshKeysResource,
 	)
 
 	if err != nil {
@@ -331,7 +331,7 @@ func (p *MgcProvider) DataSources(ctx context.Context) []func() datasource.DataS
 		datasources.NewDataSourceKubernetesVersion,
 		datasources.NewDataSourceKubernetesNodepool,
 		datasources.NewDataSourceKubernetesNode,
-		datasources.NewDataSourceSSH,
+		// datasources.NewDataSourceSSH,
 		datasources.NewDataSourceVmMachineType,
 		datasources.NewDataSourceVMIMages,
 		datasources.NewDataSourceVmInstances,

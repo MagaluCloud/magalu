@@ -10,6 +10,7 @@ import (
 	mgcSdk "magalu.cloud/lib"
 	sdkSSHKeys "magalu.cloud/lib/products/ssh/ssh_keys"
 	"magalu.cloud/sdk"
+	"magalu.cloud/terraform-provider-mgc/internal/tfutil"
 )
 
 var _ datasource.DataSource = &DataSourceSSH{}
@@ -94,7 +95,8 @@ func (r *DataSourceSSH) Read(ctx context.Context, req datasource.ReadRequest, re
 
 	resp.Diagnostics.Append(req.Config.Get(ctx, &data)...)
 
-	sdkOutput, err := r.sshKeys.List(sdkSSHKeys.ListParameters{}, sdkSSHKeys.ListConfigs{})
+	sdkOutput, err := r.sshKeys.List(sdkSSHKeys.ListParameters{},
+		tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkSSHKeys.ListConfigs{}))
 	if err != nil {
 		resp.Diagnostics.AddError("Failed to get versions", err.Error())
 		return

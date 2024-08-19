@@ -115,7 +115,7 @@ func (r *sshKeys) Read(ctx context.Context, req resource.ReadRequest, resp *reso
 	getResult, err := r.sshKeys.Get(sdkSSHKeys.GetParameters{
 		KeyId: plan.ID.ValueString(),
 	},
-		sdkSSHKeys.GetConfigs{})
+		tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkSSHKeys.GetConfigs{}))
 
 	if err != nil {
 		resp.Diagnostics.AddError(
@@ -177,7 +177,7 @@ func (r *sshKeys) Create(ctx context.Context, req resource.CreateRequest, resp *
 }
 
 func (r *sshKeys) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-
+	// TODO // TODO // TODO
 }
 
 func (r *sshKeys) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
