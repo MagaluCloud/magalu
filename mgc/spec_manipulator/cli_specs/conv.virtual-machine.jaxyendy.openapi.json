@@ -3632,6 +3632,14 @@
             "type": "integer",
             "title": "Gpu",
             "default": 0
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "sku": {
+            "type": "string",
+            "title": "Sku"
           }
         },
         "title": "InstanceTypesV1PortalResponse",
@@ -3682,6 +3690,14 @@
             "type": "integer",
             "title": "Gpu",
             "default": 0
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "sku": {
+            "type": "string",
+            "title": "Sku"
           }
         },
         "title": "InstanceTypesV1Response",
