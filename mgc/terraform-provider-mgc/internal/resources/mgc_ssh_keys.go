@@ -12,6 +12,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	sdkSSHKeys "magalu.cloud/lib/products/ssh/ssh_keys"
 	"magalu.cloud/sdk"
+	tfutil "magalu.cloud/terraform-provider-mgc/internal/tfutil"
 
 	mgcSdk "magalu.cloud/lib"
 )
@@ -143,7 +144,7 @@ func (r *sshKeys) Create(ctx context.Context, req resource.CreateRequest, resp *
 		Key:  state.Key.ValueString(),
 		Name: state.Name.ValueString(),
 	},
-		sdkSSHKeys.CreateConfigs{})
+		tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkSSHKeys.CreateConfigs{}))
 
 	if err != nil {
 		resp.Diagnostics.AddError(
@@ -155,7 +156,8 @@ func (r *sshKeys) Create(ctx context.Context, req resource.CreateRequest, resp *
 
 	getCreatedResource, err := r.sshKeys.Get(sdkSSHKeys.GetParameters{
 		KeyId: createResult.Id,
-	}, sdkSSHKeys.GetConfigs{})
+	},
+		tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkSSHKeys.GetConfigs{}))
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Error Reading BS",
@@ -185,7 +187,7 @@ func (r *sshKeys) Delete(ctx context.Context, req resource.DeleteRequest, resp *
 		sdkSSHKeys.DeleteParameters{
 			KeyId: data.ID.ValueString(),
 		},
-		sdkSSHKeys.DeleteConfigs{},
+		tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkSSHKeys.DeleteConfigs{}),
 	)
 	if err != nil {
 		resp.Diagnostics.AddError(
