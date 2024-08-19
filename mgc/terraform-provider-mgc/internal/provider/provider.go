@@ -334,6 +334,7 @@ func (p *MgcProvider) DataSources(ctx context.Context) []func() datasource.DataS
 		// datasources.NewDataSourceSSH,
 		datasources.NewDataSourceVmMachineType,
 		datasources.NewDataSourceVMIMages,
+		datasources.NewDataSourceVmInstance,
 		datasources.NewDataSourceVmInstances,
 	)
 
