@@ -203,7 +203,9 @@ func (p *MgcProvider) Resources(ctx context.Context) []func() resource.Resource 
 		resources.NewVirtualMachineSnapshotsResource,
 		resources.NewVolumeAttachResource,
 		resources.NewBlockStorageSnapshotsResource,
-		resources.NewBlockStorageVolumesResource)
+		resources.NewBlockStorageVolumesResource,
+		// resources.NewSshKeysResource,
+	)
 
 	if err != nil {
 		tflog.Error(ctx, fmt.Sprintf("An error occurred while generating the provider resource list: %v", err))
@@ -329,6 +331,10 @@ func (p *MgcProvider) DataSources(ctx context.Context) []func() datasource.DataS
 		datasources.NewDataSourceKubernetesVersion,
 		datasources.NewDataSourceKubernetesNodepool,
 		datasources.NewDataSourceKubernetesNode,
+		// datasources.NewDataSourceSSH,
+		datasources.NewDataSourceVmMachineType,
+		datasources.NewDataSourceVMIMages,
+		datasources.NewDataSourceVmInstances,
 	)
 
 	return dataSources
