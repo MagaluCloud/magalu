@@ -90,11 +90,9 @@ It allows you to interact with the Magalu Cloud to manage your resources.
 	addShowHiddenFlag(rootCmd)
 	addRawOutputFlag(rootCmd)
 	addApiKeyFlag(rootCmd)
-	rootCmd.PersistentFlags().VisitAll(func(f *pflag.Flag) { f.Hidden = true })
 
 	rootCmd.InitDefaultHelpFlag()
 	rootCmd.InitDefaultVersionFlag()
-	addShowCliGlobalFlags(rootCmd)
 
 	// Immediately parse flags for root command because we'll access the global flags prior
 	// to calling Execute (which is when Cobra parses the flags)
@@ -135,10 +133,6 @@ It allows you to interact with the Magalu Cloud to manage your resources.
 
 	if err = initLogger(sdk, getLogFilterFlag(rootCmd)); err != nil {
 		return err
-	}
-
-	if getShowCliGlobalFlags(rootCmd) {
-		rootCmd.PersistentFlags().VisitAll(func(f *pflag.Flag) { f.Hidden = false })
 	}
 
 	rootCmd.AddCommand(newDumpTreeCmd(sdk))

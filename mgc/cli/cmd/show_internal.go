@@ -10,6 +10,7 @@ func addShowInternalFlag(cmd *cobra.Command) {
 		false,
 		"Show internal groups and executors",
 	)
+	cmd.Root().PersistentFlags().Lookup(showInternalFlag).Hidden = true
 }
 
 func getShowInternalFlag(cmd *cobra.Command) bool {

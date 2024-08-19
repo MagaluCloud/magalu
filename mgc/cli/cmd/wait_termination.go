@@ -20,6 +20,7 @@ is used and no wait will be done`,
 
 	f := cmd.Root().PersistentFlags().Lookup(waitTerminationFlag)
 	f.NoOptDefVal = "true"
+	f.Hidden = true
 }
 
 func getWaitTerminationFlag(cmd *cobra.Command) bool {

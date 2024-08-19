@@ -1,6 +1,6 @@
 module magalu.cloud/cli
 
-go 1.22.3
+go 1.22.6
 
 require (
 	github.com/spf13/cobra v1.7.0

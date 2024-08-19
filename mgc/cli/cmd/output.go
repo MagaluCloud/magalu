@@ -20,24 +20,12 @@ type OutputFormatter interface {
 
 var outputFormatters = map[string]OutputFormatter{}
 
-func getOutputFormats() []string {
-	keys := make([]string, 0, len(outputFormatters))
-	for k := range outputFormatters {
-		keys = append(keys, k)
-	}
-	return keys
-}
-
 func addOutputFlag(cmd *cobra.Command) {
 	cmd.Root().PersistentFlags().StringP(
 		outputFlag,
 		"o",
-		"",
-		fmt.Sprintf(
-			`If the result is plain data types, it's the output format.
-One of %s, use 'help' to know more details.
-Otherwise it's the file name to save to, use '-' to write to stdout (default)`,
-			strings.Join(getOutputFormats(), "|")))
+		"yaml",
+		`Change the output format. Use '--output=help' to know more details.`)
 }
 
 func getOutputFlag(cmd *cobra.Command) string {

@@ -573,7 +573,7 @@ func (r *vmInstances) getMachineTypeID(name string) (*vmInstancesMachineTypeMode
 
 func (r *vmInstances) getVmStatus(id string) (*sdkVmInstances.GetResult, error) {
 	getResult := &sdkVmInstances.GetResult{}
-	expand := &sdkVmInstances.GetParametersExpand{"network", "machine-type", "image"}
+	expand := &sdkVmInstances.GetParametersExpand{"network", "machine-types", "image"}
 
 	duration := 5 * time.Minute
 	startTime := time.Now()
