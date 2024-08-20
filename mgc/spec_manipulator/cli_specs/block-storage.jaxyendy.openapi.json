@@ -1,8 +1,8 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "Block Storage API Product Documentation - v1",
-    "description": "Block Storage API Product Documentation",
+    "title": "Block Storage API Product - v1",
+    "description": "Block Storage API Product",
     "contact": {
       "name": "IaaS Products",
       "url": "https://github.com/luizalabs",
@@ -16,7 +16,7 @@
         "tags": [
           "attachments"
         ],
-        "summary": "Attach a volume to a instance",
+        "summary": "Attach a volume to an instance.",
         "description": "Attach a Volume to a Virtual Machine instance for the currently\n authenticated tenant.\n\nThe Volume attachment will be completed when the Volume status returns to\n\"completed\", and the state becomes \"in-use\".\n\n#### Rules\n- The Volume and the Virtual Machine must belong to the same tenant.\n- Both the Volume and Virtual Machine must have the status \"completed\".\n- The Volume's state must be \"available\".\n- The Virtual Machine's state must be \"stopped\" or \"running\".\n\n#### Notes\n- Verify the state and status of your Volume using the\n **block-storage volume get --id [uuid]** command.\n- Verify the state and status of your Virtual Machine using the\n**virtual-machine instances get --id [uuid]** command\".",
         "operationId": "create_attachment_v1_v1_attachments_post",
         "parameters": [
@@ -95,7 +95,7 @@
         "tags": [
           "attachments"
         ],
-        "summary": "Delete an attachment",
+        "summary": "Delete an attachment.",
         "description": "Detach a Volume from a Virtual Machine instance for the\n currently authenticated tenant.\n\nThe Volume detachment will be completed when the Volume state returns to\n \"available,\" and the status becomes \"completed\".\n\n#### Rules\n- The Volume and the Virtual Machine must belong to the same tenant.\n- Both the Volume and Virtual Machine must have the status \"completed\".\n- The Volume's state must be \"in-use\".\n- The Virtual Machine's state must be \"stopped\".\n\n#### Notes\n- Verify the state and status of your Volume using the\n **block-storage volume get --id [uuid]** command.\n- Verify the state and status of your Virtual Machine using the\n **virtual-machine instances get --id [uuid]** command.\n- Ensure that any file systems on the device within your operating system are\n unmounted before detaching the Volume.\n\n#### Troubleshooting\n- A failure during detachment can result in the Volume becoming stuck in the\n busy state. If this occurs, detachment may be delayed indefinitely until you\n unmount the Volume, force detachment, reboot the instance, or perform all\n three.",
         "operationId": "delete_attachment_v1_v1_attachments__id__delete",
         "parameters": [
@@ -174,7 +174,7 @@
         "tags": [
           "backups"
         ],
-        "summary": "List backups in the current tenant",
+        "summary": "List all backups.",
         "description": "Retrieve a list of Backups for the currently authenticated tenant.\n\n#### Notes\n- Use the **expand** argument to obtain additional details about the\n Volume used to create each Backup.",
         "operationId": "list_backups_v1_backups_get",
         "parameters": [
@@ -288,14 +288,13 @@
             }
           }
         },
-        "x-viveiro": true,
-        "x-mgc-hidden": true
+        "x-viveiro": true
       },
       "post": {
         "tags": [
           "backups"
         ],
-        "summary": "Create a Backup",
+        "summary": "Create a backup.",
         "description": "Create a backup for the currently authenticated tenant.\n\nThe Backup can be used when it reaches the \"available\" state and the\n \"completed\" status.\n\n#### Rules\n- The Backup name must be unique; otherwise, the creation will be disallowed.\n- The Volume can be either in in-use or available states.\n- The Volume must not have an operation in execution.\n\n#### Notes\n- Use the **block-storage volume list** command to retrieve a list of all\n Volumes and obtain the ID of the Volume that will be used to create the\n Backup.",
         "operationId": "create_backup_v1_backups_post",
         "parameters": [
@@ -373,8 +372,7 @@
             }
           }
         },
-        "x-viveiro": true,
-        "x-mgc-hidden": true
+        "x-viveiro": true
       }
     },
     "/v1/backups/copy": {
@@ -382,7 +380,7 @@
         "tags": [
           "backups"
         ],
-        "summary": "Copy backup cross region",
+        "summary": "Copy backup cross region.",
         "description": "Copy a backup cross region for the currently authenticated tenant.\n\n#### Rules\n- The copy only be accepted when the destiny region is different from origin region.\n- The copy only be accepted if the backup's name in destiny region is different from input name.\n- The copy only be accepted if the user has access to destiny region.\n\n#### Notes\n- Utilize the **block-storage backups list** command to retrieve a list of\n all Backups and obtain the ID of the Backup you wish to copy across different region.",
         "operationId": "copy_backup_cross_region_v1_backups_copy_post",
         "parameters": [
@@ -453,7 +451,8 @@
             }
           }
         },
-        "x-viveiro": true
+        "x-viveiro": true,
+        "x-mgc-hidden": true
       }
     },
     "/v1/backups/{id}": {
@@ -461,7 +460,7 @@
         "tags": [
           "backups"
         ],
-        "summary": "Get a Backup",
+        "summary": "Retrieve the details of a specific backup.",
         "description": "Retrieve details of a Backup for the currently authenticated tenant.\n\n#### Notes\n- Use the **expand** argument to obtain additional details about the Volume\n used to create the Backup.\n- Utilize the **block-storage backups list** command to retrieve a list of\n all Backups and obtain the ID of the Backup for which you want to retrieve\n details.",
         "operationId": "get_backup_v1_backups__id__get",
         "parameters": [
@@ -552,14 +551,13 @@
             }
           }
         },
-        "x-viveiro": true,
-        "x-mgc-hidden": true
+        "x-viveiro": true
       },
       "delete": {
         "tags": [
           "backups"
         ],
-        "summary": "Delete a Backup",
+        "summary": "Delete a backup.",
         "description": "Delete a Backup for the currently authenticated tenant.\n\n#### Rules\n- The Backup's status must be \"completed\".\n- The Backup's state must be \"available\".\n\n\n#### Notes\n- Utilize the **block-storage backups** list command to retrieve a list of\n all Backups and obtain the ID of the Backup you wish to delete.",
         "operationId": "delete_backup_v1_backups__id__delete",
         "parameters": [
@@ -630,16 +628,17 @@
             }
           }
         },
-        "x-viveiro": true,
-        "x-mgc-hidden": true
-      },
+        "x-viveiro": true
+      }
+    },
+    "/v1/backups/{id}/rename": {
       "patch": {
         "tags": [
           "backups"
         ],
-        "summary": "Patch a Backup",
+        "summary": "Rename a backup.",
         "description": "Patches a Backup for the currently authenticated tenant.\n\n#### Rules\n- The Backup name must be unique; otherwise, renaming will not be allowed.\n- The Backup's state must be available.\n\n#### Notes\n- Utilize the **block-storage backups list** command to retrieve a list of\n all Backups and obtain the ID of the Backup you wish to rename.",
-        "operationId": "patch_backup_v1_backups__id__patch",
+        "operationId": "patch_backup_v1_backups__id__rename_patch",
         "parameters": [
           {
             "name": "id",
@@ -684,7 +683,7 @@
                   "items": {
                     "$ref": "#/components/schemas/ErrorResponse"
                   },
-                  "title": "Response 404 Patch Backup V1 Backups  Id  Patch"
+                  "title": "Response 404 Patch Backup V1 Backups  Id  Rename Patch"
                 }
               }
             }
@@ -698,7 +697,7 @@
                   "items": {
                     "$ref": "#/components/schemas/ErrorResponse"
                   },
-                  "title": "Response 409 Patch Backup V1 Backups  Id  Patch"
+                  "title": "Response 409 Patch Backup V1 Backups  Id  Rename Patch"
                 }
               }
             }
@@ -712,14 +711,13 @@
                   "items": {
                     "$ref": "#/components/schemas/ErrorResponse"
                   },
-                  "title": "Response 422 Patch Backup V1 Backups  Id  Patch"
+                  "title": "Response 422 Patch Backup V1 Backups  Id  Rename Patch"
                 }
               }
             }
           }
         },
-        "x-viveiro": true,
-        "x-mgc-hidden": true
+        "x-viveiro": true
       }
     },
     "/v1/snapshots": {
@@ -727,7 +725,7 @@
         "tags": [
           "snapshots"
         ],
-        "summary": "List snapshots in the current tenant",
+        "summary": "List all snapshots.",
         "description": "Retrieve a list of Snapshots for the currently authenticated tenant.\n\n#### Notes\n- Use the expand argument to obtain additional details about the Volume used to\n create each Snapshot.",
         "operationId": "list_snapshot_v1_snapshots_get",
         "parameters": [
@@ -847,7 +845,7 @@
         "tags": [
           "snapshots"
         ],
-        "summary": "Create a snapshot",
+        "summary": "Create a snapshot.",
         "description": "Create a Snapshot for the currently authenticated tenant.\n\nThe Snapshot can be used when it reaches the \"available\" state and the\n \"completed\" status.\n\n#### Rules\n- The Snapshot name must be unique; otherwise, the creation will be disallowed.\n- Creating Snapshots from restored Volumes may lead to future conflicts as\n you can't delete a Volume with an Snapshot and can't delete a Snapshot with a\n restored Volume, so we recommend avoiding it.\n\n#### Notes\n- Use the **block-storage volume list** command to retrieve a list of all\n Volumes and obtain the ID of the Volume that will be used to create the\n Snapshot.",
         "operationId": "create_snapshot_v1_snapshots_post",
         "parameters": [
@@ -933,7 +931,7 @@
         "tags": [
           "snapshots"
         ],
-        "summary": "Retrieve the details of a snapshot",
+        "summary": "Retrieve the details of a specific snapshot.",
         "description": "Retrieve details of a Snapshot for the currently authenticated tenant.\n\n#### Notes\n- Use the **expand** argument to obtain additional details about the Volume\n used to create the Snapshot.\n- Utilize the **block-storage snapshots list** command to retrieve a list of\n all Snapshots and obtain the ID of the Snapshot for which you want to retrieve\n details.",
         "operationId": "get_snapshot_v1_snapshots__id__get",
         "parameters": [
@@ -1030,7 +1028,7 @@
         "tags": [
           "snapshots"
         ],
-        "summary": "Delete a snapshot",
+        "summary": "Delete a snapshot.",
         "description": "Delete a Snapshot for the currently authenticated tenant.\n\n#### Rules\n- The Snapshot's status must be \"completed\".\n- The Snapshot's state must be \"available\".\n- Deleting a Snapshot that has been restored is not possible. If necessary,\n delete the restored Volume first and then proceed to delete the Snapshot.\n\n#### Notes\n- Utilize the **block-storage snapshots** list command to retrieve a list of\n all Snapshots and obtain the ID of the Snapshot you wish to delete.\n- If needed, you can use the **block-storage volume list** command to retrieve\n a list of all Volumes and obtain the ID of the restored Volume.",
         "operationId": "delete_snapshot_v1_snapshots__id__delete",
         "parameters": [
@@ -1109,7 +1107,7 @@
         "tags": [
           "snapshots"
         ],
-        "summary": "Rename a snapshot",
+        "summary": "Rename a snapshot.",
         "description": "Rename a Snapshot for the currently authenticated tenant.\n\n#### Rules\n- The Snapshot name must be unique; otherwise, renaming will not be allowed.\n\n#### Notes\n- Utilize the **block-storage snapshots list** command to retrieve a list of\n all Snapshots and obtain the ID of the Snapshot you wish to rename.",
         "operationId": "rename_snapshot_v1_snapshots__id__rename_patch",
         "parameters": [
@@ -1198,7 +1196,7 @@
         "tags": [
           "volume-types"
         ],
-        "summary": "List volume types",
+        "summary": "List all volume types.",
         "description": "List Volume Types allowed in the current region.\n\n#### Notes\n\n- Volume types are managed internally. If you wish to use a Volume Type that\n is not yet available, please contact our support team for assistance.",
         "operationId": "list_volume_types_v1_v1_volume_types_get",
         "responses": {
@@ -1221,7 +1219,7 @@
         "tags": [
           "volumes"
         ],
-        "summary": "List all Volumes",
+        "summary": "List all volumes.",
         "description": "Retrieve a list of Volumes for the currently authenticated tenant.\n\n#### Notes\n- Use the expand argument to obtain additional details about the Volume Type.",
         "operationId": "list_volume_v1_v1_volumes_get",
         "parameters": [
@@ -1339,7 +1337,7 @@
         "tags": [
           "volumes"
         ],
-        "summary": "Create a new Volume",
+        "summary": "Create a new volume.",
         "description": "Create a Volume for the currently authenticated tenant.\n\nThe Volume can be used when it reaches the \"available\" state and \"completed\"\n status.\n\n#### Rules\n- The Volume name must be unique; otherwise, the creation will be disallowed.\n- The Volume type must be available to use.\n\n#### Notes\n- Utilize the **block-storage volume-types list** command to retrieve a list\n of all available Volume Types.\n- Verify the state and status of your Volume using the\n**block-storage volume get --id [uuid]** command\".",
         "operationId": "create_volume_v1_v1_volumes_post",
         "parameters": [
@@ -1425,7 +1423,7 @@
         "tags": [
           "volumes"
         ],
-        "summary": "Retrieve the details of a volume",
+        "summary": "Retrieve the details of a specific volume.",
         "description": "Retrieve details of a Volume for the currently authenticated tenant.\n\n#### Notes\n- Use the **expand** argument to obtain additional details about the Volume\n Type.\n- Utilize the **block-storage volume list** command to retrieve a list of all\n Volumes and obtain the ID of the Volume for which you want to retrieve\n details.",
         "operationId": "get_volume_v1_v1_volumes__id__get",
         "parameters": [
@@ -1520,7 +1518,7 @@
         "tags": [
           "volumes"
         ],
-        "summary": "Delete a Volume",
+        "summary": "Delete a volume.",
         "description": "Delete a Volume for the currently authenticated tenant.\n\n#### Rules\n- The Volume cannot be attached to a Virtual Machine, i.e., its state cannot\n be \"in-use\". If necessary, detach the Volume from the Virtual Machine before\n proceeding with deletion.\n- The Volume must not have any snapshots. If necessary, delete the Volume's\n  snapshots before proceeding with deletion.\n- The Volume must have the status \"completed\", i.e., must not have any\n  actions in progress.\n\n\n#### Notes\n- Check the state and status of your Volume using the\n**block-storage volume get --id [uuid]** command\".",
         "operationId": "delete_volume_v1_v1_volumes__id__delete",
         "parameters": [
@@ -1599,7 +1597,7 @@
         "tags": [
           "volumes"
         ],
-        "summary": "Attach a Volume",
+        "summary": "Attach the volume to an instance.",
         "description": "Attach a Volume to a Virtual Machine instance for the currently\n authenticated tenant.\n\nThe Volume attachment will be completed when the Volume status returns to\n\"completed\", and the state becomes \"in-use\".\n\n#### Rules\n- The Volume and the Virtual Machine must belong to the same tenant.\n- Both the Volume and Virtual Machine must have the status \"completed\".\n- The Volume's state must be \"available\".\n- The Virtual Machine's state must be \"stopped\" or \"running\".\n\n#### Notes\n- Verify the state and status of your Volume using the\n **block-storage volume get --id [uuid]** command.\n- Verify the state and status of your Virtual Machine using the\n**virtual-machine instances get --id [uuid]** command\".",
         "operationId": "attach_volume_v1_v1_volumes__id__attach__virtual_machine_id__post",
         "parameters": [
@@ -1688,7 +1686,7 @@
         "tags": [
           "volumes"
         ],
-        "summary": "Detach a Volume",
+        "summary": "Detach the volume from an instance.",
         "description": "Detach a Volume from a Virtual Machine instance for the\n currently authenticated tenant.\n\nThe Volume detachment will be completed when the Volume state returns to\n \"available,\" and the status becomes \"completed\".\n\n#### Rules\n- The Volume and the Virtual Machine must belong to the same tenant.\n- Both the Volume and Virtual Machine must have the status \"completed\".\n- The Volume's state must be \"in-use\".\n- The Virtual Machine's state must be \"stopped\".\n\n#### Notes\n- Verify the state and status of your Volume using the\n **block-storage volume get --id [uuid]** command.\n- Verify the state and status of your Virtual Machine using the\n **virtual-machine instances get --id [uuid]** command.\n- Ensure that any file systems on the device within your operating system are\n unmounted before detaching the Volume.\n\n#### Troubleshooting\n- A failure during detachment can result in the Volume becoming stuck in the\n busy state. If this occurs, detachment may be delayed indefinitely until you\n unmount the Volume, force detachment, reboot the instance, or perform all\n three.",
         "operationId": "detach_volume_v1_v1_volumes__id__detach_post",
         "parameters": [
@@ -1767,7 +1765,7 @@
         "tags": [
           "volumes"
         ],
-        "summary": "Extend a Volume",
+        "summary": "Extend the size of a volume.",
         "description": "Extend the size of an existing Volume for the currently\n authenticated tenant.\n\nThe Volume extension will be completed when the Volume status returns to\n \"completed\".\n\n#### Rules\n- The Volume state must be \"available\".\n- The Volume status must be \"completed\" or \"extend_error\".\n- The new Volume size must be larger than the current size.\n\n#### Notes\n- Utilize the block-storage volume list command to retrieve a list of all\n Volumes and obtain the ID of the Volume you want to extend.\n- Storage quotas are managed internally. If the operation fails due to quota\n restrictions, please contact our support team for assistance.",
         "operationId": "extend_volume_v1_volumes__id__extend_post",
         "parameters": [
@@ -1842,7 +1840,7 @@
         "tags": [
           "volumes"
         ],
-        "summary": "Rename a volume",
+        "summary": "Rename a volume.",
         "description": "Rename a Volume for the currently authenticated tenant.\n\n#### Rules\n- The Volume name must be unique; otherwise, renaming will not be allowed.\n\n#### Notes\n- Utilize the **block-storage volume list** command to retrieve a list of all\n Volumes and obtain the ID of the Volume you wish to rename.",
         "operationId": "rename_volume_v1_v1_volumes__id__rename_patch",
         "parameters": [
@@ -1931,7 +1929,7 @@
         "tags": [
           "volumes"
         ],
-        "summary": "Retype a Volume",
+        "summary": "Change the type of a volume.",
         "description": "Change the Volume Type of an existing Volume for the currently\n authenticated tenant.\n\nThe Volume retype will be completed when the Volume status returns to\n \"completed\".\n\n#### Rules\n- The Volume state must be \"available\".\n- The Volume status must be \"completed\" or \"retype_error\".\n- The new Volume Type must belong to the same region as the Volume.\n\n#### Notes\n- Utilize the **block-storage volume list** command to retrieve a list of all\n Volumes and obtain the ID of the Volume you want to retype.\n- Utilize the **block-storage volume-types list** command to retrieve a list of\n all Volume Types and obtain the ID of the Volume Type you want to use.",
         "operationId": "retype_volume_v1_volumes__id__retype_post",
         "parameters": [
@@ -2201,18 +2199,18 @@
                 "message": "You have reached the limit of allowed backups. Please, remove unused backups or contact support to increase your quota.",
                 "slug": "creating_error_quota"
               },
-              "id": "cd8236f8-b08f-4b59-b19e-66ee331932c5",
+              "id": "f986f5e0-fcb9-492f-a40c-47aa85dfb7d0",
               "name": "My backup",
               "size": 10,
               "source_backup": {
-                "id": "5fc6f2e0-fd8d-4539-8cb1-baee8ed10e12"
+                "id": "002e7022-44d7-484d-b1db-8b41824ee2be"
               },
               "state": "available",
               "status": "completed",
               "type": "incremental",
               "updated_at": "2022-01-01T00:00:10Z",
               "volume": {
-                "id": "b0ef547c-99c2-4463-9b46-5c3de9d2da8e"
+                "id": "6a19d0f9-7d26-4b5e-9c2f-65041fdefed0"
               }
             }
           ]
@@ -2337,18 +2335,18 @@
             "message": "You have reached the limit of allowed backups. Please, remove unused backups or contact support to increase your quota.",
             "slug": "creating_error_quota"
           },
-          "id": "cd8236f8-b08f-4b59-b19e-66ee331932c5",
+          "id": "f986f5e0-fcb9-492f-a40c-47aa85dfb7d0",
           "name": "My backup",
           "size": 10,
           "source_backup": {
-            "id": "5fc6f2e0-fd8d-4539-8cb1-baee8ed10e12"
+            "id": "002e7022-44d7-484d-b1db-8b41824ee2be"
           },
           "state": "available",
           "status": "completed",
           "type": "incremental",
           "updated_at": "2022-01-01T00:00:10Z",
           "volume": {
-            "id": "b0ef547c-99c2-4463-9b46-5c3de9d2da8e"
+            "id": "6a19d0f9-7d26-4b5e-9c2f-65041fdefed0"
           }
         }
       },
@@ -2401,7 +2399,8 @@
           "restoring",
           "restoring_error",
           "provisioning",
-          "copying"
+          "copying",
+          "copying_error_quota"
         ]
       },
       "BackupType": {

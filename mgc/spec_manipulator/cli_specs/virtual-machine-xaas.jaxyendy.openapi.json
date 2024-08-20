@@ -3,7 +3,7 @@
   "info": {
     "title": "Internal Virtual Machine Api Product",
     "description": "Virtual Machine Api Product",
-    "version": "1.258.0"
+    "version": "1.266.0"
   },
   "paths": {
     "/v1/health": {
@@ -945,6 +945,121 @@
                 }
               }
             }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": false
+      }
+    },
+    "/v1/internal/instances/config/{id}/first-windows-password": {
+      "get": {
+        "tags": [
+          "instances"
+        ],
+        "summary": "Get Instance Access",
+        "description": "Get the instance access info for the console",
+        "operationId": "get_instance_access_v1_internal_instances_config__id__first_windows_password_get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Id",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InstanceAccess_InstanceAccessResponse_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "instances"
+        ],
+        "summary": "Create Instance Access",
+        "description": "Creates a private and public key for an instance",
+        "operationId": "create_instance_access_v1_internal_instances_config__id__first_windows_password_post",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Id"
+            }
+          },
+          {
+            "name": "project_type",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ProjectTypeAll"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/KeyPair"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Successful Response"
           },
           "422": {
             "description": "Validation Error",
@@ -1931,7 +2046,7 @@
             "maxLength": 255,
             "minLength": 1
           },
-          "virtual_machine": {
+          "instance": {
             "anyOf": [
               {
                 "$ref": "#/components/schemas/ID"
@@ -1940,19 +2055,19 @@
                 "$ref": "#/components/schemas/Name"
               }
             ],
-            "title": "Virtual Machine"
+            "title": "Instance"
           }
         },
         "title": "BackupRequest",
         "required": [
           "name",
-          "virtual_machine"
+          "instance"
         ],
         "example": {
-          "name": "backup name",
-          "virtual_machine": {
+          "instance": {
             "id": "4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a"
-          }
+          },
+          "name": "backup name"
         }
       },
       "BackupResponse": {
@@ -2714,6 +2829,21 @@
               }
             ],
             "title": "Image Url"
+          },
+          "labels": {
+            "anyOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "uniqueItems": true
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Labels"
           }
         },
         "title": "ImageRequestV1",
@@ -2732,6 +2862,10 @@
           "image_id": "c322af4a-c1f6-4cd5-a4dc-c8090ebcf44c",
           "image_url": "https://bin.com",
           "internal": false,
+          "labels": [
+            "primary",
+            "main"
+          ],
           "min_disk": 2,
           "min_ram": 1,
           "min_vcpu": 1,
@@ -2855,6 +2989,10 @@
             "type": "string",
             "title": "Id"
           },
+          "image_id": {
+            "type": "string",
+            "title": "Image Id"
+          },
           "name": {
             "type": "string",
             "title": "Name"
@@ -2949,11 +3087,26 @@
           "min_disk": {
             "type": "integer",
             "title": "Min Disk"
+          },
+          "builded_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "examples": [
+                  "2022-01-01T00:00:10Z"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Builded At"
           }
         },
         "title": "ImageResponseInternalV1",
         "required": [
           "id",
+          "image_id",
           "name",
           "status",
           "sku",
@@ -2967,6 +3120,7 @@
           "end_life_at": "2022-06-10T18:33:12Z",
           "end_standard_support_at": "2022-06-10T18:33:12Z",
           "id": "847ceef4-ff96-4762-895d-5e94e410ddeb",
+          "image_id": "65717bcc-6328-433d-b802-9f9b63e28154",
           "internal": true,
           "min_disk": 2,
           "min_ram": 1,
@@ -3015,6 +3169,74 @@
           "importing",
           "error"
         ]
+      },
+      "InstanceAccessResponse": {
+        "type": "object",
+        "properties": {
+          "expires_at": {
+            "type": "string",
+            "examples": [
+              "2022-01-01T00:00:10Z"
+            ],
+            "title": "Expires At"
+          },
+          "created_at": {
+            "type": "string",
+            "examples": [
+              "2022-01-01T00:00:10Z"
+            ],
+            "title": "Created At"
+          },
+          "visualized_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "examples": [
+                  "2022-01-01T00:00:10Z"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Visualized At"
+          },
+          "id": {
+            "type": "string",
+            "title": "Id"
+          }
+        },
+        "title": "InstanceAccessResponse",
+        "required": [
+          "expires_at",
+          "created_at",
+          "visualized_at",
+          "id"
+        ],
+        "example": {
+          "created_at": "2022-01-01T00:00:10Z",
+          "expires_at": "2022-01-02T00:00:10Z",
+          "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+        }
+      },
+      "InstanceAccess_InstanceAccessResponse_": {
+        "type": "object",
+        "properties": {
+          "instance": {
+            "$ref": "#/components/schemas/InstanceAccessResponse"
+          }
+        },
+        "title": "InstanceAccess[InstanceAccessResponse]",
+        "required": [
+          "instance"
+        ],
+        "example": {
+          "instance": {
+            "created_at": "2022-01-01T00:00:10Z",
+            "expires_at": "2022-01-02T00:00:10Z",
+            "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+          }
+        }
       },
       "InstanceCreateRequestV1NetworkDefault": {
         "type": "object",
@@ -3069,6 +3291,182 @@
           "vpc": {
             "id": "2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6"
           }
+        }
+      },
+      "InstanceCreateRequestV1NetworkXaas": {
+        "type": "object",
+        "properties": {
+          "vpc": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ID"
+              },
+              {
+                "$ref": "#/components/schemas/Name"
+              }
+            ],
+            "title": "Vpc",
+            "default": {
+              "name": "default"
+            }
+          },
+          "interface": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ID"
+              },
+              {
+                "$ref": "#/components/schemas/SecurityGroups"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Interface"
+          },
+          "associate_public_ip": {
+            "type": "boolean",
+            "title": "Associate Public Ip",
+            "default": false
+          }
+        },
+        "title": "InstanceCreateRequestV1NetworkXaas",
+        "example": {
+          "associate_public_ip": true,
+          "interface": {
+            "security_groups": [
+              {
+                "id": "f273fbde-2ddf-4dcd-8c41-342671ac0d17"
+              },
+              {
+                "id": "02a2acf3-d6db-4424-ac97-0254cb9c329e"
+              }
+            ]
+          },
+          "vpc": {
+            "id": "2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6"
+          }
+        }
+      },
+      "InstanceCreateRequestV1Xaas": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "maxLength": 255,
+            "minLength": 1
+          },
+          "machine_type": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ID"
+              },
+              {
+                "$ref": "#/components/schemas/Name"
+              }
+            ],
+            "title": "Machine Type"
+          },
+          "ssh_key_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ssh key Name"
+          },
+          "image": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ID"
+              },
+              {
+                "$ref": "#/components/schemas/Name"
+              }
+            ],
+            "title": "Image"
+          },
+          "availability_zone": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 255,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Availability Zone"
+          },
+          "network": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/InstanceCreateRequestV1NetworkXaas"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": {
+              "vpc": {
+                "name": "default"
+              },
+              "associate_public_ip": false
+            }
+          },
+          "user_data": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 65000,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Used to perform automated configuration tasks."
+          }
+        },
+        "title": "InstanceCreateRequestV1Xaas",
+        "required": [
+          "name",
+          "machine_type",
+          "image"
+        ],
+        "example": {
+          "availability_zone": "br-regiao-1a",
+          "image": {
+            "id": "2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6"
+          },
+          "machine_type": {
+            "id": "2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6"
+          },
+          "name": "instance name",
+          "network": {
+            "associate_public_ip": false,
+            "interface": {
+              "id": "c8719fd8-7a48-4dbf-b4d8-74f71fa67422",
+              "security_groups": [
+                {
+                  "id": "f273fbde-2ddf-4dcd-8c41-342671ac0d17"
+                },
+                {
+                  "id": "02a2acf3-d6db-4424-ac97-0254cb9c329e"
+                }
+              ]
+            },
+            "vpc": {
+              "id": "2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6"
+            }
+          },
+          "ssh_key_name": "keypair_name_here",
+          "user_data": "some_base64_script"
         }
       },
       "InstanceDeletedAllResponse": {
@@ -3531,7 +3929,7 @@
       "InstanceTypesV1ListResponse": {
         "type": "object",
         "properties": {
-          "instance_types": {
+          "machine_types": {
             "type": "array",
             "items": {
               "anyOf": [
@@ -3543,15 +3941,15 @@
                 }
               ]
             },
-            "title": "Instance Types"
+            "title": "Machine Types"
           }
         },
         "title": "InstanceTypesV1ListResponse",
         "required": [
-          "instance_types"
+          "machine_types"
         ],
         "example": {
-          "instance_types": [
+          "machine_types": [
             {
               "disk": 10,
               "gpu": 1,
@@ -3626,12 +4024,6 @@
       "InstanceTypesV1Request": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "string",
-            "title": "Id",
-            "maxLength": 255,
-            "minLength": 1
-          },
           "name": {
             "type": "string",
             "title": "Name",
@@ -3679,7 +4071,6 @@
         },
         "title": "InstanceTypesV1Request",
         "required": [
-          "id",
           "name",
           "ram",
           "disk",
@@ -3691,7 +4082,6 @@
           "disk": 10,
           "gpu": 1,
           "gpu_model": "a100",
-          "id": "3a4dc05b-eb10-42ec-8c0c-848e06f7aded",
           "internal": true,
           "name": "instance_type_name",
           "ram": 1024,
@@ -4126,6 +4516,7 @@
           "deleting_pending",
           "deleting",
           "deleting_error",
+          "deleting_network_error",
           "deleted"
         ]
       },
@@ -4162,6 +4553,24 @@
         "title": "IpAddressExpand",
         "required": [
           "privateIpAddress"
+        ]
+      },
+      "KeyPair": {
+        "type": "object",
+        "properties": {
+          "public_key": {
+            "type": "string",
+            "title": "Public Key"
+          },
+          "private_key": {
+            "type": "string",
+            "title": "Private Key"
+          }
+        },
+        "title": "KeyPair",
+        "required": [
+          "public_key",
+          "private_key"
         ]
       },
       "KeypairDeletedAllResponse": {
@@ -4353,6 +4762,7 @@
               "end_life_at": "2022-06-10T18:33:12Z",
               "end_standard_support_at": "2022-06-10T18:33:12Z",
               "id": "847ceef4-ff96-4762-895d-5e94e410ddeb",
+              "image_id": "65717bcc-6328-433d-b802-9f9b63e28154",
               "internal": true,
               "min_disk": 2,
               "min_ram": 1,
@@ -4637,7 +5047,8 @@
           "dbaas",
           "iamaas",
           "k8saas",
-          "mngsvc"
+          "mngsvc",
+          "vm-backups"
         ]
       },
       "ProjectTypeAll": {
@@ -4648,7 +5059,8 @@
           "iamaas",
           "k8saas",
           "mngsvc",
-          "default"
+          "default",
+          "vm-backups"
         ]
       },
       "SecurityGroups": {
@@ -4674,7 +5086,7 @@
             "maxLength": 255,
             "minLength": 1
           },
-          "virtual_machine": {
+          "instance": {
             "anyOf": [
               {
                 "$ref": "#/components/schemas/ID"
@@ -4683,19 +5095,19 @@
                 "$ref": "#/components/schemas/Name"
               }
             ],
-            "title": "Virtual Machine"
+            "title": "Instance"
           }
         },
         "title": "SnapshotCreateRequestV1",
         "required": [
           "name",
-          "virtual_machine"
+          "instance"
         ],
         "example": {
-          "name": "snapshot name",
-          "virtual_machine": {
+          "instance": {
             "id": "4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a"
-          }
+          },
+          "name": "snapshot name"
         }
       },
       "SnapshotRenameRequest": {
@@ -4799,6 +5211,94 @@
           "updated_at": "2022-06-11T18:33:12Z"
         }
       },
+      "SnapshotRestoreRequestV1Xaas": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "maxLength": 255,
+            "minLength": 1
+          },
+          "machine_type": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ID"
+              },
+              {
+                "$ref": "#/components/schemas/Name"
+              }
+            ],
+            "title": "Machine Type"
+          },
+          "ssh_key_name": {
+            "type": "string",
+            "title": "Ssh Key Name"
+          },
+          "availability_zone": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 255,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Availability Zone"
+          },
+          "network": {
+            "$ref": "#/components/schemas/InstanceCreateRequestV1NetworkXaas"
+          },
+          "user_data": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 65000,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "User Data"
+          }
+        },
+        "title": "SnapshotRestoreRequestV1Xaas",
+        "required": [
+          "name",
+          "machine_type",
+          "ssh_key_name",
+          "network"
+        ],
+        "example": {
+          "availability_zone": "br-regiao-1a",
+          "machine_type": {
+            "id": "4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a"
+          },
+          "name": "instance name",
+          "network": {
+            "associate_public_ip": false,
+            "interface": {
+              "id": "c8719fd8-7a48-4dbf-b4d8-74f71fa67422",
+              "security_groups": [
+                {
+                  "id": "f273fbde-2ddf-4dcd-8c41-342671ac0d17"
+                },
+                {
+                  "id": "02a2acf3-d6db-4424-ac97-0254cb9c329e"
+                }
+              ]
+            },
+            "vpc": {
+              "id": "2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6"
+            }
+          },
+          "ssh_key_name": "keypair_name_here",
+          "user_data": "some_base64_script"
+        }
+      },
       "SnapshotStateV1": {
         "type": "string",
         "title": "SnapshotStateV1",
@@ -4829,9 +5329,17 @@
           "version": {
             "anyOf": [
               {
+                "type": "integer",
+                "enum": [
+                  6
+                ],
                 "const": 6
               },
               {
+                "type": "integer",
+                "enum": [
+                  4
+                ],
                 "const": 4
               }
             ],

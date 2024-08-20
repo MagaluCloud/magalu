@@ -105,7 +105,6 @@ paths:
             x-viveiro: true
             x-mgc-output-flag: table=BACKUP_TYPE:$.backups[*].backup_type,CREATED_AT:$.backups[*].created_at',  ID:$.backups[*].id,INSTANCE:$.backups[*].instance,DISK:$.backups[*].min_disk,NAME:$.backups[*].name,
                 SIZE:$.backups[*].size,STATE:$.backups[*].state,STATUS:$.backups[*].status,UPDATED_AT:$.backups[*].updated_at
-            x-mgc-hidden: true
             security:
             -   OAuth2:
                 - virtual-machine.read
@@ -179,7 +178,6 @@ paths:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
             x-mgc-output-flag: table=ID:$.id
-            x-mgc-hidden: true
             security:
             -   OAuth2:
                 - virtual-machine.write
@@ -262,7 +260,6 @@ paths:
             x-viveiro: true
             x-mgc-output-flag: table=BACKUP_TYPE:$.backups[].backup_type,CREATED_AT:$.backups[].created_at',  ID:$.backups[].id,INSTANCE:$.backups[].instance,DISK:$.backups[].min_disk,NAME:$.backups[].name,
                 SIZE:$.backups[].size,STATE:$.backups[].state,STATUS:$.backups[].status,UPDATED_AT:$.backups[*].updated_at
-            x-mgc-hidden: true
             security:
             -   OAuth2:
                 - virtual-machine.read
@@ -315,7 +312,6 @@ paths:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
             x-mgc-output-flag: table=ID:$.id
-            x-mgc-hidden: true
             security:
             -   OAuth2:
                 - virtual-machine.write
@@ -445,7 +441,6 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
-            x-mgc-hidden: true
             security:
             -   OAuth2:
                 - virtual-machine.write
@@ -528,7 +523,6 @@ paths:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
             x-mgc-output-flag: table=ID:$.id
-            x-mgc-hidden: true
             security:
             -   OAuth2:
                 - virtual-machine.write
@@ -723,6 +717,11 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/CreateResponse'
                     links:
+                        password:
+                            operationId: view_instance_access_v1_instances_config__id__first_windows_password_get
+                            description: Retrieve the first windows admin password
+                            parameters:
+                                id: $response.body#/id
                         get:
                             operationId: instance_details_v1_v1_instances__id__get
                             description: Read Virtual Machine instance
@@ -799,6 +798,80 @@ paths:
             -   OAuth2:
                 - virtual-machine.write
             x-mgc-description: Create a Virtual Machine instance
+    /v1/instances/config/{id}/first-windows-password:
+        get:
+            tags:
+            - instances
+            summary: Retrieve the first windows admin password
+            description: "Retrieves the Windows Administrator password for the informed\
+                \ instance.\n    The password is accessible only once and has a built-in\n\
+                \    expiration date to enhance security."
+            operationId: view_instance_access_v1_instances_config__id__first_windows_password_get
+            parameters:
+            -   name: id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Id
+                    format: uuid
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/InstanceAccess_InstanceAccessResponseWithPass_'
+                    links:
+                        get:
+                            operationId: instance_details_v1_v1_instances__id__get
+                            description: Retrieve the details of a specific instance.
+                            parameters:
+                                id: $request.path.id
+                        delete:
+                            operationId: instance_delete_v1_v1_instances__id__delete
+                            description: Delete an instance.
+                            parameters:
+                                id: $request.path.id
+                        reboot:
+                            operationId: reboot_instance_v1_instances__id__reboot_post
+                            description: Reboot an instance.
+                            parameters:
+                                id: $request.path.id
+                        rename:
+                            operationId: update_instance_name_v1_instances__id__rename_patch
+                            description: Renames an instance.
+                            parameters:
+                                id: $request.path.id
+                        retype:
+                            operationId: retype_instance_v1_instances__id__retype_post
+                            description: Changes an instance machine-type.
+                            parameters:
+                                id: $request.path.id
+                        start:
+                            operationId: start_instance_v1_instances__id__start_post
+                            description: Starts an instance.
+                            parameters:
+                                id: $request.path.id
+                        stop:
+                            operationId: stop_instance_v1_instances__id__stop_post
+                            description: Stops an instance.
+                            parameters:
+                                id: $request.path.id
+                        suspend:
+                            operationId: suspend_instance_v1_instances__id__suspend_post
+                            description: Suspends instance.
+                            parameters:
+                                id: $request.path.id
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            security:
+            -   OAuth2:
+                - virtual-machine.read
     /v1/instances/network-interface/attach:
         post:
             tags:
@@ -956,6 +1029,11 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/InstanceV1Response'
                     links:
+                        password:
+                            operationId: view_instance_access_v1_instances_config__id__first_windows_password_get
+                            description: Retrieve the first windows admin password
+                            parameters:
+                                id: $request.path.id
                         delete:
                             operationId: instance_delete_v1_v1_instances__id__delete
                             description: Delete Virtual Machine instance
@@ -1183,6 +1261,11 @@ paths:
                 '204':
                     description: Successful Response
                     links:
+                        password:
+                            operationId: view_instance_access_v1_instances_config__id__first_windows_password_get
+                            description: Retrieve the first windows admin password
+                            parameters:
+                                id: $request.path.id
                         get:
                             operationId: instance_details_v1_v1_instances__id__get
                             description: Read Virtual Machine instance
@@ -1266,6 +1349,11 @@ paths:
                 '204':
                     description: Successful Response
                     links:
+                        password:
+                            operationId: view_instance_access_v1_instances_config__id__first_windows_password_get
+                            description: Retrieve the first windows admin password
+                            parameters:
+                                id: $request.path.id
                         get:
                             operationId: instance_details_v1_v1_instances__id__get
                             description: Read Virtual Machine instance
@@ -1395,6 +1483,11 @@ paths:
                 '204':
                     description: Successful Response
                     links:
+                        password:
+                            operationId: view_instance_access_v1_instances_config__id__first_windows_password_get
+                            description: Retrieve the first windows admin password
+                            parameters:
+                                id: $request.path.id
                         get:
                             operationId: instance_details_v1_v1_instances__id__get
                             description: Read Virtual Machine instance
@@ -1504,6 +1597,11 @@ paths:
                 '204':
                     description: Successful Response
                     links:
+                        password:
+                            operationId: view_instance_access_v1_instances_config__id__first_windows_password_get
+                            description: Retrieve the first windows admin password
+                            parameters:
+                                id: $request.path.id
                         get:
                             operationId: instance_details_v1_v1_instances__id__get
                             description: Read Virtual Machine instance
@@ -1586,6 +1684,11 @@ paths:
                 '204':
                     description: Successful Response
                     links:
+                        password:
+                            operationId: view_instance_access_v1_instances_config__id__first_windows_password_get
+                            description: Retrieve the first windows admin password
+                            parameters:
+                                id: $request.path.id
                         get:
                             operationId: instance_details_v1_v1_instances__id__get
                             description: Read Virtual Machine instance
@@ -1669,6 +1772,11 @@ paths:
                 '204':
                     description: Successful Response
                     links:
+                        password:
+                            operationId: view_instance_access_v1_instances_config__id__first_windows_password_get
+                            description: Retrieve the first windows admin password
+                            parameters:
+                                id: $request.path.id
                         get:
                             operationId: instance_details_v1_v1_instances__id__get
                             description: Read Virtual Machine instance
@@ -2767,6 +2875,61 @@ components:
             - creating
             - importing
             - error
+        InstanceAccessResponseWithPass:
+            type: object
+            properties:
+                password:
+                    type: string
+                    title: Password
+                created_at:
+                    type: string
+                    title: Created At
+                    example: '2022-01-01T00:00:10Z'
+                id:
+                    type: string
+                    title: Id
+            title: InstanceAccessResponseWithPass
+            required:
+            - password
+            - created_at
+            - id
+            example:
+                created_at: '2022-01-01T00:00:10Z'
+                id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                password: admin-password
+        InstanceAccess_InstanceAccessResponseWithPass_:
+            type: object
+            properties:
+                instance:
+                    type: object
+                    properties:
+                        password:
+                            type: string
+                            title: Password
+                        created_at:
+                            type: string
+                            title: Created At
+                            example: '2022-01-01T00:00:10Z'
+                        id:
+                            type: string
+                            title: Id
+                    title: InstanceAccessResponseWithPass
+                    required:
+                    - password
+                    - created_at
+                    - id
+                    example:
+                        created_at: '2022-01-01T00:00:10Z'
+                        id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                        password: admin-password
+            title: InstanceAccess[InstanceAccessResponseWithPass]
+            required:
+            - instance
+            example:
+                instance:
+                    created_at: '2022-01-01T00:00:10Z'
+                    id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                    password: admin-password
         InstanceCreateRequestV1Default:
             type: object
             properties:
@@ -2781,8 +2944,10 @@ components:
                     -   $ref: '#/components/schemas/Name'
                     title: Machine Type
                 ssh_key_name:
-                    type: string
+                    anyOf:
+                    -   type: string
                     title: Ssh key Name
+                    nullable: true
                 image:
                     anyOf:
                     -   $ref: '#/components/schemas/ID'
@@ -2810,7 +2975,6 @@ components:
             required:
             - name
             - machine_type
-            - ssh_key_name
             - image
             example:
                 availability_zone: br-regiao-1a

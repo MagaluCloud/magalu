@@ -147,8 +147,7 @@
           }
         },
         "x-viveiro": true,
-        "x-mgc-output-flag": "table=BACKUP_TYPE:$.backups[*].backup_type,CREATED_AT:$.backups[*].created_at',  ID:$.backups[*].id,INSTANCE:$.backups[*].instance,DISK:$.backups[*].min_disk,NAME:$.backups[*].name, SIZE:$.backups[*].size,STATE:$.backups[*].state,STATUS:$.backups[*].status,UPDATED_AT:$.backups[*].updated_at",
-        "x-mgc-hidden": true
+        "x-mgc-output-flag": "table=BACKUP_TYPE:$.backups[*].backup_type,CREATED_AT:$.backups[*].created_at',  ID:$.backups[*].id,INSTANCE:$.backups[*].instance,DISK:$.backups[*].min_disk,NAME:$.backups[*].name, SIZE:$.backups[*].size,STATE:$.backups[*].state,STATUS:$.backups[*].status,UPDATED_AT:$.backups[*].updated_at"
       },
       "post": {
         "tags": [
@@ -241,8 +240,7 @@
           }
         },
         "x-viveiro": true,
-        "x-mgc-output-flag": "table=ID:$.id",
-        "x-mgc-hidden": true
+        "x-mgc-output-flag": "table=ID:$.id"
       }
     },
     "/v1/backups/{id}": {
@@ -351,8 +349,7 @@
           }
         },
         "x-viveiro": true,
-        "x-mgc-output-flag": "table=BACKUP_TYPE:$.backups[].backup_type,CREATED_AT:$.backups[].created_at',  ID:$.backups[].id,INSTANCE:$.backups[].instance,DISK:$.backups[].min_disk,NAME:$.backups[].name, SIZE:$.backups[].size,STATE:$.backups[].state,STATUS:$.backups[].status,UPDATED_AT:$.backups[*].updated_at",
-        "x-mgc-hidden": true
+        "x-mgc-output-flag": "table=BACKUP_TYPE:$.backups[].backup_type,CREATED_AT:$.backups[].created_at',  ID:$.backups[].id,INSTANCE:$.backups[].instance,DISK:$.backups[].min_disk,NAME:$.backups[].name, SIZE:$.backups[].size,STATE:$.backups[].state,STATUS:$.backups[].status,UPDATED_AT:$.backups[*].updated_at"
       },
       "delete": {
         "tags": [
@@ -438,8 +435,7 @@
           }
         },
         "x-viveiro": true,
-        "x-mgc-output-flag": "table=ID:$.id",
-        "x-mgc-hidden": true
+        "x-mgc-output-flag": "table=ID:$.id"
       }
     },
     "/v1/backups/{id}/copy": {
@@ -633,8 +629,7 @@
             }
           }
         },
-        "x-viveiro": true,
-        "x-mgc-hidden": true
+        "x-viveiro": true
       }
     },
     "/v1/backups/{id}/restore": {
@@ -739,8 +734,7 @@
           }
         },
         "x-viveiro": true,
-        "x-mgc-output-flag": "table=ID:$.id",
-        "x-mgc-hidden": true
+        "x-mgc-output-flag": "table=ID:$.id"
       }
     },
     "/v1/images": {
@@ -1046,6 +1040,59 @@
         },
         "x-viveiro": true,
         "x-mgc-output-flag": "table=ID:$.id"
+      }
+    },
+    "/v1/instances/config/{id}/first-windows-password": {
+      "get": {
+        "tags": [
+          "instances"
+        ],
+        "summary": "Retrieve the first windows admin password",
+        "description": "Retrieves the Windows Administrator password for the informed instance.\n    The password is accessible only once and has a built-in\n    expiration date to enhance security.",
+        "operationId": "view_instance_access_v1_instances_config__id__first_windows_password_get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Id",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InstanceAccess_InstanceAccessResponseWithPass_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/v1/instances/network-interface/attach": {
@@ -3098,6 +3145,56 @@
           "error"
         ]
       },
+      "InstanceAccessResponseWithPass": {
+        "type": "object",
+        "properties": {
+          "password": {
+            "type": "string",
+            "title": "Password"
+          },
+          "created_at": {
+            "type": "string",
+            "examples": [
+              "2022-01-01T00:00:10Z"
+            ],
+            "title": "Created At"
+          },
+          "id": {
+            "type": "string",
+            "title": "Id"
+          }
+        },
+        "title": "InstanceAccessResponseWithPass",
+        "required": [
+          "password",
+          "created_at",
+          "id"
+        ],
+        "example": {
+          "created_at": "2022-01-01T00:00:10Z",
+          "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+          "password": "admin-password"
+        }
+      },
+      "InstanceAccess_InstanceAccessResponseWithPass_": {
+        "type": "object",
+        "properties": {
+          "instance": {
+            "$ref": "#/components/schemas/InstanceAccessResponseWithPass"
+          }
+        },
+        "title": "InstanceAccess[InstanceAccessResponseWithPass]",
+        "required": [
+          "instance"
+        ],
+        "example": {
+          "instance": {
+            "created_at": "2022-01-01T00:00:10Z",
+            "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+            "password": "admin-password"
+          }
+        }
+      },
       "InstanceCreateRequestV1Default": {
         "type": "object",
         "properties": {
@@ -3119,7 +3216,14 @@
             "title": "Machine Type"
           },
           "ssh_key_name": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Ssh key Name"
           },
           "image": {
@@ -3180,7 +3284,6 @@
         "required": [
           "name",
           "machine_type",
-          "ssh_key_name",
           "image"
         ],
         "example": {

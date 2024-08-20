@@ -9,7 +9,11 @@ Usage:
 
 ## Product catalog:
 - Commands:
-- copy        Copy backup cross region
+- create      Create a backup.
+- delete      Delete a backup.
+- get         Retrieve the details of a specific backup.
+- list        List all backups.
+- rename      Rename a backup.
 
 ## Other commands:
 - Flags:
