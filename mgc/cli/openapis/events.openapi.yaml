@@ -78,12 +78,6 @@ paths:
                     anyOf:
                     -   type: string
                     title: Tenantid
-            -   name: X-Tenant-ID
-                in: header
-                required: false
-                schema:
-                    type: string
-                    title: X-Tenant-Id
             -   name: data
                 in: query
                 description: The raw data event

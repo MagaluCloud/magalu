@@ -71,6 +71,7 @@ if __name__ == "__main__":
         RemovePathTransformer(".*xaas.*"),
         RemoveComponentTransformer(".*(xaas|XAAS|Xaas).*"),
         RemoveParamTransformer("x-tenant-id"),
+        RemoveParamTransformer("X-Tenant-ID"),
         AddSecurityTransformer(args.product_name),
         # AddParameterTypes(),
         AddTagsBlockTransformer(),

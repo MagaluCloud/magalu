@@ -558,19 +558,6 @@ func (o *operation) setSecurityHeader(ctx context.Context, paramValues core.Para
 	if isAuthForced(paramValues) || o.needsAuth() {
 		// TODO: review needsAuth() usage if more security schemes are used. Assuming oauth2 + bearer
 		// If others are to be used, loop using forEachSecurityRequirement()
-
-		xTenantID, err := auth.XTenantID(ctx)
-		if err == nil {
-			req.Header.Set("x-tenant-id", xTenantID)
-		}
-
-		if xTenantID == "" {
-			xTenantID, err = auth.CurrentTenantID()
-			if err == nil {
-				req.Header.Set("x-tenant-id", xTenantID)
-			}
-		}
-
 		switch auth.CurrentSecurityMethod() {
 
 		case apiKeyAuthMethod:
