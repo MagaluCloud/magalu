@@ -1,4 +1,4 @@
-module spec_manipulator
+module magalu.cloud/actions
 
 go 1.22.6
 

@@ -1,1 +1,1 @@
-go build -o specs
+go build -o mgc_actions

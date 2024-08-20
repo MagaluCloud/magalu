@@ -1,4 +1,4 @@
-package cmd
+package spec
 
 import (
 	"fmt"
@@ -16,7 +16,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func prepareSchema(xchema *base.Schema) *base.Schema {
+func PrepareSchema(xchema *base.Schema) *base.Schema {
 	newChema := &base.Schema{}
 	// Compatible with all versions
 	newChema.Not = xchema.Not
@@ -94,7 +94,7 @@ func prepareSchema(xchema *base.Schema) *base.Schema {
 		propMap := orderedmap.New[string, *base.SchemaProxy]()
 
 		for prop := xchema.Properties.Oldest(); prop != nil; prop = prop.Next() {
-			preparedSchema := prepareSchema(prop.Value.Schema())
+			preparedSchema := PrepareSchema(prop.Value.Schema())
 			if preparedSchema.Title == "InstanceCreateRequestV1NetworkDefault" {
 				preparedSchema.Default = nil
 			}
@@ -123,7 +123,7 @@ func prepareSchema(xchema *base.Schema) *base.Schema {
 					*newChema.Nullable = true
 					continue
 				}
-				newAllOf = append(newAllOf, base.CreateSchemaProxy(prepareSchema(xA.Schema())))
+				newAllOf = append(newAllOf, base.CreateSchemaProxy(PrepareSchema(xA.Schema())))
 			}
 		}
 	}
@@ -146,7 +146,7 @@ func prepareSchema(xchema *base.Schema) *base.Schema {
 					*newChema.Nullable = true
 					continue
 				}
-				newOneOf = append(newOneOf, base.CreateSchemaProxy(prepareSchema(xO.Schema())))
+				newOneOf = append(newOneOf, base.CreateSchemaProxy(PrepareSchema(xO.Schema())))
 			}
 		}
 	}
@@ -172,7 +172,7 @@ func prepareSchema(xchema *base.Schema) *base.Schema {
 					*newChema.Nullable = true
 					continue
 				}
-				newAnyOf = append(newAnyOf, base.CreateSchemaProxy(prepareSchema(xA.Schema())))
+				newAnyOf = append(newAnyOf, base.CreateSchemaProxy(PrepareSchema(xA.Schema())))
 			}
 
 		}
@@ -217,7 +217,7 @@ func prepareSchema(xchema *base.Schema) *base.Schema {
 	//Items *DynamicValue[*SchemaProxy, bool]
 	if xchema.Items != nil {
 		newChema.Items = &base.DynamicValue[*base.SchemaProxy, bool]{
-			A: base.CreateSchemaProxy(prepareSchema(xchema.Items.A.Schema())),
+			A: base.CreateSchemaProxy(PrepareSchema(xchema.Items.A.Schema())),
 		}
 
 	}
@@ -286,13 +286,12 @@ func prepareSchema(xchema *base.Schema) *base.Schema {
 
 }
 
-var downgradeSpecCmd = &cobra.Command{
-	Use:    "downgrade",
-	Short:  "Downgrade specs from 3.1.x to 3.0.x",
-	Hidden: true,
+var DowngradeSpecCmd = &cobra.Command{
+	Use:   "downgrade",
+	Short: "Downgrade specs from 3.1.x to 3.0.x",
 	Run: func(cmd *cobra.Command, args []string) {
 		// runPrepare(cmd, args)
-		_ = verificarEAtualizarDiretorio(currentDir())
+		_ = verificarEAtualizarDiretorio(CurrentDir())
 
 		currentConfig, err := loadList()
 
@@ -302,7 +301,7 @@ var downgradeSpecCmd = &cobra.Command{
 		}
 
 		for _, v := range currentConfig {
-			file := filepath.Join(currentDir(), v.File)
+			file := filepath.Join(CurrentDir(), v.File)
 			fileBytes, err := os.ReadFile(file)
 			if err != nil {
 				fmt.Println(err)
@@ -342,7 +341,7 @@ var downgradeSpecCmd = &cobra.Command{
 			// Schemas
 			for pair := docModel.Model.Components.Schemas.Oldest(); pair != nil; pair = pair.Next() {
 				xchema := pair.Value.Schema()
-				*xchema = *prepareSchema(xchema)
+				*xchema = *PrepareSchema(xchema)
 			}
 
 			//Paths
@@ -355,7 +354,7 @@ var downgradeSpecCmd = &cobra.Command{
 					if op.Value.Parameters != nil {
 						for _, param := range op.Value.Parameters {
 							xchema := param.Schema.Schema()
-							*xchema = *prepareSchema(xchema)
+							*xchema = *PrepareSchema(xchema)
 						}
 					}
 				}
@@ -387,7 +386,7 @@ var downgradeSpecCmd = &cobra.Command{
 				panic(fmt.Sprintf("cannot re-render document: %d errors reported", len(errs)))
 			}
 
-			_ = os.WriteFile(filepath.Join(currentDir(), "conv."+v.File), fileBytes, 0644)
+			_ = os.WriteFile(filepath.Join(CurrentDir(), "conv."+v.File), fileBytes, 0644)
 		}
 	},
 }

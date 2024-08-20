@@ -1,4 +1,4 @@
-package cmd
+package spec
 
 import (
 	"fmt"
@@ -29,8 +29,8 @@ type modules struct {
 // WIP WIP WIP
 
 // prepareToGoCmd is a hidden command that prepares all available specs to golang
-func runPrepare(cmd *cobra.Command, args []string) {
-	_ = verificarEAtualizarDiretorio(currentDir())
+func RunPrepare(cmd *cobra.Command, args []string) {
+	_ = verificarEAtualizarDiretorio(CurrentDir())
 
 	currentConfig, err := loadList()
 
@@ -39,7 +39,7 @@ func runPrepare(cmd *cobra.Command, args []string) {
 		return
 	}
 
-	finalFile := filepath.Join(currentDir(), "specs.go.tmp")
+	finalFile := filepath.Join(CurrentDir(), "specs.go.tmp")
 	newFileSpecs, err := os.OpenFile(finalFile, os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
 		fmt.Println(err)
@@ -72,12 +72,12 @@ func runPrepare(cmd *cobra.Command, args []string) {
 
 	for _, v := range currentConfig {
 		fileStringBase64 := ""
-		fmt.Println(filepath.Join(currentDir(), v.File))
+		fmt.Println(filepath.Join(CurrentDir(), v.File))
 		//read file and convert to string and save in new generate a new go file
 		if !v.Enabled {
 			fileStringBase64 = ""
 		} else {
-			file := filepath.Join(currentDir(), v.File)
+			file := filepath.Join(CurrentDir(), v.File)
 			fileBytes, err := os.ReadFile(file)
 			if err != nil {
 				fmt.Println(err)
@@ -193,7 +193,7 @@ func runPrepare(cmd *cobra.Command, args []string) {
 
 			fileStringBase64 = b64.StdEncoding.EncodeToString(fileBytes)
 
-			err = os.WriteFile(filepath.Join(currentDir(), v.File), fileBytes, 0644)
+			err = os.WriteFile(filepath.Join(CurrentDir(), v.File), fileBytes, 0644)
 			if err != nil {
 				fmt.Println(err)
 				return
@@ -220,9 +220,8 @@ func runPrepare(cmd *cobra.Command, args []string) {
 }
 
 // replace another python scripts
-var prepareToGoCmd = &cobra.Command{
-	Use:    "prepare",
-	Short:  "Prepare all available specs to golang",
-	Hidden: true,
-	Run:    runPrepare,
+var PrepareToGoCmd = &cobra.Command{
+	Use:   "prepare",
+	Short: "Prepare all available specs to golang",
+	Run:   RunPrepare,
 }

@@ -1,4 +1,4 @@
-package cmd
+package spec
 
 import (
 	"fmt"
@@ -51,18 +51,17 @@ func add(cmd *cobra.Command, args []string) {
 
 	toSave = append(toSave, currentConfig...)
 	viper.Set("jaxyendy", toSave)
-	err = viper.WriteConfigAs(VIPER_FILE)
+	err = viper.WriteConfigAs("SPEC_DIR")
 	if err != nil {
 		fmt.Println(err)
 	}
 	fmt.Println("done")
 }
 
-var addSpecsCmd = &cobra.Command{
+var AddSpecsCmd = &cobra.Command{
 	Use:     "add [url] [menu]",
 	Short:   "Add new spec",
 	Example: "specs add https://block-storage.br-ne-1.jaxyendy.com/v1/openapi.json block-storage",
 	Args:    cobra.MinimumNArgs(2),
-	Hidden:  true,
 	Run:     add,
 }
