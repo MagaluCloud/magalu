@@ -14,6 +14,7 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	mgcSdk "magalu.cloud/lib"
+	"magalu.cloud/terraform-provider-mgc/internal/tfutil"
 
 	sdkBlockStorageVolumes "magalu.cloud/lib/products/block_storage/volumes"
 	"magalu.cloud/sdk"
@@ -195,7 +196,7 @@ func (r *bsVolumes) Read(ctx context.Context, req resource.ReadRequest, resp *re
 	getResult, err := r.bsVolumes.Get(sdkBlockStorageVolumes.GetParameters{
 		Id:     plan.ID.ValueString(),
 		Expand: &sdkBlockStorageVolumes.GetParametersExpand{"volume_type"},
-	}, sdkBlockStorageVolumes.GetConfigs{})
+	}, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkBlockStorageVolumes.GetConfigs{}))
 
 	if err != nil {
 		resp.Diagnostics.AddError(
@@ -235,7 +236,7 @@ func (r *bsVolumes) Create(ctx context.Context, req resource.CreateRequest, resp
 		Type: sdkBlockStorageVolumes.CreateParametersType{
 			Name: state.Type.Name.ValueStringPointer(),
 		},
-	}, sdkBlockStorageVolumes.CreateConfigs{})
+	}, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkBlockStorageVolumes.CreateConfigs{}))
 
 	if err != nil {
 		resp.Diagnostics.AddError(
@@ -250,7 +251,7 @@ func (r *bsVolumes) Create(ctx context.Context, req resource.CreateRequest, resp
 	getCreatedResource, err := r.bsVolumes.Get(sdkBlockStorageVolumes.GetParameters{
 		Id:     state.ID.ValueString(),
 		Expand: &sdkBlockStorageVolumes.GetParametersExpand{"volume_type"},
-	}, sdkBlockStorageVolumes.GetConfigs{})
+	}, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkBlockStorageVolumes.GetConfigs{}))
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Error Reading BS",
@@ -280,7 +281,13 @@ func (r *bsVolumes) Update(ctx context.Context, req resource.UpdateRequest, resp
 
 	if data.Type.Name.ValueString() != currState.Type.Name.ValueString() {
 		// retype
-		err := r.bsVolumes.Retype(sdkBlockStorageVolumes.RetypeParameters{}, sdkBlockStorageVolumes.RetypeConfigs{})
+		err := r.bsVolumes.Retype(sdkBlockStorageVolumes.RetypeParameters{
+			Id: data.ID.ValueString(),
+			NewType: sdkBlockStorageVolumes.RetypeParametersNewType{
+				Name: data.Type.Name.ValueStringPointer(),
+			},
+		},
+			tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkBlockStorageVolumes.RetypeConfigs{}))
 		if err != nil {
 			resp.Diagnostics.AddError(
 				"Error to retype the block storage volume",
@@ -291,7 +298,11 @@ func (r *bsVolumes) Update(ctx context.Context, req resource.UpdateRequest, resp
 	}
 
 	if data.Size.ValueInt64() > currState.Size.ValueInt64() {
-		err := r.bsVolumes.Extend(sdkBlockStorageVolumes.ExtendParameters{}, sdkBlockStorageVolumes.ExtendConfigs{})
+		err := r.bsVolumes.Extend(sdkBlockStorageVolumes.ExtendParameters{
+			Id:   data.ID.ValueString(),
+			Size: int(data.Size.ValueInt64()),
+		},
+			tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkBlockStorageVolumes.ExtendConfigs{}))
 		if err != nil {
 			resp.Diagnostics.AddError(
 				"Error to resize the block storage volume",
@@ -310,7 +321,7 @@ func (r *bsVolumes) Delete(ctx context.Context, req resource.DeleteRequest, resp
 		sdkBlockStorageVolumes.DeleteParameters{
 			Id: data.ID.ValueString(),
 		},
-		sdkBlockStorageVolumes.DeleteConfigs{},
+		tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkBlockStorageVolumes.DeleteConfigs{}),
 	)
 	if err != nil {
 		resp.Diagnostics.AddError(
