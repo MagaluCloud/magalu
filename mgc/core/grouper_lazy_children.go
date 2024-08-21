@@ -3,9 +3,12 @@ package core
 import (
 	"fmt"
 	"strings"
+	"sync"
 
 	"slices"
 )
+
+var childrenMutex sync.Mutex
 
 // Implements VisitChildren() and GetChildByName() by calling createChildren()
 // only once, when/if needed, and storing the results.
@@ -39,7 +42,9 @@ func (g *GrouperLazyChildren[T]) getChildren() (children []T, byName map[string]
 	g.childByName = make(map[string]T, len(children))
 
 	for _, child := range children {
+		childrenMutex.Lock()
 		g.childByName[child.Name()] = child
+		childrenMutex.Unlock()
 	}
 
 	slices.SortFunc(g.children, func(a, b T) int {
