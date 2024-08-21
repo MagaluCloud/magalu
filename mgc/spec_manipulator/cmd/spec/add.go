@@ -65,3 +65,20 @@ var AddSpecsCmd = &cobra.Command{
 	Args:    cobra.MinimumNArgs(2),
 	Run:     add,
 }
+
+func CliDumpTreeCmd() *cobra.Command {
+	options := &DumpeMenu{}
+
+	cmd := &cobra.Command{
+		Use:   "dumptree",
+		Short: "run dump tree",
+		Run: func(cmd *cobra.Command, args []string) {
+			dumpTree(*options)
+		},
+	}
+
+	cmd.Flags().StringVarP(&options.cli, "cli", "c", "", "Local ou comando da CLI")
+	cmd.Flags().StringVarP(&options.output, "output", "o", "", "Local de saida do dump file")
+
+	return cmd
+}
