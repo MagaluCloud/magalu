@@ -66,7 +66,7 @@ func (r *DataSourceSSH) Schema(_ context.Context, req datasource.SchemaRequest, 
 				Description: "List of ssh-keys.",
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
-						"id": schema.BoolAttribute{
+						"id": schema.StringAttribute{
 							Computed:    true,
 							Description: "ID of ssh key.",
 						},
