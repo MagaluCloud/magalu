@@ -4,6 +4,7 @@ import (
 	"magalu.cloud/core"
 	"magalu.cloud/core/utils"
 	"magalu.cloud/sdk/static/object_storage/buckets/acl"
+	"magalu.cloud/sdk/static/object_storage/buckets/label"
 	"magalu.cloud/sdk/static/object_storage/buckets/policy"
 	"magalu.cloud/sdk/static/object_storage/buckets/versioning"
 )
@@ -24,6 +25,7 @@ var GetGroup = utils.NewLazyLoader[core.Grouper](func() core.Grouper {
 				acl.GetGroup(),        // object-storage buckets acl
 				versioning.GetGroup(), // object-storage buckets versioning
 				policy.GetGroup(),     // object-storage buckets policy
+				label.GetGroup(),      // object-storage buckets label
 			}
 		},
 	)
