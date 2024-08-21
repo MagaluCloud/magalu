@@ -35,10 +35,10 @@ modules:
     summary: APIs referentes ao produto de VPC
     url: https://network.jaxyendy.com/openapi.json
     version: 1.131.1
--   description: GlobalDB API
+-   description: SSH Keys management
     name: ssh
     path: ssh.openapi.yaml
-    summary: GlobalDB API
+    summary: SSH Keys management
     url: https://globaldb.jaxyendy.com/openapi-cli.json
     version: 0.1.0
 -   description: Virtual Machine Api Product

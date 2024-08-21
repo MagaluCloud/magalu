@@ -356,7 +356,7 @@ func (r *vmInstances) Create(ctx context.Context, req resource.CreateRequest, re
 
 	createParams := sdkVmInstances.CreateParameters{
 		Name:       state.FinalName.ValueString(),
-		SshKeyName: state.SshKeyName.ValueString(),
+		SshKeyName: state.SshKeyName.ValueStringPointer(),
 		Image: sdkVmInstances.CreateParametersImage{
 			Name: state.Image.Name.ValueStringPointer(),
 		},

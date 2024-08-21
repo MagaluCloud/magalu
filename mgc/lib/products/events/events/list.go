@@ -9,7 +9,7 @@ Lists all cloud events.
 
 Lists all cloud events emitted by other products.
 
-Version: 0.12.0
+Version: 0.13.0
 
 import "magalu.cloud/lib/products/events/events"
 */
@@ -38,7 +38,6 @@ type ListParametersData struct {
 }
 
 type ListConfigs struct {
-	XTenantId *string `json:"X-Tenant-ID,omitempty"`
 	Env       *string `json:"env,omitempty"`
 	Region    *string `json:"region,omitempty"`
 	ServerUrl *string `json:"serverUrl,omitempty"`

@@ -8,7 +8,7 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	mgcSdk "magalu.cloud/lib"
-	sdkSSHKeys "magalu.cloud/lib/products/ssh/ssh_keys"
+	sdkSSHKeys "magalu.cloud/lib/products/ssh/public_keys"
 	"magalu.cloud/sdk"
 	"magalu.cloud/terraform-provider-mgc/internal/tfutil"
 )
@@ -24,7 +24,6 @@ type SshKeyModel struct {
 	ID       types.String `tfsdk:"id"`
 	Name     types.String `tfsdk:"name"`
 	Key_Type types.String `tfsdk:"key_type"`
-	Key      types.String `tfsdk:"key"`
 }
 
 type SshKeysModel struct {
@@ -70,10 +69,6 @@ func (r *DataSourceSSH) Schema(_ context.Context, req datasource.SchemaRequest, 
 							Computed:    true,
 							Description: "ID of ssh key.",
 						},
-						"key": schema.StringAttribute{
-							Computed:    true,
-							Description: "The value of public ssh key.",
-						},
 						"key_type": schema.StringAttribute{
 							Computed:    true,
 							Description: "The type of ssh key.",
@@ -104,10 +99,9 @@ func (r *DataSourceSSH) Read(ctx context.Context, req datasource.ReadRequest, re
 
 	for _, key := range sdkOutput.Results {
 		data.SSHKeys = append(data.SSHKeys, SshKeyModel{
-			ID:       types.StringValue(key.Id),
-			Name:     types.StringValue(key.Name),
-			Key_Type: types.StringValue(key.KeyType),
-			Key:      types.StringValue(key.Key),
+			ID:       types.StringValue(*key.Id),
+			Name:     types.StringValue(*key.Name),
+			Key_Type: types.StringValue(*key.KeyType),
 		})
 
 	}

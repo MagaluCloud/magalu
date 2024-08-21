@@ -9,7 +9,7 @@ security-groups
 
 security_group | security-groups
 
-Version: 1.131.0
+Version: 1.131.1
 
 import "magalu.cloud/lib/products/network/security_group/security_groups"
 */

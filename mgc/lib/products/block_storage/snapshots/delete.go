@@ -3,7 +3,7 @@ Executor: delete
 
 # Summary
 
-# Delete a snapshot
+Delete a snapshot.
 
 # Description
 

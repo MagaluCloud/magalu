@@ -15,7 +15,11 @@ type service struct {
 }
 
 type Service interface {
-	Copy(parameters CopyParameters, configs CopyConfigs) (err error)
+	Create(parameters CreateParameters, configs CreateConfigs) (result CreateResult, err error)
+	Delete(parameters DeleteParameters, configs DeleteConfigs) (err error)
+	Get(parameters GetParameters, configs GetConfigs) (result GetResult, err error)
+	List(parameters ListParameters, configs ListConfigs) (result ListResult, err error)
+	Rename(parameters RenameParameters, configs RenameConfigs) (err error)
 }
 
 func NewService(ctx context.Context, client *mgcClient.Client) Service {

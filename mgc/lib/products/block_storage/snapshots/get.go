@@ -3,7 +3,7 @@ Executor: get
 
 # Summary
 
-# Retrieve the details of a snapshot
+Retrieve the details of a specific snapshot.
 
 # Description
 

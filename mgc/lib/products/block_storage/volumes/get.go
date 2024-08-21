@@ -3,7 +3,7 @@ Executor: get
 
 # Summary
 
-# Retrieve the details of a volume
+Retrieve the details of a specific volume.
 
 # Description
 

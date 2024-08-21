@@ -10,7 +10,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	sdkSSHKeys "magalu.cloud/lib/products/ssh/ssh_keys"
+	sdkSSHKeys "magalu.cloud/lib/products/ssh/public_keys"
 	"magalu.cloud/sdk"
 	tfutil "magalu.cloud/terraform-provider-mgc/internal/tfutil"
 
@@ -183,7 +183,7 @@ func (r *sshKeys) Update(ctx context.Context, req resource.UpdateRequest, resp *
 func (r *sshKeys) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
 	var data sshKeyModel
 	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
-	_, err := r.sshKeys.Delete(
+	err := r.sshKeys.Delete(
 		sdkSSHKeys.DeleteParameters{
 			KeyId: data.ID.ValueString(),
 		},

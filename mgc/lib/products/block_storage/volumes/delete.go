@@ -3,7 +3,7 @@ Executor: delete
 
 # Summary
 
-# Delete a Volume
+Delete a volume.
 
 # Description
 

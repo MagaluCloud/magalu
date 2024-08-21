@@ -3,7 +3,7 @@ Executor: detach
 
 # Summary
 
-# Detach a Volume
+Detach the volume from an instance.
 
 # Description
 

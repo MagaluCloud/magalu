@@ -5,11 +5,15 @@ Executor: get
 
 # Get Ssh Key
 
+# Description
+
+Retrieves a specific SSH public key.
+
 Version: 0.1.0
 
-import "magalu.cloud/lib/products/ssh/ssh_keys"
+import "magalu.cloud/lib/products/ssh/public_keys"
 */
-package sshKeys
+package publicKeys
 
 import (
 	mgcCore "magalu.cloud/core"
@@ -21,7 +25,6 @@ type GetParameters struct {
 }
 
 type GetConfigs struct {
-	XTenantId string  `json:"X-Tenant-ID"`
 	Env       *string `json:"env,omitempty"`
 	ServerUrl *string `json:"serverUrl,omitempty"`
 }
@@ -40,7 +43,7 @@ func (s *service) Get(
 	result GetResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("Get", mgcCore.RefPath("/ssh/ssh_keys/get"), s.client, s.ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Get", mgcCore.RefPath("/ssh/public_keys/get"), s.client, s.ctx)
 	if err != nil {
 		return
 	}

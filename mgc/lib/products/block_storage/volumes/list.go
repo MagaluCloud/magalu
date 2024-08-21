@@ -3,7 +3,7 @@ Executor: list
 
 # Summary
 
-# List all Volumes
+List all volumes.
 
 # Description
 

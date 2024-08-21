@@ -3,14 +3,14 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc ssh ssh-pub-keys delete [key-name] [flags]
+  ./mgc ssh public-keys delete [key-id] [flags]
 ```
 
 ## Product catalog:
 - Flags:
-- -h, --help              help for delete
-- --key-name string   Key Name: The name of the SSH public key. (required)
-- -v, --version           version for delete
+- -h, --help            help for delete
+- --key-id string   Key ID: The id of the SSH public key. (required)
+- -v, --version         version for delete
 
 ## Other commands:
 - Global Flags:

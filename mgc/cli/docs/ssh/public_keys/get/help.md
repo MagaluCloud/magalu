@@ -1,18 +1,17 @@
-# Lists all SSH public keys.
+# Retrieves a specific SSH public key.
 
 ## Usage:
 ```bash
 Usage:
-  ./mgc ssh ssh-pub-keys list [flags]
+  ./mgc ssh public-keys get [key-id] [flags]
 ```
 
 ## Product catalog:
 - Flags:
-- --control.limit integer    Limit the number of results. (default 50)
-- --control.offset integer   Offset the list of results.
-- --control.sort string      Sort the list of results.
-- -h, --help                     help for list
-- -v, --version                  version for list
+- --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
+- -h, --help                          help for get
+- --key-id string                 Key ID: The id of the SSH public key. (required)
+- -v, --version                       version for get
 
 ## Other commands:
 - Global Flags:

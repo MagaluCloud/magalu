@@ -1,4 +1,4 @@
-# GlobalDB API
+# SSH Keys management
 
 ## Usage:
 ```bash
@@ -9,7 +9,7 @@ Usage:
 
 ## Product catalog:
 - Commands:
-- ssh-pub-keys Operations related to SSH public keys.
+- public-keys Operations related to SSH public keys.
 
 ## Other commands:
 - Flags:

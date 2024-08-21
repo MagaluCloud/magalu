@@ -3,7 +3,7 @@ Executor: create
 
 # Summary
 
-# Create a snapshot
+Create a snapshot.
 
 # Description
 

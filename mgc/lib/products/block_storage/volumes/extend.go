@@ -3,7 +3,7 @@ Executor: extend
 
 # Summary
 
-# Extend a Volume
+Extend the size of a volume.
 
 # Description
 

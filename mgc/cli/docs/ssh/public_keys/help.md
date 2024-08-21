@@ -3,13 +3,13 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc ssh ssh-pub-keys [flags]
-  ./mgc ssh ssh-pub-keys [command]
+  ./mgc ssh public-keys [flags]
+  ./mgc ssh public-keys [command]
 ```
 
 ## Product catalog:
 - Aliases:
-- ssh-pub-keys, ssh_pub_keys
+- public-keys, public_keys
 
 ## Other commands:
 - Commands:
@@ -21,7 +21,7 @@ Usage:
 ## Flags:
 ```bash
 Flags:
-  -h, --help      help for ssh-pub-keys
-  -v, --version   version for ssh-pub-keys
+  -h, --help      help for public-keys
+  -v, --version   version for public-keys
 ```
 

@@ -3,7 +3,7 @@ Executor: create
 
 # Summary
 
-# Create a new Volume
+Create a new volume.
 
 # Description
 

@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc ssh ssh-pub-keys create [flags]
+  ./mgc ssh public-keys create [flags]
 ```
 
 ## Product catalog:

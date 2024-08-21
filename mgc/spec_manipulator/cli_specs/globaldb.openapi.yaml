@@ -1,7 +1,7 @@
 openapi: 3.0.2
 info:
   title: GlobalDB API
-  description: GlobalDB API
+  description: SSH Keys management
   version: 0.1.0
   contact:
     name: Tribo IAAS Cloud
@@ -11,7 +11,7 @@ paths:
   /v0/ssh-keys:
     post:
       tags:
-        - ssh_pub_keys
+        - public_keys
       summary: Create Ssh Key
       description: Creates a new SSH public key.
       operationId: create_ssh_key
@@ -48,7 +48,7 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
     get:
       tags:
-        - ssh_pub_keys
+        - public_keys
       summary: List Ssh Keys
       description: Lists all SSH public keys.
       operationId: list_ssh_keys
@@ -100,10 +100,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
-  /v0/ssh-keys/{key_name}:
+  /v0/ssh-keys/{key_id}:
     get:
       tags:
-        - ssh_pub_keys
+        - public_keys
       summary: Get Ssh Key
       description: Retrieves a specific SSH public key.
       operationId: get_ssh_key
@@ -111,13 +111,13 @@ paths:
         - OAuth2:
             - gdb:ssh-pkey-r
       parameters:
-        - name: key_name
+        - name: key_id
           in: path
           required: true
           schema:
             type: string
-            title: Key Name
-          description: The name of the SSH public key.
+            title: Key ID
+          description: The id of the SSH public key.
         - name: X-Tenant-ID
           in: header
           required: false
@@ -141,7 +141,7 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
     delete:
       tags:
-        - ssh_pub_keys
+        - public_keys
       summary: Delete Ssh Key
       description: Deletes a specific SSH public key.
       operationId: delete_ssh_key
@@ -149,13 +149,13 @@ paths:
         - OAuth2:
             - gdb:ssh-pkey-w
       parameters:
-        - name: key_name
+        - name: key_id
           in: path
           required: true
           schema:
             type: string
-            title: Key Name
-          description: The name of the SSH public key.
+            title: Key ID
+          description: The id of the SSH public key.
         - name: X-Tenant-ID
           in: header
           required: false
@@ -195,6 +195,10 @@ components:
       title: SSHPubKeyPublicInput
     SSHPubKeyPublicOutput:
       properties:
+        id:
+          type: string
+          title: Key ID
+          example: 95aa4aea-25bc-46fe-a764-c7f6ffccs1e0
         name:
           type: string
           title: Name
@@ -209,21 +213,34 @@ components:
           example: ssh-rsa
       type: object
       required:
+        - id
         - name
         - key
         - key_type
       title: SSHPubKeyPublicOutput
-    SSHPubKeyPublicOutputList:
+    SSHPubKeyPublicOutputList:         
+      type: object
+      title: SSHPubKeyPublicOutputList
       properties:
         results:
-          items:
-            $ref: '#/components/schemas/SSHPubKeyPublicOutput'
           type: array
-          title: Results
-      type: object
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                title: Name
+                example: my-first-key
+              key_type:
+                type: string
+                title: Key Type
+                example: ssh-rsa
+              id:
+                type: string
+                title: Key ID
+                example: 95aa4aea-25bc-46fe-a764-c7f6ffccs1e0
       required:
-        - results
-      title: SSHPubKeyPublicOutputList
+      - results
     ValidationError:
       properties:
         loc:
@@ -257,7 +274,7 @@ components:
           tokenUrl: https://idp-maas-sandbox.ipet.sh/auth/realms/master/protocol/openid-connect/token
       type: oauth2      
 tags:
-  - name: ssh_pub_keys
+  - name: public_keys
     description: Operations related to SSH public keys.
 servers:
   - url: https://globaldb-public-api.gcp-sa-east1-prod.jaxyendy.com

@@ -19,6 +19,7 @@ type Service interface {
 	Delete(parameters DeleteParameters, configs DeleteConfigs) (err error)
 	Get(parameters GetParameters, configs GetConfigs) (result GetResult, err error)
 	List(parameters ListParameters, configs ListConfigs) (result ListResult, err error)
+	Password(parameters PasswordParameters, configs PasswordConfigs) (result PasswordResult, err error)
 	Reboot(parameters RebootParameters, configs RebootConfigs) (err error)
 	Rename(parameters RenameParameters, configs RenameConfigs) (err error)
 	Retype(parameters RetypeParameters, configs RetypeConfigs) (err error)
