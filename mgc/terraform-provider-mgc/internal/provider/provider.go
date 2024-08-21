@@ -204,7 +204,7 @@ func (p *MgcProvider) Resources(ctx context.Context) []func() resource.Resource 
 		resources.NewVolumeAttachResource,
 		resources.NewBlockStorageSnapshotsResource,
 		resources.NewBlockStorageVolumesResource,
-		// resources.NewSshKeysResource,
+		resources.NewSshKeysResource,
 	)
 
 	if err != nil {
@@ -279,6 +279,7 @@ func collectGroupResources(
 		"mgc_block_storage_snapshots",
 		"mgc_block_storage_volumes",
 		"mgc_kubernetes_cluster",
+		"mgc_ssh_public_keys",
 	}
 
 	if slices.Contains(ignoredTFModules, strResourceName) {
@@ -331,7 +332,7 @@ func (p *MgcProvider) DataSources(ctx context.Context) []func() datasource.DataS
 		datasources.NewDataSourceKubernetesVersion,
 		datasources.NewDataSourceKubernetesNodepool,
 		datasources.NewDataSourceKubernetesNode,
-		// datasources.NewDataSourceSSH,
+		datasources.NewDataSourceSSH,
 		datasources.NewDataSourceVmMachineType,
 		datasources.NewDataSourceVMIMages,
 		datasources.NewDataSourceVmInstance,
