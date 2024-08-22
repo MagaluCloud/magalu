@@ -8,7 +8,7 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	mgcSdk "magalu.cloud/lib"
-	sdkSSHKeys "magalu.cloud/lib/products/ssh/public_keys"
+	sdkSSHKeys "magalu.cloud/lib/products/profile/ssh_keys"
 	"magalu.cloud/sdk"
 	"magalu.cloud/terraform-provider-mgc/internal/tfutil"
 )
@@ -99,9 +99,9 @@ func (r *DataSourceSSH) Read(ctx context.Context, req datasource.ReadRequest, re
 
 	for _, key := range sdkOutput.Results {
 		data.SSHKeys = append(data.SSHKeys, SshKeyModel{
-			ID:       types.StringValue(*key.Id),
-			Name:     types.StringValue(*key.Name),
-			Key_Type: types.StringValue(*key.KeyType),
+			ID:       types.StringValue(key.Id),
+			Name:     types.StringValue(key.Name),
+			Key_Type: types.StringValue(key.KeyType),
 		})
 
 	}

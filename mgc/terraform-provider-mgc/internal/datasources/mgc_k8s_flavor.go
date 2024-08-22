@@ -13,7 +13,6 @@ import (
 )
 
 type ListResultResultsItem struct {
-	Bastion      []ListResultResultsItemBastionItem `tfsdk:"bastion"`
 	Controlplane []ListResultResultsItemBastionItem `tfsdk:"controlplane"`
 	Nodepool     []ListResultResultsItemBastionItem `tfsdk:"nodepool"`
 }
@@ -118,7 +117,6 @@ func (r *DataSourceKubernetesFlavor) Read(ctx context.Context, req datasource.Re
 
 	f := result.Results[0]
 	output := &ListResultResultsItem{
-		Bastion:      resourceListResultResultsItemBastionItem(f.Bastion),
 		Controlplane: resourceListResultResultsItemBastionItem(f.Controlplane),
 		Nodepool:     resourceListResultResultsItemBastionItem(f.Nodepool),
 	}
@@ -126,7 +124,7 @@ func (r *DataSourceKubernetesFlavor) Read(ctx context.Context, req datasource.Re
 	resp.Diagnostics = resp.State.Set(ctx, &output)
 }
 
-func resourceListResultResultsItemBastionItem(items []sdkNodepool.ListResultResultsItemBastionItem) []ListResultResultsItemBastionItem {
+func resourceListResultResultsItemBastionItem(items []sdkNodepool.ListResultResultsItemControlplaneItem) []ListResultResultsItemBastionItem {
 	var result []ListResultResultsItemBastionItem
 	for _, item := range items {
 		result = append(result, ListResultResultsItemBastionItem{
