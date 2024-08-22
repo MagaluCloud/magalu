@@ -603,6 +603,155 @@
             "source": "require 'uri'\nrequire 'net/http'\nrequire 'openssl'\n\nurl = URI(\"https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters/%7Bcluster_id%7D\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\nhttp.verify_mode = OpenSSL::SSL::VERIFY_NONE\n\nrequest = Net::HTTP::Delete.new(url)\nrequest[\"x-tenant-id\"] = 'SOME_STRING_VALUE'\nrequest[\"Authorization\"] = 'Bearer REPLACE_BEARER_TOKEN'\n\nresponse = http.request(request)\nputs response.read_body"
           }
         ]
+      },
+      "patch": {
+        "tags": [
+          "cluster"
+        ],
+        "summary": "Patches a cluster",
+        "description": "Patches the mutable fields of a cluster",
+        "operationId": "patchCluster",
+        "parameters": [
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "description": "User's UUID for identification.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "cluster_id",
+            "in": "path",
+            "description": "Cluster's UUID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PatchClusterRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PatchClusterResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": [
+              "mke.read"
+            ]
+          },
+          {
+            "OAuth2": [
+              "mke.read"
+            ]
+          }
+        ],
+        "x-codeSamples": [
+          {
+            "lang": "Shell + Curl",
+            "source": "curl --request PATCH \\\n  --url https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters/%7Bcluster_id%7D \\\n  --header 'Authorization: Bearer REPLACE_BEARER_TOKEN' \\\n  --header 'content-type: application/json' \\\n  --header 'x-tenant-id: SOME_STRING_VALUE' \\\n  --data '{\"allowed_cidrs\":[\"string\"]}'"
+          },
+          {
+            "lang": "Shell + Httpie",
+            "source": "echo '{\"allowed_cidrs\":[\"string\"]}' |  \\\n  http PATCH https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters/%7Bcluster_id%7D \\\n  Authorization:'Bearer REPLACE_BEARER_TOKEN' \\\n  content-type:application/json \\\n  x-tenant-id:SOME_STRING_VALUE"
+          },
+          {
+            "lang": "Go + Native",
+            "source": "package main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n\t\"net/http\"\n\t\"io/ioutil\"\n)\n\nfunc main() {\n\n\turl := \"https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters/%7Bcluster_id%7D\"\n\n\tpayload := strings.NewReader(\"{\\\"allowed_cidrs\\\":[\\\"string\\\"]}\")\n\n\treq, _ := http.NewRequest(\"PATCH\", url, payload)\n\n\treq.Header.Add(\"content-type\", \"application/json\")\n\treq.Header.Add(\"x-tenant-id\", \"SOME_STRING_VALUE\")\n\treq.Header.Add(\"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := ioutil.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+          },
+          {
+            "lang": "Python + Python3",
+            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api-mke.pre-prod.br-ne-1.jaxyendy.com\")\n\npayload = \"{\\\"allowed_cidrs\\\":[\\\"string\\\"]}\"\n\nheaders = {\n    'content-type': \"application/json\",\n    'x-tenant-id': \"SOME_STRING_VALUE\",\n    'Authorization': \"Bearer REPLACE_BEARER_TOKEN\"\n    }\n\nconn.request(\"PATCH\", \"/v0/clusters/%7Bcluster_id%7D\", payload, headers)\n\nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"utf-8\"))"
+          },
+          {
+            "lang": "Node + Native",
+            "source": "const http = require(\"https\");\n\nconst options = {\n  \"method\": \"PATCH\",\n  \"hostname\": \"api-mke.pre-prod.br-ne-1.jaxyendy.com\",\n  \"port\": null,\n  \"path\": \"/v0/clusters/%7Bcluster_id%7D\",\n  \"headers\": {\n    \"content-type\": \"application/json\",\n    \"x-tenant-id\": \"SOME_STRING_VALUE\",\n    \"Authorization\": \"Bearer REPLACE_BEARER_TOKEN\"\n  }\n};\n\nconst req = http.request(options, function (res) {\n  const chunks = [];\n\n  res.on(\"data\", function (chunk) {\n    chunks.push(chunk);\n  });\n\n  res.on(\"end\", function () {\n    const body = Buffer.concat(chunks);\n    console.log(body.toString());\n  });\n});\n\nreq.write(JSON.stringify({allowed_cidrs: ['string']}));\nreq.end();"
+          },
+          {
+            "lang": "Ruby + Native",
+            "source": "require 'uri'\nrequire 'net/http'\nrequire 'openssl'\n\nurl = URI(\"https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters/%7Bcluster_id%7D\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\nhttp.verify_mode = OpenSSL::SSL::VERIFY_NONE\n\nrequest = Net::HTTP::Patch.new(url)\nrequest[\"content-type\"] = 'application/json'\nrequest[\"x-tenant-id\"] = 'SOME_STRING_VALUE'\nrequest[\"Authorization\"] = 'Bearer REPLACE_BEARER_TOKEN'\nrequest.body = \"{\\\"allowed_cidrs\\\":[\\\"string\\\"]}\"\n\nresponse = http.request(request)\nputs response.read_body"
+          }
+        ]
       }
     },
     "/v0/clusters/{cluster_id}/kubeconfig": {
@@ -2114,7 +2263,7 @@
           },
           "enabled_bastion": {
             "type": "boolean",
-            "description": "Enables the use of a bastion host for secure access to the cluster.\n",
+            "description": "[Deprecated] This parameter is deprecated and its use won't create a bastion server\nEnables the use of a bastion host for secure access to the cluster.\n",
             "default": false,
             "example": false
           },
@@ -2165,8 +2314,7 @@
           }
         },
         "required": [
-          "name",
-          "enabled_bastion"
+          "name"
         ],
         "description": "Request object for the creation of a Kubernetes cluster."
       },
@@ -2425,6 +2573,30 @@
           }
         },
         "description": "Object of the node pool modification request."
+      },
+      "PatchClusterRequest": {
+        "type": "object",
+        "properties": {
+          "allowed_cidrs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "description": "Cluster fields to be patched"
+      },
+      "PatchClusterResponse": {
+        "type": "object",
+        "properties": {
+          "allowed_cidrs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "description": "Object for cluster patch response"
       },
       "KubeApiServer": {
         "type": "object",
@@ -3122,13 +3294,6 @@
       "FlavorsAvailable": {
         "type": "object",
         "properties": {
-          "bastion": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/FlavorWithSku"
-            },
-            "description": "Lists of available flavors for the Bastion."
-          },
           "nodepool": {
             "type": "array",
             "items": {
@@ -3145,7 +3310,6 @@
           }
         },
         "required": [
-          "bastion",
           "nodepool",
           "controlplane"
         ],

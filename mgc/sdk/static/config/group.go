@@ -9,7 +9,7 @@ var GetGroup = utils.NewLazyLoader(func() core.Grouper {
 	return core.NewStaticGroup(
 		core.DescriptorSpec{
 			Name:    "config",
-			Summary: "Manage Configuration values",
+			Summary: "Manage CLI Configuration values",
 			GroupID: "settings",
 			Description: `Configuration values are available to be set so that they persist between
 different executions of the MgcSDK. They reside in a YAML file when set.

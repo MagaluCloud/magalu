@@ -3,7 +3,7 @@
   "info": {
     "title": "Internal Virtual Machine Api Product",
     "description": "Virtual Machine Api Product",
-    "version": "1.266.0"
+    "version": "1.267.1"
   },
   "paths": {
     "/v1/health": {
@@ -958,6 +958,21 @@
           }
         },
         "x-viveiro": false
+      }
+    },
+    "/v1/internal/instances/config/first-windows-password/expire": {
+      "patch": {
+        "tags": [
+          "instances"
+        ],
+        "summary": "Expire Instance Access",
+        "description": "Expire a batch of instance access records",
+        "operationId": "expire_instance_access_v1_internal_instances_config_first_windows_password_expire_patch",
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          }
+        }
       }
     },
     "/v1/internal/instances/config/{id}/first-windows-password": {
@@ -5232,7 +5247,14 @@
             "title": "Machine Type"
           },
           "ssh_key_name": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Ssh Key Name"
           },
           "availability_zone": {
@@ -5269,7 +5291,6 @@
         "required": [
           "name",
           "machine_type",
-          "ssh_key_name",
           "network"
         ],
         "example": {

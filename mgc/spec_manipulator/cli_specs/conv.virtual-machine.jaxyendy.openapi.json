@@ -5321,8 +5321,13 @@
             "title": "Machine Type"
           },
           "ssh_key_name": {
-            "type": "string",
-            "title": "Ssh Key Name"
+            "anyOf": [
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Ssh Key Name",
+            "nullable": true
           },
           "availability_zone": {
             "anyOf": [
@@ -5358,8 +5363,7 @@
         "title": "SnapshotRestoreRequestV1Default",
         "required": [
           "name",
-          "machine_type",
-          "ssh_key_name"
+          "machine_type"
         ],
         "example": {
           "availability_zone": "br-regiao-1a",

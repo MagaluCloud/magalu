@@ -3,7 +3,7 @@ Package: config
 
 # Summary
 
-# Manage Configuration values
+# Manage CLI Configuration values
 
 # Description
 

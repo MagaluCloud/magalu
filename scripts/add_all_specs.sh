@@ -33,10 +33,10 @@ echo "NETWORK"
 $BASEDIR/add_specs.sh container-registry container-registry mgc/spec_manipulator/cli_specs/container-registry.openapi.yaml https://container-registry.jaxyendy.com/openapi.json
 echo "REGISTRY"
 
-$BASEDIR/add_specs.sh events events mgc/spec_manipulator/cli_specs/conv.events-consult.openapi.yaml https://events-consult.jaxyendy.com/openapi-cli.json
-echo "EVENTS"
+# $BASEDIR/add_specs.sh events events mgc/spec_manipulator/cli_specs/conv.events-consult.openapi.yaml https://events-consult.jaxyendy.com/openapi-cli.json
+# echo "EVENTS"
 
-$BASEDIR/add_specs_without_region.sh ssh profile mgc/spec_manipulator/cli_specs/globaldb.openapi.yaml https://globaldb.jaxyendy.com/openapi-cli.json
+$BASEDIR/add_specs_without_region.sh profile profile mgc/spec_manipulator/cli_specs/conv.globaldb.openapi.yaml https://globaldb.jaxyendy.com/openapi-cli.json
 echo "SSH1"
 
 

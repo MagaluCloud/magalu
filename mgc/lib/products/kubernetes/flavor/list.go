@@ -33,13 +33,12 @@ type ListResult struct {
 
 // Lists of available flavors provided by the application.
 type ListResultResultsItem struct {
-	Bastion      ListResultResultsItemBastion      `json:"bastion"`
 	Controlplane ListResultResultsItemControlplane `json:"controlplane"`
 	Nodepool     ListResultResultsItemNodepool     `json:"nodepool"`
 }
 
 // Definition of CPU capacity, RAM, and storage for nodes.
-type ListResultResultsItemBastionItem struct {
+type ListResultResultsItemControlplaneItem struct {
 	Id   string `json:"id"`
 	Name string `json:"name"`
 	Ram  int    `json:"ram"`
@@ -48,11 +47,9 @@ type ListResultResultsItemBastionItem struct {
 	Vcpu int    `json:"vcpu"`
 }
 
-type ListResultResultsItemBastion []ListResultResultsItemBastionItem
+type ListResultResultsItemControlplane []ListResultResultsItemControlplaneItem
 
-type ListResultResultsItemControlplane []ListResultResultsItemBastionItem
-
-type ListResultResultsItemNodepool []ListResultResultsItemBastionItem
+type ListResultResultsItemNodepool []ListResultResultsItemControlplaneItem
 
 type ListResultResults []ListResultResultsItem
 

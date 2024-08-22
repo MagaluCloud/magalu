@@ -23,7 +23,7 @@ import (
 type CreateParameters struct {
 	AllowedCidrs       *CreateParametersAllowedCidrs `json:"allowed_cidrs,omitempty"`
 	Description        *string                       `json:"description,omitempty"`
-	EnabledBastion     bool                          `json:"enabled_bastion"`
+	EnabledBastion     *bool                         `json:"enabled_bastion,omitempty"`
 	EnabledServerGroup *bool                         `json:"enabled_server_group,omitempty"`
 	Name               string                        `json:"name"`
 	NodePools          *CreateParametersNodePools    `json:"node_pools,omitempty"`

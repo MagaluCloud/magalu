@@ -4304,8 +4304,10 @@ components:
                     -   $ref: '#/components/schemas/Name'
                     title: Machine Type
                 ssh_key_name:
-                    type: string
+                    anyOf:
+                    -   type: string
                     title: Ssh Key Name
+                    nullable: true
                 availability_zone:
                     anyOf:
                     -   type: string
@@ -4328,7 +4330,6 @@ components:
             required:
             - name
             - machine_type
-            - ssh_key_name
             example:
                 availability_zone: br-regiao-1a
                 machine_type:

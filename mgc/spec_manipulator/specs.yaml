@@ -63,7 +63,7 @@ jaxyendy:
       sdk: true
       enabled: true
       dev: false
-    - url: http://globaldb-public-api.pre-prod.mgl1.br.jaxyendy.com/openapi.json
+    - url: https://globaldb-public-api.prod.gcp-sa-east1.br.jaxyendy.com/openapi.json
       file: globaldb.openapi.yaml
       menu: ssh
       cli: false

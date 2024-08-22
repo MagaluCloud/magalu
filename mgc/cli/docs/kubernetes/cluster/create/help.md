@@ -17,8 +17,9 @@ Usage:
 - --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
 - --description string            A brief description of the Kubernetes cluster.
 - 
-- --enabled-bastion               Enables the use of a bastion host for secure access to the cluster.
-- (required)
+- --enabled-bastion               [Deprecated] This parameter is deprecated and its use won't create a bastion server
+- Enables the use of a bastion host for secure access to the cluster.
+- 
 - --enabled-server-group          Enables the use of a server group with anti-affinity policy during the creation of the cluster and its node pools.
 - (default true)
 - -h, --help                          help for create

@@ -20,6 +20,7 @@ type Service interface {
 	Get(parameters GetParameters, configs GetConfigs) (result GetResult, err error)
 	Kubeconfig(parameters KubeconfigParameters, configs KubeconfigConfigs) (string, error)
 	List(configs ListConfigs) (result ListResult, err error)
+	Update(parameters UpdateParameters, configs UpdateConfigs) (result UpdateResult, err error)
 }
 
 func NewService(ctx context.Context, client *mgcClient.Client) Service {

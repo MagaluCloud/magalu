@@ -14,6 +14,7 @@ Usage:
 - get         List a cluster by uuid
 - kubeconfig  Get kubeconfig cluster
 - list        List all clusters
+- update      Patches a cluster
 
 ## Other commands:
 - Flags:

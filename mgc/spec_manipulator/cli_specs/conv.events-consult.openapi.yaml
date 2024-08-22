@@ -3,7 +3,7 @@
   "info": {
     "title": "Cloud Events Consult API",
     "description": "Cloud Events API Product.",
-    "version": "0.13.0"
+    "version": "0.14.0"
   },
   "paths": {
     "/v0/events": {
@@ -11,8 +11,8 @@
         "tags": [
           "events"
         ],
-        "summary": "Lists all cloud events.",
-        "description": "Lists all cloud events emitted by other products.",
+        "summary": "Lists all events.",
+        "description": "Lists all events emitted by other products.",
         "operationId": "list_event",
         "parameters": [
           {
@@ -197,6 +197,88 @@
           }
         ]
       }
+    },
+    "/v0/event-types": {
+      "get": {
+        "tags": [
+          "event-types"
+        ],
+        "summary": "Lists all event types.",
+        "description": "Lists all types of events emitted by other products.",
+        "operationId": "list_type",
+        "parameters": [
+          {
+            "name": "_limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "title": " Limit",
+              "maximum": 2147483647,
+              "default": 50
+            }
+          },
+          {
+            "name": "_offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "title": " Offset",
+              "maximum": 2147483647,
+              "default": 0
+            }
+          },
+          {
+            "name": "X-Tenant-ID",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListPaginatorResponse_EventType_"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPResponseError"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "evt:event-tr"
+            ]
+          }
+        ]
+      }
     }
   },
   "components": {
@@ -296,6 +378,19 @@
         ],
         "description": "Represent all the fields available in event output, following the Cloud Events Spec."
       },
+      "EventType": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "title": "Type"
+          }
+        },
+        "title": "EventType",
+        "required": [
+          "type"
+        ]
+      },
       "HTTPResponseError": {
         "type": "object",
         "properties": {
@@ -356,6 +451,67 @@
           }
         },
         "title": "HTTPValidationError"
+      },
+      "ListPaginatorResponse_EventType_": {
+        "type": "object",
+        "properties": {
+          "meta": {
+            "type": "object",
+            "properties": {
+              "limit": {
+                "type": "integer",
+                "title": "Limit",
+                "maximum": 2147483647,
+                "description": "Number of items per page",
+                "default": 50
+              },
+              "offset": {
+                "type": "integer",
+                "title": "Offset",
+                "maximum": 2147483647,
+                "description": "Offset for pagination",
+                "default": 0
+              },
+              "count": {
+                "type": "integer",
+                "title": "Count",
+                "description": "The number of items on the current page."
+              },
+              "total": {
+                "type": "integer",
+                "title": "Total",
+                "description": "The total number of items available across all pages."
+              }
+            },
+            "title": "PaginatorResponse",
+            "required": [
+              "count",
+              "total"
+            ]
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "title": "Type"
+                }
+              },
+              "title": "EventType",
+              "required": [
+                "type"
+              ]
+            },
+            "title": "Results"
+          }
+        },
+        "title": "ListPaginatorResponse[EventType]",
+        "required": [
+          "meta",
+          "results"
+        ]
       },
       "ListPaginatorResponse_Event_": {
         "type": "object",
@@ -572,7 +728,11 @@
   "tags": [
     {
       "name": "events",
-      "description": "Endpoints related to listing cloud events emitted by other products."
+      "description": "Endpoints related to listing events emitted by other products."
+    },
+    {
+      "name": "event-types",
+      "description": "Endpoints related to listing types of events emitted by other products."
     }
   ]
 }

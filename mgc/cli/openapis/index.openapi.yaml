@@ -17,12 +17,6 @@ modules:
     summary: DBaaS API Product.
     url: https://dbaas.jaxyendy.com/openapi.json
     version: 1.26.1
--   description: Cloud Events API Product.
-    name: events
-    path: events.openapi.yaml
-    summary: Cloud Events API Product.
-    url: https://events-consult.jaxyendy.com/openapi-cli.json
-    version: 0.13.0
 -   description: APIs related to the Kubernetes product.
     name: kubernetes
     path: kubernetes.openapi.yaml
@@ -35,10 +29,10 @@ modules:
     summary: APIs referentes ao produto de VPC
     url: https://network.jaxyendy.com/openapi.json
     version: 1.131.1
--   description: SSH Keys management
-    name: ssh
-    path: ssh.openapi.yaml
-    summary: SSH Keys management
+-   description: MUOVO
+    name: profile
+    path: profile.openapi.yaml
+    summary: MUOVO
     url: https://globaldb.jaxyendy.com/openapi-cli.json
     version: 0.1.0
 -   description: Virtual Machine Api Product

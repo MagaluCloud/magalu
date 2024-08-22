@@ -24,6 +24,6 @@ Get the available virtual-machine images.
 
 Read-Only:
 
-- `id` (Boolean) ID of ssh key.
+- `id` (String) ID of ssh key.
 - `key_type` (String) The type of ssh key.
 - `name` (String) The name of ssh key
