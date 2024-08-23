@@ -1,4 +1,4 @@
-# ssh_keys
+# Manage SSH Keys
 
 ## Usage:
 ```bash

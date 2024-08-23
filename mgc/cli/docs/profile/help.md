@@ -1,4 +1,7 @@
-# Actions with profile
+# The profile group provides commands to view and modify user account settings. 
+It allows users to manage their SSH keys, update personal information, and configure other 
+account-related preferences. This group is essential for maintaining secure access and 
+personalizing the user experience within the system.
 
 ## Usage:
 ```bash
@@ -9,8 +12,7 @@ Usage:
 
 ## Product catalog:
 - Commands:
-- ssh-keys    ssh_keys
-- workspaces  Workspace related commands
+- ssh-keys    Manage SSH Keys
 
 ## Other commands:
 - Flags:

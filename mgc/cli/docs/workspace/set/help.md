@@ -1,15 +1,14 @@
-# Creates a new workspace
+# Sets workspace to be used
 
 ## Usage:
 ```bash
 Usage:
-  ./mgc profile workspaces create [name] [copy] [flags]
+  ./mgc workspace set [name] [flags]
 ```
 
 ## Product catalog:
 - Flags:
-- --copy string   Name of the workspace to copy content from. If this parameter is passed, the new Workspace will be pre-populated with the contents of the Workspace with the specified name
-- -h, --help          help for create
+- -h, --help          help for set
 - --name string   Workspace name (required)
 
 ## Other commands:

@@ -31,22 +31,22 @@ var getSet = utils.NewLazyLoader[core.Executor](func() core.Executor {
 func setProfile(ctx context.Context, params setCurrentParams, _ struct{}) (*profile_manager.Profile, error) {
 	m := profile_manager.FromContext(ctx)
 	if m == nil {
-		return nil, ProfileError{Name: "", Err: errors.New("couldn't get ProfileManager from context")}
+		return nil, WorkspaceError{Name: "", Err: errors.New("couldn't get ProfileManager from context")}
 	}
 
 	p, err := m.Get(params.Name)
 	if err != nil {
-		return nil, ProfileError{Name: params.Name, Err: err}
+		return nil, WorkspaceError{Name: params.Name, Err: err}
 	}
 
 	_, err = os.Stat(p.Dir())
 	if err != nil {
-		return nil, ProfileError{Name: params.Name, Err: errors.New("profile does not exist")}
+		return nil, WorkspaceError{Name: params.Name, Err: errors.New("workspace does not exist")}
 	}
 
 	err = m.SetCurrent(p)
 	if err != nil {
-		return nil, ProfileError{Name: params.Name, Err: err}
+		return nil, WorkspaceError{Name: params.Name, Err: err}
 	}
 
 	return p, nil

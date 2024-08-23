@@ -1,15 +1,16 @@
-# Deletes the workspace with the specified name
+# Creates a new workspace
 
 ## Usage:
 ```bash
 Usage:
-  ./mgc profile workspaces delete [name] [flags]
+  ./mgc workspace create [name] [copy] [flags]
 ```
 
 ## Product catalog:
 - Flags:
-- -h, --help          help for delete
-- --name string   Workspace name (required)
+- --copy string   Name of the workspace to copy content from. If this parameter is passed, the new workspace will be pre-populated with the contents of the workspace with the specified name
+- -h, --help          help for create
+- --name string   Profile name (required)
 
 ## Other commands:
 - Global Flags:

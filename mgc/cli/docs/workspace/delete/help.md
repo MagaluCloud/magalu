@@ -1,15 +1,15 @@
-# Sets workspace to be used
+# Deletes the workspace with the specified name
 
 ## Usage:
 ```bash
 Usage:
-  ./mgc profile workspaces set [name] [flags]
+  ./mgc workspace delete [name] [flags]
 ```
 
 ## Product catalog:
 - Flags:
-- -h, --help          help for set
-- --name string   Workspace name (required)
+- -h, --help          help for delete
+- --name string   workspace name (required)
 
 ## Other commands:
 - Global Flags:

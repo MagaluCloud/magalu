@@ -2,15 +2,15 @@ package workspace
 
 import "fmt"
 
-type ProfileError struct {
+type WorkspaceError struct {
 	Name string
 	Err  error
 }
 
-func (e ProfileError) Unwrap() error {
+func (e WorkspaceError) Unwrap() error {
 	return e.Err
 }
 
-func (e ProfileError) Error() string {
+func (e WorkspaceError) Error() string {
 	return fmt.Sprintf("workspace %s: %s", e.Name, e.Err.Error())
 }
