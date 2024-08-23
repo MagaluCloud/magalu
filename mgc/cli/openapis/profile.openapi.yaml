@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
     title: GlobalDB API
-    description: MUOVO
+    description: SSH Keys management
     version: 0.1.0
 paths:
     /v0/ssh-keys:
