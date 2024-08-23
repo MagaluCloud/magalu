@@ -14,6 +14,7 @@ Usage:
 - get               Retrieve the details of a specific instance.
 - list              List all instances.
 - network-interface network-interface
+- password          Retrieve the first windows admin password
 - reboot            Reboot an instance.
 - rename            Renames an instance.
 - retype            Changes an instance machine-type.

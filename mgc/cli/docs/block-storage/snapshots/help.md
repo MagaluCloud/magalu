@@ -9,11 +9,11 @@ Usage:
 
 ## Product catalog:
 - Commands:
-- create      Create a snapshot
-- delete      Delete a snapshot
-- get         Retrieve the details of a snapshot
-- list        List snapshots in the current tenant
-- rename      Rename a snapshot
+- create      Create a snapshot.
+- delete      Delete a snapshot.
+- get         Retrieve the details of a specific snapshot.
+- list        List all snapshots.
+- rename      Rename a snapshot.
 
 ## Other commands:
 - Flags:

@@ -5,11 +5,15 @@ Executor: create
 
 # Create Ssh Key
 
+# Description
+
+Creates a new SSH public key.
+
 Version: 0.1.0
 
-import "magalu.cloud/lib/products/ssh/ssh_keys"
+import "magalu.cloud/lib/products/ssh/public_keys"
 */
-package sshKeys
+package publicKeys
 
 import (
 	mgcCore "magalu.cloud/core"
@@ -22,7 +26,6 @@ type CreateParameters struct {
 }
 
 type CreateConfigs struct {
-	XTenantId string  `json:"X-Tenant-ID"`
 	Env       *string `json:"env,omitempty"`
 	ServerUrl *string `json:"serverUrl,omitempty"`
 }
@@ -41,7 +44,7 @@ func (s *service) Create(
 	result CreateResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("Create", mgcCore.RefPath("/ssh/ssh_keys/create"), s.client, s.ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Create", mgcCore.RefPath("/ssh/public_keys/create"), s.client, s.ctx)
 	if err != nil {
 		return
 	}

@@ -1,7 +1,7 @@
 /*
-import "magalu.cloud/lib/products/ssh/ssh_keys"
+import "magalu.cloud/lib/products/ssh/public_keys"
 */
-package sshKeys
+package publicKeys
 
 import (
 	"context"
@@ -16,7 +16,7 @@ type service struct {
 
 type Service interface {
 	Create(parameters CreateParameters, configs CreateConfigs) (result CreateResult, err error)
-	Delete(parameters DeleteParameters, configs DeleteConfigs) (result DeleteResult, err error)
+	Delete(parameters DeleteParameters, configs DeleteConfigs) (err error)
 	Get(parameters GetParameters, configs GetConfigs) (result GetResult, err error)
 	List(parameters ListParameters, configs ListConfigs) (result ListResult, err error)
 }

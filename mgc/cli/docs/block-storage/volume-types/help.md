@@ -9,7 +9,7 @@ Usage:
 
 ## Product catalog:
 - Commands:
-- list        List volume types
+- list        List all volume types.
 
 ## Other commands:
 - Flags:

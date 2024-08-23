@@ -9,7 +9,7 @@ Executor: list
 
 Returns a list of ports for a provided vpc_id and x-tenant-id. The list will be paginated, it means you can easily find what you need just setting the page number(_offset) and the quantity of items per page(_limit). The level of detail can also be set
 
-Version: 1.131.0
+Version: 1.131.1
 
 import "magalu.cloud/lib/products/network/port/vpcs_ports"
 */

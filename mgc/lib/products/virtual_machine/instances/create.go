@@ -26,7 +26,7 @@ type CreateParameters struct {
 	MachineType      CreateParametersMachineType `json:"machine_type"`
 	Name             string                      `json:"name"`
 	Network          *CreateParametersNetwork    `json:"network,omitempty"`
-	SshKeyName       string                      `json:"ssh_key_name"`
+	SshKeyName       *string                     `json:"ssh_key_name,omitempty"`
 	UserData         *string                     `json:"user_data,omitempty"`
 }
 

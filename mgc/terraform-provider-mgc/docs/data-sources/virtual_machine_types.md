@@ -3,12 +3,12 @@
 page_title: "mgc_virtual_machine_types Data Source - terraform-provider-mgc"
 subcategory: ""
 description: |-
-  Get the available virtual-machine images.
+  Get the available virtual-machine types.
 ---
 
 # mgc_virtual_machine_types (Data Source)
 
-Get the available virtual-machine images.
+Get the available virtual-machine types.
 
 
 
@@ -26,7 +26,7 @@ Read-Only:
 
 - `disk` (Number) Disk
 - `gpu` (Number) GPU
-- `id` (Boolean) ID of machine-type.
+- `id` (String) ID of machine-type.
 - `name` (String) Name of type.
 - `ram` (Number) Ram
 - `vcpu` (Number) VCpu

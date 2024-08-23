@@ -14,6 +14,7 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	mgcSdk "magalu.cloud/lib"
+	"magalu.cloud/terraform-provider-mgc/internal/tfutil"
 
 	sdkBlockStorageSnapshots "magalu.cloud/lib/products/block_storage/snapshots"
 	"magalu.cloud/sdk"
@@ -179,7 +180,7 @@ func (r *bsSnapshots) Read(ctx context.Context, req resource.ReadRequest, resp *
 
 	result, err := r.bsSnapshots.Get(sdkBlockStorageSnapshots.GetParameters{
 		Id: data.ID.ValueString()},
-		sdkBlockStorageSnapshots.GetConfigs{},
+		tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkBlockStorageSnapshots.GetConfigs{}),
 	)
 
 	if err != nil {
@@ -220,7 +221,7 @@ func (r *bsSnapshots) Create(ctx context.Context, req resource.CreateRequest, re
 		Volume: sdkBlockStorageSnapshots.CreateParametersVolume{
 			Id: plan.Volume.ID.ValueString(),
 		},
-	}, sdkBlockStorageSnapshots.CreateConfigs{})
+	}, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkBlockStorageSnapshots.CreateConfigs{}))
 
 	if err != nil {
 		resp.Diagnostics.AddError(
@@ -236,7 +237,7 @@ func (r *bsSnapshots) Create(ctx context.Context, req resource.CreateRequest, re
 
 	getCreatedResource, err := r.bsSnapshots.Get(sdkBlockStorageSnapshots.GetParameters{
 		Id: state.ID.ValueString(),
-	}, sdkBlockStorageSnapshots.GetConfigs{})
+	}, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkBlockStorageSnapshots.GetConfigs{}))
 
 	if err != nil {
 		resp.Diagnostics.AddError(
@@ -271,7 +272,7 @@ func (r *bsSnapshots) Delete(ctx context.Context, req resource.DeleteRequest, re
 
 	err := r.bsSnapshots.Delete(sdkBlockStorageSnapshots.DeleteParameters{
 		Id: data.ID.ValueString(),
-	}, sdkBlockStorageSnapshots.DeleteConfigs{})
+	}, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkBlockStorageSnapshots.DeleteConfigs{}))
 
 	if err != nil {
 		resp.Diagnostics.AddError(
@@ -300,7 +301,7 @@ func (r *bsSnapshots) checkStatusIsCreating(id string) {
 			return
 		}
 
-		*getResult, err = r.bsSnapshots.Get(getParam, sdkBlockStorageSnapshots.GetConfigs{})
+		*getResult, err = r.bsSnapshots.Get(getParam, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkBlockStorageSnapshots.GetConfigs{}))
 		if err != nil {
 			return
 		}

@@ -3,12 +3,12 @@
 page_title: "mgc_virtual_machine_instances Data Source - terraform-provider-mgc"
 subcategory: ""
 description: |-
-  Get the available virtual-machine images.
+  Get the available virtual-machine instances.
 ---
 
 # mgc_virtual_machine_instances (Data Source)
 
-Get the available virtual-machine images.
+Get the available virtual-machine instances.
 
 
 
@@ -24,7 +24,7 @@ Get the available virtual-machine images.
 
 Read-Only:
 
-- `id` (Boolean) ID of machine-type.
+- `id` (String) ID of machine-type.
 - `image_id` (String) Image ID of instance
 - `machine_type_id` (String) Machine type ID of instance
 - `name` (String) Name of type.

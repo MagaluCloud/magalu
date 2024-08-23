@@ -3,7 +3,7 @@ Executor: retype
 
 # Summary
 
-# Retype a Volume
+Change the type of a volume.
 
 # Description
 

@@ -5,11 +5,15 @@ Executor: delete
 
 # Delete Ssh Key
 
+# Description
+
+Deletes a specific SSH public key.
+
 Version: 0.1.0
 
-import "magalu.cloud/lib/products/ssh/ssh_keys"
+import "magalu.cloud/lib/products/ssh/public_keys"
 */
-package sshKeys
+package publicKeys
 
 import (
 	mgcCore "magalu.cloud/core"
@@ -21,26 +25,17 @@ type DeleteParameters struct {
 }
 
 type DeleteConfigs struct {
-	XTenantId string  `json:"X-Tenant-ID"`
 	Env       *string `json:"env,omitempty"`
 	ServerUrl *string `json:"serverUrl,omitempty"`
-}
-
-type DeleteResult struct {
-	Id      string `json:"id"`
-	Key     string `json:"key"`
-	KeyType string `json:"key_type"`
-	Name    string `json:"name"`
 }
 
 func (s *service) Delete(
 	parameters DeleteParameters,
 	configs DeleteConfigs,
 ) (
-	result DeleteResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("Delete", mgcCore.RefPath("/ssh/ssh_keys/delete"), s.client, s.ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Delete", mgcCore.RefPath("/ssh/public_keys/delete"), s.client, s.ctx)
 	if err != nil {
 		return
 	}
@@ -55,18 +50,15 @@ func (s *service) Delete(
 		return
 	}
 
-	r, err := exec.Execute(ctx, p, c)
-	if err != nil {
-		return
-	}
-	return mgcHelpers.ConvertResult[DeleteResult](r)
+	_, err = exec.Execute(ctx, p, c)
+	return
 }
 
 func (s *service) DeleteConfirmPrompt(
 	parameters DeleteParameters,
 	configs DeleteConfigs,
 ) (message string) {
-	e, err := mgcHelpers.ResolveExecutor("Delete", mgcCore.RefPath("/ssh/ssh_keys/delete"), s.client)
+	e, err := mgcHelpers.ResolveExecutor("Delete", mgcCore.RefPath("/ssh/public_keys/delete"), s.client)
 	if err != nil {
 		return
 	}

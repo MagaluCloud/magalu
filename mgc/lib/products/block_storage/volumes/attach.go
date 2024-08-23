@@ -3,7 +3,7 @@ Executor: attach
 
 # Summary
 
-# Attach a Volume
+Attach the volume to an instance.
 
 # Description
 

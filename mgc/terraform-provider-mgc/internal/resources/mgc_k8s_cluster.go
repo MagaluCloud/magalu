@@ -128,7 +128,6 @@ func (r *k8sClusterResource) Schema(_ context.Context, _ resource.SchemaRequest,
 				Default:     booldefault.StaticBool(true),
 				PlanModifiers: []planmodifier.Bool{
 					boolplanmodifier.UseStateForUnknown(),
-					boolplanmodifier.RequiresReplace(),
 				},
 			},
 			"version": schema.StringAttribute{
@@ -218,7 +217,6 @@ func (r *k8sClusterResource) Create(ctx context.Context, req resource.CreateRequ
 	createdCluster, err := r.GetClusterPooling(ctx, cluster.Id, data.AsyncCreation.ValueBool())
 	if err != nil {
 		resp.Diagnostics.AddError("Failed to get Kubernetes cluster", err.Error())
-		return
 	}
 
 	newState := ConvertSDKCreateResultToTerraformCreateClsuterModel(&createdCluster)
@@ -309,6 +307,8 @@ func (r *k8sClusterResource) ImportState(ctx context.Context, req resource.Impor
 
 	out := ConvertSDKCreateResultToTerraformCreateClsuterModel(&cluster)
 
+	out.EnabledServerGroup = types.BoolValue(true)
+
 	diags := resp.State.Set(ctx, &out)
 	resp.Diagnostics.Append(diags...)
 }
@@ -370,7 +370,7 @@ func (r *k8sClusterResource) deleteClusterPooling(clusterId string) {
 			ClusterId: clusterId,
 		}, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkCluster.GetConfigs{}))
 		if err != nil {
-			continue
+			return
 		}
 	}
 }

@@ -9,15 +9,15 @@ Usage:
 
 ## Product catalog:
 - Commands:
-- attach      Attach a Volume
-- create      Create a new Volume
-- delete      Delete a Volume
-- detach      Detach a Volume
-- extend      Extend a Volume
-- get         Retrieve the details of a volume
-- list        List all Volumes
-- rename      Rename a volume
-- retype      Retype a Volume
+- attach      Attach the volume to an instance.
+- create      Create a new volume.
+- delete      Delete a volume.
+- detach      Detach the volume from an instance.
+- extend      Extend the size of a volume.
+- get         Retrieve the details of a specific volume.
+- list        List all volumes.
+- rename      Rename a volume.
+- retype      Change the type of a volume.
 
 ## Other commands:
 - Flags:

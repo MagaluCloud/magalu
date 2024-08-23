@@ -3,7 +3,7 @@ Executor: list
 
 # Summary
 
-# List volume types
+List all volume types.
 
 # Description
 

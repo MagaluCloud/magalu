@@ -68,7 +68,7 @@ func (r *DataSourceVmMachineType) Schema(_ context.Context, req datasource.Schem
 				Description: "List of available VM machine-types.",
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
-						"id": schema.BoolAttribute{
+						"id": schema.StringAttribute{
 							Computed:    true,
 							Description: "ID of machine-type.",
 						},
@@ -97,7 +97,7 @@ func (r *DataSourceVmMachineType) Schema(_ context.Context, req datasource.Schem
 			},
 		},
 	}
-	resp.Schema.Description = "Get the available virtual-machine images."
+	resp.Schema.Description = "Get the available virtual-machine types."
 }
 
 const typeActive string = "active"

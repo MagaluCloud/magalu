@@ -24,6 +24,6 @@ Get the available virtual-machine images.
 
 Read-Only:
 
-- `id` (Boolean) ID of image.
+- `id` (String) ID of image.
 - `name` (String) The image name.
-- `plataform` (String) The image platform.
+- `platform` (String) The image platform.

@@ -14,16 +14,16 @@
 
 ## Other commands:
 - Usage:
-- ./mgc block-storage backups update [id] [flags]
+- ./mgc block-storage backups rename [id] [flags]
 
 ## Flags:
 ```bash
 Flags:
       --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
       --description string            Description (between 1 and 255 characters)
-  -h, --help                          help for update
+  -h, --help                          help for rename
       --id uuid                       Id (required)
       --name string                   Name (between 1 and 255 characters)
-  -v, --version                       version for update
+  -v, --version                       version for rename
 ```
 

@@ -5,11 +5,15 @@ Executor: list
 
 # List Ssh Keys
 
+# Description
+
+Lists all SSH public keys.
+
 Version: 0.1.0
 
-import "magalu.cloud/lib/products/ssh/ssh_keys"
+import "magalu.cloud/lib/products/ssh/public_keys"
 */
-package sshKeys
+package publicKeys
 
 import (
 	mgcCore "magalu.cloud/core"
@@ -23,7 +27,6 @@ type ListParameters struct {
 }
 
 type ListConfigs struct {
-	XTenantId string  `json:"X-Tenant-ID"`
 	Env       *string `json:"env,omitempty"`
 	ServerUrl *string `json:"serverUrl,omitempty"`
 }
@@ -33,10 +36,9 @@ type ListResult struct {
 }
 
 type ListResultResultsItem struct {
-	Id      string `json:"id"`
-	Key     string `json:"key"`
-	KeyType string `json:"key_type"`
-	Name    string `json:"name"`
+	Id      *string `json:"id,omitempty"`
+	KeyType *string `json:"key_type,omitempty"`
+	Name    *string `json:"name,omitempty"`
 }
 
 type ListResultResults []ListResultResultsItem
@@ -48,7 +50,7 @@ func (s *service) List(
 	result ListResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("List", mgcCore.RefPath("/ssh/ssh_keys/list"), s.client, s.ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("List", mgcCore.RefPath("/ssh/public_keys/list"), s.client, s.ctx)
 	if err != nil {
 		return
 	}

@@ -17,13 +17,14 @@ Usage:
 
 ## Product catalog:
 - Products:
-- block-storage      Block Storage API Product Documentation
+- block-storage      Block Storage API Product
 - container-registry Magalu Container Registry product API.
 - dbaas              DBaaS API Product.
 - events             Cloud Events API Product.
 - kubernetes         APIs related to the Kubernetes product.
 - network            APIs referentes ao produto de VPC
 - object-storage     Operations for Object Storage
+- ssh                SSH Keys management
 - virtual-machine    Virtual Machine Api Product
 
 ## Other commands:

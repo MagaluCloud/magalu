@@ -48,7 +48,7 @@ Usage:
 - This is the same as '--network.vpc=id:string'.
 - --network.vpc.name string                   Vpc: Name (between 1 and 255 characters)
 - This is the same as '--network.vpc=name:string'.
-- --ssh-key-name string                       Ssh key Name (required)
+- --ssh-key-name string                       Ssh key Name
 - --user-data string                          Used to perform automated configuration tasks. (between 1 and 65000 characters)
 - -v, --version                                   version for create
 

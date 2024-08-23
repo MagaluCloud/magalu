@@ -9,7 +9,7 @@ Executor: list
 
 Returns a list of subnets for a provided vpc_id
 
-Version: 1.131.0
+Version: 1.131.1
 
 import "magalu.cloud/lib/products/network/subnets/vpcs_subnets"
 */

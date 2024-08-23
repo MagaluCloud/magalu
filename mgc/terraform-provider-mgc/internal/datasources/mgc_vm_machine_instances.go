@@ -72,7 +72,7 @@ func (r *DataSourceVmInstances) Schema(_ context.Context, req datasource.SchemaR
 				Description: "List of available VM instances.",
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
-						"id": schema.BoolAttribute{
+						"id": schema.StringAttribute{
 							Computed:    true,
 							Description: "ID of machine-type.",
 						},
@@ -117,7 +117,7 @@ func (r *DataSourceVmInstances) Schema(_ context.Context, req datasource.SchemaR
 			},
 		},
 	}
-	resp.Schema.Description = "Get the available virtual-machine images."
+	resp.Schema.Description = "Get the available virtual-machine instances."
 }
 
 func (r *DataSourceVmInstances) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
@@ -125,10 +125,10 @@ func (r *DataSourceVmInstances) Read(ctx context.Context, req datasource.ReadReq
 
 	resp.Diagnostics.Append(req.Config.Get(ctx, &data)...)
 
-	sdkOutput, err := r.vmInstances.List(sdkVMInstances.ListParameters{},
+	sdkOutput, err := r.vmInstances.List(sdkVMInstances.ListParameters{Expand: &sdkVMInstances.ListParametersExpand{"network"}},
 		tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVMInstances.ListConfigs{}))
 	if err != nil {
-		resp.Diagnostics.AddError("Failed to get versions", err.Error())
+		resp.Diagnostics.AddError("Failed to get instances", err.Error())
 		return
 	}
 
@@ -139,8 +139,12 @@ func (r *DataSourceVmInstances) Read(ctx context.Context, req datasource.ReadReq
 
 		for _, port := range *instance.Network.Ports {
 			privateIpAddress = port.IpAddresses.PrivateIpAddress
-			publicIpv4Adress = *port.IpAddresses.PublicIpAddress
-			publicIpv6Adress = *port.IpAddresses.IpV6address
+			if port.IpAddresses.PublicIpAddress != nil {
+				publicIpv4Adress = *port.IpAddresses.PublicIpAddress
+			}
+			if port.IpAddresses.IpV6address != nil {
+				publicIpv6Adress = *port.IpAddresses.IpV6address
+			}
 		}
 
 		data.Instances = append(data.Instances, VMInstanceModel{

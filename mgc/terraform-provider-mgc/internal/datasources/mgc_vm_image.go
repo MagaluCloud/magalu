@@ -65,11 +65,11 @@ func (r *DataSourceVmImages) Schema(_ context.Context, req datasource.SchemaRequ
 				Description: "List of available VM Images.",
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
-						"id": schema.BoolAttribute{
+						"id": schema.StringAttribute{
 							Computed:    true,
 							Description: "ID of image.",
 						},
-						"plataform": schema.StringAttribute{
+						"platform": schema.StringAttribute{
 							Computed:    true,
 							Description: "The image platform.",
 						},

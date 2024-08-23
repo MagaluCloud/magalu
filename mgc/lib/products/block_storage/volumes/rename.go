@@ -3,7 +3,7 @@ Executor: rename
 
 # Summary
 
-# Rename a volume
+Rename a volume.
 
 # Description
 

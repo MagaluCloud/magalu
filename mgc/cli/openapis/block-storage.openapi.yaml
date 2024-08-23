@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
-    title: Block Storage API Product Documentation - v1
-    description: Block Storage API Product Documentation
+    title: Block Storage API Product - v1
+    description: Block Storage API Product
     contact:
         name: IaaS Products
         url: https://github.com/luizalabs
@@ -12,7 +12,7 @@ paths:
         post:
             tags:
             - attachments
-            summary: Attach a volume to a instance
+            summary: Attach a volume to an instance.
             description: "Attach a Volume to a Virtual Machine instance for the currently\n\
                 \ authenticated tenant.\n\nThe Volume attachment will be completed\
                 \ when the Volume status returns to\n\"completed\", and the state\
@@ -73,7 +73,7 @@ paths:
         delete:
             tags:
             - attachments
-            summary: Delete an attachment
+            summary: Delete an attachment.
             description: "Detach a Volume from a Virtual Machine instance for the\n\
                 \ currently authenticated tenant.\n\nThe Volume detachment will be\
                 \ completed when the Volume state returns to\n \"available,\" and\
@@ -138,7 +138,7 @@ paths:
         get:
             tags:
             - backups
-            summary: List backups in the current tenant
+            summary: List all backups.
             description: "Retrieve a list of Backups for the currently authenticated\
                 \ tenant.\n\n#### Notes\n- Use the **expand** argument to obtain additional\
                 \ details about the\n Volume used to create each Backup."
@@ -214,14 +214,13 @@ paths:
                                     $ref: '#/components/schemas/ErrorResponse'
                                 title: Response 422 List Backups V1 Backups Get
             x-viveiro: true
-            x-mgc-hidden: true
             security:
             -   OAuth2:
                 - block-storage.read
         post:
             tags:
             - backups
-            summary: Create a Backup
+            summary: Create a backup.
             description: "Create a backup for the currently authenticated tenant.\n\
                 \nThe Backup can be used when it reaches the \"available\" state and\
                 \ the\n \"completed\" status.\n\n#### Rules\n- The Backup name must\
@@ -247,17 +246,17 @@ paths:
                     links:
                         get:
                             operationId: get_backup_v1_backups__id__get
-                            description: Get a Backup
-                            parameters:
-                                id: $response.body#/id
-                        update:
-                            operationId: patch_backup_v1_backups__id__patch
-                            description: Patch a Backup
+                            description: Retrieve the details of a specific backup.
                             parameters:
                                 id: $response.body#/id
                         delete:
                             operationId: delete_backup_v1_backups__id__delete
-                            description: Delete a Backup
+                            description: Delete a backup.
+                            parameters:
+                                id: $response.body#/id
+                        rename:
+                            operationId: patch_backup_v1_backups__id__rename_patch
+                            description: Rename a backup.
                             parameters:
                                 id: $response.body#/id
                 '404':
@@ -288,7 +287,6 @@ paths:
                                     $ref: '#/components/schemas/ErrorResponse'
                                 title: Response 422 Create Backup V1 Backups Post
             x-viveiro: true
-            x-mgc-hidden: true
             security:
             -   OAuth2:
                 - block-storage.write
@@ -296,7 +294,7 @@ paths:
         post:
             tags:
             - backups
-            summary: Copy backup cross region
+            summary: Copy backup cross region.
             description: "Copy a backup cross region for the currently authenticated\
                 \ tenant.\n\n#### Rules\n- The copy only be accepted when the destiny\
                 \ region is different from origin region.\n- The copy only be accepted\
@@ -346,6 +344,7 @@ paths:
                                 title: Response 422 Copy Backup Cross Region V1 Backups
                                     Copy Post
             x-viveiro: true
+            x-mgc-hidden: true
             security:
             -   OAuth2:
                 - block-storage.write
@@ -353,7 +352,7 @@ paths:
         get:
             tags:
             - backups
-            summary: Get a Backup
+            summary: Retrieve the details of a specific backup.
             description: "Retrieve details of a Backup for the currently authenticated\
                 \ tenant.\n\n#### Notes\n- Use the **expand** argument to obtain additional\
                 \ details about the Volume\n used to create the Backup.\n- Utilize\
@@ -389,14 +388,14 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/BackupResponse'
                     links:
-                        update:
-                            operationId: patch_backup_v1_backups__id__patch
-                            description: Patch a Backup
-                            parameters:
-                                id: $request.path.id
                         delete:
                             operationId: delete_backup_v1_backups__id__delete
-                            description: Delete a Backup
+                            description: Delete a backup.
+                            parameters:
+                                id: $request.path.id
+                        rename:
+                            operationId: patch_backup_v1_backups__id__rename_patch
+                            description: Rename a backup.
                             parameters:
                                 id: $request.path.id
                 '404':
@@ -427,14 +426,13 @@ paths:
                                     $ref: '#/components/schemas/ErrorResponse'
                                 title: Response 422 Get Backup V1 Backups  Id  Get
             x-viveiro: true
-            x-mgc-hidden: true
             security:
             -   OAuth2:
                 - block-storage.read
         delete:
             tags:
             - backups
-            summary: Delete a Backup
+            summary: Delete a backup.
             description: "Delete a Backup for the currently authenticated tenant.\n\
                 \n#### Rules\n- The Backup's status must be \"completed\".\n- The\
                 \ Backup's state must be \"available\".\n\n\n#### Notes\n- Utilize\
@@ -480,21 +478,21 @@ paths:
                                     $ref: '#/components/schemas/ErrorResponse'
                                 title: Response 422 Delete Backup V1 Backups  Id  Delete
             x-viveiro: true
-            x-mgc-hidden: true
             security:
             -   OAuth2:
                 - block-storage.write
+    /v1/backups/{id}/rename:
         patch:
             tags:
             - backups
-            summary: Patch a Backup
+            summary: Rename a backup.
             description: "Patches a Backup for the currently authenticated tenant.\n\
                 \n#### Rules\n- The Backup name must be unique; otherwise, renaming\
                 \ will not be allowed.\n- The Backup's state must be available.\n\n\
                 #### Notes\n- Utilize the **block-storage backups list** command to\
                 \ retrieve a list of\n all Backups and obtain the ID of the Backup\
                 \ you wish to rename."
-            operationId: patch_backup_v1_backups__id__patch
+            operationId: patch_backup_v1_backups__id__rename_patch
             parameters:
             -   name: id
                 in: path
@@ -515,12 +513,12 @@ paths:
                     links:
                         get:
                             operationId: get_backup_v1_backups__id__get
-                            description: Get a Backup
+                            description: Retrieve the details of a specific backup.
                             parameters:
                                 id: $request.path.id
                         delete:
                             operationId: delete_backup_v1_backups__id__delete
-                            description: Delete a Backup
+                            description: Delete a backup.
                             parameters:
                                 id: $request.path.id
                 '404':
@@ -531,7 +529,8 @@ paths:
                                 type: array
                                 items:
                                     $ref: '#/components/schemas/ErrorResponse'
-                                title: Response 404 Patch Backup V1 Backups  Id  Patch
+                                title: Response 404 Patch Backup V1 Backups  Id  Rename
+                                    Patch
                 '409':
                     description: Conflict
                     content:
@@ -540,7 +539,8 @@ paths:
                                 type: array
                                 items:
                                     $ref: '#/components/schemas/ErrorResponse'
-                                title: Response 409 Patch Backup V1 Backups  Id  Patch
+                                title: Response 409 Patch Backup V1 Backups  Id  Rename
+                                    Patch
                 '422':
                     description: Unprocessable Entity
                     content:
@@ -549,9 +549,9 @@ paths:
                                 type: array
                                 items:
                                     $ref: '#/components/schemas/ErrorResponse'
-                                title: Response 422 Patch Backup V1 Backups  Id  Patch
+                                title: Response 422 Patch Backup V1 Backups  Id  Rename
+                                    Patch
             x-viveiro: true
-            x-mgc-hidden: true
             security:
             -   OAuth2:
                 - block-storage.write
@@ -559,7 +559,7 @@ paths:
         get:
             tags:
             - snapshots
-            summary: List snapshots in the current tenant
+            summary: List all snapshots.
             description: "Retrieve a list of Snapshots for the currently authenticated\
                 \ tenant.\n\n#### Notes\n- Use the expand argument to obtain additional\
                 \ details about the Volume used to\n create each Snapshot."
@@ -641,7 +641,7 @@ paths:
         post:
             tags:
             - snapshots
-            summary: Create a snapshot
+            summary: Create a snapshot.
             description: "Create a Snapshot for the currently authenticated tenant.\n\
                 \nThe Snapshot can be used when it reaches the \"available\" state\
                 \ and the\n \"completed\" status.\n\n#### Rules\n- The Snapshot name\
@@ -669,17 +669,17 @@ paths:
                     links:
                         get:
                             operationId: get_snapshot_v1_snapshots__id__get
-                            description: Retrieve the details of a snapshot
+                            description: Retrieve the details of a specific snapshot.
                             parameters:
                                 id: $response.body#/id
                         delete:
                             operationId: delete_snapshot_v1_snapshots__id__delete
-                            description: Delete a snapshot
+                            description: Delete a snapshot.
                             parameters:
                                 id: $response.body#/id
                         rename:
                             operationId: rename_snapshot_v1_snapshots__id__rename_patch
-                            description: Rename a snapshot
+                            description: Rename a snapshot.
                             parameters:
                                 id: $response.body#/id
                 '404':
@@ -717,7 +717,7 @@ paths:
         get:
             tags:
             - snapshots
-            summary: Retrieve the details of a snapshot
+            summary: Retrieve the details of a specific snapshot.
             description: "Retrieve details of a Snapshot for the currently authenticated\
                 \ tenant.\n\n#### Notes\n- Use the **expand** argument to obtain additional\
                 \ details about the Volume\n used to create the Snapshot.\n- Utilize\
@@ -755,17 +755,17 @@ paths:
                     links:
                         delete:
                             operationId: delete_snapshot_v1_snapshots__id__delete
-                            description: Delete a snapshot
+                            description: Delete a snapshot.
                             parameters:
                                 id: $request.path.id
                         rename:
                             operationId: rename_snapshot_v1_snapshots__id__rename_patch
-                            description: Rename a snapshot
+                            description: Rename a snapshot.
                             parameters:
                                 id: $request.path.id
                         update/name:
                             operationId: rename_snapshot_v1_snapshots__id__rename_patch
-                            description: Rename a snapshot
+                            description: Rename a snapshot.
                             parameters:
                                 id: $request.path.id
                             x-mgc-hidden: true
@@ -803,7 +803,7 @@ paths:
         delete:
             tags:
             - snapshots
-            summary: Delete a snapshot
+            summary: Delete a snapshot.
             description: "Delete a Snapshot for the currently authenticated tenant.\n\
                 \n#### Rules\n- The Snapshot's status must be \"completed\".\n- The\
                 \ Snapshot's state must be \"available\".\n- Deleting a Snapshot that\
@@ -861,7 +861,7 @@ paths:
         patch:
             tags:
             - snapshots
-            summary: Rename a snapshot
+            summary: Rename a snapshot.
             description: "Rename a Snapshot for the currently authenticated tenant.\n\
                 \n#### Rules\n- The Snapshot name must be unique; otherwise, renaming\
                 \ will not be allowed.\n\n#### Notes\n- Utilize the **block-storage\
@@ -888,7 +888,7 @@ paths:
                     links:
                         get:
                             operationId: get_snapshot_v1_snapshots__id__get
-                            description: Retrieve the details of a snapshot
+                            description: Retrieve the details of a specific snapshot.
                             parameters:
                                 id: $request.path.id
                             x-mgc-wait-termination:
@@ -897,7 +897,7 @@ paths:
                                 jsonPathQuery: $.result.name == $.owner.parameters.name
                         delete:
                             operationId: delete_snapshot_v1_snapshots__id__delete
-                            description: Delete a snapshot
+                            description: Delete a snapshot.
                             parameters:
                                 id: $request.path.id
                 '404':
@@ -938,7 +938,7 @@ paths:
         get:
             tags:
             - volume-types
-            summary: List volume types
+            summary: List all volume types.
             description: "List Volume Types allowed in the current region.\n\n####\
                 \ Notes\n\n- Volume types are managed internally. If you wish to use\
                 \ a Volume Type that\n is not yet available, please contact our support\
@@ -959,7 +959,7 @@ paths:
         get:
             tags:
             - volumes
-            summary: List all Volumes
+            summary: List all volumes.
             description: 'Retrieve a list of Volumes for the currently authenticated
                 tenant.
 
@@ -1044,7 +1044,7 @@ paths:
         post:
             tags:
             - volumes
-            summary: Create a new Volume
+            summary: Create a new volume.
             description: "Create a Volume for the currently authenticated tenant.\n\
                 \nThe Volume can be used when it reaches the \"available\" state and\
                 \ \"completed\"\n status.\n\n#### Rules\n- The Volume name must be\
@@ -1070,37 +1070,37 @@ paths:
                     links:
                         get:
                             operationId: get_volume_v1_v1_volumes__id__get
-                            description: Retrieve the details of a volume
+                            description: Retrieve the details of a specific volume.
                             parameters:
                                 id: $response.body#/id
                         delete:
                             operationId: delete_volume_v1_v1_volumes__id__delete
-                            description: Delete a Volume
+                            description: Delete a volume.
                             parameters:
                                 id: $response.body#/id
                         attach:
                             operationId: attach_volume_v1_v1_volumes__id__attach__virtual_machine_id__post
-                            description: Attach a Volume
+                            description: Attach the volume to an instance.
                             parameters:
                                 id: $response.body#/id
                         detach:
                             operationId: detach_volume_v1_v1_volumes__id__detach_post
-                            description: Detach a Volume
+                            description: Detach the volume from an instance.
                             parameters:
                                 id: $response.body#/id
                         extend:
                             operationId: extend_volume_v1_volumes__id__extend_post
-                            description: Extend a Volume
+                            description: Extend the size of a volume.
                             parameters:
                                 id: $response.body#/id
                         rename:
                             operationId: rename_volume_v1_v1_volumes__id__rename_patch
-                            description: Rename a volume
+                            description: Rename a volume.
                             parameters:
                                 id: $response.body#/id
                         retype:
                             operationId: retype_volume_v1_volumes__id__retype_post
-                            description: Retype a Volume
+                            description: Change the type of a volume.
                             parameters:
                                 id: $response.body#/id
                 '404':
@@ -1138,7 +1138,7 @@ paths:
         get:
             tags:
             - volumes
-            summary: Retrieve the details of a volume
+            summary: Retrieve the details of a specific volume.
             description: "Retrieve details of a Volume for the currently authenticated\
                 \ tenant.\n\n#### Notes\n- Use the **expand** argument to obtain additional\
                 \ details about the Volume\n Type.\n- Utilize the **block-storage\
@@ -1176,49 +1176,49 @@ paths:
                     links:
                         delete:
                             operationId: delete_volume_v1_v1_volumes__id__delete
-                            description: Delete a Volume
+                            description: Delete a volume.
                             parameters:
                                 id: $request.path.id
                         attach:
                             operationId: attach_volume_v1_v1_volumes__id__attach__virtual_machine_id__post
-                            description: Attach a Volume
+                            description: Attach the volume to an instance.
                             parameters:
                                 id: $request.path.id
                         detach:
                             operationId: detach_volume_v1_v1_volumes__id__detach_post
-                            description: Detach a Volume
+                            description: Detach the volume from an instance.
                             parameters:
                                 id: $request.path.id
                         extend:
                             operationId: extend_volume_v1_volumes__id__extend_post
-                            description: Extend a Volume
+                            description: Extend the size of a volume.
                             parameters:
                                 id: $request.path.id
                         update/size:
                             operationId: extend_volume_v1_volumes__id__extend_post
-                            description: Extend a Volume
+                            description: Extend the size of a volume.
                             parameters:
                                 id: $request.path.id
                             x-mgc-hidden: true
                         rename:
                             operationId: rename_volume_v1_v1_volumes__id__rename_patch
-                            description: Rename a volume
+                            description: Rename a volume.
                             parameters:
                                 id: $request.path.id
                         update/name:
                             operationId: rename_volume_v1_v1_volumes__id__rename_patch
-                            description: Rename a volume
+                            description: Rename a volume.
                             parameters:
                                 id: $request.path.id
                             x-mgc-hidden: true
                         retype:
                             operationId: retype_volume_v1_volumes__id__retype_post
-                            description: Retype a Volume
+                            description: Change the type of a volume.
                             parameters:
                                 id: $request.path.id
                         update/type:
                             operationId: retype_volume_v1_volumes__id__retype_post
-                            description: Retype a Volume
+                            description: Change the type of a volume.
                             parameters:
                                 id: $request.path.id
                             x-mgc-hidden: true
@@ -1253,7 +1253,7 @@ paths:
         delete:
             tags:
             - volumes
-            summary: Delete a Volume
+            summary: Delete a volume.
             description: "Delete a Volume for the currently authenticated tenant.\n\
                 \n#### Rules\n- The Volume cannot be attached to a Virtual Machine,\
                 \ i.e., its state cannot\n be \"in-use\". If necessary, detach the\
@@ -1311,7 +1311,7 @@ paths:
         post:
             tags:
             - volumes
-            summary: Attach a Volume
+            summary: Attach the volume to an instance.
             description: "Attach a Volume to a Virtual Machine instance for the currently\n\
                 \ authenticated tenant.\n\nThe Volume attachment will be completed\
                 \ when the Volume status returns to\n\"completed\", and the state\
@@ -1346,32 +1346,32 @@ paths:
                     links:
                         get:
                             operationId: get_volume_v1_v1_volumes__id__get
-                            description: Retrieve the details of a volume
+                            description: Retrieve the details of a specific volume.
                             parameters:
                                 id: $request.path.id
                         delete:
                             operationId: delete_volume_v1_v1_volumes__id__delete
-                            description: Delete a Volume
+                            description: Delete a volume.
                             parameters:
                                 id: $request.path.id
                         detach:
                             operationId: detach_volume_v1_v1_volumes__id__detach_post
-                            description: Detach a Volume
+                            description: Detach the volume from an instance.
                             parameters:
                                 id: $request.path.id
                         extend:
                             operationId: extend_volume_v1_volumes__id__extend_post
-                            description: Extend a Volume
+                            description: Extend the size of a volume.
                             parameters:
                                 id: $request.path.id
                         rename:
                             operationId: rename_volume_v1_v1_volumes__id__rename_patch
-                            description: Rename a volume
+                            description: Rename a volume.
                             parameters:
                                 id: $request.path.id
                         retype:
                             operationId: retype_volume_v1_volumes__id__retype_post
-                            description: Retype a Volume
+                            description: Change the type of a volume.
                             parameters:
                                 id: $request.path.id
                 '404':
@@ -1412,7 +1412,7 @@ paths:
         post:
             tags:
             - volumes
-            summary: Detach a Volume
+            summary: Detach the volume from an instance.
             description: "Detach a Volume from a Virtual Machine instance for the\n\
                 \ currently authenticated tenant.\n\nThe Volume detachment will be\
                 \ completed when the Volume state returns to\n \"available,\" and\
@@ -1445,32 +1445,32 @@ paths:
                     links:
                         get:
                             operationId: get_volume_v1_v1_volumes__id__get
-                            description: Retrieve the details of a volume
+                            description: Retrieve the details of a specific volume.
                             parameters:
                                 id: $request.path.id
                         delete:
                             operationId: delete_volume_v1_v1_volumes__id__delete
-                            description: Delete a Volume
+                            description: Delete a volume.
                             parameters:
                                 id: $request.path.id
                         attach:
                             operationId: attach_volume_v1_v1_volumes__id__attach__virtual_machine_id__post
-                            description: Attach a Volume
+                            description: Attach the volume to an instance.
                             parameters:
                                 id: $request.path.id
                         extend:
                             operationId: extend_volume_v1_volumes__id__extend_post
-                            description: Extend a Volume
+                            description: Extend the size of a volume.
                             parameters:
                                 id: $request.path.id
                         rename:
                             operationId: rename_volume_v1_v1_volumes__id__rename_patch
-                            description: Rename a volume
+                            description: Rename a volume.
                             parameters:
                                 id: $request.path.id
                         retype:
                             operationId: retype_volume_v1_volumes__id__retype_post
-                            description: Retype a Volume
+                            description: Change the type of a volume.
                             parameters:
                                 id: $request.path.id
                 '404':
@@ -1511,7 +1511,7 @@ paths:
         post:
             tags:
             - volumes
-            summary: Extend a Volume
+            summary: Extend the size of a volume.
             description: "Extend the size of an existing Volume for the currently\n\
                 \ authenticated tenant.\n\nThe Volume extension will be completed\
                 \ when the Volume status returns to\n \"completed\".\n\n#### Rules\n\
@@ -1543,7 +1543,7 @@ paths:
                     links:
                         get:
                             operationId: get_volume_v1_v1_volumes__id__get
-                            description: Retrieve the details of a volume
+                            description: Retrieve the details of a specific volume.
                             parameters:
                                 id: $request.path.id
                             x-mgc-wait-termination:
@@ -1552,27 +1552,27 @@ paths:
                                 jsonPathQuery: $.result.size == $.owner.parameters.size
                         delete:
                             operationId: delete_volume_v1_v1_volumes__id__delete
-                            description: Delete a Volume
+                            description: Delete a volume.
                             parameters:
                                 id: $request.path.id
                         attach:
                             operationId: attach_volume_v1_v1_volumes__id__attach__virtual_machine_id__post
-                            description: Attach a Volume
+                            description: Attach the volume to an instance.
                             parameters:
                                 id: $request.path.id
                         detach:
                             operationId: detach_volume_v1_v1_volumes__id__detach_post
-                            description: Detach a Volume
+                            description: Detach the volume from an instance.
                             parameters:
                                 id: $request.path.id
                         rename:
                             operationId: rename_volume_v1_v1_volumes__id__rename_patch
-                            description: Rename a volume
+                            description: Rename a volume.
                             parameters:
                                 id: $request.path.id
                         retype:
                             operationId: retype_volume_v1_volumes__id__retype_post
-                            description: Retype a Volume
+                            description: Change the type of a volume.
                             parameters:
                                 id: $request.path.id
                 '404':
@@ -1603,7 +1603,7 @@ paths:
         patch:
             tags:
             - volumes
-            summary: Rename a volume
+            summary: Rename a volume.
             description: "Rename a Volume for the currently authenticated tenant.\n\
                 \n#### Rules\n- The Volume name must be unique; otherwise, renaming\
                 \ will not be allowed.\n\n#### Notes\n- Utilize the **block-storage\
@@ -1630,7 +1630,7 @@ paths:
                     links:
                         get:
                             operationId: get_volume_v1_v1_volumes__id__get
-                            description: Retrieve the details of a volume
+                            description: Retrieve the details of a specific volume.
                             parameters:
                                 id: $request.path.id
                             x-mgc-wait-termination:
@@ -1639,27 +1639,27 @@ paths:
                                 jsonPathQuery: $.result.name == $.owner.parameters.name
                         delete:
                             operationId: delete_volume_v1_v1_volumes__id__delete
-                            description: Delete a Volume
+                            description: Delete a volume.
                             parameters:
                                 id: $request.path.id
                         attach:
                             operationId: attach_volume_v1_v1_volumes__id__attach__virtual_machine_id__post
-                            description: Attach a Volume
+                            description: Attach the volume to an instance.
                             parameters:
                                 id: $request.path.id
                         detach:
                             operationId: detach_volume_v1_v1_volumes__id__detach_post
-                            description: Detach a Volume
+                            description: Detach the volume from an instance.
                             parameters:
                                 id: $request.path.id
                         extend:
                             operationId: extend_volume_v1_volumes__id__extend_post
-                            description: Extend a Volume
+                            description: Extend the size of a volume.
                             parameters:
                                 id: $request.path.id
                         retype:
                             operationId: retype_volume_v1_volumes__id__retype_post
-                            description: Retype a Volume
+                            description: Change the type of a volume.
                             parameters:
                                 id: $request.path.id
                 '404':
@@ -1700,7 +1700,7 @@ paths:
         post:
             tags:
             - volumes
-            summary: Retype a Volume
+            summary: Change the type of a volume.
             description: "Change the Volume Type of an existing Volume for the currently\n\
                 \ authenticated tenant.\n\nThe Volume retype will be completed when\
                 \ the Volume status returns to\n \"completed\".\n\n#### Rules\n- The\
@@ -1732,7 +1732,7 @@ paths:
                     links:
                         get:
                             operationId: get_volume_v1_v1_volumes__id__get
-                            description: Retrieve the details of a volume
+                            description: Retrieve the details of a specific volume.
                             parameters:
                                 id: $request.path.id
                             x-mgc-wait-termination:
@@ -1741,27 +1741,27 @@ paths:
                                 jsonPathQuery: $.result.type == $.owner.parameters.new_type
                         delete:
                             operationId: delete_volume_v1_v1_volumes__id__delete
-                            description: Delete a Volume
+                            description: Delete a volume.
                             parameters:
                                 id: $request.path.id
                         attach:
                             operationId: attach_volume_v1_v1_volumes__id__attach__virtual_machine_id__post
-                            description: Attach a Volume
+                            description: Attach the volume to an instance.
                             parameters:
                                 id: $request.path.id
                         detach:
                             operationId: detach_volume_v1_v1_volumes__id__detach_post
-                            description: Detach a Volume
+                            description: Detach the volume from an instance.
                             parameters:
                                 id: $request.path.id
                         extend:
                             operationId: extend_volume_v1_volumes__id__extend_post
-                            description: Extend a Volume
+                            description: Extend the size of a volume.
                             parameters:
                                 id: $request.path.id
                         rename:
                             operationId: rename_volume_v1_v1_volumes__id__rename_patch
-                            description: Rename a volume
+                            description: Rename a volume.
                             parameters:
                                 id: $request.path.id
                 '404':
@@ -1936,6 +1936,7 @@ components:
                                 - restoring_error
                                 - provisioning
                                 - copying
+                                - copying_error_quota
                             created_at:
                                 anyOf:
                                 -   type: string
@@ -1989,17 +1990,17 @@ components:
                                     Please, remove unused backups or contact support
                                     to increase your quota.
                                 slug: creating_error_quota
-                            id: cd8236f8-b08f-4b59-b19e-66ee331932c5
+                            id: f986f5e0-fcb9-492f-a40c-47aa85dfb7d0
                             name: My backup
                             size: 10
                             source_backup:
-                                id: 5fc6f2e0-fd8d-4539-8cb1-baee8ed10e12
+                                id: 002e7022-44d7-484d-b1db-8b41824ee2be
                             state: available
                             status: completed
                             type: incremental
                             updated_at: '2022-01-01T00:00:10Z'
                             volume:
-                                id: b0ef547c-99c2-4463-9b46-5c3de9d2da8e
+                                id: 6a19d0f9-7d26-4b5e-9c2f-65041fdefed0
                     title: Backups
             title: BackupListResponse
             required:
@@ -2013,17 +2014,17 @@ components:
                             remove unused backups or contact support to increase your
                             quota.
                         slug: creating_error_quota
-                    id: cd8236f8-b08f-4b59-b19e-66ee331932c5
+                    id: f986f5e0-fcb9-492f-a40c-47aa85dfb7d0
                     name: My backup
                     size: 10
                     source_backup:
-                        id: 5fc6f2e0-fd8d-4539-8cb1-baee8ed10e12
+                        id: 002e7022-44d7-484d-b1db-8b41824ee2be
                     state: available
                     status: completed
                     type: incremental
                     updated_at: '2022-01-01T00:00:10Z'
                     volume:
-                        id: b0ef547c-99c2-4463-9b46-5c3de9d2da8e
+                        id: 6a19d0f9-7d26-4b5e-9c2f-65041fdefed0
         BackupResponse:
             type: object
             properties:
@@ -2067,6 +2068,7 @@ components:
                     - restoring_error
                     - provisioning
                     - copying
+                    - copying_error_quota
                 created_at:
                     anyOf:
                     -   type: string
@@ -2120,17 +2122,17 @@ components:
                         remove unused backups or contact support to increase your
                         quota.
                     slug: creating_error_quota
-                id: cd8236f8-b08f-4b59-b19e-66ee331932c5
+                id: f986f5e0-fcb9-492f-a40c-47aa85dfb7d0
                 name: My backup
                 size: 10
                 source_backup:
-                    id: 5fc6f2e0-fd8d-4539-8cb1-baee8ed10e12
+                    id: 002e7022-44d7-484d-b1db-8b41824ee2be
                 state: available
                 status: completed
                 type: incremental
                 updated_at: '2022-01-01T00:00:10Z'
                 volume:
-                    id: b0ef547c-99c2-4463-9b46-5c3de9d2da8e
+                    id: 6a19d0f9-7d26-4b5e-9c2f-65041fdefed0
         BackupResponseError:
             type: object
             properties:
@@ -2173,6 +2175,7 @@ components:
             - restoring_error
             - provisioning
             - copying
+            - copying_error_quota
         BackupType:
             type: string
             title: BackupType

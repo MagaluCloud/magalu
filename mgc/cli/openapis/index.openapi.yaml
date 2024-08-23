@@ -1,8 +1,8 @@
 modules:
--   description: Block Storage API Product Documentation
+-   description: Block Storage API Product
     name: block-storage
     path: block-storage.openapi.yaml
-    summary: Block Storage API Product Documentation
+    summary: Block Storage API Product
     url: https://block-storage.jaxyendy.com/openapi.json
     version: v1
 -   description: Magalu Container Registry product API.
@@ -34,7 +34,13 @@ modules:
     path: network.openapi.yaml
     summary: APIs referentes ao produto de VPC
     url: https://network.jaxyendy.com/openapi.json
-    version: 1.131.0
+    version: 1.131.1
+-   description: SSH Keys management
+    name: ssh
+    path: ssh.openapi.yaml
+    summary: SSH Keys management
+    url: https://globaldb.jaxyendy.com/openapi-cli.json
+    version: 0.1.0
 -   description: Virtual Machine Api Product
     name: virtual-machine
     path: virtual-machine.openapi.yaml

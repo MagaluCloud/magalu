@@ -3,11 +3,11 @@ Package: block-storage
 
 # Summary
 
-# Block Storage API Product Documentation
+# Block Storage API Product
 
 # Description
 
-# Block Storage API Product Documentation
+# Block Storage API Product
 
 Version: v1
 
