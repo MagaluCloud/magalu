@@ -1,8 +1,11 @@
 #!/bin/bash
 
-resources="./docs/resources"
-datasources="./docs/data-sources"
-jsonfile="./subcategory.json"
+script_path=$(readlink -f "$0")
+script_dir=$(dirname "$script_path")
+
+resources="$script_dir/docs/resources"
+datasources="$script_dir/docs/data-sources"
+jsonfile="$script_dir/subcategory.json"
 
 if [ ! -d "$resources" ]; then
     echo "Directory does not exist"

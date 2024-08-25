@@ -37,6 +37,18 @@ repos:
         language: system
         entry: bash -c './mgc/terraform-provider-mgc/gen_docs.sh'
         stages: [pre-commit]
+    -   id: check-tf-examples
+        name: check terraform examples
+        language: system
+        entry: bash -c './mgc/terraform-provider-mgc/check_examples.sh'
+        stages: [pre-commit]
+    -   id: check-tf-docs
+        name: check terraform documentation subcategory
+        language: system
+        entry: bash -c './mgc/terraform-provider-mgc/check_subcategory.sh'
+        require_serial: true
+        pass_filenames: false
+        stages: [pre-commit]
     -   id: check-openapi-links
         name: check openapi links
         language: system
