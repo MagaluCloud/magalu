@@ -1,6 +1,6 @@
 project_name: mgc
 builds:
-  - env: [ CGO_ENABLED=0 ]
+  - env: [CGO_ENABLED=0]
     id: "terraformwin"
     goos:
       - windows
@@ -13,7 +13,7 @@ builds:
     flags:
       - -tags=embed release
     main: mgc/terraform-provider-mgc/main.go
-  - env: [ CGO_ENABLED=0 ]
+  - env: [CGO_ENABLED=0]
     id: "terraform"
     goos:
       - linux
@@ -34,16 +34,26 @@ archives:
     format: zip
     builds:
       - terraform
+    files:
+      - src: "mgc/terraform-provider-mgc/README.md"
+        dst: "README.md"
+      - src: "mgc/terraform-provider-mgc/docs/**/*"
+        dst: "docs/"
   - id: terraformwin
     name_template: "terraform-provider-mgc_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
     format: zip
     builds:
       - terraformwin
+    files:
+      - src: "mgc/terraform-provider-mgc/README.md"
+        dst: "README.md"
+      - src: "mgc/terraform-provider-mgc/docs/**/*"
+        dst: "docs/"
 checksum:
   extra_files:
-    - glob: 'mgc/terraform-provider-mgc/terraform-registry-manifest.json'
-      name_template: 'terraform-provider-{{ .ProjectName }}_{{ .Version }}_manifest.json'
-  name_template: 'terraform-provider-{{ .ProjectName }}_{{ .Version }}_SHA256SUMS'
+    - glob: "mgc/terraform-provider-mgc/terraform-registry-manifest.json"
+      name_template: "terraform-provider-{{ .ProjectName }}_{{ .Version }}_manifest.json"
+  name_template: "terraform-provider-{{ .ProjectName }}_{{ .Version }}_SHA256SUMS"
   algorithm: sha256
 signs:
   - artifacts: checksum
@@ -62,8 +72,8 @@ signs:
       - "${artifact}"
 release:
   extra_files:
-    - glob: 'mgc/terraform-provider-mgc/terraform-registry-manifest.json'
-      name_template: 'terraform-provider-{{ .ProjectName }}_{{ .Version }}_manifest.json'
+    - glob: "mgc/terraform-provider-mgc/terraform-registry-manifest.json"
+      name_template: "terraform-provider-{{ .ProjectName }}_{{ .Version }}_manifest.json"
   github:
     owner: MagaluCloud
     name: terraform-provider-mgc

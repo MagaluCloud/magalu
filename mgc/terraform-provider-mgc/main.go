@@ -6,7 +6,7 @@ import (
 	"log"
 
 	"github.com/hashicorp/terraform-plugin-framework/providerserver"
-	"magalu.cloud/terraform-provider-mgc/internal/provider"
+	"magalu.cloud/terraform-provider-mgc/mgc/provider"
 )
 
 var (

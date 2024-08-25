@@ -32,10 +32,10 @@ repos:
         entry: bash -c './scripts/oapi_index_gen.sh'
         additional_dependencies: [PyYAML, typing, argparse]
         stages: [pre-commit]
-    -   id: generate tf docs
-        name: generate tf docs
+    -   id: tf-docs
+        name: generate terraform documentation
         language: system
-        entry: bash -c './scripts/tf_generate_docs.sh'
+        entry: bash -c './mgc/terraform-provider-mgc/gen_docs.sh'
         stages: [pre-commit]
     -   id: check-openapi-links
         name: check openapi links
