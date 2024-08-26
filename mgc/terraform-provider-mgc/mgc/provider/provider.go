@@ -281,6 +281,7 @@ func collectGroupResources(
 		"mgc_kubernetes_cluster",
 		"mgc_ssh_public_keys",
 		"mgc_workspace",
+		"mgc_virtual_machine_backups",
 	}
 
 	if slices.Contains(ignoredTFModules, strResourceName) {
