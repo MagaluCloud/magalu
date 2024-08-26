@@ -28,12 +28,12 @@ func interfaceToMap(i interface{}) (map[string]interface{}, bool) {
 	return mapa, true
 }
 
-func add(cmd *cobra.Command, args []string) {
+func add(options AddMenu) {
 
 	var toSave []specList
-	file := fmt.Sprintf("%s.jaxyendy.openapi.json", args[1])
+	file := fmt.Sprintf("%s.jaxyendy.openapi.json", options.menu)
 
-	toSave = append(toSave, specList{Url: args[0], File: file, Menu: args[1], Enabled: true, CLI: true, TF: true, SDK: true})
+	toSave = append(toSave, specList{Url: options.url, File: file, Menu: options.menu, Enabled: true, CLI: true, TF: true, SDK: true})
 
 	currentConfig, err := loadList()
 	if err != nil {
@@ -44,7 +44,7 @@ func add(cmd *cobra.Command, args []string) {
 		fmt.Println("url already exists")
 		return
 	}
-	if !validarEndpoint(args[0]) {
+	if !validarEndpoint(options.url) {
 		fmt.Println("url is invalid")
 		return
 	}
@@ -58,27 +58,25 @@ func add(cmd *cobra.Command, args []string) {
 	fmt.Println("done")
 }
 
-var AddSpecsCmd = &cobra.Command{
-	Use:     "add [url] [menu]",
-	Short:   "Add new spec",
-	Example: "specs add https://block-storage.br-ne-1.jaxyendy.com/v1/openapi.json block-storage",
-	Args:    cobra.MinimumNArgs(2),
-	Run:     add,
+type AddMenu struct {
+	url  string
+	menu string
 }
 
-func CliDumpTreeCmd() *cobra.Command {
-	options := &DumpeMenu{}
+func SpecAddNewCmd() *cobra.Command {
+	options := &AddMenu{}
 
 	cmd := &cobra.Command{
-		Use:   "dumptree",
-		Short: "run dump tree",
+		Use:     "add [url] [menu]",
+		Short:   "Add new spec",
+		Example: "specs add https://block-storage.br-ne-1.jaxyendy.com/v1/openapi.json block-storage",
 		Run: func(cmd *cobra.Command, args []string) {
-			dumpTree(*options)
+			add(*options)
 		},
 	}
 
-	cmd.Flags().StringVarP(&options.cli, "cli", "c", "", "Local ou comando da CLI")
-	cmd.Flags().StringVarP(&options.output, "output", "o", "", "Local de saida do dump file")
+	cmd.Flags().StringVarP(&options.url, "url", "u", "", "URL")
+	cmd.Flags().StringVarP(&options.menu, "menu", "m", "", "Menu")
 
 	return cmd
 }

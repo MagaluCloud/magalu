@@ -61,39 +61,39 @@ func loadSpec(filename string) (*v3.Document, error) {
 }
 
 func mergeSpecs(spec1, spec2 *v3.Document) (*v3.Document, error) {
-	mergedSpec := &v3.Document{
-		OpenAPI: spec1.OpenAPI,
-		Info:    spec1.Info, // Você pode escolher qual info manter ou combinar
-		Paths:   make(v3.Paths),
-		Components: &v3.Components{
-			Schemas: make(v3.SchemaMap),
-			// Adicione outros componentes conforme necessário
-		},
-	}
+	// mergedSpec := &v3.Document{
+	// 	OpenAPI: spec1.OpenAPI,
+	// 	Info:    spec1.Info, // Você pode escolher qual info manter ou combinar
+	// 	Paths:   make(v3.Paths),
+	// 	Components: &v3.Components{
+	// 		Schemas: make(v3.SchemaMap),
+	// 		// Adicione outros componentes conforme necessário
+	// 	},
+	// }
 
-	// Mesclar caminhos
-	for path, item := range spec1.Paths {
-		mergedSpec.Paths[path] = item
-	}
-	for path, item := range spec2.Paths {
-		if _, exists := mergedSpec.Paths[path]; exists {
-			// Lidar com conflitos de caminho, se necessário
-			fmt.Printf("Aviso: Caminho duplicado encontrado: %s\n", path)
-		}
-		mergedSpec.Paths[path] = item
-	}
+	// // Mesclar caminhos
+	// for path, item := range spec1.Paths {
+	// 	mergedSpec.Paths[path] = item
+	// }
+	// for path, item := range spec2.Paths {
+	// 	if _, exists := mergedSpec.Paths[path]; exists {
+	// 		// Lidar com conflitos de caminho, se necessário
+	// 		fmt.Printf("Aviso: Caminho duplicado encontrado: %s\n", path)
+	// 	}
+	// 	mergedSpec.Paths[path] = item
+	// }
 
-	// Mesclar schemas
-	for name, schema := range spec1.Components.Schemas {
-		mergedSpec.Components.Schemas[name] = schema
-	}
-	for name, schema := range spec2.Components.Schemas {
-		if _, exists := mergedSpec.Components.Schemas[name]; exists {
-			// Lidar com conflitos de schema, se necessário
-			fmt.Printf("Aviso: Schema duplicado encontrado: %s\n", name)
-		}
-		mergedSpec.Components.Schemas[name] = schema
-	}
+	// // Mesclar schemas
+	// for name, schema := range spec1.Components.Schemas {
+	// 	mergedSpec.Components.Schemas[name] = schema
+	// }
+	// for name, schema := range spec2.Components.Schemas {
+	// 	if _, exists := mergedSpec.Components.Schemas[name]; exists {
+	// 		// Lidar com conflitos de schema, se necessário
+	// 		fmt.Printf("Aviso: Schema duplicado encontrado: %s\n", name)
+	// 	}
+	// 	mergedSpec.Components.Schemas[name] = schema
+	// }
 
 	// Mesclar outros componentes conforme necessário
 
