@@ -36,6 +36,8 @@ repos:
         name: generate terraform documentation
         language: system
         entry: make -C ./mgc/terraform-provider-mgc/ generate-docs
+        require_serial: true
+        pass_filenames: false
         stages: [pre-commit]
     -   id: check-tf-examples
         name: check terraform examples
