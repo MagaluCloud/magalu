@@ -1,18 +1,16 @@
-# List the SSH keys. It is possible sort this list with parameters id, name, key_type
+# delete a backup from instance
 
 ## Usage:
 ```bash
 Usage:
-  ./mgc profile ssh-keys list [flags]
+  ./mgc virtual-machine backups delete [id] [flags]
 ```
 
 ## Product catalog:
 - Flags:
-- --control.limit integer     Limit (default 50)
-- --control.offset integer    Offset
-- --control.sort string       Sort
-- -h, --help                     help for list
-- -v, --version                  version for list
+- -h, --help      help for delete
+- --id uuid   Id (required)
+- -v, --version   version for delete
 
 ## Other commands:
 - Global Flags:
@@ -27,6 +25,7 @@ Usage:
 - --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 - -o, --output string            Change the output format. Use '--output=help' to know more details. (default "yaml")
 - -r, --raw                      Output raw data, without any formatting or coloring
+- --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
 - --server-url uri           Manually specify the server to use
 
 ## Flags:

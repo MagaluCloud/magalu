@@ -4645,6 +4645,10 @@
     {
       "name": "snapshots",
       "description": "Operations with snapshots for instances."
+    },
+    {
+      "name": "backups",
+      "description": "Operations with backups for instances."
     }
   ]
 }
