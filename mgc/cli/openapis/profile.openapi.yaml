@@ -290,7 +290,7 @@ components:
                 slug: Unauthorized
 tags:
 -   name: ssh_keys
-    description: ssh_keys
+    description: Manage SSH Keys
 $id: https://globaldb.jaxyendy.com/openapi-cli.json
 servers:
 -   url: https://{env}/profile

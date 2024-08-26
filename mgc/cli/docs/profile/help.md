@@ -12,7 +12,7 @@ Usage:
 
 ## Product catalog:
 - Commands:
-- ssh-keys    ssh_keys
+- ssh-keys    Manage SSH Keys
 
 ## Other commands:
 - Flags:

@@ -482,5 +482,11 @@
         ]
       }
     }
-  }
+  },
+  "tags": [
+    {
+      "name": "ssh_keys",
+      "description": "Manage SSH Keys"
+    }
+  ]
 }
