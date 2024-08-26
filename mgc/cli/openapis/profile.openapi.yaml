@@ -1,14 +1,16 @@
 openapi: 3.0.3
 info:
-    title: GlobalDB API
-    description: SSH Keys management
+    title: Global resources management
+    description: Manage users global data
     version: 0.1.0
 paths:
     /v0/ssh-keys:
         get:
             tags:
             - ssh_keys
-            summary: List Ssh Keys
+            summary: List SSH keys
+            description: List the SSH keys. It is possible sort this list with parameters
+                id, name, key_type
             operationId: list_ssh_keys
             parameters:
             -   name: _limit
@@ -52,7 +54,13 @@ paths:
         post:
             tags:
             - ssh_keys
-            summary: Create Ssh Key
+            summary: Register new SSH key
+            description: 'Register new SSH key by providing a name and the public
+                SSH key
+
+
+                The supported key types are: ssh-rsa, ssh-dss, ecdsa-sha, ssh-ed25519,
+                sk-ecdsa-sha, sk-ssh-ed25519'
             operationId: create_ssh_key
             requestBody:
                 content:
@@ -80,7 +88,9 @@ paths:
         get:
             tags:
             - ssh_keys
-            summary: Get Ssh Key
+            summary: Retrieve a SSH key
+            description: Retrieve an SSH key using its ID. If you do not know the
+                ID, retrieve it by listing your keys.
             operationId: get_ssh_key
             parameters:
             -   name: key_id
@@ -100,7 +110,7 @@ paths:
                     links:
                         delete:
                             operationId: delete_ssh_key
-                            description: Delete Ssh Key
+                            description: Delete SSH Key
                             parameters:
                                 key_id: $request.path.key_id
                 '422':
@@ -115,7 +125,8 @@ paths:
         delete:
             tags:
             - ssh_keys
-            summary: Delete Ssh Key
+            summary: Delete SSH Key
+            description: Delete an SSH key using its id.
             operationId: delete_ssh_key
             parameters:
             -   name: key_id
@@ -192,7 +203,8 @@ components:
                     maxLength: 45
                 key:
                     type: string
-                    title: The SSH public key data
+                    title: 'The SSH public key. The supported key types are: ssh-rsa,
+                        ssh-dss, ecdsa-sha, ssh-ed25519, sk-ecdsa-sha, sk-ssh-ed25519'
                     maxLength: 16384
             title: SSHPubKeyPublicInput
             required:
@@ -278,7 +290,7 @@ components:
                 slug: Unauthorized
 tags:
 -   name: ssh_keys
-    description: Manage SSH Keys
+    description: ssh_keys
 $id: https://globaldb.jaxyendy.com/openapi-cli.json
 servers:
 -   url: https://{env}/profile

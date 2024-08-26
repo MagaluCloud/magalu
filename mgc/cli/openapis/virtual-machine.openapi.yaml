@@ -146,6 +146,32 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/CreateResponse'
+                    links:
+                        get:
+                            operationId: details_backup_v1_backups__id__get
+                            description: Retrieve the details of a backup.
+                            parameters:
+                                id: $response.body#/id
+                        delete:
+                            operationId: delete_backup_v1_backups__id__delete
+                            description: Delete a backup of a virtual machine asynchronously.
+                            parameters:
+                                id: $response.body#/id
+                        copy:
+                            operationId: copy_backup_region_v1_backups__id__copy_post
+                            description: Copy a backup of a virtual machine asynchronously.
+                            parameters:
+                                id: $response.body#/id
+                        rename:
+                            operationId: rename_backup_v1_backups__id__rename_patch
+                            description: Renames a backup
+                            parameters:
+                                id: $response.body#/id
+                        restore:
+                            operationId: restore_backup_v1_backups__id__restore_post
+                            description: Restore a backup to a virtual machine
+                            parameters:
+                                id: $response.body#/id
                 '400':
                     description: Backup Not Allowed Exception
                     content:
@@ -227,6 +253,33 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/BackupResponse'
+                    links:
+                        delete:
+                            operationId: delete_backup_v1_backups__id__delete
+                            description: Delete a backup of a virtual machine asynchronously.
+                            parameters:
+                                id: $request.path.id
+                        copy:
+                            operationId: copy_backup_region_v1_backups__id__copy_post
+                            description: Copy a backup of a virtual machine asynchronously.
+                            parameters:
+                                id: $request.path.id
+                        rename:
+                            operationId: rename_backup_v1_backups__id__rename_patch
+                            description: Renames a backup
+                            parameters:
+                                id: $request.path.id
+                        update/name:
+                            operationId: rename_backup_v1_backups__id__rename_patch
+                            description: Renames a backup
+                            parameters:
+                                id: $request.path.id
+                            x-mgc-hidden: true
+                        restore:
+                            operationId: restore_backup_v1_backups__id__restore_post
+                            description: Restore a backup to a virtual machine
+                            parameters:
+                                id: $request.path.id
                 '400':
                     description: Backup Not Allowed Exception
                     content:
@@ -339,6 +392,27 @@ paths:
             responses:
                 '204':
                     description: Successful Response
+                    links:
+                        get:
+                            operationId: details_backup_v1_backups__id__get
+                            description: Retrieve the details of a backup.
+                            parameters:
+                                id: $request.path.id
+                        delete:
+                            operationId: delete_backup_v1_backups__id__delete
+                            description: Delete a backup of a virtual machine asynchronously.
+                            parameters:
+                                id: $request.path.id
+                        rename:
+                            operationId: rename_backup_v1_backups__id__rename_patch
+                            description: Renames a backup
+                            parameters:
+                                id: $request.path.id
+                        restore:
+                            operationId: restore_backup_v1_backups__id__restore_post
+                            description: Restore a backup to a virtual machine
+                            parameters:
+                                id: $request.path.id
                 '400':
                     description: Backup Not Allowed Exception
                     content:
@@ -410,6 +484,31 @@ paths:
             responses:
                 '204':
                     description: Successful Response
+                    links:
+                        get:
+                            operationId: details_backup_v1_backups__id__get
+                            description: Retrieve the details of a backup.
+                            parameters:
+                                id: $request.path.id
+                            x-mgc-wait-termination:
+                                interval: 5s
+                                maxRetries: 10
+                                jsonPathQuery: $.result.name == $.owner.parameters.name
+                        delete:
+                            operationId: delete_backup_v1_backups__id__delete
+                            description: Delete a backup of a virtual machine asynchronously.
+                            parameters:
+                                id: $request.path.id
+                        copy:
+                            operationId: copy_backup_region_v1_backups__id__copy_post
+                            description: Copy a backup of a virtual machine asynchronously.
+                            parameters:
+                                id: $request.path.id
+                        restore:
+                            operationId: restore_backup_v1_backups__id__restore_post
+                            description: Restore a backup to a virtual machine
+                            parameters:
+                                id: $request.path.id
                 '400':
                     description: Backup Not Allowed Exception
                     content:
@@ -491,6 +590,27 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/CreateResponse'
+                    links:
+                        get:
+                            operationId: details_backup_v1_backups__id__get
+                            description: Retrieve the details of a backup.
+                            parameters:
+                                id: $request.path.id
+                        delete:
+                            operationId: delete_backup_v1_backups__id__delete
+                            description: Delete a backup of a virtual machine asynchronously.
+                            parameters:
+                                id: $request.path.id
+                        copy:
+                            operationId: copy_backup_region_v1_backups__id__copy_post
+                            description: Copy a backup of a virtual machine asynchronously.
+                            parameters:
+                                id: $request.path.id
+                        rename:
+                            operationId: rename_backup_v1_backups__id__rename_patch
+                            description: Renames a backup
+                            parameters:
+                                id: $request.path.id
                 '400':
                     description: Backup Not Allowed Exception
                     content:
@@ -4385,6 +4505,8 @@ tags:
     description: Operations with machine types for instances.
 -   name: snapshots
     description: Operations with snapshots for instances.
+-   name: backups
+    description: Operations with backups for instances.
 $id: https://virtual-machine.jaxyendy.com/openapi.json
 servers:
 -   url: https://{env}/{region}/compute

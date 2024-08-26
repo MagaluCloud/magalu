@@ -1,20 +1,25 @@
-# Register new SSH key by providing a name and the public SSH key
+# Operations with backups for instances.
 
 ## Usage:
 ```bash
-The supported key types are: ssh-rsa, ssh-dss, ecdsa-sha, ssh-ed25519, sk-ecdsa-sha, sk-ssh-ed25519
+Usage:
+  ./mgc virtual-machine backups [flags]
+  ./mgc virtual-machine backups [command]
 ```
 
 ## Product catalog:
-- Usage:
-- ./mgc profile ssh-keys create [flags]
+- Commands:
+- create      Create a backup of a virtual machine asynchronously.
+- delete      Delete a backup of a virtual machine asynchronously.
+- get         Retrieve the details of a backup.
+- list        Lists all backups in the current tenant.
+- rename      Renames a backup
+- restore     Restore a backup to a virtual machine
 
 ## Other commands:
 - Flags:
-- -h, --help          help for create
-- --key string    The SSH public key. The supported key types are: ssh-rsa, ssh-dss, ecdsa-sha, ssh-ed25519, sk-ecdsa-sha, sk-ssh-ed25519 (max character count: 16384) (required)
-- --name string   The SSH Key name (max character count: 45) (required)
-- -v, --version       version for create
+- -h, --help      help for backups
+- -v, --version   version for backups
 
 ## Flags:
 ```bash
@@ -26,10 +31,8 @@ Global Flags:
   -t, --cli.timeout duration     If > 0, it's the timeout for the action execution. It's specified as numbers and unit suffix.
                                  Valid unit suffixes: ns, us, ms, s, m and h. Examples: 300ms, 1m30s
       --debug                    Display detailed log information at the debug level
-      --env enum                 Environment to use (one of "pre-prod" or "prod") (default "prod")
       --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
   -o, --output string            Change the output format. Use '--output=help' to know more details. (default "yaml")
   -r, --raw                      Output raw data, without any formatting or coloring
-      --server-url uri           Manually specify the server to use
 ```
 

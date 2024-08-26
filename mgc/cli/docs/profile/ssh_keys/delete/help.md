@@ -1,4 +1,4 @@
-# Delete Ssh Key
+# Delete an SSH key using its id.
 
 ## Usage:
 ```bash

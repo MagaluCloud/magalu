@@ -1,8 +1,8 @@
 {
   "openapi": "3.0.3",
   "info": {
-    "title": "GlobalDB API",
-    "description": "SSH Keys management",
+    "title": "Global resources management",
+    "description": "Manage users global data",
     "version": "0.1.0"
   },
   "paths": {
@@ -11,7 +11,8 @@
         "tags": [
           "ssh_keys"
         ],
-        "summary": "List Ssh Keys",
+        "summary": "List SSH keys",
+        "description": "List the SSH keys. It is possible sort this list with parameters id, name, key_type",
         "operationId": "list_ssh_keys",
         "parameters": [
           {
@@ -93,7 +94,8 @@
         "tags": [
           "ssh_keys"
         ],
-        "summary": "Create Ssh Key",
+        "summary": "Register new SSH key",
+        "description": "Register new SSH key by providing a name and the public SSH key\n\nThe supported key types are: ssh-rsa, ssh-dss, ecdsa-sha, ssh-ed25519, sk-ecdsa-sha, sk-ssh-ed25519",
         "operationId": "create_ssh_key",
         "parameters": [
           {
@@ -153,7 +155,8 @@
         "tags": [
           "ssh_keys"
         ],
-        "summary": "Get Ssh Key",
+        "summary": "Retrieve a SSH key",
+        "description": "Retrieve an SSH key using its ID. If you do not know the ID, retrieve it by listing your keys.",
         "operationId": "get_ssh_key",
         "parameters": [
           {
@@ -211,7 +214,8 @@
         "tags": [
           "ssh_keys"
         ],
-        "summary": "Delete Ssh Key",
+        "summary": "Delete SSH Key",
+        "description": "Delete an SSH key using its id.",
         "operationId": "delete_ssh_key",
         "parameters": [
           {
@@ -355,7 +359,7 @@
           },
           "key": {
             "type": "string",
-            "title": "The SSH public key data",
+            "title": "The SSH public key. The supported key types are: ssh-rsa, ssh-dss, ecdsa-sha, ssh-ed25519, sk-ecdsa-sha, sk-ssh-ed25519",
             "maxLength": 16384
           }
         },

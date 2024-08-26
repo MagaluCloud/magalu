@@ -1,20 +1,24 @@
-# Register new SSH key by providing a name and the public SSH key
+# List Virtual Machine backups in the current tenant which is logged in.
 
 ## Usage:
 ```bash
-The supported key types are: ssh-rsa, ssh-dss, ecdsa-sha, ssh-ed25519, sk-ecdsa-sha, sk-ssh-ed25519
+#### Notes
+- You can use the **extend** argument to get more details from the inner objects
+like image or type.
 ```
 
 ## Product catalog:
 - Usage:
-- ./mgc profile ssh-keys create [flags]
+- ./mgc virtual-machine backups list [flags]
 
 ## Other commands:
 - Flags:
-- -h, --help          help for create
-- --key string    The SSH public key. The supported key types are: ssh-rsa, ssh-dss, ecdsa-sha, ssh-ed25519, sk-ecdsa-sha, sk-ssh-ed25519 (max character count: 16384) (required)
-- --name string   The SSH Key name (max character count: 45) (required)
-- -v, --version       version for create
+- --control.limit integer     Limit: limit the number of the results (max: 2147483647) (default 50)
+- --control.offset integer    Offset: pagination for the results limited (max: 2147483647)
+- --control.sort string       Sort: order of the results using informed fields (pattern: ^(^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$) (default "created_at:asc")
+- --expand array(string)     Expand: You can get more detailed info about: ['instance']  (default [])
+- -h, --help                     help for list
+- -v, --version                  version for list
 
 ## Flags:
 ```bash
@@ -30,6 +34,7 @@ Global Flags:
       --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
   -o, --output string            Change the output format. Use '--output=help' to know more details. (default "yaml")
   -r, --raw                      Output raw data, without any formatting or coloring
+      --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
       --server-url uri           Manually specify the server to use
 ```
 

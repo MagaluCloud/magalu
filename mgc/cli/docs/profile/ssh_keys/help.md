@@ -1,4 +1,4 @@
-# Manage SSH Keys
+# ssh_keys
 
 ## Usage:
 ```bash
@@ -13,10 +13,10 @@ Usage:
 
 ## Other commands:
 - Commands:
-- create      Create Ssh Key
-- delete      Delete Ssh Key
-- get         Get Ssh Key
-- list        List Ssh Keys
+- create      Register new SSH key
+- delete      Delete SSH Key
+- get         Retrieve a SSH key
+- list        List SSH keys
 
 ## Flags:
 ```bash
