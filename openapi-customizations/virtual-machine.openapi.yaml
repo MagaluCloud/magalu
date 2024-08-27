@@ -3,7 +3,7 @@
 # NOTE: Lists are merged by their indexes, be careful with parameters, tags and such!
 # to keep it sane, keep some list item identifier (ex: "name") and add extra properties,
 # such as "x-mgc-name" or "x-mgc-description"
-
+openapi: 3.0.2
 paths:
     /v1/instances:
         get:
