@@ -18,6 +18,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
 	mgcSdk "magalu.cloud/lib"
 	sdkCluster "magalu.cloud/lib/products/kubernetes/cluster"
 	"magalu.cloud/sdk"
@@ -111,7 +112,7 @@ func (r *k8sClusterResource) Schema(_ context.Context, _ resource.SchemaRequest,
 				Optional:    true,
 				ElementType: types.StringType,
 				PlanModifiers: []planmodifier.List{
-					listplanmodifier.RequiresReplace(),
+					listplanmodifier.UseStateForUnknown(),
 				},
 			},
 			"description": schema.StringAttribute{
@@ -217,6 +218,9 @@ func (r *k8sClusterResource) Create(ctx context.Context, req resource.CreateRequ
 	createdCluster, err := r.GetClusterPooling(ctx, cluster.Id, data.AsyncCreation.ValueBool())
 	if err != nil {
 		resp.Diagnostics.AddError("Failed to get Kubernetes cluster", err.Error())
+		data.ID = types.StringValue(cluster.Id)
+		resp.State.Set(ctx, &data)
+		return
 	}
 
 	newState := ConvertSDKCreateResultToTerraformCreateClsuterModel(&createdCluster)
@@ -254,13 +258,39 @@ func (r *k8sClusterResource) GetClusterPooling(ctx context.Context, clusterId st
 		if state == "failed" {
 			return result, errors.New("cluster failed to provision")
 		}
+
+		tflog.Debug(ctx, fmt.Sprintf("current cluster state: [%s]", state))
 	}
 
 	return result, errors.New("timeout waiting for cluster to provision")
 }
 
 func (r *k8sClusterResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	resp.Diagnostics.AddError("Update not supported", "Update not supported, please delete and recreate the resource")
+	var data KubernetesClusterCreateResourceModel
+	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	cidrs := []string{}
+	for _, c := range data.AllowedCidrs {
+		cidrs = append(cidrs, c.ValueString())
+	}
+	allowedCidrs := sdkCluster.UpdateParametersAllowedCidrs(cidrs)
+
+	param := sdkCluster.UpdateParameters{
+		ClusterId:    data.ID.ValueString(),
+		AllowedCidrs: &allowedCidrs,
+	}
+
+	_, err := r.k8sCluster.Update(param,
+		tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkCluster.UpdateConfigs{}))
+	if err != nil {
+		resp.Diagnostics.AddError("Failed to update Kubernetes cluster", err.Error())
+		return
+	}
+
+	resp.Diagnostics = resp.State.Set(ctx, &data)
 }
 
 func (r *k8sClusterResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {

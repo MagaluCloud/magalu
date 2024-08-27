@@ -12,6 +12,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
 	mgcSdk "magalu.cloud/lib"
 	sdkNodepool "magalu.cloud/lib/products/kubernetes/nodepool"
 	"magalu.cloud/sdk"
@@ -185,10 +186,14 @@ func (r *NewNodePoolResource) Create(ctx context.Context, req resource.CreateReq
 		return
 	}
 
-	r.waitNodePoolCreation(nodepool.Id, data.ClusterID.ValueString())
-
 	data.NodePool = tfutil.ConvertToNodePoolCreate(&nodepool)
 	resp.Diagnostics.Append(resp.State.Set(ctx, data)...)
+
+	err = r.waitNodePoolCreation(ctx, nodepool.Id, data.ClusterID.ValueString())
+	if err != nil {
+		resp.Diagnostics.AddError("Failed to wait for node pool creation", err.Error())
+		return
+	}
 }
 
 func (r *NewNodePoolResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
@@ -224,7 +229,11 @@ func (r *NewNodePoolResource) Update(ctx context.Context, req resource.UpdateReq
 	}
 	data.NodePool = tfutil.ConvertToNodePoolUpdate(&nodepool)
 
-	r.waitNodePoolCreation(data.ID.ValueString(), data.ClusterID.ValueString())
+	err = r.waitNodePoolCreation(ctx, data.ID.ValueString(), data.ClusterID.ValueString())
+	if err != nil {
+		resp.Diagnostics.AddError("Failed to wait for node pool creation", err.Error())
+		return
+	}
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, data)...)
 }
@@ -298,7 +307,7 @@ func convertStringArrayTFToSliceString(tags *[]types.String) *[]string {
 	return &tagsSlice
 }
 
-func (r *NewNodePoolResource) waitNodePoolCreation(nodepoolid, clusterId string) {
+func (r *NewNodePoolResource) waitNodePoolCreation(ctx context.Context, nodepoolid, clusterId string) error {
 	for startTime := time.Now(); time.Since(startTime) < ClusterPoolingTimeout; {
 		time.Sleep(30 * time.Second)
 
@@ -308,11 +317,14 @@ func (r *NewNodePoolResource) waitNodePoolCreation(nodepoolid, clusterId string)
 		}, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkNodepool.GetConfigs{}))
 
 		if err != nil {
-			continue
+			return err
 		}
 
 		if nodepool.Status.State == "Running" {
-			return
+			return nil
 		}
+
+		tflog.Debug(ctx, fmt.Sprintf("Node pool %s is in state %s", nodepoolid, nodepool.Status.State))
 	}
+	return fmt.Errorf("timeout waiting for node pool creation")
 }
