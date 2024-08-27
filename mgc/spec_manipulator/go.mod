@@ -1,6 +1,10 @@
 module magalu.cloud/actions
 
-go 1.22.6
+go 1.23
+
+replace (
+github.com/pb33f/libopenapi => /home/gfz/git/libopenapi
+)
 
 require (
 	github.com/pb33f/libopenapi v0.16.14

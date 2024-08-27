@@ -1,7 +1,6 @@
 package spec
 
 import (
-	"encoding/json"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -42,14 +41,8 @@ func mergeSpecsMain(options MergeSpecs) {
 		os.Exit(1)
 	}
 
-	err = addServersToDocument(&docA, options.globalDb)
-	if err != nil {
-		fmt.Println("Failed to add servers to document: %v", err)
-		os.Exit(1)
-	}
-
 	// Realizar o merge
-	mergedSpec := mergeSpecs(docA, docB)
+	mergedSpec := mergeSpecs(docA, docB, options)
 
 	// Salvar a especificação mesclada
 	err = saveSpec(mergedSpec, options.output)
@@ -60,165 +53,41 @@ func mergeSpecsMain(options MergeSpecs) {
 
 	fmt.Println("Especificações mescladas com sucesso. Resultado salvo em '" + options.output + "'")
 }
-func addServersToDocument(doc *libopenapi.Document, isGlobalDB bool) error {
 
-	yamlContent := `
-				  {"servers": [
-				    {
-				      "url": "https://{env}/{region}/{product}",
-				      "variables": {
-				        "region": {
-				          "description": "Region to reach the service",
-				          "default": "br-se1",
-				          "enum": [
-				            "br-ne-1",
-				            "br-se1",
-				            "br-mgl1"
-				          ],
-				          "x-mgc-transforms": [
-				            {
-				              "type": "translate",
-				              "allowMissing": true,
-				              "translations": [
-				                {
-				                  "from": "br-ne1",
-				                  "to": "br-ne-1"
-				                },
-				                {
-				                  "from": "br-mgl1",
-				                  "to": "br-se-1"
-				                }
-				              ]
-				            }
-				          ]
-				        },
-				        "env": {
-				          "description": "Environment to use",
-				          "default": "api.magalu.cloud",
-				          "enum": [
-				            "api.magalu.cloud",
-				            "api.pre-prod.jaxyendy.com"
-				          ],
-				          "x-mgc-transforms": [
-				            {
-				              "type": "translate",
-				              "translations": [
-				                {
-				                  "from": "prod",
-				                  "to": "api.magalu.cloud"
-				                },
-				                {
-				                  "from": "pre-prod",
-				                  "to": "api.pre-prod.jaxyendy.com"
-				                }
-				              ]
-				            }
-				          ]
-				        }
-				      }
-				    }
-				  ]
-				}`
+func mergeSpecs(specA, specB libopenapi.Document, options MergeSpecs) libopenapi.Document {
+	mergedSpec := specA
 
-	if isGlobalDB {
-		yamlContent = `
-		{"servers": [
-		  {
-			"url": "https://{env}/{product}",
-			"variables": {
-			  "region": {
-				"description": "Region to reach the service",
-				"default": "br-se1",
-				"enum": [
-				  "br-ne-1",
-				  "br-se1",
-				  "br-mgl1"
-				],
-				"x-mgc-transforms": [
-				  {
-					"type": "translate",
-					"allowMissing": true,
-					"translations": [
-					  {
-						"from": "br-ne1",
-						"to": "br-ne-1"
-					  },
-					  {
-						"from": "br-mgl1",
-						"to": "br-se-1"
-					  }
-					]
-				  }
-				]
-			  },
-			  "env": {
-				"description": "Environment to use",
-				"default": "api.magalu.cloud",
-				"enum": [
-				  "api.magalu.cloud",
-				  "api.pre-prod.jaxyendy.com"
-				],
-				"x-mgc-transforms": [
-				  {
-					"type": "translate",
-					"translations": [
-					  {
-						"from": "prod",
-						"to": "api.magalu.cloud"
-					  },
-					  {
-						"from": "pre-prod",
-						"to": "api.pre-prod.jaxyendy.com"
-					  }
-					]
-				  }
-				]
-			  }
-			}
-		  }
-		]
-	  }`
-
-	}
-
-	node, err := jsonToYamlNode(yamlContent)
-	if err != nil {
-		return err
-	}
-
-	// Assumindo que doc.V3 não é nil e é um ponteiro para v3.Document
-	if doc == nil {
-		return fmt.Errorf("document is not a valid OpenAPI v3 document")
-	}
-
-	// Criar um novo slice de Server a partir do node
-	docV := *doc
-	mergedSpec, _ := docV.BuildV3Model()
-
-	server := &v3.Server{
-		URL:         "",
-		Description: "",
-		Variables:   orderedmap.New[string, *v3.ServerVariable](),
-		Extensions:  orderedmap.New[string, *yaml.Node](),
-	}
-
-	// Função auxiliar para criar uma extensão
+	//Add Servers
 	createExtension := func(value interface{}) *yaml.Node {
 		node := &yaml.Node{}
 		err := node.Encode(value)
 		if err != nil {
-			// Trate o erro conforme necessário
+			fmt.Println(err)
+			os.Exit(1)
 		}
 		return node
 	}
 
-	// Configurar a variável "region"
-	regionVariable := &v3.ServerVariable{
-		Description: "Region to reach the service",
-		Default:     "br-se1",
-		Enum:        []string{"br-ne-1", "br-se1", "br-mgl1"},
-		Extensions:  orderedmap.New[string, *yaml.Node](),
+	mergedSpecA, _ := mergedSpec.BuildV3Model()
+	specModelB, _ := specB.BuildV3Model()
+
+	url := "https://{env}/{region}/" + options.productPathURL
+	if options.globalDb {
+		url = "https://{env}/" + options.productPathURL
 	}
+
+	server := &v3.Server{
+		URL:       url,
+		Variables: orderedmap.New[string, *v3.ServerVariable](),
+	}
+
+	regionVar := &v3.ServerVariable{
+		Enum:       []string{"br-ne-1", "br-se1", "br-mgl1"},
+		Extensions: orderedmap.New[string, *yaml.Node](),
+	}
+
+	regionVar.Description = "Region to reach the service"
+	regionVar.Default = "br-se1"
 
 	regionTransforms := []map[string]interface{}{
 		{
@@ -230,16 +99,15 @@ func addServersToDocument(doc *libopenapi.Document, isGlobalDB bool) error {
 			},
 		},
 	}
-	regionVariable.Extensions.Set("x-mgc-transforms", createExtension(regionTransforms))
+	regionVar.Extensions.Set("x-mgc-transforms", createExtension(regionTransforms))
+	server.Variables.Set("region", regionVar)
 
-	// Configurar a variável "env"
-	envVariable := &v3.ServerVariable{
-		Description: "Environment to use",
-		Default:     "api.magalu.cloud",
-		Enum:        []string{"api.magalu.cloud", "api.pre-prod.jaxyendy.com"},
-		Extensions:  orderedmap.New[string, *yaml.Node](),
+	envVar := &v3.ServerVariable{
+		Enum:       []string{"api.magalu.cloud", "api.pre-prod.jaxyendy.com"},
+		Extensions: orderedmap.New[string, *yaml.Node](),
 	}
-
+	envVar.Description = "Environment to use"
+	envVar.Default = "api.magalu.cloud"
 	envTransforms := []map[string]interface{}{
 		{
 			"type": "translate",
@@ -249,38 +117,10 @@ func addServersToDocument(doc *libopenapi.Document, isGlobalDB bool) error {
 			},
 		},
 	}
-	envVariable.Extensions.Set("x-mgc-transforms", createExtension(envTransforms))
+	envVar.Extensions.Set("x-mgc-transforms", createExtension(envTransforms))
+	server.Variables.Set("env", envVar)
 
-	// Adicionar as variáveis ao servidor
-	server.Variables.Set("region", regionVariable)
-	server.Variables.Set("env", envVariable)
-
-	mergedSpec.Model.Servers = append(mergedSpec.Model.Servers, server)
-	*doc = docV
-
-	return nil
-}
-
-func jsonToYamlNode(jsonStr string) (*yaml.Node, error) {
-	var jsonData interface{}
-	err := json.Unmarshal([]byte(jsonStr), &jsonData)
-	if err != nil {
-		return nil, err
-	}
-
-	var node yaml.Node
-	err = node.Encode(jsonData)
-	if err != nil {
-		return nil, err
-	}
-
-	return &node, nil
-}
-func mergeSpecs(specA, specB libopenapi.Document) libopenapi.Document {
-	mergedSpec := specA
-
-	mergedSpecA, _ := mergedSpec.BuildV3Model()
-	specModelB, _ := specB.BuildV3Model()
+	mergedSpecA.Model.Servers = append(mergedSpecA.Model.Servers, server)
 
 	// Merge paths
 	for path := specModelB.Model.Paths.PathItems.Oldest(); path != nil; path = path.Next() {
@@ -556,10 +396,11 @@ func saveSpec(spec libopenapi.Document, filename string) error {
 }
 
 type MergeSpecs struct {
-	specA    string
-	specB    string
-	output   string
-	globalDb bool
+	specA          string
+	specB          string
+	output         string
+	globalDb       bool
+	productPathURL string
 }
 
 func MergeSpecsCmd() *cobra.Command {
@@ -578,10 +419,12 @@ func MergeSpecsCmd() *cobra.Command {
 	cmd.Flags().StringVarP(&options.specB, "from", "f", "", "Path to the second OpenAPI specification file")
 	cmd.Flags().StringVarP(&options.output, "output", "o", "", "Output filename OpenAPI specification file")
 	cmd.Flags().BoolVarP(&options.globalDb, "globaldb", "g", false, "Is globalDB?")
+	cmd.Flags().StringVarP(&options.productPathURL, "product", "p", "", "productURLPath")
 
 	cmd.MarkFlagRequired("target")
 	cmd.MarkFlagRequired("from")
 	cmd.MarkFlagRequired("output")
 	cmd.MarkFlagRequired("globaldb")
+	cmd.MarkFlagRequired("product")
 	return cmd
 }

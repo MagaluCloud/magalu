@@ -5619,5 +5619,60 @@
       "name": "snapshots",
       "description": "Operations with snapshots for instances."
     }
+  ],
+  "servers": [
+    {
+      "url": "https://{env}/compute",
+      "variables": {
+        "region": {
+          "enum": [
+            "br-ne-1",
+            "br-se1",
+            "br-mgl1"
+          ],
+          "default": "br-se1",
+          "description": "Region to reach the service",
+          "x-mgc-transforms": [
+            {
+              "allowMissing": true,
+              "translations": [
+                {
+                  "from": "br-ne1",
+                  "to": "br-ne-1"
+                },
+                {
+                  "from": "br-mgl1",
+                  "to": "br-se-1"
+                }
+              ],
+              "type": "translate"
+            }
+          ]
+        },
+        "env": {
+          "enum": [
+            "api.magalu.cloud",
+            "api.pre-prod.jaxyendy.com"
+          ],
+          "default": "api.magalu.cloud",
+          "description": "Environment to use",
+          "x-mgc-transforms": [
+            {
+              "translations": [
+                {
+                  "from": "prod",
+                  "to": "api.magalu.cloud"
+                },
+                {
+                  "from": "pre-prod",
+                  "to": "api.pre-prod.jaxyendy.com"
+                }
+              ],
+              "type": "translate"
+            }
+          ]
+        }
+      }
+    }
   ]
 }
