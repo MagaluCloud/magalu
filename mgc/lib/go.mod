@@ -1,6 +1,6 @@
 module magalu.cloud/lib
 
-go 1.22.6
+go 1.23
 
 require (
 	magalu.cloud/core v0.23.0
