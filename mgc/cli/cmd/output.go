@@ -37,7 +37,7 @@ func setOutputFlag(cmd *cobra.Command, value string) {
 }
 
 // TODO: Bind config to PFlag. Investigate how to make it work correctly
-func getOutpuConfig(sdk *mgcSdk.Sdk) string {
+func getOutputConfig(sdk *mgcSdk.Sdk) string {
 	var defaultOutput string
 	err := sdk.Config().Get("defaultOutput", &defaultOutput)
 	if err != nil {
@@ -77,7 +77,7 @@ func getOutputFormatter(name, options string) (formatter OutputFormatter, err er
 }
 
 func getOutputFor(sdk *mgcSdk.Sdk, cmd *cobra.Command, result core.Result) string {
-	output := getOutpuConfig(sdk)
+	output := getOutputConfig(sdk)
 	if output == "" {
 		output = getOutputFlag(cmd)
 	}
