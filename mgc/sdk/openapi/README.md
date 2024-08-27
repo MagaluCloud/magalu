@@ -183,6 +183,7 @@ paths:
             x-mgc-output-flag: table=ID:$.images[*].id,NAME:$.images[*].name,VERSION:$.images[*].version
             x-mgc-output-flag: jsonpath=$.id
             x-mgc-output-flag: template={{.id}}
+            x-mgc-output-flag: remove=$.machine_types[*].sku|$.machine_types[*].status
 ```
 
 

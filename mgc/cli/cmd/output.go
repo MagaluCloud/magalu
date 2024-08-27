@@ -86,6 +86,11 @@ func getOutputFor(sdk *mgcSdk.Sdk, cmd *cobra.Command, result core.Result) strin
 		if outputOptions, ok := core.ResultAs[core.ResultWithDefaultOutputOptions](result); ok {
 			return outputOptions.DefaultOutputOptions()
 		}
+	} else {
+		if outputOptions, ok := core.ResultAs[core.ResultWithDefaultOutputOptions](result); ok {
+			output = outputOptions.DefaultOutputOptions() + "," + output
+		}
+
 	}
 
 	return output

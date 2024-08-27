@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"strings"
 
 	"github.com/spf13/cobra"
 	"gopkg.in/yaml.v3"
@@ -55,10 +56,62 @@ func handleResultWithReader(reader io.Reader, outFile string, cmd *cobra.Command
 	return nil
 }
 
+func removeProperty(data any, path string) any {
+	parts := strings.Split(strings.TrimPrefix(path, "$."), ".")
+	return removePropertyRecursive(data, parts)
+}
+
+func removePropertyRecursive(data any, parts []string) interface{} {
+	if len(parts) == 0 {
+		return data
+	}
+
+	currentPart := parts[0]
+	remainingParts := parts[1:]
+
+	// check if part is array
+	if currentPart, ok := strings.CutSuffix(currentPart, "[*]"); ok {
+		if obj, ok := data.(map[string]interface{}); ok {
+			obj[currentPart] = removePropertyRecursive(obj[currentPart], parts[1:])
+		}
+	} else {
+		if len(remainingParts) == 0 {
+			if obj, ok := data.([]interface{}); ok {
+				for _, item := range obj {
+					if it, ok := item.(map[string]interface{}); ok {
+						delete(it, currentPart)
+					}
+
+				}
+			}
+
+		}
+
+	}
+
+	return data
+}
+
 func handleResultWithValue(result core.ResultWithValue, output string, cmd *cobra.Command) (err error) {
+	outputas := strings.Split(output, ",")
+	remove := ""
+	for _, ot := range outputas {
+		if strings.HasPrefix(ot, "remove=") {
+			remove = strings.Split(ot, "=")[1]
+		} else {
+			output = ot
+		}
+	}
+
+	fieldsToRemove := strings.Split(remove, "|")
+
 	value := result.Value()
 	if value == nil {
 		return nil
+	}
+
+	for _, path := range fieldsToRemove {
+		value = removeProperty(value, path)
 	}
 
 	err = result.ValidateSchema()

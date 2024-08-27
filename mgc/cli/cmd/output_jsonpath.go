@@ -12,6 +12,7 @@ type jsonpathOutputFormatter struct{}
 
 func (*jsonpathOutputFormatter) Format(value any, options string, isRaw bool) error {
 	path := options
+
 	target, err := utils.GetJsonPath(path, value)
 	if err != nil {
 		return fmt.Errorf("jsonpath output formatter: %w", err)
