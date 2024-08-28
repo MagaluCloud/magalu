@@ -382,11 +382,19 @@ func ConvertSDKCreateResultToTerraformCreateClsuterModel(sdkResult *sdkCluster.G
 	}
 
 	if sdkResult.Description != nil {
-		tfModel.Description = types.StringValue(*sdkResult.Description)
+		if *sdkResult.Description == "" {
+			sdkResult.Description = nil
+		} else {
+			tfModel.Description = types.StringValue(*sdkResult.Description)
+		}
 	}
 
 	if sdkResult.AllowedCidrs != nil {
-		tfModel.AllowedCidrs = tfutil.ConvertStringSliceToTypesStringSlice(*sdkResult.AllowedCidrs)
+		if len(*sdkResult.AllowedCidrs) == 0 {
+			sdkResult.AllowedCidrs = nil
+		} else {
+			tfModel.AllowedCidrs = tfutil.ConvertStringSliceToTypesStringSlice(*sdkResult.AllowedCidrs)
+		}
 	}
 
 	return tfModel
