@@ -9,3 +9,6 @@ build-spec:
 build:
 	cd mgc/cli; echo "Building...."; \
 	go build -tags "embed" -o mgc
+
+test:
+	find . -name go.mod -execdir go test ./... \;
