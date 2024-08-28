@@ -37,7 +37,8 @@ Usage:
 - Please specify the Kubernetes version using the standard "vX.Y.Z" format.
 - (default "v1.30.2")
 - -v, --version                       version for create
-- --zone string                   Identifier of the zone where the Kubernetes cluster will be located.
+- --zone string                   [Deprecated] This parameter is deprecated and its use won't create a cluster at requested zone.
+- Identifier of the zone where the Kubernetes cluster will be located.
 
 ## Flags:
 ```bash

@@ -20,3 +20,9 @@ servers:
                     to: api.magalu.cloud
                 -   from: pre-prod
                     to: api.pre-prod.jaxyendy.com
+paths:
+    /v0/ssh-keys:
+        get:
+            tags:
+            - ssh_keys
+            x-mgc-output-flag: remove=$.results[*].key

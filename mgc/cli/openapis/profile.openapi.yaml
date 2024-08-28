@@ -35,6 +35,7 @@ paths:
                     -   type: string
                     title: ' Sort'
                     nullable: true
+                    default: id:asc
             responses:
                 '200':
                     description: Successful Response
@@ -51,6 +52,7 @@ paths:
             security:
             -   OAuth2:
                 - gdb:ssh-pkey-r
+            x-mgc-output-flag: remove=$.results[*].key
         post:
             tags:
             - ssh_keys

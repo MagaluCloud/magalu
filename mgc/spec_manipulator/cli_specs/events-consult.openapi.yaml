@@ -3,7 +3,7 @@
   "info": {
     "title": "Cloud Events Consult API",
     "description": "Cloud Events API Product.",
-    "version": "0.14.0"
+    "version": "0.15.0"
   },
   "paths": {
     "/v0/events": {

@@ -56,6 +56,8 @@ servers:
     description: SE1-BLU pre-prod
 -   url: https://api-mke.prod.se1.br.jaxyendy.com
     description: SE1-BLU prod
+-   url: https:///api-mke.team-integration.se1.br.jaxyendy.com
+    description: SE1-BLU team-integration
 paths:
     /v0/clusters:
         get:
@@ -2397,9 +2399,15 @@ components:
                     example: This is an example cluster.
                 zone:
                     type: string
-                    description: Identifier of the zone where the Kubernetes cluster
-                        will be located.
+                    description: '[Deprecated] This parameter is deprecated and its
+                        use won''t create a cluster at requested zone.
+
+                        Identifier of the zone where the Kubernetes cluster will be
+                        located.
+
+                        '
                     example: br-region-zone
+                    deprecated: true
                 enabled_bastion:
                     type: boolean
                     description: '[Deprecated] This parameter is deprecated and its
@@ -2411,6 +2419,7 @@ components:
                         '
                     default: false
                     example: false
+                    deprecated: true
                 enabled_server_group:
                     type: boolean
                     description: 'Enables the use of a server group with anti-affinity

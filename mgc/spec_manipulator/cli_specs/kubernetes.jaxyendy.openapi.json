@@ -46,6 +46,10 @@
     {
       "url": "https://api-mke.prod.se1.br.jaxyendy.com",
       "description": "SE1-BLU prod"
+    },
+    {
+      "url": "https:///api-mke.team-integration.se1.br.jaxyendy.com",
+      "description": "SE1-BLU team-integration"
     }
   ],
   "paths": {
@@ -2258,14 +2262,16 @@
           },
           "zone": {
             "type": "string",
-            "description": "Identifier of the zone where the Kubernetes cluster will be located.",
-            "example": "br-region-zone"
+            "description": "[Deprecated] This parameter is deprecated and its use won't create a cluster at requested zone.\nIdentifier of the zone where the Kubernetes cluster will be located.\n",
+            "example": "br-region-zone",
+            "deprecated": true
           },
           "enabled_bastion": {
             "type": "boolean",
             "description": "[Deprecated] This parameter is deprecated and its use won't create a bastion server\nEnables the use of a bastion host for secure access to the cluster.\n",
             "default": false,
-            "example": false
+            "example": false,
+            "deprecated": true
           },
           "enabled_server_group": {
             "type": "boolean",

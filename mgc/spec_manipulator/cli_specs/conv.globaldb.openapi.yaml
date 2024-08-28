@@ -46,7 +46,8 @@
                 }
               ],
               "title": " Sort",
-              "nullable": true
+              "nullable": true,
+              "default": "id:asc"
             }
           },
           {

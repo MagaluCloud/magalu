@@ -3278,6 +3278,20 @@
               }
             ],
             "title": "Used to perform automated configuration tasks."
+          },
+          "labels": {
+            "anyOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Labels"
           }
         },
         "title": "InstanceCreateRequestV1Default",
@@ -3291,6 +3305,10 @@
           "image": {
             "id": "2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6"
           },
+          "labels": [
+            "label1",
+            "label2"
+          ],
           "machine_type": {
             "id": "2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6"
           },
