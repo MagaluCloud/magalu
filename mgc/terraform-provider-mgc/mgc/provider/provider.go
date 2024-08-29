@@ -155,7 +155,7 @@ func (p *MgcProvider) Configure(ctx context.Context, req provider.ConfigureReque
 			apiKey = data.ApiKey.ValueString()
 		}
 
-		configProvider.Set("api_key", apiKey)
+		configProvider.Set("apikey", apiKey)
 	}
 
 	keyId := ""
