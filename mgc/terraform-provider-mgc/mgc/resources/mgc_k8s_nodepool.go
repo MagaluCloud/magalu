@@ -13,7 +13,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
-	orderedmap "github.com/wk8/go-ordered-map/v2"
 	mgcSdk "magalu.cloud/lib"
 	sdkNodepool "magalu.cloud/lib/products/kubernetes/nodepool"
 	tfutil "magalu.cloud/terraform-provider-mgc/mgc/tfutil"
@@ -37,8 +36,7 @@ func (r *NewNodePoolResource) Configure(ctx context.Context, req resource.Config
 		return
 	}
 
-	configProvider, ok := req.ProviderData.(*orderedmap.OrderedMap[string, string])
-
+	configProvider, ok := req.ProviderData.(map[string]string)
 	if !ok {
 		resp.Diagnostics.AddError(
 			"Unexpected Data Source Configure Type",

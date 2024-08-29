@@ -15,7 +15,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
-	orderedmap "github.com/wk8/go-ordered-map/v2"
 	datasources "magalu.cloud/terraform-provider-mgc/mgc/datasources"
 	resources "magalu.cloud/terraform-provider-mgc/mgc/resources"
 
@@ -122,7 +121,7 @@ func (p *MgcProvider) Configure(ctx context.Context, req provider.ConfigureReque
 	tflog.Info(ctx, "configuring MGC provider")
 
 	var data ProviderConfig
-	configProvider := orderedmap.New[string, string]()
+	configProvider := map[string]string{}
 
 	resp.Diagnostics.Append(req.Config.Get(ctx, &data)...)
 	if resp.Diagnostics.HasError() {
@@ -130,13 +129,13 @@ func (p *MgcProvider) Configure(ctx context.Context, req provider.ConfigureReque
 	}
 
 	// REGION
-	configProvider.Set("region", "br-se1")
+	configProvider["region"] = "br-se1"
 	if !data.Region.IsNull() || os.Getenv("MGC_REGION") != "" {
 		region := os.Getenv("MGC_REGION")
 		if region == "" && !data.Region.IsNull() {
 			region = data.Region.ValueString()
 		}
-		configProvider.Set("region", region)
+		configProvider["region"] = region
 	}
 	// ENV
 	if !data.Env.IsNull() {
@@ -144,7 +143,7 @@ func (p *MgcProvider) Configure(ctx context.Context, req provider.ConfigureReque
 		if env == "" && !data.Env.IsNull() {
 			env = data.Env.String()
 		}
-		configProvider.Set("env", env)
+		configProvider["env"] = env
 	}
 
 	// API KEY
@@ -155,7 +154,7 @@ func (p *MgcProvider) Configure(ctx context.Context, req provider.ConfigureReque
 			apiKey = data.ApiKey.ValueString()
 		}
 
-		configProvider.Set("apikey", apiKey)
+		configProvider["apikey"] = apiKey
 	}
 
 	keyId := ""
@@ -175,8 +174,8 @@ func (p *MgcProvider) Configure(ctx context.Context, req provider.ConfigureReque
 		keySecret = data.ObjectStorage.ObjectKeyPair.KeySecret.ValueString()
 	}
 	if keyId != "" && keySecret != "" {
-		configProvider.Set("keyid", keyId)
-		configProvider.Set("keysecret", keySecret)
+		configProvider["keyid"] = keyId
+		configProvider["keysecret"] = keySecret
 	}
 	resp.DataSourceData = configProvider
 	resp.ResourceData = configProvider

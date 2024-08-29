@@ -11,7 +11,6 @@ require (
 	github.com/hashicorp/terraform-plugin-go v0.23.0
 	github.com/hashicorp/terraform-plugin-log v0.9.0
 	github.com/stoewer/go-strcase v1.3.0
-	github.com/wk8/go-ordered-map/v2 v2.1.8
 	magalu.cloud/core v0.24.2
 	magalu.cloud/lib v0.0.0-00010101000000-000000000000
 	magalu.cloud/sdk v0.24.2
@@ -24,8 +23,6 @@ require (
 	github.com/Masterminds/semver/v3 v3.2.1 // indirect
 	github.com/PaesslerAG/gval v1.2.2 // indirect
 	github.com/PaesslerAG/jsonpath v0.1.1 // indirect
-	github.com/bahlo/generic-list-go v0.2.0 // indirect
-	github.com/buger/jsonparser v1.1.1 // indirect
 	github.com/containerd/console v1.0.3 // indirect
 	github.com/dustin/go-humanize v1.0.1 // indirect
 	github.com/fatih/color v1.16.0 // indirect

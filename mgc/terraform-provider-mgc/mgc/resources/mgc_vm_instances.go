@@ -14,7 +14,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
-	orderedmap "github.com/wk8/go-ordered-map/v2"
 
 	bws "github.com/geffersonFerraz/brazilian-words-sorter"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -52,8 +51,7 @@ func (r *vmInstances) Configure(ctx context.Context, req resource.ConfigureReque
 		return
 	}
 
-	configProvider, ok := req.ProviderData.(*orderedmap.OrderedMap[string, string])
-
+	configProvider, ok := req.ProviderData.(map[string]string)
 	if !ok {
 		resp.Diagnostics.AddError(
 			"Unexpected Data Source Configure Type",

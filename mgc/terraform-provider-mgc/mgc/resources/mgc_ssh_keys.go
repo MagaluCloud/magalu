@@ -8,7 +8,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	orderedmap "github.com/wk8/go-ordered-map/v2"
 	sdkSSHKeys "magalu.cloud/lib/products/profile/ssh_keys"
 	tfutil "magalu.cloud/terraform-provider-mgc/mgc/tfutil"
 
@@ -37,8 +36,7 @@ func (r *sshKeys) Configure(ctx context.Context, req resource.ConfigureRequest, 
 	if req.ProviderData == nil {
 		return
 	}
-	configProvider, ok := req.ProviderData.(*orderedmap.OrderedMap[string, string])
-
+	configProvider, ok := req.ProviderData.(map[string]string)
 	if !ok {
 		resp.Diagnostics.AddError(
 			"Unexpected Data Source Configure Type",

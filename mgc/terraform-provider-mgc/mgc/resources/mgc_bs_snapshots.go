@@ -12,7 +12,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	orderedmap "github.com/wk8/go-ordered-map/v2"
 	mgcSdk "magalu.cloud/lib"
 	sdkBlockStorageSnapshots "magalu.cloud/lib/products/block_storage/snapshots"
 	"magalu.cloud/terraform-provider-mgc/mgc/tfutil"
@@ -48,7 +47,7 @@ func (r *bsSnapshots) Configure(ctx context.Context, req resource.ConfigureReque
 		return
 	}
 
-	configProvider, ok := req.ProviderData.(*orderedmap.OrderedMap[string, string])
+	configProvider, ok := req.ProviderData.(map[string]string)
 
 	if !ok {
 		resp.Diagnostics.AddError(

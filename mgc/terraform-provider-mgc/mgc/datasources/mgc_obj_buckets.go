@@ -5,7 +5,6 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
-	orderedmap "github.com/wk8/go-ordered-map/v2"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	mgcSdk "magalu.cloud/lib"
@@ -42,8 +41,7 @@ func (r *DatasourceBuckets) Configure(ctx context.Context, req datasource.Config
 		return
 	}
 
-	configProvider, ok := req.ProviderData.(*orderedmap.OrderedMap[string, string])
-
+	configProvider, ok := req.ProviderData.(map[string]string)
 	if !ok {
 		resp.Diagnostics.AddError(
 			"Unexpected Data Source Configure Type",

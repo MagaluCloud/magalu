@@ -19,7 +19,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
-	orderedmap "github.com/wk8/go-ordered-map/v2"
 	mgcSdk "magalu.cloud/lib"
 	sdkCluster "magalu.cloud/lib/products/kubernetes/cluster"
 	tfutil "magalu.cloud/terraform-provider-mgc/mgc/tfutil"
@@ -59,8 +58,7 @@ func (r *k8sClusterResource) Configure(ctx context.Context, req resource.Configu
 	if req.ProviderData == nil {
 		return
 	}
-	configProvider, ok := req.ProviderData.(*orderedmap.OrderedMap[string, string])
-
+	configProvider, ok := req.ProviderData.(map[string]string)
 	if !ok {
 		resp.Diagnostics.AddError(
 			"Unexpected Data Source Configure Type",

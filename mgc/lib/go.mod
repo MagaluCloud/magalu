@@ -3,7 +3,6 @@ module magalu.cloud/lib
 go 1.22.6
 
 require (
-	github.com/wk8/go-ordered-map/v2 v2.1.8
 	magalu.cloud/core v0.24.2
 	magalu.cloud/sdk v0.24.2
 )
@@ -15,8 +14,6 @@ require (
 	github.com/Masterminds/semver/v3 v3.2.1 // indirect
 	github.com/PaesslerAG/gval v1.2.2 // indirect
 	github.com/PaesslerAG/jsonpath v0.1.1 // indirect
-	github.com/bahlo/generic-list-go v0.2.0 // indirect
-	github.com/buger/jsonparser v1.1.1 // indirect
 	github.com/containerd/console v1.0.3 // indirect
 	github.com/dustin/go-humanize v1.0.1 // indirect
 	github.com/fsnotify/fsnotify v1.7.0 // indirect
