@@ -40,11 +40,11 @@ func NewClient(sdk *mgcSdk.Sdk, config *orderedmap.OrderedMap[string, string]) *
 
 	if config != nil {
 		for key := config.Oldest(); key != nil; key = key.Next() {
-			sdk.Config().SetTempConfig(key.Key, key.Value)
+			_ = sdk.Config().SetTempConfig(key.Key, key.Value)
 		}
 
 		if apikey, ok := config.Get("apikey"); ok {
-			sdk.Auth().SetAPIKey(apikey)
+			_ = sdk.Auth().SetAPIKey(apikey)
 		}
 	}
 
