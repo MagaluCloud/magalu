@@ -175,8 +175,8 @@ func setKeyPair(sdk *mgcSdk.Sdk) {
 	objKey := os.Getenv("MGC_OBJ_KEY_SECRET")
 
 	if objId != "" && objKey != "" {
-		sdk.Config().SetTempConfig("keyId", objId)
-		sdk.Config().SetTempConfig("keySecret", objKey)
+		_ = sdk.Config().SetTempConfig("keyId", objId)
+		_ = sdk.Config().SetTempConfig("keySecret", objKey)
 	}
 }
 
