@@ -6,9 +6,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	orderedmap "github.com/wk8/go-ordered-map/v2"
 	mgcSdk "magalu.cloud/lib"
 	sdkNodepool "magalu.cloud/lib/products/kubernetes/nodepool"
-	"magalu.cloud/sdk"
 	tfutil "magalu.cloud/terraform-provider-mgc/mgc/tfutil"
 )
 
@@ -256,7 +256,7 @@ func (d *DataSourceKubernetesNode) Configure(ctx context.Context, req datasource
 		return
 	}
 
-	sdk, ok := req.ProviderData.(*sdk.Sdk)
+	configProvider, ok := req.ProviderData.(*orderedmap.OrderedMap[string, string])
 
 	if !ok {
 		resp.Diagnostics.AddError(
@@ -266,7 +266,7 @@ func (d *DataSourceKubernetesNode) Configure(ctx context.Context, req datasource
 		return
 	}
 
-	d.sdkClient = mgcSdk.NewClient(sdk)
+	d.sdkClient = mgcSdk.NewClient(nil, configProvider)
 	d.nodepool = sdkNodepool.NewService(ctx, d.sdkClient)
 }
 

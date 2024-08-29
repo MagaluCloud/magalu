@@ -9,11 +9,11 @@ func generateCommon(p string, sdk *mgcSdkPkg.Sdk, ctx *GeneratorContext) (err er
 		return
 	}
 
-	if err = generateHelpers(p, sdk, ctx); err != nil {
+	if err = generateHelpers(p, ctx); err != nil {
 		return
 	}
 
-	if err = generateClient(p, sdk, ctx); err != nil {
+	if err = generateClient(p, ctx); err != nil {
 		return
 	}
 

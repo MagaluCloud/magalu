@@ -2,7 +2,6 @@ package resources
 
 import (
 	"context"
-	"fmt"
 	"time"
 
 	bws "github.com/geffersonFerraz/brazilian-words-sorter"
@@ -13,11 +12,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	orderedmap "github.com/wk8/go-ordered-map/v2"
 	mgcSdk "magalu.cloud/lib"
-	"magalu.cloud/terraform-provider-mgc/mgc/tfutil"
-
 	sdkBlockStorageSnapshots "magalu.cloud/lib/products/block_storage/snapshots"
-	"magalu.cloud/sdk"
+	"magalu.cloud/terraform-provider-mgc/mgc/tfutil"
 )
 
 // Ensure the implementation satisfies the expected interfaces.
@@ -50,17 +48,17 @@ func (r *bsSnapshots) Configure(ctx context.Context, req resource.ConfigureReque
 		return
 	}
 
-	sdk, ok := req.ProviderData.(*sdk.Sdk)
+	configProvider, ok := req.ProviderData.(*orderedmap.OrderedMap[string, string])
 
 	if !ok {
 		resp.Diagnostics.AddError(
 			"Unexpected Data Source Configure Type",
-			fmt.Sprintf("Expected provider config, got: %T. Please report this issue to the provider developers.", req.ProviderData),
+			"Expected provider config, got: %T. Please report this issue to the provider developers.",
 		)
 		return
 	}
 
-	r.sdkClient = mgcSdk.NewClient(sdk)
+	r.sdkClient = mgcSdk.NewClient(nil, configProvider)
 
 	r.bsSnapshots = sdkBlockStorageSnapshots.NewService(ctx, r.sdkClient)
 }

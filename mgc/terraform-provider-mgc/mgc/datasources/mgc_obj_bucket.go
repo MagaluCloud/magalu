@@ -5,6 +5,7 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
+	orderedmap "github.com/wk8/go-ordered-map/v2"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	mgcSdk "magalu.cloud/lib"
@@ -12,7 +13,6 @@ import (
 
 	sdkBucketsAcl "magalu.cloud/lib/products/object_storage/buckets/acl"
 	sdkBucketsVersioning "magalu.cloud/lib/products/object_storage/buckets/versioning"
-	"magalu.cloud/sdk"
 )
 
 var _ datasource.DataSource = &DatasourceBucket{}
@@ -53,7 +53,7 @@ func (r *DatasourceBucket) Configure(ctx context.Context, req datasource.Configu
 		return
 	}
 
-	sdk, ok := req.ProviderData.(*sdk.Sdk)
+	configProvider, ok := req.ProviderData.(*orderedmap.OrderedMap[string, string])
 
 	if !ok {
 		resp.Diagnostics.AddError(
@@ -63,7 +63,7 @@ func (r *DatasourceBucket) Configure(ctx context.Context, req datasource.Configu
 		return
 	}
 
-	r.sdkClient = mgcSdk.NewClient(sdk)
+	r.sdkClient = mgcSdk.NewClient(nil, configProvider)
 	r.versioning = sdkBucketsVersioning.NewService(ctx, r.sdkClient)
 	r.acl = sdkBucketsAcl.NewService(ctx, r.sdkClient)
 }

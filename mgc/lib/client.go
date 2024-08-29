@@ -1,6 +1,7 @@
 package client
 
 import (
+	orderedmap "github.com/wk8/go-ordered-map/v2"
 	mgcUtils "magalu.cloud/core/utils"
 	mgcSdk "magalu.cloud/sdk"
 )
@@ -23,7 +24,30 @@ func (c *Client) Sdk() *mgcSdk.Sdk {
 // Creates a new Client based on the given SDK.
 //
 // If sdk is nil, then the DefaultSdk() is used.
-func NewClient(sdk *mgcSdk.Sdk) *Client {
+func NewClient(sdk *mgcSdk.Sdk, config *orderedmap.OrderedMap[string, string]) *Client {
+	/*
+		apikey
+		keyid
+		keysecret
+		region
+		serverUrl
+		env
+	*/
+
+	if sdk == nil {
+		sdk = DefaultSdk()
+	}
+
+	if config != nil {
+		for key := config.Oldest(); key != nil; key = key.Next() {
+			sdk.Config().SetTempConfig(key.Key, key.Value)
+		}
+
+		if apikey, ok := config.Get("apikey"); ok {
+			sdk.Auth().SetAPIKey(apikey)
+		}
+	}
+
 	return &Client{
 		sdk: sdk,
 	}

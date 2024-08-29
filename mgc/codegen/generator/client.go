@@ -4,8 +4,6 @@ import (
 	_ "embed"
 	"path"
 	"text/template"
-
-	mgcSdkPkg "magalu.cloud/sdk"
 )
 
 type clientTemplateData struct {
@@ -23,7 +21,7 @@ func init() {
 	clientTemplate = templateMust("client.go.template", clientTemplateContents)
 }
 
-func generateClient(dirname string, sdk *mgcSdkPkg.Sdk, ctx *GeneratorContext) (err error) {
+func generateClient(dirname string, ctx *GeneratorContext) (err error) {
 	return templateWrite(
 		ctx,
 		path.Join(dirname, "client.go"),

@@ -221,21 +221,6 @@ func (c *Config) SetTempConfig(key string, value interface{}) error {
 	return nil
 }
 
-func (c *Config) GetTempKeyPair(pairName string) *KeyPair {
-	if c.tempConfig == nil {
-		return nil
-	}
-	return &KeyPair{KeyID: c.tempConfig.keyPairMap[pairName].KeyID, KeySecret: c.tempConfig.keyPairMap[pairName].KeySecret}
-
-}
-
-func (c *Config) AddTempKeyPair(pairName, keyID, keySecret string) {
-	if c.tempConfig == nil {
-		c.NewTempConfig()
-	}
-	c.tempConfig.keyPairMap[pairName] = KeyPair{KeyID: keyID, KeySecret: keySecret}
-}
-
 func (c *Config) Set(key string, value interface{}) error {
 	marshaled, err := marshalValueIfNeeded(value)
 	if err != nil {

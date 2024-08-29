@@ -5,11 +5,11 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
+	orderedmap "github.com/wk8/go-ordered-map/v2"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	mgcSdk "magalu.cloud/lib"
 	sdkVMMachineTypes "magalu.cloud/lib/products/virtual_machine/machine_types"
-	"magalu.cloud/sdk"
 	"magalu.cloud/terraform-provider-mgc/mgc/tfutil"
 )
 
@@ -46,7 +46,7 @@ func (r *DataSourceVmMachineType) Configure(ctx context.Context, req datasource.
 		return
 	}
 
-	sdk, ok := req.ProviderData.(*sdk.Sdk)
+	configProvider, ok := req.ProviderData.(*orderedmap.OrderedMap[string, string])
 
 	if !ok {
 		resp.Diagnostics.AddError(
@@ -56,7 +56,7 @@ func (r *DataSourceVmMachineType) Configure(ctx context.Context, req datasource.
 		return
 	}
 
-	r.sdkClient = mgcSdk.NewClient(sdk)
+	r.sdkClient = mgcSdk.NewClient(nil, configProvider)
 	r.vmMachineTypes = sdkVMMachineTypes.NewService(ctx, r.sdkClient)
 }
 

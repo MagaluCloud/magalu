@@ -4,8 +4,6 @@ import (
 	_ "embed"
 	"path"
 	"text/template"
-
-	mgcSdkPkg "magalu.cloud/sdk"
 )
 
 type helpersTemplateData struct {
@@ -33,7 +31,7 @@ func init() {
 	helpersExecutorsTemplate = templateMust("helpers_executors.go.template", helpersExecutorsTemplateContents)
 }
 
-func generateHelpers(dirname string, sdk *mgcSdkPkg.Sdk, ctx *GeneratorContext) (err error) {
+func generateHelpers(dirname string, ctx *GeneratorContext) (err error) {
 	p := path.Join(dirname, helpersPackage)
 	err = createDir(ctx, p)
 	if err != nil {

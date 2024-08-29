@@ -14,6 +14,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
+	orderedmap "github.com/wk8/go-ordered-map/v2"
 
 	bws "github.com/geffersonFerraz/brazilian-words-sorter"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -23,8 +24,6 @@ import (
 	sdkVmInstances "magalu.cloud/lib/products/virtual_machine/instances"
 	sdkVmMachineTypes "magalu.cloud/lib/products/virtual_machine/machine_types"
 	tfutil "magalu.cloud/terraform-provider-mgc/mgc/tfutil"
-
-	"magalu.cloud/sdk"
 )
 
 var (
@@ -53,17 +52,17 @@ func (r *vmInstances) Configure(ctx context.Context, req resource.ConfigureReque
 		return
 	}
 
-	sdk, ok := req.ProviderData.(*sdk.Sdk)
+	configProvider, ok := req.ProviderData.(*orderedmap.OrderedMap[string, string])
 
 	if !ok {
 		resp.Diagnostics.AddError(
 			"Unexpected Data Source Configure Type",
-			fmt.Sprintf("Expected provider config, got: %T. Please report this issue to the provider developers.", req.ProviderData),
+			"Expected provider config, got: %T. Please report this issue to the provider developers.",
 		)
 		return
 	}
 
-	r.sdkClient = mgcSdk.NewClient(sdk)
+	r.sdkClient = mgcSdk.NewClient(nil, configProvider)
 	r.vmInstances = sdkVmInstances.NewService(ctx, r.sdkClient)
 	r.vmImages = sdkVmImages.NewService(ctx, r.sdkClient)
 	r.vmMachineTypes = sdkVmMachineTypes.NewService(ctx, r.sdkClient)

@@ -345,9 +345,11 @@ func (o *Auth) CurrentScopes() (core.Scopes, error) {
 }
 
 func (o *Auth) AccessKeyPair() (accessKeyId, secretAccessKey string) {
-	//used by terraform - mgc/terraform-provider-mgc/internal/provider/provider.go - yeap, we need improve it
-	if tempKeyPair := o.mgcConfig.GetTempKeyPair("apikey"); tempKeyPair != nil {
-		return tempKeyPair.KeyID, tempKeyPair.KeySecret
+	var keyId, keySecret string
+	o.mgcConfig.Get("keyId", &keyId)
+	o.mgcConfig.Get("keySecret", &keySecret)
+	if keyId != "" && keySecret != "" {
+		return keyId, keySecret
 	}
 	return o.accessKeyId, o.secretAccessKey
 }

@@ -5,11 +5,11 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
+	orderedmap "github.com/wk8/go-ordered-map/v2"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	mgcSdk "magalu.cloud/lib"
 	sdkBuckets "magalu.cloud/lib/products/object_storage/buckets"
-	"magalu.cloud/sdk"
 	"magalu.cloud/terraform-provider-mgc/mgc/tfutil"
 )
 
@@ -42,7 +42,7 @@ func (r *DatasourceBuckets) Configure(ctx context.Context, req datasource.Config
 		return
 	}
 
-	sdk, ok := req.ProviderData.(*sdk.Sdk)
+	configProvider, ok := req.ProviderData.(*orderedmap.OrderedMap[string, string])
 
 	if !ok {
 		resp.Diagnostics.AddError(
@@ -52,7 +52,7 @@ func (r *DatasourceBuckets) Configure(ctx context.Context, req datasource.Config
 		return
 	}
 
-	r.sdkClient = mgcSdk.NewClient(sdk)
+	r.sdkClient = mgcSdk.NewClient(nil, configProvider)
 	r.buckets = sdkBuckets.NewService(ctx, r.sdkClient)
 }
 

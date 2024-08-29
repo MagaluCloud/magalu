@@ -15,6 +15,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
+	orderedmap "github.com/wk8/go-ordered-map/v2"
 	datasources "magalu.cloud/terraform-provider-mgc/mgc/datasources"
 	resources "magalu.cloud/terraform-provider-mgc/mgc/resources"
 
@@ -121,34 +122,32 @@ func (p *MgcProvider) Configure(ctx context.Context, req provider.ConfigureReque
 	tflog.Info(ctx, "configuring MGC provider")
 
 	var data ProviderConfig
+	configProvider := orderedmap.New[string, string]()
 
 	resp.Diagnostics.Append(req.Config.Get(ctx, &data)...)
 	if resp.Diagnostics.HasError() {
 		tflog.Error(ctx, "fail to get configs from provider")
 	}
 
+	// REGION
+	configProvider.Set("region", "br-se1")
 	if !data.Region.IsNull() || os.Getenv("MGC_REGION") != "" {
 		region := os.Getenv("MGC_REGION")
 		if region == "" && !data.Region.IsNull() {
 			region = data.Region.ValueString()
 		}
-		if err := p.sdk.Config().SetTempConfig("region", region); err != nil {
-			tflog.Error(ctx, "fail to set region")
-		}
-	} else {
-		if err := p.sdk.Config().SetTempConfig("region", "br-se1"); err != nil {
-			tflog.Error(ctx, "fail to set region")
-		}
+		configProvider.Set("region", region)
 	}
+	// ENV
 	if !data.Env.IsNull() {
 		env := os.Getenv("MGC_ENV")
 		if env == "" && !data.Env.IsNull() {
 			env = data.Env.String()
 		}
-		if err := p.sdk.Config().SetTempConfig("env", env); err != nil {
-			tflog.Error(ctx, "fail to set env")
-		}
+		configProvider.Set("env", env)
 	}
+
+	// API KEY
 	if !data.ApiKey.IsNull() || os.Getenv("MGC_API_KEY") != "" {
 		apiKey := os.Getenv("MGC_API_KEY")
 
@@ -156,10 +155,7 @@ func (p *MgcProvider) Configure(ctx context.Context, req provider.ConfigureReque
 			apiKey = data.ApiKey.ValueString()
 		}
 
-		err := p.sdk.Auth().SetAPIKey(apiKey)
-		if err != nil {
-			tflog.Error(ctx, "fail to set api key")
-		}
+		configProvider.Set("api_key", apiKey)
 	}
 
 	keyId := ""
@@ -179,14 +175,11 @@ func (p *MgcProvider) Configure(ctx context.Context, req provider.ConfigureReque
 		keySecret = data.ObjectStorage.ObjectKeyPair.KeySecret.ValueString()
 	}
 	if keyId != "" && keySecret != "" {
-		p.sdk.Config().AddTempKeyPair("apikey",
-			keyId,
-			keySecret,
-		)
-		tflog.Debug(ctx, "setting object storage key pair")
+		configProvider.Set("keyid", keyId)
+		configProvider.Set("keysecret", keySecret)
 	}
-	resp.DataSourceData = p.sdk
-	resp.ResourceData = p.sdk
+	resp.DataSourceData = configProvider
+	resp.ResourceData = configProvider
 }
 
 func (p *MgcProvider) Resources(ctx context.Context) []func() resource.Resource {

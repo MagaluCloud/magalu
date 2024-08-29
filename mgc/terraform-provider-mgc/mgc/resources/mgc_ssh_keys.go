@@ -2,15 +2,14 @@ package resources
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	orderedmap "github.com/wk8/go-ordered-map/v2"
 	sdkSSHKeys "magalu.cloud/lib/products/profile/ssh_keys"
-	"magalu.cloud/sdk"
 	tfutil "magalu.cloud/terraform-provider-mgc/mgc/tfutil"
 
 	mgcSdk "magalu.cloud/lib"
@@ -38,18 +37,17 @@ func (r *sshKeys) Configure(ctx context.Context, req resource.ConfigureRequest, 
 	if req.ProviderData == nil {
 		return
 	}
-
-	sdk, ok := req.ProviderData.(*sdk.Sdk)
+	configProvider, ok := req.ProviderData.(*orderedmap.OrderedMap[string, string])
 
 	if !ok {
 		resp.Diagnostics.AddError(
 			"Unexpected Data Source Configure Type",
-			fmt.Sprintf("Expected provider config, got: %T. Please report this issue to the provider developers.", req.ProviderData),
+			"Expected provider config, got: %T. Please report this issue to the provider developers.",
 		)
 		return
 	}
 
-	r.sdkClient = mgcSdk.NewClient(sdk)
+	r.sdkClient = mgcSdk.NewClient(nil, configProvider)
 	r.sshKeys = sdkSSHKeys.NewService(ctx, r.sdkClient)
 }
 

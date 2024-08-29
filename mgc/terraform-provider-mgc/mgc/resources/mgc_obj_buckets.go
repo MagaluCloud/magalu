@@ -2,17 +2,16 @@ package resources
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	orderedmap "github.com/wk8/go-ordered-map/v2"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	mgcSdk "magalu.cloud/lib"
 	tfutil "magalu.cloud/terraform-provider-mgc/mgc/tfutil"
 
 	sdkBuckets "magalu.cloud/lib/products/object_storage/buckets"
-	"magalu.cloud/sdk"
 )
 
 type ObjectStorageBucket struct {
@@ -56,17 +55,17 @@ func (r *objectStorageBuckets) Configure(ctx context.Context, req resource.Confi
 		return
 	}
 
-	sdk, ok := req.ProviderData.(*sdk.Sdk)
+	configProvider, ok := req.ProviderData.(*orderedmap.OrderedMap[string, string])
 
 	if !ok {
 		resp.Diagnostics.AddError(
 			"Unexpected Data Source Configure Type",
-			fmt.Sprintf("Expected provider config, got: %T. Please report this issue to the provider developers.", req.ProviderData),
+			"Expected provider config, got: %T. Please report this issue to the provider developers.",
 		)
 		return
 	}
 
-	r.sdkClient = mgcSdk.NewClient(sdk)
+	r.sdkClient = mgcSdk.NewClient(nil, configProvider)
 
 	r.buckets = sdkBuckets.NewService(ctx, r.sdkClient)
 }
