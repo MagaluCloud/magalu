@@ -3,6 +3,7 @@ package transform
 import (
 	"fmt"
 	"reflect"
+	"sync"
 
 	"github.com/getkin/kin-openapi/openapi3"
 	"golang.org/x/exp/maps"
@@ -123,6 +124,10 @@ var baseSchema = utils.NewLazyLoader(func() *mgcSchemaPkg.Schema {
 })
 
 func addTransformer[T any](creator transformerCreator, names ...string) {
+	var sm sync.Mutex
+	sm.Lock()
+	defer sm.Unlock()
+
 	if len(names) == 0 {
 		panic("programming error: missing names")
 	}

@@ -47,7 +47,7 @@ func (s *service) PublicUrl(
 	}
 
 	var c mgcCore.Configs
-	if c, err = mgcHelpers.ConvertConfigs[PublicUrlConfigs](configs); err != nil {
+	if c, err = mgcHelpers.ConvertConfigs[map[string]interface{}](s.client.Sdk().Config().TempConfig()); err != nil {
 		return
 	}
 

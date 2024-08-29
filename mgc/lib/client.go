@@ -23,30 +23,7 @@ func (c *Client) Sdk() *mgcSdk.Sdk {
 // Creates a new Client based on the given SDK.
 //
 // If sdk is nil, then the DefaultSdk() is used.
-func NewClient(sdk *mgcSdk.Sdk, config map[string]string) *Client {
-	/*
-		apikey
-		keyid
-		keysecret
-		region
-		serverUrl
-		env
-	*/
-
-	if sdk == nil {
-		sdk = DefaultSdk()
-	}
-
-	if config != nil {
-		for key, value := range config {
-			_ = sdk.Config().SetTempConfig(key, value)
-		}
-
-		if apikey, ok := config["apikey"]; ok {
-			_ = sdk.Auth().SetAPIKey(apikey)
-		}
-	}
-
+func NewClient(sdk *mgcSdk.Sdk) *Client {
 	return &Client{
 		sdk: sdk,
 	}

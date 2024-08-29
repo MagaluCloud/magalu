@@ -8,7 +8,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	mgcSdk "magalu.cloud/lib"
 	sdkVersion "magalu.cloud/lib/products/kubernetes/version"
-	"magalu.cloud/terraform-provider-mgc/mgc/tfutil"
+	"magalu.cloud/sdk"
 )
 
 type VersionsModel struct {
@@ -38,7 +38,7 @@ func (r *DataSourceKubernetesVersion) Configure(ctx context.Context, req datasou
 		return
 	}
 
-	configProvider, ok := req.ProviderData.(map[string]string)
+	sdk, ok := req.ProviderData.(*sdk.Sdk)
 	if !ok {
 		resp.Diagnostics.AddError(
 			"Unexpected Data Source Configure Type",
@@ -47,7 +47,7 @@ func (r *DataSourceKubernetesVersion) Configure(ctx context.Context, req datasou
 		return
 	}
 
-	r.sdkClient = mgcSdk.NewClient(nil, configProvider)
+	r.sdkClient = mgcSdk.NewClient(sdk)
 	r.nodepool = sdkVersion.NewService(ctx, r.sdkClient)
 }
 
@@ -78,7 +78,7 @@ func (r *DataSourceKubernetesVersion) Schema(_ context.Context, req datasource.S
 func (r *DataSourceKubernetesVersion) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
 	var data VersionsModel
 	resp.Diagnostics.Append(req.Config.Get(ctx, &data)...)
-	sdkOutput, err := r.nodepool.List(tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVersion.ListConfigs{}))
+	sdkOutput, err := r.nodepool.List(sdkVersion.ListConfigs{})
 	if err != nil {
 		resp.Diagnostics.AddError("Failed to get versions", err.Error())
 		return

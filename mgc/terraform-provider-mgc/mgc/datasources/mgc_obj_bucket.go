@@ -8,7 +8,7 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	mgcSdk "magalu.cloud/lib"
-	tfutil "magalu.cloud/terraform-provider-mgc/mgc/tfutil"
+	"magalu.cloud/sdk"
 
 	sdkBucketsAcl "magalu.cloud/lib/products/object_storage/buckets/acl"
 	sdkBucketsVersioning "magalu.cloud/lib/products/object_storage/buckets/versioning"
@@ -52,7 +52,7 @@ func (r *DatasourceBucket) Configure(ctx context.Context, req datasource.Configu
 		return
 	}
 
-	configProvider, ok := req.ProviderData.(map[string]string)
+	sdk, ok := req.ProviderData.(*sdk.Sdk)
 	if !ok {
 		resp.Diagnostics.AddError(
 			"Unexpected Data Source Configure Type",
@@ -61,7 +61,7 @@ func (r *DatasourceBucket) Configure(ctx context.Context, req datasource.Configu
 		return
 	}
 
-	r.sdkClient = mgcSdk.NewClient(nil, configProvider)
+	r.sdkClient = mgcSdk.NewClient(sdk)
 	r.versioning = sdkBucketsVersioning.NewService(ctx, r.sdkClient)
 	r.acl = sdkBucketsAcl.NewService(ctx, r.sdkClient)
 }
@@ -136,13 +136,13 @@ func (r *DatasourceBucket) Read(ctx context.Context, req datasource.ReadRequest,
 	resp.Diagnostics.Append(req.Config.Get(ctx, &data)...)
 
 	versioning, err := r.versioning.Get(sdkBucketsVersioning.GetParameters{Bucket: data.Name.ValueString()},
-		tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkBucketsVersioning.GetConfigs{}))
+		sdkBucketsVersioning.GetConfigs{})
 	if err != nil {
 		resp.Diagnostics.AddError("Failed to get versioning", err.Error())
 		return
 	}
 	acl, err := r.acl.Get(sdkBucketsAcl.GetParameters{Dst: data.Name.ValueString()},
-		tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkBucketsAcl.GetConfigs{}))
+		sdkBucketsAcl.GetConfigs{})
 	if err != nil {
 		resp.Diagnostics.AddError("Failed to get acl", err.Error())
 		return

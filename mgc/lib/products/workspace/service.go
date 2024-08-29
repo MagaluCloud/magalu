@@ -1,7 +1,7 @@
 /*
-import "magalu.cloud/lib/products/profile/workspaces"
+import "magalu.cloud/lib/products/workspace"
 */
-package workspaces
+package workspace
 
 import (
 	"context"

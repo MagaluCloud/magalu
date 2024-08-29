@@ -8,6 +8,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	mgcSdk "magalu.cloud/lib"
 	sdkNodepool "magalu.cloud/lib/products/kubernetes/nodepool"
+	"magalu.cloud/sdk"
 	tfutil "magalu.cloud/terraform-provider-mgc/mgc/tfutil"
 )
 
@@ -55,7 +56,7 @@ func (r *DataSourceKubernetesNodepool) Configure(ctx context.Context, req dataso
 		return
 	}
 
-	configProvider, ok := req.ProviderData.(map[string]string)
+	sdk, ok := req.ProviderData.(*sdk.Sdk)
 	if !ok {
 		resp.Diagnostics.AddError(
 			"Unexpected Data Source Configure Type",
@@ -64,7 +65,7 @@ func (r *DataSourceKubernetesNodepool) Configure(ctx context.Context, req dataso
 		return
 	}
 
-	r.sdkClient = mgcSdk.NewClient(nil, configProvider)
+	r.sdkClient = mgcSdk.NewClient(sdk)
 	r.nodepool = sdkNodepool.NewService(ctx, r.sdkClient)
 }
 
@@ -197,7 +198,7 @@ func (r *DataSourceKubernetesNodepool) Read(ctx context.Context, req datasource.
 	sdkOutput, err := r.nodepool.Get(sdkNodepool.GetParameters{
 		ClusterId:  data.ClusterID.ValueString(),
 		NodePoolId: data.ID.ValueString(),
-	}, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkNodepool.GetConfigs{}))
+	}, sdkNodepool.GetConfigs{})
 	if err != nil {
 		resp.Diagnostics.AddError("Failed to get nodepool", err.Error())
 		return

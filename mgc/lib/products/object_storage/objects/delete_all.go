@@ -54,7 +54,7 @@ func (s *service) DeleteAll(
 	}
 
 	var c mgcCore.Configs
-	if c, err = mgcHelpers.ConvertConfigs[DeleteAllConfigs](configs); err != nil {
+	if c, err = mgcHelpers.ConvertConfigs[map[string]interface{}](s.client.Sdk().Config().TempConfig()); err != nil {
 		return
 	}
 

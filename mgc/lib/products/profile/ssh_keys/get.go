@@ -3,7 +3,11 @@ Executor: get
 
 # Summary
 
-# Get Ssh Key
+# Retrieve a SSH key
+
+# Description
+
+Retrieve an SSH key using its ID. If you do not know the ID, retrieve it by listing your keys.
 
 Version: 0.1.0
 
@@ -50,7 +54,7 @@ func (s *service) Get(
 	}
 
 	var c mgcCore.Configs
-	if c, err = mgcHelpers.ConvertConfigs[GetConfigs](configs); err != nil {
+	if c, err = mgcHelpers.ConvertConfigs[map[string]interface{}](s.client.Sdk().Config().TempConfig()); err != nil {
 		return
 	}
 

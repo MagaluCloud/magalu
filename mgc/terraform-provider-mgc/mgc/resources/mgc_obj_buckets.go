@@ -8,7 +8,7 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	mgcSdk "magalu.cloud/lib"
-	tfutil "magalu.cloud/terraform-provider-mgc/mgc/tfutil"
+	"magalu.cloud/sdk"
 
 	sdkBuckets "magalu.cloud/lib/products/object_storage/buckets"
 )
@@ -54,7 +54,7 @@ func (r *objectStorageBuckets) Configure(ctx context.Context, req resource.Confi
 		return
 	}
 
-	configProvider, ok := req.ProviderData.(map[string]string)
+	sdk, ok := req.ProviderData.(*sdk.Sdk)
 	if !ok {
 		resp.Diagnostics.AddError(
 			"Unexpected Data Source Configure Type",
@@ -63,7 +63,7 @@ func (r *objectStorageBuckets) Configure(ctx context.Context, req resource.Confi
 		return
 	}
 
-	r.sdkClient = mgcSdk.NewClient(nil, configProvider)
+	r.sdkClient = mgcSdk.NewClient(sdk)
 
 	r.buckets = sdkBuckets.NewService(ctx, r.sdkClient)
 }
@@ -194,7 +194,7 @@ func (r *objectStorageBuckets) Create(ctx context.Context, req resource.CreateRe
 		Private:           model.Private.ValueBoolPointer(),
 		PublicRead:        model.PublicRead.ValueBoolPointer(),
 		PublicReadWrite:   model.PublicReadWrite.ValueBoolPointer(),
-	}, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkBuckets.CreateConfigs{}))
+	}, sdkBuckets.CreateConfigs{})
 
 	if err != nil {
 		resp.Diagnostics.AddError("Failed to create bucket", err.Error())
@@ -258,7 +258,7 @@ func (r *objectStorageBuckets) Delete(ctx context.Context, req resource.DeleteRe
 	_, err := r.buckets.Delete(sdkBuckets.DeleteParameters{
 		Bucket:    name,
 		Recursive: model.Recursive.ValueBool(),
-	}, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkBuckets.DeleteConfigs{}))
+	}, sdkBuckets.DeleteConfigs{})
 
 	if err != nil {
 		resp.Diagnostics.AddError("Failed to delete bucket", err.Error())

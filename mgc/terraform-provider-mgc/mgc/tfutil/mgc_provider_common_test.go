@@ -32,69 +32,69 @@ func mockFindKey(key string, value any) error {
 	return nil
 }
 
-func TestGetConfigsFromTags(t *testing.T) {
-	config := TestConfig{}
+// func TestGetConfigsFromTags(t *testing.T) {
+// 	config := TestConfig{}
 
-	name := "TestApp"
-	role := "TestRole"
-	version := 1
+// 	name := "TestApp"
+// 	role := "TestRole"
+// 	version := 1
 
-	expected := TestConfig{
-		Name:    &name,
-		Role:    &role,
-		Version: &version,
-	}
+// 	expected := TestConfig{
+// 		Name:    &name,
+// 		Role:    &role,
+// 		Version: &version,
+// 	}
 
-	result := GetConfigsFromTags(mockFindKey, config)
+// 	result := GetConfigsFromTags(mockFindKey, config)
 
-	if !reflect.DeepEqual(result, expected) {
-		t.Errorf("Expected %+v, got %+v", expected, result)
-	}
-}
+// 	if !reflect.DeepEqual(result, expected) {
+// 		t.Errorf("Expected %+v, got %+v", expected, result)
+// 	}
+// }
 
-func TestGetConfigsFromTags2(t *testing.T) {
-	config := TestConfig2{}
+// func TestGetConfigsFromTags2(t *testing.T) {
+// 	config := TestConfig2{}
 
-	name := "TestApp"
-	role := "TestRole"
-	version := 1
+// 	name := "TestApp"
+// 	role := "TestRole"
+// 	version := 1
 
-	expected := TestConfig2{
-		Name:    name,
-		Role:    role,
-		Version: version,
-	}
+// 	expected := TestConfig2{
+// 		Name:    name,
+// 		Role:    role,
+// 		Version: version,
+// 	}
 
-	result := GetConfigsFromTags(mockFindKey, config)
+// 	result := GetConfigsFromTags(mockFindKey, config)
 
-	if !reflect.DeepEqual(result, expected) {
-		t.Errorf("Expected %+v, got %+v", expected, result)
-	}
-}
+// 	if !reflect.DeepEqual(result, expected) {
+// 		t.Errorf("Expected %+v, got %+v", expected, result)
+// 	}
+// }
 
-func TestGetConfigsFromTagsIgnoreEmptyValues(t *testing.T) {
-	type MyTestConfig struct {
-		Banana  *string `json:"banana"`
-		Role    *string `json:"role"`
-		Version *int    `json:"version"`
-	}
+// func TestGetConfigsFromTagsIgnoreEmptyValues(t *testing.T) {
+// 	type MyTestConfig struct {
+// 		Banana  *string `json:"banana"`
+// 		Role    *string `json:"role"`
+// 		Version *int    `json:"version"`
+// 	}
 
-	config := MyTestConfig{}
+// 	config := MyTestConfig{}
 
-	role := "TestRole"
-	version := 1
+// 	role := "TestRole"
+// 	version := 1
 
-	expected := MyTestConfig{
-		Role:    &role,
-		Version: &version,
-	}
+// 	expected := MyTestConfig{
+// 		Role:    &role,
+// 		Version: &version,
+// 	}
 
-	result := GetConfigsFromTags(mockFindKey, config)
+// 	result := GetConfigsFromTags(mockFindKey, config)
 
-	if !reflect.DeepEqual(result, expected) {
-		t.Errorf("Expected %+v, got %+v", expected, result)
-	}
-}
+// 	if !reflect.DeepEqual(result, expected) {
+// 		t.Errorf("Expected %+v, got %+v", expected, result)
+// 	}
+// }
 
 func TestSetField(t *testing.T) {
 	type TestStruct struct {

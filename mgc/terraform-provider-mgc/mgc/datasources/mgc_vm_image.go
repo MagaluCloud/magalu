@@ -9,7 +9,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	mgcSdk "magalu.cloud/lib"
 	sdkVMImages "magalu.cloud/lib/products/virtual_machine/images"
-	"magalu.cloud/terraform-provider-mgc/mgc/tfutil"
+	"magalu.cloud/sdk"
 )
 
 var _ datasource.DataSource = &DataSourceVmImages{}
@@ -42,7 +42,7 @@ func (r *DataSourceVmImages) Configure(ctx context.Context, req datasource.Confi
 		return
 	}
 
-	configProvider, ok := req.ProviderData.(map[string]string)
+	sdk, ok := req.ProviderData.(*sdk.Sdk)
 	if !ok {
 		resp.Diagnostics.AddError(
 			"Unexpected Data Source Configure Type",
@@ -51,7 +51,7 @@ func (r *DataSourceVmImages) Configure(ctx context.Context, req datasource.Confi
 		return
 	}
 
-	r.sdkClient = mgcSdk.NewClient(nil, configProvider)
+	r.sdkClient = mgcSdk.NewClient(sdk)
 	r.vmImages = sdkVMImages.NewService(ctx, r.sdkClient)
 }
 
@@ -91,7 +91,7 @@ func (r *DataSourceVmImages) Read(ctx context.Context, req datasource.ReadReques
 	resp.Diagnostics.Append(req.Config.Get(ctx, &data)...)
 
 	sdkOutput, err := r.vmImages.List(sdkVMImages.ListParameters{},
-		tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVMImages.ListConfigs{}))
+		sdkVMImages.ListConfigs{})
 	if err != nil {
 		resp.Diagnostics.AddError("Failed to get versions", err.Error())
 		return

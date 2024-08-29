@@ -5,9 +5,9 @@ Executor: set
 
 # Sets workspace to be used
 
-import "magalu.cloud/lib/products/profile/workspaces"
+import "magalu.cloud/lib/products/workspace"
 */
-package workspaces
+package workspace
 
 import (
 	mgcCore "magalu.cloud/core"
@@ -28,7 +28,7 @@ func (s *service) Set(
 	result SetResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("Set", mgcCore.RefPath("/profile/workspaces/set"), s.client, s.ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Set", mgcCore.RefPath("/workspace/set"), s.client, s.ctx)
 	if err != nil {
 		return
 	}

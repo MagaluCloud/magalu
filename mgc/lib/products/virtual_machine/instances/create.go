@@ -32,14 +32,22 @@ type CreateParameters struct {
 
 // any of: CreateParametersImage
 type CreateParametersImage struct {
-	Id   string  `json:"id"`
-	Name *string `json:"name,omitempty"`
+	Id             string                               `json:"id"`
+	Name           *string                              `json:"name,omitempty"`
+	SecurityGroups *CreateParametersImageSecurityGroups `json:"security_groups,omitempty"`
 }
+
+type CreateParametersImageSecurityGroupsItem struct {
+	Id string `json:"id"`
+}
+
+type CreateParametersImageSecurityGroups []CreateParametersImageSecurityGroupsItem
 
 // any of: CreateParametersMachineType
 type CreateParametersMachineType struct {
-	Id   string  `json:"id"`
-	Name *string `json:"name,omitempty"`
+	Id             string                               `json:"id"`
+	Name           *string                              `json:"name,omitempty"`
+	SecurityGroups *CreateParametersImageSecurityGroups `json:"security_groups,omitempty"`
 }
 
 type CreateParametersNetwork struct {
@@ -50,22 +58,16 @@ type CreateParametersNetwork struct {
 
 // any of: CreateParametersNetworkInterface
 type CreateParametersNetworkInterface struct {
-	Id             string                                          `json:"id"`
-	Name           *string                                         `json:"name,omitempty"`
-	SecurityGroups *CreateParametersNetworkInterfaceSecurityGroups `json:"security_groups,omitempty"`
+	Id             string                               `json:"id"`
+	Name           *string                              `json:"name,omitempty"`
+	SecurityGroups *CreateParametersImageSecurityGroups `json:"security_groups,omitempty"`
 }
-
-type CreateParametersNetworkInterfaceSecurityGroupsItem struct {
-	Id string `json:"id"`
-}
-
-type CreateParametersNetworkInterfaceSecurityGroups []CreateParametersNetworkInterfaceSecurityGroupsItem
 
 // any of: CreateParametersNetworkVpc
 type CreateParametersNetworkVpc struct {
-	Id             string                                          `json:"id"`
-	Name           *string                                         `json:"name,omitempty"`
-	SecurityGroups *CreateParametersNetworkInterfaceSecurityGroups `json:"security_groups,omitempty"`
+	Id             string                               `json:"id"`
+	Name           *string                              `json:"name,omitempty"`
+	SecurityGroups *CreateParametersImageSecurityGroups `json:"security_groups,omitempty"`
 }
 
 type CreateConfigs struct {
@@ -96,7 +98,7 @@ func (s *service) Create(
 	}
 
 	var c mgcCore.Configs
-	if c, err = mgcHelpers.ConvertConfigs[CreateConfigs](configs); err != nil {
+	if c, err = mgcHelpers.ConvertConfigs[map[string]interface{}](s.client.Sdk().Config().TempConfig()); err != nil {
 		return
 	}
 

@@ -15,19 +15,10 @@ import (
 	"github.com/spf13/viper"
 )
 
-type KeyPair struct {
-	KeyID     string
-	KeySecret string
-}
-type tempConfig struct {
-	configMap  map[string]interface{}
-	keyPairMap map[string]KeyPair
-}
-
 type Config struct {
 	pm         *profile_manager.ProfileManager
 	viper      *viper.Viper
-	tempConfig *tempConfig
+	tempConfig map[string]interface{}
 }
 
 const (
@@ -103,14 +94,14 @@ func (c *Config) Get(key string, out any) error {
 	)
 
 	if c.tempConfig != nil {
-		if outVal, found := c.tempConfig.configMap[key]; found {
+		if outVal, found := c.tempConfig[key]; found {
 
-			decodeConfig := mapstructure.DecoderConfig{
+			decodeConfig := &mapstructure.DecoderConfig{
 				DecodeHook: decodeHookFunc,
 				Result:     out,
 			}
 
-			decoder, err := mapstructure.NewDecoder(&decodeConfig)
+			decoder, err := mapstructure.NewDecoder(decodeConfig)
 			if err != nil {
 				return fmt.Errorf("fail to create a config decoder: %s ", err.Error())
 			}
@@ -196,14 +187,12 @@ func marshalValueIfNeeded(value any) (any, error) {
 }
 
 func (c *Config) NewTempConfig() {
-	if c.tempConfig == nil {
-		c.tempConfig = &tempConfig{
-			configMap:  make(map[string]interface{}),
-			keyPairMap: make(map[string]KeyPair),
-		}
-	}
-	//Default tmp configs
-	c.tempConfig.configMap["region"] = "br-se1"
+	c.tempConfig = map[string]interface{}{}
+	c.tempConfig["region"] = "br-se1"
+}
+
+func (c *Config) TempConfig() map[string]interface{} {
+	return c.tempConfig
 }
 
 func (c *Config) SetTempConfig(key string, value interface{}) error {
@@ -216,7 +205,7 @@ func (c *Config) SetTempConfig(key string, value interface{}) error {
 		c.NewTempConfig()
 	}
 
-	c.tempConfig.configMap[key] = marshaled
+	c.tempConfig[key] = marshaled
 
 	return nil
 }

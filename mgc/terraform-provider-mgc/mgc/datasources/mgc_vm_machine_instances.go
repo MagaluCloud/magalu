@@ -9,7 +9,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	mgcSdk "magalu.cloud/lib"
 	sdkVMInstances "magalu.cloud/lib/products/virtual_machine/instances"
-	"magalu.cloud/terraform-provider-mgc/mgc/tfutil"
+	"magalu.cloud/sdk"
 )
 
 var _ datasource.DataSource = &DataSourceVmInstances{}
@@ -48,7 +48,7 @@ func (r *DataSourceVmInstances) Configure(ctx context.Context, req datasource.Co
 	if req.ProviderData == nil {
 		return
 	}
-	configProvider, ok := req.ProviderData.(map[string]string)
+	sdk, ok := req.ProviderData.(*sdk.Sdk)
 	if !ok {
 		resp.Diagnostics.AddError(
 			"Unexpected Data Source Configure Type",
@@ -57,7 +57,7 @@ func (r *DataSourceVmInstances) Configure(ctx context.Context, req datasource.Co
 		return
 	}
 
-	r.sdkClient = mgcSdk.NewClient(nil, configProvider)
+	r.sdkClient = mgcSdk.NewClient(sdk)
 	r.vmInstances = sdkVMInstances.NewService(ctx, r.sdkClient)
 }
 
@@ -123,7 +123,7 @@ func (r *DataSourceVmInstances) Read(ctx context.Context, req datasource.ReadReq
 	resp.Diagnostics.Append(req.Config.Get(ctx, &data)...)
 
 	sdkOutput, err := r.vmInstances.List(sdkVMInstances.ListParameters{Expand: &sdkVMInstances.ListParametersExpand{"network"}},
-		tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVMInstances.ListConfigs{}))
+		sdkVMInstances.ListConfigs{})
 	if err != nil {
 		resp.Diagnostics.AddError("Failed to get instances", err.Error())
 		return

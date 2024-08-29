@@ -6,6 +6,7 @@ import (
 	"os"
 	"slices"
 	"strings"
+	"sync"
 
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
@@ -121,7 +122,7 @@ func (p *MgcProvider) Configure(ctx context.Context, req provider.ConfigureReque
 	tflog.Info(ctx, "configuring MGC provider")
 
 	var data ProviderConfig
-	configProvider := map[string]string{}
+	configProvider := &map[string]string{}
 
 	resp.Diagnostics.Append(req.Config.Get(ctx, &data)...)
 	if resp.Diagnostics.HasError() {
@@ -129,13 +130,13 @@ func (p *MgcProvider) Configure(ctx context.Context, req provider.ConfigureReque
 	}
 
 	// REGION
-	configProvider["region"] = "br-se1"
+	(*configProvider)["region"] = "br-se1"
 	if !data.Region.IsNull() || os.Getenv("MGC_REGION") != "" {
 		region := os.Getenv("MGC_REGION")
 		if region == "" && !data.Region.IsNull() {
 			region = data.Region.ValueString()
 		}
-		configProvider["region"] = region
+		(*configProvider)["region"] = region
 	}
 	// ENV
 	if !data.Env.IsNull() {
@@ -143,7 +144,7 @@ func (p *MgcProvider) Configure(ctx context.Context, req provider.ConfigureReque
 		if env == "" && !data.Env.IsNull() {
 			env = data.Env.String()
 		}
-		configProvider["env"] = env
+		(*configProvider)["env"] = env
 	}
 
 	// API KEY
@@ -154,7 +155,7 @@ func (p *MgcProvider) Configure(ctx context.Context, req provider.ConfigureReque
 			apiKey = data.ApiKey.ValueString()
 		}
 
-		configProvider["apikey"] = apiKey
+		(*configProvider)["apikey"] = apiKey
 	}
 
 	keyId := ""
@@ -173,19 +174,37 @@ func (p *MgcProvider) Configure(ctx context.Context, req provider.ConfigureReque
 		keyId = data.ObjectStorage.ObjectKeyPair.KeyID.ValueString()
 		keySecret = data.ObjectStorage.ObjectKeyPair.KeySecret.ValueString()
 	}
+
 	if keyId != "" && keySecret != "" {
-		configProvider["keyid"] = keyId
-		configProvider["keysecret"] = keySecret
+		(*configProvider)["keyid"] = keyId
+		(*configProvider)["keysecret"] = keySecret
 	}
-	resp.DataSourceData = configProvider
-	resp.ResourceData = configProvider
+
+	for key, value := range *configProvider {
+		_ = p.sdk.Config().Delete(key)
+		_ = p.sdk.Config().SetTempConfig(key, value)
+	}
+
+	if apikey, ok := (*configProvider)["apikey"]; ok {
+		_ = p.sdk.Auth().SetAPIKey(apikey)
+	}
+
+	resp.DataSourceData = p.sdk
+	resp.ResourceData = p.sdk
 }
 
 func (p *MgcProvider) Resources(ctx context.Context) []func() resource.Resource {
 	tflog.Info(ctx, "configuring MGC provider resources")
+	var sm sync.Mutex
+	sm.Lock()
 
 	root := p.sdk.Group()
 	rsrc, err := collectGroupResources(ctx, p.sdk, root, []string{providerTypeName})
+
+	if err != nil {
+		tflog.Error(ctx, fmt.Sprintf("An error occurred while generating the provider resource list: %v", err))
+	}
+	sm.Unlock()
 
 	rsrc = append(rsrc,
 		resources.NewNewNodePoolResource,
@@ -198,10 +217,6 @@ func (p *MgcProvider) Resources(ctx context.Context) []func() resource.Resource 
 		resources.NewBlockStorageVolumesResource,
 		resources.NewSshKeysResource,
 	)
-
-	if err != nil {
-		tflog.Error(ctx, fmt.Sprintf("An error occurred while generating the provider resource list: %v", err))
-	}
 
 	return rsrc
 }

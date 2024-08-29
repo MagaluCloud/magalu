@@ -7,7 +7,6 @@ ROOTDIR=$(builtin cd $BASEDIR/..; pwd)
 LIBDIR=${LIBDIR:-"$ROOTDIR/mgc/lib"}
 
 export MGC_SDK_OPENAPI_DIR=${MGC_SDK_OPENAPI_DIR:-"$ROOTDIR/mgc/cli/openapis"}
-export MGC_SDK_BLUEPRINTS_DIR=${MGC_SDK_BLUEPRINTS_DIR:-"$ROOTDIR/mgc/cli/blueprints"}
 BRANCH="$(git rev-parse --abbrev-ref HEAD)"
 
 # if [[ "$BRANCH" != "main" ]]; then

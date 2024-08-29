@@ -15,6 +15,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	mgcSdk "magalu.cloud/lib"
 	sdkNodepool "magalu.cloud/lib/products/kubernetes/nodepool"
+	"magalu.cloud/sdk"
 	tfutil "magalu.cloud/terraform-provider-mgc/mgc/tfutil"
 )
 
@@ -36,7 +37,7 @@ func (r *NewNodePoolResource) Configure(ctx context.Context, req resource.Config
 		return
 	}
 
-	configProvider, ok := req.ProviderData.(map[string]string)
+	sdk, ok := req.ProviderData.(*sdk.Sdk)
 	if !ok {
 		resp.Diagnostics.AddError(
 			"Unexpected Data Source Configure Type",
@@ -45,7 +46,7 @@ func (r *NewNodePoolResource) Configure(ctx context.Context, req resource.Config
 		return
 	}
 
-	r.sdkClient = mgcSdk.NewClient(nil, configProvider)
+	r.sdkClient = mgcSdk.NewClient(sdk)
 	r.sdkNodepool = sdkNodepool.NewService(ctx, r.sdkClient)
 }
 
@@ -143,7 +144,7 @@ func (r *NewNodePoolResource) Read(ctx context.Context, req resource.ReadRequest
 	nodepool, err := r.sdkNodepool.Get(sdkNodepool.GetParameters{
 		ClusterId:  data.ClusterID.ValueString(),
 		NodePoolId: data.ID.ValueString(),
-	}, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkNodepool.GetConfigs{}))
+	}, sdkNodepool.GetConfigs{})
 
 	if err != nil {
 		resp.Diagnostics.AddError("Failed to get node pool", err.Error())
@@ -177,7 +178,7 @@ func (r *NewNodePoolResource) Create(ctx context.Context, req resource.CreateReq
 		Tags:   &tags,
 		Taints: convertTaintsNP(data.Taints),
 	},
-		tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkNodepool.CreateConfigs{}))
+		sdkNodepool.CreateConfigs{})
 
 	if err != nil {
 		resp.Diagnostics.AddError("Failed to create node pool", err.Error())
@@ -219,7 +220,7 @@ func (r *NewNodePoolResource) Update(ctx context.Context, req resource.UpdateReq
 			MinReplicas: int(data.MinReplicas.ValueInt64()),
 		},
 	},
-		tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkNodepool.UpdateConfigs{}))
+		sdkNodepool.UpdateConfigs{})
 
 	if err != nil {
 		resp.Diagnostics.AddError("Failed to update node pool", err.Error())
@@ -248,7 +249,7 @@ func (r *NewNodePoolResource) Delete(ctx context.Context, req resource.DeleteReq
 		ClusterId:  data.ClusterID.ValueString(),
 		NodePoolId: data.ID.ValueString(),
 	},
-		tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkNodepool.DeleteConfigs{}))
+		sdkNodepool.DeleteConfigs{})
 
 	if err != nil {
 		resp.Diagnostics.AddError("Failed to delete node pool", err.Error())
@@ -267,7 +268,7 @@ func (r *NewNodePoolResource) ImportState(ctx context.Context, req resource.Impo
 	nodepool, err := r.sdkNodepool.Get(sdkNodepool.GetParameters{
 		ClusterId:  ids[0],
 		NodePoolId: ids[1],
-	}, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkNodepool.GetConfigs{}))
+	}, sdkNodepool.GetConfigs{})
 
 	if err != nil {
 		resp.Diagnostics.AddError("Failed to get node pool", err.Error())
@@ -312,7 +313,7 @@ func (r *NewNodePoolResource) waitNodePoolCreation(ctx context.Context, nodepool
 		nodepool, err := r.sdkNodepool.Get(sdkNodepool.GetParameters{
 			ClusterId:  clusterId,
 			NodePoolId: nodepoolid,
-		}, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkNodepool.GetConfigs{}))
+		}, sdkNodepool.GetConfigs{})
 
 		if err != nil {
 			return err

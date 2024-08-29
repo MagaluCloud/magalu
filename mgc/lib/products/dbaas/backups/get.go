@@ -73,7 +73,7 @@ func (s *service) Get(
 	}
 
 	var c mgcCore.Configs
-	if c, err = mgcHelpers.ConvertConfigs[GetConfigs](configs); err != nil {
+	if c, err = mgcHelpers.ConvertConfigs[map[string]interface{}](s.client.Sdk().Config().TempConfig()); err != nil {
 		return
 	}
 

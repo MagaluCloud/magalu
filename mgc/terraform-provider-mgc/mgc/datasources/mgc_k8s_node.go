@@ -8,6 +8,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	mgcSdk "magalu.cloud/lib"
 	sdkNodepool "magalu.cloud/lib/products/kubernetes/nodepool"
+	"magalu.cloud/sdk"
 	tfutil "magalu.cloud/terraform-provider-mgc/mgc/tfutil"
 )
 
@@ -255,7 +256,7 @@ func (d *DataSourceKubernetesNode) Configure(ctx context.Context, req datasource
 		return
 	}
 
-	configProvider, ok := req.ProviderData.(map[string]string)
+	sdk, ok := req.ProviderData.(*sdk.Sdk)
 
 	if !ok {
 		resp.Diagnostics.AddError(
@@ -265,7 +266,7 @@ func (d *DataSourceKubernetesNode) Configure(ctx context.Context, req datasource
 		return
 	}
 
-	d.sdkClient = mgcSdk.NewClient(nil, configProvider)
+	d.sdkClient = mgcSdk.NewClient(sdk)
 	d.nodepool = sdkNodepool.NewService(ctx, d.sdkClient)
 }
 
@@ -277,7 +278,7 @@ func (d *DataSourceKubernetesNode) Read(ctx context.Context, req datasource.Read
 	node, err := d.nodepool.Nodes(sdkNodepool.NodesParameters{
 		ClusterId:  data.ClusterID.ValueString(),
 		NodePoolId: data.NodepoolID.ValueString(),
-	}, tfutil.GetConfigsFromTags(d.sdkClient.Sdk().Config().Get, sdkNodepool.NodesConfigs{}))
+	}, sdkNodepool.NodesConfigs{})
 	if err != nil {
 		resp.Diagnostics.AddError("Failed to get node", err.Error())
 		return

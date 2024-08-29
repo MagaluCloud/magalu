@@ -5,9 +5,9 @@ Executor: delete
 
 # Deletes the workspace with the specified name
 
-import "magalu.cloud/lib/products/profile/workspaces"
+import "magalu.cloud/lib/products/workspace"
 */
-package workspaces
+package workspace
 
 import (
 	mgcCore "magalu.cloud/core"
@@ -28,7 +28,7 @@ func (s *service) Delete(
 	result DeleteResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("Delete", mgcCore.RefPath("/profile/workspaces/delete"), s.client, s.ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Delete", mgcCore.RefPath("/workspace/delete"), s.client, s.ctx)
 	if err != nil {
 		return
 	}

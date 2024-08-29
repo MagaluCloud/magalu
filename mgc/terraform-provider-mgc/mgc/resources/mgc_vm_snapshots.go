@@ -11,9 +11,9 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	mgcSdk "magalu.cloud/lib"
+	"magalu.cloud/sdk"
 
 	sdkVmSnapshots "magalu.cloud/lib/products/virtual_machine/snapshots"
-	tfutil "magalu.cloud/terraform-provider-mgc/mgc/tfutil"
 )
 
 var (
@@ -40,7 +40,7 @@ func (r *vmSnapshots) Configure(ctx context.Context, req resource.ConfigureReque
 		return
 	}
 
-	configProvider, ok := req.ProviderData.(map[string]string)
+	sdk, ok := req.ProviderData.(*sdk.Sdk)
 	if !ok {
 		resp.Diagnostics.AddError(
 			"Unexpected Data Source Configure Type",
@@ -49,7 +49,7 @@ func (r *vmSnapshots) Configure(ctx context.Context, req resource.ConfigureReque
 		return
 	}
 
-	r.sdkClient = mgcSdk.NewClient(nil, configProvider)
+	r.sdkClient = mgcSdk.NewClient(sdk)
 
 	r.vmSnapshots = sdkVmSnapshots.NewService(ctx, r.sdkClient)
 }
@@ -107,7 +107,7 @@ func (r *vmSnapshots) getVmSnapshot(id string) (sdkVmSnapshots.GetResult, error)
 		sdkVmSnapshots.GetParameters{
 			Id: id,
 		},
-		tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVmSnapshots.GetConfigs{}))
+		sdkVmSnapshots.GetConfigs{})
 	if err != nil {
 		return sdkVmSnapshots.GetResult{}, err
 	}
@@ -149,7 +149,7 @@ func (r *vmSnapshots) Create(ctx context.Context, req resource.CreateRequest, re
 		},
 	}
 
-	result, err := r.vmSnapshots.Create(createParams, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVmSnapshots.CreateConfigs{}))
+	result, err := r.vmSnapshots.Create(createParams, sdkVmSnapshots.CreateConfigs{})
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Error Creating VM Snapshot",
@@ -181,7 +181,7 @@ func (r *vmSnapshots) Delete(ctx context.Context, req resource.DeleteRequest, re
 		sdkVmSnapshots.DeleteParameters{
 			Id: data.ID.ValueString(),
 		},
-		tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVmSnapshots.DeleteConfigs{}))
+		sdkVmSnapshots.DeleteConfigs{})
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Error deleting VM Snapshot",

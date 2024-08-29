@@ -5,9 +5,9 @@ Executor: get
 
 Get current workspace.
 
-import "magalu.cloud/lib/products/profile/workspaces"
+import "magalu.cloud/lib/products/workspace"
 */
-package workspaces
+package workspace
 
 import (
 	mgcCore "magalu.cloud/core"
@@ -22,7 +22,7 @@ func (s *service) Get() (
 	result GetResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("Get", mgcCore.RefPath("/profile/workspaces/get"), s.client, s.ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Get", mgcCore.RefPath("/workspace/get"), s.client, s.ctx)
 	if err != nil {
 		return
 	}

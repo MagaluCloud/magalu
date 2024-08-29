@@ -8,7 +8,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	mgcSdk "magalu.cloud/lib"
 	"magalu.cloud/lib/products/kubernetes/cluster"
-	tfutil "magalu.cloud/terraform-provider-mgc/mgc/tfutil"
+	"magalu.cloud/sdk"
 )
 
 var _ datasource.DataSource = &DataSourceKubernetesClusterKubeConfig{}
@@ -54,7 +54,7 @@ func (d *DataSourceKubernetesClusterKubeConfig) Read(ctx context.Context, req da
 
 	sdkOuput, err := d.cluster.Kubeconfig(cluster.KubeconfigParameters{
 		ClusterId: data.ClusterID.ValueString(),
-	}, tfutil.GetConfigsFromTags(d.sdkClient.Sdk().Config().Get, cluster.KubeconfigConfigs{}))
+	}, cluster.KubeconfigConfigs{})
 	if err != nil {
 		resp.Diagnostics.AddError("Failed to get kubeconfig", err.Error())
 		return
@@ -69,7 +69,7 @@ func (r *DataSourceKubernetesClusterKubeConfig) Configure(ctx context.Context, r
 		return
 	}
 
-	configProvider, ok := req.ProviderData.(map[string]string)
+	sdk, ok := req.ProviderData.(*sdk.Sdk)
 
 	if !ok {
 		resp.Diagnostics.AddError(
@@ -79,6 +79,6 @@ func (r *DataSourceKubernetesClusterKubeConfig) Configure(ctx context.Context, r
 		return
 	}
 
-	r.sdkClient = mgcSdk.NewClient(nil, configProvider)
+	r.sdkClient = mgcSdk.NewClient(sdk)
 	r.cluster = cluster.NewService(ctx, r.sdkClient)
 }

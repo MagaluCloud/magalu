@@ -5,9 +5,9 @@ Executor: create
 
 # Creates a new workspace
 
-import "magalu.cloud/lib/products/profile/workspaces"
+import "magalu.cloud/lib/products/workspace"
 */
-package workspaces
+package workspace
 
 import (
 	mgcCore "magalu.cloud/core"
@@ -29,7 +29,7 @@ func (s *service) Create(
 	result CreateResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("Create", mgcCore.RefPath("/profile/workspaces/create"), s.client, s.ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Create", mgcCore.RefPath("/workspace/create"), s.client, s.ctx)
 	if err != nil {
 		return
 	}

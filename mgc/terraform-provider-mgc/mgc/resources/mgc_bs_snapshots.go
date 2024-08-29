@@ -14,7 +14,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	mgcSdk "magalu.cloud/lib"
 	sdkBlockStorageSnapshots "magalu.cloud/lib/products/block_storage/snapshots"
-	"magalu.cloud/terraform-provider-mgc/mgc/tfutil"
+	"magalu.cloud/sdk"
 )
 
 // Ensure the implementation satisfies the expected interfaces.
@@ -47,7 +47,7 @@ func (r *bsSnapshots) Configure(ctx context.Context, req resource.ConfigureReque
 		return
 	}
 
-	configProvider, ok := req.ProviderData.(map[string]string)
+	sdk, ok := req.ProviderData.(*sdk.Sdk)
 
 	if !ok {
 		resp.Diagnostics.AddError(
@@ -57,7 +57,7 @@ func (r *bsSnapshots) Configure(ctx context.Context, req resource.ConfigureReque
 		return
 	}
 
-	r.sdkClient = mgcSdk.NewClient(nil, configProvider)
+	r.sdkClient = mgcSdk.NewClient(sdk)
 
 	r.bsSnapshots = sdkBlockStorageSnapshots.NewService(ctx, r.sdkClient)
 }
@@ -175,10 +175,7 @@ func (r *bsSnapshots) Read(ctx context.Context, req resource.ReadRequest, resp *
 	data := &bsSnapshotsResourceModel{}
 	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
 
-	result, err := r.bsSnapshots.Get(sdkBlockStorageSnapshots.GetParameters{
-		Id: data.ID.ValueString()},
-		tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkBlockStorageSnapshots.GetConfigs{}),
-	)
+	result, err := r.bsSnapshots.Get(sdkBlockStorageSnapshots.GetParameters{Id: data.ID.ValueString()}, sdkBlockStorageSnapshots.GetConfigs{})
 
 	if err != nil {
 		resp.Diagnostics.AddError(
@@ -218,7 +215,7 @@ func (r *bsSnapshots) Create(ctx context.Context, req resource.CreateRequest, re
 		Volume: sdkBlockStorageSnapshots.CreateParametersVolume{
 			Id: plan.Volume.ID.ValueString(),
 		},
-	}, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkBlockStorageSnapshots.CreateConfigs{}))
+	}, sdkBlockStorageSnapshots.CreateConfigs{})
 
 	if err != nil {
 		resp.Diagnostics.AddError(
@@ -234,7 +231,7 @@ func (r *bsSnapshots) Create(ctx context.Context, req resource.CreateRequest, re
 
 	getCreatedResource, err := r.bsSnapshots.Get(sdkBlockStorageSnapshots.GetParameters{
 		Id: state.ID.ValueString(),
-	}, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkBlockStorageSnapshots.GetConfigs{}))
+	}, sdkBlockStorageSnapshots.GetConfigs{})
 
 	if err != nil {
 		resp.Diagnostics.AddError(
@@ -269,7 +266,7 @@ func (r *bsSnapshots) Delete(ctx context.Context, req resource.DeleteRequest, re
 
 	err := r.bsSnapshots.Delete(sdkBlockStorageSnapshots.DeleteParameters{
 		Id: data.ID.ValueString(),
-	}, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkBlockStorageSnapshots.DeleteConfigs{}))
+	}, sdkBlockStorageSnapshots.DeleteConfigs{})
 
 	if err != nil {
 		resp.Diagnostics.AddError(
@@ -298,7 +295,7 @@ func (r *bsSnapshots) checkStatusIsCreating(id string) {
 			return
 		}
 
-		*getResult, err = r.bsSnapshots.Get(getParam, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkBlockStorageSnapshots.GetConfigs{}))
+		*getResult, err = r.bsSnapshots.Get(getParam, sdkBlockStorageSnapshots.GetConfigs{})
 		if err != nil {
 			return
 		}

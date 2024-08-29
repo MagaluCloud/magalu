@@ -42,7 +42,7 @@ func (s *service) Kubeconfig(parameters KubeconfigParameters, configs Kubeconfig
 	}
 
 	var c mgcCore.Configs
-	if c, err = mgcHelpers.ConvertConfigs[KubeconfigConfigs](configs); err != nil {
+	if c, err = mgcHelpers.ConvertConfigs[map[string]interface{}](s.client.Sdk().Config().TempConfig()); err != nil {
 		return "", err
 	}
 

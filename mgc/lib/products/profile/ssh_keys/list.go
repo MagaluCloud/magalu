@@ -3,7 +3,11 @@ Executor: list
 
 # Summary
 
-# List Ssh Keys
+# List SSH keys
+
+# Description
+
+List the SSH keys. It is possible sort this list with parameters id, name, key_type
 
 Version: 0.1.0
 
@@ -58,7 +62,7 @@ func (s *service) List(
 	}
 
 	var c mgcCore.Configs
-	if c, err = mgcHelpers.ConvertConfigs[ListConfigs](configs); err != nil {
+	if c, err = mgcHelpers.ConvertConfigs[map[string]interface{}](s.client.Sdk().Config().TempConfig()); err != nil {
 		return
 	}
 

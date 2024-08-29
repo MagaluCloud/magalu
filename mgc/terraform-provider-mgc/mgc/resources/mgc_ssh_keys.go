@@ -9,7 +9,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	sdkSSHKeys "magalu.cloud/lib/products/profile/ssh_keys"
-	tfutil "magalu.cloud/terraform-provider-mgc/mgc/tfutil"
+	"magalu.cloud/sdk"
 
 	mgcSdk "magalu.cloud/lib"
 )
@@ -36,7 +36,7 @@ func (r *sshKeys) Configure(ctx context.Context, req resource.ConfigureRequest, 
 	if req.ProviderData == nil {
 		return
 	}
-	configProvider, ok := req.ProviderData.(map[string]string)
+	sdk, ok := req.ProviderData.(*sdk.Sdk)
 	if !ok {
 		resp.Diagnostics.AddError(
 			"Unexpected Data Source Configure Type",
@@ -45,7 +45,7 @@ func (r *sshKeys) Configure(ctx context.Context, req resource.ConfigureRequest, 
 		return
 	}
 
-	r.sdkClient = mgcSdk.NewClient(nil, configProvider)
+	r.sdkClient = mgcSdk.NewClient(sdk)
 	r.sshKeys = sdkSSHKeys.NewService(ctx, r.sdkClient)
 }
 
@@ -107,7 +107,7 @@ func (r *sshKeys) Read(ctx context.Context, req resource.ReadRequest, resp *reso
 	getResult, err := r.sshKeys.Get(sdkSSHKeys.GetParameters{
 		KeyId: plan.ID.ValueString(),
 	},
-		tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkSSHKeys.GetConfigs{}))
+		sdkSSHKeys.GetConfigs{})
 
 	if err != nil {
 		resp.Diagnostics.AddError("Error Reading ssh key", err.Error())
@@ -128,7 +128,7 @@ func (r *sshKeys) Create(ctx context.Context, req resource.CreateRequest, resp *
 		Key:  plan.Key.ValueString(),
 		Name: plan.Name.ValueString(),
 	},
-		tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkSSHKeys.CreateConfigs{}))
+		sdkSSHKeys.CreateConfigs{})
 
 	if err != nil {
 		resp.Diagnostics.AddError("Error creating ssh key", err.Error())
@@ -144,12 +144,7 @@ func (r *sshKeys) Update(ctx context.Context, req resource.UpdateRequest, resp *
 func (r *sshKeys) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
 	var data sshKeyModel
 	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
-	_, err := r.sshKeys.Delete(
-		sdkSSHKeys.DeleteParameters{
-			KeyId: data.ID.ValueString(),
-		},
-		tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkSSHKeys.DeleteConfigs{}),
-	)
+	_, err := r.sshKeys.Delete(sdkSSHKeys.DeleteParameters{KeyId: data.ID.ValueString()}, sdkSSHKeys.DeleteConfigs{})
 	if err != nil {
 		resp.Diagnostics.AddError("Error deleting ssh key", err.Error())
 	}

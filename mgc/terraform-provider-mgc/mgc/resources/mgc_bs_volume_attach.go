@@ -9,9 +9,9 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	mgcSdk "magalu.cloud/lib"
+	"magalu.cloud/sdk"
 
 	sdkVolumes "magalu.cloud/lib/products/block_storage/volumes"
-	tfutil "magalu.cloud/terraform-provider-mgc/mgc/tfutil"
 )
 
 const (
@@ -43,7 +43,7 @@ func (r *VolumeAttach) Configure(ctx context.Context, req resource.ConfigureRequ
 		return
 	}
 
-	configProvider, ok := req.ProviderData.(map[string]string)
+	sdk, ok := req.ProviderData.(*sdk.Sdk)
 	if !ok {
 		resp.Diagnostics.AddError(
 			"Unexpected Data Source Configure Type",
@@ -52,7 +52,7 @@ func (r *VolumeAttach) Configure(ctx context.Context, req resource.ConfigureRequ
 		return
 	}
 
-	r.sdkClient = mgcSdk.NewClient(nil, configProvider)
+	r.sdkClient = mgcSdk.NewClient(sdk)
 
 	r.blockStorageVolumes = sdkVolumes.NewService(ctx, r.sdkClient)
 }
@@ -85,7 +85,7 @@ func (r *VolumeAttach) Create(ctx context.Context, req resource.CreateRequest, r
 	err := r.blockStorageVolumes.Attach(sdkVolumes.AttachParameters{
 		Id:               model.BlockStorageID.ValueString(),
 		VirtualMachineId: model.VirtualMachineID.ValueString(),
-	}, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVolumes.AttachConfigs{}))
+	}, sdkVolumes.AttachConfigs{})
 
 	if err != nil {
 		resp.Diagnostics.AddError("Failed to attach volume", err.Error())
@@ -120,7 +120,7 @@ func (r *VolumeAttach) Read(ctx context.Context, req resource.ReadRequest, resp 
 	result, err := r.blockStorageVolumes.Get(sdkVolumes.GetParameters{
 		Id:     model.BlockStorageID.ValueString(),
 		Expand: &expand,
-	}, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVolumes.GetConfigs{}))
+	}, sdkVolumes.GetConfigs{})
 
 	if err != nil {
 		resp.Diagnostics.AddError("Failed to get volume", err.Error())
@@ -150,7 +150,7 @@ func (r *VolumeAttach) Update(ctx context.Context, req resource.UpdateRequest, r
 	err := r.blockStorageVolumes.Attach(sdkVolumes.AttachParameters{
 		Id:               model.BlockStorageID.ValueString(),
 		VirtualMachineId: model.VirtualMachineID.ValueString(),
-	}, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVolumes.AttachConfigs{}))
+	}, sdkVolumes.AttachConfigs{})
 
 	if err != nil {
 		resp.Diagnostics.AddError("Failed to attach volume", err.Error())
@@ -182,7 +182,7 @@ func (r *VolumeAttach) Delete(ctx context.Context, req resource.DeleteRequest, r
 
 	err := r.blockStorageVolumes.Detach(sdkVolumes.DetachParameters{
 		Id: model.BlockStorageID.ValueString(),
-	}, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVolumes.DetachConfigs{}))
+	}, sdkVolumes.DetachConfigs{})
 
 	if err != nil {
 		resp.Diagnostics.AddError("Failed to detach volume", err.Error())
@@ -202,7 +202,7 @@ func (r *VolumeAttach) waitForVolumeAvailability(volumeID string, expetedStatus 
 		time.Sleep(10 * time.Second)
 		getResult, err := r.blockStorageVolumes.Get(sdkVolumes.GetParameters{
 			Id: volumeID,
-		}, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVolumes.GetConfigs{}))
+		}, sdkVolumes.GetConfigs{})
 		if err != nil {
 			return err
 		}

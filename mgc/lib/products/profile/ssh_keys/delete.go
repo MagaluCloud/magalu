@@ -3,7 +3,11 @@ Executor: delete
 
 # Summary
 
-# Delete Ssh Key
+# Delete SSH Key
+
+# Description
+
+Delete an SSH key using its id.
 
 Version: 0.1.0
 
@@ -50,7 +54,7 @@ func (s *service) Delete(
 	}
 
 	var c mgcCore.Configs
-	if c, err = mgcHelpers.ConvertConfigs[DeleteConfigs](configs); err != nil {
+	if c, err = mgcHelpers.ConvertConfigs[map[string]interface{}](s.client.Sdk().Config().TempConfig()); err != nil {
 		return
 	}
 
@@ -82,7 +86,7 @@ func (s *service) DeleteConfirmPrompt(
 	}
 
 	var c mgcCore.Configs
-	if c, err = mgcHelpers.ConvertConfigs[DeleteConfigs](configs); err != nil {
+	if c, err = mgcHelpers.ConvertConfigs[map[string]interface{}](s.client.Sdk().Config().TempConfig()); err != nil {
 		return
 	}
 

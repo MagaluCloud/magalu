@@ -8,7 +8,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	mgcSdk "magalu.cloud/lib"
 	sdkNodepool "magalu.cloud/lib/products/kubernetes/flavor"
-	tfutil "magalu.cloud/terraform-provider-mgc/mgc/tfutil"
+	"magalu.cloud/sdk"
 )
 
 type ListResultResultsItem struct {
@@ -42,7 +42,7 @@ func (r *DataSourceKubernetesFlavor) Configure(ctx context.Context, req datasour
 		return
 	}
 
-	configProvider, ok := req.ProviderData.(map[string]string)
+	sdk, ok := req.ProviderData.(*sdk.Sdk)
 
 	if !ok {
 		resp.Diagnostics.AddError(
@@ -52,7 +52,7 @@ func (r *DataSourceKubernetesFlavor) Configure(ctx context.Context, req datasour
 		return
 	}
 
-	r.sdkClient = mgcSdk.NewClient(nil, configProvider)
+	r.sdkClient = mgcSdk.NewClient(sdk)
 	r.nodepool = sdkNodepool.NewService(ctx, r.sdkClient)
 }
 
@@ -107,7 +107,7 @@ func resourceListResultResultsItemBastionItemSchema() schema.NestedAttributeObje
 }
 
 func (r *DataSourceKubernetesFlavor) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
-	result, err := r.nodepool.List(tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkNodepool.ListConfigs{}))
+	result, err := r.nodepool.List(sdkNodepool.ListConfigs{})
 
 	if err != nil || result.Results == nil {
 		resp.Diagnostics.AddError("Failed to list flavors", err.Error())

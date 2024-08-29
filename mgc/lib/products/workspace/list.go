@@ -5,9 +5,9 @@ Executor: list
 
 # List all available workspaces
 
-import "magalu.cloud/lib/products/profile/workspaces"
+import "magalu.cloud/lib/products/workspace"
 */
-package workspaces
+package workspace
 
 import (
 	mgcCore "magalu.cloud/core"
@@ -24,7 +24,7 @@ func (s *service) List() (
 	result ListResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("List", mgcCore.RefPath("/profile/workspaces/list"), s.client, s.ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("List", mgcCore.RefPath("/workspace/list"), s.client, s.ctx)
 	if err != nil {
 		return
 	}

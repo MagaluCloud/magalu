@@ -9,7 +9,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	mgcSdk "magalu.cloud/lib"
 	sdkSSHKeys "magalu.cloud/lib/products/profile/ssh_keys"
-	"magalu.cloud/terraform-provider-mgc/mgc/tfutil"
+	"magalu.cloud/sdk"
 )
 
 var _ datasource.DataSource = &DataSourceSSH{}
@@ -42,7 +42,7 @@ func (r *DataSourceSSH) Configure(ctx context.Context, req datasource.ConfigureR
 		return
 	}
 
-	configProvider, ok := req.ProviderData.(map[string]string)
+	sdk, ok := req.ProviderData.(*sdk.Sdk)
 	if !ok {
 		resp.Diagnostics.AddError(
 			"Unexpected Data Source Configure Type",
@@ -51,7 +51,7 @@ func (r *DataSourceSSH) Configure(ctx context.Context, req datasource.ConfigureR
 		return
 	}
 
-	r.sdkClient = mgcSdk.NewClient(nil, configProvider)
+	r.sdkClient = mgcSdk.NewClient(sdk)
 	r.sshKeys = sdkSSHKeys.NewService(ctx, r.sdkClient)
 }
 
@@ -89,7 +89,7 @@ func (r *DataSourceSSH) Read(ctx context.Context, req datasource.ReadRequest, re
 	resp.Diagnostics.Append(req.Config.Get(ctx, &data)...)
 
 	sdkOutput, err := r.sshKeys.List(sdkSSHKeys.ListParameters{},
-		tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkSSHKeys.ListConfigs{}))
+		sdkSSHKeys.ListConfigs{})
 	if err != nil {
 		resp.Diagnostics.AddError("Failed to get versions", err.Error())
 		return

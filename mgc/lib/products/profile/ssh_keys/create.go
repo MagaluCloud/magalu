@@ -3,7 +3,13 @@ Executor: create
 
 # Summary
 
-# Create Ssh Key
+# Register new SSH key
+
+# Description
+
+# Register new SSH key by providing a name and the public SSH key
+
+The supported key types are: ssh-rsa, ssh-dss, ecdsa-sha, ssh-ed25519, sk-ecdsa-sha, sk-ssh-ed25519
 
 Version: 0.1.0
 
@@ -51,7 +57,7 @@ func (s *service) Create(
 	}
 
 	var c mgcCore.Configs
-	if c, err = mgcHelpers.ConvertConfigs[CreateConfigs](configs); err != nil {
+	if c, err = mgcHelpers.ConvertConfigs[map[string]interface{}](s.client.Sdk().Config().TempConfig()); err != nil {
 		return
 	}
 

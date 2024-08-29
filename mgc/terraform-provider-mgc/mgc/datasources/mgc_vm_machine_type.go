@@ -9,7 +9,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	mgcSdk "magalu.cloud/lib"
 	sdkVMMachineTypes "magalu.cloud/lib/products/virtual_machine/machine_types"
-	"magalu.cloud/terraform-provider-mgc/mgc/tfutil"
+	"magalu.cloud/sdk"
 )
 
 var _ datasource.DataSource = &DataSourceVmMachineType{}
@@ -45,7 +45,7 @@ func (r *DataSourceVmMachineType) Configure(ctx context.Context, req datasource.
 		return
 	}
 
-	configProvider, ok := req.ProviderData.(map[string]string)
+	sdk, ok := req.ProviderData.(*sdk.Sdk)
 	if !ok {
 		resp.Diagnostics.AddError(
 			"Unexpected Data Source Configure Type",
@@ -54,7 +54,7 @@ func (r *DataSourceVmMachineType) Configure(ctx context.Context, req datasource.
 		return
 	}
 
-	r.sdkClient = mgcSdk.NewClient(nil, configProvider)
+	r.sdkClient = mgcSdk.NewClient(sdk)
 	r.vmMachineTypes = sdkVMMachineTypes.NewService(ctx, r.sdkClient)
 }
 
@@ -106,7 +106,7 @@ func (r *DataSourceVmMachineType) Read(ctx context.Context, req datasource.ReadR
 	resp.Diagnostics.Append(req.Config.Get(ctx, &data)...)
 
 	sdkOutput, err := r.vmMachineTypes.List(sdkVMMachineTypes.ListParameters{},
-		tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVMMachineTypes.ListConfigs{}))
+		sdkVMMachineTypes.ListConfigs{})
 	if err != nil {
 		resp.Diagnostics.AddError("Failed to get versions", err.Error())
 		return

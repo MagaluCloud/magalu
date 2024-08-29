@@ -8,21 +8,21 @@ import (
 
 type findKey func(key string, out any) error
 
-func GetConfigsFromTags[T any](keys findKey, s T) T {
-	envs := listJSONTags(s)
-	for _, env := range envs {
-		var value any
-		if err := keys(env, &value); err == nil {
-			if value != nil && !reflect.ValueOf(value).IsZero() {
-				err = setField(&s, env, value)
-				if err != nil {
-					fmt.Printf("Error setting field %s: %v\n", env, err)
-				}
-			}
-		}
-	}
-	return s
-}
+// func GetConfigsFromTags[T any](keys findKey, s T) T {
+// 	envs := listJSONTags(s)
+// 	for _, env := range envs {
+// 		var value any
+// 		if err := keys(env, &value); err == nil {
+// 			if value != nil && !reflect.ValueOf(value).IsZero() {
+// 				err = setField(&s, env, value)
+// 				if err != nil {
+// 					fmt.Printf("Error setting field %s: %v\n", env, err)
+// 				}
+// 			}
+// 		}
+// 	}
+// 	return s
+// }
 
 func listJSONTags(obj any) []string {
 	t := reflect.TypeOf(obj)
