@@ -346,8 +346,8 @@ func (o *Auth) CurrentScopes() (core.Scopes, error) {
 
 func (o *Auth) AccessKeyPair() (accessKeyId, secretAccessKey string) {
 	var keyId, keySecret string
-	_ = o.mgcConfig.Get("keyId", &keyId)
-	_ = o.mgcConfig.Get("keySecret", &keySecret)
+	_ = o.mgcConfig.Get("keyid", &keyId)
+	_ = o.mgcConfig.Get("keysecret", &keySecret)
 	if keyId != "" && keySecret != "" {
 		return keyId, keySecret
 	}

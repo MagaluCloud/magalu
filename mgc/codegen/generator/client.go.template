@@ -24,6 +24,20 @@ func (c *Client) Sdk() *mgcSdk.Sdk {
 //
 // If sdk is nil, then the DefaultSdk() is used.
 func NewClient(sdk *mgcSdk.Sdk) *Client {
+	if sdk == nil {
+		sdk = DefaultSdk()
+	}
+
+	if config != nil {
+		for key := config.Oldest(); key != nil; key = key.Next() {
+			_ = sdk.Config().SetTempConfig(key.Key, key.Value)
+		}
+
+		if apikey, ok := config.Get("apikey"); ok {
+			_ = sdk.Auth().SetAPIKey(apikey)
+		}
+	}
+
 	return &Client{
 		sdk: sdk,
 	}
