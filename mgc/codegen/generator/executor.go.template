@@ -57,9 +57,25 @@ func (s *service) Kubeconfig(parameters KubeconfigParameters, configs Kubeconfig
 		return "", err
 	}
 
+
+	sdkConfig := s.client.Sdk().Config().TempConfig()
+
 	var c mgcCore.Configs
 	if c, err = mgcHelpers.ConvertConfigs[KubeconfigConfigs](configs); err != nil {
 		return "", err
+	}
+
+
+	if c["serverUrl"] == nil && sdkConfig["serverUrl"] != nil {
+		c["serverUrl"] = sdkConfig["serverUrl"]
+	}
+
+	if c["env"] == nil && sdkConfig["env"] != nil {
+		c["env"] = sdkConfig["env"]
+	}
+
+	if c["region"] == nil && sdkConfig["region"] != nil {
+		c["region"] = sdkConfig["region"]
 	}
 
 	result, err := exec.Execute(ctx, p, c)
@@ -107,6 +123,18 @@ func (s *service) Kubeconfig(parameters KubeconfigParameters, configs Kubeconfig
 	{{- if .Types.Configs }}
 		if c, err = mgcHelpers.ConvertConfigs[{{ .Types.Configs }}](configs); err != nil {
 			return
+		}
+		sdkConfig := s.client.Sdk().Config().TempConfig()
+		if c["serverUrl"] == nil && sdkConfig["serverUrl"] != nil {
+			c["serverUrl"] = sdkConfig["serverUrl"]
+		}
+
+		if c["env"] == nil && sdkConfig["env"] != nil {
+			c["env"] = sdkConfig["env"]
+		}
+
+		if c["region"] == nil && sdkConfig["region"] != nil {
+			c["region"] = sdkConfig["region"]
 		}
 	{{- end }}
 	{{ if .Types.Result }}
@@ -165,6 +193,18 @@ func (s *service) Kubeconfig(parameters KubeconfigParameters, configs Kubeconfig
 		if c, err = mgcHelpers.ConvertConfigs[{{ .Types.Configs }}](configs); err != nil {
 			return
 		}
+		sdkConfig := s.client.Sdk().Config().TempConfig()
+		if c["serverUrl"] == nil && sdkConfig["serverUrl"] != nil {
+			c["serverUrl"] = sdkConfig["serverUrl"]
+		}
+
+		if c["env"] == nil && sdkConfig["env"] != nil {
+			c["env"] = sdkConfig["env"]
+		}
+
+		if c["region"] == nil && sdkConfig["region"] != nil {
+			c["region"] = sdkConfig["region"]
+		}
 	{{- end }}
 	{{ if .Types.Result }}
 		r, err := exec.ExecuteUntilTermination(ctx, p, c)
@@ -210,6 +250,18 @@ func (s *service) Kubeconfig(parameters KubeconfigParameters, configs Kubeconfig
 	{{- if .Types.Configs }}
 		if c, err = mgcHelpers.ConvertConfigs[{{ .Types.Configs }}](configs); err != nil {
 			return
+		}
+		sdkConfig := s.client.Sdk().Config().TempConfig()
+		if c["serverUrl"] == nil && sdkConfig["serverUrl"] != nil {
+			c["serverUrl"] = sdkConfig["serverUrl"]
+		}
+
+		if c["env"] == nil && sdkConfig["env"] != nil {
+			c["env"] = sdkConfig["env"]
+		}
+
+		if c["region"] == nil && sdkConfig["region"] != nil {
+			c["region"] = sdkConfig["region"]
 		}
 	{{- end }}
 	

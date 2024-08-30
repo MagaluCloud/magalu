@@ -1,6 +1,8 @@
 package utils
 
-import "errors"
+import (
+	"errors"
+)
 
 type LoadWithError[T any] func() (T, error)
 type OnceWithError func() error

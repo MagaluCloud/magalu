@@ -41,9 +41,23 @@ func (s *service) Kubeconfig(parameters KubeconfigParameters, configs Kubeconfig
 		return "", err
 	}
 
+	sdkConfig := s.client.Sdk().Config().TempConfig()
+
 	var c mgcCore.Configs
-	if c, err = mgcHelpers.ConvertConfigs[map[string]interface{}](s.client.Sdk().Config().TempConfig()); err != nil {
+	if c, err = mgcHelpers.ConvertConfigs[KubeconfigConfigs](configs); err != nil {
 		return "", err
+	}
+
+	if c["serverUrl"] == nil && sdkConfig["serverUrl"] != nil {
+		c["serverUrl"] = sdkConfig["serverUrl"]
+	}
+
+	if c["env"] == nil && sdkConfig["env"] != nil {
+		c["env"] = sdkConfig["env"]
+	}
+
+	if c["region"] == nil && sdkConfig["region"] != nil {
+		c["region"] = sdkConfig["region"]
 	}
 
 	result, err := exec.Execute(ctx, p, c)

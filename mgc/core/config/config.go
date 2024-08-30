@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"reflect"
 	"strings"
+	"sync"
 
 	"magalu.cloud/core"
 	"magalu.cloud/core/profile_manager"
@@ -18,7 +19,7 @@ import (
 type Config struct {
 	pm         *profile_manager.ProfileManager
 	viper      *viper.Viper
-	tempConfig map[string]interface{}
+	tempConfig sync.Map
 }
 
 const (
@@ -93,25 +94,23 @@ func (c *Config) Get(key string, out any) error {
 		stringUnmarshalHook,
 	)
 
-	if c.tempConfig != nil {
-		if outVal, found := c.tempConfig[key]; found {
+	if outVal, found := c.tempConfig.Load(key); found {
 
-			decodeConfig := &mapstructure.DecoderConfig{
-				DecodeHook: decodeHookFunc,
-				Result:     out,
-			}
-
-			decoder, err := mapstructure.NewDecoder(decodeConfig)
-			if err != nil {
-				return fmt.Errorf("fail to create a config decoder: %s ", err.Error())
-			}
-
-			err = decoder.Decode(outVal)
-			if err != nil {
-				return fmt.Errorf("fail to run config decoder: %s", err.Error())
-			}
-			return nil
+		decodeConfig := &mapstructure.DecoderConfig{
+			DecodeHook: decodeHookFunc,
+			Result:     out,
 		}
+
+		decoder, err := mapstructure.NewDecoder(decodeConfig)
+		if err != nil {
+			return fmt.Errorf("fail to create a config decoder: %s ", err.Error())
+		}
+
+		err = decoder.Decode(outVal)
+		if err != nil {
+			return fmt.Errorf("fail to run config decoder: %s", err.Error())
+		}
+		return nil
 	}
 
 	return c.viper.UnmarshalKey(
@@ -187,12 +186,17 @@ func marshalValueIfNeeded(value any) (any, error) {
 }
 
 func (c *Config) NewTempConfig() {
-	c.tempConfig = map[string]interface{}{}
-	c.tempConfig["region"] = "br-se1"
+	c.tempConfig = sync.Map{}
+	c.tempConfig.Store("region", "br-se1")
 }
 
 func (c *Config) TempConfig() map[string]interface{} {
-	return c.tempConfig
+	result := make(map[string]interface{})
+	c.tempConfig.Range(func(key, value interface{}) bool {
+		result[key.(string)] = value
+		return true
+	})
+	return result
 }
 
 func (c *Config) SetTempConfig(key string, value interface{}) error {
@@ -201,12 +205,7 @@ func (c *Config) SetTempConfig(key string, value interface{}) error {
 		return fmt.Errorf("unable to marshal config %s: %w", key, err)
 	}
 
-	if c.tempConfig == nil {
-		c.NewTempConfig()
-	}
-
-	c.tempConfig[key] = marshaled
-
+	c.tempConfig.Store(key, marshaled)
 	return nil
 }
 

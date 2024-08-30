@@ -59,8 +59,20 @@ func (s *service) UploadDir(
 	}
 
 	var c mgcCore.Configs
-	if c, err = mgcHelpers.ConvertConfigs[map[string]interface{}](s.client.Sdk().Config().TempConfig()); err != nil {
+	if c, err = mgcHelpers.ConvertConfigs[UploadDirConfigs](configs); err != nil {
 		return
+	}
+	sdkConfig := s.client.Sdk().Config().TempConfig()
+	if c["serverUrl"] == nil && sdkConfig["serverUrl"] != nil {
+		c["serverUrl"] = sdkConfig["serverUrl"]
+	}
+
+	if c["env"] == nil && sdkConfig["env"] != nil {
+		c["env"] = sdkConfig["env"]
+	}
+
+	if c["region"] == nil && sdkConfig["region"] != nil {
+		c["region"] = sdkConfig["region"]
 	}
 
 	r, err := exec.Execute(ctx, p, c)
