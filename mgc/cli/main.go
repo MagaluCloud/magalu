@@ -5,13 +5,22 @@ import (
 	"os"
 	"runtime"
 	"strings"
+	"time"
 
+	"github.com/rakyll/autopprof"
 	"magalu.cloud/cli/cmd"
 	mgcSdk "magalu.cloud/sdk"
 )
 
 func main() {
 	defer panicRecover()
+
+	go func() {
+		autopprof.Capture(autopprof.CPUProfile{
+			Duration: 30 * time.Second,
+		})
+	}()
+
 	mgcSdk.SetUserAgent("MgcCLI")
 
 	err := cmd.Execute()

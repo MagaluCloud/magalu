@@ -77,6 +77,7 @@ require (
 	github.com/perimeterx/marshmallow v1.1.5 // indirect
 	github.com/pkg/browser v0.0.0-20210911075715-681adbf594b8 // indirect
 	github.com/pterm/pterm v0.12.79 // indirect
+	github.com/rakyll/autopprof v0.1.0
 	github.com/rivo/uniseg v0.4.4 // indirect
 	github.com/shopspring/decimal v1.4.0 // indirect
 	github.com/skip2/go-qrcode v0.0.0-20200617195104-da1b6568686e // indirect
