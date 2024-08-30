@@ -97,7 +97,7 @@ func (t *ClientLogger) RoundTrip(req *http.Request) (*http.Response, error) {
 		}
 	}
 
-	t.logResponse(log, req, resp, err)
+	// t.logResponse(log, req, resp, err)
 
 	return resp, err
 }

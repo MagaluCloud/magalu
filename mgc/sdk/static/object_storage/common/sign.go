@@ -164,7 +164,6 @@ func setMD5Checksum(req *http.Request) error {
 	if req.Body == nil {
 		return nil
 	}
-
 	if v := req.Header.Get(contentMD5Header); len(v) != 0 {
 		return nil
 	}
@@ -176,20 +175,25 @@ func setMD5Checksum(req *http.Request) error {
 	if err != nil {
 		return err
 	}
-
 	defer body.Close()
 
 	h := md5.New()
-
-	_, err = io.Copy(h, body)
-	defer body.Close()
-
-	if err != nil {
-		return err
+	buf := make([]byte, 32*1024) // 32KB buffer
+	for {
+		n, err := body.Read(buf)
+		if n > 0 {
+			h.Write(buf[:n])
+		}
+		if err == io.EOF {
+			break
+		}
+		if err != nil {
+			return err
+		}
 	}
+
 	checksum := base64.StdEncoding.EncodeToString(h.Sum(nil))
 	req.Header.Set(contentMD5Header, checksum)
-
 	return nil
 }
 
@@ -342,11 +346,11 @@ func signHeaders(req *http.Request, accessKey, secretKey string, unsignedPayload
 
 	req.Header.Set(headerDateKey, signingTime.Format(longTimeFormat))
 
-	if _, ok := ignoredHeaders[contentMD5Header]; !ok {
-		if err := setMD5Checksum(req); err != nil {
-			return fmt.Errorf("unable to compute checksum of the body content: %w", err)
-		}
-	}
+	// if _, ok := ignoredHeaders[contentMD5Header]; !ok {
+	// 	if err := setMD5Checksum(req); err != nil {
+	// 		return fmt.Errorf("unable to compute checksum of the body content: %w", err)
+	// 	}
+	// }
 
 	signedHeaders := getSignedHeaders(req, ignoredHeaders)
 	params := NewSignatureParameters(accessKey, signingTime, payloadHash, signedHeaders)

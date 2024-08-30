@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"net/http"
+	_ "net/http/pprof"
 	"os"
 	"runtime"
 	"strings"
@@ -13,6 +15,10 @@ import (
 func main() {
 	defer panicRecover()
 	mgcSdk.SetUserAgent("MgcCLI")
+
+	go func() {
+        fmt.Println(http.ListenAndServe("localhost:6060", nil))
+    }()
 
 	err := cmd.Execute()
 	if err != nil {

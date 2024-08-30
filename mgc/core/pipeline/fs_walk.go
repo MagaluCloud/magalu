@@ -2,7 +2,6 @@ package pipeline
 
 import (
 	"context"
-	"fmt"
 	"io/fs"
 	"os"
 	"path"
@@ -60,52 +59,45 @@ func WalkDirFilterHiddenDirs(path string, d fs.DirEntry, err error) error {
 // Each file/directory may contain an associated error, it may be ignored or keep going.
 // By default, if no checkPath is provided, it keeps going.
 func WalkDirEntries(
-	ctx context.Context,
-	root string,
-	checkPath fs.WalkDirFunc,
-) (outputChan <-chan WalkDirEntry) {
-	ch := make(chan WalkDirEntry)
-	outputChan = ch
+    ctx context.Context,
+    root string,
+    checkPath fs.WalkDirFunc,
+) (<-chan WalkDirEntry) {
+    ch := make(chan WalkDirEntry, 100) // Buffered channel
+    logger := FromContext(ctx).Named("WalkDirEntries").With(
+        "root", root,
+    )
+    ctx = NewContext(ctx, logger)
 
-	logger := FromContext(ctx).Named("WalkDirEntries").With(
-		"root", root,
-		"outputChan", fmt.Sprintf("%#v", outputChan),
-	)
-	ctx = NewContext(ctx, logger)
+    go func() {
+        defer close(ch)
+        logger.Info("Starting directory walk")
 
-	generator := func() {
-		defer func() {
-			logger.Info("closing output channel")
-			close(ch)
-		}()
+        err := fs.WalkDir(os.DirFS(root), ".", func(p string, d fs.DirEntry, err error) error {
+            if d == nil {
+                return filepath.SkipDir
+            }
+            p = path.Join(root, p)
+            if checkPath != nil {
+                if e := checkPath(p, d, err); e != nil {
+                    logger.Debugw("checkPath error", "err", e, "path", p)
+                    return e
+                }
+            }
+            dir := NewSimpleWalkDirEntry(p, d, err)
+            select {
+            case <-ctx.Done():
+                logger.Debug("Context cancelled", "err", ctx.Err())
+                return filepath.SkipAll
+            case ch <- dir:
+                return nil
+            }
+        })
 
-		_ = fs.WalkDir(os.DirFS(root), ".", func(p string, d fs.DirEntry, err error) error {
-			if d == nil {
-				return filepath.SkipDir
-			}
-			p = path.Join(root, p)
-			if checkPath != nil {
-				e := checkPath(p, d, err)
-				if e != nil {
-					logger.Debugw("checkPath != nil", "err", err, "path", p, "dirEntry", d)
-					return e
-				}
-			}
-			dir := NewSimpleWalkDirEntry(p, d, err)
-			select {
-			case <-ctx.Done():
-				logger.Debugw("context.Done()", "err", ctx.Err())
-				return filepath.SkipAll
+        if err != nil {
+            logger.Error("Error during directory walk", "err", err)
+        }
+    }()
 
-			case ch <- dir:
-				logger.Debugw("entry", "err", err, "path", p, "dirEntry", d)
-				return nil
-			}
-		})
-		logger.Debug("finished walking entries")
-	}
-
-	logger.Info("start", root)
-	go generator()
-	return
+    return ch
 }
