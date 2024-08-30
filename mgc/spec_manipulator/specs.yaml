@@ -57,8 +57,8 @@ jaxyendy:
       dev: false
     - url: https://events-consult-api.br-ne-1.jaxyendy.com/openapi-cli.json
       file: events-consult.openapi.yaml
-      menu: events
-      cli: false
+      menu: audit
+      cli: true
       tf: false
       sdk: true
       enabled: true

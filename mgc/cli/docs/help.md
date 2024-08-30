@@ -17,6 +17,7 @@ Usage:
 
 ## Product catalog:
 - Products:
+- audit              Cloud Events API Product.
 - block-storage      Block Storage API Product
 - container-registry Magalu Container Registry product API.
 - dbaas              DBaaS API Product.

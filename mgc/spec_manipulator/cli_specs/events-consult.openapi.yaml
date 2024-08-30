@@ -3,7 +3,7 @@
   "info": {
     "title": "Cloud Events Consult API",
     "description": "Cloud Events API Product.",
-    "version": "0.15.0"
+    "version": "0.15.1"
   },
   "paths": {
     "/v0/events": {
@@ -18,30 +18,31 @@
           {
             "name": "_limit",
             "in": "query",
+            "description": "Number of items per page",
             "required": false,
             "schema": {
               "type": "integer",
-              "title": " Limit",
-              "maximum": 2147483647,
-              "minimum": 0,
+              "title": "Limit",
+              "description": "Number of items per page",
               "default": 50
             }
           },
           {
             "name": "_offset",
             "in": "query",
+            "description": "Offset for pagination",
             "required": false,
             "schema": {
               "type": "integer",
-              "title": " Offset",
-              "maximum": 2147483647,
-              "minimum": 0,
+              "title": "Offset",
+              "description": "Offset for pagination",
               "default": 0
             }
           },
           {
             "name": "id",
             "in": "query",
+            "description": "Identification of the event",
             "required": false,
             "schema": {
               "anyOf": [
@@ -49,12 +50,14 @@
                   "type": "string"
                 }
               ],
-              "title": "Id"
+              "title": "ID",
+              "description": "Identification of the event"
             }
           },
           {
             "name": "source__like",
             "in": "query",
+            "description": "Context in which the event occurred ('like' operation)",
             "required": false,
             "schema": {
               "anyOf": [
@@ -62,12 +65,14 @@
                   "type": "string"
                 }
               ],
-              "title": "Source  Like"
+              "title": "Source",
+              "description": "Context in which the event occurred ('like' operation)"
             }
           },
           {
             "name": "time",
             "in": "query",
+            "description": "Timestamp of when the occurrence happened",
             "required": false,
             "schema": {
               "anyOf": [
@@ -76,12 +81,14 @@
                   "format": "date-time"
                 }
               ],
-              "title": "Time"
+              "title": "Time",
+              "description": "Timestamp of when the occurrence happened"
             }
           },
           {
             "name": "type__like",
             "in": "query",
+            "description": "Type of event related to the originating occurrence ('like' operation)",
             "required": false,
             "schema": {
               "anyOf": [
@@ -89,12 +96,14 @@
                   "type": "string"
                 }
               ],
-              "title": "Type  Like"
+              "title": "Type",
+              "description": "Type of event related to the originating occurrence ('like' operation)"
             }
           },
           {
             "name": "product__like",
             "in": "query",
+            "description": "In which producer product an event occurred ('like' operation)",
             "required": false,
             "schema": {
               "anyOf": [
@@ -102,12 +111,14 @@
                   "type": "string"
                 }
               ],
-              "title": "Product  Like"
+              "title": "Product",
+              "description": "In which producer product an event occurred ('like' operation)"
             }
           },
           {
             "name": "authid",
             "in": "query",
+            "description": "Identification of the principal that triggered the occurrence",
             "required": false,
             "schema": {
               "anyOf": [
@@ -115,20 +126,8 @@
                   "type": "string"
                 }
               ],
-              "title": "Authid"
-            }
-          },
-          {
-            "name": "tenantid",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                }
-              ],
-              "title": "Tenantid"
+              "title": "Auth ID",
+              "description": "Identification of the principal that triggered the occurrence"
             }
           },
           {
@@ -196,7 +195,8 @@
               "evt:event-tr"
             ]
           }
-        ]
+        ],
+        "x-mgc-output-flag": "table=ID:$.results[*].id,SOURCE:$.results[*].source,TYPE:$.results[*].type,SPECVERSION:$.results[*].specversion,SUBJECT:$.results[*].subject,TIME:$.results[*].time,AUTHID:$.results[*].authid,AUTHTYPE:$.results[*].authtype,PRODUCT:$.results[*].product,REGION:$.results[*].region"
       }
     },
     "/v0/event-types": {
@@ -211,24 +211,24 @@
           {
             "name": "_limit",
             "in": "query",
+            "description": "Number of items per page",
             "required": false,
             "schema": {
               "type": "integer",
-              "title": " Limit",
-              "maximum": 2147483647,
-              "minimum": 0,
+              "title": "Limit",
+              "description": "Number of items per page",
               "default": 50
             }
           },
           {
             "name": "_offset",
             "in": "query",
+            "description": "Offset for pagination",
             "required": false,
             "schema": {
               "type": "integer",
-              "title": " Offset",
-              "maximum": 2147483647,
-              "minimum": 0,
+              "title": "Offset",
+              "description": "Offset for pagination",
               "default": 0
             }
           },
@@ -279,7 +279,8 @@
               "evt:event-tr"
             ]
           }
-        ]
+        ],
+        "x-mgc-output-flag": "table=TYPE:$.results[*].type"
       }
     }
   },
@@ -494,17 +495,13 @@
             "type": "integer",
             "title": "Limit",
             "maximum": 2147483647,
-            "minimum": 0,
-            "description": "Number of items per page",
-            "default": 50
+            "minimum": 0
           },
           "offset": {
             "type": "integer",
             "title": "Offset",
             "maximum": 2147483647,
-            "minimum": 0,
-            "description": "Offset for pagination",
-            "default": 0
+            "minimum": 0
           },
           "count": {
             "type": "integer",

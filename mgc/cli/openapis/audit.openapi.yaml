@@ -1,0 +1,541 @@
+openapi: 3.0.3
+info:
+    title: Cloud Events Consult API
+    description: Cloud Events API Product.
+    version: 0.15.1
+paths:
+    /v0/events:
+        get:
+            tags:
+            - events
+            summary: Lists all events.
+            description: Lists all events emitted by other products.
+            operationId: list_event
+            parameters:
+            -   name: _limit
+                in: query
+                description: Number of items per page
+                required: false
+                schema:
+                    type: integer
+                    title: Limit
+                    description: Number of items per page
+                    default: 50
+            -   name: _offset
+                in: query
+                description: Offset for pagination
+                required: false
+                schema:
+                    type: integer
+                    title: Offset
+                    description: Offset for pagination
+                    default: 0
+            -   name: id
+                in: query
+                description: Identification of the event
+                required: false
+                schema:
+                    anyOf:
+                    -   type: string
+                    title: ID
+                    description: Identification of the event
+            -   name: source__like
+                in: query
+                description: Context in which the event occurred ('like' operation)
+                required: false
+                schema:
+                    anyOf:
+                    -   type: string
+                    title: Source
+                    description: Context in which the event occurred ('like' operation)
+            -   name: time
+                in: query
+                description: Timestamp of when the occurrence happened
+                required: false
+                schema:
+                    anyOf:
+                    -   type: string
+                        format: date-time
+                    title: Time
+                    description: Timestamp of when the occurrence happened
+            -   name: type__like
+                in: query
+                description: Type of event related to the originating occurrence ('like'
+                    operation)
+                required: false
+                schema:
+                    anyOf:
+                    -   type: string
+                    title: Type
+                    description: Type of event related to the originating occurrence
+                        ('like' operation)
+            -   name: product__like
+                in: query
+                description: In which producer product an event occurred ('like' operation)
+                required: false
+                schema:
+                    anyOf:
+                    -   type: string
+                    title: Product
+                    description: In which producer product an event occurred ('like'
+                        operation)
+            -   name: authid
+                in: query
+                description: Identification of the principal that triggered the occurrence
+                required: false
+                schema:
+                    anyOf:
+                    -   type: string
+                    title: Auth ID
+                    description: Identification of the principal that triggered the
+                        occurrence
+            -   name: data
+                in: query
+                description: The raw data event
+                required: false
+                schema:
+                    type: object
+                    title: Raw Data
+                    additionalProperties:
+                        type: string
+                    default: {}
+                    example:
+                        data.tenant_id: 00000000-0000-0000-0000-000000000000
+                        data.machine_type.name: cloud-bs1.xsmall
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ListPaginatorResponse_Event_'
+                '500':
+                    description: Internal Server Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPResponseError'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            security:
+            -   OAuth2:
+                - evt:event-tr
+            x-mgc-output-flag: table=ID:$.results[*].id,SOURCE:$.results[*].source,TYPE:$.results[*].type,SPECVERSION:$.results[*].specversion,SUBJECT:$.results[*].subject,TIME:$.results[*].time,AUTHID:$.results[*].authid,AUTHTYPE:$.results[*].authtype,PRODUCT:$.results[*].product,REGION:$.results[*].region
+    /v0/event-types:
+        get:
+            tags:
+            - event-types
+            summary: Lists all event types.
+            description: Lists all types of events emitted by other products.
+            operationId: list_type
+            parameters:
+            -   name: _limit
+                in: query
+                description: Number of items per page
+                required: false
+                schema:
+                    type: integer
+                    title: Limit
+                    description: Number of items per page
+                    default: 50
+            -   name: _offset
+                in: query
+                description: Offset for pagination
+                required: false
+                schema:
+                    type: integer
+                    title: Offset
+                    description: Offset for pagination
+                    default: 0
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ListPaginatorResponse_EventType_'
+                '500':
+                    description: Internal Server Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPResponseError'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            security:
+            -   OAuth2:
+                - evt:event-tr
+            x-mgc-output-flag: table=TYPE:$.results[*].type
+components:
+    schemas:
+        Event:
+            type: object
+            properties:
+                id:
+                    type: string
+                    title: Id
+                    description: Identifies the event.
+                    example: 00000000-00000000-00000000-00000000
+                source:
+                    type: string
+                    title: Source
+                    description: Identifies the context in which the event occurred.
+                    example: https://api.com/v1/instances/00000000-00000000-00000000-00000000
+                type:
+                    type: string
+                    title: Type
+                    description: The value describing the type of event related to
+                        the originating occurrence.
+                    example: cloud.magalu.compute.instance.create
+                specversion:
+                    type: string
+                    title: Specversion
+                    description: Version of the CloudEvents specification which the
+                        event uses.
+                    default: '1.0'
+                subject:
+                    type: string
+                    title: Subject
+                    description: Identifies the subject of the event, in context of
+                        the event producer (identified by source)
+                    example: instance/00000000-00000000-00000000-00000000
+                time:
+                    type: string
+                    title: Time
+                    format: date-time
+                    description: Timestamp of when the occurrence happened.
+                    example: '2024-07-16T22:50:00'
+                authid:
+                    type: string
+                    title: Authid
+                    description: A unique identifier of the principal that triggered
+                        the occurrence.
+                    example: 00000000-00000000-00000000-00000000
+                authtype:
+                    type: string
+                    title: Authtype
+                    description: An enum representing the type of principal that triggered
+                        the occurrence.
+                    example: tenant
+                product:
+                    type: string
+                    title: Product
+                    description: The identification in which producer type an event
+                        occur
+                    example: default
+                region:
+                    anyOf:
+                    -   type: string
+                    title: Region
+                    description: The physical region of the event
+                    nullable: true
+                tenantid:
+                    type: string
+                    title: Tenantid
+                    description: ID of the tenant which requested the change
+                    example: 00000000-00000000-00000000-00000000
+                data:
+                    type: object
+                    title: Raw event
+                    description: The raw event about the occurrence
+            title: Event
+            required:
+            - id
+            - source
+            - type
+            - subject
+            - time
+            - authid
+            - authtype
+            - product
+            - tenantid
+            - data
+            description: Represent all the fields available in event output, following
+                the Cloud Events Spec.
+        EventType:
+            type: object
+            properties:
+                type:
+                    type: string
+                    title: Type
+            title: EventType
+            required:
+            - type
+        HTTPResponseError:
+            type: object
+            properties:
+                message:
+                    title: Message
+                    type: string
+                slug:
+                    title: Slug
+                    type: string
+            title: HTTPResponseError
+            required:
+            - detail
+            - message
+            example:
+                message: Unauthorized
+                slug: Unauthorized
+        HTTPValidationError:
+            type: object
+            properties:
+                message:
+                    title: Message
+                    type: string
+                slug:
+                    title: Slug
+                    type: string
+            title: HTTPValidationError
+            example:
+                message: Unauthorized
+                slug: Unauthorized
+        ListPaginatorResponse_EventType_:
+            type: object
+            properties:
+                meta:
+                    type: object
+                    properties:
+                        limit:
+                            type: integer
+                            title: Limit
+                            maximum: 2147483647
+                        offset:
+                            type: integer
+                            title: Offset
+                            maximum: 2147483647
+                        count:
+                            type: integer
+                            title: Count
+                            description: The number of items on the current page.
+                        total:
+                            type: integer
+                            title: Total
+                            description: The total number of items available across
+                                all pages.
+                    title: PaginatorResponse
+                    required:
+                    - count
+                    - total
+                results:
+                    type: array
+                    items:
+                        type: object
+                        properties:
+                            type:
+                                type: string
+                                title: Type
+                        title: EventType
+                        required:
+                        - type
+                    title: Results
+            title: ListPaginatorResponse[EventType]
+            required:
+            - meta
+            - results
+        ListPaginatorResponse_Event_:
+            type: object
+            properties:
+                meta:
+                    type: object
+                    properties:
+                        limit:
+                            type: integer
+                            title: Limit
+                            maximum: 2147483647
+                        offset:
+                            type: integer
+                            title: Offset
+                            maximum: 2147483647
+                        count:
+                            type: integer
+                            title: Count
+                            description: The number of items on the current page.
+                        total:
+                            type: integer
+                            title: Total
+                            description: The total number of items available across
+                                all pages.
+                    title: PaginatorResponse
+                    required:
+                    - count
+                    - total
+                results:
+                    type: array
+                    items:
+                        type: object
+                        properties:
+                            id:
+                                type: string
+                                title: Id
+                                description: Identifies the event.
+                                example: 00000000-00000000-00000000-00000000
+                            source:
+                                type: string
+                                title: Source
+                                description: Identifies the context in which the event
+                                    occurred.
+                                example: https://api.com/v1/instances/00000000-00000000-00000000-00000000
+                            type:
+                                type: string
+                                title: Type
+                                description: The value describing the type of event
+                                    related to the originating occurrence.
+                                example: cloud.magalu.compute.instance.create
+                            specversion:
+                                type: string
+                                title: Specversion
+                                description: Version of the CloudEvents specification
+                                    which the event uses.
+                                default: '1.0'
+                            subject:
+                                type: string
+                                title: Subject
+                                description: Identifies the subject of the event,
+                                    in context of the event producer (identified by
+                                    source)
+                                example: instance/00000000-00000000-00000000-00000000
+                            time:
+                                type: string
+                                title: Time
+                                format: date-time
+                                description: Timestamp of when the occurrence happened.
+                                example: '2024-07-16T22:50:00'
+                            authid:
+                                type: string
+                                title: Authid
+                                description: A unique identifier of the principal
+                                    that triggered the occurrence.
+                                example: 00000000-00000000-00000000-00000000
+                            authtype:
+                                type: string
+                                title: Authtype
+                                description: An enum representing the type of principal
+                                    that triggered the occurrence.
+                                example: tenant
+                            product:
+                                type: string
+                                title: Product
+                                description: The identification in which producer
+                                    type an event occur
+                                example: default
+                            region:
+                                anyOf:
+                                -   type: string
+                                title: Region
+                                description: The physical region of the event
+                                nullable: true
+                            tenantid:
+                                type: string
+                                title: Tenantid
+                                description: ID of the tenant which requested the
+                                    change
+                                example: 00000000-00000000-00000000-00000000
+                            data:
+                                type: object
+                                title: Raw event
+                                description: The raw event about the occurrence
+                        title: Event
+                        required:
+                        - id
+                        - source
+                        - type
+                        - subject
+                        - time
+                        - authid
+                        - authtype
+                        - product
+                        - tenantid
+                        - data
+                        description: Represent all the fields available in event output,
+                            following the Cloud Events Spec.
+                    title: Results
+            title: ListPaginatorResponse[Event]
+            required:
+            - meta
+            - results
+        PaginatorResponse:
+            type: object
+            properties:
+                limit:
+                    type: integer
+                    title: Limit
+                    maximum: 2147483647
+                offset:
+                    type: integer
+                    title: Offset
+                    maximum: 2147483647
+                count:
+                    type: integer
+                    title: Count
+                    description: The number of items on the current page.
+                total:
+                    type: integer
+                    title: Total
+                    description: The total number of items available across all pages.
+            title: PaginatorResponse
+            required:
+            - count
+            - total
+        ValidationError:
+            type: object
+            properties:
+                message:
+                    title: Message
+                    type: string
+                slug:
+                    title: Slug
+                    type: string
+            title: ValidationError
+            required:
+            - loc
+            - msg
+            - type
+            example:
+                message: Unauthorized
+                slug: Unauthorized
+tags:
+-   name: events
+    description: Endpoints related to listing events emitted by other products.
+-   name: event-types
+    description: Endpoints related to listing types of events emitted by other products.
+$id: https://events-consult.jaxyendy.com/openapi-cli.json
+servers:
+-   url: https://{env}/{region}/audit
+    variables:
+        region:
+            description: Region to reach the service
+            default: br-se1
+            enum:
+            - br-ne-1
+            - br-se1
+            - br-mgl1
+            x-mgc-transforms:
+            -   type: translate
+                allowMissing: true
+                translations:
+                -   from: br-ne1
+                    to: br-ne-1
+                -   from: br-mgl1
+                    to: br-se-1
+        env:
+            description: Environment to use
+            default: api.magalu.cloud
+            enum:
+            - api.magalu.cloud
+            - api.pre-prod.jaxyendy.com
+            x-mgc-transforms:
+            -   type: translate
+                translations:
+                -   from: prod
+                    to: api.magalu.cloud
+                -   from: pre-prod
+                    to: api.pre-prod.jaxyendy.com
