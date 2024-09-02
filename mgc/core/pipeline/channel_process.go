@@ -209,45 +209,45 @@ type ProcessorResult[I any, O any] struct {
 //
 // Code is based on https://go.dev/blog/pipelines#bounded-parallelism
 func ParallelProcess[I any, O any](
-    ctx context.Context,
-    maxParallelProcessors int,
-    inputChan <-chan I,
-    processor Processor[I, O],
-    finalize Finalize[O],
-) (<-chan O, <-chan error) {
-    ch := make(chan O, maxParallelProcessors)
-    errCh := make(chan error, 1) // Channel for error reporting
-    logger := FromContext(ctx).Named("ParallelProcess").With(
-        "maxParallelProcessors", maxParallelProcessors,
-    )
-    ctx = NewContext(ctx, logger)
+	ctx context.Context,
+	maxParallelProcessors int,
+	inputChan <-chan I,
+	processor Processor[I, O],
+	finalize Finalize[O],
+) (outputChan <-chan O) {
+	ch := make(chan O)
 
-    var wg sync.WaitGroup
-    wg.Add(maxParallelProcessors)
+	logger := FromContext(ctx).Named("ParallelProcess").With(
+		"maxParallelProcessors", maxParallelProcessors,
+		"inputChan", fmt.Sprintf("%#v", inputChan),
+		"outputChan", fmt.Sprintf("%#v", ch),
+	)
+	ctx = NewContext(ctx, logger)
 
-    for i := 0; i < maxParallelProcessors; i++ {
-        workerCtx := NewContext(ctx, logger.With("worker", i))
-        go func() {
-            defer wg.Done()
-            if err := processChannel(workerCtx, inputChan, ch, processor); err != nil {
-                select {
-                case errCh <- err:
-                default:
-                    // Error channel is full, log the error
-                    logger.Error("Worker error", "err", err)
-                }
-            }
-        }()
-    }
+	finishedInput := true
 
-    go func() {
-        wg.Wait()
-        close(ch)
-        close(errCh)
-        if err := finalizeProcess(ctx, ch, finalize); err != nil {
-            logger.Error("Finalization error", "err", err)
-        }
-    }()
+	wg := sync.WaitGroup{}
+	wg.Add(maxParallelProcessors)
+	innerLogger := FromContext(ctx)
+	for i := 0; i < maxParallelProcessors; i++ {
+		workerCtx := NewContext(ctx, innerLogger.With("worker", i))
+		go func() {
+			fi := processChannel[I, O](workerCtx, inputChan, ch, processor)
+			if !fi {
+				finishedInput = false
+			}
+			wg.Done()
+		}()
+	}
 
-    return ch, errCh
+	go func() {
+		defer func() {
+			logger.Info("closing output channel")
+			close(ch)
+		}()
+		wg.Wait()
+		finalizeProcess(ctx, ch, finalize, finishedInput)
+	}()
+
+	return ch
 }

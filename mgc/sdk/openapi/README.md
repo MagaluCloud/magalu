@@ -12,6 +12,8 @@ index.openapi.yaml   -> module-name.openapi.yaml -> tag        -> operation
 [entrypoint]         [module: module-name]       [resource]    [action]
 ```
 
+Currently, the spec of container-registry is the best "example" to follow: https://mcr.br-ne-1.jaxyendy.com/docs/openapi.yaml
+
 ## Reading
 
 The SDK may contain embedded OpenAPI files if built with `-tags "embed"`.
@@ -24,6 +26,19 @@ environment variable `$MGC_SDK_OPENAPI_DIR` or `./openapis` if not set.
 > In order to add a new file, one must create the `index.openapi.yaml`
 > including that file.
 
+
+## Adding new spec
+
+In the `scripts/add_all_specs.sh` you can add a new spec, like this:
+```
+$BASEDIR/add_specs_without_region.sh profile profile mgc/spec_manipulator/cli_specs/conv.globaldb.openapi.yaml https://globaldb.jaxyendy.com/openapi-cli.json
+echo "SSH"
+
+# EXAMPLE
+# $BASEDIR/SCRIPT.sh NOME_NO_MENU URL_PATH LOCAL_DA_SPEC HTTPS://LOCAL_DA_SPEC
+```
+
+After this, just run `./scripts/add_all_specs.sh` and BUILD all.
 
 ## Entry Point (index.openapi.yaml)
 
@@ -39,9 +54,6 @@ modules:
     path: module-name.openapi.yaml
     version: 1.2.3 # your module version
 ```
-
-> **NOTE:**
-> it's easier to generate the index using `scripts/oapi_index_gen.py`
 
 
 ## Extensions
@@ -66,7 +78,6 @@ elements. The following list shows which extensions can be used in the spec:
     - `x-mgc-confirmPrompt`
     - `x-mgc-wait-termination`
     - `x-mgc-output-flag`
-    - `x-mgc-transforms`
 - Link
     - `x-mgc-wait-termination`
     - `x-mgc-extra-parameters`
@@ -75,7 +86,6 @@ elements. The following list shows which extensions can be used in the spec:
     - `x-mgc-name`
     - `x-mgc-description`
     - `x-mgc-hidden`
-    - `x-mgc-transforms`
 
 ### `x-mgc-name`
 
@@ -212,38 +222,6 @@ paths:
                             title: Id
 ```
 
-### `x-mgc-transforms`
-
-Apply the following transformation to a OAPI Spec item:
-
-- uppercase: applies upper case
-- lowercase: applies lower case
-- pascalcase: applies pascal case
-- kebabcase: applies kebab case
-- snakecase: applies snakecase
-- camelcase: applies camel case
-
-- translate: applies a series of translations to the spec, replacing regex expression matches
-
-```yaml
-servers:
--   url: https://{env}/{region}/database
-    variables:
-        env:
-            description: Environment to use
-            default: api.magalu.cloud
-            enum:
-            - api.magalu.cloud
-            - api.pre-prod.jaxyendy.com
-            x-mgc-tranforms: lowercase
-            x-mgc-transforms:
-            -   type: translate
-                translations:
-                -   from: prod
-                    to: api.magalu.cloud
-                -   from: pre-prod
-                    to: api.pre-prod.jaxyendy.com
-```
 ## Parameters x Config
 
 Server variables, header and cookie parameters are handled as **Config**.
