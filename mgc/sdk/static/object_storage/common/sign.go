@@ -2,11 +2,8 @@ package common
 
 import (
 	"bytes"
-	"crypto/md5"
-	"encoding/base64"
 	"encoding/hex"
 	"fmt"
-	"io"
 	"net/http"
 	"net/url"
 	"strings"
@@ -160,42 +157,42 @@ func getPayloadHash(req *http.Request) (string, error) {
 // Empty payloads do not have an MD5 value.
 //
 // Replaces the smithy-go middleware for httpChecksum trait.
-func setMD5Checksum(req *http.Request) error {
-	if req.Body == nil {
-		return nil
-	}
-	if v := req.Header.Get(contentMD5Header); len(v) != 0 {
-		return nil
-	}
-	if req.GetBody == nil {
-		return fmt.Errorf("programming error: object storage operation must define a GetBody function in the request to set the MD5 Checksum")
-	}
+// func setMD5Checksum(req *http.Request) error {
+// 	if req.Body == nil {
+// 		return nil
+// 	}
+// 	if v := req.Header.Get(contentMD5Header); len(v) != 0 {
+// 		return nil
+// 	}
+// 	if req.GetBody == nil {
+// 		return fmt.Errorf("programming error: object storage operation must define a GetBody function in the request to set the MD5 Checksum")
+// 	}
 
-	body, err := req.GetBody()
-	if err != nil {
-		return err
-	}
-	defer body.Close()
+// 	body, err := req.GetBody()
+// 	if err != nil {
+// 		return err
+// 	}
+// 	defer body.Close()
 
-	h := md5.New()
-	buf := make([]byte, 32*1024) // 32KB buffer
-	for {
-		n, err := body.Read(buf)
-		if n > 0 {
-			h.Write(buf[:n])
-		}
-		if err == io.EOF {
-			break
-		}
-		if err != nil {
-			return err
-		}
-	}
+// 	h := md5.New()
+// 	buf := make([]byte, 32*1024) // 32KB buffer
+// 	for {
+// 		n, err := body.Read(buf)
+// 		if n > 0 {
+// 			h.Write(buf[:n])
+// 		}
+// 		if err == io.EOF {
+// 			break
+// 		}
+// 		if err != nil {
+// 			return err
+// 		}
+// 	}
 
-	checksum := base64.StdEncoding.EncodeToString(h.Sum(nil))
-	req.Header.Set(contentMD5Header, checksum)
-	return nil
-}
+// 	checksum := base64.StdEncoding.EncodeToString(h.Sum(nil))
+// 	req.Header.Set(contentMD5Header, checksum)
+// 	return nil
+// }
 
 func getSignedHeaders(req *http.Request, ignoredHeaders map[string]struct{}) []string {
 	signedHeaders := make([]string, 0, len(req.Header))

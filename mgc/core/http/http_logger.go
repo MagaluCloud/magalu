@@ -1,9 +1,7 @@
 package http
 
 import (
-	"bytes"
 	"encoding/json"
-	"errors"
 	"io"
 	"net/http"
 	"os"
@@ -106,24 +104,24 @@ func (t *ClientLogger) logRequest(log *zap.SugaredLogger, req *http.Request) {
 	log.Debugw("request", "headers", LogHttpHeaders(req.Header))
 }
 
-func (t *ClientLogger) logResponse(log *zap.SugaredLogger, req *http.Request, resp *http.Response, err error) {
-	if resp == nil {
-		if err == nil {
-			err = errors.New("Unknown Error")
-		}
-		log.Debugw("request error", "error", err)
-		return
-	}
-	log = log.With("headers", LogHttpHeaders(resp.Header))
-	respBody, _ := io.ReadAll(resp.Body)
-	if err != nil {
-		log.Debugw("response with error", "status", resp.Status, "error", err)
-	} else {
-		log.Debugw("response", "status", resp.Status, "body", string(respBody))
-	}
+// func (t *ClientLogger) logResponse(log *zap.SugaredLogger, req *http.Request, resp *http.Response, err error) {
+// 	if resp == nil {
+// 		if err == nil {
+// 			err = errors.New("Unknown Error")
+// 		}
+// 		log.Debugw("request error", "error", err)
+// 		return
+// 	}
+// 	log = log.With("headers", LogHttpHeaders(resp.Header))
+// 	respBody, _ := io.ReadAll(resp.Body)
+// 	if err != nil {
+// 		log.Debugw("response with error", "status", resp.Status, "error", err)
+// 	} else {
+// 		log.Debugw("response", "status", resp.Status, "body", string(respBody))
+// 	}
 
-	resp.Body = io.NopCloser(bytes.NewBuffer(respBody))
-}
+// 	resp.Body = io.NopCloser(bytes.NewBuffer(respBody))
+// }
 
 type LogRequest http.Request
 

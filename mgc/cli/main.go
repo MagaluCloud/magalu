@@ -17,8 +17,8 @@ func main() {
 	mgcSdk.SetUserAgent("MgcCLI")
 
 	go func() {
-        fmt.Println(http.ListenAndServe("localhost:6060", nil))
-    }()
+		fmt.Println(http.ListenAndServe("localhost:6060", nil))
+	}()
 
 	err := cmd.Execute()
 	if err != nil {
