@@ -78,17 +78,17 @@ func getOutputFormatter(name, options string) (formatter OutputFormatter, err er
 
 func getOutputFor(sdk *mgcSdk.Sdk, cmd *cobra.Command, result core.Result) string {
 	output := getOutputConfig(sdk)
-	if output == "" {
-		output = getOutputFlag(cmd)
+	if flagDefault := getOutputFlag(cmd); flagDefault != "" {
+		output = flagDefault
 	}
 
 	if output == "" {
 		if outputOptions, ok := core.ResultAs[core.ResultWithDefaultOutputOptions](result); ok {
-			return outputOptions.DefaultOutputOptions()
+			return "default=" + outputOptions.DefaultOutputOptions()
 		}
 	} else {
 		if outputOptions, ok := core.ResultAs[core.ResultWithDefaultOutputOptions](result); ok {
-			output = outputOptions.DefaultOutputOptions() + "," + output
+			output = outputOptions.DefaultOutputOptions() + ";default=" + output
 		}
 
 	}
