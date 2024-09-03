@@ -256,7 +256,8 @@ var defaultTransport *http.Transport
 func DefaultTransport() http.RoundTripper {
 	if defaultTransport == nil {
 		defaultTransport = (http.DefaultTransport).(*http.Transport)
-		defaultTransport.MaxIdleConns = 10
+		defaultTransport.MaxIdleConns = 1000   //500
+		defaultTransport.MaxConnsPerHost = 500 //200
 		defaultTransport.IdleConnTimeout = 30 * time.Second
 	}
 	return defaultTransport
