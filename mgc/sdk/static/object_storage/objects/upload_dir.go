@@ -92,7 +92,7 @@ func uploadDir(ctx context.Context, params uploadDirParams, cfg common.Config) (
 	progressReporter.Start()
 	defer progressReporter.End()
 
-	entries := pipeline.WalkDirEntries(ctx, basePath.String(), func(path string, d fs.DirEntry, err error) error {
+	entries := pipeline.WalkDirEntriesBound(ctx, basePath.String(), func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
 			return err
 		}
@@ -113,7 +113,7 @@ func uploadDir(ctx context.Context, params uploadDirParams, cfg common.Config) (
 		}
 
 		return nil
-	})
+	}, 8000)
 
 	entries = common.ApplyFilters(ctx, entries, params.FilterParams, cancel)
 	uploadObjectsErrorChan := pipeline.ParallelProcess(ctx, cfg.Workers, entries, createObjectUploadProcessor(cfg, params.Destination, basePath.String(), params.StorageClass, progressReporter), nil)
