@@ -3,7 +3,7 @@ package objects
 import (
 	"context"
 	"fmt"
-	"io/fs"
+	"os"
 	"path/filepath"
 	"strings"
 	syncer "sync"
@@ -64,7 +64,7 @@ func uploadDir(ctx context.Context, params uploadDirParams, cfg common.Config) (
 	progressReporter.Start()
 	defer progressReporter.End()
 
-	err = processCurrentAndSubfolders(ctx, cfg, params.Destination, params.StorageClass, basePath.String(), progressReporter)
+	err = processCurrentAndSubfolders(ctx, cfg, params.Destination, params.StorageClass, basePath.String(), params.Shallow, progressReporter)
 
 	if err != nil {
 		return &uploadDirResult{}, err
@@ -74,36 +74,6 @@ func uploadDir(ctx context.Context, params uploadDirParams, cfg common.Config) (
 		URI: params.Destination.String(),
 		Dir: basePath.String(),
 	}, nil
-}
-
-func walkFiles(ctx context.Context, root string, progressReporter *progress_report.UnitsReporter) (<-chan FileInfo, <-chan error) {
-	files := make(chan FileInfo)
-	errc := make(chan error, 1)
-
-	go func() {
-		defer close(files)
-		errc <- filepath.Walk(root, func(path string, info fs.FileInfo, err error) error {
-			if err != nil {
-				return err
-			}
-			if info.IsDir() {
-				fileCount, err := getFileCount(path)
-				if err != nil {
-					return err
-				}
-
-				progressReporter.Report(0, fileCount, err)
-				return nil
-			}
-			select {
-			case files <- FileInfo{path}:
-			case <-ctx.Done():
-				return ctx.Err()
-			}
-			return nil
-		})
-	}()
-	return files, errc
 }
 
 func processFile(ctx context.Context, cfg common.Config, destination mgcSchemaPkg.URI, basePath string, storageClass string, file FileInfo, progressReporter *progress_report.UnitsReporter) error {
@@ -145,10 +115,9 @@ func worker(ctx context.Context, cfg common.Config, destination mgcSchemaPkg.URI
 	}
 }
 
-func processCurrentAndSubfolders(ctx context.Context, cfg common.Config, destination mgcSchemaPkg.URI, storageClass string, path string, progressReporter *progress_report.UnitsReporter) error {
-	files, errc := walkFiles(ctx, path, progressReporter)
-
-	results := make(chan error)
+func processCurrentAndSubfolders(ctx context.Context, cfg common.Config, destination mgcSchemaPkg.URI, storageClass string, path string, shallow bool, progressReporter *progress_report.UnitsReporter) error {
+	files := make(chan FileInfo, cfg.Workers)
+	results := make(chan error, cfg.Workers)
 
 	var wg syncer.WaitGroup
 	wg.Add(cfg.Workers)
@@ -160,49 +129,61 @@ func processCurrentAndSubfolders(ctx context.Context, cfg common.Config, destina
 	}
 
 	go func() {
+		defer close(files)
+		err := walkDir(ctx, path, files, shallow, progressReporter)
+		if err != nil {
+			select {
+			case results <- err:
+			case <-ctx.Done():
+			}
+		}
+	}()
+
+	go func() {
 		wg.Wait()
 		close(results)
 	}()
 
-	for {
-		select {
-		case err, ok := <-results:
-			if !ok {
-				return nil
-			}
-			if err != nil {
-				return err
-			}
-		case err := <-errc:
-			if err != nil {
-				return err
-			}
-			return nil
-		case <-ctx.Done():
-			return ctx.Err()
-		}
-	}
-}
-
-func getFileCount(dirPath string) (count uint64, err error) {
-	i := 0
-	err = filepath.WalkDir(dirPath, func(path string, d fs.DirEntry, err error) error {
-		defer func() { i += 1 }()
+	for err := range results {
 		if err != nil {
 			return err
 		}
+	}
 
-		if i == 0 {
-			return nil
+	return nil
+}
+
+func walkDir(ctx context.Context, root string, files chan<- FileInfo, shallow bool, progressReporter *progress_report.UnitsReporter) error {
+	entries, err := os.ReadDir(root)
+	if err != nil {
+		return err
+	}
+
+	fileCount := uint64(0)
+	for _, entry := range entries {
+		if entry.IsDir() {
+			if !shallow {
+				subdir := filepath.Join(root, entry.Name())
+				if err := walkDir(ctx, subdir, files, shallow, progressReporter); err != nil {
+					return err
+				}
+			}
+		} else {
+			fileCount++
 		}
+	}
 
-		if d.IsDir() {
-			return fs.SkipDir
+	progressReporter.Report(0, fileCount, nil)
+
+	for _, entry := range entries {
+		if !entry.IsDir() {
+			select {
+			case files <- FileInfo{Path: filepath.Join(root, entry.Name())}:
+			case <-ctx.Done():
+				return ctx.Err()
+			}
 		}
+	}
 
-		count += 1
-		return nil
-	})
-
-	return
+	return nil
 }
