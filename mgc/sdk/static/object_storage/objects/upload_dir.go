@@ -140,7 +140,7 @@ func uploadDir(ctx context.Context, params uploadDirParams, cfg common.Config) (
 
 func getFileCount(dirPath string) (count uint64, err error) {
 	i := 0
-	err = filepath.WalkDir(dirPath, func(path string, d fs.DirEntry, err error) error {
+	err = utils.BoundWalkDir(dirPath, func(path string, d fs.DirEntry, err error) error {
 		defer func() { i += 1 }()
 		if err != nil {
 			return err
