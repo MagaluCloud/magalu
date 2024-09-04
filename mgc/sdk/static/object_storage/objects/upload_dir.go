@@ -116,25 +116,30 @@ func worker(ctx context.Context, cfg common.Config, destination mgcSchemaPkg.URI
 }
 
 func processCurrentAndSubfolders(ctx context.Context, cfg common.Config, destination mgcSchemaPkg.URI, storageClass string, path string, shallow bool, progressReporter *progress_report.UnitsReporter) error {
-	files := make(chan FileInfo, cfg.Workers)
+	files, err := walkDir(ctx, path, shallow, progressReporter)
+	if err != nil {
+		return err
+	}
+
 	results := make(chan error, cfg.Workers)
+	filesChan := make(chan FileInfo, cfg.Workers)
 
 	var wg syncer.WaitGroup
 	wg.Add(cfg.Workers)
 	for i := 0; i < cfg.Workers; i++ {
 		go func() {
 			defer wg.Done()
-			worker(ctx, cfg, destination, path, storageClass, files, results, progressReporter)
+			worker(ctx, cfg, destination, path, storageClass, filesChan, results, progressReporter)
 		}()
 	}
 
 	go func() {
-		defer close(files)
-		err := walkDir(ctx, path, files, shallow, progressReporter)
-		if err != nil {
+		defer close(filesChan)
+		for _, file := range files {
 			select {
-			case results <- err:
+			case filesChan <- file:
 			case <-ctx.Done():
+				return
 			}
 		}
 	}()
@@ -153,37 +158,43 @@ func processCurrentAndSubfolders(ctx context.Context, cfg common.Config, destina
 	return nil
 }
 
-func walkDir(ctx context.Context, root string, files chan<- FileInfo, shallow bool, progressReporter *progress_report.UnitsReporter) error {
-	entries, err := os.ReadDir(root)
-	if err != nil {
-		return err
+func walkDir(ctx context.Context, root string, shallow bool, progressReporter *progress_report.UnitsReporter) ([]FileInfo, error) {
+	var files []FileInfo
+	var fileCount uint64
+
+	var walkFn func(string) error
+	walkFn = func(dir string) error {
+		entries, err := os.ReadDir(dir)
+		if err != nil {
+			return err
+		}
+
+		for _, entry := range entries {
+			select {
+			case <-ctx.Done():
+				return ctx.Err()
+			default:
+			}
+
+			path := filepath.Join(dir, entry.Name())
+			if entry.IsDir() {
+				if !shallow {
+					if err := walkFn(path); err != nil {
+						return err
+					}
+				}
+			} else {
+				files = append(files, FileInfo{Path: path})
+				fileCount++
+			}
+		}
+		return nil
 	}
 
-	fileCount := uint64(0)
-	for _, entry := range entries {
-		if entry.IsDir() {
-			if !shallow {
-				subdir := filepath.Join(root, entry.Name())
-				if err := walkDir(ctx, subdir, files, shallow, progressReporter); err != nil {
-					return err
-				}
-			}
-		} else {
-			fileCount++
-		}
+	if err := walkFn(root); err != nil {
+		return nil, err
 	}
 
 	progressReporter.Report(0, fileCount, nil)
-
-	for _, entry := range entries {
-		if !entry.IsDir() {
-			select {
-			case files <- FileInfo{Path: filepath.Join(root, entry.Name())}:
-			case <-ctx.Done():
-				return ctx.Err()
-			}
-		}
-	}
-
-	return nil
+	return files, nil
 }
