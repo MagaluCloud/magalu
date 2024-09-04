@@ -90,12 +90,12 @@ func sync(ctx context.Context, params syncParams, cfg common.Config) (result cor
 		return nil, err
 	}
 
-	srcObjects := pipeline.WalkDirEntries(ctx, basePath.String(), func(path string, d fs.DirEntry, err error) error {
+	srcObjects := pipeline.WalkDirEntriesBound(ctx, basePath.String(), func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
 			return err
 		}
 		return nil
-	})
+	}, 8000)
 
 	progressReporter := progress_report.NewUnitsReporter(ctx, "Syncing Folder", 0)
 	progressReporter.Start()
