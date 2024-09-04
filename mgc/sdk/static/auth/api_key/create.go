@@ -25,6 +25,21 @@ type createParams struct {
 	ApiKeyExpiration  *string `json:"expiration,omitempty" jsonschema:"description=Date to expire new api,example=2024-11-07 (YYYY-MM-DD)" mgc:"positional"`
 }
 
+type ScopesFromIDMagalu []struct {
+	UUID        string `json:"uuid"`
+	Name        string `json:"name"`
+	Icon        string `json:"icon"`
+	APIProducts []struct {
+		UUID   string `json:"uuid"`
+		Name   string `json:"name"`
+		Icon   string `json:"icon"`
+		Scopes []struct {
+			UUID  string `json:"uuid"`
+			Title string `json:"title"`
+		} `json:"scopes"`
+	} `json:"api_products"`
+}
+
 //go:embed scopes.json
 var scopesFile []byte
 
@@ -55,11 +70,24 @@ func create(ctx context.Context, parameter createParams, _ struct{}) (*apiKeyRes
 		return nil, fmt.Errorf("programming error: unable to retrieve HTTP Client from context")
 	}
 
-	var scopesList map[string]string
+	var scopesListFile ScopesFromIDMagalu
 
-	err := json.Unmarshal(scopesFile, &scopesList)
+	err := json.Unmarshal(scopesFile, &scopesListFile)
 	if err != nil {
 		return nil, err
+	}
+
+	scopesList := make(map[string]string)
+
+	for _, v := range scopesListFile {
+		if v.UUID == "c5457157-4359-44d7-a0ed-188362c91013" {
+			for _, v2 := range v.APIProducts {
+				for _, v3 := range v2.Scopes {
+					scopeName := "[" + v2.Name + "] " + v3.Title
+					scopesList[scopeName] = v3.UUID
+				}
+			}
+		}
 	}
 
 	input := maps.Keys(scopesList)
