@@ -22,7 +22,7 @@ Usage:
 - Valid unit suffixes: ns, us, ms, s, m and h. Examples: 300ms, 1m30s
 - --debug                    Display detailed log information at the debug level
 - --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
-- -o, --output string            Change the output format. Use '--output=help' to know more details. (default "yaml")
+- -o, --output string            Change the output format. Use '--output=help' to know more details.
 - -r, --raw                      Output raw data, without any formatting or coloring
 - --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
 - --server-url uri           Manually specify the server to use

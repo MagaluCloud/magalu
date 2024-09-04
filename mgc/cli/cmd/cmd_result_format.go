@@ -175,6 +175,11 @@ func setOrMergeValue(result map[string]interface{}, key string, value interface{
 }
 
 func handleResultWithValue(result core.ResultWithValue, output string, cmd *cobra.Command) (err error) {
+	err = result.ValidateSchema()
+	if err != nil {
+		logValidationErr(err)
+	}
+
 	outputs := strings.Split(output, ";")
 	output = ""
 	var remove string
@@ -220,12 +225,8 @@ func handleResultWithValue(result core.ResultWithValue, output string, cmd *cobr
 	for _, path := range fieldsToRemove {
 		value = removeProperty(value, path)
 	}
-
-	value = keepProperties(value, allowedFields)
-
-	err = result.ValidateSchema()
-	if err != nil {
-		logValidationErr(err)
+	if len(allowedFields) > 0 {
+		value = keepProperties(value, allowedFields)
 	}
 
 	name, options := parseOutputFormatter(output)

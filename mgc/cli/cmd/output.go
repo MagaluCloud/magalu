@@ -24,7 +24,7 @@ func addOutputFlag(cmd *cobra.Command) {
 	cmd.Root().PersistentFlags().StringP(
 		outputFlag,
 		"o",
-		"yaml",
+		"",
 		`Change the output format. Use '--output=help' to know more details.`)
 }
 
@@ -77,8 +77,19 @@ func getOutputFormatter(name, options string) (formatter OutputFormatter, err er
 }
 
 func getOutputFor(sdk *mgcSdk.Sdk, cmd *cobra.Command, result core.Result) string {
-	output := getOutputConfig(sdk)
-	flagDefault := getOutputFlag(cmd)
+	hasOutputFromFlag := false
+	output := ""
+	if out := getOutputFlag(cmd); out != "" {
+		hasOutputFromFlag = true
+		output = out
+	}
+
+	if xoutput := getOutputConfig(sdk); output == "" && xoutput != "" {
+		output = xoutput
+	}
+	if output == "" {
+		output = "yaml"
+	}
 
 	if output == "" {
 		if outputOptions, ok := core.ResultAs[core.ResultWithDefaultOutputOptions](result); ok {
@@ -89,30 +100,20 @@ func getOutputFor(sdk *mgcSdk.Sdk, cmd *cobra.Command, result core.Result) strin
 			outputFromSpec := outputOptions.DefaultOutputOptions()
 			if !strings.Contains(outputFromSpec, "default=") {
 				//SPEC NAO CONTEM DEFAULT
-				if flagDefault != "" {
-					outputFromSpec = outputFromSpec + ";default=" + flagDefault
-				} else if output != "" {
-					outputFromSpec = outputFromSpec + ";default=" + output
+				if output != "" {
+					output = outputFromSpec + ";default=" + output
 				}
-				return outputFromSpec
 			} else {
-				//SPEC CONTEM DEFAULT, MAS TEM QUE SUBSTITUIR S
-				if flagDefault != "" {
+				if hasOutputFromFlag {
 					outs := strings.Split(outputFromSpec, ";")
-					for i, out := range outs {
-						if strings.HasPrefix(out, "default=") {
-							outs[i] = "default=" + flagDefault
-						}
-					}
-					output = strings.Join(outs, ";")
-				} else if output != "" {
-					outs := strings.Split(outputFromSpec, ";")
-					for i, out := range outs {
-						if strings.HasPrefix(out, "default=") {
+					for i, ot := range outs {
+						if strings.HasPrefix(ot, "default=") {
 							outs[i] = "default=" + output
 						}
 					}
 					output = strings.Join(outs, ";")
+				} else {
+					output = outputFromSpec
 				}
 			}
 		}
