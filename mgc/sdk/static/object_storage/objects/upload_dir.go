@@ -9,7 +9,6 @@ import (
 	syncer "sync"
 
 	"magalu.cloud/core"
-	"magalu.cloud/core/progress_report"
 	mgcSchemaPkg "magalu.cloud/core/schema"
 	"magalu.cloud/core/utils"
 	"magalu.cloud/sdk/static/object_storage/common"
@@ -26,10 +25,6 @@ type uploadDirParams struct {
 type uploadDirResult struct {
 	Dir string `json:"dir"`
 	URI string `json:"uri"`
-}
-
-type FileInfo struct {
-	Path string
 }
 
 var getUploadDir = utils.NewLazyLoader[core.Executor](func() core.Executor {
@@ -59,12 +54,7 @@ func uploadDir(ctx context.Context, params uploadDirParams, cfg common.Config) (
 		return nil, err
 	}
 
-	progressReportMsg := "Uploading directory: " + basePath.String()
-	progressReporter := progress_report.NewUnitsReporter(ctx, progressReportMsg, 0)
-	progressReporter.Start()
-	defer progressReporter.End()
-
-	err = processCurrentAndSubfolders(ctx, cfg, params.Destination, params.StorageClass, basePath.String(), params.Shallow, progressReporter)
+	err = processCurrentAndSubfolders(ctx, cfg, params.Destination, params.StorageClass, basePath.String(), params.Shallow)
 
 	if err != nil {
 		return &uploadDirResult{}, err
@@ -76,32 +66,31 @@ func uploadDir(ctx context.Context, params uploadDirParams, cfg common.Config) (
 	}, nil
 }
 
-func processFile(ctx context.Context, cfg common.Config, destination mgcSchemaPkg.URI, basePath string, storageClass string, file FileInfo, progressReporter *progress_report.UnitsReporter) error {
-	filePath := file.Path
-	dst := destination.JoinPath((strings.TrimPrefix(filePath, basePath)))
+func processFile(ctx context.Context, cfg common.Config, destination mgcSchemaPkg.URI, basePath string, storageClass string, file string) error {
+
+	dst := destination.JoinPath((strings.TrimPrefix(file, basePath)))
 
 	_, err := upload(
 		ctx,
-		uploadParams{Source: mgcSchemaPkg.FilePath(filePath), Destination: dst, StorageClass: storageClass},
+		uploadParams{Source: mgcSchemaPkg.FilePath(file), Destination: dst, StorageClass: storageClass},
 		cfg,
 	)
 
 	if err != nil {
 		err = &common.ObjectError{Url: mgcSchemaPkg.URI(dst), Err: err}
-		progressReporter.Report(1, 0, err)
 		return err
 	}
 	return nil
 }
 
-func worker(ctx context.Context, cfg common.Config, destination mgcSchemaPkg.URI, basePath string, storageClass string, files <-chan FileInfo, results chan<- error, progressReporter *progress_report.UnitsReporter) {
+func worker(ctx context.Context, cfg common.Config, destination mgcSchemaPkg.URI, basePath string, storageClass string, files <-chan string, results chan<- error) {
 	for {
 		select {
 		case file, ok := <-files:
 			if !ok {
 				return
 			}
-			err := processFile(ctx, cfg, destination, basePath, storageClass, file, progressReporter)
+			err := processFile(ctx, cfg, destination, basePath, storageClass, file)
 			if err != nil {
 				select {
 				case results <- err:
@@ -115,21 +104,21 @@ func worker(ctx context.Context, cfg common.Config, destination mgcSchemaPkg.URI
 	}
 }
 
-func processCurrentAndSubfolders(ctx context.Context, cfg common.Config, destination mgcSchemaPkg.URI, storageClass string, path string, shallow bool, progressReporter *progress_report.UnitsReporter) error {
-	files, err := walkDir(ctx, path, shallow, progressReporter)
+func processCurrentAndSubfolders(ctx context.Context, cfg common.Config, destination mgcSchemaPkg.URI, storageClass string, path string, shallow bool) error {
+	files, err := walkDir(ctx, path, shallow)
 	if err != nil {
 		return err
 	}
 
 	results := make(chan error, cfg.Workers)
-	filesChan := make(chan FileInfo, cfg.Workers)
+	filesChan := make(chan string, cfg.Workers)
 
 	var wg syncer.WaitGroup
 	wg.Add(cfg.Workers)
 	for i := 0; i < cfg.Workers; i++ {
 		go func() {
 			defer wg.Done()
-			worker(ctx, cfg, destination, path, storageClass, filesChan, results, progressReporter)
+			worker(ctx, cfg, destination, path, storageClass, filesChan, results)
 		}()
 	}
 
@@ -158,9 +147,8 @@ func processCurrentAndSubfolders(ctx context.Context, cfg common.Config, destina
 	return nil
 }
 
-func walkDir(ctx context.Context, root string, shallow bool, progressReporter *progress_report.UnitsReporter) ([]FileInfo, error) {
-	var files []FileInfo
-	var fileCount uint64
+func walkDir(ctx context.Context, root string, shallow bool) ([]string, error) {
+	var files []string
 
 	var walkFn func(string) error
 	walkFn = func(dir string) error {
@@ -184,8 +172,7 @@ func walkDir(ctx context.Context, root string, shallow bool, progressReporter *p
 					}
 				}
 			} else {
-				files = append(files, FileInfo{Path: path})
-				fileCount++
+				files = append(files, path)
 			}
 		}
 		return nil
@@ -194,7 +181,5 @@ func walkDir(ctx context.Context, root string, shallow bool, progressReporter *p
 	if err := walkFn(root); err != nil {
 		return nil, err
 	}
-
-	progressReporter.Report(0, fileCount, nil)
 	return files, nil
 }
