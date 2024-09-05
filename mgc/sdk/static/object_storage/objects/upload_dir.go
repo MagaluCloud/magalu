@@ -64,6 +64,7 @@ func uploadDir(ctx context.Context, params uploadDirParams, cfg common.Config) (
 	progressBar, _ := pterm.DefaultProgressbar.
 		WithTotal(totalFiles).
 		WithTitle("Uploading files").
+		WithRemoveWhenDone(true).
 		Start()
 
 	err = processCurrentAndSubfolders(ctx, cfg, params.Destination, params.StorageClass, basePath.String(), files, progressBar)

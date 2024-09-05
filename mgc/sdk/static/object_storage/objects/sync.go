@@ -95,6 +95,7 @@ func sync(ctx context.Context, params syncParams, cfg common.Config) (result cor
 	progressBar, _ := pterm.DefaultProgressbar.
 		WithTotal(totalFiles).
 		WithTitle("Syncing files").
+		WithRemoveWhenDone(true).
 		Start()
 
 	fillBucketFiles(ctx, params, cfg)
