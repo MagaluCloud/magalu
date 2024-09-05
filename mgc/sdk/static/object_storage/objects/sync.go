@@ -21,12 +21,6 @@ type UploadCounter struct {
 	v  uint64
 }
 
-type syncUploadPair struct {
-	Source      mgcSchemaPkg.URI
-	Destination mgcSchemaPkg.URI
-	Stats       fileSyncStats
-}
-
 type fileSyncStats struct {
 	SourceLength  int64
 	SourceModTime int64
