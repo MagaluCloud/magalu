@@ -182,7 +182,6 @@ func setMD5Checksum(req *http.Request) error {
 	h := md5.New()
 
 	_, err = io.Copy(h, body)
-	// defer body.Close()
 
 	if err != nil {
 		return err
