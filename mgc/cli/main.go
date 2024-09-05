@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"os"
 	"runtime"
-	"runtime/debug"
 	"strings"
 
 	"magalu.cloud/cli/cmd"
@@ -15,7 +14,6 @@ func main() {
 	defer panicRecover()
 	mgcSdk.SetUserAgent("MgcCLI")
 
-	debug.SetGCPercent(10)
 	err := cmd.Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error: %s\n", err)
