@@ -8,6 +8,7 @@ import (
 	"strings"
 	syncer "sync"
 
+	"github.com/pterm/pterm"
 	"magalu.cloud/core"
 	mgcSchemaPkg "magalu.cloud/core/schema"
 	"magalu.cloud/core/utils"
@@ -54,11 +55,24 @@ func uploadDir(ctx context.Context, params uploadDirParams, cfg common.Config) (
 		return nil, err
 	}
 
-	err = processCurrentAndSubfolders(ctx, cfg, params.Destination, params.StorageClass, basePath.String(), params.Shallow)
+	files, err := walkDir(ctx, basePath.String(), params.Shallow)
+	if err != nil {
+		return nil, err
+	}
+
+	totalFiles := len(files)
+	progressBar, _ := pterm.DefaultProgressbar.
+		WithTotal(totalFiles).
+		WithTitle("Uploading files").
+		Start()
+
+	err = processCurrentAndSubfolders(ctx, cfg, params.Destination, params.StorageClass, basePath.String(), files, progressBar)
 
 	if err != nil {
 		return &uploadDirResult{}, err
 	}
+
+	_, _ = progressBar.Stop()
 
 	return &uploadDirResult{
 		URI: params.Destination.String(),
@@ -66,8 +80,7 @@ func uploadDir(ctx context.Context, params uploadDirParams, cfg common.Config) (
 	}, nil
 }
 
-func processFile(ctx context.Context, cfg common.Config, destination mgcSchemaPkg.URI, basePath string, storageClass string, file string) error {
-
+func processFile(ctx context.Context, cfg common.Config, destination mgcSchemaPkg.URI, basePath string, storageClass string, file string, progressBar *pterm.ProgressbarPrinter) error {
 	dst := destination.JoinPath((strings.TrimPrefix(file, basePath)))
 
 	_, err := upload(
@@ -80,17 +93,19 @@ func processFile(ctx context.Context, cfg common.Config, destination mgcSchemaPk
 		err = &common.ObjectError{Url: mgcSchemaPkg.URI(dst), Err: err}
 		return err
 	}
+
+	progressBar.Increment()
 	return nil
 }
 
-func worker(ctx context.Context, cfg common.Config, destination mgcSchemaPkg.URI, basePath string, storageClass string, files <-chan string, results chan<- error) {
+func worker(ctx context.Context, cfg common.Config, destination mgcSchemaPkg.URI, basePath string, storageClass string, files <-chan string, results chan<- error, progressBar *pterm.ProgressbarPrinter) {
 	for {
 		select {
 		case file, ok := <-files:
 			if !ok {
 				return
 			}
-			err := processFile(ctx, cfg, destination, basePath, storageClass, file)
+			err := processFile(ctx, cfg, destination, basePath, storageClass, file, progressBar)
 			if err != nil {
 				select {
 				case results <- err:
@@ -104,12 +119,7 @@ func worker(ctx context.Context, cfg common.Config, destination mgcSchemaPkg.URI
 	}
 }
 
-func processCurrentAndSubfolders(ctx context.Context, cfg common.Config, destination mgcSchemaPkg.URI, storageClass string, path string, shallow bool) error {
-	files, err := walkDir(ctx, path, shallow)
-	if err != nil {
-		return err
-	}
-
+func processCurrentAndSubfolders(ctx context.Context, cfg common.Config, destination mgcSchemaPkg.URI, storageClass string, path string, files []string, progressBar *pterm.ProgressbarPrinter) error {
 	results := make(chan error, cfg.Workers)
 	filesChan := make(chan string, cfg.Workers)
 
@@ -118,7 +128,7 @@ func processCurrentAndSubfolders(ctx context.Context, cfg common.Config, destina
 	for i := 0; i < cfg.Workers; i++ {
 		go func() {
 			defer wg.Done()
-			worker(ctx, cfg, destination, path, storageClass, filesChan, results)
+			worker(ctx, cfg, destination, path, storageClass, filesChan, results, progressBar)
 		}()
 	}
 

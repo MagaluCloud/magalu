@@ -3,15 +3,14 @@ package objects
 import (
 	"context"
 	"fmt"
-	"io/fs"
 	"os"
 	"strings"
 	sy "sync"
 	"time"
 
+	"github.com/pterm/pterm"
 	"magalu.cloud/core"
 	"magalu.cloud/core/pipeline"
-	"magalu.cloud/core/progress_report"
 	mgcSchemaPkg "magalu.cloud/core/schema"
 	"magalu.cloud/core/utils"
 	"magalu.cloud/sdk/static/object_storage/common"
@@ -89,34 +88,30 @@ func sync(ctx context.Context, params syncParams, cfg common.Config) (result cor
 		return nil, err
 	}
 
-	srcObjects := pipeline.WalkDirEntries(ctx, basePath.String(), func(path string, d fs.DirEntry, err error) error {
-		if err != nil {
-			return err
-		}
-		return nil
-	})
-
-	progressReporter := progress_report.NewUnitsReporter(ctx, "Syncing Folder", 0)
-	progressReporter.Start()
-
-	defer progressReporter.End()
-
-	fillBucketFiles(ctx, params, cfg)
-
 	if f, _ := os.Stat(basePath.String()); !f.IsDir() {
 		return nil, fmt.Errorf("local path must be a folder")
 	}
 
-	uploadChannel := pipeline.Process(ctx, srcObjects, createObjectSyncFilePairProcessor(cfg, params.Local, params.Bucket, progressReporter, basePath), nil)
-	uploadObjectsErrorChan := pipeline.ParallelProcess(ctx, cfg.Workers, uploadChannel, createSyncObjectProcessor(cfg, progressReporter), nil)
-	objErr, err := pipeline.SliceItemConsumer[utils.MultiError](ctx, uploadObjectsErrorChan)
-
-	for _, er := range objErr {
-		if er != nil {
-			progressReporter.Report(0, 0, er)
-			return nil, objErr
-		}
+	files, err := walkDir(ctx, basePath.String(), false)
+	if err != nil {
+		return nil, err
 	}
+
+	totalFiles := len(files)
+	progressBar, _ := pterm.DefaultProgressbar.
+		WithTotal(totalFiles).
+		WithTitle("Syncing files").
+		Start()
+
+	fillBucketFiles(ctx, params, cfg)
+
+	err = processSyncFiles(ctx, cfg, params.Local, params.Bucket, basePath.String(), files, progressBar)
+
+	if err != nil {
+		return nil, err
+	}
+
+	_, _ = progressBar.Stop()
 
 	deletedFiles := make([]string, 0, len(allBucketFiles))
 
@@ -182,85 +177,6 @@ func fillBucketFiles(ctx context.Context, params syncParams, cfg common.Config) 
 	}
 }
 
-func createObjectSyncFilePairProcessor(
-	cfg common.Config,
-	source mgcSchemaPkg.URI,
-	destination mgcSchemaPkg.URI,
-	progressReporter *progress_report.UnitsReporter,
-	basePath mgcSchemaPkg.URI,
-) pipeline.Processor[pipeline.WalkDirEntry, syncUploadPair] {
-	return func(ctx context.Context, entry pipeline.WalkDirEntry) (syncUploadPair, pipeline.ProcessStatus) {
-		if err := entry.Err(); err != nil {
-			return syncUploadPair{}, pipeline.ProcessSkip
-		}
-		if entry.DirEntry().IsDir() {
-			return syncUploadPair{}, pipeline.ProcessSkip
-		}
-		normalizedSource, err := common.GetAbsSystemURI(mgcSchemaPkg.URI(entry.Path()))
-		if err != nil {
-			logger().Debugw("error with path", "error", err)
-			return syncUploadPair{}, pipeline.ProcessSkip
-		}
-
-		pathWithFolder := strings.TrimPrefix(entry.Path(), basePath.String())
-		normalizedDestination := destination.JoinPath(pathWithFolder)
-
-		info, err := entry.DirEntry().Info()
-		if err != nil {
-			return syncUploadPair{}, pipeline.ProcessAbort
-		}
-
-		progressReporter.Report(0, 1, nil)
-
-		if allBucketFiles[pathWithFolder] {
-			delete(allBucketFiles, pathWithFolder)
-		}
-
-		return syncUploadPair{
-			Source:      normalizedSource,
-			Destination: normalizedDestination,
-			Stats: fileSyncStats{
-				SourceLength:  info.Size(),
-				SourceModTime: info.ModTime().Unix(),
-			},
-		}, pipeline.ProcessOutput
-	}
-}
-
-func createSyncObjectProcessor(
-	cfg common.Config,
-	progressReporter *progress_report.UnitsReporter,
-) pipeline.Processor[syncUploadPair, error] {
-	return func(ctx context.Context, entry syncUploadPair) (error, pipeline.ProcessStatus) {
-		var err error
-		defer func(cause error) {
-			progressReporter.Report(1, 0, err)
-		}(err)
-
-		logger().Debug("%s %s\n", entry.Source, entry.Destination)
-
-		fileStats, err := getFileStats(ctx, entry.Destination, cfg)
-		if err != nil {
-			logger().Debugw("error getting file stats", "error", err)
-		}
-
-		isSameSize := entry.Stats.SourceLength == fileStats.SourceLength
-		isLocalOlderThenBucket := entry.Stats.SourceModTime < fileStats.SourceModTime
-		if err == nil && isSameSize && isLocalOlderThenBucket {
-			logger().Debug("Skipping file [%s] - no change", entry.Source)
-			return nil, pipeline.ProcessSkip
-		}
-
-		err = uploadFile(ctx, entry.Source, entry.Destination, cfg)
-		if err != nil {
-			return &common.ObjectError{Url: mgcSchemaPkg.URI(entry.Source.Path()), Err: err}, pipeline.ProcessOutput
-		}
-
-		uploadFiles.Increment()
-		return nil, pipeline.ProcessOutput
-	}
-}
-
 func getFileStats(ctx context.Context, destination mgcSchemaPkg.URI, cfg common.Config) (fileSyncStats, error) {
 	dstHead, err := headObject(ctx, headObjectParams{
 		Destination: destination,
@@ -301,4 +217,105 @@ func (c *UploadCounter) Increment() {
 
 func (c *UploadCounter) Value() uint64 {
 	return c.v
+}
+
+func processSyncFiles(ctx context.Context, cfg common.Config, source, destination mgcSchemaPkg.URI, basePath string, files []string, progressBar *pterm.ProgressbarPrinter) error {
+	results := make(chan error, cfg.Workers)
+	filesChan := make(chan string, cfg.Workers)
+
+	var wg sy.WaitGroup
+	wg.Add(cfg.Workers)
+	for i := 0; i < cfg.Workers; i++ {
+		go func() {
+			defer wg.Done()
+			syncWorker(ctx, cfg, source, destination, basePath, filesChan, results, progressBar)
+		}()
+	}
+
+	go func() {
+		defer close(filesChan)
+		for _, file := range files {
+			select {
+			case filesChan <- file:
+			case <-ctx.Done():
+				return
+			}
+		}
+	}()
+
+	go func() {
+		wg.Wait()
+		close(results)
+	}()
+
+	for err := range results {
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+func syncWorker(ctx context.Context, cfg common.Config, source, destination mgcSchemaPkg.URI, basePath string, files <-chan string, results chan<- error, progressBar *pterm.ProgressbarPrinter) {
+	for {
+		select {
+		case file, ok := <-files:
+			if !ok {
+				return
+			}
+			err := processSyncFile(ctx, cfg, source, destination, basePath, file, progressBar)
+			if err != nil {
+				select {
+				case results <- err:
+				case <-ctx.Done():
+					return
+				}
+			}
+		case <-ctx.Done():
+			return
+		}
+	}
+}
+
+func processSyncFile(ctx context.Context, cfg common.Config, source, destination mgcSchemaPkg.URI, basePath, file string, progressBar *pterm.ProgressbarPrinter) error {
+	normalizedSource, err := common.GetAbsSystemURI(mgcSchemaPkg.URI(file))
+	if err != nil {
+		logger().Debugw("error with path", "error", err)
+		return nil
+	}
+
+	pathWithFolder := strings.TrimPrefix(file, basePath)
+	normalizedDestination := destination.JoinPath(pathWithFolder)
+
+	info, err := os.Stat(file)
+	if err != nil {
+		return err
+	}
+
+	if allBucketFiles[pathWithFolder] {
+		delete(allBucketFiles, pathWithFolder)
+	}
+
+	fileStats, err := getFileStats(ctx, normalizedDestination, cfg)
+	if err != nil {
+		logger().Debugw("error getting file stats", "error", err)
+	}
+
+	isSameSize := info.Size() == fileStats.SourceLength
+	isLocalOlderThenBucket := info.ModTime().Unix() < fileStats.SourceModTime
+	if err == nil && isSameSize && isLocalOlderThenBucket {
+		logger().Debug("Skipping file [%s] - no change", normalizedSource)
+		progressBar.Increment()
+		return nil
+	}
+
+	err = uploadFile(ctx, normalizedSource, normalizedDestination, cfg)
+	if err != nil {
+		return &common.ObjectError{Url: mgcSchemaPkg.URI(normalizedSource.Path()), Err: err}
+	}
+
+	uploadFiles.Increment()
+	progressBar.Increment()
+	return nil
 }

@@ -2,8 +2,6 @@ package main
 
 import (
 	"fmt"
-	"net/http"
-	_ "net/http/pprof"
 	"os"
 	"runtime"
 	"runtime/debug"
@@ -16,10 +14,6 @@ import (
 func main() {
 	defer panicRecover()
 	mgcSdk.SetUserAgent("MgcCLI")
-
-	go func() {
-		http.ListenAndServe("localhost:6060", nil)
-	}()
 
 	debug.SetGCPercent(10)
 	err := cmd.Execute()
