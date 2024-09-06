@@ -13,6 +13,7 @@ import (
 	"magalu.cloud/core/pipeline"
 	mgcSchemaPkg "magalu.cloud/core/schema"
 	"magalu.cloud/core/utils"
+	"magalu.cloud/sdk/openapi"
 	"magalu.cloud/sdk/static/object_storage/common"
 )
 
@@ -92,11 +93,14 @@ func sync(ctx context.Context, params syncParams, cfg common.Config) (result cor
 	}
 
 	totalFiles := len(files)
-	progressBar, _ := pterm.DefaultProgressbar.
+	progressBar := pterm.DefaultProgressbar.
 		WithTotal(totalFiles).
 		WithTitle("Syncing files").
-		WithRemoveWhenDone(true).
-		Start()
+		WithRemoveWhenDone(true)
+
+	if !openapi.GetRawOutputFlag(ctx) {
+		progressBar, _ = progressBar.Start()
+	}
 
 	fillBucketFiles(ctx, params, cfg)
 

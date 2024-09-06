@@ -12,6 +12,7 @@ import (
 	"magalu.cloud/core"
 	mgcSchemaPkg "magalu.cloud/core/schema"
 	"magalu.cloud/core/utils"
+	"magalu.cloud/sdk/openapi"
 	"magalu.cloud/sdk/static/object_storage/common"
 )
 
@@ -61,11 +62,14 @@ func uploadDir(ctx context.Context, params uploadDirParams, cfg common.Config) (
 	}
 
 	totalFiles := len(files)
-	progressBar, _ := pterm.DefaultProgressbar.
+	progressBar := pterm.DefaultProgressbar.
 		WithTotal(totalFiles).
 		WithTitle("Uploading files").
-		WithRemoveWhenDone(true).
-		Start()
+		WithRemoveWhenDone(true)
+
+	if !openapi.GetRawOutputFlag(ctx) {
+		progressBar, _ = progressBar.Start()
+	}
 
 	err = processCurrentAndSubfolders(ctx, cfg, params.Destination, params.StorageClass, basePath.String(), files, progressBar)
 
