@@ -1,26 +1,21 @@
-# Bucket operations for Object Storage API
+# Label-related commands
 
 ## Usage:
 ```bash
 Usage:
-  ./mgc object-storage buckets [flags]
-  ./mgc object-storage buckets [command]
+  ./mgc object-storage buckets label [flags]
+  ./mgc object-storage buckets label [command]
 ```
 
 ## Product catalog:
 - Commands:
-- acl         ACL-related commands
-- create      Create a new Bucket
-- delete      Delete an existing Bucket
-- label       Label-related commands
-- list        List all existing Buckets
-- policy      Policy-related commands
-- public-url  Get bucket public url
-- versioning  Manage bucket versioning
+- delete      Delete labels for the specified bucket
+- get         Get labels for the specified bucket
+- set         Set labels for the specified bucket
 
 ## Other commands:
 - Flags:
-- -h, --help   help for buckets
+- -h, --help   help for label
 
 ## Flags:
 ```bash
@@ -33,7 +28,7 @@ Global Flags:
                                  Valid unit suffixes: ns, us, ms, s, m and h. Examples: 300ms, 1m30s
       --debug                    Display detailed log information at the debug level
       --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
-  -o, --output string            Change the output format. Use '--output=help' to know more details.
+  -o, --output string            Change the output format. Use '--output=help' to know more details. (default "yaml")
   -r, --raw                      Output raw data, without any formatting or coloring
 ```
 
