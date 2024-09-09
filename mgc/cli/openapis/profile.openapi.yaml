@@ -2,6 +2,10 @@ openapi: 3.0.3
 info:
     title: Global resources management
     description: Manage users global data
+    contact:
+        name: Tribo IAAS Cloud
+        url: https://gitlab.luizalabs.com/
+        email: leandro.poloni@luizalabs.com
     version: 0.1.0
 paths:
     /v0/ssh-keys:
@@ -31,11 +35,9 @@ paths:
                 in: query
                 required: false
                 schema:
-                    anyOf:
-                    -   type: string
+                    type: string
                     title: ' Sort'
-                    nullable: true
-                    default: id:asc
+                    default: ''
             responses:
                 '200':
                     description: Successful Response
@@ -154,33 +156,6 @@ paths:
             security:
             -   OAuth2:
                 - gdb:ssh-pkey-w
-    /healthcheck:
-        get:
-            summary: Healthcheck
-            operationId: healthcheck_healthcheck_get
-            responses:
-                '200':
-                    description: Successful Response
-                    content:
-                        application/json:
-                            schema: {}
-            security:
-            -   OAuth2:
-                - profile.read
-    /metrics:
-        get:
-            summary: Metrics
-            description: Endpoint that serves Prometheus metrics.
-            operationId: metrics_metrics_get
-            responses:
-                '200':
-                    description: Successful Response
-                    content:
-                        application/json:
-                            schema: {}
-            security:
-            -   OAuth2:
-                - profile.read
 components:
     schemas:
         HTTPValidationError:

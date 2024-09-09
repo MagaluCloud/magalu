@@ -60,6 +60,11 @@ func collectOperations(
 				continue
 			}
 
+			tagExtended := getNameExtension(extensionPrefix, tag.Extensions, "")
+			if reTag := slices.Contains(op.Tags, tagExtended); reTag {
+				tag.Name = tagExtended
+			}
+
 			if !slices.Contains(op.Tags, tag.Name) {
 				continue
 			}

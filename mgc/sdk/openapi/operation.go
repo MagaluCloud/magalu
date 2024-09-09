@@ -63,6 +63,7 @@ func newOperation(
 	refResolver *core.BoundRefPathResolver,
 ) *operation {
 	logger = logger.Named(name)
+
 	op := &operation{
 		SimpleDescriptor: core.SimpleDescriptor{Spec: core.DescriptorSpec{
 			Name:        name,

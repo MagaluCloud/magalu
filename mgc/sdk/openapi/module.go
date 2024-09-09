@@ -118,7 +118,20 @@ func newModule(
 					boundRefResolver,
 				)
 
-				resources = append(resources, resource)
+				// Verifica se o recurso já existe em resources
+				resourceExists := false
+				for _, existingResource := range resources {
+					if existingResource.Name() == resource.Name() {
+						resourceExists = true
+						break
+					}
+				}
+
+				// Se o recurso não existir, adiciona-o à lista
+				if !resourceExists {
+					resources = append(resources, resource)
+				}
+
 			}
 
 			return resources, nil

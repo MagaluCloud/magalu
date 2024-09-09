@@ -780,6 +780,18 @@
               "pattern": "^(^[\\w-]+:(asc|desc)(,[\\w-]+:(asc|desc))*)?$",
               "default": "platform:asc,end_life_at:desc"
             }
+          },
+          {
+            "name": "_labels",
+            "in": "query",
+            "description": "label-1, label2, label 3",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": " Labels",
+              "description": "label-1, label2, label 3",
+              "default": ""
+            }
           }
         ],
         "responses": {
@@ -861,7 +873,7 @@
           {
             "name": "expand",
             "in": "query",
-            "description": "You can get more detailed info about: ['image', 'machine-type', 'machine-types', 'network'] ",
+            "description": "You can get more detailed info about: ['image', 'machine-type', 'machine-types', 'network', 'labels'] ",
             "required": false,
             "schema": {
               "type": "array",
@@ -869,7 +881,7 @@
                 "type": "string"
               },
               "title": "Expand",
-              "description": "You can get more detailed info about: ['image', 'machine-type', 'machine-types', 'network'] ",
+              "description": "You can get more detailed info about: ['image', 'machine-type', 'machine-types', 'network', 'labels'] ",
               "default": []
             }
           },
@@ -1292,7 +1304,7 @@
           {
             "name": "expand",
             "in": "query",
-            "description": "You can get more detailed info about: ['image', 'machine-type', 'machine-types', 'network'] ",
+            "description": "You can get more detailed info about: ['image', 'machine-type', 'machine-types', 'network', 'labels'] ",
             "required": false,
             "schema": {
               "type": "array",
@@ -1300,7 +1312,7 @@
                 "type": "string"
               },
               "title": "Expand",
-              "description": "You can get more detailed info about: ['image', 'machine-type', 'machine-types', 'network'] ",
+              "description": "You can get more detailed info about: ['image', 'machine-type', 'machine-types', 'network', 'labels'] ",
               "default": []
             }
           },
@@ -3107,6 +3119,20 @@
           },
           "minimum_requirements": {
             "$ref": "#/components/schemas/ImageReqMin"
+          },
+          "labels": {
+            "anyOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Labels"
           }
         },
         "title": "ImageResponseExternalV1",
@@ -3120,6 +3146,11 @@
           "end_life_at": "2022-06-10T18:33:12Z",
           "end_standard_support_at": "2022-06-10T18:33:12Z",
           "id": "c47e974f-8002-46e9-8a63-d66505be2aa1",
+          "labels": [
+            "label-1",
+            "label 2",
+            "label3"
+          ],
           "minimum_requirements": {
             "disk": 2,
             "ram": 1,
@@ -3875,6 +3906,20 @@
             ],
             "title": "Network"
           },
+          "labels": {
+            "anyOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Labels"
+          },
           "error": {
             "anyOf": [
               {
@@ -3906,6 +3951,10 @@
           "image": {
             "id": "2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6"
           },
+          "labels": [
+            "label1",
+            "label2"
+          ],
           "machine_type": {
             "id": "2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6"
           },
@@ -4084,6 +4133,11 @@
               "end_life_at": "2022-06-10T18:33:12Z",
               "end_standard_support_at": "2022-06-10T18:33:12Z",
               "id": "c47e974f-8002-46e9-8a63-d66505be2aa1",
+              "labels": [
+                "label-1",
+                "label 2",
+                "label3"
+              ],
               "minimum_requirements": {
                 "disk": 2,
                 "ram": 1,
@@ -4126,6 +4180,10 @@
               "image": {
                 "id": "2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6"
               },
+              "labels": [
+                "label1",
+                "label2"
+              ],
               "machine_type": {
                 "id": "2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6"
               },

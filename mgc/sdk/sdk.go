@@ -153,7 +153,7 @@ func (o *Sdk) Group() core.Grouper {
 				return []core.Grouper{
 					static.GetGroup(),
 					o.newOpenApiSource(),
-					o.newBlueprintSource(o.RefResolver()),
+					// o.newBlueprintSource(o.RefResolver()),
 				}
 			},
 		)

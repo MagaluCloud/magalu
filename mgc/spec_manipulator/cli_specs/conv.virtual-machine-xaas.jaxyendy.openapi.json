@@ -3,7 +3,7 @@
   "info": {
     "title": "Internal Virtual Machine Api Product",
     "description": "Virtual Machine Api Product",
-    "version": "1.267.1"
+    "version": "1.274.0"
   },
   "paths": {
     "/v1/health": {
@@ -555,6 +555,18 @@
               "title": "Deleted",
               "default": true
             }
+          },
+          {
+            "name": "_labels",
+            "in": "query",
+            "description": "label-1, label2, label 3",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": " Labels",
+              "description": "label-1, label2, label 3",
+              "default": ""
+            }
           }
         ],
         "responses": {
@@ -916,6 +928,67 @@
       }
     },
     "/v1/internal/instances": {
+      "get": {
+        "tags": [
+          "instances"
+        ],
+        "summary": "List Instances By Status And State Filter",
+        "description": "Internal list all instance with optional status and state filter.\n\n### Note\nThis route is used only for internal proposes.",
+        "operationId": "list_instances_by_status_and_state_filter_v1_internal_instances_get",
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/InstanceV1Status"
+                }
+              ],
+              "title": "Status",
+              "nullable": true
+            }
+          },
+          {
+            "name": "state",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/InstanceV1State"
+                }
+              ],
+              "title": "State",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListSimpleInstanceResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": false
+      },
       "delete": {
         "tags": [
           "instances"
@@ -1810,6 +1883,18 @@
               "pattern": "^(^[\\w-]+:(asc|desc)(,[\\w-]+:(asc|desc))*)?$",
               "description": "order of the results using informed fields",
               "default": "created_at:asc"
+            }
+          },
+          {
+            "name": "_internal",
+            "in": "query",
+            "description": "If will return the internal flavors",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "title": " Internal",
+              "description": "If will return the internal flavors",
+              "default": true
             }
           }
         ],
@@ -3501,6 +3586,18 @@
               "ram",
               "disk"
             ]
+          },
+          "labels": {
+            "anyOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            ],
+            "title": "Labels",
+            "nullable": true
           }
         },
         "title": "ImageResponseExternalV1",
@@ -3514,6 +3611,11 @@
           "end_life_at": "2022-06-10T18:33:12Z",
           "end_standard_support_at": "2022-06-10T18:33:12Z",
           "id": "c47e974f-8002-46e9-8a63-d66505be2aa1",
+          "labels": [
+            "label-1",
+            "label 2",
+            "label3"
+          ],
           "minimum_requirements": {
             "disk": 2,
             "ram": 1,
@@ -3635,6 +3737,18 @@
             ],
             "title": "Builded At",
             "nullable": true
+          },
+          "labels": {
+            "anyOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            ],
+            "title": "Labels",
+            "nullable": true
           }
         },
         "title": "ImageResponseInternalV1",
@@ -3656,6 +3770,11 @@
           "id": "847ceef4-ff96-4762-895d-5e94e410ddeb",
           "image_id": "65717bcc-6328-433d-b802-9f9b63e28154",
           "internal": true,
+          "labels": [
+            "label-1",
+            "label 2",
+            "label3"
+          ],
           "min_disk": 2,
           "min_ram": 1,
           "min_vcpu": 1,
@@ -3982,6 +4101,18 @@
               }
             ],
             "title": "Used to perform automated configuration tasks.",
+            "nullable": true
+          },
+          "labels": {
+            "anyOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            ],
+            "title": "Labels",
             "nullable": true
           }
         },
@@ -4430,6 +4561,15 @@
                 "internal": {
                   "type": "boolean",
                   "title": "Internal"
+                },
+                "urp_id": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    }
+                  ],
+                  "title": "Urp Id",
+                  "nullable": true
                 }
               },
               "title": "InstanceTypesV1InternalResponse",
@@ -4452,6 +4592,7 @@
                 "ram": 2,
                 "sku": "some_sku",
                 "status": "active",
+                "urp_id": "780dad7d-a672-4faf-b60d-b394c5860cf8",
                 "vcpus": 2
               }
             },
@@ -4516,6 +4657,15 @@
           "internal": {
             "type": "boolean",
             "title": "Internal"
+          },
+          "urp_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Urp Id",
+            "nullable": true
           }
         },
         "title": "InstanceTypesV1InternalResponse",
@@ -4538,6 +4688,7 @@
           "ram": 2,
           "sku": "some_sku",
           "status": "active",
+          "urp_id": "780dad7d-a672-4faf-b60d-b394c5860cf8",
           "vcpus": 2
         }
       },
@@ -5044,6 +5195,18 @@
             "title": "Network",
             "nullable": true
           },
+          "labels": {
+            "anyOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            ],
+            "title": "Labels",
+            "nullable": true
+          },
           "error": {
             "anyOf": [
               {
@@ -5073,6 +5236,10 @@
           "image": {
             "id": "2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6"
           },
+          "labels": [
+            "label1",
+            "label2"
+          ],
           "machine_type": {
             "id": "2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6"
           },
@@ -5548,6 +5715,18 @@
                     "ram",
                     "disk"
                   ]
+                },
+                "labels": {
+                  "anyOf": [
+                    {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  ],
+                  "title": "Labels",
+                  "nullable": true
                 }
               },
               "title": "ImageResponseExternalV1",
@@ -5561,6 +5740,11 @@
                 "end_life_at": "2022-06-10T18:33:12Z",
                 "end_standard_support_at": "2022-06-10T18:33:12Z",
                 "id": "c47e974f-8002-46e9-8a63-d66505be2aa1",
+                "labels": [
+                  "label-1",
+                  "label 2",
+                  "label3"
+                ],
                 "minimum_requirements": {
                   "disk": 2,
                   "ram": 1,
@@ -5586,6 +5770,11 @@
               "end_life_at": "2022-06-10T18:33:12Z",
               "end_standard_support_at": "2022-06-10T18:33:12Z",
               "id": "c47e974f-8002-46e9-8a63-d66505be2aa1",
+              "labels": [
+                "label-1",
+                "label 2",
+                "label3"
+              ],
               "minimum_requirements": {
                 "disk": 2,
                 "ram": 1,
@@ -5714,6 +5903,18 @@
                   ],
                   "title": "Builded At",
                   "nullable": true
+                },
+                "labels": {
+                  "anyOf": [
+                    {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  ],
+                  "title": "Labels",
+                  "nullable": true
                 }
               },
               "title": "ImageResponseInternalV1",
@@ -5735,6 +5936,11 @@
                 "id": "847ceef4-ff96-4762-895d-5e94e410ddeb",
                 "image_id": "65717bcc-6328-433d-b802-9f9b63e28154",
                 "internal": true,
+                "labels": [
+                  "label-1",
+                  "label 2",
+                  "label3"
+                ],
                 "min_disk": 2,
                 "min_ram": 1,
                 "min_vcpu": 1,
@@ -5761,6 +5967,11 @@
               "id": "847ceef4-ff96-4762-895d-5e94e410ddeb",
               "image_id": "65717bcc-6328-433d-b802-9f9b63e28154",
               "internal": true,
+              "labels": [
+                "label-1",
+                "label 2",
+                "label3"
+              ],
               "min_disk": 2,
               "min_ram": 1,
               "min_vcpu": 1,
@@ -5922,6 +6133,18 @@
                   "title": "Network",
                   "nullable": true
                 },
+                "labels": {
+                  "anyOf": [
+                    {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  ],
+                  "title": "Labels",
+                  "nullable": true
+                },
                 "error": {
                   "anyOf": [
                     {
@@ -5951,6 +6174,10 @@
                 "image": {
                   "id": "2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6"
                 },
+                "labels": [
+                  "label1",
+                  "label2"
+                ],
                 "machine_type": {
                   "id": "2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6"
                 },
@@ -5989,6 +6216,10 @@
               "image": {
                 "id": "2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6"
               },
+              "labels": [
+                "label1",
+                "label2"
+              ],
               "machine_type": {
                 "id": "2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6"
               },
@@ -6005,6 +6236,88 @@
               "status": "completed",
               "updated_at": "2022-06-11T18:33:12Z",
               "user_data": "base64_data"
+            }
+          ]
+        }
+      },
+      "ListSimpleInstanceResponse": {
+        "type": "object",
+        "properties": {
+          "instances": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "state": {
+                  "type": "string",
+                  "title": "State"
+                },
+                "status": {
+                  "type": "string",
+                  "title": "Status"
+                },
+                "id": {
+                  "type": "string",
+                  "title": "Id"
+                },
+                "urp_id": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    }
+                  ],
+                  "title": "Urp Id",
+                  "nullable": true
+                },
+                "tenant_id": {
+                  "type": "string",
+                  "title": "Tenant Id"
+                },
+                "project_type": {
+                  "type": "string",
+                  "title": "Project Type"
+                }
+              },
+              "title": "SimpleInstanceResponse",
+              "required": [
+                "state",
+                "status",
+                "id",
+                "tenant_id",
+                "project_type"
+              ],
+              "example": {
+                "id": "bcccde01-fe02-4582-bc5f-54016821c311",
+                "project_type": "default",
+                "state": "running",
+                "status": "completed",
+                "tenant_id": "684ad4df-7d6a-4ba5-97f3-d09503c358da",
+                "urp_id": "893a55f3-3e4f-46a9-b0ac-63f8eece6071"
+              }
+            },
+            "title": "Instances"
+          }
+        },
+        "title": "ListSimpleInstanceResponse",
+        "required": [
+          "instances"
+        ],
+        "example": {
+          "instances": [
+            {
+              "id": "f9985c7e-1524-4621-803b-4ba108aa2880",
+              "project_type": "default",
+              "state": "running",
+              "status": "completed",
+              "tenant_id": "a8aafc59-ac4e-4576-8ff5-5217c44998ae",
+              "urp_id": "628d8474-5e84-4647-ab4d-47de53c1354b"
+            },
+            {
+              "id": "65595bc3-7bb9-457b-8e4c-72c1e704f482",
+              "project_type": "default",
+              "state": "new",
+              "status": "creating_error",
+              "tenant_id": "2a838425-e179-4df0-916a-2ea9d707969e"
             }
           ]
         }
@@ -6515,6 +6828,56 @@
           }
         },
         "title": "SecurityGroups"
+      },
+      "SimpleInstanceResponse": {
+        "type": "object",
+        "properties": {
+          "state": {
+            "type": "string",
+            "title": "State"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "urp_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Urp Id",
+            "nullable": true
+          },
+          "tenant_id": {
+            "type": "string",
+            "title": "Tenant Id"
+          },
+          "project_type": {
+            "type": "string",
+            "title": "Project Type"
+          }
+        },
+        "title": "SimpleInstanceResponse",
+        "required": [
+          "state",
+          "status",
+          "id",
+          "tenant_id",
+          "project_type"
+        ],
+        "example": {
+          "id": "bcccde01-fe02-4582-bc5f-54016821c311",
+          "project_type": "default",
+          "state": "running",
+          "status": "completed",
+          "tenant_id": "684ad4df-7d6a-4ba5-97f3-d09503c358da",
+          "urp_id": "893a55f3-3e4f-46a9-b0ac-63f8eece6071"
+        }
       },
       "SnapshotCreateRequestV1": {
         "type": "object",

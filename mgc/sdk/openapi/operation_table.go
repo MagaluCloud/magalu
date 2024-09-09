@@ -308,9 +308,14 @@ func newOperationTable(name string, descs []*operationDesc) *operationTable {
 	table := &operationTable{name: name}
 	for _, desc := range descs {
 		descName, descVariables := getOperationNameAndVariables(desc.method, desc.pathKey)
+		descName = []string{name, descName[len(descName)-1]}
 		table.add(descName, descVariables, desc)
 	}
 	table.simplify()
+	// if len(table.childTables) > 0 {
+	// 	table.childOperations = append(table.childOperations, table.childTables[0].childOperations...)
+	// 	table.childTables = []*operationTable{}
+	// }
 	table.finalizeEntryKeys()
 	return table
 }
