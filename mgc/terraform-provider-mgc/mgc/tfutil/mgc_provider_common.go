@@ -4,9 +4,35 @@ import (
 	"fmt"
 	"reflect"
 	"strings"
+
+	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
 type findKey func(key string, out any) error
+
+type ProviderConfig struct {
+	Region        types.String         `tfsdk:"region"`
+	Env           types.String         `tfsdk:"env"`
+	ApiKey        types.String         `tfsdk:"api_key"`
+	ObjectStorage *ObjectStorageConfig `tfsdk:"object_storage"`
+}
+
+type KeyPair struct {
+	KeyID     types.String `tfsdk:"key_id"`
+	KeySecret types.String `tfsdk:"key_secret"`
+}
+
+type ObjectStorageConfig struct {
+	ObjectKeyPair *KeyPair `tfsdk:"key_pair"`
+}
+
+type MgcApiKey struct {
+	ApiKey string
+}
+
+func (m *MgcApiKey) GetAPIKey() string {
+	return m.ApiKey
+}
 
 func GetConfigsFromTags[T any](keys findKey, s T) T {
 	envs := listJSONTags(s)

@@ -45,7 +45,7 @@ func (r *VolumeAttach) Configure(ctx context.Context, req resource.ConfigureRequ
 		return
 	}
 
-	sdk, ok := req.ProviderData.(*sdk.Sdk)
+	config, ok := req.ProviderData.(tfutil.ProviderConfig)
 
 	if !ok {
 		resp.Diagnostics.AddError(
@@ -55,6 +55,10 @@ func (r *VolumeAttach) Configure(ctx context.Context, req resource.ConfigureRequ
 		return
 	}
 
+	sdk := sdk.NewSdk()
+	_ = sdk.Config().SetTempConfig("region", config.Region.ValueStringPointer())
+	_ = sdk.Config().SetTempConfig("env", config.Env.ValueStringPointer())
+	_ = sdk.Config().SetTempConfig("api_key", config.ApiKey.ValueStringPointer())
 	r.sdkClient = mgcSdk.NewClient(sdk)
 
 	r.blockStorageVolumes = sdkVolumes.NewService(ctx, r.sdkClient)

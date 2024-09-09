@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"os"
 	"regexp"
 	"strings"
 	"time"
@@ -55,12 +56,16 @@ func (r *k8sClusterResource) Metadata(_ context.Context, req resource.MetadataRe
 	resp.TypeName = req.ProviderTypeName + "_kubernetes_cluster"
 }
 
+type contextKey string
+
+const pidKey contextKey = "pid"
+
 func (r *k8sClusterResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
 	if req.ProviderData == nil {
 		return
 	}
 
-	sdk, ok := req.ProviderData.(*sdk.Sdk)
+	config, ok := req.ProviderData.(tfutil.ProviderConfig)
 
 	if !ok {
 		resp.Diagnostics.AddError(
@@ -70,7 +75,13 @@ func (r *k8sClusterResource) Configure(ctx context.Context, req resource.Configu
 		return
 	}
 
+	sdk := sdk.NewSdk()
+	_ = sdk.Config().SetTempConfig("region", config.Region.ValueStringPointer())
+	_ = sdk.Config().SetTempConfig("env", config.Env.ValueStringPointer())
+	_ = sdk.Config().SetTempConfig("api_key", config.ApiKey.ValueStringPointer())
+
 	r.sdkClient = mgcSdk.NewClient(sdk)
+	ctx = context.WithValue(ctx, pidKey, os.Getpid())
 	r.k8sCluster = sdkCluster.NewService(ctx, r.sdkClient)
 }
 

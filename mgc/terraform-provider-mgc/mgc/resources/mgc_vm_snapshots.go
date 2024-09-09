@@ -42,7 +42,7 @@ func (r *vmSnapshots) Configure(ctx context.Context, req resource.ConfigureReque
 		return
 	}
 
-	sdk, ok := req.ProviderData.(*sdk.Sdk)
+	config, ok := req.ProviderData.(tfutil.ProviderConfig)
 
 	if !ok {
 		resp.Diagnostics.AddError(
@@ -52,6 +52,10 @@ func (r *vmSnapshots) Configure(ctx context.Context, req resource.ConfigureReque
 		return
 	}
 
+	sdk := sdk.NewSdk()
+	_ = sdk.Config().SetTempConfig("region", config.Region.ValueStringPointer())
+	_ = sdk.Config().SetTempConfig("env", config.Env.ValueStringPointer())
+	_ = sdk.Config().SetTempConfig("api_key", config.ApiKey.ValueStringPointer())
 	r.sdkClient = mgcSdk.NewClient(sdk)
 
 	r.vmSnapshots = sdkVmSnapshots.NewService(ctx, r.sdkClient)
