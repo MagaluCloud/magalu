@@ -105,8 +105,8 @@ func (r *vmSnapshots) ModifyPlan(ctx context.Context, req resource.ModifyPlanReq
 	//do nothing
 }
 
-func (r *vmSnapshots) getVmSnapshot(id string) (sdkVmSnapshots.GetResult, error) {
-	getResult, err := r.vmSnapshots.Get(
+func (r *vmSnapshots) getVmSnapshot(ctx context.Context, id string) (sdkVmSnapshots.GetResult, error) {
+	getResult, err := r.vmSnapshots.GetContext(ctx,
 		sdkVmSnapshots.GetParameters{
 			Id: id,
 		},
@@ -121,7 +121,7 @@ func (r *vmSnapshots) Read(ctx context.Context, req resource.ReadRequest, resp *
 	data := &vmSnapshotsResourceModel{}
 	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
 
-	getResult, err := r.getVmSnapshot(data.ID.ValueString())
+	getResult, err := r.getVmSnapshot(ctx, data.ID.ValueString())
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Error Reading VM",
@@ -152,7 +152,7 @@ func (r *vmSnapshots) Create(ctx context.Context, req resource.CreateRequest, re
 		},
 	}
 
-	result, err := r.vmSnapshots.Create(createParams, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVmSnapshots.CreateConfigs{}))
+	result, err := r.vmSnapshots.CreateContext(ctx, createParams, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVmSnapshots.CreateConfigs{}))
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Error Creating VM Snapshot",
@@ -180,7 +180,7 @@ func (r *vmSnapshots) Delete(ctx context.Context, req resource.DeleteRequest, re
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
 
-	err := r.vmSnapshots.Delete(
+	err := r.vmSnapshots.DeleteContext(ctx,
 		sdkVmSnapshots.DeleteParameters{
 			Id: data.ID.ValueString(),
 		},

@@ -10,6 +10,8 @@ import "magalu.cloud/lib/products/object_storage/buckets/acl"
 package acl
 
 import (
+	"context"
+
 	mgcCore "magalu.cloud/core"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
@@ -51,7 +53,7 @@ type SetConfigs struct {
 
 type SetResult any
 
-func (s *service) Set(
+/*func (s *service) Set(
 	parameters SetParameters,
 	configs SetConfigs,
 ) (
@@ -59,6 +61,37 @@ func (s *service) Set(
 	err error,
 ) {
 	exec, ctx, err := mgcHelpers.PrepareExecutor("Set", mgcCore.RefPath("/object-storage/buckets/acl/set"), s.client, s.ctx)
+	if err != nil {
+		return
+	}
+
+	var p mgcCore.Parameters
+	if p, err = mgcHelpers.ConvertParameters[SetParameters](parameters); err != nil {
+		return
+	}
+
+	var c mgcCore.Configs
+	if c, err = mgcHelpers.ConvertConfigs[SetConfigs](configs); err != nil {
+		return
+	}
+
+	r, err := exec.Execute(ctx, p, c)
+	if err != nil {
+		return
+	}
+	return mgcHelpers.ConvertResult[SetResult](r)
+}*/
+
+// Context from caller is used to allow cancellation of long-running requests
+func (s *service) SetContext(
+	ctx context.Context,
+	parameters SetParameters,
+	configs SetConfigs,
+) (
+	result SetResult,
+	err error,
+) {
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Set", mgcCore.RefPath("/object-storage/buckets/acl/set"), s.client, ctx)
 	if err != nil {
 		return
 	}

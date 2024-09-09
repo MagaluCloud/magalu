@@ -15,7 +15,8 @@ type service struct {
 }
 
 type Service interface {
-	List(parameters ListParameters, configs ListConfigs) (result ListResult, err error)
+	ListContext(ctx context.Context, parameters ListParameters, configs ListConfigs) (result ListResult, err error)
+	//List(	parameters ListParameters, configs ListConfigs,) ( result ListResult, err error,)
 }
 
 func NewService(ctx context.Context, client *mgcClient.Client) Service {

@@ -16,6 +16,8 @@ import "magalu.cloud/lib/products/container_registry/credentials"
 package credentials
 
 import (
+	"context"
+
 	mgcCore "magalu.cloud/core"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
@@ -33,13 +35,40 @@ type PasswordResult struct {
 	Username string `json:"username"`
 }
 
-func (s *service) Password(
+/*func (s *service) Password(
 	configs PasswordConfigs,
 ) (
 	result PasswordResult,
 	err error,
 ) {
 	exec, ctx, err := mgcHelpers.PrepareExecutor("Password", mgcCore.RefPath("/container-registry/credentials/password"), s.client, s.ctx)
+	if err != nil {
+		return
+	}
+
+	var p mgcCore.Parameters
+
+	var c mgcCore.Configs
+	if c, err = mgcHelpers.ConvertConfigs[PasswordConfigs](configs); err != nil {
+		return
+	}
+
+	r, err := exec.Execute(ctx, p, c)
+	if err != nil {
+		return
+	}
+	return mgcHelpers.ConvertResult[PasswordResult](r)
+}*/
+
+// Context from caller is used to allow cancellation of long-running requests
+func (s *service) PasswordContext(
+	ctx context.Context,
+	configs PasswordConfigs,
+) (
+	result PasswordResult,
+	err error,
+) {
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Password", mgcCore.RefPath("/container-registry/credentials/password"), s.client, ctx)
 	if err != nil {
 		return
 	}

@@ -10,6 +10,8 @@ import "magalu.cloud/lib/products/object_storage/objects"
 package objects
 
 import (
+	"context"
+
 	mgcCore "magalu.cloud/core"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
@@ -44,7 +46,7 @@ type VersionsResultItemOwner struct {
 
 type VersionsResult []VersionsResultItem
 
-func (s *service) Versions(
+/*func (s *service) Versions(
 	parameters VersionsParameters,
 	configs VersionsConfigs,
 ) (
@@ -52,6 +54,37 @@ func (s *service) Versions(
 	err error,
 ) {
 	exec, ctx, err := mgcHelpers.PrepareExecutor("Versions", mgcCore.RefPath("/object-storage/objects/versions"), s.client, s.ctx)
+	if err != nil {
+		return
+	}
+
+	var p mgcCore.Parameters
+	if p, err = mgcHelpers.ConvertParameters[VersionsParameters](parameters); err != nil {
+		return
+	}
+
+	var c mgcCore.Configs
+	if c, err = mgcHelpers.ConvertConfigs[VersionsConfigs](configs); err != nil {
+		return
+	}
+
+	r, err := exec.Execute(ctx, p, c)
+	if err != nil {
+		return
+	}
+	return mgcHelpers.ConvertResult[VersionsResult](r)
+}*/
+
+// Context from caller is used to allow cancellation of long-running requests
+func (s *service) VersionsContext(
+	ctx context.Context,
+	parameters VersionsParameters,
+	configs VersionsConfigs,
+) (
+	result VersionsResult,
+	err error,
+) {
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Versions", mgcCore.RefPath("/object-storage/objects/versions"), s.client, ctx)
 	if err != nil {
 		return
 	}

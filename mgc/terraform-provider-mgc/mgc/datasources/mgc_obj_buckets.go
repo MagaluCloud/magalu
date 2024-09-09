@@ -85,7 +85,7 @@ func (r *DatasourceBuckets) Read(ctx context.Context, req datasource.ReadRequest
 
 	resp.Diagnostics.Append(req.Config.Get(ctx, &data)...)
 
-	sdkOutput, err := r.buckets.List(tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkBuckets.ListConfigs{}))
+	sdkOutput, err := r.buckets.ListContext(ctx, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkBuckets.ListConfigs{}))
 	if err != nil {
 		resp.Diagnostics.AddError("Failed to get versions", err.Error())
 		return

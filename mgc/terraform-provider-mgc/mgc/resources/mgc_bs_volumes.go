@@ -193,7 +193,7 @@ func (r *bsVolumes) Read(ctx context.Context, req resource.ReadRequest, resp *re
 	plan := &bsVolumesResourceModel{}
 	resp.Diagnostics.Append(req.State.Get(ctx, &plan)...)
 
-	getResult, err := r.bsVolumes.Get(sdkBlockStorageVolumes.GetParameters{
+	getResult, err := r.bsVolumes.GetContext(ctx, sdkBlockStorageVolumes.GetParameters{
 		Id:     plan.ID.ValueString(),
 		Expand: &sdkBlockStorageVolumes.GetParametersExpand{"volume_type"},
 	}, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkBlockStorageVolumes.GetConfigs{}))
@@ -230,7 +230,7 @@ func (r *bsVolumes) Create(ctx context.Context, req resource.CreateRequest, resp
 		state.FinalName = types.StringValue(state.Name.ValueString() + "-" + bwords.Sort())
 	}
 
-	createResult, err := r.bsVolumes.Create(sdkBlockStorageVolumes.CreateParameters{
+	createResult, err := r.bsVolumes.CreateContext(ctx, sdkBlockStorageVolumes.CreateParameters{
 		Name: state.FinalName.ValueString(),
 		Size: int(state.Size.ValueInt64()),
 		Type: sdkBlockStorageVolumes.CreateParametersType{
@@ -248,7 +248,7 @@ func (r *bsVolumes) Create(ctx context.Context, req resource.CreateRequest, resp
 
 	state.ID = types.StringValue(createResult.Id)
 
-	getCreatedResource, err := r.bsVolumes.Get(sdkBlockStorageVolumes.GetParameters{
+	getCreatedResource, err := r.bsVolumes.GetContext(ctx, sdkBlockStorageVolumes.GetParameters{
 		Id:     state.ID.ValueString(),
 		Expand: &sdkBlockStorageVolumes.GetParametersExpand{"volume_type"},
 	}, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkBlockStorageVolumes.GetConfigs{}))
@@ -281,7 +281,7 @@ func (r *bsVolumes) Update(ctx context.Context, req resource.UpdateRequest, resp
 
 	if data.Type.Name.ValueString() != currState.Type.Name.ValueString() {
 		// retype
-		err := r.bsVolumes.Retype(sdkBlockStorageVolumes.RetypeParameters{
+		err := r.bsVolumes.RetypeContext(ctx, sdkBlockStorageVolumes.RetypeParameters{
 			Id: data.ID.ValueString(),
 			NewType: sdkBlockStorageVolumes.RetypeParametersNewType{
 				Name: data.Type.Name.ValueStringPointer(),
@@ -298,7 +298,7 @@ func (r *bsVolumes) Update(ctx context.Context, req resource.UpdateRequest, resp
 	}
 
 	if data.Size.ValueInt64() > currState.Size.ValueInt64() {
-		err := r.bsVolumes.Extend(sdkBlockStorageVolumes.ExtendParameters{
+		err := r.bsVolumes.ExtendContext(ctx, sdkBlockStorageVolumes.ExtendParameters{
 			Id:   data.ID.ValueString(),
 			Size: int(data.Size.ValueInt64()),
 		},
@@ -317,7 +317,7 @@ func (r *bsVolumes) Update(ctx context.Context, req resource.UpdateRequest, resp
 func (r *bsVolumes) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
 	var data bsVolumesResourceModel
 	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
-	err := r.bsVolumes.Delete(
+	err := r.bsVolumes.DeleteContext(ctx,
 		sdkBlockStorageVolumes.DeleteParameters{
 			Id: data.ID.ValueString(),
 		},

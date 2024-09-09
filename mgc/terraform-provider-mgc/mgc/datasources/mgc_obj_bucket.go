@@ -137,13 +137,13 @@ func (r *DatasourceBucket) Read(ctx context.Context, req datasource.ReadRequest,
 
 	resp.Diagnostics.Append(req.Config.Get(ctx, &data)...)
 
-	versioning, err := r.versioning.Get(sdkBucketsVersioning.GetParameters{Bucket: data.Name.ValueString()},
+	versioning, err := r.versioning.GetContext(ctx, sdkBucketsVersioning.GetParameters{Bucket: data.Name.ValueString()},
 		tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkBucketsVersioning.GetConfigs{}))
 	if err != nil {
 		resp.Diagnostics.AddError("Failed to get versioning", err.Error())
 		return
 	}
-	acl, err := r.acl.Get(sdkBucketsAcl.GetParameters{Dst: data.Name.ValueString()},
+	acl, err := r.acl.GetContext(ctx, sdkBucketsAcl.GetParameters{Dst: data.Name.ValueString()},
 		tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkBucketsAcl.GetConfigs{}))
 	if err != nil {
 		resp.Diagnostics.AddError("Failed to get acl", err.Error())

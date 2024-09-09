@@ -23,6 +23,8 @@ import "magalu.cloud/lib/products/virtual_machine/snapshots"
 package snapshots
 
 import (
+	"context"
+
 	mgcCore "magalu.cloud/core"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
@@ -73,7 +75,7 @@ type GetResultInstanceMachineType struct {
 	Vcpus *int    `json:"vcpus,omitempty"`
 }
 
-func (s *service) Get(
+/*func (s *service) Get(
 	parameters GetParameters,
 	configs GetConfigs,
 ) (
@@ -81,6 +83,37 @@ func (s *service) Get(
 	err error,
 ) {
 	exec, ctx, err := mgcHelpers.PrepareExecutor("Get", mgcCore.RefPath("/virtual-machine/snapshots/get"), s.client, s.ctx)
+	if err != nil {
+		return
+	}
+
+	var p mgcCore.Parameters
+	if p, err = mgcHelpers.ConvertParameters[GetParameters](parameters); err != nil {
+		return
+	}
+
+	var c mgcCore.Configs
+	if c, err = mgcHelpers.ConvertConfigs[GetConfigs](configs); err != nil {
+		return
+	}
+
+	r, err := exec.Execute(ctx, p, c)
+	if err != nil {
+		return
+	}
+	return mgcHelpers.ConvertResult[GetResult](r)
+}*/
+
+// Context from caller is used to allow cancellation of long-running requests
+func (s *service) GetContext(
+	ctx context.Context,
+	parameters GetParameters,
+	configs GetConfigs,
+) (
+	result GetResult,
+	err error,
+) {
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Get", mgcCore.RefPath("/virtual-machine/snapshots/get"), s.client, ctx)
 	if err != nil {
 		return
 	}

@@ -275,7 +275,7 @@ func (d *DataSourceKubernetesNode) Read(ctx context.Context, req datasource.Read
 
 	resp.Diagnostics.Append(req.Config.Get(ctx, &data)...)
 
-	node, err := d.nodepool.Nodes(sdkNodepool.NodesParameters{
+	node, err := d.nodepool.NodesContext(ctx, sdkNodepool.NodesParameters{
 		ClusterId:  data.ClusterID.ValueString(),
 		NodePoolId: data.NodepoolID.ValueString(),
 	}, tfutil.GetConfigsFromTags(d.sdkClient.Sdk().Config().Get, sdkNodepool.NodesConfigs{}))

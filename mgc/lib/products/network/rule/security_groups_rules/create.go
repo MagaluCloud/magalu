@@ -16,6 +16,8 @@ import "magalu.cloud/lib/products/network/rule/security_groups_rules"
 package securityGroupsRules
 
 import (
+	"context"
+
 	mgcCore "magalu.cloud/core"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
@@ -44,7 +46,7 @@ type CreateResult struct {
 	Id string `json:"id"`
 }
 
-func (s *service) Create(
+/*func (s *service) Create(
 	parameters CreateParameters,
 	configs CreateConfigs,
 ) (
@@ -52,6 +54,37 @@ func (s *service) Create(
 	err error,
 ) {
 	exec, ctx, err := mgcHelpers.PrepareExecutor("Create", mgcCore.RefPath("/network/rule/security-groups-rules/create"), s.client, s.ctx)
+	if err != nil {
+		return
+	}
+
+	var p mgcCore.Parameters
+	if p, err = mgcHelpers.ConvertParameters[CreateParameters](parameters); err != nil {
+		return
+	}
+
+	var c mgcCore.Configs
+	if c, err = mgcHelpers.ConvertConfigs[CreateConfigs](configs); err != nil {
+		return
+	}
+
+	r, err := exec.Execute(ctx, p, c)
+	if err != nil {
+		return
+	}
+	return mgcHelpers.ConvertResult[CreateResult](r)
+}*/
+
+// Context from caller is used to allow cancellation of long-running requests
+func (s *service) CreateContext(
+	ctx context.Context,
+	parameters CreateParameters,
+	configs CreateConfigs,
+) (
+	result CreateResult,
+	err error,
+) {
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Create", mgcCore.RefPath("/network/rule/security-groups-rules/create"), s.client, ctx)
 	if err != nil {
 		return
 	}

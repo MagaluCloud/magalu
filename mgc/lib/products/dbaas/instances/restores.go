@@ -16,6 +16,8 @@ import "magalu.cloud/lib/products/dbaas/instances"
 package instances
 
 import (
+	"context"
+
 	mgcCore "magalu.cloud/core"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
@@ -35,7 +37,7 @@ type RestoresResult struct {
 	Id string `json:"id"`
 }
 
-func (s *service) Restores(
+/*func (s *service) Restores(
 	parameters RestoresParameters,
 	configs RestoresConfigs,
 ) (
@@ -43,6 +45,37 @@ func (s *service) Restores(
 	err error,
 ) {
 	exec, ctx, err := mgcHelpers.PrepareExecutor("Restores", mgcCore.RefPath("/dbaas/instances/restores"), s.client, s.ctx)
+	if err != nil {
+		return
+	}
+
+	var p mgcCore.Parameters
+	if p, err = mgcHelpers.ConvertParameters[RestoresParameters](parameters); err != nil {
+		return
+	}
+
+	var c mgcCore.Configs
+	if c, err = mgcHelpers.ConvertConfigs[RestoresConfigs](configs); err != nil {
+		return
+	}
+
+	r, err := exec.Execute(ctx, p, c)
+	if err != nil {
+		return
+	}
+	return mgcHelpers.ConvertResult[RestoresResult](r)
+}*/
+
+// Context from caller is used to allow cancellation of long-running requests
+func (s *service) RestoresContext(
+	ctx context.Context,
+	parameters RestoresParameters,
+	configs RestoresConfigs,
+) (
+	result RestoresResult,
+	err error,
+) {
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Restores", mgcCore.RefPath("/dbaas/instances/restores"), s.client, ctx)
 	if err != nil {
 		return
 	}

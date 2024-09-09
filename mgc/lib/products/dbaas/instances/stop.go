@@ -16,6 +16,8 @@ import "magalu.cloud/lib/products/dbaas/instances"
 package instances
 
 import (
+	"context"
+
 	mgcCore "magalu.cloud/core"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
@@ -108,7 +110,7 @@ type StopResultReplicasItemVolume struct {
 
 type StopResultReplicas []StopResultReplicasItem
 
-func (s *service) Stop(
+/*func (s *service) Stop(
 	parameters StopParameters,
 	configs StopConfigs,
 ) (
@@ -116,6 +118,37 @@ func (s *service) Stop(
 	err error,
 ) {
 	exec, ctx, err := mgcHelpers.PrepareExecutor("Stop", mgcCore.RefPath("/dbaas/instances/stop"), s.client, s.ctx)
+	if err != nil {
+		return
+	}
+
+	var p mgcCore.Parameters
+	if p, err = mgcHelpers.ConvertParameters[StopParameters](parameters); err != nil {
+		return
+	}
+
+	var c mgcCore.Configs
+	if c, err = mgcHelpers.ConvertConfigs[StopConfigs](configs); err != nil {
+		return
+	}
+
+	r, err := exec.Execute(ctx, p, c)
+	if err != nil {
+		return
+	}
+	return mgcHelpers.ConvertResult[StopResult](r)
+}*/
+
+// Context from caller is used to allow cancellation of long-running requests
+func (s *service) StopContext(
+	ctx context.Context,
+	parameters StopParameters,
+	configs StopConfigs,
+) (
+	result StopResult,
+	err error,
+) {
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Stop", mgcCore.RefPath("/dbaas/instances/stop"), s.client, ctx)
 	if err != nil {
 		return
 	}

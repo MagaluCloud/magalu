@@ -92,7 +92,7 @@ func (r *DataSourceVmImages) Read(ctx context.Context, req datasource.ReadReques
 
 	resp.Diagnostics.Append(req.Config.Get(ctx, &data)...)
 
-	sdkOutput, err := r.vmImages.List(sdkVMImages.ListParameters{},
+	sdkOutput, err := r.vmImages.ListContext(ctx, sdkVMImages.ListParameters{},
 		tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVMImages.ListConfigs{}))
 	if err != nil {
 		resp.Diagnostics.AddError("Failed to get versions", err.Error())

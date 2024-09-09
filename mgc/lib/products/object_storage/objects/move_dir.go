@@ -15,6 +15,8 @@ import "magalu.cloud/lib/products/object_storage/objects"
 package objects
 
 import (
+	"context"
+
 	mgcCore "magalu.cloud/core"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
@@ -38,7 +40,7 @@ type MoveDirResult struct {
 	Src       string `json:"src"`
 }
 
-func (s *service) MoveDir(
+/*func (s *service) MoveDir(
 	parameters MoveDirParameters,
 	configs MoveDirConfigs,
 ) (
@@ -46,6 +48,37 @@ func (s *service) MoveDir(
 	err error,
 ) {
 	exec, ctx, err := mgcHelpers.PrepareExecutor("MoveDir", mgcCore.RefPath("/object-storage/objects/move-dir"), s.client, s.ctx)
+	if err != nil {
+		return
+	}
+
+	var p mgcCore.Parameters
+	if p, err = mgcHelpers.ConvertParameters[MoveDirParameters](parameters); err != nil {
+		return
+	}
+
+	var c mgcCore.Configs
+	if c, err = mgcHelpers.ConvertConfigs[MoveDirConfigs](configs); err != nil {
+		return
+	}
+
+	r, err := exec.Execute(ctx, p, c)
+	if err != nil {
+		return
+	}
+	return mgcHelpers.ConvertResult[MoveDirResult](r)
+}*/
+
+// Context from caller is used to allow cancellation of long-running requests
+func (s *service) MoveDirContext(
+	ctx context.Context,
+	parameters MoveDirParameters,
+	configs MoveDirConfigs,
+) (
+	result MoveDirResult,
+	err error,
+) {
+	exec, ctx, err := mgcHelpers.PrepareExecutor("MoveDir", mgcCore.RefPath("/object-storage/objects/move-dir"), s.client, ctx)
 	if err != nil {
 		return
 	}

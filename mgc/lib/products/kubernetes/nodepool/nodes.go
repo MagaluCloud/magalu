@@ -16,6 +16,8 @@ import "magalu.cloud/lib/products/kubernetes/nodepool"
 package nodepool
 
 import (
+	"context"
+
 	mgcCore "magalu.cloud/core"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
@@ -111,7 +113,7 @@ type NodesResultResultsItemTaints []NodesResultResultsItemTaintsItem
 
 type NodesResultResults []NodesResultResultsItem
 
-func (s *service) Nodes(
+/*func (s *service) Nodes(
 	parameters NodesParameters,
 	configs NodesConfigs,
 ) (
@@ -119,6 +121,37 @@ func (s *service) Nodes(
 	err error,
 ) {
 	exec, ctx, err := mgcHelpers.PrepareExecutor("Nodes", mgcCore.RefPath("/kubernetes/nodepool/nodes"), s.client, s.ctx)
+	if err != nil {
+		return
+	}
+
+	var p mgcCore.Parameters
+	if p, err = mgcHelpers.ConvertParameters[NodesParameters](parameters); err != nil {
+		return
+	}
+
+	var c mgcCore.Configs
+	if c, err = mgcHelpers.ConvertConfigs[NodesConfigs](configs); err != nil {
+		return
+	}
+
+	r, err := exec.Execute(ctx, p, c)
+	if err != nil {
+		return
+	}
+	return mgcHelpers.ConvertResult[NodesResult](r)
+}*/
+
+// Context from caller is used to allow cancellation of long-running requests
+func (s *service) NodesContext(
+	ctx context.Context,
+	parameters NodesParameters,
+	configs NodesConfigs,
+) (
+	result NodesResult,
+	err error,
+) {
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Nodes", mgcCore.RefPath("/kubernetes/nodepool/nodes"), s.client, ctx)
 	if err != nil {
 		return
 	}

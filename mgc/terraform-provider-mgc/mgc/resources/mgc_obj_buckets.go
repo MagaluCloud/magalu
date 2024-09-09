@@ -183,7 +183,7 @@ func (r *objectStorageBuckets) Create(ctx context.Context, req resource.CreateRe
 	grantWrite := sdkBuckets.CreateParametersGrantWrite(convertGrants(model.GrantWrite))
 	grantWriteACP := sdkBuckets.CreateParametersGrantWriteAcp(convertGrants(model.GrantWriteACP))
 
-	result, err := r.buckets.Create(sdkBuckets.CreateParameters{
+	result, err := r.buckets.CreateContext(ctx, sdkBuckets.CreateParameters{
 		Bucket:            model.Bucket.ValueString(),
 		BucketIsPrefix:    model.BucketIsPrefix.ValueBool(),
 		AuthenticatedRead: model.AuthenticatedRead.ValueBoolPointer(),
@@ -258,7 +258,7 @@ func (r *objectStorageBuckets) Delete(ctx context.Context, req resource.DeleteRe
 		model.Recursive = types.BoolValue(false)
 	}
 
-	_, err := r.buckets.Delete(sdkBuckets.DeleteParameters{
+	_, err := r.buckets.DeleteContext(ctx, sdkBuckets.DeleteParameters{
 		Bucket:    name,
 		Recursive: model.Recursive.ValueBool(),
 	}, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkBuckets.DeleteConfigs{}))

@@ -107,7 +107,7 @@ func (r *DataSourceVmMachineType) Read(ctx context.Context, req datasource.ReadR
 
 	resp.Diagnostics.Append(req.Config.Get(ctx, &data)...)
 
-	sdkOutput, err := r.vmMachineTypes.List(sdkVMMachineTypes.ListParameters{},
+	sdkOutput, err := r.vmMachineTypes.ListContext(ctx, sdkVMMachineTypes.ListParameters{},
 		tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVMMachineTypes.ListConfigs{}))
 	if err != nil {
 		resp.Diagnostics.AddError("Failed to get versions", err.Error())

@@ -15,11 +15,16 @@ type service struct {
 }
 
 type Service interface {
-	Delete(parameters DeleteParameters) (result DeleteResult, err error)
-	Get(parameters GetParameters) (result GetResult, err error)
-	GetSchema(parameters GetSchemaParameters) (result GetSchemaResult, err error)
-	List() (result ListResult, err error)
-	Set(parameters SetParameters) (result SetResult, err error)
+	DeleteContext(ctx context.Context, parameters DeleteParameters) (result DeleteResult, err error)
+	//Delete(	parameters DeleteParameters,) ( result DeleteResult, err error,)
+	GetContext(ctx context.Context, parameters GetParameters) (result GetResult, err error)
+	//Get(	parameters GetParameters,) ( result GetResult, err error,)
+	GetSchemaContext(ctx context.Context, parameters GetSchemaParameters) (result GetSchemaResult, err error)
+	//GetSchema(	parameters GetSchemaParameters,) ( result GetSchemaResult, err error,)
+	ListContext(ctx context.Context) (result ListResult, err error)
+	//List() ( result ListResult, err error,)
+	SetContext(ctx context.Context, parameters SetParameters) (result SetResult, err error)
+	//Set(	parameters SetParameters,) ( result SetResult, err error,)
 }
 
 func NewService(ctx context.Context, client *mgcClient.Client) Service {

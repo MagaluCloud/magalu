@@ -16,6 +16,8 @@ import "magalu.cloud/lib/products/dbaas/replicas"
 package replicas
 
 import (
+	"context"
+
 	mgcCore "magalu.cloud/core"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
@@ -71,7 +73,7 @@ type StartResultVolume struct {
 	Type string `json:"type"`
 }
 
-func (s *service) Start(
+/*func (s *service) Start(
 	parameters StartParameters,
 	configs StartConfigs,
 ) (
@@ -79,6 +81,37 @@ func (s *service) Start(
 	err error,
 ) {
 	exec, ctx, err := mgcHelpers.PrepareExecutor("Start", mgcCore.RefPath("/dbaas/replicas/start"), s.client, s.ctx)
+	if err != nil {
+		return
+	}
+
+	var p mgcCore.Parameters
+	if p, err = mgcHelpers.ConvertParameters[StartParameters](parameters); err != nil {
+		return
+	}
+
+	var c mgcCore.Configs
+	if c, err = mgcHelpers.ConvertConfigs[StartConfigs](configs); err != nil {
+		return
+	}
+
+	r, err := exec.Execute(ctx, p, c)
+	if err != nil {
+		return
+	}
+	return mgcHelpers.ConvertResult[StartResult](r)
+}*/
+
+// Context from caller is used to allow cancellation of long-running requests
+func (s *service) StartContext(
+	ctx context.Context,
+	parameters StartParameters,
+	configs StartConfigs,
+) (
+	result StartResult,
+	err error,
+) {
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Start", mgcCore.RefPath("/dbaas/replicas/start"), s.client, ctx)
 	if err != nil {
 		return
 	}

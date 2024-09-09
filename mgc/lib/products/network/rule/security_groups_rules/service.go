@@ -15,8 +15,10 @@ type service struct {
 }
 
 type Service interface {
-	Create(parameters CreateParameters, configs CreateConfigs) (result CreateResult, err error)
-	List(parameters ListParameters, configs ListConfigs) (result ListResult, err error)
+	CreateContext(ctx context.Context, parameters CreateParameters, configs CreateConfigs) (result CreateResult, err error)
+	//Create(	parameters CreateParameters, configs CreateConfigs,) ( result CreateResult, err error,)
+	ListContext(ctx context.Context, parameters ListParameters, configs ListConfigs) (result ListResult, err error)
+	//List(	parameters ListParameters, configs ListConfigs,) ( result ListResult, err error,)
 }
 
 func NewService(ctx context.Context, client *mgcClient.Client) Service {

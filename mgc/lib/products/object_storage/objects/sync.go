@@ -14,6 +14,8 @@ import "magalu.cloud/lib/products/object_storage/objects"
 package objects
 
 import (
+	"context"
+
 	mgcCore "magalu.cloud/core"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
@@ -34,7 +36,7 @@ type SyncConfigs struct {
 
 type SyncResult any
 
-func (s *service) Sync(
+/*func (s *service) Sync(
 	parameters SyncParameters,
 	configs SyncConfigs,
 ) (
@@ -42,6 +44,37 @@ func (s *service) Sync(
 	err error,
 ) {
 	exec, ctx, err := mgcHelpers.PrepareExecutor("Sync", mgcCore.RefPath("/object-storage/objects/sync"), s.client, s.ctx)
+	if err != nil {
+		return
+	}
+
+	var p mgcCore.Parameters
+	if p, err = mgcHelpers.ConvertParameters[SyncParameters](parameters); err != nil {
+		return
+	}
+
+	var c mgcCore.Configs
+	if c, err = mgcHelpers.ConvertConfigs[SyncConfigs](configs); err != nil {
+		return
+	}
+
+	r, err := exec.Execute(ctx, p, c)
+	if err != nil {
+		return
+	}
+	return mgcHelpers.ConvertResult[SyncResult](r)
+}*/
+
+// Context from caller is used to allow cancellation of long-running requests
+func (s *service) SyncContext(
+	ctx context.Context,
+	parameters SyncParameters,
+	configs SyncConfigs,
+) (
+	result SyncResult,
+	err error,
+) {
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Sync", mgcCore.RefPath("/object-storage/objects/sync"), s.client, ctx)
 	if err != nil {
 		return
 	}

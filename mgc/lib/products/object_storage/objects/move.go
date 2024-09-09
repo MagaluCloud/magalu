@@ -15,6 +15,8 @@ import "magalu.cloud/lib/products/object_storage/objects"
 package objects
 
 import (
+	"context"
+
 	mgcCore "magalu.cloud/core"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
@@ -36,7 +38,7 @@ type MoveResult struct {
 	Src string `json:"src"`
 }
 
-func (s *service) Move(
+/*func (s *service) Move(
 	parameters MoveParameters,
 	configs MoveConfigs,
 ) (
@@ -44,6 +46,37 @@ func (s *service) Move(
 	err error,
 ) {
 	exec, ctx, err := mgcHelpers.PrepareExecutor("Move", mgcCore.RefPath("/object-storage/objects/move"), s.client, s.ctx)
+	if err != nil {
+		return
+	}
+
+	var p mgcCore.Parameters
+	if p, err = mgcHelpers.ConvertParameters[MoveParameters](parameters); err != nil {
+		return
+	}
+
+	var c mgcCore.Configs
+	if c, err = mgcHelpers.ConvertConfigs[MoveConfigs](configs); err != nil {
+		return
+	}
+
+	r, err := exec.Execute(ctx, p, c)
+	if err != nil {
+		return
+	}
+	return mgcHelpers.ConvertResult[MoveResult](r)
+}*/
+
+// Context from caller is used to allow cancellation of long-running requests
+func (s *service) MoveContext(
+	ctx context.Context,
+	parameters MoveParameters,
+	configs MoveConfigs,
+) (
+	result MoveResult,
+	err error,
+) {
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Move", mgcCore.RefPath("/object-storage/objects/move"), s.client, ctx)
 	if err != nil {
 		return
 	}

@@ -108,7 +108,7 @@ func resourceListResultResultsItemBastionItemSchema() schema.NestedAttributeObje
 }
 
 func (r *DataSourceKubernetesFlavor) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
-	result, err := r.nodepool.List(tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkNodepool.ListConfigs{}))
+	result, err := r.nodepool.ListContext(ctx, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkNodepool.ListConfigs{}))
 
 	if err != nil || result.Results == nil {
 		resp.Diagnostics.AddError("Failed to list flavors", err.Error())

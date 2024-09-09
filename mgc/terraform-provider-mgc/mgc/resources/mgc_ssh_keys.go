@@ -108,7 +108,7 @@ func (r *sshKeys) Read(ctx context.Context, req resource.ReadRequest, resp *reso
 	plan := &sshKeyModel{}
 	resp.Diagnostics.Append(req.State.Get(ctx, &plan)...)
 
-	getResult, err := r.sshKeys.Get(sdkSSHKeys.GetParameters{
+	getResult, err := r.sshKeys.GetContext(ctx, sdkSSHKeys.GetParameters{
 		KeyId: plan.ID.ValueString(),
 	},
 		tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkSSHKeys.GetConfigs{}))
@@ -128,7 +128,7 @@ func (r *sshKeys) Create(ctx context.Context, req resource.CreateRequest, resp *
 		return
 	}
 
-	createResult, err := r.sshKeys.Create(sdkSSHKeys.CreateParameters{
+	createResult, err := r.sshKeys.CreateContext(ctx, sdkSSHKeys.CreateParameters{
 		Key:  plan.Key.ValueString(),
 		Name: plan.Name.ValueString(),
 	},
@@ -148,7 +148,7 @@ func (r *sshKeys) Update(ctx context.Context, req resource.UpdateRequest, resp *
 func (r *sshKeys) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
 	var data sshKeyModel
 	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
-	_, err := r.sshKeys.Delete(
+	_, err := r.sshKeys.DeleteContext(ctx,
 		sdkSSHKeys.DeleteParameters{
 			KeyId: data.ID.ValueString(),
 		},

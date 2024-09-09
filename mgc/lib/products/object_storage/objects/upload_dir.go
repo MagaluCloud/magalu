@@ -10,6 +10,8 @@ import "magalu.cloud/lib/products/object_storage/objects"
 package objects
 
 import (
+	"context"
+
 	mgcCore "magalu.cloud/core"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
@@ -41,7 +43,7 @@ type UploadDirResult struct {
 	Uri string `json:"uri"`
 }
 
-func (s *service) UploadDir(
+/*func (s *service) UploadDir(
 	parameters UploadDirParameters,
 	configs UploadDirConfigs,
 ) (
@@ -49,6 +51,37 @@ func (s *service) UploadDir(
 	err error,
 ) {
 	exec, ctx, err := mgcHelpers.PrepareExecutor("UploadDir", mgcCore.RefPath("/object-storage/objects/upload-dir"), s.client, s.ctx)
+	if err != nil {
+		return
+	}
+
+	var p mgcCore.Parameters
+	if p, err = mgcHelpers.ConvertParameters[UploadDirParameters](parameters); err != nil {
+		return
+	}
+
+	var c mgcCore.Configs
+	if c, err = mgcHelpers.ConvertConfigs[UploadDirConfigs](configs); err != nil {
+		return
+	}
+
+	r, err := exec.Execute(ctx, p, c)
+	if err != nil {
+		return
+	}
+	return mgcHelpers.ConvertResult[UploadDirResult](r)
+}*/
+
+// Context from caller is used to allow cancellation of long-running requests
+func (s *service) UploadDirContext(
+	ctx context.Context,
+	parameters UploadDirParameters,
+	configs UploadDirConfigs,
+) (
+	result UploadDirResult,
+	err error,
+) {
+	exec, ctx, err := mgcHelpers.PrepareExecutor("UploadDir", mgcCore.RefPath("/object-storage/objects/upload-dir"), s.client, ctx)
 	if err != nil {
 		return
 	}

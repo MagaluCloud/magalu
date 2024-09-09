@@ -15,8 +15,10 @@ type service struct {
 }
 
 type Service interface {
-	Attach(parameters AttachParameters, configs AttachConfigs) (err error)
-	Detach(parameters DetachParameters, configs DetachConfigs) (err error)
+	AttachContext(ctx context.Context, parameters AttachParameters, configs AttachConfigs) (err error)
+	//Attach(	parameters AttachParameters, configs AttachConfigs,) ( err error,)
+	DetachContext(ctx context.Context, parameters DetachParameters, configs DetachConfigs) (err error)
+	//Detach(	parameters DetachParameters, configs DetachConfigs,) ( err error,)
 }
 
 func NewService(ctx context.Context, client *mgcClient.Client) Service {

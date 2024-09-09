@@ -125,7 +125,7 @@ func (r *DataSourceVmInstances) Read(ctx context.Context, req datasource.ReadReq
 
 	resp.Diagnostics.Append(req.Config.Get(ctx, &data)...)
 
-	sdkOutput, err := r.vmInstances.List(sdkVMInstances.ListParameters{Expand: &sdkVMInstances.ListParametersExpand{"network"}},
+	sdkOutput, err := r.vmInstances.ListContext(ctx, sdkVMInstances.ListParameters{Expand: &sdkVMInstances.ListParametersExpand{"network"}},
 		tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVMInstances.ListConfigs{}))
 	if err != nil {
 		resp.Diagnostics.AddError("Failed to get instances", err.Error())

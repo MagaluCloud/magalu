@@ -15,8 +15,10 @@ type service struct {
 }
 
 type Service interface {
-	Delete(parameters DeleteParameters, configs DeleteConfigs) (err error)
-	Get(parameters GetParameters, configs GetConfigs) (result GetResult, err error)
+	DeleteContext(ctx context.Context, parameters DeleteParameters, configs DeleteConfigs) (err error)
+	//Delete(	parameters DeleteParameters, configs DeleteConfigs,) ( err error,)
+	GetContext(ctx context.Context, parameters GetParameters, configs GetConfigs) (result GetResult, err error)
+	//Get(	parameters GetParameters, configs GetConfigs,) ( result GetResult, err error,)
 }
 
 func NewService(ctx context.Context, client *mgcClient.Client) Service {

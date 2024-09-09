@@ -101,7 +101,7 @@ func (r *DataSourceVmInstance) Read(ctx context.Context, req datasource.ReadRequ
 
 	resp.Diagnostics.Append(req.Config.Get(ctx, &data)...)
 
-	sdkOutput, err := r.vmInstances.Get(sdkVMInstances.GetParameters{Id: data.ID.ValueString(), Expand: &sdkVMInstances.GetParametersExpand{"network"}},
+	sdkOutput, err := r.vmInstances.GetContext(ctx, sdkVMInstances.GetParameters{Id: data.ID.ValueString(), Expand: &sdkVMInstances.GetParametersExpand{"network"}},
 		tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVMInstances.GetConfigs{}))
 
 	if err != nil {

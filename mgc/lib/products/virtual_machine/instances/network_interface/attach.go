@@ -16,6 +16,8 @@ import "magalu.cloud/lib/products/virtual_machine/instances/network_interface"
 package networkInterface
 
 import (
+	"context"
+
 	mgcCore "magalu.cloud/core"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
@@ -52,13 +54,40 @@ type AttachConfigs struct {
 	ServerUrl *string `json:"serverUrl,omitempty"`
 }
 
-func (s *service) Attach(
+/*func (s *service) Attach(
 	parameters AttachParameters,
 	configs AttachConfigs,
 ) (
 	err error,
 ) {
 	exec, ctx, err := mgcHelpers.PrepareExecutor("Attach", mgcCore.RefPath("/virtual-machine/instances/network-interface/attach"), s.client, s.ctx)
+	if err != nil {
+		return
+	}
+
+	var p mgcCore.Parameters
+	if p, err = mgcHelpers.ConvertParameters[AttachParameters](parameters); err != nil {
+		return
+	}
+
+	var c mgcCore.Configs
+	if c, err = mgcHelpers.ConvertConfigs[AttachConfigs](configs); err != nil {
+		return
+	}
+
+	_, err = exec.Execute(ctx, p, c)
+	return
+}*/
+
+// Context from caller is used to allow cancellation of long-running requests
+func (s *service) AttachContext(
+	ctx context.Context,
+	parameters AttachParameters,
+	configs AttachConfigs,
+) (
+	err error,
+) {
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Attach", mgcCore.RefPath("/virtual-machine/instances/network-interface/attach"), s.client, ctx)
 	if err != nil {
 		return
 	}

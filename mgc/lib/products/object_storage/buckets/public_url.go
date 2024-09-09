@@ -10,6 +10,8 @@ import "magalu.cloud/lib/products/object_storage/buckets"
 package buckets
 
 import (
+	"context"
+
 	mgcCore "magalu.cloud/core"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
@@ -29,7 +31,7 @@ type PublicUrlResult struct {
 	Url string `json:"url"`
 }
 
-func (s *service) PublicUrl(
+/*func (s *service) PublicUrl(
 	parameters PublicUrlParameters,
 	configs PublicUrlConfigs,
 ) (
@@ -37,6 +39,37 @@ func (s *service) PublicUrl(
 	err error,
 ) {
 	exec, ctx, err := mgcHelpers.PrepareExecutor("PublicUrl", mgcCore.RefPath("/object-storage/buckets/public-url"), s.client, s.ctx)
+	if err != nil {
+		return
+	}
+
+	var p mgcCore.Parameters
+	if p, err = mgcHelpers.ConvertParameters[PublicUrlParameters](parameters); err != nil {
+		return
+	}
+
+	var c mgcCore.Configs
+	if c, err = mgcHelpers.ConvertConfigs[PublicUrlConfigs](configs); err != nil {
+		return
+	}
+
+	r, err := exec.Execute(ctx, p, c)
+	if err != nil {
+		return
+	}
+	return mgcHelpers.ConvertResult[PublicUrlResult](r)
+}*/
+
+// Context from caller is used to allow cancellation of long-running requests
+func (s *service) PublicUrlContext(
+	ctx context.Context,
+	parameters PublicUrlParameters,
+	configs PublicUrlConfigs,
+) (
+	result PublicUrlResult,
+	err error,
+) {
+	exec, ctx, err := mgcHelpers.PrepareExecutor("PublicUrl", mgcCore.RefPath("/object-storage/buckets/public-url"), s.client, ctx)
 	if err != nil {
 		return
 	}

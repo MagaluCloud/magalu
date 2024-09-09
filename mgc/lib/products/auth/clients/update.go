@@ -10,6 +10,8 @@ import "magalu.cloud/lib/products/auth/clients"
 package clients
 
 import (
+	"context"
+
 	mgcCore "magalu.cloud/core"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
@@ -38,13 +40,40 @@ type UpdateResult struct {
 	Uuid     *string `json:"uuid,omitempty"`
 }
 
-func (s *service) Update(
+/*func (s *service) Update(
 	parameters UpdateParameters,
 ) (
 	result UpdateResult,
 	err error,
 ) {
 	exec, ctx, err := mgcHelpers.PrepareExecutor("Update", mgcCore.RefPath("/auth/clients/update"), s.client, s.ctx)
+	if err != nil {
+		return
+	}
+
+	var p mgcCore.Parameters
+	if p, err = mgcHelpers.ConvertParameters[UpdateParameters](parameters); err != nil {
+		return
+	}
+
+	var c mgcCore.Configs
+
+	r, err := exec.Execute(ctx, p, c)
+	if err != nil {
+		return
+	}
+	return mgcHelpers.ConvertResult[UpdateResult](r)
+}*/
+
+// Context from caller is used to allow cancellation of long-running requests
+func (s *service) UpdateContext(
+	ctx context.Context,
+	parameters UpdateParameters,
+) (
+	result UpdateResult,
+	err error,
+) {
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Update", mgcCore.RefPath("/auth/clients/update"), s.client, ctx)
 	if err != nil {
 		return
 	}

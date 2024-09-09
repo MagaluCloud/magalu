@@ -90,7 +90,7 @@ func (r *DataSourceSSH) Read(ctx context.Context, req datasource.ReadRequest, re
 
 	resp.Diagnostics.Append(req.Config.Get(ctx, &data)...)
 
-	sdkOutput, err := r.sshKeys.List(sdkSSHKeys.ListParameters{},
+	sdkOutput, err := r.sshKeys.ListContext(ctx, sdkSSHKeys.ListParameters{},
 		tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkSSHKeys.ListConfigs{}))
 	if err != nil {
 		resp.Diagnostics.AddError("Failed to get versions", err.Error())

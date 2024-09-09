@@ -16,6 +16,8 @@ import "magalu.cloud/lib/products/virtual_machine/images"
 package images
 
 import (
+	"context"
+
 	mgcCore "magalu.cloud/core"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
@@ -56,7 +58,7 @@ type ListResultImagesItemMinimumRequirements struct {
 
 type ListResultImages []ListResultImagesItem
 
-func (s *service) List(
+/*func (s *service) List(
 	parameters ListParameters,
 	configs ListConfigs,
 ) (
@@ -64,6 +66,37 @@ func (s *service) List(
 	err error,
 ) {
 	exec, ctx, err := mgcHelpers.PrepareExecutor("List", mgcCore.RefPath("/virtual-machine/images/list"), s.client, s.ctx)
+	if err != nil {
+		return
+	}
+
+	var p mgcCore.Parameters
+	if p, err = mgcHelpers.ConvertParameters[ListParameters](parameters); err != nil {
+		return
+	}
+
+	var c mgcCore.Configs
+	if c, err = mgcHelpers.ConvertConfigs[ListConfigs](configs); err != nil {
+		return
+	}
+
+	r, err := exec.Execute(ctx, p, c)
+	if err != nil {
+		return
+	}
+	return mgcHelpers.ConvertResult[ListResult](r)
+}*/
+
+// Context from caller is used to allow cancellation of long-running requests
+func (s *service) ListContext(
+	ctx context.Context,
+	parameters ListParameters,
+	configs ListConfigs,
+) (
+	result ListResult,
+	err error,
+) {
+	exec, ctx, err := mgcHelpers.PrepareExecutor("List", mgcCore.RefPath("/virtual-machine/images/list"), s.client, ctx)
 	if err != nil {
 		return
 	}

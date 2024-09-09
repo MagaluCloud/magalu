@@ -42,6 +42,8 @@ import "magalu.cloud/lib/products/block_storage/volumes"
 package volumes
 
 import (
+	"context"
+
 	mgcCore "magalu.cloud/core"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
@@ -56,13 +58,40 @@ type DetachConfigs struct {
 	ServerUrl *string `json:"serverUrl,omitempty"`
 }
 
-func (s *service) Detach(
+/*func (s *service) Detach(
 	parameters DetachParameters,
 	configs DetachConfigs,
 ) (
 	err error,
 ) {
 	exec, ctx, err := mgcHelpers.PrepareExecutor("Detach", mgcCore.RefPath("/block-storage/volumes/detach"), s.client, s.ctx)
+	if err != nil {
+		return
+	}
+
+	var p mgcCore.Parameters
+	if p, err = mgcHelpers.ConvertParameters[DetachParameters](parameters); err != nil {
+		return
+	}
+
+	var c mgcCore.Configs
+	if c, err = mgcHelpers.ConvertConfigs[DetachConfigs](configs); err != nil {
+		return
+	}
+
+	_, err = exec.Execute(ctx, p, c)
+	return
+}*/
+
+// Context from caller is used to allow cancellation of long-running requests
+func (s *service) DetachContext(
+	ctx context.Context,
+	parameters DetachParameters,
+	configs DetachConfigs,
+) (
+	err error,
+) {
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Detach", mgcCore.RefPath("/block-storage/volumes/detach"), s.client, ctx)
 	if err != nil {
 		return
 	}

@@ -19,6 +19,8 @@ import "magalu.cloud/lib/products/virtual_machine/instances"
 package instances
 
 import (
+	"context"
+
 	mgcCore "magalu.cloud/core"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
@@ -43,7 +45,7 @@ type PasswordResultInstance struct {
 	Password  string `json:"password"`
 }
 
-func (s *service) Password(
+/*func (s *service) Password(
 	parameters PasswordParameters,
 	configs PasswordConfigs,
 ) (
@@ -51,6 +53,37 @@ func (s *service) Password(
 	err error,
 ) {
 	exec, ctx, err := mgcHelpers.PrepareExecutor("Password", mgcCore.RefPath("/virtual-machine/instances/password"), s.client, s.ctx)
+	if err != nil {
+		return
+	}
+
+	var p mgcCore.Parameters
+	if p, err = mgcHelpers.ConvertParameters[PasswordParameters](parameters); err != nil {
+		return
+	}
+
+	var c mgcCore.Configs
+	if c, err = mgcHelpers.ConvertConfigs[PasswordConfigs](configs); err != nil {
+		return
+	}
+
+	r, err := exec.Execute(ctx, p, c)
+	if err != nil {
+		return
+	}
+	return mgcHelpers.ConvertResult[PasswordResult](r)
+}*/
+
+// Context from caller is used to allow cancellation of long-running requests
+func (s *service) PasswordContext(
+	ctx context.Context,
+	parameters PasswordParameters,
+	configs PasswordConfigs,
+) (
+	result PasswordResult,
+	err error,
+) {
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Password", mgcCore.RefPath("/virtual-machine/instances/password"), s.client, ctx)
 	if err != nil {
 		return
 	}

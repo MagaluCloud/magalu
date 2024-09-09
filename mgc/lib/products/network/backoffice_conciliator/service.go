@@ -15,7 +15,8 @@ type service struct {
 }
 
 type Service interface {
-	Create(configs CreateConfigs) (result CreateResult, err error)
+	CreateContext(ctx context.Context, configs CreateConfigs) (result CreateResult, err error)
+	//Create( configs CreateConfigs,) ( result CreateResult, err error,)
 }
 
 func NewService(ctx context.Context, client *mgcClient.Client) Service {

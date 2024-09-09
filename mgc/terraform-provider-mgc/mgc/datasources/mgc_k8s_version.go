@@ -80,7 +80,7 @@ func (r *DataSourceKubernetesVersion) Schema(_ context.Context, req datasource.S
 func (r *DataSourceKubernetesVersion) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
 	var data VersionsModel
 	resp.Diagnostics.Append(req.Config.Get(ctx, &data)...)
-	sdkOutput, err := r.nodepool.List(tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVersion.ListConfigs{}))
+	sdkOutput, err := r.nodepool.ListContext(ctx, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVersion.ListConfigs{}))
 	if err != nil {
 		resp.Diagnostics.AddError("Failed to get versions", err.Error())
 		return

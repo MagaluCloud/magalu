@@ -175,7 +175,7 @@ func (r *k8sClusterResource) Read(ctx context.Context, req resource.ReadRequest,
 	param := sdkCluster.GetParameters{
 		ClusterId: data.ID.ValueString(),
 	}
-	cluster, err := r.k8sCluster.Get(param,
+	cluster, err := r.k8sCluster.GetContext(ctx, param,
 		tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkCluster.GetConfigs{}))
 	if err != nil {
 		resp.Diagnostics.AddError("Failed to get Kubernetes cluster", err.Error())
@@ -203,7 +203,7 @@ func (r *k8sClusterResource) Create(ctx context.Context, req resource.CreateRequ
 	}
 
 	param := convertTerraformModelToSDKCreateParameters(&data)
-	cluster, err := r.k8sCluster.Create(*param,
+	cluster, err := r.k8sCluster.CreateContext(ctx, *param,
 		tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkCluster.CreateConfigs{}))
 	if err != nil {
 		resp.Diagnostics.AddError("Failed to create Kubernetes cluster", err.Error())
@@ -245,7 +245,7 @@ func (r *k8sClusterResource) GetClusterPooling(ctx context.Context, clusterId st
 	var err error
 	for startTime := time.Now(); time.Since(startTime) < ClusterPoolingTimeout; {
 		time.Sleep(1 * time.Minute)
-		result, err = r.k8sCluster.Get(param,
+		result, err = r.k8sCluster.GetContext(ctx, param,
 			tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkCluster.GetConfigs{}))
 		if err != nil {
 			return sdkCluster.GetResult{}, err
@@ -283,7 +283,7 @@ func (r *k8sClusterResource) Update(ctx context.Context, req resource.UpdateRequ
 		AllowedCidrs: &allowedCidrs,
 	}
 
-	_, err := r.k8sCluster.Update(param,
+	_, err := r.k8sCluster.UpdateContext(ctx, param,
 		tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkCluster.UpdateConfigs{}))
 	if err != nil {
 		resp.Diagnostics.AddError("Failed to update Kubernetes cluster", err.Error())
@@ -306,14 +306,14 @@ func (r *k8sClusterResource) Delete(ctx context.Context, req resource.DeleteRequ
 		ClusterId: data.ID.ValueString(),
 	}
 
-	err := r.k8sCluster.Delete(param,
+	err := r.k8sCluster.DeleteContext(ctx, param,
 		tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkCluster.DeleteConfigs{}))
 	if err != nil {
 		resp.Diagnostics.AddError("Failed to delete Kubernetes cluster", err.Error())
 		return
 	}
 
-	r.deleteClusterPooling(data.ID.ValueString())
+	r.deleteClusterPooling(ctx, data.ID.ValueString())
 }
 
 func (r *k8sClusterResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
@@ -328,7 +328,7 @@ func (r *k8sClusterResource) ImportState(ctx context.Context, req resource.Impor
 		ClusterId: clusterId,
 	}
 
-	cluster, err := r.k8sCluster.Get(param,
+	cluster, err := r.k8sCluster.GetContext(ctx, param,
 		tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkCluster.GetConfigs{}))
 	if err != nil {
 		resp.Diagnostics.AddError("Failed to get Kubernetes cluster", err.Error())
@@ -400,10 +400,10 @@ func ConvertSDKCreateResultToTerraformCreateClsuterModel(sdkResult *sdkCluster.G
 	return tfModel
 }
 
-func (r *k8sClusterResource) deleteClusterPooling(clusterId string) {
+func (r *k8sClusterResource) deleteClusterPooling(ctx context.Context, clusterId string) {
 	for startTime := time.Now(); time.Since(startTime) < ClusterPoolingTimeout; {
 		time.Sleep(30 * time.Second)
-		_, err := r.k8sCluster.Get(sdkCluster.GetParameters{
+		_, err := r.k8sCluster.GetContext(ctx, sdkCluster.GetParameters{
 			ClusterId: clusterId,
 		}, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkCluster.GetConfigs{}))
 		if err != nil {

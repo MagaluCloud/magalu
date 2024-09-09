@@ -16,6 +16,8 @@ import "magalu.cloud/lib/products/dbaas/instances"
 package instances
 
 import (
+	"context"
+
 	mgcCore "magalu.cloud/core"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
@@ -115,7 +117,7 @@ type ResizeResultReplicasItemVolume struct {
 
 type ResizeResultReplicas []ResizeResultReplicasItem
 
-func (s *service) Resize(
+/*func (s *service) Resize(
 	parameters ResizeParameters,
 	configs ResizeConfigs,
 ) (
@@ -123,6 +125,37 @@ func (s *service) Resize(
 	err error,
 ) {
 	exec, ctx, err := mgcHelpers.PrepareExecutor("Resize", mgcCore.RefPath("/dbaas/instances/resize"), s.client, s.ctx)
+	if err != nil {
+		return
+	}
+
+	var p mgcCore.Parameters
+	if p, err = mgcHelpers.ConvertParameters[ResizeParameters](parameters); err != nil {
+		return
+	}
+
+	var c mgcCore.Configs
+	if c, err = mgcHelpers.ConvertConfigs[ResizeConfigs](configs); err != nil {
+		return
+	}
+
+	r, err := exec.Execute(ctx, p, c)
+	if err != nil {
+		return
+	}
+	return mgcHelpers.ConvertResult[ResizeResult](r)
+}*/
+
+// Context from caller is used to allow cancellation of long-running requests
+func (s *service) ResizeContext(
+	ctx context.Context,
+	parameters ResizeParameters,
+	configs ResizeConfigs,
+) (
+	result ResizeResult,
+	err error,
+) {
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Resize", mgcCore.RefPath("/dbaas/instances/resize"), s.client, ctx)
 	if err != nil {
 		return
 	}

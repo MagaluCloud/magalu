@@ -16,6 +16,8 @@ import "magalu.cloud/lib/products/kubernetes/flavor"
 package flavor
 
 import (
+	"context"
+
 	mgcCore "magalu.cloud/core"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
@@ -53,13 +55,40 @@ type ListResultResultsItemNodepool []ListResultResultsItemControlplaneItem
 
 type ListResultResults []ListResultResultsItem
 
-func (s *service) List(
+/*func (s *service) List(
 	configs ListConfigs,
 ) (
 	result ListResult,
 	err error,
 ) {
 	exec, ctx, err := mgcHelpers.PrepareExecutor("List", mgcCore.RefPath("/kubernetes/flavor/list"), s.client, s.ctx)
+	if err != nil {
+		return
+	}
+
+	var p mgcCore.Parameters
+
+	var c mgcCore.Configs
+	if c, err = mgcHelpers.ConvertConfigs[ListConfigs](configs); err != nil {
+		return
+	}
+
+	r, err := exec.Execute(ctx, p, c)
+	if err != nil {
+		return
+	}
+	return mgcHelpers.ConvertResult[ListResult](r)
+}*/
+
+// Context from caller is used to allow cancellation of long-running requests
+func (s *service) ListContext(
+	ctx context.Context,
+	configs ListConfigs,
+) (
+	result ListResult,
+	err error,
+) {
+	exec, ctx, err := mgcHelpers.PrepareExecutor("List", mgcCore.RefPath("/kubernetes/flavor/list"), s.client, ctx)
 	if err != nil {
 		return
 	}

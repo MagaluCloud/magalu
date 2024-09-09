@@ -26,6 +26,8 @@ import "magalu.cloud/lib/products/virtual_machine/snapshots"
 package snapshots
 
 import (
+	"context"
+
 	mgcCore "magalu.cloud/core"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
@@ -83,7 +85,7 @@ type RestoreResult struct {
 	Id string `json:"id"`
 }
 
-func (s *service) Restore(
+/*func (s *service) Restore(
 	parameters RestoreParameters,
 	configs RestoreConfigs,
 ) (
@@ -91,6 +93,37 @@ func (s *service) Restore(
 	err error,
 ) {
 	exec, ctx, err := mgcHelpers.PrepareExecutor("Restore", mgcCore.RefPath("/virtual-machine/snapshots/restore"), s.client, s.ctx)
+	if err != nil {
+		return
+	}
+
+	var p mgcCore.Parameters
+	if p, err = mgcHelpers.ConvertParameters[RestoreParameters](parameters); err != nil {
+		return
+	}
+
+	var c mgcCore.Configs
+	if c, err = mgcHelpers.ConvertConfigs[RestoreConfigs](configs); err != nil {
+		return
+	}
+
+	r, err := exec.Execute(ctx, p, c)
+	if err != nil {
+		return
+	}
+	return mgcHelpers.ConvertResult[RestoreResult](r)
+}*/
+
+// Context from caller is used to allow cancellation of long-running requests
+func (s *service) RestoreContext(
+	ctx context.Context,
+	parameters RestoreParameters,
+	configs RestoreConfigs,
+) (
+	result RestoreResult,
+	err error,
+) {
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Restore", mgcCore.RefPath("/virtual-machine/snapshots/restore"), s.client, ctx)
 	if err != nil {
 		return
 	}

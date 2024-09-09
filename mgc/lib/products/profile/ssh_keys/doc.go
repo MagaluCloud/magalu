@@ -3,7 +3,7 @@ Package: ssh_keys
 
 # Description
 
-ssh_keys
+# Manage SSH Keys
 
 Version: 0.1.0
 

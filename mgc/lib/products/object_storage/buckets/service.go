@@ -15,10 +15,14 @@ type service struct {
 }
 
 type Service interface {
-	Create(parameters CreateParameters, configs CreateConfigs) (result CreateResult, err error)
-	Delete(parameters DeleteParameters, configs DeleteConfigs) (result DeleteResult, err error)
-	List(configs ListConfigs) (result ListResult, err error)
-	PublicUrl(parameters PublicUrlParameters, configs PublicUrlConfigs) (result PublicUrlResult, err error)
+	CreateContext(ctx context.Context, parameters CreateParameters, configs CreateConfigs) (result CreateResult, err error)
+	//Create(	parameters CreateParameters, configs CreateConfigs,) ( result CreateResult, err error,)
+	DeleteContext(ctx context.Context, parameters DeleteParameters, configs DeleteConfigs) (result DeleteResult, err error)
+	//Delete(	parameters DeleteParameters, configs DeleteConfigs,) ( result DeleteResult, err error,)
+	ListContext(ctx context.Context, configs ListConfigs) (result ListResult, err error)
+	//List( configs ListConfigs,) ( result ListResult, err error,)
+	PublicUrlContext(ctx context.Context, parameters PublicUrlParameters, configs PublicUrlConfigs) (result PublicUrlResult, err error)
+	//PublicUrl(	parameters PublicUrlParameters, configs PublicUrlConfigs,) ( result PublicUrlResult, err error,)
 }
 
 func NewService(ctx context.Context, client *mgcClient.Client) Service {

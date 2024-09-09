@@ -178,7 +178,7 @@ func (r *bsSnapshots) Read(ctx context.Context, req resource.ReadRequest, resp *
 	data := &bsSnapshotsResourceModel{}
 	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
 
-	result, err := r.bsSnapshots.Get(sdkBlockStorageSnapshots.GetParameters{
+	result, err := r.bsSnapshots.GetContext(ctx, sdkBlockStorageSnapshots.GetParameters{
 		Id: data.ID.ValueString()},
 		tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkBlockStorageSnapshots.GetConfigs{}),
 	)
@@ -215,7 +215,7 @@ func (r *bsSnapshots) Create(ctx context.Context, req resource.CreateRequest, re
 	}
 
 	// Create the block storage
-	createResult, err := r.bsSnapshots.Create(sdkBlockStorageSnapshots.CreateParameters{
+	createResult, err := r.bsSnapshots.CreateContext(ctx, sdkBlockStorageSnapshots.CreateParameters{
 		Description: plan.Description.ValueStringPointer(),
 		Name:        plan.FinalName.String(),
 		Volume: sdkBlockStorageSnapshots.CreateParametersVolume{
@@ -235,7 +235,7 @@ func (r *bsSnapshots) Create(ctx context.Context, req resource.CreateRequest, re
 	state.CreatedAt = types.StringValue(time.Now().Format(time.RFC850))
 	state.UpdatedAt = types.StringValue(time.Now().Format(time.RFC850))
 
-	getCreatedResource, err := r.bsSnapshots.Get(sdkBlockStorageSnapshots.GetParameters{
+	getCreatedResource, err := r.bsSnapshots.GetContext(ctx, sdkBlockStorageSnapshots.GetParameters{
 		Id: state.ID.ValueString(),
 	}, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkBlockStorageSnapshots.GetConfigs{}))
 
@@ -246,7 +246,7 @@ func (r *bsSnapshots) Create(ctx context.Context, req resource.CreateRequest, re
 		)
 		return
 	}
-	r.checkStatusIsCreating(state.ID.ValueString())
+	r.checkStatusIsCreating(ctx, state.ID.ValueString())
 
 	r.setValuesFromServer(getCreatedResource, state)
 
@@ -270,7 +270,7 @@ func (r *bsSnapshots) Delete(ctx context.Context, req resource.DeleteRequest, re
 	var data bsSnapshotsResourceModel
 	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
 
-	err := r.bsSnapshots.Delete(sdkBlockStorageSnapshots.DeleteParameters{
+	err := r.bsSnapshots.DeleteContext(ctx, sdkBlockStorageSnapshots.DeleteParameters{
 		Id: data.ID.ValueString(),
 	}, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkBlockStorageSnapshots.DeleteConfigs{}))
 
@@ -284,7 +284,7 @@ func (r *bsSnapshots) Delete(ctx context.Context, req resource.DeleteRequest, re
 
 }
 
-func (r *bsSnapshots) checkStatusIsCreating(id string) {
+func (r *bsSnapshots) checkStatusIsCreating(ctx context.Context, id string) {
 	getResult := &sdkBlockStorageSnapshots.GetResult{}
 
 	duration := 5 * time.Minute
@@ -301,7 +301,7 @@ func (r *bsSnapshots) checkStatusIsCreating(id string) {
 			return
 		}
 
-		*getResult, err = r.bsSnapshots.Get(getParam, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkBlockStorageSnapshots.GetConfigs{}))
+		*getResult, err = r.bsSnapshots.GetContext(ctx, getParam, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkBlockStorageSnapshots.GetConfigs{}))
 		if err != nil {
 			return
 		}

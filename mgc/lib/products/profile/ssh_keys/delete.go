@@ -3,7 +3,11 @@ Executor: delete
 
 # Summary
 
-# Delete Ssh Key
+# Delete SSH Key
+
+# Description
+
+Delete an SSH key using its id.
 
 Version: 0.1.0
 
@@ -12,6 +16,8 @@ import "magalu.cloud/lib/products/profile/ssh_keys"
 package sshKeys
 
 import (
+	"context"
+
 	mgcCore "magalu.cloud/core"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
@@ -32,7 +38,7 @@ type DeleteResult struct {
 	Name    string `json:"name"`
 }
 
-func (s *service) Delete(
+/*func (s *service) Delete(
 	parameters DeleteParameters,
 	configs DeleteConfigs,
 ) (
@@ -40,6 +46,37 @@ func (s *service) Delete(
 	err error,
 ) {
 	exec, ctx, err := mgcHelpers.PrepareExecutor("Delete", mgcCore.RefPath("/profile/ssh_keys/delete"), s.client, s.ctx)
+	if err != nil {
+		return
+	}
+
+	var p mgcCore.Parameters
+	if p, err = mgcHelpers.ConvertParameters[DeleteParameters](parameters); err != nil {
+		return
+	}
+
+	var c mgcCore.Configs
+	if c, err = mgcHelpers.ConvertConfigs[DeleteConfigs](configs); err != nil {
+		return
+	}
+
+	r, err := exec.Execute(ctx, p, c)
+	if err != nil {
+		return
+	}
+	return mgcHelpers.ConvertResult[DeleteResult](r)
+}*/
+
+// Context from caller is used to allow cancellation of long-running requests
+func (s *service) DeleteContext(
+	ctx context.Context,
+	parameters DeleteParameters,
+	configs DeleteConfigs,
+) (
+	result DeleteResult,
+	err error,
+) {
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Delete", mgcCore.RefPath("/profile/ssh_keys/delete"), s.client, ctx)
 	if err != nil {
 		return
 	}
