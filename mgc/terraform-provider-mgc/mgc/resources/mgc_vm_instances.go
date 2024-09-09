@@ -571,7 +571,7 @@ func (r *vmInstances) getMachineTypeID(ctx context.Context, name string) (*vmIns
 	machineType := vmInstancesMachineTypeModel{}
 	machineTypeList, err := r.vmMachineTypes.ListContext(ctx, sdkVmMachineTypes.ListParameters{}, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVmMachineTypes.ListConfigs{}))
 	if err != nil {
-		return nil, fmt.Errorf("could not load machine-type list, unexpected error: " + err.Error())
+		return nil, fmt.Errorf("could not load machine-type list, unexpected error: %w", err)
 	}
 
 	for _, x := range machineTypeList.MachineTypes {
@@ -586,7 +586,7 @@ func (r *vmInstances) getMachineTypeID(ctx context.Context, name string) (*vmIns
 	}
 
 	if machineType.ID.ValueString() == "" {
-		return nil, fmt.Errorf("could not found machine-type ID with name: " + name)
+		return nil, fmt.Errorf("could not found machine-type ID with name: %s", name)
 	}
 	return &machineType, nil
 }
