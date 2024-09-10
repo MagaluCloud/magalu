@@ -2,6 +2,7 @@ package tfutil
 
 import (
 	"fmt"
+	"os"
 	"reflect"
 	"strings"
 
@@ -9,6 +10,21 @@ import (
 )
 
 type findKey func(key string, out any) error
+
+// // providerData holds the data for a specific provider instance
+// type ProviderData struct {
+// 	Config ProviderConfig
+// }
+
+// // providerDataMap is a thread-safe map to store provider data
+// type ProviderDataMap struct {
+// 	sync.RWMutex
+// 	Data map[string]*ProviderData
+// }
+
+// var ProviderDataStore = &ProviderDataMap{
+// 	Data: make(map[string]*ProviderData),
+// }
 
 type ProviderConfig struct {
 	Region        types.String         `tfsdk:"region"`
@@ -45,6 +61,12 @@ func GetConfigsFromTags[T any](keys findKey, s T) T {
 					fmt.Printf("Error setting field %s: %v\n", env, err)
 				}
 			}
+		}
+	}
+	// Server url
+	if serverUrl, ok := os.LookupEnv("MGC_SERVER_URL"); ok {
+		if err := setField(&s, "ServerUrl", serverUrl); err != nil {
+			fmt.Printf("Error setting field ServerUrl: %v\n", err)
 		}
 	}
 	return s

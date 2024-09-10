@@ -156,6 +156,19 @@ func (s *service) ListContext(
 		return
 	}
 
+	sdkConfig := s.client.Sdk().Config().TempConfig()
+	if c["serverUrl"] == nil && sdkConfig["serverUrl"] != nil {
+		c["serverUrl"] = sdkConfig["serverUrl"]
+	}
+
+	if c["env"] == nil && sdkConfig["env"] != nil {
+		c["env"] = sdkConfig["env"]
+	}
+
+	if c["region"] == nil && sdkConfig["region"] != nil {
+		c["region"] = sdkConfig["region"]
+	}
+
 	r, err := exec.Execute(ctx, p, c)
 	if err != nil {
 		return

@@ -207,6 +207,10 @@ func (c *Config) NewTempConfig() {
 }
 
 func (c *Config) SetTempConfig(key string, value interface{}) error {
+	if value == nil {
+		return nil
+	}
+
 	marshaled, err := marshalValueIfNeeded(value)
 	if err != nil {
 		return fmt.Errorf("unable to marshal config %s: %w", key, err)
@@ -234,6 +238,13 @@ func (c *Config) AddTempKeyPair(pairName, keyID, keySecret string) {
 		c.NewTempConfig()
 	}
 	c.tempConfig.keyPairMap[pairName] = KeyPair{KeyID: keyID, KeySecret: keySecret}
+}
+func (c *Config) TempConfig() map[string]interface{} {
+	result := make(map[string]interface{})
+	for key, value := range c.tempConfig.configMap {
+		result[key] = value
+	}
+	return result
 }
 
 func (c *Config) Set(key string, value interface{}) error {

@@ -6,6 +6,7 @@ import (
 	"os"
 	"slices"
 	"strings"
+	"sync"
 
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
@@ -22,26 +23,26 @@ import (
 	mgcSdk "magalu.cloud/sdk"
 )
 
-var _ provider.Provider = (*MgcProvider)(nil)
+var _ provider.Provider = (*mgcProvider)(nil)
 
 const providerTypeName = "mgc"
 
 var ignoredTFModules = []string{"profile"}
 
-type MgcProvider struct {
+type mgcProvider struct {
 	version string
 	commit  string
 	date    string
 	sdk     *mgcSdk.Sdk
 }
 
-func (p *MgcProvider) Metadata(ctx context.Context, req provider.MetadataRequest, resp *provider.MetadataResponse) {
+func (p *mgcProvider) Metadata(ctx context.Context, req provider.MetadataRequest, resp *provider.MetadataResponse) {
 	tflog.Debug(ctx, "setting provider metadata")
 	resp.TypeName = providerTypeName
 	resp.Version = p.version
 }
 
-func (p *MgcProvider) Schema(ctx context.Context, req provider.SchemaRequest, resp *provider.SchemaResponse) {
+func (p *mgcProvider) Schema(ctx context.Context, req provider.SchemaRequest, resp *provider.SchemaResponse) {
 	tflog.Debug(ctx, "setting provider schema")
 
 	schemaApiKey := schema.SingleNestedAttribute{
@@ -94,26 +95,42 @@ func (p *MgcProvider) Schema(ctx context.Context, req provider.SchemaRequest, re
 
 }
 
-func (p *MgcProvider) Configure(ctx context.Context, req provider.ConfigureRequest, resp *provider.ConfigureResponse) {
+var M sync.Mutex
+
+func (p *mgcProvider) Configure(ctx context.Context, req provider.ConfigureRequest, resp *provider.ConfigureResponse) {
 	tflog.Info(ctx, "configuring MGC provider")
 
 	var data tfutil.ProviderConfig
+	// tfutil.ProviderDataStore.Lock()
+	// M.Lock()
 
 	resp.Diagnostics.Append(req.Config.Get(ctx, &data)...)
 	if resp.Diagnostics.HasError() {
 		tflog.Error(ctx, "fail to get configs from provider")
 	}
 
-	if data.ApiKey.ValueString() == "" || os.Getenv("MGC_API_KEY") != "" {
-		data.ApiKey = types.StringValue(os.Getenv("MGC_API_KEY"))
+	if data.ApiKey.ValueString() == "" {
+		if apiKeyFromOS := os.Getenv("MGC_API_KEY"); apiKeyFromOS != "" {
+			data.ApiKey = types.StringValue(apiKeyFromOS)
+		} else {
+			data.ApiKey = types.StringValue("")
+		}
 	}
 
-	if data.Env.ValueString() == "" || os.Getenv("MGC_ENV") != "" {
-		data.Env = types.StringValue(os.Getenv("MGC_ENV"))
+	if data.Env.ValueString() == "" {
+		if envFromOS := os.Getenv("MGC_ENV"); envFromOS != "" {
+			data.Env = types.StringValue(envFromOS)
+		} else {
+			data.Env = types.StringValue("prod")
+		}
 	}
 
-	if data.Region.ValueString() == "" || os.Getenv("MGC_REGION") != "" {
-		data.Region = types.StringValue(os.Getenv("MGC_REGION"))
+	if data.Region.ValueString() == "" {
+		if regionFromOS := os.Getenv("MGC_REGION"); regionFromOS != "" {
+			data.Region = types.StringValue(regionFromOS)
+		} else {
+			data.Region = types.StringValue("br-se1")
+		}
 	}
 
 	if data.ObjectStorage == nil || (os.Getenv("MGC_OBJ_KEY_ID") != "" && os.Getenv("MGC_OBJ_KEY_SECRET") != "") {
@@ -125,73 +142,19 @@ func (p *MgcProvider) Configure(ctx context.Context, req provider.ConfigureReque
 		}
 	}
 
-	/// here
+	// providerKey := data.Region.ValueString() + "-" + data.Env.ValueString() + "-" + data.ApiKey.ValueString()
 
-	///
-
-	// if !data.Region.IsNull() || os.Getenv("MGC_REGION") != "" {
-	// 	region := os.Getenv("MGC_REGION")
-	// 	if region == "" && !data.Region.IsNull() {
-	// 		region = data.Region.ValueString()
-	// 	}
-	// 	if err := p.sdk.Config().SetTempConfig("region", region); err != nil {
-	// 		tflog.Error(ctx, "fail to set region")
-	// 	}
-	// } else {
-	// 	if err := p.sdk.Config().SetTempConfig("region", "br-se1"); err != nil {
-	// 		tflog.Error(ctx, "fail to set region")
-	// 	}
-	// }
-	// if !data.Env.IsNull() {
-	// 	env := os.Getenv("MGC_ENV")
-	// 	if env == "" && !data.Env.IsNull() {
-	// 		env = data.Env.String()
-	// 	}
-	// 	if err := p.sdk.Config().SetTempConfig("env", env); err != nil {
-	// 		tflog.Error(ctx, "fail to set env")
-	// 	}
-	// }
-	// if !data.ApiKey.IsNull() || os.Getenv("MGC_API_KEY") != "" {
-	// 	apiKey := os.Getenv("MGC_API_KEY")
-
-	// 	if apiKey == "" && !data.ApiKey.IsNull() {
-	// 		apiKey = data.ApiKey.ValueString()
-	// 	}
-
-	// 	err := p.sdk.Auth().SetAPIKey(apiKey)
-	// 	if err != nil {
-	// 		tflog.Error(ctx, "fail to set api key")
-	// 	}
+	// tfutil.ProviderDataStore.Data[providerKey] = &tfutil.ProviderData{
+	// 	Config: data,
 	// }
 
-	// keyId := ""
-	// keySecret := ""
-	// if os.Getenv("MGC_OBJ_KEY_ID") != "" && os.Getenv("MGC_OBJ_KEY_SECRET") != "" {
-	// 	keyId = os.Getenv("MGC_OBJ_KEY_ID")
-	// 	keySecret = os.Getenv("MGC_OBJ_KEY_SECRET")
-	// }
-
-	// if keyId == "" &&
-	// 	keySecret == "" &&
-	// 	data.ObjectStorage != nil &&
-	// 	data.ObjectStorage.ObjectKeyPair != nil &&
-	// 	!data.ObjectStorage.ObjectKeyPair.KeyID.IsNull() &&
-	// 	!data.ObjectStorage.ObjectKeyPair.KeySecret.IsNull() {
-	// 	keyId = data.ObjectStorage.ObjectKeyPair.KeyID.ValueString()
-	// 	keySecret = data.ObjectStorage.ObjectKeyPair.KeySecret.ValueString()
-	// }
-	// if keyId != "" && keySecret != "" {
-	// 	p.sdk.Config().AddTempKeyPair("apikey",
-	// 		keyId,
-	// 		keySecret,
-	// 	)
-	// 	tflog.Debug(ctx, "setting object storage key pair")
-	// }
 	resp.DataSourceData = data
 	resp.ResourceData = data
+	// M.Unlock()
+	// tfutil.ProviderDataStore.Unlock()
 }
 
-func (p *MgcProvider) Resources(ctx context.Context) []func() resource.Resource {
+func (p *mgcProvider) Resources(ctx context.Context) []func() resource.Resource {
 	tflog.Info(ctx, "configuring MGC provider resources")
 
 	root := p.sdk.Group()
@@ -325,7 +288,7 @@ func collectGroupResources(
 	return resources, err
 }
 
-func (p *MgcProvider) DataSources(ctx context.Context) []func() datasource.DataSource {
+func (p *mgcProvider) DataSources(ctx context.Context) []func() datasource.DataSource {
 	tflog.Info(ctx, "configuring MGC provider data sources")
 
 	var dataSources []func() datasource.DataSource
@@ -353,7 +316,7 @@ func New(version string, commit string, date string) func() provider.Provider {
 	mgcSdk.SetUserAgent("MgcTF")
 
 	return func() provider.Provider {
-		return &MgcProvider{
+		return &mgcProvider{
 			sdk:     sdk,
 			version: version,
 			commit:  commit,

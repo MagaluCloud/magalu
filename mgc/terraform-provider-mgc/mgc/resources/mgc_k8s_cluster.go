@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"os"
 	"regexp"
 	"strings"
 	"time"
@@ -56,17 +55,13 @@ func (r *k8sClusterResource) Metadata(_ context.Context, req resource.MetadataRe
 	resp.TypeName = req.ProviderTypeName + "_kubernetes_cluster"
 }
 
-type contextKey string
-
-const pidKey contextKey = "pid"
-
 func (r *k8sClusterResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
 	if req.ProviderData == nil {
 		return
 	}
 
-	config, ok := req.ProviderData.(tfutil.ProviderConfig)
-
+	// providerKey, ok := req.ProviderData.(string)
+	config, ok := req.ProviderData.(*tfutil.ProviderConfig)
 	if !ok {
 		resp.Diagnostics.AddError(
 			"Unexpected Data Source Configure Type",
@@ -74,14 +69,32 @@ func (r *k8sClusterResource) Configure(ctx context.Context, req resource.Configu
 		)
 		return
 	}
+	// tfutil.ProviderDataStore.RLock()
+	// defer tfutil.ProviderDataStore.RUnlock()
+
+	// data, ok := tfutil.ProviderDataStore.Data[providerKey]
+	// if !ok {
+	// 	resp.Diagnostics.AddError(
+	// 		"Unexpected Data Source Configure Type",
+	// 		fmt.Sprintf("Expected provider config, got: %T. Please report this issue to the provider developers.", req.ProviderData),
+	// 	)
+	// 	return
+	// }
+
+	// config := data.Config
 
 	sdk := sdk.NewSdk()
-	_ = sdk.Config().SetTempConfig("region", config.Region.ValueStringPointer())
-	_ = sdk.Config().SetTempConfig("env", config.Env.ValueStringPointer())
-	_ = sdk.Config().SetTempConfig("api_key", config.ApiKey.ValueStringPointer())
-
 	r.sdkClient = mgcSdk.NewClient(sdk)
-	ctx = context.WithValue(ctx, pidKey, os.Getpid())
+	if config.Region.ValueString() != "" {
+		_ = r.sdkClient.Sdk().Config().SetTempConfig("region", config.Region.ValueString())
+	}
+	if config.Env.ValueString() != "" {
+		_ = r.sdkClient.Sdk().Config().SetTempConfig("env", config.Env.ValueString())
+	}
+	if config.ApiKey.ValueString() != "" {
+		_ = r.sdkClient.Sdk().Auth().SetAPIKey(config.ApiKey.ValueString())
+	}
+
 	r.k8sCluster = sdkCluster.NewService(ctx, r.sdkClient)
 }
 
@@ -186,8 +199,7 @@ func (r *k8sClusterResource) Read(ctx context.Context, req resource.ReadRequest,
 	param := sdkCluster.GetParameters{
 		ClusterId: data.ID.ValueString(),
 	}
-	cluster, err := r.k8sCluster.GetContext(ctx, param,
-		tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkCluster.GetConfigs{}))
+	cluster, err := r.k8sCluster.GetContext(ctx, param, sdkCluster.GetConfigs{})
 	if err != nil {
 		resp.Diagnostics.AddError("Failed to get Kubernetes cluster", err.Error())
 		return
