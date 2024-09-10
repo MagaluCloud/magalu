@@ -61,7 +61,7 @@ func (r *k8sClusterResource) Configure(ctx context.Context, req resource.Configu
 	}
 
 	// providerKey, ok := req.ProviderData.(string)
-	config, ok := req.ProviderData.(*tfutil.ProviderConfig)
+	config, ok := req.ProviderData.(tfutil.ProviderConfig)
 	if !ok {
 		resp.Diagnostics.AddError(
 			"Unexpected Data Source Configure Type",
