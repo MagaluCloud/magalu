@@ -29,7 +29,7 @@ type EnableConfigs struct {
 
 type EnableResult any
 
-/*func (s *service) Enable(
+func (s *service) Enable(
 	parameters EnableParameters,
 	configs EnableConfigs,
 ) (
@@ -56,7 +56,7 @@ type EnableResult any
 		return
 	}
 	return mgcHelpers.ConvertResult[EnableResult](r)
-}*/
+}
 
 // Context from caller is used to allow cancellation of long-running requests
 func (s *service) EnableContext(

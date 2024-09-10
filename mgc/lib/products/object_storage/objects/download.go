@@ -35,7 +35,7 @@ type DownloadConfigs struct {
 
 type DownloadResult any
 
-/*func (s *service) Download(
+func (s *service) Download(
 	parameters DownloadParameters,
 	configs DownloadConfigs,
 ) (
@@ -62,7 +62,7 @@ type DownloadResult any
 		return
 	}
 	return mgcHelpers.ConvertResult[DownloadResult](r)
-}*/
+}
 
 // Context from caller is used to allow cancellation of long-running requests
 func (s *service) DownloadContext(

@@ -59,8 +59,6 @@ func (r *k8sClusterResource) Configure(ctx context.Context, req resource.Configu
 	if req.ProviderData == nil {
 		return
 	}
-
-	// providerKey, ok := req.ProviderData.(string)
 	config, ok := req.ProviderData.(tfutil.ProviderConfig)
 	if !ok {
 		resp.Diagnostics.AddError(
@@ -69,19 +67,6 @@ func (r *k8sClusterResource) Configure(ctx context.Context, req resource.Configu
 		)
 		return
 	}
-	// tfutil.ProviderDataStore.RLock()
-	// defer tfutil.ProviderDataStore.RUnlock()
-
-	// data, ok := tfutil.ProviderDataStore.Data[providerKey]
-	// if !ok {
-	// 	resp.Diagnostics.AddError(
-	// 		"Unexpected Data Source Configure Type",
-	// 		fmt.Sprintf("Expected provider config, got: %T. Please report this issue to the provider developers.", req.ProviderData),
-	// 	)
-	// 	return
-	// }
-
-	// config := data.Config
 
 	sdk := sdk.NewSdk()
 	r.sdkClient = mgcSdk.NewClient(sdk)

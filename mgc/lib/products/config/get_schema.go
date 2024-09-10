@@ -173,7 +173,7 @@ type GetSchemaResultAdditionalPropertiesSchemaValueXml struct {
 type GetSchemaResultAdditionalPropertiesSchemaValueXmlExtensions struct {
 }
 
-/*func (s *service) GetSchema(
+func (s *service) GetSchema(
 	parameters GetSchemaParameters,
 ) (
 	result GetSchemaResult,
@@ -196,7 +196,7 @@ type GetSchemaResultAdditionalPropertiesSchemaValueXmlExtensions struct {
 		return
 	}
 	return mgcHelpers.ConvertResult[GetSchemaResult](r)
-}*/
+}
 
 // Context from caller is used to allow cancellation of long-running requests
 func (s *service) GetSchemaContext(

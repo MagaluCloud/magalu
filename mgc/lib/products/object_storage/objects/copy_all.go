@@ -51,7 +51,7 @@ type CopyAllResultFilterItem struct {
 
 type CopyAllResultFilter []CopyAllResultFilterItem
 
-/*func (s *service) CopyAll(
+func (s *service) CopyAll(
 	parameters CopyAllParameters,
 	configs CopyAllConfigs,
 ) (
@@ -78,7 +78,7 @@ type CopyAllResultFilter []CopyAllResultFilterItem
 		return
 	}
 	return mgcHelpers.ConvertResult[CopyAllResult](r)
-}*/
+}
 
 // Context from caller is used to allow cancellation of long-running requests
 func (s *service) CopyAllContext(

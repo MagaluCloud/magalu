@@ -57,7 +57,7 @@ type GetResultInstance struct {
 	Name string `json:"name"`
 }
 
-/*func (s *service) Get(
+func (s *service) Get(
 	parameters GetParameters,
 	configs GetConfigs,
 ) (
@@ -84,7 +84,7 @@ type GetResultInstance struct {
 		return
 	}
 	return mgcHelpers.ConvertResult[GetResult](r)
-}*/
+}
 
 // Context from caller is used to allow cancellation of long-running requests
 func (s *service) GetContext(

@@ -36,7 +36,7 @@ type SyncConfigs struct {
 
 type SyncResult any
 
-/*func (s *service) Sync(
+func (s *service) Sync(
 	parameters SyncParameters,
 	configs SyncConfigs,
 ) (
@@ -63,7 +63,7 @@ type SyncResult any
 		return
 	}
 	return mgcHelpers.ConvertResult[SyncResult](r)
-}*/
+}
 
 // Context from caller is used to allow cancellation of long-running requests
 func (s *service) SyncContext(

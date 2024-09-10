@@ -54,7 +54,7 @@ type AttachConfigs struct {
 	ServerUrl *string `json:"serverUrl,omitempty"`
 }
 
-/*func (s *service) Attach(
+func (s *service) Attach(
 	parameters AttachParameters,
 	configs AttachConfigs,
 ) (
@@ -77,7 +77,7 @@ type AttachConfigs struct {
 
 	_, err = exec.Execute(ctx, p, c)
 	return
-}*/
+}
 
 // Context from caller is used to allow cancellation of long-running requests
 func (s *service) AttachContext(

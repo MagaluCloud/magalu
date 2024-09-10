@@ -24,7 +24,7 @@ type RevokeResult struct {
 	Id string `json:"id"`
 }
 
-/*func (s *service) Revoke(
+func (s *service) Revoke(
 	parameters RevokeParameters,
 ) (
 	result RevokeResult,
@@ -47,7 +47,7 @@ type RevokeResult struct {
 		return
 	}
 	return mgcHelpers.ConvertResult[RevokeResult](r)
-}*/
+}
 
 // Context from caller is used to allow cancellation of long-running requests
 func (s *service) RevokeContext(

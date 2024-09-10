@@ -45,7 +45,7 @@ type PasswordResultInstance struct {
 	Password  string `json:"password"`
 }
 
-/*func (s *service) Password(
+func (s *service) Password(
 	parameters PasswordParameters,
 	configs PasswordConfigs,
 ) (
@@ -72,7 +72,7 @@ type PasswordResultInstance struct {
 		return
 	}
 	return mgcHelpers.ConvertResult[PasswordResult](r)
-}*/
+}
 
 // Context from caller is used to allow cancellation of long-running requests
 func (s *service) PasswordContext(

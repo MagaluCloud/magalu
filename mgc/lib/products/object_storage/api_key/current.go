@@ -28,8 +28,7 @@ type CurrentResult struct {
 	Uuid          string  `json:"uuid"`
 }
 
-/*func (s *service) Current(
-) (
+func (s *service) Current() (
 	result CurrentResult,
 	err error,
 ) {
@@ -47,7 +46,7 @@ type CurrentResult struct {
 		return
 	}
 	return mgcHelpers.ConvertResult[CurrentResult](r)
-}*/
+}
 
 // Context from caller is used to allow cancellation of long-running requests
 func (s *service) CurrentContext(

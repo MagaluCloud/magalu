@@ -42,7 +42,7 @@ type RenameConfigs struct {
 	ServerUrl *string `json:"serverUrl,omitempty"`
 }
 
-/*func (s *service) Rename(
+func (s *service) Rename(
 	parameters RenameParameters,
 	configs RenameConfigs,
 ) (
@@ -65,7 +65,7 @@ type RenameConfigs struct {
 
 	_, err = exec.Execute(ctx, p, c)
 	return
-}*/
+}
 
 // Context from caller is used to allow cancellation of long-running requests
 func (s *service) RenameContext(

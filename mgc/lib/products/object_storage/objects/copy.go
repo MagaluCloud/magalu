@@ -32,7 +32,7 @@ type CopyConfigs struct {
 
 type CopyResult any
 
-/*func (s *service) Copy(
+func (s *service) Copy(
 	parameters CopyParameters,
 	configs CopyConfigs,
 ) (
@@ -59,7 +59,7 @@ type CopyResult any
 		return
 	}
 	return mgcHelpers.ConvertResult[CopyResult](r)
-}*/
+}
 
 // Context from caller is used to allow cancellation of long-running requests
 func (s *service) CopyContext(

@@ -24,7 +24,7 @@ type DeleteResult struct {
 	Name string `json:"name"`
 }
 
-/*func (s *service) Delete(
+func (s *service) Delete(
 	parameters DeleteParameters,
 ) (
 	result DeleteResult,
@@ -47,7 +47,7 @@ type DeleteResult struct {
 		return
 	}
 	return mgcHelpers.ConvertResult[DeleteResult](r)
-}*/
+}
 
 // Context from caller is used to allow cancellation of long-running requests
 func (s *service) DeleteContext(

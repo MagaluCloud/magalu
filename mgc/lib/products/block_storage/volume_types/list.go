@@ -52,7 +52,7 @@ type ListResultTypesItemIops struct {
 
 type ListResultTypes []ListResultTypesItem
 
-/*func (s *service) List(
+func (s *service) List(
 	configs ListConfigs,
 ) (
 	result ListResult,
@@ -75,7 +75,7 @@ type ListResultTypes []ListResultTypesItem
 		return
 	}
 	return mgcHelpers.ConvertResult[ListResult](r)
-}*/
+}
 
 // Context from caller is used to allow cancellation of long-running requests
 func (s *service) ListContext(

@@ -24,7 +24,7 @@ type AccessTokenResult struct {
 	AccessToken *string `json:"access_token,omitempty"`
 }
 
-/*func (s *service) AccessToken(
+func (s *service) AccessToken(
 	parameters AccessTokenParameters,
 ) (
 	result AccessTokenResult,
@@ -47,7 +47,7 @@ type AccessTokenResult struct {
 		return
 	}
 	return mgcHelpers.ConvertResult[AccessTokenResult](r)
-}*/
+}
 
 // Context from caller is used to allow cancellation of long-running requests
 func (s *service) AccessTokenContext(

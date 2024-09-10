@@ -24,7 +24,7 @@ type SetResult struct {
 	Name string `json:"name"`
 }
 
-/*func (s *service) Set(
+func (s *service) Set(
 	parameters SetParameters,
 ) (
 	result SetResult,
@@ -47,7 +47,7 @@ type SetResult struct {
 		return
 	}
 	return mgcHelpers.ConvertResult[SetResult](r)
-}*/
+}
 
 // Context from caller is used to allow cancellation of long-running requests
 func (s *service) SetContext(

@@ -54,7 +54,7 @@ type DetachConfigs struct {
 	ServerUrl *string `json:"serverUrl,omitempty"`
 }
 
-/*func (s *service) Detach(
+func (s *service) Detach(
 	parameters DetachParameters,
 	configs DetachConfigs,
 ) (
@@ -77,7 +77,7 @@ type DetachConfigs struct {
 
 	_, err = exec.Execute(ctx, p, c)
 	return
-}*/
+}
 
 // Context from caller is used to allow cancellation of long-running requests
 func (s *service) DetachContext(

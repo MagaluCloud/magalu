@@ -6,7 +6,6 @@ import (
 	"os"
 	"slices"
 	"strings"
-	"sync"
 
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
@@ -95,14 +94,10 @@ func (p *mgcProvider) Schema(ctx context.Context, req provider.SchemaRequest, re
 
 }
 
-var M sync.Mutex
-
 func (p *mgcProvider) Configure(ctx context.Context, req provider.ConfigureRequest, resp *provider.ConfigureResponse) {
 	tflog.Info(ctx, "configuring MGC provider")
 
 	var data tfutil.ProviderConfig
-	// tfutil.ProviderDataStore.Lock()
-	// M.Lock()
 
 	resp.Diagnostics.Append(req.Config.Get(ctx, &data)...)
 	if resp.Diagnostics.HasError() {
@@ -142,16 +137,8 @@ func (p *mgcProvider) Configure(ctx context.Context, req provider.ConfigureReque
 		}
 	}
 
-	// providerKey := data.Region.ValueString() + "-" + data.Env.ValueString() + "-" + data.ApiKey.ValueString()
-
-	// tfutil.ProviderDataStore.Data[providerKey] = &tfutil.ProviderData{
-	// 	Config: data,
-	// }
-
 	resp.DataSourceData = data
 	resp.ResourceData = data
-	// M.Unlock()
-	// tfutil.ProviderDataStore.Unlock()
 }
 
 func (p *mgcProvider) Resources(ctx context.Context) []func() resource.Resource {

@@ -33,7 +33,7 @@ type PresignResult struct {
 	Url string `json:"url"`
 }
 
-/*func (s *service) Presign(
+func (s *service) Presign(
 	parameters PresignParameters,
 	configs PresignConfigs,
 ) (
@@ -60,7 +60,7 @@ type PresignResult struct {
 		return
 	}
 	return mgcHelpers.ConvertResult[PresignResult](r)
-}*/
+}
 
 // Context from caller is used to allow cancellation of long-running requests
 func (s *service) PresignContext(

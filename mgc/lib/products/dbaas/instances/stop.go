@@ -110,7 +110,7 @@ type StopResultReplicasItemVolume struct {
 
 type StopResultReplicas []StopResultReplicasItem
 
-/*func (s *service) Stop(
+func (s *service) Stop(
 	parameters StopParameters,
 	configs StopConfigs,
 ) (
@@ -137,7 +137,7 @@ type StopResultReplicas []StopResultReplicasItem
 		return
 	}
 	return mgcHelpers.ConvertResult[StopResult](r)
-}*/
+}
 
 // Context from caller is used to allow cancellation of long-running requests
 func (s *service) StopContext(

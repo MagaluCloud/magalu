@@ -38,7 +38,7 @@ type StartConfigs struct {
 	ServerUrl *string `json:"serverUrl,omitempty"`
 }
 
-/*func (s *service) Start(
+func (s *service) Start(
 	parameters StartParameters,
 	configs StartConfigs,
 ) (
@@ -61,7 +61,7 @@ type StartConfigs struct {
 
 	_, err = exec.Execute(ctx, p, c)
 	return
-}*/
+}
 
 // Context from caller is used to allow cancellation of long-running requests
 func (s *service) StartContext(

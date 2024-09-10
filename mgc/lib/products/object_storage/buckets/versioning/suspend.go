@@ -29,7 +29,7 @@ type SuspendConfigs struct {
 
 type SuspendResult any
 
-/*func (s *service) Suspend(
+func (s *service) Suspend(
 	parameters SuspendParameters,
 	configs SuspendConfigs,
 ) (
@@ -56,7 +56,7 @@ type SuspendResult any
 		return
 	}
 	return mgcHelpers.ConvertResult[SuspendResult](r)
-}*/
+}
 
 // Context from caller is used to allow cancellation of long-running requests
 func (s *service) SuspendContext(

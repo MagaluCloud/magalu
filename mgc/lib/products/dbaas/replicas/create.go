@@ -38,7 +38,7 @@ type CreateResult struct {
 	Id string `json:"id"`
 }
 
-/*func (s *service) Create(
+func (s *service) Create(
 	parameters CreateParameters,
 	configs CreateConfigs,
 ) (
@@ -65,7 +65,7 @@ type CreateResult struct {
 		return
 	}
 	return mgcHelpers.ConvertResult[CreateResult](r)
-}*/
+}
 
 // Context from caller is used to allow cancellation of long-running requests
 func (s *service) CreateContext(

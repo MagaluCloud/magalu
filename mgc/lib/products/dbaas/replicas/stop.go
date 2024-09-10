@@ -73,7 +73,7 @@ type StopResultVolume struct {
 	Type string `json:"type"`
 }
 
-/*func (s *service) Stop(
+func (s *service) Stop(
 	parameters StopParameters,
 	configs StopConfigs,
 ) (
@@ -100,7 +100,7 @@ type StopResultVolume struct {
 		return
 	}
 	return mgcHelpers.ConvertResult[StopResult](r)
-}*/
+}
 
 // Context from caller is used to allow cancellation of long-running requests
 func (s *service) StopContext(

@@ -27,7 +27,7 @@ type CreateResult struct {
 	Uuid *string `json:"uuid,omitempty"`
 }
 
-/*func (s *service) Create(
+func (s *service) Create(
 	parameters CreateParameters,
 ) (
 	result CreateResult,
@@ -50,7 +50,7 @@ type CreateResult struct {
 		return
 	}
 	return mgcHelpers.ConvertResult[CreateResult](r)
-}*/
+}
 
 // Context from caller is used to allow cancellation of long-running requests
 func (s *service) CreateContext(

@@ -39,7 +39,7 @@ type SuspendConfigs struct {
 	ServerUrl *string `json:"serverUrl,omitempty"`
 }
 
-/*func (s *service) Suspend(
+func (s *service) Suspend(
 	parameters SuspendParameters,
 	configs SuspendConfigs,
 ) (
@@ -62,7 +62,7 @@ type SuspendConfigs struct {
 
 	_, err = exec.Execute(ctx, p, c)
 	return
-}*/
+}
 
 // Context from caller is used to allow cancellation of long-running requests
 func (s *service) SuspendContext(

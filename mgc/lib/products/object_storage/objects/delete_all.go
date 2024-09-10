@@ -38,7 +38,7 @@ type DeleteAllConfigs struct {
 
 type DeleteAllResult any
 
-/*func (s *service) DeleteAll(
+func (s *service) DeleteAll(
 	parameters DeleteAllParameters,
 	configs DeleteAllConfigs,
 ) (
@@ -65,7 +65,7 @@ type DeleteAllResult any
 		return
 	}
 	return mgcHelpers.ConvertResult[DeleteAllResult](r)
-}*/
+}
 
 // Context from caller is used to allow cancellation of long-running requests
 func (s *service) DeleteAllContext(

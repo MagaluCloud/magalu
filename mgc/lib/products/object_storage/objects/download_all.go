@@ -42,7 +42,7 @@ type DownloadAllResult struct {
 	Src        string  `json:"src"`
 }
 
-/*func (s *service) DownloadAll(
+func (s *service) DownloadAll(
 	parameters DownloadAllParameters,
 	configs DownloadAllConfigs,
 ) (
@@ -69,7 +69,7 @@ type DownloadAllResult struct {
 		return
 	}
 	return mgcHelpers.ConvertResult[DownloadAllResult](r)
-}*/
+}
 
 // Context from caller is used to allow cancellation of long-running requests
 func (s *service) DownloadAllContext(

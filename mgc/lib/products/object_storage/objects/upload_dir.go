@@ -43,7 +43,7 @@ type UploadDirResult struct {
 	Uri string `json:"uri"`
 }
 
-/*func (s *service) UploadDir(
+func (s *service) UploadDir(
 	parameters UploadDirParameters,
 	configs UploadDirConfigs,
 ) (
@@ -70,7 +70,7 @@ type UploadDirResult struct {
 		return
 	}
 	return mgcHelpers.ConvertResult[UploadDirResult](r)
-}*/
+}
 
 // Context from caller is used to allow cancellation of long-running requests
 func (s *service) UploadDirContext(

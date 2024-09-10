@@ -35,7 +35,7 @@ type AttachConfigs struct {
 
 type AttachResult any
 
-/*func (s *service) Attach(
+func (s *service) Attach(
 	parameters AttachParameters,
 	configs AttachConfigs,
 ) (
@@ -62,7 +62,7 @@ type AttachResult any
 		return
 	}
 	return mgcHelpers.ConvertResult[AttachResult](r)
-}*/
+}
 
 // Context from caller is used to allow cancellation of long-running requests
 func (s *service) AttachContext(

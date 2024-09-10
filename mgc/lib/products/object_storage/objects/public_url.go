@@ -31,7 +31,7 @@ type PublicUrlResult struct {
 	Url string `json:"url"`
 }
 
-/*func (s *service) PublicUrl(
+func (s *service) PublicUrl(
 	parameters PublicUrlParameters,
 	configs PublicUrlConfigs,
 ) (
@@ -58,7 +58,7 @@ type PublicUrlResult struct {
 		return
 	}
 	return mgcHelpers.ConvertResult[PublicUrlResult](r)
-}*/
+}
 
 // Context from caller is used to allow cancellation of long-running requests
 func (s *service) PublicUrlContext(

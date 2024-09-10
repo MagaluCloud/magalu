@@ -64,7 +64,7 @@ type RetypeConfigs struct {
 	ServerUrl *string `json:"serverUrl,omitempty"`
 }
 
-/*func (s *service) Retype(
+func (s *service) Retype(
 	parameters RetypeParameters,
 	configs RetypeConfigs,
 ) (
@@ -87,7 +87,7 @@ type RetypeConfigs struct {
 
 	_, err = exec.Execute(ctx, p, c)
 	return
-}*/
+}
 
 // Context from caller is used to allow cancellation of long-running requests
 func (s *service) RetypeContext(

@@ -113,7 +113,7 @@ type NodesResultResultsItemTaints []NodesResultResultsItemTaintsItem
 
 type NodesResultResults []NodesResultResultsItem
 
-/*func (s *service) Nodes(
+func (s *service) Nodes(
 	parameters NodesParameters,
 	configs NodesConfigs,
 ) (
@@ -140,7 +140,7 @@ type NodesResultResults []NodesResultResultsItem
 		return
 	}
 	return mgcHelpers.ConvertResult[NodesResult](r)
-}*/
+}
 
 // Context from caller is used to allow cancellation of long-running requests
 func (s *service) NodesContext(

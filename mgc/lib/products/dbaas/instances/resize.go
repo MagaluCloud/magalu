@@ -117,7 +117,7 @@ type ResizeResultReplicasItemVolume struct {
 
 type ResizeResultReplicas []ResizeResultReplicasItem
 
-/*func (s *service) Resize(
+func (s *service) Resize(
 	parameters ResizeParameters,
 	configs ResizeConfigs,
 ) (
@@ -144,7 +144,7 @@ type ResizeResultReplicas []ResizeResultReplicasItem
 		return
 	}
 	return mgcHelpers.ConvertResult[ResizeResult](r)
-}*/
+}
 
 // Context from caller is used to allow cancellation of long-running requests
 func (s *service) ResizeContext(

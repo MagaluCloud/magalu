@@ -44,7 +44,7 @@ type LoginResultSelectedTenant struct {
 	Uuid        string `json:"uuid"`
 }
 
-/*func (s *service) Login(
+func (s *service) Login(
 	parameters LoginParameters,
 ) (
 	result LoginResult,
@@ -67,7 +67,7 @@ type LoginResultSelectedTenant struct {
 		return
 	}
 	return mgcHelpers.ConvertResult[LoginResult](r)
-}*/
+}
 
 // Context from caller is used to allow cancellation of long-running requests
 func (s *service) LoginContext(

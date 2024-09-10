@@ -40,7 +40,7 @@ type MoveDirResult struct {
 	Src       string `json:"src"`
 }
 
-/*func (s *service) MoveDir(
+func (s *service) MoveDir(
 	parameters MoveDirParameters,
 	configs MoveDirConfigs,
 ) (
@@ -67,7 +67,7 @@ type MoveDirResult struct {
 		return
 	}
 	return mgcHelpers.ConvertResult[MoveDirResult](r)
-}*/
+}
 
 // Context from caller is used to allow cancellation of long-running requests
 func (s *service) MoveDirContext(

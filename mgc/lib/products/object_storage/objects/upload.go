@@ -34,7 +34,7 @@ type UploadResult struct {
 	Uri  string `json:"uri"`
 }
 
-/*func (s *service) Upload(
+func (s *service) Upload(
 	parameters UploadParameters,
 	configs UploadConfigs,
 ) (
@@ -61,7 +61,7 @@ type UploadResult struct {
 		return
 	}
 	return mgcHelpers.ConvertResult[UploadResult](r)
-}*/
+}
 
 // Context from caller is used to allow cancellation of long-running requests
 func (s *service) UploadContext(

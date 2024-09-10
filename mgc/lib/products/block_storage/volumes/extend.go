@@ -50,7 +50,7 @@ type ExtendConfigs struct {
 	ServerUrl *string `json:"serverUrl,omitempty"`
 }
 
-/*func (s *service) Extend(
+func (s *service) Extend(
 	parameters ExtendParameters,
 	configs ExtendConfigs,
 ) (
@@ -73,7 +73,7 @@ type ExtendConfigs struct {
 
 	_, err = exec.Execute(ctx, p, c)
 	return
-}*/
+}
 
 // Context from caller is used to allow cancellation of long-running requests
 func (s *service) ExtendContext(

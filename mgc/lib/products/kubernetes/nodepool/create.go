@@ -111,7 +111,7 @@ type CreateResultTaints []CreateParametersTaintsItem
 
 type CreateResultZone []string
 
-/*func (s *service) Create(
+func (s *service) Create(
 	parameters CreateParameters,
 	configs CreateConfigs,
 ) (
@@ -138,7 +138,7 @@ type CreateResultZone []string
 		return
 	}
 	return mgcHelpers.ConvertResult[CreateResult](r)
-}*/
+}
 
 // Context from caller is used to allow cancellation of long-running requests
 func (s *service) CreateContext(

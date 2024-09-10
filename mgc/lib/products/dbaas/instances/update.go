@@ -113,7 +113,7 @@ type UpdateResultReplicasItemVolume struct {
 
 type UpdateResultReplicas []UpdateResultReplicasItem
 
-/*func (s *service) Update(
+func (s *service) Update(
 	parameters UpdateParameters,
 	configs UpdateConfigs,
 ) (
@@ -140,7 +140,7 @@ type UpdateResultReplicas []UpdateResultReplicasItem
 		return
 	}
 	return mgcHelpers.ConvertResult[UpdateResult](r)
-}*/
+}
 
 // Context from caller is used to allow cancellation of long-running requests
 func (s *service) UpdateContext(

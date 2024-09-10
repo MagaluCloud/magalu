@@ -55,7 +55,7 @@ type FlavorsResultResultsItemNodepool []FlavorsResultResultsItemControlplaneItem
 
 type FlavorsResultResults []FlavorsResultResultsItem
 
-/*func (s *service) Flavors(
+func (s *service) Flavors(
 	configs FlavorsConfigs,
 ) (
 	result FlavorsResult,
@@ -78,7 +78,7 @@ type FlavorsResultResults []FlavorsResultResultsItem
 		return
 	}
 	return mgcHelpers.ConvertResult[FlavorsResult](r)
-}*/
+}
 
 // Context from caller is used to allow cancellation of long-running requests
 func (s *service) FlavorsContext(

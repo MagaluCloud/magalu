@@ -90,7 +90,7 @@ type ListResultPortsSimplifiedItemIpAddress []ListResultPortsSimplifiedItemIpAdd
 
 type ListResultPortsSimplified []ListResultPortsSimplifiedItem
 
-/*func (s *service) List(
+func (s *service) List(
 	parameters ListParameters,
 	configs ListConfigs,
 ) (
@@ -117,7 +117,7 @@ type ListResultPortsSimplified []ListResultPortsSimplifiedItem
 		return
 	}
 	return mgcHelpers.ConvertResult[ListResult](r)
-}*/
+}
 
 // Context from caller is used to allow cancellation of long-running requests
 func (s *service) ListContext(

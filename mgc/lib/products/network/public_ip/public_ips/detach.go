@@ -35,7 +35,7 @@ type DetachConfigs struct {
 
 type DetachResult any
 
-/*func (s *service) Detach(
+func (s *service) Detach(
 	parameters DetachParameters,
 	configs DetachConfigs,
 ) (
@@ -62,7 +62,7 @@ type DetachResult any
 		return
 	}
 	return mgcHelpers.ConvertResult[DetachResult](r)
-}*/
+}
 
 // Context from caller is used to allow cancellation of long-running requests
 func (s *service) DetachContext(

@@ -38,7 +38,7 @@ type MoveResult struct {
 	Src string `json:"src"`
 }
 
-/*func (s *service) Move(
+func (s *service) Move(
 	parameters MoveParameters,
 	configs MoveConfigs,
 ) (
@@ -65,7 +65,7 @@ type MoveResult struct {
 		return
 	}
 	return mgcHelpers.ConvertResult[MoveResult](r)
-}*/
+}
 
 // Context from caller is used to allow cancellation of long-running requests
 func (s *service) MoveContext(

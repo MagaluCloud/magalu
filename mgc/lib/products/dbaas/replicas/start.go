@@ -73,7 +73,7 @@ type StartResultVolume struct {
 	Type string `json:"type"`
 }
 
-/*func (s *service) Start(
+func (s *service) Start(
 	parameters StartParameters,
 	configs StartConfigs,
 ) (
@@ -100,7 +100,7 @@ type StartResultVolume struct {
 		return
 	}
 	return mgcHelpers.ConvertResult[StartResult](r)
-}*/
+}
 
 // Context from caller is used to allow cancellation of long-running requests
 func (s *service) StartContext(

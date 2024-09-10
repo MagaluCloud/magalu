@@ -22,7 +22,9 @@ import "{{ .PackageImport }}"
 package {{ .PackageName }}
 
 import (
+	{{- if ne .GoName "Kubeconfig" }}
 	"context"
+	{{- end }}
 
 	mgcCore "magalu.cloud/core"
 	mgcHelpers "{{ .HelpersImport }}"
@@ -78,7 +80,7 @@ func (s *service) Kubeconfig(parameters KubeconfigParameters, configs Kubeconfig
 }
 
 {{- else }}
-	/*func (s *service) {{ .GoName }}(
+	func (s *service) {{ .GoName }}(
 
 	{{- if .Types.Parameters }}
 		parameters {{ .Types.Parameters }},
@@ -120,7 +122,7 @@ func (s *service) Kubeconfig(parameters KubeconfigParameters, configs Kubeconfig
 		_, err = exec.Execute(ctx, p, c)
 		return
 	{{ end -}}
-	}*/
+	}
 
 	// Context from caller is used to allow cancellation of long-running requests
 	func (s *service) {{ .GoName }}Context(

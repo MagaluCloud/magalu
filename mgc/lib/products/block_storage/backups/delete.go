@@ -40,7 +40,7 @@ type DeleteConfigs struct {
 	ServerUrl *string `json:"serverUrl,omitempty"`
 }
 
-/*func (s *service) Delete(
+func (s *service) Delete(
 	parameters DeleteParameters,
 	configs DeleteConfigs,
 ) (
@@ -63,7 +63,7 @@ type DeleteConfigs struct {
 
 	_, err = exec.Execute(ctx, p, c)
 	return
-}*/
+}
 
 // Context from caller is used to allow cancellation of long-running requests
 func (s *service) DeleteContext(

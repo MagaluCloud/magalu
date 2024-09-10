@@ -38,7 +38,7 @@ type StopConfigs struct {
 	ServerUrl *string `json:"serverUrl,omitempty"`
 }
 
-/*func (s *service) Stop(
+func (s *service) Stop(
 	parameters StopParameters,
 	configs StopConfigs,
 ) (
@@ -61,7 +61,7 @@ type StopConfigs struct {
 
 	_, err = exec.Execute(ctx, p, c)
 	return
-}*/
+}
 
 // Context from caller is used to allow cancellation of long-running requests
 func (s *service) StopContext(

@@ -53,7 +53,7 @@ type SetConfigs struct {
 
 type SetResult any
 
-/*func (s *service) Set(
+func (s *service) Set(
 	parameters SetParameters,
 	configs SetConfigs,
 ) (
@@ -80,7 +80,7 @@ type SetResult any
 		return
 	}
 	return mgcHelpers.ConvertResult[SetResult](r)
-}*/
+}
 
 // Context from caller is used to allow cancellation of long-running requests
 func (s *service) SetContext(

@@ -97,7 +97,7 @@ type GetResultNetworkVpc struct {
 	Name string `json:"name"`
 }
 
-/*func (s *service) Get(
+func (s *service) Get(
 	parameters GetParameters,
 	configs GetConfigs,
 ) (
@@ -124,7 +124,7 @@ type GetResultNetworkVpc struct {
 		return
 	}
 	return mgcHelpers.ConvertResult[GetResult](r)
-}*/
+}
 
 // Context from caller is used to allow cancellation of long-running requests
 func (s *service) GetContext(
@@ -185,8 +185,7 @@ func (s *service) GetUntilTermination(
 	exec, ok := e.(mgcCore.TerminatorExecutor)
 	if !ok {
 		// Not expected, but let's fallback
-		return s.GetContext(
-			ctx,
+		return s.Get(
 			parameters,
 			configs,
 		)

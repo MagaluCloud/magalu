@@ -39,7 +39,7 @@ type RebootConfigs struct {
 	ServerUrl *string `json:"serverUrl,omitempty"`
 }
 
-/*func (s *service) Reboot(
+func (s *service) Reboot(
 	parameters RebootParameters,
 	configs RebootConfigs,
 ) (
@@ -62,7 +62,7 @@ type RebootConfigs struct {
 
 	_, err = exec.Execute(ctx, p, c)
 	return
-}*/
+}
 
 // Context from caller is used to allow cancellation of long-running requests
 func (s *service) RebootContext(

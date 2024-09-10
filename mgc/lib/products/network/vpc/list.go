@@ -53,7 +53,7 @@ type ListResultVpcsItemSubnets []string
 
 type ListResultVpcs []ListResultVpcsItem
 
-/*func (s *service) List(
+func (s *service) List(
 	configs ListConfigs,
 ) (
 	result ListResult,
@@ -76,7 +76,7 @@ type ListResultVpcs []ListResultVpcsItem
 		return
 	}
 	return mgcHelpers.ConvertResult[ListResult](r)
-}*/
+}
 
 // Context from caller is used to allow cancellation of long-running requests
 func (s *service) ListContext(

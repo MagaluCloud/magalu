@@ -37,7 +37,7 @@ type RestoresResult struct {
 	Id string `json:"id"`
 }
 
-/*func (s *service) Restores(
+func (s *service) Restores(
 	parameters RestoresParameters,
 	configs RestoresConfigs,
 ) (
@@ -64,7 +64,7 @@ type RestoresResult struct {
 		return
 	}
 	return mgcHelpers.ConvertResult[RestoresResult](r)
-}*/
+}
 
 // Context from caller is used to allow cancellation of long-running requests
 func (s *service) RestoresContext(

@@ -110,7 +110,7 @@ type StartResultReplicasItemVolume struct {
 
 type StartResultReplicas []StartResultReplicasItem
 
-/*func (s *service) Start(
+func (s *service) Start(
 	parameters StartParameters,
 	configs StartConfigs,
 ) (
@@ -137,7 +137,7 @@ type StartResultReplicas []StartResultReplicasItem
 		return
 	}
 	return mgcHelpers.ConvertResult[StartResult](r)
-}*/
+}
 
 // Context from caller is used to allow cancellation of long-running requests
 func (s *service) StartContext(

@@ -46,7 +46,7 @@ type VersionsResultItemOwner struct {
 
 type VersionsResult []VersionsResultItem
 
-/*func (s *service) Versions(
+func (s *service) Versions(
 	parameters VersionsParameters,
 	configs VersionsConfigs,
 ) (
@@ -73,7 +73,7 @@ type VersionsResult []VersionsResultItem
 		return
 	}
 	return mgcHelpers.ConvertResult[VersionsResult](r)
-}*/
+}
 
 // Context from caller is used to allow cancellation of long-running requests
 func (s *service) VersionsContext(

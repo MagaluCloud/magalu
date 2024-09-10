@@ -37,7 +37,7 @@ type HeadResult struct {
 	StorageClass  string `json:"StorageClass"`
 }
 
-/*func (s *service) Head(
+func (s *service) Head(
 	parameters HeadParameters,
 	configs HeadConfigs,
 ) (
@@ -64,7 +64,7 @@ type HeadResult struct {
 		return
 	}
 	return mgcHelpers.ConvertResult[HeadResult](r)
-}*/
+}
 
 // Context from caller is used to allow cancellation of long-running requests
 func (s *service) HeadContext(
