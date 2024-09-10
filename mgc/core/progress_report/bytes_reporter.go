@@ -10,6 +10,7 @@ const bytesProgressReporterKey contextKey = "magalu.cli/core/progressreport/byte
 
 type bytesProgressReport struct {
 	bytes uint64
+	size  uint64
 	err   error
 }
 
@@ -61,6 +62,13 @@ func (r *BytesReporter) Report(bytes uint64, err error) {
 	r.reportChan <- bytesProgressReport{bytes: bytes, err: err}
 }
 
+func (r *BytesReporter) IncreaseTotal(size uint64, err error) {
+	if r == nil {
+		return
+	}
+	r.reportChan <- bytesProgressReport{size: size, err: err}
+}
+
 func (r *BytesReporter) End() {
 	if r.reportChan == nil {
 		return
@@ -76,6 +84,7 @@ func (r *BytesReporter) End() {
 
 func (r *BytesReporter) progressReportSubroutine() {
 	bytesDone := uint64(0)
+	total := r.size
 
 	// Report we're starting progress
 	r.reportProgress(r.name, bytesDone, r.size, UnitsBytes, nil)
@@ -84,10 +93,11 @@ func (r *BytesReporter) progressReportSubroutine() {
 
 	for report := range r.reportChan {
 		bytesDone += report.bytes
+		total += report.size
 		if report.err != nil && !errors.Is(report.err, io.EOF) {
 			err = report.err
 		}
-		r.reportProgress(r.name, bytesDone, r.size, UnitsBytes, nil)
+		r.reportProgress(r.name, bytesDone, total, UnitsBytes, nil)
 	}
 	// Set DONE flag
 	if err == nil {

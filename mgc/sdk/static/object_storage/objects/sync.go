@@ -90,17 +90,26 @@ func sync(ctx context.Context, params syncParams, cfg common.Config) (result cor
 		return nil, err
 	}
 
+	progressReporter := progress_report.NewBytesReporter(ctx, "Syncing Folder", 0)
+	progressReporter.Start()
+
+	defer progressReporter.End()
+
 	srcObjects := pipeline.WalkDirEntriesBound(ctx, basePath.String(), func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
 			return err
 		}
+
+		if d.IsDir() {
+			filesSize, err := getFilesSize(path)
+			if err != nil {
+				return err
+			}
+
+			progressReporter.IncreaseTotal(filesSize, err)
+		}
 		return nil
 	}, 8000)
-
-	progressReporter := progress_report.NewUnitsReporter(ctx, "Syncing Folder", 0)
-	progressReporter.Start()
-
-	defer progressReporter.End()
 
 	fillBucketFiles(ctx, params, cfg)
 
@@ -114,7 +123,7 @@ func sync(ctx context.Context, params syncParams, cfg common.Config) (result cor
 
 	for _, er := range objErr {
 		if er != nil {
-			progressReporter.Report(0, 0, er)
+			progressReporter.Report(0, er)
 			return nil, objErr
 		}
 	}
@@ -187,7 +196,7 @@ func createObjectSyncFilePairProcessor(
 	cfg common.Config,
 	source mgcSchemaPkg.URI,
 	destination mgcSchemaPkg.URI,
-	progressReporter *progress_report.UnitsReporter,
+	progressReporter *progress_report.BytesReporter,
 	basePath mgcSchemaPkg.URI,
 ) pipeline.Processor[pipeline.WalkDirEntry, syncUploadPair] {
 	return func(ctx context.Context, entry pipeline.WalkDirEntry) (syncUploadPair, pipeline.ProcessStatus) {
@@ -211,7 +220,7 @@ func createObjectSyncFilePairProcessor(
 			return syncUploadPair{}, pipeline.ProcessAbort
 		}
 
-		progressReporter.Report(0, 1, nil)
+		progressReporter.IncreaseTotal(1, nil)
 
 		if allBucketFiles[pathWithFolder] {
 			delete(allBucketFiles, pathWithFolder)
@@ -230,12 +239,12 @@ func createObjectSyncFilePairProcessor(
 
 func createSyncObjectProcessor(
 	cfg common.Config,
-	progressReporter *progress_report.UnitsReporter,
+	progressReporter *progress_report.BytesReporter,
 ) pipeline.Processor[syncUploadPair, error] {
 	return func(ctx context.Context, entry syncUploadPair) (error, pipeline.ProcessStatus) {
 		var err error
 		defer func(cause error) {
-			progressReporter.Report(1, 0, err)
+			progressReporter.Report(uint64(entry.Stats.SourceLength), err)
 		}(err)
 
 		logger().Debug("%s %s\n", entry.Source, entry.Destination)
