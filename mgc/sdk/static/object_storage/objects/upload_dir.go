@@ -75,6 +75,7 @@ func createObjectUploadProcessor(cfg common.Config, destination mgcSchemaPkg.URI
 }
 
 func uploadDir(ctx context.Context, params uploadDirParams, cfg common.Config) (*uploadDirResult, error) {
+	ctx = common.WithNoIndividualReport(ctx)
 	ctx, cancel := context.WithCancelCause(ctx)
 	defer cancel(nil)
 

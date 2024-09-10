@@ -72,6 +72,7 @@ var (
 )
 
 func sync(ctx context.Context, params syncParams, cfg common.Config) (result core.Value, err error) {
+	ctx = common.WithNoIndividualReport(ctx)
 	if !strings.HasPrefix(string(params.Bucket), common.URIPrefix) {
 		logger().Debugw("Bucket path missing prefix, adding prefix")
 		params.Bucket = common.URIPrefix + params.Bucket

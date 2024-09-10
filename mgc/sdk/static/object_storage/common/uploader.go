@@ -19,6 +19,17 @@ type uploader interface {
 	Upload(context.Context) error
 }
 
+const NoIndividualReportKey = "NoIndividualReport"
+
+func WithNoIndividualReport(ctx context.Context) context.Context {
+	return context.WithValue(ctx, NoIndividualReportKey, true)
+}
+
+func fromNoIndividualReport(ctx context.Context) bool {
+	val, ok := ctx.Value(NoIndividualReportKey).(bool)
+	return ok && val
+}
+
 func NewUploader(cfg Config, src mgcSchemaPkg.FilePath, dst mgcSchemaPkg.URI, storageClass string) (uploader, error) {
 	fileInfo, err := os.Stat(src.String())
 	if err != nil {

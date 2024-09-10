@@ -22,11 +22,16 @@ type smallFileUploader struct {
 var _ uploader = (*smallFileUploader)(nil)
 
 func (u *smallFileUploader) Upload(ctx context.Context) error {
-	progressReporter := progress_report.NewBytesReporter(ctx, "Uploading "+u.fileInfo.Name(), uint64(u.fileInfo.Size()))
-	progressReporter.Start()
-	defer progressReporter.End()
+	reportParts := !fromNoIndividualReport(ctx)
+	var progressReporter *progress_report.BytesReporter
+	if reportParts {
+		progressReporter = progress_report.NewBytesReporter(ctx, "Uploading "+u.fileInfo.Name(), uint64(u.fileInfo.Size()))
+		progressReporter.Start()
+		defer progressReporter.End()
 
-	ctx = progress_report.NewBytesReporterContext(ctx, progressReporter)
+		ctx = progress_report.NewBytesReporterContext(ctx, progressReporter)
+	}
+
 	newReader := func() (io.ReadCloser, error) {
 		reader, err := readContent(u.filePath, u.fileInfo)
 		if err != nil {
