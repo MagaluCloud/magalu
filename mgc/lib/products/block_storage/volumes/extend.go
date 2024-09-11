@@ -33,6 +33,8 @@ import "magalu.cloud/lib/products/block_storage/volumes"
 package volumes
 
 import (
+	"context"
+
 	mgcCore "magalu.cloud/core"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
@@ -67,6 +69,46 @@ func (s *service) Extend(
 	var c mgcCore.Configs
 	if c, err = mgcHelpers.ConvertConfigs[ExtendConfigs](configs); err != nil {
 		return
+	}
+
+	_, err = exec.Execute(ctx, p, c)
+	return
+}
+
+// Context from caller is used to allow cancellation of long-running requests
+func (s *service) ExtendContext(
+	ctx context.Context,
+	parameters ExtendParameters,
+	configs ExtendConfigs,
+) (
+	err error,
+) {
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Extend", mgcCore.RefPath("/block-storage/volumes/extend"), s.client, ctx)
+	if err != nil {
+		return
+	}
+
+	var p mgcCore.Parameters
+	if p, err = mgcHelpers.ConvertParameters[ExtendParameters](parameters); err != nil {
+		return
+	}
+
+	var c mgcCore.Configs
+	if c, err = mgcHelpers.ConvertConfigs[ExtendConfigs](configs); err != nil {
+		return
+	}
+
+	sdkConfig := s.client.Sdk().Config().TempConfig()
+	if c["serverUrl"] == nil && sdkConfig["serverUrl"] != nil {
+		c["serverUrl"] = sdkConfig["serverUrl"]
+	}
+
+	if c["env"] == nil && sdkConfig["env"] != nil {
+		c["env"] = sdkConfig["env"]
+	}
+
+	if c["region"] == nil && sdkConfig["region"] != nil {
+		c["region"] = sdkConfig["region"]
 	}
 
 	_, err = exec.Execute(ctx, p, c)

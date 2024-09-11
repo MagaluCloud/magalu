@@ -56,7 +56,7 @@ func (r *objectStorageBuckets) Configure(ctx context.Context, req resource.Confi
 		return
 	}
 
-	sdk, ok := req.ProviderData.(*sdk.Sdk)
+	config, ok := req.ProviderData.(tfutil.ProviderConfig)
 
 	if !ok {
 		resp.Diagnostics.AddError(
@@ -64,6 +64,14 @@ func (r *objectStorageBuckets) Configure(ctx context.Context, req resource.Confi
 			fmt.Sprintf("Expected provider config, got: %T. Please report this issue to the provider developers.", req.ProviderData),
 		)
 		return
+	}
+
+	sdk := sdk.NewSdk()
+	_ = sdk.Config().SetTempConfig("region", config.Region.ValueStringPointer())
+	_ = sdk.Config().SetTempConfig("env", config.Env.ValueStringPointer())
+	_ = sdk.Config().SetTempConfig("api_key", config.ApiKey.ValueStringPointer())
+	if config.ObjectStorage != nil && config.ObjectStorage.ObjectKeyPair != nil {
+		sdk.Config().AddTempKeyPair("apikey", config.ObjectStorage.ObjectKeyPair.KeyID.ValueString(), config.ObjectStorage.ObjectKeyPair.KeySecret.ValueString())
 	}
 
 	r.sdkClient = mgcSdk.NewClient(sdk)
@@ -183,7 +191,7 @@ func (r *objectStorageBuckets) Create(ctx context.Context, req resource.CreateRe
 	grantWrite := sdkBuckets.CreateParametersGrantWrite(convertGrants(model.GrantWrite))
 	grantWriteACP := sdkBuckets.CreateParametersGrantWriteAcp(convertGrants(model.GrantWriteACP))
 
-	result, err := r.buckets.Create(sdkBuckets.CreateParameters{
+	result, err := r.buckets.CreateContext(ctx, sdkBuckets.CreateParameters{
 		Bucket:            model.Bucket.ValueString(),
 		BucketIsPrefix:    model.BucketIsPrefix.ValueBool(),
 		AuthenticatedRead: model.AuthenticatedRead.ValueBoolPointer(),
@@ -258,7 +266,7 @@ func (r *objectStorageBuckets) Delete(ctx context.Context, req resource.DeleteRe
 		model.Recursive = types.BoolValue(false)
 	}
 
-	_, err := r.buckets.Delete(sdkBuckets.DeleteParameters{
+	_, err := r.buckets.DeleteContext(ctx, sdkBuckets.DeleteParameters{
 		Bucket:    name,
 		Recursive: model.Recursive.ValueBool(),
 	}, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkBuckets.DeleteConfigs{}))

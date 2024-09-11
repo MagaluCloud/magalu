@@ -13,7 +13,6 @@ import (
 
 	"go.uber.org/zap"
 	"magalu.cloud/core/pipeline"
-	"magalu.cloud/core/progress_report"
 	mgcSchemaPkg "magalu.cloud/core/schema"
 )
 
@@ -203,12 +202,6 @@ func (u *bigFileUploader) createPartSenderProcessor(cancel context.CancelCauseFu
 func (u *bigFileUploader) Upload(ctx context.Context) error {
 	bigfileUploaderLogger().Debug("start")
 
-	progressReportMsg := fmt.Sprintf("Uploading %q", u.fileInfo.Name())
-	progressReporter := progress_report.NewBytesReporter(ctx, progressReportMsg, uint64(u.fileInfo.Size()))
-	progressReporter.Start()
-	defer progressReporter.End()
-	ctx = progress_report.NewBytesReporterContext(ctx, progressReporter)
-
 	ctx, cancel := context.WithCancelCause(ctx)
 
 	var err error
@@ -217,7 +210,6 @@ func (u *bigFileUploader) Upload(ctx context.Context) error {
 			err = ctx.Err()
 		}
 
-		progressReporter.Report(0, err)
 		cancel(err)
 	}()
 

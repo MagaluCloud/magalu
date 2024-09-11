@@ -10,6 +10,8 @@ import "magalu.cloud/lib/products/config"
 package config
 
 import (
+	"context"
+
 	mgcCore "magalu.cloud/core"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
@@ -27,6 +29,29 @@ func (s *service) List() (
 	err error,
 ) {
 	exec, ctx, err := mgcHelpers.PrepareExecutor("List", mgcCore.RefPath("/config/list"), s.client, s.ctx)
+	if err != nil {
+		return
+	}
+
+	var p mgcCore.Parameters
+
+	var c mgcCore.Configs
+
+	r, err := exec.Execute(ctx, p, c)
+	if err != nil {
+		return
+	}
+	return mgcHelpers.ConvertResult[ListResult](r)
+}
+
+// Context from caller is used to allow cancellation of long-running requests
+func (s *service) ListContext(
+	ctx context.Context,
+) (
+	result ListResult,
+	err error,
+) {
+	exec, ctx, err := mgcHelpers.PrepareExecutor("List", mgcCore.RefPath("/config/list"), s.client, ctx)
 	if err != nil {
 		return
 	}

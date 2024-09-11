@@ -37,7 +37,7 @@ func (r *NewNodePoolResource) Configure(ctx context.Context, req resource.Config
 		return
 	}
 
-	sdk, ok := req.ProviderData.(*sdk.Sdk)
+	config, ok := req.ProviderData.(tfutil.ProviderConfig)
 
 	if !ok {
 		resp.Diagnostics.AddError(
@@ -46,6 +46,11 @@ func (r *NewNodePoolResource) Configure(ctx context.Context, req resource.Config
 		)
 		return
 	}
+
+	sdk := sdk.NewSdk()
+	_ = sdk.Config().SetTempConfig("region", config.Region.ValueStringPointer())
+	_ = sdk.Config().SetTempConfig("env", config.Env.ValueStringPointer())
+	_ = sdk.Config().SetTempConfig("api_key", config.ApiKey.ValueStringPointer())
 
 	r.sdkClient = mgcSdk.NewClient(sdk)
 	r.sdkNodepool = sdkNodepool.NewService(ctx, r.sdkClient)
@@ -142,7 +147,7 @@ func (r *NewNodePoolResource) Read(ctx context.Context, req resource.ReadRequest
 		resp.Diagnostics = diags
 		return
 	}
-	nodepool, err := r.sdkNodepool.Get(sdkNodepool.GetParameters{
+	nodepool, err := r.sdkNodepool.GetContext(ctx, sdkNodepool.GetParameters{
 		ClusterId:  data.ClusterID.ValueString(),
 		NodePoolId: data.ID.ValueString(),
 	}, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkNodepool.GetConfigs{}))
@@ -167,7 +172,7 @@ func (r *NewNodePoolResource) Create(ctx context.Context, req resource.CreateReq
 	if data.Tags != nil {
 		tags = sdkNodepool.CreateParametersTags(*convertStringArrayTFToSliceString(data.Tags))
 	}
-	nodepool, err := r.sdkNodepool.Create(sdkNodepool.CreateParameters{
+	nodepool, err := r.sdkNodepool.CreateContext(ctx, sdkNodepool.CreateParameters{
 		ClusterId: data.ClusterID.ValueString(),
 		Flavor:    data.Flavor.ValueString(),
 		Name:      data.Name.ValueString(),
@@ -212,7 +217,7 @@ func (r *NewNodePoolResource) Update(ctx context.Context, req resource.UpdateReq
 	}
 
 	repli := int(data.Replicas.ValueInt64())
-	nodepool, err := r.sdkNodepool.Update(sdkNodepool.UpdateParameters{
+	nodepool, err := r.sdkNodepool.UpdateContext(ctx, sdkNodepool.UpdateParameters{
 		ClusterId:  data.ClusterID.ValueString(),
 		NodePoolId: state.ID.ValueString(),
 		Replicas:   &repli,
@@ -246,7 +251,7 @@ func (r *NewNodePoolResource) Delete(ctx context.Context, req resource.DeleteReq
 		return
 	}
 
-	err := r.sdkNodepool.Delete(sdkNodepool.DeleteParameters{
+	err := r.sdkNodepool.DeleteContext(ctx, sdkNodepool.DeleteParameters{
 		ClusterId:  data.ClusterID.ValueString(),
 		NodePoolId: data.ID.ValueString(),
 	},
@@ -266,7 +271,7 @@ func (r *NewNodePoolResource) ImportState(ctx context.Context, req resource.Impo
 		return
 	}
 
-	nodepool, err := r.sdkNodepool.Get(sdkNodepool.GetParameters{
+	nodepool, err := r.sdkNodepool.GetContext(ctx, sdkNodepool.GetParameters{
 		ClusterId:  ids[0],
 		NodePoolId: ids[1],
 	}, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkNodepool.GetConfigs{}))
@@ -311,7 +316,7 @@ func (r *NewNodePoolResource) waitNodePoolCreation(ctx context.Context, nodepool
 	for startTime := time.Now(); time.Since(startTime) < ClusterPoolingTimeout; {
 		time.Sleep(30 * time.Second)
 
-		nodepool, err := r.sdkNodepool.Get(sdkNodepool.GetParameters{
+		nodepool, err := r.sdkNodepool.GetContext(ctx, sdkNodepool.GetParameters{
 			ClusterId:  clusterId,
 			NodePoolId: nodepoolid,
 		}, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkNodepool.GetConfigs{}))

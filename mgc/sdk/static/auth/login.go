@@ -364,7 +364,7 @@ func preHeadlessLogin(ctx context.Context, parameters loginParameters, codeUrl *
 func headlessLogin(ctx context.Context, auth *auth.Auth, resultChan chan *authResult) error {
 	var responseUrl string
 	fmt.Println("Enter the response URL:")
-	fmt.Scanln(&responseUrl)
+	_, _ = fmt.Scanln(&responseUrl)
 
 	url, err := url.Parse(responseUrl)
 	if err != nil {

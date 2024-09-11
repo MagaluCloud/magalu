@@ -26,6 +26,8 @@ import "magalu.cloud/lib/products/virtual_machine/snapshots"
 package snapshots
 
 import (
+	"context"
+
 	mgcCore "magalu.cloud/core"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
@@ -103,6 +105,50 @@ func (s *service) Restore(
 	var c mgcCore.Configs
 	if c, err = mgcHelpers.ConvertConfigs[RestoreConfigs](configs); err != nil {
 		return
+	}
+
+	r, err := exec.Execute(ctx, p, c)
+	if err != nil {
+		return
+	}
+	return mgcHelpers.ConvertResult[RestoreResult](r)
+}
+
+// Context from caller is used to allow cancellation of long-running requests
+func (s *service) RestoreContext(
+	ctx context.Context,
+	parameters RestoreParameters,
+	configs RestoreConfigs,
+) (
+	result RestoreResult,
+	err error,
+) {
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Restore", mgcCore.RefPath("/virtual-machine/snapshots/restore"), s.client, ctx)
+	if err != nil {
+		return
+	}
+
+	var p mgcCore.Parameters
+	if p, err = mgcHelpers.ConvertParameters[RestoreParameters](parameters); err != nil {
+		return
+	}
+
+	var c mgcCore.Configs
+	if c, err = mgcHelpers.ConvertConfigs[RestoreConfigs](configs); err != nil {
+		return
+	}
+
+	sdkConfig := s.client.Sdk().Config().TempConfig()
+	if c["serverUrl"] == nil && sdkConfig["serverUrl"] != nil {
+		c["serverUrl"] = sdkConfig["serverUrl"]
+	}
+
+	if c["env"] == nil && sdkConfig["env"] != nil {
+		c["env"] = sdkConfig["env"]
+	}
+
+	if c["region"] == nil && sdkConfig["region"] != nil {
+		c["region"] = sdkConfig["region"]
 	}
 
 	r, err := exec.Execute(ctx, p, c)

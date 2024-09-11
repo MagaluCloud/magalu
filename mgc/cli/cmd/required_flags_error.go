@@ -16,7 +16,7 @@ func (e requiredFlagsError) Error() string {
 		panic("programming error: must never return empty errors")
 
 	case 1:
-		return fmt.Sprintf("missing required flag: " + formatFlagUsage(e[0], true))
+		return fmt.Sprintf("missing required flag: %s", formatFlagUsage(e[0], true))
 
 	default:
 		s := "missing required flags: "

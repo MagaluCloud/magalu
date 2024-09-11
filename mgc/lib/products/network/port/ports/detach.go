@@ -16,6 +16,8 @@ import "magalu.cloud/lib/products/network/port/ports"
 package ports
 
 import (
+	"context"
+
 	mgcCore "magalu.cloud/core"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
@@ -53,6 +55,50 @@ func (s *service) Detach(
 	var c mgcCore.Configs
 	if c, err = mgcHelpers.ConvertConfigs[DetachConfigs](configs); err != nil {
 		return
+	}
+
+	r, err := exec.Execute(ctx, p, c)
+	if err != nil {
+		return
+	}
+	return mgcHelpers.ConvertResult[DetachResult](r)
+}
+
+// Context from caller is used to allow cancellation of long-running requests
+func (s *service) DetachContext(
+	ctx context.Context,
+	parameters DetachParameters,
+	configs DetachConfigs,
+) (
+	result DetachResult,
+	err error,
+) {
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Detach", mgcCore.RefPath("/network/port/ports/detach"), s.client, ctx)
+	if err != nil {
+		return
+	}
+
+	var p mgcCore.Parameters
+	if p, err = mgcHelpers.ConvertParameters[DetachParameters](parameters); err != nil {
+		return
+	}
+
+	var c mgcCore.Configs
+	if c, err = mgcHelpers.ConvertConfigs[DetachConfigs](configs); err != nil {
+		return
+	}
+
+	sdkConfig := s.client.Sdk().Config().TempConfig()
+	if c["serverUrl"] == nil && sdkConfig["serverUrl"] != nil {
+		c["serverUrl"] = sdkConfig["serverUrl"]
+	}
+
+	if c["env"] == nil && sdkConfig["env"] != nil {
+		c["env"] = sdkConfig["env"]
+	}
+
+	if c["region"] == nil && sdkConfig["region"] != nil {
+		c["region"] = sdkConfig["region"]
 	}
 
 	r, err := exec.Execute(ctx, p, c)

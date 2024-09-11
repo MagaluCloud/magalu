@@ -15,6 +15,8 @@ import "magalu.cloud/lib/products/config"
 package config
 
 import (
+	"context"
+
 	mgcCore "magalu.cloud/core"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
@@ -32,6 +34,33 @@ func (s *service) Delete(
 	err error,
 ) {
 	exec, ctx, err := mgcHelpers.PrepareExecutor("Delete", mgcCore.RefPath("/config/delete"), s.client, s.ctx)
+	if err != nil {
+		return
+	}
+
+	var p mgcCore.Parameters
+	if p, err = mgcHelpers.ConvertParameters[DeleteParameters](parameters); err != nil {
+		return
+	}
+
+	var c mgcCore.Configs
+
+	r, err := exec.Execute(ctx, p, c)
+	if err != nil {
+		return
+	}
+	return mgcHelpers.ConvertResult[DeleteResult](r)
+}
+
+// Context from caller is used to allow cancellation of long-running requests
+func (s *service) DeleteContext(
+	ctx context.Context,
+	parameters DeleteParameters,
+) (
+	result DeleteResult,
+	err error,
+) {
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Delete", mgcCore.RefPath("/config/delete"), s.client, ctx)
 	if err != nil {
 		return
 	}

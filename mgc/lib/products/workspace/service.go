@@ -1,7 +1,7 @@
 /*
-import "magalu.cloud/lib/products/profile/workspaces"
+import "magalu.cloud/lib/products/workspace"
 */
-package workspaces
+package workspace
 
 import (
 	"context"
@@ -15,10 +15,15 @@ type service struct {
 }
 
 type Service interface {
+	CreateContext(ctx context.Context, parameters CreateParameters) (result CreateResult, err error)
 	Create(parameters CreateParameters) (result CreateResult, err error)
+	DeleteContext(ctx context.Context, parameters DeleteParameters) (result DeleteResult, err error)
 	Delete(parameters DeleteParameters) (result DeleteResult, err error)
+	GetContext(ctx context.Context) (result GetResult, err error)
 	Get() (result GetResult, err error)
+	ListContext(ctx context.Context) (result ListResult, err error)
 	List() (result ListResult, err error)
+	SetContext(ctx context.Context, parameters SetParameters) (result SetResult, err error)
 	Set(parameters SetParameters) (result SetResult, err error)
 }
 

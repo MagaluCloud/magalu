@@ -15,6 +15,7 @@ type service struct {
 }
 
 type Service interface {
+	ListContext(ctx context.Context, parameters ListParameters, configs ListConfigs) (result ListResult, err error)
 	List(parameters ListParameters, configs ListConfigs) (result ListResult, err error)
 }
 

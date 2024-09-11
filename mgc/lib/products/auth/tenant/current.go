@@ -14,6 +14,8 @@ import "magalu.cloud/lib/products/auth/tenant"
 package tenant
 
 import (
+	"context"
+
 	mgcCore "magalu.cloud/core"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
@@ -31,6 +33,29 @@ func (s *service) Current() (
 	err error,
 ) {
 	exec, ctx, err := mgcHelpers.PrepareExecutor("Current", mgcCore.RefPath("/auth/tenant/current"), s.client, s.ctx)
+	if err != nil {
+		return
+	}
+
+	var p mgcCore.Parameters
+
+	var c mgcCore.Configs
+
+	r, err := exec.Execute(ctx, p, c)
+	if err != nil {
+		return
+	}
+	return mgcHelpers.ConvertResult[CurrentResult](r)
+}
+
+// Context from caller is used to allow cancellation of long-running requests
+func (s *service) CurrentContext(
+	ctx context.Context,
+) (
+	result CurrentResult,
+	err error,
+) {
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Current", mgcCore.RefPath("/auth/tenant/current"), s.client, ctx)
 	if err != nil {
 		return
 	}

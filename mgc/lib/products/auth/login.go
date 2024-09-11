@@ -16,6 +16,8 @@ import "magalu.cloud/lib/products/auth"
 package auth
 
 import (
+	"context"
+
 	mgcCore "magalu.cloud/core"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
@@ -49,6 +51,33 @@ func (s *service) Login(
 	err error,
 ) {
 	exec, ctx, err := mgcHelpers.PrepareExecutor("Login", mgcCore.RefPath("/auth/login"), s.client, s.ctx)
+	if err != nil {
+		return
+	}
+
+	var p mgcCore.Parameters
+	if p, err = mgcHelpers.ConvertParameters[LoginParameters](parameters); err != nil {
+		return
+	}
+
+	var c mgcCore.Configs
+
+	r, err := exec.Execute(ctx, p, c)
+	if err != nil {
+		return
+	}
+	return mgcHelpers.ConvertResult[LoginResult](r)
+}
+
+// Context from caller is used to allow cancellation of long-running requests
+func (s *service) LoginContext(
+	ctx context.Context,
+	parameters LoginParameters,
+) (
+	result LoginResult,
+	err error,
+) {
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Login", mgcCore.RefPath("/auth/login"), s.client, ctx)
 	if err != nil {
 		return
 	}

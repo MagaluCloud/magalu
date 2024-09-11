@@ -15,7 +15,9 @@ type service struct {
 }
 
 type Service interface {
+	FlavorsContext(ctx context.Context, configs FlavorsConfigs) (result FlavorsResult, err error)
 	Flavors(configs FlavorsConfigs) (result FlavorsResult, err error)
+	VersionsContext(ctx context.Context, configs VersionsConfigs) (result VersionsResult, err error)
 	Versions(configs VersionsConfigs) (result VersionsResult, err error)
 }
 

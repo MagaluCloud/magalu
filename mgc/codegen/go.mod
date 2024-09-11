@@ -1,6 +1,6 @@
 module magalu.cloud/codegen
 
-go 1.22.6
+go 1.23.0
 
 require (
 	github.com/getkin/kin-openapi v0.118.0

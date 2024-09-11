@@ -22,6 +22,7 @@ type Service interface {
 		{{- if eq .GoName "Kubeconfig" }}
     	Kubeconfig(parameters KubeconfigParameters, configs KubeconfigConfigs) (string, error)
     	{{- else }}
+		{{ .GoName }}Context(ctx context.Context, {{- if .Types.Parameters }}	parameters {{ .Types.Parameters }}, {{- end }} {{- if .Types.Configs }} configs {{ .Types.Configs }},{{- end }}) ({{- if .Types.Result }} result {{ .Types.Result }},{{- end}} err error,)
 		{{ .GoName }}( {{- if .Types.Parameters }}	parameters {{ .Types.Parameters }}, {{- end }} {{- if .Types.Configs }} configs {{ .Types.Configs }},{{- end }}) ({{- if .Types.Result }} result {{ .Types.Result }},{{- end}} err error,)
 		{{- end }}
 	{{- end }}

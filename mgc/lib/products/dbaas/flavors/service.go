@@ -15,7 +15,9 @@ type service struct {
 }
 
 type Service interface {
+	GetContext(ctx context.Context, parameters GetParameters, configs GetConfigs) (result GetResult, err error)
 	Get(parameters GetParameters, configs GetConfigs) (result GetResult, err error)
+	ListContext(ctx context.Context, parameters ListParameters, configs ListConfigs) (result ListResult, err error)
 	List(parameters ListParameters, configs ListConfigs) (result ListResult, err error)
 }
 

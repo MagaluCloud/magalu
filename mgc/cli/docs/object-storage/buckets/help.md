@@ -12,6 +12,7 @@ Usage:
 - acl         ACL-related commands
 - create      Create a new Bucket
 - delete      Delete an existing Bucket
+- label       Label-related commands
 - list        List all existing Buckets
 - policy      Policy-related commands
 - public-url  Get bucket public url

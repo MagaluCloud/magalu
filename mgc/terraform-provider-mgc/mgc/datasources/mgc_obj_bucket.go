@@ -2,6 +2,7 @@ package datasources
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
@@ -52,15 +53,22 @@ func (r *DatasourceBucket) Configure(ctx context.Context, req datasource.Configu
 	if req.ProviderData == nil {
 		return
 	}
-
-	sdk, ok := req.ProviderData.(*sdk.Sdk)
+	config, ok := req.ProviderData.(tfutil.ProviderConfig)
 
 	if !ok {
 		resp.Diagnostics.AddError(
 			"Unexpected Data Source Configure Type",
-			"Expected provider config, got: %T. Please report this issue to the provider developers.",
+			fmt.Sprintf("Expected provider config, got: %T. Please report this issue to the provider developers.", req.ProviderData),
 		)
 		return
+	}
+
+	sdk := sdk.NewSdk()
+	_ = sdk.Config().SetTempConfig("region", config.Region.ValueStringPointer())
+	_ = sdk.Config().SetTempConfig("env", config.Env.ValueStringPointer())
+	_ = sdk.Config().SetTempConfig("api_key", config.ApiKey.ValueStringPointer())
+	if config.ObjectStorage != nil && config.ObjectStorage.ObjectKeyPair != nil {
+		sdk.Config().AddTempKeyPair("apikey", config.ObjectStorage.ObjectKeyPair.KeyID.ValueString(), config.ObjectStorage.ObjectKeyPair.KeySecret.ValueString())
 	}
 
 	r.sdkClient = mgcSdk.NewClient(sdk)
@@ -137,13 +145,13 @@ func (r *DatasourceBucket) Read(ctx context.Context, req datasource.ReadRequest,
 
 	resp.Diagnostics.Append(req.Config.Get(ctx, &data)...)
 
-	versioning, err := r.versioning.Get(sdkBucketsVersioning.GetParameters{Bucket: data.Name.ValueString()},
+	versioning, err := r.versioning.GetContext(ctx, sdkBucketsVersioning.GetParameters{Bucket: data.Name.ValueString()},
 		tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkBucketsVersioning.GetConfigs{}))
 	if err != nil {
 		resp.Diagnostics.AddError("Failed to get versioning", err.Error())
 		return
 	}
-	acl, err := r.acl.Get(sdkBucketsAcl.GetParameters{Dst: data.Name.ValueString()},
+	acl, err := r.acl.GetContext(ctx, sdkBucketsAcl.GetParameters{Dst: data.Name.ValueString()},
 		tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkBucketsAcl.GetConfigs{}))
 	if err != nil {
 		resp.Diagnostics.AddError("Failed to get acl", err.Error())

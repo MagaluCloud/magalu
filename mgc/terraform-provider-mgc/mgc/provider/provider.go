@@ -17,54 +17,31 @@ import (
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	datasources "magalu.cloud/terraform-provider-mgc/mgc/datasources"
 	resources "magalu.cloud/terraform-provider-mgc/mgc/resources"
+	"magalu.cloud/terraform-provider-mgc/mgc/tfutil"
 
 	mgcSdk "magalu.cloud/sdk"
 )
 
-var _ provider.Provider = (*MgcProvider)(nil)
+var _ provider.Provider = (*mgcProvider)(nil)
 
 const providerTypeName = "mgc"
 
 var ignoredTFModules = []string{"profile"}
 
-type MgcProvider struct {
+type mgcProvider struct {
 	version string
 	commit  string
 	date    string
 	sdk     *mgcSdk.Sdk
 }
 
-type KeyPair struct {
-	KeyID     types.String `tfsdk:"key_id"`
-	KeySecret types.String `tfsdk:"key_secret"`
-}
-
-type ObjectStorageConfig struct {
-	ObjectKeyPair *KeyPair `tfsdk:"key_pair"`
-}
-
-type ProviderConfig struct {
-	Region        types.String         `tfsdk:"region"`
-	Env           types.String         `tfsdk:"env"`
-	ApiKey        types.String         `tfsdk:"api_key"`
-	ObjectStorage *ObjectStorageConfig `tfsdk:"object_storage"`
-}
-
-type MgcApiKey struct {
-	ApiKey string
-}
-
-func (m *MgcApiKey) GetAPIKey() string {
-	return m.ApiKey
-}
-
-func (p *MgcProvider) Metadata(ctx context.Context, req provider.MetadataRequest, resp *provider.MetadataResponse) {
+func (p *mgcProvider) Metadata(ctx context.Context, req provider.MetadataRequest, resp *provider.MetadataResponse) {
 	tflog.Debug(ctx, "setting provider metadata")
 	resp.TypeName = providerTypeName
 	resp.Version = p.version
 }
 
-func (p *MgcProvider) Schema(ctx context.Context, req provider.SchemaRequest, resp *provider.SchemaResponse) {
+func (p *mgcProvider) Schema(ctx context.Context, req provider.SchemaRequest, resp *provider.SchemaResponse) {
 	tflog.Debug(ctx, "setting provider schema")
 
 	schemaApiKey := schema.SingleNestedAttribute{
@@ -117,79 +94,54 @@ func (p *MgcProvider) Schema(ctx context.Context, req provider.SchemaRequest, re
 
 }
 
-func (p *MgcProvider) Configure(ctx context.Context, req provider.ConfigureRequest, resp *provider.ConfigureResponse) {
+func (p *mgcProvider) Configure(ctx context.Context, req provider.ConfigureRequest, resp *provider.ConfigureResponse) {
 	tflog.Info(ctx, "configuring MGC provider")
 
-	var data ProviderConfig
+	var data tfutil.ProviderConfig
 
 	resp.Diagnostics.Append(req.Config.Get(ctx, &data)...)
 	if resp.Diagnostics.HasError() {
 		tflog.Error(ctx, "fail to get configs from provider")
 	}
 
-	if !data.Region.IsNull() || os.Getenv("MGC_REGION") != "" {
-		region := os.Getenv("MGC_REGION")
-		if region == "" && !data.Region.IsNull() {
-			region = data.Region.ValueString()
-		}
-		if err := p.sdk.Config().SetTempConfig("region", region); err != nil {
-			tflog.Error(ctx, "fail to set region")
-		}
-	} else {
-		if err := p.sdk.Config().SetTempConfig("region", "br-se1"); err != nil {
-			tflog.Error(ctx, "fail to set region")
-		}
-	}
-	if !data.Env.IsNull() {
-		env := os.Getenv("MGC_ENV")
-		if env == "" && !data.Env.IsNull() {
-			env = data.Env.String()
-		}
-		if err := p.sdk.Config().SetTempConfig("env", env); err != nil {
-			tflog.Error(ctx, "fail to set env")
-		}
-	}
-	if !data.ApiKey.IsNull() || os.Getenv("MGC_API_KEY") != "" {
-		apiKey := os.Getenv("MGC_API_KEY")
-
-		if apiKey == "" && !data.ApiKey.IsNull() {
-			apiKey = data.ApiKey.ValueString()
-		}
-
-		err := p.sdk.Auth().SetAPIKey(apiKey)
-		if err != nil {
-			tflog.Error(ctx, "fail to set api key")
+	if data.ApiKey.ValueString() == "" {
+		if apiKeyFromOS := os.Getenv("MGC_API_KEY"); apiKeyFromOS != "" {
+			data.ApiKey = types.StringValue(apiKeyFromOS)
+		} else {
+			data.ApiKey = types.StringValue("")
 		}
 	}
 
-	keyId := ""
-	keySecret := ""
-	if os.Getenv("MGC_OBJ_KEY_ID") != "" && os.Getenv("MGC_OBJ_KEY_SECRET") != "" {
-		keyId = os.Getenv("MGC_OBJ_KEY_ID")
-		keySecret = os.Getenv("MGC_OBJ_KEY_SECRET")
+	if data.Env.ValueString() == "" {
+		if envFromOS := os.Getenv("MGC_ENV"); envFromOS != "" {
+			data.Env = types.StringValue(envFromOS)
+		} else {
+			data.Env = types.StringValue("prod")
+		}
 	}
 
-	if keyId == "" &&
-		keySecret == "" &&
-		data.ObjectStorage != nil &&
-		data.ObjectStorage.ObjectKeyPair != nil &&
-		!data.ObjectStorage.ObjectKeyPair.KeyID.IsNull() &&
-		!data.ObjectStorage.ObjectKeyPair.KeySecret.IsNull() {
-		keyId = data.ObjectStorage.ObjectKeyPair.KeyID.ValueString()
-		keySecret = data.ObjectStorage.ObjectKeyPair.KeySecret.ValueString()
+	if data.Region.ValueString() == "" {
+		if regionFromOS := os.Getenv("MGC_REGION"); regionFromOS != "" {
+			data.Region = types.StringValue(regionFromOS)
+		} else {
+			data.Region = types.StringValue("br-se1")
+		}
 	}
-	if keyId != "" && keySecret != "" {
-		p.sdk.Config().AddTempKeyPair("apikey",
-			keyId,
-			keySecret,
-		)
-		tflog.Debug(ctx, "setting object storage key pair")
+
+	if data.ObjectStorage == nil || (os.Getenv("MGC_OBJ_KEY_ID") != "" && os.Getenv("MGC_OBJ_KEY_SECRET") != "") {
+		data.ObjectStorage = &tfutil.ObjectStorageConfig{
+			ObjectKeyPair: &tfutil.KeyPair{
+				KeyID:     types.StringValue(os.Getenv("MGC_OBJ_KEY_ID")),
+				KeySecret: types.StringValue(os.Getenv("MGC_OBJ_KEY_SECRET")),
+			},
+		}
 	}
-	resp.DataSourceData = p.sdk
-	resp.ResourceData = p.sdk
+
+	resp.DataSourceData = data
+	resp.ResourceData = data
 }
 
-func (p *MgcProvider) Resources(ctx context.Context) []func() resource.Resource {
+func (p *mgcProvider) Resources(ctx context.Context) []func() resource.Resource {
 	tflog.Info(ctx, "configuring MGC provider resources")
 
 	root := p.sdk.Group()
@@ -323,7 +275,7 @@ func collectGroupResources(
 	return resources, err
 }
 
-func (p *MgcProvider) DataSources(ctx context.Context) []func() datasource.DataSource {
+func (p *mgcProvider) DataSources(ctx context.Context) []func() datasource.DataSource {
 	tflog.Info(ctx, "configuring MGC provider data sources")
 
 	var dataSources []func() datasource.DataSource
@@ -351,7 +303,7 @@ func New(version string, commit string, date string) func() provider.Provider {
 	mgcSdk.SetUserAgent("MgcTF")
 
 	return func() provider.Provider {
-		return &MgcProvider{
+		return &mgcProvider{
 			sdk:     sdk,
 			version: version,
 			commit:  commit,

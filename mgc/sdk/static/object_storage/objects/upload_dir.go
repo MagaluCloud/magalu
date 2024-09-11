@@ -3,15 +3,16 @@ package objects
 import (
 	"context"
 	"fmt"
-	"io/fs"
+	"os"
 	"path/filepath"
 	"strings"
+	syncer "sync"
 
+	"github.com/pterm/pterm"
 	"magalu.cloud/core"
-	"magalu.cloud/core/pipeline"
-	"magalu.cloud/core/progress_report"
 	mgcSchemaPkg "magalu.cloud/core/schema"
 	"magalu.cloud/core/utils"
+	"magalu.cloud/sdk/openapi"
 	"magalu.cloud/sdk/static/object_storage/common"
 )
 
@@ -42,38 +43,6 @@ var getUploadDir = utils.NewLazyLoader[core.Executor](func() core.Executor {
 	})
 })
 
-func createObjectUploadProcessor(cfg common.Config, destination mgcSchemaPkg.URI, basePath string, storageClass string, progressReporter *progress_report.UnitsReporter) pipeline.Processor[pipeline.WalkDirEntry, error] {
-	return func(ctx context.Context, dirEntry pipeline.WalkDirEntry) (error, pipeline.ProcessStatus) {
-		var err error
-		defer func() { progressReporter.Report(1, 0, err) }()
-
-		if err = dirEntry.Err(); err != nil {
-			err = &common.ObjectError{Err: err}
-			return err, pipeline.ProcessAbort
-		}
-
-		if dirEntry.DirEntry().IsDir() {
-			return nil, pipeline.ProcessOutput
-		}
-
-		filePath := dirEntry.Path()
-		dst := destination.JoinPath((strings.TrimPrefix(filePath, basePath)))
-
-		_, err = upload(
-			ctx,
-			uploadParams{Source: mgcSchemaPkg.FilePath(filePath), Destination: dst, StorageClass: storageClass},
-			cfg,
-		)
-
-		if err != nil {
-			err = &common.ObjectError{Url: mgcSchemaPkg.URI(dst), Err: err}
-			return err, pipeline.ProcessOutput
-		}
-
-		return nil, pipeline.ProcessOutput
-	}
-}
-
 func uploadDir(ctx context.Context, params uploadDirParams, cfg common.Config) (*uploadDirResult, error) {
 	ctx, cancel := context.WithCancelCause(ctx)
 	defer cancel(nil)
@@ -87,49 +56,28 @@ func uploadDir(ctx context.Context, params uploadDirParams, cfg common.Config) (
 		return nil, err
 	}
 
-	progressReportMsg := "Uploading directory: " + basePath.String()
-	progressReporter := progress_report.NewUnitsReporter(ctx, progressReportMsg, 0)
-	progressReporter.Start()
-	defer progressReporter.End()
-
-	entries := pipeline.WalkDirEntries(ctx, basePath.String(), func(path string, d fs.DirEntry, err error) error {
-		if err != nil {
-			return err
-		}
-
-		if path != basePath.String() && path+"/" != basePath.String() {
-			if d.IsDir() && params.Shallow {
-				return filepath.SkipDir
-			}
-		}
-
-		if d.IsDir() {
-			fileCount, err := getFileCount(path)
-			if err != nil {
-				return err
-			}
-
-			progressReporter.Report(0, fileCount, err)
-		}
-
-		return nil
-	})
-
-	entries = common.ApplyFilters(ctx, entries, params.FilterParams, cancel)
-	uploadObjectsErrorChan := pipeline.ParallelProcess(ctx, cfg.Workers, entries, createObjectUploadProcessor(cfg, params.Destination, basePath.String(), params.StorageClass, progressReporter), nil)
-	uploadObjectsErrorChan = pipeline.Filter(ctx, uploadObjectsErrorChan, pipeline.FilterNonNil[error]{})
-
-	objErr, err := pipeline.SliceItemConsumer[utils.MultiError](ctx, uploadObjectsErrorChan)
+	files, err := walkDir(ctx, basePath.String(), params.Shallow)
 	if err != nil {
-		progressReporter.Report(0, 0, err)
 		return nil, err
 	}
-	if len(objErr) > 0 {
-		progressReporter.Report(0, 0, objErr)
-		return nil, objErr
+
+	totalFiles := len(files)
+	progressBar := pterm.DefaultProgressbar.
+		WithTotal(totalFiles).
+		WithTitle("Uploading files").
+		WithRemoveWhenDone(true)
+
+	if !openapi.GetRawOutputFlag(ctx) {
+		progressBar, _ = progressBar.Start()
 	}
 
-	progressReporter.Report(1, 1, nil)
+	err = processCurrentAndSubfolders(ctx, cfg, params.Destination, params.StorageClass, basePath.String(), files, progressBar)
+
+	if err != nil {
+		return &uploadDirResult{}, err
+	}
+
+	_, _ = progressBar.Stop()
 
 	return &uploadDirResult{
 		URI: params.Destination.String(),
@@ -137,27 +85,116 @@ func uploadDir(ctx context.Context, params uploadDirParams, cfg common.Config) (
 	}, nil
 }
 
-func getFileCount(dirPath string) (count uint64, err error) {
-	i := 0
-	err = filepath.WalkDir(dirPath, func(path string, d fs.DirEntry, err error) error {
-		defer func() { i += 1 }()
+func processFile(ctx context.Context, cfg common.Config, destination mgcSchemaPkg.URI, basePath string, storageClass string, file string, progressBar *pterm.ProgressbarPrinter) error {
+	dst := destination.JoinPath((strings.TrimPrefix(file, basePath)))
+
+	_, err := upload(
+		ctx,
+		uploadParams{Source: mgcSchemaPkg.FilePath(file), Destination: dst, StorageClass: storageClass},
+		cfg,
+	)
+
+	if err != nil {
+		err = &common.ObjectError{Url: mgcSchemaPkg.URI(dst), Err: err}
+		return err
+	}
+
+	progressBar.Increment()
+	return nil
+}
+
+func worker(ctx context.Context, cfg common.Config, destination mgcSchemaPkg.URI, basePath string, storageClass string, files <-chan string, results chan<- error, progressBar *pterm.ProgressbarPrinter) {
+	for {
+		select {
+		case file, ok := <-files:
+			if !ok {
+				return
+			}
+			err := processFile(ctx, cfg, destination, basePath, storageClass, file, progressBar)
+			if err != nil {
+				select {
+				case results <- err:
+				case <-ctx.Done():
+					return
+				}
+			}
+		case <-ctx.Done():
+			return
+		}
+	}
+}
+
+func processCurrentAndSubfolders(ctx context.Context, cfg common.Config, destination mgcSchemaPkg.URI, storageClass string, path string, files []string, progressBar *pterm.ProgressbarPrinter) error {
+	results := make(chan error, cfg.Workers)
+	filesChan := make(chan string, cfg.Workers)
+
+	var wg syncer.WaitGroup
+	wg.Add(cfg.Workers)
+	for i := 0; i < cfg.Workers; i++ {
+		go func() {
+			defer wg.Done()
+			worker(ctx, cfg, destination, path, storageClass, filesChan, results, progressBar)
+		}()
+	}
+
+	go func() {
+		defer close(filesChan)
+		for _, file := range files {
+			select {
+			case filesChan <- file:
+			case <-ctx.Done():
+				return
+			}
+		}
+	}()
+
+	go func() {
+		wg.Wait()
+		close(results)
+	}()
+
+	for err := range results {
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+func walkDir(ctx context.Context, root string, shallow bool) ([]string, error) {
+	var files []string
+
+	var walkFn func(string) error
+	walkFn = func(dir string) error {
+		entries, err := os.ReadDir(dir)
 		if err != nil {
 			return err
 		}
 
-		// First loop will always be the dir represented by 'dirPath' itself, so skip it
-		// bud don't return 'fs.SkipDir'
-		if i == 0 {
-			return nil
-		}
+		for _, entry := range entries {
+			select {
+			case <-ctx.Done():
+				return ctx.Err()
+			default:
+			}
 
-		if d.IsDir() {
-			return fs.SkipDir
+			path := filepath.Join(dir, entry.Name())
+			if entry.IsDir() {
+				if !shallow {
+					if err := walkFn(path); err != nil {
+						return err
+					}
+				}
+			} else {
+				files = append(files, path)
+			}
 		}
-
-		count += 1
 		return nil
-	})
+	}
 
-	return
+	if err := walkFn(root); err != nil {
+		return nil, err
+	}
+	return files, nil
 }

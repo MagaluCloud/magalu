@@ -38,8 +38,7 @@ func (r *sshKeys) Configure(ctx context.Context, req resource.ConfigureRequest, 
 	if req.ProviderData == nil {
 		return
 	}
-
-	sdk, ok := req.ProviderData.(*sdk.Sdk)
+	config, ok := req.ProviderData.(tfutil.ProviderConfig)
 
 	if !ok {
 		resp.Diagnostics.AddError(
@@ -48,6 +47,11 @@ func (r *sshKeys) Configure(ctx context.Context, req resource.ConfigureRequest, 
 		)
 		return
 	}
+
+	sdk := sdk.NewSdk()
+	_ = sdk.Config().SetTempConfig("region", config.Region.ValueStringPointer())
+	_ = sdk.Config().SetTempConfig("env", config.Env.ValueStringPointer())
+	_ = sdk.Config().SetTempConfig("api_key", config.ApiKey.ValueStringPointer())
 
 	r.sdkClient = mgcSdk.NewClient(sdk)
 	r.sshKeys = sdkSSHKeys.NewService(ctx, r.sdkClient)
@@ -108,7 +112,7 @@ func (r *sshKeys) Read(ctx context.Context, req resource.ReadRequest, resp *reso
 	plan := &sshKeyModel{}
 	resp.Diagnostics.Append(req.State.Get(ctx, &plan)...)
 
-	getResult, err := r.sshKeys.Get(sdkSSHKeys.GetParameters{
+	getResult, err := r.sshKeys.GetContext(ctx, sdkSSHKeys.GetParameters{
 		KeyId: plan.ID.ValueString(),
 	},
 		tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkSSHKeys.GetConfigs{}))
@@ -128,7 +132,7 @@ func (r *sshKeys) Create(ctx context.Context, req resource.CreateRequest, resp *
 		return
 	}
 
-	createResult, err := r.sshKeys.Create(sdkSSHKeys.CreateParameters{
+	createResult, err := r.sshKeys.CreateContext(ctx, sdkSSHKeys.CreateParameters{
 		Key:  plan.Key.ValueString(),
 		Name: plan.Name.ValueString(),
 	},
@@ -148,7 +152,7 @@ func (r *sshKeys) Update(ctx context.Context, req resource.UpdateRequest, resp *
 func (r *sshKeys) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
 	var data sshKeyModel
 	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
-	_, err := r.sshKeys.Delete(
+	_, err := r.sshKeys.DeleteContext(ctx,
 		sdkSSHKeys.DeleteParameters{
 			KeyId: data.ID.ValueString(),
 		},

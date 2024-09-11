@@ -78,7 +78,7 @@ func (r *DataSourceKubernetesCluster) Configure(ctx context.Context, req datasou
 		return
 	}
 
-	sdk, ok := req.ProviderData.(*sdk.Sdk)
+	config, ok := req.ProviderData.(tfutil.ProviderConfig)
 
 	if !ok {
 		resp.Diagnostics.AddError(
@@ -87,6 +87,11 @@ func (r *DataSourceKubernetesCluster) Configure(ctx context.Context, req datasou
 		)
 		return
 	}
+
+	sdk := sdk.NewSdk()
+	_ = sdk.Config().SetTempConfig("region", config.Region.ValueStringPointer())
+	_ = sdk.Config().SetTempConfig("env", config.Env.ValueStringPointer())
+	_ = sdk.Config().SetTempConfig("api_key", config.ApiKey.ValueStringPointer())
 
 	r.sdkClient = mgcSdk.NewClient(sdk)
 	r.cluster = cluster.NewService(ctx, r.sdkClient)
@@ -378,7 +383,7 @@ func (d *DataSourceKubernetesCluster) Read(ctx context.Context, req datasource.R
 		return
 	}
 
-	cluster, err := d.cluster.Get(cluster.GetParameters{
+	cluster, err := d.cluster.GetContext(ctx, cluster.GetParameters{
 		ClusterId: data.ID.ValueString(),
 	}, tfutil.GetConfigsFromTags(d.sdkClient.Sdk().Config().Get, cluster.GetConfigs{}))
 	if err != nil {

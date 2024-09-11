@@ -2,6 +2,7 @@ package datasources
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
@@ -41,18 +42,24 @@ func (r *DatasourceBuckets) Configure(ctx context.Context, req datasource.Config
 	if req.ProviderData == nil {
 		return
 	}
-
-	sdk, ok := req.ProviderData.(*sdk.Sdk)
+	config, ok := req.ProviderData.(tfutil.ProviderConfig)
 
 	if !ok {
 		resp.Diagnostics.AddError(
 			"Unexpected Data Source Configure Type",
-			"Expected provider config, got: %T. Please report this issue to the provider developers.",
+			fmt.Sprintf("Expected provider config, got: %T. Please report this issue to the provider developers.", req.ProviderData),
 		)
 		return
 	}
 
-	r.sdkClient = mgcSdk.NewClient(sdk)
+	sdk := sdk.NewSdk()
+	_ = sdk.Config().SetTempConfig("region", config.Region.ValueStringPointer())
+	_ = sdk.Config().SetTempConfig("env", config.Env.ValueStringPointer())
+	_ = sdk.Config().SetTempConfig("api_key", config.ApiKey.ValueStringPointer())
+	if config.ObjectStorage != nil && config.ObjectStorage.ObjectKeyPair != nil {
+		sdk.Config().AddTempKeyPair("apikey", config.ObjectStorage.ObjectKeyPair.KeyID.ValueString(), config.ObjectStorage.ObjectKeyPair.KeySecret.ValueString())
+	}
+
 	r.buckets = sdkBuckets.NewService(ctx, r.sdkClient)
 }
 
@@ -85,7 +92,7 @@ func (r *DatasourceBuckets) Read(ctx context.Context, req datasource.ReadRequest
 
 	resp.Diagnostics.Append(req.Config.Get(ctx, &data)...)
 
-	sdkOutput, err := r.buckets.List(tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkBuckets.ListConfigs{}))
+	sdkOutput, err := r.buckets.ListContext(ctx, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkBuckets.ListConfigs{}))
 	if err != nil {
 		resp.Diagnostics.AddError("Failed to get versions", err.Error())
 		return
