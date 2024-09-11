@@ -1,6 +1,6 @@
 module magalu.cloud/terraform-provider-mgc
 
-go 1.23
+go 1.23.0
 
 require (
 	github.com/geffersonFerraz/brazilian-words-sorter v1.1.0
@@ -11,9 +11,9 @@ require (
 	github.com/hashicorp/terraform-plugin-go v0.23.0
 	github.com/hashicorp/terraform-plugin-log v0.9.0
 	github.com/stoewer/go-strcase v1.3.0
-	magalu.cloud/core v0.23.0
+	magalu.cloud/core v0.26.0
 	magalu.cloud/lib v0.0.0-00010101000000-000000000000
-	magalu.cloud/sdk v0.23.0
+	magalu.cloud/sdk v0.26.0
 )
 
 require (

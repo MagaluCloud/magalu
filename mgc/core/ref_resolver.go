@@ -216,9 +216,8 @@ func (r *MultiRefPathResolver) Add(url string, docResolver RefPathResolver) erro
 //
 // Most users will want BoundRefPathResolver instead.
 type DocumentRefPathResolver struct {
-	cache   map[RefPath]any // JSON Pointer string => resolved value
+	cache   sync.Map // JSON Pointer string => resolved value
 	getRoot func() (any, error)
-	mutexl  *sync.Mutex
 }
 
 var _ RefPathResolver = (*DocumentRefPathResolver)(nil)
@@ -226,9 +225,8 @@ var _ RefPathResolver = (*DocumentRefPathResolver)(nil)
 // NOTE: getRoot() will be called multiple times, make sure it caches its own results, ex utils.NewLazyLoaderWithError()
 func NewDocumentRefPathResolver(getRoot utils.LoadWithError[any]) *DocumentRefPathResolver {
 	return &DocumentRefPathResolver{
-		cache:   map[RefPath]any{},
+		cache:   sync.Map{},
 		getRoot: getRoot,
-		mutexl:  &sync.Mutex{},
 	}
 }
 
@@ -254,9 +252,8 @@ func (r *DocumentRefPathResolver) ResolvePath(path RefPath) (result any, err err
 		return
 	}
 
-	var ok bool
-	if result, ok = r.cache[path]; ok {
-		return
+	if cachedResult, ok := r.cache.Load(path); ok {
+		return cachedResult, nil
 	}
 
 	url, _ := path.SplitUrl()
@@ -278,7 +275,7 @@ func (r *DocumentRefPathResolver) ResolvePath(path RefPath) (result any, err err
 	}
 
 	if err == nil {
-		r.cache[path] = result
+		r.cache.Store(path, result)
 	} else {
 		err = &RefPathResolveError{path, err}
 	}

@@ -9,13 +9,15 @@ Executor: create
 
 Create a Rule async, returning its ID. To monitor the creation progress, please check the status in the service message or implement polling.Either a remote_ip_prefix or a remote_group_id can be specified.With remote_ip_prefix, all IPs that match the criteria will be allowed.With remote_group_id, only the specified security group is allowed to communicatefollowing the specified protocol, direction and port_range_min/max
 
-Version: 1.131.0
+Version: 1.131.1
 
 import "magalu.cloud/lib/products/network/rule/security_groups_rules"
 */
 package securityGroupsRules
 
 import (
+	"context"
+
 	mgcCore "magalu.cloud/core"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
@@ -64,6 +66,50 @@ func (s *service) Create(
 	var c mgcCore.Configs
 	if c, err = mgcHelpers.ConvertConfigs[CreateConfigs](configs); err != nil {
 		return
+	}
+
+	r, err := exec.Execute(ctx, p, c)
+	if err != nil {
+		return
+	}
+	return mgcHelpers.ConvertResult[CreateResult](r)
+}
+
+// Context from caller is used to allow cancellation of long-running requests
+func (s *service) CreateContext(
+	ctx context.Context,
+	parameters CreateParameters,
+	configs CreateConfigs,
+) (
+	result CreateResult,
+	err error,
+) {
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Create", mgcCore.RefPath("/network/rule/security-groups-rules/create"), s.client, ctx)
+	if err != nil {
+		return
+	}
+
+	var p mgcCore.Parameters
+	if p, err = mgcHelpers.ConvertParameters[CreateParameters](parameters); err != nil {
+		return
+	}
+
+	var c mgcCore.Configs
+	if c, err = mgcHelpers.ConvertConfigs[CreateConfigs](configs); err != nil {
+		return
+	}
+
+	sdkConfig := s.client.Sdk().Config().TempConfig()
+	if c["serverUrl"] == nil && sdkConfig["serverUrl"] != nil {
+		c["serverUrl"] = sdkConfig["serverUrl"]
+	}
+
+	if c["env"] == nil && sdkConfig["env"] != nil {
+		c["env"] = sdkConfig["env"]
+	}
+
+	if c["region"] == nil && sdkConfig["region"] != nil {
+		c["region"] = sdkConfig["region"]
 	}
 
 	r, err := exec.Execute(ctx, p, c)

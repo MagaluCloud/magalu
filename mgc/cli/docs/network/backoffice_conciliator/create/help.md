@@ -23,7 +23,7 @@ Usage:
 - --env enum                 Environment to use (one of "pre-prod" or "prod") (default "prod")
 - --limit integer            Limit of tenants
 - --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
-- -o, --output string            Change the output format. Use '--output=help' to know more details. (default "yaml")
+- -o, --output string            Change the output format. Use '--output=help' to know more details.
 - -r, --raw                      Output raw data, without any formatting or coloring
 - --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
 - --resource-type enum       Resource Type: Resources to start the conciliator (one of "public_ip", "rule", "security_group" or "security_group, rule, public_ip") (default "security_group, rule, public_ip")

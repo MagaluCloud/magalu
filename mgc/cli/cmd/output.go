@@ -24,7 +24,7 @@ func addOutputFlag(cmd *cobra.Command) {
 	cmd.Root().PersistentFlags().StringP(
 		outputFlag,
 		"o",
-		"yaml",
+		"",
 		`Change the output format. Use '--output=help' to know more details.`)
 }
 
@@ -37,7 +37,7 @@ func setOutputFlag(cmd *cobra.Command, value string) {
 }
 
 // TODO: Bind config to PFlag. Investigate how to make it work correctly
-func getOutpuConfig(sdk *mgcSdk.Sdk) string {
+func getOutputConfig(sdk *mgcSdk.Sdk) string {
 	var defaultOutput string
 	err := sdk.Config().Get("defaultOutput", &defaultOutput)
 	if err != nil {
@@ -77,15 +77,47 @@ func getOutputFormatter(name, options string) (formatter OutputFormatter, err er
 }
 
 func getOutputFor(sdk *mgcSdk.Sdk, cmd *cobra.Command, result core.Result) string {
-	output := getOutputFlag(cmd)
+	hasOutputFromFlag := false
+	output := ""
+	if out := getOutputFlag(cmd); out != "" {
+		hasOutputFromFlag = true
+		output = out
+	}
+
+	if xoutput := getOutputConfig(sdk); output == "" && xoutput != "" {
+		output = xoutput
+	}
 	if output == "" {
-		output = getOutpuConfig(sdk)
+		output = "yaml"
 	}
 
 	if output == "" {
 		if outputOptions, ok := core.ResultAs[core.ResultWithDefaultOutputOptions](result); ok {
-			return outputOptions.DefaultOutputOptions()
+			return "default=" + outputOptions.DefaultOutputOptions()
 		}
+	} else {
+		if outputOptions, ok := core.ResultAs[core.ResultWithDefaultOutputOptions](result); ok {
+			outputFromSpec := outputOptions.DefaultOutputOptions()
+			if !strings.Contains(outputFromSpec, "default=") {
+				//SPEC NAO CONTEM DEFAULT
+				if output != "" {
+					output = outputFromSpec + ";default=" + output
+				}
+			} else {
+				if hasOutputFromFlag {
+					outs := strings.Split(outputFromSpec, ";")
+					for i, ot := range outs {
+						if strings.HasPrefix(ot, "default=") {
+							outs[i] = "default=" + output
+						}
+					}
+					output = strings.Join(outs, ";")
+				} else {
+					output = outputFromSpec
+				}
+			}
+		}
+
 	}
 
 	return output

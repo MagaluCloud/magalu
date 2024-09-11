@@ -8,21 +8,16 @@ import (
 var GetGroup = utils.NewLazyLoader(func() core.Grouper {
 	return core.NewStaticGroup(
 		core.DescriptorSpec{
-			Name: "profile",
-			Description: `Profiles hold auth and runtime configuration for the MgcSDK, like tokens and log filter settings.
-Users can create as many profiles as they choose to. Auth and config operations will affect only the
-current profile, so users can alter and switch between profiles without loosing the previous configuration`,
-			Summary: "Profile related commands",
+			Name:    "profile",
+			Summary: "Manage account settings, including SSH keys and related configurations",
+			Description: `The profile group provides commands to view and modify user account settings. 
+It allows users to manage their SSH keys, update personal information, and configure other 
+account-related preferences. This group is essential for maintaining secure access and 
+personalizing the user experience within the system.`,
 			GroupID: "settings",
 		},
 		func() []core.Descriptor {
-			return []core.Descriptor{
-				getGet(),
-				getCreate(),
-				getSet(),
-				getList(),
-				getDelete(),
-			}
+			return []core.Descriptor{}
 		},
 	)
 })

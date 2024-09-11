@@ -17,10 +17,10 @@ Usage:
 
 ## Product catalog:
 - Products:
-- block-storage      Block Storage API Product Documentation
+- audit              Cloud Events API Product.
+- block-storage      Block Storage API Product
 - container-registry Magalu Container Registry product API.
 - dbaas              DBaaS API Product.
-- events             Cloud Events API Product.
 - kubernetes         APIs related to the Kubernetes product.
 - network            APIs referentes ao produto de VPC
 - object-storage     Operations for Object Storage
@@ -29,8 +29,9 @@ Usage:
 ## Other commands:
 - Settings:
 - auth               Actions with ID Magalu to log in, API Keys, refresh tokens, change tenants and others
-- config             Manage Configuration values
-- profile            Profile related commands
+- config             Manage CLI Configuration values
+- profile            Manage account settings, including SSH keys and related configurations
+- workspace          Manage workspaces for isolated auth and config settings
 
 ## Flags:
 ```bash

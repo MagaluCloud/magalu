@@ -16,6 +16,8 @@ import "magalu.cloud/lib/products/dbaas/replicas"
 package replicas
 
 import (
+	"context"
+
 	mgcCore "magalu.cloud/core"
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
@@ -91,6 +93,50 @@ func (s *service) Stop(
 	var c mgcCore.Configs
 	if c, err = mgcHelpers.ConvertConfigs[StopConfigs](configs); err != nil {
 		return
+	}
+
+	r, err := exec.Execute(ctx, p, c)
+	if err != nil {
+		return
+	}
+	return mgcHelpers.ConvertResult[StopResult](r)
+}
+
+// Context from caller is used to allow cancellation of long-running requests
+func (s *service) StopContext(
+	ctx context.Context,
+	parameters StopParameters,
+	configs StopConfigs,
+) (
+	result StopResult,
+	err error,
+) {
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Stop", mgcCore.RefPath("/dbaas/replicas/stop"), s.client, ctx)
+	if err != nil {
+		return
+	}
+
+	var p mgcCore.Parameters
+	if p, err = mgcHelpers.ConvertParameters[StopParameters](parameters); err != nil {
+		return
+	}
+
+	var c mgcCore.Configs
+	if c, err = mgcHelpers.ConvertConfigs[StopConfigs](configs); err != nil {
+		return
+	}
+
+	sdkConfig := s.client.Sdk().Config().TempConfig()
+	if c["serverUrl"] == nil && sdkConfig["serverUrl"] != nil {
+		c["serverUrl"] = sdkConfig["serverUrl"]
+	}
+
+	if c["env"] == nil && sdkConfig["env"] != nil {
+		c["env"] = sdkConfig["env"]
+	}
+
+	if c["region"] == nil && sdkConfig["region"] != nil {
+		c["region"] = sdkConfig["region"]
 	}
 
 	r, err := exec.Execute(ctx, p, c)

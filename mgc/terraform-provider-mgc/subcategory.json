@@ -1,0 +1,24 @@
+{
+  "Block Storage": [
+    "block_storage_*"
+  ],
+  "Virtual Machine": [
+    "virtual_machine_*"
+  ],
+  "Network": [
+    "network_*"
+  ],
+  "Kubernetes": [
+    "kubernetes_*",
+    "container_registry_registries.md"
+  ],
+  "Database": [
+    "dbaas*"
+  ],
+  "Object Storage": [
+    "object_storage_*"
+  ],
+  "SSH Keys": [
+    "ssh_keys.md"
+  ]
+}

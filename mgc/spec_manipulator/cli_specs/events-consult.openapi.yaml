@@ -3,7 +3,7 @@
   "info": {
     "title": "Cloud Events Consult API",
     "description": "Cloud Events API Product.",
-    "version": "0.12.0"
+    "version": "0.15.1"
   },
   "paths": {
     "/v0/events": {
@@ -11,37 +11,38 @@
         "tags": [
           "events"
         ],
-        "summary": "Lists all cloud events.",
-        "description": "Lists all cloud events emitted by other products.",
+        "summary": "Lists all events.",
+        "description": "Lists all events emitted by other products.",
         "operationId": "list_event",
         "parameters": [
           {
             "name": "_limit",
             "in": "query",
+            "description": "Number of items per page",
             "required": false,
             "schema": {
               "type": "integer",
-              "title": " Limit",
-              "maximum": 2147483647,
-              "minimum": 0,
+              "title": "Limit",
+              "description": "Number of items per page",
               "default": 50
             }
           },
           {
             "name": "_offset",
             "in": "query",
+            "description": "Offset for pagination",
             "required": false,
             "schema": {
               "type": "integer",
-              "title": " Offset",
-              "maximum": 2147483647,
-              "minimum": 0,
+              "title": "Offset",
+              "description": "Offset for pagination",
               "default": 0
             }
           },
           {
             "name": "id",
             "in": "query",
+            "description": "Identification of the event",
             "required": false,
             "schema": {
               "anyOf": [
@@ -49,12 +50,14 @@
                   "type": "string"
                 }
               ],
-              "title": "Id"
+              "title": "ID",
+              "description": "Identification of the event"
             }
           },
           {
             "name": "source__like",
             "in": "query",
+            "description": "Context in which the event occurred ('like' operation)",
             "required": false,
             "schema": {
               "anyOf": [
@@ -62,12 +65,14 @@
                   "type": "string"
                 }
               ],
-              "title": "Source  Like"
+              "title": "Source",
+              "description": "Context in which the event occurred ('like' operation)"
             }
           },
           {
             "name": "time",
             "in": "query",
+            "description": "Timestamp of when the occurrence happened",
             "required": false,
             "schema": {
               "anyOf": [
@@ -76,12 +81,14 @@
                   "format": "date-time"
                 }
               ],
-              "title": "Time"
+              "title": "Time",
+              "description": "Timestamp of when the occurrence happened"
             }
           },
           {
             "name": "type__like",
             "in": "query",
+            "description": "Type of event related to the originating occurrence ('like' operation)",
             "required": false,
             "schema": {
               "anyOf": [
@@ -89,12 +96,14 @@
                   "type": "string"
                 }
               ],
-              "title": "Type  Like"
+              "title": "Type",
+              "description": "Type of event related to the originating occurrence ('like' operation)"
             }
           },
           {
             "name": "product__like",
             "in": "query",
+            "description": "In which producer product an event occurred ('like' operation)",
             "required": false,
             "schema": {
               "anyOf": [
@@ -102,12 +111,14 @@
                   "type": "string"
                 }
               ],
-              "title": "Product  Like"
+              "title": "Product",
+              "description": "In which producer product an event occurred ('like' operation)"
             }
           },
           {
             "name": "authid",
             "in": "query",
+            "description": "Identification of the principal that triggered the occurrence",
             "required": false,
             "schema": {
               "anyOf": [
@@ -115,20 +126,8 @@
                   "type": "string"
                 }
               ],
-              "title": "Authid"
-            }
-          },
-          {
-            "name": "tenantid",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                }
-              ],
-              "title": "Tenantid"
+              "title": "Auth ID",
+              "description": "Identification of the principal that triggered the occurrence"
             }
           },
           {
@@ -196,7 +195,92 @@
               "evt:event-tr"
             ]
           }
-        ]
+        ],
+        "x-mgc-output-flag": "table=ID:$.results[*].id,SOURCE:$.results[*].source,TYPE:$.results[*].type,SPECVERSION:$.results[*].specversion,SUBJECT:$.results[*].subject,TIME:$.results[*].time,AUTHID:$.results[*].authid,AUTHTYPE:$.results[*].authtype,PRODUCT:$.results[*].product,REGION:$.results[*].region"
+      }
+    },
+    "/v0/event-types": {
+      "get": {
+        "tags": [
+          "event-types"
+        ],
+        "summary": "Lists all event types.",
+        "description": "Lists all types of events emitted by other products.",
+        "operationId": "list_type",
+        "parameters": [
+          {
+            "name": "_limit",
+            "in": "query",
+            "description": "Number of items per page",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "title": "Limit",
+              "description": "Number of items per page",
+              "default": 50
+            }
+          },
+          {
+            "name": "_offset",
+            "in": "query",
+            "description": "Offset for pagination",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "title": "Offset",
+              "description": "Offset for pagination",
+              "default": 0
+            }
+          },
+          {
+            "name": "X-Tenant-ID",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListPaginatorResponse_EventType_"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPResponseError"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "evt:event-tr"
+            ]
+          }
+        ],
+        "x-mgc-output-flag": "table=TYPE:$.results[*].type"
       }
     }
   },
@@ -320,6 +404,19 @@
         ],
         "description": "Represent all the fields available in event output, following the Cloud Events Spec."
       },
+      "EventType": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "title": "Type"
+          }
+        },
+        "title": "EventType",
+        "required": [
+          "type"
+        ]
+      },
       "HTTPResponseError": {
         "type": "object",
         "properties": {
@@ -351,6 +448,26 @@
         },
         "title": "HTTPValidationError"
       },
+      "ListPaginatorResponse_EventType_": {
+        "type": "object",
+        "properties": {
+          "meta": {
+            "$ref": "#/components/schemas/PaginatorResponse"
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EventType"
+            },
+            "title": "Results"
+          }
+        },
+        "title": "ListPaginatorResponse[EventType]",
+        "required": [
+          "meta",
+          "results"
+        ]
+      },
       "ListPaginatorResponse_Event_": {
         "type": "object",
         "properties": {
@@ -378,17 +495,13 @@
             "type": "integer",
             "title": "Limit",
             "maximum": 2147483647,
-            "minimum": 0,
-            "description": "Number of items per page",
-            "default": 50
+            "minimum": 0
           },
           "offset": {
             "type": "integer",
             "title": "Offset",
             "maximum": 2147483647,
-            "minimum": 0,
-            "description": "Offset for pagination",
-            "default": 0
+            "minimum": 0
           },
           "count": {
             "type": "integer",
@@ -442,17 +555,29 @@
       }
     },
     "securitySchemes": {
-      "HTTPBearerDry": {
-        "type": "http",
-        "description": "## How to Auth\nTo use the API a token is needed, and both grant_types **client_credentials** and **authorization_code** tokens can be used.\n\nFollow [this guide](https://magazine.atlassian.net/wiki/spaces/CLOUD/pages/4230643732/Client+Credentials) to learn how to authenticate via **client credentials**.\n\nFollow [this guide](https://magazine.atlassian.net/wiki/spaces/CLOUD/pages/4253385090/Authorization+Code) to learn how to authenticate via **authorization code**.\n### Where?\nGenerate Token using OAuth2 API: https://autoseg-idp.luizalabs.com\n\n## Auth status: **Active 🟢**",
-        "scheme": "bearer"
+      "OAuth2": {
+        "type": "oauth2",
+        "description": "OAuth2/OIDC via IDP",
+        "flows": {
+          "authorizationCode": {
+            "authorizationUrl": "https://autoseg-idp.luizalabs.com/oauth/auth",
+            "tokenUrl": "https://autoseg-idp.luizalabs.com/oauth/token",
+            "scopes": {
+              "evt:event-tr": "Permissão de leitura de consumo de serviços."
+            }
+          }
+        }
       }
     }
   },
   "tags": [
     {
       "name": "events",
-      "description": "Endpoints related to listing cloud events emitted by other products."
+      "description": "Endpoints related to listing events emitted by other products."
+    },
+    {
+      "name": "event-types",
+      "description": "Endpoints related to listing types of events emitted by other products."
     }
   ]
 }

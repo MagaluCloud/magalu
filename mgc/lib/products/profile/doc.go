@@ -3,13 +3,14 @@ Package: profile
 
 # Summary
 
-# Profile related commands
+# Manage account settings, including SSH keys and related configurations
 
 # Description
 
-Profiles hold auth and runtime configuration for the MgcSDK, like tokens and log filter settings.
-Users can create as many profiles as they choose to. Auth and config operations will affect only the
-current profile, so users can alter and switch between profiles without loosing the previous configuration
+The profile group provides commands to view and modify user account settings.
+It allows users to manage their SSH keys, update personal information, and configure other
+account-related preferences. This group is essential for maintaining secure access and
+personalizing the user experience within the system.
 
 import "magalu.cloud/lib/products/profile"
 */

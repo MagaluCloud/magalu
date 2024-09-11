@@ -3,7 +3,6 @@ package common
 import (
 	"context"
 	"fmt"
-	"io"
 	"maps"
 	"net/http"
 	"net/url"
@@ -11,7 +10,6 @@ import (
 
 	"magalu.cloud/core/auth"
 	mgcHttpPkg "magalu.cloud/core/http"
-	"magalu.cloud/core/progress_report"
 )
 
 // note: must be in HTTP Header Canonical format (Title-Case-With-Dashes)
@@ -119,21 +117,6 @@ func SendRequestWithIgnoredHeaders(ctx context.Context, req *http.Request, ignor
 
 	if err = signHeaders(req, accesskeyId, accessSecretKey, unsignedPayload, ignoredHeaders); err != nil {
 		return
-	}
-
-	if req.Body != nil {
-		if reporter := progress_report.BytesReporterFromContext(ctx); reporter != nil {
-			req.Body = progress_report.NewReporterReader(req.Body, reporter.Report)
-			if getBodyRaw := req.GetBody; getBodyRaw != nil {
-				req.GetBody = func() (io.ReadCloser, error) {
-					body, err := getBodyRaw()
-					if err != nil {
-						return nil, err
-					}
-					return progress_report.NewReporterReader(body, reporter.Report), nil
-				}
-			}
-		}
 	}
 
 	res, err = httpClient.Do(req)

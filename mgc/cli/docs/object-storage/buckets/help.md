@@ -12,6 +12,7 @@ Usage:
 - acl         ACL-related commands
 - create      Create a new Bucket
 - delete      Delete an existing Bucket
+- label       Label-related commands
 - list        List all existing Buckets
 - policy      Policy-related commands
 - public-url  Get bucket public url
@@ -32,7 +33,7 @@ Global Flags:
                                  Valid unit suffixes: ns, us, ms, s, m and h. Examples: 300ms, 1m30s
       --debug                    Display detailed log information at the debug level
       --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
-  -o, --output string            Change the output format. Use '--output=help' to know more details. (default "yaml")
+  -o, --output string            Change the output format. Use '--output=help' to know more details.
   -r, --raw                      Output raw data, without any formatting or coloring
 ```
 

@@ -14,6 +14,7 @@ Usage:
 - get               Retrieve the details of a specific instance.
 - list              List all instances.
 - network-interface network-interface
+- password          Retrieve the first windows admin password
 - reboot            Reboot an instance.
 - rename            Renames an instance.
 - retype            Changes an instance machine-type.
@@ -37,7 +38,7 @@ Global Flags:
                                  Valid unit suffixes: ns, us, ms, s, m and h. Examples: 300ms, 1m30s
       --debug                    Display detailed log information at the debug level
       --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
-  -o, --output string            Change the output format. Use '--output=help' to know more details. (default "yaml")
+  -o, --output string            Change the output format. Use '--output=help' to know more details.
   -r, --raw                      Output raw data, without any formatting or coloring
 ```
 

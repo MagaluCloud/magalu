@@ -1,0 +1,1 @@
+terraform import mgc_kubernetes_cluster.clsuter 123

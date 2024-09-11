@@ -1,4 +1,4 @@
-# Block Storage API Product Documentation
+# Block Storage API Product
 
 ## Usage:
 ```bash

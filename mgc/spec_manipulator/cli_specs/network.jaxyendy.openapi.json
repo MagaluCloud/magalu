@@ -8,7 +8,7 @@
       "url": "https://github.com/luizalabs",
       "email": "thullyo.cunha@luizalabs.com"
     },
-    "version": "1.131.0"
+    "version": "1.131.1"
   },
   "paths": {
     "/v0/healthcheck": {
@@ -2787,6 +2787,52 @@
         "example": {
           "nic_vpc_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
         }
+      },
+      "CreateOvnIcXaasRequest": {
+        "type": "object",
+        "properties": {
+          "project_type": {
+            "type": "string",
+            "title": "Project Type"
+          },
+          "router_name": {
+            "type": "string",
+            "title": "Router Name"
+          },
+          "ovn_ic_agent": {
+            "type": "string",
+            "title": "Ovn Ic Agent"
+          }
+        },
+        "title": "CreateOvnIcXaasRequest",
+        "required": [
+          "project_type",
+          "router_name",
+          "ovn_ic_agent"
+        ]
+      },
+      "DeleteOvnIcXaasRequest": {
+        "type": "object",
+        "properties": {
+          "project_type": {
+            "type": "string",
+            "title": "Project Type"
+          },
+          "router_name": {
+            "type": "string",
+            "title": "Router Name"
+          },
+          "ovn_ic_agent": {
+            "type": "string",
+            "title": "Ovn Ic Agent"
+          }
+        },
+        "title": "DeleteOvnIcXaasRequest",
+        "required": [
+          "project_type",
+          "router_name",
+          "ovn_ic_agent"
+        ]
       },
       "DhcpPoolStr": {
         "type": "object",
@@ -6085,6 +6131,132 @@
           "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
         }
       },
+      "SubnetResponseXAAS": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "vpc_id": {
+            "type": "string",
+            "title": "Vpc Id"
+          },
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "cidr": {
+            "type": "string",
+            "title": "Cidr"
+          },
+          "ethertype": {
+            "type": "string",
+            "title": "Ethertype"
+          },
+          "created_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Created At"
+          },
+          "updated": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Updated"
+          },
+          "subnetpool_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Subnetpool Id"
+          },
+          "external_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "External Id"
+          },
+          "cidr_block": {
+            "type": "string",
+            "title": "Cidr Block"
+          },
+          "ip_version": {
+            "type": "string",
+            "title": "Ip Version"
+          },
+          "zone": {
+            "type": "string",
+            "title": "Zone"
+          }
+        },
+        "title": "SubnetResponseXAAS",
+        "required": [
+          "id",
+          "vpc_id",
+          "cidr",
+          "ethertype",
+          "cidr_block",
+          "ip_version",
+          "zone"
+        ],
+        "example": {
+          "cidr": "172.20.0.0/24",
+          "cidr_block": "[ATENÇÃO] - Este campo futuramente substituirá 'cidr'",
+          "created_at": "2022-01-01 00:00:00",
+          "description": "vpc description",
+          "ethertype": "4",
+          "external_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+          "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+          "ip_version": "[ATENÇÃO] - Este campo futuramente substituirá 'ethertype'",
+          "name": "vpc_name",
+          "subnetpool_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+          "updated": "2022-01-01 00:00:00",
+          "vpc_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+          "zone": "a"
+        }
+      },
       "SubnetsResponse": {
         "type": "object",
         "properties": {
@@ -6107,6 +6279,39 @@
               "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
               "ip_version": "4",
               "name": "vpc_name",
+              "updated": "2022-01-01 00:00:00",
+              "vpc_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+              "zone": "a"
+            }
+          ]
+        }
+      },
+      "SubnetsResponseXAAS": {
+        "type": "object",
+        "properties": {
+          "subnets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SubnetResponseXAAS"
+            },
+            "title": "Subnets",
+            "default": []
+          }
+        },
+        "title": "SubnetsResponseXAAS",
+        "example": {
+          "subnets": [
+            {
+              "cidr": "172.20.0.0/24",
+              "cidr_block": "[ATENÇÃO] - Este campo futuramente substituirá 'cidr'",
+              "created_at": "2022-01-01 00:00:00",
+              "description": "vpc description",
+              "ethertype": "4",
+              "external_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+              "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+              "ip_version": "[ATENÇÃO] - Este campo futuramente substituirá 'ethertype'",
+              "name": "vpc_name",
+              "subnetpool_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
               "updated": "2022-01-01 00:00:00",
               "vpc_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
               "zone": "a"
@@ -6733,6 +6938,189 @@
           "description": "vpc description",
           "name": "vpc_name",
           "subnetpool_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+        }
+      },
+      "XaasSecurityGroupListEvent": {
+        "type": "object",
+        "properties": {
+          "security_groups": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/XaasSecurityGroupResponseEvent"
+            },
+            "title": "Security Groups"
+          }
+        },
+        "title": "XaasSecurityGroupListEvent",
+        "required": [
+          "security_groups"
+        ],
+        "example": {
+          "security_groups": [
+            {
+              "created_at": "2022-01-01 00:00:00",
+              "description": "security group description",
+              "error": "null",
+              "external_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+              "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+              "is_default": true,
+              "name": "security_group_name",
+              "project_type": "default",
+              "status": "created",
+              "tenant_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+              "updated": "2022-01-01 00:00:00",
+              "vpc_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+            }
+          ]
+        }
+      },
+      "XaasSecurityGroupResponseEvent": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Id"
+          },
+          "vpc_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Vpc Id"
+          },
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "created_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Created At"
+          },
+          "updated": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Updated"
+          },
+          "status": {
+            "$ref": "#/components/schemas/SecurityGroupStatus"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error"
+          },
+          "tenant_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tenant Id"
+          },
+          "project_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Project Type"
+          },
+          "is_default": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Is Default"
+          },
+          "external_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "External Id"
+          }
+        },
+        "title": "XaasSecurityGroupResponseEvent",
+        "required": [
+          "status"
+        ],
+        "example": {
+          "created_at": "2022-01-01 00:00:00",
+          "description": "security group description",
+          "error": "null",
+          "external_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+          "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+          "is_default": true,
+          "name": "security_group_name",
+          "project_type": "default",
+          "status": "created",
+          "tenant_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+          "updated": "2022-01-01 00:00:00",
+          "vpc_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
         }
       }
     }

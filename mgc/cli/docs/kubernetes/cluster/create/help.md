@@ -17,8 +17,9 @@ Usage:
 - --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
 - --description string            A brief description of the Kubernetes cluster.
 - 
-- --enabled-bastion               Enables the use of a bastion host for secure access to the cluster.
-- (required)
+- --enabled-bastion               [Deprecated] This parameter is deprecated and its use won't create a bastion server
+- Enables the use of a bastion host for secure access to the cluster.
+- 
 - --enabled-server-group          Enables the use of a server group with anti-affinity policy during the creation of the cluster and its node pools.
 - (default true)
 - -h, --help                          help for create
@@ -36,7 +37,8 @@ Usage:
 - Please specify the Kubernetes version using the standard "vX.Y.Z" format.
 - (default "v1.30.2")
 - -v, --version                       version for create
-- --zone string                   Identifier of the zone where the Kubernetes cluster will be located.
+- --zone string                   [Deprecated] This parameter is deprecated and its use won't create a cluster at requested zone.
+- Identifier of the zone where the Kubernetes cluster will be located.
 
 ## Flags:
 ```bash
@@ -50,7 +52,7 @@ Global Flags:
       --debug                    Display detailed log information at the debug level
       --env enum                 Environment to use (one of "pre-prod" or "prod") (default "prod")
       --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
-  -o, --output string            Change the output format. Use '--output=help' to know more details. (default "yaml")
+  -o, --output string            Change the output format. Use '--output=help' to know more details.
   -r, --raw                      Output raw data, without any formatting or coloring
       --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
       --server-url uri           Manually specify the server to use

@@ -15,7 +15,9 @@ type service struct {
 }
 
 type Service interface {
+	AccessTokenContext(ctx context.Context, parameters AccessTokenParameters) (result AccessTokenResult, err error)
 	AccessToken(parameters AccessTokenParameters) (result AccessTokenResult, err error)
+	LoginContext(ctx context.Context, parameters LoginParameters) (result LoginResult, err error)
 	Login(parameters LoginParameters) (result LoginResult, err error)
 }
 

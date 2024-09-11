@@ -9,15 +9,15 @@ Usage:
 
 ## Product catalog:
 - Commands:
-- attach      Attach a Volume
-- create      Create a new Volume
-- delete      Delete a Volume
-- detach      Detach a Volume
-- extend      Extend a Volume
-- get         Retrieve the details of a volume
-- list        List all Volumes
-- rename      Rename a volume
-- retype      Retype a Volume
+- attach      Attach the volume to an instance.
+- create      Create a new volume.
+- delete      Delete a volume.
+- detach      Detach the volume from an instance.
+- extend      Extend the size of a volume.
+- get         Retrieve the details of a specific volume.
+- list        List all volumes.
+- rename      Rename a volume.
+- retype      Change the type of a volume.
 
 ## Other commands:
 - Flags:
@@ -35,7 +35,7 @@ Global Flags:
                                  Valid unit suffixes: ns, us, ms, s, m and h. Examples: 300ms, 1m30s
       --debug                    Display detailed log information at the debug level
       --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
-  -o, --output string            Change the output format. Use '--output=help' to know more details. (default "yaml")
+  -o, --output string            Change the output format. Use '--output=help' to know more details.
   -r, --raw                      Output raw data, without any formatting or coloring
 ```
 

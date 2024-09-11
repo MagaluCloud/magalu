@@ -22,6 +22,9 @@ import "{{ .PackageImport }}"
 package {{ .PackageName }}
 
 import (
+	{{- if ne .GoName "Kubeconfig" }}
+	"context"
+	{{- end }}
 
 	mgcCore "magalu.cloud/core"
 	mgcHelpers "{{ .HelpersImport }}"
@@ -120,6 +123,66 @@ func (s *service) Kubeconfig(parameters KubeconfigParameters, configs Kubeconfig
 		return
 	{{ end -}}
 	}
+
+	// Context from caller is used to allow cancellation of long-running requests
+	func (s *service) {{ .GoName }}Context(
+		ctx context.Context,
+	{{- if .Types.Parameters }}
+		parameters {{ .Types.Parameters }},
+	{{- end }}
+	{{- if .Types.Configs }}
+		configs {{ .Types.Configs }},
+	{{- end }}
+	) (
+	{{- if .Types.Result }}
+		result {{ .Types.Result }},
+	{{- end}}
+		err error,
+	) {
+		exec, ctx, err := mgcHelpers.PrepareExecutor({{ printf "%q" .GoName }}, mgcCore.RefPath({{ printf "%q" .RefPath }}), s.client, ctx)
+		if err != nil {
+			return
+		}
+
+		var p mgcCore.Parameters
+	{{- if .Types.Parameters }}
+		if p, err = mgcHelpers.ConvertParameters[{{ .Types.Parameters }}](parameters); err != nil {
+			return
+		}
+	{{- end }}
+
+		var c mgcCore.Configs
+	{{- if .Types.Configs }}
+		if c, err = mgcHelpers.ConvertConfigs[{{ .Types.Configs }}](configs); err != nil {
+			return
+		}
+
+		sdkConfig := s.client.Sdk().Config().TempConfig()
+		if c["serverUrl"] == nil && sdkConfig["serverUrl"] != nil {
+			c["serverUrl"] = sdkConfig["serverUrl"]
+		}
+
+		if c["env"] == nil && sdkConfig["env"] != nil {
+			c["env"] = sdkConfig["env"]
+		}
+
+		if c["region"] == nil && sdkConfig["region"] != nil {
+			c["region"] = sdkConfig["region"]
+		}
+
+	{{- end }}
+	{{ if .Types.Result }}
+		r, err := exec.Execute(ctx, p, c)
+		if err != nil {
+			return
+		}
+		return mgcHelpers.ConvertResult[{{ .Types.Result }}](r)
+	{{ else }}
+		_, err = exec.Execute(ctx, p, c)
+		return
+	{{ end -}}
+	}
+
 	{{- if .TerminatorExecutor }}
 
 	func (s *service) {{ .GoName }}UntilTermination(
@@ -178,6 +241,7 @@ func (s *service) Kubeconfig(parameters KubeconfigParameters, configs Kubeconfig
 	{{ end -}}
 	}
 	{{- end }}
+
 	{{- if .ConfirmableExecutor }}
 	
 	func (s *service) {{ .GoName }}ConfirmPrompt(

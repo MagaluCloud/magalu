@@ -3,13 +3,6 @@ fail_fast: true
 repos:
 -   repo: local
     hooks:
-    -   id: spec-stats
-        name: spec-stats
-        language: python
-        entry: bash -c 'python3 ./scripts/spec_stats.py ./mgc/cli/openapis -o ./spec_stats_dump.yml'
-        types_or: [python, yaml]
-        stages: [pre-commit, pre-push]
-        additional_dependencies: [jsonschema, PyYAML, typing, argparse]
     -   id: go-test
         name: go-test
         language: golang
@@ -39,10 +32,26 @@ repos:
         entry: bash -c './scripts/oapi_index_gen.sh'
         additional_dependencies: [PyYAML, typing, argparse]
         stages: [pre-commit]
-    -   id: generate tf docs
-        name: generate tf docs
+    -   id: tf-docs
+        name: generate terraform documentation
         language: system
-        entry: bash -c './scripts/tf_generate_docs.sh'
+        entry: make -C ./mgc/terraform-provider-mgc/ generate-docs
+        require_serial: true
+        pass_filenames: false
+        stages: [pre-commit]
+    -   id: check-tf-examples
+        name: check terraform examples
+        language: system
+        entry: make -C ./mgc/terraform-provider-mgc/ check-example-usage
+        require_serial: true
+        pass_filenames: false
+        stages: [pre-commit]
+    -   id: check-tf-docs
+        name: check terraform documentation subcategory
+        language: system
+        entry: make -C ./mgc/terraform-provider-mgc/ check-empty-subcategory
+        require_serial: true
+        pass_filenames: false
         stages: [pre-commit]
     -   id: check-openapi-links
         name: check openapi links
@@ -93,7 +102,7 @@ repos:
         stages: [pre-commit, pre-push]
 
 -   repo: https://github.com/golangci/golangci-lint
-    rev: v1.55.2
+    rev: v1.61.0
     hooks:
     -   id: golangci-lint
         stages: [pre-commit]
@@ -102,7 +111,7 @@ repos:
         entry: bash -c "go list -f '{{.Dir}}/...' -m | xargs golangci-lint run --fix --new-from-rev HEAD"
 
 -   repo: https://github.com/golangci/golangci-lint
-    rev: v1.55.2
+    rev: v1.61.0
     hooks:
     -   id: golangci-lint
         stages: [pre-push]
