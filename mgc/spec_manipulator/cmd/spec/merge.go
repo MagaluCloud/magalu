@@ -421,10 +421,10 @@ func MergeSpecsCmd() *cobra.Command {
 	cmd.Flags().BoolVarP(&options.globalDb, "globaldb", "g", false, "Is globalDB?")
 	cmd.Flags().StringVarP(&options.productPathURL, "product", "p", "", "productURLPath")
 
-	cmd.MarkFlagRequired("target")
-	cmd.MarkFlagRequired("from")
-	cmd.MarkFlagRequired("output")
-	cmd.MarkFlagRequired("globaldb")
-	cmd.MarkFlagRequired("product")
+	_ = cmd.MarkFlagRequired("target")
+	_ = cmd.MarkFlagRequired("from")
+	_ = cmd.MarkFlagRequired("output")
+	_ = cmd.MarkFlagRequired("globaldb")
+	_ = cmd.MarkFlagRequired("product")
 	return cmd
 }
