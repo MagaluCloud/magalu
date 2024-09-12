@@ -40,3 +40,9 @@ venv
 cli-dump-tree.json
 spec_stats_dump.yml
 mgc/spec_manipulator/cli_specs/specs.go.tmp
+
+.terraform
+.terraform.lock.hcl
+terraform.tfstate
+terraform.tfstate.backup
+terraform.tfstate.d
