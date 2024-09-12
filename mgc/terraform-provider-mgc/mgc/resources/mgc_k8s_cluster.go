@@ -59,6 +59,7 @@ func (r *k8sClusterResource) Configure(ctx context.Context, req resource.Configu
 	if req.ProviderData == nil {
 		return
 	}
+
 	config, ok := req.ProviderData.(tfutil.ProviderConfig)
 	if !ok {
 		resp.Diagnostics.AddError(
@@ -80,6 +81,7 @@ func (r *k8sClusterResource) Configure(ctx context.Context, req resource.Configu
 		_ = r.sdkClient.Sdk().Auth().SetAPIKey(config.ApiKey.ValueString())
 	}
 
+	r.sdkClient = mgcSdk.NewClient(sdk)
 	r.k8sCluster = sdkCluster.NewService(ctx, r.sdkClient)
 }
 

@@ -54,7 +54,6 @@ func (r *vmInstances) Configure(ctx context.Context, req resource.ConfigureReque
 	}
 
 	config, ok := req.ProviderData.(tfutil.ProviderConfig)
-
 	if !ok {
 		resp.Diagnostics.AddError(
 			"Unexpected Data Source Configure Type",
@@ -64,9 +63,18 @@ func (r *vmInstances) Configure(ctx context.Context, req resource.ConfigureReque
 	}
 
 	sdk := sdk.NewSdk()
-	_ = sdk.Config().SetTempConfig("region", config.Region.ValueStringPointer())
-	_ = sdk.Config().SetTempConfig("env", config.Env.ValueStringPointer())
-	_ = sdk.Config().SetTempConfig("api_key", config.ApiKey.ValueStringPointer())
+	r.sdkClient = mgcSdk.NewClient(sdk)
+	if config.Region.ValueString() != "" {
+		_ = r.sdkClient.Sdk().Config().SetTempConfig("region", config.Region.ValueString())
+	}
+	if config.Env.ValueString() != "" {
+		_ = r.sdkClient.Sdk().Config().SetTempConfig("env", config.Env.ValueString())
+	}
+	if config.ApiKey.ValueString() != "" {
+		_ = r.sdkClient.Sdk().Auth().SetAPIKey(config.ApiKey.ValueString())
+	}
+
+	r.sdkClient = mgcSdk.NewClient(sdk)
 
 	r.sdkClient = mgcSdk.NewClient(sdk)
 	r.vmInstances = sdkVmInstances.NewService(ctx, r.sdkClient)

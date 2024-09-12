@@ -38,8 +38,8 @@ func (r *sshKeys) Configure(ctx context.Context, req resource.ConfigureRequest, 
 	if req.ProviderData == nil {
 		return
 	}
-	config, ok := req.ProviderData.(tfutil.ProviderConfig)
 
+	config, ok := req.ProviderData.(tfutil.ProviderConfig)
 	if !ok {
 		resp.Diagnostics.AddError(
 			"Unexpected Data Source Configure Type",
@@ -49,9 +49,16 @@ func (r *sshKeys) Configure(ctx context.Context, req resource.ConfigureRequest, 
 	}
 
 	sdk := sdk.NewSdk()
-	_ = sdk.Config().SetTempConfig("region", config.Region.ValueStringPointer())
-	_ = sdk.Config().SetTempConfig("env", config.Env.ValueStringPointer())
-	_ = sdk.Config().SetTempConfig("api_key", config.ApiKey.ValueStringPointer())
+	r.sdkClient = mgcSdk.NewClient(sdk)
+	if config.Region.ValueString() != "" {
+		_ = r.sdkClient.Sdk().Config().SetTempConfig("region", config.Region.ValueString())
+	}
+	if config.Env.ValueString() != "" {
+		_ = r.sdkClient.Sdk().Config().SetTempConfig("env", config.Env.ValueString())
+	}
+	if config.ApiKey.ValueString() != "" {
+		_ = r.sdkClient.Sdk().Auth().SetAPIKey(config.ApiKey.ValueString())
+	}
 
 	r.sdkClient = mgcSdk.NewClient(sdk)
 	r.sshKeys = sdkSSHKeys.NewService(ctx, r.sdkClient)
