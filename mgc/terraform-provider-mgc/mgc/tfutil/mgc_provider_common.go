@@ -11,21 +11,6 @@ import (
 
 type findKey func(key string, out any) error
 
-// // providerData holds the data for a specific provider instance
-// type ProviderData struct {
-// 	Config ProviderConfig
-// }
-
-// // providerDataMap is a thread-safe map to store provider data
-// type ProviderDataMap struct {
-// 	sync.RWMutex
-// 	Data map[string]*ProviderData
-// }
-
-// var ProviderDataStore = &ProviderDataMap{
-// 	Data: make(map[string]*ProviderData),
-// }
-
 type ProviderConfig struct {
 	Region        types.String         `tfsdk:"region"`
 	Env           types.String         `tfsdk:"env"`

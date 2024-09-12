@@ -21,7 +21,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	mgcSdk "magalu.cloud/lib"
 	sdkCluster "magalu.cloud/lib/products/kubernetes/cluster"
-	"magalu.cloud/sdk"
+	"magalu.cloud/terraform-provider-mgc/mgc/client"
 	tfutil "magalu.cloud/terraform-provider-mgc/mgc/tfutil"
 )
 
@@ -60,28 +60,16 @@ func (r *k8sClusterResource) Configure(ctx context.Context, req resource.Configu
 		return
 	}
 
-	config, ok := req.ProviderData.(tfutil.ProviderConfig)
-	if !ok {
+	var err error
+	r.sdkClient, err = client.NewSDKClient(req)
+	if err != nil {
 		resp.Diagnostics.AddError(
-			"Unexpected Data Source Configure Type",
+			err.Error(),
 			fmt.Sprintf("Expected provider config, got: %T. Please report this issue to the provider developers.", req.ProviderData),
 		)
 		return
 	}
 
-	sdk := sdk.NewSdk()
-	r.sdkClient = mgcSdk.NewClient(sdk)
-	if config.Region.ValueString() != "" {
-		_ = r.sdkClient.Sdk().Config().SetTempConfig("region", config.Region.ValueString())
-	}
-	if config.Env.ValueString() != "" {
-		_ = r.sdkClient.Sdk().Config().SetTempConfig("env", config.Env.ValueString())
-	}
-	if config.ApiKey.ValueString() != "" {
-		_ = r.sdkClient.Sdk().Auth().SetAPIKey(config.ApiKey.ValueString())
-	}
-
-	r.sdkClient = mgcSdk.NewClient(sdk)
 	r.k8sCluster = sdkCluster.NewService(ctx, r.sdkClient)
 }
 

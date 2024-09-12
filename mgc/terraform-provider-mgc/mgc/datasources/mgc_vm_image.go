@@ -10,7 +10,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	mgcSdk "magalu.cloud/lib"
 	sdkVMImages "magalu.cloud/lib/products/virtual_machine/images"
-	"magalu.cloud/sdk"
+	"magalu.cloud/terraform-provider-mgc/mgc/client"
 	"magalu.cloud/terraform-provider-mgc/mgc/tfutil"
 )
 
@@ -44,28 +44,16 @@ func (r *DataSourceVmImages) Configure(ctx context.Context, req datasource.Confi
 		return
 	}
 
-	config, ok := req.ProviderData.(tfutil.ProviderConfig)
-	if !ok {
+	var err error
+	r.sdkClient, err = client.NewSDKClient(req)
+	if err != nil {
 		resp.Diagnostics.AddError(
-			"Unexpected Data Source Configure Type",
+			err.Error(),
 			fmt.Sprintf("Expected provider config, got: %T. Please report this issue to the provider developers.", req.ProviderData),
 		)
 		return
 	}
 
-	sdk := sdk.NewSdk()
-	r.sdkClient = mgcSdk.NewClient(sdk)
-	if config.Region.ValueString() != "" {
-		_ = r.sdkClient.Sdk().Config().SetTempConfig("region", config.Region.ValueString())
-	}
-	if config.Env.ValueString() != "" {
-		_ = r.sdkClient.Sdk().Config().SetTempConfig("env", config.Env.ValueString())
-	}
-	if config.ApiKey.ValueString() != "" {
-		_ = r.sdkClient.Sdk().Auth().SetAPIKey(config.ApiKey.ValueString())
-	}
-
-	r.sdkClient = mgcSdk.NewClient(sdk)
 	r.vmImages = sdkVMImages.NewService(ctx, r.sdkClient)
 }
 

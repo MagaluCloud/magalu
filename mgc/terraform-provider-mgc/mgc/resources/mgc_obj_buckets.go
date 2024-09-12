@@ -9,10 +9,10 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	mgcSdk "magalu.cloud/lib"
+	"magalu.cloud/terraform-provider-mgc/mgc/client"
 	tfutil "magalu.cloud/terraform-provider-mgc/mgc/tfutil"
 
 	sdkBuckets "magalu.cloud/lib/products/object_storage/buckets"
-	"magalu.cloud/sdk"
 )
 
 type ObjectStorageBucket struct {
@@ -56,32 +56,15 @@ func (r *objectStorageBuckets) Configure(ctx context.Context, req resource.Confi
 		return
 	}
 
-	config, ok := req.ProviderData.(tfutil.ProviderConfig)
-	if !ok {
+	var err error
+	r.sdkClient, err = client.NewSDKClient(req)
+	if err != nil {
 		resp.Diagnostics.AddError(
-			"Unexpected Data Source Configure Type",
+			err.Error(),
 			fmt.Sprintf("Expected provider config, got: %T. Please report this issue to the provider developers.", req.ProviderData),
 		)
 		return
 	}
-
-	sdk := sdk.NewSdk()
-	r.sdkClient = mgcSdk.NewClient(sdk)
-	if config.Region.ValueString() != "" {
-		_ = r.sdkClient.Sdk().Config().SetTempConfig("region", config.Region.ValueString())
-	}
-	if config.Env.ValueString() != "" {
-		_ = r.sdkClient.Sdk().Config().SetTempConfig("env", config.Env.ValueString())
-	}
-	if config.ApiKey.ValueString() != "" {
-		_ = r.sdkClient.Sdk().Auth().SetAPIKey(config.ApiKey.ValueString())
-	}
-
-	if config.ObjectStorage != nil && config.ObjectStorage.ObjectKeyPair != nil {
-		sdk.Config().AddTempKeyPair("apikey", config.ObjectStorage.ObjectKeyPair.KeyID.ValueString(), config.ObjectStorage.ObjectKeyPair.KeySecret.ValueString())
-	}
-
-	r.sdkClient = mgcSdk.NewClient(sdk)
 
 	r.buckets = sdkBuckets.NewService(ctx, r.sdkClient)
 }

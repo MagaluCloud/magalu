@@ -26,21 +26,8 @@ output "flavor_output" {
 
 ### Read-Only
 
-- `bastion` (Attributes List) Bastion configuration. (see [below for nested schema](#nestedatt--bastion))
 - `controlplane` (Attributes List) Control plane configuration. (see [below for nested schema](#nestedatt--controlplane))
 - `nodepool` (Attributes List) Node pool configuration. (see [below for nested schema](#nestedatt--nodepool))
-
-<a id="nestedatt--bastion"></a>
-### Nested Schema for `bastion`
-
-Read-Only:
-
-- `id` (String) ID of the flavor.
-- `name` (String) Name of the flavor.
-- `ram` (Number) Amount of RAM in MB.
-- `size` (Number) Size of the flavor.
-- `vcpu` (Number) Number of virtual CPUs.
-
 
 <a id="nestedatt--controlplane"></a>
 ### Nested Schema for `controlplane`

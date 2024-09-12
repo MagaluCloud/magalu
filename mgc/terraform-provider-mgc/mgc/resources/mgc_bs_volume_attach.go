@@ -12,7 +12,7 @@ import (
 	mgcSdk "magalu.cloud/lib"
 
 	sdkVolumes "magalu.cloud/lib/products/block_storage/volumes"
-	"magalu.cloud/sdk"
+	"magalu.cloud/terraform-provider-mgc/mgc/client"
 	tfutil "magalu.cloud/terraform-provider-mgc/mgc/tfutil"
 )
 
@@ -41,32 +41,19 @@ func (r *VolumeAttach) Metadata(_ context.Context, req resource.MetadataRequest,
 
 func (r *VolumeAttach) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
 	if req.ProviderData == nil {
-
 		return
 	}
 
-	config, ok := req.ProviderData.(tfutil.ProviderConfig)
-	if !ok {
+	var err error
+	r.sdkClient, err = client.NewSDKClient(req)
+	if err != nil {
 		resp.Diagnostics.AddError(
-			"Unexpected Data Source Configure Type",
+			err.Error(),
 			fmt.Sprintf("Expected provider config, got: %T. Please report this issue to the provider developers.", req.ProviderData),
 		)
 		return
 	}
 
-	sdk := sdk.NewSdk()
-	r.sdkClient = mgcSdk.NewClient(sdk)
-	if config.Region.ValueString() != "" {
-		_ = r.sdkClient.Sdk().Config().SetTempConfig("region", config.Region.ValueString())
-	}
-	if config.Env.ValueString() != "" {
-		_ = r.sdkClient.Sdk().Config().SetTempConfig("env", config.Env.ValueString())
-	}
-	if config.ApiKey.ValueString() != "" {
-		_ = r.sdkClient.Sdk().Auth().SetAPIKey(config.ApiKey.ValueString())
-	}
-
-	r.sdkClient = mgcSdk.NewClient(sdk)
 	r.blockStorageVolumes = sdkVolumes.NewService(ctx, r.sdkClient)
 }
 
