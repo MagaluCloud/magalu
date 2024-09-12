@@ -124,7 +124,7 @@ paths:
             security:
             -   OAuth2:
                 - evt:event-tr
-            x-mgc-output-flag: table=ID:$.results[*].id,SOURCE:$.results[*].source,TYPE:$.results[*].type,SPECVERSION:$.results[*].specversion,SUBJECT:$.results[*].subject,TIME:$.results[*].time,AUTHID:$.results[*].authid,AUTHTYPE:$.results[*].authtype,PRODUCT:$.results[*].product,REGION:$.results[*].region
+            x-mgc-output-flag: default=table;allowfields=ID:$.results[*].id,SOURCE:$.results[*].source,TYPE:$.results[*].type,SPECVERSION:$.results[*].specversion,SUBJECT:$.results[*].subject,TIME:$.results[*].time,AUTHID:$.results[*].authid,AUTHTYPE:$.results[*].authtype,PRODUCT:$.results[*].product,REGION:$.results[*].region
     /v0/event-types:
         get:
             tags:
@@ -173,7 +173,7 @@ paths:
             security:
             -   OAuth2:
                 - evt:event-tr
-            x-mgc-output-flag: table=TYPE:$.results[*].type
+            x-mgc-output-flag: default=table;allowfields=TYPE:$.results[*].type
 components:
     schemas:
         Event:

@@ -77,47 +77,27 @@ func getOutputFormatter(name, options string) (formatter OutputFormatter, err er
 }
 
 func getOutputFor(sdk *mgcSdk.Sdk, cmd *cobra.Command, result core.Result) string {
-	hasOutputFromFlag := false
 	output := ""
-	if out := getOutputFlag(cmd); out != "" {
-		hasOutputFromFlag = true
-		output = out
+
+	if out_from_config := getOutputConfig(sdk); out_from_config != "" {
+		output = out_from_config
 	}
 
-	if xoutput := getOutputConfig(sdk); output == "" && xoutput != "" {
-		output = xoutput
-	}
-	if output == "" {
-		output = "yaml"
+	if out_from_flag := getOutputFlag(cmd); out_from_flag != "" {
+		output = out_from_flag
 	}
 
-	if output == "" {
-		if outputOptions, ok := core.ResultAs[core.ResultWithDefaultOutputOptions](result); ok {
-			return "default=" + outputOptions.DefaultOutputOptions()
-		}
-	} else {
-		if outputOptions, ok := core.ResultAs[core.ResultWithDefaultOutputOptions](result); ok {
-			outputFromSpec := outputOptions.DefaultOutputOptions()
-			if !strings.Contains(outputFromSpec, "default=") {
-				//SPEC NAO CONTEM DEFAULT
-				if output != "" {
-					output = outputFromSpec + ";default=" + output
-				}
-			} else {
-				if hasOutputFromFlag {
-					outs := strings.Split(outputFromSpec, ";")
-					for i, ot := range outs {
-						if strings.HasPrefix(ot, "default=") {
-							outs[i] = "default=" + output
-						}
-					}
-					output = strings.Join(outs, ";")
-				} else {
-					output = outputFromSpec
+	if outputOptions, ok := core.ResultAs[core.ResultWithDefaultOutputOptions](result); ok {
+		outputFromSpec := outputOptions.DefaultOutputOptions()
+		if !strings.Contains(outputFromSpec, "default=") {
+			outs := strings.Split(outputFromSpec, ";")
+			for i, ot := range outs {
+				if strings.HasPrefix(ot, "default=") {
+					outs[i] = "default=" + output
 				}
 			}
+			output = strings.Join(outs, ";")
 		}
-
 	}
 
 	return output

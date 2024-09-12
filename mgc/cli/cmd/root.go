@@ -230,11 +230,4 @@ func setDefaultOutputFormat(sdk *mgcSdk.Sdk) {
 		logger().Debugw("failed to get output format from config", "error", err)
 		return
 	}
-	if outputFormat == "" {
-		err = sdk.Config().Set("defaultOutput", defaultOutputFormat)
-		if err != nil {
-			logger().Debugw("failed to set output format in config", "error", err)
-			return
-		}
-	}
 }
