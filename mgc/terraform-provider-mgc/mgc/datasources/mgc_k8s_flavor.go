@@ -61,11 +61,6 @@ func (r *DataSourceKubernetesFlavor) Schema(_ context.Context, req datasource.Sc
 	resp.Schema = schema.Schema{
 		Description: "Available flavors for Kubernetes clusters.",
 		Attributes: map[string]schema.Attribute{
-			"bastion": schema.ListNestedAttribute{
-				Description:  "Bastion configuration.",
-				Computed:     true,
-				NestedObject: resourceListResultResultsItemBastionItemSchema(),
-			},
 			"controlplane": schema.ListNestedAttribute{
 				Description:  "Control plane configuration.",
 				Computed:     true,
