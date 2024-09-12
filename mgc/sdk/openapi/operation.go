@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
+	"sync"
 
 	"go.uber.org/zap"
 	"magalu.cloud/core"
@@ -655,6 +656,8 @@ func isVisitJSONErrFatal(err error) bool {
 	return true
 }
 
+var m sync.Mutex
+
 func (o *operation) Execute(
 	ctx context.Context,
 	parameters core.Parameters,
@@ -669,7 +672,7 @@ func (o *operation) Execute(
 			_ = spinnerInfo.Stop()
 		}()
 	}
-
+	m.Lock()
 	logger := o.logger.With("parameters", parameters, "configs", configs)
 	logger.Debug("execute")
 	// keep the original parameters, configs -- do not use the transformed versions!
@@ -708,6 +711,7 @@ func (o *operation) Execute(
 	if o.transformParameters != nil {
 		logger.Debug("starting parameters transforms")
 		// Safe because transformParameters doesn't modify the input map
+
 		parameters, err = o.transformParameters(parameters)
 		if err != nil {
 			logger.Warnw("failed to transform parameters", "error", err)
@@ -744,7 +748,7 @@ func (o *operation) Execute(
 		return nil, err
 	}
 	logger.Debug("created HTTP request, now execute it...")
-
+	m.Unlock()
 	resp, err := client.Do(req)
 
 	if err != nil {

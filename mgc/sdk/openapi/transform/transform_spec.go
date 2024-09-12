@@ -3,6 +3,7 @@ package transform
 import (
 	"fmt"
 	"reflect"
+	"sync"
 
 	"github.com/getkin/kin-openapi/openapi3"
 	"golang.org/x/exp/maps"
@@ -24,11 +25,14 @@ type transformerRegistryEntry struct {
 }
 
 var registryInits = map[string]func() *transformerRegistryEntry{}
+var m sync.RWMutex
 var registry = utils.NewLazyLoader(func() map[string]*transformerRegistryEntry {
 	reg := map[string]*transformerRegistryEntry{}
+	m.RLock()
 	for n, init := range registryInits {
 		reg[n] = init()
 	}
+	m.RUnlock()
 	maps.Clear(registryInits)
 	return reg
 })
