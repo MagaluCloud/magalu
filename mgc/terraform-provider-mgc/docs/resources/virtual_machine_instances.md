@@ -57,12 +57,12 @@ resource "mgc_virtual_machine_instances" "basic_instance_with_SG" {
 - `image` (Attributes) The image used to create the virtual machine instance. (see [below for nested schema](#nestedatt--image))
 - `machine_type` (Attributes) The machine type of the virtual machine instance. (see [below for nested schema](#nestedatt--machine_type))
 - `name` (String) The name of the virtual machine instance.
-- `ssh_key_name` (String) The name of the SSH key associated with the virtual machine instance.
 
 ### Optional
 
 - `name_is_prefix` (Boolean) Indicates whether the provided name is a prefix or the exact name of the virtual machine instance.
 - `network` (Attributes) The network configuration of the virtual machine instance. (see [below for nested schema](#nestedatt--network))
+- `ssh_key_name` (String) The name of the SSH key associated with the virtual machine instance. If the image is Windows, this field is not used.
 
 ### Read-Only
 

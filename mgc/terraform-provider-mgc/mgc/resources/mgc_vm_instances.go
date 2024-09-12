@@ -157,11 +157,11 @@ func (r *vmInstances) Schema(_ context.Context, _ resource.SchemaRequest, resp *
 				Computed: true,
 			},
 			"ssh_key_name": schema.StringAttribute{
-				Description: "The name of the SSH key associated with the virtual machine instance.",
+				Description: "The name of the SSH key associated with the virtual machine instance. If the image is Windows, this field is not used.",
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.UseStateForUnknown(),
 				},
-				Required: true,
+				Optional: true,
 			},
 			"state": schema.StringAttribute{
 				Description: "The current state of the virtual machine instance.",
@@ -310,11 +310,6 @@ func (r *vmInstances) Schema(_ context.Context, _ resource.SchemaRequest, resp *
 	}
 }
 
-func (r *vmInstances) ModifyPlan(ctx context.Context, req resource.ModifyPlanRequest, resp *resource.ModifyPlanResponse) {
-}
-func (r *vmInstances) ModifyPlanResponse(ctx context.Context, req resource.ModifyPlanRequest, resp *resource.ModifyPlanResponse) {
-}
-
 func (r *vmInstances) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
 	data := vmInstancesResourceModel{}
 	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
@@ -335,15 +330,12 @@ func (r *vmInstances) Read(ctx context.Context, req resource.ReadRequest, resp *
 
 func (r *vmInstances) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
 	plan := vmInstancesResourceModel{}
-
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
-
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
 	state := plan
-
 	state.FinalName = types.StringValue(state.Name.ValueString())
 
 	if state.NameIsPrefix.ValueBool() {
@@ -376,21 +368,6 @@ func (r *vmInstances) Create(ctx context.Context, req resource.CreateRequest, re
 			Id: state.Network.VPC.ID.ValueString(),
 		}
 	}
-
-	// if state.Network.Interface != nil && len(state.Network.Interface.SecurityGroups) > 0 {
-	// 	var items []sdkVmInstances.CreateParametersNetworkInterfaceSecurityGroupsItem
-	// 	for _, sg := range state.Network.Interface.SecurityGroups {
-	// 		items = append(items, sdkVmInstances.CreateParametersNetworkInterfaceSecurityGroupsItem{
-	// 			Id: sg.ID.ValueString(),
-	// 		})
-	// 	}
-	// 	vmInstancesNetworkInterfaceSecurityGroups := sdkVmInstances.CreateParametersNetworkInterfaceSecurityGroups(items)
-	// 	createParams.Network.Interface = &sdkVmInstances.CreateParametersNetworkInterface{
-	// 		SecurityGroups: &vmInstancesNetworkInterfaceSecurityGroups,
-	// 	}
-	// }
-
-	// createParams.Network.AssociatePublicIp = state.Network.AssociatePublicIP.ValueBoolPointer()
 
 	if state.Network.Interface != nil && len(state.Network.Interface.SecurityGroups) > 0 {
 		network := sdkVmInstances.CreateParametersNetwork{}
@@ -447,7 +424,6 @@ func (r *vmInstances) Update(ctx context.Context, req resource.UpdateRequest, re
 	req.State.Get(ctx, currState)
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
 
-	// RENAME
 	if !currState.Name.Equal(data.Name) {
 		data.FinalName = types.StringValue(data.Name.ValueString())
 
@@ -469,7 +445,6 @@ func (r *vmInstances) Update(ctx context.Context, req resource.UpdateRequest, re
 		}
 	}
 
-	// RETYPE
 	machineType, err := r.getMachineTypeID(ctx, data.MachineType.Name.ValueString())
 
 	if err != nil {
