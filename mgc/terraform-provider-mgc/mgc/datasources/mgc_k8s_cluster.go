@@ -9,6 +9,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	mgcSdk "magalu.cloud/lib"
 	"magalu.cloud/lib/products/kubernetes/cluster"
+	"magalu.cloud/terraform-provider-mgc/mgc/client"
 	tfutil "magalu.cloud/terraform-provider-mgc/mgc/tfutil"
 )
 
@@ -78,7 +79,7 @@ func (r *DataSourceKubernetesCluster) Configure(ctx context.Context, req datasou
 	}
 
 	var err error
-	r.sdkClient, err = tfutil.SDKClientGenerator(req)
+	r.sdkClient, err = client.NewSDKClient(req)
 	if err != nil {
 		resp.Diagnostics.AddError(
 			err.Error(),

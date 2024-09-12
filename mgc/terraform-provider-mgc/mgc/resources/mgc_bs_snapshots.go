@@ -14,6 +14,7 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	mgcSdk "magalu.cloud/lib"
+	"magalu.cloud/terraform-provider-mgc/mgc/client"
 	"magalu.cloud/terraform-provider-mgc/mgc/tfutil"
 
 	sdkBlockStorageSnapshots "magalu.cloud/lib/products/block_storage/snapshots"
@@ -50,7 +51,7 @@ func (r *bsSnapshots) Configure(ctx context.Context, req resource.ConfigureReque
 	}
 
 	var err error
-	r.sdkClient, err = tfutil.SDKClientGenerator(req)
+	r.sdkClient, err = client.NewSDKClient(req)
 	if err != nil {
 		resp.Diagnostics.AddError(
 			err.Error(),

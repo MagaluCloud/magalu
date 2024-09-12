@@ -10,6 +10,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	sdkSSHKeys "magalu.cloud/lib/products/profile/ssh_keys"
+	"magalu.cloud/terraform-provider-mgc/mgc/client"
 	tfutil "magalu.cloud/terraform-provider-mgc/mgc/tfutil"
 
 	mgcSdk "magalu.cloud/lib"
@@ -39,7 +40,7 @@ func (r *sshKeys) Configure(ctx context.Context, req resource.ConfigureRequest, 
 	}
 
 	var err error
-	r.sdkClient, err = tfutil.SDKClientGenerator(req)
+	r.sdkClient, err = client.NewSDKClient(req)
 	if err != nil {
 		resp.Diagnostics.AddError(
 			err.Error(),

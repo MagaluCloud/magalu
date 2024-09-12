@@ -15,6 +15,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	mgcSdk "magalu.cloud/lib"
 	sdkNodepool "magalu.cloud/lib/products/kubernetes/nodepool"
+	"magalu.cloud/terraform-provider-mgc/mgc/client"
 	tfutil "magalu.cloud/terraform-provider-mgc/mgc/tfutil"
 )
 
@@ -37,7 +38,7 @@ func (r *NewNodePoolResource) Configure(ctx context.Context, req resource.Config
 	}
 
 	var err error
-	r.sdkClient, err = tfutil.SDKClientGenerator(req)
+	r.sdkClient, err = client.NewSDKClient(req)
 	if err != nil {
 		resp.Diagnostics.AddError(
 			err.Error(),

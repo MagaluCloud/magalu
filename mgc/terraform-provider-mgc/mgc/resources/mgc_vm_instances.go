@@ -22,6 +22,7 @@ import (
 	sdkVmImages "magalu.cloud/lib/products/virtual_machine/images"
 	sdkVmInstances "magalu.cloud/lib/products/virtual_machine/instances"
 	sdkVmMachineTypes "magalu.cloud/lib/products/virtual_machine/machine_types"
+	"magalu.cloud/terraform-provider-mgc/mgc/client"
 	tfutil "magalu.cloud/terraform-provider-mgc/mgc/tfutil"
 )
 
@@ -52,7 +53,7 @@ func (r *vmInstances) Configure(ctx context.Context, req resource.ConfigureReque
 	}
 
 	var err error
-	r.sdkClient, err = tfutil.SDKClientGenerator(req)
+	r.sdkClient, err = client.NewSDKClient(req)
 	if err != nil {
 		resp.Diagnostics.AddError(
 			err.Error(),

@@ -14,6 +14,7 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	mgcSdk "magalu.cloud/lib"
+	"magalu.cloud/terraform-provider-mgc/mgc/client"
 	"magalu.cloud/terraform-provider-mgc/mgc/tfutil"
 
 	sdkBlockStorageVolumes "magalu.cloud/lib/products/block_storage/volumes"
@@ -50,7 +51,7 @@ func (r *bsVolumes) Configure(ctx context.Context, req resource.ConfigureRequest
 	}
 
 	var err error
-	r.sdkClient, err = tfutil.SDKClientGenerator(req)
+	r.sdkClient, err = client.NewSDKClient(req)
 	if err != nil {
 		resp.Diagnostics.AddError(
 			err.Error(),

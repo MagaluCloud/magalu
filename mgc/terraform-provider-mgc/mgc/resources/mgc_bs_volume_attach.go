@@ -12,6 +12,7 @@ import (
 	mgcSdk "magalu.cloud/lib"
 
 	sdkVolumes "magalu.cloud/lib/products/block_storage/volumes"
+	"magalu.cloud/terraform-provider-mgc/mgc/client"
 	tfutil "magalu.cloud/terraform-provider-mgc/mgc/tfutil"
 )
 
@@ -44,7 +45,7 @@ func (r *VolumeAttach) Configure(ctx context.Context, req resource.ConfigureRequ
 	}
 
 	var err error
-	r.sdkClient, err = tfutil.SDKClientGenerator(req)
+	r.sdkClient, err = client.NewSDKClient(req)
 	if err != nil {
 		resp.Diagnostics.AddError(
 			err.Error(),

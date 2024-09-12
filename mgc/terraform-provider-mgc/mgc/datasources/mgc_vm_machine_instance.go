@@ -10,6 +10,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	mgcSdk "magalu.cloud/lib"
 	sdkVMInstances "magalu.cloud/lib/products/virtual_machine/instances"
+	"magalu.cloud/terraform-provider-mgc/mgc/client"
 	"magalu.cloud/terraform-provider-mgc/mgc/tfutil"
 )
 
@@ -34,7 +35,7 @@ func (r *DataSourceVmInstance) Configure(ctx context.Context, req datasource.Con
 	}
 
 	var err error
-	r.sdkClient, err = tfutil.SDKClientGenerator(req)
+	r.sdkClient, err = client.NewSDKClient(req)
 	if err != nil {
 		resp.Diagnostics.AddError(
 			err.Error(),
