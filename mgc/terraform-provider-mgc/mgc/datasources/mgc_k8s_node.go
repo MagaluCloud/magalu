@@ -258,7 +258,6 @@ func (d *DataSourceKubernetesNode) Configure(ctx context.Context, req datasource
 	}
 
 	config, ok := req.ProviderData.(tfutil.ProviderConfig)
-
 	if !ok {
 		resp.Diagnostics.AddError(
 			"Unexpected Data Source Configure Type",
@@ -268,9 +267,17 @@ func (d *DataSourceKubernetesNode) Configure(ctx context.Context, req datasource
 	}
 
 	sdk := sdk.NewSdk()
-	_ = sdk.Config().SetTempConfig("region", config.Region.ValueStringPointer())
-	_ = sdk.Config().SetTempConfig("env", config.Env.ValueStringPointer())
-	_ = sdk.Config().SetTempConfig("api_key", config.ApiKey.ValueStringPointer())
+	d.sdkClient = mgcSdk.NewClient(sdk)
+	if config.Region.ValueString() != "" {
+		_ = d.sdkClient.Sdk().Config().SetTempConfig("region", config.Region.ValueString())
+	}
+	if config.Env.ValueString() != "" {
+		_ = d.sdkClient.Sdk().Config().SetTempConfig("env", config.Env.ValueString())
+	}
+	if config.ApiKey.ValueString() != "" {
+		_ = d.sdkClient.Sdk().Auth().SetAPIKey(config.ApiKey.ValueString())
+	}
+
 	d.sdkClient = mgcSdk.NewClient(sdk)
 	d.nodepool = sdkNodepool.NewService(ctx, d.sdkClient)
 }

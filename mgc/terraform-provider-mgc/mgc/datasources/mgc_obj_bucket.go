@@ -53,8 +53,8 @@ func (r *DatasourceBucket) Configure(ctx context.Context, req datasource.Configu
 	if req.ProviderData == nil {
 		return
 	}
-	config, ok := req.ProviderData.(tfutil.ProviderConfig)
 
+	config, ok := req.ProviderData.(tfutil.ProviderConfig)
 	if !ok {
 		resp.Diagnostics.AddError(
 			"Unexpected Data Source Configure Type",
@@ -64,14 +64,23 @@ func (r *DatasourceBucket) Configure(ctx context.Context, req datasource.Configu
 	}
 
 	sdk := sdk.NewSdk()
-	_ = sdk.Config().SetTempConfig("region", config.Region.ValueStringPointer())
-	_ = sdk.Config().SetTempConfig("env", config.Env.ValueStringPointer())
-	_ = sdk.Config().SetTempConfig("api_key", config.ApiKey.ValueStringPointer())
+	r.sdkClient = mgcSdk.NewClient(sdk)
+	if config.Region.ValueString() != "" {
+		_ = r.sdkClient.Sdk().Config().SetTempConfig("region", config.Region.ValueString())
+	}
+	if config.Env.ValueString() != "" {
+		_ = r.sdkClient.Sdk().Config().SetTempConfig("env", config.Env.ValueString())
+	}
+	if config.ApiKey.ValueString() != "" {
+		_ = r.sdkClient.Sdk().Auth().SetAPIKey(config.ApiKey.ValueString())
+	}
+
+	r.sdkClient = mgcSdk.NewClient(sdk)
+
 	if config.ObjectStorage != nil && config.ObjectStorage.ObjectKeyPair != nil {
 		sdk.Config().AddTempKeyPair("apikey", config.ObjectStorage.ObjectKeyPair.KeyID.ValueString(), config.ObjectStorage.ObjectKeyPair.KeySecret.ValueString())
 	}
 
-	r.sdkClient = mgcSdk.NewClient(sdk)
 	r.versioning = sdkBucketsVersioning.NewService(ctx, r.sdkClient)
 	r.acl = sdkBucketsAcl.NewService(ctx, r.sdkClient)
 }
