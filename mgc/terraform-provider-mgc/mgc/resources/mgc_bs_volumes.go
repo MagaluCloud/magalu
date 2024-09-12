@@ -17,7 +17,6 @@ import (
 	"magalu.cloud/terraform-provider-mgc/mgc/tfutil"
 
 	sdkBlockStorageVolumes "magalu.cloud/lib/products/block_storage/volumes"
-	"magalu.cloud/sdk"
 )
 
 // Ensure the implementation satisfies the expected interfaces.
@@ -50,28 +49,16 @@ func (r *bsVolumes) Configure(ctx context.Context, req resource.ConfigureRequest
 		return
 	}
 
-	config, ok := req.ProviderData.(tfutil.ProviderConfig)
-	if !ok {
+	var err error
+	r.sdkClient, err = tfutil.SDKClientGenerator(req)
+	if err != nil {
 		resp.Diagnostics.AddError(
-			"Unexpected Data Source Configure Type",
+			err.Error(),
 			fmt.Sprintf("Expected provider config, got: %T. Please report this issue to the provider developers.", req.ProviderData),
 		)
 		return
 	}
 
-	sdk := sdk.NewSdk()
-	r.sdkClient = mgcSdk.NewClient(sdk)
-	if config.Region.ValueString() != "" {
-		_ = r.sdkClient.Sdk().Config().SetTempConfig("region", config.Region.ValueString())
-	}
-	if config.Env.ValueString() != "" {
-		_ = r.sdkClient.Sdk().Config().SetTempConfig("env", config.Env.ValueString())
-	}
-	if config.ApiKey.ValueString() != "" {
-		_ = r.sdkClient.Sdk().Auth().SetAPIKey(config.ApiKey.ValueString())
-	}
-
-	r.sdkClient = mgcSdk.NewClient(sdk)
 	r.bsVolumes = sdkBlockStorageVolumes.NewService(ctx, r.sdkClient)
 }
 
