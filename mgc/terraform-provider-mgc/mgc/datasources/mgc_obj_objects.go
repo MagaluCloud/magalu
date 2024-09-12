@@ -116,4 +116,5 @@ func (r *DatasourceObjects) Read(ctx context.Context, req datasource.ReadRequest
 	}
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
+
 }
