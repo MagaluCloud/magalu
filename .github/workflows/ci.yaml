@@ -18,22 +18,20 @@ jobs:
     runs-on: self-hosted
     timeout-minutes: 10
     steps:
-      - uses: actions/setup-python@v3
-      - name: Set owner of working dir recurively (Linux)
-        run: sudo chown -R $(whoami) .
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.1.7
         with:
           token: ${{ secrets.GH_PAT }}
-          fetch-depth: 0
+          fetch-depth: 1
+      - uses: actions/setup-python@v5.2.0          
       - name: Set up Go
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@v5.0.2
         with:
           cache-dependency-path: "**/go.sum"
           go-version: stable
       - name: "Go Imports"
         run: go install golang.org/x/tools/cmd/goimports@latest
-      - uses: pre-commit/action@v3.0.0
+      - uses: pre-commit/action@v3.0.1
         name: "Pre-commit run"
         with:
           extra_args: --show-diff-on-failure --color=always --hook-stage push --all-files

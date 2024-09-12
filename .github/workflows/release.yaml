@@ -21,15 +21,13 @@ jobs:
     runs-on: self-hosted
     timeout-minutes: 10
     steps:
-      - name: Set owner of working dir recurively (Linux)
-        run: sudo chown -R $(whoami) .
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.1.7
         with:
-          fetch-depth: 0
+          fetch-depth: 1
           token: ${{ secrets.GH_PAT }}
       - name: Set up Go
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@v5.0.2
         with:
           cache-dependency-path: "**/go.sum"
           go-version: stable
@@ -44,20 +42,20 @@ jobs:
     if: ${{ inputs.runCLI }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.1.7
         with:
           fetch-depth: 0
           token: ${{ secrets.GH_PAT }}
       - name: Set up Go
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@v5.0.2
         with:
           cache-dependency-path: "**/go.sum"
           go-version: stable
       - name: Run GoReleaser
-        uses: goreleaser/goreleaser-action@v5
+        uses: goreleaser/goreleaser-action@v6
         with:
           distribution: goreleaser
-          version: latest
+          version: '~> v2'
           args: release --clean --config="goreleaser_cli.yaml"
         env:
           VERSION: ${{ github.ref_name }}
@@ -71,12 +69,12 @@ jobs:
     if: ${{ inputs.runTerraform }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.1.7
         with:
           fetch-depth: 0
           token: ${{ secrets.GH_PAT }}
       - name: Set up Go
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@v5.0.2
         with:
           cache-dependency-path: "**/go.sum"
           go-version: stable
@@ -84,10 +82,10 @@ jobs:
         run: |
           echo "${{ secrets.GPG_PRIVATE_KEY }}" | gpg --batch --yes --passphrase "${{ secrets.GPG_PASSPHRASE }}" --import
       - name: Run GoReleaser
-        uses: goreleaser/goreleaser-action@v5
+        uses: goreleaser/goreleaser-action@v6
         with:
           distribution: goreleaser
-          version: latest
+          version: '~> v2'
           args: release --clean --config="goreleaser_terraform.yaml"
         env:
           VERSION: ${{ github.ref_name }}
