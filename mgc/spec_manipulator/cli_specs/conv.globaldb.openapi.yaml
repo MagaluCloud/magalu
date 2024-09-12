@@ -453,8 +453,7 @@
   },
   "tags": [
     {
-      "name": "ssh_keys",
-      "description": "Manage SSH Keys"
+      "name": "ssh_keys"
     }
   ]
 }

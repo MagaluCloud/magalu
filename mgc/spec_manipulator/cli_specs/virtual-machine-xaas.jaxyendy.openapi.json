@@ -3,7 +3,7 @@
   "info": {
     "title": "Internal Virtual Machine Api Product",
     "description": "Virtual Machine Api Product",
-    "version": "1.274.0"
+    "version": "1.279.0"
   },
   "paths": {
     "/v1/health": {
@@ -324,7 +324,8 @@
             }
           }
         },
-        "x-viveiro": false
+        "x-viveiro": false,
+        "x-mgc-hidden": true
       },
       "post": {
         "tags": [
@@ -424,7 +425,8 @@
             }
           }
         },
-        "x-viveiro": false
+        "x-viveiro": false,
+        "x-mgc-hidden": true
       }
     },
     "/v1/internal/backups/urp/{external_backup_id}": {
@@ -535,7 +537,8 @@
             }
           }
         },
-        "x-viveiro": false
+        "x-viveiro": false,
+        "x-mgc-hidden": true
       }
     },
     "/v1/internal/images": {
@@ -967,6 +970,38 @@
                 }
               ],
               "title": "State"
+            }
+          },
+          {
+            "name": "project_type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Project Type"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Tenant-Id"
             }
           }
         ],
@@ -2045,6 +2080,10 @@
             "type": "integer",
             "title": "Min Disk"
           },
+          "instance_metadata": {
+            "type": "object",
+            "title": "Instance Metadata"
+          },
           "origin_region": {
             "type": "string",
             "title": "Origin Region",
@@ -2063,6 +2102,7 @@
           "name",
           "backup_url",
           "min_disk",
+          "instance_metadata",
           "origin_region",
           "origin_backup_id"
         ],
@@ -2940,8 +2980,7 @@
                 "type": "array",
                 "items": {
                   "type": "string"
-                },
-                "uniqueItems": true
+                }
               },
               {
                 "type": "null"
@@ -3603,7 +3642,7 @@
           "machine_type": {
             "id": "2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6"
           },
-          "name": "instance name",
+          "name": "instance-name",
           "network": {
             "associate_public_ip": false,
             "interface": {
@@ -4460,7 +4499,7 @@
           "machine_type": {
             "id": "2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6"
           },
-          "name": "instance name",
+          "name": "instance-name",
           "network": {
             "ports": [
               {
@@ -4640,7 +4679,7 @@
           "machine_type": {
             "id": "2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6"
           },
-          "name": "instance name",
+          "name": "instance-name",
           "network": {
             "ports": [
               {
@@ -5008,7 +5047,7 @@
               "machine_type": {
                 "id": "2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6"
               },
-              "name": "instance name",
+              "name": "instance-name",
               "network": {
                 "ports": [
                   {
@@ -5089,7 +5128,7 @@
                   "id": "4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a"
                 }
               },
-              "name": "snapshot name",
+              "name": "snapshot-name",
               "size": 1000,
               "state": "available",
               "status": "completed",
@@ -5345,6 +5384,100 @@
           "project_type": {
             "type": "string",
             "title": "Project Type"
+          },
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name"
+          },
+          "image_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Image Id"
+          },
+          "image_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Image Name"
+          },
+          "instance_type_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Instance Type Id"
+          },
+          "instance_type_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Instance Type Name"
+          },
+          "availability_zone": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Availability Zone"
+          },
+          "created_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "examples": [
+                  "2022-01-01T00:00:10Z"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Created At"
+          },
+          "updated_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "examples": [
+                  "2022-01-01T00:00:10Z"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Updated At"
           }
         },
         "title": "SimpleInstanceResponse",
@@ -5394,7 +5527,7 @@
           "instance": {
             "id": "4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a"
           },
-          "name": "snapshot name"
+          "name": "snapshot-name"
         }
       },
       "SnapshotRenameRequest": {
@@ -5412,7 +5545,7 @@
           "name"
         ],
         "example": {
-          "name": "new snapshot name"
+          "name": "new-snapshot-name"
         }
       },
       "SnapshotResponseV1": {
@@ -5491,7 +5624,7 @@
               "id": "4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a"
             }
           },
-          "name": "snapshot name",
+          "name": "snapshot-name",
           "size": 1000,
           "state": "available",
           "status": "completed",
@@ -5570,7 +5703,7 @@
           "machine_type": {
             "id": "4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a"
           },
-          "name": "instance name",
+          "name": "instance-name",
           "network": {
             "associate_public_ip": false,
             "interface": {
@@ -5613,7 +5746,10 @@
           "completed",
           "deleting",
           "deleted",
-          "deleted_error"
+          "deleted_error",
+          "pending_copy",
+          "copying",
+          "copy_error"
         ]
       },
       "URPAddress": {

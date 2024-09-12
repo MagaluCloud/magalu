@@ -26,3 +26,7 @@ paths:
             tags:
             - ssh_keys
             x-mgc-output-flag: remove=$.results[*].key
+tags:
+-   name: ssh_keys
+    description: ssh_keys
+    x-mgc-description: Manage SSH Keys

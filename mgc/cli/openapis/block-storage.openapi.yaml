@@ -214,6 +214,7 @@ paths:
                                     $ref: '#/components/schemas/ErrorResponse'
                                 title: Response 422 List Backups V1 Backups Get
             x-viveiro: true
+            x-mgc-hidden: true
             security:
             -   OAuth2:
                 - block-storage.read
@@ -243,22 +244,6 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/IdResponse'
-                    links:
-                        get:
-                            operationId: get_backup_v1_backups__id__get
-                            description: Retrieve the details of a specific backup.
-                            parameters:
-                                id: $response.body#/id
-                        delete:
-                            operationId: delete_backup_v1_backups__id__delete
-                            description: Delete a backup.
-                            parameters:
-                                id: $response.body#/id
-                        rename:
-                            operationId: patch_backup_v1_backups__id__rename_patch
-                            description: Rename a backup.
-                            parameters:
-                                id: $response.body#/id
                 '404':
                     description: Not Found
                     content:
@@ -287,6 +272,7 @@ paths:
                                     $ref: '#/components/schemas/ErrorResponse'
                                 title: Response 422 Create Backup V1 Backups Post
             x-viveiro: true
+            x-mgc-hidden: true
             security:
             -   OAuth2:
                 - block-storage.write
@@ -387,17 +373,6 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/BackupResponse'
-                    links:
-                        delete:
-                            operationId: delete_backup_v1_backups__id__delete
-                            description: Delete a backup.
-                            parameters:
-                                id: $request.path.id
-                        rename:
-                            operationId: patch_backup_v1_backups__id__rename_patch
-                            description: Rename a backup.
-                            parameters:
-                                id: $request.path.id
                 '404':
                     description: Not Found
                     content:
@@ -426,6 +401,7 @@ paths:
                                     $ref: '#/components/schemas/ErrorResponse'
                                 title: Response 422 Get Backup V1 Backups  Id  Get
             x-viveiro: true
+            x-mgc-hidden: true
             security:
             -   OAuth2:
                 - block-storage.read
@@ -478,6 +454,7 @@ paths:
                                     $ref: '#/components/schemas/ErrorResponse'
                                 title: Response 422 Delete Backup V1 Backups  Id  Delete
             x-viveiro: true
+            x-mgc-hidden: true
             security:
             -   OAuth2:
                 - block-storage.write
@@ -510,17 +487,6 @@ paths:
             responses:
                 '204':
                     description: Successful Response
-                    links:
-                        get:
-                            operationId: get_backup_v1_backups__id__get
-                            description: Retrieve the details of a specific backup.
-                            parameters:
-                                id: $request.path.id
-                        delete:
-                            operationId: delete_backup_v1_backups__id__delete
-                            description: Delete a backup.
-                            parameters:
-                                id: $request.path.id
                 '404':
                     description: Not Found
                     content:
@@ -552,6 +518,7 @@ paths:
                                 title: Response 422 Patch Backup V1 Backups  Id  Rename
                                     Patch
             x-viveiro: true
+            x-mgc-hidden: true
             security:
             -   OAuth2:
                 - block-storage.write
@@ -880,7 +847,7 @@ paths:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/Name'
+                            $ref: '#/components/schemas/SnapshotRenameRequest'
                 required: true
             responses:
                 '204':
@@ -1990,17 +1957,17 @@ components:
                                     Please, remove unused backups or contact support
                                     to increase your quota.
                                 slug: creating_error_quota
-                            id: 9ceedabf-f108-4413-b3db-0734e6d86c8a
+                            id: 8f18b0fb-7ae1-497f-a962-d899a254492f
                             name: My backup
                             size: 10
                             source_backup:
-                                id: 2ecf36d9-19f6-4569-85b7-47e58ac42d47
+                                id: 5b4a19a5-b736-4c66-a4e1-3d369c4c0a2c
                             state: available
                             status: completed
                             type: incremental
                             updated_at: '2022-01-01T00:00:10Z'
                             volume:
-                                id: 75724ef0-d326-41cd-8863-96e5478ba949
+                                id: 99aaa0aa-642c-495e-ac86-9a62fe2c233a
                     title: Backups
             title: BackupListResponse
             required:
@@ -2014,17 +1981,17 @@ components:
                             remove unused backups or contact support to increase your
                             quota.
                         slug: creating_error_quota
-                    id: 9ceedabf-f108-4413-b3db-0734e6d86c8a
+                    id: 8f18b0fb-7ae1-497f-a962-d899a254492f
                     name: My backup
                     size: 10
                     source_backup:
-                        id: 2ecf36d9-19f6-4569-85b7-47e58ac42d47
+                        id: 5b4a19a5-b736-4c66-a4e1-3d369c4c0a2c
                     state: available
                     status: completed
                     type: incremental
                     updated_at: '2022-01-01T00:00:10Z'
                     volume:
-                        id: 75724ef0-d326-41cd-8863-96e5478ba949
+                        id: 99aaa0aa-642c-495e-ac86-9a62fe2c233a
         BackupResponse:
             type: object
             properties:
@@ -2122,17 +2089,17 @@ components:
                         remove unused backups or contact support to increase your
                         quota.
                     slug: creating_error_quota
-                id: 9ceedabf-f108-4413-b3db-0734e6d86c8a
+                id: 8f18b0fb-7ae1-497f-a962-d899a254492f
                 name: My backup
                 size: 10
                 source_backup:
-                    id: 2ecf36d9-19f6-4569-85b7-47e58ac42d47
+                    id: 5b4a19a5-b736-4c66-a4e1-3d369c4c0a2c
                 state: available
                 status: completed
                 type: incremental
                 updated_at: '2022-01-01T00:00:10Z'
                 volume:
-                    id: 75724ef0-d326-41cd-8863-96e5478ba949
+                    id: 99aaa0aa-642c-495e-ac86-9a62fe2c233a
         BackupResponseError:
             type: object
             properties:
@@ -2585,24 +2552,26 @@ components:
                 name:
                     type: string
                     title: Name
-                    maxLength: 255
-                    minLength: 1
+                    maxLength: 50
+                    minLength: 3
             title: RenameVolumeRequest
             required:
             - name
             example:
-                name: volume name
+                name: volume-name
         SnapshotCreationRequest:
             type: object
             properties:
+                name:
+                    type: string
+                    title: Name
+                    maxLength: 50
+                    minLength: 3
                 volume:
                     anyOf:
                     -   $ref: '#/components/schemas/IdRequest'
                     -   $ref: '#/components/schemas/Name'
                     title: Volume
-                name:
-                    type: string
-                    title: Name
                 description:
                     anyOf:
                     -   type: string
@@ -2610,12 +2579,12 @@ components:
                     nullable: true
             title: SnapshotCreationRequest
             required:
-            - volume
             - name
+            - volume
             - description
             example:
                 description: my-snapshot
-                name: snapshot name
+                name: snapshot-name
                 volume:
                     id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
         SnapshotListResponse:
@@ -2730,6 +2699,19 @@ components:
                     updated_at: '2022-01-01T00:00:10Z'
                     volume:
                         id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        SnapshotRenameRequest:
+            type: object
+            properties:
+                name:
+                    type: string
+                    title: Name
+                    maxLength: 50
+                    minLength: 3
+            title: SnapshotRenameRequest
+            required:
+            - name
+            example:
+                name: snapshot-name
         SnapshotResponse:
             type: object
             properties:
@@ -2931,8 +2913,8 @@ components:
                 name:
                     type: string
                     title: Name
-                    maxLength: 255
-                    minLength: 1
+                    maxLength: 50
+                    minLength: 3
                 size:
                     type: integer
                     title: Size
@@ -2964,7 +2946,7 @@ components:
             example:
                 backup:
                     name: my_backup_name
-                name: volume name
+                name: volume-name
                 size: 10
                 snapshot:
                     name: my_snapshot_name
@@ -3381,8 +3363,6 @@ tags:
     description: Operations with volume types for volumes.
 -   name: snapshots
     description: Operations with snapshots for volumes.
--   name: backups
-    description: Operations with backups for volumes.
 $id: https://block-storage.jaxyendy.com/openapi.json
 servers:
 -   url: https://{env}/{region}/volume

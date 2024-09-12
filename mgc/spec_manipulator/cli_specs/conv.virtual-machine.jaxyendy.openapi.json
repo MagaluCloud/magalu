@@ -145,8 +145,8 @@
             }
           }
         },
-        "x-viveiro": true,
-        "x-mgc-output-flag": "table=BACKUP_TYPE:$.backups[*].backup_type,CREATED_AT:$.backups[*].created_at',  ID:$.backups[*].id,INSTANCE:$.backups[*].instance,DISK:$.backups[*].min_disk,NAME:$.backups[*].name, SIZE:$.backups[*].size,STATE:$.backups[*].state,STATUS:$.backups[*].status,UPDATED_AT:$.backups[*].updated_at"
+        "x-viveiro": false,
+        "x-mgc-hidden": true
       },
       "post": {
         "tags": [
@@ -238,8 +238,8 @@
             }
           }
         },
-        "x-viveiro": true,
-        "x-mgc-output-flag": "table=ID:$.id"
+        "x-viveiro": false,
+        "x-mgc-hidden": true
       }
     },
     "/v1/backups/{id}": {
@@ -347,8 +347,8 @@
             }
           }
         },
-        "x-viveiro": true,
-        "x-mgc-output-flag": "table=BACKUP_TYPE:$.backups[].backup_type,CREATED_AT:$.backups[].created_at',  ID:$.backups[].id,INSTANCE:$.backups[].instance,DISK:$.backups[].min_disk,NAME:$.backups[].name, SIZE:$.backups[].size,STATE:$.backups[].state,STATUS:$.backups[].status,UPDATED_AT:$.backups[*].updated_at"
+        "x-viveiro": false,
+        "x-mgc-hidden": true
       },
       "delete": {
         "tags": [
@@ -433,8 +433,8 @@
             }
           }
         },
-        "x-viveiro": true,
-        "x-mgc-output-flag": "table=ID:$.id"
+        "x-viveiro": false,
+        "x-mgc-hidden": true
       }
     },
     "/v1/backups/{id}/copy": {
@@ -531,7 +531,7 @@
             }
           }
         },
-        "x-viveiro": true,
+        "x-viveiro": false,
         "x-mgc-hidden": true
       }
     },
@@ -628,7 +628,8 @@
             }
           }
         },
-        "x-viveiro": true
+        "x-viveiro": false,
+        "x-mgc-hidden": true
       }
     },
     "/v1/backups/{id}/restore": {
@@ -732,8 +733,8 @@
             }
           }
         },
-        "x-viveiro": true,
-        "x-mgc-output-flag": "table=ID:$.id"
+        "x-viveiro": false,
+        "x-mgc-hidden": true
       }
     },
     "/v1/images": {
@@ -3284,6 +3285,11 @@
             "title": "Created At",
             "example": "2022-01-01T00:00:10Z"
           },
+          "user": {
+            "type": "string",
+            "title": "User",
+            "default": "admin"
+          },
           "id": {
             "type": "string",
             "title": "Id"
@@ -3298,7 +3304,8 @@
         "example": {
           "created_at": "2022-01-01T00:00:10Z",
           "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-          "password": "admin-password"
+          "password": "admin-password",
+          "user": "admin"
         }
       },
       "InstanceAccess_InstanceAccessResponseWithPass_": {
@@ -3316,6 +3323,11 @@
                 "title": "Created At",
                 "example": "2022-01-01T00:00:10Z"
               },
+              "user": {
+                "type": "string",
+                "title": "User",
+                "default": "admin"
+              },
               "id": {
                 "type": "string",
                 "title": "Id"
@@ -3330,7 +3342,8 @@
             "example": {
               "created_at": "2022-01-01T00:00:10Z",
               "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-              "password": "admin-password"
+              "password": "admin-password",
+              "user": "admin"
             }
           }
         },
@@ -3342,7 +3355,8 @@
           "instance": {
             "created_at": "2022-01-01T00:00:10Z",
             "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-            "password": "admin-password"
+            "password": "admin-password",
+            "user": "admin"
           }
         }
       },
@@ -3447,7 +3461,7 @@
           "machine_type": {
             "id": "2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6"
           },
-          "name": "instance name",
+          "name": "instance-name",
           "network": {
             "associate_public_ip": true,
             "interface": {
@@ -4082,7 +4096,7 @@
           "machine_type": {
             "id": "2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6"
           },
-          "name": "instance name",
+          "name": "instance-name",
           "network": {
             "ports": [
               {
@@ -4164,7 +4178,7 @@
           "name"
         ],
         "example": {
-          "name": "new instance name"
+          "name": "new-instance-name"
         }
       },
       "IpAddressExpand": {
@@ -4709,7 +4723,7 @@
                 "machine_type": {
                   "id": "2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6"
                 },
-                "name": "instance name",
+                "name": "instance-name",
                 "network": {
                   "ports": [
                     {
@@ -4751,7 +4765,7 @@
               "machine_type": {
                 "id": "2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6"
               },
-              "name": "instance name",
+              "name": "instance-name",
               "network": {
                 "ports": [
                   {
@@ -4886,7 +4900,7 @@
                     "id": "4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a"
                   }
                 },
-                "name": "snapshot name",
+                "name": "snapshot-name",
                 "size": 1000,
                 "state": "available",
                 "status": "completed",
@@ -4914,7 +4928,7 @@
                   "id": "4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a"
                 }
               },
-              "name": "snapshot name",
+              "name": "snapshot-name",
               "size": 1000,
               "state": "available",
               "status": "completed",
@@ -5262,7 +5276,7 @@
           "instance": {
             "id": "4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a"
           },
-          "name": "snapshot name"
+          "name": "snapshot-name"
         }
       },
       "SnapshotRenameRequest": {
@@ -5280,7 +5294,7 @@
           "name"
         ],
         "example": {
-          "name": "new snapshot name"
+          "name": "new-snapshot-name"
         }
       },
       "SnapshotResponseV1": {
@@ -5396,7 +5410,7 @@
               "id": "4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a"
             }
           },
-          "name": "snapshot name",
+          "name": "snapshot-name",
           "size": 1000,
           "state": "available",
           "status": "completed",
@@ -5473,7 +5487,7 @@
           "machine_type": {
             "id": "4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a"
           },
-          "name": "instance name",
+          "name": "instance-name",
           "network": {
             "associate_public_ip": true,
             "interface": {
@@ -5563,10 +5577,6 @@
     {
       "name": "snapshots",
       "description": "Operations with snapshots for instances."
-    },
-    {
-      "name": "backups",
-      "description": "Operations with backups for instances."
     }
   ]
 }

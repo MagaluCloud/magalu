@@ -35,4 +35,45 @@ servers:
                     to: api.magalu.cloud
                 -   from: pre-prod
                     to: api.pre-prod.jaxyendy.com
-
+tags:
+-   name: healthcheck
+    description: healthcheck
+    x-mgc-hidden: true
+-   name: interconnections
+    description: interconnections
+    x-mgc-hidden: true
+-   name: internal
+    description: internal
+    x-mgc-hidden: true
+-   name: port
+    description: port
+    x-mgc-name: ports
+    x-mgc-description: 'VPC Port'
+-   name: public_ip
+    description: public_ip
+    x-mgc-name: public_ips
+    x-mgc-description: 'VPC Public IPs'
+-   name: quotas
+    description: quotas
+    x-mgc-hidden: true
+-   name: rule
+    description: rule
+    x-mgc-name: rules
+    x-mgc-description: 'VPC Rules'
+-   name: security_group
+    x-mgc-name: security_groups
+    description: security_group
+    x-mgc-description: 'VPC Security Groups'
+-   name: subnetpools
+    description: subnetpools
+    x-mgc-hidden: true
+-   name: subnets
+    description: subnets
+    x-mgc-description: 'VPC Subnets'
+-   name: vpc
+    description: vpc
+    x-mgc-name: vpcs
+    x-mgc-description: 'Virtual Private Cloud (VPC)'
+-   name: worker_public_ips
+    description: worker_public_ips
+    x-mgc-hidden: true
