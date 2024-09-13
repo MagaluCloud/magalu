@@ -77,7 +77,7 @@ func getOutputFormatter(name, options string) (formatter OutputFormatter, err er
 }
 
 func getOutputFor(sdk *mgcSdk.Sdk, cmd *cobra.Command, result core.Result) string {
-	output := ""
+	var output string
 
 	if out_from_config := getOutputConfig(sdk); out_from_config != "" {
 		output = out_from_config
