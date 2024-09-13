@@ -220,12 +220,3 @@ func setDefaultRegion(sdk *mgcSdk.Sdk) {
 		}
 	}
 }
-
-func setDefaultOutputFormat(sdk *mgcSdk.Sdk) {
-	var outputFormat string
-	err := sdk.Config().Get("defaultOutput", &outputFormat)
-	if err != nil {
-		logger().Debugw("failed to get output format from config", "error", err)
-		return
-	}
-}
