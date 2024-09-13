@@ -23,7 +23,10 @@ jobs:
         with:
           token: ${{ secrets.GH_PAT }}
           fetch-depth: 1
-      - uses: actions/setup-python@v5.2.0          
+      - uses: actions/setup-python@v5.2.0   
+        with:
+          python-version: '3.12'
+          cache: 'pip' # caching pip dependencies       
       - name: Set up Go
         uses: actions/setup-go@v5.0.2
         with:
