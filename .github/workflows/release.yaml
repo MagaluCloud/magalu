@@ -70,14 +70,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4.1.7
         with:
-          fetch-depth: 0
-          token: ${{ secrets.GH_PAT }}
-      - name: Checkout #Clone terraform repository
-        uses: actions/checkout@v4.1.7
-        with:
-          repository: MagaluCloud/terraform-provider-mgc
-          fetch-depth: 0
-          path: terraform-provider-mgc
+          fetch-depth: 1
           token: ${{ secrets.GH_PAT }}
       - name: Set up Go
         uses: actions/setup-go@v5.0.2
@@ -98,6 +91,13 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
           GPG_FINGERPRINT: ${{ secrets.GPG_FINGERPRINT }}
           GPG_PASSPHRASE: ${{ secrets.PASSPHRASE }}
+      - name: Checkout #Clone terraform repository
+        uses: actions/checkout@v4.1.7
+        with:
+          repository: MagaluCloud/terraform-provider-mgc
+          fetch-depth: 1
+          path: terraform-provider-mgc
+          token: ${{ secrets.GH_PAT }}          
       - name: Setup GitHub CLI
         uses: ksivamuthu/actions-setup-gh-cli@v3         
       - name: Copy Docs
