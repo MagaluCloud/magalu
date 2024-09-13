@@ -18,10 +18,9 @@ import (
 )
 
 const (
-	loggerConfigKey     = "logging"
-	defaultRegion       = "br-se1"
-	defaultOutputFormat = "yaml"
-	apiKeyEnvVar        = "MGC_API_KEY"
+	loggerConfigKey = "logging"
+	defaultRegion   = "br-se1"
+	apiKeyEnvVar    = "MGC_API_KEY"
 )
 
 var argParser = &osArgParser{}
@@ -157,7 +156,6 @@ It allows you to interact with the Magalu Cloud to manage your resources.
 	}
 
 	setDefaultRegion(sdk)
-	setDefaultOutputFormat(sdk)
 	setApiKey(rootCmd, sdk)
 	setKeyPair(sdk)
 

@@ -10,7 +10,6 @@ import (
 )
 
 const outputFlag = "output"
-const defaultFormatter = "yaml"
 const helpFormatter = "help"
 
 type OutputFormatter interface {
@@ -67,7 +66,7 @@ func parseOutputFormatter(output string) (name, options string) {
 // NOTE: use parseOutputFormatter() to get both name and options
 func getOutputFormatter(name, options string) (formatter OutputFormatter, err error) {
 	if name == "" {
-		name = defaultFormatter
+		name = "yaml"
 	}
 
 	if formatter, ok := outputFormatters[name]; ok {
@@ -78,26 +77,39 @@ func getOutputFormatter(name, options string) (formatter OutputFormatter, err er
 
 func getOutputFor(sdk *mgcSdk.Sdk, cmd *cobra.Command, result core.Result) string {
 	var output string
+	var defaultConfigOutput string
+	var configFlag string
 
-	if out_from_config := getOutputConfig(sdk); out_from_config != "" {
-		output = out_from_config
+	if defaultConfigOutput = getOutputConfig(sdk); defaultConfigOutput != "" {
+		output = defaultConfigOutput
 	}
 
-	if out_from_flag := getOutputFlag(cmd); out_from_flag != "" {
-		output = out_from_flag
+	if configFlag = getOutputFlag(cmd); configFlag != "" {
+		output = configFlag
 	}
 
 	if outputOptions, ok := core.ResultAs[core.ResultWithDefaultOutputOptions](result); ok {
 		outputFromSpec := outputOptions.DefaultOutputOptions()
-		if !strings.Contains(outputFromSpec, "default=") {
+		if strings.Contains(outputFromSpec, "default=") {
 			outs := strings.Split(outputFromSpec, ";")
 			for i, ot := range outs {
 				if strings.HasPrefix(ot, "default=") {
-					outs[i] = "default=" + output
+					if defaultConfigOutput != "" {
+						outs[i] = "default=" + defaultConfigOutput
+					} else if configFlag != "" {
+						outs[i] = "default=" + configFlag
+					} else {
+						outs[i] = ot
+					}
+					break
 				}
 			}
 			output = strings.Join(outs, ";")
 		}
+	}
+
+	if output == "" {
+		return "yaml"
 	}
 
 	return output
