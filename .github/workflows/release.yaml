@@ -105,6 +105,8 @@ jobs:
           cp -r mgc/terraform-provider-mgc/docs/* terraform-provider-mgc/docs/
           cp mgc/terraform-provider-mgc/README.md terraform-provider-mgc/README.md
       - name: Create Pull Request
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
         run: |
           cd terraform-provider-mgc
           git config user.name github-actions
