@@ -99,7 +99,7 @@ jobs:
           GPG_FINGERPRINT: ${{ secrets.GPG_FINGERPRINT }}
           GPG_PASSPHRASE: ${{ secrets.PASSPHRASE }}
       - name: Setup GitHub CLI
-        uses: cli/cli@v2          
+        uses: ksivamuthu/actions-setup-gh-cli@v3         
       - name: Copy Docs
         run: |
           cp -r mgc/terraform-provider-mgc/docs/* terraform-provider-mgc/docs/
