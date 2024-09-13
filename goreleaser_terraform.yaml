@@ -1,4 +1,5 @@
 project_name: mgc
+version: 2
 builds:
   - env: [CGO_ENABLED=0]
     id: "terraformwin"
@@ -74,8 +75,6 @@ release:
   extra_files:
     - glob: "mgc/terraform-provider-mgc/terraform-registry-manifest.json"
       name_template: "terraform-provider-{{ .ProjectName }}_{{ .Version }}_manifest.json"
-    - glob: "mgc/terraform-provider-mgc/docs/**"
-    - glob: "mgc/terraform-provider-mgc/README.md"
   github:
     owner: MagaluCloud
     name: terraform-provider-mgc
