@@ -3,6 +3,9 @@ name: Internal Release
 on:
   workflow_dispatch:
 
+concurrency:
+  group: ci-check-${{ github.ref }}
+  
 jobs:
   build:
     runs-on: self-hosted
