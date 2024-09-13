@@ -59,19 +59,8 @@ repos:
         entry: bash -c './scripts/oapi_check_links.sh'
         stages: [pre-commit]
         require_serial: true
-    # -   id: blueprint-index-gen
-    #     name: blueprint-index-gen
-    #     language: system
-    #     entry: bash -c './scripts/blueprint_index_gen.sh'
-    #     stages: [pre-commit]
-    #     require_serial: true
-    # -   id: codegen-lib
-    #     name: codegen-lib
-    #     language: system
-    #     entry: bash -c './scripts/codegen_lib.sh'
-    #     stages: [pre-commit, pre-push]
 -   repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.4.0
+    rev: v4.6.0
     hooks:
     -   id: trailing-whitespace
         stages: [pre-commit, pre-push]
@@ -132,7 +121,7 @@ repos:
         stages: [commit-msg]
 
 -   repo: https://github.com/pycqa/flake8
-    rev: 6.1.0
+    rev: 7.1.0
     hooks:
     -   id: flake8
         stages: [pre-commit, pre-push]
@@ -148,7 +137,7 @@ repos:
           - flake8-tidy-imports
 
 -   repo: https://github.com/psf/black
-    rev: 23.9.1
+    rev: 24.8.0
     hooks:
     -   id: black
         stages: [pre-commit, pre-push]
