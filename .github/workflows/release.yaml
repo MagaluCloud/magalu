@@ -55,7 +55,7 @@ jobs:
         uses: goreleaser/goreleaser-action@v6
         with:
           distribution: goreleaser
-          version: '~> v2'
+          version: '2'
           args: release --clean --config="goreleaser_cli.yaml"
         env:
           VERSION: ${{ github.ref_name }}
@@ -85,7 +85,7 @@ jobs:
         uses: goreleaser/goreleaser-action@v6
         with:
           distribution: goreleaser
-          version: '~> v2'
+          version: '2'
           args: release --clean --config="goreleaser_terraform.yaml"
         env:
           VERSION: ${{ github.ref_name }}

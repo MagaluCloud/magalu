@@ -5,8 +5,6 @@ builds:
     id: "mgc"
     goos:
       - linux
-      - windows
-      - darwin
     binary: mgc
     goarch:
       - amd64
@@ -19,7 +17,6 @@ builds:
     id: "terraform"
     goos:
       - linux
-      - windows
     goarch:
       - amd64
     binary: terraform-provider-mgc
@@ -46,5 +43,13 @@ release:
   draft: true
   prerelease: true
 archives:
-- id: all
+- id: mgc
+  builds:
+    - mgc
+  name_template: "mgccli_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+  allow_different_binary_count: true
+- id: terraform
+  builds:
+    - terraform
+  name_template: "terraform_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
   allow_different_binary_count: true
