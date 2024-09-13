@@ -23,7 +23,7 @@ jobs:
         uses: goreleaser/goreleaser-action@v6
         with:
           distribution: goreleaser
-          version: '2'
+          version: 2
           args: release --clean --config="goreleaser_internal.yaml"
         env:
           VERSION: ${{ github.ref_name }}
