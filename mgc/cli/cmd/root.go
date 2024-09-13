@@ -18,10 +18,9 @@ import (
 )
 
 const (
-	loggerConfigKey     = "logging"
-	defaultRegion       = "br-se1"
-	defaultOutputFormat = "yaml"
-	apiKeyEnvVar        = "MGC_API_KEY"
+	loggerConfigKey = "logging"
+	defaultRegion   = "br-se1"
+	apiKeyEnvVar    = "MGC_API_KEY"
 )
 
 var argParser = &osArgParser{}
@@ -157,7 +156,6 @@ It allows you to interact with the Magalu Cloud to manage your resources.
 	}
 
 	setDefaultRegion(sdk)
-	setDefaultOutputFormat(sdk)
 	setApiKey(rootCmd, sdk)
 	setKeyPair(sdk)
 
@@ -218,22 +216,6 @@ func setDefaultRegion(sdk *mgcSdk.Sdk) {
 		err = sdk.Config().Set("region", region)
 		if err != nil {
 			logger().Debugw("failed to set region in config", "error", err)
-			return
-		}
-	}
-}
-
-func setDefaultOutputFormat(sdk *mgcSdk.Sdk) {
-	var outputFormat string
-	err := sdk.Config().Get("defaultOutput", &outputFormat)
-	if err != nil {
-		logger().Debugw("failed to get output format from config", "error", err)
-		return
-	}
-	if outputFormat == "" {
-		err = sdk.Config().Set("defaultOutput", defaultOutputFormat)
-		if err != nil {
-			logger().Debugw("failed to set output format in config", "error", err)
 			return
 		}
 	}
