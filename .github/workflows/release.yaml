@@ -100,8 +100,8 @@ jobs:
           token: ${{ secrets.GH_PAT2 }}
       - name: Set up Git config
         run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
+          git config --global user.name "Magalu Cloud"
+          git config --global user.email "magalucloud.services@luizalabs.com"
           git config --global commit.gpgsign true
           git config --global user.signingkey $(gpg --list-secret-keys --keyid-format LONG | grep sec | awk '{print $2}' | cut -d'/' -f2)
       - name: Setup GitHub CLI
@@ -115,8 +115,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GH_PAT2 }}
         run: |
           cd terraform-provider-mgc
-          git config user.name MagaluCloud
-          git config user.email magalucloud.services@luizalabs.com
           git checkout -b update-files-${{ github.sha }}
           git add .
           git commit -S -m "chore: update docs from ${{ github.ref_name }}"
