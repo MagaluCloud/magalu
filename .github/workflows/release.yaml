@@ -113,7 +113,7 @@ jobs:
           git config user.email github-actions@github.com
           git checkout -b update-files-${{ github.sha }}
           git add .
-          git commit -m "chore: update docs from ${{ github.ref_name }}"
+          git commit -S -m "chore: update docs from ${{ github.ref_name }}"
           git push --set-upstream origin update-files-${{ github.sha }}       
           gh pr create \
             --title "Update files from source repository" \
