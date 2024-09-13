@@ -115,8 +115,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GH_PAT2 }}
         run: |
           cd terraform-provider-mgc
-          git config user.name github-actions
-          git config user.email github-actions@github.com
+          git config user.name MagaluCloud
+          git config user.email magalucloud.services@luizalabs.com
           git checkout -b update-files-${{ github.sha }}
           git add .
           git commit -S -m "chore: update docs from ${{ github.ref_name }}"
