@@ -97,9 +97,15 @@ jobs:
           repository: MagaluCloud/terraform-provider-mgc
           fetch-depth: 1
           path: terraform-provider-mgc
-          token: ${{ secrets.GH_PAT2 }}          
+          token: ${{ secrets.GH_PAT2 }}
+      - name: Set up Git config
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git config --global commit.gpgsign true
+          git config --global user.signingkey $(gpg --list-secret-keys --keyid-format LONG | grep sec | awk '{print $2}' | cut -d'/' -f2)
       - name: Setup GitHub CLI
-        uses: ksivamuthu/actions-setup-gh-cli@v3         
+        uses: ksivamuthu/actions-setup-gh-cli@v3  
       - name: Copy Docs
         run: |
           cp -r mgc/terraform-provider-mgc/docs/* terraform-provider-mgc/docs/
