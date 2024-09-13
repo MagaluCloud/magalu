@@ -24,7 +24,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4.1.7
         with:
-          token: ${{ secrets.GH_PAT }}
+          token: ${{ secrets.GH_PAT2 }}
           fetch-depth: 1
       - uses: actions/setup-python@v5.2.0   
         with:
