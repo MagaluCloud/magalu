@@ -195,6 +195,7 @@ func handleResultWithValue(result core.ResultWithValue, output string, cmd *cobr
 		fieldsToRemove = strings.Split(remove, ",")
 	}
 
+	outputs = strings.Split(output, ";")
 	var allowed string
 	for _, ot := range outputs {
 		if strings.HasPrefix(ot, "allowfields=") {

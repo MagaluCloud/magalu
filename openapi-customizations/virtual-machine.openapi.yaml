@@ -401,6 +401,9 @@ paths:
                             parameters:
                                 id: $request.path.id
                             x-mgc-hidden: true
+    /v1/machine-types:
+        get:
+            x-mgc-output-flag: remove=$.machine_types[*].sku,$.machine_types[*].status
 components:
     schemas:
         InstanceV1Response:

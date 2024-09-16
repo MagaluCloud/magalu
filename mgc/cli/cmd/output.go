@@ -80,6 +80,7 @@ func getOutputFor(sdk *mgcSdk.Sdk, cmd *cobra.Command, result core.Result) strin
 	var output string
 	var defaultConfigOutput string
 	var configFlag string
+	var addAfterWhenEmpty string
 
 	if defaultConfigOutput = getOutputConfig(sdk); defaultConfigOutput != "" {
 		output = defaultConfigOutput
@@ -106,11 +107,17 @@ func getOutputFor(sdk *mgcSdk.Sdk, cmd *cobra.Command, result core.Result) strin
 				}
 			}
 			output = strings.Join(outs, ";")
+		} else {
+			if output != "" {
+				output = output + ";" + outputFromSpec
+			} else {
+				addAfterWhenEmpty = outputFromSpec
+			}
 		}
 	}
 
 	if output == "" {
-		return defaultFormatter
+		return defaultFormatter + ";" + addAfterWhenEmpty
 	}
 
 	return output

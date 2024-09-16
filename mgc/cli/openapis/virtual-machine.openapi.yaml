@@ -1997,7 +1997,7 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
-            x-mgc-output-flag: table=ID:$.instance_types[*].id,NAME:$.instance_types[*].name,STATUS:$.instance_types[*].status,VCPUS:$.instance_types[*].vcpus,RAM:$.instance_types[*].ram,DISK:$.instance_types[*].disk,GPU:$.instance_types[*].gpu
+            x-mgc-output-flag: remove=$.machine_types[*].sku,$.machine_types[*].status
             security:
             -   OAuth2:
                 - virtual-machine.read
