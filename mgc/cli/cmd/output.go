@@ -11,6 +11,7 @@ import (
 
 const outputFlag = "output"
 const helpFormatter = "help"
+const defaultFormatter = "yaml"
 
 type OutputFormatter interface {
 	Format(value any, options string, isRaw bool) error
@@ -66,7 +67,7 @@ func parseOutputFormatter(output string) (name, options string) {
 // NOTE: use parseOutputFormatter() to get both name and options
 func getOutputFormatter(name, options string) (formatter OutputFormatter, err error) {
 	if name == "" {
-		name = "yaml"
+		name = defaultFormatter
 	}
 
 	if formatter, ok := outputFormatters[name]; ok {
@@ -109,7 +110,7 @@ func getOutputFor(sdk *mgcSdk.Sdk, cmd *cobra.Command, result core.Result) strin
 	}
 
 	if output == "" {
-		return "yaml"
+		return defaultFormatter
 	}
 
 	return output
