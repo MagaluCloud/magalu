@@ -9,7 +9,7 @@ Executor: delete
 
 Delete a port from the provided tenant_id
 
-Version: 1.131.1
+Version: 1.133.0
 
 import "magalu.cloud/lib/products/network/port/ports"
 */

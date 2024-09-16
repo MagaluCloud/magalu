@@ -9,7 +9,7 @@ Stops a database instance.
 
 Stops a database instance.
 
-Version: 1.26.1
+Version: 1.27.1
 
 import "magalu.cloud/lib/products/dbaas/instances"
 */
@@ -43,6 +43,7 @@ type StopResult struct {
 	FlavorId            string                       `json:"flavor_id"`
 	Generation          string                       `json:"generation"`
 	Id                  string                       `json:"id"`
+	InstanceTypeId      string                       `json:"instance_type_id"`
 	Name                string                       `json:"name"`
 	Parameters          StopResultParameters         `json:"parameters"`
 	Replicas            *StopResultReplicas          `json:"replicas,omitempty"`
@@ -71,21 +72,22 @@ type StopResultParametersItemValue any
 type StopResultParameters []StopResultParametersItem
 
 type StopResultReplicasItem struct {
-	Addresses   StopResultReplicasItemAddresses  `json:"addresses"`
-	CreatedAt   string                           `json:"created_at"`
-	DatastoreId string                           `json:"datastore_id"`
-	EngineId    string                           `json:"engine_id"`
-	FinishedAt  *string                          `json:"finished_at,omitempty"`
-	FlavorId    string                           `json:"flavor_id"`
-	Generation  string                           `json:"generation"`
-	Id          string                           `json:"id"`
-	Name        string                           `json:"name"`
-	Parameters  StopResultReplicasItemParameters `json:"parameters"`
-	SourceId    string                           `json:"source_id"`
-	StartedAt   *string                          `json:"started_at,omitempty"`
-	Status      string                           `json:"status"`
-	UpdatedAt   *string                          `json:"updated_at,omitempty"`
-	Volume      StopResultReplicasItemVolume     `json:"volume"`
+	Addresses      StopResultReplicasItemAddresses  `json:"addresses"`
+	CreatedAt      string                           `json:"created_at"`
+	DatastoreId    string                           `json:"datastore_id"`
+	EngineId       string                           `json:"engine_id"`
+	FinishedAt     *string                          `json:"finished_at,omitempty"`
+	FlavorId       string                           `json:"flavor_id"`
+	Generation     string                           `json:"generation"`
+	Id             string                           `json:"id"`
+	InstanceTypeId string                           `json:"instance_type_id"`
+	Name           string                           `json:"name"`
+	Parameters     StopResultReplicasItemParameters `json:"parameters"`
+	SourceId       string                           `json:"source_id"`
+	StartedAt      *string                          `json:"started_at,omitempty"`
+	Status         string                           `json:"status"`
+	UpdatedAt      *string                          `json:"updated_at,omitempty"`
+	Volume         StopResultReplicasItemVolume     `json:"volume"`
 }
 
 type StopResultReplicasItemAddressesItem struct {

@@ -9,7 +9,7 @@ Executor: get
 
 # Returns a subnet details
 
-Version: 1.131.1
+Version: 1.133.0
 
 import "magalu.cloud/lib/products/network/subnets/subnets"
 */

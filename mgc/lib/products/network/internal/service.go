@@ -1,7 +1,7 @@
 /*
-import "magalu.cloud/lib/products/network/backoffice_conciliator"
+import "magalu.cloud/lib/products/network/internal"
 */
-package backofficeConciliator
+package internal
 
 import (
 	"context"
@@ -15,8 +15,8 @@ type service struct {
 }
 
 type Service interface {
-	CreateContext(ctx context.Context, configs CreateConfigs) (result CreateResult, err error)
-	Create(configs CreateConfigs) (result CreateResult, err error)
+	ConciliatorContext(ctx context.Context, configs ConciliatorConfigs) (result ConciliatorResult, err error)
+	Conciliator(configs ConciliatorConfigs) (result ConciliatorResult, err error)
 }
 
 func NewService(ctx context.Context, client *mgcClient.Client) Service {

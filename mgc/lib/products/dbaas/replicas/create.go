@@ -9,7 +9,7 @@ Replica Create.
 
 Creates a new replica for an instance asynchronously.
 
-Version: 1.26.1
+Version: 1.27.1
 
 import "magalu.cloud/lib/products/dbaas/replicas"
 */
@@ -23,9 +23,10 @@ import (
 )
 
 type CreateParameters struct {
-	FlavorId *string `json:"flavor_id,omitempty"`
-	Name     string  `json:"name"`
-	SourceId string  `json:"source_id"`
+	FlavorId       *string `json:"flavor_id,omitempty"`
+	InstanceTypeId *string `json:"instance_type_id,omitempty"`
+	Name           string  `json:"name"`
+	SourceId       string  `json:"source_id"`
 }
 
 type CreateConfigs struct {

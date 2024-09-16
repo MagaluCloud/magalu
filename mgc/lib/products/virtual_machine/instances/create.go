@@ -25,6 +25,7 @@ import (
 type CreateParameters struct {
 	AvailabilityZone *string                     `json:"availability_zone,omitempty"`
 	Image            CreateParametersImage       `json:"image"`
+	Labels           *CreateParametersLabels     `json:"labels,omitempty"`
 	MachineType      CreateParametersMachineType `json:"machine_type"`
 	Name             string                      `json:"name"`
 	Network          *CreateParametersNetwork    `json:"network,omitempty"`
@@ -34,22 +35,16 @@ type CreateParameters struct {
 
 // any of: CreateParametersImage
 type CreateParametersImage struct {
-	Id             string                               `json:"id"`
-	Name           *string                              `json:"name,omitempty"`
-	SecurityGroups *CreateParametersImageSecurityGroups `json:"security_groups,omitempty"`
+	Id   string  `json:"id"`
+	Name *string `json:"name,omitempty"`
 }
 
-type CreateParametersImageSecurityGroupsItem struct {
-	Id string `json:"id"`
-}
-
-type CreateParametersImageSecurityGroups []CreateParametersImageSecurityGroupsItem
+type CreateParametersLabels []string
 
 // any of: CreateParametersMachineType
 type CreateParametersMachineType struct {
-	Id             string                               `json:"id"`
-	Name           *string                              `json:"name,omitempty"`
-	SecurityGroups *CreateParametersImageSecurityGroups `json:"security_groups,omitempty"`
+	Id   string  `json:"id"`
+	Name *string `json:"name,omitempty"`
 }
 
 type CreateParametersNetwork struct {
@@ -60,16 +55,22 @@ type CreateParametersNetwork struct {
 
 // any of: CreateParametersNetworkInterface
 type CreateParametersNetworkInterface struct {
-	Id             string                               `json:"id"`
-	Name           *string                              `json:"name,omitempty"`
-	SecurityGroups *CreateParametersImageSecurityGroups `json:"security_groups,omitempty"`
+	Id             string                                          `json:"id"`
+	Name           *string                                         `json:"name,omitempty"`
+	SecurityGroups *CreateParametersNetworkInterfaceSecurityGroups `json:"security_groups,omitempty"`
 }
+
+type CreateParametersNetworkInterfaceSecurityGroupsItem struct {
+	Id string `json:"id"`
+}
+
+type CreateParametersNetworkInterfaceSecurityGroups []CreateParametersNetworkInterfaceSecurityGroupsItem
 
 // any of: CreateParametersNetworkVpc
 type CreateParametersNetworkVpc struct {
-	Id             string                               `json:"id"`
-	Name           *string                              `json:"name,omitempty"`
-	SecurityGroups *CreateParametersImageSecurityGroups `json:"security_groups,omitempty"`
+	Id             string                                          `json:"id"`
+	Name           *string                                         `json:"name,omitempty"`
+	SecurityGroups *CreateParametersNetworkInterfaceSecurityGroups `json:"security_groups,omitempty"`
 }
 
 type CreateConfigs struct {

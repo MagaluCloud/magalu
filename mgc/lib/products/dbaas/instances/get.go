@@ -9,7 +9,7 @@ Database instance details.
 
 Returns a database instance detail.
 
-Version: 1.26.1
+Version: 1.27.1
 
 import "magalu.cloud/lib/products/dbaas/instances"
 */
@@ -44,6 +44,7 @@ type GetResult struct {
 	FlavorId            string                      `json:"flavor_id"`
 	Generation          string                      `json:"generation"`
 	Id                  string                      `json:"id"`
+	InstanceTypeId      string                      `json:"instance_type_id"`
 	Name                string                      `json:"name"`
 	Parameters          GetResultParameters         `json:"parameters"`
 	Replicas            *GetResultReplicas          `json:"replicas,omitempty"`
@@ -72,21 +73,22 @@ type GetResultParametersItemValue any
 type GetResultParameters []GetResultParametersItem
 
 type GetResultReplicasItem struct {
-	Addresses   GetResultReplicasItemAddresses  `json:"addresses"`
-	CreatedAt   string                          `json:"created_at"`
-	DatastoreId string                          `json:"datastore_id"`
-	EngineId    string                          `json:"engine_id"`
-	FinishedAt  *string                         `json:"finished_at,omitempty"`
-	FlavorId    string                          `json:"flavor_id"`
-	Generation  string                          `json:"generation"`
-	Id          string                          `json:"id"`
-	Name        string                          `json:"name"`
-	Parameters  GetResultReplicasItemParameters `json:"parameters"`
-	SourceId    string                          `json:"source_id"`
-	StartedAt   *string                         `json:"started_at,omitempty"`
-	Status      string                          `json:"status"`
-	UpdatedAt   *string                         `json:"updated_at,omitempty"`
-	Volume      GetResultReplicasItemVolume     `json:"volume"`
+	Addresses      GetResultReplicasItemAddresses  `json:"addresses"`
+	CreatedAt      string                          `json:"created_at"`
+	DatastoreId    string                          `json:"datastore_id"`
+	EngineId       string                          `json:"engine_id"`
+	FinishedAt     *string                         `json:"finished_at,omitempty"`
+	FlavorId       string                          `json:"flavor_id"`
+	Generation     string                          `json:"generation"`
+	Id             string                          `json:"id"`
+	InstanceTypeId string                          `json:"instance_type_id"`
+	Name           string                          `json:"name"`
+	Parameters     GetResultReplicasItemParameters `json:"parameters"`
+	SourceId       string                          `json:"source_id"`
+	StartedAt      *string                         `json:"started_at,omitempty"`
+	Status         string                          `json:"status"`
+	UpdatedAt      *string                         `json:"updated_at,omitempty"`
+	Volume         GetResultReplicasItemVolume     `json:"volume"`
 }
 
 type GetResultReplicasItemAddressesItem struct {

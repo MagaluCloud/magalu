@@ -41,6 +41,7 @@ type GetResult struct {
 	Error            *GetResultError      `json:"error,omitempty"`
 	Id               string               `json:"id"`
 	Image            GetResultImage       `json:"image"`
+	Labels           *GetResultLabels     `json:"labels,omitempty"`
 	MachineType      GetResultMachineType `json:"machine_type"`
 	Name             *string              `json:"name,omitempty"`
 	Network          *GetResultNetwork    `json:"network,omitempty"`
@@ -62,6 +63,8 @@ type GetResultImage struct {
 	Name     *string `json:"name,omitempty"`
 	Platform *string `json:"platform,omitempty"`
 }
+
+type GetResultLabels []string
 
 // any of: GetResultMachineType
 type GetResultMachineType struct {

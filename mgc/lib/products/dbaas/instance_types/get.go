@@ -3,18 +3,17 @@ Executor: get
 
 # Summary
 
-Flavor detail (Deprecated).
+Instance Type detail.
 
 # Description
 
-**Deprecated**: This endpoint is being phased out. Please use the /v1/instance-types endpoint to retrieve the list of available instance types instead.
-Returns an instance type detail. It is recommended to update your integration to use the newer `/v1/instance-types/{instance_type_id}` endpoint for improved functionality and future compatibility.
+Returns an instance type detail.
 
 Version: 1.27.1
 
-import "magalu.cloud/lib/products/dbaas/flavors"
+import "magalu.cloud/lib/products/dbaas/instance_types"
 */
-package flavors
+package instanceTypes
 
 import (
 	"context"
@@ -53,7 +52,7 @@ func (s *service) Get(
 	result GetResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("Get", mgcCore.RefPath("/dbaas/flavors/get"), s.client, s.ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Get", mgcCore.RefPath("/dbaas/instance_types/get"), s.client, s.ctx)
 	if err != nil {
 		return
 	}
@@ -84,7 +83,7 @@ func (s *service) GetContext(
 	result GetResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("Get", mgcCore.RefPath("/dbaas/flavors/get"), s.client, ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Get", mgcCore.RefPath("/dbaas/instance_types/get"), s.client, ctx)
 	if err != nil {
 		return
 	}

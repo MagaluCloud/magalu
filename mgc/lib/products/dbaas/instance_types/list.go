@@ -3,17 +3,17 @@ Executor: list
 
 # Summary
 
-List available engines.
+List available instance types.
 
 # Description
 
-Returns a list of available engines.
+Returns a list of available instance types. An instance type is a hardware template that defines the size of RAM and vCPU.
 
 Version: 1.27.1
 
-import "magalu.cloud/lib/products/dbaas/engines"
+import "magalu.cloud/lib/products/dbaas/instance_types"
 */
-package engines
+package instanceTypes
 
 import (
 	"context"
@@ -23,9 +23,10 @@ import (
 )
 
 type ListParameters struct {
-	Limit  *int    `json:"_limit,omitempty"`
-	Offset *int    `json:"_offset,omitempty"`
-	Status *string `json:"status,omitempty"`
+	Limit    *int    `json:"_limit,omitempty"`
+	Offset   *int    `json:"_offset,omitempty"`
+	EngineId *string `json:"engine_id,omitempty"`
+	Status   *string `json:"status,omitempty"`
 }
 
 type ListConfigs struct {
@@ -61,11 +62,16 @@ type ListResultMetaPage struct {
 }
 
 type ListResultResultsItem struct {
-	Engine  string `json:"engine"`
-	Id      string `json:"id"`
-	Name    string `json:"name"`
-	Status  string `json:"status"`
-	Version string `json:"version"`
+	FamilyDescription string `json:"family_description"`
+	FamilySlug        string `json:"family_slug"`
+	Id                string `json:"id"`
+	Label             string `json:"label"`
+	Name              string `json:"name"`
+	Ram               string `json:"ram"`
+	Size              string `json:"size"`
+	SkuReplica        string `json:"sku_replica"`
+	SkuSource         string `json:"sku_source"`
+	Vcpu              string `json:"vcpu"`
 }
 
 type ListResultResults []ListResultResultsItem
@@ -77,7 +83,7 @@ func (s *service) List(
 	result ListResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("List", mgcCore.RefPath("/dbaas/engines/list"), s.client, s.ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("List", mgcCore.RefPath("/dbaas/instance_types/list"), s.client, s.ctx)
 	if err != nil {
 		return
 	}
@@ -108,7 +114,7 @@ func (s *service) ListContext(
 	result ListResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("List", mgcCore.RefPath("/dbaas/engines/list"), s.client, ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("List", mgcCore.RefPath("/dbaas/instance_types/list"), s.client, ctx)
 	if err != nil {
 		return
 	}

@@ -47,6 +47,7 @@ type ListResultInstancesItem struct {
 	Error            *ListResultInstancesItemError      `json:"error,omitempty"`
 	Id               string                             `json:"id"`
 	Image            ListResultInstancesItemImage       `json:"image"`
+	Labels           *ListResultInstancesItemLabels     `json:"labels,omitempty"`
 	MachineType      ListResultInstancesItemMachineType `json:"machine_type"`
 	Name             *string                            `json:"name,omitempty"`
 	Network          *ListResultInstancesItemNetwork    `json:"network,omitempty"`
@@ -68,6 +69,8 @@ type ListResultInstancesItemImage struct {
 	Name     *string `json:"name,omitempty"`
 	Platform *string `json:"platform,omitempty"`
 }
+
+type ListResultInstancesItemLabels []string
 
 // any of: ListResultInstancesItemMachineType
 type ListResultInstancesItemMachineType struct {

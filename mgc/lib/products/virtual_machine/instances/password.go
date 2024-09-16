@@ -40,9 +40,10 @@ type PasswordResult struct {
 }
 
 type PasswordResultInstance struct {
-	CreatedAt string `json:"created_at"`
-	Id        string `json:"id"`
-	Password  string `json:"password"`
+	CreatedAt string  `json:"created_at"`
+	Id        string  `json:"id"`
+	Password  string  `json:"password"`
+	User      *string `json:"user,omitempty"`
 }
 
 func (s *service) Password(

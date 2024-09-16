@@ -9,7 +9,7 @@ Replica Resize.
 
 Resize an instance replica.
 
-Version: 1.26.1
+Version: 1.27.1
 
 import "magalu.cloud/lib/products/dbaas/replicas"
 */
@@ -23,8 +23,9 @@ import (
 )
 
 type ResizeParameters struct {
-	FlavorId  string `json:"flavor_id"`
-	ReplicaId string `json:"replica_id"`
+	FlavorId       *string `json:"flavor_id,omitempty"`
+	InstanceTypeId *string `json:"instance_type_id,omitempty"`
+	ReplicaId      string  `json:"replica_id"`
 }
 
 type ResizeConfigs struct {
@@ -34,21 +35,22 @@ type ResizeConfigs struct {
 }
 
 type ResizeResult struct {
-	Addresses   ResizeResultAddresses  `json:"addresses"`
-	CreatedAt   string                 `json:"created_at"`
-	DatastoreId string                 `json:"datastore_id"`
-	EngineId    string                 `json:"engine_id"`
-	FinishedAt  *string                `json:"finished_at,omitempty"`
-	FlavorId    string                 `json:"flavor_id"`
-	Generation  string                 `json:"generation"`
-	Id          string                 `json:"id"`
-	Name        string                 `json:"name"`
-	Parameters  ResizeResultParameters `json:"parameters"`
-	SourceId    string                 `json:"source_id"`
-	StartedAt   *string                `json:"started_at,omitempty"`
-	Status      string                 `json:"status"`
-	UpdatedAt   *string                `json:"updated_at,omitempty"`
-	Volume      ResizeResultVolume     `json:"volume"`
+	Addresses      ResizeResultAddresses  `json:"addresses"`
+	CreatedAt      string                 `json:"created_at"`
+	DatastoreId    string                 `json:"datastore_id"`
+	EngineId       string                 `json:"engine_id"`
+	FinishedAt     *string                `json:"finished_at,omitempty"`
+	FlavorId       string                 `json:"flavor_id"`
+	Generation     string                 `json:"generation"`
+	Id             string                 `json:"id"`
+	InstanceTypeId string                 `json:"instance_type_id"`
+	Name           string                 `json:"name"`
+	Parameters     ResizeResultParameters `json:"parameters"`
+	SourceId       string                 `json:"source_id"`
+	StartedAt      *string                `json:"started_at,omitempty"`
+	Status         string                 `json:"status"`
+	UpdatedAt      *string                `json:"updated_at,omitempty"`
+	Volume         ResizeResultVolume     `json:"volume"`
 }
 
 type ResizeResultAddressesItem struct {

@@ -365,16 +365,16 @@ func (r *vmInstances) Create(ctx context.Context, req resource.CreateRequest, re
 	if state.Network.Interface != nil && len(state.Network.Interface.SecurityGroups) > 0 {
 		network := sdkVmInstances.CreateParametersNetwork{}
 		network.Interface = &sdkVmInstances.CreateParametersNetworkInterface{}
-		network.Interface.SecurityGroups = &sdkVmInstances.CreateParametersImageSecurityGroups{}
+		network.Interface.SecurityGroups = &sdkVmInstances.CreateParametersNetworkInterfaceSecurityGroups{}
 
-		items := []sdkVmInstances.CreateParametersImageSecurityGroupsItem{}
+		items := []sdkVmInstances.CreateParametersNetworkInterfaceSecurityGroupsItem{}
 
 		for _, sg := range state.Network.Interface.SecurityGroups {
-			items = append(items, sdkVmInstances.CreateParametersImageSecurityGroupsItem{
+			items = append(items, sdkVmInstances.CreateParametersNetworkInterfaceSecurityGroupsItem{
 				Id: sg.ID.ValueString(),
 			})
 		}
-		vmInstancesNetworkInterfaceSecurityGroups := sdkVmInstances.CreateParametersImageSecurityGroups(items)
+		vmInstancesNetworkInterfaceSecurityGroups := sdkVmInstances.CreateParametersNetworkInterfaceSecurityGroups(items)
 		createParams.Network.Interface = &sdkVmInstances.CreateParametersNetworkInterface{}
 		createParams.Network.Interface.SecurityGroups = &vmInstancesNetworkInterfaceSecurityGroups
 	}

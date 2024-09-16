@@ -1,5 +1,5 @@
 /*
-Executor: create
+Executor: conciliator
 
 # Summary
 
@@ -9,11 +9,11 @@ Executor: create
 
 # Start conciliator validation
 
-Version: 1.131.1
+Version: 1.133.0
 
-import "magalu.cloud/lib/products/network/backoffice_conciliator"
+import "magalu.cloud/lib/products/network/internal"
 */
-package backofficeConciliator
+package internal
 
 import (
 	"context"
@@ -22,7 +22,7 @@ import (
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
 
-type CreateConfigs struct {
+type ConciliatorConfigs struct {
 	Env          *string `json:"env,omitempty"`
 	Limit        *int    `json:"limit,omitempty"`
 	Region       *string `json:"region,omitempty"`
@@ -31,15 +31,15 @@ type CreateConfigs struct {
 	Skip         *int    `json:"skip,omitempty"`
 }
 
-type CreateResult any
+type ConciliatorResult any
 
-func (s *service) Create(
-	configs CreateConfigs,
+func (s *service) Conciliator(
+	configs ConciliatorConfigs,
 ) (
-	result CreateResult,
+	result ConciliatorResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("Create", mgcCore.RefPath("/network/backoffice_conciliator/create"), s.client, s.ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Conciliator", mgcCore.RefPath("/network/internal/conciliator"), s.client, s.ctx)
 	if err != nil {
 		return
 	}
@@ -47,7 +47,7 @@ func (s *service) Create(
 	var p mgcCore.Parameters
 
 	var c mgcCore.Configs
-	if c, err = mgcHelpers.ConvertConfigs[CreateConfigs](configs); err != nil {
+	if c, err = mgcHelpers.ConvertConfigs[ConciliatorConfigs](configs); err != nil {
 		return
 	}
 
@@ -55,18 +55,18 @@ func (s *service) Create(
 	if err != nil {
 		return
 	}
-	return mgcHelpers.ConvertResult[CreateResult](r)
+	return mgcHelpers.ConvertResult[ConciliatorResult](r)
 }
 
 // Context from caller is used to allow cancellation of long-running requests
-func (s *service) CreateContext(
+func (s *service) ConciliatorContext(
 	ctx context.Context,
-	configs CreateConfigs,
+	configs ConciliatorConfigs,
 ) (
-	result CreateResult,
+	result ConciliatorResult,
 	err error,
 ) {
-	exec, ctx, err := mgcHelpers.PrepareExecutor("Create", mgcCore.RefPath("/network/backoffice_conciliator/create"), s.client, ctx)
+	exec, ctx, err := mgcHelpers.PrepareExecutor("Conciliator", mgcCore.RefPath("/network/internal/conciliator"), s.client, ctx)
 	if err != nil {
 		return
 	}
@@ -74,7 +74,7 @@ func (s *service) CreateContext(
 	var p mgcCore.Parameters
 
 	var c mgcCore.Configs
-	if c, err = mgcHelpers.ConvertConfigs[CreateConfigs](configs); err != nil {
+	if c, err = mgcHelpers.ConvertConfigs[ConciliatorConfigs](configs); err != nil {
 		return
 	}
 
@@ -95,7 +95,7 @@ func (s *service) CreateContext(
 	if err != nil {
 		return
 	}
-	return mgcHelpers.ConvertResult[CreateResult](r)
+	return mgcHelpers.ConvertResult[ConciliatorResult](r)
 }
 
 // TODO: links

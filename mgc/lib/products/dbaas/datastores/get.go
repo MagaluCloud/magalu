@@ -11,7 +11,7 @@ Datastore detail (Deprecated).
 
 Returns a datastore detail. It is recommended to update your integration to use the newer `/v1/engines/{engine_id}` endpoint for improved functionality and future compatibility.
 
-Version: 1.26.1
+Version: 1.27.1
 
 import "magalu.cloud/lib/products/dbaas/datastores"
 */

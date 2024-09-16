@@ -23,6 +23,7 @@ import (
 )
 
 type ListParameters struct {
+	Labels *string `json:"_labels,omitempty"`
 	Limit  *int    `json:"_limit,omitempty"`
 	Offset *int    `json:"_offset,omitempty"`
 	Sort   *string `json:"_sort,omitempty"`
@@ -42,6 +43,7 @@ type ListResultImagesItem struct {
 	EndLifeAt            *string                                 `json:"end_life_at,omitempty"`
 	EndStandardSupportAt *string                                 `json:"end_standard_support_at,omitempty"`
 	Id                   string                                  `json:"id"`
+	Labels               *ListResultImagesItemLabels             `json:"labels,omitempty"`
 	MinimumRequirements  ListResultImagesItemMinimumRequirements `json:"minimum_requirements"`
 	Name                 string                                  `json:"name"`
 	Platform             *string                                 `json:"platform,omitempty"`
@@ -49,6 +51,8 @@ type ListResultImagesItem struct {
 	Status               string                                  `json:"status"`
 	Version              *string                                 `json:"version,omitempty"`
 }
+
+type ListResultImagesItemLabels []string
 
 type ListResultImagesItemMinimumRequirements struct {
 	Disk int `json:"disk"`

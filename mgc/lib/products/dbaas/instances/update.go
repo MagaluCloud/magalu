@@ -9,7 +9,7 @@ Database instance update.
 
 Updates a database instance.
 
-Version: 1.26.1
+Version: 1.27.1
 
 import "magalu.cloud/lib/products/dbaas/instances"
 */
@@ -46,6 +46,7 @@ type UpdateResult struct {
 	FlavorId            string                         `json:"flavor_id"`
 	Generation          string                         `json:"generation"`
 	Id                  string                         `json:"id"`
+	InstanceTypeId      string                         `json:"instance_type_id"`
 	Name                string                         `json:"name"`
 	Parameters          UpdateResultParameters         `json:"parameters"`
 	Replicas            *UpdateResultReplicas          `json:"replicas,omitempty"`
@@ -74,21 +75,22 @@ type UpdateResultParametersItemValue any
 type UpdateResultParameters []UpdateResultParametersItem
 
 type UpdateResultReplicasItem struct {
-	Addresses   UpdateResultReplicasItemAddresses  `json:"addresses"`
-	CreatedAt   string                             `json:"created_at"`
-	DatastoreId string                             `json:"datastore_id"`
-	EngineId    string                             `json:"engine_id"`
-	FinishedAt  *string                            `json:"finished_at,omitempty"`
-	FlavorId    string                             `json:"flavor_id"`
-	Generation  string                             `json:"generation"`
-	Id          string                             `json:"id"`
-	Name        string                             `json:"name"`
-	Parameters  UpdateResultReplicasItemParameters `json:"parameters"`
-	SourceId    string                             `json:"source_id"`
-	StartedAt   *string                            `json:"started_at,omitempty"`
-	Status      string                             `json:"status"`
-	UpdatedAt   *string                            `json:"updated_at,omitempty"`
-	Volume      UpdateResultReplicasItemVolume     `json:"volume"`
+	Addresses      UpdateResultReplicasItemAddresses  `json:"addresses"`
+	CreatedAt      string                             `json:"created_at"`
+	DatastoreId    string                             `json:"datastore_id"`
+	EngineId       string                             `json:"engine_id"`
+	FinishedAt     *string                            `json:"finished_at,omitempty"`
+	FlavorId       string                             `json:"flavor_id"`
+	Generation     string                             `json:"generation"`
+	Id             string                             `json:"id"`
+	InstanceTypeId string                             `json:"instance_type_id"`
+	Name           string                             `json:"name"`
+	Parameters     UpdateResultReplicasItemParameters `json:"parameters"`
+	SourceId       string                             `json:"source_id"`
+	StartedAt      *string                            `json:"started_at,omitempty"`
+	Status         string                             `json:"status"`
+	UpdatedAt      *string                            `json:"updated_at,omitempty"`
+	Volume         UpdateResultReplicasItemVolume     `json:"volume"`
 }
 
 type UpdateResultReplicasItemAddressesItem struct {
