@@ -22,6 +22,7 @@ Usage:
 - This is the same as '--image=id:string'.
 - --image.name string                         Image: Name (between 1 and 255 characters)
 - This is the same as '--image=name:string'.
+- --labels array(string)                      Labels
 - --machine-type object                       Machine Type (at least one of: single property: id or single property: name)
 - Use --machine-type=help for more details (required)
 - --machine-type.id string                    Machine Type: Id (between 1 and 255 characters)

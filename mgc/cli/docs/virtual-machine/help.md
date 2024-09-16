@@ -13,7 +13,6 @@ Usage:
 
 ## Other commands:
 - Commands:
-- backups       Operations with backups for instances.
 - images        Operations with images for instances.
 - instances     Operations with instances, including create, delete, start, stop, reboot and other actions.
 - machine-types Operations with machine types for instances.

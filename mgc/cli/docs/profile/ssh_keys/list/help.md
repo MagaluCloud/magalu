@@ -10,7 +10,7 @@ Usage:
 - Flags:
 - --control.limit integer     Limit (default 50)
 - --control.offset integer    Offset
-- --control.sort string       Sort (default "id:asc")
+- --control.sort string       Sort
 - -h, --help                     help for list
 - -v, --version                  version for list
 

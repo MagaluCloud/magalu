@@ -102,9 +102,8 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
-            x-viveiro: true
-            x-mgc-output-flag: table=BACKUP_TYPE:$.backups[*].backup_type,CREATED_AT:$.backups[*].created_at',  ID:$.backups[*].id,INSTANCE:$.backups[*].instance,DISK:$.backups[*].min_disk,NAME:$.backups[*].name,
-                SIZE:$.backups[*].size,STATE:$.backups[*].state,STATUS:$.backups[*].status,UPDATED_AT:$.backups[*].updated_at
+            x-viveiro: false
+            x-mgc-hidden: true
             security:
             -   OAuth2:
                 - virtual-machine.read
@@ -146,32 +145,6 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/CreateResponse'
-                    links:
-                        get:
-                            operationId: details_backup_v1_backups__id__get
-                            description: Retrieve the details of a backup.
-                            parameters:
-                                id: $response.body#/id
-                        delete:
-                            operationId: delete_backup_v1_backups__id__delete
-                            description: Delete a backup of a virtual machine asynchronously.
-                            parameters:
-                                id: $response.body#/id
-                        copy:
-                            operationId: copy_backup_region_v1_backups__id__copy_post
-                            description: Copy a backup of a virtual machine asynchronously.
-                            parameters:
-                                id: $response.body#/id
-                        rename:
-                            operationId: rename_backup_v1_backups__id__rename_patch
-                            description: Renames a backup
-                            parameters:
-                                id: $response.body#/id
-                        restore:
-                            operationId: restore_backup_v1_backups__id__restore_post
-                            description: Restore a backup to a virtual machine
-                            parameters:
-                                id: $response.body#/id
                 '400':
                     description: Backup Not Allowed Exception
                     content:
@@ -202,8 +175,8 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
-            x-viveiro: true
-            x-mgc-output-flag: table=ID:$.id
+            x-viveiro: false
+            x-mgc-hidden: true
             security:
             -   OAuth2:
                 - virtual-machine.write
@@ -253,33 +226,6 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/BackupResponse'
-                    links:
-                        delete:
-                            operationId: delete_backup_v1_backups__id__delete
-                            description: Delete a backup of a virtual machine asynchronously.
-                            parameters:
-                                id: $request.path.id
-                        copy:
-                            operationId: copy_backup_region_v1_backups__id__copy_post
-                            description: Copy a backup of a virtual machine asynchronously.
-                            parameters:
-                                id: $request.path.id
-                        rename:
-                            operationId: rename_backup_v1_backups__id__rename_patch
-                            description: Renames a backup
-                            parameters:
-                                id: $request.path.id
-                        update/name:
-                            operationId: rename_backup_v1_backups__id__rename_patch
-                            description: Renames a backup
-                            parameters:
-                                id: $request.path.id
-                            x-mgc-hidden: true
-                        restore:
-                            operationId: restore_backup_v1_backups__id__restore_post
-                            description: Restore a backup to a virtual machine
-                            parameters:
-                                id: $request.path.id
                 '400':
                     description: Backup Not Allowed Exception
                     content:
@@ -310,9 +256,8 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
-            x-viveiro: true
-            x-mgc-output-flag: table=BACKUP_TYPE:$.backups[].backup_type,CREATED_AT:$.backups[].created_at',  ID:$.backups[].id,INSTANCE:$.backups[].instance,DISK:$.backups[].min_disk,NAME:$.backups[].name,
-                SIZE:$.backups[].size,STATE:$.backups[].state,STATUS:$.backups[].status,UPDATED_AT:$.backups[*].updated_at
+            x-viveiro: false
+            x-mgc-hidden: true
             security:
             -   OAuth2:
                 - virtual-machine.read
@@ -363,8 +308,8 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
-            x-viveiro: true
-            x-mgc-output-flag: table=ID:$.id
+            x-viveiro: false
+            x-mgc-hidden: true
             security:
             -   OAuth2:
                 - virtual-machine.write
@@ -392,27 +337,6 @@ paths:
             responses:
                 '204':
                     description: Successful Response
-                    links:
-                        get:
-                            operationId: details_backup_v1_backups__id__get
-                            description: Retrieve the details of a backup.
-                            parameters:
-                                id: $request.path.id
-                        delete:
-                            operationId: delete_backup_v1_backups__id__delete
-                            description: Delete a backup of a virtual machine asynchronously.
-                            parameters:
-                                id: $request.path.id
-                        rename:
-                            operationId: rename_backup_v1_backups__id__rename_patch
-                            description: Renames a backup
-                            parameters:
-                                id: $request.path.id
-                        restore:
-                            operationId: restore_backup_v1_backups__id__restore_post
-                            description: Restore a backup to a virtual machine
-                            parameters:
-                                id: $request.path.id
                 '400':
                     description: Backup Not Allowed Exception
                     content:
@@ -443,7 +367,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
-            x-viveiro: true
+            x-viveiro: false
             x-mgc-hidden: true
             security:
             -   OAuth2:
@@ -484,31 +408,6 @@ paths:
             responses:
                 '204':
                     description: Successful Response
-                    links:
-                        get:
-                            operationId: details_backup_v1_backups__id__get
-                            description: Retrieve the details of a backup.
-                            parameters:
-                                id: $request.path.id
-                            x-mgc-wait-termination:
-                                interval: 5s
-                                maxRetries: 10
-                                jsonPathQuery: $.result.name == $.owner.parameters.name
-                        delete:
-                            operationId: delete_backup_v1_backups__id__delete
-                            description: Delete a backup of a virtual machine asynchronously.
-                            parameters:
-                                id: $request.path.id
-                        copy:
-                            operationId: copy_backup_region_v1_backups__id__copy_post
-                            description: Copy a backup of a virtual machine asynchronously.
-                            parameters:
-                                id: $request.path.id
-                        restore:
-                            operationId: restore_backup_v1_backups__id__restore_post
-                            description: Restore a backup to a virtual machine
-                            parameters:
-                                id: $request.path.id
                 '400':
                     description: Backup Not Allowed Exception
                     content:
@@ -539,7 +438,8 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
-            x-viveiro: true
+            x-viveiro: false
+            x-mgc-hidden: true
             security:
             -   OAuth2:
                 - virtual-machine.write
@@ -590,27 +490,6 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/CreateResponse'
-                    links:
-                        get:
-                            operationId: details_backup_v1_backups__id__get
-                            description: Retrieve the details of a backup.
-                            parameters:
-                                id: $request.path.id
-                        delete:
-                            operationId: delete_backup_v1_backups__id__delete
-                            description: Delete a backup of a virtual machine asynchronously.
-                            parameters:
-                                id: $request.path.id
-                        copy:
-                            operationId: copy_backup_region_v1_backups__id__copy_post
-                            description: Copy a backup of a virtual machine asynchronously.
-                            parameters:
-                                id: $request.path.id
-                        rename:
-                            operationId: rename_backup_v1_backups__id__rename_patch
-                            description: Renames a backup
-                            parameters:
-                                id: $request.path.id
                 '400':
                     description: Backup Not Allowed Exception
                     content:
@@ -641,8 +520,8 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
-            x-viveiro: true
-            x-mgc-output-flag: table=ID:$.id
+            x-viveiro: false
+            x-mgc-hidden: true
             security:
             -   OAuth2:
                 - virtual-machine.write
@@ -679,6 +558,15 @@ paths:
                     title: ' Sort'
                     pattern: ^(^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$
                     default: platform:asc,end_life_at:desc
+            -   name: _labels
+                in: query
+                description: label-1, label2, label 3
+                required: false
+                schema:
+                    type: string
+                    title: ' Labels'
+                    description: label-1, label2, label 3
+                    default: ''
             responses:
                 '200':
                     description: Successful Response
@@ -748,7 +636,7 @@ paths:
             -   name: expand
                 in: query
                 description: 'You can get more detailed info about: [''image'', ''machine-type'',
-                    ''machine-types'', ''network''] '
+                    ''machine-types'', ''network'', ''labels''] '
                 required: false
                 schema:
                     type: array
@@ -756,7 +644,7 @@ paths:
                         type: string
                     title: Expand
                     description: 'You can get more detailed info about: [''image'',
-                        ''machine-type'', ''machine-types'', ''network''] '
+                        ''machine-type'', ''machine-types'', ''network'', ''labels''] '
                     default: []
             responses:
                 '200':
@@ -1128,7 +1016,7 @@ paths:
             -   name: expand
                 in: query
                 description: 'You can get more detailed info about: [''image'', ''machine-type'',
-                    ''machine-types'', ''network''] '
+                    ''machine-types'', ''network'', ''labels''] '
                 required: false
                 schema:
                     type: array
@@ -1136,7 +1024,7 @@ paths:
                         type: string
                     title: Expand
                     description: 'You can get more detailed info about: [''image'',
-                        ''machine-type'', ''machine-types'', ''network''] '
+                        ''machine-type'', ''machine-types'', ''network'', ''labels''] '
                     default:
                     - network
                     - image
@@ -2965,6 +2853,13 @@ components:
                     - vcpu
                     - ram
                     - disk
+                labels:
+                    anyOf:
+                    -   type: array
+                        items:
+                            type: string
+                    title: Labels
+                    nullable: true
             title: ImageResponseExternalV1
             required:
             - id
@@ -2975,6 +2870,10 @@ components:
                 end_life_at: '2022-06-10T18:33:12Z'
                 end_standard_support_at: '2022-06-10T18:33:12Z'
                 id: c47e974f-8002-46e9-8a63-d66505be2aa1
+                labels:
+                - label-1
+                - label 2
+                - label3
                 minimum_requirements:
                     disk: 2
                     ram: 1
@@ -3005,6 +2904,10 @@ components:
                     type: string
                     title: Created At
                     example: '2022-01-01T00:00:10Z'
+                user:
+                    type: string
+                    title: User
+                    default: admin
                 id:
                     type: string
                     title: Id
@@ -3017,6 +2920,7 @@ components:
                 created_at: '2022-01-01T00:00:10Z'
                 id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                 password: admin-password
+                user: admin
         InstanceAccess_InstanceAccessResponseWithPass_:
             type: object
             properties:
@@ -3030,6 +2934,10 @@ components:
                             type: string
                             title: Created At
                             example: '2022-01-01T00:00:10Z'
+                        user:
+                            type: string
+                            title: User
+                            default: admin
                         id:
                             type: string
                             title: Id
@@ -3042,6 +2950,7 @@ components:
                         created_at: '2022-01-01T00:00:10Z'
                         id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                         password: admin-password
+                        user: admin
             title: InstanceAccess[InstanceAccessResponseWithPass]
             required:
             - instance
@@ -3050,6 +2959,7 @@ components:
                     created_at: '2022-01-01T00:00:10Z'
                     id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                     password: admin-password
+                    user: admin
         InstanceCreateRequestV1Default:
             type: object
             properties:
@@ -3091,6 +3001,13 @@ components:
                         minLength: 1
                     title: Used to perform automated configuration tasks.
                     nullable: true
+                labels:
+                    anyOf:
+                    -   type: array
+                        items:
+                            type: string
+                    title: Labels
+                    nullable: true
             title: InstanceCreateRequestV1Default
             required:
             - name
@@ -3100,9 +3017,12 @@ components:
                 availability_zone: br-regiao-1a
                 image:
                     id: 2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6
+                labels:
+                - label1
+                - label2
                 machine_type:
                     id: 2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6
-                name: instance name
+                name: instance-name
                 network:
                     associate_public_ip: true
                     interface:
@@ -3500,6 +3420,13 @@ components:
                     -   $ref: '#/components/schemas/NetworkPortsV1Expand'
                     title: Network
                     nullable: true
+                labels:
+                    anyOf:
+                    -   type: array
+                        items:
+                            type: string
+                    title: Labels
+                    nullable: true
                 error:
                     anyOf:
                     -   $ref: '#/components/schemas/ErrorMessageV1'
@@ -3522,9 +3449,12 @@ components:
                 id: 2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6
                 image:
                     id: 2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6
+                labels:
+                - label1
+                - label2
                 machine_type:
                     id: 2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6
-                name: instance name
+                name: instance-name
                 network:
                     ports:
                     -   id: 2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6
@@ -3593,7 +3523,7 @@ components:
             required:
             - name
             example:
-                name: new instance name
+                name: new-instance-name
         IpAddressExpand:
             type: object
             properties:
@@ -3785,6 +3715,13 @@ components:
                                 - vcpu
                                 - ram
                                 - disk
+                            labels:
+                                anyOf:
+                                -   type: array
+                                    items:
+                                        type: string
+                                title: Labels
+                                nullable: true
                         title: ImageResponseExternalV1
                         required:
                         - id
@@ -3795,6 +3732,10 @@ components:
                             end_life_at: '2022-06-10T18:33:12Z'
                             end_standard_support_at: '2022-06-10T18:33:12Z'
                             id: c47e974f-8002-46e9-8a63-d66505be2aa1
+                            labels:
+                            - label-1
+                            - label 2
+                            - label3
                             minimum_requirements:
                                 disk: 2
                                 ram: 1
@@ -3813,6 +3754,10 @@ components:
                 -   end_life_at: '2022-06-10T18:33:12Z'
                     end_standard_support_at: '2022-06-10T18:33:12Z'
                     id: c47e974f-8002-46e9-8a63-d66505be2aa1
+                    labels:
+                    - label-1
+                    - label 2
+                    - label3
                     minimum_requirements:
                         disk: 2
                         ram: 1
@@ -3926,6 +3871,13 @@ components:
                                 -   $ref: '#/components/schemas/NetworkPortsV1Expand'
                                 title: Network
                                 nullable: true
+                            labels:
+                                anyOf:
+                                -   type: array
+                                    items:
+                                        type: string
+                                title: Labels
+                                nullable: true
                             error:
                                 anyOf:
                                 -   $ref: '#/components/schemas/ErrorMessageV1'
@@ -3948,9 +3900,12 @@ components:
                             id: 2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6
                             image:
                                 id: 2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6
+                            labels:
+                            - label1
+                            - label2
                             machine_type:
                                 id: 2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6
-                            name: instance name
+                            name: instance-name
                             network:
                                 ports:
                                 -   id: 2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6
@@ -3974,9 +3929,12 @@ components:
                     id: 2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6
                     image:
                         id: 2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6
+                    labels:
+                    - label1
+                    - label2
                     machine_type:
                         id: 2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6
-                    name: instance name
+                    name: instance-name
                     network:
                         ports:
                         -   id: 2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6
@@ -4065,7 +4023,7 @@ components:
                                     id: 4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a
                                 machine_type:
                                     id: 4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a
-                            name: snapshot name
+                            name: snapshot-name
                             size: 1000
                             state: available
                             status: completed
@@ -4084,7 +4042,7 @@ components:
                             id: 4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a
                         machine_type:
                             id: 4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a
-                    name: snapshot name
+                    name: snapshot-name
                     size: 1000
                     state: available
                     status: completed
@@ -4316,7 +4274,7 @@ components:
             example:
                 instance:
                     id: 4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a
-                name: snapshot name
+                name: snapshot-name
         SnapshotRenameRequest:
             type: object
             properties:
@@ -4329,7 +4287,7 @@ components:
             required:
             - name
             example:
-                name: new snapshot name
+                name: new-snapshot-name
         SnapshotResponseV1:
             type: object
             properties:
@@ -4405,7 +4363,7 @@ components:
                         id: 4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a
                     machine_type:
                         id: 4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a
-                name: snapshot name
+                name: snapshot-name
                 size: 1000
                 state: available
                 status: completed
@@ -4454,7 +4412,7 @@ components:
                 availability_zone: br-regiao-1a
                 machine_type:
                     id: 4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a
-                name: instance name
+                name: instance-name
                 network:
                     associate_public_ip: true
                     interface:
@@ -4505,8 +4463,6 @@ tags:
     description: Operations with machine types for instances.
 -   name: snapshots
     description: Operations with snapshots for instances.
--   name: backups
-    description: Operations with backups for instances.
 $id: https://virtual-machine.jaxyendy.com/openapi.json
 servers:
 -   url: https://{env}/{region}/compute

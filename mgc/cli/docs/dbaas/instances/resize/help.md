@@ -13,9 +13,11 @@ Usage:
 ## Other commands:
 - Flags:
 - --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-- --flavor-id uuid                Flavor Id
+- --flavor-id uuid                Flavor Id (Deprecated): **Deprecated**: This property is being deprecated in favor of 'instance_type_id'. Please update your requests to use 'instance_type_id' for improved functionality and future compatibility.
+- 
 - -h, --help                          help for resize
 - --instance-id uuid              Value referring to instance Id. (required)
+- --instance-type-id uuid         Instance Type Id
 - -v, --version                       version for resize
 - --volume object                 Instance Volume Request (properties: size and type)
 - Use --volume=help for more details

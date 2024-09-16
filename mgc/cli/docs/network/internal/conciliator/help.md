@@ -3,13 +3,13 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc network backoffice-conciliator create [flags]
+  ./mgc network internal conciliator [flags]
 ```
 
 ## Product catalog:
 - Flags:
-- -h, --help      help for create
-- -v, --version   version for create
+- -h, --help      help for conciliator
+- -v, --version   version for conciliator
 
 ## Other commands:
 - Global Flags:

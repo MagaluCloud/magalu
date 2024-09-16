@@ -1,18 +1,15 @@
-# Get a Virtual Machine instance details
+# Clusters management.
 
 ## Usage:
 ```bash
 Usage:
-  ./mgc virtual-machine instances get [id] [flags]
+  ./mgc dbaas clusters [flags]
 ```
 
 ## Product catalog:
 - Flags:
-- --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-- --expand array(string)          Expand: You can get more detailed info about: ['image', 'machine-type', 'machine-types', 'network', 'labels']  (default ["network","image","machine-type"])
-- -h, --help                          help for get
-- --id string                     Instance id - for help use ./mgc virtual-machines instances list . (required)
-- -v, --version                       version for get
+- -h, --help      help for clusters
+- -v, --version   version for clusters
 
 ## Other commands:
 - Global Flags:
@@ -23,12 +20,9 @@ Usage:
 - -t, --cli.timeout duration     If > 0, it's the timeout for the action execution. It's specified as numbers and unit suffix.
 - Valid unit suffixes: ns, us, ms, s, m and h. Examples: 300ms, 1m30s
 - --debug                    Display detailed log information at the debug level
-- --env enum                 Environment to use (one of "pre-prod" or "prod") (default "prod")
 - --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 - -o, --output string            Change the output format. Use '--output=help' to know more details.
 - -r, --raw                      Output raw data, without any formatting or coloring
-- --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
-- --server-url uri           Manually specify the server to use
 
 ## Flags:
 ```bash

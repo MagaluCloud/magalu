@@ -22,7 +22,7 @@ modules:
     path: dbaas.openapi.yaml
     summary: DBaaS API Product.
     url: https://dbaas.jaxyendy.com/openapi.json
-    version: 1.26.1
+    version: 1.27.1
 -   description: APIs related to the Kubernetes product.
     name: kubernetes
     path: kubernetes.openapi.yaml
@@ -34,7 +34,7 @@ modules:
     path: network.openapi.yaml
     summary: APIs referentes ao produto de VPC
     url: https://network.jaxyendy.com/openapi.json
-    version: 1.131.1
+    version: 1.133.0
 -   description: Manage users global data
     name: profile
     path: profile.openapi.yaml

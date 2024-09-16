@@ -8,7 +8,7 @@
       "url": "https://github.com/luizalabs",
       "email": "thullyo.cunha@luizalabs.com"
     },
-    "version": "1.131.1"
+    "version": "1.133.0"
   },
   "paths": {
     "/v0/healthcheck": {
@@ -36,7 +36,7 @@
     "/v0/internal/conciliator": {
       "post": {
         "tags": [
-          "backoffice_conciliator"
+          "internal"
         ],
         "summary": "Start conciliator",
         "description": "Start conciliator validation",
@@ -120,6 +120,60 @@
           }
         },
         "x-viveiro": false
+      }
+    },
+    "/v0/internal/find_ip_owner": {
+      "get": {
+        "tags": [
+          "internal"
+        ],
+        "summary": "Finds owner of IP address",
+        "description": "Finds the tenant that owns certain IP address",
+        "operationId": "find_ip_owner_v0_internal_find_ip_owner_get",
+        "parameters": [
+          {
+            "name": "ip_address",
+            "in": "query",
+            "description": "Source IP address of sflow packet",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "IP Address",
+              "description": "Source IP address of sflow packet"
+            },
+            "example": "192.168.1.1"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IpOwnerResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": false,
+        "x-mgc-hidden": true
       }
     },
     "/v0/interconnections/{vpc_id}": {
@@ -2847,6 +2901,15 @@
           "nic_vpc_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
         }
       },
+      "AddressType": {
+        "type": "string",
+        "title": "AddressType",
+        "enum": [
+          "unknown",
+          "router",
+          "public_ip"
+        ]
+      },
       "CreateOvnIcXaasRequest": {
         "type": "object",
         "properties": {
@@ -2970,6 +3033,64 @@
           "status": "OK"
         }
       },
+      "Ip": {
+        "type": "object",
+        "properties": {
+          "ip_address": {
+            "anyOf": [
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Ip Address",
+            "nullable": true
+          },
+          "owner": {
+            "anyOf": [
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Owner",
+            "nullable": true
+          },
+          "created_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              }
+            ],
+            "title": "Created At",
+            "nullable": true
+          },
+          "origin": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AddressType"
+              }
+            ],
+            "default": "unknown"
+          },
+          "origin_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Origin Id",
+            "nullable": true
+          }
+        },
+        "title": "Ip",
+        "example": {
+          "ip_address": "127.0.0.1",
+          "origin": "unknown",
+          "origin_id": "00000000-0000-0000-0000-000000000000",
+          "owner": "00000000-0000-0000-0000-000000000000",
+          "vpc_created_at": "2024-01-01 00:00:00"
+        }
+      },
       "IpAddress": {
         "type": "object",
         "properties": {
@@ -2990,6 +3111,44 @@
         "example": {
           "ip_address": "172.20.0.2",
           "subnet_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+        }
+      },
+      "IpOwnerResponse": {
+        "type": "object",
+        "properties": {
+          "flow_by_shared_nat": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Ip"
+              }
+            ],
+            "nullable": true
+          },
+          "flow_by_public_ip": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Ip"
+              }
+            ],
+            "nullable": true
+          }
+        },
+        "title": "IpOwnerResponse",
+        "example": {
+          "flow_by_public_ip": {
+            "ip_address": "127.0.0.1",
+            "origin": "public_ip",
+            "origin_id": "00000000-0000-0000-0000-000000000000",
+            "owner": "00000000-0000-0000-0000-000000000000",
+            "vpc_created_at": "2024-01-01 00:00:00"
+          },
+          "flow_by_shared_nat": {
+            "ip_address": "127.0.0.1",
+            "origin": "router",
+            "origin_id": "00000000-0000-0000-0000-000000000000",
+            "owner": "00000000-0000-0000-0000-000000000000",
+            "vpc_created_at": "2024-01-01 00:00:00"
+          }
         }
       },
       "ListNetworkApiResponse": {

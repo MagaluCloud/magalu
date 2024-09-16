@@ -9,8 +9,8 @@ Usage:
 
 ## Product catalog:
 - Commands:
-- get         Flavor detail.
-- list        List available flavors.
+- get         Flavor detail (Deprecated).
+- list        List available flavors (Deprecated).
 
 ## Other commands:
 - Flags:

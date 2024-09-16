@@ -29,7 +29,9 @@ resource "mgc_dbaas_replicas" "dbaas_replica" {
 
 ### Optional
 
-- `flavor_id` (String)
+- `flavor_id` (String) Flavor Id (Deprecated).
+**Deprecated**: This property is being deprecated in favor of `instance_type_id`. Please update your requests to use `instance_type_id` for improved functionality and future compatibility.
+- `instance_type_id` (String)
 
 ### Read-Only
 

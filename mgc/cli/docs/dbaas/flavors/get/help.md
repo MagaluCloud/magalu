@@ -1,16 +1,17 @@
-# Returns a flavor detail.
+# **Deprecated**: This endpoint is being phased out. Please use the /v1/instance-types endpoint to retrieve the list of available instance types instead.
+Returns an instance type detail. It is recommended to update your integration to use the newer `/v1/instance-types/{instance_type_id}` endpoint for improved functionality and future compatibility.
 
 ## Usage:
 ```bash
 Usage:
-  ./mgc dbaas flavors get [flavor-id] [flags]
+  ./mgc dbaas flavors get [instance-type-id] [flags]
 ```
 
 ## Product catalog:
 - Flags:
-- --flavor-id uuid   Flavor Id: Flavor Unique Id. (required)
-- -h, --help             help for get
-- -v, --version          version for get
+- -h, --help                    help for get
+- --instance-type-id uuid   Flavor Id: Flavor Unique Id. (required)
+- -v, --version                 version for get
 
 ## Other commands:
 - Global Flags:

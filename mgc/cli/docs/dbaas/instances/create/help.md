@@ -18,8 +18,10 @@ Usage:
 - --datastore-id uuid               Datastore Id (Deprecated): **Deprecated**: This property is being deprecated in favor of 'engine_id'. Please update your requests to use 'engine_id' for improved functionality and future compatibility.
 - 
 - --engine-id uuid                  Engine Id
-- --flavor-id uuid                  Flavor Id (required)
+- --flavor-id uuid                  Flavor Id (Deprecated): **Deprecated**: This property is being deprecated in favor of 'instance_type_id'. Please update your requests to use 'instance_type_id' for improved functionality and future compatibility.
+- 
 - -h, --help                            help for create
+- --instance-type-id uuid           Instance Type Id
 - --name string                     Name (max character count: 100) (required)
 - --parameters array(object)        Use --parameters=help for more details (default [])
 - --password string                 Password (max character count: 50) (required)

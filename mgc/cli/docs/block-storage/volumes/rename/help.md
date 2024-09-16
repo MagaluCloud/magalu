@@ -22,7 +22,7 @@ Flags:
       --cli.watch                     Wait until the operation is completed by calling the 'get' link and waiting until termination. Akin to '! get -w'
   -h, --help                          help for rename
       --id uuid                       Id (required)
-      --name string                   Name (between 1 and 255 characters) (required)
+      --name string                   Name (between 3 and 50 characters) (required)
   -v, --version                       version for rename
 ```
 

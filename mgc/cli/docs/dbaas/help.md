@@ -13,12 +13,14 @@ Usage:
 
 ## Other commands:
 - Commands:
-- backups     Database backups management.
-- datastores  Datastores available for database instances.
-- engines     Engines available for database instances.
-- flavors     Flavors available for database instances.
-- instances   Database instances management.
-- replicas    Database replicas management.
+- backups        Database backups management.
+- clusters       Clusters management.
+- datastores     Datastores available for database instances.
+- engines        Engines available for database instances.
+- flavors        Flavors available for database instances.
+- instance-types Instance Types available for database instances.
+- instances      Database instances management.
+- replicas       Database replicas management.
 
 ## Flags:
 ```bash

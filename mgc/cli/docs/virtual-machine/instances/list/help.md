@@ -11,7 +11,7 @@ Usage:
 - --control.limit integer     Limit: limit the number of the results (max: 2147483647) (default 50)
 - --control.offset integer    Offset: pagination for the results limited (max: 2147483647)
 - --control.sort string       Sort: order of the results using informed fields (pattern: ^(^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$) (default "created_at:asc")
-- --expand array(string)     Expand: You can get more detailed info about: ['image', 'machine-type', 'machine-types', 'network']  (default [])
+- --expand array(string)     Expand: You can get more detailed info about: ['image', 'machine-type', 'machine-types', 'network', 'labels']  (default [])
 - -h, --help                     help for list
 - -v, --version                  version for list
 

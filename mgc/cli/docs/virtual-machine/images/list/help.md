@@ -8,6 +8,7 @@ Usage:
 
 ## Product catalog:
 - Flags:
+- --control.labels string     Labels: label-1, label2, label 3
 - --control.limit integer     Limit (max: 2147483647) (default 50)
 - --control.offset integer    Offset (max: 2147483647)
 - --control.sort string       Sort (pattern: ^(^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$) (default "platform:asc,end_life_at:desc")

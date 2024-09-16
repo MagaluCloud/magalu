@@ -35,7 +35,6 @@ paths:
                     -   type: string
                     title: ' Sort'
                     nullable: true
-                    default: id:asc
             responses:
                 '200':
                     description: Successful Response

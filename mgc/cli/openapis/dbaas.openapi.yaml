@@ -6,7 +6,7 @@ info:
         name: Tribo IAAS Cloud
         url: https://gitlab.luizalabs.com/cloud/dbaas/docs
         email: cloud-iaas-dbaas@luizalabs.com
-    version: 1.26.1
+    version: 1.27.1
 tags:
 -   name: datastores
     description: Datastores available for database instances.
@@ -14,12 +14,16 @@ tags:
     description: Engines available for database instances.
 -   name: flavors
     description: Flavors available for database instances.
+-   name: instance_types
+    description: Instance Types available for database instances.
 -   name: instances
     description: Database instances management.
 -   name: backups
     description: Database backups management.
 -   name: replicas
     description: Database replicas management.
+-   name: clusters
+    description: Clusters management.
 paths:
     /v1/datastores:
         get:
@@ -183,16 +187,21 @@ paths:
                 - dbaas.read
     /v1/flavors:
         get:
-            operationId: flavors_v1_get_all
+            operationId: flavor_v1_get_all
+            deprecated: true
             tags:
             - flavors
-            summary: List available flavors.
-            description: Returns a list of available flavors. A flavor is a hardware
-                template that defines the size of RAM and vCPU.
+            summary: List available flavors (Deprecated).
+            description: "**Deprecated**: This endpoint is being phased out. Please\
+                \ use the `/v1/instance-types` endpoint to retrieve the list of available\
+                \ instance types instead.\nReturns a list of available instance types.\
+                \ It is recommended to update your integration to use the newer `/v1/instance-types`\
+                \ endpoint for improved functionality and future compatibility.  \
+                \         \n"
             parameters:
             -   $ref: '#/components/parameters/offset'
             -   $ref: '#/components/parameters/limit_medium'
-            -   $ref: '#/components/parameters/flavor_status'
+            -   $ref: '#/components/parameters/instance_type_status'
             -   in: query
                 name: engine_id
                 required: false
@@ -207,7 +216,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/FlavorsResponse'
+                                $ref: '#/components/schemas/InstanceTypesResponse'
                 '400':
                     $ref: '#/components/responses/RequiredField'
                 '401':
@@ -225,20 +234,26 @@ paths:
                 - dbaas.read
             -   OAuth2Prod:
                 - dbaas.read
-    /v1/flavors/{flavor_id}:
+    /v1/flavors/{instance_type_id}:
         get:
             operationId: flavors_v1_get_by_id
+            deprecated: true
             tags:
             - flavors
-            summary: Flavor detail.
-            description: Returns a flavor detail.
+            summary: Flavor detail (Deprecated).
+            description: "**Deprecated**: This endpoint is being phased out. Please\
+                \ use the /v1/instance-types endpoint to retrieve the list of available\
+                \ instance types instead.\nReturns an instance type detail. It is\
+                \ recommended to update your integration to use the newer `/v1/instance-types/{instance_type_id}`\
+                \ endpoint for improved functionality and future compatibility.  \
+                \         \n"
             parameters:
             -   required: true
                 schema:
                     title: Flavor Id
                     type: string
                     format: uuid
-                name: flavor_id
+                name: instance_type_id
                 in: path
                 description: Flavor Unique Id.
             responses:
@@ -248,6 +263,92 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/Flavor'
+                '400':
+                    $ref: '#/components/responses/RequiredField'
+                '401':
+                    $ref: '#/components/responses/Unauthorized'
+                '403':
+                    $ref: '#/components/responses/Forbidden'
+                '404':
+                    $ref: '#/components/responses/NotFound'
+                '422':
+                    $ref: '#/components/responses/UnprocessableEntity'
+                '500':
+                    $ref: '#/components/responses/InternalServerError'
+            security:
+            -   bearerAuth:
+                - dbaas.read
+            -   OAuth2PreProd:
+                - dbaas.read
+            -   OAuth2Prod:
+                - dbaas.read
+    /v1/instance-types:
+        get:
+            operationId: instance_types_v1_get_all
+            tags:
+            - instance_types
+            summary: List available instance types.
+            description: Returns a list of available instance types. An instance type
+                is a hardware template that defines the size of RAM and vCPU.
+            parameters:
+            -   $ref: '#/components/parameters/offset'
+            -   $ref: '#/components/parameters/limit_medium'
+            -   $ref: '#/components/parameters/instance_type_status'
+            -   in: query
+                name: engine_id
+                required: false
+                description: Engine Id unique identifier
+                schema:
+                    format: uuid
+                    title: Engine Id
+                    type: string
+            responses:
+                '200':
+                    description: Successful Response.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/InstanceTypesResponse'
+                '400':
+                    $ref: '#/components/responses/RequiredField'
+                '401':
+                    $ref: '#/components/responses/Unauthorized'
+                '403':
+                    $ref: '#/components/responses/Forbidden'
+                '422':
+                    $ref: '#/components/responses/UnprocessableEntity'
+                '500':
+                    $ref: '#/components/responses/InternalServerError'
+            security:
+            -   bearerAuth:
+                - dbaas.read
+            -   OAuth2PreProd:
+                - dbaas.read
+            -   OAuth2Prod:
+                - dbaas.read
+    /v1/instance-types/{instance_type_id}:
+        get:
+            operationId: instance_types_v1_get_by_id
+            tags:
+            - instance_types
+            summary: Instance Type detail.
+            description: Returns an instance type detail.
+            parameters:
+            -   required: true
+                schema:
+                    title: Instance Type Id
+                    type: string
+                    format: uuid
+                name: instance_type_id
+                in: path
+                description: Instance Type Unique Id.
+            responses:
+                '200':
+                    description: Successful Response.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/InstanceType'
                 '400':
                     $ref: '#/components/responses/RequiredField'
                 '401':
@@ -279,49 +380,12 @@ paths:
             -   $ref: '#/components/parameters/limit_small'
             -   $ref: '#/components/parameters/instance_status'
             -   $ref: '#/components/parameters/instance_expand'
-            -   in: query
-                name: engine_id
-                required: false
-                description: Engine Id unique identifier
-                schema:
-                    format: uuid
-                    title: Engine Id
-                    type: string
-            -   in: query
-                name: volume.size
-                required: false
-                description: Volume Size exact size
-                schema:
-                    title: Volume Size
-                    type: integer
-            -   in: query
-                name: volume.size__gt
-                required: false
-                description: Volume Size greater than
-                schema:
-                    title: Volume Size greater than
-                    type: integer
-            -   in: query
-                name: volume.size__gte
-                required: false
-                description: Volume Size greater than or equal
-                schema:
-                    title: Volume Size greater than or equal
-                    type: integer
-            -   in: query
-                name: volume.size__lt
-                required: false
-                description: Volume Size less than
-                schema:
-                    title: Volume Size less than
-                    type: integer
-            -   in: query
-                name: volume.size__lte
-                required: false
-                description: Volume Size less than or equal
-                schema:
-                    title: Volume Size less than or equal
-                    type: integer
+            -   $ref: '#/components/parameters/engine_id_query'
+            -   $ref: '#/components/parameters/volume_size_query'
+            -   $ref: '#/components/parameters/volume_size_gt'
+            -   $ref: '#/components/parameters/volume_size_gte'
+            -   $ref: '#/components/parameters/volume_size_lt'
+            -   $ref: '#/components/parameters/volume_size_lte'
             responses:
                 '200':
                     description: Successful Response.
@@ -1219,12 +1283,6 @@ paths:
                             description: Replica Resize.
                             parameters:
                                 replica_id: $response.body#/id
-                        update/flavor_id:
-                            operationId: replicas_v1_resize
-                            description: Replica Resize.
-                            parameters:
-                                replica_id: $response.body#/id
-                            x-mgc-hidden: true
                         start:
                             operationId: replicas_v1_start
                             description: Replica Start.
@@ -1319,10 +1377,6 @@ paths:
                             description: Replica Detail.
                             parameters:
                                 replica_id: $response.body#/id
-                            x-mgc-wait-termination:
-                                interval: 5s
-                                maxRetries: 10
-                                jsonPathQuery: $.result.flavor_id == $.owner.parameters.flavor_id
                         delete:
                             operationId: replicas_v1_delete
                             description: Deletes a replica instance.
@@ -1333,19 +1387,11 @@ paths:
                             description: Replica Start.
                             parameters:
                                 replica_id: $response.body#/id
-                            x-mgc-wait-termination:
-                                interval: 5s
-                                maxRetries: 10
-                                jsonPathQuery: $.result.flavor_id == $.owner.parameters.flavor_id
                         stop:
                             operationId: replicas_v1_stop
                             description: Replica Stop.
                             parameters:
                                 replica_id: $response.body#/id
-                            x-mgc-wait-termination:
-                                interval: 5s
-                                maxRetries: 10
-                                jsonPathQuery: $.result.flavor_id == $.owner.parameters.flavor_id
                 '400':
                     $ref: '#/components/responses/RequiredField'
                 '401':
@@ -1591,6 +1637,16 @@ components:
                 format: uuid
             example: f21999cb-302f-48f7-b584-6a84748e112c
             description: Value referring to instance Id.
+        cluster_id:
+            name: cluster_id
+            in: path
+            required: true
+            schema:
+                title: Cluster Id
+                type: string
+                format: uuid
+            example: f21999cb-302f-48f7-b584-6a84748e112c
+            description: Value referring to cluster Id.
         instance_id_query:
             name: instance_id
             in: query
@@ -1616,6 +1672,21 @@ components:
                     '
             example: 7a11cfc5-f9f8-4fa2-a418-94a423f6a51f
             description: Value referring to datastore Id.
+        instance_type_id:
+            name: instance_type_id
+            in: path
+            required: true
+            schema:
+                title: Flavor Id (Deprecated)
+                type: string
+                format: uuid
+                description: '**Deprecated**: This property is being deprecated in
+                    favor of `instance_type_id`. Please update your requests to use
+                    `instance_type_id` for improved functionality and future compatibility.
+
+                    '
+            example: 7a11cfc5-f9f8-4fa2-a418-94a423f6a51f
+            description: Value referring to instance type Id.
         engine_id_query:
             name: engine_id
             in: query
@@ -1625,6 +1696,46 @@ components:
                 title: Engine Id
                 type: string
             description: Value referring to engine Id.
+        volume_size_query:
+            name: volume.size
+            in: query
+            required: false
+            schema:
+                title: Volume.Size
+                type: integer
+            description: Value referring to volume size.
+        volume_size_gt:
+            name: volume.size__gt
+            in: query
+            required: false
+            schema:
+                title: Volume.Size Gt
+                type: integer
+            description: Value referring to volume size greater than.
+        volume_size_gte:
+            name: volume.size__gte
+            in: query
+            required: false
+            schema:
+                title: Volume.Size Gte
+                type: integer
+            description: Value referring to volume size greater than or equal to.
+        volume_size_lt:
+            name: volume.size__lt
+            in: query
+            required: false
+            schema:
+                title: Volume.Size Lt
+                type: integer
+            description: Value referring to volume size less than.
+        volume_size_lte:
+            name: volume.size__lte
+            in: query
+            required: false
+            schema:
+                title: Volume.Size Lte
+                type: integer
+            description: Value referring to volume size less than or equal to.
         instance_expand:
             name: _expand
             in: query
@@ -1671,12 +1782,12 @@ components:
             schema:
                 $ref: '#/components/schemas/EngineStatus'
             description: Value referring to engine status.
-        flavor_status:
+        instance_type_status:
             name: status
             in: query
             schema:
                 allOf:
-                -   $ref: '#/components/schemas/FlavorStatus'
+                -   $ref: '#/components/schemas/InstanceTypeStatus'
                 default: ACTIVE
             description: An enumeration.
         backup_type:
@@ -1703,6 +1814,12 @@ components:
             schema:
                 $ref: '#/components/schemas/InstanceStatus'
             description: Value referring to instance status.
+        cluster_status:
+            name: status
+            in: query
+            schema:
+                $ref: '#/components/schemas/ClusterStatus'
+            description: Value referring to cluster status.
     schemas:
         MetaResponse:
             properties:
@@ -1924,8 +2041,8 @@ components:
                     type: string
                     maxLength: 100
                     example: mydbinstance
-        FlavorsResponse:
-            title: Flavors Response
+        InstanceTypesResponse:
+            title: InstanceTypes Response
             required:
             - meta
             - results
@@ -1937,7 +2054,7 @@ components:
                     title: Results
                     type: array
                     items:
-                        $ref: '#/components/schemas/Flavor'
+                        $ref: '#/components/schemas/InstanceType'
         AddressAccess:
             title: Address Access
             type: string
@@ -1993,6 +2110,18 @@ components:
             - ERROR_DELETING
             - MAINTENANCE
             example: ACTIVE
+        ClusterStatus:
+            title: Instance Status
+            type: string
+            enum:
+            - ACTIVE
+            - ERROR
+            - PENDING
+            - CREATING
+            - DELETING
+            - DELETED
+            - ERROR_DELETING
+            example: ACTIVE
         InstanceGeneration:
             title: Instance Generation
             description: Current database instance generation
@@ -2003,6 +2132,8 @@ components:
             - G2B
             - G3B
             - G4B
+            - G5B
+            - G6B
             example: G1B
         InstanceParametersNames:
             title: Instance Parameters Name
@@ -2047,7 +2178,6 @@ components:
         InstanceCreateRequest:
             title: Instance Create Request
             required:
-            - flavor_id
             - name
             - password
             - user
@@ -2073,7 +2203,18 @@ components:
 
                         '
                 flavor_id:
-                    title: Flavor Id
+                    deprecated: true
+                    title: Flavor Id (Deprecated)
+                    type: string
+                    format: uuid
+                    description: '**Deprecated**: This property is being deprecated
+                        in favor of `instance_type_id`. Please update your requests
+                        to use `instance_type_id` for improved functionality and future
+                        compatibility.
+
+                        '
+                instance_type_id:
+                    title: Instance Type Id
                     type: string
                     format: uuid
                 user:
@@ -2176,6 +2317,7 @@ components:
             - engine_id
             - datastore_id
             - flavor_id
+            - instance_type_id
             - volume
             - addresses
             - status
@@ -2213,7 +2355,18 @@ components:
                     type: string
                     format: uuid
                 flavor_id:
-                    description: Flavor unique identifier. Instance size.
+                    deprecated: true
+                    description: 'Flavor unique identifier. Instance size  (Deprecated).
+
+                        **Deprecated**: This property is being deprecated in favor
+                        of `instance_type_id`. Please update your requests to use
+                        `instance_type_id` for improved functionality and future compatibility.
+
+                        '
+                    type: string
+                    format: uuid
+                instance_type_id:
+                    description: Instance Type unique identifier. Instance size.
                     type: string
                     format: uuid
                 volume:
@@ -2344,8 +2497,8 @@ components:
                     example: '5.7'
                 status:
                     $ref: '#/components/schemas/EngineStatus'
-        FlavorStatus:
-            title: Flavor Status
+        InstanceTypeStatus:
+            title: Instance Type Status
             description: An enumeration.
             type: string
             enum:
@@ -2387,6 +2540,7 @@ components:
             - engine_id
             - datastore_id
             - flavor_id
+            - instance_type_id
             - volume
             - id
             - name
@@ -2422,8 +2576,19 @@ components:
                         '
                     type: string
                     format: uuid
+                instance_type_id:
+                    title: Instance Type Id
+                    type: string
+                    format: uuid
                 flavor_id:
-                    title: Flavor Id
+                    deprecated: true
+                    description: 'Instance Type Id (Deprecated).
+
+                        **Deprecated**: This property is being deprecated in favor
+                        of `instance_type_id`. Please update your requests to use
+                        `engine_id` for improved functionality and future compatibility.
+
+                        '
                     type: string
                     format: uuid
                 volume:
@@ -2486,19 +2651,30 @@ components:
                     maxLength: 255
                     type: string
                 flavor_id:
-                    title: Flavor Id
+                    deprecated: true
+                    description: "Flavor Id (Deprecated).\n**Deprecated**: This property\
+                        \ is being deprecated in favor of `instance_type_id`. Please\
+                        \ update your requests to use `instance_type_id` for improved\
+                        \ functionality and future compatibility.          \n"
+                    type: string
+                    format: uuid
+                instance_type_id:
+                    title: Instance Type Id
                     type: string
                     format: uuid
         ReplicaResizeRequest:
             title: Replica Resize Request
-            required:
-            - flavor_id
             type: object
             properties:
-                flavor_id:
-                    title: Flavor Id
+                instance_type_id:
+                    title: Instance Type Id
                     type: string
                     format: uuid
+                flavor_id:
+                    deprecated: true
+                    format: uuid
+                    title: Flavor Id
+                    type: string
         ReplicaResponse:
             title: Replica Response
             required:
@@ -2604,6 +2780,60 @@ components:
                     description: SKU Database Instance Replica.
                     type: string
                     example: BRNE10610101sm
+        InstanceType:
+            type: object
+            required:
+            - id
+            - name
+            - label
+            - vcpu
+            - ram
+            - family_description
+            - family_slug
+            - size
+            - sku_source
+            - sku_replica
+            properties:
+                id:
+                    description: Instance Type unique identifier.
+                    type: string
+                    format: uuid
+                name:
+                    description: Instance Type name.
+                    type: string
+                    example: i0-c1-r4-d10
+                label:
+                    description: Instance Type label.
+                    type: string
+                    example: cloud-dbaas-bs1.small
+                vcpu:
+                    description: Number of vCPUs.
+                    type: string
+                    example: '1'
+                ram:
+                    description: RAM Amount.
+                    type: string
+                    example: 4 GB
+                family_description:
+                    description: Instance Type Family Description.
+                    type: string
+                    example: Basic
+                family_slug:
+                    description: Instance Type Family SLUG.
+                    type: string
+                    example: bs1
+                size:
+                    description: Instance Type Size Description.
+                    type: string
+                    example: Small
+                sku_source:
+                    description: SKU Database Instance Source.
+                    type: string
+                    example: BRNE10600101sm
+                sku_replica:
+                    description: SKU Database Instance Replica.
+                    type: string
+                    example: BRNE10610101sm
         ErrorResponse:
             title: Error Response
             type: object
@@ -2624,10 +2854,19 @@ components:
             title: Instance Resize Request
             type: object
             properties:
-                flavor_id:
-                    title: Flavor Id
+                instance_type_id:
+                    title: Instance Type Id
                     type: string
                     format: uuid
+                flavor_id:
+                    deprecated: true
+                    title: Flavor Id (Deprecated)
+                    type: string
+                    format: uuid
+                    description: "**Deprecated**: This property is being deprecated\
+                        \ in favor of `instance_type_id`. Please update your requests\
+                        \ to use `instance_type_id` for improved functionality and\
+                        \ future compatibility.\t\t\n"
                 volume:
                     $ref: '#/components/schemas/InstanceVolumeResizeRequest'
     securitySchemes:

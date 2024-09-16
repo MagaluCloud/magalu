@@ -30,7 +30,6 @@ resource "mgc_dbaas_instances" "dbaas_instances" {
 
 ### Required
 
-- `flavor_id` (String)
 - `name` (String)
 - `password` (String)
 - `user` (String)
@@ -42,6 +41,8 @@ resource "mgc_dbaas_instances" "dbaas_instances" {
 - `backup_start_at` (String) Start time (UTC timezone) which is allowed to start the automated backup process.
 - `datastore_id` (String) **Deprecated**: This property is being deprecated in favor of `engine_id`. Please update your requests to use `engine_id` for improved functionality and future compatibility.
 - `engine_id` (String)
+- `flavor_id` (String) **Deprecated**: This property is being deprecated in favor of `instance_type_id`. Please update your requests to use `instance_type_id` for improved functionality and future compatibility.
+- `instance_type_id` (String)
 - `parameters` (Attributes List) (see [below for nested schema](#nestedatt--parameters))
 - `status` (String)
 
@@ -120,9 +121,11 @@ Read-Only:
 **Deprecated**: This property is being deprecated in favor of `engine_id`. Please update your requests to use `engine_id` for improved functionality and future compatibility.
 - `engine_id` (String) Engine unique identifier.
 - `finished_at` (String)
-- `flavor_id` (String)
+- `flavor_id` (String) Instance Type Id (Deprecated).
+**Deprecated**: This property is being deprecated in favor of `instance_type_id`. Please update your requests to use `engine_id` for improved functionality and future compatibility.
 - `generation` (String) Current database instance generation
 - `id` (String)
+- `instance_type_id` (String)
 - `name` (String)
 - `parameters` (Attributes List) (see [below for nested schema](#nestedatt--replicas--parameters))
 - `source_id` (String)

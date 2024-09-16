@@ -1,24 +1,20 @@
-# Operations with backups for volumes.
+# internal
 
 ## Usage:
 ```bash
 Usage:
-  ./mgc block-storage backups [flags]
-  ./mgc block-storage backups [command]
+  ./mgc network internal [flags]
+  ./mgc network internal [command]
 ```
 
 ## Product catalog:
 - Commands:
-- create      Create a backup.
-- delete      Delete a backup.
-- get         Retrieve the details of a specific backup.
-- list        List all backups.
-- rename      Rename a backup.
+- conciliator Start conciliator
 
 ## Other commands:
 - Flags:
-- -h, --help      help for backups
-- -v, --version   version for backups
+- -h, --help      help for internal
+- -v, --version   version for internal
 
 ## Flags:
 ```bash

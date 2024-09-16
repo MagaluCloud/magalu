@@ -9,9 +9,9 @@ Usage:
 ## Product catalog:
 - Flags:
 - --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-- --cli.watch                     Wait until the operation is completed by calling the 'get' link and waiting until termination. Akin to '! get -w'
-- --flavor-id uuid                Flavor Id (required)
+- --flavor-id uuid                Flavor Id
 - -h, --help                          help for resize
+- --instance-type-id uuid         Instance Type Id
 - --replica-id uuid               Value referring to replica Id. (required)
 - -v, --version                       version for resize
 

@@ -288,7 +288,8 @@
             }
           }
         },
-        "x-viveiro": true
+        "x-viveiro": true,
+        "x-mgc-hidden": true
       },
       "post": {
         "tags": [
@@ -372,7 +373,8 @@
             }
           }
         },
-        "x-viveiro": true
+        "x-viveiro": true,
+        "x-mgc-hidden": true
       }
     },
     "/v1/backups/copy": {
@@ -551,7 +553,8 @@
             }
           }
         },
-        "x-viveiro": true
+        "x-viveiro": true,
+        "x-mgc-hidden": true
       },
       "delete": {
         "tags": [
@@ -628,7 +631,8 @@
             }
           }
         },
-        "x-viveiro": true
+        "x-viveiro": true,
+        "x-mgc-hidden": true
       }
     },
     "/v1/backups/{id}/rename": {
@@ -717,7 +721,8 @@
             }
           }
         },
-        "x-viveiro": true
+        "x-viveiro": true,
+        "x-mgc-hidden": true
       }
     },
     "/v1/snapshots": {
@@ -1135,7 +1140,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Name"
+                "$ref": "#/components/schemas/SnapshotRenameRequest"
               }
             }
           },
@@ -2199,18 +2204,18 @@
                 "message": "You have reached the limit of allowed backups. Please, remove unused backups or contact support to increase your quota.",
                 "slug": "creating_error_quota"
               },
-              "id": "dafcd1d6-758d-4e1d-ac08-b0516a09671b",
+              "id": "86a86fdb-eece-4c6b-a1e0-0f2cde06e4d7",
               "name": "My backup",
               "size": 10,
               "source_backup": {
-                "id": "2214c107-fbf1-4da0-85f5-4595f2350361"
+                "id": "0c3918b7-7ef8-40dc-83b7-5fcfc84e2590"
               },
               "state": "available",
               "status": "completed",
               "type": "incremental",
               "updated_at": "2022-01-01T00:00:10Z",
               "volume": {
-                "id": "6384cf50-9450-465c-96ff-d1c3a4ab7d11"
+                "id": "f53b3be3-1d61-4b1e-a054-792d99c65ce3"
               }
             }
           ]
@@ -2335,18 +2340,18 @@
             "message": "You have reached the limit of allowed backups. Please, remove unused backups or contact support to increase your quota.",
             "slug": "creating_error_quota"
           },
-          "id": "dafcd1d6-758d-4e1d-ac08-b0516a09671b",
+          "id": "86a86fdb-eece-4c6b-a1e0-0f2cde06e4d7",
           "name": "My backup",
           "size": 10,
           "source_backup": {
-            "id": "2214c107-fbf1-4da0-85f5-4595f2350361"
+            "id": "0c3918b7-7ef8-40dc-83b7-5fcfc84e2590"
           },
           "state": "available",
           "status": "completed",
           "type": "incremental",
           "updated_at": "2022-01-01T00:00:10Z",
           "volume": {
-            "id": "6384cf50-9450-465c-96ff-d1c3a4ab7d11"
+            "id": "f53b3be3-1d61-4b1e-a054-792d99c65ce3"
           }
         }
       },
@@ -2817,8 +2822,8 @@
           "name": {
             "type": "string",
             "title": "Name",
-            "maxLength": 255,
-            "minLength": 1
+            "maxLength": 50,
+            "minLength": 3
           }
         },
         "title": "RenameVolumeRequest",
@@ -2826,12 +2831,18 @@
           "name"
         ],
         "example": {
-          "name": "volume name"
+          "name": "volume-name"
         }
       },
       "SnapshotCreationRequest": {
         "type": "object",
         "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "maxLength": 50,
+            "minLength": 3
+          },
           "volume": {
             "anyOf": [
               {
@@ -2842,10 +2853,6 @@
               }
             ],
             "title": "Volume"
-          },
-          "name": {
-            "type": "string",
-            "title": "Name"
           },
           "description": {
             "anyOf": [
@@ -2861,13 +2868,13 @@
         },
         "title": "SnapshotCreationRequest",
         "required": [
-          "volume",
           "name",
+          "volume",
           "description"
         ],
         "example": {
           "description": "my-snapshot",
-          "name": "snapshot name",
+          "name": "snapshot-name",
           "volume": {
             "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
           }
@@ -2908,6 +2915,24 @@
               }
             }
           ]
+        }
+      },
+      "SnapshotRenameRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "maxLength": 50,
+            "minLength": 3
+          }
+        },
+        "title": "SnapshotRenameRequest",
+        "required": [
+          "name"
+        ],
+        "example": {
+          "name": "snapshot-name"
         }
       },
       "SnapshotResponse": {
@@ -3166,8 +3191,8 @@
           "name": {
             "type": "string",
             "title": "Name",
-            "maxLength": 255,
-            "minLength": 1
+            "maxLength": 50,
+            "minLength": 3
           },
           "size": {
             "type": "integer",
@@ -3226,7 +3251,7 @@
           "backup": {
             "name": "my_backup_name"
           },
-          "name": "volume name",
+          "name": "volume-name",
           "size": 10,
           "snapshot": {
             "name": "my_snapshot_name"
@@ -3593,10 +3618,6 @@
     {
       "name": "snapshots",
       "description": "Operations with snapshots for volumes."
-    },
-    {
-      "name": "backups",
-      "description": "Operations with backups for volumes."
     }
   ]
 }

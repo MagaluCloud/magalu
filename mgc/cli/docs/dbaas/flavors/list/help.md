@@ -1,4 +1,5 @@
-# Returns a list of available flavors. A flavor is a hardware template that defines the size of RAM and vCPU.
+# **Deprecated**: This endpoint is being phased out. Please use the `/v1/instance-types` endpoint to retrieve the list of available instance types instead.
+Returns a list of available instance types. It is recommended to update your integration to use the newer `/v1/instance-types` endpoint for improved functionality and future compatibility.
 
 ## Usage:
 ```bash
