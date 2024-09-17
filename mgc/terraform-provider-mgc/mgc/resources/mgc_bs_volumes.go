@@ -20,32 +20,25 @@ import (
 	sdkBlockStorageVolumes "magalu.cloud/lib/products/block_storage/volumes"
 )
 
-// Ensure the implementation satisfies the expected interfaces.
 var (
 	_ resource.Resource              = &bsVolumes{}
 	_ resource.ResourceWithConfigure = &bsVolumes{}
 )
 
-// NewOrderResource is a helper function to simplify the provider implementation.
 func NewBlockStorageVolumesResource() resource.Resource {
 	return &bsVolumes{}
 }
 
-// orderResource is the resource implementation.
 type bsVolumes struct {
 	sdkClient *mgcSdk.Client
 	bsVolumes sdkBlockStorageVolumes.Service
 }
 
-// Metadata returns the resource type name.
 func (r *bsVolumes) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
 	resp.TypeName = req.ProviderTypeName + "_block_storage_volumes"
 }
 
-// Configure adds the provider configured client to the resource.
 func (r *bsVolumes) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
-	// Add a nil check when handling ProviderData because Terraform
-	// sets that data after it calls the ConfigureProvider RPC.
 	if req.ProviderData == nil {
 		return
 	}
@@ -63,7 +56,6 @@ func (r *bsVolumes) Configure(ctx context.Context, req resource.ConfigureRequest
 	r.bsVolumes = sdkBlockStorageVolumes.NewService(ctx, r.sdkClient)
 }
 
-// vmSnapshotsResourceModel maps de resource schema data.
 type bsVolumesResourceModel struct {
 	ID           types.String `tfsdk:"id"`
 	Name         types.String `tfsdk:"name"`
@@ -84,7 +76,6 @@ type bsVolumeType struct {
 	Status   types.String `tfsdk:"status"`
 }
 
-// Schema defines the schema for the resource.
 func (r *bsVolumes) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	description := "Block storage volumes are storage devices that can be attached to virtual machines. They are used to store data and can be detached and attached to other virtual machines."
 	resp.Schema = schema.Schema{
@@ -168,10 +159,6 @@ func (r *bsVolumes) Schema(_ context.Context, _ resource.SchemaRequest, resp *re
 
 }
 
-func (r *bsVolumes) ModifyPlan(ctx context.Context, req resource.ModifyPlanRequest, resp *resource.ModifyPlanResponse) {
-	//do nothing
-}
-
 func (r *bsVolumes) setValuesFromServer(result sdkBlockStorageVolumes.GetResult, state *bsVolumesResourceModel) {
 	state.ID = types.StringValue(result.Id)
 	state.FinalName = types.StringValue(result.Name)
@@ -187,7 +174,6 @@ func (r *bsVolumes) setValuesFromServer(result sdkBlockStorageVolumes.GetResult,
 	}
 }
 
-// Read refreshes the Terraform state with the latest data.
 func (r *bsVolumes) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
 	plan := &bsVolumesResourceModel{}
 	resp.Diagnostics.Append(req.State.Get(ctx, &plan)...)
@@ -207,11 +193,9 @@ func (r *bsVolumes) Read(ctx context.Context, req resource.ReadRequest, resp *re
 	plan.ID = types.StringValue(getResult.Id)
 	r.setValuesFromServer(getResult, plan)
 
-	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
 
-// Create creates the resource and sets the initial Terraform state.
 func (r *bsVolumes) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
 	plan := &bsVolumesResourceModel{}
 	diags := req.Plan.Get(ctx, &plan)
@@ -263,14 +247,12 @@ func (r *bsVolumes) Create(ctx context.Context, req resource.CreateRequest, resp
 
 	state.CreatedAt = types.StringValue(time.Now().Format(time.RFC850))
 	state.UpdatedAt = types.StringValue(time.Now().Format(time.RFC850))
-	// Set state to fully populated data
 	resp.Diagnostics.Append(resp.State.Set(ctx, state)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 }
 
-// Update updates the resource and sets the updated Terraform state on success.
 func (r *bsVolumes) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
 	data := bsVolumesResourceModel{}
 	currState := &bsVolumesResourceModel{}
@@ -279,7 +261,6 @@ func (r *bsVolumes) Update(ctx context.Context, req resource.UpdateRequest, resp
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
 
 	if data.Type.Name.ValueString() != currState.Type.Name.ValueString() {
-		// retype
 		err := r.bsVolumes.RetypeContext(ctx, sdkBlockStorageVolumes.RetypeParameters{
 			Id: data.ID.ValueString(),
 			NewType: sdkBlockStorageVolumes.RetypeParametersNewType{
@@ -312,7 +293,6 @@ func (r *bsVolumes) Update(ctx context.Context, req resource.UpdateRequest, resp
 	}
 }
 
-// Delete deletes the resource and removes the Terraform state on success.
 func (r *bsVolumes) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
 	var data bsVolumesResourceModel
 	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
