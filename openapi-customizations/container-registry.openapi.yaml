@@ -5,7 +5,7 @@
 # such as "x-mgc-name" or "x-mgc-description"
 
 servers:
--   url: https://{env}/{region}/registry
+-   url: https://{env}/{region}/container-registry
     variables:
         region:
             description: Region to reach the service
