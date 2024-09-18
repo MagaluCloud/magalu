@@ -2,7 +2,43 @@ openapi: 3.0.3
 info:
     title: Cloud Events Consult API
     description: Cloud Events API Product.
-    version: 0.15.1
+    version: 0.17.0
+servers:
+-   url: https://{env}/{region}/audit
+    description: Server for br-ne-1 region
+    variables:
+        region:
+            description: Region to reach the service
+            default: br-se1
+            enum:
+            - br-ne-1
+            - br-se1
+            - br-mgl1
+            x-mgc-transforms:
+            -   type: translate
+                allowMissing: true
+                translations:
+                -   from: br-ne1
+                    to: br-ne-1
+                -   from: br-mgl1
+                    to: br-se-1
+        env:
+            description: Environment to use
+            default: api.magalu.cloud
+            enum:
+            - api.magalu.cloud
+            - api.pre-prod.jaxyendy.com
+            x-mgc-transforms:
+            -   type: translate
+                translations:
+                -   from: prod
+                    to: api.magalu.cloud
+                -   from: pre-prod
+                    to: api.pre-prod.jaxyendy.com
+-   url: https://api.magalu.cloud/br-se-1/audit
+    description: Server for br-se-1 region
+-   url: https://api.magalu.cloud/br-se1/audit
+    description: Server for br-se1 region
 paths:
     /v0/events:
         get:
@@ -93,6 +129,8 @@ paths:
                 in: query
                 description: The raw data event
                 required: false
+                style: form
+                explode: true
                 schema:
                     type: object
                     title: Raw Data
@@ -307,11 +345,9 @@ components:
                         limit:
                             type: integer
                             title: Limit
-                            maximum: 2147483647
                         offset:
                             type: integer
                             title: Offset
-                            maximum: 2147483647
                         count:
                             type: integer
                             title: Count
@@ -350,11 +386,9 @@ components:
                         limit:
                             type: integer
                             title: Limit
-                            maximum: 2147483647
                         offset:
                             type: integer
                             title: Offset
-                            maximum: 2147483647
                         count:
                             type: integer
                             title: Count
@@ -468,11 +502,9 @@ components:
                 limit:
                     type: integer
                     title: Limit
-                    maximum: 2147483647
                 offset:
                     type: integer
                     title: Offset
-                    maximum: 2147483647
                 count:
                     type: integer
                     title: Count
@@ -508,34 +540,3 @@ tags:
 -   name: event-types
     description: Endpoints related to listing types of events emitted by other products.
 $id: https://events-consult.jaxyendy.com/openapi-cli.json
-servers:
--   url: https://{env}/{region}/audit
-    variables:
-        region:
-            description: Region to reach the service
-            default: br-se1
-            enum:
-            - br-ne-1
-            - br-se1
-            - br-mgl1
-            x-mgc-transforms:
-            -   type: translate
-                allowMissing: true
-                translations:
-                -   from: br-ne1
-                    to: br-ne-1
-                -   from: br-mgl1
-                    to: br-se-1
-        env:
-            description: Environment to use
-            default: api.magalu.cloud
-            enum:
-            - api.magalu.cloud
-            - api.pre-prod.jaxyendy.com
-            x-mgc-transforms:
-            -   type: translate
-                translations:
-                -   from: prod
-                    to: api.magalu.cloud
-                -   from: pre-prod
-                    to: api.pre-prod.jaxyendy.com

@@ -42,20 +42,20 @@ type ListResult struct {
 }
 
 type ListResultInstancesItem struct {
-	AvailabilityZone *string                            `json:"availability_zone,omitempty"`
-	CreatedAt        string                             `json:"created_at"`
-	Error            *ListResultInstancesItemError      `json:"error,omitempty"`
-	Id               string                             `json:"id"`
-	Image            ListResultInstancesItemImage       `json:"image"`
-	Labels           *ListResultInstancesItemLabels     `json:"labels,omitempty"`
-	MachineType      ListResultInstancesItemMachineType `json:"machine_type"`
-	Name             *string                            `json:"name,omitempty"`
-	Network          *ListResultInstancesItemNetwork    `json:"network,omitempty"`
-	SshKeyName       *string                            `json:"ssh_key_name,omitempty"`
-	State            string                             `json:"state"`
-	Status           string                             `json:"status"`
-	UpdatedAt        *string                            `json:"updated_at,omitempty"`
-	UserData         *string                            `json:"user_data,omitempty"`
+	AvailabilityZone *string                             `json:"availability_zone,omitempty"`
+	CreatedAt        string                              `json:"created_at"`
+	Error            *ListResultInstancesItemError       `json:"error,omitempty"`
+	Id               string                              `json:"id"`
+	Image            *ListResultInstancesItemImage       `json:"image"`
+	Labels           *ListResultInstancesItemLabels      `json:"labels,omitempty"`
+	MachineType      *ListResultInstancesItemMachineType `json:"machine_type"`
+	Name             *string                             `json:"name,omitempty"`
+	Network          *ListResultInstancesItemNetwork     `json:"network,omitempty"`
+	SshKeyName       *string                             `json:"ssh_key_name,omitempty"`
+	State            string                              `json:"state"`
+	Status           string                              `json:"status"`
+	UpdatedAt        *string                             `json:"updated_at,omitempty"`
+	UserData         *string                             `json:"user_data,omitempty"`
 }
 
 type ListResultInstancesItemError struct {

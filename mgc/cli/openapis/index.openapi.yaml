@@ -4,7 +4,7 @@ modules:
     path: audit.openapi.yaml
     summary: Cloud Events API Product.
     url: https://events-consult.jaxyendy.com/openapi-cli.json
-    version: 0.15.1
+    version: 0.17.0
 -   description: Block Storage API Product
     name: block-storage
     path: block-storage.openapi.yaml

@@ -36,20 +36,20 @@ type GetConfigs struct {
 }
 
 type GetResult struct {
-	AvailabilityZone *string              `json:"availability_zone,omitempty"`
-	CreatedAt        string               `json:"created_at"`
-	Error            *GetResultError      `json:"error,omitempty"`
-	Id               string               `json:"id"`
-	Image            GetResultImage       `json:"image"`
-	Labels           *GetResultLabels     `json:"labels,omitempty"`
-	MachineType      GetResultMachineType `json:"machine_type"`
-	Name             *string              `json:"name,omitempty"`
-	Network          *GetResultNetwork    `json:"network,omitempty"`
-	SshKeyName       *string              `json:"ssh_key_name,omitempty"`
-	State            string               `json:"state"`
-	Status           string               `json:"status"`
-	UpdatedAt        *string              `json:"updated_at,omitempty"`
-	UserData         *string              `json:"user_data,omitempty"`
+	AvailabilityZone *string               `json:"availability_zone,omitempty"`
+	CreatedAt        string                `json:"created_at"`
+	Error            *GetResultError       `json:"error,omitempty"`
+	Id               string                `json:"id"`
+	Image            *GetResultImage       `json:"image"`
+	Labels           *GetResultLabels      `json:"labels,omitempty"`
+	MachineType      *GetResultMachineType `json:"machine_type"`
+	Name             *string               `json:"name,omitempty"`
+	Network          *GetResultNetwork     `json:"network,omitempty"`
+	SshKeyName       *string               `json:"ssh_key_name,omitempty"`
+	State            string                `json:"state"`
+	Status           string                `json:"status"`
+	UpdatedAt        *string               `json:"updated_at,omitempty"`
+	UserData         *string               `json:"user_data,omitempty"`
 }
 
 type GetResultError struct {

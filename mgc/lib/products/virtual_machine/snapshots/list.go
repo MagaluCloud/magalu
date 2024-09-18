@@ -46,20 +46,20 @@ type ListResult struct {
 }
 
 type ListResultSnapshotsItem struct {
-	CreatedAt string                          `json:"created_at"`
-	Id        string                          `json:"id"`
-	Instance  ListResultSnapshotsItemInstance `json:"instance"`
-	Name      *string                         `json:"name,omitempty"`
-	Size      int                             `json:"size"`
-	State     string                          `json:"state"`
-	Status    string                          `json:"status"`
-	UpdatedAt *string                         `json:"updated_at,omitempty"`
+	CreatedAt string                           `json:"created_at"`
+	Id        string                           `json:"id"`
+	Instance  *ListResultSnapshotsItemInstance `json:"instance"`
+	Name      *string                          `json:"name,omitempty"`
+	Size      int                              `json:"size"`
+	State     string                           `json:"state"`
+	Status    string                           `json:"status"`
+	UpdatedAt *string                          `json:"updated_at,omitempty"`
 }
 
 type ListResultSnapshotsItemInstance struct {
-	Id          string                                     `json:"id"`
-	Image       ListResultSnapshotsItemInstanceImage       `json:"image"`
-	MachineType ListResultSnapshotsItemInstanceMachineType `json:"machine_type"`
+	Id          string                                      `json:"id"`
+	Image       *ListResultSnapshotsItemInstanceImage       `json:"image"`
+	MachineType *ListResultSnapshotsItemInstanceMachineType `json:"machine_type"`
 }
 
 // any of: ListResultSnapshotsItemInstanceImage
