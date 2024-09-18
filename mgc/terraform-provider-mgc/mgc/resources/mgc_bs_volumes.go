@@ -2,6 +2,7 @@ package resources
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"time"
 
@@ -9,8 +10,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/boolplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	mgcSdk "magalu.cloud/lib"
@@ -20,9 +23,14 @@ import (
 	sdkBlockStorageVolumes "magalu.cloud/lib/products/block_storage/volumes"
 )
 
+const (
+	completedBsSttus = "completed"
+)
+
 var (
-	_ resource.Resource              = &bsVolumes{}
-	_ resource.ResourceWithConfigure = &bsVolumes{}
+	_              resource.Resource              = &bsVolumes{}
+	_              resource.ResourceWithConfigure = &bsVolumes{}
+	expandBsVolume                                = &sdkBlockStorageVolumes.GetParametersExpand{"volume_type"}
 )
 
 func NewBlockStorageVolumesResource() resource.Resource {
@@ -94,11 +102,15 @@ func (r *bsVolumes) Schema(_ context.Context, _ resource.SchemaRequest, resp *re
 				Optional:    true,
 				Computed:    true,
 				Default:     booldefault.StaticBool(false),
+				PlanModifiers: []planmodifier.Bool{
+					boolplanmodifier.RequiresReplace(),
+				},
 			},
 			"name": schema.StringAttribute{
 				Description: "The name of the block storage.",
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.UseStateForUnknown(),
+					stringplanmodifier.RequiresReplace(),
 				},
 				Required: true,
 			},
@@ -159,9 +171,12 @@ func (r *bsVolumes) Schema(_ context.Context, _ resource.SchemaRequest, resp *re
 
 }
 
-func (r *bsVolumes) setValuesFromServer(result sdkBlockStorageVolumes.GetResult, state *bsVolumesResourceModel) {
+func convertToState(result sdkBlockStorageVolumes.GetResult, originalName string, originalIsPrefix bool) *bsVolumesResourceModel {
+	state := bsVolumesResourceModel{}
 	state.ID = types.StringValue(result.Id)
 	state.FinalName = types.StringValue(result.Name)
+	state.NameIsPrefix = types.BoolValue(originalIsPrefix)
+	state.Name = types.StringValue(originalName)
 	state.Size = types.Int64Value(int64(result.Size))
 	state.State = types.StringValue(result.State)
 	state.Status = types.StringValue(result.Status)
@@ -172,6 +187,9 @@ func (r *bsVolumes) setValuesFromServer(result sdkBlockStorageVolumes.GetResult,
 		Name:     types.StringPointerValue(result.Type.Name),
 		Status:   types.StringPointerValue(result.Type.Status),
 	}
+
+	state.CreatedAt = types.StringValue(result.CreatedAt)
+	return &state
 }
 
 func (r *bsVolumes) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
@@ -180,34 +198,28 @@ func (r *bsVolumes) Read(ctx context.Context, req resource.ReadRequest, resp *re
 
 	getResult, err := r.bsVolumes.GetContext(ctx, sdkBlockStorageVolumes.GetParameters{
 		Id:     plan.ID.ValueString(),
-		Expand: &sdkBlockStorageVolumes.GetParametersExpand{"volume_type"},
+		Expand: expandBsVolume,
 	}, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkBlockStorageVolumes.GetConfigs{}))
 
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Error Reading block storage",
-			"Could not read BS ID "+plan.ID.ValueString()+": "+err.Error(),
+			err.Error(),
 		)
 		return
 	}
-	plan.ID = types.StringValue(getResult.Id)
-	r.setValuesFromServer(getResult, plan)
-
+	plan = convertToState(getResult, plan.Name.ValueString(), plan.NameIsPrefix.ValueBool())
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
 
 func (r *bsVolumes) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	plan := &bsVolumesResourceModel{}
-	diags := req.Plan.Get(ctx, &plan)
-	resp.Diagnostics.Append(diags...)
+	state := &bsVolumesResourceModel{}
+	resp.Diagnostics.Append(req.Plan.Get(ctx, &state)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	state := plan
-
 	state.FinalName = types.StringValue(state.Name.ValueString())
-
 	if state.NameIsPrefix.ValueBool() {
 		bwords := bws.BrazilianWords(3, "-")
 		state.FinalName = types.StringValue(state.Name.ValueString() + "-" + bwords.Sort())
@@ -220,77 +232,73 @@ func (r *bsVolumes) Create(ctx context.Context, req resource.CreateRequest, resp
 			Name: state.Type.Name.ValueStringPointer(),
 		},
 	}, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkBlockStorageVolumes.CreateConfigs{}))
-
 	if err != nil {
-		resp.Diagnostics.AddError(
-			"Error creating vm",
-			"Could not create virtual-machine, unexpected error: "+err.Error(),
-		)
+		resp.Diagnostics.AddError("Error creating volume", err.Error())
 		return
 	}
 
 	state.ID = types.StringValue(createResult.Id)
-
-	getCreatedResource, err := r.bsVolumes.GetContext(ctx, sdkBlockStorageVolumes.GetParameters{
-		Id:     state.ID.ValueString(),
-		Expand: &sdkBlockStorageVolumes.GetParametersExpand{"volume_type"},
-	}, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkBlockStorageVolumes.GetConfigs{}))
+	getCreatedResource, err := r.waitCompletedVolume(ctx, state.ID.ValueString())
 	if err != nil {
-		resp.Diagnostics.AddError(
-			"Error Reading BS",
-			"Could not read BS ID "+state.ID.ValueString()+": "+err.Error(),
-		)
+		resp.Diagnostics.AddError("Error Reading block storage", err.Error())
 		return
 	}
 
-	r.setValuesFromServer(getCreatedResource, state)
-
-	state.CreatedAt = types.StringValue(time.Now().Format(time.RFC850))
-	state.UpdatedAt = types.StringValue(time.Now().Format(time.RFC850))
+	state = convertToState(*getCreatedResource, state.Name.ValueString(), state.NameIsPrefix.ValueBool())
 	resp.Diagnostics.Append(resp.State.Set(ctx, state)...)
-	if resp.Diagnostics.HasError() {
-		return
-	}
 }
 
 func (r *bsVolumes) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	data := bsVolumesResourceModel{}
+	newState := &bsVolumesResourceModel{}
 	currState := &bsVolumesResourceModel{}
 
-	req.State.Get(ctx, currState)
-	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
+	resp.Diagnostics.Append(req.Plan.Get(ctx, &newState)...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	resp.Diagnostics.Append(req.State.Get(ctx, currState)...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
-	if data.Type.Name.ValueString() != currState.Type.Name.ValueString() {
+	if newState.Type.Name.ValueString() != currState.Type.Name.ValueString() {
 		err := r.bsVolumes.RetypeContext(ctx, sdkBlockStorageVolumes.RetypeParameters{
-			Id: data.ID.ValueString(),
+			Id: newState.ID.ValueString(),
 			NewType: sdkBlockStorageVolumes.RetypeParametersNewType{
-				Name: data.Type.Name.ValueStringPointer(),
+				Name: newState.Type.Name.ValueStringPointer(),
 			},
 		},
 			tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkBlockStorageVolumes.RetypeConfigs{}))
 		if err != nil {
-			resp.Diagnostics.AddError(
-				"Error to retype the block storage volume",
-				"Could not retype, unexpected error: "+err.Error(),
-			)
+			resp.Diagnostics.AddError("Error to retype the block storage volume", err.Error())
 			return
 		}
+		tflog.Debug(ctx, "waiting retry completion")
+		_, _ = r.waitCompletedVolume(ctx, currState.ID.ValueString())
+		tflog.Info(ctx, "retype performed with success")
 	}
 
-	if data.Size.ValueInt64() > currState.Size.ValueInt64() {
+	if newState.Size.ValueInt64() > currState.Size.ValueInt64() {
 		err := r.bsVolumes.ExtendContext(ctx, sdkBlockStorageVolumes.ExtendParameters{
-			Id:   data.ID.ValueString(),
-			Size: int(data.Size.ValueInt64()),
+			Id:   newState.ID.ValueString(),
+			Size: int(newState.Size.ValueInt64()),
 		},
 			tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkBlockStorageVolumes.ExtendConfigs{}))
 		if err != nil {
-			resp.Diagnostics.AddError(
-				"Error to resize the block storage volume",
-				"Could not resize, unexpected error: "+err.Error(),
-			)
+			resp.Diagnostics.AddError("Error to resize the block storage volume", err.Error())
 			return
 		}
+		tflog.Info(ctx, "resize performed with success")
 	}
+
+	tflog.Debug(ctx, "waiting volume completion")
+	getResult, err := r.waitCompletedVolume(ctx, currState.ID.ValueString())
+	if err != nil {
+		resp.Diagnostics.AddError("Error Reading block storage", err.Error())
+		return
+	}
+	newState = convertToState(*getResult, currState.Name.ValueString(), currState.NameIsPrefix.ValueBool())
+	resp.Diagnostics.Append(resp.State.Set(ctx, &newState)...)
 }
 
 func (r *bsVolumes) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
@@ -303,11 +311,25 @@ func (r *bsVolumes) Delete(ctx context.Context, req resource.DeleteRequest, resp
 		tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkBlockStorageVolumes.DeleteConfigs{}),
 	)
 	if err != nil {
-		resp.Diagnostics.AddError(
-			"Error deleting block storage volume",
-			"Could not delete block storage volume "+data.ID.ValueString()+": "+err.Error(),
-		)
+		resp.Diagnostics.AddError("Error deleting block storage volume", err.Error())
 		return
 	}
+}
 
+func (r *bsVolumes) waitCompletedVolume(ctx context.Context, id string) (*sdkBlockStorageVolumes.GetResult, error) {
+	for startTime := time.Now(); time.Since(startTime) < ClusterPoolingTimeout; {
+		time.Sleep(3 * time.Second)
+		getResult, err := r.bsVolumes.GetContext(ctx, sdkBlockStorageVolumes.GetParameters{
+			Id:     id,
+			Expand: expandBsVolume,
+		}, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkBlockStorageVolumes.GetConfigs{}))
+		if err != nil {
+			return nil, err
+		}
+		if getResult.Status == completedBsSttus {
+			return &getResult, nil
+		}
+		tflog.Debug(ctx, fmt.Sprintf("volume current status: %s", getResult.Status))
+	}
+	return nil, errors.New("timeout fetching block storage resource")
 }
