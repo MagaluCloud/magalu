@@ -375,8 +375,8 @@ func ConvertSDKCreateResultToTerraformCreateClsuterModel(sdkResult *sdkCluster.G
 	tfModel := &KubernetesClusterCreateResourceModel{
 		Name:      types.StringValue(sdkResult.Name),
 		ID:        types.StringValue(sdkResult.Id),
-		CreatedAt: types.StringValue(*sdkResult.CreatedAt),
 		Version:   types.StringValue(sdkResult.Version),
+		CreatedAt: types.StringPointerValue(sdkResult.CreatedAt),
 	}
 
 	if sdkResult.Description != nil {
