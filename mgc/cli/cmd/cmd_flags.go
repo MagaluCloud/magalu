@@ -456,7 +456,6 @@ func (cf *cmdFlags) addExistingFlag(existingFlag *flag.Flag) {
 
 const (
 	originalControlPrefix = "_"
-	targetControlPrefix   = "control."
 )
 
 func (cf *cmdFlags) addSchemaFlag(
@@ -468,11 +467,7 @@ func (cf *cmdFlags) addSchemaFlag(
 	isConfig bool,
 	isHidden bool,
 ) (f *flag.Flag) {
-	baseFlagName, isControl := strings.CutPrefix(propName, originalControlPrefix)
-	if isControl {
-		baseFlagName = targetControlPrefix + baseFlagName
-	}
-
+	baseFlagName, _ := strings.CutPrefix(propName, originalControlPrefix)
 	flagName := normalizeName(baseFlagName)
 	for cf.knownFlags[flagName] != nil {
 		flagName = conflictPrefix + flagName
@@ -564,6 +559,14 @@ func (cf *cmdFlags) addChildSchemaFlag(
 	cf.addFlagChildren(f, normalizeName)
 }
 
+const (
+	eqSuffix  = "-eq"
+	gtSuffix  = "-gt"
+	gteSuffix = "-gte"
+	ltSuffix  = "-lt"
+	lteSuffix = "-lte"
+)
+
 func (cf *cmdFlags) addParametersFlags(
 	parametersSchema *mgcSdk.Schema,
 	positionalArgs []string,
@@ -590,6 +593,44 @@ func (cf *cmdFlags) addParametersFlags(
 		}
 	}
 
+	var treatedFlags []flag.Flag
+	for _, flag := range cf.schemaFlags {
+		flagNameRemovedSuffix := cf.removeSuffix(flag.Name)
+		canContinue := true
+		for _, x := range treatedFlags {
+			if x.Name == flagNameRemovedSuffix && !cf.hasFilter(flag.Name) {
+				canContinue = false
+				break
+			}
+		}
+		if !canContinue {
+			continue
+		}
+		if cf.hasFilter(flag.Name) {
+			if fok := cf.canBeFiltered(cf.schemaFlags, flag.Name); fok {
+				for i, x := range treatedFlags {
+					if x.Name == flagNameRemovedSuffix {
+						treatedFlags[i] = cf.changeFlagToFilterFlag(parametersSchema, normalizeName(flagNameRemovedSuffix))
+						canContinue = false
+						break
+					}
+				}
+				if !canContinue {
+					continue
+				}
+
+				treatedFlags = append(treatedFlags, cf.changeFlagToFilterFlag(parametersSchema, normalizeName(flagNameRemovedSuffix)))
+				continue
+			}
+		}
+		treatedFlags = append(treatedFlags, *flag)
+	}
+
+	cf.schemaFlags = []*flag.Flag{}
+	for _, sf := range treatedFlags {
+		cf.schemaFlags = append(cf.schemaFlags, &sf)
+	}
+
 	for i, f := range cf.positionalArgs {
 		if f == nil {
 			// these must not happen in practice, unless we did a mistake in our sdk (static, blueprint, openapi)
@@ -598,6 +639,76 @@ func (cf *cmdFlags) addParametersFlags(
 	}
 
 	return nil
+}
+
+func (cf *cmdFlags) changeFlagToFilterFlag(parametersSchema *mgcSdk.Schema, flagName flag.NormalizedName) flag.Flag {
+	propName := string(flagName)
+	changedSchema := *parametersSchema
+	changedSchema.Properties[propName].Value.Type = "string"
+	if !strings.HasSuffix(changedSchema.Properties[propName].Value.Description, "=\"gte=20&lte=60\")") {
+		changedSchema.Properties[propName].Value.Description = changedSchema.Properties[propName].Value.Description +
+			" (use operators \"gt\", \"lt\", \"gte\", \"lte\", \"eq\" or omit for exact match. E.g: --" + propName +
+			"=\"gte=20&lte=60\")"
+	}
+	f := schema_flags.NewSchemaFlag(
+		&changedSchema,
+		propName,
+		flagName,
+		false,
+		false,
+		false,
+	)
+	return *f
+}
+
+func (cf *cmdFlags) hasFilter(paramName string) bool {
+	return strings.HasSuffix(paramName, "eq") || strings.HasSuffix(paramName, "gte") ||
+		strings.HasSuffix(paramName, "gt") || strings.HasSuffix(paramName, "lte") ||
+		strings.HasSuffix(paramName, "lt")
+}
+
+func (cf *cmdFlags) removeSuffix(param string) string {
+	param, _ = strings.CutSuffix(param, eqSuffix)
+	param, _ = strings.CutSuffix(param, gtSuffix)
+	param, _ = strings.CutSuffix(param, gteSuffix)
+	param, _ = strings.CutSuffix(param, ltSuffix)
+	param, _ = strings.CutSuffix(param, lteSuffix)
+	return param
+}
+
+func (cf *cmdFlags) canBeFiltered(cflags []*flag.Flag, param string) bool {
+	hasEqual := false
+	hasGte := false
+	hasGt := false
+	hasLte := false
+	hasLt := false
+
+	param = cf.removeSuffix(param)
+
+	for _, f := range cflags {
+		if f.Name == param || f.Name+eqSuffix == param || f.Name+eqSuffix == param+eqSuffix || f.Name == param+eqSuffix {
+			hasEqual = true
+			f.Name = param
+		}
+		if f.Name == param+gtSuffix {
+			hasGt = true
+		}
+		if f.Name == param+gteSuffix {
+			hasGte = true
+		}
+		if f.Name == param+ltSuffix {
+			hasLt = true
+		}
+		if f.Name == param+lteSuffix {
+			hasLte = true
+		}
+
+	}
+
+	if hasEqual && hasGt && hasGte && hasLt && hasLte {
+		return true
+	}
+	return false
 }
 
 func (cf *cmdFlags) addConfigsFlags(

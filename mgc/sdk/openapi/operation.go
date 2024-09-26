@@ -373,8 +373,25 @@ func addQueryParam(qValues *url.Values, param *openapi3.Parameter, val core.Valu
 				qValues.Add(param.Name, fmt.Sprint(val))
 			}
 		}
+	} else if hasFilter(fmt.Sprint(val)) {
+		buildFilterURL(qValues, param.Name, fmt.Sprint(val))
 	} else {
 		qValues.Set(param.Name, fmt.Sprintf("%v", val))
+	}
+}
+
+func hasFilter(paramName string) bool {
+	return strings.HasPrefix(paramName, "eq") || strings.HasPrefix(paramName, "gte") ||
+		strings.HasPrefix(paramName, "gt") || strings.HasPrefix(paramName, "lte") ||
+		strings.HasPrefix(paramName, "lt")
+}
+func buildFilterURL(q *url.Values, fieldName, value string) {
+	pairs := strings.Split(value, "&")
+	for _, pair := range pairs {
+		kv := strings.Split(pair, "=")
+		if len(kv) == 2 {
+			q.Set(fieldName+"_"+kv[0], kv[1])
+		}
 	}
 }
 
