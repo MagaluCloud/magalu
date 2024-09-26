@@ -456,6 +456,7 @@ func (cf *cmdFlags) addExistingFlag(existingFlag *flag.Flag) {
 
 const (
 	originalControlPrefix = "_"
+	targetControlPrefix   = "control."
 )
 
 func (cf *cmdFlags) addSchemaFlag(
@@ -467,7 +468,10 @@ func (cf *cmdFlags) addSchemaFlag(
 	isConfig bool,
 	isHidden bool,
 ) (f *flag.Flag) {
-	baseFlagName, _ := strings.CutPrefix(propName, originalControlPrefix)
+	baseFlagName, isControl := strings.CutPrefix(propName, originalControlPrefix)
+	if isControl {
+		baseFlagName = targetControlPrefix + baseFlagName
+	}
 	flagName := normalizeName(baseFlagName)
 	for cf.knownFlags[flagName] != nil {
 		flagName = conflictPrefix + flagName
@@ -682,9 +686,7 @@ func (cf *cmdFlags) canBeFiltered(cflags []*flag.Flag, param string) bool {
 	hasGt := false
 	hasLte := false
 	hasLt := false
-
 	param = cf.removeSuffix(param)
-
 	for _, f := range cflags {
 		if f.Name == param || f.Name+eqSuffix == param || f.Name+eqSuffix == param+eqSuffix || f.Name == param+eqSuffix {
 			hasEqual = true
