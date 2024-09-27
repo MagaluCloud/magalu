@@ -3,8 +3,22 @@
   "info": {
     "title": "Cloud Events Consult API",
     "description": "Cloud Events API Product.",
-    "version": "0.15.1"
+    "version": "0.17.0"
   },
+  "servers": [
+    {
+      "url": "https://api.magalu.cloud/br-ne-1/audit",
+      "description": "Server for br-ne-1 region"
+    },
+    {
+      "url": "https://api.magalu.cloud/br-se-1/audit",
+      "description": "Server for br-se-1 region"
+    },
+    {
+      "url": "https://api.magalu.cloud/br-se1/audit",
+      "description": "Server for br-se1 region"
+    }
+  ],
   "paths": {
     "/v0/events": {
       "get": {
@@ -143,6 +157,8 @@
             "in": "query",
             "description": "The raw data event",
             "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "object",
               "title": "Raw Data",
@@ -196,7 +212,7 @@
             ]
           }
         ],
-        "x-mgc-output-flag": "table=ID:$.results[*].id,SOURCE:$.results[*].source,TYPE:$.results[*].type,SPECVERSION:$.results[*].specversion,SUBJECT:$.results[*].subject,TIME:$.results[*].time,AUTHID:$.results[*].authid,AUTHTYPE:$.results[*].authtype,PRODUCT:$.results[*].product,REGION:$.results[*].region"
+        "x-mgc-output-flag": "default=table;allowfields=ID:$.results[*].id,SOURCE:$.results[*].source,TYPE:$.results[*].type,SPECVERSION:$.results[*].specversion,SUBJECT:$.results[*].subject,TIME:$.results[*].time,AUTHID:$.results[*].authid,AUTHTYPE:$.results[*].authtype,PRODUCT:$.results[*].product,REGION:$.results[*].region"
       }
     },
     "/v0/event-types": {
@@ -280,7 +296,7 @@
             ]
           }
         ],
-        "x-mgc-output-flag": "table=TYPE:$.results[*].type"
+        "x-mgc-output-flag": "default=table;allowfields=TYPE:$.results[*].type"
       }
     }
   },
@@ -493,15 +509,11 @@
         "properties": {
           "limit": {
             "type": "integer",
-            "title": "Limit",
-            "maximum": 2147483647,
-            "minimum": 0
+            "title": "Limit"
           },
           "offset": {
             "type": "integer",
-            "title": "Offset",
-            "maximum": 2147483647,
-            "minimum": 0
+            "title": "Offset"
           },
           "count": {
             "type": "integer",

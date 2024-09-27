@@ -313,65 +313,6 @@ paths:
             security:
             -   OAuth2:
                 - virtual-machine.write
-    /v1/backups/{id}/copy:
-        post:
-            tags:
-            - backups
-            summary: Copy a backup of a virtual machine asynchronously.
-            description: Copy a backup region
-            operationId: copy_backup_region_v1_backups__id__copy_post
-            parameters:
-            -   name: id
-                in: path
-                required: true
-                schema:
-                    type: string
-                    title: Id
-                    format: uuid
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/BackupCopyRequest'
-                required: true
-            responses:
-                '204':
-                    description: Successful Response
-                '400':
-                    description: Backup Not Allowed Exception
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ExceptionModel'
-                '404':
-                    description: Instance Not Found Exception
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ExceptionModel'
-                '409':
-                    description: Backup Validation Exception
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ExceptionModel'
-                '500':
-                    description: Internal Exception
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ExceptionModel'
-                '422':
-                    description: Validation Error
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/HTTPValidationError'
-            x-viveiro: false
-            x-mgc-hidden: true
-            security:
-            -   OAuth2:
-                - virtual-machine.write
     /v1/backups/{id}/rename:
         patch:
             tags:
@@ -2047,6 +1988,12 @@ paths:
                             description: Delete Instance Type
                             parameters:
                                 id: $response.body#/id
+                        copy:
+                            operationId: copy_snapshot_region_v1_snapshots__id__copy_post
+                            description: Copy a snapshot of a virtual machine asynchronously
+                                to another region.
+                            parameters:
+                                id: $response.body#/id
                         rename:
                             operationId: rename_snapshot_v1_snapshots__id__rename_patch
                             description: Rename Instance Type
@@ -2143,6 +2090,12 @@ paths:
                         delete:
                             operationId: snapshots_delete_v1_snapshots__id__delete
                             description: Delete a Snapshot.
+                            parameters:
+                                id: $request.path.id
+                        copy:
+                            operationId: copy_snapshot_region_v1_snapshots__id__copy_post
+                            description: Copy a snapshot of a virtual machine asynchronously
+                                to another region.
                             parameters:
                                 id: $request.path.id
                         rename:
@@ -2248,6 +2201,12 @@ paths:
                             description: Delete a Snapshot.
                             parameters:
                                 id: $request.path.id
+                        copy:
+                            operationId: copy_snapshot_region_v1_snapshots__id__copy_post
+                            description: Copy a snapshot of a virtual machine asynchronously
+                                to another region.
+                            parameters:
+                                id: $request.path.id
                         rename:
                             operationId: rename_snapshot_v1_snapshots__id__rename_patch
                             description: Renames a snapshot.
@@ -2351,6 +2310,87 @@ paths:
             security:
             -   OAuth2:
                 - virtual-machine.write
+    /v1/snapshots/{id}/copy:
+        post:
+            tags:
+            - snapshots
+            summary: Copy a snapshot of a virtual machine asynchronously to another
+                region.
+            description: Snapshot copy
+            operationId: copy_snapshot_region_v1_snapshots__id__copy_post
+            parameters:
+            -   name: id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Id
+                    format: uuid
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/SnapshotCopyRequest'
+                required: true
+            responses:
+                '204':
+                    description: Successful Response
+                    links:
+                        get:
+                            operationId: snapshot_details_v1_v1_snapshots__id__get
+                            description: Retrieve the details of an snapshot.
+                            parameters:
+                                id: $request.path.id
+                        restore:
+                            operationId: restore_snapshot_v1_v1_snapshots__id__post
+                            description: Restore a snapshot to an instance.
+                            parameters:
+                                id: $request.path.id
+                        delete:
+                            operationId: snapshots_delete_v1_snapshots__id__delete
+                            description: Delete a Snapshot.
+                            parameters:
+                                id: $request.path.id
+                        rename:
+                            operationId: rename_snapshot_v1_snapshots__id__rename_patch
+                            description: Renames a snapshot.
+                            parameters:
+                                id: $request.path.id
+                '400':
+                    description: Snapshot Not Allowed Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '404':
+                    description: Instance Not Found Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '409':
+                    description: Snapshot Validation Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '500':
+                    description: Internal Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExceptionModel'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: false
+            x-mgc-hidden: true
+            security:
+            -   OAuth2:
+                - virtual-machine.write
     /v1/snapshots/{id}/rename:
         patch:
             tags:
@@ -2403,6 +2443,12 @@ paths:
                             description: Delete a Snapshot.
                             parameters:
                                 id: $request.path.id
+                        copy:
+                            operationId: copy_snapshot_region_v1_snapshots__id__copy_post
+                            description: Copy a snapshot of a virtual machine asynchronously
+                                to another region.
+                            parameters:
+                                id: $request.path.id
                 '400':
                     description: Snapshot Not Allowed Exception
                     content:
@@ -2439,21 +2485,6 @@ paths:
                 - virtual-machine.write
 components:
     schemas:
-        BackupCopyRequest:
-            type: object
-            properties:
-                region:
-                    type: string
-                    title: Regions
-                    enum:
-                    - br-se1
-                    - br-se-1
-                    - br-ne-1
-            title: BackupCopyRequest
-            required:
-            - region
-            example:
-                region: br-ne-1
         BackupRenameRequest:
             type: object
             properties:
@@ -3114,11 +3145,13 @@ components:
                     -   $ref: '#/components/schemas/ImageInstanceV1Response'
                     -   $ref: '#/components/schemas/ImageExtendResponse'
                     title: Image
+                    nullable: true
                 machine_type:
                     anyOf:
                     -   $ref: '#/components/schemas/InstanceTypeForInstanceV1Response'
                     -   $ref: '#/components/schemas/InstanceTypesExtendResponse'
                     title: Machine Type
+                    nullable: true
             title: InstanceResponseSnapshotV1
             required:
             - id
@@ -3333,11 +3366,13 @@ components:
                     -   $ref: '#/components/schemas/InstanceTypeForInstanceV1Response'
                     -   $ref: '#/components/schemas/InstanceTypesExtendResponse'
                     title: Machine Type
+                    nullable: true
                 image:
                     anyOf:
                     -   $ref: '#/components/schemas/ImageInstanceV1Response'
                     -   $ref: '#/components/schemas/ImageExtendResponse'
                     title: Image
+                    nullable: true
                 status:
                     type: string
                     title: InstanceV1Status
@@ -3788,11 +3823,13 @@ components:
                                 -   $ref: '#/components/schemas/InstanceTypeForInstanceV1Response'
                                 -   $ref: '#/components/schemas/InstanceTypesExtendResponse'
                                 title: Machine Type
+                                nullable: true
                             image:
                                 anyOf:
                                 -   $ref: '#/components/schemas/ImageInstanceV1Response'
                                 -   $ref: '#/components/schemas/ImageExtendResponse'
                                 title: Image
+                                nullable: true
                             status:
                                 type: string
                                 title: InstanceV1Status
@@ -3979,33 +4016,9 @@ components:
                                 type: integer
                                 title: Size
                             instance:
-                                type: object
-                                properties:
-                                    id:
-                                        type: string
-                                        title: Id
-                                    image:
-                                        anyOf:
-                                        -   $ref: '#/components/schemas/ImageInstanceV1Response'
-                                        -   $ref: '#/components/schemas/ImageExtendResponse'
-                                        title: Image
-                                    machine_type:
-                                        anyOf:
-                                        -   $ref: '#/components/schemas/InstanceTypeForInstanceV1Response'
-                                        -   $ref: '#/components/schemas/InstanceTypesExtendResponse'
-                                        title: Machine Type
-                                title: InstanceResponseSnapshotV1
-                                required:
-                                - id
-                                - image
-                                - machine_type
-                                example:
-                                    instance:
-                                        id: 4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a
-                                        image:
-                                            id: 4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a
-                                        machine_type:
-                                            id: 4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a
+                                anyOf:
+                                -   $ref: '#/components/schemas/InstanceResponseSnapshotV1'
+                                nullable: true
                         title: SnapshotResponseV1
                         required:
                         - id
@@ -4254,6 +4267,21 @@ components:
                     title: Security Groups
                     default: []
             title: SecurityGroups
+        SnapshotCopyRequest:
+            type: object
+            properties:
+                region:
+                    type: string
+                    title: Regions
+                    enum:
+                    - br-se1
+                    - br-se-1
+                    - br-ne-1
+            title: SnapshotCopyRequest
+            required:
+            - region
+            example:
+                region: br-ne-1
         SnapshotCreateRequestV1:
             type: object
             properties:
@@ -4319,33 +4347,9 @@ components:
                     type: integer
                     title: Size
                 instance:
-                    type: object
-                    properties:
-                        id:
-                            type: string
-                            title: Id
-                        image:
-                            anyOf:
-                            -   $ref: '#/components/schemas/ImageInstanceV1Response'
-                            -   $ref: '#/components/schemas/ImageExtendResponse'
-                            title: Image
-                        machine_type:
-                            anyOf:
-                            -   $ref: '#/components/schemas/InstanceTypeForInstanceV1Response'
-                            -   $ref: '#/components/schemas/InstanceTypesExtendResponse'
-                            title: Machine Type
-                    title: InstanceResponseSnapshotV1
-                    required:
-                    - id
-                    - image
-                    - machine_type
-                    example:
-                        instance:
-                            id: 4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a
-                            image:
-                                id: 4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a
-                            machine_type:
-                                id: 4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a
+                    anyOf:
+                    -   $ref: '#/components/schemas/InstanceResponseSnapshotV1'
+                    nullable: true
             title: SnapshotResponseV1
             required:
             - id

@@ -438,104 +438,6 @@
         "x-mgc-hidden": true
       }
     },
-    "/v1/backups/{id}/copy": {
-      "post": {
-        "tags": [
-          "backups"
-        ],
-        "summary": "Copy a backup of a virtual machine asynchronously.",
-        "description": "Copy a backup region",
-        "operationId": "copy_backup_region_v1_backups__id__copy_post",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Id",
-              "format": "uuid"
-            }
-          },
-          {
-            "name": "x-tenant-id",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "X-Tenant-Id"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/BackupCopyRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "204": {
-            "description": "Successful Response"
-          },
-          "400": {
-            "description": "Backup Not Allowed Exception",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ExceptionModel"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Instance Not Found Exception",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ExceptionModel"
-                }
-              }
-            }
-          },
-          "409": {
-            "description": "Backup Validation Exception",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ExceptionModel"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Exception",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ExceptionModel"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "x-viveiro": false,
-        "x-mgc-hidden": true
-      }
-    },
     "/v1/backups/{id}/rename": {
       "patch": {
         "tags": [
@@ -2498,6 +2400,104 @@
         "x-viveiro": true
       }
     },
+    "/v1/snapshots/{id}/copy": {
+      "post": {
+        "tags": [
+          "snapshots"
+        ],
+        "summary": "Copy a snapshot of a virtual machine asynchronously to another region.",
+        "description": "Snapshot copy",
+        "operationId": "copy_snapshot_region_v1_snapshots__id__copy_post",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Id",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SnapshotCopyRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "400": {
+            "description": "Snapshot Not Allowed Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Instance Not Found Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Snapshot Validation Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionModel"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": false,
+        "x-mgc-hidden": true
+      }
+    },
     "/v1/snapshots/{id}/rename": {
       "patch": {
         "tags": [
@@ -2597,21 +2597,6 @@
   },
   "components": {
     "schemas": {
-      "BackupCopyRequest": {
-        "type": "object",
-        "properties": {
-          "region": {
-            "$ref": "#/components/schemas/Regions"
-          }
-        },
-        "title": "BackupCopyRequest",
-        "required": [
-          "region"
-        ],
-        "example": {
-          "region": "br-ne-1"
-        }
-      },
       "BackupRenameRequest": {
         "type": "object",
         "properties": {
@@ -3505,6 +3490,9 @@
               },
               {
                 "$ref": "#/components/schemas/ImageExtendResponse"
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Image"
@@ -3516,6 +3504,9 @@
               },
               {
                 "$ref": "#/components/schemas/InstanceTypesExtendResponse"
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Machine Type"
@@ -3825,6 +3816,9 @@
               },
               {
                 "$ref": "#/components/schemas/InstanceTypesExtendResponse"
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Machine Type"
@@ -3836,6 +3830,9 @@
               },
               {
                 "$ref": "#/components/schemas/ImageExtendResponse"
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Image"
@@ -4421,6 +4418,21 @@
         },
         "title": "SecurityGroups"
       },
+      "SnapshotCopyRequest": {
+        "type": "object",
+        "properties": {
+          "region": {
+            "$ref": "#/components/schemas/Regions"
+          }
+        },
+        "title": "SnapshotCopyRequest",
+        "required": [
+          "region"
+        ],
+        "example": {
+          "region": "br-ne-1"
+        }
+      },
       "SnapshotCreateRequestV1": {
         "type": "object",
         "properties": {
@@ -4524,7 +4536,14 @@
             "title": "Size"
           },
           "instance": {
-            "$ref": "#/components/schemas/InstanceResponseSnapshotV1"
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/InstanceResponseSnapshotV1"
+              },
+              {
+                "type": "null"
+              }
+            ]
           }
         },
         "title": "SnapshotResponseV1",

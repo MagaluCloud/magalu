@@ -43,20 +43,20 @@ type GetConfigs struct {
 }
 
 type GetResult struct {
-	CreatedAt string            `json:"created_at"`
-	Id        string            `json:"id"`
-	Instance  GetResultInstance `json:"instance"`
-	Name      *string           `json:"name,omitempty"`
-	Size      int               `json:"size"`
-	State     string            `json:"state"`
-	Status    string            `json:"status"`
-	UpdatedAt *string           `json:"updated_at,omitempty"`
+	CreatedAt string             `json:"created_at"`
+	Id        string             `json:"id"`
+	Instance  *GetResultInstance `json:"instance"`
+	Name      *string            `json:"name,omitempty"`
+	Size      int                `json:"size"`
+	State     string             `json:"state"`
+	Status    string             `json:"status"`
+	UpdatedAt *string            `json:"updated_at,omitempty"`
 }
 
 type GetResultInstance struct {
-	Id          string                       `json:"id"`
-	Image       GetResultInstanceImage       `json:"image"`
-	MachineType GetResultInstanceMachineType `json:"machine_type"`
+	Id          string                        `json:"id"`
+	Image       *GetResultInstanceImage       `json:"image"`
+	MachineType *GetResultInstanceMachineType `json:"machine_type"`
 }
 
 // any of: GetResultInstanceImage
