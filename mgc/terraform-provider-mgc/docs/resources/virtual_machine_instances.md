@@ -103,12 +103,9 @@ Read-Only:
 <a id="nestedatt--network"></a>
 ### Nested Schema for `network`
 
-Required:
-
-- `associate_public_ip` (Boolean) Indicates whether to associate a public IP address with the virtual machine instance.
-
 Optional:
 
+- `associate_public_ip` (Boolean) Indicates whether to associate a public IP address with the virtual machine instance.
 - `delete_public_ip` (Boolean) Indicates whether to delete the public IP address associated with the virtual machine instance.
 - `interface` (Attributes) The network interface configuration of the virtual machine instance. (see [below for nested schema](#nestedatt--network--interface))
 - `vpc` (Attributes) The VPC (Virtual Private Cloud) associated with the virtual machine instance. (see [below for nested schema](#nestedatt--network--vpc))
@@ -141,6 +138,9 @@ Optional:
 Optional:
 
 - `id` (String) The unique identifier of the VPC.
+
+Read-Only:
+
 - `name` (String) The name of the VPC.
 
 ## Import
