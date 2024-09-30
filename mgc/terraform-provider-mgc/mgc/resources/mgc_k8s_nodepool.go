@@ -166,18 +166,28 @@ func (r *NewNodePoolResource) Create(ctx context.Context, req resource.CreateReq
 	if data.Tags != nil {
 		tags = sdkNodepool.CreateParametersTags(*convertStringArrayTFToSliceString(data.Tags))
 	}
-	nodepool, err := r.sdkNodepool.CreateContext(ctx, sdkNodepool.CreateParameters{
+	createParams := sdkNodepool.CreateParameters{
 		ClusterId: data.ClusterID.ValueString(),
 		Flavor:    data.Flavor.ValueString(),
 		Name:      data.Name.ValueString(),
 		Replicas:  int(data.Replicas.ValueInt64()),
-		AutoScale: &sdkNodepool.CreateParametersAutoScale{
+		Tags:      &tags,
+		Taints:    convertTaintsNP(data.Taints),
+	}
+
+	if data.MaxReplicas.ValueInt64() > 0 || data.MinReplicas.ValueInt64() > 0 {
+		if data.MaxReplicas.ValueInt64() > 0 && data.MinReplicas.ValueInt64() == 0 ||
+			data.MaxReplicas.ValueInt64() == 0 && data.MinReplicas.ValueInt64() > 0 {
+			resp.Diagnostics.AddError("min_replicas & max_replicas are required", "When using min_replicas or max_replicas, both are required")
+			return
+		}
+		createParams.AutoScale = &sdkNodepool.CreateParametersAutoScale{
 			MaxReplicas: int(data.MaxReplicas.ValueInt64()),
 			MinReplicas: int(data.MinReplicas.ValueInt64()),
-		},
-		Tags:   &tags,
-		Taints: convertTaintsNP(data.Taints),
-	},
+		}
+	}
+
+	nodepool, err := r.sdkNodepool.CreateContext(ctx, createParams,
 		tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkNodepool.CreateConfigs{}))
 
 	if err != nil {
