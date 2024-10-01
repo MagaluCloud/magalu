@@ -25,7 +25,7 @@ func (*yamlOutputFormatter) Format(value any, options string, isRaw bool) error 
 		indent = defaultIndent
 	}
 
-	yamlBytes, err := yaml.MarshalWithOptions(value, yaml.Indent(indent))
+	yamlBytes, err := yaml.MarshalWithOptions(value, yaml.Indent(indent), yaml.UseJSONMarshaler())
 	if err != nil {
 		return err
 	}
