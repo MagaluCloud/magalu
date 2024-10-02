@@ -74,7 +74,6 @@ func DecodeJSON[T core.Value](resp *http.Response, data *T) error {
 		return fmt.Errorf("error decoding JSON response body: %w", err)
 	}
 
-	// Converter json.Number para tipos numéricos apropriados
 	err = convertJSONNumbers(reflect.ValueOf(data).Elem())
 	if err != nil {
 		return fmt.Errorf("error converting JSON numbers: %w", err)

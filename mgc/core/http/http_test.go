@@ -3,6 +3,7 @@ package http
 import (
 	"bytes"
 	"context"
+	"encoding/json"
 	"fmt"
 	"io"
 	"mime/multipart"
@@ -367,4 +368,51 @@ more dummy text
 			t.Fatalf("should return error when T is not 'any' or a decodable struct, got nil instead for bool")
 		}
 	})
+}
+
+func TestConvertComplexJSONNumbers(t *testing.T) {
+	input := map[string]interface{}{
+		"types": map[string]interface{}{
+			"name":      "play",
+			"latitude":  "2",
+			"cpu_count": 1.32,
+			"tops": map[string]interface{}{
+				"read":  json.Number("1000"),
+				"write": json.Number("1000"),
+			},
+		},
+	}
+
+	expected := map[string]interface{}{
+		"types": map[string]interface{}{
+			"name":      "play",
+			"latitude":  "2",
+			"cpu_count": 1.32,
+			"tops": map[string]interface{}{
+				"read":  int64(1000),
+				"write": int64(1000),
+			},
+		},
+	}
+
+	inputValue := reflect.ValueOf(input)
+	err := convertJSONNumbers(inputValue)
+	if err != nil {
+		t.Fatalf("convertJSONNumbers() error = %v", err)
+	}
+
+	if !reflect.DeepEqual(input, expected) {
+		t.Errorf("convertJSONNumbers() = %v, want %v", input, expected)
+	}
+
+	if tops, ok := input["types"].(map[string]interface{})["tops"].(map[string]interface{}); ok {
+		if read, ok := tops["read"].(int64); !ok || read != 1000 {
+			t.Errorf("Expected 'read' to be int64(1000), got %v", tops["read"])
+		}
+		if write, ok := tops["write"].(int64); !ok || write != 1000 {
+			t.Errorf("Expected 'write' to be int64(1000), got %v", tops["write"])
+		}
+	} else {
+		t.Error("Expected structure not found in the result")
+	}
 }
