@@ -56,6 +56,71 @@ func TestDecodeJSON(t *testing.T) {
 	}
 }
 
+type testTypesDecodeJson struct {
+	Name     string  `json:"name"`
+	Latitude string  `json:"latitude"`
+	CPUCount float64 `json:"cpu_count"`
+	RAM      int     `json:"ram"`
+	Tops     []struct {
+		Read  int `json:"read"`
+		Write int `json:"write"`
+	} `json:"tops"`
+}
+
+func TestDecodeJSONComplex(t *testing.T) {
+	expectedData := `{
+					  "name": "play",
+					  "latitude": "2",
+					  "cpu_count": 1.32,
+					  "ram": 16,
+					  "tops": [
+					    {
+					      "read": 1000,
+					      "write": 1000
+					    }
+					  ]
+					}`
+	dummyResponse := &http.Response{
+		Body: io.NopCloser(bytes.NewBufferString(expectedData)),
+	}
+	decoded := new(testTypesDecodeJson)
+	err := DecodeJSON(dummyResponse, &decoded)
+	if err != nil {
+		t.Errorf("DecodeJSON function failed: %s", err)
+	}
+
+	latitudeReturn := string("2")
+	if decoded.Latitude != latitudeReturn {
+		t.Errorf("DecodeJSON function failed. 'testTypesDecodeJson' expected %s but got %s", decoded.Latitude, latitudeReturn)
+	}
+
+	nameReturn := string("play")
+	if decoded.Name != nameReturn {
+		t.Errorf("DecodeJSON function failed. 'testTypesDecodeJson' expected %s but got %s", decoded.Name, nameReturn)
+	}
+
+	cpuReturn := float64(1.32)
+	if decoded.CPUCount != cpuReturn {
+		t.Errorf("DecodeJSON function failed. 'testTypesDecodeJson' expected %v but got %v", decoded.CPUCount, cpuReturn)
+	}
+
+	ramReturn := int(16)
+	if decoded.RAM != ramReturn {
+		t.Errorf("DecodeJSON function failed. 'testTypesDecodeJson' expected %v but got %v", decoded.RAM, ramReturn)
+	}
+
+	readReturn := int(1000)
+	if decoded.Tops[0].Read != readReturn {
+		t.Errorf("DecodeJSON function failed. 'testTypesDecodeJson' expected %v but got %v", decoded.Tops[0].Read, readReturn)
+	}
+
+	writeReturn := int(1000)
+	if decoded.Tops[0].Write != writeReturn {
+		t.Errorf("DecodeJSON function failed. 'testTypesDecodeJson' expected %v but got %v", decoded.Tops[0].Write, writeReturn)
+	}
+
+}
+
 func TestNewHttpErrorFromResponse(t *testing.T) {
 	dummyResponse := &http.Response{
 		Body:       io.NopCloser(bytes.NewBufferString("some value")),
