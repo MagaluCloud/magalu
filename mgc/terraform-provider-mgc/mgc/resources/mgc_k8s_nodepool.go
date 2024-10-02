@@ -176,8 +176,7 @@ func (r *NewNodePoolResource) Create(ctx context.Context, req resource.CreateReq
 	}
 
 	if data.MaxReplicas.ValueInt64() > 0 || data.MinReplicas.ValueInt64() > 0 {
-		if data.MaxReplicas.ValueInt64() > 0 && data.MinReplicas.ValueInt64() == 0 ||
-			data.MaxReplicas.ValueInt64() == 0 && data.MinReplicas.ValueInt64() > 0 {
+		if data.MinReplicas.ValueInt64() == 0 || data.MaxReplicas.ValueInt64() == 0 {
 			resp.Diagnostics.AddError("min_replicas & max_replicas are required", "When using min_replicas or max_replicas, both are required")
 			return
 		}
