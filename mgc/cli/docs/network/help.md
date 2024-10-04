@@ -1,4 +1,4 @@
-# APIs referentes ao produto de VPC
+# VPC Api Product
 
 ## Usage:
 ```bash
@@ -9,18 +9,13 @@ Usage:
 
 ## Product catalog:
 - Commands:
-- healthcheck       healthcheck
-- interconnections  interconnections
-- internal          internal
-- port              port
-- public-ip         public_ip
-- quotas            quotas
-- rule              rule
-- security-group    security_group
-- subnetpools       subnetpools
-- subnets           subnets
-- vpc               vpc
-- worker-public-ips worker_public_ips
+- ports           Operations related to Ports
+- public-ips      Operations related to Public IPs
+- rules           Operations related to Rules
+- security-groups Operations related to Security Groups
+- subnetpools     Operations related to Subnet Pools
+- subnets         Operations related to Subnets
+- vpcs            Operations related to VPCs
 
 ## Other commands:
 - Flags:

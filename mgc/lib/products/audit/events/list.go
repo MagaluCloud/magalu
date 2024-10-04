@@ -9,7 +9,7 @@ Lists all events.
 
 Lists all events emitted by other products.
 
-Version: 0.15.1
+Version: 0.17.0
 
 import "magalu.cloud/lib/products/audit/events"
 */

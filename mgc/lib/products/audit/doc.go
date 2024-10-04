@@ -9,7 +9,7 @@ Cloud Events API Product.
 
 Cloud Events API Product.
 
-Version: 0.15.1
+Version: 0.17.0
 
 import "magalu.cloud/lib/products/audit"
 */

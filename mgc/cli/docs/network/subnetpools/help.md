@@ -1,4 +1,4 @@
-# subnetpools
+# Operations related to Subnet Pools
 
 ## Usage:
 ```bash
@@ -9,7 +9,12 @@ Usage:
 
 ## Product catalog:
 - Commands:
-- list        List Subnet Pools by Tenant
+- create             Create a Subnet Pool in a tenant
+- create-book-cidr   Book Subnetpool
+- create-unbook-cidr Unbook Subnetpool
+- delete             Delete Subnet Pool by ID
+- get                Get Subnet Pool by ID
+- list               List Subnet Pools by Tenant
 
 ## Other commands:
 - Flags:

@@ -22,7 +22,7 @@ Usage:
 - container-registry Magalu Container Registry product API.
 - dbaas              DBaaS API Product.
 - kubernetes         APIs related to the Kubernetes product.
-- network            APIs referentes ao produto de VPC
+- network            VPC Api Product
 - object-storage     Operations for Object Storage
 - virtual-machine    Virtual Machine Api Product
 

@@ -9,7 +9,7 @@ Executor: list
 
 # Returns a list of Subnet Pools for the current tenant's project
 
-Version: 1.133.0
+Version: 1.138.0
 
 import "magalu.cloud/lib/products/network/subnetpools"
 */
@@ -22,30 +22,55 @@ import (
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
 
+type ListParameters struct {
+	Limit  *int    `json:"_limit,omitempty"`
+	Offset *int    `json:"_offset,omitempty"`
+	Sort   *string `json:"_sort,omitempty"`
+}
+
 type ListConfigs struct {
 	Env       *string `json:"env,omitempty"`
 	Region    *string `json:"region,omitempty"`
 	ServerUrl *string `json:"serverUrl,omitempty"`
 }
 
-// A Pydantic model representing a list of Subnet Pools.
+// A Schema representing a list of Subnet Pools.
 type ListResult struct {
-	Subnetpools *ListResultSubnetpools `json:"subnetpools,omitempty"`
+	Meta    ListResultMeta     `json:"meta"`
+	Results *ListResultResults `json:"results,omitempty"`
 }
 
-// A Pydantic model representing a response for Subnet Pool creation.
-type ListResultSubnetpoolsItem struct {
+type ListResultMeta struct {
+	Links ListResultMetaLinks `json:"links"`
+	Page  ListResultMetaPage  `json:"page"`
+}
+
+type ListResultMetaLinks struct {
+	Next     string `json:"next"`
+	Previous string `json:"previous"`
+	Self     string `json:"self"`
+}
+
+type ListResultMetaPage struct {
+	Count  int  `json:"count"`
+	Limit  *int `json:"limit,omitempty"`
+	Offset *int `json:"offset,omitempty"`
+	Total  int  `json:"total"`
+}
+
+// A Schema representing a response for Subnet Pool creation.
+type ListResultResultsItem struct {
 	Cidr        *string `json:"cidr,omitempty"`
 	Description *string `json:"description,omitempty"`
-	ExternalId  *string `json:"external_id,omitempty"`
 	Id          string  `json:"id"`
 	Name        string  `json:"name"`
 	TenantId    string  `json:"tenant_id"`
 }
 
-type ListResultSubnetpools []ListResultSubnetpoolsItem
+type ListResultResults []ListResultResultsItem
 
 func (s *service) List(
+	parameters ListParameters,
 	configs ListConfigs,
 ) (
 	result ListResult,
@@ -57,6 +82,9 @@ func (s *service) List(
 	}
 
 	var p mgcCore.Parameters
+	if p, err = mgcHelpers.ConvertParameters[ListParameters](parameters); err != nil {
+		return
+	}
 
 	var c mgcCore.Configs
 	if c, err = mgcHelpers.ConvertConfigs[ListConfigs](configs); err != nil {
@@ -73,6 +101,7 @@ func (s *service) List(
 // Context from caller is used to allow cancellation of long-running requests
 func (s *service) ListContext(
 	ctx context.Context,
+	parameters ListParameters,
 	configs ListConfigs,
 ) (
 	result ListResult,
@@ -84,6 +113,9 @@ func (s *service) ListContext(
 	}
 
 	var p mgcCore.Parameters
+	if p, err = mgcHelpers.ConvertParameters[ListParameters](parameters); err != nil {
+		return
+	}
 
 	var c mgcCore.Configs
 	if c, err = mgcHelpers.ConvertConfigs[ListConfigs](configs); err != nil {
