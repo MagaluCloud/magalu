@@ -39,7 +39,9 @@ func defaultObjectLockingBody(retainUntilDate time.Time) objectLockRetention {
 
 type setObjectLockParams struct {
 	Object          common.ObjectError `json:"dst" jsonschema:"description=Specifies the object whose lock is being requested" mgc:"positional"`
-	RetainUntilDate string             `json:"retain_until_date" jsonschema:"description=Timestamp in ISO 8601 format,example=2025-10-03T00:00:00Z"`
+	RetainUntilDate string             `json:"retain_until_date,omitempty" jsonschema:"description=Timestamp in ISO 8601 format,example=2025-10-03T00:00:00Z"`
+	Days            int                `json:"days,omitempty" jsonschema:"description=Number of days to retain the object"`
+	Years           int                `json:"years,omitempty" jsonschema:"description=Number of years to retain the object"`
 }
 
 var getSet = utils.NewLazyLoader(func() core.Executor {
@@ -59,8 +61,8 @@ var getSet = utils.NewLazyLoader(func() core.Executor {
 })
 
 func setObjectLocking(ctx context.Context, params setObjectLockParams, cfg common.Config) (result core.Value, err error) {
-	if params.RetainUntilDate == "" {
-		return nil, fmt.Errorf("Missing parameter `retain_until_date`")
+	if params.RetainUntilDate == "" && params.Days == 0 && params.Years == 0 {
+		return nil, fmt.Errorf("You must provide one of the following: `retain_until_date`, `days`, or `years`")
 	}
 
 	req, err := newSetObjectLockingRequest(ctx, params, cfg)
@@ -97,7 +99,18 @@ func newSetObjectLockingRequest(ctx context.Context, p setObjectLockParams, cfg 
 	req.URL.RawQuery = query.Encode()
 
 	getBody := func() (io.ReadCloser, error) {
-		parsedTime, err := time.Parse("2006-01-02T15:04:05", p.RetainUntilDate)
+		var parsedTime time.Time
+
+		if p.Days > 0 {
+			parsedTime = time.Now().AddDate(0, 0, p.Days)
+		} else if p.Years > 0 {
+			parsedTime = time.Now().AddDate(p.Years, 0, 0)
+		} else {
+			parsedTime, err = time.Parse("2006-01-02T15:04:05", p.RetainUntilDate)
+			if err != nil {
+				return nil, core.UsageError{Err: err}
+			}
+		}
 		if err != nil {
 			return nil, core.UsageError{Err: err}
 		}
