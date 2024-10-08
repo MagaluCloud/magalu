@@ -101,18 +101,20 @@ func newSetObjectLockingRequest(ctx context.Context, p setObjectLockParams, cfg 
 	getBody := func() (io.ReadCloser, error) {
 		var parsedTime time.Time
 
-		if p.Days > 0 {
-			parsedTime = time.Now().AddDate(0, 0, p.Days)
-		} else if p.Years > 0 {
-			parsedTime = time.Now().AddDate(p.Years, 0, 0)
-		} else {
+		if p.RetainUntilDate != "" {
 			parsedTime, err = time.Parse("2006-01-02T15:04:05", p.RetainUntilDate)
 			if err != nil {
 				return nil, core.UsageError{Err: err}
 			}
-		}
-		if err != nil {
-			return nil, core.UsageError{Err: err}
+		} else {
+			currentTime := time.Now()
+			if p.Days > 0 {
+				currentTime = currentTime.AddDate(0, 0, p.Days)
+			}
+			if p.Years > 0 {
+				currentTime = currentTime.AddDate(p.Years, 0, 0)
+			}
+			parsedTime = currentTime
 		}
 		bodyObj := defaultObjectLockingBody(parsedTime)
 		body, err := xml.MarshalIndent(bodyObj, "", "  ")
