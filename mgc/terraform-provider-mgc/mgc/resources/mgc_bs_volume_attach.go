@@ -2,7 +2,6 @@ package resources
 
 import (
 	"context"
-	"fmt"
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -45,11 +44,12 @@ func (r *VolumeAttach) Configure(ctx context.Context, req resource.ConfigureRequ
 	}
 
 	var err error
-	r.sdkClient, err = client.NewSDKClient(req)
+	var errDetail error
+	r.sdkClient, err, errDetail = client.NewSDKClient(req)
 	if err != nil {
 		resp.Diagnostics.AddError(
 			err.Error(),
-			fmt.Sprintf("Expected provider config, got: %T. Please report this issue to the provider developers.", req.ProviderData),
+			errDetail.Error(),
 		)
 		return
 	}

@@ -53,11 +53,12 @@ func (r *vmInstances) Configure(ctx context.Context, req resource.ConfigureReque
 	}
 
 	var err error
-	r.sdkClient, err = client.NewSDKClient(req)
+	var errDetail error
+	r.sdkClient, err, errDetail = client.NewSDKClient(req)
 	if err != nil {
 		resp.Diagnostics.AddError(
 			err.Error(),
-			fmt.Sprintf("Expected provider config, got: %T. Please report this issue to the provider developers.", req.ProviderData),
+			errDetail.Error(),
 		)
 		return
 	}
