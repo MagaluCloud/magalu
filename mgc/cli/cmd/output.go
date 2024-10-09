@@ -117,6 +117,9 @@ func getOutputFor(sdk *mgcSdk.Sdk, cmd *cobra.Command, result core.Result) strin
 	}
 
 	if output == "" {
+		if addAfterWhenEmpty == "" {
+			return defaultFormatter
+		}
 		return defaultFormatter + ";" + addAfterWhenEmpty
 	}
 

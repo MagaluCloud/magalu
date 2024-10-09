@@ -174,35 +174,37 @@ func setOrMergeValue(result map[string]interface{}, key string, value interface{
 	result[key] = value
 }
 
-func handleResultWithValue(result core.ResultWithValue, output string, cmd *cobra.Command) (err error) {
-	err = result.ValidateSchema()
-	if err != nil {
-		logValidationErr(err)
-	}
-
+func removeFieldsFromOutput(output string) (string, []string, error) {
 	outputs := strings.Split(output, ";")
-	output = ""
+	newOutputs := []string{}
 	var remove string
 	for _, ot := range outputs {
 		if strings.HasPrefix(ot, "remove=") {
 			remove = strings.Split(ot, "=")[1]
-		} else {
-			output = ot
+			continue
 		}
+		newOutputs = append(newOutputs, ot)
 	}
-	var fieldsToRemove []string
+
+	fieldsToRemove := []string{}
 	if remove != "" {
 		fieldsToRemove = strings.Split(remove, ",")
 	}
 
-	outputs = strings.Split(output, ";")
+	return strings.Join(newOutputs, ";"), fieldsToRemove, nil
+}
+
+func allowFieldInOutput(output string) (string, []string, error) {
+	outputs := strings.Split(output, ";")
+	newOutputs := []string{}
 	var allowed string
 	for _, ot := range outputs {
 		if strings.HasPrefix(ot, "allowfields=") {
 			allowed = strings.Split(ot, "=")[1]
-		} else {
-			output = ot
+			continue
 		}
+		newOutputs = append(newOutputs, ot)
+
 	}
 	var allowedFields []string
 	if allowed != "" {
@@ -212,10 +214,38 @@ func handleResultWithValue(result core.ResultWithValue, output string, cmd *cobr
 		}
 	}
 
-	for _, ot := range outputs {
+	return strings.Join(newOutputs, ";"), allowedFields, nil
+}
+func getDefaultFromResult(output string) (string, error) {
+	for _, ot := range strings.Split(output, ";") {
 		if strings.HasPrefix(ot, "default=") {
-			output = strings.Split(ot, "=")[1]
+			return strings.Split(ot, "=")[1], nil
 		}
+	}
+	return output, nil
+}
+
+func handleResultWithValue(result core.ResultWithValue, output string, cmd *cobra.Command) (err error) {
+	err = result.ValidateSchema()
+	if err != nil {
+		logValidationErr(err)
+	}
+
+	var fieldsToRemove []string
+	output, fieldsToRemove, err = removeFieldsFromOutput(output)
+	if err != nil {
+		logValidationErr(err)
+	}
+
+	var allowedFields []string
+	output, allowedFields, err = allowFieldInOutput(output)
+	if err != nil {
+		logValidationErr(err)
+	}
+
+	output, err = getDefaultFromResult(output)
+	if err != nil {
+		logValidationErr(err)
 	}
 
 	value := result.Value()
