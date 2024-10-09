@@ -22,6 +22,7 @@ of HTTP requests using the MgcSDK. Authentication is done via Magalu Cloud accou
 			return []core.Descriptor{
 				getLogin(),
 				getAccessToken(),
+				getLogout(),
 				tenant.GetGroup(),
 				clients.GetGroup(),
 				api_key.GetGroup(),
