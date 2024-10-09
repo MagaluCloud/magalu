@@ -31,7 +31,7 @@ type objectLockRetention struct {
 func defaultObjectLockingBody(retainUntilDate time.Time) objectLockRetention {
 	return objectLockRetention{
 		Namespace:       "http://s3.amazonaws.com/doc/2006-03-01/",
-		Mode:            objectLockModeGovernance,
+		Mode:            objectLockModeCompliance,
 		RetainUntilDate: retainUntilDate.UTC().Format("2006-01-02T15:04:05"),
 	}
 
@@ -63,6 +63,11 @@ var getSet = utils.NewLazyLoader(func() core.Executor {
 func setObjectLocking(ctx context.Context, params setObjectLockParams, cfg common.Config) (result core.Value, err error) {
 	if params.RetainUntilDate == "" && params.Days == 0 && params.Years == 0 {
 		return nil, fmt.Errorf("You must provide one of the following: `retain_until_date`, `days`, or `years`")
+	}
+
+	if (params.RetainUntilDate != "" && (params.Days > 0 || params.Years > 0)) ||
+		(params.Days > 0 && params.Years > 0) {
+		return nil, fmt.Errorf("You must provide only one of the following: `retain_until_date`, `days`, or `years`, not multiple")
 	}
 
 	req, err := newSetObjectLockingRequest(ctx, params, cfg)
@@ -107,14 +112,13 @@ func newSetObjectLockingRequest(ctx context.Context, p setObjectLockParams, cfg 
 				return nil, core.UsageError{Err: err}
 			}
 		} else {
-			currentTime := time.Now()
+			parsedTime = time.Now()
 			if p.Days > 0 {
-				currentTime = currentTime.AddDate(0, 0, p.Days)
+				parsedTime = parsedTime.AddDate(0, 0, p.Days)
 			}
 			if p.Years > 0 {
-				currentTime = currentTime.AddDate(p.Years, 0, 0)
+				parsedTime = parsedTime.AddDate(p.Years, 0, 0)
 			}
-			parsedTime = currentTime
 		}
 		bodyObj := defaultObjectLockingBody(parsedTime)
 		body, err := xml.MarshalIndent(bodyObj, "", "  ")
