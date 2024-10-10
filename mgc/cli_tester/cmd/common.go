@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"regexp"
 	"strings"
 
 	"github.com/spf13/viper"
@@ -65,10 +66,12 @@ func writeSnapshot(output []byte, dir string, id string) error {
 	return nil
 }
 
-func compareBytes(expected, actual []byte) error {
+func compareBytes(expected, actual []byte, ignoreDateUUID bool) error {
 	if bytes.Equal(expected, actual) {
 		return nil
 	}
+
+	allEqual := true
 
 	expectedLines := strings.Split(string(expected), "\n")
 	actualLines := strings.Split(string(actual), "\n")
@@ -76,13 +79,27 @@ func compareBytes(expected, actual []byte) error {
 	var diff strings.Builder
 	diff.WriteString("\nDiferenças encontradas:\n")
 
+	dateRegex := regexp.MustCompile(`\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z`)
+	uuidRegex := regexp.MustCompile(`[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}`)
+
 	i, j := 0, 0
 	for i < len(expectedLines) && j < len(actualLines) {
-		if expectedLines[i] == actualLines[j] {
+		expectedLine := expectedLines[i]
+		actualLine := actualLines[j]
+
+		if ignoreDateUUID {
+			expectedLine = dateRegex.ReplaceAllString(expectedLine, "DATE")
+			expectedLine = uuidRegex.ReplaceAllString(expectedLine, "UUID")
+			actualLine = dateRegex.ReplaceAllString(actualLine, "DATE")
+			actualLine = uuidRegex.ReplaceAllString(actualLine, "UUID")
+		}
+
+		if expectedLine == actualLine {
 			diff.WriteString("  " + expectedLines[i] + "\n")
 			i++
 			j++
 		} else {
+			allEqual = false
 			diff.WriteString("- " + expectedLines[i] + "\n")
 			diff.WriteString("+ " + actualLines[j] + "\n")
 			i++
@@ -98,13 +115,17 @@ func compareBytes(expected, actual []byte) error {
 		diff.WriteString("+ " + actualLines[j] + "\n")
 	}
 
+	if allEqual {
+		return nil
+	}
+
 	return fmt.Errorf("%s", diff.String())
 }
 
 func compareSnapshot(output []byte, dir string, id string) error {
 	snapContent, err := loadFile(dir, fmt.Sprintf("%s.cli", id))
 	if err == nil {
-		return compareBytes(snapContent, output)
+		return compareBytes(snapContent, output, true)
 	}
 
 	if errors.Is(err, os.ErrNotExist) {

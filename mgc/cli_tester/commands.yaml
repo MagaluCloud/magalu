@@ -1,3 +1,9 @@
 commands:
+    - module: vm
+      command: mgc vm instances list -o json
+    - module: vm
+      command: mgc vm instances list -o yaml
+    - module: vm
+      command: mgc vm instances list
     - module: auth
       command: mgc auth tenant current

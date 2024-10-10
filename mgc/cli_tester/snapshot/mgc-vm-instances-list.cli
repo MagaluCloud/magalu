@@ -1,0 +1,26 @@
+{
+ "instances": [
+  {
+   "created_at": "2024-10-01T18:14:53Z",
+   "id": "e6063fe8-3ead-4453-b4fb-969dfce59c2e",
+   "image": {
+    "id": "f4895a9d-b71c-4d20-a740-ac8467e8b446"
+   },
+   "machine_type": {
+    "id": "fb634f1c-4280-4acb-b9a4-24dea423a9a6"
+   },
+   "name": "10",
+   "network": {
+    "ports": [
+     {
+      "id": "54503ab9-9021-461c-9a59-cb01fa2ab193"
+     }
+    ]
+   },
+   "ssh_key_name": "geff",
+   "state": "running",
+   "status": "completed",
+   "updated_at": "2024-10-01T18:15:30Z"
+  }
+ ]
+}
