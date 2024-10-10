@@ -1,5 +1,7 @@
 commands:
     - module: vm
+      command: mgc vm instances list -o table
+    - module: vm
       command: mgc vm instances list -o json
     - module: vm
       command: mgc vm instances list -o yaml
