@@ -8,7 +8,7 @@ instances:
   name: "10"
   network:
       ports:
-      - id: 54503ab9-9021-461c-9a59-cb01f22ab000
+      - id: 54503ab9-9021-461c-9a59-cb01f22ab193
   ssh_key_name: geff
   state: running
   status: completed

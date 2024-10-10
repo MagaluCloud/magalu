@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"os"
 	"os/exec"
 	"path"
 	"strconv"
@@ -24,6 +25,13 @@ var runTestsCmd = &cobra.Command{
 	Short:  "Run all available tests",
 	Hidden: false,
 	Run: func(cmd *cobra.Command, args []string) {
+
+		if os.Getenv("MGC_API_KEY") == "" {
+			// TODO: Validar object storage também
+			fmt.Println("Se faz necessário a variavel de ambiente MGC_API_KEY")
+			return
+		}
+
 		rewriteSnap := false
 		if len(args) > 0 {
 			rewriteSnap, _ = strconv.ParseBool(args[0])
