@@ -1,0 +1,4 @@
+commands:
+  - id: 0
+    name: "Check tenant"
+    command: "mgc auth tenant current --raw"
