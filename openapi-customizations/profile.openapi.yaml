@@ -23,6 +23,19 @@ servers:
 paths:
     /v0/ssh-keys:
         get:
-            tags:
-            - ssh_keys
+            parameters:
+            -   name: _limit
+                in: query
+                schema:
+                    type: integer
+                    default: 50
+            -   name: _offset
+                in: query
+                schema:
+                    type: integer
+                    default: 0
+            -   name: _sort
+                in: query
+                schema:
+                    default: name:asc
             x-mgc-output-flag: remove=$.results[*].key
