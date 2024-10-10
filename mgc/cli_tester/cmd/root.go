@@ -30,7 +30,6 @@ var currentDir = func() string {
 	return filepath.Dir(ex)
 }
 
-// Execute executes the root command.
 func Execute() error {
 	return rootCmd.Execute()
 }
@@ -48,7 +47,6 @@ func initConfig() {
 	home := filepath.Dir(ex)
 	cobra.CheckErr(err)
 
-	// Search config in home directory with name ".cobra" (without extension).
 	viper.AddConfigPath(home)
 	viper.SetConfigType("yaml")
 	viper.SetConfigName(VIPER_FILE)

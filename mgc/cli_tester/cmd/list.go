@@ -12,8 +12,6 @@ var lisCommandsCmd = &cobra.Command{
 	Short:  "List all available commands",
 	Hidden: true,
 	Run: func(cmd *cobra.Command, args []string) {
-		// _ = ensureDirectoryExists(path.Join(currentDir(), SNAP_DIR)) MOVER PARA OUTRO LUGAR
-
 		currentCommands, err := loadList()
 
 		if err != nil {

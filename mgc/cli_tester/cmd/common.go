@@ -107,7 +107,6 @@ func compareBytes(expected, actual []byte, ignoreDateUUID bool) error {
 		}
 	}
 
-	// Adicionar linhas restantes, se houver
 	for ; i < len(expectedLines); i++ {
 		diff.WriteString("- " + expectedLines[i] + "\n")
 	}

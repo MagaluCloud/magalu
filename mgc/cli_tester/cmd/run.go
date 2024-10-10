@@ -64,7 +64,7 @@ var runTestsCmd = &cobra.Command{
 				}
 
 				snapshotFile := normalizeCommandToFile(cmmd.Command)
-				if rewriteSnap { // TODO: normalizar o nome do arquivo, utilizando o proprio comando.
+				if rewriteSnap {
 					_ = writeSnapshot(output, SNAP_DIR, snapshotFile)
 				}
 
@@ -84,7 +84,7 @@ var runTestsCmd = &cobra.Command{
 
 		wg.Wait()
 
-		//TODO: Fazer um table bonitinho =)
+		//TODO: Fazer um output bonitinho =)
 		if len(result.errors) == 0 {
 			fmt.Println("Sucesso! Todos os comandos executados sem alterações.")
 			return
