@@ -6,6 +6,7 @@ import (
 	"os/exec"
 	"path"
 	"strconv"
+	"sync"
 
 	"github.com/spf13/cobra"
 )
@@ -44,36 +45,44 @@ var runTestsCmd = &cobra.Command{
 		if err != nil {
 			fmt.Println(err)
 			return
+
 		}
-		var result result
+		result := result{}
+		var wg sync.WaitGroup
 
 		for _, cmmd := range currentCommands {
-			output, err := exec.Command("sh", "-c", cmmd.Command+" --raw").CombinedOutput()
-			if err != nil {
-				result.errors = append(result.errors, resultError{
-					commandsList: cmmd,
-					Error:        err.Error(),
-				})
-				continue
-			}
+			wg.Add(1)
+			go func() {
+				defer wg.Done()
+				output, err := exec.Command("sh", "-c", cmmd.Command+" --raw").CombinedOutput()
+				if err != nil {
+					result.errors = append(result.errors, resultError{
+						commandsList: cmmd,
+						Error:        err.Error(),
+					})
+					return
+				}
 
-			snapshotFile := normalizeCommandToFile(cmmd.Command)
-			if rewriteSnap { // TODO: normalizar o nome do arquivo, utilizando o proprio comando.
-				_ = writeSnapshot(output, SNAP_DIR, snapshotFile)
-			}
+				snapshotFile := normalizeCommandToFile(cmmd.Command)
+				if rewriteSnap { // TODO: normalizar o nome do arquivo, utilizando o proprio comando.
+					_ = writeSnapshot(output, SNAP_DIR, snapshotFile)
+				}
 
-			err = compareSnapshot(output, SNAP_DIR, snapshotFile)
+				err = compareSnapshot(output, SNAP_DIR, snapshotFile)
 
-			if err != nil {
-				result.errors = append(result.errors, resultError{
-					commandsList: cmmd,
-					Error:        err.Error(),
-				})
-				continue
-			}
+				if err != nil {
+					result.errors = append(result.errors, resultError{
+						commandsList: cmmd,
+						Error:        err.Error(),
+					})
+					return
+				}
 
-			result.success = append(result.success, cmmd)
+				result.success = append(result.success, cmmd)
+			}()
 		}
+
+		wg.Wait()
 
 		//TODO: Fazer um table bonitinho =)
 		if len(result.errors) == 0 {

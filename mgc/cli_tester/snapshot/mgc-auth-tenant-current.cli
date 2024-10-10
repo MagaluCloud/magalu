@@ -1,7 +1,8 @@
+WARN	magalu.cloud/core/auth	Failed to get detailed info about Tenant, returning only ID	{"err": "Get \"https://id.magalu.com/account/api/v2/whoami/tenants\": unable to get access token: RefreshToken is not set. Did you forget to log-in?"}
 {
- "email": "financeiro@magalu.cloud",
+ "email": "",
  "is_delegated": false,
- "is_managed": true,
- "legal_name": "**DEVS.CCT.CLI - CLI e Terraform",
- "uuid": "c6e1ff89-7b50-47f8-bb8b-bf6bf4fc956f"
+ "is_managed": false,
+ "legal_name": "",
+ "uuid": ""
 }
