@@ -40,17 +40,21 @@ var runTestsCmd = &cobra.Command{
 		var result result
 
 		for _, cmmd := range currentCommands {
-			// fmt.Printf(`Executando comando: "%v - %s" -> $%s`, cmd.ID, cmd.Name, cmd.Command)
-
 			output, err := exec.Command("sh", "-c", cmmd.Command+" --raw").CombinedOutput()
+			if err != nil {
+				result.errors = append(result.errors, resultError{
+					commandsList: cmmd,
+					Error:        err.Error(),
+				})
+				continue
+			}
 
+			snapshotFile := normalizeCommandToFile(cmmd.Command)
 			if rewriteSnap { // TODO: normalizar o nome do arquivo, utilizando o proprio comando.
-				_ = writeSnapshot(output, SNAP_DIR, cmmd.Module)
+				_ = writeSnapshot(output, SNAP_DIR, snapshotFile)
 			}
 
-			if err == nil {
-				err = compareSnapshot(output, SNAP_DIR, cmmd.Module)
-			}
+			err = compareSnapshot(output, SNAP_DIR, snapshotFile)
 
 			if err != nil {
 				result.errors = append(result.errors, resultError{
@@ -69,11 +73,11 @@ var runTestsCmd = &cobra.Command{
 			return
 		}
 
-		fmt.Println("Erros encontrados:")
+		fmt.Print("\nErros encontrados:\n\n")
 		for _, er := range result.errors {
 
 			fmt.Println("Command: ", er.Command)
-			fmt.Println(er.Error)
+			fmt.Println("Error: ", er.Error)
 		}
 	},
 }

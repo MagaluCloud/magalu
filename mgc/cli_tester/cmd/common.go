@@ -61,7 +61,7 @@ func loadFile(dir, filePath string) ([]byte, error) {
 }
 
 func writeSnapshot(output []byte, dir string, id string) error {
-	_ = createFile(output, dir, fmt.Sprintf("%v.cli", id))
+	_ = createFile(output, dir, fmt.Sprintf("%s.cli", id))
 	return nil
 }
 
@@ -102,7 +102,7 @@ func compareBytes(expected, actual []byte) error {
 }
 
 func compareSnapshot(output []byte, dir string, id string) error {
-	snapContent, err := loadFile(dir, fmt.Sprintf("%v.cli", id))
+	snapContent, err := loadFile(dir, fmt.Sprintf("%s.cli", id))
 	if err == nil {
 		return compareBytes(snapContent, output)
 	}
@@ -113,4 +113,16 @@ func compareSnapshot(output []byte, dir string, id string) error {
 	}
 
 	return fmt.Errorf("Diosmio")
+}
+
+func normalizeCommandToFile(input string) string {
+	words := strings.Fields(input)
+	var filteredWords []string
+	for _, word := range words {
+		if !strings.HasPrefix(word, "--") {
+			filteredWords = append(filteredWords, word)
+		}
+	}
+	result := strings.Join(filteredWords, "-")
+	return result
 }
