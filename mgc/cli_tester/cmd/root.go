@@ -5,6 +5,8 @@ import (
 	"os"
 	"path/filepath"
 
+	mock "magalu.cloud/cli_tester/cmd/mock"
+
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -39,6 +41,7 @@ func init() {
 	rootCmd.AddCommand(lisCommandsCmd)
 	rootCmd.AddCommand(addCommandCmd)
 	rootCmd.AddCommand(runTestsCmd)
+	rootCmd.AddCommand(mock.MockCmd())
 }
 
 func initConfig() {
