@@ -108,9 +108,6 @@ func getOutputFor(sdk *mgcSdk.Sdk, cmd *cobra.Command, result core.Result) strin
 			}
 			output = strings.Join(outs, ";")
 		} else {
-			if strings.HasPrefix(outputFromSpec, "template") {
-				return outputFromSpec
-			}
 			if output != "" {
 				output = output + ";" + outputFromSpec
 			} else {
@@ -120,9 +117,6 @@ func getOutputFor(sdk *mgcSdk.Sdk, cmd *cobra.Command, result core.Result) strin
 	}
 
 	if output == "" {
-		if addAfterWhenEmpty == "" {
-			return defaultFormatter
-		}
 		return defaultFormatter + ";" + addAfterWhenEmpty
 	}
 
