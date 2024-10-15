@@ -29,12 +29,12 @@ modules:
     summary: APIs related to the Kubernetes product.
     url: https://mke.br-ne-1.com/docs/openapi-with-snippets.json
     version: 0.1.0
--   description: APIs referentes ao produto de VPC
+-   description: VPC Api Product
     name: network
     path: network.openapi.yaml
-    summary: APIs referentes ao produto de VPC
+    summary: VPC Api Product
     url: https://network.jaxyendy.com/openapi.json
-    version: 1.133.0
+    version: 1.138.0
 -   description: Manage users global data
     name: profile
     path: profile.openapi.yaml

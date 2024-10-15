@@ -1,5 +1,5 @@
 jaxyendy:
-    - url: https://vpc.br-ne-1.jaxyendy.com/openapi.json
+    - url: https://vpc.prod.se1.br.jaxyendy.com/openapi/openapi-cli.json
       file: network.jaxyendy.openapi.json
       menu: network
       cli: true

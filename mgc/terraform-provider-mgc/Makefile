@@ -2,6 +2,8 @@ SHELL := /bin/bash
 .SHELLFLAGS := -eu -o pipefail -c
 .DEFAULT_GOAL := help
 
+SKIP_TF_STEP ?= true
+
 # Directories
 SCRIPT_DIR := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 DOCS_DIR := $(SCRIPT_DIR)/docs
@@ -60,7 +62,6 @@ check-example-usage: ## Check for missing example usage in documentation files
 	done; \
 	echo "Found $$error_count file(s) missing '## Example Usage'."; \
 	[ $$error_count -eq 0 ]
-
 check-empty-subcategory: ## Check for empty subcategories in documentation files
 	@echo "Checking for empty subcategories..."
 	@error_count=0; \

@@ -522,7 +522,7 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
-            x-mgc-output-flag: table=ID:$.images[*].id,NAME:$.images[*].name,VERSION:$.images[*].version,PLATFORM:$.images[*].platform,END_STANDARD_SUPPORT_AT:$.images[*].end_standard_support_at,STATUS:$.images[*].status
+            x-mgc-output-flag: ''
             security:
             -   OAuth2:
                 - virtual-machine.read
@@ -625,7 +625,7 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
-            x-mgc-output-flag: table
+            x-mgc-output-flag: ''
             security:
             -   OAuth2:
                 - virtual-machine.read
@@ -742,7 +742,7 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
-            x-mgc-output-flag: table=ID:$.id
+            x-mgc-output-flag: ''
             security:
             -   OAuth2:
                 - virtual-machine.write
@@ -1079,8 +1079,7 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
-            x-mgc-output-flag: table=ID:$.id,NAME:$.name,STATE:$.state,STATUS:$..status,MACHINE_TYPE:$.machine_type,IMAGE:$.image,
-                CREATED_AT:$.created_at, SSH_KEY_NAME:$.ssh_key_name
+            x-mgc-output-flag: ''
             security:
             -   OAuth2:
                 - virtual-machine.read
@@ -1928,8 +1927,7 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
-            x-mgc-output-flag: table=ID:$.snapshots[*].id,NAME:$.snapshots[*].name,STATE:$.snapshots[*].state,STATUS:$.snapshots[*].status,SIZE:$.snapshots[*].size,INSTANCE:$.snapshots[*].instance,
-                CREATED_AT:$.snapshots[*].created_at
+            x-mgc-output-flag: ''
             security:
             -   OAuth2:
                 - virtual-machine.read
@@ -2030,7 +2028,7 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
-            x-mgc-output-flag: table=ID:$.id
+            x-mgc-output-flag: ''
             security:
             -   OAuth2:
                 - virtual-machine.write
@@ -2140,8 +2138,7 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
-            x-mgc-output-flag: table=ID:$.id,NAME:$.name,STATE:$.state,STATUS:$.status,SIZE:$.size,INSTANCE:$.instance,
-                CREATED_AT:$.created_at
+            x-mgc-output-flag: ''
             security:
             -   OAuth2:
                 - virtual-machine.read
@@ -2244,7 +2241,7 @@ paths:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
             x-mgc-name: restore
-            x-mgc-output-flag: table=ID:$.id
+            x-mgc-output-flag: ''
             security:
             -   OAuth2:
                 - virtual-machine.write

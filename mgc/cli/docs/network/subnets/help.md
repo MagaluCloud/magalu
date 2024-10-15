@@ -1,4 +1,4 @@
-# subnets
+# Operations related to Subnets
 
 ## Usage:
 ```bash
@@ -9,8 +9,9 @@ Usage:
 
 ## Product catalog:
 - Commands:
-- subnets      subnets
-- vpcs-subnets vpcs-subnets
+- delete      Delete a Subnet
+- get         Subnet Details
+- update      Update Subnet
 
 ## Other commands:
 - Flags:

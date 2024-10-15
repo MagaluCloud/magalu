@@ -3,6 +3,7 @@ package http
 import (
 	"bytes"
 	"context"
+	"encoding/json"
 	"fmt"
 	"io"
 	"mime/multipart"
@@ -53,6 +54,71 @@ func TestDecodeJSON(t *testing.T) {
 	if decoded.Data != "some string" {
 		t.Errorf("DecodeJSON function failed. 'dummyResponseBodyStruct.Data' expected %s but got %s", expectedData, decoded.Data)
 	}
+}
+
+type testTypesDecodeJson struct {
+	Name     string  `json:"name"`
+	Latitude string  `json:"latitude"`
+	CPUCount float64 `json:"cpu_count"`
+	RAM      int     `json:"ram"`
+	Tops     []struct {
+		Read  int `json:"read"`
+		Write int `json:"write"`
+	} `json:"tops"`
+}
+
+func TestDecodeJSONComplex(t *testing.T) {
+	expectedData := `{
+					  "name": "play",
+					  "latitude": "2",
+					  "cpu_count": 1.32,
+					  "ram": 16,
+					  "tops": [
+					    {
+					      "read": 1000,
+					      "write": 1000
+					    }
+					  ]
+					}`
+	dummyResponse := &http.Response{
+		Body: io.NopCloser(bytes.NewBufferString(expectedData)),
+	}
+	decoded := new(testTypesDecodeJson)
+	err := DecodeJSON(dummyResponse, &decoded)
+	if err != nil {
+		t.Errorf("DecodeJSON function failed: %s", err)
+	}
+
+	latitudeReturn := string("2")
+	if decoded.Latitude != latitudeReturn {
+		t.Errorf("DecodeJSON function failed. 'testTypesDecodeJson' expected %s but got %s", decoded.Latitude, latitudeReturn)
+	}
+
+	nameReturn := string("play")
+	if decoded.Name != nameReturn {
+		t.Errorf("DecodeJSON function failed. 'testTypesDecodeJson' expected %s but got %s", decoded.Name, nameReturn)
+	}
+
+	cpuReturn := float64(1.32)
+	if decoded.CPUCount != cpuReturn {
+		t.Errorf("DecodeJSON function failed. 'testTypesDecodeJson' expected %v but got %v", decoded.CPUCount, cpuReturn)
+	}
+
+	ramReturn := int(16)
+	if decoded.RAM != ramReturn {
+		t.Errorf("DecodeJSON function failed. 'testTypesDecodeJson' expected %v but got %v", decoded.RAM, ramReturn)
+	}
+
+	readReturn := int(1000)
+	if decoded.Tops[0].Read != readReturn {
+		t.Errorf("DecodeJSON function failed. 'testTypesDecodeJson' expected %v but got %v", decoded.Tops[0].Read, readReturn)
+	}
+
+	writeReturn := int(1000)
+	if decoded.Tops[0].Write != writeReturn {
+		t.Errorf("DecodeJSON function failed. 'testTypesDecodeJson' expected %v but got %v", decoded.Tops[0].Write, writeReturn)
+	}
+
 }
 
 func TestNewHttpErrorFromResponse(t *testing.T) {
@@ -367,4 +433,51 @@ more dummy text
 			t.Fatalf("should return error when T is not 'any' or a decodable struct, got nil instead for bool")
 		}
 	})
+}
+
+func TestConvertComplexJSONNumbers(t *testing.T) {
+	input := map[string]interface{}{
+		"types": map[string]interface{}{
+			"name":      "play",
+			"latitude":  "2",
+			"cpu_count": 1.32,
+			"tops": map[string]interface{}{
+				"read":  json.Number("1000"),
+				"write": json.Number("1000"),
+			},
+		},
+	}
+
+	expected := map[string]interface{}{
+		"types": map[string]interface{}{
+			"name":      "play",
+			"latitude":  "2",
+			"cpu_count": 1.32,
+			"tops": map[string]interface{}{
+				"read":  int64(1000),
+				"write": int64(1000),
+			},
+		},
+	}
+
+	inputValue := reflect.ValueOf(input)
+	err := convertJSONNumbers(inputValue)
+	if err != nil {
+		t.Fatalf("convertJSONNumbers() error = %v", err)
+	}
+
+	if !reflect.DeepEqual(input, expected) {
+		t.Errorf("convertJSONNumbers() = %v, want %v", input, expected)
+	}
+
+	if tops, ok := input["types"].(map[string]interface{})["tops"].(map[string]interface{}); ok {
+		if read, ok := tops["read"].(int64); !ok || read != 1000 {
+			t.Errorf("Expected 'read' to be int64(1000), got %v", tops["read"])
+		}
+		if write, ok := tops["write"].(int64); !ok || write != 1000 {
+			t.Errorf("Expected 'write' to be int64(1000), got %v", tops["write"])
+		}
+	} else {
+		t.Error("Expected structure not found in the result")
+	}
 }

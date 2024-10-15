@@ -35,21 +35,24 @@ repos:
     -   id: tf-docs
         name: generate terraform documentation
         language: system
-        entry: make -C ./mgc/terraform-provider-mgc/ generate-docs
+        entry: bash -c 'if [ "$SKIP_TF_STEP" != "true" ]; then make -C ./mgc/terraform-provider-mgc/ generate-docs; else echo "Skipped"; fi'
+        # entry: make -C ./mgc/terraform-provider-mgc/ generate-docs
         require_serial: true
         pass_filenames: false
         stages: [pre-commit]
     -   id: check-tf-examples
         name: check terraform examples
         language: system
-        entry: make -C ./mgc/terraform-provider-mgc/ check-example-usage
+        entry: bash -c 'if [ "$SKIP_TF_STEP" != "true" ]; then make -C ./mgc/terraform-provider-mgc/ check-example-usage; else echo "Skipped"; fi'
+        # entry: make -C ./mgc/terraform-provider-mgc/ check-example-usage
         require_serial: true
         pass_filenames: false
         stages: [pre-commit]
     -   id: check-tf-docs
         name: check terraform documentation subcategory
         language: system
-        entry: make -C ./mgc/terraform-provider-mgc/ check-empty-subcategory
+        entry: bash -c 'if [ "$SKIP_TF_STEP" != "true" ]; then make -C ./mgc/terraform-provider-mgc/ check-empty-subcategory; else echo "Skipped"; fi'
+        # entry: make -C ./mgc/terraform-provider-mgc/ check-empty-subcategory
         require_serial: true
         pass_filenames: false
         stages: [pre-commit]

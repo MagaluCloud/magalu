@@ -9,6 +9,8 @@ import (
 	"mime"
 	"mime/multipart"
 	"net/http"
+	"reflect"
+	"strconv"
 	"strings"
 	"time"
 
@@ -66,9 +68,63 @@ func DecodeJSON[T core.Value](resp *http.Response, data *T) error {
 	}
 	decoder := json.NewDecoder(body)
 	decoder.DisallowUnknownFields()
+	decoder.UseNumber()
 	err = decoder.Decode(data)
 	if err != nil {
 		return fmt.Errorf("error decoding JSON response body: %w", err)
+	}
+
+	err = convertJSONNumbers(reflect.ValueOf(data).Elem())
+	if err != nil {
+		return fmt.Errorf("error converting JSON numbers: %w", err)
+	}
+	return nil
+}
+
+func convertJSONNumbers(v reflect.Value) error {
+	switch v.Kind() {
+	case reflect.Interface:
+		return convertJSONNumbers(v.Elem())
+	case reflect.Ptr:
+		return convertJSONNumbers(v.Elem())
+	case reflect.Struct:
+		for i := 0; i < v.NumField(); i++ {
+			if err := convertJSONNumbers(v.Field(i)); err != nil {
+				return err
+			}
+		}
+	case reflect.Map:
+		for _, key := range v.MapKeys() {
+			val := v.MapIndex(key)
+			if val.Kind() == reflect.Interface {
+				val = val.Elem()
+			}
+			if val.Kind() == reflect.String {
+				if num, ok := val.Interface().(json.Number); ok {
+					if i, err := strconv.ParseInt(string(num), 10, 64); err == nil {
+						v.SetMapIndex(key, reflect.ValueOf(i))
+					} else if f, err := strconv.ParseFloat(string(num), 64); err == nil {
+						v.SetMapIndex(key, reflect.ValueOf(f))
+					}
+				}
+			} else if err := convertJSONNumbers(val); err != nil {
+				return err
+			}
+		}
+	case reflect.Slice:
+		for i := 0; i < v.Len(); i++ {
+			if err := convertJSONNumbers(v.Index(i)); err != nil {
+				return err
+			}
+		}
+	case reflect.String:
+		if num, ok := v.Interface().(json.Number); ok {
+			if i, err := strconv.ParseInt(string(num), 10, 64); err == nil {
+				v.Set(reflect.ValueOf(i))
+			} else if f, err := strconv.ParseFloat(string(num), 64); err == nil {
+				v.Set(reflect.ValueOf(f))
+			}
+		}
 	}
 	return nil
 }

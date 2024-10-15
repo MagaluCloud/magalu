@@ -18,7 +18,6 @@ import (
 	bws "github.com/geffersonFerraz/brazilian-words-sorter"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	mgcSdk "magalu.cloud/lib"
-	sdkNetworkVPCs "magalu.cloud/lib/products/network/vpc"
 	sdkVmImages "magalu.cloud/lib/products/virtual_machine/images"
 	sdkVmInstances "magalu.cloud/lib/products/virtual_machine/instances"
 	sdkVmMachineTypes "magalu.cloud/lib/products/virtual_machine/machine_types"
@@ -40,7 +39,6 @@ type vmInstances struct {
 	vmInstances    sdkVmInstances.Service
 	vmImages       sdkVmImages.Service
 	vmMachineTypes sdkVmMachineTypes.Service
-	nwVPCs         sdkNetworkVPCs.Service
 }
 
 func (r *vmInstances) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -53,11 +51,12 @@ func (r *vmInstances) Configure(ctx context.Context, req resource.ConfigureReque
 	}
 
 	var err error
-	r.sdkClient, err = client.NewSDKClient(req)
+	var errDetail error
+	r.sdkClient, err, errDetail = client.NewSDKClient(req)
 	if err != nil {
 		resp.Diagnostics.AddError(
 			err.Error(),
-			fmt.Sprintf("Expected provider config, got: %T. Please report this issue to the provider developers.", req.ProviderData),
+			errDetail.Error(),
 		)
 		return
 	}
@@ -65,7 +64,6 @@ func (r *vmInstances) Configure(ctx context.Context, req resource.ConfigureReque
 	r.vmInstances = sdkVmInstances.NewService(ctx, r.sdkClient)
 	r.vmImages = sdkVmImages.NewService(ctx, r.sdkClient)
 	r.vmMachineTypes = sdkVmMachineTypes.NewService(ctx, r.sdkClient)
-	r.nwVPCs = sdkNetworkVPCs.NewService(ctx, r.sdkClient)
 }
 
 type vmInstancesResourceModel struct {

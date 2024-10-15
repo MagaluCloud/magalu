@@ -15,6 +15,7 @@ Usage:
 - api-key      Manage your ID Magalu API keys
 - clients      Manage Clients (Oauth Applications) to use ID Magalu
 - login        Authenticate with Magalu Cloud
+- logout       Run logout
 - tenant       Manage Tenants
 
 ## Other commands:

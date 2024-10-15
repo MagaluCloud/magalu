@@ -365,6 +365,15 @@ func (o *Auth) SetTokens(token *LoginResult) error {
 	return o.writeCurrentConfig()
 }
 
+func (o *Auth) Logout() error {
+	o.accessKeyId = ""
+	o.secretAccessKey = ""
+	o.apiKey = ""
+	o.accessToken = ""
+	o.refreshToken = ""
+	return o.writeCurrentConfig()
+}
+
 func (o *Auth) SetAccessKey(id string, key string) error {
 	o.accessKeyId = id
 	o.secretAccessKey = key

@@ -15,24 +15,25 @@ type SDKFrom interface {
 	resource.ConfigureRequest | datasource.ConfigureRequest
 }
 
-func NewSDKClient[T SDKFrom](req T) (*mgcSdk.Client, error) {
+func NewSDKClient[T SDKFrom](req T) (*mgcSdk.Client, error, error) {
 	var config tfutil.ProviderConfig
 
+	devErrMsg := "fail to parse provider config"
 	switch tp := any(req).(type) {
 	case resource.ConfigureRequest:
 		if cfg, ok := tp.ProviderData.(tfutil.ProviderConfig); ok {
 			config = cfg
 			break
 		}
-		return nil, fmt.Errorf("unexpected Resource Configure Type")
+		return nil, fmt.Errorf("%s", devErrMsg), fmt.Errorf("unexpected Resource Configure Type")
 	case datasource.ConfigureRequest:
 		if cfg, ok := tp.ProviderData.(tfutil.ProviderConfig); ok {
 			config = cfg
 			break
 		}
-		return nil, fmt.Errorf("unexpected Data Source Configure Type")
+		return nil, fmt.Errorf("%s", devErrMsg), fmt.Errorf("unexpected Data Source Configure Type")
 	default:
-		return nil, fmt.Errorf("")
+		return nil, fmt.Errorf("%s", devErrMsg), fmt.Errorf("provider data is null")
 	}
 
 	local_sdk := sdk.NewSdk()
@@ -44,14 +45,17 @@ func NewSDKClient[T SDKFrom](req T) (*mgcSdk.Client, error) {
 	if config.Env.ValueString() != "" {
 		_ = sdkClient.Sdk().Config().SetTempConfig("env", config.Env.ValueString())
 	}
-	if config.ApiKey.ValueString() != "" {
-		_ = sdkClient.Sdk().Auth().SetAPIKey(config.ApiKey.ValueString())
+
+	if config.ApiKey.ValueString() == "" {
+		return nil, fmt.Errorf("provider with api_key must be setted"), fmt.Errorf(`please check the resource to see if they are using 'provider' and verify if the provider has the 'api_key' correctly set`)
 	}
+
+	_ = sdkClient.Sdk().Auth().SetAPIKey(config.ApiKey.ValueString())
 
 	if config.ObjectStorage != nil && config.ObjectStorage.ObjectKeyPair != nil {
 		sdkClient.Sdk().Config().AddTempKeyPair("apikey", config.ObjectStorage.ObjectKeyPair.KeyID.ValueString(),
 			config.ObjectStorage.ObjectKeyPair.KeySecret.ValueString())
 	}
 
-	return sdkClient, nil
+	return sdkClient, nil, nil
 }
