@@ -44,7 +44,7 @@ Usage:
 - This is the same as '--network.interface=security_groups:array'. (default [])
 - --network.vpc object                        network's vpc property: Vpc (at least one of: single property: id or single property: name)
 - Use --network.vpc=help for more details
-- This is the same as '--network=vpc:object'. (default {"name":"default"})
+- This is the same as '--network=vpc:object'. (default {"name":"vpc_default"})
 - --network.vpc.id string                     Vpc: Id (between 1 and 255 characters)
 - This is the same as '--network.vpc=id:string'.
 - --network.vpc.name string                   Vpc: Name (between 1 and 255 characters)
