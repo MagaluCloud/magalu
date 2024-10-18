@@ -236,8 +236,8 @@ func securityGroupRulesSdkModelToTerraform(rules *networkSecurityGroups.GetResul
 			Error:           types.StringPointerValue(rule.Error),
 			Ethertype:       types.StringPointerValue(rule.Ethertype),
 			Id:              types.StringPointerValue(rule.Id),
-			PortRangeMax:    types.Int64PointerValue(convertIntPointerToInt64Pointer(rule.PortRangeMax)),
-			PortRangeMin:    types.Int64PointerValue(convertIntPointerToInt64Pointer(rule.PortRangeMin)),
+			PortRangeMax:    types.Int64PointerValue(tfutil.ConvertIntPointerToInt64Pointer(rule.PortRangeMax)),
+			PortRangeMin:    types.Int64PointerValue(tfutil.ConvertIntPointerToInt64Pointer(rule.PortRangeMin)),
 			Protocol:        types.StringPointerValue(rule.Protocol),
 			RemoteGroupId:   types.StringPointerValue(rule.RemoteGroupId),
 			RemoteIpPrefix:  types.StringPointerValue(rule.RemoteIpPrefix),
@@ -246,12 +246,4 @@ func securityGroupRulesSdkModelToTerraform(rules *networkSecurityGroups.GetResul
 		})
 	}
 	return terraformRules
-}
-
-func convertIntPointerToInt64Pointer(intPtr *int) *int64 {
-	if intPtr == nil {
-		return nil
-	}
-	int64Val := int64(*intPtr)
-	return &int64Val
 }

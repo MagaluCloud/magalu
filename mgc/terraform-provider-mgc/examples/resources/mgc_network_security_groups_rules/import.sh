@@ -1,0 +1,1 @@
+terraform import mgc_network_security_groups_rules.example 123

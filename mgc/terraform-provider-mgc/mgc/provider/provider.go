@@ -159,6 +159,7 @@ func (p *mgcProvider) Resources(ctx context.Context) []func() resource.Resource 
 		resources.NewSshKeysResource,
 		resources.NewNetworkVPCResource,
 		resources.NewNetworkSecurityGroupsResource,
+		resources.NewNetworkSecurityGroupsRulesResource,
 	)
 
 	if err != nil {
