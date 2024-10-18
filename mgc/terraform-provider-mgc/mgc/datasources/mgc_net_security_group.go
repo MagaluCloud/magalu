@@ -165,7 +165,7 @@ func (r *NetworkSecurityGroupResource) Schema(_ context.Context, _ datasource.Sc
 }
 
 func (r *NetworkSecurityGroupResource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_network_security_groups"
+	resp.TypeName = req.ProviderTypeName + "_network_security_group"
 }
 
 func (r *NetworkSecurityGroupResource) Configure(ctx context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
