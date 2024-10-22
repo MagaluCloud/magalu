@@ -1,0 +1,1 @@
+terraform import mgc_network_vpcs.example 123

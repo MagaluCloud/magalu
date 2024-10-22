@@ -1,5 +1,5 @@
 data "mgc_network_vpc" "example" {
-  id = mgc_network_vpc.example.id
+  id = mgc_network_vpcs.example.id
 }
 
 output "datasource_vpc_id" {

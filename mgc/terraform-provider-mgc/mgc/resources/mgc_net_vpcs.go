@@ -30,7 +30,7 @@ func NewNetworkVPCResource() resource.Resource {
 }
 
 func (r *NetworkVPCResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_network_vpc"
+	resp.TypeName = req.ProviderTypeName + "_network_vpcs"
 }
 
 func (r *NetworkVPCResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
