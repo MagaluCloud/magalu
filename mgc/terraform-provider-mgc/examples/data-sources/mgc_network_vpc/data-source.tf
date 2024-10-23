@@ -3,5 +3,5 @@ data "mgc_network_vpc" "example" {
 }
 
 output "datasource_vpc_id" {
-  value      = data.mgc_network_vpc.example
+  value = data.mgc_network_vpc.example
 }
