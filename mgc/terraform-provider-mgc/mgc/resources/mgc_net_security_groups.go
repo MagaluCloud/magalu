@@ -157,8 +157,6 @@ func (r *NetworkSecurityGroupsResource) Delete(ctx context.Context, req resource
 		resp.Diagnostics.AddError("Failed to delete Security Group", err.Error())
 		return
 	}
-
-	resp.Diagnostics.Append(resp.State.Set(ctx, data)...)
 }
 
 func (r *NetworkSecurityGroupsResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {

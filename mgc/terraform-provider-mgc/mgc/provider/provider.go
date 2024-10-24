@@ -162,6 +162,7 @@ func (p *mgcProvider) Resources(ctx context.Context) []func() resource.Resource 
 		resources.NewNetworkSecurityGroupsResource,
 		resources.NewNetworkSecurityGroupsRulesResource,
 		resources.NewNetworkVPCInterfaceResource,
+		resources.NewNetworkSecurityGroupsAttachResource,
 	)
 
 	if err != nil {

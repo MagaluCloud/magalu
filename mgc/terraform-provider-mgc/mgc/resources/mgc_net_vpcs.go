@@ -147,8 +147,6 @@ func (r *NetworkVPCResource) Delete(ctx context.Context, req resource.DeleteRequ
 		resp.Diagnostics.AddError("Failed to delete VPC", err.Error())
 		return
 	}
-
-	resp.State.RemoveResource(ctx)
 }
 
 func (r *NetworkVPCResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {

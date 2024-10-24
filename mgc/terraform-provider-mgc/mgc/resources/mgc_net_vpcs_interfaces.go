@@ -132,8 +132,6 @@ func (r *NetworkVPCInterfaceResource) Delete(ctx context.Context, req resource.D
 		resp.Diagnostics.AddError("Failed to delete VPC Interface", err.Error())
 		return
 	}
-
-	resp.Diagnostics.Append(resp.State.Set(ctx, nil)...)
 }
 
 func (r *NetworkVPCInterfaceResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
