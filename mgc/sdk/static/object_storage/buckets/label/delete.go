@@ -32,7 +32,7 @@ var getDelete = utils.NewLazyLoader(func() core.Executor {
 })
 
 func deleteLabels(ctx context.Context, params deleteBucketLabelParams, cfg common.Config) (_ core.Value, err error) {
-	res, err := getTags(ctx, GetBucketLabelParams{Bucket: params.Bucket}, cfg)
+	res, err := GetTags(ctx, GetBucketLabelParams{Bucket: params.Bucket}, cfg)
 	if err != nil {
 		return
 	}

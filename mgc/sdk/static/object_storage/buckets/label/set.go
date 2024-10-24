@@ -49,7 +49,7 @@ var getSet = utils.NewLazyLoader(func() core.Executor {
 })
 
 func setLabels(ctx context.Context, params setBucketLabelParams, cfg common.Config) (_ core.Value, err error) {
-	res, err := getTags(ctx, GetBucketLabelParams{Bucket: params.Bucket}, cfg)
+	res, err := GetTags(ctx, GetBucketLabelParams{Bucket: params.Bucket}, cfg)
 	if err != nil {
 		return
 	}
