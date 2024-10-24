@@ -102,16 +102,20 @@ func (r *NetworkPublicIPResource) Create(ctx context.Context, req resource.Creat
 		return
 	}
 
-	pip, err := r.networkPIP.CreateContext(ctx, convertCreateTFModelToSDKModel(data), tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, networkPIP.CreateConfigs{}))
+	createdPIP, err := r.networkPIP.CreateContext(ctx, convertCreateTFModelToSDKModel(data), tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, networkPIP.CreateConfigs{}))
 
 	if err != nil {
 		resp.Diagnostics.AddError("Failed to create Public IP", err.Error())
 		return
 	}
 
+	pip, err := getPublicIPData(r.sdkClient, ctx, createdPIP.Id)
+	if err != nil {
+		resp.Diagnostics.AddError("Failed to fetch public IP address")
+	}
+
 	data.Id = types.StringPointerValue(pip.Id)
-	// TODO: CreateResults only returns Id, should we get the rest?
-	// data.PublicIP = types.StringPointerValue(pip.PublicIp)
+	data.PublicIP = types.StringPointerValue(pip.PublicIp)
 	resp.Diagnostics.Append(resp.State.Set(ctx, data)...)
 }
 
@@ -122,6 +126,16 @@ func convertCreateTFModelToSDKModel(create NetworkPublicIPModel) networkPIP.Crea
 	}
 }
 
+func getPublicIPData(sdkClient mgcSdk.Client, ctx context.Context, pipId string) (
+	result GetResult,
+	err error,
+) {
+	return r.networkPIP.GetContext(ctx, networkPIP.GetParameters{
+		PublicIpId: pipId,
+	},
+		tfutil.GetConfigsFromTags(sdkClient.Sdk().Config().Get, networkPIP.GetConfigs{}))
+}
+
 func (r *NetworkPublicIPResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
 	var data NetworkPublicIPModel
 	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
@@ -129,11 +143,7 @@ func (r *NetworkPublicIPResource) Read(ctx context.Context, req resource.ReadReq
 		return
 	}
 
-	pip, err := r.networkPIP.GetContext(ctx, networkPIP.GetParameters{
-		PublicIpId: data.Id.ValueString(),
-	},
-		tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, networkPIP.GetConfigs{}))
-
+	pip, err := getPublicIPData(r.sdkClient, ctx, createdPIP.Id)
 	if err != nil {
 		resp.Diagnostics.AddError("Failed to read public IP", err.Error())
 		return
