@@ -20,18 +20,6 @@ type NetworkPublicIPModel struct {
 	PublicIP    types.String `tfsdk:"public_ip"`
 	Description types.String `tfsdk:"description"`
 	VPCId       types.String `tfsdk:"vpc_id"`
-
-	//  "id": "fe140324-7795-4d8b-b607-ce6b9096ce4a",
-	//  "description": "Created With Port: port-test-67474460-c42e-4a11-b1c7-0465a55002e1",
-	//  "public_ip": "201.23.18.173",
-	//  "vpc_id": "4ed41b5b-bf84-4a81-a16a-6193ce626f0c"
-
-	//  "port_id": "945519cc-42d2-439c-a9a1-eb999c098204",
-	//  "error": null,
-	//  "external_id": null,
-	//  "project_type": null,
-	//  "status": "created",
-	//  "tenant_id": null,
 }
 
 type NetworkPublicIPResource struct {
