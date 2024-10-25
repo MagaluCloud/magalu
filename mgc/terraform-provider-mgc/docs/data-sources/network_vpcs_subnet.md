@@ -3,12 +3,12 @@
 page_title: "mgc_network_vpcs_subnet Data Source - terraform-provider-mgc"
 subcategory: "Network"
 description: |-
-  
+  Network VPC Subnet
 ---
 
 # mgc_network_vpcs_subnet (Data Source)
 
-
+Network VPC Subnet
 
 ## Example Usage
 

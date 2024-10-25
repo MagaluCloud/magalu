@@ -46,6 +46,7 @@ func (r *mgcNetworkVpcsSubnetDatasource) Metadata(_ context.Context, req datasou
 
 func (r *mgcNetworkVpcsSubnetDatasource) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
+		Description: "Network VPC Subnet",
 		Attributes: map[string]schema.Attribute{
 			"cidr_block": schema.StringAttribute{
 				Description: "The CIDR block of the subnet",
