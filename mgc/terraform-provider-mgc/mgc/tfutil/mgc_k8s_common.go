@@ -45,12 +45,10 @@ func ConvertToNodePool(np *cluster.GetResultNodePoolsItem) NodePool {
 		ID:          types.StringValue(np.Id),
 	}
 
-	// Convert Flavor
 	if np.InstanceTemplate.Flavor.Name != "" {
 		nodePool.Flavor = types.StringValue(np.InstanceTemplate.Flavor.Name)
 	}
 
-	// Convert Tags
 	if np.Tags != nil {
 		tags := make([]types.String, len(*np.Tags))
 		for i, tag := range *np.Tags {
@@ -61,7 +59,6 @@ func ConvertToNodePool(np *cluster.GetResultNodePoolsItem) NodePool {
 		}
 	}
 
-	// Convert Taints
 	if np.Taints != nil {
 		var taints []Taint
 		for _, taint := range *np.Taints {
@@ -92,12 +89,10 @@ func ConvertToNodePoolGet(np *sdkNodepool.GetResult) NodePool {
 		ID:          types.StringValue(np.Id),
 	}
 
-	// Convert Flavor
 	if np.InstanceTemplate.Flavor.Name != "" {
 		nodePool.Flavor = types.StringValue(np.InstanceTemplate.Flavor.Name)
 	}
 
-	// Convert Tags
 	if np.Tags != nil {
 		tags := make([]types.String, len(*np.Tags))
 		for i, tag := range *np.Tags {
@@ -146,12 +141,10 @@ func ConvertToNodePoolCreate(np *sdkNodepool.CreateResult) NodePool {
 		ID:          types.StringValue(np.Id),
 	}
 
-	// Convert Flavor
 	if np.InstanceTemplate.Flavor.Name != "" {
 		nodePool.Flavor = types.StringValue(np.InstanceTemplate.Flavor.Name)
 	}
 
-	// Convert Tags
 	if np.Tags != nil {
 		tags := make([]types.String, len(*np.Tags))
 		for i, tag := range *np.Tags {
@@ -192,12 +185,10 @@ func ConvertToNodePoolUpdate(np *sdkNodepool.UpdateResult) NodePool {
 		ID:          types.StringValue(np.Id),
 	}
 
-	// Convert Flavor
 	if np.InstanceTemplate.Flavor.Name != "" {
 		nodePool.Flavor = types.StringValue(np.InstanceTemplate.Flavor.Name)
 	}
 
-	// Convert Tags
 	if np.Tags != nil {
 		tags := make([]types.String, len(*np.Tags))
 		for i, tag := range *np.Tags {
