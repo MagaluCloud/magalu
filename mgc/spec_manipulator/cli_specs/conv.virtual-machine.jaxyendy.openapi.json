@@ -5194,7 +5194,7 @@
       "SnapshotCopyRequest": {
         "type": "object",
         "properties": {
-          "region": {
+          "destination_region": {
             "type": "string",
             "title": "Regions",
             "enum": [
@@ -5206,10 +5206,10 @@
         },
         "title": "SnapshotCopyRequest",
         "required": [
-          "region"
+          "destination_region"
         ],
         "example": {
-          "region": "br-ne-1"
+          "destination_region": "br-ne-1"
         }
       },
       "SnapshotCreateRequestV1": {

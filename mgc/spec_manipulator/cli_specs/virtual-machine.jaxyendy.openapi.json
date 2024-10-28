@@ -4421,16 +4421,16 @@
       "SnapshotCopyRequest": {
         "type": "object",
         "properties": {
-          "region": {
+          "destination_region": {
             "$ref": "#/components/schemas/Regions"
           }
         },
         "title": "SnapshotCopyRequest",
         "required": [
-          "region"
+          "destination_region"
         ],
         "example": {
-          "region": "br-ne-1"
+          "destination_region": "br-ne-1"
         }
       },
       "SnapshotCreateRequestV1": {
