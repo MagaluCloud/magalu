@@ -11,6 +11,11 @@ output "public_ip_id" {
   value = mgc_network_public_ips.example.public_ip
 }
 
-#TODO output "datasource_public_ip_id" {
-# value = data.mgc_network_public_ips.example
-# }
+data "mgc_network_public_ips" "example" {
+  id = mgc_network_public_ips.example.id
+}
+
+output "datasource_public_ip_id" {
+  value = data.mgc_network_public_ips.example
+}
+

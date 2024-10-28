@@ -240,6 +240,7 @@ func collectGroupResources(
 		"mgc_virtual_machine_backups",
 		"mgc_network_vpcs",
 		"mgc_network_security_groups",
+		"mgc_network_public_ips",
 	}
 
 	if slices.Contains(ignoredTFModules, strResourceName) {
@@ -298,6 +299,7 @@ func (p *mgcProvider) DataSources(ctx context.Context) []func() datasource.DataS
 		datasources.NewDataSourceVmInstances,
 		datasources.NewNetworkVPCDatasource,
 		datasources.NewNetworkSecurityGroupDataSource,
+		datasources.NewNetworkPublicIPDataSource,
 	)
 
 	return dataSources

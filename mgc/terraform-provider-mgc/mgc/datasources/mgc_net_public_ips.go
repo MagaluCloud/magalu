@@ -20,20 +20,20 @@ type NetworkPublicIPModel struct {
 	PortId      types.String `tfsdk:"port_id"`
 }
 
-type NetworkPublicIPDatasource struct {
+type NetworkPublicIPDataSource struct {
 	sdkClient  *mgcSdk.Client
 	networkPIP networkPIP.Service
 }
 
-func NewNetworkPublicIPDatasources() datasource.DataSource {
-	return &NetworkPublicIPDatasource{}
+func NewNetworkPublicIPDataSource() datasource.DataSource {
+	return &NetworkPublicIPDataSource{}
 }
 
-func (r *NetworkPublicIPDatasource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
+func (r *NetworkPublicIPDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
 	resp.TypeName = req.ProviderTypeName + "_network_public_ips"
 }
 
-func (r *NetworkPublicIPDatasource) Configure(ctx context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
+func (r *NetworkPublicIPDataSource) Configure(ctx context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
 	if req.ProviderData == nil {
 		return
 	}
@@ -53,7 +53,7 @@ func (r *NetworkPublicIPDatasource) Configure(ctx context.Context, req datasourc
 	r.networkPIP = networkPIP.NewService(ctx, r.sdkClient)
 }
 
-func (r *NetworkPublicIPDatasource) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
+func (r *NetworkPublicIPDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		Description: "Network Public IP",
 		Attributes: map[string]schema.Attribute{
@@ -81,7 +81,7 @@ func (r *NetworkPublicIPDatasource) Schema(_ context.Context, _ datasource.Schem
 	}
 }
 
-func (r *NetworkPublicIPDatasource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
+func (r *NetworkPublicIPDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
 	data := &NetworkPublicIPModel{}
 	resp.Diagnostics.Append(req.Config.Get(ctx, &data)...)
 
