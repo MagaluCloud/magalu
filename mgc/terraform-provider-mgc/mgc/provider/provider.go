@@ -157,6 +157,7 @@ func (p *mgcProvider) Resources(ctx context.Context) []func() resource.Resource 
 		resources.NewBlockStorageSnapshotsResource,
 		resources.NewBlockStorageVolumesResource,
 		resources.NewSshKeysResource,
+		resources.NewNetworkPublicIPResource,
 		resources.NewNetworkVPCResource,
 		resources.NewNetworkSecurityGroupsResource,
 		resources.NewNetworkSecurityGroupsRulesResource,
