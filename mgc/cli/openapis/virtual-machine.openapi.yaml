@@ -4271,7 +4271,7 @@ components:
         SnapshotCopyRequest:
             type: object
             properties:
-                region:
+                destination_region:
                     type: string
                     title: Regions
                     enum:
@@ -4280,9 +4280,9 @@ components:
                     - br-ne-1
             title: SnapshotCopyRequest
             required:
-            - region
+            - destination_region
             example:
-                region: br-ne-1
+                destination_region: br-ne-1
         SnapshotCreateRequestV1:
             type: object
             properties:
