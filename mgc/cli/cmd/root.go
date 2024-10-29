@@ -36,7 +36,7 @@ func Execute() (err error) {
 	sdk := &mgcSdk.Sdk{}
 
 	vv := fmt.Sprintf("%s (%s/%s)",
-		mgcSdk.Version,
+		version,
 		runtime.GOOS,
 		runtime.GOARCH)
 
