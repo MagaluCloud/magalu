@@ -2,8 +2,10 @@ package buckets
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"strconv"
+	"sync"
 
 	"magalu.cloud/core"
 	"magalu.cloud/core/utils"
@@ -14,7 +16,7 @@ import (
 type BucketResponse struct {
 	CreationDate string `xml:"CreationDate"`
 	Name         string `xml:"Name"`
-	BucketSize   int64  `json:"BucketSize,omitempty" xml:"BucketSize"`
+	BucketSize   string `json:"BucketSize,omitempty" xml:"BucketSize"`
 }
 
 type ListResponse struct {
@@ -53,17 +55,34 @@ func list(ctx context.Context, _ struct{}, cfg common.Config) (result ListRespon
 		return
 	}
 
+	var wg sync.WaitGroup
+	sizeChannel := make(chan *BucketResponse)
+
 	for _, bucket := range result.Buckets {
-		size, err := getBucketSizeFromTag(ctx, bucket.Name, cfg)
-		if err != nil {
-			bucket.BucketSize = 0
-		} else {
-			bucket.BucketSize = size
-		}
+		wg.Add(1)
+		go func(bucket *BucketResponse) {
+			defer wg.Done()
+			size, err := getBucketSizeFromTag(ctx, bucket.Name, cfg)
+			if err != nil {
+				bucket.BucketSize = "0B"
+			} else {
+				bucket.BucketSize = FormatSize(size)
+			}
+			sizeChannel <- bucket
+		}(bucket)
+	}
+
+	go func() {
+		wg.Wait()
+		close(sizeChannel)
+	}()
+
+	for range sizeChannel {
 	}
 
 	return
 }
+
 func getBucketSizeFromTag(ctx context.Context, bucketName string, cfg common.Config) (int64, error) {
 	tagSet, err := label.GetTags(ctx, label.GetBucketLabelParams{Bucket: common.BucketName(bucketName)}, cfg)
 	if err != nil {
@@ -81,4 +100,18 @@ func getBucketSizeFromTag(ctx context.Context, bucketName string, cfg common.Con
 	}
 
 	return 0, nil
+}
+
+func FormatSize(size int64) string {
+	const unit = 1024
+	if size < unit {
+		return fmt.Sprintf("%dB", size)
+	}
+	div, exp := int64(unit), 0
+	for n := size / unit; n >= unit; n /= unit {
+		div *= unit
+		exp++
+	}
+	return fmt.Sprintf("%.1f%ciB",
+		float64(size)/float64(div), "KMGTPE"[exp])
 }
