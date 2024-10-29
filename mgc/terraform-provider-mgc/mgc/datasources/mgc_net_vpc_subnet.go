@@ -36,7 +36,7 @@ type mgcNetworkVpcsSubnetDatasource struct {
 	networkVPC networkSubnets.Service
 }
 
-func NewMgcNetworkVpcsSubnetDatasource() datasource.DataSource {
+func NewDataSourceNetworkVpcsSubnet() datasource.DataSource {
 	return &mgcNetworkVpcsSubnetDatasource{}
 }
 

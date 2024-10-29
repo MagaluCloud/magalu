@@ -40,7 +40,7 @@ type NetworkVPCInterfaceDatasource struct {
 	networkInterfaces networkInterfaces.Service
 }
 
-func NewNetworkVPCInterfaceDatasource() datasource.DataSource {
+func NewDataSourceNetworkVPCInterface() datasource.DataSource {
 	return &NetworkVPCInterfaceDatasource{}
 }
 

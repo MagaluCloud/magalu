@@ -35,7 +35,7 @@ type mgcNetworkVpcsSubnetsResource struct {
 	networkSubnets     networkSubnets.Service
 }
 
-func NewMgcNetworkVpcsSubnetsResource() resource.Resource {
+func NewNetworkVpcsSubnetsResource() resource.Resource {
 	return &mgcNetworkVpcsSubnetsResource{}
 }
 
@@ -190,7 +190,7 @@ func (r *mgcNetworkVpcsSubnetsResource) Read(ctx context.Context, req resource.R
 	data.Description = types.StringPointerValue(subnet.Description)
 	data.IpVersion = types.StringValue(subnet.IpVersion)
 	data.Name = types.StringPointerValue(subnet.Name)
-	// data.SubnetpoolId = types.StringPointerValue(subnet)
+	// data.SubnetpoolId = types.StringPointerValue(subnet.subnetPoolId)
 	data.VpcId = types.StringValue(subnet.VpcId)
 	resp.Diagnostics.Append(resp.State.Set(ctx, data)...)
 }
@@ -238,4 +238,33 @@ func convertIPStringToIPVersion(ipVersion string) int {
 		return 4
 	}
 	return 6
+}
+
+func (r *mgcNetworkVpcsSubnetsResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+	subnetId := req.ID
+	data := mgcNetworkVpcsSubnetsModel{}
+
+	subnet, err := r.networkSubnets.GetContext(ctx, networkSubnets.GetParameters{
+		SubnetId: subnetId,
+	}, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, networkSubnets.GetConfigs{}))
+
+	if err != nil {
+		resp.Diagnostics.AddError("unable to import VPC subnet", err.Error())
+		return
+	}
+
+	dnsNameServers := []types.String{}
+	for _, dns := range subnet.DnsNameservers {
+		dnsNameServers = append(dnsNameServers, types.StringPointerValue(&dns))
+	}
+
+	data.DnsNameservers = dnsNameServers
+	data.CidrBlock = types.StringPointerValue(&subnet.CidrBlock)
+	data.Description = types.StringPointerValue(subnet.Description)
+	data.IpVersion = types.StringValue(subnet.IpVersion)
+	data.Name = types.StringPointerValue(subnet.Name)
+	// data.SubnetpoolId = types.StringPointerValue(subnet.subnetPoolId)
+	data.VpcId = types.StringValue(subnet.VpcId)
+	data.ID = types.StringPointerValue(&subnet.Id)
+	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
