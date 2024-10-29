@@ -2489,8 +2489,7 @@
             }
           }
         },
-        "x-viveiro": false,
-        "x-mgc-hidden": true
+        "x-viveiro": false
       }
     },
     "/v1/snapshots/{id}/rename": {

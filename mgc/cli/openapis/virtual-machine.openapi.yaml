@@ -2388,7 +2388,6 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: false
-            x-mgc-hidden: true
             security:
             -   OAuth2:
                 - virtual-machine.write
