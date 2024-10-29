@@ -175,59 +175,14 @@ func setOrMergeValue(result map[string]interface{}, key string, value interface{
 }
 
 func handleResultWithValue(result core.ResultWithValue, output string, cmd *cobra.Command) (err error) {
-	err = result.ValidateSchema()
-	if err != nil {
-		logValidationErr(err)
-	}
-
-	outputs := strings.Split(output, ";")
-	output = ""
-	var remove string
-	for _, ot := range outputs {
-		if strings.HasPrefix(ot, "remove=") {
-			remove = strings.Split(ot, "=")[1]
-		} else {
-			output = ot
-		}
-	}
-	var fieldsToRemove []string
-	if remove != "" {
-		fieldsToRemove = strings.Split(remove, ",")
-	}
-
-	outputs = strings.Split(output, ";")
-	var allowed string
-	for _, ot := range outputs {
-		if strings.HasPrefix(ot, "allowfields=") {
-			allowed = strings.Split(ot, "=")[1]
-		} else {
-			output = ot
-		}
-	}
-	var allowedFields []string
-	if allowed != "" {
-		allowedFields = strings.Split(allowed, ",")
-		for i, x := range allowedFields {
-			allowedFields[i] = strings.Split(x, ":")[1]
-		}
-	}
-
-	for _, ot := range outputs {
-		if strings.HasPrefix(ot, "default=") {
-			output = strings.Split(ot, "=")[1]
-		}
-	}
-
 	value := result.Value()
 	if value == nil {
 		return nil
 	}
 
-	for _, path := range fieldsToRemove {
-		value = removeProperty(value, path)
-	}
-	if len(allowedFields) > 0 {
-		value = keepProperties(value, allowedFields)
+	err = result.ValidateSchema()
+	if err != nil {
+		logValidationErr(err)
 	}
 
 	name, options := parseOutputFormatter(output)
@@ -242,7 +197,31 @@ func handleResultWithValue(result core.ResultWithValue, output string, cmd *cobr
 	if err != nil {
 		return err
 	}
-	return formatter.Format(value, options, getRawOutputFlag(cmd))
+
+	newOptions := []string{}
+	for _, x := range strings.Split(options, ";") {
+
+		if toRemove, ok := strings.CutPrefix(x, "remove="); ok {
+			value = removeProperty(value, toRemove)
+			continue
+		}
+
+		if toKeep, ok := strings.CutPrefix(x, "allowfields="); ok {
+			var allowedFields []string
+			if toKeep != "" {
+				allowedFields = strings.Split(toKeep, ",")
+				for i, x := range allowedFields {
+					allowedFields[i] = strings.Split(x, ":")[1]
+				}
+			}
+
+			value = keepProperties(value, allowedFields)
+			continue
+		}
+		newOptions = append(newOptions, x)
+	}
+
+	return formatter.Format(value, strings.Join(newOptions, ";"), getRawOutputFlag(cmd))
 }
 
 func handleSimpleResultValue(value core.Value, output string) error {

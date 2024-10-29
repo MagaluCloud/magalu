@@ -56,12 +56,21 @@ func hasOutputFormatHelp(cmd *cobra.Command) bool {
 }
 
 func parseOutputFormatter(output string) (name, options string) {
-	parts := strings.SplitN(output, "=", 2)
-	name = parts[0]
-	if len(parts) == 2 {
-		options = parts[1]
+	name = ""
+	newOptions := []string{}
+	for _, x := range strings.Split(output, ";") {
+		if value, _ := strings.CutPrefix(x, "default="); value != "" {
+			if _, ok := outputFormatters[value]; ok {
+				name = value
+				continue
+			}
+		}
+
+		if strings.HasPrefix(x, "allowfields=") || strings.HasPrefix(x, "remove=") {
+			newOptions = append(newOptions, x)
+		}
 	}
-	return name, options
+	return name, strings.Join(newOptions, ";")
 }
 
 // NOTE: use parseOutputFormatter() to get both name and options
@@ -77,48 +86,37 @@ func getOutputFormatter(name, options string) (formatter OutputFormatter, err er
 }
 
 func getOutputFor(sdk *mgcSdk.Sdk, cmd *cobra.Command, result core.Result) string {
-	var output string
-	var defaultConfigOutput string
-	var configFlag string
-	var addAfterWhenEmpty string
+	outputFromSpec := ""
 
-	if defaultConfigOutput = getOutputConfig(sdk); defaultConfigOutput != "" {
-		output = defaultConfigOutput
-	}
-
-	if configFlag = getOutputFlag(cmd); configFlag != "" {
-		output = configFlag
-	}
-
+	formatFromSpec := []string{}
 	if outputOptions, ok := core.ResultAs[core.ResultWithDefaultOutputOptions](result); ok {
-		outputFromSpec := outputOptions.DefaultOutputOptions()
-		if strings.Contains(outputFromSpec, "default=") {
-			outs := strings.Split(outputFromSpec, ";")
-			for i, ot := range outs {
-				if strings.HasPrefix(ot, "default=") {
-					if defaultConfigOutput != "" {
-						outs[i] = "default=" + defaultConfigOutput
-					} else if configFlag != "" {
-						outs[i] = "default=" + configFlag
-					} else {
-						outs[i] = ot
-					}
-					break
-				}
+		for _, x := range strings.Split(outputOptions.DefaultOutputOptions(), ";") {
+			if strings.HasPrefix(x, "allowfields=") || strings.HasPrefix(x, "remove=") {
+				formatFromSpec = append(formatFromSpec, x)
+				continue
 			}
-			output = strings.Join(outs, ";")
-		} else {
-			if output != "" {
-				output = output + ";" + outputFromSpec
-			} else {
-				addAfterWhenEmpty = outputFromSpec
+			if fromSpec, ok := strings.CutPrefix(x, "default="); ok {
+				outputFromSpec = fromSpec
+				continue
 			}
 		}
 	}
 
-	if output == "" {
-		return defaultFormatter + ";" + addAfterWhenEmpty
+	fmtFromSpec := strings.Join(formatFromSpec, ";")
+	if fmtFromSpec != "" {
+		fmtFromSpec = ";" + fmtFromSpec
 	}
 
-	return output
+	outputFromConfig := getOutputConfig(sdk)
+	outputFromFlag := getOutputFlag(cmd)
+
+	if outputFromFlag != "" {
+		return outputFromFlag + fmtFromSpec
+	}
+
+	if outputFromConfig != "" {
+		return outputFromConfig + fmtFromSpec
+	}
+
+	return outputFromSpec + fmtFromSpec
 }
