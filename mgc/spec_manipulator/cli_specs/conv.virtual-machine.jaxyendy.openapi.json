@@ -5157,8 +5157,8 @@
         "title": "Regions",
         "enum": [
           "br-se1",
-          "br-se-1",
-          "br-ne-1"
+          "br-mgl1",
+          "br-ne1"
         ]
       },
       "SecurityGroups": {
@@ -5198,8 +5198,8 @@
             "title": "Regions",
             "enum": [
               "br-se1",
-              "br-se-1",
-              "br-ne-1"
+              "br-mgl1",
+              "br-ne1"
             ]
           }
         },
@@ -5208,7 +5208,7 @@
           "destination_region"
         ],
         "example": {
-          "destination_region": "br-ne-1"
+          "destination_region": "br-ne1"
         }
       },
       "SnapshotCreateRequestV1": {

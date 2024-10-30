@@ -4399,8 +4399,8 @@
         "title": "Regions",
         "enum": [
           "br-se1",
-          "br-se-1",
-          "br-ne-1"
+          "br-mgl1",
+          "br-ne1"
         ]
       },
       "SecurityGroups": {
@@ -4429,7 +4429,7 @@
           "destination_region"
         ],
         "example": {
-          "destination_region": "br-ne-1"
+          "destination_region": "br-ne1"
         }
       },
       "SnapshotCreateRequestV1": {
@@ -4628,7 +4628,7 @@
             ],
             "default": {
               "vpc": {
-                "name": "default"
+                "name": "vpc_default"
               },
               "associate_public_ip": true
             }
