@@ -31,12 +31,16 @@ output "datasource_vpcs_interface" {
 
 ### Read-Only
 
+- `created_at` (String) Creation timestamp of the VPC interface
+- `description` (String) Description of the VPC interface
 - `ip_address` (Attributes List) The IP addresses associated with the VPC interface (see [below for nested schema](#nestedatt--ip_address))
-- `is_port_security_enabled` (Boolean) Indicates if port security is enabled
-- `name` (String) The name of the VPC interface
-- `public_ip` (Attributes List) The public IPs associated with the VPC interface (see [below for nested schema](#nestedatt--public_ip))
-- `security_groups` (List of String) The security groups associated with the VPC interface
-- `vpc_id` (String) The VPC ID associated with the VPC interface
+- `is_admin_state_up` (Boolean) Administrative state of the VPC interface
+- `is_port_security_enabled` (Boolean) Port security status of the VPC interface
+- `name` (String) Name of the VPC interface
+- `public_ip` (Attributes List) Public IP configuration of the VPC interface (see [below for nested schema](#nestedatt--public_ip))
+- `security_groups` (List of String) List of security group IDs
+- `updated` (String) Last update timestamp of the VPC interface
+- `vpc_id` (String) ID of the VPC this interface belongs to
 
 <a id="nestedatt--ip_address"></a>
 ### Nested Schema for `ip_address`
@@ -53,5 +57,5 @@ Read-Only:
 
 Read-Only:
 
-- `public_ip` (String) The public IP
+- `public_ip` (String) The public IP address
 - `public_ip_id` (String) The public IP ID

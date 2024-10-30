@@ -245,12 +245,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Successful Response",
-                        "content": {
-                            "application/json": {
-                                "schema": {}
-                            }
-                        }
+                        "description": "Successful Response"
                     },
                     "422": {
                         "description": "Validation Error",
@@ -319,12 +314,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Successful Response",
-                        "content": {
-                            "application/json": {
-                                "schema": {}
-                            }
-                        }
+                        "description": "Successful Response"
                     },
                     "422": {
                         "description": "Validation Error",
@@ -568,12 +558,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Successful Response",
-                        "content": {
-                            "application/json": {
-                                "schema": {}
-                            }
-                        }
+                        "description": "Successful Response"
                     },
                     "422": {
                         "description": "Validation Error",
@@ -642,12 +627,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Successful Response",
-                        "content": {
-                            "application/json": {
-                                "schema": {}
-                            }
-                        }
+                        "description": "Successful Response"
                     },
                     "422": {
                         "description": "Validation Error",

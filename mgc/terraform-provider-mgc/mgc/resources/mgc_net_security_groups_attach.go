@@ -57,8 +57,8 @@ func (r *NetworkSecurityGroupsAttachResource) Schema(_ context.Context, _ resour
 	resp.Schema = schema.Schema{
 		Description: "Network Security Group Attach",
 		Attributes: map[string]schema.Attribute{
-			"network_security_group_id": schema.StringAttribute{
-				Description: "The ID of the Network Security Group",
+			"interface_id": schema.StringAttribute{
+				Description: "The ID of the Network Interface",
 				Required:    true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
@@ -97,7 +97,7 @@ func (r *NetworkSecurityGroupsAttachResource) Read(ctx context.Context, req reso
 		return
 	}
 
-	if !slices.Contains(*interfaceResponse.SecurityGroups, "security_group_id") {
+	if !slices.Contains(*interfaceResponse.SecurityGroups, data.SecurityGroupID.ValueString()) {
 		resp.Diagnostics.AddError("Security Group not attach to interface", "Security Group not found in interface")
 		return
 	}
@@ -116,7 +116,7 @@ func (r *NetworkSecurityGroupsAttachResource) Create(ctx context.Context, req re
 		PortId:          data.InterfaceID.ValueString(),
 		SecurityGroupId: data.SecurityGroupID.ValueString(),
 	}
-	_, err := r.networkSecurityGroupsAttach.AttachContext(ctx, attachParam,
+	err := r.networkSecurityGroupsAttach.AttachContext(ctx, attachParam,
 		tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, networkSecurityAttach.AttachConfigs{}))
 	if err != nil {
 		resp.Diagnostics.AddError("Failed to attach Security Group", err.Error())
@@ -141,7 +141,7 @@ func (r *NetworkSecurityGroupsAttachResource) Delete(ctx context.Context, req re
 		PortId:          data.InterfaceID.ValueString(),
 		SecurityGroupId: data.SecurityGroupID.ValueString(),
 	}
-	_, err := r.networkSecurityGroupsAttach.DetachContext(ctx, detachParam,
+	err := r.networkSecurityGroupsAttach.DetachContext(ctx, detachParam,
 		tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, networkSecurityAttach.DetachConfigs{}))
 	if err != nil {
 		resp.Diagnostics.AddError("Failed to detach Security Group", err.Error())

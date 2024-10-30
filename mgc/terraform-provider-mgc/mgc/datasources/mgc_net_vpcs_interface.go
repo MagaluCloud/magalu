@@ -13,6 +13,7 @@ import (
 )
 
 type NetworkVPCInterfaceModel struct {
+	CreatedAt             types.String                        `tfsdk:"created_at"`
 	Description           types.String                        `tfsdk:"description"`
 	Id                    types.String                        `tfsdk:"id"`
 	IpAddress             []NetworkVPCInterfaceIpAddressModel `tfsdk:"ip_address"`
@@ -21,6 +22,7 @@ type NetworkVPCInterfaceModel struct {
 	Name                  types.String                        `tfsdk:"name"`
 	PublicIp              []NetworkVPCInterfacePublicIpModel  `tfsdk:"public_ip"`
 	SecurityGroups        []types.String                      `tfsdk:"security_groups"`
+	Updated               types.String                        `tfsdk:"updated"`
 	VpcId                 types.String                        `tfsdk:"vpc_id"`
 }
 
@@ -52,6 +54,14 @@ func (r *NetworkVPCInterfaceDatasource) Schema(_ context.Context, req datasource
 	resp.Schema = schema.Schema{
 		Description: "Network VPC Interface",
 		Attributes: map[string]schema.Attribute{
+			"created_at": schema.StringAttribute{
+				Description: "Creation timestamp of the VPC interface",
+				Computed:    true,
+			},
+			"description": schema.StringAttribute{
+				Description: "Description of the VPC interface",
+				Computed:    true,
+			},
 			"id": schema.StringAttribute{
 				Description: "The ID of the VPC interface",
 				Required:    true,
@@ -76,21 +86,25 @@ func (r *NetworkVPCInterfaceDatasource) Schema(_ context.Context, req datasource
 					},
 				},
 			},
+			"is_admin_state_up": schema.BoolAttribute{
+				Description: "Administrative state of the VPC interface",
+				Computed:    true,
+			},
 			"is_port_security_enabled": schema.BoolAttribute{
-				Description: "Indicates if port security is enabled",
+				Description: "Port security status of the VPC interface",
 				Computed:    true,
 			},
 			"name": schema.StringAttribute{
-				Description: "The name of the VPC interface",
+				Description: "Name of the VPC interface",
 				Computed:    true,
 			},
 			"public_ip": schema.ListNestedAttribute{
-				Description: "The public IPs associated with the VPC interface",
+				Description: "Public IP configuration of the VPC interface",
 				Computed:    true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
 						"public_ip": schema.StringAttribute{
-							Description: "The public IP",
+							Description: "The public IP address",
 							Computed:    true,
 						},
 						"public_ip_id": schema.StringAttribute{
@@ -101,12 +115,16 @@ func (r *NetworkVPCInterfaceDatasource) Schema(_ context.Context, req datasource
 				},
 			},
 			"security_groups": schema.ListAttribute{
-				Description: "The security groups associated with the VPC interface",
+				Description: "List of security group IDs",
 				Computed:    true,
 				ElementType: types.StringType,
 			},
+			"updated": schema.StringAttribute{
+				Description: "Last update timestamp of the VPC interface",
+				Computed:    true,
+			},
 			"vpc_id": schema.StringAttribute{
-				Description: "The VPC ID associated with the VPC interface",
+				Description: "ID of the VPC this interface belongs to",
 				Computed:    true,
 			},
 		},
@@ -140,7 +158,7 @@ func (r *NetworkVPCInterfaceDatasource) Read(ctx context.Context, req datasource
 	}
 
 	vpcInterface, err := r.networkInterfaces.GetContext(ctx, networkInterfaces.GetParameters{
-		PortId: data.Id.String(),
+		PortId: data.Id.ValueString(),
 	}, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, networkInterfaces.GetConfigs{}))
 	if err != nil {
 		resp.Diagnostics.AddError("unable to get VPC interface", err.Error())
@@ -176,6 +194,9 @@ func (r *NetworkVPCInterfaceDatasource) Read(ctx context.Context, req datasource
 			data.SecurityGroups = append(data.SecurityGroups, types.StringValue(securityGroup))
 		}
 	}
+	data.CreatedAt = types.StringPointerValue(vpcInterface.CreatedAt)
+	data.Updated = types.StringPointerValue(vpcInterface.Updated)
+	data.Description = types.StringPointerValue(vpcInterface.Description)
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, data)...)
 }

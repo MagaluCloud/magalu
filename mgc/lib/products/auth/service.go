@@ -19,6 +19,8 @@ type Service interface {
 	AccessToken(parameters AccessTokenParameters) (result AccessTokenResult, err error)
 	LoginContext(ctx context.Context, parameters LoginParameters) (result LoginResult, err error)
 	Login(parameters LoginParameters) (result LoginResult, err error)
+	LogoutContext(ctx context.Context, parameters LogoutParameters) (result LogoutResult, err error)
+	Logout(parameters LogoutParameters) (result LogoutResult, err error)
 }
 
 func NewService(ctx context.Context, client *mgcClient.Client) Service {

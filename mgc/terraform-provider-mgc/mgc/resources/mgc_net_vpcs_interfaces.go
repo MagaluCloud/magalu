@@ -81,7 +81,7 @@ func (r *NetworkVPCInterfaceResource) Read(ctx context.Context, req resource.Rea
 	}
 
 	vpcInterface, err := r.networkInterfaces.GetContext(ctx, networkInterfaces.GetParameters{
-		PortId: model.Id.String(),
+		PortId: model.Id.ValueString(),
 	}, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, networkInterfaces.GetConfigs{}))
 	if err != nil {
 		resp.Diagnostics.AddError("unable to get VPC Interface", err.Error())
@@ -126,7 +126,7 @@ func (r *NetworkVPCInterfaceResource) Delete(ctx context.Context, req resource.D
 	}
 
 	err := r.networkInterfaces.DeleteContext(ctx, networkInterfaces.DeleteParameters{
-		PortId: model.Id.String(),
+		PortId: model.Id.ValueString(),
 	}, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, networkInterfaces.DeleteConfigs{}))
 	if err != nil {
 		resp.Diagnostics.AddError("Failed to delete VPC Interface", err.Error())

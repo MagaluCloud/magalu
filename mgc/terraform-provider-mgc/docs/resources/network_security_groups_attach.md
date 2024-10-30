@@ -28,7 +28,7 @@ output "security_group_attach_id" {
 
 ### Required
 
-- `network_security_group_id` (String) The ID of the Network Security Group
+- `interface_id` (String) The ID of the Network Interface
 - `security_group_id` (String) The ID of the Security Group
 
 ## Import
