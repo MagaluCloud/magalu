@@ -34,3 +34,11 @@ resource "mgc_network_public_ips" "example" {
 
 - `id` (String) The ID of the public IP
 - `public_ip` (String) The public IP address
+
+## Import
+
+Import is supported using the following syntax:
+
+```shell
+terraform import mgc_network_public_ips.example 123
+```

@@ -50,9 +50,9 @@ resource "mgc_network_security_groups_rules" "allow_ssh_ipv6" {
 - `description` (String) Description of the security group rule. Example: 'Allow incoming SSH traffic'
 - `port_range_max` (Number) Maximum port number in the range. Valid values: 1-65535. Example: 22
 - `port_range_min` (Number) Minimum port number in the range. Valid values: 1-65535. Example: 22
-- `protocol` (String) IP protocol. Common values: tcp, udp, icmp. Example: 'tcp'
+- `protocol` (String) IP protocol. Allowed values: tcp, udp, icmp, icmpv6. Example: 'tcp'
 - `remote_group_id` (String) ID of the remote security group. Example: 'sg-0123456789abcdef0'
-- `remote_ip_prefix` (String) CIDR notation of remote IP range. Example: '192.168.1.0/24'
+- `remote_ip_prefix` (String) CIDR notation of remote IPv4 and IPv6 range. Example: '192.168.1.0/24', '0.0.0.0/0', '::/0' or '2001:db8::/32'
 
 ### Read-Only
 

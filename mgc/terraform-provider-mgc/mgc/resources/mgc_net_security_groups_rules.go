@@ -98,8 +98,11 @@ func (r *NetworkSecurityGroupsRulesResource) Schema(_ context.Context, _ resourc
 				},
 			},
 			"protocol": schema.StringAttribute{
-				Description: "IP protocol. Common values: tcp, udp, icmp. Example: 'tcp'",
+				Description: "IP protocol. Allowed values: tcp, udp, icmp, icmpv6. Example: 'tcp'",
 				Optional:    true,
+				Validators: []validator.String{
+					stringvalidator.OneOf("tcp", "udp", "icmp", "icmpv6"),
+				},
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
 				},
@@ -112,8 +115,11 @@ func (r *NetworkSecurityGroupsRulesResource) Schema(_ context.Context, _ resourc
 				},
 			},
 			"remote_ip_prefix": schema.StringAttribute{
-				Description: "CIDR notation of remote IP range. Example: '192.168.1.0/24'",
+				Description: "CIDR notation of remote IPv4 and IPv6 range. Example: '192.168.1.0/24', '0.0.0.0/0', '::/0' or '2001:db8::/32'",
 				Optional:    true,
+				Validators: []validator.String{
+					tfutil.CidrValidator{},
+				},
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
 				},

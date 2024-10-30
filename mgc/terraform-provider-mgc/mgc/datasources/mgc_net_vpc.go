@@ -23,7 +23,7 @@ type NetworkVPCDatasource struct {
 	networkVPC networkVpc.Service
 }
 
-func NewNetworkVPCDatasource() datasource.DataSource {
+func NewDataSourceNetworkVPC() datasource.DataSource {
 	return &NetworkVPCDatasource{}
 }
 

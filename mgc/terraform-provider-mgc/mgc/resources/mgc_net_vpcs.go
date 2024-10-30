@@ -30,7 +30,7 @@ func NewNetworkVPCResource() resource.Resource {
 }
 
 func (r *NetworkVPCResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_network_vpc"
+	resp.TypeName = req.ProviderTypeName + "_network_vpcs"
 }
 
 func (r *NetworkVPCResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
@@ -147,8 +147,6 @@ func (r *NetworkVPCResource) Delete(ctx context.Context, req resource.DeleteRequ
 		resp.Diagnostics.AddError("Failed to delete VPC", err.Error())
 		return
 	}
-
-	resp.State.RemoveResource(ctx)
 }
 
 func (r *NetworkVPCResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {

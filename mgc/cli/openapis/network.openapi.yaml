@@ -150,9 +150,6 @@ paths:
             responses:
                 '200':
                     description: Successful Response
-                    content:
-                        application/json:
-                            schema: {}
                     links:
                         get:
                             operationId: detail_port_v0_ports__port_id__get
@@ -209,9 +206,6 @@ paths:
             responses:
                 '200':
                     description: Successful Response
-                    content:
-                        application/json:
-                            schema: {}
                     links:
                         get:
                             operationId: detail_port_v0_ports__port_id__get
@@ -373,9 +367,6 @@ paths:
             responses:
                 '200':
                     description: Successful Response
-                    content:
-                        application/json:
-                            schema: {}
                     links:
                         get:
                             operationId: detail_public_ip_v0_public_ips__public_ip_id__get
@@ -431,9 +422,6 @@ paths:
             responses:
                 '200':
                     description: Successful Response
-                    content:
-                        application/json:
-                            schema: {}
                     links:
                         get:
                             operationId: detail_public_ip_v0_public_ips__public_ip_id__get

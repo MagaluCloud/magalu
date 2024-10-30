@@ -48,7 +48,7 @@ type NetworkSecurityGroupResource struct {
 	networkSecurityGroups networkSecurityGroups.Service
 }
 
-func NewNetworkSecurityGroupDataSource() datasource.DataSource {
+func NewDataSourceNetworkSecurityGroup() datasource.DataSource {
 	return &NetworkSecurityGroupResource{}
 }
 
