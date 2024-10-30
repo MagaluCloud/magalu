@@ -20,22 +20,3 @@ servers:
                     to: api.magalu.cloud
                 -   from: pre-prod
                     to: api.pre-prod.jaxyendy.com
-paths:
-    /v0/ssh-keys:
-        get:
-            parameters:
-            -   name: _limit
-                in: query
-                schema:
-                    type: integer
-                    default: 50
-            -   name: _offset
-                in: query
-                schema:
-                    type: integer
-                    default: 0
-            -   name: _sort
-                in: query
-                schema:
-                    default: name:asc
-            x-mgc-output-flag: remove=$.results[*].key

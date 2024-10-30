@@ -522,7 +522,7 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
-            x-mgc-output-flag: ''
+            x-mgc-output-flag: table=ID:$.images[*].id,NAME:$.images[*].name,VERSION:$.images[*].version,PLATFORM:$.images[*].platform,END_STANDARD_SUPPORT_AT:$.images[*].end_standard_support_at,STATUS:$.images[*].status
             security:
             -   OAuth2:
                 - virtual-machine.read
@@ -625,7 +625,8 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
-            x-mgc-output-flag: ''
+            x-mgc-output-flag: table=ID:$.instances[*].id,NAME:$.instances[*].name,STATE:$.instances[*].state,STATUS:$.instances[*].status,MACHINE_TYPE:$.instances[*].machine_type,IMAGE:$.instances[*].image,
+                CREATED_AT:$.instances[*].created_at, SSH_KEY_NAME:$.instances[*].ssh_key_name
             security:
             -   OAuth2:
                 - virtual-machine.read
@@ -742,7 +743,7 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
-            x-mgc-output-flag: ''
+            x-mgc-output-flag: table=ID:$.id
             security:
             -   OAuth2:
                 - virtual-machine.write
@@ -1079,7 +1080,8 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
-            x-mgc-output-flag: ''
+            x-mgc-output-flag: table=ID:$.id,NAME:$.name,STATE:$.state,STATUS:$..status,MACHINE_TYPE:$.machine_type,IMAGE:$.image,
+                CREATED_AT:$.created_at, SSH_KEY_NAME:$.ssh_key_name
             security:
             -   OAuth2:
                 - virtual-machine.read
@@ -1825,7 +1827,7 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
-            x-mgc-output-flag: remove=$.machine_types[*].sku,$.machine_types[*].status
+            x-mgc-output-flag: table=ID:$.instance_types[*].id,NAME:$.instance_types[*].name,STATUS:$.instance_types[*].status,VCPUS:$.instance_types[*].vcpus,RAM:$.instance_types[*].ram,DISK:$.instance_types[*].disk,GPU:$.instance_types[*].gpu
             security:
             -   OAuth2:
                 - virtual-machine.read
@@ -1927,7 +1929,8 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
-            x-mgc-output-flag: ''
+            x-mgc-output-flag: table=ID:$.snapshots[*].id,NAME:$.snapshots[*].name,STATE:$.snapshots[*].state,STATUS:$.snapshots[*].status,SIZE:$.snapshots[*].size,INSTANCE:$.snapshots[*].instance,
+                CREATED_AT:$.snapshots[*].created_at
             security:
             -   OAuth2:
                 - virtual-machine.read
@@ -2028,7 +2031,7 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
-            x-mgc-output-flag: ''
+            x-mgc-output-flag: table=ID:$.id
             security:
             -   OAuth2:
                 - virtual-machine.write
@@ -2138,7 +2141,8 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
-            x-mgc-output-flag: ''
+            x-mgc-output-flag: table=ID:$.id,NAME:$.name,STATE:$.state,STATUS:$.status,SIZE:$.size,INSTANCE:$.instance,
+                CREATED_AT:$.created_at
             security:
             -   OAuth2:
                 - virtual-machine.read
@@ -2241,7 +2245,7 @@ paths:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
             x-mgc-name: restore
-            x-mgc-output-flag: ''
+            x-mgc-output-flag: table=ID:$.id
             security:
             -   OAuth2:
                 - virtual-machine.write
