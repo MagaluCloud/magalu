@@ -25,12 +25,12 @@ type NetworkPublicIPDataSource struct {
 	networkPIP networkPIP.Service
 }
 
-func NewNetworkPublicIPDataSource() datasource.DataSource {
+func NewDataSourceNetworkPublicIP() datasource.DataSource {
 	return &NetworkPublicIPDataSource{}
 }
 
 func (r *NetworkPublicIPDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_network_public_ips"
+	resp.TypeName = req.ProviderTypeName + "_network_public_ip"
 }
 
 func (r *NetworkPublicIPDataSource) Configure(ctx context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
@@ -59,7 +59,7 @@ func (r *NetworkPublicIPDataSource) Schema(_ context.Context, _ datasource.Schem
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				Description: "The ID of the public IP",
-				Computed:    true,
+				Required:    true,
 			},
 			"public_ip": schema.StringAttribute{
 				Description: "The public IP address",
@@ -67,15 +67,15 @@ func (r *NetworkPublicIPDataSource) Schema(_ context.Context, _ datasource.Schem
 			},
 			"description": schema.StringAttribute{
 				Description: "The description of the public IP",
-				Optional:    true,
+				Computed:    true,
 			},
 			"vpc_id": schema.StringAttribute{
 				Description: "The related VPC ID",
-				Required:    true,
+				Computed:    true,
 			},
 			"port_id": schema.StringAttribute{
 				Description: "The port ID it's attached to",
-				Optional:    true,
+				Computed:    true,
 			},
 		},
 	}

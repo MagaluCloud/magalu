@@ -50,6 +50,7 @@ func (r *NetworkPublicIPResource) Configure(ctx context.Context, req resource.Co
 	}
 
 	r.networkPIP = networkPIP.NewService(ctx, r.sdkClient)
+	r.networkVPCPIP = networkVPCPIP.NewService(ctx, r.sdkClient)
 }
 
 func (r *NetworkPublicIPResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {

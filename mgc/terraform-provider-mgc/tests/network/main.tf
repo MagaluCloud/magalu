@@ -86,6 +86,16 @@ data "mgc_network_vpcs_subnet" "primary_subnet_data" {
   id = "4a073774-5a74-4bc8-9ef4-405058ed802a"
 }
 
+# Public IP
+resource "mgc_network_public_ips" "example" {
+  description = "example public ip"
+  vpc_id      = mgc_network_vpcs.main_vpc.id
+}
+
+data "mgc_network_public_ip" "example" {
+  id = mgc_network_public_ips.example.id
+}
+
 # Outputs
 output "primary_security_group_data" {
   value = data.mgc_network_security_group.primary_sg_data
@@ -105,4 +115,8 @@ output "primary_interface_data" {
 
 output "primary_subnet_data" {
   value = data.mgc_network_vpcs_subnet.primary_subnet_data
+}
+
+output "datasource_public_ip_id" {
+  value = data.mgc_network_public_ip.example
 }
