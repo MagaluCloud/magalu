@@ -77,47 +77,15 @@ func getOutputFormatter(name, options string) (formatter OutputFormatter, err er
 }
 
 func getOutputFor(sdk *mgcSdk.Sdk, cmd *cobra.Command, result core.Result) string {
-	var output string
-	var defaultConfigOutput string
-	var configFlag string
-	var addAfterWhenEmpty string
-
-	if defaultConfigOutput = getOutputConfig(sdk); defaultConfigOutput != "" {
-		output = defaultConfigOutput
-	}
-
-	if configFlag = getOutputFlag(cmd); configFlag != "" {
-		output = configFlag
-	}
-
-	if outputOptions, ok := core.ResultAs[core.ResultWithDefaultOutputOptions](result); ok {
-		outputFromSpec := outputOptions.DefaultOutputOptions()
-		if strings.Contains(outputFromSpec, "default=") {
-			outs := strings.Split(outputFromSpec, ";")
-			for i, ot := range outs {
-				if strings.HasPrefix(ot, "default=") {
-					if defaultConfigOutput != "" {
-						outs[i] = "default=" + defaultConfigOutput
-					} else if configFlag != "" {
-						outs[i] = "default=" + configFlag
-					} else {
-						outs[i] = ot
-					}
-					break
-				}
-			}
-			output = strings.Join(outs, ";")
-		} else {
-			if output != "" {
-				output = output + ";" + outputFromSpec
-			} else {
-				addAfterWhenEmpty = outputFromSpec
-			}
-		}
+	output := getOutputFlag(cmd)
+	if output == "" {
+		output = getOutputConfig(sdk)
 	}
 
 	if output == "" {
-		return defaultFormatter + ";" + addAfterWhenEmpty
+		if outputOptions, ok := core.ResultAs[core.ResultWithDefaultOutputOptions](result); ok {
+			return outputOptions.DefaultOutputOptions()
+		}
 	}
 
 	return output

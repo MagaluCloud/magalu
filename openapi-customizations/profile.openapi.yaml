@@ -38,4 +38,3 @@ paths:
                 in: query
                 schema:
                     default: name:asc
-            x-mgc-output-flag: remove=$.results[*].key

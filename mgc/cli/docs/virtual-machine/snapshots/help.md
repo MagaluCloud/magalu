@@ -9,6 +9,7 @@ Usage:
 
 ## Product catalog:
 - Commands:
+- copy        Copy a snapshot of a virtual machine asynchronously to another region.
 - create      Create a snapshot of an instance.
 - delete      Delete a Snapshot.
 - get         Retrieve the details of an snapshot.

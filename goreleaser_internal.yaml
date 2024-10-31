@@ -6,9 +6,11 @@ builds:
     id: "mgc"
     goos:
       - linux
+      - darwin      
     binary: mgc
     goarch:
       - amd64
+      - arm64      
     ldflags:
       - -s -w -X magalu.cloud/sdk.Version={{.Version}}"
     flags:
@@ -18,8 +20,10 @@ builds:
     id: "terraform"
     goos:
       - linux
+      - darwin      
     goarch:
       - amd64
+      - arm64      
     binary: terraform-provider-mgc
     ldflags:
       - -s -w -X magalu.cloud/sdk.Version={{.Version}}"

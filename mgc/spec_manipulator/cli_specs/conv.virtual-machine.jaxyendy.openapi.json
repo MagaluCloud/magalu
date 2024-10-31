@@ -2489,8 +2489,7 @@
             }
           }
         },
-        "x-viveiro": false,
-        "x-mgc-hidden": true
+        "x-viveiro": false
       }
     },
     "/v1/snapshots/{id}/rename": {
@@ -5158,8 +5157,8 @@
         "title": "Regions",
         "enum": [
           "br-se1",
-          "br-se-1",
-          "br-ne-1"
+          "br-mgl1",
+          "br-ne1"
         ]
       },
       "SecurityGroups": {
@@ -5194,22 +5193,22 @@
       "SnapshotCopyRequest": {
         "type": "object",
         "properties": {
-          "region": {
+          "destination_region": {
             "type": "string",
             "title": "Regions",
             "enum": [
               "br-se1",
-              "br-se-1",
-              "br-ne-1"
+              "br-mgl1",
+              "br-ne1"
             ]
           }
         },
         "title": "SnapshotCopyRequest",
         "required": [
-          "region"
+          "destination_region"
         ],
         "example": {
-          "region": "br-ne-1"
+          "destination_region": "br-ne1"
         }
       },
       "SnapshotCreateRequestV1": {

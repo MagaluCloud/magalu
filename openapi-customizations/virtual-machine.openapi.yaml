@@ -5,16 +5,11 @@
 # such as "x-mgc-name" or "x-mgc-description"
 
 paths:
-    /v1/images:
-        get:
-            x-mgc-output-flag: ""
     /v1/instances:
         get:
             x-mgc-description: List Virtual Machine instances
-            x-mgc-output-flag: ""
         post:
             x-mgc-description: Create a Virtual Machine instance
-            x-mgc-output-flag: ""
             responses:
                 "201":
                     links:
@@ -68,7 +63,6 @@ paths:
                         type: array
                         default: [network, image, machine-type]
             x-mgc-description: Get a Virtual Machine instance details
-            x-mgc-output-flag: ""
             x-mgc-wait-termination:
                 maxRetries: 30
                 interval: 5s
@@ -379,10 +373,7 @@ paths:
                             parameters:
                                 id: $request.path.id
     /v1/snapshots:
-        get:
-            x-mgc-output-flag: ""
         post:
-            x-mgc-output-flag: ""
             responses:
                 '202':
                     links:
@@ -399,9 +390,7 @@ paths:
     /v1/snapshots/{id}:
         post:
             x-mgc-name: restore
-            x-mgc-output-flag: ""
         get:
-            x-mgc-output-flag: ""
             responses:
                 '200':
                     links:
@@ -411,9 +400,6 @@ paths:
                             parameters:
                                 id: $request.path.id
                             x-mgc-hidden: true
-    /v1/machine-types:
-        get:
-            x-mgc-output-flag: remove=$.machine_types[*].sku,$.machine_types[*].status
 components:
     schemas:
         InstanceV1Response:
