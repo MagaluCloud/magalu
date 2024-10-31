@@ -23,22 +23,22 @@ data "mgc_network_security_group" "primary_sg_data" {
 resource "mgc_network_security_groups_rules" "ssh_ipv4_rule" {
   description       = "Allow incoming SSH traffic"
   direction         = "ingress"
-  ethertype        = "IPv4"
-  port_range_max   = 22
-  port_range_min   = 22
-  protocol         = "tcp"
-  remote_ip_prefix = "192.168.1.0/24"
+  ethertype         = "IPv4"
+  port_range_max    = 22
+  port_range_min    = 22
+  protocol          = "tcp"
+  remote_ip_prefix  = "192.168.1.0/24"
   security_group_id = mgc_network_security_groups.primary_sg.id
 }
 
 resource "mgc_network_security_groups_rules" "ssh_ipv6_rule" {
   description       = "Allow incoming SSH traffic from IPv6"
   direction         = "ingress"
-  ethertype        = "IPv6"
-  port_range_max   = 22
-  port_range_min   = 22
-  protocol         = "tcp"
-  remote_ip_prefix = "::/0"
+  ethertype         = "IPv6"
+  port_range_max    = 22
+  port_range_min    = 22
+  protocol          = "tcp"
+  remote_ip_prefix  = "::/0"
   security_group_id = mgc_network_security_groups.primary_sg.id
 }
 
@@ -105,6 +105,12 @@ data "mgc_network_public_ip" "example" {
 resource "mgc_network_public_ips_attach" "example" {
   public_ip_id = mgc_network_public_ips.example.id
   interface_id = mgc_network_vpcs_interfaces.pip_interface.id
+}
+
+#Subnetpools
+resource "mgc_network_subnetpools_book_cidr" "book_subnetpool" {
+  cidr = "172.18.0.199/32"
+  subnet_pool_id   = "0290a302-77b4-4315-801c-087c7b96867b"
 }
 
 # Outputs
