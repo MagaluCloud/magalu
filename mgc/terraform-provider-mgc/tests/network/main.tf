@@ -61,6 +61,11 @@ data "mgc_network_vpcs_interface" "primary_interface_data" {
   id = mgc_network_vpcs_interfaces.primary_interface.id
 }
 
+resource "mgc_network_vpcs_interfaces" "pip_interface" {
+  name   = "pip-interface"
+  vpc_id = "9dd2d30e-565d-42ce-a0a3-f2de1c473fed"
+}
+
 # Security Group Attachment
 resource "mgc_network_security_groups_attach" "primary_sg_attachment" {
   security_group_id = mgc_network_security_groups.primary_sg.id
@@ -94,6 +99,12 @@ resource "mgc_network_public_ips" "example" {
 
 data "mgc_network_public_ip" "example" {
   id = mgc_network_public_ips.example.id
+}
+
+#Public IP Attachment
+resource "mgc_network_public_ips_attach" "example" {
+  public_ip_id = mgc_network_public_ips.example.id
+  interface_id = mgc_network_vpcs_interfaces.pip_interface.id
 }
 
 # Outputs

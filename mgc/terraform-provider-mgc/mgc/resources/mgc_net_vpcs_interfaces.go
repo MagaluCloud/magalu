@@ -101,9 +101,12 @@ func (r *NetworkVPCInterfaceResource) Create(ctx context.Context, req resource.C
 		return
 	}
 
+	disableDefaultRules := false
 	createdVPCInterface, err := r.networkVPCInterface.CreateContext(ctx, networkVpcInterfaces.CreateParameters{
-		VpcId: model.VpcId.ValueString(),
-		Name:  model.Name.ValueString(),
+		VpcId:  model.VpcId.ValueString(),
+		Name:   model.Name.ValueString(),
+		HasPip: &disableDefaultRules,
+		HasSg:  &disableDefaultRules,
 	}, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, networkVpcInterfaces.CreateConfigs{}))
 	if err != nil {
 		resp.Diagnostics.AddError("Failed to create VPC Interface", err.Error())

@@ -145,6 +145,7 @@ func (p *mgcProvider) Resources(ctx context.Context) []func() resource.Resource 
 		resources.NewNetworkSecurityGroupsRulesResource,
 		resources.NewNetworkVPCInterfaceResource,
 		resources.NewNetworkSecurityGroupsAttachResource,
+		resources.NewNetworkPublicIPAttachResource,
 	)
 }
 
