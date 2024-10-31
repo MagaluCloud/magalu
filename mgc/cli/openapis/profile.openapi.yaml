@@ -52,7 +52,6 @@ paths:
             security:
             -   OAuth2:
                 - gdb:ssh-pkey-r
-            x-mgc-output-flag: remove=$.results[*].key
         post:
             tags:
             - ssh_keys
