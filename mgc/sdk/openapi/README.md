@@ -185,6 +185,7 @@ Similar to the `--cli.output`/`-o` flag in the CLI.
 When choosing `table` you can specify columns and rows using jsonpath syntax. The following example outputs a table with
 three columns (ID, NAME and VERSION) where each row is defined by a jsonpath expression.
 
+
 ```yaml
 paths:
    /v0/some/path:
