@@ -1,10 +1,9 @@
 # noqa: T201
 
 import os
-from typing import Dict, Any, List, TypedDict, TextIO, Tuple
+from typing import Dict, Any, List, TypedDict, Tuple
 import argparse
 import yaml
-import json
 import re
 
 OAPISchema = Dict[str, Any]
