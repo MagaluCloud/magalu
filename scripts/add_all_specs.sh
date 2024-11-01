@@ -3,8 +3,7 @@
 BASEDIR=$(dirname $0)
 # ROOTDIR=$(builtin cd $BASEDIR/..; pwd)
 
-OAPIDIR=${OAPIDIR:-"mgc/cli/openapis"}
-OAPIEMBED=${OAPIEMBED:-"mgc/sdk/openapi/embed_loader.go"}
+OAPIDIR=${OAPIDIR:-"mgc/sdk/openapi/openapis"}
 OAPI_PATH=$ROOTDIR/$OAPIDIR
 
 set -xe
