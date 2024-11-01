@@ -1,0 +1,4 @@
+The containing parts of this repo are licensed as follows:
+
+Terraform provider (mgc/terraform-provider-mgc/LICENSE) - Mozilla Public Licence 2.0
+All other sources (mgc/LICENSE)- GNU General Public License 3
