@@ -33,6 +33,10 @@ by Terraform Plugin Provider to perform CRUD on resources.
 the SDK. The commands can either come from dynamic loaded OpenAPI spec or static
 modules, i.e: authentication.
 
+* **[terraform-provider-mgc](./mgc/terraform-provider-mgc/)**: Terraform Plugin Provider,
+with the same commands and actions defined by the SDK. The provider enables
+managing resources on Magalu Cloud.
+
 Most of our code is written in Golang, however there are some utility scripts written
 in Python as well.
 
@@ -46,7 +50,7 @@ For this, [Poetry](https://python-poetry.org/) is used. Check [Poetry.md](Poetry
 
 ## Running the CLI
 
-See [cli/RUNNING.md](./mgc/cli/RUNNING.md)
+See [cli/DEVELOPMENT.md](./mgc/cli/DEVELOPMENT.md)
 
 ## OpenAPI
 
