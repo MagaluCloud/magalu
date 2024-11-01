@@ -11,7 +11,8 @@ import (
 	"magalu.cloud/core/dataloader"
 )
 
-
+//go:embed openapis/audit.openapi.yaml
+var audit []byte
 //go:embed openapis/block-storage.openapi.yaml
 var blockStorage []byte
 //go:embed openapis/container-registry.openapi.yaml
@@ -48,6 +49,7 @@ func (f embedLoader) String() string {
 
 var embedLoaderInstance = embedLoader{
 	"index.openapi.yaml": index,
+	"audit.openapi.yaml": audit,
 	"block-storage.openapi.yaml": blockStorage,
 	"container-registry.openapi.yaml": containerRegistry,
 	"dbaas.openapi.yaml": dbaas,

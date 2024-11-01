@@ -3,8 +3,6 @@ package sdk
 import (
 	"context"
 	"net/http"
-	"os"
-	"path/filepath"
 
 	"magalu.cloud/core"
 	"magalu.cloud/core/auth"
@@ -88,22 +86,9 @@ func (o *Sdk) newOpenApiSource() core.Grouper {
 
 	// TODO: are these going to be fixed? configurable?
 	extensionPrefix := "x-mgc"
-	openApiDir := os.Getenv("MGC_SDK_OPENAPI_DIR")
-	if openApiDir == "" {
-		cwd, err := os.Getwd()
-		if err == nil {
-			openApiDir = filepath.Join(cwd, "openapis")
-		}
-	}
-	fileLoader := &dataloader.FileLoader{
-		Dir: openApiDir,
-	}
-
 	var loader dataloader.Loader
 	if embedLoader != nil {
-		loader = dataloader.NewMergeLoader(fileLoader, embedLoader)
-	} else {
-		loader = fileLoader
+		loader = dataloader.NewMergeLoader(embedLoader)
 	}
 
 	return openapi.NewSource(loader, &extensionPrefix)
