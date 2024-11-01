@@ -5,7 +5,7 @@ set -e
 BASEDIR=$(dirname $0)
 ROOTDIR=$(builtin cd $BASEDIR/..; pwd)
 
-OAPIDIR=${OAPIDIR:-"mgc/cli/openapis"}
+OAPIDIR=${OAPIDIR:-"mgc/sdk/openapi/openapis"}
 CUSTOM_DIR=${CUSTOM_DIR:-"openapi-customizations"}
 
 OAPI_PATH=$ROOTDIR/$OAPIDIR

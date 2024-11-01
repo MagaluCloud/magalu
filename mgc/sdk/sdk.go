@@ -3,8 +3,6 @@ package sdk
 import (
 	"context"
 	"net/http"
-	"os"
-	"path/filepath"
 
 	"magalu.cloud/core"
 	"magalu.cloud/core/auth"
@@ -12,7 +10,6 @@ import (
 	"magalu.cloud/core/dataloader"
 	mgcHttpPkg "magalu.cloud/core/http"
 	"magalu.cloud/core/profile_manager"
-	"magalu.cloud/sdk/blueprint"
 	"magalu.cloud/sdk/openapi"
 	"magalu.cloud/sdk/static"
 )
@@ -89,49 +86,12 @@ func (o *Sdk) newOpenApiSource() core.Grouper {
 
 	// TODO: are these going to be fixed? configurable?
 	extensionPrefix := "x-mgc"
-	openApiDir := os.Getenv("MGC_SDK_OPENAPI_DIR")
-	if openApiDir == "" {
-		cwd, err := os.Getwd()
-		if err == nil {
-			openApiDir = filepath.Join(cwd, "openapis")
-		}
-	}
-	fileLoader := &dataloader.FileLoader{
-		Dir: openApiDir,
-	}
-
 	var loader dataloader.Loader
 	if embedLoader != nil {
-		loader = dataloader.NewMergeLoader(fileLoader, embedLoader)
-	} else {
-		loader = fileLoader
+		loader = dataloader.NewMergeLoader(embedLoader)
 	}
 
 	return openapi.NewSource(loader, &extensionPrefix)
-}
-
-func (o *Sdk) newBlueprintSource(rootRefResolver core.RefPathResolver) core.Grouper {
-	embedLoader := blueprint.GetEmbedLoader()
-
-	blueprintsDir := os.Getenv("MGC_SDK_BLUEPRINTS_DIR")
-	if blueprintsDir == "" {
-		cwd, err := os.Getwd()
-		if err == nil {
-			blueprintsDir = filepath.Join(cwd, "blueprints")
-		}
-	}
-	fileLoader := &dataloader.FileLoader{
-		Dir: blueprintsDir,
-	}
-
-	var loader dataloader.Loader
-	if embedLoader != nil {
-		loader = dataloader.NewMergeLoader(fileLoader, embedLoader)
-	} else {
-		loader = fileLoader
-	}
-
-	return blueprint.NewSource(loader, rootRefResolver)
 }
 
 func (o *Sdk) RefResolver() core.RefPathResolver {
@@ -153,7 +113,6 @@ func (o *Sdk) Group() core.Grouper {
 				return []core.Grouper{
 					static.GetGroup(),
 					o.newOpenApiSource(),
-					o.newBlueprintSource(o.RefResolver()),
 				}
 			},
 		)
