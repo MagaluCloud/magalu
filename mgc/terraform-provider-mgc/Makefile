@@ -107,4 +107,10 @@ setup-config: ## Setup configuration file for Terraform or OpenTofu
 	@echo "File $$config_file written to $$HOME:"
 	@cat $$config_file
 
+build: ## Build the plugin
+	@echo "Building the plugin..."
+	@mkdir -p ~/.terraform.d/plugins/terraform.local/local/mgc/1.0.0/linux_amd64/
+	@go build -o ~/.terraform.d/plugins/terraform.local/local/mgc/1.0.0/linux_amd64/terraform-provider-mgc_v1.0.0
+	@echo "Plugin built successfully."
+
 all: update-subcategory check-example-usage check-empty-subcategory generate-docs setup-config ## Run all tasks
