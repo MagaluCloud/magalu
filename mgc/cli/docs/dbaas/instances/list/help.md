@@ -12,18 +12,14 @@ Usage:
 
 ## Other commands:
 - Flags:
-- --control.expand enum       Instance extra attributes or relations to show with the main query. When available, more than one value can be informed using commas. e.g: '--control.expand="replicas"' (must be "replicas")
-- --control.limit integer     The maximum number of items per page. (range: 1 - 25) (default 10)
-- --control.offset integer    The number of items to skip before starting to collect the result set. (min: 0)
-- --engine-id uuid            Value referring to engine Id.
-- -h, --help                      help for list
-- --status enum               Value referring to instance status. (one of "ACTIVE", "BACKING_UP", "CREATING", "DELETED", "DELETING", "ERROR", "ERROR_DELETING", "MAINTENANCE", "PENDING", "REBOOT", "RESIZING", "RESTORING", "STARTING", "STOPPED" or "STOPPING")
-- -v, --version                   version for list
-- --volume.size integer       Volume.Size: Value referring to volume size.
-- --volume.size-gt integer    Volume.Size Gt: Value referring to volume size greater than.
-- --volume.size-gte integer   Volume.Size Gte: Value referring to volume size greater than or equal to.
-- --volume.size-lt integer    Volume.Size Lt: Value referring to volume size less than.
-- --volume.size-lte integer   Volume.Size Lte: Value referring to volume size less than or equal to.
+- --control.expand enum      Instance extra attributes or relations to show with the main query. When available, more than one value can be informed using commas. e.g: '--control.expand="replicas"' (must be "replicas")
+- --control.limit integer    The maximum number of items per page. (range: 1 - 25) (default 10)
+- --control.offset integer   The number of items to skip before starting to collect the result set. (min: 0)
+- --engine-id uuid           Value referring to engine Id.
+- -h, --help                     help for list
+- --status enum              Value referring to instance status. (one of "ACTIVE", "BACKING_UP", "CREATING", "DELETED", "DELETING", "ERROR", "ERROR_DELETING", "MAINTENANCE", "PENDING", "REBOOT", "RESIZING", "RESTORING", "STARTING", "STOPPED" or "STOPPING")
+- -v, --version                  version for list
+- --volume.size string       Value referring to volume size. (use operators "gt", "lt", "gte", "lte", "eq" or omit for exact match. E.g: --volume.size="gte=20&lte=60")
 
 ## Flags:
 ```bash
