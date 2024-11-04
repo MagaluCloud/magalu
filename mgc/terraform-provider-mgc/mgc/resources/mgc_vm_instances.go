@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"math/big"
+	"regexp"
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
@@ -127,7 +128,14 @@ func (r *vmInstances) Schema(_ context.Context, _ resource.SchemaRequest, resp *
 			"name": schema.StringAttribute{
 				Description: "The name of the virtual machine instance.",
 				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.UseStateForUnknown(),
+					stringplanmodifier.RequiresReplace(),
+				},
+				Validators: []validator.String{
+					stringvalidator.LengthBetween(1, 255),
+					stringvalidator.RegexMatches(
+						regexp.MustCompile(`^[a-z0-9]+(?:[-_][a-z0-9]+)*$`),
+						"The name must contain only lowercase letters, numbers, underlines and hyphens. Hyphens and underlines cannot be located at the edges either.",
+					),
 				},
 				Required: true,
 			},
@@ -165,13 +173,15 @@ func (r *vmInstances) Schema(_ context.Context, _ resource.SchemaRequest, resp *
 				Computed:    true,
 			},
 			"user_data": schema.StringAttribute{
-				Description: "Used to perform automated configuration tasks. (between 1 and 65000 characters)",
+				Description: "Used to perform automated configuration tasks. Must be sent in base64 format. (between 1 and 65000 characters)",
 				Optional:    true,
 				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.UseStateForUnknown(),
+					stringplanmodifier.RequiresReplace(),
 				},
 				Validators: []validator.String{
 					stringvalidator.LengthBetween(1, 65000),
+					stringvalidator.RegexMatches(regexp.MustCompile(`^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$`),
+						"Must be a valid base64 string."),
 				},
 			},
 			"image": schema.SingleNestedAttribute{
@@ -394,19 +404,13 @@ func (r *vmInstances) Create(ctx context.Context, req resource.CreateRequest, re
 
 	result, err := r.vmInstances.CreateContext(ctx, createParams, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVmInstances.CreateConfigs{}))
 	if err != nil {
-		resp.Diagnostics.AddError(
-			"Error creating vm",
-			"Could not create virtual-machine, unexpected error: "+err.Error(),
-		)
+		resp.Diagnostics.AddError("Error creating vm", err.Error())
 		return
 	}
 
 	getResult, err := r.getVmStatus(ctx, result.Id)
 	if err != nil {
-		resp.Diagnostics.AddError(
-			"Error Reading VM",
-			"Could not read VM ID "+result.Id+": "+err.Error(),
-		)
+		resp.Diagnostics.AddError("Error Reading VM", err.Error())
 		return
 	}
 	state.ID = types.StringValue(result.Id)
@@ -417,9 +421,6 @@ func (r *vmInstances) Create(ctx context.Context, req resource.CreateRequest, re
 	state.UpdatedAt = types.StringValue(time.Now().Format(time.RFC850))
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, state)...)
-	if resp.Diagnostics.HasError() {
-		return
-	}
 }
 
 func (r *vmInstances) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
