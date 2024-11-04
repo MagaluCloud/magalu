@@ -82,6 +82,7 @@ func getMetadataFromResponse(resp *http.Response) (HeadObjectResponse, error) {
 		ContentLength: contentLength,
 		ETag:          resp.Header.Get("ETag"),
 		ContentType:   resp.Header.Get("Content-Type"),
+		StorageClass:  resp.Header.Get("x-amz-storage-class"),
 	}
 
 	return metadata, nil
