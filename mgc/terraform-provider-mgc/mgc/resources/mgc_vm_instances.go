@@ -127,9 +127,6 @@ func (r *vmInstances) Schema(_ context.Context, _ resource.SchemaRequest, resp *
 			},
 			"name": schema.StringAttribute{
 				Description: "The name of the virtual machine instance.",
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplace(),
-				},
 				Validators: []validator.String{
 					stringvalidator.LengthBetween(1, 255),
 					stringvalidator.RegexMatches(
