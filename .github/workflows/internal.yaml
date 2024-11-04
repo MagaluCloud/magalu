@@ -8,7 +8,7 @@ concurrency:
   
 jobs:
   build:
-    runs-on: self-hosted
+    runs-on: ${{ vars.RUNNER_RUNS_ON }}
     timeout-minutes: 15
     steps:
       - name: Checkout

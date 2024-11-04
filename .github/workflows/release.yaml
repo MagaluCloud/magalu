@@ -17,7 +17,7 @@ concurrency:
 
 jobs:
   build:
-    runs-on: self-hosted
+    runs-on: ${{ vars.RUNNER_RUNS_ON }}
     timeout-minutes: 10
     steps:
       - name: Checkout
@@ -36,7 +36,7 @@ jobs:
 
   cli-release:
     needs: build
-    runs-on: self-hosted
+    runs-on: ${{ vars.RUNNER_RUNS_ON }}
     timeout-minutes: 10
     if: ${{ inputs.runCLI }}
     steps:
@@ -63,7 +63,7 @@ jobs:
 
   terraform-release:
     needs: build
-    runs-on: self-hosted
+    runs-on: ${{ vars.RUNNER_RUNS_ON }}
     timeout-minutes: 20
     if: ${{ inputs.runTerraform }}
     steps:
