@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
+	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
@@ -79,6 +80,7 @@ type vmInstancesResourceModel struct {
 	Network      networkVmInstancesModel     `tfsdk:"network"`
 	MachineType  vmInstancesMachineTypeModel `tfsdk:"machine_type"`
 	Image        tfutil.GenericIDNameModel   `tfsdk:"image"`
+	UserData     types.String                `tfsdk:"user_data"`
 }
 
 type networkVmInstancesModel struct {
@@ -161,6 +163,16 @@ func (r *vmInstances) Schema(_ context.Context, _ resource.SchemaRequest, resp *
 			"status": schema.StringAttribute{
 				Description: "The status of the virtual machine instance.",
 				Computed:    true,
+			},
+			"user_data": schema.StringAttribute{
+				Description: "Used to perform automated configuration tasks. (between 1 and 65000 characters)",
+				Optional:    true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.UseStateForUnknown(),
+				},
+				Validators: []validator.String{
+					stringvalidator.LengthBetween(1, 65000),
+				},
 			},
 			"image": schema.SingleNestedAttribute{
 				Description: "The image used to create the virtual machine instance.",
@@ -378,6 +390,7 @@ func (r *vmInstances) Create(ctx context.Context, req resource.CreateRequest, re
 	}
 
 	createParams.Network.AssociatePublicIp = state.Network.AssociatePublicIP.ValueBoolPointer()
+	createParams.UserData = state.UserData.ValueStringPointer()
 
 	result, err := r.vmInstances.CreateContext(ctx, createParams, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVmInstances.CreateConfigs{}))
 	if err != nil {
@@ -535,6 +548,7 @@ func (r *vmInstances) setValuesFromServer(data vmInstancesResourceModel, server 
 		}
 
 	}
+	data.UserData = types.StringPointerValue(server.UserData)
 	return data
 }
 
