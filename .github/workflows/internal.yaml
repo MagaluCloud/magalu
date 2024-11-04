@@ -8,7 +8,7 @@ concurrency:
   
 jobs:
   build:
-    runs-on: ${{ env.RUNNER_RUNS_ON }}
+    runs-on: ${{ vars.RUNNER_RUNS_ON }}
     timeout-minutes: 15
     steps:
       - name: Checkout
