@@ -108,10 +108,10 @@ resource "mgc_network_public_ips_attach" "example" {
 }
 
 #Subnetpools
-resource "mgc_network_subnetpools_book_cidr" "book_subnetpool" {
-  cidr = "172.18.0.199/32"
-  subnet_pool_id   = "0290a302-77b4-4315-801c-087c7b96867b"
-}
+# resource "mgc_network_subnetpools_book_cidr" "book_subnetpool" {
+#   cidr = "172.18.0.199/32"
+#   subnet_pool_id   = "0290a302-77b4-4315-801c-087c7b96867b"
+# }
 
 # Outputs
 output "primary_security_group_data" {
