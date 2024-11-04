@@ -285,7 +285,6 @@ func (r *NewNodePoolResource) ImportState(ctx context.Context, req resource.Impo
 		return
 	}
 
-	data.ClusterID = types.StringValue(ids[0])
 	data.NodePool = tfutil.ConvertToNodePoolGet(&nodepool)
 	resp.Diagnostics.Append(resp.State.Set(ctx, data)...)
 }
