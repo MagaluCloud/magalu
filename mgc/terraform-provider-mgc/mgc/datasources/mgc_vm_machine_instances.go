@@ -31,6 +31,7 @@ type VMInstanceModel struct {
 	State         types.String `tfsdk:"state"`
 	ImageID       types.String `tfsdk:"image_id"`
 	MachineTypeID types.String `tfsdk:"machine_type_id"`
+	UserData      types.String `tfsdk:"user_data"`
 }
 
 type VMInstancesModel struct {
@@ -112,6 +113,10 @@ func (r *DataSourceVmInstances) Schema(_ context.Context, req datasource.SchemaR
 							Computed:    true,
 							Description: "Machine type ID of instance",
 						},
+						"user_data": schema.StringAttribute{
+							Computed:    true,
+							Description: "User data of instance",
+						},
 					},
 				},
 			},
@@ -158,6 +163,7 @@ func (r *DataSourceVmInstances) Read(ctx context.Context, req datasource.ReadReq
 			State:         types.StringValue(instance.State),
 			ImageID:       types.StringValue(instance.Image.Id),
 			MachineTypeID: types.StringValue(instance.MachineType.Id),
+			UserData:      types.StringPointerValue(instance.UserData),
 		})
 	}
 

@@ -18,7 +18,7 @@ concurrency:
 jobs:
   validate:
     name: Run Pre Commit Hooks
-    runs-on: self-hosted
+    runs-on: ${{ vars.RUNNER_RUNS_ON }}
     timeout-minutes: 10
     steps:
       - name: Checkout

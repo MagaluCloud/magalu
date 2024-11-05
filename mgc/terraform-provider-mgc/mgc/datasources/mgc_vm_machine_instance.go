@@ -91,6 +91,10 @@ func (r *DataSourceVmInstance) Schema(_ context.Context, req datasource.SchemaRe
 				Computed:    true,
 				Description: "Machine type ID of instance",
 			},
+			"user_data": schema.StringAttribute{
+				Computed:    true,
+				Description: "User data of instance",
+			},
 		},
 	}
 	resp.Schema.Description = "Get the available virtual-machine instance details"
@@ -136,6 +140,7 @@ func (r *DataSourceVmInstance) Read(ctx context.Context, req datasource.ReadRequ
 		State:         types.StringValue(instance.State),
 		ImageID:       types.StringValue(instance.Image.Id),
 		MachineTypeID: types.StringValue(instance.MachineType.Id),
+		UserData:      types.StringPointerValue(instance.UserData),
 	}
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
