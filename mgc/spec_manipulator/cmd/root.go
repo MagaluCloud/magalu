@@ -3,17 +3,18 @@ package cmd
 import (
 	"fmt"
 	"os"
-	"path"
 	"path/filepath"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	"magalu.cloud/mgca/cmd/pipeline"
+	"magalu.cloud/mgca/cmd/spec"
 )
 
 var (
 	rootCmd = &cobra.Command{
 		CompletionOptions: cobra.CompletionOptions{DisableDefaultCmd: true},
-		Use:               "specs",
+		Use:               "mgca",
 		Short:             "Utilitário para auxiliar na atualização de specs",
 		Long:              `Uma, ou mais uma CLI para ajudar no processo de atualização das specs.`,
 	}
@@ -24,31 +25,17 @@ const (
 	SPEC_DIR   = "cli_specs"
 )
 
-var currentDir = func() string {
-	ex, err := os.Executable()
-	if err != nil {
-		panic(err)
-	}
-	exPath := filepath.Dir(ex)
-
-	return path.Join(exPath, SPEC_DIR)
-}
-
 // Execute executes the root command.
 func Execute() error {
+	rootCmd.AddCommand(spec.SpecCmd())
+	rootCmd.AddCommand(pipeline.PipelineCmd())
+	rootCmd.AddCommand(versionCmd) // version
+
 	return rootCmd.Execute()
 }
 
 func init() {
 	cobra.OnInitialize(initConfig)
-	rootCmd.AddCommand(versionCmd)       // version
-	rootCmd.AddCommand(downloadSpecsCmd) // download all
-	rootCmd.AddCommand(addSpecsCmd)      // add spec
-	rootCmd.AddCommand(deleteSpecsCmd)   // delete spec
-	rootCmd.AddCommand(listSpecsCmd)     // list specs
-	rootCmd.AddCommand(prepareToGoCmd)   // convert spec to golang
-	rootCmd.AddCommand(downgradeSpecCmd) // downgrade spec
-
 }
 
 func initConfig() {
