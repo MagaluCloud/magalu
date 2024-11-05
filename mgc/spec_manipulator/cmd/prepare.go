@@ -96,10 +96,17 @@ func runPrepare(cmd *cobra.Command, args []string) {
 			}
 
 			toVerify := []verify{}
+			toRemove := []string{}
 			for pair := docModel.Model.Paths.PathItems.Oldest(); pair != nil; pair = pair.Next() {
 				forceHidden := false
 				if strings.Contains(strings.ToLower(pair.Key), "xaas") || strings.Contains(strings.ToLower(pair.Key), "/internal") {
 					forceHidden = true
+					/*
+						Esse código é apenas para manter a compatibilidade com o que tinhamos antes.
+						Após garantir funcionamento, remove-lo e garantir que quando for xaas, o x-mgc-hidden fique true.
+					*/
+					toRemove = append(toRemove, pair.Key)
+					continue
 				}
 
 				if pair.Value.Delete != nil {
@@ -215,6 +222,14 @@ func runPrepare(cmd *cobra.Command, args []string) {
 					}
 
 				}
+			}
+
+			/*
+				Aqui continua o código a ser removido
+			*/
+
+			for _, key := range toRemove {
+				docModel.Model.Paths.PathItems.Delete(key)
 			}
 
 			ccVerify := make([]verify, len(toVerify))
