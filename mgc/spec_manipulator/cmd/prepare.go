@@ -263,9 +263,7 @@ func runPrepare(cmd *cobra.Command, args []string) {
 				})
 
 			}
-			rejectPaths = nil
 			toVerify = nil
-			ccVerify = nil
 
 			_, document, _, errs := document.RenderAndReload()
 			if len(errors) > 0 {
