@@ -4,9 +4,11 @@ import (
 	"context"
 	"fmt"
 	"math/big"
+	"regexp"
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
+	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
@@ -79,6 +81,7 @@ type vmInstancesResourceModel struct {
 	Network      networkVmInstancesModel     `tfsdk:"network"`
 	MachineType  vmInstancesMachineTypeModel `tfsdk:"machine_type"`
 	Image        tfutil.GenericIDNameModel   `tfsdk:"image"`
+	UserData     types.String                `tfsdk:"user_data"`
 }
 
 type networkVmInstancesModel struct {
@@ -124,8 +127,12 @@ func (r *vmInstances) Schema(_ context.Context, _ resource.SchemaRequest, resp *
 			},
 			"name": schema.StringAttribute{
 				Description: "The name of the virtual machine instance.",
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.UseStateForUnknown(),
+				Validators: []validator.String{
+					stringvalidator.LengthBetween(1, 255),
+					stringvalidator.RegexMatches(
+						regexp.MustCompile(`^[a-z0-9]+(?:[-_][a-z0-9]+)*$`),
+						"The name must contain only lowercase letters, numbers, underlines and hyphens. Hyphens and underlines cannot be located at the edges either.",
+					),
 				},
 				Required: true,
 			},
@@ -161,6 +168,18 @@ func (r *vmInstances) Schema(_ context.Context, _ resource.SchemaRequest, resp *
 			"status": schema.StringAttribute{
 				Description: "The status of the virtual machine instance.",
 				Computed:    true,
+			},
+			"user_data": schema.StringAttribute{
+				Description: "Used to perform automated configuration tasks. Must be sent in base64 format. (between 1 and 65000 characters)",
+				Optional:    true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplace(),
+				},
+				Validators: []validator.String{
+					stringvalidator.LengthBetween(1, 65000),
+					stringvalidator.RegexMatches(regexp.MustCompile(`^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$`),
+						"Must be a valid base64 string."),
+				},
 			},
 			"image": schema.SingleNestedAttribute{
 				Description: "The image used to create the virtual machine instance.",
@@ -378,22 +397,17 @@ func (r *vmInstances) Create(ctx context.Context, req resource.CreateRequest, re
 	}
 
 	createParams.Network.AssociatePublicIp = state.Network.AssociatePublicIP.ValueBoolPointer()
+	createParams.UserData = state.UserData.ValueStringPointer()
 
 	result, err := r.vmInstances.CreateContext(ctx, createParams, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVmInstances.CreateConfigs{}))
 	if err != nil {
-		resp.Diagnostics.AddError(
-			"Error creating vm",
-			"Could not create virtual-machine, unexpected error: "+err.Error(),
-		)
+		resp.Diagnostics.AddError("Error creating vm", err.Error())
 		return
 	}
 
 	getResult, err := r.getVmStatus(ctx, result.Id)
 	if err != nil {
-		resp.Diagnostics.AddError(
-			"Error Reading VM",
-			"Could not read VM ID "+result.Id+": "+err.Error(),
-		)
+		resp.Diagnostics.AddError("Error Reading VM", err.Error())
 		return
 	}
 	state.ID = types.StringValue(result.Id)
@@ -404,9 +418,6 @@ func (r *vmInstances) Create(ctx context.Context, req resource.CreateRequest, re
 	state.UpdatedAt = types.StringValue(time.Now().Format(time.RFC850))
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, state)...)
-	if resp.Diagnostics.HasError() {
-		return
-	}
 }
 
 func (r *vmInstances) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
@@ -535,6 +546,7 @@ func (r *vmInstances) setValuesFromServer(data vmInstancesResourceModel, server 
 		}
 
 	}
+	data.UserData = types.StringPointerValue(server.UserData)
 	return data
 }
 
