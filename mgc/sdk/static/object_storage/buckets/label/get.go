@@ -32,7 +32,7 @@ var getGet = utils.NewLazyLoader[core.Executor](func() core.Executor {
 			Name:        "get",
 			Description: "Get labels for the specified bucket",
 		},
-		GetLabels,
+		getLabels,
 	)
 	exec = core.NewExecuteResultOutputOptions(exec, func(exec core.Executor, result core.Result) string {
 		return "xml"
@@ -40,8 +40,8 @@ var getGet = utils.NewLazyLoader[core.Executor](func() core.Executor {
 	return exec
 })
 
-func GetLabels(ctx context.Context, params GetBucketLabelParams, cfg common.Config) (_ Label, err error) {
-	res, err := GetTags(ctx, GetBucketLabelParams{Bucket: params.Bucket}, cfg)
+func getLabels(ctx context.Context, params GetBucketLabelParams, cfg common.Config) (_ Label, err error) {
+	res, err := getTags(ctx, GetBucketLabelParams{Bucket: params.Bucket}, cfg)
 	if err != nil {
 		return
 	}
@@ -49,7 +49,7 @@ func GetLabels(ctx context.Context, params GetBucketLabelParams, cfg common.Conf
 	return Label{Value: labels}, err
 }
 
-func GetTags(ctx context.Context, params GetBucketLabelParams, cfg common.Config) (_ TagSet, err error) {
+func getTags(ctx context.Context, params GetBucketLabelParams, cfg common.Config) (_ TagSet, err error) {
 	req, err := newGetTaggingRequest(ctx, cfg, params.Bucket)
 	if err != nil {
 		return
