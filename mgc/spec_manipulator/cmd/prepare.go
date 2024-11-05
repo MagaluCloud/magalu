@@ -10,20 +10,11 @@ import (
 
 	"github.com/pb33f/libopenapi"
 	validator "github.com/pb33f/libopenapi-validator"
-	"github.com/spf13/cobra"
-)
+	"github.com/pb33f/libopenapi/orderedmap"
 
-type modules struct {
-	Description string `json:"description"`
-	Name        string `json:"name"`
-	Path        string `json:"path"`
-	Summary     string `json:"summary"`
-	URL         string `json:"url"`
-	Version     string `json:"version"`
-	CLI         bool   `json:"cli"`
-	TF          bool   `json:"tf"`
-	SDK         bool   `json:"sdk"`
-}
+	"github.com/spf13/cobra"
+	"gopkg.in/yaml.v3"
+)
 
 type verify struct {
 	path   string
@@ -44,8 +35,7 @@ const (
 	PUT    = "PUT"
 )
 
-func processHiddenExtension(method, extKey, extValue, menu, path string, toVerify *[]verify) {
-	// fmt.Println(menu, path, method, " {", extKey, ":", extValue, "}")
+func processHiddenExtension(method, extValue, path string, toVerify *[]verify) {
 	hiddenValue, err := strconv.ParseBool(extValue)
 	if err != nil {
 		fmt.Println("Error parsing bool:", err)
@@ -72,7 +62,6 @@ func removeVersionFromURL(url string) (string, int, error) {
 	return cleanURL, version, nil
 }
 
-// prepareToGoCmd is a hidden command that prepares all available specs to golang
 func runPrepare(cmd *cobra.Command, args []string) {
 	_ = verificarEAtualizarDiretorio(currentDir())
 
@@ -83,43 +72,9 @@ func runPrepare(cmd *cobra.Command, args []string) {
 		return
 	}
 
-	// finalFile := filepath.Join(currentDir(), "specs.go.tmp")
-	// newFileSpecs, err := os.OpenFile(finalFile, os.O_CREATE|os.O_WRONLY, 0644)
-	// if err != nil {
-	// 	fmt.Println(err)
-	// 	return
-	// }
-	// defer newFileSpecs.Close()
-
-	// _, _ = newFileSpecs.Write([]byte("package openapi\n\n"))
-	// _, _ = newFileSpecs.Write([]byte("import (\n"))
-	// _, _ = newFileSpecs.Write([]byte("	\"os\"\n"))
-	// _, _ = newFileSpecs.Write([]byte("	\"syscall\"\n"))
-	// _, _ = newFileSpecs.Write([]byte("	\"magalu.cloud/core/dataloader\"\n"))
-	// _, _ = newFileSpecs.Write([]byte(")\n\n"))
-	// _, _ = newFileSpecs.Write([]byte("type embedLoader map[string][]byte\n"))
-	// _, _ = newFileSpecs.Write([]byte("func GetEmbedLoader() dataloader.Loader {\n"))
-	// _, _ = newFileSpecs.Write([]byte("return embedLoaderInstance\n"))
-	// _, _ = newFileSpecs.Write([]byte("		}\n"))
-	// _, _ = newFileSpecs.Write([]byte("func (f embedLoader) Load(name string) ([]byte, error) {\n"))
-	// _, _ = newFileSpecs.Write([]byte("if data, ok := embedLoaderInstance[name]; ok {\n"))
-	// _, _ = newFileSpecs.Write([]byte("return data, nil\n"))
-	// _, _ = newFileSpecs.Write([]byte("}\n"))
-	// _, _ = newFileSpecs.Write([]byte("return nil, &os.PathError{Op: \"open\", Path: name, Err: syscall.ENOENT}\n"))
-	// _, _ = newFileSpecs.Write([]byte("}\n"))
-	// _, _ = newFileSpecs.Write([]byte("func (f embedLoader) String() string {\n"))
-	// _, _ = newFileSpecs.Write([]byte("		return \"embedLoader\"\n"))
-	// _, _ = newFileSpecs.Write([]byte("}\n"))
-	// _, _ = newFileSpecs.Write([]byte("var embedLoaderInstance = embedLoader{\n"))
-
-	// indexModules := []modules{}
-
 	rejectedPaths := []rejected{}
 
 	for _, v := range currentConfig {
-		// fileStringBase64 := ""
-		// fmt.Println(filepath.Join(currentDir(), v.File))
-		//read file and convert to string and save in new generate a new go file
 		if v.Enabled {
 			file := filepath.Join(currentDir(), v.File)
 			fileBytes, err := os.ReadFile(file)
@@ -140,59 +95,125 @@ func runPrepare(cmd *cobra.Command, args []string) {
 				panic(fmt.Sprintf("cannot create v3 model from document: %d errors reported", len(errors)))
 			}
 
-			// indexModules = append(indexModules, modules{
-			// 	Description: docModel.Model.Info.Description,
-			// 	Name:        v.Menu,
-			// 	Path:        v.File,
-			// 	Summary:     docModel.Model.Info.Description,
-			// 	URL:         v.Url,
-			// 	Version:     docModel.Model.Info.Version,
-			// 	CLI:         v.CLI,
-			// 	TF:          v.TF,
-			// 	SDK:         v.SDK,
-			// })
-
 			toVerify := []verify{}
-
 			for pair := docModel.Model.Paths.PathItems.Oldest(); pair != nil; pair = pair.Next() {
+				forceHidden := false
+				if strings.Contains(strings.ToLower(pair.Key), "xaas") || strings.Contains(strings.ToLower(pair.Key), "/internal") {
+					forceHidden = true
+				}
+
 				if pair.Value.Delete != nil {
+					hasHidden := false
 					for ext := pair.Value.Delete.Extensions.Oldest(); ext != nil; ext = ext.Next() {
 						if ext.Key == "x-mgc-hidden" {
-							processHiddenExtension(DELETE, ext.Key, ext.Value.Value, v.Menu, pair.Key, &toVerify)
+							processHiddenExtension(DELETE, ext.Value.Value, pair.Key, &toVerify)
+							if forceHidden && ext.Value.Value != "true" {
+								ext.Value.Value = "true"
+							}
+							hasHidden = true
 						}
+					}
+					if !hasHidden && forceHidden {
+						if pair.Value.Delete.Extensions == nil {
+							pair.Value.Delete.Extensions = &orderedmap.Map[string, *yaml.Node]{}
+						}
+						pair.Value.Delete.Extensions.Set("x-mgc-hidden", &yaml.Node{
+							Kind:  yaml.ScalarNode,
+							Value: "true",
+						})
 					}
 				}
 
 				if pair.Value.Get != nil {
+					hasHidden := false
 					for ext := pair.Value.Get.Extensions.Oldest(); ext != nil; ext = ext.Next() {
 						if ext.Key == "x-mgc-hidden" {
-							processHiddenExtension(GET, ext.Key, ext.Value.Value, v.Menu, pair.Key, &toVerify)
+							processHiddenExtension(GET, ext.Value.Value, pair.Key, &toVerify)
+							if forceHidden && ext.Value.Value != "true" {
+								ext.Value.Value = "true"
+							}
+							hasHidden = true
 						}
 					}
+					if !hasHidden && forceHidden {
+						if pair.Value.Get.Extensions == nil {
+							pair.Value.Get.Extensions = &orderedmap.Map[string, *yaml.Node]{}
+						}
+						pair.Value.Get.Extensions.Set("x-mgc-hidden", &yaml.Node{
+							Kind:  yaml.ScalarNode,
+							Value: "true",
+						})
+					}
+
 				}
 
 				if pair.Value.Patch != nil {
+					hasHidden := false
 					for ext := pair.Value.Patch.Extensions.Oldest(); ext != nil; ext = ext.Next() {
 						if ext.Key == "x-mgc-hidden" {
-							processHiddenExtension(PATCH, ext.Key, ext.Value.Value, v.Menu, pair.Key, &toVerify)
+							processHiddenExtension(PATCH, ext.Value.Value, pair.Key, &toVerify)
+							if forceHidden && ext.Value.Value != "true" {
+								ext.Value.Value = "true"
+							}
+							hasHidden = true
 						}
 					}
+					if !hasHidden && forceHidden {
+						if pair.Value.Patch.Extensions == nil {
+							pair.Value.Patch.Extensions = &orderedmap.Map[string, *yaml.Node]{}
+						}
+						pair.Value.Patch.Extensions.Set("x-mgc-hidden", &yaml.Node{
+							Kind:  yaml.ScalarNode,
+							Value: "true",
+						})
+					}
+
 				}
 
 				if pair.Value.Post != nil {
+					hasHidden := false
 					for ext := pair.Value.Post.Extensions.Oldest(); ext != nil; ext = ext.Next() {
 						if ext.Key == "x-mgc-hidden" {
-							processHiddenExtension(POST, ext.Key, ext.Value.Value, v.Menu, pair.Key, &toVerify)
+							processHiddenExtension(POST, ext.Value.Value, pair.Key, &toVerify)
+							if forceHidden && ext.Value.Value != "true" {
+								ext.Value.Value = "true"
+							}
+							hasHidden = true
 						}
 					}
+					if !hasHidden && forceHidden {
+						if pair.Value.Post.Extensions == nil {
+							pair.Value.Post.Extensions = &orderedmap.Map[string, *yaml.Node]{}
+						}
+						pair.Value.Post.Extensions.Set("x-mgc-hidden", &yaml.Node{
+							Kind:  yaml.ScalarNode,
+							Value: "true",
+						})
+					}
+
 				}
 
 				if pair.Value.Put != nil {
-					for ext := pair.Value.Post.Extensions.Oldest(); ext != nil; ext = ext.Next() {
+					hasHidden := false
+					for ext := pair.Value.Put.Extensions.Oldest(); ext != nil; ext = ext.Next() {
 						if ext.Key == "x-mgc-hidden" {
-							processHiddenExtension(PUT, ext.Key, ext.Value.Value, v.Menu, pair.Key, &toVerify)
+							processHiddenExtension(PUT, ext.Value.Value, pair.Key, &toVerify)
+							if forceHidden && ext.Value.Value != "true" {
+								ext.Value.Value = "true"
+							}
+							hasHidden = true
 						}
 					}
+					if !hasHidden && forceHidden {
+						if pair.Value.Put.Extensions == nil {
+							pair.Value.Put.Extensions = &orderedmap.Map[string, *yaml.Node]{}
+						}
+						pair.Value.Put.Extensions.Set("x-mgc-hidden", &yaml.Node{
+							Kind:  yaml.ScalarNode,
+							Value: "true",
+						})
+					}
+
 				}
 			}
 
@@ -232,7 +253,6 @@ func runPrepare(cmd *cobra.Command, args []string) {
 			}
 
 			for _, xv := range rejectPaths {
-				// fmt.Printf("Rejecting %s %s - Hidden: %t\n", xv.method, xv.path, xv.hidden)
 				rejectedPaths = append(rejectedPaths, rejected{
 					verify: verify{
 						path:   xv.path,
@@ -273,7 +293,6 @@ func runPrepare(cmd *cobra.Command, args []string) {
 
 			if !valid {
 				for _, e := range validationErrs {
-					// 5. Handle the error
 					fmt.Printf("Type: %s, Failure: %s\n", e.ValidationType, e.Message)
 					fmt.Printf("Fix: %s\n\n", e.HowToFix)
 				}
@@ -293,8 +312,6 @@ func runPrepare(cmd *cobra.Command, args []string) {
 			}
 		}
 
-		// _, _ = newFileSpecs.Write([]byte(fmt.Sprintf("\"%v\":([]byte)(\"%v\"),\n", v.File, fileStringBase64)))
-
 	}
 
 	if len(rejectedPaths) > 0 {
@@ -304,18 +321,6 @@ func runPrepare(cmd *cobra.Command, args []string) {
 		}
 		os.Exit(1)
 	}
-	//convert to json
-
-	// indexJson, err := json.Marshal(indexModules)
-	// if err != nil {
-	// 	fmt.Println(err)
-	// 	return
-	// }
-
-	// fileStringBase64 := b64.StdEncoding.EncodeToString(indexJson)
-	// _, _ = newFileSpecs.Write([]byte(fmt.Sprintf("\"%v\":([]byte)(\"%v\"),\n", "index.openapi.json", fileStringBase64)))
-	// _, _ = newFileSpecs.Write([]byte("\n}\n"))
-
 }
 
 // replace another python scripts
