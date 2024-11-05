@@ -248,9 +248,13 @@ func runPrepare(cmd *cobra.Command, args []string) {
 				}
 
 				for _, c := range ccVerify {
-					_, cVersion, _ := removeVersionFromURL(c.path)
+					cffix, cVersion, _ := removeVersionFromURL(c.path)
 
 					if c.method != vv.method {
+						continue
+					}
+
+					if c.path == vv.path {
 						continue
 					}
 
@@ -258,11 +262,19 @@ func runPrepare(cmd *cobra.Command, args []string) {
 						continue
 					}
 
+					if suffix != cffix {
+						continue
+					}
+
 					if cVersion == vVersion {
 						continue
 					}
 
-					if c.hidden != vv.hidden || (!c.hidden && !vv.hidden) {
+					if vVersion < cVersion {
+						continue
+					}
+
+					if (!vv.hidden && c.hidden) || (c.hidden && vv.hidden) {
 						continue
 					}
 
