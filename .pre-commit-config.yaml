@@ -35,8 +35,7 @@ repos:
     -   id: tf-docs
         name: generate terraform documentation
         language: system
-        entry: bash -c 'if [ "$SKIP_TF_STEP" != "true" ]; then make -C ./mgc/terraform-provider-mgc/ generate-docs; else echo "Skipped"; fi'
-        # entry: make -C ./mgc/terraform-provider-mgc/ generate-docs
+        entry: make -C ./mgc/terraform-provider-mgc/ generate-docs
         require_serial: true
         pass_filenames: false
         stages: [pre-commit]
