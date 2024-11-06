@@ -45,13 +45,7 @@ func NewSDKClient[T SDKFrom](req T) (*mgcSdk.Client, error, error) {
 	if config.Env.ValueString() != "" {
 		_ = sdkClient.Sdk().Config().SetTempConfig("env", config.Env.ValueString())
 	}
-	/* break-change - next release
-	if config.ApiKey.ValueString() == "" {
-		return nil, fmt.Errorf("provider with api_key must be setted"), fmt.Errorf(`please check the resource to see if they are using 'provider' and verify if the provider has the 'api_key' correctly set`)
-	}
 
-	_ = sdkClient.Sdk().Auth().SetAPIKey(config.ApiKey.ValueString())
-	*/
 	if config.ApiKey.ValueString() != "" {
 		_ = sdkClient.Sdk().Auth().SetAPIKey(config.ApiKey.ValueString())
 	}
