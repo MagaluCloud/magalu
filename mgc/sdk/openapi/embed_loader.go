@@ -16,7 +16,11 @@ var folder embed.FS
 type embedLoader map[string][]byte
 
 func GetEmbedLoader() dataloader.Loader {
-	return embedLoaderInstance()
+	result := embedLoaderInstance()
+	if result == nil {
+		return nil
+	}
+	return result
 }
 
 func (f embedLoader) Load(name string) ([]byte, error) {
