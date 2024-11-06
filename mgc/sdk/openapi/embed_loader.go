@@ -50,14 +50,14 @@ var embedLoaderInstance = func() embedLoader {
 	dataIndex, err := folder.ReadFile("openapis/" + indexFileName)
 	if err != nil {
 		fmt.Println("Error reading index file")
-		panic(err)
+		return nil
 	}
 
 	config := &configIndex{}
 	err = yaml.Unmarshal(dataIndex, config)
 	if err != nil {
 		fmt.Println("Error unmarshalling index file")
-		panic(err)
+		return nil
 	}
 
 	loader[indexFileName] = dataIndex
@@ -66,7 +66,7 @@ var embedLoaderInstance = func() embedLoader {
 		data, err := folder.ReadFile("openapis/" + m.Path)
 		if err != nil {
 			fmt.Println("Error reading module file")
-			panic(err)
+			return nil
 		}
 		loader[m.Path] = data
 
