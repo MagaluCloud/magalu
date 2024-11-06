@@ -46,15 +46,22 @@ func NewSDKClient[T SDKFrom](req T) (*mgcSdk.Client, error, error) {
 		_ = sdkClient.Sdk().Config().SetTempConfig("env", config.Env.ValueString())
 	}
 
-	if config.ApiKey.ValueString() == "" {
-		return nil, fmt.Errorf("provider with api_key must be setted"), fmt.Errorf(`please check the resource to see if they are using 'provider' and verify if the provider has the 'api_key' correctly set`)
-	}
-
-	_ = sdkClient.Sdk().Auth().SetAPIKey(config.ApiKey.ValueString())
-
+	keyPairPresent := false
 	if config.ObjectStorage != nil && config.ObjectStorage.ObjectKeyPair != nil {
 		sdkClient.Sdk().Config().AddTempKeyPair("apikey", config.ObjectStorage.ObjectKeyPair.KeyID.ValueString(),
 			config.ObjectStorage.ObjectKeyPair.KeySecret.ValueString())
+		keyPairPresent = true
+	}
+
+	if !keyPairPresent && config.ApiKey.ValueString() == "" {
+		return nil, fmt.Errorf("provider with api_key must be setted"), fmt.Errorf(`please check the resource to see if they are using 'provider' and verify if the provider has the 'api_key' correctly set`)
+	}
+
+	if config.ApiKey.ValueString() != "" {
+		err := sdkClient.Sdk().Auth().SetAPIKey(config.ApiKey.ValueString())
+		if err != nil {
+			return nil, fmt.Errorf("fail to set api_key"), err
+		}
 	}
 
 	return sdkClient, nil, nil
