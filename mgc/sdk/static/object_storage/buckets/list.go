@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"magalu.cloud/core"
 	"magalu.cloud/core/utils"
@@ -51,7 +52,21 @@ func list(ctx context.Context, _ struct{}, cfg common.Config) (result ListRespon
 		return
 	}
 
-	return common.UnwrapResponse[ListResponse](resp, req)
+	result, err = common.UnwrapResponse[ListResponse](resp, req)
+	if err != nil {
+		return
+	}
+
+	for _, bucket := range result.Buckets {
+		size, err := strconv.ParseInt(bucket.BucketSize, 10, 64)
+		if err != nil {
+			bucket.BucketSize = "0B"
+		} else {
+			bucket.BucketSize = FormatSize(size)
+		}
+	}
+
+	return
 }
 
 func FormatSize(size int64) string {
@@ -59,11 +74,15 @@ func FormatSize(size int64) string {
 	if size < unit {
 		return fmt.Sprintf("%dB", size)
 	}
-	div, exp := int64(unit), 0
-	for n := size / unit; n >= unit; n /= unit {
-		div *= unit
-		exp++
+
+	suffixes := []string{"KiB", "MiB", "GiB", "TiB", "PiB", "EiB"}
+	i := 0
+	sizeFloat := float64(size)
+
+	for sizeFloat >= unit && i < len(suffixes)-1 {
+		sizeFloat /= unit
+		i++
 	}
-	return fmt.Sprintf("%.1f%ciB",
-		float64(size)/float64(div), "KMGTPE"[exp])
+
+	return fmt.Sprintf("%.1f %s", sizeFloat, suffixes[i])
 }
