@@ -24,7 +24,7 @@ var downloadSpecsCmd = &cobra.Command{
 		for _, v := range currentConfig {
 			_ = getAndSaveFile(v.Url, filepath.Join(currentDir(), v.File))
 		}
-		runPrepare(cmd, args)
+		fmt.Println("Now, run '" + cmd.Root().Name() + " prepare'")
 
 	},
 }

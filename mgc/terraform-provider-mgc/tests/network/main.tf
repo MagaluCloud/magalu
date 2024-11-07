@@ -66,11 +66,6 @@ resource "mgc_network_vpcs_interfaces" "pip_interface" {
   vpc_id = "9dd2d30e-565d-42ce-a0a3-f2de1c473fed"
 }
 
-resource "mgc_network_vpcs_interfaces" "pip_interface" {
-  name   = "pip-interface"
-  vpc_id = "9dd2d30e-565d-42ce-a0a3-f2de1c473fed"
-}
-
 # Security Group Attachment
 resource "mgc_network_security_groups_attach" "primary_sg_attachment" {
   security_group_id = mgc_network_security_groups.primary_sg.id
@@ -113,10 +108,10 @@ resource "mgc_network_public_ips_attach" "example" {
 }
 
 #Subnetpools
-resource "mgc_network_subnetpools_book_cidr" "book_subnetpool" {
-  cidr = "172.18.0.199/32"
-  subnet_pool_id   = "0290a302-77b4-4315-801c-087c7b96867b"
-}
+# resource "mgc_network_subnetpools_book_cidr" "book_subnetpool" {
+#   cidr = "172.18.0.199/32"
+#   subnet_pool_id   = "0290a302-77b4-4315-801c-087c7b96867b"
+# }
 
 # Outputs
 output "primary_security_group_data" {
@@ -138,11 +133,6 @@ output "primary_interface_data" {
 output "primary_subnet_data" {
   value = data.mgc_network_vpcs_subnet.primary_subnet_data
 }
-
-output "datasource_public_ip_id" {
-  value = data.mgc_network_public_ip.example
-}
-
 
 output "datasource_public_ip_id" {
   value = data.mgc_network_public_ip.example
