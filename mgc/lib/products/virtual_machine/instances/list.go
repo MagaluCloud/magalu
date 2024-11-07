@@ -83,9 +83,28 @@ type ListResultInstancesItemMachineType struct {
 
 // any of: ListResultInstancesItemNetwork
 type ListResultInstancesItemNetwork struct {
-	Ports *ListResultInstancesItemNetworkPorts `json:"ports"`
-	Vpc   *ListResultInstancesItemNetworkVpc   `json:"vpc,omitempty"`
+	Interfaces *ListResultInstancesItemNetworkInterfaces `json:"interfaces,omitempty"`
+	Ports      *ListResultInstancesItemNetworkPorts      `json:"ports"`
+	Vpc        *ListResultInstancesItemNetworkVpc        `json:"vpc,omitempty"`
 }
+
+type ListResultInstancesItemNetworkInterfacesItem struct {
+	AssociatedPublicIpv4 *string                                                     `json:"associated_public_ipv4,omitempty"`
+	Id                   string                                                      `json:"id"`
+	IpAddresses          ListResultInstancesItemNetworkInterfacesItemIpAddresses     `json:"ip_addresses"`
+	Name                 string                                                      `json:"name"`
+	Primary              *bool                                                       `json:"primary,omitempty"`
+	SecurityGroups       *ListResultInstancesItemNetworkInterfacesItemSecurityGroups `json:"security_groups,omitempty"`
+}
+
+type ListResultInstancesItemNetworkInterfacesItemIpAddresses struct {
+	PrivateIpv4 string  `json:"private_ipv4"`
+	PublicIpv6  *string `json:"public_ipv6,omitempty"`
+}
+
+type ListResultInstancesItemNetworkInterfacesItemSecurityGroups []string
+
+type ListResultInstancesItemNetworkInterfaces []ListResultInstancesItemNetworkInterfacesItem
 
 type ListResultInstancesItemNetworkPortsItem struct {
 	Id          string                                             `json:"id"`
