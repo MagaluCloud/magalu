@@ -60,7 +60,7 @@ func list(ctx context.Context, _ struct{}, cfg common.Config) (result ListRespon
 	for _, bucket := range result.Buckets {
 		size, err := strconv.ParseInt(bucket.BucketSize, 10, 64)
 		if err != nil {
-			bucket.BucketSize = "0B"
+			bucket.BucketSize = "-"
 		} else {
 			bucket.BucketSize = FormatSize(size)
 		}
