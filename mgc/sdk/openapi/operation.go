@@ -408,6 +408,9 @@ func (o *operation) getRequestUrl(
 	queryValues := url.Values{}
 	path := o.key
 	_, err = o.parameters.forEachWithValue(paramValues, parametersLocations, func(externalName string, parameter *openapi3.Parameter, value any) (run bool, err error) {
+		if value == nil {
+			return true, nil
+		}
 		switch parameter.In {
 		case openapi3.ParameterInPath:
 			path = replaceInPath(path, parameter, value)
