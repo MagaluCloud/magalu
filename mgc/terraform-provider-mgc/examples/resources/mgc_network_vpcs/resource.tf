@@ -1,4 +1,4 @@
-resource "mgc_network_vpcs" "my_vpc" {
-  name        = "my-vpc"
-  description = "My VPC"
+resource "mgc_network_vpcs" "example" {
+  name        = "example-vpc"
+  description = "An example VPC"
 }

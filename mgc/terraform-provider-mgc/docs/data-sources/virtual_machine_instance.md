@@ -40,3 +40,4 @@ output "vm_instances" {
 - `ssh_key_name` (String) SSH Key name
 - `state` (String) State of instance
 - `status` (String) Status of instance.
+- `user_data` (String) User data of instance

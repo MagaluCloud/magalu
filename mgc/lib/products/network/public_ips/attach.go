@@ -33,13 +33,10 @@ type AttachConfigs struct {
 	ServerUrl *string `json:"serverUrl,omitempty"`
 }
 
-type AttachResult any
-
 func (s *service) Attach(
 	parameters AttachParameters,
 	configs AttachConfigs,
 ) (
-	result AttachResult,
 	err error,
 ) {
 	exec, ctx, err := mgcHelpers.PrepareExecutor("Attach", mgcCore.RefPath("/network/public_ips/attach"), s.client, s.ctx)
@@ -57,11 +54,8 @@ func (s *service) Attach(
 		return
 	}
 
-	r, err := exec.Execute(ctx, p, c)
-	if err != nil {
-		return
-	}
-	return mgcHelpers.ConvertResult[AttachResult](r)
+	_, err = exec.Execute(ctx, p, c)
+	return
 }
 
 // Context from caller is used to allow cancellation of long-running requests
@@ -70,7 +64,6 @@ func (s *service) AttachContext(
 	parameters AttachParameters,
 	configs AttachConfigs,
 ) (
-	result AttachResult,
 	err error,
 ) {
 	exec, ctx, err := mgcHelpers.PrepareExecutor("Attach", mgcCore.RefPath("/network/public_ips/attach"), s.client, ctx)
@@ -101,11 +94,8 @@ func (s *service) AttachContext(
 		c["region"] = sdkConfig["region"]
 	}
 
-	r, err := exec.Execute(ctx, p, c)
-	if err != nil {
-		return
-	}
-	return mgcHelpers.ConvertResult[AttachResult](r)
+	_, err = exec.Execute(ctx, p, c)
+	return
 }
 
 // TODO: links

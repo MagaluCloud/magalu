@@ -33,13 +33,10 @@ type DetachConfigs struct {
 	ServerUrl *string `json:"serverUrl,omitempty"`
 }
 
-type DetachResult any
-
 func (s *service) Detach(
 	parameters DetachParameters,
 	configs DetachConfigs,
 ) (
-	result DetachResult,
 	err error,
 ) {
 	exec, ctx, err := mgcHelpers.PrepareExecutor("Detach", mgcCore.RefPath("/network/ports/detach"), s.client, s.ctx)
@@ -57,11 +54,8 @@ func (s *service) Detach(
 		return
 	}
 
-	r, err := exec.Execute(ctx, p, c)
-	if err != nil {
-		return
-	}
-	return mgcHelpers.ConvertResult[DetachResult](r)
+	_, err = exec.Execute(ctx, p, c)
+	return
 }
 
 // Context from caller is used to allow cancellation of long-running requests
@@ -70,7 +64,6 @@ func (s *service) DetachContext(
 	parameters DetachParameters,
 	configs DetachConfigs,
 ) (
-	result DetachResult,
 	err error,
 ) {
 	exec, ctx, err := mgcHelpers.PrepareExecutor("Detach", mgcCore.RefPath("/network/ports/detach"), s.client, ctx)
@@ -101,11 +94,8 @@ func (s *service) DetachContext(
 		c["region"] = sdkConfig["region"]
 	}
 
-	r, err := exec.Execute(ctx, p, c)
-	if err != nil {
-		return
-	}
-	return mgcHelpers.ConvertResult[DetachResult](r)
+	_, err = exec.Execute(ctx, p, c)
+	return
 }
 
 // TODO: links

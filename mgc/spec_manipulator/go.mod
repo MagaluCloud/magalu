@@ -3,7 +3,7 @@ module spec_manipulator
 go 1.23.0
 
 require (
-	github.com/pb33f/libopenapi v0.16.7
+	github.com/pb33f/libopenapi v0.18.6
 	github.com/spf13/cobra v1.8.0
 	gopkg.in/yaml.v3 v3.0.1
 )

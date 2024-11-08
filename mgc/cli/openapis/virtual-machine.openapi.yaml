@@ -31,7 +31,7 @@ paths:
                     exclusiveMinimum: false
                     type: integer
                     title: ' Limit'
-                    maximum: 2147483647
+                    maximum: 1000
                     description: limit the number of the results
                     default: 50
             -   name: _offset
@@ -508,6 +508,16 @@ paths:
                     title: ' Labels'
                     description: label-1, label2, label 3
                     default: ''
+            -   name: availability-zone
+                in: query
+                description: br-ne1-a
+                required: false
+                schema:
+                    anyOf:
+                    -   type: string
+                    title: Availability-Zone
+                    description: br-ne1-a
+                    nullable: true
             responses:
                 '200':
                     description: Successful Response
@@ -522,7 +532,7 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
-            x-mgc-output-flag: ''
+            x-mgc-output-flag: table=ID:$.images[*].id,NAME:$.images[*].name,VERSION:$.images[*].version,PLATFORM:$.images[*].platform,END_STANDARD_SUPPORT_AT:$.images[*].end_standard_support_at,STATUS:$.images[*].status,AVAILABILITY_ZONES:$.images[*].availability_zones
             security:
             -   OAuth2:
                 - virtual-machine.read
@@ -551,7 +561,7 @@ paths:
                     exclusiveMinimum: false
                     type: integer
                     title: ' Limit'
-                    maximum: 2147483647
+                    maximum: 1000
                     description: limit the number of the results
                     default: 50
             -   name: _offset
@@ -625,7 +635,8 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
-            x-mgc-output-flag: ''
+            x-mgc-output-flag: table=ID:$.instances[*].id,NAME:$.instances[*].name,STATE:$.instances[*].state,STATUS:$.instances[*].status,MACHINE_TYPE:$.instances[*].machine_type,IMAGE:$.instances[*].image,
+                CREATED_AT:$.instances[*].created_at, SSH_KEY_NAME:$.instances[*].ssh_key_name
             security:
             -   OAuth2:
                 - virtual-machine.read
@@ -742,7 +753,7 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
-            x-mgc-output-flag: ''
+            x-mgc-output-flag: table=ID:$.id
             security:
             -   OAuth2:
                 - virtual-machine.write
@@ -1079,7 +1090,8 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
-            x-mgc-output-flag: ''
+            x-mgc-output-flag: table=ID:$.id,NAME:$.name,STATE:$.state,STATUS:$..status,MACHINE_TYPE:$.machine_type,IMAGE:$.image,
+                CREATED_AT:$.created_at, SSH_KEY_NAME:$.ssh_key_name
             security:
             -   OAuth2:
                 - virtual-machine.read
@@ -1788,7 +1800,7 @@ paths:
                     exclusiveMinimum: false
                     type: integer
                     title: ' Limit'
-                    maximum: 2147483647
+                    maximum: 1000
                     description: limit the number of the results
                     default: 50
             -   name: _offset
@@ -1811,6 +1823,16 @@ paths:
                     pattern: ^(^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$
                     description: order of the results using informed fields
                     default: created_at:asc
+            -   name: availability-zone
+                in: query
+                description: br-ne1-a
+                required: false
+                schema:
+                    anyOf:
+                    -   type: string
+                    title: Availability-Zone
+                    description: br-ne1-a
+                    nullable: true
             responses:
                 '200':
                     description: Successful Response
@@ -1825,7 +1847,7 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
-            x-mgc-output-flag: remove=$.machine_types[*].sku,$.machine_types[*].status
+            x-mgc-output-flag: table=ID:$.instance_types[*].id,NAME:$.instance_types[*].name,STATUS:$.instance_types[*].status,VCPUS:$.instance_types[*].vcpus,RAM:$.instance_types[*].ram,DISK:$.instance_types[*].disk,GPU:$.instance_types[*].gpu
             security:
             -   OAuth2:
                 - virtual-machine.read
@@ -1854,7 +1876,7 @@ paths:
                     exclusiveMinimum: false
                     type: integer
                     title: ' Limit'
-                    maximum: 2147483647
+                    maximum: 1000
                     description: limit the number of the results
                     default: 50
             -   name: _offset
@@ -1927,7 +1949,8 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
-            x-mgc-output-flag: ''
+            x-mgc-output-flag: table=ID:$.snapshots[*].id,NAME:$.snapshots[*].name,STATE:$.snapshots[*].state,STATUS:$.snapshots[*].status,SIZE:$.snapshots[*].size,INSTANCE:$.snapshots[*].instance,
+                CREATED_AT:$.snapshots[*].created_at
             security:
             -   OAuth2:
                 - virtual-machine.read
@@ -2028,7 +2051,7 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
-            x-mgc-output-flag: ''
+            x-mgc-output-flag: table=ID:$.id
             security:
             -   OAuth2:
                 - virtual-machine.write
@@ -2138,7 +2161,8 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
-            x-mgc-output-flag: ''
+            x-mgc-output-flag: table=ID:$.id,NAME:$.name,STATE:$.state,STATUS:$.status,SIZE:$.size,INSTANCE:$.instance,
+                CREATED_AT:$.created_at
             security:
             -   OAuth2:
                 - virtual-machine.read
@@ -2241,7 +2265,7 @@ paths:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
             x-mgc-name: restore
-            x-mgc-output-flag: ''
+            x-mgc-output-flag: table=ID:$.id
             security:
             -   OAuth2:
                 - virtual-machine.write
@@ -2384,7 +2408,6 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: false
-            x-mgc-hidden: true
             security:
             -   OAuth2:
                 - virtual-machine.write
@@ -2628,7 +2651,7 @@ components:
                             -   $ref: '#/components/schemas/Name'
                             title: Vpc
                             default:
-                                name: default
+                                name: vpc_default
                         interface:
                             anyOf:
                             -   $ref: '#/components/schemas/ID'
@@ -2888,6 +2911,13 @@ components:
                             type: string
                     title: Labels
                     nullable: true
+                availability_zones:
+                    anyOf:
+                    -   type: array
+                        items:
+                            type: string
+                    title: Availability Zones
+                    nullable: true
             title: ImageResponseExternalV1
             required:
             - id
@@ -2895,6 +2925,8 @@ components:
             - status
             - minimum_requirements
             example:
+                availability_zones:
+                - br-ne1-a
                 end_life_at: '2022-06-10T18:33:12Z'
                 end_standard_support_at: '2022-06-10T18:33:12Z'
                 id: c47e974f-8002-46e9-8a63-d66505be2aa1
@@ -3014,8 +3046,6 @@ components:
                 availability_zone:
                     anyOf:
                     -   type: string
-                        maxLength: 255
-                        minLength: 1
                     title: Availability Zone
                     nullable: true
                 network:
@@ -3070,7 +3100,7 @@ components:
                     -   $ref: '#/components/schemas/Name'
                     title: Vpc
                     default:
-                        name: default
+                        name: vpc_default
                 interface:
                     anyOf:
                     -   $ref: '#/components/schemas/ID'
@@ -3247,7 +3277,9 @@ components:
             - machine_types
             example:
                 machine_types:
-                -   disk: 10
+                -   availability_zones:
+                    - br-ne-1-a
+                    disk: 10
                     gpu: 1
                     id: 3a4dc05b-eb10-42ec-8c0c-848e06f7aded
                     name: abc.small
@@ -3283,6 +3315,13 @@ components:
                 sku:
                     type: string
                     title: Sku
+                availability_zones:
+                    anyOf:
+                    -   type: array
+                        items:
+                            type: string
+                    title: Availability Zones
+                    nullable: true
             title: InstanceTypesV1PortalResponse
             required:
             - id
@@ -3327,8 +3366,17 @@ components:
                     type: string
                     title: Status
                 sku:
-                    type: string
+                    anyOf:
+                    -   type: string
                     title: Sku
+                    nullable: true
+                availability_zones:
+                    anyOf:
+                    -   type: array
+                        items:
+                            type: string
+                    title: Availability Zones
+                    nullable: true
             title: InstanceTypesV1Response
             required:
             - id
@@ -3337,16 +3385,18 @@ components:
             - ram
             - disk
             - status
-            - sku
             example:
+                availability_zones:
+                - br-ne1-a
+                - br-ne1-y
                 disk: 10
-                gpu: 1
-                id: 3a4dc05b-eb10-42ec-8c0c-848e06f7aded
-                name: abc.small
-                ram: 2
-                sku: some_sku
+                gpu: 0
+                id: c78b759d-af80-4489-acf1-04c48851f273
+                name: instance_type_name_0102
+                ram: 1024
+                sku: sku0102
                 status: active
-                vcpus: 2
+                vcpus: 1
         InstanceV1Response:
             type: object
             properties:
@@ -3388,11 +3438,14 @@ components:
                     - creating_error_quota_disk
                     - creating_error_quota_instance
                     - creating_error_quota_floating_ip
+                    - creating_error_quota_network
                     - completed
                     - retyping_pending
                     - retyping
                     - retyping_confirmed
                     - retyping_error
+                    - retyping_error_quota_ram
+                    - retyping_error_quota_vcpu
                     - retyping_error_quota
                     - stopping_pending
                     - stopping
@@ -3450,6 +3503,7 @@ components:
                     anyOf:
                     -   $ref: '#/components/schemas/NetworkPortsV1'
                     -   $ref: '#/components/schemas/NetworkPortsV1Expand'
+                    -   $ref: '#/components/schemas/NetworkPortsNewExpand'
                     title: Network
                     nullable: true
                 labels:
@@ -3523,11 +3577,14 @@ components:
             - creating_error_quota_disk
             - creating_error_quota_instance
             - creating_error_quota_floating_ip
+            - creating_error_quota_network
             - completed
             - retyping_pending
             - retyping
             - retyping_confirmed
             - retyping_error
+            - retyping_error_quota_ram
+            - retyping_error_quota_vcpu
             - retyping_error_quota
             - stopping_pending
             - stopping
@@ -3575,6 +3632,20 @@ components:
             title: IpAddressExpand
             required:
             - privateIpAddress
+        IpAddressNewExpand:
+            type: object
+            properties:
+                private_ipv4:
+                    type: string
+                    title: Private Ipv4
+                public_ipv6:
+                    anyOf:
+                    -   type: string
+                    title: Public Ipv6
+                    nullable: true
+            title: IpAddressNewExpand
+            required:
+            - private_ipv4
         ListBackupResponse:
             type: object
             properties:
@@ -3754,6 +3825,13 @@ components:
                                         type: string
                                 title: Labels
                                 nullable: true
+                            availability_zones:
+                                anyOf:
+                                -   type: array
+                                    items:
+                                        type: string
+                                title: Availability Zones
+                                nullable: true
                         title: ImageResponseExternalV1
                         required:
                         - id
@@ -3761,6 +3839,8 @@ components:
                         - status
                         - minimum_requirements
                         example:
+                            availability_zones:
+                            - br-ne1-a
                             end_life_at: '2022-06-10T18:33:12Z'
                             end_standard_support_at: '2022-06-10T18:33:12Z'
                             id: c47e974f-8002-46e9-8a63-d66505be2aa1
@@ -3783,7 +3863,9 @@ components:
             - images
             example:
                 images:
-                -   end_life_at: '2022-06-10T18:33:12Z'
+                -   availability_zones:
+                    - br-ne1-a
+                    end_life_at: '2022-06-10T18:33:12Z'
                     end_standard_support_at: '2022-06-10T18:33:12Z'
                     id: c47e974f-8002-46e9-8a63-d66505be2aa1
                     labels:
@@ -3845,11 +3927,14 @@ components:
                                 - creating_error_quota_disk
                                 - creating_error_quota_instance
                                 - creating_error_quota_floating_ip
+                                - creating_error_quota_network
                                 - completed
                                 - retyping_pending
                                 - retyping
                                 - retyping_confirmed
                                 - retyping_error
+                                - retyping_error_quota_ram
+                                - retyping_error_quota_vcpu
                                 - retyping_error_quota
                                 - stopping_pending
                                 - stopping
@@ -3903,6 +3988,7 @@ components:
                                 anyOf:
                                 -   $ref: '#/components/schemas/NetworkPortsV1'
                                 -   $ref: '#/components/schemas/NetworkPortsV1Expand'
+                                -   $ref: '#/components/schemas/NetworkPortsNewExpand'
                                 title: Network
                                 nullable: true
                             labels:
@@ -4126,6 +4212,62 @@ components:
             - name
             example:
                 name: some_resource_name
+        NetworkPortsNewExpand:
+            type: object
+            properties:
+                vpc:
+                    anyOf:
+                    -   $ref: '#/components/schemas/VpcV1Expand'
+                    nullable: true
+                interfaces:
+                    anyOf:
+                    -   type: array
+                        items:
+                            type: object
+                            properties:
+                                id:
+                                    type: string
+                                    title: Id
+                                name:
+                                    type: string
+                                    title: Name
+                                security_groups:
+                                    type: array
+                                    items:
+                                        type: string
+                                    title: Security Groups
+                                    default: []
+                                primary:
+                                    type: boolean
+                                    title: Primary
+                                    default: true
+                                associated_public_ipv4:
+                                    anyOf:
+                                    -   type: string
+                                    title: Associated Public Ipv4
+                                    nullable: true
+                                ip_addresses:
+                                    type: object
+                                    properties:
+                                        private_ipv4:
+                                            type: string
+                                            title: Private Ipv4
+                                        public_ipv6:
+                                            anyOf:
+                                            -   type: string
+                                            title: Public Ipv6
+                                            nullable: true
+                                    title: IpAddressNewExpand
+                                    required:
+                                    - private_ipv4
+                            title: PortNewExpand
+                            required:
+                            - id
+                            - name
+                            - ip_addresses
+                    title: Interfaces
+                    nullable: true
+            title: NetworkPortsNewExpand
         NetworkPortsV1:
             type: object
             properties:
@@ -4203,6 +4345,49 @@ components:
             - id
             example:
                 id: c47e974f-8002-46e9-8a63-d66505be2aa1
+        PortNewExpand:
+            type: object
+            properties:
+                id:
+                    type: string
+                    title: Id
+                name:
+                    type: string
+                    title: Name
+                security_groups:
+                    type: array
+                    items:
+                        type: string
+                    title: Security Groups
+                    default: []
+                primary:
+                    type: boolean
+                    title: Primary
+                    default: true
+                associated_public_ipv4:
+                    anyOf:
+                    -   type: string
+                    title: Associated Public Ipv4
+                    nullable: true
+                ip_addresses:
+                    type: object
+                    properties:
+                        private_ipv4:
+                            type: string
+                            title: Private Ipv4
+                        public_ipv6:
+                            anyOf:
+                            -   type: string
+                            title: Public Ipv6
+                            nullable: true
+                    title: IpAddressNewExpand
+                    required:
+                    - private_ipv4
+            title: PortNewExpand
+            required:
+            - id
+            - name
+            - ip_addresses
         PortV1Expand:
             type: object
             properties:
@@ -4241,8 +4426,8 @@ components:
             title: Regions
             enum:
             - br-se1
-            - br-se-1
-            - br-ne-1
+            - br-mgl1
+            - br-ne1
         SecurityGroups:
             type: object
             properties:
@@ -4267,18 +4452,18 @@ components:
         SnapshotCopyRequest:
             type: object
             properties:
-                region:
+                destination_region:
                     type: string
                     title: Regions
                     enum:
                     - br-se1
-                    - br-se-1
-                    - br-ne-1
+                    - br-mgl1
+                    - br-ne1
             title: SnapshotCopyRequest
             required:
-            - region
+            - destination_region
             example:
-                region: br-ne-1
+                destination_region: br-ne1
         SnapshotCreateRequestV1:
             type: object
             properties:
