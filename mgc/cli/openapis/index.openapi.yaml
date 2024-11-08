@@ -34,7 +34,7 @@ modules:
     path: network.openapi.yaml
     summary: VPC Api Product
     url: https://network.jaxyendy.com/openapi.json
-    version: 1.138.0
+    version: 1.141.3
 -   description: Manage users global data
     name: profile
     path: profile.openapi.yaml

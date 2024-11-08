@@ -15,7 +15,7 @@ Usage:
 - -h, --help                                   help for create
 - --ip-version integer                     Ip Version (required)
 - --name string                            Name (required)
-- --subnetpool-id string                   Subnetpool Id (required)
+- --subnetpool-id string                   Subnetpool Id
 - -v, --version                                version for create
 - --vpc-id string                          Vpc Id: Id of the VPC to create Subnet (required)
 
