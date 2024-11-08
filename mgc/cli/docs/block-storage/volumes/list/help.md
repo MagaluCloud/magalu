@@ -17,6 +17,8 @@
 - --control.sort string       Sort (pattern: ^(^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$) (default "created_at:asc")
 - --expand array(string)     Expand: You can get more detailed info about: ['volume_type', 'attachment'] (default [])
 - -h, --help                     help for list
+- --name string              Name
+- --type string              Type
 - -v, --version                  version for list
 
 ## Flags:

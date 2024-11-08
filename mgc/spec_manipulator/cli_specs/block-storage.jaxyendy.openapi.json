@@ -225,6 +225,38 @@
             }
           },
           {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Name"
+            }
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Type"
+            }
+          },
+          {
             "name": "x-tenant-id",
             "in": "header",
             "required": true,
@@ -781,6 +813,38 @@
             }
           },
           {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Name"
+            }
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Type"
+            }
+          },
+          {
             "name": "x-tenant-id",
             "in": "header",
             "required": true,
@@ -1204,13 +1268,50 @@
         "summary": "List all volume types.",
         "description": "List Volume Types allowed in the current region.\n\n#### Notes\n\n- Volume types are managed internally. If you wish to use a Volume Type that\n is not yet available, please contact our support team for assistance.",
         "operationId": "list_volume_types_v1_v1_volume_types_get",
+        "parameters": [
+          {
+            "name": "availability-zone",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Availability-Zone"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Successful Response",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GenericVolumeTypeList_VolumeTypeResponse_"
+                  "$ref": "#/components/schemas/GenericVolumeTypeList_VolumeTypeResponseWithAzs_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
                 }
               }
             }
@@ -1274,6 +1375,38 @@
               "title": " Sort",
               "pattern": "^(^[\\w-]+:(asc|desc)(,[\\w-]+:(asc|desc))*)?$",
               "default": "created_at:asc"
+            }
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Name"
+            }
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Type"
             }
           },
           {
@@ -2507,11 +2640,7 @@
             "title": "Name"
           },
           "type": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BackupType"
-              }
-            ],
+            "$ref": "#/components/schemas/BackupType",
             "default": "full"
           }
         },
@@ -2646,28 +2775,32 @@
           "volume_type"
         ]
       },
-      "GenericVolumeTypeList_VolumeTypeResponse_": {
+      "GenericVolumeTypeList_VolumeTypeResponseWithAzs_": {
         "type": "object",
         "properties": {
           "types": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/VolumeTypeResponse"
+              "$ref": "#/components/schemas/VolumeTypeResponseWithAzs"
             },
             "title": "Types"
           }
         },
-        "title": "GenericVolumeTypeList[VolumeTypeResponse]",
+        "title": "GenericVolumeTypeList[VolumeTypeResponseWithAzs]",
         "required": [
           "types"
         ],
         "example": {
           "types": [
             {
+              "availability_zones": [
+                "a"
+              ],
               "disk_type": "nvme",
               "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
               "iops": {
                 "read": 1000,
+                "total": 1000,
                 "write": 1000
               },
               "name": "my_volume_type",
@@ -2850,9 +2983,26 @@
               },
               {
                 "$ref": "#/components/schemas/Name"
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Volume"
+          },
+          "source_snapshot": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/IdRequest"
+              },
+              {
+                "$ref": "#/components/schemas/Name"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Snapshot"
           },
           "description": {
             "anyOf": [
@@ -2864,17 +3014,31 @@
               }
             ],
             "title": "Description"
+          },
+          "type": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SnapshotType"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": "instant"
           }
         },
         "title": "SnapshotCreationRequest",
         "required": [
           "name",
-          "volume",
           "description"
         ],
         "example": {
           "description": "my-snapshot",
           "name": "snapshot-name",
+          "source_snapshot": {
+            "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+          },
+          "type": "instant",
           "volume": {
             "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
           }
@@ -2898,6 +3062,9 @@
         "example": {
           "snapshots": [
             {
+              "availability_zones": [
+                "br-ne1-a"
+              ],
               "created_at": "2022-01-01T00:00:10Z",
               "description": "my snapshot for testing",
               "error": {
@@ -2909,6 +3076,7 @@
               "size": 10,
               "state": "available",
               "status": "completed",
+              "type": "object",
               "updated_at": "2022-01-01T00:00:10Z",
               "volume": {
                 "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
@@ -3017,6 +3185,17 @@
                 "type": "null"
               }
             ]
+          },
+          "availability_zones": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "title": "Availability Zones"
+          },
+          "type": {
+            "type": "string",
+            "title": "Type"
           }
         },
         "title": "SnapshotResponse",
@@ -3029,9 +3208,14 @@
           "status",
           "created_at",
           "updated_at",
-          "volume"
+          "volume",
+          "availability_zones",
+          "type"
         ],
         "example": {
+          "availability_zones": [
+            "br-ne1-a"
+          ],
           "created_at": "2022-01-01T00:00:10Z",
           "description": "my snapshot for testing",
           "error": {
@@ -3043,6 +3227,7 @@
           "size": 10,
           "state": "available",
           "status": "completed",
+          "type": "object",
           "updated_at": "2022-01-01T00:00:10Z",
           "volume": {
             "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
@@ -3091,7 +3276,19 @@
           "completed",
           "deleting",
           "deleted",
-          "deleted_error"
+          "deleted_error",
+          "replicating",
+          "replicating_error",
+          "restoring",
+          "restoring_error"
+        ]
+      },
+      "SnapshotType": {
+        "type": "string",
+        "title": "SnapshotType",
+        "enum": [
+          "instant",
+          "object"
         ]
       },
       "SnapshotVolume": {
@@ -3188,6 +3385,17 @@
       "VolumeCreateRequestV1": {
         "type": "object",
         "properties": {
+          "availability_zone": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Availability Zone"
+          },
           "name": {
             "type": "string",
             "title": "Name",
@@ -3212,20 +3420,6 @@
             ],
             "title": "Type"
           },
-          "backup": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/IdRequest"
-              },
-              {
-                "$ref": "#/components/schemas/Name"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Backup"
-          },
           "snapshot": {
             "anyOf": [
               {
@@ -3248,9 +3442,7 @@
           "type"
         ],
         "example": {
-          "backup": {
-            "name": "my_backup_name"
-          },
+          "availability_zone": "br-se1-a",
           "name": "volume-name",
           "size": 10,
           "snapshot": {
@@ -3382,6 +3574,13 @@
                 "type": "null"
               }
             ]
+          },
+          "availability_zones": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "title": "Availability Zones"
           }
         },
         "title": "VolumeResponseV1",
@@ -3393,7 +3592,8 @@
           "state",
           "created_at",
           "updated_at",
-          "type"
+          "type",
+          "availability_zones"
         ],
         "example": {
           "attachment": {
@@ -3408,6 +3608,9 @@
               "updated_at": "2022-01-01T00:00:10Z"
             }
           },
+          "availability_zones": [
+            "br-ne1-a"
+          ],
           "created_at": "2022-01-01T00:00:10Z",
           "error": {
             "message": "You have reached the limit of allowed disks. Please, remove unused disks or contact support to increase your quota.",
@@ -3523,6 +3726,59 @@
           "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
           "iops": {
             "read": 1000,
+            "total": 1000,
+            "write": 1000
+          },
+          "name": "my_volume_type",
+          "status": "active"
+        }
+      },
+      "VolumeTypeResponseWithAzs": {
+        "type": "object",
+        "properties": {
+          "iops": {
+            "$ref": "#/components/schemas/VolumeTypeSpec"
+          },
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "disk_type": {
+            "$ref": "#/components/schemas/DiskType"
+          },
+          "status": {
+            "$ref": "#/components/schemas/VolumeTypeStatus"
+          },
+          "availability_zones": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "title": "Availability Zones"
+          }
+        },
+        "title": "VolumeTypeResponseWithAzs",
+        "required": [
+          "iops",
+          "id",
+          "name",
+          "disk_type",
+          "status",
+          "availability_zones"
+        ],
+        "example": {
+          "availability_zones": [
+            "a"
+          ],
+          "disk_type": "nvme",
+          "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+          "iops": {
+            "read": 1000,
+            "total": 1000,
             "write": 1000
           },
           "name": "my_volume_type",
@@ -3539,13 +3795,23 @@
           "write": {
             "type": "integer",
             "title": "Write"
+          },
+          "total": {
+            "type": "integer",
+            "title": "Total"
           }
         },
         "title": "VolumeTypeSpec",
         "required": [
           "read",
-          "write"
-        ]
+          "write",
+          "total"
+        ],
+        "example": {
+          "read": 1000,
+          "total": 1000,
+          "write": 1000
+        }
       },
       "VolumeTypeStatus": {
         "type": "string",
@@ -3586,6 +3852,9 @@
                   "updated_at": "2022-01-01T00:00:10Z"
                 }
               },
+              "availability_zones": [
+                "br-ne1-a"
+              ],
               "created_at": "2022-01-01T00:00:10Z",
               "error": {
                 "message": "You have reached the limit of allowed disks. Please, remove unused disks or contact support to increase your quota.",

@@ -18,6 +18,8 @@
 - --control.sort string       Sort (pattern: ^(^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$) (default "created_at:asc")
 - --expand array(enum)       Expand (default [])
 - -h, --help                     help for list
+- --name string              Name
+- --type string              Type
 - -v, --version                  version for list
 
 ## Flags:
