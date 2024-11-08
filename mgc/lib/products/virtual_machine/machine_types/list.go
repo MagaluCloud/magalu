@@ -23,9 +23,10 @@ import (
 )
 
 type ListParameters struct {
-	Limit  *int    `json:"_limit,omitempty"`
-	Offset *int    `json:"_offset,omitempty"`
-	Sort   *string `json:"_sort,omitempty"`
+	Limit            *int    `json:"_limit,omitempty"`
+	Offset           *int    `json:"_offset,omitempty"`
+	Sort             *string `json:"_sort,omitempty"`
+	AvailabilityZone *string `json:"availability-zone,omitempty"`
 }
 
 type ListConfigs struct {
@@ -40,15 +41,18 @@ type ListResult struct {
 
 // any of: ListResultMachineTypesItem
 type ListResultMachineTypesItem struct {
-	Disk   int    `json:"disk"`
-	Gpu    *int   `json:"gpu,omitempty"`
-	Id     string `json:"id"`
-	Name   string `json:"name"`
-	Ram    int    `json:"ram"`
-	Sku    string `json:"sku"`
-	Status string `json:"status"`
-	Vcpus  int    `json:"vcpus"`
+	AvailabilityZones *ListResultMachineTypesItemAvailabilityZones `json:"availability_zones,omitempty"`
+	Disk              int                                          `json:"disk"`
+	Gpu               *int                                         `json:"gpu,omitempty"`
+	Id                string                                       `json:"id"`
+	Name              string                                       `json:"name"`
+	Ram               int                                          `json:"ram"`
+	Sku               *string                                      `json:"sku"`
+	Status            string                                       `json:"status"`
+	Vcpus             int                                          `json:"vcpus"`
 }
+
+type ListResultMachineTypesItemAvailabilityZones []string
 
 type ListResultMachineTypes []ListResultMachineTypesItem
 

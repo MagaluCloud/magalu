@@ -27,7 +27,7 @@
               "exclusiveMinimum": false,
               "type": "integer",
               "title": " Limit",
-              "maximum": 2147483647,
+              "maximum": 1000,
               "description": "limit the number of the results",
               "default": 50
             }
@@ -693,6 +693,31 @@
               "description": "label-1, label2, label 3",
               "default": ""
             }
+          },
+          {
+            "name": "availability-zone",
+            "in": "query",
+            "description": "br-ne1-a",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                }
+              ],
+              "title": "Availability-Zone",
+              "description": "br-ne1-a",
+              "nullable": true
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
           }
         ],
         "responses": {
@@ -718,7 +743,7 @@
           }
         },
         "x-viveiro": true,
-        "x-mgc-output-flag": "table=ID:$.images[*].id,NAME:$.images[*].name,VERSION:$.images[*].version,PLATFORM:$.images[*].platform,END_STANDARD_SUPPORT_AT:$.images[*].end_standard_support_at,STATUS:$.images[*].status"
+        "x-mgc-output-flag": "table=ID:$.images[*].id,NAME:$.images[*].name,VERSION:$.images[*].version,PLATFORM:$.images[*].platform,END_STANDARD_SUPPORT_AT:$.images[*].end_standard_support_at,STATUS:$.images[*].status,AVAILABILITY_ZONES:$.images[*].availability_zones"
       }
     },
     "/v1/instances": {
@@ -739,7 +764,7 @@
               "exclusiveMinimum": false,
               "type": "integer",
               "title": " Limit",
-              "maximum": 2147483647,
+              "maximum": 1000,
               "description": "limit the number of the results",
               "default": 50
             }
@@ -1807,7 +1832,7 @@
               "exclusiveMinimum": false,
               "type": "integer",
               "title": " Limit",
-              "maximum": 2147483647,
+              "maximum": 1000,
               "description": "limit the number of the results",
               "default": 50
             }
@@ -1836,6 +1861,31 @@
               "pattern": "^(^[\\w-]+:(asc|desc)(,[\\w-]+:(asc|desc))*)?$",
               "description": "order of the results using informed fields",
               "default": "created_at:asc"
+            }
+          },
+          {
+            "name": "availability-zone",
+            "in": "query",
+            "description": "br-ne1-a",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                }
+              ],
+              "title": "Availability-Zone",
+              "description": "br-ne1-a",
+              "nullable": true
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
             }
           }
         ],
@@ -1883,7 +1933,7 @@
               "exclusiveMinimum": false,
               "type": "integer",
               "title": " Limit",
-              "maximum": 2147483647,
+              "maximum": 1000,
               "description": "limit the number of the results",
               "default": 50
             }
@@ -2802,7 +2852,7 @@
                 ],
                 "title": "Vpc",
                 "default": {
-                  "name": "default"
+                  "name": "vpc_default"
                 }
               },
               "interface": {
@@ -3208,6 +3258,18 @@
             ],
             "title": "Labels",
             "nullable": true
+          },
+          "availability_zones": {
+            "anyOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            ],
+            "title": "Availability Zones",
+            "nullable": true
           }
         },
         "title": "ImageResponseExternalV1",
@@ -3218,6 +3280,9 @@
           "minimum_requirements"
         ],
         "example": {
+          "availability_zones": [
+            "br-ne1-a"
+          ],
           "end_life_at": "2022-06-10T18:33:12Z",
           "end_standard_support_at": "2022-06-10T18:33:12Z",
           "id": "c47e974f-8002-46e9-8a63-d66505be2aa1",
@@ -3381,9 +3446,7 @@
           "availability_zone": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 255,
-                "minLength": 1
+                "type": "string"
               }
             ],
             "title": "Availability Zone",
@@ -3474,7 +3537,7 @@
             ],
             "title": "Vpc",
             "default": {
-              "name": "default"
+              "name": "vpc_default"
             }
           },
           "interface": {
@@ -3757,6 +3820,9 @@
         "example": {
           "machine_types": [
             {
+              "availability_zones": [
+                "br-ne-1-a"
+              ],
               "disk": 10,
               "gpu": 1,
               "id": "3a4dc05b-eb10-42ec-8c0c-848e06f7aded",
@@ -3804,6 +3870,18 @@
           "sku": {
             "type": "string",
             "title": "Sku"
+          },
+          "availability_zones": {
+            "anyOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            ],
+            "title": "Availability Zones",
+            "nullable": true
           }
         },
         "title": "InstanceTypesV1PortalResponse",
@@ -3860,8 +3938,25 @@
             "title": "Status"
           },
           "sku": {
-            "type": "string",
-            "title": "Sku"
+            "anyOf": [
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Sku",
+            "nullable": true
+          },
+          "availability_zones": {
+            "anyOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            ],
+            "title": "Availability Zones",
+            "nullable": true
           }
         },
         "title": "InstanceTypesV1Response",
@@ -3871,18 +3966,21 @@
           "vcpus",
           "ram",
           "disk",
-          "status",
-          "sku"
+          "status"
         ],
         "example": {
+          "availability_zones": [
+            "br-ne1-a",
+            "br-ne1-y"
+          ],
           "disk": 10,
-          "gpu": 1,
-          "id": "3a4dc05b-eb10-42ec-8c0c-848e06f7aded",
-          "name": "abc.small",
-          "ram": 2,
-          "sku": "some_sku",
+          "gpu": 0,
+          "id": "c78b759d-af80-4489-acf1-04c48851f273",
+          "name": "instance_type_name_0102",
+          "ram": 1024,
+          "sku": "sku0102",
           "status": "active",
-          "vcpus": 2
+          "vcpus": 1
         }
       },
       "InstanceV1Response": {
@@ -3943,11 +4041,14 @@
               "creating_error_quota_disk",
               "creating_error_quota_instance",
               "creating_error_quota_floating_ip",
+              "creating_error_quota_network",
               "completed",
               "retyping_pending",
               "retyping",
               "retyping_confirmed",
               "retyping_error",
+              "retyping_error_quota_ram",
+              "retyping_error_quota_vcpu",
               "retyping_error_quota",
               "stopping_pending",
               "stopping",
@@ -4025,6 +4126,9 @@
               },
               {
                 "$ref": "#/components/schemas/NetworkPortsV1Expand"
+              },
+              {
+                "$ref": "#/components/schemas/NetworkPortsNewExpand"
               }
             ],
             "title": "Network",
@@ -4123,11 +4227,14 @@
           "creating_error_quota_disk",
           "creating_error_quota_instance",
           "creating_error_quota_floating_ip",
+          "creating_error_quota_network",
           "completed",
           "retyping_pending",
           "retyping",
           "retyping_confirmed",
           "retyping_error",
+          "retyping_error_quota_ram",
+          "retyping_error_quota_vcpu",
           "retyping_error_quota",
           "stopping_pending",
           "stopping",
@@ -4192,6 +4299,28 @@
         "title": "IpAddressExpand",
         "required": [
           "privateIpAddress"
+        ]
+      },
+      "IpAddressNewExpand": {
+        "type": "object",
+        "properties": {
+          "private_ipv4": {
+            "type": "string",
+            "title": "Private Ipv4"
+          },
+          "public_ipv6": {
+            "anyOf": [
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Public Ipv6",
+            "nullable": true
+          }
+        },
+        "title": "IpAddressNewExpand",
+        "required": [
+          "private_ipv4"
         ]
       },
       "ListBackupResponse": {
@@ -4447,6 +4576,18 @@
                   ],
                   "title": "Labels",
                   "nullable": true
+                },
+                "availability_zones": {
+                  "anyOf": [
+                    {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  ],
+                  "title": "Availability Zones",
+                  "nullable": true
                 }
               },
               "title": "ImageResponseExternalV1",
@@ -4457,6 +4598,9 @@
                 "minimum_requirements"
               ],
               "example": {
+                "availability_zones": [
+                  "br-ne1-a"
+                ],
                 "end_life_at": "2022-06-10T18:33:12Z",
                 "end_standard_support_at": "2022-06-10T18:33:12Z",
                 "id": "c47e974f-8002-46e9-8a63-d66505be2aa1",
@@ -4487,6 +4631,9 @@
         "example": {
           "images": [
             {
+              "availability_zones": [
+                "br-ne1-a"
+              ],
               "end_life_at": "2022-06-10T18:33:12Z",
               "end_standard_support_at": "2022-06-10T18:33:12Z",
               "id": "c47e974f-8002-46e9-8a63-d66505be2aa1",
@@ -4572,11 +4719,14 @@
                     "creating_error_quota_disk",
                     "creating_error_quota_instance",
                     "creating_error_quota_floating_ip",
+                    "creating_error_quota_network",
                     "completed",
                     "retyping_pending",
                     "retyping",
                     "retyping_confirmed",
                     "retyping_error",
+                    "retyping_error_quota_ram",
+                    "retyping_error_quota_vcpu",
                     "retyping_error_quota",
                     "stopping_pending",
                     "stopping",
@@ -4654,6 +4804,9 @@
                     },
                     {
                       "$ref": "#/components/schemas/NetworkPortsV1Expand"
+                    },
+                    {
+                      "$ref": "#/components/schemas/NetworkPortsNewExpand"
                     }
                   ],
                   "title": "Network",
@@ -4984,6 +5137,92 @@
           "name": "some_resource_name"
         }
       },
+      "NetworkPortsNewExpand": {
+        "type": "object",
+        "properties": {
+          "vpc": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/VpcV1Expand"
+              }
+            ],
+            "nullable": true
+          },
+          "interfaces": {
+            "anyOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "title": "Id"
+                    },
+                    "name": {
+                      "type": "string",
+                      "title": "Name"
+                    },
+                    "security_groups": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "title": "Security Groups",
+                      "default": []
+                    },
+                    "primary": {
+                      "type": "boolean",
+                      "title": "Primary",
+                      "default": true
+                    },
+                    "associated_public_ipv4": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        }
+                      ],
+                      "title": "Associated Public Ipv4",
+                      "nullable": true
+                    },
+                    "ip_addresses": {
+                      "type": "object",
+                      "properties": {
+                        "private_ipv4": {
+                          "type": "string",
+                          "title": "Private Ipv4"
+                        },
+                        "public_ipv6": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            }
+                          ],
+                          "title": "Public Ipv6",
+                          "nullable": true
+                        }
+                      },
+                      "title": "IpAddressNewExpand",
+                      "required": [
+                        "private_ipv4"
+                      ]
+                    }
+                  },
+                  "title": "PortNewExpand",
+                  "required": [
+                    "id",
+                    "name",
+                    "ip_addresses"
+                  ]
+                }
+              }
+            ],
+            "title": "Interfaces",
+            "nullable": true
+          }
+        },
+        "title": "NetworkPortsNewExpand"
+      },
       "NetworkPortsV1": {
         "type": "object",
         "properties": {
@@ -5101,6 +5340,69 @@
         "example": {
           "id": "c47e974f-8002-46e9-8a63-d66505be2aa1"
         }
+      },
+      "PortNewExpand": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "security_groups": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "title": "Security Groups",
+            "default": []
+          },
+          "primary": {
+            "type": "boolean",
+            "title": "Primary",
+            "default": true
+          },
+          "associated_public_ipv4": {
+            "anyOf": [
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Associated Public Ipv4",
+            "nullable": true
+          },
+          "ip_addresses": {
+            "type": "object",
+            "properties": {
+              "private_ipv4": {
+                "type": "string",
+                "title": "Private Ipv4"
+              },
+              "public_ipv6": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  }
+                ],
+                "title": "Public Ipv6",
+                "nullable": true
+              }
+            },
+            "title": "IpAddressNewExpand",
+            "required": [
+              "private_ipv4"
+            ]
+          }
+        },
+        "title": "PortNewExpand",
+        "required": [
+          "id",
+          "name",
+          "ip_addresses"
+        ]
       },
       "PortV1Expand": {
         "type": "object",
