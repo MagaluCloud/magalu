@@ -13,4 +13,4 @@ Before creating clusters in Magalu Cloud via Terraform, make sure the used API K
 
 The "Manage service accounts" scope is required by Kubernetes so it can create needed resources in behalf of the user.
 
-For mor information on how to create an API Key with such scopes, please check the [API Key tutorial](https://docs.magalu.cloud/docs/devops-tools/api-keys/how-to/other-products/create-api-key).
+For more information on how to create an API Key with such scopes, please check the [API Key tutorial](https://docs.magalu.cloud/docs/devops-tools/api-keys/how-to/other-products/create-api-key).
