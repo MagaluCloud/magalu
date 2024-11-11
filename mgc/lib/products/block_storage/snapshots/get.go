@@ -43,17 +43,21 @@ type GetConfigs struct {
 }
 
 type GetResult struct {
-	CreatedAt   string          `json:"created_at"`
-	Description *string         `json:"description"`
-	Error       *GetResultError `json:"error,omitempty"`
-	Id          string          `json:"id"`
-	Name        string          `json:"name"`
-	Size        int             `json:"size"`
-	State       string          `json:"state"`
-	Status      string          `json:"status"`
-	UpdatedAt   string          `json:"updated_at"`
-	Volume      GetResultVolume `json:"volume"`
+	AvailabilityZones GetResultAvailabilityZones `json:"availability_zones"`
+	CreatedAt         string                     `json:"created_at"`
+	Description       *string                    `json:"description"`
+	Error             *GetResultError            `json:"error,omitempty"`
+	Id                string                     `json:"id"`
+	Name              string                     `json:"name"`
+	Size              int                        `json:"size"`
+	State             string                     `json:"state"`
+	Status            string                     `json:"status"`
+	Type              string                     `json:"type"`
+	UpdatedAt         string                     `json:"updated_at"`
+	Volume            GetResultVolume            `json:"volume"`
 }
+
+type GetResultAvailabilityZones []string
 
 type GetResultError struct {
 	Message string `json:"message"`
