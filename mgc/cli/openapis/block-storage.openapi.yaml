@@ -187,14 +187,6 @@ paths:
                     -   type: string
                     title: Name
                     nullable: true
-            -   name: type
-                in: query
-                required: false
-                schema:
-                    anyOf:
-                    -   type: string
-                    title: Type
-                    nullable: true
             responses:
                 '200':
                     description: Successful Response
@@ -596,7 +588,7 @@ paths:
                 required: false
                 schema:
                     anyOf:
-                    -   type: string
+                    -   $ref: '#/components/schemas/SnapshotType'
                     title: Type
                     nullable: true
             responses:
@@ -1027,14 +1019,6 @@ paths:
                     anyOf:
                     -   type: string
                     title: Name
-                    nullable: true
-            -   name: type
-                in: query
-                required: false
-                schema:
-                    anyOf:
-                    -   type: string
-                    title: Type
                     nullable: true
             responses:
                 '200':
@@ -2020,17 +2004,17 @@ components:
                                     Please, remove unused backups or contact support
                                     to increase your quota.
                                 slug: creating_error_quota
-                            id: 86a86fdb-eece-4c6b-a1e0-0f2cde06e4d7
+                            id: 003badbe-eced-4930-b145-6d935330e404
                             name: My backup
                             size: 10
                             source_backup:
-                                id: 0c3918b7-7ef8-40dc-83b7-5fcfc84e2590
+                                id: 511768a4-0dec-49c1-b59a-ecd9515bc570
                             state: available
                             status: completed
                             type: incremental
                             updated_at: '2022-01-01T00:00:10Z'
                             volume:
-                                id: f53b3be3-1d61-4b1e-a054-792d99c65ce3
+                                id: bd21ad09-b13a-4dad-ae89-125c43c47885
                     title: Backups
             title: BackupListResponse
             required:
@@ -2044,17 +2028,17 @@ components:
                             remove unused backups or contact support to increase your
                             quota.
                         slug: creating_error_quota
-                    id: 86a86fdb-eece-4c6b-a1e0-0f2cde06e4d7
+                    id: 003badbe-eced-4930-b145-6d935330e404
                     name: My backup
                     size: 10
                     source_backup:
-                        id: 0c3918b7-7ef8-40dc-83b7-5fcfc84e2590
+                        id: 511768a4-0dec-49c1-b59a-ecd9515bc570
                     state: available
                     status: completed
                     type: incremental
                     updated_at: '2022-01-01T00:00:10Z'
                     volume:
-                        id: f53b3be3-1d61-4b1e-a054-792d99c65ce3
+                        id: bd21ad09-b13a-4dad-ae89-125c43c47885
         BackupResponse:
             type: object
             properties:
@@ -2152,17 +2136,17 @@ components:
                         remove unused backups or contact support to increase your
                         quota.
                     slug: creating_error_quota
-                id: 86a86fdb-eece-4c6b-a1e0-0f2cde06e4d7
+                id: 003badbe-eced-4930-b145-6d935330e404
                 name: My backup
                 size: 10
                 source_backup:
-                    id: 0c3918b7-7ef8-40dc-83b7-5fcfc84e2590
+                    id: 511768a4-0dec-49c1-b59a-ecd9515bc570
                 state: available
                 status: completed
                 type: incremental
                 updated_at: '2022-01-01T00:00:10Z'
                 volume:
-                    id: f53b3be3-1d61-4b1e-a054-792d99c65ce3
+                    id: bd21ad09-b13a-4dad-ae89-125c43c47885
         BackupResponseError:
             type: object
             properties:
