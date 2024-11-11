@@ -558,18 +558,14 @@ const oAuth2Method = "oauth2"
 
 const bearerAuthMethod = "bearerauth"
 
-func (o *operation) setSecurityHeader(ctx context.Context, paramValues core.Parameters, req *http.Request, auth *mgcAuthPkg.Auth) (err error) {
+func (o *operation) setSecurityHeader(ctx context.Context, paramValues core.Parameters, req *http.Request, auth mgcAuthPkg.Authenticator) (err error) {
 	if isAuthForced(paramValues) || o.needsAuth() {
-		// TODO: review needsAuth() usage if more security schemes are used. Assuming oauth2 + bearer
-		// If others are to be used, loop using forEachSecurityRequirement()
 		switch auth.CurrentSecurityMethod() {
-
 		case apiKeyAuthMethod:
 			apiKey, err := auth.ApiKey(ctx)
 			if err != nil {
 				return err
 			}
-
 			req.Header.Set("x-api-key", apiKey)
 
 		case xaasAuthMethod:
@@ -577,7 +573,6 @@ func (o *operation) setSecurityHeader(ctx context.Context, paramValues core.Para
 			if err != nil {
 				return err
 			}
-
 			req.Header.Set("x-tenant-id", xTenantID)
 
 		default:
@@ -585,14 +580,10 @@ func (o *operation) setSecurityHeader(ctx context.Context, paramValues core.Para
 			if err != nil {
 				return err
 			}
-
 			req.Header.Set("Authorization", "Bearer "+accessToken)
 		}
-
 		return nil
-
 	}
-
 	return nil
 }
 
@@ -676,6 +667,7 @@ func (o *operation) Execute(
 		}()
 	}
 	m.Lock()
+	defer m.Unlock()
 	logger := o.logger.With("parameters", parameters, "configs", configs)
 	logger.Debug("execute")
 	// keep the original parameters, configs -- do not use the transformed versions!
@@ -751,7 +743,6 @@ func (o *operation) Execute(
 		return nil, err
 	}
 	logger.Debug("created HTTP request, now execute it...")
-	m.Unlock()
 	resp, err := client.Do(req)
 
 	if err != nil {
