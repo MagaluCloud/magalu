@@ -87,6 +87,32 @@ type Config struct {
 	ClientsV2Url          string
 }
 
+type Authenticator interface {
+	AccessToken(ctx context.Context) (string, error)
+	SetTokens(token *LoginResult) error
+	RefreshAccessToken(ctx context.Context) (string, error)
+	ValidateAccessToken(ctx context.Context) error
+	CodeChallengeToURL(scopes core.Scopes) (*url.URL, error)
+	RequestAuthTokenWithAuthorizationCode(ctx context.Context, authCode string) error
+	ListTenants(ctx context.Context) ([]*Tenant, error)
+	SelectTenant(ctx context.Context, id string, scopes core.ScopesString) (*TokenExchangeResult, error)
+	CurrentTenant(ctx context.Context) (*Tenant, error)
+	CurrentTenantID() (string, error)
+	SetScopes(ctx context.Context, scopes core.Scopes) (*TokenExchangeResult, error)
+	CurrentScopes() (core.Scopes, error)
+	CurrentScopesString() (core.ScopesString, error)
+	ApiKey(ctx context.Context) (string, error)
+	SetAPIKey(apiKey string) error
+	AccessKeyPair() (accessKeyId, secretAccessKey string)
+	SetAccessKey(id string, key string) error
+	UnsetAccessKey() error
+	XTenantID(ctx context.Context) (string, error)
+	SetXTenantID(tenantId string) error
+	Logout() error
+	GetConfig() Config
+	CurrentSecurityMethod() string
+}
+
 type Auth struct {
 	// This Client should not have Access Token auto-refresh in transports, as it will
 	// be used in the request to auto-refresh the token. For requests that need the
