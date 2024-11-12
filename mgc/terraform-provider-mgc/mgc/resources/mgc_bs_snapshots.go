@@ -64,17 +64,20 @@ func (r *bsSnapshots) Configure(ctx context.Context, req resource.ConfigureReque
 
 // bsSnapshotsResourceModel maps de resource schema data.
 type bsSnapshotsResourceModel struct {
-	ID           types.String             `tfsdk:"id"`
-	Name         types.String             `tfsdk:"name"`
-	NameIsPrefix types.Bool               `tfsdk:"name_is_prefix"`
-	Description  types.String             `tfsdk:"description"`
-	FinalName    types.String             `tfsdk:"final_name"`
-	UpdatedAt    types.String             `tfsdk:"updated_at"`
-	CreatedAt    types.String             `tfsdk:"created_at"`
-	Volume       bsSnapshotsVolumeIDModel `tfsdk:"volume"`
-	State        types.String             `tfsdk:"state"`
-	Status       types.String             `tfsdk:"status"`
-	Size         types.Int64              `tfsdk:"size"`
+	ID                types.String             `tfsdk:"id"`
+	Name              types.String             `tfsdk:"name"`
+	NameIsPrefix      types.Bool               `tfsdk:"name_is_prefix"`
+	Description       types.String             `tfsdk:"description"`
+	FinalName         types.String             `tfsdk:"final_name"`
+	UpdatedAt         types.String             `tfsdk:"updated_at"`
+	CreatedAt         types.String             `tfsdk:"created_at"`
+	Volume            bsSnapshotsVolumeIDModel `tfsdk:"volume"`
+	State             types.String             `tfsdk:"state"`
+	Status            types.String             `tfsdk:"status"`
+	Size              types.Int64              `tfsdk:"size"`
+	SnapshotSourceID  types.String             `tfsdk:"snapshot_source_id"`
+	Type              types.String             `tfsdk:"type"`
+	AvailabilityZones []types.String           `tfsdk:"availability_zones"`
 }
 
 type bsSnapshotsVolumeIDModel struct {
@@ -154,6 +157,19 @@ func (r *bsSnapshots) Schema(_ context.Context, _ resource.SchemaRequest, resp *
 					},
 				},
 			},
+			"snapshot_source_id": schema.StringAttribute{
+				Description: "The ID of the snapshot source.",
+				Optional:    true,
+			},
+			"type": schema.StringAttribute{
+				Description: "The type of the snapshot.",
+				Optional:    true,
+			},
+			"availability_zones": schema.ListAttribute{
+				Description: "The availability zones of the snapshot.",
+				Computed:    true,
+				ElementType: types.StringType,
+			},
 		},
 	}
 }
@@ -167,6 +183,14 @@ func (r *bsSnapshots) setValuesFromServer(result sdkBlockStorageSnapshots.GetRes
 	state.FinalName = types.StringValue(result.Name)
 	state.State = types.StringValue(result.State)
 	state.Status = types.StringValue(result.Status)
+	state.Type = types.StringValue(result.Type)
+
+	if result.AvailabilityZones != nil {
+		state.AvailabilityZones = make([]types.String, len(result.AvailabilityZones))
+		for i, az := range result.AvailabilityZones {
+			state.AvailabilityZones[i] = types.StringValue(az)
+		}
+	}
 
 }
 
@@ -215,9 +239,13 @@ func (r *bsSnapshots) Create(ctx context.Context, req resource.CreateRequest, re
 	createResult, err := r.bsSnapshots.CreateContext(ctx, sdkBlockStorageSnapshots.CreateParameters{
 		Description: plan.Description.ValueStringPointer(),
 		Name:        plan.FinalName.String(),
-		Volume: sdkBlockStorageSnapshots.CreateParametersVolume{
+		Volume: &sdkBlockStorageSnapshots.CreateParametersVolume{
 			Id: plan.Volume.ID.ValueString(),
 		},
+		SourceSnapshot: &sdkBlockStorageSnapshots.CreateParametersSourceSnapshot{
+			Id: plan.SnapshotSourceID.ValueString(),
+		},
+		Type: plan.Type.ValueStringPointer(),
 	}, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkBlockStorageSnapshots.CreateConfigs{}))
 
 	if err != nil {
