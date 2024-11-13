@@ -2,17 +2,21 @@ package resources
 
 import (
 	"context"
+	"time"
 
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
 	mgcSdk "magalu.cloud/lib"
 	networkVpc "magalu.cloud/lib/products/network/vpcs"
 	"magalu.cloud/terraform-provider-mgc/mgc/client"
 	"magalu.cloud/terraform-provider-mgc/mgc/tfutil"
 )
+
+const NetworkPoolingTimeout = 5 * time.Minute
 
 type NetworkVPCModel struct {
 	Id          types.String `tfsdk:"id"`
@@ -90,13 +94,28 @@ func (r *NetworkVPCResource) Create(ctx context.Context, req resource.CreateRequ
 
 	createdVPC, err := r.networkVPC.CreateContext(ctx, convertCreateTFModelToSDKModel(data),
 		tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, networkVpc.CreateConfigs{}))
-
 	if err != nil {
 		resp.Diagnostics.AddError("Failed to create VPC", err.Error())
 		return
 	}
 
-	data.Id = types.StringPointerValue(createdVPC.Id)
+	for startTime := time.Now(); time.Since(startTime) < NetworkPoolingTimeout; {
+		res, err := r.networkVPC.GetContext(ctx, networkVpc.GetParameters{
+			VpcId: createdVPC.Id,
+		},
+			tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, networkVpc.GetConfigs{}))
+		if err != nil {
+			resp.Diagnostics.AddError("Failed to get VPC", err.Error())
+			return
+		}
+		if res.Status == "created" {
+			break
+		}
+		tflog.Info(ctx, "VPC is not yet created, waiting for 10 seconds",
+			map[string]interface{}{"status": res.Status})
+	}
+
+	data.Id = types.StringValue(createdVPC.Id)
 	resp.Diagnostics.Append(resp.State.Set(ctx, data)...)
 }
 

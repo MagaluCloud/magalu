@@ -9,7 +9,7 @@ Executor: get
 
 # Return a VPC details
 
-Version: 1.138.0
+Version: 1.141.3
 
 import "magalu.cloud/lib/products/network/vpcs"
 */
@@ -42,6 +42,7 @@ type GetResult struct {
 	NetworkId       *string                  `json:"network_id,omitempty"`
 	RouterId        *string                  `json:"router_id,omitempty"`
 	SecurityGroups  *GetResultSecurityGroups `json:"security_groups,omitempty"`
+	Status          string                   `json:"status"`
 	Subnets         *GetResultSubnets        `json:"subnets,omitempty"`
 	TenantId        *string                  `json:"tenant_id,omitempty"`
 	Updated         *string                  `json:"updated,omitempty"`

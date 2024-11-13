@@ -9,7 +9,7 @@ Executor: get
 
 # Returns a subnet details
 
-Version: 1.138.0
+Version: 1.141.3
 
 import "magalu.cloud/lib/products/network/subnets"
 */
@@ -42,6 +42,7 @@ type GetResult struct {
 	Id             string                  `json:"id"`
 	IpVersion      string                  `json:"ip_version"`
 	Name           *string                 `json:"name,omitempty"`
+	SubnetpoolId   string                  `json:"subnetpool_id"`
 	Updated        *string                 `json:"updated,omitempty"`
 	VpcId          string                  `json:"vpc_id"`
 	Zone           string                  `json:"zone"`

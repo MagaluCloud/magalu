@@ -9,7 +9,7 @@ Executor: get
 
 # Get details of a specific Subnet Pool
 
-Version: 1.138.0
+Version: 1.141.3
 
 import "magalu.cloud/lib/products/network/subnetpools"
 */
@@ -39,6 +39,7 @@ type GetResult struct {
 	Description string  `json:"description"`
 	Id          string  `json:"id"`
 	IpVersion   int     `json:"ip_version"`
+	IsDefault   bool    `json:"is_default"`
 	Name        string  `json:"name"`
 	TenantId    string  `json:"tenant_id"`
 }
