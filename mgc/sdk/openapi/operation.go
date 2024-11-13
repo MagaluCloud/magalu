@@ -538,6 +538,7 @@ func isSupportedScheme(schema string) bool {
 		oAuth2Method,
 		apiKeyAuthMethod,
 		xaasAuthMethod,
+		HTTPBearer,
 	}
 
 	for _, supportedScheme := range allSupportedSchemes {
@@ -557,6 +558,8 @@ const xaasAuthMethod = "xaasauth"
 const oAuth2Method = "oauth2"
 
 const bearerAuthMethod = "bearerauth"
+
+const HTTPBearer = "httpbearer"
 
 func (o *operation) setSecurityHeader(ctx context.Context, paramValues core.Parameters, req *http.Request, auth mgcAuthPkg.Authenticator) (err error) {
 	if isAuthForced(paramValues) || o.needsAuth() {
