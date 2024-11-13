@@ -23,6 +23,7 @@ Fixes #[issue_number]
 - [ ] Manual Testing (please describe and provide some evidence)
 
 ## Checklist
+- [ ] Run Pre commit `pre-commit run --all-files`
 - [ ] Code follows the style guidelines of this project
 - [ ] Corresponding changes to the documentation were made
 - [ ] No new warnings were generated
