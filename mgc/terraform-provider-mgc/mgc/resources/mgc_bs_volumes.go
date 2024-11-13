@@ -8,10 +8,12 @@ import (
 
 	bws "github.com/geffersonFerraz/brazilian-words-sorter"
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
+	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/boolplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -69,18 +71,18 @@ func (r *bsVolumes) Configure(ctx context.Context, req resource.ConfigureRequest
 }
 
 type bsVolumesResourceModel struct {
-	ID                types.String   `tfsdk:"id"`
-	Name              types.String   `tfsdk:"name"`
-	NameIsPrefix      types.Bool     `tfsdk:"name_is_prefix"`
-	FinalName         types.String   `tfsdk:"final_name"`
-	SnapshotID        types.String   `tfsdk:"snapshot_id"`
-	AvailabilityZones []types.String `tfsdk:"availability_zones"`
-	UpdatedAt         types.String   `tfsdk:"updated_at"`
-	CreatedAt         types.String   `tfsdk:"created_at"`
-	Size              types.Int64    `tfsdk:"size"`
-	Type              bsVolumeType   `tfsdk:"type"`
-	State             types.String   `tfsdk:"state"`
-	Status            types.String   `tfsdk:"status"`
+	ID                types.String `tfsdk:"id"`
+	Name              types.String `tfsdk:"name"`
+	NameIsPrefix      types.Bool   `tfsdk:"name_is_prefix"`
+	FinalName         types.String `tfsdk:"final_name"`
+	SnapshotID        types.String `tfsdk:"snapshot_id"`
+	AvailabilityZones types.List   `tfsdk:"availability_zones"`
+	UpdatedAt         types.String `tfsdk:"updated_at"`
+	CreatedAt         types.String `tfsdk:"created_at"`
+	Size              types.Int64  `tfsdk:"size"`
+	Type              bsVolumeType `tfsdk:"type"`
+	State             types.String `tfsdk:"state"`
+	Status            types.String `tfsdk:"status"`
 }
 
 type bsVolumeType struct {
@@ -136,6 +138,9 @@ func (r *bsVolumes) Schema(_ context.Context, _ resource.SchemaRequest, resp *re
 				Optional:    true,
 				Computed:    true,
 				ElementType: types.StringType,
+				PlanModifiers: []planmodifier.List{
+					listplanmodifier.UseStateForUnknown(),
+				},
 				Validators: []validator.List{
 					listvalidator.SizeAtMost(1),
 				},
@@ -207,9 +212,10 @@ func convertToState(result sdkBlockStorageVolumes.GetResult, originalName string
 	}
 
 	if result.AvailabilityZones != nil {
-		state.AvailabilityZones = make([]types.String, len(result.AvailabilityZones))
-		for i, az := range result.AvailabilityZones {
-			state.AvailabilityZones[i] = types.StringValue(az)
+		state.AvailabilityZones = types.List{}
+		for _, az := range result.AvailabilityZones {
+			lv, _ := types.ListValue(types.StringType, []attr.Value{types.StringValue(az)})
+			state.AvailabilityZones = lv
 		}
 	}
 
@@ -258,9 +264,15 @@ func (r *bsVolumes) Create(ctx context.Context, req resource.CreateRequest, resp
 		},
 	}
 
-	if len(state.AvailabilityZones) > 0 {
-		for _, az := range state.AvailabilityZones {
-			createParam.AvailabilityZone = az.ValueStringPointer()
+	if !state.AvailabilityZones.IsNull() {
+		elems, _ := state.AvailabilityZones.ToListValue(ctx)
+		azList := []string{}
+		resp.Diagnostics = elems.ElementsAs(ctx, &azList, true)
+		for _, x := range azList {
+			str := new(string)
+			*str = x
+			createParam.AvailabilityZone = str
+			break
 		}
 	}
 

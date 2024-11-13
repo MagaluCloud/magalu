@@ -46,3 +46,4 @@ mgc/spec_manipulator/cli_specs/specs.go.tmp
 terraform.tfstate
 terraform.tfstate.backup
 terraform.tfstate.d
+**/__debug_bin**
