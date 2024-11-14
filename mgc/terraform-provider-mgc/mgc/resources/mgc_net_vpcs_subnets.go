@@ -207,7 +207,7 @@ func (r *mgcNetworkVpcsSubnetsResource) Update(ctx context.Context, req resource
 		dnsServers = append(dnsServers, dns.ValueString())
 	}
 	subnetUpdateParams := networkSubnets.UpdateParameters{
-		SubnetId: data.ID.ValueString(),
+		SubnetId:       data.ID.ValueString(),
 		DnsNameservers: &dnsServers,
 	}
 
