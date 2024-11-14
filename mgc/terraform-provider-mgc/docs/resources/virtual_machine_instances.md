@@ -63,6 +63,7 @@ resource "mgc_virtual_machine_instances" "basic_instance_with_SG" {
 - `name_is_prefix` (Boolean) Indicates whether the provided name is a prefix or the exact name of the virtual machine instance.
 - `network` (Attributes) The network configuration of the virtual machine instance. (see [below for nested schema](#nestedatt--network))
 - `ssh_key_name` (String) The name of the SSH key associated with the virtual machine instance. If the image is Windows, this field is not used.
+- `user_data` (String) Used to perform automated configuration tasks. Must be sent in base64 format. (between 1 and 65000 characters)
 
 ### Read-Only
 

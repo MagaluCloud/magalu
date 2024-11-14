@@ -3,19 +3,19 @@
 page_title: "mgc_network_vpcs Resource - terraform-provider-mgc"
 subcategory: "Network"
 description: |-
-  Operations related to VPCs
+  Network VPC
 ---
 
 # mgc_network_vpcs (Resource)
 
-Operations related to VPCs
+Network VPC
 
 ## Example Usage
 
 ```terraform
-resource "mgc_network_vpcs" "my_vpc" {
-  name        = "my-vpc"
-  description = "My VPC"
+resource "mgc_network_vpcs" "example" {
+  name        = "example-vpc"
+  description = "An example VPC"
 }
 ```
 
@@ -24,21 +24,20 @@ resource "mgc_network_vpcs" "my_vpc" {
 
 ### Required
 
-- `name` (String)
+- `name` (String) The name of the VPC
 
 ### Optional
 
-- `description` (String)
+- `description` (String) The description of the VPC
 
 ### Read-Only
 
-- `created_at` (String)
-- `external_network` (String)
-- `id` (String) ID of the VPC to delete
-- `is_default` (Boolean)
-- `network_id` (String)
-- `router_id` (String)
-- `security_groups` (List of String)
-- `subnets` (List of String)
-- `tenant_id` (String)
-- `updated` (String)
+- `id` (String) The ID of the VPC
+
+## Import
+
+Import is supported using the following syntax:
+
+```shell
+terraform import mgc_network_vpcs.example 123
+```

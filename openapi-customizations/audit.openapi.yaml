@@ -35,3 +35,10 @@ servers:
                     to: api.magalu.cloud
                 -   from: pre-prod
                     to: api.pre-prod.jaxyendy.com
+paths:
+    /v0/events:
+        get:
+            x-mgc-output-flag: table
+    /v0/event-types:
+        get:
+            x-mgc-output-flag: table

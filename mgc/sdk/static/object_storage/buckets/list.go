@@ -2,7 +2,9 @@ package buckets
 
 import (
 	"context"
+	"fmt"
 	"net/http"
+	"strconv"
 
 	"magalu.cloud/core"
 	"magalu.cloud/core/utils"
@@ -12,6 +14,7 @@ import (
 type BucketResponse struct {
 	CreationDate string `xml:"CreationDate"`
 	Name         string `xml:"Name"`
+	BucketSize   string `xml:"BucketSize"`
 }
 
 type ListResponse struct {
@@ -49,5 +52,37 @@ func list(ctx context.Context, _ struct{}, cfg common.Config) (result ListRespon
 		return
 	}
 
-	return common.UnwrapResponse[ListResponse](resp, req)
+	result, err = common.UnwrapResponse[ListResponse](resp, req)
+	if err != nil {
+		return
+	}
+
+	for _, bucket := range result.Buckets {
+		size, err := strconv.ParseInt(bucket.BucketSize, 10, 64)
+		if err != nil {
+			bucket.BucketSize = "-"
+		} else {
+			bucket.BucketSize = FormatSize(size)
+		}
+	}
+
+	return
+}
+
+func FormatSize(size int64) string {
+	const unit = 1024
+	if size < unit {
+		return fmt.Sprintf("%dB", size)
+	}
+
+	suffixes := []string{"KiB", "MiB", "GiB", "TiB", "PiB", "EiB"}
+	i := 0
+	sizeFloat := float64(size)
+
+	for sizeFloat >= unit && i < len(suffixes)-1 {
+		sizeFloat /= unit
+		i++
+	}
+
+	return fmt.Sprintf("%.1f %s", sizeFloat, suffixes[i])
 }

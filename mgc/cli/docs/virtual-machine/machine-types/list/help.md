@@ -8,11 +8,12 @@ Usage:
 
 ## Product catalog:
 - Flags:
-- --control.limit integer     Limit: limit the number of the results (max: 2147483647) (default 50)
-- --control.offset integer    Offset: pagination for the results limited (max: 2147483647)
-- --control.sort string       Sort: order of the results using informed fields (pattern: ^(^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$) (default "created_at:asc")
-- -h, --help                     help for list
-- -v, --version                  version for list
+- --availability-zone string   Availability-Zone: br-ne1-a
+- --control.limit integer       Limit: limit the number of the results (max: 1000) (default 50)
+- --control.offset integer      Offset: pagination for the results limited (max: 2147483647)
+- --control.sort string         Sort: order of the results using informed fields (pattern: ^(^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$) (default "created_at:asc")
+- -h, --help                       help for list
+- -v, --version                    version for list
 
 ## Other commands:
 - Global Flags:

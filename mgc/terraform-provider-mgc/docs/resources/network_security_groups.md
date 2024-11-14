@@ -3,18 +3,32 @@
 page_title: "mgc_network_security_groups Resource - terraform-provider-mgc"
 subcategory: "Network"
 description: |-
-  Operations related to Security Groups
+  Network Security Group
 ---
 
 # mgc_network_security_groups (Resource)
 
-Operations related to Security Groups
+Network Security Group
 
 ## Example Usage
 
 ```terraform
-resource "mgc_network_security_group_security_groups" "security_groups" {
-  name = "security_groups"
+resource "mgc_network_security_groups" "example" {
+  name                  = "example-security-group"
+  description           = "An example security group"
+  disable_default_rules = false
+}
+
+output "security_group_id" {
+  value = mgc_network_security_groups.example
+}
+
+resource "mgc_network_security_groups" "example2" {
+  name                  = "example-security-group3"
+}
+
+output "security_group_id2" {
+  value = mgc_network_security_groups.example2
 }
 ```
 
@@ -23,44 +37,21 @@ resource "mgc_network_security_group_security_groups" "security_groups" {
 
 ### Required
 
-- `name` (String)
+- `name` (String) The name of the Security Group
 
 ### Optional
 
-- `description` (String)
-- `skip_default_rules` (Boolean) Skip creation of default security group rules
-- `validate_quota` (Boolean) Validate the quota before creating Security Group
-- `wait` (Boolean) The request will be asynchronous. The wait parameter tells the API that you want the request to simulate synchronous behavior (to maintain endpoint compatibility). You can set an approximate timeout with the waitTimeout parameter
-- `wait_timeout` (Number) the approximate time in seconds you want to wait when simulating the request as synchronous (only works with wait=true)
+- `description` (String) The description of the Security Group
+- `disable_default_rules` (Boolean) Disable default rules, when creating the Security Group
 
 ### Read-Only
 
-- `created_at` (String)
-- `error` (String)
-- `external_id` (String)
-- `id` (String) Id of the security group to delete
-- `is_default` (Boolean)
-- `project_type` (String)
-- `rules` (Attributes List) (see [below for nested schema](#nestedatt--rules))
-- `status` (String)
-- `tenant_id` (String)
-- `updated` (String)
-- `vpc_id` (String)
+- `id` (String) The ID of the Security Group
 
-<a id="nestedatt--rules"></a>
-### Nested Schema for `rules`
+## Import
 
-Read-Only:
+Import is supported using the following syntax:
 
-- `created_at` (String)
-- `direction` (String)
-- `error` (String)
-- `ethertype` (String)
-- `id` (String)
-- `port_range_max` (Number)
-- `port_range_min` (Number)
-- `protocol` (String)
-- `remote_group_id` (String)
-- `remote_ip_prefix` (String)
-- `security_group_id` (String)
-- `status` (String)
+```shell
+terraform import mgc_network_security_groups.example 123
+```

@@ -17,7 +17,7 @@ concurrency:
 
 jobs:
   build:
-    runs-on: self-hosted
+    runs-on: ${{ vars.RUNNER_RUNS_ON }}
     timeout-minutes: 10
     steps:
       - name: Checkout
@@ -36,7 +36,7 @@ jobs:
 
   cli-release:
     needs: build
-    runs-on: self-hosted
+    runs-on: ${{ vars.RUNNER_RUNS_ON }}
     timeout-minutes: 10
     if: ${{ inputs.runCLI }}
     steps:
@@ -63,7 +63,7 @@ jobs:
 
   terraform-release:
     needs: build
-    runs-on: self-hosted
+    runs-on: ${{ vars.RUNNER_RUNS_ON }}
     timeout-minutes: 20
     if: ${{ inputs.runTerraform }}
     steps:
@@ -108,6 +108,7 @@ jobs:
         uses: ksivamuthu/actions-setup-gh-cli@v3  
       - name: Copy Docs
         run: |
+          rm -rf terraform-provider-mgc/docs/**
           cp -r mgc/terraform-provider-mgc/docs/* terraform-provider-mgc/docs/
           cp mgc/terraform-provider-mgc/README.md terraform-provider-mgc/README.md
       - name: Create Pull Request

@@ -15,6 +15,8 @@ type service struct {
 }
 
 type Service interface {
+	CopyContext(ctx context.Context, parameters CopyParameters, configs CopyConfigs) (err error)
+	Copy(parameters CopyParameters, configs CopyConfigs) (err error)
 	CreateContext(ctx context.Context, parameters CreateParameters, configs CreateConfigs) (result CreateResult, err error)
 	Create(parameters CreateParameters, configs CreateConfigs) (result CreateResult, err error)
 	DeleteContext(ctx context.Context, parameters DeleteParameters, configs DeleteConfigs) (err error)

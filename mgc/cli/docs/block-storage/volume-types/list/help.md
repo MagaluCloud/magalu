@@ -16,7 +16,8 @@
 ## Flags:
 ```bash
 Flags:
-  -h, --help      help for list
-  -v, --version   version for list
+      --availability-zone string   Availability-Zone
+  -h, --help                       help for list
+  -v, --version                    version for list
 ```
 
