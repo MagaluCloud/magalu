@@ -55,6 +55,7 @@ type RetypeParametersNewType struct {
 
 type RetypeParametersNewTypeIops struct {
 	Read  int `json:"read"`
+	Total int `json:"total"`
 	Write int `json:"write"`
 }
 

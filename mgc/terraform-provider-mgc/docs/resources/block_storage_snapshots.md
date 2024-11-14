@@ -16,9 +16,18 @@ The block storage snapshots resource allows you to manage block storage snapshot
 resource "mgc_block_storage_snapshots" "snapshot_example" {
   description = "example of description"
   name        = "exemplo snapshot name"
+  snapshot_source_id = mgc_block_storage_snapshots.other_snapshot.id
+  type        = "instant"
   volume = {
     id = mgc_block_storage_volumes.example_volume.id
   }
+}
+
+resource "mgc_block_storage_snapshots" "snapshot_of_snap_example" {
+  snapshot_source_id = mgc_block_storage_snapshots.snapshot_example.id
+  type        = "object"
+  description = "exampleDescription"
+  name = "exampleName"
 }
 ```
 
@@ -29,14 +38,17 @@ resource "mgc_block_storage_snapshots" "snapshot_example" {
 
 - `description` (String) The description of the volume snapshot.
 - `name` (String) The name of the volume snapshot.
-- `volume` (Attributes) (see [below for nested schema](#nestedatt--volume))
 
 ### Optional
 
 - `name_is_prefix` (Boolean) Indicates whether the provided name is a prefix or the exact name of the volume snapshot.
+- `snapshot_source_id` (String) The ID of the snapshot source.
+- `type` (String) The type of the snapshot.
+- `volume` (Attributes) (see [below for nested schema](#nestedatt--volume))
 
 ### Read-Only
 
+- `availability_zones` (List of String) The availability zones of the snapshot.
 - `created_at` (String) The timestamp when the block storage was created.
 - `final_name` (String) The final name of the volume snapshot after applying any naming conventions or modifications.
 - `id` (String) The unique identifier of the volume snapshot.

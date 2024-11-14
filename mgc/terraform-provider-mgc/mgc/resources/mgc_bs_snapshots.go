@@ -5,6 +5,7 @@ import (
 	"time"
 
 	bws "github.com/geffersonFerraz/brazilian-words-sorter"
+	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
@@ -64,17 +65,20 @@ func (r *bsSnapshots) Configure(ctx context.Context, req resource.ConfigureReque
 
 // bsSnapshotsResourceModel maps de resource schema data.
 type bsSnapshotsResourceModel struct {
-	ID           types.String             `tfsdk:"id"`
-	Name         types.String             `tfsdk:"name"`
-	NameIsPrefix types.Bool               `tfsdk:"name_is_prefix"`
-	Description  types.String             `tfsdk:"description"`
-	FinalName    types.String             `tfsdk:"final_name"`
-	UpdatedAt    types.String             `tfsdk:"updated_at"`
-	CreatedAt    types.String             `tfsdk:"created_at"`
-	Volume       bsSnapshotsVolumeIDModel `tfsdk:"volume"`
-	State        types.String             `tfsdk:"state"`
-	Status       types.String             `tfsdk:"status"`
-	Size         types.Int64              `tfsdk:"size"`
+	ID                types.String              `tfsdk:"id"`
+	Name              types.String              `tfsdk:"name"`
+	NameIsPrefix      types.Bool                `tfsdk:"name_is_prefix"`
+	Description       types.String              `tfsdk:"description"`
+	FinalName         types.String              `tfsdk:"final_name"`
+	UpdatedAt         types.String              `tfsdk:"updated_at"`
+	CreatedAt         types.String              `tfsdk:"created_at"`
+	Volume            *bsSnapshotsVolumeIDModel `tfsdk:"volume"`
+	State             types.String              `tfsdk:"state"`
+	Status            types.String              `tfsdk:"status"`
+	Size              types.Int64               `tfsdk:"size"`
+	SnapshotSourceID  types.String              `tfsdk:"snapshot_source_id"`
+	Type              types.String              `tfsdk:"type"`
+	AvailabilityZones types.List                `tfsdk:"availability_zones"`
 }
 
 type bsSnapshotsVolumeIDModel struct {
@@ -146,13 +150,26 @@ func (r *bsSnapshots) Schema(_ context.Context, _ resource.SchemaRequest, resp *
 				Computed:    true,
 			},
 			"volume": schema.SingleNestedAttribute{
-				Required: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"id": schema.StringAttribute{
 						Description: "ID of block storage volume",
 						Required:    true,
 					},
 				},
+			},
+			"snapshot_source_id": schema.StringAttribute{
+				Description: "The ID of the snapshot source.",
+				Optional:    true,
+			},
+			"type": schema.StringAttribute{
+				Description: "The type of the snapshot.",
+				Optional:    true,
+			},
+			"availability_zones": schema.ListAttribute{
+				Description: "The availability zones of the snapshot.",
+				Computed:    true,
+				ElementType: types.StringType,
 			},
 		},
 	}
@@ -167,7 +184,15 @@ func (r *bsSnapshots) setValuesFromServer(result sdkBlockStorageSnapshots.GetRes
 	state.FinalName = types.StringValue(result.Name)
 	state.State = types.StringValue(result.State)
 	state.Status = types.StringValue(result.Status)
+	state.Type = types.StringValue(result.Type)
 
+	if result.AvailabilityZones != nil {
+		state.AvailabilityZones = types.List{}
+		for _, az := range result.AvailabilityZones {
+			lv, _ := types.ListValue(types.StringType, []attr.Value{types.StringValue(az)})
+			state.AvailabilityZones = lv
+		}
+	}
 }
 
 // Read refreshes the Terraform state with the latest data.
@@ -212,18 +237,31 @@ func (r *bsSnapshots) Create(ctx context.Context, req resource.CreateRequest, re
 	}
 
 	// Create the block storage
-	createResult, err := r.bsSnapshots.CreateContext(ctx, sdkBlockStorageSnapshots.CreateParameters{
+	createRequest := sdkBlockStorageSnapshots.CreateParameters{
 		Description: plan.Description.ValueStringPointer(),
-		Name:        plan.FinalName.String(),
-		Volume: sdkBlockStorageSnapshots.CreateParametersVolume{
+		Name:        plan.FinalName.ValueString(),
+		Type:        plan.Type.ValueStringPointer(),
+	}
+
+	if plan.Volume != nil {
+		createRequest.Volume = &sdkBlockStorageSnapshots.CreateParametersVolume{
 			Id: plan.Volume.ID.ValueString(),
-		},
-	}, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkBlockStorageSnapshots.CreateConfigs{}))
+		}
+	}
+
+	if !plan.SnapshotSourceID.IsNull() {
+		createRequest.SourceSnapshot = &sdkBlockStorageSnapshots.CreateParametersSourceSnapshot{
+			Id: plan.SnapshotSourceID.ValueString(),
+		}
+	}
+
+	createResult, err := r.bsSnapshots.CreateContext(ctx, createRequest,
+		tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkBlockStorageSnapshots.CreateConfigs{}))
 
 	if err != nil {
 		resp.Diagnostics.AddError(
-			"Error creating vm",
-			"Could not create virtual-machine, unexpected error: "+err.Error(),
+			"Error creating snapshot",
+			"Could not create snapshot - "+err.Error(),
 		)
 		return
 	}
