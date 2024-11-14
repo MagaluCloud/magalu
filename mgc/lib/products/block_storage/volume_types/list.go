@@ -27,6 +27,10 @@ import (
 	mgcHelpers "magalu.cloud/lib/helpers"
 )
 
+type ListParameters struct {
+	AvailabilityZone *string `json:"availability-zone,omitempty"`
+}
+
 type ListConfigs struct {
 	Env       *string `json:"env,omitempty"`
 	Region    *string `json:"region,omitempty"`
@@ -38,21 +42,26 @@ type ListResult struct {
 }
 
 type ListResultTypesItem struct {
-	DiskType string                  `json:"disk_type"`
-	Id       string                  `json:"id"`
-	Iops     ListResultTypesItemIops `json:"iops"`
-	Name     string                  `json:"name"`
-	Status   string                  `json:"status"`
+	AvailabilityZones ListResultTypesItemAvailabilityZones `json:"availability_zones"`
+	DiskType          string                               `json:"disk_type"`
+	Id                string                               `json:"id"`
+	Iops              ListResultTypesItemIops              `json:"iops"`
+	Name              string                               `json:"name"`
+	Status            string                               `json:"status"`
 }
+
+type ListResultTypesItemAvailabilityZones []string
 
 type ListResultTypesItemIops struct {
 	Read  int `json:"read"`
+	Total int `json:"total"`
 	Write int `json:"write"`
 }
 
 type ListResultTypes []ListResultTypesItem
 
 func (s *service) List(
+	parameters ListParameters,
 	configs ListConfigs,
 ) (
 	result ListResult,
@@ -64,6 +73,9 @@ func (s *service) List(
 	}
 
 	var p mgcCore.Parameters
+	if p, err = mgcHelpers.ConvertParameters[ListParameters](parameters); err != nil {
+		return
+	}
 
 	var c mgcCore.Configs
 	if c, err = mgcHelpers.ConvertConfigs[ListConfigs](configs); err != nil {
@@ -80,6 +92,7 @@ func (s *service) List(
 // Context from caller is used to allow cancellation of long-running requests
 func (s *service) ListContext(
 	ctx context.Context,
+	parameters ListParameters,
 	configs ListConfigs,
 ) (
 	result ListResult,
@@ -91,6 +104,9 @@ func (s *service) ListContext(
 	}
 
 	var p mgcCore.Parameters
+	if p, err = mgcHelpers.ConvertParameters[ListParameters](parameters); err != nil {
+		return
+	}
 
 	var c mgcCore.Configs
 	if c, err = mgcHelpers.ConvertConfigs[ListConfigs](configs); err != nil {

@@ -15,6 +15,7 @@ Block storage volumes are storage devices that can be attached to virtual machin
 ```terraform
 resource "mgc_block_storage_volumes" "example_volume" {
   name = "example-volume"
+  availability_zones = ["br-se1-a"]
   size = 10
   type = {
     name = "cloud_nvme"
@@ -33,7 +34,9 @@ resource "mgc_block_storage_volumes" "example_volume" {
 
 ### Optional
 
+- `availability_zones` (List of String) The availability zones where the block storage is available.
 - `name_is_prefix` (Boolean) Indicates whether the provided name is a prefix or the exact name of the block storage.
+- `snapshot_id` (String) The unique identifier of the snapshot used to create the block storage.
 
 ### Read-Only
 
