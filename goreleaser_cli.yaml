@@ -61,6 +61,13 @@ brews:
       owner: MagaluCloud
       name: homebrew-mgccli
       branch: "{{.ProjectName}}-{{.Version}}"
+      pull_requests:
+        enabled: true
+        draft: false
+        base:
+          owner: MagaluCloud
+          name: homebrew-mgccli
+          branch: main
       git:
         url: 'git@github.com:MagaluCloud/homebrew-mgccli.git'
         private_key: '{{ .Env.PRIVATE_KEY_PATH }}'
