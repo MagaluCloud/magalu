@@ -31,6 +31,8 @@ type ListParameters struct {
 	Offset *int                  `json:"_offset,omitempty"`
 	Sort   *string               `json:"_sort,omitempty"`
 	Expand *ListParametersExpand `json:"expand,omitempty"`
+	Name   *string               `json:"name,omitempty"`
+	Type   *string               `json:"type,omitempty"`
 }
 
 type ListParametersExpand []string
@@ -46,17 +48,21 @@ type ListResult struct {
 }
 
 type ListResultSnapshotsItem struct {
-	CreatedAt   string                        `json:"created_at"`
-	Description *string                       `json:"description"`
-	Error       *ListResultSnapshotsItemError `json:"error,omitempty"`
-	Id          string                        `json:"id"`
-	Name        string                        `json:"name"`
-	Size        int                           `json:"size"`
-	State       string                        `json:"state"`
-	Status      string                        `json:"status"`
-	UpdatedAt   string                        `json:"updated_at"`
-	Volume      ListResultSnapshotsItemVolume `json:"volume"`
+	AvailabilityZones ListResultSnapshotsItemAvailabilityZones `json:"availability_zones"`
+	CreatedAt         string                                   `json:"created_at"`
+	Description       *string                                  `json:"description"`
+	Error             *ListResultSnapshotsItemError            `json:"error,omitempty"`
+	Id                string                                   `json:"id"`
+	Name              string                                   `json:"name"`
+	Size              int                                      `json:"size"`
+	State             string                                   `json:"state"`
+	Status            string                                   `json:"status"`
+	Type              string                                   `json:"type"`
+	UpdatedAt         string                                   `json:"updated_at"`
+	Volume            ListResultSnapshotsItemVolume            `json:"volume"`
 }
+
+type ListResultSnapshotsItemAvailabilityZones []string
 
 type ListResultSnapshotsItemError struct {
 	Message string `json:"message"`

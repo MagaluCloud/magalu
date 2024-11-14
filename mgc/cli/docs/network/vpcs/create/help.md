@@ -1,4 +1,4 @@
-# Create a VPC
+# This endpoint allows you to create a new Virtual Private Cloud (VPC). It requires the tenant ID and a payload containing the VPC details such as name and description.
 
 ## Usage:
 ```bash
@@ -8,11 +8,10 @@ Usage:
 
 ## Product catalog:
 - Flags:
-- --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-- --description string            Description
-- -h, --help                          help for create
-- --name string                   Name (required)
-- -v, --version                       version for create
+- --description string   Description
+- -h, --help                 help for create
+- --name string          Name (required)
+- -v, --version              version for create
 
 ## Other commands:
 - Global Flags:

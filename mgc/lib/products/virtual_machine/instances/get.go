@@ -77,9 +77,28 @@ type GetResultMachineType struct {
 
 // any of: GetResultNetwork
 type GetResultNetwork struct {
-	Ports *GetResultNetworkPorts `json:"ports"`
-	Vpc   *GetResultNetworkVpc   `json:"vpc,omitempty"`
+	Interfaces *GetResultNetworkInterfaces `json:"interfaces,omitempty"`
+	Ports      *GetResultNetworkPorts      `json:"ports"`
+	Vpc        *GetResultNetworkVpc        `json:"vpc,omitempty"`
 }
+
+type GetResultNetworkInterfacesItem struct {
+	AssociatedPublicIpv4 *string                                       `json:"associated_public_ipv4,omitempty"`
+	Id                   string                                        `json:"id"`
+	IpAddresses          GetResultNetworkInterfacesItemIpAddresses     `json:"ip_addresses"`
+	Name                 string                                        `json:"name"`
+	Primary              *bool                                         `json:"primary,omitempty"`
+	SecurityGroups       *GetResultNetworkInterfacesItemSecurityGroups `json:"security_groups,omitempty"`
+}
+
+type GetResultNetworkInterfacesItemIpAddresses struct {
+	PrivateIpv4 string  `json:"private_ipv4"`
+	PublicIpv6  *string `json:"public_ipv6,omitempty"`
+}
+
+type GetResultNetworkInterfacesItemSecurityGroups []string
+
+type GetResultNetworkInterfaces []GetResultNetworkInterfacesItem
 
 type GetResultNetworkPortsItem struct {
 	Id          string                               `json:"id"`

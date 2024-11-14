@@ -38,9 +38,17 @@ import (
 )
 
 type CreateParameters struct {
-	Description *string                `json:"description"`
-	Name        string                 `json:"name"`
-	Volume      CreateParametersVolume `json:"volume"`
+	Description    *string                         `json:"description"`
+	Name           string                          `json:"name"`
+	SourceSnapshot *CreateParametersSourceSnapshot `json:"source_snapshot,omitempty"`
+	Type           *string                         `json:"type,omitempty"`
+	Volume         *CreateParametersVolume         `json:"volume,omitempty"`
+}
+
+// any of: CreateParametersSourceSnapshot
+type CreateParametersSourceSnapshot struct {
+	Id   string  `json:"id"`
+	Name *string `json:"name,omitempty"`
 }
 
 // any of: CreateParametersVolume
