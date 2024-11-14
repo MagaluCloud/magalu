@@ -260,8 +260,8 @@ func (r *bsSnapshots) Create(ctx context.Context, req resource.CreateRequest, re
 
 	if err != nil {
 		resp.Diagnostics.AddError(
-			"Error creating vm",
-			"Could not create snapshot, err.Error(),
+			"Error creating snapshot",
+			"Could not create snapshot - "+err.Error(),
 		)
 		return
 	}
