@@ -55,6 +55,28 @@ func Test_operationTree_block_storage_block_storage(t *testing.T) {
 	checkOperationTable(t, operations, expected)
 }
 
+func Test_operationTree_multi_version(t *testing.T) {
+	operations := []*operationDesc{
+		{pathKey: "/v0/volumes", method: "get"},
+		{pathKey: "/v1/volumes", method: "post"},
+		{pathKey: "/v0/volumes/{id}", method: "delete"},
+		{pathKey: "/v0/volumes/{id}", method: "get"},
+		{pathKey: "/v0/volumes/{id}", method: "patch"},
+		{pathKey: "/v0/volumes/{id}/attach/{virtual_machine_id}", method: "post"},
+		{pathKey: "/v0/volumes/{id}/detach/{virtual_machine_id}", method: "post"},
+	}
+	expected := []string{
+		"list - get /v0/volumes",
+		"create - post /v1/volumes",
+		"delete - delete /v0/volumes/{id}",
+		"get - get /v0/volumes/{id}",
+		"update - patch /v0/volumes/{id}",
+		"attach - post /v0/volumes/{id}/attach/{virtual_machine_id}",
+		"detach - post /v0/volumes/{id}/detach/{virtual_machine_id}",
+	}
+	checkOperationTable(t, operations, expected)
+}
+
 func Test_operationTree_block_storage_snapshots(t *testing.T) {
 	operations := []*operationDesc{
 		{pathKey: "/v0/snapshots", method: "get"},

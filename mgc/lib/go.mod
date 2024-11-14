@@ -5,8 +5,8 @@ go 1.23.0
 toolchain go1.23.2
 
 require (
-	magalu.cloud/core v0.28.4
-	magalu.cloud/sdk v0.28.4
+	magalu.cloud/core v0.29.2
+	magalu.cloud/sdk v0.29.2
 )
 
 require (

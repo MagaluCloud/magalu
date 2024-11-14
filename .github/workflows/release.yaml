@@ -108,6 +108,7 @@ jobs:
         uses: ksivamuthu/actions-setup-gh-cli@v3  
       - name: Copy Docs
         run: |
+          rm -rf terraform-provider-mgc/docs/**
           cp -r mgc/terraform-provider-mgc/docs/* terraform-provider-mgc/docs/
           cp mgc/terraform-provider-mgc/README.md terraform-provider-mgc/README.md
       - name: Create Pull Request

@@ -7,7 +7,7 @@
             "name": "IaaS Products",
             "url": "https://github.com/luizalabs"
         },
-        "version": "1.138.0"
+        "version": "1.141.3"
     },
     "paths": {
         "/v0/ports": {
@@ -1924,68 +1924,6 @@
                         ]
                     }
                 ]
-            },
-            "post": {
-                "tags": [
-                    "vpcs"
-                ],
-                "summary": "Create VPC",
-                "description": "Create a VPC",
-                "operationId": "create_vpc_v0_vpcs_post",
-                "parameters": [
-                    {
-                        "name": "x-tenant-id",
-                        "in": "header",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "title": "X-Tenant-Id",
-                            "description": "Tenant id of the project"
-                        },
-                        "description": "Tenant id of the project"
-                    }
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/VpcCreateRequest"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Successful Response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/vpc_api_product__vpc__models__vpc__VpcCreateResponse"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Validation Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/HTTPValidationError"
-                                }
-                            }
-                        }
-                    }
-                },
-                "x-viveiro": true,
-                "x-mgc-hidden": false,
-                "security": [
-                    {
-                        "OAuth2": [
-                            "network.write"
-                        ]
-                    }
-                ]
             }
         },
         "/v0/vpcs/{vpc_id}": {
@@ -2611,19 +2549,6 @@
                                 "$ref": "#/components/schemas/SubnetCreateRequest"
                             },
                             "examples": {
-                                "example_cidr": {
-                                    "summary": "Example with CIDR",
-                                    "value": {
-                                        "name": "subnet_name",
-                                        "description": "some_description",
-                                        "subnetpool_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-                                        "cidr_block": "172.50.0.0/24",
-                                        "ip_version": 4,
-                                        "dns_nameservers": [
-                                            "8.8.8.8"
-                                        ]
-                                    }
-                                },
                                 "example_mask": {
                                     "summary": "Example with Mask",
                                     "value": {
@@ -2631,6 +2556,19 @@
                                         "description": "some_description",
                                         "subnetpool_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
                                         "cidr_block": "24",
+                                        "ip_version": 4,
+                                        "dns_nameservers": [
+                                            "8.8.8.8"
+                                        ]
+                                    }
+                                },
+                                "example_cidr": {
+                                    "summary": "Example with CIDR",
+                                    "value": {
+                                        "name": "subnet_name",
+                                        "description": "some_description",
+                                        "subnetpool_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+                                        "cidr_block": "172.50.0.0/24",
                                         "ip_version": 4,
                                         "dns_nameservers": [
                                             "8.8.8.8"
@@ -2648,6 +2586,110 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/SubnetCreateResponse"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                },
+                "x-viveiro": true,
+                "x-mgc-hidden": false,
+                "security": [
+                    {
+                        "OAuth2": [
+                            "network.write"
+                        ]
+                    }
+                ]
+            }
+        },
+        "/v1/vpcs": {
+            "post": {
+                "tags": [
+                    "vpcs"
+                ],
+                "summary": "Create VPC",
+                "description": "This endpoint allows you to create a new Virtual Private Cloud (VPC). It requires the tenant ID and a payload containing the VPC details such as name and description.",
+                "operationId": "v1_create_vpc_v1_vpcs_post",
+                "parameters": [
+                    {
+                        "name": "x-tenant-id",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "X-Tenant-Id",
+                            "description": "Tenant id of the project"
+                        },
+                        "description": "Tenant id of the project"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/VpcCreatePayload"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "202": {
+                        "description": "Accepted",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/vpc_api_product__v1__vpcs__schemas__VpcCreateResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/StatusCode400BadRequest"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/StatusCode409Conflict"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Exception",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/StatusCode500InternalServerError"
+                                }
+                            }
+                        }
+                    },
+                    "504": {
+                        "description": "Gateway Timeout",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/StatusCode504GatewayTimeout"
                                 }
                             }
                         }
@@ -3622,6 +3664,22 @@
                         ],
                         "title": "Vpc Id"
                     },
+                    "tenant_id": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            }
+                        ],
+                        "title": "Tenant Id"
+                    },
+                    "project_type": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            }
+                        ],
+                        "title": "Project Type"
+                    },
                     "description": {
                         "anyOf": [
                             {
@@ -3689,8 +3747,10 @@
                     "external_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
                     "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
                     "port_ip": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+                    "project_type": "project_type",
                     "public_ip": "100.94.5.31",
                     "status": "created",
+                    "tenant_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
                     "updated": "2022-01-01 00:00:00",
                     "vpc_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
                 }
@@ -3752,6 +3812,22 @@
                                         }
                                     ],
                                     "title": "Vpc Id"
+                                },
+                                "tenant_id": {
+                                    "anyOf": [
+                                        {
+                                            "type": "string"
+                                        }
+                                    ],
+                                    "title": "Tenant Id"
+                                },
+                                "project_type": {
+                                    "anyOf": [
+                                        {
+                                            "type": "string"
+                                        }
+                                    ],
+                                    "title": "Project Type"
                                 },
                                 "description": {
                                     "anyOf": [
@@ -3820,8 +3896,10 @@
                                 "external_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
                                 "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
                                 "port_ip": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+                                "project_type": "project_type",
                                 "public_ip": "100.94.5.31",
                                 "status": "created",
+                                "tenant_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
                                 "updated": "2022-01-01 00:00:00",
                                 "vpc_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
                             }
@@ -3911,7 +3989,9 @@
                                 "type": "string"
                             }
                         ],
-                        "title": "Description"
+                        "title": "Description",
+                        "description": "Description of the security group rule",
+                        "example": "Allow incoming SSH traffic"
                     }
                 },
                 "title": "RuleCreateRequest",
@@ -4952,6 +5032,104 @@
                     "error"
                 ]
             },
+            "Status": {
+                "type": "string",
+                "title": "Status",
+                "enum": [
+                    "pending",
+                    "processing",
+                    "created",
+                    "error"
+                ]
+            },
+            "StatusCode400BadRequest": {
+                "type": "object",
+                "properties": {
+                    "slug": {
+                        "type": "string",
+                        "title": "Slug",
+                        "default": "Bad Request"
+                    },
+                    "message": {
+                        "type": "string",
+                        "title": "Message"
+                    },
+                    "details": {
+                        "type": "array",
+                        "items": {
+                            "type": "object"
+                        },
+                        "title": "Details"
+                    }
+                },
+                "title": "StatusCode400BadRequest",
+                "required": [
+                    "message",
+                    "details"
+                ]
+            },
+            "StatusCode409Conflict": {
+                "type": "object",
+                "properties": {
+                    "slug": {
+                        "type": "string",
+                        "title": "Slug",
+                        "default": "Conflict"
+                    },
+                    "message": {
+                        "type": "string",
+                        "title": "Message"
+                    },
+                    "details": {
+                        "type": "array",
+                        "items": {
+                            "type": "object"
+                        },
+                        "title": "Details"
+                    }
+                },
+                "title": "StatusCode409Conflict",
+                "required": [
+                    "message",
+                    "details"
+                ]
+            },
+            "StatusCode500InternalServerError": {
+                "type": "object",
+                "properties": {
+                    "slug": {
+                        "type": "string",
+                        "title": "Slug",
+                        "default": "Internal Server Error"
+                    },
+                    "message": {
+                        "type": "string",
+                        "title": "Message"
+                    }
+                },
+                "title": "StatusCode500InternalServerError",
+                "required": [
+                    "message"
+                ]
+            },
+            "StatusCode504GatewayTimeout": {
+                "type": "object",
+                "properties": {
+                    "slug": {
+                        "type": "string",
+                        "title": "Slug",
+                        "default": "Gateway Timeout"
+                    },
+                    "message": {
+                        "type": "string",
+                        "title": "Message"
+                    }
+                },
+                "title": "StatusCode504GatewayTimeout",
+                "required": [
+                    "message"
+                ]
+            },
             "SubnetCreateRequest": {
                 "type": "object",
                 "properties": {
@@ -4985,7 +5163,11 @@
                         "default": []
                     },
                     "subnetpool_id": {
-                        "type": "string",
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            }
+                        ],
                         "title": "Subnetpool Id"
                     }
                 },
@@ -4993,8 +5175,7 @@
                 "required": [
                     "name",
                     "cidr_block",
-                    "ip_version",
-                    "subnetpool_id"
+                    "ip_version"
                 ],
                 "example": {
                     "cidr_block": "172.50.0.0/24",
@@ -5069,6 +5250,10 @@
                         "type": "integer",
                         "title": "Ip Version"
                     },
+                    "is_default": {
+                        "type": "boolean",
+                        "title": "Is Default"
+                    },
                     "name": {
                         "type": "string",
                         "title": "Name"
@@ -5084,6 +5269,7 @@
                     "created_at",
                     "tenant_id",
                     "ip_version",
+                    "is_default",
                     "name",
                     "description"
                 ],
@@ -5094,6 +5280,7 @@
                     "description": "some description",
                     "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
                     "ip_version": 4,
+                    "is_default": true,
                     "name": "some_subnet_pool",
                     "tenant_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
                 }
@@ -5185,19 +5372,25 @@
                             }
                         ],
                         "title": "Description"
+                    },
+                    "is_default": {
+                        "type": "boolean",
+                        "title": "Is Default"
                     }
                 },
                 "title": "SubnetPoolResponse",
                 "required": [
                     "id",
                     "name",
-                    "tenant_id"
+                    "tenant_id",
+                    "is_default"
                 ],
                 "description": "A Schema representing a response for Subnet Pool creation.",
                 "example": {
                     "cidr": "172.26.0.0/16",
                     "description": "some description",
                     "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+                    "is_default": true,
                     "name": "some_subnet_pool",
                     "tenant_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
                 }
@@ -5308,19 +5501,25 @@
                                         }
                                     ],
                                     "title": "Description"
+                                },
+                                "is_default": {
+                                    "type": "boolean",
+                                    "title": "Is Default"
                                 }
                             },
                             "title": "SubnetPoolResponse",
                             "required": [
                                 "id",
                                 "name",
-                                "tenant_id"
+                                "tenant_id",
+                                "is_default"
                             ],
                             "description": "A Schema representing a response for Subnet Pool creation.",
                             "example": {
                                 "cidr": "172.26.0.0/16",
                                 "description": "some description",
                                 "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+                                "is_default": true,
                                 "name": "some_subnet_pool",
                                 "tenant_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
                             }
@@ -5354,6 +5553,7 @@
                             "cidr": "172.20.0.0/16",
                             "description": "subnet pool description",
                             "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+                            "is_default": true,
                             "name": "subnet_pool_name",
                             "tenant_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
                         }
@@ -5391,6 +5591,10 @@
                         "type": "string",
                         "title": "Cidr Block"
                     },
+                    "subnetpool_id": {
+                        "type": "string",
+                        "title": "Subnetpool Id"
+                    },
                     "ip_version": {
                         "type": "string",
                         "title": "Ip Version"
@@ -5423,6 +5627,7 @@
                     "id",
                     "vpc_id",
                     "cidr_block",
+                    "subnetpool_id",
                     "ip_version",
                     "zone"
                 ],
@@ -5433,6 +5638,7 @@
                     "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
                     "ip_version": "4",
                     "name": "vpc_name",
+                    "subnetpool_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
                     "updated": "2022-01-01 00:00:00",
                     "vpc_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
                     "zone": "a"
@@ -5468,6 +5674,10 @@
                     "cidr_block": {
                         "type": "string",
                         "title": "Cidr Block"
+                    },
+                    "subnetpool_id": {
+                        "type": "string",
+                        "title": "Subnetpool Id"
                     },
                     "ip_version": {
                         "type": "string",
@@ -5534,6 +5744,7 @@
                     "id",
                     "vpc_id",
                     "cidr_block",
+                    "subnetpool_id",
                     "ip_version",
                     "zone",
                     "gateway_ip",
@@ -5614,6 +5825,10 @@
                                     "type": "string",
                                     "title": "Cidr Block"
                                 },
+                                "subnetpool_id": {
+                                    "type": "string",
+                                    "title": "Subnetpool Id"
+                                },
                                 "ip_version": {
                                     "type": "string",
                                     "title": "Ip Version"
@@ -5646,6 +5861,7 @@
                                 "id",
                                 "vpc_id",
                                 "cidr_block",
+                                "subnetpool_id",
                                 "ip_version",
                                 "zone"
                             ],
@@ -5656,6 +5872,7 @@
                                 "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
                                 "ip_version": "4",
                                 "name": "vpc_name",
+                                "subnetpool_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
                                 "updated": "2022-01-01 00:00:00",
                                 "vpc_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
                                 "zone": "a"
@@ -5675,6 +5892,7 @@
                             "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
                             "ip_version": "4",
                             "name": "vpc_name",
+                            "subnetpool_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
                             "updated": "2022-01-01 00:00:00",
                             "vpc_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
                             "zone": "a"
@@ -5730,7 +5948,7 @@
                     "type"
                 ]
             },
-            "VpcCreateRequest": {
+            "VpcCreatePayload": {
                 "type": "object",
                 "properties": {
                     "name": {
@@ -5746,13 +5964,13 @@
                         "title": "Description"
                     }
                 },
-                "title": "VpcCreateRequest",
+                "title": "VpcCreatePayload",
                 "required": [
                     "name"
                 ],
                 "example": {
                     "description": "Description",
-                    "name": "vpc_name"
+                    "name": "VPC Name"
                 }
             },
             "VpcResponse": {
@@ -5789,6 +6007,16 @@
                             }
                         ],
                         "title": "Description"
+                    },
+                    "status": {
+                        "type": "string",
+                        "title": "Status",
+                        "enum": [
+                            "pending",
+                            "processing",
+                            "created",
+                            "error"
+                        ]
                     },
                     "router_id": {
                         "anyOf": [
@@ -5862,6 +6090,9 @@
                     }
                 },
                 "title": "VpcResponse",
+                "required": [
+                    "status"
+                ],
                 "example": {
                     "created_at": "2022-01-01 00:00:00",
                     "description": "DESCRIPTION",
@@ -5874,6 +6105,7 @@
                     "security_groups": [
                         "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
                     ],
+                    "status": "created",
                     "subnets": [
                         "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
                     ],
@@ -5922,6 +6154,16 @@
                                                 }
                                             ],
                                             "title": "Description"
+                                        },
+                                        "status": {
+                                            "type": "string",
+                                            "title": "Status",
+                                            "enum": [
+                                                "pending",
+                                                "processing",
+                                                "created",
+                                                "error"
+                                            ]
                                         },
                                         "router_id": {
                                             "anyOf": [
@@ -5995,6 +6237,9 @@
                                         }
                                     },
                                     "title": "VpcResponse",
+                                    "required": [
+                                        "status"
+                                    ],
                                     "example": {
                                         "created_at": "2022-01-01 00:00:00",
                                         "description": "DESCRIPTION",
@@ -6007,6 +6252,7 @@
                                         "security_groups": [
                                             "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
                                         ],
+                                        "status": "created",
                                         "subnets": [
                                             "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
                                         ],
@@ -6044,21 +6290,32 @@
                     ]
                 }
             },
-            "vpc_api_product__vpc__models__vpc__VpcCreateResponse": {
+            "vpc_api_product__v1__vpcs__schemas__VpcCreateResponse": {
                 "type": "object",
                 "properties": {
                     "id": {
-                        "anyOf": [
-                            {
-                                "type": "string"
-                            }
-                        ],
+                        "type": "string",
                         "title": "Id"
+                    },
+                    "status": {
+                        "type": "string",
+                        "title": "Status",
+                        "enum": [
+                            "pending",
+                            "processing",
+                            "created",
+                            "error"
+                        ]
                     }
                 },
                 "title": "VpcCreateResponse",
+                "required": [
+                    "id",
+                    "status"
+                ],
                 "example": {
-                    "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+                    "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+                    "status": "pending"
                 }
             }
         }

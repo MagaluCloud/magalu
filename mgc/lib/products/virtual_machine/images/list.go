@@ -23,10 +23,11 @@ import (
 )
 
 type ListParameters struct {
-	Labels *string `json:"_labels,omitempty"`
-	Limit  *int    `json:"_limit,omitempty"`
-	Offset *int    `json:"_offset,omitempty"`
-	Sort   *string `json:"_sort,omitempty"`
+	Labels           *string `json:"_labels,omitempty"`
+	Limit            *int    `json:"_limit,omitempty"`
+	Offset           *int    `json:"_offset,omitempty"`
+	Sort             *string `json:"_sort,omitempty"`
+	AvailabilityZone *string `json:"availability-zone,omitempty"`
 }
 
 type ListConfigs struct {
@@ -40,6 +41,7 @@ type ListResult struct {
 }
 
 type ListResultImagesItem struct {
+	AvailabilityZones    *ListResultImagesItemAvailabilityZones  `json:"availability_zones,omitempty"`
 	EndLifeAt            *string                                 `json:"end_life_at,omitempty"`
 	EndStandardSupportAt *string                                 `json:"end_standard_support_at,omitempty"`
 	Id                   string                                  `json:"id"`
@@ -51,6 +53,8 @@ type ListResultImagesItem struct {
 	Status               string                                  `json:"status"`
 	Version              *string                                 `json:"version,omitempty"`
 }
+
+type ListResultImagesItemAvailabilityZones []string
 
 type ListResultImagesItemLabels []string
 
