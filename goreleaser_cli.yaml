@@ -44,7 +44,7 @@ nfpms:
   id: mgc
   description: MGC CLI.
   homepage: https://magalu.cloud/
-  license: MIT
+  license: "GPL-3.0"
   package_name: mgccli
   bindir: /usr/bin
   formats:
@@ -56,17 +56,11 @@ nfpms:
 brews:
   - name: mgccli
     homepage: "https://magalu.cloud"
+    license: "GPL-3.0"
     repository:
       owner: MagaluCloud
       name: homebrew-mgccli
       branch: "{{.ProjectName}}-{{.Version}}"
-      pull_request:
-        enabled: true  
-        draft: false
-        base:
-          owner: MagaluCloud
-          name: homebrew-mgccli
-          branch: main
       git:
         url: 'git@github.com:MagaluCloud/homebrew-mgccli.git'
         private_key: '{{ .Env.PRIVATE_KEY_PATH }}'

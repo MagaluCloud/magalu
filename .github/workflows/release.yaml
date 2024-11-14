@@ -60,6 +60,7 @@ jobs:
           VERSION: ${{ github.ref_name }}
           GITHUB_TOKEN: ${{ secrets.GH_PAT2 }}
           PRIVATE_KEY_PATH: ${{ secrets.SSH_ID_RSA_MAGALUCLI }}
+      - name: Open PR in Homebrew
 
   terraform-release:
     needs: build
