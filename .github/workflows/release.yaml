@@ -70,8 +70,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PAT2 }}
         run: |
-          cd $HOME/homebrew-mgccli
           gh pr create \
+            --repo MagaluCloud/homebrew-mgccli \
             --title "Update mgccli formula to version ${{ github.ref_name }}" \
             --body "This PR updates the mgccli formula to version ${{ github.ref_name }}." \
             --base main \
