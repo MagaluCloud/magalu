@@ -54,18 +54,15 @@ nfpms:
     - mgc
 
 brews:
-  -
-    name: mgccli
+  - name: mgccli
     homepage: "https://magalu.cloud"
-    # auto = skip when is -rc
-    # skip_upload: auto
     repository:
-      pull_request:
-        enabled: true
-        draft: true
       owner: MagaluCloud
       name: homebrew-mgccli
-      branch: main
+      branch: "{{.ProjectName}}-{{.Version}}"
+      pull_request:
+        enabled: true  
+        draft: false
       git:
         url: 'git@github.com:MagaluCloud/homebrew-mgccli.git'
         private_key: '{{ .Env.PRIVATE_KEY_PATH }}'
