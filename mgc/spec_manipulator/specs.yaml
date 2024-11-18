@@ -71,7 +71,7 @@ jaxyendy:
       sdk: true
       enabled: false
       dev: true
-    - url: https://lbaas.dev-qa.br-ne-1.jaxyendy.com/openapi.json
+    - url: https://lbaas.dev-qa.se1.br.jaxyendy.com/openapi.json
       file: lbaas.openapi.yaml
       menu: lbaas
       cli: false
