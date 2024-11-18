@@ -29,10 +29,10 @@ modules:
     summary: APIs related to the Kubernetes product.
     url: https://mke.br-ne-1.com/docs/openapi-with-snippets.json
     version: 0.1.0
--   description: ''
+-   description: Lbaas RP API
     name: lbaas
     path: lbaas.openapi.yaml
-    summary: ''
+    summary: Lbaas RP API
     url: https://lbaas.jaxyendy.com/openapi-cli.json
     version: 1.2.0
 -   description: VPC Api Product
