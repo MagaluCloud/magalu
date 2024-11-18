@@ -59,7 +59,7 @@ brews:
       owner: MagaluCloud
       name: homebrew-mgccli
       branch: "{{.ProjectName}}-{{.Version}}"
-      pull_requests:
+      pull_request:
         enabled: true
         draft: false
         base:
