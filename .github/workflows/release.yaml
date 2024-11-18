@@ -63,7 +63,7 @@ jobs:
       - name: Set up Git config
         run: |
           git config --global user.name "Magalu Cloud"
-          git config --global user.email "magalucloud.services@luizalabs.com"
+          git config --global user.email "magalucloud.cli@luizalabs.com"
       - name: Setup GitHub CLI
         uses: ksivamuthu/actions-setup-gh-cli@v3
       - name: Create Pull Request
@@ -117,7 +117,7 @@ jobs:
       - name: Set up Git config
         run: |
           git config --global user.name "Magalu Cloud"
-          git config --global user.email "magalucloud.services@luizalabs.com"
+          git config --global user.email "magalucloud.cli@luizalabs.com"
           git config --global commit.gpgsign true
           git config --global user.signingkey $(gpg --list-secret-keys --keyid-format LONG | grep sec | awk '{print $2}' | cut -d'/' -f2)
       - name: Setup GitHub CLI
