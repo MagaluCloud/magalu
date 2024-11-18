@@ -75,7 +75,7 @@ jobs:
             --title "Update mgccli formula to version ${{ github.ref_name }}" \
             --body "This PR updates the mgccli formula to version ${{ github.ref_name }}." \
             --base main \
-            --head mgccli-${{ github.ref_name }}
+            --head mgccli-${{ github.ref_name#v }}
 
   terraform-release:
     needs: build
