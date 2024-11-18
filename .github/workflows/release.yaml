@@ -69,13 +69,15 @@ jobs:
       - name: Create Pull Request
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PAT2 }}
+          REF_NAME: ${{ github.ref_name }}
         run: |
+          VERSION=${REF_NAME#v}
           gh pr create \
             --repo MagaluCloud/homebrew-mgccli \
             --title "Update mgccli formula to version ${{ github.ref_name }}" \
             --body "This PR updates the mgccli formula to version ${{ github.ref_name }}." \
             --base main \
-            --head mgccli-${{ github.ref_name#v }}
+            --head mgccli-${VERSION}
 
   terraform-release:
     needs: build
