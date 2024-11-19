@@ -73,7 +73,7 @@ func (r *mgcNetworkSubnetpoolsResource) Schema(_ context.Context, _ resource.Sch
 				},
 			},
 			"type": schema.StringAttribute{
-				Description: "The type of the subnet pool",
+				Description: "The type of the subnet pool. Possible values are 'pip' (Public IP) and 'default'",
 				Optional:    true,
 				Computed:    true,
 				Default:     stringdefault.StaticString("default"),
@@ -153,7 +153,7 @@ func (r *mgcNetworkSubnetpoolsResource) Read(ctx context.Context, req resource.R
 	data.Cidr = types.StringPointerValue(subnetPool.Cidr)
 	data.Description = types.StringValue(subnetPool.Description)
 	data.Name = types.StringValue(subnetPool.Name)
-	// data.Type = types.StringValue(isDefaultConverter(subnetPool.))
+	data.Type = types.StringValue(isDefaultConverter(subnetPool.IsDefault))
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
@@ -196,14 +196,14 @@ func (r *mgcNetworkSubnetpoolsResource) ImportState(ctx context.Context, req res
 	data.Cidr = types.StringPointerValue(subnetPool.Cidr)
 	data.Description = types.StringValue(subnetPool.Description)
 	data.Name = types.StringValue(subnetPool.Name)
-	// data.Type = types.StringValue(subnetPool.Type)
+	data.Type = types.StringValue(isDefaultConverter(subnetPool.IsDefault))
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-// func isDefaultConverter(isDefault bool) string {
-// 	if isDefault {
-// 		return "default"
-// 	}
-// 	return "pip"
-// }
+func isDefaultConverter(isDefault bool) string {
+	if isDefault {
+		return "default"
+	}
+	return "pip"
+}

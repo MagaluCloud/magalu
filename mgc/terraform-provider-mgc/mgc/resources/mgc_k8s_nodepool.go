@@ -6,11 +6,13 @@ import (
 	"strings"
 	"time"
 
+	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	mgcSdk "magalu.cloud/lib"
@@ -79,16 +81,25 @@ func (r *NewNodePoolResource) Schema(_ context.Context, req resource.SchemaReque
 			"replicas": schema.Int64Attribute{
 				Description: "Number of replicas of the nodes in the node pool.",
 				Required:    true,
+				Validators: []validator.Int64{
+					int64validator.AtLeast(0),
+				},
 			},
 			"max_replicas": schema.Int64Attribute{
 				Description: "Maximum number of replicas for autoscaling.",
 				Optional:    true,
 				Computed:    true,
+				Validators: []validator.Int64{
+					int64validator.AtLeast(0),
+				},
 			},
 			"min_replicas": schema.Int64Attribute{
 				Description: "Minimum number of replicas for autoscaling.",
 				Optional:    true,
 				Computed:    true,
+				Validators: []validator.Int64{
+					int64validator.AtLeast(0),
+				},
 			},
 			"tags": schema.ListAttribute{
 				Description: "List of tags applied to the node pool.",
@@ -176,15 +187,16 @@ func (r *NewNodePoolResource) Create(ctx context.Context, req resource.CreateReq
 		Taints:    convertTaintsNP(data.Taints),
 	}
 
-	if data.MaxReplicas.ValueInt64() > 0 || data.MinReplicas.ValueInt64() > 0 {
-		if data.MinReplicas.ValueInt64() == 0 || data.MaxReplicas.ValueInt64() == 0 {
-			resp.Diagnostics.AddError("min_replicas & max_replicas are required", "When using min_replicas or max_replicas, both are required")
-			return
-		}
-		createParams.AutoScale = &sdkNodepool.CreateParametersAutoScale{
-			MaxReplicas: int(data.MaxReplicas.ValueInt64()),
-			MinReplicas: int(data.MinReplicas.ValueInt64()),
-		}
+	if !data.MaxReplicas.IsNull() || !data.MinReplicas.IsNull() {
+		createParams.AutoScale = &sdkNodepool.CreateParametersAutoScale{}
+	}
+
+	if !data.MaxReplicas.IsNull() {
+		createParams.AutoScale.MaxReplicas = int(data.MaxReplicas.ValueInt64())
+	}
+
+	if !data.MinReplicas.IsNull() {
+		createParams.AutoScale.MinReplicas = int(data.MinReplicas.ValueInt64())
 	}
 
 	nodepool, err := r.sdkNodepool.CreateContext(ctx, createParams,

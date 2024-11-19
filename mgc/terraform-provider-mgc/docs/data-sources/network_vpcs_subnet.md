@@ -38,6 +38,7 @@ output "datasource_subnet_id" {
 - `gateway_ip` (String) The gateway IP of the subnet
 - `ip_version` (String) The IP version of the subnet
 - `name` (String) The name of the subnet
+- `subnetpool_id` (String) The subnet pool ID of the subnet
 - `updated` (String) The updated timestamp of the subnet
 - `vpc_id` (String) The VPC ID of the subnet
 - `zone` (String) The zone of the subnet

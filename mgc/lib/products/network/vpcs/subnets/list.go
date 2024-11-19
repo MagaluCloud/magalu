@@ -9,7 +9,7 @@ Executor: list
 
 Returns a list of subnets for a provided vpc_id
 
-Version: 1.138.0
+Version: 1.141.3
 
 import "magalu.cloud/lib/products/network/vpcs/subnets"
 */
@@ -37,15 +37,16 @@ type ListResult struct {
 }
 
 type ListResultSubnetsItem struct {
-	CidrBlock   string  `json:"cidr_block"`
-	CreatedAt   *string `json:"created_at,omitempty"`
-	Description *string `json:"description,omitempty"`
-	Id          string  `json:"id"`
-	IpVersion   string  `json:"ip_version"`
-	Name        *string `json:"name,omitempty"`
-	Updated     *string `json:"updated,omitempty"`
-	VpcId       string  `json:"vpc_id"`
-	Zone        string  `json:"zone"`
+	CidrBlock    string  `json:"cidr_block"`
+	CreatedAt    *string `json:"created_at,omitempty"`
+	Description  *string `json:"description,omitempty"`
+	Id           string  `json:"id"`
+	IpVersion    string  `json:"ip_version"`
+	Name         *string `json:"name,omitempty"`
+	SubnetpoolId string  `json:"subnetpool_id"`
+	Updated      *string `json:"updated,omitempty"`
+	VpcId        string  `json:"vpc_id"`
+	Zone         string  `json:"zone"`
 }
 
 type ListResultSubnets []ListResultSubnetsItem

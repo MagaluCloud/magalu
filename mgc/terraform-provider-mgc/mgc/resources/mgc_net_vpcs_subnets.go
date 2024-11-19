@@ -150,7 +150,7 @@ func (r *mgcNetworkVpcsSubnetsResource) Create(ctx context.Context, req resource
 		DnsNameservers: &dnsCreateParam,
 		IpVersion:      convertIPStringToIPVersion(data.IpVersion.ValueString()),
 		Name:           data.Name.ValueString(),
-		SubnetpoolId:   data.SubnetpoolId.ValueString(),
+		SubnetpoolId:   data.SubnetpoolId.ValueStringPointer(),
 		VpcId:          data.VpcId.ValueString(),
 	}
 
@@ -190,7 +190,7 @@ func (r *mgcNetworkVpcsSubnetsResource) Read(ctx context.Context, req resource.R
 	data.Description = types.StringPointerValue(subnet.Description)
 	data.IpVersion = types.StringValue(subnet.IpVersion)
 	data.Name = types.StringPointerValue(subnet.Name)
-	// data.SubnetpoolId = types.StringPointerValue(subnet.subnetPoolId)
+	data.SubnetpoolId = types.StringPointerValue(&subnet.SubnetpoolId)
 	data.VpcId = types.StringValue(subnet.VpcId)
 	resp.Diagnostics.Append(resp.State.Set(ctx, data)...)
 }
@@ -202,8 +202,13 @@ func (r *mgcNetworkVpcsSubnetsResource) Update(ctx context.Context, req resource
 		return
 	}
 
+	dnsServers := networkSubnets.UpdateParametersDnsNameservers{}
+	for _, dns := range data.DnsNameservers {
+		dnsServers = append(dnsServers, dns.ValueString())
+	}
 	subnetUpdateParams := networkSubnets.UpdateParameters{
-		SubnetId: data.ID.ValueString(),
+		SubnetId:       data.ID.ValueString(),
+		DnsNameservers: &dnsServers,
 	}
 
 	_, err := r.networkSubnets.UpdateContext(ctx, subnetUpdateParams,

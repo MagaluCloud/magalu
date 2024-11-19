@@ -60,6 +60,22 @@ jobs:
           VERSION: ${{ github.ref_name }}
           GITHUB_TOKEN: ${{ secrets.GH_PAT2 }}
           PRIVATE_KEY_PATH: ${{ secrets.SSH_ID_RSA_MAGALUCLI }}
+      - name: Set up Git config
+        run: |
+          git config --global user.name "Magalu Cloud"
+          git config --global user.email "magalucloud.services@luizalabs.com"
+      - name: Setup GitHub CLI
+        uses: ksivamuthu/actions-setup-gh-cli@v3
+      - name: Create Pull Request
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_PAT2 }}
+        run: |
+          gh pr create \
+            --repo MagaluCloud/homebrew-mgccli \
+            --title "🚀 Update mgccli brew formula to version ${{ github.ref_name }}" \
+            --body "This PR updates the mgccli formula to version ${{ github.ref_name }}." \
+            --base main \
+            --head mgccli-${{ github.ref_name }}
 
   terraform-release:
     needs: build
