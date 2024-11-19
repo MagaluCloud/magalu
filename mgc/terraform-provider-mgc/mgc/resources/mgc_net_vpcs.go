@@ -113,10 +113,11 @@ func (r *NetworkVPCResource) Create(ctx context.Context, req resource.CreateRequ
 		}
 		tflog.Info(ctx, "VPC is not yet created, waiting for 10 seconds",
 			map[string]interface{}{"status": res.Status})
+		time.Sleep(10 * time.Second)
 	}
 
 	data.Id = types.StringValue(createdVPC.Id)
-	resp.Diagnostics.Append(resp.State.Set(ctx, data)...)
+	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
 func convertCreateTFModelToSDKModel(create NetworkVPCModel) networkVpc.CreateParameters {
@@ -143,11 +144,15 @@ func (r *NetworkVPCResource) Read(ctx context.Context, req resource.ReadRequest,
 		return
 	}
 
+	if vpc.Description != nil && *vpc.Description == "" {
+		vpc.Description = nil
+	}
+
 	data.Name = types.StringPointerValue(vpc.Name)
 	data.Description = types.StringPointerValue(vpc.Description)
 	data.Id = types.StringPointerValue(vpc.Id)
 
-	resp.Diagnostics.Append(resp.State.Set(ctx, data)...)
+	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
 func (r *NetworkVPCResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {

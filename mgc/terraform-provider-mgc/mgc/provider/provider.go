@@ -146,8 +146,9 @@ func (p *mgcProvider) Resources(ctx context.Context) []func() resource.Resource 
 		resources.NewNetworkVPCInterfaceResource,
 		resources.NewNetworkSecurityGroupsAttachResource,
 		resources.NewNetworkPublicIPAttachResource,
-		resources.NewNetworkVpcsSubnetsResource,
-		resources.NewNetworkSubnetpoolsResource,
+		// disabled for now, waitng network team to finish the implementation
+		// resources.NewNetworkVpcsSubnetsResource,
+		// resources.NewNetworkSubnetpoolsResource,
 	)
 }
 
