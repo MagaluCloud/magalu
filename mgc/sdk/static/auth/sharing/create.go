@@ -37,7 +37,7 @@ type delegateResult struct {
 var getCreate = utils.NewLazyLoader[core.Executor](func() core.Executor {
 	executor := core.NewStaticExecute(
 		core.DescriptorSpec{
-			Name:        "assign",
+			Name:        "add",
 			Description: "Assign access to my Account/Organization",
 		},
 		create,
