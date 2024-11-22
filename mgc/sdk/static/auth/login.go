@@ -114,6 +114,7 @@ func login(ctx context.Context, parameters loginParameters, _ struct{}) (*loginR
 
 	scopes.Add("evt:event-tr")
 	scopes.Add("pa:sa:manage")
+	scopes.Add("pa:accounts:read")
 	scopes.Add("pa:delegations:read")
 	scopes.Add("pa:delegations:write")
 	scopes.Add("pa:delegations:delete")
