@@ -13,13 +13,11 @@ import (
 )
 
 type DelegationAccount struct {
-	UUID  string `json:"uuid"`
 	Name  string `json:"name"`
 	Email string `json:"email"`
 }
 
 type DelegationTenant struct {
-	UUID      string `json:"uuid"`
 	LegalName string `json:"legal_name"`
 }
 
