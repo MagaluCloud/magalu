@@ -5,6 +5,7 @@ import (
 	"github.com/MagaluCloud/magalu/mgc/core/utils"
 	"github.com/MagaluCloud/magalu/mgc/sdk/static/auth/api_key"
 	"github.com/MagaluCloud/magalu/mgc/sdk/static/auth/clients"
+	"github.com/MagaluCloud/magalu/mgc/sdk/static/auth/sharing"
 	"github.com/MagaluCloud/magalu/mgc/sdk/static/auth/tenant"
 )
 
@@ -26,6 +27,7 @@ of HTTP requests using the MgcSDK. Authentication is done via Magalu Cloud accou
 				tenant.GetGroup(),
 				clients.GetGroup(),
 				api_key.GetGroup(),
+				sharing.GetGroup(),
 			}
 		},
 	)

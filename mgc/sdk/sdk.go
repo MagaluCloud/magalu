@@ -184,6 +184,7 @@ func init() {
 			ClientId:              "cw9qpaUl2nBiC8PVjNFN5jZeb2vTd_1S5cYs1FhEXh0",
 			ObjectStoreScopeIDs:   []string{"b6afac7e-0afd-42de-b4aa-1bc82a27e307", "5ea6d1f7-20eb-4e80-9a9c-c7923636a4bd"},
 			PublicClientsScopeIDs: map[string]string{"openid": "2836b3ba-093c-416a-92f0-7fc4ee5ac961", "profile": "50447cbf-8a42-4426-8e53-fe84bf0726ad"},
+			TotalScopeID:          "4939109a-1b47-4c8a-936c-8ed2e162bd98",
 			RedirectUri:           "http://localhost:8095/callback",
 			LoginUrl:              "https://id.magalu.com/login",
 			TokenUrl:              "https://id.magalu.com/oauth/token",
@@ -195,11 +196,14 @@ func init() {
 			ApiKeysUrlV2:          "https://id.magalu.com/account/api/v2/api-keys",
 			PublicClientsUrl:      "https://id.magalu.com/account/api/v1/external/clients",
 			ClientsV2Url:          "https://id.magalu.com/account/api/v2/clients",
+			DelegationUrl:         "https://id.magalu.com/account/api/v1/delegations",
+			AccountsUrl:           "https://id.magalu.com/account/api/v1/accounts",
 		},
 		"pre-prod": { // TODO update this links to the correct ones
 			ClientId:              "dByqQVtHcs07b_O9jpUDgfV5UCskh9TbC64WUXEdVHE",
 			ObjectStoreScopeIDs:   []string{"b6afac7e-0afd-42de-b4aa-1bc82a27e307", "5ea6d1f7-20eb-4e80-9a9c-c7923636a4bd"},
 			PublicClientsScopeIDs: map[string]string{"openid": "4bdb7c8e-6006-478a-ba90-f8313f88bbb8", "profile": "8614f807-9aea-462c-bade-6c08fa52a272"},
+			TotalScopeID:          "FIX-IT",
 			RedirectUri:           "http://localhost:8095/callback",
 			LoginUrl:              "https://idmagalu-preprod.luizalabs.com/login",
 			TokenUrl:              "https://idpa-api-preprod.luizalabs.com/oauth/token",
@@ -211,6 +215,8 @@ func init() {
 			ApiKeysUrlV2:          "https://platform-account-api-preprod.luizalabs.com/api/v2/api-keys",
 			PublicClientsUrl:      "https://platform-account-api-preprod.luizalabs.com/api/v1/external/clients",
 			ClientsV2Url:          "https://platform-account-api-preprod.luizalabs.com/api/v2/clients",
+			DelegationUrl:         "https://platform-account-api-preprod.luizalabs.com/api/v1/delegations",
+			AccountsUrl:           "https://platform-account-api-preprod.luizalabs.com/api/v1/accounts",
 		},
 	}
 	authConfigMap["default"] = authConfigMap["prod"]
