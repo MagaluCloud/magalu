@@ -8,7 +8,7 @@ import (
 var GetGroup = utils.NewLazyLoader(func() core.Grouper {
 	return core.NewStaticGroup(
 		core.DescriptorSpec{
-			Name:        "share",
+			Name:        "sharing",
 			Summary:     "Shared Access (Beta)",
 			Description: `You may share access to your account or organization with other people using Cloud Access Share`,
 		},

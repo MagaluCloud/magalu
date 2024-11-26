@@ -37,8 +37,8 @@ type delegateResult struct {
 var getCreate = utils.NewLazyLoader[core.Executor](func() core.Executor {
 	executor := core.NewStaticExecute(
 		core.DescriptorSpec{
-			Name:        "add",
-			Description: "Assign access to my Account/Organization",
+			Name:        "admit",
+			Description: "Admit access to my Account/Organization",
 		},
 		create,
 	)
@@ -59,6 +59,7 @@ func create(ctx context.Context, parameter createParams, _ struct{}) (*delegateR
 
 	config := auth.GetConfig()
 
+	//////////////////////////////////////////////////////////////
 	// Find Account ID
 	r, err := http.NewRequestWithContext(ctx, http.MethodGet, config.AccountsUrl+"?email="+parameter.DelegateToEmail, nil)
 	if err != nil {
@@ -85,9 +86,7 @@ func create(ctx context.Context, parameter createParams, _ struct{}) (*delegateR
 	}
 
 	DelegateToUUID := account_result[0].UUID
-
-	///////////////////////////////
-
+	//////////////////////////////////////////////////////////////
 	clientPayload := createPayload{
 		DelegateToUUID: DelegateToUUID,
 		ScopeID:        config.TotalScopeID,

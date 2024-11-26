@@ -18,8 +18,8 @@ type removeParams struct {
 var getRemove = utils.NewLazyLoader[core.Executor](func() core.Executor {
 	executor := core.NewStaticExecute(
 		core.DescriptorSpec{
-			Name:        "remove",
-			Description: "Remove access to my Account/Organization",
+			Name:        "refuse",
+			Description: "Refuse access to my Account/Organization",
 		},
 		remove,
 	)

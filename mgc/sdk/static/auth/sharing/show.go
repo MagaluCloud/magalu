@@ -32,8 +32,8 @@ type Delegation struct {
 var getList = utils.NewLazyLoader[core.Executor](func() core.Executor {
 	var exec core.Executor = core.NewStaticExecuteSimple(
 		core.DescriptorSpec{
-			Name:        "list",
-			Description: "List people with access to my Account/Organization",
+			Name:        "show",
+			Description: "Show people with access to my Account/Organization",
 		},
 		listDelegations,
 	)
