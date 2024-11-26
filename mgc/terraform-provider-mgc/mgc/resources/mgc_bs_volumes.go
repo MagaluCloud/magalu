@@ -132,9 +132,6 @@ func (r *bsVolumes) Schema(_ context.Context, _ resource.SchemaRequest, resp *re
 			"snapshot_id": schema.StringAttribute{
 				Description: "The unique identifier of the snapshot used to create the block storage.",
 				Optional:    true,
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.UseStateForUnknown(),
-				},
 			},
 			"availability_zones": schema.ListAttribute{
 				Description: "The availability zones where the block storage is available.",
