@@ -28,10 +28,6 @@ func (r *DataSourceBsVolumes) Metadata(_ context.Context, req datasource.Metadat
 	resp.TypeName = req.ProviderTypeName + "_block_storage_volumes"
 }
 
-type volumes struct {
-	Volumes []bsVolumesResourceModel `tfsdk:"volumes"`
-}
-
 type bsVolumesResourceModel struct {
 	ID                types.String `tfsdk:"id"`
 	Name              types.String `tfsdk:"name"`
@@ -72,10 +68,11 @@ func (r *DataSourceBsVolumes) Configure(ctx context.Context, req datasource.Conf
 
 func (r *DataSourceBsVolumes) Schema(_ context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description: "Block storage volumes",
+		Description:         "Block storage volumes",
+		MarkdownDescription: "Block storage volumes",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
-				Description: "The unique identifier of the block storage.",
+				Description: "The unique identifier of the volume snapshot.",
 				Required:    true,
 			},
 			"name": schema.StringAttribute{
@@ -134,39 +131,33 @@ func (r *DataSourceBsVolumes) Schema(_ context.Context, req datasource.SchemaReq
 }
 
 func (r *DataSourceBsVolumes) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
-	var data volumes
+	var data bsVolumesResourceModel
 
 	resp.Diagnostics.Append(req.Config.Get(ctx, &data)...)
 
-	sdkOutput, err := r.bsVolumes.ListContext(ctx, sdkBlockStorageVolumes.ListParameters{},
-		tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkBlockStorageVolumes.ListConfigs{}))
+	sdkOutput, err := r.bsVolumes.GetContext(ctx, sdkBlockStorageVolumes.GetParameters{Id: data.ID.ValueString()},
+		tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkBlockStorageVolumes.GetConfigs{}))
 	if err != nil {
 		resp.Diagnostics.AddError("Failed to get versions", err.Error())
 		return
 	}
 
-	for _, volume := range sdkOutput.Volumes {
-		list, diags := types.ListValueFrom(ctx, types.StringType, volume.AvailabilityZones)
-		resp.Diagnostics.Append(diags...)
+	list, diags := types.ListValueFrom(ctx, types.StringType, sdkOutput.AvailabilityZones)
+	resp.Diagnostics.Append(diags...)
 
-		data.Volumes = append(data.Volumes, bsVolumesResourceModel{
-			ID:                types.StringValue(volume.Id),
-			Name:              types.StringValue(volume.Name),
-			AvailabilityZones: list,
-			UpdatedAt:         types.StringValue(volume.UpdatedAt),
-			CreatedAt:         types.StringValue(volume.CreatedAt),
-			Size:              types.Int64Value(int64(volume.Size)),
-			Type: bsVolumeType{
-				DiskType: types.StringPointerValue(volume.Type.DiskType),
-				Id:       types.StringValue(volume.Type.Id),
-				Name:     types.StringPointerValue(volume.Type.Name),
-				Status:   types.StringPointerValue(volume.Type.Status),
-			},
-			State:  types.StringValue(volume.State),
-			Status: types.StringValue(volume.Status),
-		})
-
+	data.Name = types.StringValue(sdkOutput.Name)
+	data.AvailabilityZones = list
+	data.UpdatedAt = types.StringValue(sdkOutput.UpdatedAt)
+	data.CreatedAt = types.StringValue(sdkOutput.CreatedAt)
+	data.Size = types.Int64Value(int64(sdkOutput.Size))
+	data.Type = bsVolumeType{
+		DiskType: types.StringPointerValue(sdkOutput.Type.DiskType),
+		Id:       types.StringValue(sdkOutput.Type.Id),
+		Name:     types.StringPointerValue(sdkOutput.Type.Name),
+		Status:   types.StringPointerValue(sdkOutput.Type.Status),
 	}
+	data.State = types.StringValue(sdkOutput.State)
+	data.Status = types.StringValue(sdkOutput.Status)
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }

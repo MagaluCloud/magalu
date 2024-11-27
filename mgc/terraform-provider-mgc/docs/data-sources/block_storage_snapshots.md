@@ -36,7 +36,6 @@ output "snapshot" {
 - `description` (String) The description of the volume snapshot.
 - `name` (String) The name of the volume snapshot.
 - `size` (Number) The size of the snapshot in GB.
-- `snapshot_source_id` (String) The ID of the snapshot source.
 - `state` (String) The current state of the virtual machine instance.
 - `status` (String) The status of the virtual machine instance.
 - `type` (String) The type of the snapshot.

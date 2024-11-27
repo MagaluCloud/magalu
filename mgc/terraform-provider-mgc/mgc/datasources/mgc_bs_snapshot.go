@@ -28,11 +28,6 @@ func (r *DataSourceBsSnapshots) Metadata(_ context.Context, req datasource.Metad
 	resp.TypeName = req.ProviderTypeName + "_block_storage_snapshots"
 }
 
-type snapshotsModel struct {
-	Snapshots []bsSnapshotsResourceModel `tfsdk:"snapshots"`
-}
-
-// bsSnapshotsResourceModel maps de resource schema data.
 type bsSnapshotsResourceModel struct {
 	ID                types.String              `tfsdk:"id"`
 	Name              types.String              `tfsdk:"name"`
@@ -117,10 +112,6 @@ func (r *DataSourceBsSnapshots) Schema(_ context.Context, req datasource.SchemaR
 					},
 				},
 			},
-			"snapshot_source_id": schema.StringAttribute{
-				Description: "The ID of the snapshot source.",
-				Computed:    true,
-			},
 			"type": schema.StringAttribute{
 				Description: "The type of the snapshot.",
 				Computed:    true,
@@ -135,36 +126,31 @@ func (r *DataSourceBsSnapshots) Schema(_ context.Context, req datasource.SchemaR
 }
 
 func (r *DataSourceBsSnapshots) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
-	var data snapshotsModel
+	var data bsSnapshotsResourceModel
 
 	resp.Diagnostics.Append(req.Config.Get(ctx, &data)...)
 
-	sdkOutput, err := r.bsSnapshots.ListContext(ctx, sdkBlockStorageSnapshots.ListParameters{},
-		tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkBlockStorageSnapshots.ListConfigs{}))
+	sdkOutput, err := r.bsSnapshots.GetContext(ctx, sdkBlockStorageSnapshots.GetParameters{Id: data.ID.ValueString()},
+		tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkBlockStorageSnapshots.GetConfigs{}))
 	if err != nil {
 		resp.Diagnostics.AddError("Failed to get versions", err.Error())
 		return
 	}
 
-	for _, snap := range sdkOutput.Snapshots {
-		list, diags := types.ListValueFrom(ctx, types.StringType, snap.AvailabilityZones)
-		resp.Diagnostics.Append(diags...)
+	list, diags := types.ListValueFrom(ctx, types.StringType, sdkOutput.AvailabilityZones)
+	resp.Diagnostics.Append(diags...)
 
-		data.Snapshots = append(data.Snapshots, bsSnapshotsResourceModel{
-			ID:                types.StringValue(snap.Id),
-			Name:              types.StringValue(snap.Name),
-			Description:       types.StringPointerValue(snap.Description),
-			UpdatedAt:         types.StringValue(snap.UpdatedAt),
-			CreatedAt:         types.StringValue(snap.CreatedAt),
-			Volume:            &bsSnapshotsVolumeIDModel{ID: types.StringValue(snap.Volume.Id)},
-			State:             types.StringValue(snap.State),
-			Status:            types.StringValue(snap.Status),
-			Size:              types.Int64Value(int64(snap.Size)),
-			Type:              types.StringValue(snap.Type),
-			AvailabilityZones: list,
-		})
-
-	}
+	data.ID = types.StringValue(sdkOutput.Id)
+	data.Name = types.StringValue(sdkOutput.Name)
+	data.Description = types.StringPointerValue(sdkOutput.Description)
+	data.UpdatedAt = types.StringValue(sdkOutput.UpdatedAt)
+	data.CreatedAt = types.StringValue(sdkOutput.CreatedAt)
+	data.Volume = &bsSnapshotsVolumeIDModel{ID: types.StringValue(sdkOutput.Volume.Id)}
+	data.State = types.StringValue(sdkOutput.State)
+	data.Status = types.StringValue(sdkOutput.Status)
+	data.Size = types.Int64Value(int64(sdkOutput.Size))
+	data.Type = types.StringValue(sdkOutput.Type)
+	data.AvailabilityZones = list
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }

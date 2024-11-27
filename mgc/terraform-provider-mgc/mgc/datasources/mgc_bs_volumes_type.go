@@ -29,7 +29,7 @@ func (r *DataSourceBsVolumeTypes) Metadata(_ context.Context, req datasource.Met
 }
 
 type volumeTypes struct {
-	VolumeTypes []volumeType `tfsdk:"types"`
+	VolumeTypes []volumeType `tfsdk:"volume_types"`
 }
 
 type volumeType struct {

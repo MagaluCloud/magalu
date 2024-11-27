@@ -13,12 +13,13 @@ Block storage volumes
 ## Example Usage
 
 ```terraform
-data "mgc_block_storage_volumes" "volume" {
-  id         = mgc_block_storage_volumes.my_volume.id
+data "mgc_block_storage_volumes" "my-volume" {
+  provider = mgc.sudeste
+  volume_id       = mgc_block_storage_volumes.my_volume.id
 }
 
-output "volume" {
-  value = data.mgc_block_storage_volumes.name
+output "my-volume" {
+  value = data.mgc_block_storage_volumes.my-volume.name
 }
 ```
 
@@ -27,7 +28,7 @@ output "volume" {
 
 ### Required
 
-- `id` (String) The unique identifier of the block storage.
+- `id` (String) The unique identifier of the volume snapshot.
 
 ### Read-Only
 
