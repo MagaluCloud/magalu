@@ -2,15 +2,18 @@ package resources
 
 import (
 	"context"
+	"regexp"
 	"time"
 
 	bws "github.com/geffersonFerraz/brazilian-words-sorter"
+	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	mgcSdk "magalu.cloud/lib"
@@ -20,32 +23,25 @@ import (
 	sdkBlockStorageSnapshots "magalu.cloud/lib/products/block_storage/snapshots"
 )
 
-// Ensure the implementation satisfies the expected interfaces.
 var (
 	_ resource.Resource              = &bsSnapshots{}
 	_ resource.ResourceWithConfigure = &bsSnapshots{}
 )
 
-// NewOrderResource is a helper function to simplify the provider implementation.
 func NewBlockStorageSnapshotsResource() resource.Resource {
 	return &bsSnapshots{}
 }
 
-// orderResource is the resource implementation.
 type bsSnapshots struct {
 	sdkClient   *mgcSdk.Client
 	bsSnapshots sdkBlockStorageSnapshots.Service
 }
 
-// Metadata returns the resource type name.
 func (r *bsSnapshots) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
 	resp.TypeName = req.ProviderTypeName + "_block_storage_snapshots"
 }
 
-// Configure adds the provider configured client to the resource.
 func (r *bsSnapshots) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
-	// Add a nil check when handling ProviderData because Terraform
-	// sets that data after it calls the ConfigureProvider RPC.
 	if req.ProviderData == nil {
 		return
 	}
@@ -63,7 +59,6 @@ func (r *bsSnapshots) Configure(ctx context.Context, req resource.ConfigureReque
 	r.bsSnapshots = sdkBlockStorageSnapshots.NewService(ctx, r.sdkClient)
 }
 
-// bsSnapshotsResourceModel maps de resource schema data.
 type bsSnapshotsResourceModel struct {
 	ID                types.String              `tfsdk:"id"`
 	Name              types.String              `tfsdk:"name"`
@@ -85,12 +80,9 @@ type bsSnapshotsVolumeIDModel struct {
 	ID types.String `tfsdk:"id"`
 }
 
-// Schema defines the schema for the resource.
 func (r *bsSnapshots) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
-	description := "The block storage snapshots resource allows you to manage block storage snapshots in the Magalu Cloud."
 	resp.Schema = schema.Schema{
-		Description:         description,
-		MarkdownDescription: description,
+		Description: "The block storage snapshots resource allows you to manage block storage snapshots in the Magalu Cloud.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				Description: "The unique identifier of the volume snapshot.",
@@ -108,14 +100,24 @@ func (r *bsSnapshots) Schema(_ context.Context, _ resource.SchemaRequest, resp *
 			"name": schema.StringAttribute{
 				Description: "The name of the volume snapshot.",
 				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.UseStateForUnknown(),
+					stringplanmodifier.RequiresReplace(),
+				},
+				Validators: []validator.String{
+					stringvalidator.LengthBetween(1, 255),
+					stringvalidator.RegexMatches(
+						regexp.MustCompile(`^[a-z0-9]+(?:[-_][a-z0-9]+)*$`),
+						"The name must contain only lowercase letters, numbers, underlines and hyphens. Hyphens and underlines cannot be located at the edges either.",
+					),
 				},
 				Required: true,
 			},
 			"description": schema.StringAttribute{
 				Description: "The description of the volume snapshot.",
 				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.UseStateForUnknown(),
+					stringplanmodifier.RequiresReplace(),
+				},
+				Validators: []validator.String{
+					stringvalidator.LengthBetween(1, 255),
 				},
 				Required: true,
 			},
@@ -154,17 +156,29 @@ func (r *bsSnapshots) Schema(_ context.Context, _ resource.SchemaRequest, resp *
 				Attributes: map[string]schema.Attribute{
 					"id": schema.StringAttribute{
 						Description: "ID of block storage volume",
-						Required:    true,
+						PlanModifiers: []planmodifier.String{
+							stringplanmodifier.RequiresReplace(),
+						},
+						Required: true,
 					},
 				},
 			},
 			"snapshot_source_id": schema.StringAttribute{
 				Description: "The ID of the snapshot source.",
-				Optional:    true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplace(),
+				},
+				Optional: true,
 			},
 			"type": schema.StringAttribute{
 				Description: "The type of the snapshot.",
-				Optional:    true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplace(),
+				},
+				Validators: []validator.String{
+					stringvalidator.OneOf("instant", "object"),
+				},
+				Optional: true,
 			},
 			"availability_zones": schema.ListAttribute{
 				Description: "The availability zones of the snapshot.",
@@ -173,10 +187,6 @@ func (r *bsSnapshots) Schema(_ context.Context, _ resource.SchemaRequest, resp *
 			},
 		},
 	}
-}
-
-func (r *bsSnapshots) ModifyPlan(ctx context.Context, req resource.ModifyPlanRequest, resp *resource.ModifyPlanResponse) {
-	//do nothing
 }
 
 func (r *bsSnapshots) setValuesFromServer(result sdkBlockStorageSnapshots.GetResult, state *bsSnapshotsResourceModel) {
@@ -195,7 +205,6 @@ func (r *bsSnapshots) setValuesFromServer(result sdkBlockStorageSnapshots.GetRes
 	}
 }
 
-// Read refreshes the Terraform state with the latest data.
 func (r *bsSnapshots) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
 	data := &bsSnapshotsResourceModel{}
 	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
@@ -206,20 +215,14 @@ func (r *bsSnapshots) Read(ctx context.Context, req resource.ReadRequest, resp *
 	)
 
 	if err != nil {
-		resp.Diagnostics.AddError(
-			"Error reading block storage snapshot",
-			"Could not read block storage snapshot "+data.ID.ValueString()+": "+err.Error(),
-		)
+		resp.Diagnostics.AddError("Error reading block storage snapshot", err.Error())
 		return
 	}
 
 	r.setValuesFromServer(result, data)
-
-	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-// Create creates the resource and sets the initial Terraform state.
 func (r *bsSnapshots) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
 	plan := &bsSnapshotsResourceModel{}
 	diags := req.Plan.Get(ctx, &plan)
@@ -236,7 +239,6 @@ func (r *bsSnapshots) Create(ctx context.Context, req resource.CreateRequest, re
 		state.FinalName = types.StringValue(state.Name.ValueString() + "-" + bwords.Sort())
 	}
 
-	// Create the block storage
 	createRequest := sdkBlockStorageSnapshots.CreateParameters{
 		Description: plan.Description.ValueStringPointer(),
 		Name:        plan.FinalName.ValueString(),
@@ -259,10 +261,7 @@ func (r *bsSnapshots) Create(ctx context.Context, req resource.CreateRequest, re
 		tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkBlockStorageSnapshots.CreateConfigs{}))
 
 	if err != nil {
-		resp.Diagnostics.AddError(
-			"Error creating snapshot",
-			"Could not create snapshot - "+err.Error(),
-		)
+		resp.Diagnostics.AddError("Error creating snapshot", err.Error())
 		return
 	}
 
@@ -275,32 +274,21 @@ func (r *bsSnapshots) Create(ctx context.Context, req resource.CreateRequest, re
 	}, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkBlockStorageSnapshots.GetConfigs{}))
 
 	if err != nil {
-		resp.Diagnostics.AddError(
-			"Error Reading BS",
-			"Could not read BS ID "+state.ID.ValueString()+": "+err.Error(),
-		)
+		resp.Diagnostics.AddError("Error Reading BS", err.Error())
 		return
 	}
 	r.checkStatusIsCreating(ctx, state.ID.ValueString())
-
 	r.setValuesFromServer(getCreatedResource, state)
 
 	state.Size = types.Int64Value(int64(getCreatedResource.Size))
 
-	// Set state to fully populated data
 	diags = resp.State.Set(ctx, plan)
 	resp.Diagnostics.Append(diags...)
-	if resp.Diagnostics.HasError() {
-		return
-	}
 }
 
-// Update updates the resource and sets the updated Terraform state on success.
 func (r *bsSnapshots) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-
 }
 
-// Delete deletes the resource and removes the Terraform state on success.
 func (r *bsSnapshots) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
 	var data bsSnapshotsResourceModel
 	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
@@ -310,13 +298,8 @@ func (r *bsSnapshots) Delete(ctx context.Context, req resource.DeleteRequest, re
 	}, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkBlockStorageSnapshots.DeleteConfigs{}))
 
 	if err != nil {
-		resp.Diagnostics.AddError(
-			"Error deleting VM Snapshot",
-			"Could not delete VM Snapshot "+data.ID.ValueString()+": "+err.Error(),
-		)
-		return
+		resp.Diagnostics.AddError("Error deleting VM Snapshot", err.Error())
 	}
-
 }
 
 func (r *bsSnapshots) checkStatusIsCreating(ctx context.Context, id string) {
