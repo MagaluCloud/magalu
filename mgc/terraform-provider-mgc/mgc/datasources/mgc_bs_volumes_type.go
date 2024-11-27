@@ -33,7 +33,7 @@ type volumeTypes struct {
 }
 
 type volumeType struct {
-	AvailabilityZones []string     `tfsdk:"availability_zones"`
+	AvailabilityZones types.List   `tfsdk:"availability_zones"`
 	DiskType          types.String `tfsdk:"disk_type"`
 	Id                types.String `tfsdk:"id"`
 	Iops              types.Int64  `tfsdk:"iops"`
@@ -92,6 +92,7 @@ func (r *DataSourceBsVolumeTypes) Schema(_ context.Context, req datasource.Schem
 						"availability_zones": schema.ListAttribute{
 							Computed:    true,
 							Description: "The volume type availability zones.",
+							ElementType: types.StringType,
 						},
 					},
 				},
@@ -112,14 +113,17 @@ func (r *DataSourceBsVolumeTypes) Read(ctx context.Context, req datasource.ReadR
 		return
 	}
 
-	for _, image := range sdkOutput.Types {
+	for _, stype := range sdkOutput.Types {
+		list, diags := types.ListValueFrom(ctx, types.StringType, stype.AvailabilityZones)
+		resp.Diagnostics.Append(diags...)
+
 		data.VolumeTypes = append(data.VolumeTypes, volumeType{
-			AvailabilityZones: image.AvailabilityZones,
-			DiskType:          types.StringValue(image.DiskType),
-			Id:                types.StringValue(image.Id),
-			Iops:              types.Int64Value(int64(image.Iops.Total)),
-			Name:              types.StringValue(image.Name),
-			Status:            types.StringValue(image.Status),
+			AvailabilityZones: list,
+			DiskType:          types.StringValue(stype.DiskType),
+			Id:                types.StringValue(stype.Id),
+			Iops:              types.Int64Value(int64(stype.Iops.Total)),
+			Name:              types.StringValue(stype.Name),
+			Status:            types.StringValue(stype.Status),
 		})
 
 	}
