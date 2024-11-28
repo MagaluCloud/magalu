@@ -21,17 +21,18 @@ type DataSourceVmInstances struct {
 }
 
 type VMInstanceModel struct {
-	ID            types.String `tfsdk:"id"`
-	Name          types.String `tfsdk:"name"`
-	PublicIPV4    types.String `tfsdk:"public_ipv4"`
-	PublicIPV6    types.String `tfsdk:"public_ipv6"`
-	PrivateIPV4   types.String `tfsdk:"private_ipv4"`
-	SshKeyName    types.String `tfsdk:"ssh_key_name"`
-	Status        types.String `tfsdk:"status"`
-	State         types.String `tfsdk:"state"`
-	ImageID       types.String `tfsdk:"image_id"`
-	MachineTypeID types.String `tfsdk:"machine_type_id"`
-	UserData      types.String `tfsdk:"user_data"`
+	ID               types.String `tfsdk:"id"`
+	Name             types.String `tfsdk:"name"`
+	PublicIPV4       types.String `tfsdk:"public_ipv4"`
+	PublicIPV6       types.String `tfsdk:"public_ipv6"`
+	PrivateIPV4      types.String `tfsdk:"private_ipv4"`
+	SshKeyName       types.String `tfsdk:"ssh_key_name"`
+	Status           types.String `tfsdk:"status"`
+	State            types.String `tfsdk:"state"`
+	ImageID          types.String `tfsdk:"image_id"`
+	MachineTypeID    types.String `tfsdk:"machine_type_id"`
+	UserData         types.String `tfsdk:"user_data"`
+	AvailabilityZone types.String `tfsdk:"availability_zone"`
 }
 
 type VMInstancesModel struct {
@@ -117,6 +118,10 @@ func (r *DataSourceVmInstances) Schema(_ context.Context, req datasource.SchemaR
 							Computed:    true,
 							Description: "User data of instance",
 						},
+						"availability_zone": schema.StringAttribute{
+							Computed:    true,
+							Description: "Availability zone of instance",
+						},
 					},
 				},
 			},
@@ -164,6 +169,7 @@ func (r *DataSourceVmInstances) Read(ctx context.Context, req datasource.ReadReq
 			ImageID:       types.StringValue(instance.Image.Id),
 			MachineTypeID: types.StringValue(instance.MachineType.Id),
 			UserData:      types.StringPointerValue(instance.UserData),
+			AvailabilityZone: types.StringPointerValue(instance.AvailabilityZone),
 		})
 	}
 

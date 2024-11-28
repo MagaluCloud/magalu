@@ -69,19 +69,20 @@ func (r *vmInstances) Configure(ctx context.Context, req resource.ConfigureReque
 }
 
 type vmInstancesResourceModel struct {
-	ID           types.String                `tfsdk:"id"`
-	Name         types.String                `tfsdk:"name"`
-	NameIsPrefix types.Bool                  `tfsdk:"name_is_prefix"`
-	FinalName    types.String                `tfsdk:"final_name"`
-	UpdatedAt    types.String                `tfsdk:"updated_at"`
-	CreatedAt    types.String                `tfsdk:"created_at"`
-	SshKeyName   types.String                `tfsdk:"ssh_key_name"`
-	State        types.String                `tfsdk:"state"`
-	Status       types.String                `tfsdk:"status"`
-	Network      networkVmInstancesModel     `tfsdk:"network"`
-	MachineType  vmInstancesMachineTypeModel `tfsdk:"machine_type"`
-	Image        tfutil.GenericIDNameModel   `tfsdk:"image"`
-	UserData     types.String                `tfsdk:"user_data"`
+	ID               types.String                `tfsdk:"id"`
+	Name             types.String                `tfsdk:"name"`
+	NameIsPrefix     types.Bool                  `tfsdk:"name_is_prefix"`
+	FinalName        types.String                `tfsdk:"final_name"`
+	UpdatedAt        types.String                `tfsdk:"updated_at"`
+	CreatedAt        types.String                `tfsdk:"created_at"`
+	SshKeyName       types.String                `tfsdk:"ssh_key_name"`
+	State            types.String                `tfsdk:"state"`
+	Status           types.String                `tfsdk:"status"`
+	Network          networkVmInstancesModel     `tfsdk:"network"`
+	MachineType      vmInstancesMachineTypeModel `tfsdk:"machine_type"`
+	Image            tfutil.GenericIDNameModel   `tfsdk:"image"`
+	UserData         types.String                `tfsdk:"user_data"`
+	AvailabilityZone types.String                `tfsdk:"availability_zone"`
 }
 
 type networkVmInstancesModel struct {
@@ -157,7 +158,7 @@ func (r *vmInstances) Schema(_ context.Context, _ resource.SchemaRequest, resp *
 			"ssh_key_name": schema.StringAttribute{
 				Description: "The name of the SSH key associated with the virtual machine instance. If the image is Windows, this field is not used.",
 				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.UseStateForUnknown(),
+					stringplanmodifier.RequiresReplace(),
 				},
 				Optional: true,
 			},
@@ -181,6 +182,15 @@ func (r *vmInstances) Schema(_ context.Context, _ resource.SchemaRequest, resp *
 						"Must be a valid base64 string."),
 				},
 			},
+			"availability_zone": schema.StringAttribute{
+				Description: "The availability zone of the virtual machine instance.",
+				Optional:    true,
+				Computed:    true,
+				PlanModifiers: []planmodifier.String{
+					tfutil.ReplaceIfChangeAndNotIsNotSetOnPlan{},
+				},
+				Validators: []validator.String{},
+			},
 			"image": schema.SingleNestedAttribute{
 				Description: "The image used to create the virtual machine instance.",
 				Required:    true,
@@ -192,7 +202,7 @@ func (r *vmInstances) Schema(_ context.Context, _ resource.SchemaRequest, resp *
 					"name": schema.StringAttribute{
 						Description: "The name of the image.",
 						PlanModifiers: []planmodifier.String{
-							stringplanmodifier.UseStateForUnknown(),
+							stringplanmodifier.RequiresReplace(),
 						},
 						Required: true,
 					},
@@ -324,7 +334,7 @@ func (r *vmInstances) Read(ctx context.Context, req resource.ReadRequest, resp *
 	data := vmInstancesResourceModel{}
 	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
 
-	getResult, err := r.getVmStatus(ctx, data.ID.ValueString())
+	getResult, err := r.getInstanceResultWithCompletedStatus(ctx, data.ID.ValueString())
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Error Reading VM",
@@ -334,29 +344,25 @@ func (r *vmInstances) Read(ctx context.Context, req resource.ReadRequest, resp *
 	}
 
 	data.ID = types.StringValue(getResult.Id)
-	data = r.setValuesFromServer(data, getResult)
+	data = r.updateModelFromRemote(data, getResult)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
 func (r *vmInstances) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	plan := vmInstancesResourceModel{}
-	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
+	state := vmInstancesResourceModel{}
+	resp.Diagnostics.Append(req.Plan.Get(ctx, &state)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	state := plan
 	state.FinalName = types.StringValue(state.Name.ValueString())
-
 	if state.NameIsPrefix.ValueBool() {
 		bwords := bws.BrazilianWords(3, "-")
 		state.FinalName = types.StringValue(state.Name.ValueString() + "-" + bwords.Sort())
 	}
-
 	if state.Network.DeletePublicIP.IsNull() {
 		state.Network.DeletePublicIP = types.BoolValue(true)
 	}
-
 	if state.Network.AssociatePublicIP.IsNull() {
 		state.Network.AssociatePublicIP = types.BoolValue(false)
 	}
@@ -370,7 +376,9 @@ func (r *vmInstances) Create(ctx context.Context, req resource.CreateRequest, re
 		MachineType: sdkVmInstances.CreateParametersMachineType{
 			Name: state.MachineType.Name.ValueStringPointer(),
 		},
-		Network: &sdkVmInstances.CreateParametersNetwork{},
+		Network:          &sdkVmInstances.CreateParametersNetwork{},
+		AvailabilityZone: state.AvailabilityZone.ValueStringPointer(),
+		UserData:         state.UserData.ValueStringPointer(),
 	}
 
 	if state.Network.VPC != nil && state.Network.VPC.ID.ValueString() != "" {
@@ -378,12 +386,10 @@ func (r *vmInstances) Create(ctx context.Context, req resource.CreateRequest, re
 			Id: state.Network.VPC.ID.ValueString(),
 		}
 	}
-
 	if state.Network.Interface != nil && len(state.Network.Interface.SecurityGroups) > 0 {
 		network := sdkVmInstances.CreateParametersNetwork{}
 		network.Interface = &sdkVmInstances.CreateParametersNetworkInterface{}
 		network.Interface.SecurityGroups = &sdkVmInstances.CreateParametersNetworkInterfaceSecurityGroups{}
-
 		items := []sdkVmInstances.CreateParametersNetworkInterfaceSecurityGroupsItem{}
 
 		for _, sg := range state.Network.Interface.SecurityGroups {
@@ -395,9 +401,7 @@ func (r *vmInstances) Create(ctx context.Context, req resource.CreateRequest, re
 		createParams.Network.Interface = &sdkVmInstances.CreateParametersNetworkInterface{}
 		createParams.Network.Interface.SecurityGroups = &vmInstancesNetworkInterfaceSecurityGroups
 	}
-
 	createParams.Network.AssociatePublicIp = state.Network.AssociatePublicIP.ValueBoolPointer()
-	createParams.UserData = state.UserData.ValueStringPointer()
 
 	result, err := r.vmInstances.CreateContext(ctx, createParams, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVmInstances.CreateConfigs{}))
 	if err != nil {
@@ -405,18 +409,13 @@ func (r *vmInstances) Create(ctx context.Context, req resource.CreateRequest, re
 		return
 	}
 
-	getResult, err := r.getVmStatus(ctx, result.Id)
+	getResult, err := r.getInstanceResultWithCompletedStatus(ctx, result.Id)
 	if err != nil {
 		resp.Diagnostics.AddError("Error Reading VM", err.Error())
 		return
 	}
 	state.ID = types.StringValue(result.Id)
-
-	state = r.setValuesFromServer(state, getResult)
-
-	state.CreatedAt = types.StringValue(time.Now().Format(time.RFC850))
-	state.UpdatedAt = types.StringValue(time.Now().Format(time.RFC850))
-
+	state = r.updateModelFromRemote(state, getResult)
 	resp.Diagnostics.Append(resp.State.Set(ctx, state)...)
 }
 
@@ -426,9 +425,8 @@ func (r *vmInstances) Update(ctx context.Context, req resource.UpdateRequest, re
 	req.State.Get(ctx, currState)
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
 
-	if !currState.Name.Equal(data.Name) {
+	if currState.Name.ValueString() != data.Name.ValueString() {
 		data.FinalName = types.StringValue(data.Name.ValueString())
-
 		if data.NameIsPrefix.ValueBool() {
 			bwords := bws.BrazilianWords(3, "-")
 			data.FinalName = types.StringValue(data.Name.ValueString() + "-" + bwords.Sort())
@@ -439,52 +437,31 @@ func (r *vmInstances) Update(ctx context.Context, req resource.UpdateRequest, re
 		}, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVmInstances.RenameConfigs{}))
 
 		if err != nil {
-			resp.Diagnostics.AddError(
-				"Error to rename vm",
-				"Could not rename the vm instance, unexpected error: "+err.Error(),
-			)
+			resp.Diagnostics.AddError("Error to rename vm", err.Error())
 			return
 		}
 	}
 
-	machineType, err := r.getMachineTypeID(ctx, data.MachineType.Name.ValueString())
-
-	if err != nil {
-		resp.Diagnostics.AddError(
-			"Error to retype vm",
-			"Could not found machine-type or load machine-type list, unexpected error: "+err.Error(),
-		)
-		return
-	}
-
-	if !currState.MachineType.ID.Equal(machineType.ID) {
-		err = r.vmInstances.RetypeContext(ctx, sdkVmInstances.RetypeParameters{
+	if currState.MachineType.Name != data.MachineType.Name {
+		err := r.vmInstances.RetypeContext(ctx, sdkVmInstances.RetypeParameters{
 			Id: data.ID.ValueString(),
 			MachineType: sdkVmInstances.RetypeParametersMachineType{
-				Id: machineType.ID.ValueString(),
+				Name: data.MachineType.Name.ValueStringPointer(),
 			},
 		}, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVmInstances.RetypeConfigs{}))
-
 		if err != nil {
-			resp.Diagnostics.AddError(
-				"Error on Update VM",
-				"Could not update VM machine-type "+data.ID.ValueString()+": "+err.Error(),
-			)
+			resp.Diagnostics.AddError("Error on Update VM", err.Error())
 			return
 		}
 	}
 
-	data.UpdatedAt = types.StringValue(time.Now().Format(time.RFC850))
-	getResult, err := r.getVmStatus(ctx, data.ID.ValueString())
+	getResult, err := r.getInstanceResultWithCompletedStatus(ctx, data.ID.ValueString())
 	if err != nil {
-		resp.Diagnostics.AddError(
-			"Error Reading VM",
-			"Error when get new vm status "+data.ID.ValueString()+": "+err.Error(),
-		)
+		resp.Diagnostics.AddError("Error Reading VM", err.Error())
 		return
 	}
 
-	data = r.setValuesFromServer(data, getResult)
+	data = r.updateModelFromRemote(data, getResult)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
@@ -500,16 +477,13 @@ func (r *vmInstances) Delete(ctx context.Context, req resource.DeleteRequest, re
 		},
 		tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVmInstances.DeleteConfigs{}))
 	if err != nil {
-		resp.Diagnostics.AddError(
-			"Error Deleting VM",
-			"Could not delete VM ID "+data.ID.ValueString()+": "+err.Error(),
-		)
+		resp.Diagnostics.AddError("Error Deleting VM", err.Error())
 		return
 	}
 	r.checkVmIsNotFound(ctx, data.ID.ValueString())
 }
 
-func (r *vmInstances) setValuesFromServer(data vmInstancesResourceModel, server *sdkVmInstances.GetResult) vmInstancesResourceModel {
+func (r *vmInstances) updateModelFromRemote(data vmInstancesResourceModel, server *sdkVmInstances.GetResult) vmInstancesResourceModel {
 	data.ID = types.StringValue(server.Id)
 	data.FinalName = types.StringValue(*server.Name)
 	data.State = types.StringValue(server.State)
@@ -547,34 +521,13 @@ func (r *vmInstances) setValuesFromServer(data vmInstancesResourceModel, server 
 
 	}
 	data.UserData = types.StringPointerValue(server.UserData)
+	data.AvailabilityZone = types.StringPointerValue(server.AvailabilityZone)
+	data.CreatedAt = types.StringValue(server.CreatedAt)
+	data.UpdatedAt = types.StringPointerValue(server.UpdatedAt)
 	return data
 }
 
-func (r *vmInstances) getMachineTypeID(ctx context.Context, name string) (*vmInstancesMachineTypeModel, error) {
-	machineType := vmInstancesMachineTypeModel{}
-	machineTypeList, err := r.vmMachineTypes.ListContext(ctx, sdkVmMachineTypes.ListParameters{}, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVmMachineTypes.ListConfigs{}))
-	if err != nil {
-		return nil, fmt.Errorf("could not load machine-type list, unexpected error: %w", err)
-	}
-
-	for _, x := range machineTypeList.MachineTypes {
-		if x.Name == name {
-			machineType.Disk = types.NumberValue(new(big.Float).SetInt64(int64(x.Disk)))
-			machineType.ID = types.StringValue(x.Id)
-			machineType.Name = types.StringValue(x.Name)
-			machineType.RAM = types.NumberValue(new(big.Float).SetInt64(int64(x.Ram)))
-			machineType.VCPUs = types.NumberValue(new(big.Float).SetInt64(int64(x.Vcpus)))
-			break
-		}
-	}
-
-	if machineType.ID.ValueString() == "" {
-		return nil, fmt.Errorf("could not found machine-type ID with name: %s", name)
-	}
-	return &machineType, nil
-}
-
-func (r *vmInstances) getVmStatus(ctx context.Context, id string) (*sdkVmInstances.GetResult, error) {
+func (r *vmInstances) getInstanceResultWithCompletedStatus(ctx context.Context, id string) (*sdkVmInstances.GetResult, error) {
 	getResult := &sdkVmInstances.GetResult{}
 	expand := &sdkVmInstances.GetParametersExpand{"network", "machine-types", "image"}
 

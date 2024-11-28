@@ -33,6 +33,7 @@ output "vm_images" {
 
 Read-Only:
 
+- `availability_zones` (List of String) The availability zones of the image.
 - `id` (String) ID of image.
 - `name` (String) The image name.
 - `platform` (String) The image platform.
