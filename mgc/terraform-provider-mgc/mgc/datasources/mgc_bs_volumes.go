@@ -29,15 +29,15 @@ func (r *DataSourceBsVolumes) Metadata(_ context.Context, req datasource.Metadat
 }
 
 type bsVolumesResourceModel struct {
-	ID                types.String `tfsdk:"id"`
-	Name              types.String `tfsdk:"name"`
-	AvailabilityZones types.List   `tfsdk:"availability_zones"`
-	UpdatedAt         types.String `tfsdk:"updated_at"`
-	CreatedAt         types.String `tfsdk:"created_at"`
-	Size              types.Int64  `tfsdk:"size"`
-	Type              bsVolumeType `tfsdk:"type"`
-	State             types.String `tfsdk:"state"`
-	Status            types.String `tfsdk:"status"`
+	ID                types.String  `tfsdk:"id"`
+	Name              types.String  `tfsdk:"name"`
+	AvailabilityZones types.List    `tfsdk:"availability_zones"`
+	UpdatedAt         types.String  `tfsdk:"updated_at"`
+	CreatedAt         types.String  `tfsdk:"created_at"`
+	Size              types.Int64   `tfsdk:"size"`
+	Type              *bsVolumeType `tfsdk:"type"`
+	State             types.String  `tfsdk:"state"`
+	Status            types.String  `tfsdk:"status"`
 }
 
 type bsVolumeType struct {
@@ -134,6 +134,9 @@ func (r *DataSourceBsVolumes) Read(ctx context.Context, req datasource.ReadReque
 	var data bsVolumesResourceModel
 
 	resp.Diagnostics.Append(req.Config.Get(ctx, &data)...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	sdkOutput, err := r.bsVolumes.GetContext(ctx, sdkBlockStorageVolumes.GetParameters{Id: data.ID.ValueString()},
 		tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkBlockStorageVolumes.GetConfigs{}))
@@ -150,7 +153,7 @@ func (r *DataSourceBsVolumes) Read(ctx context.Context, req datasource.ReadReque
 	data.UpdatedAt = types.StringValue(sdkOutput.UpdatedAt)
 	data.CreatedAt = types.StringValue(sdkOutput.CreatedAt)
 	data.Size = types.Int64Value(int64(sdkOutput.Size))
-	data.Type = bsVolumeType{
+	data.Type = &bsVolumeType{
 		DiskType: types.StringPointerValue(sdkOutput.Type.DiskType),
 		Id:       types.StringValue(sdkOutput.Type.Id),
 		Name:     types.StringPointerValue(sdkOutput.Type.Name),
