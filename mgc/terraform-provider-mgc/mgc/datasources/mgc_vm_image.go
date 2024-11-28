@@ -123,9 +123,9 @@ func (r *DataSourceVmImages) Read(ctx context.Context, req datasource.ReadReques
 		}
 
 		data.Images = append(data.Images, ImageModel{
-			ID:       types.StringValue(image.Id),
-			Name:     types.StringValue(image.Name),
-			Platform: types.StringValue(platform),
+			ID:                types.StringValue(image.Id),
+			Name:              types.StringValue(image.Name),
+			Platform:          types.StringValue(platform),
 			AvailabilityZones: azs,
 		})
 

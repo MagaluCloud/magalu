@@ -158,17 +158,17 @@ func (r *DataSourceVmInstances) Read(ctx context.Context, req datasource.ReadReq
 		}
 
 		data.Instances = append(data.Instances, VMInstanceModel{
-			ID:            types.StringValue(instance.Id),
-			Name:          types.StringValue(*instance.Name),
-			PublicIPV4:    types.StringValue(publicIpv4Adress),
-			PublicIPV6:    types.StringValue(publicIpv6Adress),
-			PrivateIPV4:   types.StringValue(privateIpAddress),
-			SshKeyName:    types.StringValue(*instance.SshKeyName),
-			Status:        types.StringValue(instance.Status),
-			State:         types.StringValue(instance.State),
-			ImageID:       types.StringValue(instance.Image.Id),
-			MachineTypeID: types.StringValue(instance.MachineType.Id),
-			UserData:      types.StringPointerValue(instance.UserData),
+			ID:               types.StringValue(instance.Id),
+			Name:             types.StringValue(*instance.Name),
+			PublicIPV4:       types.StringValue(publicIpv4Adress),
+			PublicIPV6:       types.StringValue(publicIpv6Adress),
+			PrivateIPV4:      types.StringValue(privateIpAddress),
+			SshKeyName:       types.StringValue(*instance.SshKeyName),
+			Status:           types.StringValue(instance.Status),
+			State:            types.StringValue(instance.State),
+			ImageID:          types.StringValue(instance.Image.Id),
+			MachineTypeID:    types.StringValue(instance.MachineType.Id),
+			UserData:         types.StringPointerValue(instance.UserData),
 			AvailabilityZone: types.StringPointerValue(instance.AvailabilityZone),
 		})
 	}

@@ -140,12 +140,12 @@ func (r *DataSourceVmMachineType) Read(ctx context.Context, req datasource.ReadR
 		}
 
 		data.MachineTypes = append(data.MachineTypes, MachineTypeModel{
-			ID:   types.StringValue(typ.Id),
-			Name: types.StringValue(typ.Name),
-			Disk: types.Int64Value(int64(typ.Disk)),
-			Ram:  types.Int64Value(int64(typ.Ram)),
-			VCPU: types.Int64Value(int64(typ.Vcpus)),
-			GPU:  types.Int64Value(int64(gpu)),
+			ID:                types.StringValue(typ.Id),
+			Name:              types.StringValue(typ.Name),
+			Disk:              types.Int64Value(int64(typ.Disk)),
+			Ram:               types.Int64Value(int64(typ.Ram)),
+			VCPU:              types.Int64Value(int64(typ.Vcpus)),
+			GPU:               types.Int64Value(int64(gpu)),
 			AvailabilityZones: azs,
 		})
 	}
