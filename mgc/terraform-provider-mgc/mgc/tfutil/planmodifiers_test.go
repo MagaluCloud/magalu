@@ -54,14 +54,14 @@ func TestReplaceIfChangeAndNotIsNotSetOnPlan_PlanModifyString(t *testing.T) {
 
 func TestReplaceIfChangeAndNotIsNotSetOnPlan_Description(t *testing.T) {
 	modifier := ReplaceIfChangeAndNotIsNotSetOnPlan{}
-	expected := "Requires replace if the availability zone is different."
+	expected := "Requires replace if the value is different from the state and the plan value is not unknown."
 
 	assert.Equal(t, expected, modifier.Description(context.Background()))
 }
 
 func TestReplaceIfChangeAndNotIsNotSetOnPlan_MarkdownDescription(t *testing.T) {
 	modifier := ReplaceIfChangeAndNotIsNotSetOnPlan{}
-	expected := "Requires replace if the availability zone is different."
+	expected := "Requires replace if the value is different from the state and the plan value is not unknown."
 
 	assert.Equal(t, expected, modifier.MarkdownDescription(context.Background()))
 }
