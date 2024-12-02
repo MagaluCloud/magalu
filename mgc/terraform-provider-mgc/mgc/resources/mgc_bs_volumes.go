@@ -124,7 +124,7 @@ func (r *bsVolumes) Schema(_ context.Context, _ resource.SchemaRequest, resp *re
 			},
 			"final_name": schema.StringAttribute{
 				Description: "The final name of the block storage after applying any naming conventions or modifications.",
-				Computed: true,
+				Computed:    true,
 			},
 			"snapshot_id": schema.StringAttribute{
 				Description: "The unique identifier of the snapshot used to create the block storage.",

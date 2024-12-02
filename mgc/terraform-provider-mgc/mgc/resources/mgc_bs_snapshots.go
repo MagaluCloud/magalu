@@ -123,7 +123,7 @@ func (r *bsSnapshots) Schema(_ context.Context, _ resource.SchemaRequest, resp *
 			},
 			"final_name": schema.StringAttribute{
 				Description: "The final name of the volume snapshot after applying any naming conventions or modifications.",
-				Computed: true,
+				Computed:    true,
 			},
 			"updated_at": schema.StringAttribute{
 				Description: "The timestamp when the block storage was last updated.",
