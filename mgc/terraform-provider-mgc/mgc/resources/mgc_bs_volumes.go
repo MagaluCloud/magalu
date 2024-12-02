@@ -118,17 +118,13 @@ func (r *bsVolumes) Schema(_ context.Context, _ resource.SchemaRequest, resp *re
 			"name": schema.StringAttribute{
 				Description: "The name of the block storage.",
 				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.UseStateForUnknown(),
 					stringplanmodifier.RequiresReplace(),
 				},
 				Required: true,
 			},
 			"final_name": schema.StringAttribute{
 				Description: "The final name of the block storage after applying any naming conventions or modifications.",
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.UseStateForUnknown(),
-				},
-				Computed: true,
+				Computed:    true,
 			},
 			"snapshot_id": schema.StringAttribute{
 				Description: "The unique identifier of the snapshot used to create the block storage.",

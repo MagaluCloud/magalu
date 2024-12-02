@@ -139,10 +139,7 @@ func (r *vmInstances) Schema(_ context.Context, _ resource.SchemaRequest, resp *
 			},
 			"final_name": schema.StringAttribute{
 				Description: "The final name of the virtual machine instance after applying any naming conventions or modifications.",
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.UseStateForUnknown(),
-				},
-				Computed: true,
+				Computed:    true,
 			},
 			"updated_at": schema.StringAttribute{
 				Description: "The timestamp when the virtual machine instance was last updated.",
@@ -221,10 +218,7 @@ func (r *vmInstances) Schema(_ context.Context, _ resource.SchemaRequest, resp *
 					},
 					"name": schema.StringAttribute{
 						Description: "The name of the machine type.",
-						PlanModifiers: []planmodifier.String{
-							stringplanmodifier.UseStateForUnknown(),
-						},
-						Required: true,
+						Required:    true,
 					},
 					"disk": schema.NumberAttribute{
 						Description: "The disk size of the machine type.",
