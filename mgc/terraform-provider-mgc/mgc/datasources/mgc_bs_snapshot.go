@@ -13,19 +13,19 @@ import (
 	"magalu.cloud/terraform-provider-mgc/mgc/tfutil"
 )
 
-var _ datasource.DataSource = &DataSourceBsSnapshots{}
+var _ datasource.DataSource = &DataSourceBsSnapshot{}
 
-type DataSourceBsSnapshots struct {
+type DataSourceBsSnapshot struct {
 	sdkClient   *mgcSdk.Client
 	bsSnapshots sdkBlockStorageSnapshots.Service
 }
 
-func NewDataSourceBSSnapshots() datasource.DataSource {
-	return &DataSourceBsSnapshots{}
+func NewDataSourceBSSnapshot() datasource.DataSource {
+	return &DataSourceBsSnapshot{}
 }
 
-func (r *DataSourceBsSnapshots) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_block_storage_snapshots"
+func (r *DataSourceBsSnapshot) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_block_storage_snapshot"
 }
 
 type bsSnapshotsResourceModel struct {
@@ -46,7 +46,7 @@ type bsSnapshotsVolumeIDModel struct {
 	ID types.String `tfsdk:"id"`
 }
 
-func (r *DataSourceBsSnapshots) Configure(ctx context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
+func (r *DataSourceBsSnapshot) Configure(ctx context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
 	if req.ProviderData == nil {
 		return
 	}
@@ -65,67 +65,72 @@ func (r *DataSourceBsSnapshots) Configure(ctx context.Context, req datasource.Co
 	r.bsSnapshots = sdkBlockStorageSnapshots.NewService(ctx, r.sdkClient)
 }
 
-func (r *DataSourceBsSnapshots) Schema(_ context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
-	description := "Block storage snapshots"
-	resp.Schema = schema.Schema{
-		Description:         description,
-		MarkdownDescription: description,
-		Attributes: map[string]schema.Attribute{
-			"id": schema.StringAttribute{
-				Description: "The unique identifier of the volume snapshot.",
-				Required:    true,
-			},
-			"name": schema.StringAttribute{
-				Description: "The name of the volume snapshot.",
-				Computed:    true,
-			},
-			"description": schema.StringAttribute{
-				Description: "The description of the volume snapshot.",
-				Computed:    true,
-			},
-			"updated_at": schema.StringAttribute{
-				Description: "The timestamp when the block storage was last updated.",
-				Computed:    true,
-			},
-			"created_at": schema.StringAttribute{
-				Description: "The timestamp when the block storage was created.",
-				Computed:    true,
-			},
-			"state": schema.StringAttribute{
-				Description: "The current state of the virtual machine instance.",
-				Computed:    true,
-			},
-			"status": schema.StringAttribute{
-				Description: "The status of the virtual machine instance.",
-				Computed:    true,
-			},
-			"size": schema.Int64Attribute{
-				Description: "The size of the snapshot in GB.",
-				Computed:    true,
-			},
-			"volume": schema.SingleNestedAttribute{
-				Computed: true,
-				Attributes: map[string]schema.Attribute{
-					"id": schema.StringAttribute{
-						Description: "ID of block storage volume",
-						Computed:    true,
-					},
+func GetBsSnapshotAttributes(idRequired bool) map[string]schema.Attribute {
+	return map[string]schema.Attribute{
+		"id": schema.StringAttribute{
+			Description: "The unique identifier of the volume snapshot.",
+			Required:    idRequired,
+			Computed:    !idRequired,
+		},
+		"name": schema.StringAttribute{
+			Description: "The name of the volume snapshot.",
+			Computed:    true,
+		},
+		"description": schema.StringAttribute{
+			Description: "The description of the volume snapshot.",
+			Computed:    true,
+		},
+		"updated_at": schema.StringAttribute{
+			Description: "The timestamp when the block storage was last updated.",
+			Computed:    true,
+		},
+		"created_at": schema.StringAttribute{
+			Description: "The timestamp when the block storage was created.",
+			Computed:    true,
+		},
+		"state": schema.StringAttribute{
+			Description: "The current state of the virtual machine instance.",
+			Computed:    true,
+		},
+		"status": schema.StringAttribute{
+			Description: "The status of the virtual machine instance.",
+			Computed:    true,
+		},
+		"size": schema.Int64Attribute{
+			Description: "The size of the snapshot in GB.",
+			Computed:    true,
+		},
+		"volume": schema.SingleNestedAttribute{
+			Computed: true,
+			Attributes: map[string]schema.Attribute{
+				"id": schema.StringAttribute{
+					Description: "ID of block storage volume",
+					Computed:    true,
 				},
 			},
-			"type": schema.StringAttribute{
-				Description: "The type of the snapshot.",
-				Computed:    true,
-			},
-			"availability_zones": schema.ListAttribute{
-				Description: "The availability zones of the snapshot.",
-				Computed:    true,
-				ElementType: types.StringType,
-			},
+		},
+		"type": schema.StringAttribute{
+			Description: "The type of the snapshot.",
+			Computed:    true,
+		},
+		"availability_zones": schema.ListAttribute{
+			Description: "The availability zones of the snapshot.",
+			Computed:    true,
+			ElementType: types.StringType,
 		},
 	}
 }
 
-func (r *DataSourceBsSnapshots) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
+func (r *DataSourceBsSnapshot) Schema(_ context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
+	description := "Block storage snapshots"
+	resp.Schema = schema.Schema{
+		Description:         description,
+		MarkdownDescription: description,
+		Attributes:          GetBsSnapshotAttributes(true),
+	}
+}
+
+func (r *DataSourceBsSnapshot) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
 	var data bsSnapshotsResourceModel
 
 	resp.Diagnostics.Append(req.Config.Get(ctx, &data)...)

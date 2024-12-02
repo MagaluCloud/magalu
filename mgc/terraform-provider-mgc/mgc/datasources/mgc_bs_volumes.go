@@ -29,22 +29,7 @@ func (r *DataSourceBsVolumes) Metadata(_ context.Context, req datasource.Metadat
 }
 
 type bsVolumesResourceModel struct {
-	ID                types.String  `tfsdk:"id"`
-	Name              types.String  `tfsdk:"name"`
-	AvailabilityZones types.List    `tfsdk:"availability_zones"`
-	UpdatedAt         types.String  `tfsdk:"updated_at"`
-	CreatedAt         types.String  `tfsdk:"created_at"`
-	Size              types.Int64   `tfsdk:"size"`
-	Type              *bsVolumeType `tfsdk:"type"`
-	State             types.String  `tfsdk:"state"`
-	Status            types.String  `tfsdk:"status"`
-}
-
-type bsVolumeType struct {
-	DiskType types.String `tfsdk:"disk_type"`
-	Id       types.String `tfsdk:"id"`
-	Name     types.String `tfsdk:"name"`
-	Status   types.String `tfsdk:"status"`
+	volumes []bsVolumeResourceModel `tfsdk:"volumes"`
 }
 
 func (r *DataSourceBsVolumes) Configure(ctx context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
@@ -68,62 +53,12 @@ func (r *DataSourceBsVolumes) Configure(ctx context.Context, req datasource.Conf
 
 func (r *DataSourceBsVolumes) Schema(_ context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description:         "Block storage volumes",
-		MarkdownDescription: "Block storage volumes",
 		Attributes: map[string]schema.Attribute{
-			"id": schema.StringAttribute{
-				Description: "The unique identifier of the volume snapshot.",
-				Required:    true,
-			},
-			"name": schema.StringAttribute{
-				Description: "The name of the block storage.",
+			"volumes": schema.ListNestedAttribute{
 				Computed:    true,
-			},
-			"availability_zones": schema.ListAttribute{
-				Description: "The availability zones where the block storage is available.",
-				Computed:    true,
-				ElementType: types.StringType,
-			},
-			"size": schema.Int64Attribute{
-				Description: "The size of the block storage in GB.",
-				Computed:    true,
-			},
-			"updated_at": schema.StringAttribute{
-				Description: "The timestamp when the block storage was last updated.",
-				Computed:    true,
-			},
-			"created_at": schema.StringAttribute{
-				Description: "The timestamp when the block storage was created.",
-				Computed:    true,
-			},
-			"state": schema.StringAttribute{
-				Description: "The current state of the virtual machine instance.",
-				Computed:    true,
-			},
-			"status": schema.StringAttribute{
-				Description: "The status of the virtual machine instance.",
-				Computed:    true,
-			},
-			"type": schema.SingleNestedAttribute{
-				Computed:    true,
-				Description: "The type of the block storage.",
-				Attributes: map[string]schema.Attribute{
-					"name": schema.StringAttribute{
-						Description: "The name of the block storage type.",
-						Computed:    true,
-					},
-					"disk_type": schema.StringAttribute{
-						Description: "The disk type of the block storage.",
-						Computed:    true,
-					},
-					"id": schema.StringAttribute{
-						Description: "The unique identifier of the block storage type.",
-						Computed:    true,
-					},
-					"status": schema.StringAttribute{
-						Description: "The status of the block storage type.",
-						Computed:    true,
-					},
+				Description: "List of available Block Storage Volumes.",
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: GetBsVolumeAttributes(false),
 				},
 			},
 		},
@@ -138,29 +73,36 @@ func (r *DataSourceBsVolumes) Read(ctx context.Context, req datasource.ReadReque
 		return
 	}
 
-	sdkOutput, err := r.bsVolumes.GetContext(ctx, sdkBlockStorageVolumes.GetParameters{Id: data.ID.ValueString()},
-		tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkBlockStorageVolumes.GetConfigs{}))
+	sdkOutputList, err := r.bsVolumes.ListContext(ctx, sdkBlockStorageVolumes.ListParameters{},
+		tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkBlockStorageVolumes.ListConfigs{}))
 	if err != nil {
 		resp.Diagnostics.AddError("Failed to get versions", err.Error())
 		return
 	}
 
-	list, diags := types.ListValueFrom(ctx, types.StringType, sdkOutput.AvailabilityZones)
-	resp.Diagnostics.Append(diags...)
+	for _, sdkOutput := range sdkOutputList.Volumes {
 
-	data.Name = types.StringValue(sdkOutput.Name)
-	data.AvailabilityZones = list
-	data.UpdatedAt = types.StringValue(sdkOutput.UpdatedAt)
-	data.CreatedAt = types.StringValue(sdkOutput.CreatedAt)
-	data.Size = types.Int64Value(int64(sdkOutput.Size))
-	data.Type = &bsVolumeType{
-		DiskType: types.StringPointerValue(sdkOutput.Type.DiskType),
-		Id:       types.StringValue(sdkOutput.Type.Id),
-		Name:     types.StringPointerValue(sdkOutput.Type.Name),
-		Status:   types.StringPointerValue(sdkOutput.Type.Status),
+		var item bsVolumeResourceModel
+
+		list, diags := types.ListValueFrom(ctx, types.StringType, sdkOutput.AvailabilityZones)
+		resp.Diagnostics.Append(diags...)
+
+		item.ID = types.StringValue(sdkOutput.Id)
+		item.Name = types.StringValue(sdkOutput.Name)
+		item.AvailabilityZones = list
+		item.UpdatedAt = types.StringValue(sdkOutput.UpdatedAt)
+		item.CreatedAt = types.StringValue(sdkOutput.CreatedAt)
+		item.Size = types.Int64Value(int64(sdkOutput.Size))
+		item.Type = &bsVolumeType{
+			DiskType: types.StringPointerValue(sdkOutput.Type.DiskType),
+			Id:       types.StringValue(sdkOutput.Type.Id),
+			Name:     types.StringPointerValue(sdkOutput.Type.Name),
+			Status:   types.StringPointerValue(sdkOutput.Type.Status),
+		}
+		item.State = types.StringValue(sdkOutput.State)
+		item.Status = types.StringValue(sdkOutput.Status)
+
+		data.volumes = append(data.volumes, item)
 	}
-	data.State = types.StringValue(sdkOutput.State)
-	data.Status = types.StringValue(sdkOutput.Status)
-
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }

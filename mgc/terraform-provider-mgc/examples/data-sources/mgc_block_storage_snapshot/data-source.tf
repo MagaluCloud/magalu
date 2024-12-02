@@ -1,5 +1,5 @@
 data "mgc_block_storage_snapshots" "snapshot" {
-  provider = mgc.nordeste
+  id         = mgc_block_storage_snapshots.my_snapshot.id
 }
 
 output "snapshot" {

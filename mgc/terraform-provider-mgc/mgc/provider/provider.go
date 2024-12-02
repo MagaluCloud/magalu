@@ -172,6 +172,8 @@ func (p *mgcProvider) DataSources(ctx context.Context) []func() datasource.DataS
 		datasources.NewDataSourceNetworkPublicIP,
 		datasources.NewDataSourceBSSnapshots,
 		datasources.NewDataSourceBsVolumes,
+		datasources.NewDataSourceBSSnapshot,
+		datasources.NewDataSourceBsVolume,
 		datasources.NewDataSourceBsVolumeTypes,
 	}
 }
