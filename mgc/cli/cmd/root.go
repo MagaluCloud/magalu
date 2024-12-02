@@ -23,6 +23,8 @@ const (
 	apiKeyEnvVar    = "MGC_API_KEY"
 )
 
+var menuThatNotAllowApikey = []string{"auth", "config", "conf", "object-storage", "object", "objects", "objs", "os"}
+
 var argParser = &osArgParser{}
 
 var pb *progress_bar.ProgressBar
@@ -88,7 +90,6 @@ It allows you to interact with the Magalu Cloud to manage your resources.
 	addShowInternalFlag(rootCmd)
 	addShowHiddenFlag(rootCmd)
 	addRawOutputFlag(rootCmd)
-	addApiKeyFlag(rootCmd)
 
 	rootCmd.InitDefaultHelpFlag()
 	rootCmd.InitDefaultVersionFlag()
@@ -96,6 +97,9 @@ It allows you to interact with the Magalu Cloud to manage your resources.
 	// Immediately parse flags for root command because we'll access the global flags prior
 	// to calling Execute (which is when Cobra parses the flags)
 	args := argParser.MainArgs()
+	if len(args) >= 1 && !slices.Contains(menuThatNotAllowApikey, args[0]) {
+		addApiKeyFlag(rootCmd)
+	}
 	// This loop will parse flags even if unknown flag error arises.
 	// A flag error means that ParseFlags will early return and not parse the rest of the args.
 	// This happens because some flags aren't available until further down the code.
