@@ -87,7 +87,6 @@ func (r *vmSnapshots) Schema(_ context.Context, _ resource.SchemaRequest, resp *
 			"updated_at": schema.StringAttribute{
 				Description:   "The timestamp when the snapshot was last updated.",
 				Computed:      true,
-				PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()},
 			},
 			"created_at": schema.StringAttribute{
 				Description:   "The timestamp when the snapshot was created.",

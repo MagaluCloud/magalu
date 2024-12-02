@@ -123,9 +123,6 @@ func (r *bsSnapshots) Schema(_ context.Context, _ resource.SchemaRequest, resp *
 			},
 			"final_name": schema.StringAttribute{
 				Description: "The final name of the volume snapshot after applying any naming conventions or modifications.",
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.UseStateForUnknown(),
-				},
 				Computed: true,
 			},
 			"updated_at": schema.StringAttribute{
