@@ -20,6 +20,17 @@ data "mgc_dbaas_instance_types" "deprecated_instance_types" {
 
 data "mgc_dbaas_instance_types" "default_instance_types" {}
 
+# DBaaS Instances data sources
+data "mgc_dbaas_instances" "active_instances" {
+  status = "ACTIVE"
+}
+
+data "mgc_dbaas_instances" "all_instances" {}
+
+data "mgc_dbaas_instances" "deleted_instances" {
+  status = "DELETED"
+}
+
 # Outputs for debugging
 output "active_engines" {
   value = data.mgc_dbaas_engines.active_engines.engines
@@ -44,4 +55,16 @@ output "deprecated_instance_types" {
 
 output "default_instance_types" {
   value = data.mgc_dbaas_instance_types.default_instance_types.instance_types
+}
+
+output "active_instances" {
+  value = data.mgc_dbaas_instances.active_instances.instances
+}
+
+output "all_instances" {
+  value = data.mgc_dbaas_instances.all_instances.instances
+}
+
+output "deleted_instances" {
+  value = data.mgc_dbaas_instances.deleted_instances.instances
 }

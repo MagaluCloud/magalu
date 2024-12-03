@@ -34,7 +34,7 @@ type DbEngines struct {
 	Version types.String `tfsdk:"version"`
 }
 
-func NewDataSourceDbEngines() datasource.DataSource {
+func NewDataSourceDbaasEngines() datasource.DataSource {
 	return &DataSourceDbEngines{}
 }
 

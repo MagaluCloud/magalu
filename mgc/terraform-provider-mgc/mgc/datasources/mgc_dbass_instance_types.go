@@ -34,7 +34,7 @@ type DbInstanceType struct {
 	Vcpu types.String `tfsdk:"vcpu"`
 }
 
-func NewDataSourceDbInstanceTypes() datasource.DataSource {
+func NewDataSourceDbaasInstanceTypes() datasource.DataSource {
 	return &DataSourceDbInstanceTypes{}
 }
 
