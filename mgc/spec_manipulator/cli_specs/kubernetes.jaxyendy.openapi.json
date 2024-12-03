@@ -3115,16 +3115,16 @@
         "properties": {
           "min_replicas": {
             "type": "integer",
-            "minimum": 1,
+            "minimum": 0,
             "description": "Minimum number of replicas for autoscaling. If not provided, or if the value is equal to or less than zero, the autoscaler value will be assumed based on the \"replicas\" field.\n",
-            "default": 1,
+            "nullable": true,
             "example": 2
           },
           "max_replicas": {
             "type": "integer",
-            "minimum": 1,
+            "minimum": 0,
             "description": "Maximum number of replicas for autoscaling. If not provided, or if the value is equal to or less than zero, the autoscaler value will be assumed based on the \"replicas\" field.\n",
-            "default": 1,
+            "nullable": true,
             "example": 5
           }
         },
