@@ -31,6 +31,11 @@ data "mgc_dbaas_instances" "deleted_instances" {
   status = "DELETED"
 }
 
+# Get specific instance test
+data "mgc_dbaas_instance" "test_instance" {
+  id = data.mgc_dbaas_instances.all_instances.instances[0].id
+}
+
 # Outputs for debugging
 output "active_engines" {
   value = data.mgc_dbaas_engines.active_engines.engines
@@ -67,4 +72,9 @@ output "all_instances" {
 
 output "deleted_instances" {
   value = data.mgc_dbaas_instances.deleted_instances.instances
+}
+
+# Output for the test instance
+output "test_instance" {
+  value = data.mgc_dbaas_instance.test_instance
 }

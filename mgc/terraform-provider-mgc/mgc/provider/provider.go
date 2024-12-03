@@ -173,6 +173,7 @@ func (p *mgcProvider) DataSources(ctx context.Context) []func() datasource.DataS
 		datasources.NewDataSourceDbaasEngines,
 		datasources.NewDataSourceDbaasInstanceTypes,
 		datasources.NewDataSourceDbaasInstances,
+		datasources.NewDataSourceDbaasInstance,
 	}
 }
 

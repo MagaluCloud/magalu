@@ -211,7 +211,7 @@ func (r *DataSourceDbInstances) Read(ctx context.Context, req datasource.ReadReq
 			ID:                  types.StringValue(instance.Id),
 			InstanceTypeID:      types.StringValue(instance.InstanceTypeId),
 			Name:                types.StringValue(instance.Name),
-			Parameters:          convertToStringMap(instance.Parameters),
+			Parameters:          convertToStringMapInstances(instance.Parameters),
 			Status:              types.StringValue(instance.Status),
 			VolumeSize:          types.Int64PointerValue(tfutil.ConvertIntPointerToInt64Pointer(&instance.Volume.Size)),
 			VolumeType:          types.StringValue(instance.Volume.Type),
@@ -221,7 +221,7 @@ func (r *DataSourceDbInstances) Read(ctx context.Context, req datasource.ReadReq
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func convertToStringMap(params dbaas.ListResultResultsItemParameters) map[string]types.String {
+func convertToStringMapInstances(params dbaas.ListResultResultsItemParameters) map[string]types.String {
 	result := make(map[string]types.String, len(params))
 	for _, value := range params {
 		result[value.Name] = types.StringValue(tfutil.SdkParamValueToString(value.Value))

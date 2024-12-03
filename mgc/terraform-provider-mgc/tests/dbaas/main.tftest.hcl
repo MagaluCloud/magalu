@@ -175,3 +175,39 @@ run "validate_instance_volume_fields" {
     error_message = "Found instance with invalid volume configuration"
   }
 }
+
+run "validate_get_instance" {
+  command = apply
+
+  assert {
+    condition = (
+      data.mgc_dbaas_instance.test_instance.id != "" &&
+      data.mgc_dbaas_instance.test_instance.name != "" &&
+      data.mgc_dbaas_instance.test_instance.engine_id != "" &&
+      data.mgc_dbaas_instance.test_instance.instance_type_id != "" &&
+      data.mgc_dbaas_instance.test_instance.status != ""  &&
+      data.mgc_dbaas_instance.test_instance.volume_size > 0 &&
+      data.mgc_dbaas_instance.test_instance.volume_type != "" &&
+      data.mgc_dbaas_instance.test_instance.created_at != ""
+    )
+    error_message = "Instance data is incomplete or invalid"
+  }
+}
+
+run "validate_instance_addresses" {
+  command = apply
+
+  assert {
+    condition = length(data.mgc_dbaas_instance.test_instance.addresses) > 0
+    error_message = "Instance has no addresses"
+  }
+}
+
+run "validate_instance_parameters" {
+  command = apply
+
+  assert {
+    condition = length(data.mgc_dbaas_instance.test_instance.parameters) > 0
+    error_message = "Instance has no parameters"
+  }
+}
