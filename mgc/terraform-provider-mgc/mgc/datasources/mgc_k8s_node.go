@@ -258,7 +258,7 @@ func (d *DataSourceKubernetesNode) Configure(ctx context.Context, req datasource
 
 	var err error
 	var errDetail error
-	d.sdkClient, err, errDetail = client.NewSDKClient(req)
+	d.sdkClient, err, errDetail = client.NewSDKClient(req, resp)
 	if err != nil {
 		resp.Diagnostics.AddError(
 			err.Error(),

@@ -15,7 +15,7 @@ type SDKFrom interface {
 	resource.ConfigureRequest | datasource.ConfigureRequest
 }
 
-func NewSDKClient[T SDKFrom](req T) (*mgcSdk.Client, error, error) {
+func NewSDKClient[T SDKFrom, G tfutil.ResponseFrom](req T, resp *G) (*mgcSdk.Client, error, error) {
 	var config tfutil.ProviderConfig
 
 	devErrMsg := "fail to parse provider config"
@@ -48,6 +48,9 @@ func NewSDKClient[T SDKFrom](req T) (*mgcSdk.Client, error, error) {
 
 	if config.ApiKey.ValueString() != "" {
 		_ = sdkClient.Sdk().Auth().SetAPIKey(config.ApiKey.ValueString())
+	} else {
+		// Remove this block when the provider does not support CLI Auth
+		tfutil.AddCLIAuthWarning(resp)
 	}
 
 	if config.ObjectStorage != nil && config.ObjectStorage.ObjectKeyPair != nil {
