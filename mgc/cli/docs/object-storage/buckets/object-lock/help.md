@@ -1,27 +1,20 @@
-# Bucket operations for Object Storage API
+# Object locking commands
 
 ## Usage:
 ```bash
 Usage:
-  ./mgc object-storage buckets [flags]
-  ./mgc object-storage buckets [command]
+  ./mgc object-storage buckets object-lock [flags]
+  ./mgc object-storage buckets object-lock [command]
 ```
 
 ## Product catalog:
 - Commands:
-- acl         ACL-related commands
-- create      Create a new Bucket
-- delete      Delete an existing Bucket
-- label       Label-related commands
-- list        List all existing Buckets
-- object-lock Object locking commands
-- policy      Policy-related commands
-- public-url  Get bucket public url
-- versioning  Manage bucket versioning
+- get         Get object locking configuration for the specified bucket
+- set         set number of either days or years to lock new objects for
 
 ## Other commands:
 - Flags:
-- -h, --help   help for buckets
+- -h, --help   help for object-lock
 
 ## Flags:
 ```bash
