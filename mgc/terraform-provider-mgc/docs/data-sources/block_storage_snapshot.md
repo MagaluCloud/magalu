@@ -13,12 +13,12 @@ Block storage snapshots
 ## Example Usage
 
 ```terraform
-data "mgc_block_storage_snapshots" "snapshot" {
-  id         = mgc_block_storage_snapshots.my_snapshot.id
+data "mgc_block_storage_snapshot" "snapshot" {
+  id         = mgc_block_storage_snapshot.my_snapshot.id
 }
 
 output "snapshot" {
-  value = data.mgc_block_storage_snapshots.name
+  value = data.mgc_block_storage_snapshot.name
 }
 ```
 
