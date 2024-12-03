@@ -3,12 +3,12 @@
 page_title: "mgc_dbaas_engines Data Source - terraform-provider-mgc"
 subcategory: "Database"
 description: |-
-  
+  A list of available database engines.
 ---
 
 # mgc_dbaas_engines (Data Source)
 
-
+A list of available database engines.
 
 ## Example Usage
 

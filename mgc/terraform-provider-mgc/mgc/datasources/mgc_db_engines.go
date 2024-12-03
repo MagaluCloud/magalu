@@ -63,6 +63,7 @@ func (r *DataSourceDbEngines) Configure(ctx context.Context, req datasource.Conf
 
 func (r *DataSourceDbEngines) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
+		Description: "A list of available database engines.",
 		Attributes: map[string]schema.Attribute{
 			"engines": schema.ListNestedAttribute{
 				Description: "List of available database engines",
