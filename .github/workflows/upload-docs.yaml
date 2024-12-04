@@ -22,9 +22,4 @@ jobs:
           - name: Upload docs
             run: |
              mgc object objects sync ./mgc/cli/docs s3://magalucloud-docs --delete
-          - name: Set Public Read Permissions
-            run: |
-              mgc object objects list magalucloud-docs --recursive -o json --raw | jq -r '.Contents[].Key' | while read -r key; do
-                mgc object objects acl set --public-read magalucloud-docs/"$key"
-                echo "Set public-read ACL for $key"
-              done
+             
