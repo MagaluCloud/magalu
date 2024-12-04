@@ -74,6 +74,7 @@ type Config struct {
 	ClientId              string
 	ObjectStoreScopeIDs   []string
 	PublicClientsScopeIDs map[string]string
+	TotalScopeID          string
 	RedirectUri           string
 	LoginUrl              string
 	TokenUrl              string
@@ -85,6 +86,8 @@ type Config struct {
 	ApiKeysUrlV2          string
 	PublicClientsUrl      string
 	ClientsV2Url          string
+	DelegationUrl         string
+	AccountsUrl           string
 }
 
 type Authenticator interface {
