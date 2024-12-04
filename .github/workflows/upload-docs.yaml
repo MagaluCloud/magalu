@@ -1,9 +1,7 @@
 name: Upload Docs to bucket
 
 on:
-    release:
-        types:
-            - created
+  workflow_dispatch:
 
 jobs:
     upload-docs:
