@@ -170,10 +170,10 @@ func (p *mgcProvider) DataSources(ctx context.Context) []func() datasource.DataS
 		datasources.NewDataSourceNetworkVpcsSubnet,
 		datasources.NewDataSourceNetworkSubnetpool,
 		datasources.NewDataSourceNetworkPublicIP,
-		datasources.NewDataSourceDbaasEngines,
-		datasources.NewDataSourceDbaasInstanceTypes,
-		datasources.NewDataSourceDbaasInstances,
-		datasources.NewDataSourceDbaasInstance,
+		// datasources.NewDataSourceDbaasEngines,
+		// datasources.NewDataSourceDbaasInstanceTypes,
+		// datasources.NewDataSourceDbaasInstances,
+		// datasources.NewDataSourceDbaasInstance,
 	}
 }
 
