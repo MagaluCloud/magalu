@@ -36,13 +36,19 @@ func ConvertToNodePool(np *cluster.GetResultNodePoolsItem) NodePool {
 	}
 
 	nodePool := NodePool{
-		Name:        types.StringValue(np.Name),
-		Replicas:    types.Int64Value(int64(np.Replicas)),
-		MaxReplicas: types.Int64Value(int64(np.AutoScale.MaxReplicas)),
-		MinReplicas: types.Int64Value(int64(np.AutoScale.MinReplicas)),
-		CreatedAt:   types.StringPointerValue(np.CreatedAt),
-		UpdatedAt:   types.StringPointerValue(np.UpdatedAt),
-		ID:          types.StringValue(np.Id),
+		Name:      types.StringValue(np.Name),
+		Replicas:  types.Int64Value(int64(np.Replicas)),
+		CreatedAt: types.StringPointerValue(np.CreatedAt),
+		UpdatedAt: types.StringPointerValue(np.UpdatedAt),
+		ID:        types.StringValue(np.Id),
+	}
+
+	if np.AutoScale.MaxReplicas != nil {
+		nodePool.MaxReplicas = types.Int64Value(int64(*np.AutoScale.MaxReplicas))
+	}
+
+	if np.AutoScale.MinReplicas != nil {
+		nodePool.MinReplicas = types.Int64Value(int64(*np.AutoScale.MinReplicas))
 	}
 
 	if np.InstanceTemplate.Flavor.Name != "" {
@@ -80,13 +86,19 @@ func ConvertToNodePoolGet(np *sdkNodepool.GetResult) NodePool {
 	}
 
 	nodePool := NodePool{
-		Name:        types.StringValue(np.Name),
-		Replicas:    types.Int64Value(int64(np.Replicas)),
-		MaxReplicas: types.Int64Value(int64(np.AutoScale.MaxReplicas)),
-		MinReplicas: types.Int64Value(int64(np.AutoScale.MinReplicas)),
-		CreatedAt:   types.StringPointerValue(np.CreatedAt),
-		UpdatedAt:   types.StringPointerValue(np.UpdatedAt),
-		ID:          types.StringValue(np.Id),
+		Name:      types.StringValue(np.Name),
+		Replicas:  types.Int64Value(int64(np.Replicas)),
+		CreatedAt: types.StringPointerValue(np.CreatedAt),
+		UpdatedAt: types.StringPointerValue(np.UpdatedAt),
+		ID:        types.StringValue(np.Id),
+	}
+
+	if np.AutoScale.MaxReplicas != nil {
+		nodePool.MaxReplicas = types.Int64Value(int64(*np.AutoScale.MaxReplicas))
+	}
+
+	if np.AutoScale.MinReplicas != nil {
+		nodePool.MinReplicas = types.Int64Value(int64(*np.AutoScale.MinReplicas))
 	}
 
 	if np.InstanceTemplate.Flavor.Name != "" {
@@ -132,13 +144,19 @@ func ConvertToNodePoolCreate(np *sdkNodepool.CreateResult) NodePool {
 	}
 
 	nodePool := NodePool{
-		Name:        types.StringValue(np.Name),
-		Replicas:    types.Int64Value(int64(np.Replicas)),
-		MaxReplicas: types.Int64Value(int64(np.AutoScale.MaxReplicas)),
-		MinReplicas: types.Int64Value(int64(np.AutoScale.MinReplicas)),
-		CreatedAt:   types.StringPointerValue(np.CreatedAt),
-		UpdatedAt:   types.StringPointerValue(np.UpdatedAt),
-		ID:          types.StringValue(np.Id),
+		Name:      types.StringValue(np.Name),
+		Replicas:  types.Int64Value(int64(np.Replicas)),
+		CreatedAt: types.StringPointerValue(np.CreatedAt),
+		UpdatedAt: types.StringPointerValue(np.UpdatedAt),
+		ID:        types.StringValue(np.Id),
+	}
+
+	if np.AutoScale.MaxReplicas != nil {
+		nodePool.MaxReplicas = types.Int64Value(int64(*np.AutoScale.MaxReplicas))
+	}
+
+	if np.AutoScale.MinReplicas != nil {
+		nodePool.MinReplicas = types.Int64Value(int64(*np.AutoScale.MinReplicas))
 	}
 
 	if np.InstanceTemplate.Flavor.Name != "" {
@@ -170,19 +188,40 @@ func ConvertToNodePoolCreate(np *sdkNodepool.CreateResult) NodePool {
 	return nodePool
 }
 
+func Int64PtrInt(i *int64) int {
+	if i != nil {
+		return int(*i)
+	}
+	return 0
+}
+
+func Int64PtrIntPtr(i *int64) *int {
+	if i != nil {
+		val := int(*i)
+		return &val
+	}
+	return nil
+}
+
 func ConvertToNodePoolUpdate(np *sdkNodepool.UpdateResult) NodePool {
 	if np == nil {
 		return NodePool{}
 	}
 
 	nodePool := NodePool{
-		Name:        types.StringValue(np.Name),
-		Replicas:    types.Int64Value(int64(np.Replicas)),
-		MaxReplicas: types.Int64Value(int64(np.AutoScale.MaxReplicas)),
-		MinReplicas: types.Int64Value(int64(np.AutoScale.MinReplicas)),
-		CreatedAt:   types.StringPointerValue(np.CreatedAt),
-		UpdatedAt:   types.StringPointerValue(np.UpdatedAt),
-		ID:          types.StringValue(np.Id),
+		Name:      types.StringValue(np.Name),
+		Replicas:  types.Int64Value(int64(np.Replicas)),
+		CreatedAt: types.StringPointerValue(np.CreatedAt),
+		UpdatedAt: types.StringPointerValue(np.UpdatedAt),
+		ID:        types.StringValue(np.Id),
+	}
+
+	if np.AutoScale.MaxReplicas != nil {
+		nodePool.MaxReplicas = types.Int64Value(int64(*np.AutoScale.MaxReplicas))
+	}
+
+	if np.AutoScale.MinReplicas != nil {
+		nodePool.MinReplicas = types.Int64Value(int64(*np.AutoScale.MinReplicas))
 	}
 
 	if np.InstanceTemplate.Flavor.Name != "" {
