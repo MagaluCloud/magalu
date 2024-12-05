@@ -29,15 +29,15 @@ func (r *DataSourceBsVolume) Metadata(_ context.Context, req datasource.Metadata
 }
 
 type bsVolumeResourceModel struct {
-	ID                types.String  `tfsdk:"id"`
-	Name              types.String  `tfsdk:"name"`
-	AvailabilityZones types.List    `tfsdk:"availability_zones"`
-	UpdatedAt         types.String  `tfsdk:"updated_at"`
-	CreatedAt         types.String  `tfsdk:"created_at"`
-	Size              types.Int64   `tfsdk:"size"`
-	Type              *bsVolumeType `tfsdk:"type"`
-	State             types.String  `tfsdk:"state"`
-	Status            types.String  `tfsdk:"status"`
+	ID               types.String  `tfsdk:"id"`
+	Name             types.String  `tfsdk:"name"`
+	AvailabilityZone types.String  `tfsdk:"availability_zones"`
+	UpdatedAt        types.String  `tfsdk:"updated_at"`
+	CreatedAt        types.String  `tfsdk:"created_at"`
+	Size             types.Int64   `tfsdk:"size"`
+	Type             *bsVolumeType `tfsdk:"type"`
+	State            types.String  `tfsdk:"state"`
+	Status           types.String  `tfsdk:"status"`
 }
 
 type bsVolumeType struct {
@@ -77,10 +77,9 @@ func GetBsVolumeAttributes(idRequired bool) map[string]schema.Attribute {
 			Description: "The name of the block storage.",
 			Computed:    true,
 		},
-		"availability_zones": schema.ListAttribute{
+		"availability_zone": schema.StringAttribute{
 			Description: "The availability zones where the block storage is available.",
 			Computed:    true,
-			ElementType: types.StringType,
 		},
 		"size": schema.Int64Attribute{
 			Description: "The size of the block storage in GB.",
@@ -150,12 +149,9 @@ func (r *DataSourceBsVolume) Read(ctx context.Context, req datasource.ReadReques
 		return
 	}
 
-	list, diags := types.ListValueFrom(ctx, types.StringType, sdkOutput.AvailabilityZones)
-	resp.Diagnostics.Append(diags...)
-
 	data.ID = types.StringValue(sdkOutput.Id)
 	data.Name = types.StringValue(sdkOutput.Name)
-	data.AvailabilityZones = list
+	data.AvailabilityZone = types.StringValue(sdkOutput.AvailabilityZone)
 	data.UpdatedAt = types.StringValue(sdkOutput.UpdatedAt)
 	data.CreatedAt = types.StringValue(sdkOutput.CreatedAt)
 	data.Size = types.Int64Value(int64(sdkOutput.Size))

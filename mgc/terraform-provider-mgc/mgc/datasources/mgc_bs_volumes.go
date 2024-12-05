@@ -83,13 +83,9 @@ func (r *DataSourceBsVolumes) Read(ctx context.Context, req datasource.ReadReque
 	for _, sdkOutput := range sdkOutputList.Volumes {
 
 		var item bsVolumeResourceModel
-
-		list, diags := types.ListValueFrom(ctx, types.StringType, sdkOutput.AvailabilityZones)
-		resp.Diagnostics.Append(diags...)
-
 		item.ID = types.StringValue(sdkOutput.Id)
 		item.Name = types.StringValue(sdkOutput.Name)
-		item.AvailabilityZones = list
+		item.AvailabilityZone = types.StringValue(sdkOutput.AvailabilityZone)
 		item.UpdatedAt = types.StringValue(sdkOutput.UpdatedAt)
 		item.CreatedAt = types.StringValue(sdkOutput.CreatedAt)
 		item.Size = types.Int64Value(int64(sdkOutput.Size))
