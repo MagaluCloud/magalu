@@ -244,13 +244,13 @@ func (r *bsSnapshots) Create(ctx context.Context, req resource.CreateRequest, re
 
 	if plan.Volume != nil {
 		createRequest.Volume = &sdkBlockStorageSnapshots.CreateParametersVolume{
-			Id: plan.Volume.ID.ValueString(),
+			Id: plan.Volume.ID.ValueStringPointer(),
 		}
 	}
 
 	if !plan.SnapshotSourceID.IsNull() {
 		createRequest.SourceSnapshot = &sdkBlockStorageSnapshots.CreateParametersSourceSnapshot{
-			Id: plan.SnapshotSourceID.ValueString(),
+			Id: plan.SnapshotSourceID.ValueStringPointer(),
 		}
 	}
 

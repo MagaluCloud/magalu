@@ -150,7 +150,7 @@ func (r *DataSourceBsSnapshot) Read(ctx context.Context, req datasource.ReadRequ
 	data.Description = types.StringPointerValue(sdkOutput.Description)
 	data.UpdatedAt = types.StringValue(sdkOutput.UpdatedAt)
 	data.CreatedAt = types.StringValue(sdkOutput.CreatedAt)
-	data.Volume = &bsSnapshotsVolumeIDModel{ID: types.StringValue(sdkOutput.Volume.Id)}
+	data.Volume = &bsSnapshotsVolumeIDModel{ID: types.StringPointerValue(sdkOutput.Volume.Id)}
 	data.State = types.StringValue(sdkOutput.State)
 	data.Status = types.StringValue(sdkOutput.Status)
 	data.Size = types.Int64Value(int64(sdkOutput.Size))

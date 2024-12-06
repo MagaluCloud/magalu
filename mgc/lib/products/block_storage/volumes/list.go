@@ -65,16 +65,16 @@ type ListResultVolumesItemAttachment struct {
 	Instance   ListResultVolumesItemAttachmentInstance `json:"instance"`
 }
 
-// any of: ListResultVolumesItemAttachmentInstance
+// any of: *ListResultVolumesItemAttachmentInstance
 type ListResultVolumesItemAttachmentInstance struct {
-	CreatedAt string                                       `json:"created_at"`
+	CreatedAt *string                                      `json:"created_at,omitempty"`
 	DiskType  *string                                      `json:"disk_type,omitempty"`
-	Id        string                                       `json:"id"`
+	Id        *string                                      `json:"id,omitempty"`
 	Iops      *ListResultVolumesItemAttachmentInstanceIops `json:"iops,omitempty"`
-	Name      string                                       `json:"name"`
-	State     string                                       `json:"state"`
-	Status    string                                       `json:"status"`
-	UpdatedAt string                                       `json:"updated_at"`
+	Name      *string                                      `json:"name,omitempty"`
+	State     *string                                      `json:"state,omitempty"`
+	Status    *string                                      `json:"status,omitempty"`
+	UpdatedAt *string                                      `json:"updated_at,omitempty"`
 }
 
 type ListResultVolumesItemAttachmentInstanceIops struct {
@@ -88,10 +88,10 @@ type ListResultVolumesItemError struct {
 	Slug    string `json:"slug"`
 }
 
-// any of: ListResultVolumesItemType
+// any of: *ListResultVolumesItemType
 type ListResultVolumesItemType struct {
 	DiskType *string                                      `json:"disk_type,omitempty"`
-	Id       string                                       `json:"id"`
+	Id       *string                                      `json:"id,omitempty"`
 	Iops     *ListResultVolumesItemAttachmentInstanceIops `json:"iops,omitempty"`
 	Name     *string                                      `json:"name,omitempty"`
 	Status   *string                                      `json:"status,omitempty"`
