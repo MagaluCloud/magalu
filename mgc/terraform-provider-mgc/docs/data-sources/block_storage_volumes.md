@@ -13,12 +13,12 @@ description: |-
 ## Example Usage
 
 ```terraform
-data "mgc_block_storage_volume" "my-volume" {
+data "mgc_block_storage_volumes" "my-volumes" {
   provider = mgc.sudeste
 }
 
-output "my-volume" {
-  value = data.mgc_block_storage_volume.my-volume.name
+output "my-volumes" {
+  value = data.mgc_block_storage_volumes.my-volumes.name
 }
 ```
 
