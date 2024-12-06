@@ -31,7 +31,6 @@ type ListParameters struct {
 	Sort   *string               `json:"_sort,omitempty"`
 	Expand *ListParametersExpand `json:"expand,omitempty"`
 	Name   *string               `json:"name,omitempty"`
-	Type   *string               `json:"type,omitempty"`
 }
 
 type ListParametersExpand []string
@@ -47,17 +46,17 @@ type ListResult struct {
 }
 
 type ListResultVolumesItem struct {
-	Attachment        *ListResultVolumesItemAttachment       `json:"attachment,omitempty"`
-	AvailabilityZones ListResultVolumesItemAvailabilityZones `json:"availability_zones"`
-	CreatedAt         string                                 `json:"created_at"`
-	Error             *ListResultVolumesItemError            `json:"error,omitempty"`
-	Id                string                                 `json:"id"`
-	Name              string                                 `json:"name"`
-	Size              int                                    `json:"size"`
-	State             string                                 `json:"state"`
-	Status            string                                 `json:"status"`
-	Type              ListResultVolumesItemType              `json:"type"`
-	UpdatedAt         string                                 `json:"updated_at"`
+	Attachment       *ListResultVolumesItemAttachment `json:"attachment,omitempty"`
+	AvailabilityZone string                           `json:"availability_zone"`
+	CreatedAt        string                           `json:"created_at"`
+	Error            *ListResultVolumesItemError      `json:"error,omitempty"`
+	Id               string                           `json:"id"`
+	Name             string                           `json:"name"`
+	Size             int                              `json:"size"`
+	State            string                           `json:"state"`
+	Status           string                           `json:"status"`
+	Type             ListResultVolumesItemType        `json:"type"`
+	UpdatedAt        string                           `json:"updated_at"`
 }
 
 type ListResultVolumesItemAttachment struct {
@@ -83,8 +82,6 @@ type ListResultVolumesItemAttachmentInstanceIops struct {
 	Total int `json:"total"`
 	Write int `json:"write"`
 }
-
-type ListResultVolumesItemAvailabilityZones []string
 
 type ListResultVolumesItemError struct {
 	Message string `json:"message"`
