@@ -1,36 +1,20 @@
-# Object operations for Object Storage API
+# Object locking commands
 
 ## Usage:
 ```bash
 Usage:
-  ./mgc object-storage objects [flags]
-  ./mgc object-storage objects [command]
+  ./mgc object-storage objects object-lock [flags]
+  ./mgc object-storage objects object-lock [command]
 ```
 
 ## Product catalog:
 - Commands:
-- acl          ACL related operations
-- copy         Copy an object from a bucket to another bucket
-- copy-all     Copy all objects from a bucket to another bucket
-- delete       Delete an object from a bucket
-- delete-all   Delete all objects from a bucket
-- download     Download an object from a bucket
-- download-all Download all objects from a bucket
-- head         Get object metadata
-- list         List all objects from a bucket
-- move         Moves one object from source to destination
-- move-dir     Moves objects from source to destination
-- object-lock  Object locking commands
-- presign      Generate a pre-signed URL for accessing an object
-- public-url   Get object public url
-- sync         Synchronizes a local path with a bucket
-- upload       Upload a file to a bucket
-- upload-dir   Upload a directory to a bucket
-- versions     Retrieve all versions of an object
+- get         Get object locking configuration for the specified object
+- set         set number of either days or years to lock new objects for
 
 ## Other commands:
 - Flags:
-- -h, --help   help for objects
+- -h, --help   help for object-lock
 
 ## Flags:
 ```bash
