@@ -188,21 +188,6 @@ func ConvertToNodePoolCreate(np *sdkNodepool.CreateResult) NodePool {
 	return nodePool
 }
 
-func Int64PtrInt(i *int64) int {
-	if i != nil {
-		return int(*i)
-	}
-	return 0
-}
-
-func Int64PtrIntPtr(i *int64) *int {
-	if i != nil {
-		val := int(*i)
-		return &val
-	}
-	return nil
-}
-
 func ConvertToNodePoolUpdate(np *sdkNodepool.UpdateResult) NodePool {
 	if np == nil {
 		return NodePool{}

@@ -192,11 +192,11 @@ func (r *NewNodePoolResource) Create(ctx context.Context, req resource.CreateReq
 	}
 
 	if !data.MaxReplicas.IsNull() {
-		createParams.AutoScale.MaxReplicas = tfutil.Int64PtrIntPtr(data.MaxReplicas.ValueInt64Pointer())
+		createParams.AutoScale.MaxReplicas = tfutil.ConvertInt64PointerToIntPointer(data.MaxReplicas.ValueInt64Pointer())
 	}
 
 	if !data.MinReplicas.IsNull() {
-		createParams.AutoScale.MinReplicas = tfutil.Int64PtrIntPtr(data.MinReplicas.ValueInt64Pointer())
+		createParams.AutoScale.MinReplicas = tfutil.ConvertInt64PointerToIntPointer(data.MinReplicas.ValueInt64Pointer())
 	}
 
 	nodepool, err := r.sdkNodepool.CreateContext(ctx, createParams,
@@ -242,10 +242,10 @@ func (r *NewNodePoolResource) Update(ctx context.Context, req resource.UpdateReq
 		tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkNodepool.UpdateConfigs{}))
 
 	if !data.MinReplicas.IsNull() {
-		nodepool.AutoScale.MaxReplicas = tfutil.Int64PtrIntPtr(data.MaxReplicas.ValueInt64Pointer())
+		nodepool.AutoScale.MaxReplicas = tfutil.ConvertInt64PointerToIntPointer(data.MaxReplicas.ValueInt64Pointer())
 	}
 	if !data.MinReplicas.IsNull() {
-		nodepool.AutoScale.MinReplicas = tfutil.Int64PtrIntPtr(data.MinReplicas.ValueInt64Pointer())
+		nodepool.AutoScale.MinReplicas = tfutil.ConvertInt64PointerToIntPointer(data.MinReplicas.ValueInt64Pointer())
 	}
 	if err != nil {
 		resp.Diagnostics.AddError("Failed to update node pool", err.Error())
