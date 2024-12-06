@@ -482,14 +482,18 @@ func (r *vmInstances) updateModelFromRemote(data vmInstancesResourceModel, serve
 	data.FinalName = types.StringValue(*server.Name)
 	data.State = types.StringValue(server.State)
 	data.Status = types.StringValue(server.Status)
-	data.MachineType.ID = types.StringValue(server.MachineType.Id)
-	data.MachineType.Name = types.StringValue(*server.MachineType.Name)
-	data.MachineType.Disk = types.NumberValue(new(big.Float).SetInt64(int64(*server.MachineType.Disk)))
-	data.MachineType.RAM = types.NumberValue(new(big.Float).SetInt64(int64(*server.MachineType.Ram)))
-	data.MachineType.VCPUs = types.NumberValue(new(big.Float).SetInt64(int64(*server.MachineType.Vcpus)))
+	if server.MachineType.Id != data.MachineType.ID.ValueString() {
+		data.MachineType.ID = types.StringValue(server.MachineType.Id)
+		data.MachineType.Name = types.StringValue(*server.MachineType.Name)
+		data.MachineType.Disk = types.NumberValue(new(big.Float).SetInt64(int64(*server.MachineType.Disk)))
+		data.MachineType.RAM = types.NumberValue(new(big.Float).SetInt64(int64(*server.MachineType.Ram)))
+		data.MachineType.VCPUs = types.NumberValue(new(big.Float).SetInt64(int64(*server.MachineType.Vcpus)))
+	}
 
-	data.Image.Name = types.StringValue(*server.Image.Name)
-	data.Image.ID = types.StringValue(server.Image.Id)
+	if server.Image.Id != data.Image.ID.ValueString() {
+		data.Image.Name = types.StringValue(*server.Image.Name)
+		data.Image.ID = types.StringValue(server.Image.Id)
+	}
 
 	if vpc := data.Network.VPC; vpc != nil {
 		vpc.ID = types.StringValue(server.Network.Vpc.Id)
