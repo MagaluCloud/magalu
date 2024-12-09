@@ -113,10 +113,7 @@ func (r *bsVolumes) Schema(_ context.Context, _ resource.SchemaRequest, resp *re
 			},
 			"name": schema.StringAttribute{
 				Description: "The name of the block storage.",
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplace(),
-				},
-				Required: true,
+				Required:    true,
 			},
 			"final_name": schema.StringAttribute{
 				Description: "The final name of the block storage after applying any naming conventions or modifications.",
@@ -275,23 +272,34 @@ func (r *bsVolumes) Create(ctx context.Context, req resource.CreateRequest, resp
 }
 
 func (r *bsVolumes) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	newState := &bsVolumesResourceModel{}
-	currState := &bsVolumesResourceModel{}
+	planData := &bsVolumesResourceModel{}
+	state := &bsVolumesResourceModel{}
 
-	resp.Diagnostics.Append(req.Plan.Get(ctx, &newState)...)
+	resp.Diagnostics.Append(req.Plan.Get(ctx, &planData)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	resp.Diagnostics.Append(req.State.Get(ctx, currState)...)
+	resp.Diagnostics.Append(req.State.Get(ctx, state)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	if newState.Type.Name.ValueString() != currState.Type.Name.ValueString() {
+	if planData.Name.ValueString() != state.Name.ValueString() {
+		err := r.bsVolumes.RenameContext(ctx, sdkBlockStorageVolumes.RenameParameters{
+			Id:   state.ID.ValueString(),
+			Name: planData.Name.ValueString(),
+		}, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkBlockStorageVolumes.RenameConfigs{}))
+		if err != nil {
+			resp.Diagnostics.AddError("Error renaming block storage volume", err.Error())
+			return
+		}
+	}
+
+	if planData.Type.Name.ValueString() != state.Type.Name.ValueString() {
 		err := r.bsVolumes.RetypeContext(ctx, sdkBlockStorageVolumes.RetypeParameters{
-			Id: newState.ID.ValueString(),
+			Id: planData.ID.ValueString(),
 			NewType: sdkBlockStorageVolumes.RetypeParametersNewType{
-				Name: newState.Type.Name.ValueStringPointer(),
+				Name: planData.Type.Name.ValueStringPointer(),
 			},
 		},
 			tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkBlockStorageVolumes.RetypeConfigs{}))
@@ -300,14 +308,14 @@ func (r *bsVolumes) Update(ctx context.Context, req resource.UpdateRequest, resp
 			return
 		}
 		tflog.Debug(ctx, "waiting retry completion")
-		_, _ = r.waitCompletedVolume(ctx, currState.ID.ValueString())
+		_, _ = r.waitCompletedVolume(ctx, state.ID.ValueString())
 		tflog.Info(ctx, "retype performed with success")
 	}
 
-	if newState.Size.ValueInt64() > currState.Size.ValueInt64() {
+	if planData.Size.ValueInt64() > state.Size.ValueInt64() {
 		err := r.bsVolumes.ExtendContext(ctx, sdkBlockStorageVolumes.ExtendParameters{
-			Id:   newState.ID.ValueString(),
-			Size: int(newState.Size.ValueInt64()),
+			Id:   planData.ID.ValueString(),
+			Size: int(planData.Size.ValueInt64()),
 		},
 			tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkBlockStorageVolumes.ExtendConfigs{}))
 		if err != nil {
@@ -318,13 +326,14 @@ func (r *bsVolumes) Update(ctx context.Context, req resource.UpdateRequest, resp
 	}
 
 	tflog.Debug(ctx, "waiting volume completion")
-	getResult, err := r.waitCompletedVolume(ctx, currState.ID.ValueString())
+	getResult, err := r.waitCompletedVolume(ctx, state.ID.ValueString())
 	if err != nil {
 		resp.Diagnostics.AddError("Error Reading block storage", err.Error())
 		return
 	}
-	newState = convertToState(*getResult, currState.Name.ValueString(), currState.NameIsPrefix.ValueBool())
-	resp.Diagnostics.Append(resp.State.Set(ctx, &newState)...)
+
+	planData = convertToState(*getResult, planData.Name.ValueString(), state.NameIsPrefix.ValueBool())
+	resp.Diagnostics.Append(resp.State.Set(ctx, &planData)...)
 }
 
 func (r *bsVolumes) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
