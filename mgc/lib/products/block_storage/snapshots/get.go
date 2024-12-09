@@ -54,7 +54,7 @@ type GetResult struct {
 	Status            string                     `json:"status"`
 	Type              string                     `json:"type"`
 	UpdatedAt         string                     `json:"updated_at"`
-	Volume            GetResultVolume            `json:"volume"`
+	Volume            *GetResultVolume           `json:"volume"`
 }
 
 type GetResultAvailabilityZones []string
