@@ -9,7 +9,7 @@ Engine detail.
 
 Returns a engine detail.
 
-Version: 1.27.1
+Version: 1.34.1
 
 import "magalu.cloud/lib/products/dbaas/engines"
 */

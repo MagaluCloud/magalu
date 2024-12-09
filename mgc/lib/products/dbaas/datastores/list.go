@@ -11,7 +11,7 @@ List available datastores (Deprecated).
 
 Returns a list of available datastores. It is recommended to update your integration to use the newer `/v1/engines` endpoint for improved functionality and future compatibility.
 
-Version: 1.27.1
+Version: 1.34.1
 
 import "magalu.cloud/lib/products/dbaas/datastores"
 */

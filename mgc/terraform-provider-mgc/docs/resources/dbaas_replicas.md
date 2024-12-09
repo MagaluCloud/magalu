@@ -43,6 +43,7 @@ resource "mgc_dbaas_replicas" "dbaas_replica" {
 - `finished_at` (String)
 - `generation` (String) Current database instance generation
 - `id` (String) Database Replica Unique Id
+- `maintenance_scheduled_at` (String)
 - `parameters` (Attributes List) (see [below for nested schema](#nestedatt--parameters))
 - `started_at` (String)
 - `status` (String)

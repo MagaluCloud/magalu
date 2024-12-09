@@ -9,7 +9,7 @@ Starts a database instance.
 
 Starts a database instance.
 
-Version: 1.27.1
+Version: 1.34.1
 
 import "magalu.cloud/lib/products/dbaas/instances"
 */
@@ -33,24 +33,25 @@ type StartConfigs struct {
 }
 
 type StartResult struct {
-	Addresses           StartResultAddresses          `json:"addresses"`
-	BackupRetentionDays int                           `json:"backup_retention_days"`
-	BackupStartAt       string                        `json:"backup_start_at"`
-	CreatedAt           string                        `json:"created_at"`
-	DatastoreId         string                        `json:"datastore_id"`
-	EngineId            string                        `json:"engine_id"`
-	FinishedAt          *string                       `json:"finished_at,omitempty"`
-	FlavorId            string                        `json:"flavor_id"`
-	Generation          string                        `json:"generation"`
-	Id                  string                        `json:"id"`
-	InstanceTypeId      string                        `json:"instance_type_id"`
-	Name                string                        `json:"name"`
-	Parameters          StartResultParameters         `json:"parameters"`
-	Replicas            *StartResultReplicas          `json:"replicas,omitempty"`
-	StartedAt           *string                       `json:"started_at,omitempty"`
-	Status              string                        `json:"status"`
-	UpdatedAt           *string                       `json:"updated_at,omitempty"`
-	Volume              StartResultReplicasItemVolume `json:"volume"`
+	Addresses              StartResultAddresses          `json:"addresses"`
+	BackupRetentionDays    int                           `json:"backup_retention_days"`
+	BackupStartAt          string                        `json:"backup_start_at"`
+	CreatedAt              string                        `json:"created_at"`
+	DatastoreId            string                        `json:"datastore_id"`
+	EngineId               string                        `json:"engine_id"`
+	FinishedAt             *string                       `json:"finished_at,omitempty"`
+	FlavorId               string                        `json:"flavor_id"`
+	Generation             string                        `json:"generation"`
+	Id                     string                        `json:"id"`
+	InstanceTypeId         string                        `json:"instance_type_id"`
+	MaintenanceScheduledAt *string                       `json:"maintenance_scheduled_at,omitempty"`
+	Name                   string                        `json:"name"`
+	Parameters             StartResultParameters         `json:"parameters"`
+	Replicas               *StartResultReplicas          `json:"replicas,omitempty"`
+	StartedAt              *string                       `json:"started_at,omitempty"`
+	Status                 string                        `json:"status"`
+	UpdatedAt              *string                       `json:"updated_at,omitempty"`
+	Volume                 StartResultReplicasItemVolume `json:"volume"`
 }
 
 type StartResultAddressesItem struct {
@@ -72,22 +73,23 @@ type StartResultParametersItemValue any
 type StartResultParameters []StartResultParametersItem
 
 type StartResultReplicasItem struct {
-	Addresses      StartResultReplicasItemAddresses  `json:"addresses"`
-	CreatedAt      string                            `json:"created_at"`
-	DatastoreId    string                            `json:"datastore_id"`
-	EngineId       string                            `json:"engine_id"`
-	FinishedAt     *string                           `json:"finished_at,omitempty"`
-	FlavorId       string                            `json:"flavor_id"`
-	Generation     string                            `json:"generation"`
-	Id             string                            `json:"id"`
-	InstanceTypeId string                            `json:"instance_type_id"`
-	Name           string                            `json:"name"`
-	Parameters     StartResultReplicasItemParameters `json:"parameters"`
-	SourceId       string                            `json:"source_id"`
-	StartedAt      *string                           `json:"started_at,omitempty"`
-	Status         string                            `json:"status"`
-	UpdatedAt      *string                           `json:"updated_at,omitempty"`
-	Volume         StartResultReplicasItemVolume     `json:"volume"`
+	Addresses              StartResultReplicasItemAddresses  `json:"addresses"`
+	CreatedAt              string                            `json:"created_at"`
+	DatastoreId            string                            `json:"datastore_id"`
+	EngineId               string                            `json:"engine_id"`
+	FinishedAt             *string                           `json:"finished_at,omitempty"`
+	FlavorId               string                            `json:"flavor_id"`
+	Generation             string                            `json:"generation"`
+	Id                     string                            `json:"id"`
+	InstanceTypeId         string                            `json:"instance_type_id"`
+	MaintenanceScheduledAt *string                           `json:"maintenance_scheduled_at,omitempty"`
+	Name                   string                            `json:"name"`
+	Parameters             StartResultReplicasItemParameters `json:"parameters"`
+	SourceId               string                            `json:"source_id"`
+	StartedAt              *string                           `json:"started_at,omitempty"`
+	Status                 string                            `json:"status"`
+	UpdatedAt              *string                           `json:"updated_at,omitempty"`
+	Volume                 StartResultReplicasItemVolume     `json:"volume"`
 }
 
 type StartResultReplicasItemAddressesItem struct {

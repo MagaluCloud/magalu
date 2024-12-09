@@ -16,6 +16,7 @@ Usage:
 - list        List all database instances.
 - resize      Resizes a database instance.
 - restores    Backup restore.
+- snapshots   snapshots
 - start       Starts a database instance.
 - stop        Stops a database instance.
 - update      Database instance update.

@@ -10,7 +10,7 @@ List available flavors (Deprecated).
 **Deprecated**: This endpoint is being phased out. Please use the `/v1/instance-types` endpoint to retrieve the list of available instance types instead.
 Returns a list of available instance types. It is recommended to update your integration to use the newer `/v1/instance-types` endpoint for improved functionality and future compatibility.
 
-Version: 1.27.1
+Version: 1.34.1
 
 import "magalu.cloud/lib/products/dbaas/flavors"
 */
