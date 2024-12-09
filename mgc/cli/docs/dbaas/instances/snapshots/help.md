@@ -1,30 +1,24 @@
-# Database instances management.
+# Database instances management. | snapshots
 
 ## Usage:
 ```bash
 Usage:
-  ./mgc dbaas instances [flags]
-  ./mgc dbaas instances [command]
+  ./mgc dbaas instances snapshots [flags]
+  ./mgc dbaas instances snapshots [command]
 ```
 
 ## Product catalog:
 - Commands:
-- backups     backups
-- create      Creates a new database instance.
-- delete      Deletes a database instance.
-- get         Database instance details.
-- list        List all database instances.
-- resize      Resizes a database instance.
-- restores    Backup restore.
-- snapshots   snapshots
-- start       Starts a database instance.
-- stop        Stops a database instance.
-- update      Database instance update.
+- create      Snapshot Create.
+- delete      Delete Snapshot.
+- get         Snapshot Detail.
+- list        Snapshots List.
+- update      Snapshot Update.
 
 ## Other commands:
 - Flags:
-- -h, --help      help for instances
-- -v, --version   version for instances
+- -h, --help      help for snapshots
+- -v, --version   version for snapshots
 
 ## Flags:
 ```bash

@@ -1,29 +1,30 @@
-# Returns a list of database instances for a x-tenant-id.
+# Create a new instance from snapshot.
 
 ## Usage:
 ```bash
 Usage:
-  ./mgc dbaas instances list [flags]
+  ./mgc dbaas snapshots create [snapshot-id] [flags]
 ```
 
 ## Product catalog:
 - Examples:
-- ./mgc dbaas instances list --status="ACTIVE"
+- ./mgc dbaas snapshots create --volume.size=30
 
 ## Other commands:
 - Flags:
-- --control.expand enum       Instance extra attributes or relations to show with the main query. When available, more than one value can be informed using commas. e.g: '--control.expand="replicas"' (must be "replicas")
-- --control.limit integer     The maximum number of items per page. (range: 1 - 25) (default 10)
-- --control.offset integer    The number of items to skip before starting to collect the result set. (min: 0)
-- --engine-id uuid            Value referring to engine Id.
-- -h, --help                      help for list
-- --status enum               Value referring to instance status. (one of "ACTIVE", "BACKING_UP", "CREATING", "DELETED", "DELETING", "ERROR", "ERROR_DELETING", "MAINTENANCE", "MAINTENANCE_ERROR", "PENDING", "REBOOT", "RESIZING", "RESTORING", "STARTING", "STOPPED" or "STOPPING")
-- -v, --version                   version for list
-- --volume.size integer       Volume.Size: Value referring to volume size.
-- --volume.size-gt integer    Volume.Size Gt: Value referring to volume size greater than.
-- --volume.size-gte integer   Volume.Size Gte: Value referring to volume size greater than or equal to.
-- --volume.size-lt integer    Volume.Size Lt: Value referring to volume size less than.
-- --volume.size-lte integer   Volume.Size Lte: Value referring to volume size less than or equal to.
+- --backup-retention-days integer   Backup Retention Days: The number of days that a particular backup is kept until its deletion. (default 7)
+- --backup-start-at time            Backup Start At: Start time (UTC timezone) which is allowed to start the automated backup process. (default "04:00:00")
+- -h, --help                            help for create
+- --instance-type-id uuid           Instance Type Id (required)
+- --name string                     Name (max character count: 100) (required)
+- --snapshot-id uuid                Value referring to snapshot Id. (required)
+- -v, --version                         version for create
+- --volume object                   Instance Volume Request (properties: size and type)
+- Use --volume=help for more details
+- --volume.size integer             Instance Volume Request: The size of the volume (in GiB). (range: 10 - 50000)
+- This is the same as '--volume=size:integer'.
+- --volume.type enum                Instance Volume Request: The type of the volume. (one of "CLOUD_HDD", "CLOUD_NVME" or "CLOUD_NVME_15K")
+- This is the same as '--volume=type:enum'. (default "CLOUD_NVME_15K")
 
 ## Flags:
 ```bash

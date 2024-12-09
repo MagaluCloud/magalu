@@ -2173,6 +2173,8 @@ components:
         - password
         - user
         - volume
+        - engine_id
+        - instance_type_id
       type: object
       properties:
         name:
@@ -2183,20 +2185,6 @@ components:
           title: Engine Id
           type: string
           format: uuid
-        datastore_id:
-          deprecated: true
-          title: Datastore Id (Deprecated)
-          type: string
-          format: uuid
-          description: |
-            **Deprecated**: This property is being deprecated in favor of `engine_id`. Please update your requests to use `engine_id` for improved functionality and future compatibility.
-        flavor_id:
-          deprecated: true
-          title: Flavor Id (Deprecated)
-          type: string
-          format: uuid
-          description: |
-            **Deprecated**: This property is being deprecated in favor of `instance_type_id`. Please update your requests to use `instance_type_id` for improved functionality and future compatibility.
         instance_type_id:
           title: Instance Type Id
           type: string
