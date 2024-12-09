@@ -4,6 +4,7 @@ import (
 	"magalu.cloud/core"
 	"magalu.cloud/core/utils"
 	"magalu.cloud/sdk/static/object_storage/objects/acl"
+	object_lock "magalu.cloud/sdk/static/object_storage/objects/object-lock"
 )
 
 var GetGroup = utils.NewLazyLoader[core.Grouper](func() core.Grouper {
@@ -14,23 +15,24 @@ var GetGroup = utils.NewLazyLoader[core.Grouper](func() core.Grouper {
 		},
 		func() []core.Descriptor {
 			return []core.Descriptor{
-				acl.GetGroup(),   // object-storage objects acl
-				getCopy(),        // object-storage objects copy
-				getCopyAll(),     // object-storage objects copy-all
-				getDelete(),      // object-storage objects delete
-				getDeleteAll(),   // object-storage objects delete-all
-				getDownload(),    // object-storage objects download
-				getDownloadAll(), // object-storage objects download-all
-				getHead(),        // object-storage objects head
-				getList(),        // object-storage objects list
-				getMoveDir(),     // object-storage objects move-dir
-				getMove(),        // object-storage objects move
-				getSync(),        // object-storage objects sync
-				getUpload(),      // object-storage objects upload
-				getUploadDir(),   // object-storage objects upload-dir
-				getPresign(),     // object-storage objects presigned
-				getPublicUrl(),   // object-storage objects public-url
-				getVersions(),    // object-storage objects versions
+				acl.GetGroup(),         // object-storage objects acl
+				getCopy(),              // object-storage objects copy
+				getCopyAll(),           // object-storage objects copy-all
+				getDelete(),            // object-storage objects delete
+				getDeleteAll(),         // object-storage objects delete-all
+				getDownload(),          // object-storage objects download
+				getDownloadAll(),       // object-storage objects download-all
+				getHead(),              // object-storage objects head
+				getList(),              // object-storage objects list
+				getMoveDir(),           // object-storage objects move-dir
+				getMove(),              // object-storage objects move
+				object_lock.GetGroup(), // object-storage objects object-lock
+				getSync(),              // object-storage objects sync
+				getUpload(),            // object-storage objects upload
+				getUploadDir(),         // object-storage objects upload-dir
+				getPresign(),           // object-storage objects presigned
+				getPublicUrl(),         // object-storage objects public-url
+				getVersions(),          // object-storage objects versions
 			}
 		},
 	)

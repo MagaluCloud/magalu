@@ -1,41 +1,26 @@
-# Object operations for Object Storage API
+# set number of either days or years to lock new objects for
 
 ## Usage:
 ```bash
 Usage:
-  ./mgc object-storage objects [flags]
-  ./mgc object-storage objects [command]
+  ./mgc object-storage objects object-lock set [dst] [flags]
 ```
 
 ## Product catalog:
-- Commands:
-- acl          ACL related operations
-- copy         Copy an object from a bucket to another bucket
-- copy-all     Copy all objects from a bucket to another bucket
-- delete       Delete an object from a bucket
-- delete-all   Delete all objects from a bucket
-- download     Download an object from a bucket
-- download-all Download all objects from a bucket
-- head         Get object metadata
-- list         List all objects from a bucket
-- move         Moves one object from source to destination
-- move-dir     Moves objects from source to destination
-- object-lock  Object locking commands
-- presign      Generate a pre-signed URL for accessing an object
-- public-url   Get object public url
-- sync         Synchronizes a local path with a bucket
-- upload       Upload a file to a bucket
-- upload-dir   Upload a directory to a bucket
-- versions     Retrieve all versions of an object
+- Examples:
+- ./mgc object-storage objects object-lock set --retain-until-date="2025-10-03T00:00:00"
 
 ## Other commands:
 - Flags:
-- -h, --help   help for objects
+- --dst uri                    Specifies the object whose lock is being requested (required)
+- -h, --help                       help for set
+- --retain-until-date string   Timestamp in ISO 8601 format (required)
 
 ## Flags:
 ```bash
 Global Flags:
       --api-key string           Use your API key to authenticate with the API
+      --chunk-size integer       Chunk size to consider when doing multipart requests. Specified in Mb (range: 8 - 5120) (default 8)
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is
                                  a duration (ex: 2s) and 'condition' is a 'engine=value' pair such as "jsonpath=expression"
@@ -45,5 +30,8 @@ Global Flags:
       --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
   -o, --output string            Change the output format. Use '--output=help' to know more details.
   -r, --raw                      Output raw data, without any formatting or coloring
+      --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
+      --server-url uri           Manually specify the server to use
+      --workers integer          Number of routines that spawn to do parallel operations within object_storage (min: 1) (default 5)
 ```
 
