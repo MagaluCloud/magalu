@@ -12,7 +12,8 @@ Usage:
 
 ## Product catalog:
 - Commands:
-- ssh-keys    Manage SSH Keys
+- availability-zones Manage Availability Zones
+- ssh-keys           Manage SSH Keys
 
 ## Other commands:
 - Flags:
