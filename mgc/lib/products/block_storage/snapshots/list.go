@@ -69,9 +69,9 @@ type ListResultSnapshotsItemError struct {
 	Slug    string `json:"slug"`
 }
 
-// any of: ListResultSnapshotsItemVolume
+// any of: *ListResultSnapshotsItemVolume
 type ListResultSnapshotsItemVolume struct {
-	Id   string                             `json:"id"`
+	Id   *string                            `json:"id,omitempty"`
 	Name *string                            `json:"name,omitempty"`
 	Size *int                               `json:"size,omitempty"`
 	Type *ListResultSnapshotsItemVolumeType `json:"type,omitempty"`
