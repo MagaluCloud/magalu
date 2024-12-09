@@ -117,9 +117,6 @@ func (r *bsVolumes) Schema(_ context.Context, _ resource.SchemaRequest, resp *re
 			},
 			"name": schema.StringAttribute{
 				Description: "The name of the block storage.",
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplace(),
-				},
 				Required: true,
 			},
 			"final_name": schema.StringAttribute{
