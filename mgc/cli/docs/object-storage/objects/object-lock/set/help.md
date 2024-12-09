@@ -8,7 +8,7 @@ Usage:
 
 ## Product catalog:
 - Examples:
-- ./mgc object-storage objects object-lock set --retain-until-date="2025-10-03T00:00:00Z"
+- ./mgc object-storage objects object-lock set --retain-until-date="2025-10-03T00:00:00"
 
 ## Other commands:
 - Flags:

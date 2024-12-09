@@ -17,7 +17,7 @@ import (
 
 type setObjectLockParams struct {
 	Object          mgcSchemaPkg.URI `json:"dst" jsonschema:"description=Specifies the object whose lock is being requested" mgc:"positional"`
-	RetainUntilDate string           `json:"retain_until_date" jsonschema:"description=Timestamp in ISO 8601 format,example=2025-10-03T00:00:00Z"`
+	RetainUntilDate string           `json:"retain_until_date" jsonschema:"description=Timestamp in ISO 8601 format,example=2025-10-03T00:00:00"`
 	Mode            string           `json:"mode,omitempty" jsonschema:"description=Lock mode,enum=COMPLIANCE,enum=GOVERNANCE,default=COMPLIANCE" mgc:"hidden"`
 }
 
@@ -74,16 +74,15 @@ func newSetObjectLockingRequest(ctx context.Context, p setObjectLockParams, cfg 
 	getBody := func() (io.ReadCloser, error) {
 		var parsedTime time.Time
 
-		parsedTime, err = time.Parse("2006-01-02", p.RetainUntilDate)
+		parsedTime, err = time.Parse("2006-01-02T15:04:05", p.RetainUntilDate)
 		if err != nil {
 			return nil, core.UsageError{Err: err}
 		}
-		bodyObj := common.DefaultObjectRetentionBody(parsedTime)
+		bodyObj := common.DefaultObjectRetentionBody(parsedTime.In(time.Now().Location()))
 		if p.Mode == string(common.ObjectLockModeGovernance) {
 			bodyObj.Mode = common.ObjectLockModeGovernance
 		}
 		body, err := xml.MarshalIndent(bodyObj, "", "  ")
-		fmt.Println(string(body))
 		if err != nil {
 			return nil, err
 		}
