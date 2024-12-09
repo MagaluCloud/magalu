@@ -8,7 +8,7 @@ Usage:
 
 ## Product catalog:
 - Examples:
-- ./mgc kubernetes cluster create --allowed-cidrs='["192.168.1.0/24","10.0.0.0/16"]' --description="This is an example cluster." --enabled-bastion=false --enabled-server-group=false --name="cluster-example" --node-pools='[{"auto_scale":{"max_replicas":5,"min_replicas":2},"flavor":"cloud-k8s.gp1.small","name":"nodepool-example","replicas":3,"tags":["tag-value1"],"taints":[{"effect":"NoSchedule","key":"example-key","value":"valor1"}]}]' --param.version="v1.30.2" --zone="br-region-zone"
+- ./mgc kubernetes cluster create --allowed-cidrs='["192.168.1.0/24","10.0.0.0/16"]' --description="This is an example cluster." --enabled-bastion=false --enabled-server-group=false --name="cluster-example" --node-pools='[{"auto_scale":{"max_replicas":5,"min_replicas":2},"flavor":"cloud-k8s.gp1.small","name":"nodepool-example","replicas":3,"tags":["tag-value1"],"taints":[{"effect":"NoSchedule","key":"example-key","value":"valor1"}]}]' --param.version="v1.30.2"
 
 ## Other commands:
 - Flags:
@@ -37,8 +37,6 @@ Usage:
 - Please specify the Kubernetes version using the standard "vX.Y.Z" format.
 - (default "v1.30.2")
 - -v, --version                       version for create
-- --zone string                   [Deprecated] This parameter is deprecated and its use won't create a cluster at requested zone.
-- Identifier of the zone where the Kubernetes cluster will be located.
 
 ## Flags:
 ```bash

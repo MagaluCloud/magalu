@@ -470,19 +470,24 @@ func convertToControlplane(cp *cluster.GetResultControlplane) *Controlplane {
 	}
 
 	controlplane := &Controlplane{
-		MaxReplicas: types.Int64Value(int64(cp.AutoScale.MaxReplicas)),
-		MinReplicas: types.Int64Value(int64(cp.AutoScale.MinReplicas)),
-		CreatedAt:   types.StringPointerValue(cp.CreatedAt),
-		ID:          types.StringValue(cp.Id),
-		DiskSize:    types.Int64Value(int64(cp.InstanceTemplate.DiskSize)),
-		DiskType:    types.StringValue(cp.InstanceTemplate.DiskType),
-		FlavorID:    types.StringValue(cp.InstanceTemplate.Flavor.Id),
-		FlavorName:  types.StringValue(cp.InstanceTemplate.Flavor.Name),
-		NodeImage:   types.StringValue(cp.InstanceTemplate.NodeImage),
-		Name:        types.StringValue(cp.Name),
-		Replicas:    types.Int64Value(int64(cp.Replicas)),
-		State:       types.StringValue(cp.Status.State),
-		UpdatedAt:   types.StringPointerValue(cp.UpdatedAt),
+		CreatedAt:  types.StringPointerValue(cp.CreatedAt),
+		ID:         types.StringValue(cp.Id),
+		DiskSize:   types.Int64Value(int64(cp.InstanceTemplate.DiskSize)),
+		DiskType:   types.StringValue(cp.InstanceTemplate.DiskType),
+		FlavorID:   types.StringValue(cp.InstanceTemplate.Flavor.Id),
+		FlavorName: types.StringValue(cp.InstanceTemplate.Flavor.Name),
+		NodeImage:  types.StringValue(cp.InstanceTemplate.NodeImage),
+		Name:       types.StringValue(cp.Name),
+		Replicas:   types.Int64Value(int64(cp.Replicas)),
+		State:      types.StringValue(cp.Status.State),
+		UpdatedAt:  types.StringPointerValue(cp.UpdatedAt),
+	}
+
+	if cp.AutoScale.MaxReplicas != nil {
+		controlplane.MaxReplicas = types.Int64Value(int64(*cp.AutoScale.MaxReplicas))
+	}
+	if cp.AutoScale.MinReplicas != nil {
+		controlplane.MinReplicas = types.Int64Value(int64(*cp.AutoScale.MinReplicas))
 	}
 
 	// Convert Labels

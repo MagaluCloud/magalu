@@ -53,8 +53,8 @@ type GetResult struct {
 // Object specifying properties for updating workload resources in the Kubernetes cluster.
 
 type GetResultAutoScale struct {
-	MaxReplicas int `json:"max_replicas"`
-	MinReplicas int `json:"min_replicas"`
+	MaxReplicas *int `json:"max_replicas"`
+	MinReplicas *int `json:"min_replicas"`
 }
 
 // Template for the instance object used to create machine instances and managed instance groups.
