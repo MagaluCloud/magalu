@@ -43,17 +43,17 @@ type GetConfigs struct {
 }
 
 type GetResult struct {
-	Attachment        *GetResultAttachment       `json:"attachment,omitempty"`
-	AvailabilityZones GetResultAvailabilityZones `json:"availability_zones"`
-	CreatedAt         string                     `json:"created_at"`
-	Error             *GetResultError            `json:"error,omitempty"`
-	Id                string                     `json:"id"`
-	Name              string                     `json:"name"`
-	Size              int                        `json:"size"`
-	State             string                     `json:"state"`
-	Status            string                     `json:"status"`
-	Type              GetResultType              `json:"type"`
-	UpdatedAt         string                     `json:"updated_at"`
+	Attachment       *GetResultAttachment `json:"attachment,omitempty"`
+	AvailabilityZone string               `json:"availability_zone"`
+	CreatedAt        string               `json:"created_at"`
+	Error            *GetResultError      `json:"error,omitempty"`
+	Id               string               `json:"id"`
+	Name             string               `json:"name"`
+	Size             int                  `json:"size"`
+	State            string               `json:"state"`
+	Status           string               `json:"status"`
+	Type             GetResultType        `json:"type"`
+	UpdatedAt        string               `json:"updated_at"`
 }
 
 type GetResultAttachment struct {
@@ -71,8 +71,6 @@ type GetResultAttachmentInstance struct {
 	Status    string `json:"status"`
 	UpdatedAt string `json:"updated_at"`
 }
-
-type GetResultAvailabilityZones []string
 
 type GetResultError struct {
 	Message string `json:"message"`

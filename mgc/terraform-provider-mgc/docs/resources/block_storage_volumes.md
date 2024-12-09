@@ -34,7 +34,7 @@ resource "mgc_block_storage_volumes" "example_volume" {
 
 ### Optional
 
-- `availability_zones` (List of String) The availability zones where the block storage is available.
+- `availability_zone` (String) The availability zones where the block storage is available.
 - `name_is_prefix` (Boolean) Indicates whether the provided name is a prefix or the exact name of the block storage.
 - `snapshot_id` (String) The unique identifier of the snapshot used to create the block storage.
 

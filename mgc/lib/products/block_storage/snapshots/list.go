@@ -59,7 +59,7 @@ type ListResultSnapshotsItem struct {
 	Status            string                                   `json:"status"`
 	Type              string                                   `json:"type"`
 	UpdatedAt         string                                   `json:"updated_at"`
-	Volume            ListResultSnapshotsItemVolume            `json:"volume"`
+	Volume            *ListResultSnapshotsItemVolume           `json:"volume"`
 }
 
 type ListResultSnapshotsItemAvailabilityZones []string

@@ -2397,17 +2397,6 @@ components:
                         '
                     default: ''
                     example: This is an example cluster.
-                zone:
-                    type: string
-                    description: '[Deprecated] This parameter is deprecated and its
-                        use won''t create a cluster at requested zone.
-
-                        Identifier of the zone where the Kubernetes cluster will be
-                        located.
-
-                        '
-                    example: br-region-zone
-                    deprecated: true
                 enabled_bastion:
                     type: boolean
                     description: '[Deprecated] This parameter is deprecated and its

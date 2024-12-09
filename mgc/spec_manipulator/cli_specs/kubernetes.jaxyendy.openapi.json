@@ -2260,12 +2260,6 @@
             "default": "",
             "example": "This is an example cluster."
           },
-          "zone": {
-            "type": "string",
-            "description": "[Deprecated] This parameter is deprecated and its use won't create a cluster at requested zone.\nIdentifier of the zone where the Kubernetes cluster will be located.\n",
-            "example": "br-region-zone",
-            "deprecated": true
-          },
           "enabled_bastion": {
             "type": "boolean",
             "description": "[Deprecated] This parameter is deprecated and its use won't create a bastion server\nEnables the use of a bastion host for secure access to the cluster.\n",

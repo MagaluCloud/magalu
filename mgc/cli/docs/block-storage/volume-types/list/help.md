@@ -18,6 +18,7 @@
 Flags:
       --availability-zone string   Availability-Zone
   -h, --help                       help for list
+      --name string                Name
   -v, --version                    version for list
 ```
 
