@@ -1,5 +1,5 @@
 resource "mgc_block_storage_volumes" "example_volume" {
-  name              = "example-volume-2"
+  name              = "example-volume"
   availability_zone = "br-ne1-a"
   size              = 110
   type = {
