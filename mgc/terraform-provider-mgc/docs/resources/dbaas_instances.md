@@ -55,6 +55,7 @@ resource "mgc_dbaas_instances" "dbaas_instances" {
 - `finished_at` (String)
 - `generation` (String) Current database instance generation
 - `id` (String) Value referring to instance Id.
+- `maintenance_scheduled_at` (String)
 - `replicas` (Attributes List) (see [below for nested schema](#nestedatt--replicas))
 - `started_at` (String)
 - `updated_at` (String)
@@ -126,6 +127,7 @@ Read-Only:
 - `generation` (String) Current database instance generation
 - `id` (String)
 - `instance_type_id` (String)
+- `maintenance_scheduled_at` (String)
 - `name` (String)
 - `parameters` (Attributes List) (see [below for nested schema](#nestedatt--replicas--parameters))
 - `source_id` (String)
