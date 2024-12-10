@@ -9,7 +9,7 @@ List available instance types.
 
 Returns a list of available instance types. An instance type is a hardware template that defines the size of RAM and vCPU.
 
-Version: 1.27.1
+Version: 1.34.1
 
 import "magalu.cloud/lib/products/dbaas/instance_types"
 */

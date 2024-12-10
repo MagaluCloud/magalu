@@ -15,13 +15,9 @@ Usage:
 - --backup-retention-days integer   Backup Retention Days: The number of days that a particular backup is kept until its deletion. (default 7)
 - --backup-start-at time            Backup Start At: Start time (UTC timezone) which is allowed to start the automated backup process. (default "04:00:00")
 - --cli.list-links enum[=table]     List all available links for this command (one of "json", "table" or "yaml")
-- --datastore-id uuid               Datastore Id (Deprecated): **Deprecated**: This property is being deprecated in favor of 'engine_id'. Please update your requests to use 'engine_id' for improved functionality and future compatibility.
-- 
-- --engine-id uuid                  Engine Id
-- --flavor-id uuid                  Flavor Id (Deprecated): **Deprecated**: This property is being deprecated in favor of 'instance_type_id'. Please update your requests to use 'instance_type_id' for improved functionality and future compatibility.
-- 
+- --engine-id uuid                  Engine Id (required)
 - -h, --help                            help for create
-- --instance-type-id uuid           Instance Type Id
+- --instance-type-id uuid           Instance Type Id (required)
 - --name string                     Name (max character count: 100) (required)
 - --parameters array(object)        Use --parameters=help for more details (default [])
 - --password string                 Password (max character count: 50) (required)

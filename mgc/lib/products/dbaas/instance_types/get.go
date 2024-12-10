@@ -9,7 +9,7 @@ Instance Type detail.
 
 Returns an instance type detail.
 
-Version: 1.27.1
+Version: 1.34.1
 
 import "magalu.cloud/lib/products/dbaas/instance_types"
 */

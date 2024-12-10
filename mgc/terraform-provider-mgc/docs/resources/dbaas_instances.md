@@ -13,15 +13,16 @@ Database instances management.
 ## Example Usage
 
 ```terraform
-resource "mgc_dbaas_instances" "dbaas_instances" {
-  name             = "my-database-instance"
-  user             = "db_user"
-  password         = "secure_password123"
-  engine_id        = "063f3994-b6c2-4c37-96c9-bab8d82d36f7" #mysql 8.0 - please check the available version
-  instance_type_id = "c460d5c1-883d-4fea-afc3-1a208e982084" #cloud-dbaas-bs1.medium - please check the available engine
-  volume = {
-    size = 50 # Size in GiB
-  }
+resource "mgc_dbaas_instances" "test_instance" {
+  name                 = "test-instance"
+  user                 = "dbadmin"
+  password             = "examplepassword"
+  engine_name          = "mysql"
+  engine_version       = "8.0"
+  instance_type        = "cloud-dbaas-gp1.small"
+  volume_size          = 50
+  backup_retention_days = 10
+  backup_start_at      = "16:00:00"
 }
 ```
 
@@ -30,6 +31,8 @@ resource "mgc_dbaas_instances" "dbaas_instances" {
 
 ### Required
 
+- `engine_id` (String)
+- `instance_type_id` (String)
 - `name` (String)
 - `password` (String)
 - `user` (String)
@@ -39,10 +42,6 @@ resource "mgc_dbaas_instances" "dbaas_instances" {
 
 - `backup_retention_days` (Number) The number of days that a particular backup is kept until its deletion.
 - `backup_start_at` (String) Start time (UTC timezone) which is allowed to start the automated backup process.
-- `datastore_id` (String) **Deprecated**: This property is being deprecated in favor of `engine_id`. Please update your requests to use `engine_id` for improved functionality and future compatibility.
-- `engine_id` (String)
-- `flavor_id` (String) **Deprecated**: This property is being deprecated in favor of `instance_type_id`. Please update your requests to use `instance_type_id` for improved functionality and future compatibility.
-- `instance_type_id` (String)
 - `parameters` (Attributes List) (see [below for nested schema](#nestedatt--parameters))
 - `status` (String)
 
@@ -52,9 +51,14 @@ resource "mgc_dbaas_instances" "dbaas_instances" {
 - `created_at` (String)
 - `current_status` (String)
 - `current_volume` (Attributes) (see [below for nested schema](#nestedatt--current_volume))
+- `datastore_id` (String) Datastore unique identifier (Deprecated).
+**Deprecated**: This property is being deprecated in favor of `engine_id`. Please update your requests to use `engine_id` for improved functionality and future compatibility.
 - `finished_at` (String)
+- `flavor_id` (String) Flavor unique identifier. Instance size  (Deprecated).
+**Deprecated**: This property is being deprecated in favor of `instance_type_id`. Please update your requests to use `instance_type_id` for improved functionality and future compatibility.
 - `generation` (String) Current database instance generation
 - `id` (String) Value referring to instance Id.
+- `maintenance_scheduled_at` (String)
 - `replicas` (Attributes List) (see [below for nested schema](#nestedatt--replicas))
 - `started_at` (String)
 - `updated_at` (String)
@@ -126,6 +130,7 @@ Read-Only:
 - `generation` (String) Current database instance generation
 - `id` (String)
 - `instance_type_id` (String)
+- `maintenance_scheduled_at` (String)
 - `name` (String)
 - `parameters` (Attributes List) (see [below for nested schema](#nestedatt--replicas--parameters))
 - `source_id` (String)
