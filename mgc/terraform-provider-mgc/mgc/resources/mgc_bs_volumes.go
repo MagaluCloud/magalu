@@ -123,6 +123,7 @@ func (r *bsVolumes) Schema(_ context.Context, _ resource.SchemaRequest, resp *re
 				Description: "The unique identifier of the snapshot used to create the block storage.",
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
+					stringplanmodifier.UseStateForUnknown(),
 				},
 				Optional: true,
 			},
@@ -184,8 +185,7 @@ func (r *bsVolumes) Schema(_ context.Context, _ resource.SchemaRequest, resp *re
 
 }
 
-func convertToState(result sdkBlockStorageVolumes.GetResult, originalName string, originalIsPrefix bool) *bsVolumesResourceModel {
-	state := bsVolumesResourceModel{}
+func convertToState(state *bsVolumesResourceModel, result sdkBlockStorageVolumes.GetResult, originalName string, originalIsPrefix bool) {
 	state.ID = types.StringValue(result.Id)
 	state.FinalName = types.StringValue(result.Name)
 	state.NameIsPrefix = types.BoolValue(originalIsPrefix)
@@ -201,7 +201,7 @@ func convertToState(result sdkBlockStorageVolumes.GetResult, originalName string
 	}
 	state.AvailabilityZone = types.StringValue(result.AvailabilityZone)
 	state.CreatedAt = types.StringValue(result.CreatedAt)
-	return &state
+	state.UpdatedAt = types.StringValue(time.Now().String())
 }
 
 func (r *bsVolumes) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
@@ -220,7 +220,7 @@ func (r *bsVolumes) Read(ctx context.Context, req resource.ReadRequest, resp *re
 		)
 		return
 	}
-	plan = convertToState(getResult, plan.Name.ValueString(), plan.NameIsPrefix.ValueBool())
+	convertToState(plan, getResult, plan.Name.ValueString(), plan.NameIsPrefix.ValueBool())
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
 
@@ -264,10 +264,7 @@ func (r *bsVolumes) Create(ctx context.Context, req resource.CreateRequest, resp
 		return
 	}
 
-	state = convertToState(*getCreatedResource, state.Name.ValueString(), state.NameIsPrefix.ValueBool())
-	if createParam.Snapshot != nil && createParam.Snapshot.Id != "" {
-		state.SnapshotID = types.StringValue(createParam.Snapshot.Id)
-	}
+	convertToState(state, *getCreatedResource, state.Name.ValueString(), state.NameIsPrefix.ValueBool())
 	resp.Diagnostics.Append(resp.State.Set(ctx, state)...)
 }
 
@@ -332,7 +329,7 @@ func (r *bsVolumes) Update(ctx context.Context, req resource.UpdateRequest, resp
 		return
 	}
 
-	planData = convertToState(*getResult, planData.Name.ValueString(), state.NameIsPrefix.ValueBool())
+	convertToState(planData, *getResult, planData.Name.ValueString(), state.NameIsPrefix.ValueBool())
 	resp.Diagnostics.Append(resp.State.Set(ctx, &planData)...)
 }
 
