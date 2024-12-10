@@ -201,7 +201,10 @@ func convertToState(state *bsVolumesResourceModel, result sdkBlockStorageVolumes
 	}
 	state.AvailabilityZone = types.StringValue(result.AvailabilityZone)
 	state.CreatedAt = types.StringValue(result.CreatedAt)
-	state.UpdatedAt = types.StringValue(time.Now().String())
+	state.UpdatedAt = types.StringValue(result.CreatedAt)
+	if result.UpdatedAt != "" {
+		state.UpdatedAt = types.StringValue(result.UpdatedAt)
+	}
 }
 
 func (r *bsVolumes) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
