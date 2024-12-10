@@ -180,7 +180,9 @@ paths:
       tags:
         - flavors
       summary: List available flavors (Deprecated).
-      description: "**Deprecated**: This endpoint is being phased out. Please use the `/v1/instance-types` endpoint to retrieve the list of available instance types instead.\nReturns a list of available instance types. It is recommended to update your integration to use the newer `/v1/instance-types` endpoint for improved functionality and future compatibility.           \n"
+      description: |
+        **Deprecated**: This endpoint is being phased out. Please use the `/v1/instance-types` endpoint to retrieve the list of available instance types instead.
+        Returns a list of available instance types. It is recommended to update your integration to use the newer `/v1/instance-types` endpoint for improved functionality and future compatibility.           
       parameters:
         - $ref: "#/components/parameters/offset"
         - $ref: "#/components/parameters/limit_medium"
@@ -216,7 +218,8 @@ paths:
         - OAuth2PreProd:
             - dbaas.read
         - OAuth2Prod:
-            - dbaas.read
+            - dbaas.read            
+ 
   /v1/flavors/{instance_type_id}:
     get:
       operationId: flavors_v1_get_by_id
@@ -224,8 +227,10 @@ paths:
       tags:
         - flavors
       summary: Flavor detail (Deprecated).
-      description: "**Deprecated**: This endpoint is being phased out. Please use the /v1/instance-types endpoint to retrieve the list of available instance types instead.\nReturns an instance type detail. It is recommended to update your integration to use the newer `/v1/instance-types/{instance_type_id}` endpoint for improved functionality and future compatibility.           \n"
-      parameters:
+      description: |
+        **Deprecated**: This endpoint is being phased out. Please use the /v1/instance-types endpoint to retrieve the list of available instance types instead.
+        Returns an instance type detail. It is recommended to update your integration to use the newer `/v1/instance-types/{instance_type_id}` endpoint for improved functionality and future compatibility.           
+      parameters:        
         - required: true
           schema:
             title: Flavor Id
@@ -302,10 +307,10 @@ paths:
         - OAuth2PreProd:
             - dbaas.read
         - OAuth2Prod:
-            - dbaas.read
+            - dbaas.read            
   /v1/instance-types/{instance_type_id}:
     get:
-      operationId: instance_types_v1_get_by_id
+      operationId: instance_types_v1_get_by_id     
       tags:
         - instance_types
       summary: Instance Type detail.
@@ -344,7 +349,7 @@ paths:
         - OAuth2PreProd:
             - dbaas.read
         - OAuth2Prod:
-            - dbaas.read
+            - dbaas.read            
   /v1/instances:
     get:
       operationId: instances_v1_get_all
@@ -1600,7 +1605,7 @@ components:
       in: query
       schema:
         $ref: "#/components/schemas/EngineStatus"
-      description: Value referring to engine status.
+      description: Value referring to engine status.    
     instance_type_status:
       name: status
       in: query
@@ -1688,7 +1693,7 @@ components:
           type: integer
           description: The maximum number of items per page.
         count:
-          title: Count
+          title: Count 
           type: integer
           description: The number of items on the current page.
         total:
@@ -1839,8 +1844,9 @@ components:
     BackupInstanceDetailResponse:
       title: Instance Detail Response
       description: >
-        This response object provides details about a database instance associated with a backup.  It is provided only if the originating database instance of the backup is not deleted.  If the originating instance is deleted, no instance details will be provided.
-
+        This response object provides details about a database instance associated with a backup. 
+        It is provided only if the originating database instance of the backup is not deleted. 
+        If the originating instance is deleted, no instance details will be provided.
       required:
         - id
         - name
@@ -1943,7 +1949,6 @@ components:
       title: Instance Detail Response
       description: >
         This response object provides details about a database instance associated with a snapshot.
-
       required:
         - id
         - name
@@ -2039,12 +2044,12 @@ components:
       type: object
       properties:
         meta:
-          $ref: '#/components/schemas/MetaResponse'
+            $ref: '#/components/schemas/MetaResponse'
         results:
           title: Results
           type: array
           items:
-            $ref: "#/components/schemas/InstanceType"
+            $ref: "#/components/schemas/InstanceType"            
     AddressAccess:
       title: Address Access
       type: string
@@ -2165,6 +2170,8 @@ components:
         - password
         - user
         - volume
+        - engine_id
+        - instance_type_id
       type: object
       properties:
         name:
@@ -2175,20 +2182,6 @@ components:
           title: Engine Id
           type: string
           format: uuid
-        datastore_id:
-          deprecated: true
-          title: Datastore Id (Deprecated)
-          type: string
-          format: uuid
-          description: |
-            **Deprecated**: This property is being deprecated in favor of `engine_id`. Please update your requests to use `engine_id` for improved functionality and future compatibility.
-        flavor_id:
-          deprecated: true
-          title: Flavor Id (Deprecated)
-          type: string
-          format: uuid
-          description: |
-            **Deprecated**: This property is being deprecated in favor of `instance_type_id`. Please update your requests to use `instance_type_id` for improved functionality and future compatibility.
         instance_type_id:
           title: Instance Type Id
           type: string
@@ -2418,7 +2411,7 @@ components:
       type: object
       properties:
         meta:
-          $ref: '#/components/schemas/MetaResponse'
+            $ref: '#/components/schemas/MetaResponse'
         results:
           title: Results
           type: array
@@ -2465,7 +2458,7 @@ components:
       type: string
       enum:
         - ACTIVE
-        - DEPRECATED
+        - DEPRECATED    
     InstanceExpand:
       title: Instance Expand
       description: An enumeration.
@@ -2488,7 +2481,7 @@ components:
       type: object
       properties:
         meta:
-          $ref: '#/components/schemas/MetaResponse'
+            $ref: '#/components/schemas/MetaResponse'
         results:
           title: Results
           type: array
@@ -2545,6 +2538,7 @@ components:
             **Deprecated**: This property is being deprecated in favor of `instance_type_id`. Please update your requests to use `engine_id` for improved functionality and future compatibility.
           type: string
           format: uuid
+        
         volume:
           $ref: "#/components/schemas/Volume"
         addresses:
@@ -2610,7 +2604,9 @@ components:
           type: string
         flavor_id:
           deprecated: true
-          description: "Flavor Id (Deprecated).\n**Deprecated**: This property is being deprecated in favor of `instance_type_id`. Please update your requests to use `instance_type_id` for improved functionality and future compatibility.          \n"
+          description: |
+            Flavor Id (Deprecated).
+            **Deprecated**: This property is being deprecated in favor of `instance_type_id`. Please update your requests to use `instance_type_id` for improved functionality and future compatibility.          
           type: string
           format: uuid
         instance_type_id:
@@ -2788,7 +2784,7 @@ components:
         sku_replica:
           description: SKU Database Instance Replica.
           type: string
-          example: BRNE10610101sm
+          example: BRNE10610101sm          
     ErrorResponse:
       title: Error Response
       type: object
