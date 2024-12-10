@@ -1,5 +1,6 @@
-resource "mgc_dbaas_instances_snapshots" "backup" {
-  description  = "My description"
-  instance_id  = mgc_dbaas_instances.instance.id
-  name         = "my-name"
+# Create a snapshot for a DBaaS instance
+resource "mgc_dbaas_instances_snapshots" "example" {
+  instance_id  = mgc_dbaas_instances.my_instance.id
+  name        = "example-snapshot"
+  description = "Snapshot created via Terraform"
 }

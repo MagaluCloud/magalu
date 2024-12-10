@@ -148,7 +148,9 @@ func (p *mgcProvider) Resources(ctx context.Context) []func() resource.Resource 
 		resources.NewNetworkPublicIPAttachResource,
 		resources.NewNetworkVpcsSubnetsResource,
 		resources.NewNetworkSubnetpoolsResource,
-		// resources.NewDBaaSInstanceResource,
+		resources.NewDBaaSInstanceResource,
+		resources.NewDBaaSInstanceBackupResource,
+		resources.NewDBaaSInstanceSnapshotResource,
 	)
 }
 
@@ -175,10 +177,14 @@ func (p *mgcProvider) DataSources(ctx context.Context) []func() datasource.DataS
 		datasources.NewDataSourceBSSnapshot,
 		datasources.NewDataSourceBsVolume,
 		datasources.NewDataSourceBsVolumeTypes,
-		// datasources.NewDataSourceDbaasEngines,
-		// datasources.NewDataSourceDbaasInstanceTypes,
-		// datasources.NewDataSourceDbaasInstances,
-		// datasources.NewDataSourceDbaasInstance,
+		datasources.NewDataSourceDbaasEngines,
+		datasources.NewDataSourceDbaasInstanceTypes,
+		datasources.NewDataSourceDbaasInstances,
+		datasources.NewDataSourceDbaasInstance,
+		datasources.NewDataSourceDbaasInstancesBackups,
+		datasources.NewDataSourceDbaasInstancesSnapshots,
+		datasources.NewDataSourceDbaasInstancesBackup,
+		datasources.NewDataSourceDbaasInstancesSnapshot,
 	}
 }
 

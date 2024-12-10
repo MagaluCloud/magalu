@@ -3,20 +3,21 @@
 page_title: "mgc_dbaas_instances_snapshots Resource - terraform-provider-mgc"
 subcategory: "Database"
 description: |-
-  Database instances management. | snapshots
+  Manages a DBaaS instance snapshot
 ---
 
 # mgc_dbaas_instances_snapshots (Resource)
 
-Database instances management. | snapshots
+Manages a DBaaS instance snapshot
 
 ## Example Usage
 
 ```terraform
-resource "mgc_dbaas_instances_snapshots" "backup" {
-  description  = "My description"
-  instance_id  = mgc_dbaas_instances.instance.id
-  name         = "my-name"
+# Create a snapshot for a DBaaS instance
+resource "mgc_dbaas_instances_snapshots" "example" {
+  instance_id  = mgc_dbaas_instances.my_instance.id
+  name        = "example-snapshot"
+  description = "Snapshot created via Terraform"
 }
 ```
 
@@ -25,26 +26,18 @@ resource "mgc_dbaas_instances_snapshots" "backup" {
 
 ### Required
 
-- `description` (String) Snapshot description.
-- `instance_id` (String) Value referring to instance Id.
-- `name` (String) Snapshot unique name.
+- `description` (String) Description of the snapshot
+- `instance_id` (String) ID of the DBaaS instance to snapshot
+- `name` (String) Name of the snapshot
 
 ### Read-Only
 
-- `allocated_size` (Number) Allocated size in gibibytes.
-- `created_at` (String)
-- `finished_at` (String)
-- `id` (String) Value referring to snapshot Id.
-- `instance` (Attributes) This response object provides details about a database instance associated with a snapshot. (see [below for nested schema](#nestedatt--instance))
-- `started_at` (String)
-- `status` (String) An enumeration.
-- `type` (String) An enumeration.
-- `updated_at` (String)
+- `id` (String) Unique identifier for the snapshot
 
-<a id="nestedatt--instance"></a>
-### Nested Schema for `instance`
+## Import
 
-Read-Only:
+Import is supported using the following syntax:
 
-- `id` (String) Database instance unique identifier.
-- `name` (String) Database instance unique name.
+```shell
+terraform import mgc_dbaas_instances_snapshots.example "instance-123,snapshot-456"
+```
