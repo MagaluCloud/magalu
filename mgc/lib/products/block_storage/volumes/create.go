@@ -45,15 +45,15 @@ type CreateParameters struct {
 	Type             CreateParametersType      `json:"type"`
 }
 
-// any of: CreateParametersSnapshot
+// any of: *CreateParametersSnapshot
 type CreateParametersSnapshot struct {
-	Id   string  `json:"id"`
+	Id   *string `json:"id,omitempty"`
 	Name *string `json:"name,omitempty"`
 }
 
-// any of: CreateParametersType
+// any of: *CreateParametersType
 type CreateParametersType struct {
-	Id   string  `json:"id"`
+	Id   *string `json:"id,omitempty"`
 	Name *string `json:"name,omitempty"`
 }
 
@@ -64,7 +64,7 @@ type CreateConfigs struct {
 }
 
 type CreateResult struct {
-	Id   string            `json:"id"`
+	Id   *string           `json:"id,omitempty"`
 	Name *string           `json:"name,omitempty"`
 	Size *int              `json:"size,omitempty"`
 	Type *CreateResultType `json:"type,omitempty"`
