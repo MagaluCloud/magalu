@@ -2,6 +2,10 @@ openapi: 3.0.3
 info:
     title: Global resources management
     description: Manage users global data
+    contact:
+        name: Tribo IAAS Cloud
+        url: https://gitlab.luizalabs.com/
+        email: leandro.poloni@luizalabs.com
     version: 0.1.0
 paths:
     /v0/ssh-keys:
@@ -31,10 +35,8 @@ paths:
                 in: query
                 required: false
                 schema:
-                    anyOf:
-                    -   type: string
+                    type: string
                     title: ' Sort'
-                    nullable: true
                     default: name:asc
             responses:
                 '200':
@@ -153,33 +155,36 @@ paths:
             security:
             -   OAuth2:
                 - gdb:ssh-pkey-w
-    /healthcheck:
+    /v0/availability-zones:
         get:
-            summary: Healthcheck
-            operationId: healthcheck_healthcheck_get
+            tags:
+            - availability_zones
+            summary: List all availability zones.
+            operationId: list_availability_zones
+            parameters:
+            -   name: show_is_blocked
+                in: query
+                required: false
+                schema:
+                    type: boolean
+                    title: Show Is Blocked
+                    default: false
             responses:
                 '200':
                     description: Successful Response
                     content:
                         application/json:
-                            schema: {}
-            security:
-            -   OAuth2:
-                - profile.read
-    /metrics:
-        get:
-            summary: Metrics
-            description: Endpoint that serves Prometheus metrics.
-            operationId: metrics_metrics_get
-            responses:
-                '200':
-                    description: Successful Response
+                            schema:
+                                $ref: '#/components/schemas/UserRegionsPublicOutput'
+                '422':
+                    description: Validation Error
                     content:
                         application/json:
-                            schema: {}
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
             security:
             -   OAuth2:
-                - profile.read
+                - gdb:azs-r
 components:
     schemas:
         HTTPValidationError:
@@ -195,6 +200,13 @@ components:
             example:
                 message: Unauthorized
                 slug: Unauthorized
+        PublicAZBlockType:
+            type: string
+            title: PublicAZBlockType
+            enum:
+            - none
+            - total
+            - read-only
         SSHPubKeyPublicInput:
             type: object
             properties:
@@ -272,6 +284,88 @@ components:
             title: SSHPubKeyPublicOutputList
             required:
             - results
+        UserAvailabilityZonePublicOutput:
+            type: object
+            properties:
+                az_id:
+                    type: string
+                    title: Az Id
+                    example: br-se1-a
+                block_type:
+                    allOf:
+                    -   $ref: '#/components/schemas/PublicAZBlockType'
+                    example: total
+            title: UserAvailabilityZonePublicOutput
+            required:
+            - az_id
+            - block_type
+        UserRegionPublicOutput:
+            type: object
+            properties:
+                region_id:
+                    type: string
+                    title: Region Id
+                    example: br-se1
+                availability_zones:
+                    type: array
+                    items:
+                        type: object
+                        properties:
+                            az_id:
+                                type: string
+                                title: Az Id
+                                example: br-se1-a
+                            block_type:
+                                allOf:
+                                -   $ref: '#/components/schemas/PublicAZBlockType'
+                                example: total
+                        title: UserAvailabilityZonePublicOutput
+                        required:
+                        - az_id
+                        - block_type
+                    title: Availability Zones
+            title: UserRegionPublicOutput
+            required:
+            - region_id
+            - availability_zones
+        UserRegionsPublicOutput:
+            type: object
+            properties:
+                results:
+                    type: array
+                    items:
+                        type: object
+                        properties:
+                            region_id:
+                                type: string
+                                title: Region Id
+                                example: br-se1
+                            availability_zones:
+                                type: array
+                                items:
+                                    type: object
+                                    properties:
+                                        az_id:
+                                            type: string
+                                            title: Az Id
+                                            example: br-se1-a
+                                        block_type:
+                                            allOf:
+                                            -   $ref: '#/components/schemas/PublicAZBlockType'
+                                            example: total
+                                    title: UserAvailabilityZonePublicOutput
+                                    required:
+                                    - az_id
+                                    - block_type
+                                title: Availability Zones
+                        title: UserRegionPublicOutput
+                        required:
+                        - region_id
+                        - availability_zones
+                    title: Results
+            title: UserRegionsPublicOutput
+            required:
+            - results
         ValidationError:
             type: object
             properties:
@@ -292,6 +386,8 @@ components:
 tags:
 -   name: ssh_keys
     description: Manage SSH Keys
+-   name: availability_zones
+    description: Manage Availability Zones
 $id: https://globaldb.jaxyendy.com/openapi-cli.json
 servers:
 -   url: https://{env}/profile

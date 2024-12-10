@@ -36,6 +36,24 @@ data "mgc_dbaas_instance" "test_instance" {
   id = data.mgc_dbaas_instances.all_instances.instances[0].id
 }
 
+# DBaaS Instance resource
+resource "mgc_dbaas_instances" "test_instance" {
+  name                 = "test-instance-2"
+  user                 = "dbadmin"
+  password             = "aaaaaaaaaa"
+  engine_name          = "mysql"
+  engine_version       = "8.0"
+  instance_type        = "cloud-dbaas-gp1.small"
+  volume_size          = 50
+  backup_retention_days = 10
+  backup_start_at      = "16:00:00"
+  
+  # parameters = {
+  #   character_set_server = "utf8mb4"
+  #   max_connections     = "100"
+  # }
+}
+
 # Outputs for debugging
 output "active_engines" {
   value = data.mgc_dbaas_engines.active_engines.engines
@@ -77,4 +95,17 @@ output "deleted_instances" {
 # Output for the test instance
 output "test_instance" {
   value = data.mgc_dbaas_instance.test_instance
+}
+
+# Optional: Output the instance details
+output "dbaas_instance" {
+  value = {
+    id           = mgc_dbaas_instances.test_instance.id
+    name         = mgc_dbaas_instances.test_instance.name
+    engine_name  = mgc_dbaas_instances.test_instance.engine_name
+    instance_type = mgc_dbaas_instances.test_instance.instance_type
+    volume_size  = mgc_dbaas_instances.test_instance.volume_size
+  }
+
+  sensitive = true # Because it contains instance information
 }
