@@ -146,9 +146,11 @@ func (p *mgcProvider) Resources(ctx context.Context) []func() resource.Resource 
 		resources.NewNetworkVPCInterfaceResource,
 		resources.NewNetworkSecurityGroupsAttachResource,
 		resources.NewNetworkPublicIPAttachResource,
-		// disabled for now, waitng network team to finish the implementation
-		// resources.NewNetworkVpcsSubnetsResource,
-		// resources.NewNetworkSubnetpoolsResource,
+		resources.NewNetworkVpcsSubnetsResource,
+		resources.NewNetworkSubnetpoolsResource,
+		resources.NewDBaaSInstanceResource,
+		resources.NewDBaaSInstanceBackupResource,
+		resources.NewDBaaSInstanceSnapshotResource,
 	)
 }
 
@@ -175,10 +177,14 @@ func (p *mgcProvider) DataSources(ctx context.Context) []func() datasource.DataS
 		datasources.NewDataSourceBSSnapshot,
 		datasources.NewDataSourceBsVolume,
 		datasources.NewDataSourceBsVolumeTypes,
-		// datasources.NewDataSourceDbaasEngines,
-		// datasources.NewDataSourceDbaasInstanceTypes,
-		// datasources.NewDataSourceDbaasInstances,
-		// datasources.NewDataSourceDbaasInstance,
+		datasources.NewDataSourceDbaasEngines,
+		datasources.NewDataSourceDbaasInstanceTypes,
+		datasources.NewDataSourceDbaasInstances,
+		datasources.NewDataSourceDbaasInstance,
+		datasources.NewDataSourceDbaasInstancesBackups,
+		datasources.NewDataSourceDbaasInstancesSnapshots,
+		datasources.NewDataSourceDbaasInstancesBackup,
+		datasources.NewDataSourceDbaasInstancesSnapshot,
 	}
 }
 

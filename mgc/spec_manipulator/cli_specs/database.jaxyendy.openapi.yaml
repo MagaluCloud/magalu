@@ -6,7 +6,7 @@ info:
     name: Tribo IAAS Cloud
     url: https://gitlab.luizalabs.com/cloud/dbaas/docs
     email: cloud-iaas-dbaas@luizalabs.com
-  version: 1.27.1
+  version: 1.34.1
 tags:
   - name: datastores
     description: Datastores available for database instances.
@@ -22,8 +22,8 @@ tags:
     description: Database backups management.
   - name: replicas
     description: Database replicas management.
-  - name: clusters
-    description: Clusters management.
+  - name: snapshots
+    description: Snapshots management.
 paths:
   /v1/datastores:
     get:
@@ -180,7 +180,9 @@ paths:
       tags:
         - flavors
       summary: List available flavors (Deprecated).
-      description: "**Deprecated**: This endpoint is being phased out. Please use the `/v1/instance-types` endpoint to retrieve the list of available instance types instead.\nReturns a list of available instance types. It is recommended to update your integration to use the newer `/v1/instance-types` endpoint for improved functionality and future compatibility.           \n"
+      description: |
+        **Deprecated**: This endpoint is being phased out. Please use the `/v1/instance-types` endpoint to retrieve the list of available instance types instead.
+        Returns a list of available instance types. It is recommended to update your integration to use the newer `/v1/instance-types` endpoint for improved functionality and future compatibility.           
       parameters:
         - $ref: "#/components/parameters/offset"
         - $ref: "#/components/parameters/limit_medium"
@@ -216,7 +218,8 @@ paths:
         - OAuth2PreProd:
             - dbaas.read
         - OAuth2Prod:
-            - dbaas.read
+            - dbaas.read            
+ 
   /v1/flavors/{instance_type_id}:
     get:
       operationId: flavors_v1_get_by_id
@@ -224,8 +227,10 @@ paths:
       tags:
         - flavors
       summary: Flavor detail (Deprecated).
-      description: "**Deprecated**: This endpoint is being phased out. Please use the /v1/instance-types endpoint to retrieve the list of available instance types instead.\nReturns an instance type detail. It is recommended to update your integration to use the newer `/v1/instance-types/{instance_type_id}` endpoint for improved functionality and future compatibility.           \n"
-      parameters:
+      description: |
+        **Deprecated**: This endpoint is being phased out. Please use the /v1/instance-types endpoint to retrieve the list of available instance types instead.
+        Returns an instance type detail. It is recommended to update your integration to use the newer `/v1/instance-types/{instance_type_id}` endpoint for improved functionality and future compatibility.           
+      parameters:        
         - required: true
           schema:
             title: Flavor Id
@@ -302,10 +307,10 @@ paths:
         - OAuth2PreProd:
             - dbaas.read
         - OAuth2Prod:
-            - dbaas.read
+            - dbaas.read            
   /v1/instance-types/{instance_type_id}:
     get:
-      operationId: instance_types_v1_get_by_id
+      operationId: instance_types_v1_get_by_id     
       tags:
         - instance_types
       summary: Instance Type detail.
@@ -344,7 +349,7 @@ paths:
         - OAuth2PreProd:
             - dbaas.read
         - OAuth2Prod:
-            - dbaas.read
+            - dbaas.read            
   /v1/instances:
     get:
       operationId: instances_v1_get_all
@@ -1196,6 +1201,233 @@ paths:
             - dbaas.write
         - OAuth2Prod:
             - dbaas.write
+  /v1/instances/{instance_id}/snapshots:
+    get:
+      tags:
+        - instances
+      summary: Snapshots List.
+      description: List all snapshots.
+      operationId: instances_v1_snapshots_get_all
+      parameters:
+        - $ref: "#/components/parameters/instance_id"
+        - $ref: "#/components/parameters/offset"
+        - $ref: "#/components/parameters/limit_medium"
+        - $ref: "#/components/parameters/snapshot_type"
+        - $ref: "#/components/parameters/snapshot_status"
+      responses:
+        "200":
+          description: Successful Response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SnapshotsResponse"
+        "400":
+          $ref: "#/components/responses/RequiredField"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "422":
+          $ref: "#/components/responses/UnprocessableEntity"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+      security:
+        - bearerAuth:
+            - dbaas.read
+        - OAuth2PreProd:
+            - dbaas.read
+        - OAuth2Prod:
+            - dbaas.read
+    post:
+      tags:
+        - instances
+      summary: Snapshot Create.
+      description: Creates a new snapshot asynchronously.
+      operationId: instances_v1_snapshots_post
+      parameters:
+        - $ref: "#/components/parameters/instance_id"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SnapshotCreateRequest"
+        required: true
+      responses:
+        "202":
+          description: Successful Response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SnapshotResponse"
+        "400":
+          $ref: "#/components/responses/RequiredField"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "422":
+          $ref: "#/components/responses/UnprocessableEntity"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+      security:
+        - bearerAuth:
+            - dbaas.write
+        - OAuth2PreProd:
+            - dbaas.write
+        - OAuth2Prod:
+            - dbaas.write
+  /v1/instances/{instance_id}/snapshots/{snapshot_id}:
+    get:
+      tags:
+        - instances
+      summary: Snapshot Detail.
+      description: Get a snapshot detail.
+      operationId: instances_v1_snapshot_get_by_id
+      parameters:
+        - $ref: "#/components/parameters/instance_id"
+        - $ref: "#/components/parameters/snapshot_id"
+      responses:
+        "200":
+          description: Successful Response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SnapshotDetailResponse"
+        "400":
+          $ref: "#/components/responses/RequiredField"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "422":
+          $ref: "#/components/responses/UnprocessableEntity"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+      security:
+        - bearerAuth:
+            - dbaas.read
+        - OAuth2PreProd:
+            - dbaas.read
+        - OAuth2Prod:
+            - dbaas.read
+    patch:
+      tags:
+        - instances
+      summary: Snapshot Update.
+      description: Updates a snapshot.
+      operationId: instances_v1_snapshots_patch
+      parameters:
+        - $ref: "#/components/parameters/instance_id"
+        - $ref: "#/components/parameters/snapshot_id"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SnapshotUpdateRequest"
+        required: true
+      responses:
+        "200":
+          description: Successful Response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SnapshotDetailResponse"
+        "400":
+          $ref: "#/components/responses/RequiredField"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "422":
+          $ref: "#/components/responses/UnprocessableEntity"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+      security:
+        - bearerAuth:
+            - dbaas.write
+        - OAuth2PreProd:
+            - dbaas.write
+        - OAuth2Prod:
+            - dbaas.write
+    delete:
+      tags:
+        - instances
+      summary: Delete Snapshot.
+      description: Deletes a database snapshot.
+      operationId: instances_v1_snapshots_delete
+      parameters:
+        - $ref: "#/components/parameters/instance_id"
+        - $ref: "#/components/parameters/snapshot_id"
+      responses:
+        "202":
+          content:
+            application/json:
+              schema: {}
+          description: Successful Response.
+        "400":
+          $ref: "#/components/responses/RequiredField"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "422":
+          $ref: "#/components/responses/UnprocessableEntity"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+      security:
+        - bearerAuth:
+            - dbaas.write
+        - OAuth2PreProd:
+            - dbaas.write
+        - OAuth2Prod:
+            - dbaas.write
+  /v1/snapshots/{snapshot_id}/restores:
+    post:
+      operationId: restores_instance_from_snapshot_v1__snapshot_id__post
+      parameters:
+        - $ref: "#/components/parameters/snapshot_id"
+      tags:
+        - snapshots
+      summary: Create a new instance from snapshot asynchronously.
+      description: Create a new instance from snapshot.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RestoreSnapshotRequest"
+        required: true
+      responses:
+        "202":
+          description: Accepted - Snapshot restore instance in progress.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InstanceResponse"
+        "400":
+          $ref: "#/components/responses/RequiredField"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "422":
+          $ref: "#/components/responses/UnprocessableEntity"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+      security:
+        - bearerAuth:
+            - dbaas.write
+        - OAuth2PreProd:
+            - dbaas.write
+        - OAuth2Prod:
+            - dbaas.write
 components:
   parameters:
     replica_id:
@@ -1228,6 +1460,16 @@ components:
         format: uuid
       example: 1b65c0e4-94a1-4385-aedb-c1b34f6e8935
       description: Value referring to backup Id.
+    snapshot_id:
+      name: snapshot_id
+      in: path
+      required: true
+      schema:
+        title: Snapshot Id
+        type: string
+        format: uuid
+      example: c1b34f6e-94a1-4385-aedb-1b65c0e48935
+      description: Value referring to snapshot Id.
     instance_id:
       name: instance_id
       in: path
@@ -1238,16 +1480,6 @@ components:
         format: uuid
       example: f21999cb-302f-48f7-b584-6a84748e112c
       description: Value referring to instance Id.
-    cluster_id:
-      name: cluster_id
-      in: path
-      required: true
-      schema:
-        title: Cluster Id
-        type: string
-        format: uuid
-      example: f21999cb-302f-48f7-b584-6a84748e112c
-      description: Value referring to cluster Id.
     instance_id_query:
       name: instance_id
       in: query
@@ -1373,7 +1605,7 @@ components:
       in: query
       schema:
         $ref: "#/components/schemas/EngineStatus"
-      description: Value referring to engine status.
+      description: Value referring to engine status.    
     instance_type_status:
       name: status
       in: query
@@ -1388,6 +1620,12 @@ components:
       schema:
         $ref: "#/components/schemas/BackupType"
       description: Value referring to backup type.
+    snapshot_type:
+      name: type
+      in: query
+      schema:
+        $ref: "#/components/schemas/SnapshotType"
+      description: Value referring to snapshot type.
     backup_mode:
       name: mode
       in: query
@@ -1400,18 +1638,18 @@ components:
       schema:
         $ref: "#/components/schemas/BackupStatus"
       description: Value referring to backup status.
+    snapshot_status:
+      name: status
+      in: query
+      schema:
+        $ref: "#/components/schemas/SnapshotStatus"
+      description: Value referring to snapshot status.
     instance_status:
       name: status
       in: query
       schema:
         $ref: "#/components/schemas/InstanceStatus"
       description: Value referring to instance status.
-    cluster_status:
-      name: status
-      in: query
-      schema:
-        $ref: "#/components/schemas/ClusterStatus"
-      description: Value referring to cluster status.
   schemas:
     MetaResponse:
       properties:
@@ -1455,7 +1693,7 @@ components:
           type: integer
           description: The maximum number of items per page.
         count:
-          title: Count
+          title: Count 
           type: integer
           description: The number of items on the current page.
         total:
@@ -1606,8 +1844,9 @@ components:
     BackupInstanceDetailResponse:
       title: Instance Detail Response
       description: >
-        This response object provides details about a database instance associated with a backup.  It is provided only if the originating database instance of the backup is not deleted.  If the originating instance is deleted, no instance details will be provided.
-
+        This response object provides details about a database instance associated with a backup. 
+        It is provided only if the originating database instance of the backup is not deleted. 
+        If the originating instance is deleted, no instance details will be provided.
       required:
         - id
         - name
@@ -1624,8 +1863,76 @@ components:
           type: string
           maxLength: 100
           example: "mydbinstance"
-    InstanceTypesResponse:
-      title: InstanceTypes Response
+    SnapshotDetailResponse:
+      title: Snapshot Detail Response
+      required:
+        - id
+        - instance
+        - allocated_size
+        - name
+        - description
+        - type
+        - status
+        - created_at
+      type: object
+      properties:
+        id:
+          title: Id
+          type: string
+          format: uuid
+        instance:
+          $ref: "#/components/schemas/SnapshotInstanceDetailResponse"
+        name:
+          title: Name
+          type: string
+        description:
+          title: Description
+          type: string
+        type:
+          $ref: "#/components/schemas/SnapshotType"
+        status:
+          $ref: "#/components/schemas/SnapshotStatus"
+        allocated_size:
+          title: Allocated Size
+          type: integer
+          description: Allocated size in gibibytes.
+        created_at:
+          title: Created At
+          type: string
+          format: date-time
+        started_at:
+          title: Started At
+          type: string
+          format: date-time
+        finished_at:
+          title: Finished At
+          type: string
+          format: date-time
+        updated_at:
+          title: Updated At
+          type: string
+          format: date-time
+    SnapshotStatus:
+      title: Snapshot Status
+      description: An enumeration.
+      type: string
+      enum:
+        - PENDING
+        - CREATING
+        - AVAILABLE
+        - RESTORING
+        - ERROR
+        - DELETING
+        - DELETED
+    SnapshotType:
+      title: Backup Type
+      description: An enumeration.
+      type: string
+      enum:
+        - ON_DEMAND
+        - AUTOMATED
+    SnapshotsResponse:
+      title: Snapshots Response
       required:
         - meta
         - results
@@ -1637,7 +1944,112 @@ components:
           title: Results
           type: array
           items:
-            $ref: "#/components/schemas/InstanceType"
+            $ref: "#/components/schemas/SnapshotDetailResponse"
+    SnapshotInstanceDetailResponse:
+      title: Instance Detail Response
+      description: >
+        This response object provides details about a database instance associated with a snapshot.
+      required:
+        - id
+        - name
+      type: object
+      properties:
+        id:
+          title: Id
+          description: Database instance unique identifier.
+          type: string
+          format: uuid
+        name:
+          title: Name
+          description: Database instance unique name.
+          type: string
+          maxLength: 100
+          example: "mydbinstance"
+    SnapshotCreateRequest:
+      required:
+        - name
+        - description
+      type: object
+      properties:
+        name:
+          title: Name
+          description: Snapshot unique name.
+          type: string
+          maxLength: 100
+          example: "mysnapshot"
+        description:
+          title: Description
+          description: Snapshot description.
+          type: string
+          maxLength: 255
+          example: "mydescription"
+    SnapshotUpdateRequest:
+      type: object
+      properties:
+        name:
+          title: Name
+          description: Snapshot unique name.
+          type: string
+          maxLength: 100
+          example: "mysnapshotupdated"
+        description:
+          title: Description
+          description: Snapshot description.
+          type: string
+          maxLength: 255
+          example: "mydescriptionupdated"
+    SnapshotResponse:
+      title: Snapshot Response
+      required:
+        - id
+      type: object
+      properties:
+        id:
+          title: Id
+          type: string
+          format: uuid
+    RestoreSnapshotRequest:
+      title: Restore Snapshot Instance Request
+      required:
+        - name
+        - instance_type_id
+      type: object
+      properties:
+        name:
+          title: Name
+          maxLength: 100
+          type: string
+        instance_type_id:
+          title: Instance Type Id
+          type: string
+          format: uuid
+        volume:
+          $ref: "#/components/schemas/InstanceVolumeRequest"
+        backup_retention_days:
+          title: Backup Retention Days
+          type: integer
+          default: 7
+          description: The number of days that a particular backup is kept until its deletion.
+        backup_start_at:
+          title: Backup Start At
+          description: Start time (UTC timezone) which is allowed to start the automated backup process.
+          type: string
+          format: time
+          default: "04:00:00"
+    InstanceTypesResponse:
+      title: InstanceTypes Response
+      required:
+        - meta
+        - results
+      type: object
+      properties:
+        meta:
+            $ref: '#/components/schemas/MetaResponse'
+        results:
+          title: Results
+          type: array
+          items:
+            $ref: "#/components/schemas/InstanceType"            
     AddressAccess:
       title: Address Access
       type: string
@@ -1692,18 +2104,7 @@ components:
         - RESTORING
         - ERROR_DELETING
         - MAINTENANCE
-      example: ACTIVE
-    ClusterStatus:
-      title: Instance Status
-      type: string
-      enum:
-        - ACTIVE
-        - ERROR
-        - PENDING
-        - CREATING
-        - DELETING
-        - DELETED
-        - ERROR_DELETING
+        - MAINTENANCE_ERROR
       example: ACTIVE
     InstanceGeneration:
       title: Instance Generation
@@ -1717,6 +2118,10 @@ components:
         - G4B
         - G5B
         - G6B
+        - G7B
+        - G8B
+        - G9B
+        - G10B
       example: G1B
     InstanceParametersNames:
       title: Instance Parameters Name
@@ -1765,6 +2170,8 @@ components:
         - password
         - user
         - volume
+        - engine_id
+        - instance_type_id
       type: object
       properties:
         name:
@@ -1775,20 +2182,6 @@ components:
           title: Engine Id
           type: string
           format: uuid
-        datastore_id:
-          deprecated: true
-          title: Datastore Id (Deprecated)
-          type: string
-          format: uuid
-          description: |
-            **Deprecated**: This property is being deprecated in favor of `engine_id`. Please update your requests to use `engine_id` for improved functionality and future compatibility.
-        flavor_id:
-          deprecated: true
-          title: Flavor Id (Deprecated)
-          type: string
-          format: uuid
-          description: |
-            **Deprecated**: This property is being deprecated in favor of `instance_type_id`. Please update your requests to use `instance_type_id` for improved functionality and future compatibility.
         instance_type_id:
           title: Instance Type Id
           type: string
@@ -1977,6 +2370,10 @@ components:
           title: Initial setup finish date
           type: string
           format: date-time
+        maintenance_scheduled_at:
+          title: Maintenance schedule date
+          type: string
+          format: date-time
         replicas:
           title: Replicas
           type: array
@@ -2014,7 +2411,7 @@ components:
       type: object
       properties:
         meta:
-          $ref: '#/components/schemas/MetaResponse'
+            $ref: '#/components/schemas/MetaResponse'
         results:
           title: Results
           type: array
@@ -2061,7 +2458,7 @@ components:
       type: string
       enum:
         - ACTIVE
-        - DEPRECATED
+        - DEPRECATED    
     InstanceExpand:
       title: Instance Expand
       description: An enumeration.
@@ -2084,7 +2481,7 @@ components:
       type: object
       properties:
         meta:
-          $ref: '#/components/schemas/MetaResponse'
+            $ref: '#/components/schemas/MetaResponse'
         results:
           title: Results
           type: array
@@ -2141,6 +2538,7 @@ components:
             **Deprecated**: This property is being deprecated in favor of `instance_type_id`. Please update your requests to use `engine_id` for improved functionality and future compatibility.
           type: string
           format: uuid
+        
         volume:
           $ref: "#/components/schemas/Volume"
         addresses:
@@ -2170,6 +2568,10 @@ components:
           format: date-time
         finished_at:
           title: Initial setup finish date
+          type: string
+          format: date-time
+        maintenance_scheduled_at:
+          title: Maintenance schedule date
           type: string
           format: date-time
     ReplicaAddressResponse:
@@ -2202,7 +2604,9 @@ components:
           type: string
         flavor_id:
           deprecated: true
-          description: "Flavor Id (Deprecated).\n**Deprecated**: This property is being deprecated in favor of `instance_type_id`. Please update your requests to use `instance_type_id` for improved functionality and future compatibility.          \n"
+          description: |
+            Flavor Id (Deprecated).
+            **Deprecated**: This property is being deprecated in favor of `instance_type_id`. Please update your requests to use `instance_type_id` for improved functionality and future compatibility.          
           type: string
           format: uuid
         instance_type_id:
@@ -2380,7 +2784,7 @@ components:
         sku_replica:
           description: SKU Database Instance Replica.
           type: string
-          example: BRNE10610101sm
+          example: BRNE10610101sm          
     ErrorResponse:
       title: Error Response
       type: object
@@ -2520,8 +2924,8 @@ servers:
   - url: https://api-dbaas.dev-qa.br-ne-1.jaxyendy.com
   - url: https://api-dbaas.team-integration.br-ne-1.jaxyendy.com
   - url: https://api-dbaas.pre-prod.br-ne-1.jaxyendy.com
-  - url: https://api-dbaas.br-ne-1.jaxyendy.com
+  - url: https://api.magalu.cloud/br-ne-1/database
   - url: https://dbaas.dev-qa.se1.br.jaxyendy.com
   - url: https://dbaas.team-integration.se1.br.jaxyendy.com
   - url: https://dbaas.pre-prod.se1.br.jaxyendy.com
-  - url: https://dbaas.prod.se1.br.jaxyendy.com
+  - url: https://api.magalu.cloud/br-se1/database

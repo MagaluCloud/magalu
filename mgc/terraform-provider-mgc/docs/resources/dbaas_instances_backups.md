@@ -3,19 +3,20 @@
 page_title: "mgc_dbaas_instances_backups Resource - terraform-provider-mgc"
 subcategory: "Database"
 description: |-
-  Database instances management. | backups
+  Manages a DBaaS instance backup
 ---
 
 # mgc_dbaas_instances_backups (Resource)
 
-Database instances management. | backups
+Manages a DBaaS instance backup
 
 ## Example Usage
 
 ```terraform
-resource "mgc_dbaas_instances_backups" "backup" {
-  instance_id = mgc_dbaas_instances.instance.id
-  mode        = "FULL"
+# Create a full backup for a DBaaS instance
+resource "mgc_dbaas_instances_backups" "example" {
+  instance_id = mgc_dbaas_instances.my_instance.id
+  mode       = "FULL"
 }
 ```
 
@@ -24,30 +25,17 @@ resource "mgc_dbaas_instances_backups" "backup" {
 
 ### Required
 
-- `instance_id` (String) Value referring to instance Id.
-- `mode` (String) An enumeration.
+- `instance_id` (String) ID of the DBaaS instance to backup
+- `mode` (String) Mode of the backup
 
 ### Read-Only
 
-- `created_at` (String)
-- `current_mode` (String) An enumeration.
-- `db_size` (Number) Database size in kilobytes (1024 kilobytes = 1 megabyte).
-- `engine_id` (String)
-- `finished_at` (String)
-- `id` (String) Value referring to backup Id.
-- `instance` (Attributes) This response object provides details about a database instance associated with a backup.  It is provided only if the originating database instance of the backup is not deleted.  If the originating instance is deleted, no instance details will be provided. (see [below for nested schema](#nestedatt--instance))
-- `location` (String)
-- `name` (String)
-- `size` (Number) Backup file size in kilobytes (1024 kilobytes = 1 megabyte).
-- `started_at` (String)
-- `status` (String) An enumeration.
-- `type` (String) An enumeration.
-- `updated_at` (String)
+- `id` (String) Unique identifier for the backup
 
-<a id="nestedatt--instance"></a>
-### Nested Schema for `instance`
+## Import
 
-Read-Only:
+Import is supported using the following syntax:
 
-- `id` (String) Database instance unique identifier.
-- `name` (String) Database instance unique name.
+```shell
+terraform import mgc_dbaas_instances_backups.example "instance-123,backup-456"
+```

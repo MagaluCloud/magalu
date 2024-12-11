@@ -43,18 +43,18 @@ resource "mgc_network_security_groups_rules" "ssh_ipv6_rule" {
 }
 
 # VPC Resources
-# resource "mgc_network_vpcs" "main_vpc" {
-#   name = "main-vpc-test-tf"
-# }
+resource "mgc_network_vpcs" "main_vpc" {
+  name = "main-vpc-test-tf-tests"
+}
 
 data "mgc_network_vpc" "main_vpc_data" {
-  id = "10d0f737-1f9e-48f1-b1f2-33cb15da4ff0"
+  id = mgc_network_vpcs.main_vpc.id
 }
 
 # VPC Interfaces
 resource "mgc_network_vpcs_interfaces" "primary_interface" {
   name   = "primary-interface"
-  vpc_id = "10d0f737-1f9e-48f1-b1f2-33cb15da4ff0"
+  vpc_id = data.mgc_network_vpc.main_vpc_data.id
 }
 
 data "mgc_network_vpcs_interface" "primary_interface_data" {
@@ -63,7 +63,7 @@ data "mgc_network_vpcs_interface" "primary_interface_data" {
 
 resource "mgc_network_vpcs_interfaces" "pip_interface" {
   name   = "pip-interface"
-  vpc_id = "10d0f737-1f9e-48f1-b1f2-33cb15da4ff0"
+  vpc_id = data.mgc_network_vpc.main_vpc_data.id
   depends_on = [ data.mgc_network_vpcs_subnet.primary_subnet_data ]
 }
 
@@ -78,18 +78,18 @@ resource "mgc_network_subnetpools" "main_subnetpool" {
   name        = "main-subnetpool"
   description = "Main Subnet Pool"
   type        = "pip"
-  cidr        = "172.26.0.0/16"
+  cidr        = "172.29.0.0/16"
 }
 
 # Subnet Resources
 resource "mgc_network_vpcs_subnets" "primary_subnet" {
-  cidr_block      = "172.26.1.0/24"
+  cidr_block      = "172.29.1.0/24"
   description     = "Primary Network Subnet"
   dns_nameservers = ["8.8.8.8", "8.8.4.4"]
   ip_version      = "IPv4"
   name            = "primary-subnet"
   subnetpool_id   = mgc_network_subnetpools.main_subnetpool.id
-  vpc_id          = "10d0f737-1f9e-48f1-b1f2-33cb15da4ff0"
+  vpc_id          = data.mgc_network_vpc.main_vpc_data.id
 }
 
 data "mgc_network_vpcs_subnet" "primary_subnet_data" {
@@ -99,7 +99,7 @@ data "mgc_network_vpcs_subnet" "primary_subnet_data" {
 # Public IP
 resource "mgc_network_public_ips" "example" {
   description = "example public ip"
-  vpc_id      = "10d0f737-1f9e-48f1-b1f2-33cb15da4ff0"
+  vpc_id      = data.mgc_network_vpc.main_vpc_data.id
 }
 
 data "mgc_network_public_ip" "example" {
