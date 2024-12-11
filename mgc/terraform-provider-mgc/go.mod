@@ -4,21 +4,21 @@ go 1.23.0
 
 require (
 	github.com/geffersonFerraz/brazilian-words-sorter v1.1.0
-	github.com/getkin/kin-openapi v0.118.0
-	github.com/go-test/deep v1.1.0
 	github.com/hashicorp/terraform-plugin-framework v1.11.0
 	github.com/hashicorp/terraform-plugin-framework-validators v0.13.0
-	github.com/hashicorp/terraform-plugin-go v0.23.0
 	github.com/hashicorp/terraform-plugin-log v0.9.0
-	github.com/stoewer/go-strcase v1.3.0
-	magalu.cloud/core v0.31.0
 	magalu.cloud/lib v0.0.0-00010101000000-000000000000
 	magalu.cloud/sdk v0.31.0
 )
 
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
+	github.com/getkin/kin-openapi v0.118.0 // indirect
+	github.com/go-test/deep v1.1.0 // indirect
+	github.com/hashicorp/terraform-plugin-go v0.23.0 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
+	github.com/stoewer/go-strcase v1.3.0 // indirect
+	magalu.cloud/core v0.31.0 // indirect
 )
 
 require (

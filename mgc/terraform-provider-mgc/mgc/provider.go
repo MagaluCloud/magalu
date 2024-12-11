@@ -1,8 +1,7 @@
-package provider
+package mgc
 
 import (
 	"context"
-	"fmt"
 	"os"
 
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
@@ -125,11 +124,7 @@ func (p *mgcProvider) Configure(ctx context.Context, req provider.ConfigureReque
 }
 
 func (p *mgcProvider) Resources(ctx context.Context) []func() resource.Resource {
-	rsrc, err := collectGroupResources(ctx, p.sdk, p.sdk.Group(), []string{providerTypeName})
-	if err != nil {
-		tflog.Error(ctx, fmt.Sprintf("An error occurred while generating the provider resource list: %v", err))
-	}
-	return append(rsrc,
+	return []func() resource.Resource{
 		resources.NewNewNodePoolResource,
 		resources.NewK8sClusterResource,
 		resources.NewObjectStorageBucketsResource,
@@ -152,7 +147,7 @@ func (p *mgcProvider) Resources(ctx context.Context) []func() resource.Resource 
 		resources.NewDBaaSInstanceBackupResource,
 		resources.NewDBaaSInstanceSnapshotResource,
 		resources.NewContainerRegistryRegistriesResource,
-	)
+	}
 }
 
 func (p *mgcProvider) DataSources(ctx context.Context) []func() datasource.DataSource {
