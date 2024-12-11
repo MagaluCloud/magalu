@@ -1,8 +1,8 @@
 package tfutil
 
 import (
-  "fmt"
-  
+	"fmt"
+
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -32,7 +32,6 @@ func ConvertIntPointerToInt64Pointer(intPtr *int) *int64 {
 	int64Val := int64(*intPtr)
 	return &int64Val
 }
-
 
 type ResponseFrom interface {
 	resource.ConfigureResponse | datasource.ConfigureResponse
