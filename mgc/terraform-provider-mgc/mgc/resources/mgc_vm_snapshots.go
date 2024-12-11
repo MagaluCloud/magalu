@@ -42,7 +42,7 @@ func (r *vmSnapshots) Configure(ctx context.Context, req resource.ConfigureReque
 
 	var err error
 	var errDetail error
-	r.sdkClient, err, errDetail = client.NewSDKClient(req)
+	r.sdkClient, err, errDetail = client.NewSDKClient(req, resp)
 	if err != nil {
 		resp.Diagnostics.AddError(
 			err.Error(),
@@ -85,9 +85,8 @@ func (r *vmSnapshots) Schema(_ context.Context, _ resource.SchemaRequest, resp *
 				Required:            true,
 			},
 			"updated_at": schema.StringAttribute{
-				Description:   "The timestamp when the snapshot was last updated.",
-				Computed:      true,
-				PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()},
+				Description: "The timestamp when the snapshot was last updated.",
+				Computed:    true,
 			},
 			"created_at": schema.StringAttribute{
 				Description:   "The timestamp when the snapshot was created.",

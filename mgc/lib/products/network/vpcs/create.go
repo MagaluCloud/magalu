@@ -7,9 +7,9 @@ Executor: create
 
 # Description
 
-# Create a VPC
+This endpoint allows you to create a new Virtual Private Cloud (VPC). It requires the tenant ID and a payload containing the VPC details such as name and description.
 
-Version: 1.138.0
+Version: 1.141.3
 
 import "magalu.cloud/lib/products/network/vpcs"
 */
@@ -34,7 +34,8 @@ type CreateConfigs struct {
 }
 
 type CreateResult struct {
-	Id *string `json:"id,omitempty"`
+	Id     string `json:"id"`
+	Status string `json:"status"`
 }
 
 func (s *service) Create(

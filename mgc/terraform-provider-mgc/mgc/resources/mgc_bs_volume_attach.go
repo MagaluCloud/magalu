@@ -45,7 +45,7 @@ func (r *VolumeAttach) Configure(ctx context.Context, req resource.ConfigureRequ
 
 	var err error
 	var errDetail error
-	r.sdkClient, err, errDetail = client.NewSDKClient(req)
+	r.sdkClient, err, errDetail = client.NewSDKClient(req, resp)
 	if err != nil {
 		resp.Diagnostics.AddError(
 			err.Error(),
@@ -131,7 +131,7 @@ func (r *VolumeAttach) Read(ctx context.Context, req resource.ReadRequest, resp 
 		resp.Diagnostics.AddWarning("Volume is not attached to any virtual machine", "")
 		model.VirtualMachineID = types.StringValue("")
 	} else {
-		model.VirtualMachineID = types.StringValue(result.Attachment.Instance.Id)
+		model.VirtualMachineID = types.StringPointerValue(result.Attachment.Instance.Id)
 	}
 	model.BlockStorageID = types.StringValue(result.Id)
 

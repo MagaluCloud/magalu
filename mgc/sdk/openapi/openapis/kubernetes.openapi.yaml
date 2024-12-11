@@ -2397,17 +2397,6 @@ components:
                         '
                     default: ''
                     example: This is an example cluster.
-                zone:
-                    type: string
-                    description: '[Deprecated] This parameter is deprecated and its
-                        use won''t create a cluster at requested zone.
-
-                        Identifier of the zone where the Kubernetes cluster will be
-                        located.
-
-                        '
-                    example: br-region-zone
-                    deprecated: true
                 enabled_bastion:
                     type: boolean
                     description: '[Deprecated] This parameter is deprecated and its
@@ -3215,23 +3204,23 @@ components:
             properties:
                 min_replicas:
                     type: integer
-                    minimum: 1
+                    minimum: 0
                     description: 'Minimum number of replicas for autoscaling. If not
                         provided, or if the value is equal to or less than zero, the
                         autoscaler value will be assumed based on the "replicas" field.
 
                         '
-                    default: 1
+                    nullable: true
                     example: 2
                 max_replicas:
                     type: integer
-                    minimum: 1
+                    minimum: 0
                     description: 'Maximum number of replicas for autoscaling. If not
                         provided, or if the value is equal to or less than zero, the
                         autoscaler value will be assumed based on the "replicas" field.
 
                         '
-                    default: 1
+                    nullable: true
                     example: 5
             required:
             - min_replicas

@@ -9,7 +9,7 @@ Executor: get
 
 # Return a Public IP details
 
-Version: 1.138.0
+Version: 1.141.3
 
 import "magalu.cloud/lib/products/network/public_ips"
 */
@@ -39,8 +39,10 @@ type GetResult struct {
 	ExternalId  *string `json:"external_id,omitempty"`
 	Id          *string `json:"id,omitempty"`
 	PortId      *string `json:"port_id,omitempty"`
+	ProjectType *string `json:"project_type,omitempty"`
 	PublicIp    *string `json:"public_ip,omitempty"`
 	Status      *string `json:"status,omitempty"`
+	TenantId    *string `json:"tenant_id,omitempty"`
 	Updated     *string `json:"updated,omitempty"`
 	VpcId       *string `json:"vpc_id,omitempty"`
 }

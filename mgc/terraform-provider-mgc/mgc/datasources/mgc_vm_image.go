@@ -21,9 +21,10 @@ type DataSourceVmImages struct {
 }
 
 type ImageModel struct {
-	ID       types.String `tfsdk:"id"`
-	Name     types.String `tfsdk:"name"`
-	Platform types.String `tfsdk:"platform"`
+	ID                types.String   `tfsdk:"id"`
+	Name              types.String   `tfsdk:"name"`
+	Platform          types.String   `tfsdk:"platform"`
+	AvailabilityZones []types.String `tfsdk:"availability_zones"`
 }
 
 type ImagesModel struct {
@@ -45,7 +46,7 @@ func (r *DataSourceVmImages) Configure(ctx context.Context, req datasource.Confi
 
 	var err error
 	var errDetail error
-	r.sdkClient, err, errDetail = client.NewSDKClient(req)
+	r.sdkClient, err, errDetail = client.NewSDKClient(req, resp)
 	if err != nil {
 		resp.Diagnostics.AddError(
 			err.Error(),
@@ -76,6 +77,11 @@ func (r *DataSourceVmImages) Schema(_ context.Context, req datasource.SchemaRequ
 						"name": schema.StringAttribute{
 							Computed:    true,
 							Description: "The image name.",
+						},
+						"availability_zones": schema.ListAttribute{
+							Computed:    true,
+							Description: "The availability zones of the image.",
+							ElementType: types.StringType,
 						},
 					},
 				},
@@ -109,10 +115,18 @@ func (r *DataSourceVmImages) Read(ctx context.Context, req datasource.ReadReques
 			platform = *image.Platform
 		}
 
+		var azs []types.String
+		if image.AvailabilityZones != nil {
+			for _, az := range *image.AvailabilityZones {
+				azs = append(azs, types.StringValue(az))
+			}
+		}
+
 		data.Images = append(data.Images, ImageModel{
-			ID:       types.StringValue(image.Id),
-			Name:     types.StringValue(image.Name),
-			Platform: types.StringValue(platform),
+			ID:                types.StringValue(image.Id),
+			Name:              types.StringValue(image.Name),
+			Platform:          types.StringValue(platform),
+			AvailabilityZones: azs,
 		})
 
 	}

@@ -45,15 +45,15 @@ type CreateParameters struct {
 	Volume         *CreateParametersVolume         `json:"volume,omitempty"`
 }
 
-// any of: CreateParametersSourceSnapshot
+// any of: *CreateParametersSourceSnapshot
 type CreateParametersSourceSnapshot struct {
-	Id   string  `json:"id"`
+	Id   *string `json:"id,omitempty"`
 	Name *string `json:"name,omitempty"`
 }
 
-// any of: CreateParametersVolume
+// any of: *CreateParametersVolume
 type CreateParametersVolume struct {
-	Id   string  `json:"id"`
+	Id   *string `json:"id,omitempty"`
 	Name *string `json:"name,omitempty"`
 }
 

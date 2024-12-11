@@ -1,0 +1,1 @@
+terraform import mgc_dbaas_instances.example instance-123

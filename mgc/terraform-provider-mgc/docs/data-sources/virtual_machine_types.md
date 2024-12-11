@@ -33,6 +33,7 @@ output "vm_types" {
 
 Read-Only:
 
+- `availability_zones` (List of String) The availability zones of the machine-type.
 - `disk` (Number) Disk
 - `gpu` (Number) GPU
 - `id` (String) ID of machine-type.

@@ -1,7 +1,7 @@
 project_name: mgccli
+version: 2
 builds:
-  -
-    env: [CGO_ENABLED=0]
+  - env: [CGO_ENABLED=0]
     id: "mgc"
     goos:
       - linux
@@ -16,8 +16,7 @@ builds:
     flags:
       - -tags=embed release
     main: mgc/cli/main.go
-  -
-    env: [CGO_ENABLED=0]
+  - env: [CGO_ENABLED=0]
     id: "mgcwin"
     goos:
       - windows
@@ -39,41 +38,35 @@ archives:
     builds:
       - mgcwin
 nfpms:
--
-  maintainer: Magalu Cloud <magalucloud.cli@luizalabs.com>
-  id: mgc
-  description: MGC CLI.
-  homepage: https://magalu.cloud/
-  license: MIT
-  package_name: mgccli
-  bindir: /usr/bin
-  formats:
-  - deb
-  - rpm
-  builds:
-    - mgc
+  - maintainer: Magalu Cloud <magalucloud.cli@luizalabs.com>
+    id: mgc
+    description: MGC CLI.
+    homepage: https://magalu.cloud/
+    license: "GPL-3.0"
+    package_name: mgccli
+    bindir: /usr/bin
+    formats:
+      - deb
+      - rpm
+    builds:
+      - mgc
 
 brews:
-  -
-    name: mgccli
+  - name: mgccli
     homepage: "https://magalu.cloud"
-    # auto = skip when is -rc
-    # skip_upload: auto
+    license: "GPL-3.0"
     repository:
-      pull_request:
-        enabled: true
-        draft: true
       owner: MagaluCloud
       name: homebrew-mgccli
-      branch: main
+      branch: "{{.ProjectName}}-v{{.Version}}"
       git:
-        url: 'git@github.com:MagaluCloud/homebrew-mgccli.git'
-        private_key: '{{ .Env.PRIVATE_KEY_PATH }}'
+        url: "git@github.com:MagaluCloud/homebrew-mgccli.git"
+        private_key: "{{ .Env.PRIVATE_KEY_PATH }}"
     commit_author:
       name: MagaluCloud
       email: magalucloud.cli@luizalabs.com
     ids:
-    - mgc
+      - mgc
 release:
   replace_existing_artifacts: true
   github:

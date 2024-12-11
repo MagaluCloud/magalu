@@ -43,6 +43,9 @@ func getOutputConfig(sdk *mgcSdk.Sdk) string {
 	if err != nil {
 		return ""
 	}
+	if defaultOutput == "" {
+		return defaultFormatter
+	}
 	return defaultOutput
 }
 

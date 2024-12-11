@@ -944,6 +944,14 @@ paths:
                     -   type: string
                     title: Availability-Zone
                     nullable: true
+            -   name: name
+                in: query
+                required: false
+                schema:
+                    anyOf:
+                    -   type: string
+                    title: Name
+                    nullable: true
             responses:
                 '200':
                     description: Successful Response
@@ -2715,6 +2723,7 @@ components:
                                 - replicating_error
                                 - restoring
                                 - restoring_error
+                                - reserved
                             created_at:
                                 anyOf:
                                 -   type: string
@@ -2734,6 +2743,7 @@ components:
                                 -   $ref: '#/components/schemas/IdResponse'
                                 -   $ref: '#/components/schemas/SnapshotVolume'
                                 title: Volume
+                                nullable: true
                             error:
                                 anyOf:
                                 -   $ref: '#/components/schemas/SnapshotResponseError'
@@ -2855,6 +2865,7 @@ components:
                     - replicating_error
                     - restoring
                     - restoring_error
+                    - reserved
                 created_at:
                     anyOf:
                     -   type: string
@@ -2874,6 +2885,7 @@ components:
                     -   $ref: '#/components/schemas/IdResponse'
                     -   $ref: '#/components/schemas/SnapshotVolume'
                     title: Volume
+                    nullable: true
                 error:
                     anyOf:
                     -   $ref: '#/components/schemas/SnapshotResponseError'
@@ -2957,6 +2969,7 @@ components:
             - replicating_error
             - restoring
             - restoring_error
+            - reserved
         SnapshotType:
             type: string
             title: SnapshotType
@@ -3184,11 +3197,9 @@ components:
                     anyOf:
                     -   $ref: '#/components/schemas/AttachmentResponseV1'
                     nullable: true
-                availability_zones:
-                    type: array
-                    items:
-                        type: string
-                    title: Availability Zones
+                availability_zone:
+                    type: string
+                    title: Availability Zone
             title: VolumeResponseV1
             required:
             - id
@@ -3199,7 +3210,7 @@ components:
             - created_at
             - updated_at
             - type
-            - availability_zones
+            - availability_zone
             example:
                 attachment:
                     attached_at: '2022-01-01T00:00:10Z'
@@ -3211,8 +3222,7 @@ components:
                         state: running
                         status: completed
                         updated_at: '2022-01-01T00:00:10Z'
-                availability_zones:
-                - br-ne1-a
+                availability_zone: br-ne1-a
                 created_at: '2022-01-01T00:00:10Z'
                 error:
                     message: You have reached the limit of allowed disks. Please,
@@ -3510,11 +3520,9 @@ components:
                                 anyOf:
                                 -   $ref: '#/components/schemas/AttachmentResponseV1'
                                 nullable: true
-                            availability_zones:
-                                type: array
-                                items:
-                                    type: string
-                                title: Availability Zones
+                            availability_zone:
+                                type: string
+                                title: Availability Zone
                         title: VolumeResponseV1
                         required:
                         - id
@@ -3525,7 +3533,7 @@ components:
                         - created_at
                         - updated_at
                         - type
-                        - availability_zones
+                        - availability_zone
                         example:
                             attachment:
                                 attached_at: '2022-01-01T00:00:10Z'
@@ -3537,8 +3545,7 @@ components:
                                     state: running
                                     status: completed
                                     updated_at: '2022-01-01T00:00:10Z'
-                            availability_zones:
-                            - br-ne1-a
+                            availability_zone: br-ne1-a
                             created_at: '2022-01-01T00:00:10Z'
                             error:
                                 message: You have reached the limit of allowed disks.
@@ -3569,8 +3576,7 @@ components:
                             state: running
                             status: completed
                             updated_at: '2022-01-01T00:00:10Z'
-                    availability_zones:
-                    - br-ne1-a
+                    availability_zone: br-ne1-a
                     created_at: '2022-01-01T00:00:10Z'
                     error:
                         message: You have reached the limit of allowed disks. Please,

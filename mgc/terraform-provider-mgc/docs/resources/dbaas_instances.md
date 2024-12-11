@@ -3,25 +3,26 @@
 page_title: "mgc_dbaas_instances Resource - terraform-provider-mgc"
 subcategory: "Database"
 description: |-
-  Database instances management.
+  Manages a DBaaS (Database-as-a-Service) instance
 ---
 
 # mgc_dbaas_instances (Resource)
 
-Database instances management.
+Manages a DBaaS (Database-as-a-Service) instance
 
 ## Example Usage
 
 ```terraform
-resource "mgc_dbaas_instances" "dbaas_instances" {
-  name      = "my-database-instance"
-  flavor_id = "your-flavor-id"
-  user      = "db_user"
-  password  = "secure_password123"
-
-  volume {
-    size = 50 # Size in GiB
-  }
+resource "mgc_dbaas_instances" "test_instance" {
+  name                 = "test-instance"
+  user                 = "dbadmin"
+  password             = "examplepassword"
+  engine_name          = "mysql"
+  engine_version       = "8.0"
+  instance_type        = "cloud-dbaas-gp1.small"
+  volume_size          = 50
+  backup_retention_days = 10
+  backup_start_at      = "16:00:00"
 }
 ```
 
@@ -30,144 +31,27 @@ resource "mgc_dbaas_instances" "dbaas_instances" {
 
 ### Required
 
-- `name` (String)
-- `password` (String)
-- `user` (String)
-- `volume` (Attributes) (see [below for nested schema](#nestedatt--volume))
+- `engine_name` (String) Type of database engine to use (e.g., 'mysql', 'postgresql'). Cannot be changed after creation.
+- `engine_version` (String) Version of the database engine (e.g., '8.0', '13.3'). Must be compatible with the selected engine_name.
+- `instance_type` (String) Compute and memory capacity of the instance (e.g., 'db.t3.micro'). Can be changed to scale the instance.
+- `name` (String) Name of the DBaaS instance. Must be unique within your account. Cannot be changed after creation.
+- `password` (String, Sensitive) Master password for the database. Must be at least 8 characters long and contain letters, numbers and special characters.
+- `user` (String) Master username for the database. Must start with a letter and contain only alphanumeric characters.
+- `volume_size` (Number) Size of the storage volume in GB. Can be increased but not decreased after creation.
 
 ### Optional
 
-- `backup_retention_days` (Number) The number of days that a particular backup is kept until its deletion.
-- `backup_start_at` (String) Start time (UTC timezone) which is allowed to start the automated backup process.
-- `datastore_id` (String) **Deprecated**: This property is being deprecated in favor of `engine_id`. Please update your requests to use `engine_id` for improved functionality and future compatibility.
-- `engine_id` (String)
-- `flavor_id` (String) **Deprecated**: This property is being deprecated in favor of `instance_type_id`. Please update your requests to use `instance_type_id` for improved functionality and future compatibility.
-- `instance_type_id` (String)
-- `parameters` (Attributes List) (see [below for nested schema](#nestedatt--parameters))
-- `status` (String)
+- `backup_retention_days` (Number) Number of days to retain automated backups (1-35 days). Zero disables automated backups. Default is 7 days.
+- `backup_start_at` (String) Time to initiate the daily backup in UTC (format: 'HH:MM:SS'). Default is 04:00:00.
 
 ### Read-Only
 
-- `addresses` (Attributes List) (see [below for nested schema](#nestedatt--addresses))
-- `created_at` (String)
-- `current_status` (String)
-- `current_volume` (Attributes) (see [below for nested schema](#nestedatt--current_volume))
-- `finished_at` (String)
-- `generation` (String) Current database instance generation
-- `id` (String) Value referring to instance Id.
-- `replicas` (Attributes List) (see [below for nested schema](#nestedatt--replicas))
-- `started_at` (String)
-- `updated_at` (String)
+- `id` (String) Unique identifier for the DBaaS instance. Generated automatically on creation.
 
-<a id="nestedatt--volume"></a>
-### Nested Schema for `volume`
+## Import
 
-Required:
+Import is supported using the following syntax:
 
-- `size` (Number) The size of the volume (in GiB).
-
-Optional:
-
-- `type` (String) The type of the volume.
-
-
-<a id="nestedatt--parameters"></a>
-### Nested Schema for `parameters`
-
-Required:
-
-- `name` (String) Database parameter name.
-- `value` (Attributes) Database parameter value. (see [below for nested schema](#nestedatt--parameters--value))
-
-<a id="nestedatt--parameters--value"></a>
-### Nested Schema for `parameters.value`
-
-Optional:
-
-- `boolean1` (Boolean)
-- `integer1` (Number)
-- `number1` (Number)
-- `string1` (String)
-
-
-
-<a id="nestedatt--addresses"></a>
-### Nested Schema for `addresses`
-
-Read-Only:
-
-- `access` (String) Determine if the IP can be accessed from the internet.
-- `address` (String)
-- `type` (String)
-
-
-<a id="nestedatt--current_volume"></a>
-### Nested Schema for `current_volume`
-
-Read-Only:
-
-- `size` (Number) The size of the volume (in GiB).
-- `type` (String) The type of the volume.
-
-
-<a id="nestedatt--replicas"></a>
-### Nested Schema for `replicas`
-
-Read-Only:
-
-- `addresses` (Attributes List) (see [below for nested schema](#nestedatt--replicas--addresses))
-- `created_at` (String)
-- `datastore_id` (String) Datastore unique identifier (Deprecated).
-**Deprecated**: This property is being deprecated in favor of `engine_id`. Please update your requests to use `engine_id` for improved functionality and future compatibility.
-- `engine_id` (String) Engine unique identifier.
-- `finished_at` (String)
-- `flavor_id` (String) Instance Type Id (Deprecated).
-**Deprecated**: This property is being deprecated in favor of `instance_type_id`. Please update your requests to use `engine_id` for improved functionality and future compatibility.
-- `generation` (String) Current database instance generation
-- `id` (String)
-- `instance_type_id` (String)
-- `name` (String)
-- `parameters` (Attributes List) (see [below for nested schema](#nestedatt--replicas--parameters))
-- `source_id` (String)
-- `started_at` (String)
-- `status` (String)
-- `updated_at` (String)
-- `volume` (Attributes) (see [below for nested schema](#nestedatt--replicas--volume))
-
-<a id="nestedatt--replicas--addresses"></a>
-### Nested Schema for `replicas.addresses`
-
-Read-Only:
-
-- `access` (String)
-- `address` (String)
-- `type` (String)
-
-
-<a id="nestedatt--replicas--parameters"></a>
-### Nested Schema for `replicas.parameters`
-
-Read-Only:
-
-- `name` (String) Database parameter name.
-- `value` (Attributes) Database parameter value. (see [below for nested schema](#nestedatt--replicas--parameters--value))
-
-<a id="nestedatt--replicas--parameters--value"></a>
-### Nested Schema for `replicas.parameters.value`
-
-Read-Only:
-
-- `boolean1` (Boolean)
-- `integer1` (Number)
-- `number1` (Number)
-- `string1` (String)
-
-
-
-<a id="nestedatt--replicas--volume"></a>
-### Nested Schema for `replicas.volume`
-
-Read-Only:
-
-- `size` (Number) The size of the volume (in GiB).
-- `type` (String) The type of the volume.
+```shell
+terraform import mgc_dbaas_instances.example instance-123
+```

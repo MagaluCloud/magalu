@@ -1,37 +1,23 @@
-# Description
-
-**What does this PR do?**
+## What does this PR do?
 <!-- Provide a clear and concise description of the changes -->
-
-**Related Issue**
-<!-- Does it fix an open issue? Link it here -->
-Fixes #[issue_number]
-
-## Type of change
-<!-- Please delete options that are not relevant -->
-- [ ] Bug fix (non-breaking change which fixes an issue)
-- [ ] New feature (non-breaking change which adds functionality)
-- [ ] Breaking change (fix or feature that would cause existing functionality to not work as expected)
-- [ ] Documentation update
-- [ ] Performance improvement
-- [ ] Code cleanup/refactoring
+<!--Example: This PR adds a new endpoint to the API that allows users to retrieve their order history. It includes the necessary changes to the controller, service, and repository layers, as well as updates to the API documentation. -->
 
 ## How Has This Been Tested?
-<!-- Please describe the tests you ran to verify your changes -->
-- [ ] Unit Tests
-- [ ] Integration Tests
-- [ ] Manual Testing (please describe and provide some evidence)
+<!-- Please describe the tests you ran to verify your changes and how you tested them. Include any relevant details and evidence. -->
+- **Unit Tests**: Describe the unit tests you have written and their outcomes.
+  <!-- Example: Added unit tests for the new order history endpoint. All tests passed successfully. -->
+
+- **Integration Tests**: Detail the integration tests performed and their results.
+  <!-- Example: Performed integration tests with the payment service to ensure end-to-end functionality. All tests passed. -->
+
+- **Manual Testing**: Explain the manual testing process, including steps taken and evidence such as screenshots or logs.
+  <!-- Example: Manually tested the new endpoint using Postman. Verified that the correct order history is returned for different users. Attached screenshots of the Postman results. -->
 
 ## Checklist
-- [ ] Run Pre commit `pre-commit run --all-files`
-- [ ] Code follows the style guidelines of this project
-- [ ] Corresponding changes to the documentation were made
-- [ ] No new warnings were generated
-- [ ] Tests that prove the fix is effective or that the feature works
-- [ ] Existing automated tests are passing (or have been updated to pass)
+- [ ] I have run Pre commit `pre-commit run --all-files`
+- [ ] My code follows the style guidelines of this project
+- [ ] I have made corresponding changes to the documentation
+- [ ] I have added tests that prove my fix is effective or that my feature works
 
 ## Screenshots/Videos
 <!-- If applicable, add screenshots or videos to help explain your changes -->
-
-## Additional Notes
-<!-- Add any other context about the PR here -->

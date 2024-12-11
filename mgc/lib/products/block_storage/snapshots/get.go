@@ -54,7 +54,7 @@ type GetResult struct {
 	Status            string                     `json:"status"`
 	Type              string                     `json:"type"`
 	UpdatedAt         string                     `json:"updated_at"`
-	Volume            GetResultVolume            `json:"volume"`
+	Volume            *GetResultVolume           `json:"volume"`
 }
 
 type GetResultAvailabilityZones []string
@@ -64,9 +64,9 @@ type GetResultError struct {
 	Slug    string `json:"slug"`
 }
 
-// any of: GetResultVolume
+// any of: *GetResultVolume
 type GetResultVolume struct {
-	Id   string               `json:"id"`
+	Id   *string              `json:"id,omitempty"`
 	Name *string              `json:"name,omitempty"`
 	Size *int                 `json:"size,omitempty"`
 	Type *GetResultVolumeType `json:"type,omitempty"`

@@ -6,7 +6,7 @@ import (
 	"log"
 
 	"github.com/hashicorp/terraform-plugin-framework/providerserver"
-	"magalu.cloud/terraform-provider-mgc/mgc/provider"
+	"magalu.cloud/terraform-provider-mgc/mgc"
 )
 
 var (
@@ -28,7 +28,7 @@ func main() {
 		Debug:   debug,
 	}
 
-	err := providerserver.Serve(context.Background(), provider.New(version, commit, date), opts)
+	err := providerserver.Serve(context.Background(), mgc.New(version, commit, date), opts)
 
 	if err != nil {
 		log.Fatal(err.Error())
