@@ -35,6 +35,16 @@ func ListAllConfigSchemas(ctx context.Context) (map[string]*core.Schema, error) 
 		for name, ref := range executor.ConfigsSchema().Properties {
 			current := (*core.Schema)(ref.Value)
 
+			if name == "region" {
+				var copyOfCurrent []interface{}
+				for _, enum := range current.Enum {
+					if enum != "global" {
+						copyOfCurrent = append(copyOfCurrent, enum)
+					}
+				}
+				current.Enum = copyOfCurrent
+			}
+
 			if existing, ok := configMap[name]; ok {
 				if err := mgcSchemaPkg.CompareJsonSchemas(existing, current); err != nil {
 					listAllSchemasLogger().Warnw("unhandled diverging config", "config", name, "path", path, "current", current, "existing", existing, "error", err)

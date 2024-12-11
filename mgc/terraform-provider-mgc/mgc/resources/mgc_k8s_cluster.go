@@ -349,7 +349,6 @@ func convertTerraformModelToSDKCreateParameters(data *KubernetesClusterCreateRes
 		Description:        data.Description.ValueStringPointer(),
 		Name:               data.Name.ValueString(),
 		Version:            data.Version.ValueStringPointer(),
-		Zone:               data.Zone.ValueStringPointer(),
 		EnabledServerGroup: data.EnabledServerGroup.ValueBoolPointer(),
 	}
 }

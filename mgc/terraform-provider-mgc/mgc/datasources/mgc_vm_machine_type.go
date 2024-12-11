@@ -21,12 +21,13 @@ type DataSourceVmMachineType struct {
 }
 
 type MachineTypeModel struct {
-	ID   types.String `tfsdk:"id"`
-	Name types.String `tfsdk:"name"`
-	Disk types.Int64  `tfsdk:"disk"`
-	Ram  types.Int64  `tfsdk:"ram"`
-	VCPU types.Int64  `tfsdk:"vcpu"`
-	GPU  types.Int64  `tfsdk:"gpu"`
+	ID                types.String   `tfsdk:"id"`
+	Name              types.String   `tfsdk:"name"`
+	Disk              types.Int64    `tfsdk:"disk"`
+	Ram               types.Int64    `tfsdk:"ram"`
+	VCPU              types.Int64    `tfsdk:"vcpu"`
+	GPU               types.Int64    `tfsdk:"gpu"`
+	AvailabilityZones []types.String `tfsdk:"availability_zones"`
 }
 
 type MachineTypesModel struct {
@@ -92,6 +93,11 @@ func (r *DataSourceVmMachineType) Schema(_ context.Context, req datasource.Schem
 							Computed:    true,
 							Description: "GPU",
 						},
+						"availability_zones": schema.ListAttribute{
+							Computed:    true,
+							Description: "The availability zones of the machine-type.",
+							ElementType: types.StringType,
+						},
 					},
 				},
 			},
@@ -126,13 +132,21 @@ func (r *DataSourceVmMachineType) Read(ctx context.Context, req datasource.ReadR
 
 		gpu := *typ.Gpu
 
+		azs := []types.String{}
+		if typ.AvailabilityZones != nil {
+			for _, az := range *typ.AvailabilityZones {
+				azs = append(azs, types.StringValue(az))
+			}
+		}
+
 		data.MachineTypes = append(data.MachineTypes, MachineTypeModel{
-			ID:   types.StringValue(typ.Id),
-			Name: types.StringValue(typ.Name),
-			Disk: types.Int64Value(int64(typ.Disk)),
-			Ram:  types.Int64Value(int64(typ.Ram)),
-			VCPU: types.Int64Value(int64(typ.Vcpus)),
-			GPU:  types.Int64Value(int64(gpu)),
+			ID:                types.StringValue(typ.Id),
+			Name:              types.StringValue(typ.Name),
+			Disk:              types.Int64Value(int64(typ.Disk)),
+			Ram:               types.Int64Value(int64(typ.Ram)),
+			VCPU:              types.Int64Value(int64(typ.Vcpus)),
+			GPU:               types.Int64Value(int64(gpu)),
+			AvailabilityZones: azs,
 		})
 	}
 
