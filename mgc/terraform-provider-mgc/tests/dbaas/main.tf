@@ -62,7 +62,7 @@ data "mgc_dbaas_instances_backups" "test_instance_backups" {
 # DBaaS Snapshot resource and data source
 resource "mgc_dbaas_instances_snapshots" "test_snapshot" {
   instance_id = mgc_dbaas_instances.test_instance.id
-  name        = "test-snapshot"
+  name        = "test-snapshot-tf"
   description = "Test snapshot for terraform acceptance tests"
 }
 

@@ -40,7 +40,7 @@ func (s DBaaSInstanceBackupStatus) String() string {
 type DBaaSInstanceBackupModel struct {
 	Id         types.String `tfsdk:"id"`
 	InstanceId types.String `tfsdk:"instance_id"`
-	Mode       types.String `tfsdk:"name"`
+	Mode       types.String `tfsdk:"mode"`
 }
 
 type DBaaSInstanceBackupResource struct {

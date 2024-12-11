@@ -24,7 +24,7 @@ import (
 	"magalu.cloud/terraform-provider-mgc/mgc/tfutil"
 )
 
-const instanceStatusTimeout = 60 * time.Minute
+const instanceStatusTimeout = 90 * time.Minute
 
 type DBaaSInstanceStatus string
 

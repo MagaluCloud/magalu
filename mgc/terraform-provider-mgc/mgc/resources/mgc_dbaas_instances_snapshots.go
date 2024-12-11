@@ -22,13 +22,13 @@ const snapshotStatusTimeout = 30 * time.Minute
 type DBaaSInstanceSnapshotStatus string
 
 const (
-	DBaaSInstanceSnapshotStatusPending       DBaaSInstanceSnapshotStatus = "PENDING"
-	DBaaSInstanceSnapshotStatusCreating      DBaaSInstanceSnapshotStatus = "CREATING"
-	DBaaSInstanceSnapshotStatusCreated       DBaaSInstanceSnapshotStatus = "CREATED"
-	DBaaSInstanceSnapshotStatusError         DBaaSInstanceSnapshotStatus = "ERROR"
-	DBaaSInstanceSnapshotStatusDeleting      DBaaSInstanceSnapshotStatus = "DELETING"
-	DBaaSInstanceSnapshotStatusDeleted       DBaaSInstanceSnapshotStatus = "DELETED"
-	DBaaSInstanceSnapshotStatusErrorDeleting DBaaSInstanceSnapshotStatus = "ERROR_DELETING"
+	DBaaSInstanceSnapshotStatusPending   DBaaSInstanceSnapshotStatus = "PENDING"
+	DBaaSInstanceSnapshotStatusCreating  DBaaSInstanceSnapshotStatus = "CREATING"
+	DBaaSInstanceSnapshotStatusAvailable DBaaSInstanceSnapshotStatus = "AVAILABLE"
+	DBaaSInstanceSnapshotStatusRestoring DBaaSInstanceSnapshotStatus = "RESTORING"
+	DBaaSInstanceSnapshotStatusError     DBaaSInstanceSnapshotStatus = "ERROR"
+	DBaaSInstanceSnapshotStatusDeleting  DBaaSInstanceSnapshotStatus = "DELETING"
+	DBaaSInstanceSnapshotStatusDeleted   DBaaSInstanceSnapshotStatus = "DELETED"
 )
 
 func (s DBaaSInstanceSnapshotStatus) String() string {
@@ -126,7 +126,7 @@ func (r *DBaaSInstanceSnapshotResource) Create(ctx context.Context, req resource
 
 	data.Id = types.StringValue(created.Id)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
-	err = r.waitUntilSnapshotStatusMatches(ctx, data.InstanceId.ValueString(), created.Id, DBaaSInstanceSnapshotStatusCreated)
+	err = r.waitUntilSnapshotStatusMatches(ctx, data.InstanceId.ValueString(), created.Id, DBaaSInstanceSnapshotStatusAvailable)
 	if err != nil {
 		resp.Diagnostics.AddError("Failed to create snapshot", err.Error())
 		return
