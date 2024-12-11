@@ -317,6 +317,10 @@ func (t *generatorTemplateTypes) addObject(name string, schema *mgcSchemaPkg.Sch
 	}
 
 	if len(schema.AnyOf) > 0 {
+		for _, x := range schema.AnyOf {
+			x.Value.Nullable = true
+			x.Value.Required = []string{}
+		}
 		err = t.addObjectAlternatives(def, name, "any of", schema.AnyOf)
 		if err != nil {
 			err = &utils.ChainedError{Name: "any of", Err: err}

@@ -157,7 +157,7 @@ func (r *DataSourceBsVolume) Read(ctx context.Context, req datasource.ReadReques
 	data.Size = types.Int64Value(int64(sdkOutput.Size))
 	data.Type = &bsVolumeType{
 		DiskType: types.StringPointerValue(sdkOutput.Type.DiskType),
-		Id:       types.StringValue(sdkOutput.Type.Id),
+		Id:       types.StringPointerValue(sdkOutput.Type.Id),
 		Name:     types.StringPointerValue(sdkOutput.Type.Name),
 		Status:   types.StringPointerValue(sdkOutput.Type.Status),
 	}
