@@ -43,7 +43,6 @@ resource "mgc_dbaas_instances" "test_instance" {
 
 - `backup_retention_days` (Number) Number of days to retain automated backups (1-35 days). Zero disables automated backups. Default is 7 days.
 - `backup_start_at` (String) Time to initiate the daily backup in UTC (format: 'HH:MM:SS'). Default is 04:00:00.
-- `parameters` (Map of String) Map of database engine parameters to customize the instance configuration.
 
 ### Read-Only
 

@@ -32,6 +32,10 @@ data "mgc_dbaas_instances_snapshots" "all" {
 <a id="nestedatt--snapshots"></a>
 ### Nested Schema for `snapshots`
 
+Required:
+
+- `instance_id` (String) ID of the instance
+
 Read-Only:
 
 - `created_at` (String) Creation timestamp

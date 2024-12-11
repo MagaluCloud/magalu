@@ -32,6 +32,10 @@ data "mgc_dbaas_instances_backups" "all" {
 <a id="nestedatt--backups"></a>
 ### Nested Schema for `backups`
 
+Required:
+
+- `instance_id` (String) ID of the instance
+
 Read-Only:
 
 - `created_at` (String) Creation timestamp

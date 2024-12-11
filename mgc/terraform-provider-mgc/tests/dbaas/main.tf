@@ -38,7 +38,7 @@ data "mgc_dbaas_instance" "test_instance" {
 
 # DBaaS Instance resource
 resource "mgc_dbaas_instances" "test_instance" {
-  name                  = "test-instance-2"
+  name                  = "test-instance-tf"
   user                  = "dbadmin"
   password              = "aaaaaaaaaa"
   engine_name           = "mysql"
@@ -47,11 +47,6 @@ resource "mgc_dbaas_instances" "test_instance" {
   volume_size           = 50
   backup_retention_days = 10
   backup_start_at       = "16:00:00"
-
-  # parameters = {
-  #   character_set_server = "utf8mb4"
-  #   max_connections     = "100"
-  # }
 }
 
 # DBaaS Backup resource and data source

@@ -66,6 +66,10 @@ func (r *DataSourceDbSnapshots) Schema(_ context.Context, _ datasource.SchemaReq
 							Description: "ID of the snapshot",
 							Computed:    true,
 						},
+						"instance_id": schema.StringAttribute{
+							Description: "ID of the instance",
+							Required:    true,
+						},
 						"name": schema.StringAttribute{
 							Description: "Name of the snapshot",
 							Computed:    true,

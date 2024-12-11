@@ -66,6 +66,10 @@ func (r *DataSourceDbBackups) Schema(_ context.Context, _ datasource.SchemaReque
 							Description: "ID of the backup",
 							Computed:    true,
 						},
+						"instance_id": schema.StringAttribute{
+							Description: "ID of the instance",
+							Required:    true,
+						},
 						"name": schema.StringAttribute{
 							Description: "Name of the backup",
 							Computed:    true,

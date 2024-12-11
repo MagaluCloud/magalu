@@ -12,7 +12,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/mapplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -66,7 +65,6 @@ type DBaaSInstanceModel struct {
 	VolumeSize          types.Int64  `tfsdk:"volume_size"`
 	BackupRetentionDays types.Int64  `tfsdk:"backup_retention_days"`
 	BackupStartAt       types.String `tfsdk:"backup_start_at"`
-	Parameters          types.Map    `tfsdk:"parameters"`
 }
 
 type DBaaSInstanceResource struct {
@@ -209,14 +207,6 @@ func (r *DBaaSInstanceResource) Schema(_ context.Context, _ resource.SchemaReque
 					),
 				},
 			},
-			"parameters": schema.MapAttribute{
-				Description: "Map of database engine parameters to customize the instance configuration.",
-				Optional:    true,
-				ElementType: types.StringType,
-				PlanModifiers: []planmodifier.Map{
-					mapplanmodifier.RequiresReplace(),
-				},
-			},
 		},
 	}
 }
@@ -253,22 +243,6 @@ func (r *DBaaSInstanceResource) Create(ctx context.Context, req resource.CreateR
 		BackupStartAt:       data.BackupStartAt.ValueStringPointer(),
 	}
 
-	if !data.Parameters.IsNull() {
-		parameters := make(map[string]string)
-		resp.Diagnostics.Append(data.Parameters.ElementsAs(ctx, &parameters, false)...)
-		if resp.Diagnostics.HasError() {
-			return
-		}
-		var sdkParameters dbaasInstances.CreateParametersParameters
-		for key, value := range parameters {
-			sdkParameters = append(sdkParameters, dbaasInstances.CreateParametersParametersItem{
-				Name:  key,
-				Value: value,
-			})
-		}
-		params.Parameters = &sdkParameters
-	}
-
 	created, err := r.dbaasInstances.CreateContext(ctx, params,
 		tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, dbaasInstances.CreateConfigs{}))
 	if err != nil {
@@ -288,6 +262,9 @@ func (r *DBaaSInstanceResource) Create(ctx context.Context, req resource.CreateR
 func (r *DBaaSInstanceResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
 	var data DBaaSInstanceModel
 	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	instance, err := r.dbaasInstances.GetContext(ctx, dbaasInstances.GetParameters{
 		InstanceId: data.Id.ValueString(),
