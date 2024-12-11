@@ -195,7 +195,7 @@ func convertToState(state *bsVolumesResourceModel, result sdkBlockStorageVolumes
 	state.Status = types.StringValue(result.Status)
 	state.Type = bsVolumeType{
 		DiskType: types.StringPointerValue(result.Type.DiskType),
-		Id:       types.StringValue(result.Type.Id),
+		Id:       types.StringPointerValue(result.Type.Id),
 		Name:     types.StringPointerValue(result.Type.Name),
 		Status:   types.StringPointerValue(result.Type.Status),
 	}
@@ -250,7 +250,7 @@ func (r *bsVolumes) Create(ctx context.Context, req resource.CreateRequest, resp
 
 	if !state.SnapshotID.IsNull() {
 		createParam.Snapshot = &sdkBlockStorageVolumes.CreateParametersSnapshot{
-			Id: state.SnapshotID.ValueString(),
+			Id: state.SnapshotID.ValueStringPointer(),
 		}
 	}
 
@@ -260,7 +260,7 @@ func (r *bsVolumes) Create(ctx context.Context, req resource.CreateRequest, resp
 		return
 	}
 
-	state.ID = types.StringValue(createResult.Id)
+	state.ID = types.StringPointerValue(createResult.Id)
 	getCreatedResource, err := r.waitCompletedVolume(ctx, state.ID.ValueString())
 	if err != nil {
 		resp.Diagnostics.AddError("Error Reading block storage", err.Error())
@@ -268,6 +268,9 @@ func (r *bsVolumes) Create(ctx context.Context, req resource.CreateRequest, resp
 	}
 
 	convertToState(state, *getCreatedResource, state.Name.ValueString(), state.NameIsPrefix.ValueBool())
+	if createParam.Snapshot != nil && *createParam.Snapshot.Id != "" {
+		state.SnapshotID = types.StringPointerValue(createParam.Snapshot.Id)
+	}
 	resp.Diagnostics.Append(resp.State.Set(ctx, state)...)
 }
 

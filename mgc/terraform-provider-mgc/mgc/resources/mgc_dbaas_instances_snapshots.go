@@ -17,7 +17,7 @@ import (
 	"magalu.cloud/terraform-provider-mgc/mgc/tfutil"
 )
 
-const snapshotStatusTimeout = 30 * time.Minute
+const snapshotStatusTimeout = 70 * time.Minute
 
 type DBaaSInstanceSnapshotStatus string
 
