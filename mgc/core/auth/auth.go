@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -233,32 +234,26 @@ func (a *Auth) GetConfig() Config {
 	return c
 }
 
-/*
-Returns the current user access token.
-If token is empty, we might still have refresh token, try getting a new one.
-It will either fail with error or return a valid non-empty access token
-*/
 func (o *Auth) AccessToken(ctx context.Context) (string, error) {
 	if o.accessToken == "" {
 		if _, err := o.RefreshAccessToken(ctx); err != nil {
-			return "", err
+			logger().Errorw("Failed to refresh access token", "error", err)
+			return "", errors.New("failed to obtain a valid access token, please login in `mgc auth login`")
 		}
 	}
-
-	// TODO - FINALIZE THIS!
 	claims, err := o.currentAccessTokenClaims()
 	if err != nil {
 		if _, err := o.RefreshAccessToken(ctx); err != nil {
-			return "", err
+			logger().Errorw("Failed to refresh access token", "error", err)
+			return "", errors.New("failed to obtain a valid access token, please login in `mgc auth login`")
 		}
 	}
-
 	if time.Now().After(claims.ExpiresAt.Time) {
 		if _, err := o.RefreshAccessToken(ctx); err != nil {
-			return "", err
+			logger().Errorw("Failed to refresh access token", "error", err)
+			return "", errors.New("failed to obtain a valid access token, please login in `mgc auth login`")
 		}
 	}
-
 	return o.accessToken, nil
 }
 
