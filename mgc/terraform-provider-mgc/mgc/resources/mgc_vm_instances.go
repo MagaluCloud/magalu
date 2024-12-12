@@ -580,3 +580,36 @@ func (r *vmInstances) checkVmIsNotFound(ctx context.Context, id string) {
 		time.Sleep(3 * time.Second)
 	}
 }
+
+func (r *vmInstances) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+	instance, err := r.vmInstances.GetContext(ctx, sdkVmInstances.GetParameters{Id: req.ID}, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVmInstances.GetConfigs{}))
+	if err != nil {
+		resp.Diagnostics.AddError("Error Importing VM", err.Error())
+		return
+	}
+	state := vmInstancesResourceModel{
+		Name:             types.StringPointerValue(instance.Name),
+		FinalName:        types.StringPointerValue(instance.Name),
+		NameIsPrefix:     types.BoolValue(false),
+		ID:               types.StringValue(req.ID),
+		SshKeyName:       types.StringPointerValue(instance.SshKeyName),
+		AvailabilityZone: types.StringPointerValue(instance.AvailabilityZone),
+		UserData:         types.StringPointerValue(instance.UserData),
+		Network: networkVmInstancesModel{
+			AssociatePublicIP: types.BoolValue(false),
+			DeletePublicIP:    types.BoolValue(false),
+		},
+		Image: tfutil.GenericIDNameModel{
+			ID:   types.StringValue(instance.Image.Id),
+			Name: types.StringPointerValue(instance.Image.Name),
+		},
+		MachineType: vmInstancesMachineTypeModel{
+			ID:    types.StringValue(instance.MachineType.Id),
+			Name:  types.StringPointerValue(instance.MachineType.Name),
+			Disk:  types.NumberValue(new(big.Float).SetInt64(int64(*instance.MachineType.Disk))),
+			RAM:   types.NumberValue(new(big.Float).SetInt64(int64(*instance.MachineType.Ram))),
+			VCPUs: types.NumberValue(new(big.Float).SetInt64(int64(*instance.MachineType.Vcpus))),
+		},
+	}
+	resp.Diagnostics.Append(resp.State.Set(ctx, &state)...)
+}

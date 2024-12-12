@@ -47,11 +47,3 @@ resource "mgc_dbaas_instances" "test_instance" {
 ### Read-Only
 
 - `id` (String) Unique identifier for the DBaaS instance. Generated automatically on creation.
-
-## Import
-
-Import is supported using the following syntax:
-
-```shell
-terraform import mgc_dbaas_instances.example instance-123
-```
