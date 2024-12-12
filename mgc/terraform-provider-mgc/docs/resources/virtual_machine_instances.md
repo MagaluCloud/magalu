@@ -144,11 +144,3 @@ Optional:
 
 - `id` (String) The unique identifier of the VPC.
 - `name` (String) The name of the VPC.
-
-## Import
-
-Import is supported using the following syntax:
-
-```shell
-terraform import mgc_virtual_machine_instances.basic_instance 123
-```
