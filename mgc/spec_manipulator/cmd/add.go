@@ -2,6 +2,8 @@ package cmd
 
 import (
 	"fmt"
+	"os"
+	"path/filepath"
 	"slices"
 
 	"github.com/spf13/cobra"
@@ -50,8 +52,18 @@ func add(cmd *cobra.Command, args []string) {
 	}
 
 	toSave = append(toSave, currentConfig...)
+	// move it to common function
+	ex, err := os.Executable()
+	home := filepath.Dir(ex)
+	cobra.CheckErr(err)
+
+	// Search config in home directory with name ".cobra" (without extension).
+	viper.AddConfigPath(home)
+	viper.SetConfigType("yaml")
+	viper.SetConfigName(VIPER_FILE)
+
 	viper.Set("jaxyendy", toSave)
-	err = viper.WriteConfigAs(VIPER_FILE)
+	err = viper.WriteConfigAs(viperUsedFile)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -61,7 +73,7 @@ func add(cmd *cobra.Command, args []string) {
 var addSpecsCmd = &cobra.Command{
 	Use:     "add [url] [menu]",
 	Short:   "Add new spec",
-	Example: "specs add https://block-storage.br-ne-1.jaxyendy.com/v1/openapi.json block-storage",
+	Example: "specs add https://petstore3.swagger.io/api/v3/openapi.json pet-store",
 	Args:    cobra.MinimumNArgs(2),
 	Hidden:  true,
 	Run:     add,

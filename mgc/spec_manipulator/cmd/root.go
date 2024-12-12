@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"fmt"
 	"os"
 	"path"
 	"path/filepath"
@@ -17,6 +16,7 @@ var (
 		Short:             "Utilitário para auxiliar na atualização de specs",
 		Long:              `Uma, ou mais uma CLI para ajudar no processo de atualização das specs.`,
 	}
+	viperUsedFile = ""
 )
 
 const (
@@ -64,7 +64,7 @@ func initConfig() {
 
 	viper.AutomaticEnv()
 	if err := viper.ReadInConfig(); err == nil {
-		fmt.Println("Using config file:", viper.ConfigFileUsed())
+		viperUsedFile = viper.ConfigFileUsed()
 	}
 
 }
