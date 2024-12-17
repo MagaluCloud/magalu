@@ -181,6 +181,7 @@ func (p *mgcProvider) DataSources(ctx context.Context) []func() datasource.DataS
 		datasources.NewDataSourceDbaasInstancesSnapshots,
 		datasources.NewDataSourceDbaasInstancesBackup,
 		datasources.NewDataSourceDbaasInstancesSnapshot,
+		datasources.NewDataSourceAvailabilityZones,
 	}
 }
 

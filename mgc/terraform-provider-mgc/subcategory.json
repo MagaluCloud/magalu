@@ -20,5 +20,8 @@
   ],
   "SSH Keys": [
     "ssh_keys.md"
+  ],
+  "Availability Zones": [
+    "availability_zones.md"
   ]
 }
