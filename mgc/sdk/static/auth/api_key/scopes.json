@@ -125,7 +125,7 @@
       },
       {
         "uuid": "9637733d-b0a1-4a30-af6d-7c4a8294e26a",
-        "name": "mrc-api",
+        "name": "Container Registry",
         "icon": "",
         "scopes": [
           {
