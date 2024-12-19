@@ -46,17 +46,18 @@ type ListResult struct {
 }
 
 type ListResultVolumesItem struct {
-	Attachment       *ListResultVolumesItemAttachment `json:"attachment,omitempty"`
-	AvailabilityZone string                           `json:"availability_zone"`
-	CreatedAt        string                           `json:"created_at"`
-	Error            *ListResultVolumesItemError      `json:"error,omitempty"`
-	Id               string                           `json:"id"`
-	Name             string                           `json:"name"`
-	Size             int                              `json:"size"`
-	State            string                           `json:"state"`
-	Status           string                           `json:"status"`
-	Type             ListResultVolumesItemType        `json:"type"`
-	UpdatedAt        string                           `json:"updated_at"`
+	Attachment        *ListResultVolumesItemAttachment       `json:"attachment,omitempty"`
+	AvailabilityZone  string                                 `json:"availability_zone"`
+	AvailabilityZones ListResultVolumesItemAvailabilityZones `json:"availability_zones"`
+	CreatedAt         string                                 `json:"created_at"`
+	Error             *ListResultVolumesItemError            `json:"error,omitempty"`
+	Id                string                                 `json:"id"`
+	Name              string                                 `json:"name"`
+	Size              int                                    `json:"size"`
+	State             string                                 `json:"state"`
+	Status            string                                 `json:"status"`
+	Type              ListResultVolumesItemType              `json:"type"`
+	UpdatedAt         string                                 `json:"updated_at"`
 }
 
 type ListResultVolumesItemAttachment struct {
@@ -82,6 +83,8 @@ type ListResultVolumesItemAttachmentInstanceIops struct {
 	Total int `json:"total"`
 	Write int `json:"write"`
 }
+
+type ListResultVolumesItemAvailabilityZones []string
 
 type ListResultVolumesItemError struct {
 	Message string `json:"message"`

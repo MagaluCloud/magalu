@@ -2,7 +2,7 @@ module magalu.cloud/lib
 
 go 1.23.0
 
-toolchain go1.23.3
+toolchain go1.23.4
 
 require (
 	magalu.cloud/core v0.31.0

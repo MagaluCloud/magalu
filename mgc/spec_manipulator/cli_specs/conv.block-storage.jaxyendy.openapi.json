@@ -1163,6 +1163,96 @@
         "x-viveiro": true
       }
     },
+    "/v1/snapshots/{id}/copy": {
+      "post": {
+        "tags": [
+          "snapshots"
+        ],
+        "summary": "Copy a object snapshot to another region.",
+        "description": "Copy a object snapshot cross region for the currently authenticated tenant.\n\n#### Rules\n- The copy only be accepted when the destiny region is different from origin region.\n- The copy only be accepted if the snapshot name in destiny region is different from input name.\n- The copy only be accepted if the user has access to destiny region.\n\n#### Notes\n- Utilize the **block-storage snapshots list** command to retrieve a list of\n all Snapshots and obtain the ID of the Snapshot you wish to copy across different region.",
+        "operationId": "copy_snapshot_cross_region_v1_snapshots__id__copy_post",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Id",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CopyCrossRegionRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 404 Copy Snapshot Cross Region V1 Snapshots  Id  Copy Post"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 409 Copy Snapshot Cross Region V1 Snapshots  Id  Copy Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 422 Copy Snapshot Cross Region V1 Snapshots  Id  Copy Post"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": true,
+        "x-mgc-hidden": true
+      }
+    },
     "/v1/snapshots/{id}/rename": {
       "patch": {
         "tags": [
@@ -1272,6 +1362,20 @@
                 }
               ],
               "title": "Availability-Zone",
+              "nullable": true
+            }
+          },
+          {
+            "name": "allows-encryption",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                }
+              ],
+              "title": "Allows-Encryption",
               "nullable": true
             }
           },
@@ -2422,18 +2526,18 @@
                   "message": "You have reached the limit of allowed backups. Please, remove unused backups or contact support to increase your quota.",
                   "slug": "creating_error_quota"
                 },
-                "id": "003badbe-eced-4930-b145-6d935330e404",
+                "id": "a7ce0545-7a0e-4192-97e7-659aaa66b5c4",
                 "name": "My backup",
                 "size": 10,
                 "source_backup": {
-                  "id": "511768a4-0dec-49c1-b59a-ecd9515bc570"
+                  "id": "cf495c8d-5b1c-4e3e-b991-f6642944d7a7"
                 },
                 "state": "available",
                 "status": "completed",
                 "type": "incremental",
                 "updated_at": "2022-01-01T00:00:10Z",
                 "volume": {
-                  "id": "bd21ad09-b13a-4dad-ae89-125c43c47885"
+                  "id": "3961ab7f-4939-4ea0-8f7e-25a2e30731b7"
                 }
               }
             },
@@ -2453,18 +2557,18 @@
                 "message": "You have reached the limit of allowed backups. Please, remove unused backups or contact support to increase your quota.",
                 "slug": "creating_error_quota"
               },
-              "id": "003badbe-eced-4930-b145-6d935330e404",
+              "id": "a7ce0545-7a0e-4192-97e7-659aaa66b5c4",
               "name": "My backup",
               "size": 10,
               "source_backup": {
-                "id": "511768a4-0dec-49c1-b59a-ecd9515bc570"
+                "id": "cf495c8d-5b1c-4e3e-b991-f6642944d7a7"
               },
               "state": "available",
               "status": "completed",
               "type": "incremental",
               "updated_at": "2022-01-01T00:00:10Z",
               "volume": {
-                "id": "bd21ad09-b13a-4dad-ae89-125c43c47885"
+                "id": "3961ab7f-4939-4ea0-8f7e-25a2e30731b7"
               }
             }
           ]
@@ -2607,18 +2711,18 @@
             "message": "You have reached the limit of allowed backups. Please, remove unused backups or contact support to increase your quota.",
             "slug": "creating_error_quota"
           },
-          "id": "003badbe-eced-4930-b145-6d935330e404",
+          "id": "a7ce0545-7a0e-4192-97e7-659aaa66b5c4",
           "name": "My backup",
           "size": 10,
           "source_backup": {
-            "id": "511768a4-0dec-49c1-b59a-ecd9515bc570"
+            "id": "cf495c8d-5b1c-4e3e-b991-f6642944d7a7"
           },
           "state": "available",
           "status": "completed",
           "type": "incremental",
           "updated_at": "2022-01-01T00:00:10Z",
           "volume": {
-            "id": "bd21ad09-b13a-4dad-ae89-125c43c47885"
+            "id": "3961ab7f-4939-4ea0-8f7e-25a2e30731b7"
           }
         }
       },
@@ -2731,6 +2835,22 @@
             "name": "backup-tomato"
           },
           "destiny_region": "br-ne1"
+        }
+      },
+      "CopyCrossRegionRequest": {
+        "type": "object",
+        "properties": {
+          "destination_region": {
+            "type": "string",
+            "title": "Destination Region"
+          }
+        },
+        "title": "CopyCrossRegionRequest",
+        "required": [
+          "destination_region"
+        ],
+        "example": {
+          "destination_region": "br-se1"
         }
       },
       "CreateAttachmentRequest": {
@@ -3352,13 +3472,12 @@
             "nullable": true
           },
           "type": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/SnapshotType"
-              }
-            ],
-            "default": "instant",
-            "nullable": true
+            "type": "string",
+            "title": "SnapshotType",
+            "enum": [
+              "instant",
+              "object"
+            ]
           }
         },
         "title": "SnapshotCreationRequest",
@@ -4112,6 +4231,13 @@
           "availability_zone": {
             "type": "string",
             "title": "Availability Zone"
+          },
+          "availability_zones": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "title": "Availability Zones"
           }
         },
         "title": "VolumeResponseV1",
@@ -4124,7 +4250,8 @@
           "created_at",
           "updated_at",
           "type",
-          "availability_zone"
+          "availability_zone",
+          "availability_zones"
         ],
         "example": {
           "attachment": {
@@ -4140,6 +4267,9 @@
             }
           },
           "availability_zone": "br-ne1-a",
+          "availability_zones": [
+            "br-ne1-a"
+          ],
           "created_at": "2022-01-01T00:00:10Z",
           "error": {
             "message": "You have reached the limit of allowed disks. Please, remove unused disks or contact support to increase your quota.",
@@ -4539,6 +4669,13 @@
                 "availability_zone": {
                   "type": "string",
                   "title": "Availability Zone"
+                },
+                "availability_zones": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "title": "Availability Zones"
                 }
               },
               "title": "VolumeResponseV1",
@@ -4551,7 +4688,8 @@
                 "created_at",
                 "updated_at",
                 "type",
-                "availability_zone"
+                "availability_zone",
+                "availability_zones"
               ],
               "example": {
                 "attachment": {
@@ -4567,6 +4705,9 @@
                   }
                 },
                 "availability_zone": "br-ne1-a",
+                "availability_zones": [
+                  "br-ne1-a"
+                ],
                 "created_at": "2022-01-01T00:00:10Z",
                 "error": {
                   "message": "You have reached the limit of allowed disks. Please, remove unused disks or contact support to increase your quota.",
@@ -4606,6 +4747,9 @@
                 }
               },
               "availability_zone": "br-ne1-a",
+              "availability_zones": [
+                "br-ne1-a"
+              ],
               "created_at": "2022-01-01T00:00:10Z",
               "error": {
                 "message": "You have reached the limit of allowed disks. Please, remove unused disks or contact support to increase your quota.",
