@@ -28,6 +28,7 @@ import (
 )
 
 type ListParameters struct {
+	AllowsEncryption *bool   `json:"allows-encryption,omitempty"`
 	AvailabilityZone *string `json:"availability-zone,omitempty"`
 	Name             *string `json:"name,omitempty"`
 }

@@ -29,21 +29,17 @@ func (r *DataSourceBsSnapshot) Metadata(_ context.Context, req datasource.Metada
 }
 
 type bsSnapshotsResourceModel struct {
-	ID                types.String              `tfsdk:"id"`
-	Name              types.String              `tfsdk:"name"`
-	Description       types.String              `tfsdk:"description"`
-	UpdatedAt         types.String              `tfsdk:"updated_at"`
-	CreatedAt         types.String              `tfsdk:"created_at"`
-	Volume            *bsSnapshotsVolumeIDModel `tfsdk:"volume"`
-	State             types.String              `tfsdk:"state"`
-	Status            types.String              `tfsdk:"status"`
-	Size              types.Int64               `tfsdk:"size"`
-	Type              types.String              `tfsdk:"type"`
-	AvailabilityZones types.List                `tfsdk:"availability_zones"`
-}
-
-type bsSnapshotsVolumeIDModel struct {
-	ID types.String `tfsdk:"id"`
+	ID                types.String `tfsdk:"id"`
+	Name              types.String `tfsdk:"name"`
+	Description       types.String `tfsdk:"description"`
+	UpdatedAt         types.String `tfsdk:"updated_at"`
+	CreatedAt         types.String `tfsdk:"created_at"`
+	VolumeId          types.String `tfsdk:"volume_id"`
+	State             types.String `tfsdk:"state"`
+	Status            types.String `tfsdk:"status"`
+	Size              types.Int64  `tfsdk:"size"`
+	Type              types.String `tfsdk:"type"`
+	AvailabilityZones types.List   `tfsdk:"availability_zones"`
 }
 
 func (r *DataSourceBsSnapshot) Configure(ctx context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
@@ -100,14 +96,9 @@ func GetBsSnapshotAttributes(idRequired bool) map[string]schema.Attribute {
 			Description: "The size of the snapshot in GB.",
 			Computed:    true,
 		},
-		"volume": schema.SingleNestedAttribute{
-			Computed: true,
-			Attributes: map[string]schema.Attribute{
-				"id": schema.StringAttribute{
-					Description: "ID of block storage volume",
-					Computed:    true,
-				},
-			},
+		"volume_id": schema.SingleNestedAttribute{
+			Description: "ID of block storage volume",
+			Computed:    true,
 		},
 		"type": schema.StringAttribute{
 			Description: "The type of the snapshot.",
@@ -150,7 +141,7 @@ func (r *DataSourceBsSnapshot) Read(ctx context.Context, req datasource.ReadRequ
 	data.Description = types.StringPointerValue(sdkOutput.Description)
 	data.UpdatedAt = types.StringValue(sdkOutput.UpdatedAt)
 	data.CreatedAt = types.StringValue(sdkOutput.CreatedAt)
-	data.Volume = &bsSnapshotsVolumeIDModel{ID: types.StringPointerValue(sdkOutput.Volume.Id)}
+	data.VolumeId = types.StringPointerValue(sdkOutput.Volume.Id)
 	data.State = types.StringValue(sdkOutput.State)
 	data.Status = types.StringValue(sdkOutput.Status)
 	data.Size = types.Int64Value(int64(sdkOutput.Size))
