@@ -9,7 +9,7 @@ Executor: create
 
 # Create a Subnet
 
-Version: 1.138.0
+Version: 1.141.3
 
 import "magalu.cloud/lib/products/network/vpcs/subnets"
 */
@@ -28,7 +28,7 @@ type CreateParameters struct {
 	DnsNameservers *CreateParametersDnsNameservers `json:"dns_nameservers,omitempty"`
 	IpVersion      int                             `json:"ip_version"`
 	Name           string                          `json:"name"`
-	SubnetpoolId   string                          `json:"subnetpool_id"`
+	SubnetpoolId   *string                         `json:"subnetpool_id,omitempty"`
 	VpcId          string                          `json:"vpc_id"`
 }
 

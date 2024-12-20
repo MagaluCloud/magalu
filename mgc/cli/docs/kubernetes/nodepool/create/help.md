@@ -16,11 +16,11 @@ Usage:
 - (properties: max_replicas and min_replicas)
 - Use --auto-scale=help for more details
 - --auto-scale.max-replicas integer   Object specifying properties for updating workload resources in the Kubernetes cluster: Maximum number of replicas for autoscaling. If not provided, or if the value is equal to or less than zero, the autoscaler value will be assumed based on the "replicas" field.
-- (min: 1)
-- This is the same as '--auto-scale=max_replicas:integer'. (default 1)
+- (min: 0)
+- This is the same as '--auto-scale=max_replicas:integer'.
 - --auto-scale.min-replicas integer   Object specifying properties for updating workload resources in the Kubernetes cluster: Minimum number of replicas for autoscaling. If not provided, or if the value is equal to or less than zero, the autoscaler value will be assumed based on the "replicas" field.
-- (min: 1)
-- This is the same as '--auto-scale=min_replicas:integer'. (default 1)
+- (min: 0)
+- This is the same as '--auto-scale=min_replicas:integer'.
 - --cli.list-links enum[=table]       List all available links for this command (one of "json", "table" or "yaml")
 - --cluster-id uuid                   Cluster's UUID. (required)
 - --flavor string                     Definition of the CPU, RAM, and storage capacity of the nodes.

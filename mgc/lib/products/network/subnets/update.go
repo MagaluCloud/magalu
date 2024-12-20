@@ -9,7 +9,7 @@ Executor: update
 
 Update a subnet from the provided tenant_id
 
-Version: 1.138.0
+Version: 1.141.3
 
 import "magalu.cloud/lib/products/network/subnets"
 */

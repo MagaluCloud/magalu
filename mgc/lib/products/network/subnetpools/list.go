@@ -9,7 +9,7 @@ Executor: list
 
 # Returns a list of Subnet Pools for the current tenant's project
 
-Version: 1.138.0
+Version: 1.141.3
 
 import "magalu.cloud/lib/products/network/subnetpools"
 */
@@ -63,6 +63,7 @@ type ListResultResultsItem struct {
 	Cidr        *string `json:"cidr,omitempty"`
 	Description *string `json:"description,omitempty"`
 	Id          string  `json:"id"`
+	IsDefault   bool    `json:"is_default"`
 	Name        string  `json:"name"`
 	TenantId    string  `json:"tenant_id"`
 }

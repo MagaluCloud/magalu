@@ -58,7 +58,7 @@ func (r *DataSourceKubernetesNodepool) Configure(ctx context.Context, req dataso
 
 	var err error
 	var errDetail error
-	r.sdkClient, err, errDetail = client.NewSDKClient(req)
+	r.sdkClient, err, errDetail = client.NewSDKClient(req, resp)
 	if err != nil {
 		resp.Diagnostics.AddError(
 			err.Error(),
@@ -239,8 +239,12 @@ func ConvertGetResultToFlattened(ctx context.Context, original *sdkNodepool.GetR
 		StatusState:                types.StringValue(original.Status.State),
 	}
 
-	flattened.AutoScaleMaxReplicas = types.Int64Value(int64(original.AutoScale.MaxReplicas))
-	flattened.AutoScaleMinReplicas = types.Int64Value(int64(original.AutoScale.MinReplicas))
+	if original.AutoScale.MinReplicas != nil {
+		flattened.AutoScaleMaxReplicas = types.Int64Value(int64(*original.AutoScale.MaxReplicas))
+	}
+	if original.AutoScale.MinReplicas != nil {
+		flattened.AutoScaleMinReplicas = types.Int64Value(int64(*original.AutoScale.MinReplicas))
+	}
 
 	labelsMap, _ := types.MapValueFrom(ctx, types.StringType, original.Labels)
 	flattened.Labels = labelsMap

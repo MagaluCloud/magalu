@@ -35,8 +35,8 @@ type CreateParameters struct {
 // Object specifying properties for updating workload resources in the Kubernetes cluster.
 
 type CreateParametersAutoScale struct {
-	MaxReplicas int `json:"max_replicas"`
-	MinReplicas int `json:"min_replicas"`
+	MaxReplicas *int `json:"max_replicas"`
+	MinReplicas *int `json:"min_replicas"`
 }
 
 type CreateParametersTags []string

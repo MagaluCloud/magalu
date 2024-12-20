@@ -24,6 +24,7 @@ type mgcNetworkVpcsSubnetModel struct {
 	Updated        types.String     `tfsdk:"updated"`
 	VpcId          types.String     `tfsdk:"vpc_id"`
 	Zone           types.String     `tfsdk:"zone"`
+	SubnetpoolId   types.String     `tfsdk:"subnetpool_id"`
 }
 
 type DhcpPoolsModel struct {
@@ -105,6 +106,10 @@ func (r *mgcNetworkVpcsSubnetDatasource) Schema(_ context.Context, _ datasource.
 				Description: "The zone of the subnet",
 				Computed:    true,
 			},
+			"subnetpool_id": schema.StringAttribute{
+				Description: "The subnet pool ID of the subnet",
+				Computed:    true,
+			},
 		},
 	}
 }
@@ -116,7 +121,7 @@ func (r *mgcNetworkVpcsSubnetDatasource) Configure(ctx context.Context, req data
 
 	var err error
 	var errDetail error
-	r.sdkClient, err, errDetail = client.NewSDKClient(req)
+	r.sdkClient, err, errDetail = client.NewSDKClient(req, resp)
 	if err != nil {
 		resp.Diagnostics.AddError(
 			err.Error(),
@@ -164,6 +169,7 @@ func (r *mgcNetworkVpcsSubnetDatasource) Read(ctx context.Context, req datasourc
 	data.Updated = types.StringPointerValue(subnet.Updated)
 	data.VpcId = types.StringValue(subnet.VpcId)
 	data.Zone = types.StringValue(subnet.Zone)
+	data.SubnetpoolId = types.StringValue(subnet.SubnetpoolId)
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, data)...)
 }

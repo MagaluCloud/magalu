@@ -9,7 +9,7 @@ Executor: create-unbook-cidr
 
 # Unbooking a CIDR range from a subnetpool
 
-Version: 1.138.0
+Version: 1.141.3
 
 import "magalu.cloud/lib/products/network/subnetpools"
 */

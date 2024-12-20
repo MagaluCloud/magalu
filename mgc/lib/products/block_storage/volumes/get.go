@@ -43,17 +43,17 @@ type GetConfigs struct {
 }
 
 type GetResult struct {
-	Attachment        *GetResultAttachment       `json:"attachment,omitempty"`
-	AvailabilityZones GetResultAvailabilityZones `json:"availability_zones"`
-	CreatedAt         string                     `json:"created_at"`
-	Error             *GetResultError            `json:"error,omitempty"`
-	Id                string                     `json:"id"`
-	Name              string                     `json:"name"`
-	Size              int                        `json:"size"`
-	State             string                     `json:"state"`
-	Status            string                     `json:"status"`
-	Type              GetResultType              `json:"type"`
-	UpdatedAt         string                     `json:"updated_at"`
+	Attachment       *GetResultAttachment `json:"attachment,omitempty"`
+	AvailabilityZone string               `json:"availability_zone"`
+	CreatedAt        string               `json:"created_at"`
+	Error            *GetResultError      `json:"error,omitempty"`
+	Id               string               `json:"id"`
+	Name             string               `json:"name"`
+	Size             int                  `json:"size"`
+	State            string               `json:"state"`
+	Status           string               `json:"status"`
+	Type             GetResultType        `json:"type"`
+	UpdatedAt        string               `json:"updated_at"`
 }
 
 type GetResultAttachment struct {
@@ -62,27 +62,25 @@ type GetResultAttachment struct {
 	Instance   GetResultAttachmentInstance `json:"instance"`
 }
 
-// any of: GetResultAttachmentInstance
+// any of: *GetResultAttachmentInstance
 type GetResultAttachmentInstance struct {
-	CreatedAt string `json:"created_at"`
-	Id        string `json:"id"`
-	Name      string `json:"name"`
-	State     string `json:"state"`
-	Status    string `json:"status"`
-	UpdatedAt string `json:"updated_at"`
+	CreatedAt *string `json:"created_at,omitempty"`
+	Id        *string `json:"id,omitempty"`
+	Name      *string `json:"name,omitempty"`
+	State     *string `json:"state,omitempty"`
+	Status    *string `json:"status,omitempty"`
+	UpdatedAt *string `json:"updated_at,omitempty"`
 }
-
-type GetResultAvailabilityZones []string
 
 type GetResultError struct {
 	Message string `json:"message"`
 	Slug    string `json:"slug"`
 }
 
-// any of: GetResultType
+// any of: *GetResultType
 type GetResultType struct {
 	DiskType *string            `json:"disk_type,omitempty"`
-	Id       string             `json:"id"`
+	Id       *string            `json:"id,omitempty"`
 	Iops     *GetResultTypeIops `json:"iops,omitempty"`
 	Name     *string            `json:"name,omitempty"`
 	Status   *string            `json:"status,omitempty"`

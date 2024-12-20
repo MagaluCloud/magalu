@@ -56,10 +56,7 @@ See [sdk/openapi/README.md](./mgc/sdk/openapi/README.md)
 
 ### OpenAPIs
 
-To add a new API spec, edit `./scripts/add_all_specs.sh` and follow
-the structure. Then run it.
-
-This will fetch the URL, apply modifications and save in the given path `mgc/cli/openapis`.
+To add a new API spec, see `ADD_NEW_API.md`.
 
 ### Static APIs
 

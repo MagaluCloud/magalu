@@ -1,1 +1,0 @@
-terraform import mgc_virtual_machine_instances.basic_instance 123

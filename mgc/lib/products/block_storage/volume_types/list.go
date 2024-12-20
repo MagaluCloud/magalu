@@ -29,6 +29,7 @@ import (
 
 type ListParameters struct {
 	AvailabilityZone *string `json:"availability-zone,omitempty"`
+	Name             *string `json:"name,omitempty"`
 }
 
 type ListConfigs struct {

@@ -62,7 +62,7 @@ func (r *k8sClusterResource) Configure(ctx context.Context, req resource.Configu
 
 	var err error
 	var errDetail error
-	r.sdkClient, err, errDetail = client.NewSDKClient(req)
+	r.sdkClient, err, errDetail = client.NewSDKClient(req, resp)
 	if err != nil {
 		resp.Diagnostics.AddError(
 			err.Error(),
@@ -349,7 +349,6 @@ func convertTerraformModelToSDKCreateParameters(data *KubernetesClusterCreateRes
 		Description:        data.Description.ValueStringPointer(),
 		Name:               data.Name.ValueString(),
 		Version:            data.Version.ValueStringPointer(),
-		Zone:               data.Zone.ValueStringPointer(),
 		EnabledServerGroup: data.EnabledServerGroup.ValueBoolPointer(),
 	}
 }

@@ -1270,6 +1270,22 @@
             }
           },
           {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Name"
+            }
+          },
+          {
             "name": "x-tenant-id",
             "in": "header",
             "required": true,
@@ -3140,6 +3156,9 @@
               },
               {
                 "$ref": "#/components/schemas/SnapshotVolume"
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Volume"
@@ -3248,7 +3267,8 @@
           "replicating",
           "replicating_error",
           "restoring",
-          "restoring_error"
+          "restoring_error",
+          "reserved"
         ]
       },
       "SnapshotType": {
@@ -3543,12 +3563,9 @@
               }
             ]
           },
-          "availability_zones": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "title": "Availability Zones"
+          "availability_zone": {
+            "type": "string",
+            "title": "Availability Zone"
           }
         },
         "title": "VolumeResponseV1",
@@ -3561,7 +3578,7 @@
           "created_at",
           "updated_at",
           "type",
-          "availability_zones"
+          "availability_zone"
         ],
         "example": {
           "attachment": {
@@ -3576,9 +3593,7 @@
               "updated_at": "2022-01-01T00:00:10Z"
             }
           },
-          "availability_zones": [
-            "br-ne1-a"
-          ],
+          "availability_zone": "br-ne1-a",
           "created_at": "2022-01-01T00:00:10Z",
           "error": {
             "message": "You have reached the limit of allowed disks. Please, remove unused disks or contact support to increase your quota.",
@@ -3820,9 +3835,7 @@
                   "updated_at": "2022-01-01T00:00:10Z"
                 }
               },
-              "availability_zones": [
-                "br-ne1-a"
-              ],
+              "availability_zone": "br-ne1-a",
               "created_at": "2022-01-01T00:00:10Z",
               "error": {
                 "message": "You have reached the limit of allowed disks. Please, remove unused disks or contact support to increase your quota.",

@@ -20,6 +20,7 @@ type mgcNetworkSubnetpoolsModel struct {
 	IpVersion   types.Int64  `tfsdk:"ip_version"`
 	Name        types.String `tfsdk:"name"`
 	TenantId    types.String `tfsdk:"tenant_id"`
+	IsDefault   types.Bool   `tfsdk:"is_default"`
 }
 
 type mgcNetworkSubnetpoolsDatasource struct {
@@ -67,6 +68,10 @@ func (r *mgcNetworkSubnetpoolsDatasource) Schema(_ context.Context, _ datasource
 				Description: "The ID of the tenant that owns the subnetpool",
 				Computed:    true,
 			},
+			"is_default": schema.BoolAttribute{
+				Description: "Whether the subnetpool is the default subnetpool or public IP",
+				Computed:    true,
+			},
 		},
 	}
 }
@@ -91,6 +96,7 @@ func (r *mgcNetworkSubnetpoolsDatasource) Read(ctx context.Context, req datasour
 	data.IpVersion = types.Int64PointerValue(tfutil.ConvertIntPointerToInt64Pointer(&subnetPool.IpVersion))
 	data.Name = types.StringValue(subnetPool.Name)
 	data.TenantId = types.StringValue(subnetPool.TenantId)
+	data.IsDefault = types.BoolValue(subnetPool.IsDefault)
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, data)...)
 }
@@ -102,7 +108,7 @@ func (r *mgcNetworkSubnetpoolsDatasource) Configure(ctx context.Context, req dat
 
 	var err error
 	var errDetail error
-	r.sdkClient, err, errDetail = client.NewSDKClient(req)
+	r.sdkClient, err, errDetail = client.NewSDKClient(req, resp)
 	if err != nil {
 		resp.Diagnostics.AddError(
 			err.Error(),

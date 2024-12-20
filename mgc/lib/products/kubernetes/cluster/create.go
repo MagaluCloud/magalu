@@ -30,7 +30,6 @@ type CreateParameters struct {
 	Name               string                        `json:"name"`
 	NodePools          *CreateParametersNodePools    `json:"node_pools,omitempty"`
 	Version            *string                       `json:"version,omitempty"`
-	Zone               *string                       `json:"zone,omitempty"`
 }
 
 type CreateParametersAllowedCidrs []string
@@ -48,8 +47,8 @@ type CreateParametersNodePoolsItem struct {
 // Object specifying properties for updating workload resources in the Kubernetes cluster.
 
 type CreateParametersNodePoolsItemAutoScale struct {
-	MaxReplicas int `json:"max_replicas"`
-	MinReplicas int `json:"min_replicas"`
+	MaxReplicas *int `json:"max_replicas"`
+	MinReplicas *int `json:"min_replicas"`
 }
 
 type CreateParametersNodePoolsItemTags []string

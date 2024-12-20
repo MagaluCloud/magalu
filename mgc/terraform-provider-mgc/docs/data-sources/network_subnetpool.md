@@ -35,5 +35,6 @@ output "subnetpool_cidr" {
 - `created_at` (String) The timestamp when the subnetpool was created
 - `description` (String) The description of the subnetpool
 - `ip_version` (Number) The IP version of the subnetpool (4 or 6)
+- `is_default` (Boolean) Whether the subnetpool is the default subnetpool or public IP
 - `name` (String) The name of the subnetpool
 - `tenant_id` (String) The ID of the tenant that owns the subnetpool

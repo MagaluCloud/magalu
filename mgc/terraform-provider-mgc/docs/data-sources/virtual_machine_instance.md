@@ -31,6 +31,7 @@ output "vm_instances" {
 
 ### Read-Only
 
+- `availability_zone` (String) Availability zone of instance
 - `image_id` (String) Image ID of instance
 - `machine_type_id` (String) Machine type ID of instance
 - `name` (String) Name of type.
