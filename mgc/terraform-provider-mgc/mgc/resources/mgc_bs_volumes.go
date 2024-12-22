@@ -194,7 +194,7 @@ func (r *bsVolumes) Create(ctx context.Context, req resource.CreateRequest, resp
 		},
 	}
 
-	createResult, err := r.bsVolumes.CreateContext(ctx, createParam, 
+	createResult, err := r.bsVolumes.CreateContext(ctx, createParam,
 		tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkBlockStorageVolumes.CreateConfigs{}))
 	if err != nil {
 		resp.Diagnostics.AddError("Error creating volume", err.Error())
@@ -281,7 +281,7 @@ func (r *bsVolumes) Delete(ctx context.Context, req resource.DeleteRequest, resp
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	
+
 	err := r.bsVolumes.DeleteContext(ctx,
 		sdkBlockStorageVolumes.DeleteParameters{
 			Id: data.ID.ValueString(),
