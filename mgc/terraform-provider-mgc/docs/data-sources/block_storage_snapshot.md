@@ -40,11 +40,7 @@ output "snapshot" {
 - `status` (String) The status of the virtual machine instance.
 - `type` (String) The type of the snapshot.
 - `updated_at` (String) The timestamp when the block storage was last updated.
-- `volume` (Attributes) (see [below for nested schema](#nestedatt--volume))
+- `volume_id` (Attributes) ID of block storage volume (see [below for nested schema](#nestedatt--volume_id))
 
-<a id="nestedatt--volume"></a>
-### Nested Schema for `volume`
-
-Read-Only:
-
-- `id` (String) ID of block storage volume
+<a id="nestedatt--volume_id"></a>
+### Nested Schema for `volume_id`

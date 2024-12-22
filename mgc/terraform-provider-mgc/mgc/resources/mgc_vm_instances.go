@@ -8,8 +8,10 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
+	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -20,6 +22,7 @@ import (
 	"magalu.cloud/terraform-provider-mgc/mgc/client"
 	tfutil "magalu.cloud/terraform-provider-mgc/mgc/tfutil"
 )
+
 const (
 	VmInstanceStatusTimeout = 60 * time.Minute
 )
@@ -105,19 +108,19 @@ func (r *vmInstances) Configure(ctx context.Context, req resource.ConfigureReque
 }
 
 type vmInstancesResourceModel struct {
-	ID                types.String                       `tfsdk:"id"`
-	Name              types.String                       `tfsdk:"name"`
-	CreatedAt         types.String                       `tfsdk:"created_at"`
-	SshKeyName        types.String                       `tfsdk:"ssh_key_name"`
-	VpcId             types.String                       `tfsdk:"vpc_id"`
-	MachineType       types.String                       `tfsdk:"machine_type"`
-	Image             types.String                       `tfsdk:"image"`
-	UserData          types.String                       `tfsdk:"user_data"`
-	AvailabilityZone  types.String                       `tfsdk:"availability_zone"`
-	NetworkInterfaces []vmInstancesNetworkInterfaceModel `tfsdk:"network_interfaces"`
+	ID                types.String `tfsdk:"id"`
+	Name              types.String `tfsdk:"name"`
+	CreatedAt         types.String `tfsdk:"created_at"`
+	SshKeyName        types.String `tfsdk:"ssh_key_name"`
+	VpcId             types.String `tfsdk:"vpc_id"`
+	MachineType       types.String `tfsdk:"machine_type"`
+	Image             types.String `tfsdk:"image"`
+	UserData          types.String `tfsdk:"user_data"`
+	AvailabilityZone  types.String `tfsdk:"availability_zone"`
+	NetworkInterfaces types.List   `tfsdk:"network_interfaces"`
 }
 
-type vmInstancesNetworkInterfaceModel struct {
+type VmInstancesNetworkInterfaceModel struct {
 	ID        types.String `tfsdk:"id"`
 	Name      types.String `tfsdk:"name"`
 	Ipv4      types.String `tfsdk:"ipv4"`
@@ -170,6 +173,7 @@ func (r *vmInstances) Schema(_ context.Context, _ resource.SchemaRequest, resp *
 				Computed:    true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
+					stringplanmodifier.UseStateForUnknown(),
 				},
 			},
 			"machine_type": schema.StringAttribute{
@@ -196,11 +200,15 @@ func (r *vmInstances) Schema(_ context.Context, _ resource.SchemaRequest, resp *
 				Computed:    true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
+					stringplanmodifier.UseStateForUnknown(),
 				},
 			},
 			"network_interfaces": schema.ListNestedAttribute{
 				Description: "The network interfaces of the virtual machine instance.",
 				Computed:    true,
+				PlanModifiers: []planmodifier.List{
+					listplanmodifier.UseStateForUnknown(),
+				},
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
 						"id": schema.StringAttribute{
@@ -237,13 +245,16 @@ func (r *vmInstances) Schema(_ context.Context, _ resource.SchemaRequest, resp *
 func (r *vmInstances) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
 	data := vmInstancesResourceModel{}
 	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	getResult, err := r.vmInstances.GetContext(ctx, sdkVmInstances.GetParameters{Id: data.ID.ValueString()}, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVmInstances.GetConfigs{}))
 	if err != nil {
 		resp.Diagnostics.AddError("Error Reading VM", err.Error())
 		return
 	}
-	convertedData := r.toTerraformModel(getResult)
+	convertedData := r.toTerraformModel(ctx, getResult)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &convertedData)...)
 }
 
@@ -254,6 +265,7 @@ func (r *vmInstances) Create(ctx context.Context, req resource.CreateRequest, re
 		return
 	}
 
+	createdPublicIp := false
 	createParams := sdkVmInstances.CreateParameters{
 		Name: state.Name.ValueString(),
 		MachineType: sdkVmInstances.CreateParametersMachineType{
@@ -265,19 +277,24 @@ func (r *vmInstances) Create(ctx context.Context, req resource.CreateRequest, re
 		UserData:         state.UserData.ValueStringPointer(),
 		AvailabilityZone: state.AvailabilityZone.ValueStringPointer(),
 		SshKeyName:       state.SshKeyName.ValueStringPointer(),
+		Network: &sdkVmInstances.CreateParametersNetwork{
+			AssociatePublicIp: &createdPublicIp,
+		},
 	}
 
-	result, err := r.vmInstances.CreateContext(ctx, createParams, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVmInstances.CreateConfigs{}))
+	createdId, err := r.vmInstances.CreateContext(ctx, createParams, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVmInstances.CreateConfigs{}))
 	if err != nil {
 		resp.Diagnostics.AddError("Error Creating VM", err.Error())
 		return
 	}
-	if _, err := r.waitUntilInstanceStatusMatches(ctx, result.Id, StatusCompleted); err != nil {
+	getResponse, err := r.waitUntilInstanceStatusMatches(ctx, createdId.Id, StatusCompleted)
+	if err != nil {
 		resp.Diagnostics.AddError("Error waiting for VM creation", err.Error())
 		return
 	}
 
-	resp.Diagnostics.Append(resp.State.Set(ctx, &state)...)
+	convertedResult := r.toTerraformModel(ctx, *getResponse)
+	resp.Diagnostics.Append(resp.State.Set(ctx, &convertedResult)...)
 }
 
 func (r *vmInstances) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
@@ -285,6 +302,9 @@ func (r *vmInstances) Update(ctx context.Context, req resource.UpdateRequest, re
 	state := &vmInstancesResourceModel{}
 	req.State.Get(ctx, state)
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	if state.Name.ValueString() != plan.Name.ValueString() {
 		err := r.vmInstances.RenameContext(ctx, sdkVmInstances.RenameParameters{
@@ -316,7 +336,7 @@ func (r *vmInstances) Update(ctx context.Context, req resource.UpdateRequest, re
 		return
 	}
 
-	convertedResult := r.toTerraformModel(*getResult)
+	convertedResult := r.toTerraformModel(ctx, *getResult)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &convertedResult)...)
 }
 
@@ -338,18 +358,26 @@ func (r *vmInstances) Delete(ctx context.Context, req resource.DeleteRequest, re
 	}
 }
 
-func (r *vmInstances)  toTerraformModel(server sdkVmInstances.GetResult) *vmInstancesResourceModel {
-	interfaces := []vmInstancesNetworkInterfaceModel{}
+func (r *vmInstances) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+	model := vmInstancesResourceModel{
+		ID: types.StringValue(req.ID),
+	}
+	resp.Diagnostics.Append(resp.State.Set(ctx, &model)...)
+}
+
+func (r *vmInstances) toTerraformModel(ctx context.Context, server sdkVmInstances.GetResult) *vmInstancesResourceModel {
+	interfaces := []VmInstancesNetworkInterfaceModel{}
 	for _, port := range *server.Network.Interfaces {
-		interfaces = append(interfaces, vmInstancesNetworkInterfaceModel{
+		interfaces = append(interfaces, VmInstancesNetworkInterfaceModel{
 			ID:        types.StringValue(port.Id),
 			Name:      types.StringValue(port.Name),
-			Ipv4:      types.StringPointerValue(port.AssociatedPublicIpv4), 
+			Ipv4:      types.StringPointerValue(port.AssociatedPublicIpv4),
 			LocalIpv4: types.StringValue(port.IpAddresses.PrivateIpv4),
 			Ipv6:      types.StringPointerValue(port.IpAddresses.PublicIpv6),
 			Primary:   types.BoolPointerValue(port.Primary),
 		})
 	}
+
 	data := vmInstancesResourceModel{
 		ID:                types.StringValue(server.Id),
 		Name:              types.StringPointerValue(server.Name),
@@ -360,7 +388,7 @@ func (r *vmInstances)  toTerraformModel(server sdkVmInstances.GetResult) *vmInst
 		Image:             types.StringPointerValue(server.Image.Name),
 		UserData:          types.StringPointerValue(server.UserData),
 		AvailabilityZone:  types.StringPointerValue(server.AvailabilityZone),
-		NetworkInterfaces: interfaces,
+		NetworkInterfaces: r.toTerraformNetworkInterfacesList(ctx, interfaces),
 	}
 	return &data
 }
@@ -389,4 +417,22 @@ func (r *vmInstances) waitUntilInstanceStatusMatches(ctx context.Context, instan
 			}
 		}
 	}
+}
+
+func (r *vmInstances) toTerraformNetworkInterfacesList(ctx context.Context, interfaces []VmInstancesNetworkInterfaceModel) types.List {
+	listValue, _ := types.ListValueFrom(
+		ctx,
+		types.ObjectType{
+			AttrTypes: map[string]attr.Type{
+				"id":         types.StringType,
+				"name":       types.StringType,
+				"ipv4":       types.StringType,
+				"local_ipv4": types.StringType,
+				"ipv6":       types.StringType,
+				"primary":    types.BoolType,
+			},
+		},
+		interfaces,
+	)
+	return listValue
 }

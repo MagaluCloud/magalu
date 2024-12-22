@@ -30,32 +30,14 @@ resource "mgc_block_storage_volumes" "example_volume" {
 
 - `name` (String) The name of the block storage.
 - `size` (Number) The size of the block storage in GB.
-- `type` (Attributes) The type of the block storage. (see [below for nested schema](#nestedatt--type))
+- `type` (String) The name of the block storage type.
 
 ### Optional
 
 - `availability_zone` (String) The availability zones where the block storage is available.
-- `name_is_prefix` (Boolean) Indicates whether the provided name is a prefix or the exact name of the block storage.
-- `snapshot_id` (String) The unique identifier of the snapshot used to create the block storage.
+- `snapshot_id` (String) The unique identifier of the snapshot used to create the volume.
 
 ### Read-Only
 
 - `created_at` (String) The timestamp when the block storage was created.
-- `final_name` (String) The final name of the block storage after applying any naming conventions or modifications.
 - `id` (String) The unique identifier of the block storage.
-- `state` (String) The current state of the virtual machine instance.
-- `status` (String) The status of the virtual machine instance.
-- `updated_at` (String) The timestamp when the block storage was last updated.
-
-<a id="nestedatt--type"></a>
-### Nested Schema for `type`
-
-Required:
-
-- `name` (String) The name of the block storage type.
-
-Read-Only:
-
-- `disk_type` (String) The disk type of the block storage.
-- `id` (String) The unique identifier of the block storage type.
-- `status` (String) The status of the block storage type.

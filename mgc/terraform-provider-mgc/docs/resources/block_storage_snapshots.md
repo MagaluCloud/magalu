@@ -38,28 +38,16 @@ resource "mgc_block_storage_snapshots" "snapshot_of_snap_example" {
 
 - `description` (String) The description of the volume snapshot.
 - `name` (String) The name of the volume snapshot.
+- `volume_id` (String) ID of block storage volume
 
 ### Optional
 
-- `name_is_prefix` (Boolean) Indicates whether the provided name is a prefix or the exact name of the volume snapshot.
 - `snapshot_source_id` (String) The ID of the snapshot source.
 - `type` (String) The type of the snapshot.
-- `volume` (Attributes) (see [below for nested schema](#nestedatt--volume))
 
 ### Read-Only
 
-- `availability_zones` (List of String) The availability zones of the snapshot.
+- `availability_zones` (List of String) The availability zone of the snapshot.
 - `created_at` (String) The timestamp when the block storage was created.
-- `final_name` (String) The final name of the volume snapshot after applying any naming conventions or modifications.
 - `id` (String) The unique identifier of the volume snapshot.
 - `size` (Number) The size of the snapshot in GB.
-- `state` (String) The current state of the virtual machine instance.
-- `status` (String) The status of the virtual machine instance.
-- `updated_at` (String) The timestamp when the block storage was last updated.
-
-<a id="nestedatt--volume"></a>
-### Nested Schema for `volume`
-
-Required:
-
-- `id` (String) ID of block storage volume
