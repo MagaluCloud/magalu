@@ -19,7 +19,7 @@
     "/v0beta1/network-load-balancers": {
       "get": {
         "tags": [
-          "network_load_balancer-loadbalancers"
+          "network_loadbalancers"
         ],
         "summary": "List Load Balancers",
         "operationId": "list_load_balancers_v0beta1_network_load_balancers_get",
@@ -98,7 +98,7 @@
       },
       "post": {
         "tags": [
-          "network_load_balancer-loadbalancers"
+          "network_loadbalancers"
         ],
         "summary": "Create Load Balancer",
         "operationId": "create_load_balancer_v0beta1_network_load_balancers_post",
@@ -152,7 +152,7 @@
     "/v0beta1/network-load-balancers/{load_balancer_id}": {
       "get": {
         "tags": [
-          "network_load_balancer-loadbalancers"
+          "network_loadbalancers"
         ],
         "summary": "Get Load Balancer by ID",
         "operationId": "get_load_balancer_v0beta1_network_load_balancers__load_balancer_id__get",
@@ -205,7 +205,7 @@
       },
       "put": {
         "tags": [
-          "network_load_balancer-loadbalancers"
+          "network_loadbalancers"
         ],
         "summary": "Update Load Balancer by ID",
         "operationId": "update_load_balancer_v0beta1_network_load_balancers__load_balancer_id__put",
@@ -268,7 +268,7 @@
       },
       "delete": {
         "tags": [
-          "network_load_balancer-loadbalancers"
+          "network_loadbalancers"
         ],
         "summary": "Delete Load Balancer by ID",
         "operationId": "delete_load_balancer_v0beta1_network_load_balancers__load_balancer_id__delete",
@@ -316,7 +316,7 @@
     "/v0beta1/xaas/network-load-balancers": {
       "get": {
         "tags": [
-          "network_load_balancer-XaaS loadbalancers"
+          "network_XaaS loadbalancers"
         ],
         "summary": "List Load Balancers",
         "operationId": "list_load_balancers_v0beta1_xaas_network_load_balancers_get",
@@ -423,7 +423,7 @@
       },
       "post": {
         "tags": [
-          "network_load_balancer-XaaS loadbalancers"
+          "network_XaaS loadbalancers"
         ],
         "summary": "Create Load Balancer",
         "operationId": "create_load_balancer_v0beta1_xaas_network_load_balancers_post",
@@ -505,7 +505,7 @@
     "/v0beta1/xaas/network-load-balancers/{load_balancer_id}": {
       "get": {
         "tags": [
-          "network_load_balancer-XaaS loadbalancers"
+          "network_XaaS loadbalancers"
         ],
         "summary": "Get Load Balancer by ID",
         "operationId": "get_load_balancer_v0beta1_xaas_network_load_balancers__load_balancer_id__get",
@@ -586,7 +586,7 @@
       },
       "put": {
         "tags": [
-          "network_load_balancer-XaaS loadbalancers"
+          "network_XaaS loadbalancers"
         ],
         "summary": "Update Load Balancer by ID",
         "operationId": "update_load_balancer_v0beta1_xaas_network_load_balancers__load_balancer_id__put",
@@ -673,7 +673,7 @@
       },
       "delete": {
         "tags": [
-          "network_load_balancer-XaaS loadbalancers"
+          "network_XaaS loadbalancers"
         ],
         "summary": "Delete Load Balancer by ID",
         "operationId": "delete_load_balancer_v0beta1_xaas_network_load_balancers__load_balancer_id__delete",
@@ -749,7 +749,7 @@
     "/v0beta1/xaas/network-load-balancers/shutdown/{load_balancer_id}": {
       "put": {
         "tags": [
-          "network_load_balancer-XaaS loadbalancers"
+          "network_XaaS loadbalancers"
         ],
         "summary": "Virtual shutdown of an envoy LB, it stops charging but keeps the resources running.If you need to fully stop it, delete the LB.",
         "operationId": "shutdown_load_balancer_v0beta1_xaas_network_load_balancers_shutdown__load_balancer_id__put",
@@ -816,7 +816,7 @@
     "/v0beta1/network-load-balancers/{load_balancer_id}/tls-certificates": {
       "get": {
         "tags": [
-          "network_load_balancer-certificates"
+          "network_certificates"
         ],
         "summary": "List TLS Certificates",
         "operationId": "list_tls_certificates_v0beta1_network_load_balancers__load_balancer_id__tls_certificates_get",
@@ -906,7 +906,7 @@
       },
       "post": {
         "tags": [
-          "network_load_balancer-certificates"
+          "network_certificates"
         ],
         "summary": "Create TLS Certificate",
         "operationId": "create_tls_certificate_v0beta1_network_load_balancers__load_balancer_id__tls_certificates_post",
@@ -971,7 +971,7 @@
     "/v0beta1/network-load-balancers/{load_balancer_id}/tls-certificates/{tls_certificate_id}": {
       "get": {
         "tags": [
-          "network_load_balancer-certificates"
+          "network_certificates"
         ],
         "summary": "Get TLS Certificate by ID",
         "operationId": "get_tls_certificate_v0beta1_network_load_balancers__load_balancer_id__tls_certificates__tls_certificate_id__get",
@@ -1035,7 +1035,7 @@
       },
       "put": {
         "tags": [
-          "network_load_balancer-certificates"
+          "network_certificates"
         ],
         "summary": "Update TLS Certificate by ID",
         "operationId": "update_tls_certificate_v0beta1_network_load_balancers__load_balancer_id__tls_certificates__tls_certificate_id__put",
@@ -1102,7 +1102,7 @@
       },
       "delete": {
         "tags": [
-          "network_load_balancer-certificates"
+          "network_certificates"
         ],
         "summary": "Delete TLS Certificate by ID",
         "operationId": "delete_tls_certificate_v0beta1_network_load_balancers__load_balancer_id__tls_certificates__tls_certificate_id__delete",
@@ -1150,7 +1150,7 @@
     "/v0beta1/xaas/network-load-balancers/{load_balancer_id}/tls-certificates": {
       "get": {
         "tags": [
-          "network_load_balancer-XaaS certificates"
+          "network_XaaS certificates"
         ],
         "summary": "List TLS Certificates",
         "operationId": "list_tls_certificates_v0beta1_xaas_network_load_balancers__load_balancer_id__tls_certificates_get",
@@ -1252,7 +1252,7 @@
       },
       "post": {
         "tags": [
-          "network_load_balancer-XaaS certificates"
+          "network_XaaS certificates"
         ],
         "summary": "Create TLS Certificate",
         "operationId": "create_tls_certificate_v0beta1_xaas_network_load_balancers__load_balancer_id__tls_certificates_post",
@@ -1329,7 +1329,7 @@
     "/v0beta1/xaas/network-load-balancers/{load_balancer_id}/tls-certificates/{tls_certificate_id}": {
       "get": {
         "tags": [
-          "network_load_balancer-XaaS certificates"
+          "network_XaaS certificates"
         ],
         "summary": "Get TLS Certificate by ID",
         "operationId": "get_tls_certificate_v0beta1_xaas_network_load_balancers__load_balancer_id__tls_certificates__tls_certificate_id__get",
@@ -1405,7 +1405,7 @@
       },
       "put": {
         "tags": [
-          "network_load_balancer-XaaS certificates"
+          "network_XaaS certificates"
         ],
         "summary": "Update TLS Certificate by ID",
         "operationId": "update_tls_certificate_v0beta1_xaas_network_load_balancers__load_balancer_id__tls_certificates__tls_certificate_id__put",
@@ -1484,7 +1484,7 @@
       },
       "delete": {
         "tags": [
-          "network_load_balancer-XaaS certificates"
+          "network_XaaS certificates"
         ],
         "summary": "Delete TLS Certificate by ID",
         "operationId": "delete_tls_certificate_v0beta1_xaas_network_load_balancers__load_balancer_id__tls_certificates__tls_certificate_id__delete",
@@ -1544,7 +1544,7 @@
     "/v0beta1/network-load-balancers/{load_balancer_id}/health-checks": {
       "get": {
         "tags": [
-          "network_load_balancer-healthchecks"
+          "network_healthchecks"
         ],
         "summary": "List Health Checks",
         "operationId": "list_health_checks_v0beta1_network_load_balancers__load_balancer_id__health_checks_get",
@@ -1636,7 +1636,7 @@
     "/v0beta1/network-load-balancers/{load_balancer_id}/health-checks/{health_check_id}": {
       "get": {
         "tags": [
-          "network_load_balancer-healthchecks"
+          "network_healthchecks"
         ],
         "summary": "Get Health Check by ID",
         "operationId": "get_health_check_v0beta1_network_load_balancers__load_balancer_id__health_checks__health_check_id__get",
@@ -1700,7 +1700,7 @@
       },
       "put": {
         "tags": [
-          "network_load_balancer-healthchecks"
+          "network_healthchecks"
         ],
         "summary": "Update Health Check by ID",
         "operationId": "update_health_check_v0beta1_network_load_balancers__load_balancer_id__health_checks__health_check_id__put",
@@ -1776,7 +1776,7 @@
     "/v0beta1/xaas/network-load-balancers/{load_balancer_id}/health-checks": {
       "get": {
         "tags": [
-          "network_load_balancer-XaaS healthchecks"
+          "network_XaaS healthchecks"
         ],
         "summary": "List Health Checks",
         "operationId": "list_health_checks_v0beta1_xaas_network_load_balancers__load_balancer_id__health_checks_get",
@@ -1880,7 +1880,7 @@
     "/v0beta1/xaas/network-load-balancers/{load_balancer_id}/health-checks/{health_check_id}": {
       "get": {
         "tags": [
-          "network_load_balancer-XaaS healthchecks"
+          "network_XaaS healthchecks"
         ],
         "summary": "Get Health Check by ID",
         "operationId": "get_health_check_v0beta1_xaas_network_load_balancers__load_balancer_id__health_checks__health_check_id__get",
@@ -1956,7 +1956,7 @@
       },
       "put": {
         "tags": [
-          "network_load_balancer-XaaS healthchecks"
+          "network_XaaS healthchecks"
         ],
         "summary": "Update Health Check by ID",
         "operationId": "update_health_check_v0beta1_xaas_network_load_balancers__load_balancer_id__health_checks__health_check_id__put",
@@ -2044,7 +2044,7 @@
     "/v0beta1/network-load-balancers/{load_balancer_id}/backends": {
       "get": {
         "tags": [
-          "network_load_balancer-backends"
+          "network_backends"
         ],
         "summary": "List Backends",
         "operationId": "list_backends_v0beta1_network_load_balancers__load_balancer_id__backends_get",
@@ -2134,7 +2134,7 @@
       },
       "post": {
         "tags": [
-          "network_load_balancer-backends"
+          "network_backends"
         ],
         "summary": "Create Backend",
         "operationId": "create_backend_v0beta1_network_load_balancers__load_balancer_id__backends_post",
@@ -2199,7 +2199,7 @@
     "/v0beta1/network-load-balancers/{load_balancer_id}/backends/{backend_id}": {
       "get": {
         "tags": [
-          "network_load_balancer-backends"
+          "network_backends"
         ],
         "summary": "Get Backend by ID",
         "operationId": "get_backend_v0beta1_network_load_balancers__load_balancer_id__backends__backend_id__get",
@@ -2263,7 +2263,7 @@
       },
       "put": {
         "tags": [
-          "network_load_balancer-backends"
+          "network_backends"
         ],
         "summary": "Update Backend by ID",
         "operationId": "update_backend_v0beta1_network_load_balancers__load_balancer_id__backends__backend_id__put",
@@ -2337,7 +2337,7 @@
       },
       "delete": {
         "tags": [
-          "network_load_balancer-backends"
+          "network_backends"
         ],
         "summary": "Delete Backend by ID",
         "operationId": "delete_backend_v0beta1_network_load_balancers__load_balancer_id__backends__backend_id__delete",
@@ -2396,7 +2396,7 @@
     "/v0beta1/xaas/network-load-balancers/{load_balancer_id}/backends": {
       "get": {
         "tags": [
-          "network_load_balancer-XaaS backends"
+          "network_XaaS backends"
         ],
         "summary": "List Backends",
         "operationId": "list_backends_v0beta1_xaas_network_load_balancers__load_balancer_id__backends_get",
@@ -2498,7 +2498,7 @@
       },
       "post": {
         "tags": [
-          "network_load_balancer-XaaS backends"
+          "network_XaaS backends"
         ],
         "summary": "Create Backend",
         "operationId": "create_backend_v0beta1_xaas_network_load_balancers__load_balancer_id__backends_post",
@@ -2575,7 +2575,7 @@
     "/v0beta1/xaas/network-load-balancers/{load_balancer_id}/backends/{backend_id}": {
       "get": {
         "tags": [
-          "network_load_balancer-XaaS backends"
+          "network_XaaS backends"
         ],
         "summary": "Get Backend by ID",
         "operationId": "get_backend_v0beta1_xaas_network_load_balancers__load_balancer_id__backends__backend_id__get",
@@ -2651,7 +2651,7 @@
       },
       "put": {
         "tags": [
-          "network_load_balancer-XaaS backends"
+          "network_XaaS backends"
         ],
         "summary": "Update Backend by ID",
         "operationId": "update_backend_v0beta1_xaas_network_load_balancers__load_balancer_id__backends__backend_id__put",
@@ -2737,7 +2737,7 @@
       },
       "delete": {
         "tags": [
-          "network_load_balancer-XaaS backends"
+          "network_XaaS backends"
         ],
         "summary": "Delete Backend by ID",
         "operationId": "delete_backend_v0beta1_xaas_network_load_balancers__load_balancer_id__backends__backend_id__delete",
@@ -2808,7 +2808,7 @@
     "/v0beta1/network-load-balancers/{load_balancer_id}/listeners": {
       "get": {
         "tags": [
-          "network_load_balancer-listeners"
+          "network_listeners"
         ],
         "summary": "List Listeners",
         "operationId": "list_listeners_v0beta1_network_load_balancers__load_balancer_id__listeners_get",
@@ -2898,7 +2898,7 @@
       },
       "post": {
         "tags": [
-          "network_load_balancer-listeners"
+          "network_listeners"
         ],
         "summary": "Create Listener",
         "operationId": "create_listener_v0beta1_network_load_balancers__load_balancer_id__listeners_post",
@@ -2974,7 +2974,7 @@
     "/v0beta1/network-load-balancers/{load_balancer_id}/listeners/{listener_id}": {
       "get": {
         "tags": [
-          "network_load_balancer-listeners"
+          "network_listeners"
         ],
         "summary": "Get Listener by ID",
         "operationId": "get_listener_v0beta1_network_load_balancers__load_balancer_id__listeners__listener_id__get",
@@ -3038,7 +3038,7 @@
       },
       "put": {
         "tags": [
-          "network_load_balancer-listeners"
+          "network_listeners"
         ],
         "summary": "Update Listener by ID",
         "operationId": "update_listener_v0beta1_network_load_balancers__load_balancer_id__listeners__listener_id__put",
@@ -3112,7 +3112,7 @@
       },
       "delete": {
         "tags": [
-          "network_load_balancer-listeners"
+          "network_listeners"
         ],
         "summary": "Delete Listener by ID",
         "operationId": "delete_listener_v0beta1_network_load_balancers__load_balancer_id__listeners__listener_id__delete",
@@ -3171,7 +3171,7 @@
     "/v0beta1/xaas/network-load-balancers/{load_balancer_id}/listeners": {
       "get": {
         "tags": [
-          "network_load_balancer-XaaS listeners"
+          "network_XaaS listeners"
         ],
         "summary": "List Listeners",
         "operationId": "list_listeners_v0beta1_xaas_network_load_balancers__load_balancer_id__listeners_get",
@@ -3273,7 +3273,7 @@
       },
       "post": {
         "tags": [
-          "network_load_balancer-XaaS listeners"
+          "network_XaaS listeners"
         ],
         "summary": "Create Listener",
         "operationId": "create_listener_v0beta1_xaas_network_load_balancers__load_balancer_id__listeners_post",
@@ -3373,7 +3373,7 @@
     "/v0beta1/xaas/network-load-balancers/{load_balancer_id}/listeners/{listener_id}": {
       "get": {
         "tags": [
-          "network_load_balancer-XaaS listeners"
+          "network_XaaS listeners"
         ],
         "summary": "Get Listener by ID",
         "operationId": "get_listener_v0beta1_xaas_network_load_balancers__load_balancer_id__listeners__listener_id__get",
@@ -3449,7 +3449,7 @@
       },
       "put": {
         "tags": [
-          "network_load_balancer-XaaS listeners"
+          "network_XaaS listeners"
         ],
         "summary": "Update Listener by ID",
         "operationId": "update_listener_v0beta1_xaas_network_load_balancers__load_balancer_id__listeners__listener_id__put",
@@ -3535,7 +3535,7 @@
       },
       "delete": {
         "tags": [
-          "network_load_balancer-XaaS listeners"
+          "network_XaaS listeners"
         ],
         "summary": "Delete Listener by ID",
         "operationId": "delete_listener_v0beta1_xaas_network_load_balancers__load_balancer_id__listeners__listener_id__delete",
@@ -3606,7 +3606,7 @@
     "/v0beta1/application-load-balancers": {
       "get": {
         "tags": [
-          "application_load_balancer-loadbalancers"
+          "application_loadbalancers"
         ],
         "summary": "List Load Balancers",
         "operationId": "list_load_balancers_v0beta1_application_load_balancers_get",
@@ -3685,7 +3685,7 @@
       },
       "post": {
         "tags": [
-          "application_load_balancer-loadbalancers"
+          "application_loadbalancers"
         ],
         "summary": "Create Load Balancer",
         "operationId": "create_load_balancer_v0beta1_application_load_balancers_post",
@@ -3739,7 +3739,7 @@
     "/v0beta1/application-load-balancers/{load_balancer_id}": {
       "get": {
         "tags": [
-          "application_load_balancer-loadbalancers"
+          "application_loadbalancers"
         ],
         "summary": "Get Load Balancer by ID",
         "operationId": "get_load_balancer_v0beta1_application_load_balancers__load_balancer_id__get",
@@ -3792,7 +3792,7 @@
       },
       "put": {
         "tags": [
-          "application_load_balancer-loadbalancers"
+          "application_loadbalancers"
         ],
         "summary": "Update Load Balancer by ID",
         "operationId": "update_load_balancer_v0beta1_application_load_balancers__load_balancer_id__put",
@@ -3855,7 +3855,7 @@
       },
       "delete": {
         "tags": [
-          "application_load_balancer-loadbalancers"
+          "application_loadbalancers"
         ],
         "summary": "Delete Load Balancer by ID",
         "operationId": "delete_load_balancer_v0beta1_application_load_balancers__load_balancer_id__delete",
@@ -3903,7 +3903,7 @@
     "/v0beta1/xaas/application-load-balancers": {
       "get": {
         "tags": [
-          "application_load_balancer-XaaS loadbalancers"
+          "application_XaaS loadbalancers"
         ],
         "summary": "List Load Balancers",
         "operationId": "list_load_balancers_v0beta1_xaas_application_load_balancers_get",
@@ -4010,7 +4010,7 @@
       },
       "post": {
         "tags": [
-          "application_load_balancer-XaaS loadbalancers"
+          "application_XaaS loadbalancers"
         ],
         "summary": "Create Load Balancer",
         "operationId": "create_load_balancer_v0beta1_xaas_application_load_balancers_post",
@@ -4092,7 +4092,7 @@
     "/v0beta1/xaas/application-load-balancers/{load_balancer_id}": {
       "get": {
         "tags": [
-          "application_load_balancer-XaaS loadbalancers"
+          "application_XaaS loadbalancers"
         ],
         "summary": "Get Load Balancer by ID",
         "operationId": "get_load_balancer_v0beta1_xaas_application_load_balancers__load_balancer_id__get",
@@ -4173,7 +4173,7 @@
       },
       "put": {
         "tags": [
-          "application_load_balancer-XaaS loadbalancers"
+          "application_XaaS loadbalancers"
         ],
         "summary": "Update Load Balancer by ID",
         "operationId": "update_load_balancer_v0beta1_xaas_application_load_balancers__load_balancer_id__put",
@@ -4264,7 +4264,7 @@
       },
       "delete": {
         "tags": [
-          "application_load_balancer-XaaS loadbalancers"
+          "application_XaaS loadbalancers"
         ],
         "summary": "Delete Load Balancer by ID",
         "operationId": "delete_load_balancer_v0beta1_xaas_application_load_balancers__load_balancer_id__delete",
@@ -4340,7 +4340,7 @@
     "/v0beta1/xaas/application-load-balancers/shutdown/{load_balancer_id}": {
       "put": {
         "tags": [
-          "application_load_balancer-XaaS loadbalancers"
+          "application_XaaS loadbalancers"
         ],
         "summary": "Virtual shutdown of an envoy LB, it stops charging but keeps the resources running. If you need to fully stop it, delete the LB.",
         "operationId": "shutdown_load_balancer_v0beta1_xaas_application_load_balancers_shutdown__load_balancer_id__put",
@@ -4407,7 +4407,7 @@
     "/v0beta1/application-load-balancers/{load_balancer_id}/tls-certificates": {
       "get": {
         "tags": [
-          "application_load_balancer-certificates"
+          "application_certificates"
         ],
         "summary": "List TLS Certificates",
         "operationId": "list_tls_certificates_v0beta1_application_load_balancers__load_balancer_id__tls_certificates_get",
@@ -4497,7 +4497,7 @@
       },
       "post": {
         "tags": [
-          "application_load_balancer-certificates"
+          "application_certificates"
         ],
         "summary": "Create TLS Certificate",
         "operationId": "create_tls_certificate_v0beta1_application_load_balancers__load_balancer_id__tls_certificates_post",
@@ -4562,7 +4562,7 @@
     "/v0beta1/application-load-balancers/{load_balancer_id}/tls-certificates/{tls_certificate_id}": {
       "get": {
         "tags": [
-          "application_load_balancer-certificates"
+          "application_certificates"
         ],
         "summary": "Get TLS Certificate by ID",
         "operationId": "get_tls_certificate_v0beta1_application_load_balancers__load_balancer_id__tls_certificates__tls_certificate_id__get",
@@ -4626,7 +4626,7 @@
       },
       "put": {
         "tags": [
-          "application_load_balancer-certificates"
+          "application_certificates"
         ],
         "summary": "Update TLS Certificate by ID",
         "operationId": "update_tls_certificate_v0beta1_application_load_balancers__load_balancer_id__tls_certificates__tls_certificate_id__put",
@@ -4693,7 +4693,7 @@
       },
       "delete": {
         "tags": [
-          "application_load_balancer-certificates"
+          "application_certificates"
         ],
         "summary": "Delete TLS Certificate by ID",
         "operationId": "delete_tls_certificate_v0beta1_application_load_balancers__load_balancer_id__tls_certificates__tls_certificate_id__delete",
@@ -4741,7 +4741,7 @@
     "/v0beta1/xaas/application-load-balancers/{load_balancer_id}/tls-certificates": {
       "get": {
         "tags": [
-          "application_load_balancer-XaaS certificates"
+          "application_XaaS certificates"
         ],
         "summary": "List TLS Certificates",
         "operationId": "list_tls_certificates_v0beta1_xaas_application_load_balancers__load_balancer_id__tls_certificates_get",
@@ -4843,7 +4843,7 @@
       },
       "post": {
         "tags": [
-          "application_load_balancer-XaaS certificates"
+          "application_XaaS certificates"
         ],
         "summary": "Create TLS Certificate",
         "operationId": "create_tls_certificate_v0beta1_xaas_application_load_balancers__load_balancer_id__tls_certificates_post",
@@ -4920,7 +4920,7 @@
     "/v0beta1/xaas/application-load-balancers/{load_balancer_id}/tls-certificates/{tls_certificate_id}": {
       "get": {
         "tags": [
-          "application_load_balancer-XaaS certificates"
+          "application_XaaS certificates"
         ],
         "summary": "Get TLS Certificate by ID",
         "operationId": "get_tls_certificate_v0beta1_xaas_application_load_balancers__load_balancer_id__tls_certificates__tls_certificate_id__get",
@@ -4996,7 +4996,7 @@
       },
       "put": {
         "tags": [
-          "application_load_balancer-XaaS certificates"
+          "application_XaaS certificates"
         ],
         "summary": "Update TLS Certificate by ID",
         "operationId": "update_tls_certificate_v0beta1_xaas_application_load_balancers__load_balancer_id__tls_certificates__tls_certificate_id__put",
@@ -5075,7 +5075,7 @@
       },
       "delete": {
         "tags": [
-          "application_load_balancer-XaaS certificates"
+          "application_XaaS certificates"
         ],
         "summary": "Delete TLS Certificate by ID",
         "operationId": "delete_tls_certificate_v0beta1_xaas_application_load_balancers__load_balancer_id__tls_certificates__tls_certificate_id__delete",
@@ -5135,7 +5135,7 @@
     "/v0beta1/application-load-balancers/{load_balancer_id}/health-checks": {
       "get": {
         "tags": [
-          "application_load_balancer-healthchecks"
+          "application_healthchecks"
         ],
         "summary": "List Health Checks",
         "operationId": "list_health_checks_v0beta1_application_load_balancers__load_balancer_id__health_checks_get",
@@ -5227,7 +5227,7 @@
     "/v0beta1/application-load-balancers/{load_balancer_id}/health-checks/{health_check_id}": {
       "get": {
         "tags": [
-          "application_load_balancer-healthchecks"
+          "application_healthchecks"
         ],
         "summary": "Get Health Check by ID",
         "operationId": "get_health_check_v0beta1_application_load_balancers__load_balancer_id__health_checks__health_check_id__get",
@@ -5291,7 +5291,7 @@
       },
       "put": {
         "tags": [
-          "application_load_balancer-healthchecks"
+          "application_healthchecks"
         ],
         "summary": "Update Health Check by ID",
         "operationId": "update_health_check_v0beta1_application_load_balancers__load_balancer_id__health_checks__health_check_id__put",
@@ -5367,7 +5367,7 @@
     "/v0beta1/xaas/application-load-balancers/{load_balancer_id}/health-checks": {
       "get": {
         "tags": [
-          "application_load_balancer-XaaS healthchecks"
+          "application_XaaS healthchecks"
         ],
         "summary": "List Health Checks",
         "operationId": "list_health_checks_v0beta1_xaas_application_load_balancers__load_balancer_id__health_checks_get",
@@ -5471,7 +5471,7 @@
     "/v0beta1/xaas/application-load-balancers/{load_balancer_id}/health-checks/{health_check_id}": {
       "get": {
         "tags": [
-          "application_load_balancer-XaaS healthchecks"
+          "application_XaaS healthchecks"
         ],
         "summary": "Get Health Check by ID",
         "operationId": "get_health_check_v0beta1_xaas_application_load_balancers__load_balancer_id__health_checks__health_check_id__get",
@@ -5547,7 +5547,7 @@
       },
       "put": {
         "tags": [
-          "application_load_balancer-XaaS healthchecks"
+          "application_XaaS healthchecks"
         ],
         "summary": "Update Health Check by ID",
         "operationId": "update_health_check_v0beta1_xaas_application_load_balancers__load_balancer_id__health_checks__health_check_id__put",
@@ -5635,7 +5635,7 @@
     "/v0beta1/application-load-balancers/{load_balancer_id}/backends": {
       "get": {
         "tags": [
-          "application_load_balancer-backends"
+          "application_backends"
         ],
         "summary": "List Backends",
         "operationId": "list_backends_v0beta1_application_load_balancers__load_balancer_id__backends_get",
@@ -5725,7 +5725,7 @@
       },
       "post": {
         "tags": [
-          "application_load_balancer-backends"
+          "application_backends"
         ],
         "summary": "Create Backend",
         "operationId": "create_backend_v0beta1_application_load_balancers__load_balancer_id__backends_post",
@@ -5790,7 +5790,7 @@
     "/v0beta1/application-load-balancers/{load_balancer_id}/backends/{backend_id}": {
       "get": {
         "tags": [
-          "application_load_balancer-backends"
+          "application_backends"
         ],
         "summary": "Get Backend by ID",
         "operationId": "get_backend_v0beta1_application_load_balancers__load_balancer_id__backends__backend_id__get",
@@ -5854,7 +5854,7 @@
       },
       "put": {
         "tags": [
-          "application_load_balancer-backends"
+          "application_backends"
         ],
         "summary": "Update Backend by ID",
         "operationId": "update_backend_v0beta1_application_load_balancers__load_balancer_id__backends__backend_id__put",
@@ -5928,7 +5928,7 @@
       },
       "delete": {
         "tags": [
-          "application_load_balancer-backends"
+          "application_backends"
         ],
         "summary": "Delete Backend by ID",
         "operationId": "delete_backend_v0beta1_application_load_balancers__load_balancer_id__backends__backend_id__delete",
@@ -5987,7 +5987,7 @@
     "/v0beta1/xaas/application-load-balancers/{load_balancer_id}/backends": {
       "get": {
         "tags": [
-          "application_load_balancer-XaaS backends"
+          "application_XaaS backends"
         ],
         "summary": "List Backends",
         "operationId": "list_backends_v0beta1_xaas_application_load_balancers__load_balancer_id__backends_get",
@@ -6089,7 +6089,7 @@
       },
       "post": {
         "tags": [
-          "application_load_balancer-XaaS backends"
+          "application_XaaS backends"
         ],
         "summary": "Create Backend",
         "operationId": "create_backend_v0beta1_xaas_application_load_balancers__load_balancer_id__backends_post",
@@ -6166,7 +6166,7 @@
     "/v0beta1/xaas/application-load-balancers/{load_balancer_id}/backends/{backend_id}": {
       "get": {
         "tags": [
-          "application_load_balancer-XaaS backends"
+          "application_XaaS backends"
         ],
         "summary": "Get Backend by ID",
         "operationId": "get_backend_v0beta1_xaas_application_load_balancers__load_balancer_id__backends__backend_id__get",
@@ -6242,7 +6242,7 @@
       },
       "put": {
         "tags": [
-          "application_load_balancer-XaaS backends"
+          "application_XaaS backends"
         ],
         "summary": "Update Backend by ID",
         "operationId": "update_backend_v0beta1_xaas_application_load_balancers__load_balancer_id__backends__backend_id__put",
@@ -6328,7 +6328,7 @@
       },
       "delete": {
         "tags": [
-          "application_load_balancer-XaaS backends"
+          "application_XaaS backends"
         ],
         "summary": "Delete Backend by ID",
         "operationId": "delete_backend_v0beta1_xaas_application_load_balancers__load_balancer_id__backends__backend_id__delete",
@@ -6399,7 +6399,7 @@
     "/v0beta1/application-load-balancers/{load_balancer_id}/listeners": {
       "get": {
         "tags": [
-          "application_load_balancer-listeners"
+          "application_listeners"
         ],
         "summary": "List Listeners",
         "operationId": "list_listeners_v0beta1_application_load_balancers__load_balancer_id__listeners_get",
@@ -6489,7 +6489,7 @@
       },
       "post": {
         "tags": [
-          "application_load_balancer-listeners"
+          "application_listeners"
         ],
         "summary": "Create Listener",
         "operationId": "create_listener_v0beta1_application_load_balancers__load_balancer_id__listeners_post",
@@ -6565,7 +6565,7 @@
     "/v0beta1/application-load-balancers/{load_balancer_id}/listeners/{listener_id}": {
       "get": {
         "tags": [
-          "application_load_balancer-listeners"
+          "application_listeners"
         ],
         "summary": "Get Listener by ID",
         "operationId": "get_listener_v0beta1_application_load_balancers__load_balancer_id__listeners__listener_id__get",
@@ -6629,7 +6629,7 @@
       },
       "put": {
         "tags": [
-          "application_load_balancer-listeners"
+          "application_listeners"
         ],
         "summary": "Update Listener by ID",
         "operationId": "update_listener_v0beta1_application_load_balancers__load_balancer_id__listeners__listener_id__put",
@@ -6703,7 +6703,7 @@
       },
       "delete": {
         "tags": [
-          "application_load_balancer-listeners"
+          "application_listeners"
         ],
         "summary": "Delete Listener by ID",
         "operationId": "delete_listener_v0beta1_application_load_balancers__load_balancer_id__listeners__listener_id__delete",
@@ -6762,7 +6762,7 @@
     "/v0beta1/xaas/application-load-balancers/{load_balancer_id}/listeners": {
       "get": {
         "tags": [
-          "application_load_balancer-XaaS listeners"
+          "application_XaaS listeners"
         ],
         "summary": "List Listeners",
         "operationId": "list_listeners_v0beta1_xaas_application_load_balancers__load_balancer_id__listeners_get",
@@ -6864,7 +6864,7 @@
       },
       "post": {
         "tags": [
-          "application_load_balancer-XaaS listeners"
+          "application_XaaS listeners"
         ],
         "summary": "Create Listener",
         "operationId": "create_listener_v0beta1_xaas_application_load_balancers__load_balancer_id__listeners_post",
@@ -6964,7 +6964,7 @@
     "/v0beta1/xaas/application-load-balancers/{load_balancer_id}/listeners/{listener_id}": {
       "get": {
         "tags": [
-          "application_load_balancer-XaaS listeners"
+          "application_XaaS listeners"
         ],
         "summary": "Get Listener by ID",
         "operationId": "get_listener_v0beta1_xaas_application_load_balancers__load_balancer_id__listeners__listener_id__get",
@@ -7040,7 +7040,7 @@
       },
       "put": {
         "tags": [
-          "application_load_balancer-XaaS listeners"
+          "application_XaaS listeners"
         ],
         "summary": "Update Listener by ID",
         "operationId": "update_listener_v0beta1_xaas_application_load_balancers__load_balancer_id__listeners__listener_id__put",
@@ -7126,7 +7126,7 @@
       },
       "delete": {
         "tags": [
-          "application_load_balancer-XaaS listeners"
+          "application_XaaS listeners"
         ],
         "summary": "Delete Listener by ID",
         "operationId": "delete_listener_v0beta1_xaas_application_load_balancers__load_balancer_id__listeners__listener_id__delete",
@@ -17200,43 +17200,43 @@
   },
   "tags": [
     {
-      "name": "network_load_balancer-loadbalancers",
+      "name": "network_loadbalancers",
       "description": "Network Load Balancer"
     },
     {
-      "name": "network_load_balancer-listeners",
+      "name": "network_listeners",
       "description": "Network Load Balancer Listeners"
     },
     {
-      "name": "network_load_balancer-healthchecks",
+      "name": "network_healthchecks",
       "description": "Network Load Balancer HealthCheks"
     },
     {
-      "name": "network_load_balancer-certificates",
+      "name": "network_certificates",
       "description": "Network Load Balancer Tls Certificates"
     },
     {
-      "name": "network_load_balancer-backends",
+      "name": "network_backends",
       "description": "Network Load Balancer Backends (Target Pools)"
     },
     {
-      "name": "application_load_balancer-loadbalancers",
+      "name": "application_loadbalancers",
       "description": "Application Load Balancer"
     },
     {
-      "name": "application_load_balancer-listeners",
+      "name": "application_listeners",
       "description": "Application Load Balancer Listeners"
     },
     {
-      "name": "application_load_balancer-healthchecks",
+      "name": "application_healthchecks",
       "description": "Application Load Balancer HealthCheks"
     },
     {
-      "name": "application_load_balancer-certificates",
+      "name": "application_certificates",
       "description": "Application Load Balancer Tls Certificates"
     },
     {
-      "name": "application_load_balancer-backends",
+      "name": "application_backends",
       "description": "Application Load Balancer Backends (Target Pools)"
     }
   ]
