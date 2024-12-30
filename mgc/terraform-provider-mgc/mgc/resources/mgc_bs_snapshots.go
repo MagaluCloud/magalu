@@ -82,13 +82,13 @@ func (r *bsSnapshots) Configure(ctx context.Context, req resource.ConfigureReque
 }
 
 type bsSnapshotsResourceModel struct {
-	ID                types.String   `tfsdk:"id"`
-	Name              types.String   `tfsdk:"name"`
-	Description       types.String   `tfsdk:"description"`
-	CreatedAt         types.String   `tfsdk:"created_at"`
-	VolumeId          types.String   `tfsdk:"volume_id"`
-	SnapshotSourceID  types.String   `tfsdk:"snapshot_source_id"`
-	Type              types.String   `tfsdk:"type"`
+	ID               types.String `tfsdk:"id"`
+	Name             types.String `tfsdk:"name"`
+	Description      types.String `tfsdk:"description"`
+	CreatedAt        types.String `tfsdk:"created_at"`
+	VolumeId         types.String `tfsdk:"volume_id"`
+	SnapshotSourceID types.String `tfsdk:"snapshot_source_id"`
+	Type             types.String `tfsdk:"type"`
 }
 
 func (r *bsSnapshots) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
@@ -259,13 +259,13 @@ func (r *bsSnapshots) Delete(ctx context.Context, req resource.DeleteRequest, re
 
 func (r *bsSnapshots) toTerraformModel(snapshot sdkBlockStorageSnapshots.GetResult, sourceSnapshotId *string) bsSnapshotsResourceModel {
 	return bsSnapshotsResourceModel{
-		ID:                types.StringValue(snapshot.Id),
-		Name:              types.StringValue(snapshot.Name),
-		Description:       types.StringPointerValue(snapshot.Description),
-		CreatedAt:         types.StringValue(snapshot.CreatedAt),
-		VolumeId:          types.StringPointerValue(snapshot.Volume.Id),
-		SnapshotSourceID:  types.StringPointerValue(sourceSnapshotId),
-		Type:              types.StringValue(snapshot.Type),
+		ID:               types.StringValue(snapshot.Id),
+		Name:             types.StringValue(snapshot.Name),
+		Description:      types.StringPointerValue(snapshot.Description),
+		CreatedAt:        types.StringValue(snapshot.CreatedAt),
+		VolumeId:         types.StringPointerValue(snapshot.Volume.Id),
+		SnapshotSourceID: types.StringPointerValue(sourceSnapshotId),
+		Type:             types.StringValue(snapshot.Type),
 	}
 }
 

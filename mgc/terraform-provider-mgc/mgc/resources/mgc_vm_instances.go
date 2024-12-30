@@ -363,7 +363,7 @@ func (r *vmInstances) Delete(ctx context.Context, req resource.DeleteRequest, re
 
 func (r *vmInstances) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	model := vmInstancesResourceModel{
-		ID: types.StringValue(req.ID),
+		ID:                types.StringValue(req.ID),
 		NetworkInterfaces: r.toTerraformNetworkInterfacesList(ctx, []VmInstancesNetworkInterfaceModel{}),
 	}
 	resp.Diagnostics.Append(resp.State.Set(ctx, &model)...)
