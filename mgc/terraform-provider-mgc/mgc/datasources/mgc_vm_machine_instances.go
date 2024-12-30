@@ -32,7 +32,7 @@ type VMInstancesItemModel struct {
 }
 
 type VMInstancesModel struct {
-	Instances []VMInstanceModel `tfsdk:"instances"`
+	Instances []VMInstancesItemModel `tfsdk:"instances"`
 }
 
 func NewDataSourceVmInstances() datasource.DataSource {
@@ -125,7 +125,7 @@ func (r *DataSourceVmInstances) Read(ctx context.Context, req datasource.ReadReq
 	}
 
 	for _, instance := range instances.Instances {
-		data.Instances = append(data.Instances, VMInstanceModel{
+		data.Instances = append(data.Instances, VMInstancesItemModel{
 			ID:               types.StringValue(instance.Id),
 			Name:             types.StringPointerValue(instance.Name),
 			SshKeyName:       types.StringPointerValue(instance.SshKeyName),

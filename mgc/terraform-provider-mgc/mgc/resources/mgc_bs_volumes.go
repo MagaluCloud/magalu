@@ -103,13 +103,11 @@ type bsVolumesResourceModel struct {
 }
 
 func (r *bsVolumes) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
-	description := "Block storage volumes are storage devices that can be attached to virtual machines. They are used to store data and can be detached and attached to other virtual machines."
 	resp.Schema = schema.Schema{
-		Description:         description,
-		MarkdownDescription: description,
+		Description: "Block storage volumes are storage devices that can be attached to virtual machines. They are used to store data and can be detached and attached to other virtual machines.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
-				Description: "The unique identifier of the block storage.",
+				Description: "The unique identifier of the volume.",
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.UseStateForUnknown(),
 					stringplanmodifier.RequiresReplace(),
@@ -117,30 +115,32 @@ func (r *bsVolumes) Schema(_ context.Context, _ resource.SchemaRequest, resp *re
 				Computed: true,
 			},
 			"name": schema.StringAttribute{
-				Description: "The name of the block storage.",
+				Description: "The name of the volume.",
 				Required:    true,
 			},
 			"snapshot_id": schema.StringAttribute{
-				Description: "The unique identifier of the snapshot used to create the volume.",
+				Description: "Create a volume from a snapshot.",
 				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplace(),
 					stringplanmodifier.UseStateForUnknown(),
 				},
 				Optional: true,
 			},
 			"availability_zone": schema.StringAttribute{
-				Description: "The availability zones where the block storage is available.",
+				Description: "The availability zones where the volume is available.",
 				Optional:    true,
 				Computed:    true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
+					stringplanmodifier.UseStateForUnknown(),
 				},
 			},
 			"size": schema.Int64Attribute{
-				Description: "The size of the block storage in GB.",
+				Description: "The size of the volume in GB.",
 				Required:    true,
 			},
 			"created_at": schema.StringAttribute{
-				Description: "The timestamp when the block storage was created.",
+				Description: "The timestamp when the volume was created.",
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.UseStateForUnknown(),
 				},
@@ -148,10 +148,7 @@ func (r *bsVolumes) Schema(_ context.Context, _ resource.SchemaRequest, resp *re
 			},
 			"type": schema.StringAttribute{
 				Required:    true,
-				Description: "The name of the block storage type.",
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplace(),
-				},
+				Description: "The name of the volume type.",
 			},
 		},
 	}
@@ -189,9 +186,11 @@ func (r *bsVolumes) Create(ctx context.Context, req resource.CreateRequest, resp
 		Type: sdkBlockStorageVolumes.CreateParametersType{
 			Name: state.Type.ValueStringPointer(),
 		},
-		Snapshot: &sdkBlockStorageVolumes.CreateParametersSnapshot{
+	}
+	if !state.SnapshotID.IsNull() {
+		createParam.Snapshot = &sdkBlockStorageVolumes.CreateParametersSnapshot{
 			Id: state.SnapshotID.ValueStringPointer(),
-		},
+		}
 	}
 
 	createResult, err := r.bsVolumes.CreateContext(ctx, createParam,
@@ -200,15 +199,13 @@ func (r *bsVolumes) Create(ctx context.Context, req resource.CreateRequest, resp
 		resp.Diagnostics.AddError("Error creating volume", err.Error())
 		return
 	}
-
-	state.ID = types.StringPointerValue(createResult.Id)
-	resp.Diagnostics.Append(resp.State.Set(ctx, state)...)
-
-	_, err = r.waitUntilVolumeStatusMatches(ctx, *createResult.Id, Completed)
+	getResult, err := r.waitUntilVolumeStatusMatches(ctx, *createResult.Id, Completed)
 	if err != nil {
 		resp.Diagnostics.AddError("Error Reading block storage", err.Error())
 		return
 	}
+	convertedResult := r.toTerraformModel(*getResult, state.SnapshotID.ValueStringPointer())
+	resp.Diagnostics.Append(resp.State.Set(ctx, &convertedResult)...)
 }
 
 func (r *bsVolumes) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
@@ -293,6 +290,11 @@ func (r *bsVolumes) Delete(ctx context.Context, req resource.DeleteRequest, resp
 	}
 }
 
+func (r *bsVolumes) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+	data := &bsVolumesResourceModel{ID: types.StringValue(req.ID)}
+	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
+}
+
 func (r *bsVolumes) toTerraformModel(volume sdkBlockStorageVolumes.GetResult, snapshotId *string) bsVolumesResourceModel {
 	return bsVolumesResourceModel{
 		ID:               types.StringValue(volume.Id),
@@ -315,7 +317,8 @@ func (r *bsVolumes) waitUntilVolumeStatusMatches(ctx context.Context, volumeID s
 			return nil, fmt.Errorf("timeout waiting for volume %s to reach status %s", volumeID, status)
 		case <-time.After(10 * time.Second):
 			volume, err := r.bsVolumes.GetContext(ctx, sdkBlockStorageVolumes.GetParameters{
-				Id: volumeID,
+				Expand: &sdkBlockStorageVolumes.GetParametersExpand{"volume_type"},
+				Id:     volumeID,
 			}, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkBlockStorageVolumes.GetConfigs{}))
 			if err != nil {
 				return nil, err

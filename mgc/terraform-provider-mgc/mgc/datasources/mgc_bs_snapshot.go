@@ -96,7 +96,7 @@ func GetBsSnapshotAttributes(idRequired bool) map[string]schema.Attribute {
 			Description: "The size of the snapshot in GB.",
 			Computed:    true,
 		},
-		"volume_id": schema.SingleNestedAttribute{
+		"volume_id": schema.StringAttribute{
 			Description: "ID of block storage volume",
 			Computed:    true,
 		},
@@ -123,8 +123,10 @@ func (r *DataSourceBsSnapshot) Schema(_ context.Context, req datasource.SchemaRe
 
 func (r *DataSourceBsSnapshot) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
 	var data bsSnapshotsResourceModel
-
 	resp.Diagnostics.Append(req.Config.Get(ctx, &data)...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	sdkOutput, err := r.bsSnapshots.GetContext(ctx, sdkBlockStorageSnapshots.GetParameters{Id: data.ID.ValueString()},
 		tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkBlockStorageSnapshots.GetConfigs{}))

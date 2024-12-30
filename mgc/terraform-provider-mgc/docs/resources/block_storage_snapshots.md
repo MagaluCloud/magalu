@@ -14,20 +14,10 @@ The block storage snapshots resource allows you to manage block storage snapshot
 
 ```terraform
 resource "mgc_block_storage_snapshots" "snapshot_example" {
-  description = "example of description"
-  name        = "exemplo snapshot name"
-  snapshot_source_id = mgc_block_storage_snapshots.other_snapshot.id
+  name        = "snapshot-example-new"
+  description = "Example snapshot description"
   type        = "instant"
-  volume = {
-    id = mgc_block_storage_volumes.example_volume.id
-  }
-}
-
-resource "mgc_block_storage_snapshots" "snapshot_of_snap_example" {
-  snapshot_source_id = mgc_block_storage_snapshots.snapshot_example.id
-  type        = "object"
-  description = "exampleDescription"
-  name = "exampleName"
+  volume_id   = mgc_block_storage_volumes.example_volume.id
 }
 ```
 
@@ -38,16 +28,14 @@ resource "mgc_block_storage_snapshots" "snapshot_of_snap_example" {
 
 - `description` (String) The description of the volume snapshot.
 - `name` (String) The name of the volume snapshot.
-- `volume_id` (String) ID of block storage volume
 
 ### Optional
 
-- `snapshot_source_id` (String) The ID of the snapshot source.
+- `snapshot_source_id` (String) The ID of the snapshot source, for creating a snapshot object from a snaphot instant. Is required when volume ID is not set and both volume ID and snapshot source ID cannot be set at the same time.
 - `type` (String) The type of the snapshot.
+- `volume_id` (String) ID of block storage volume. Is required when snapshot source is not set and both volume ID and snapshot source ID cannot be set at the same time.
 
 ### Read-Only
 
-- `availability_zones` (List of String) The availability zone of the snapshot.
 - `created_at` (String) The timestamp when the block storage was created.
 - `id` (String) The unique identifier of the volume snapshot.
-- `size` (Number) The size of the snapshot in GB.

@@ -87,10 +87,8 @@ type bsSnapshotsResourceModel struct {
 	Description       types.String   `tfsdk:"description"`
 	CreatedAt         types.String   `tfsdk:"created_at"`
 	VolumeId          types.String   `tfsdk:"volume_id"`
-	Size              types.Int64    `tfsdk:"size"`
 	SnapshotSourceID  types.String   `tfsdk:"snapshot_source_id"`
 	Type              types.String   `tfsdk:"type"`
-	AvailabilityZones []types.String `tfsdk:"availability_zones"`
 }
 
 func (r *bsSnapshots) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
@@ -100,7 +98,7 @@ func (r *bsSnapshots) Schema(_ context.Context, _ resource.SchemaRequest, resp *
 			"id": schema.StringAttribute{
 				Description: "The unique identifier of the volume snapshot.",
 				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplace(),
+					stringplanmodifier.UseStateForUnknown(),
 				},
 				Computed: true,
 			},
@@ -133,19 +131,15 @@ func (r *bsSnapshots) Schema(_ context.Context, _ resource.SchemaRequest, resp *
 				},
 				Computed: true,
 			},
-			"size": schema.Int64Attribute{
-				Description: "The size of the snapshot in GB.",
-				Computed:    true,
-			},
 			"volume_id": schema.StringAttribute{
-				Description: "ID of block storage volume",
+				Description: "ID of block storage volume. Is required when snapshot source is not set and both volume ID and snapshot source ID cannot be set at the same time.",
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
 				},
-				Required: true,
+				Optional: true,
 			},
 			"snapshot_source_id": schema.StringAttribute{
-				Description: "The ID of the snapshot source.",
+				Description: "The ID of the snapshot source, for creating a snapshot object from a snaphot instant. Is required when volume ID is not set and both volume ID and snapshot source ID cannot be set at the same time.",
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
 				},
@@ -160,11 +154,6 @@ func (r *bsSnapshots) Schema(_ context.Context, _ resource.SchemaRequest, resp *
 					stringvalidator.OneOf("instant", "object"),
 				},
 				Optional: true,
-			},
-			"availability_zones": schema.ListAttribute{
-				Description: "The availability zone of the snapshot.",
-				Computed:    true,
-				ElementType: types.StringType,
 			},
 		},
 	}
@@ -201,9 +190,12 @@ func (r *bsSnapshots) Create(ctx context.Context, req resource.CreateRequest, re
 			Id: plan.VolumeId.ValueStringPointer(),
 		},
 		Type: plan.Type.ValueStringPointer(),
-		SourceSnapshot: &sdkBlockStorageSnapshots.CreateParametersSourceSnapshot{
+	}
+
+	if !plan.SnapshotSourceID.IsNull() {
+		createRequest.SourceSnapshot = &sdkBlockStorageSnapshots.CreateParametersSourceSnapshot{
 			Id: plan.SnapshotSourceID.ValueStringPointer(),
-		},
+		}
 	}
 
 	createResult, err := r.bsSnapshots.CreateContext(ctx, createRequest,
@@ -215,10 +207,14 @@ func (r *bsSnapshots) Create(ctx context.Context, req resource.CreateRequest, re
 	plan.ID = types.StringValue(createResult.Id)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 
-	_, err = r.waitUntilSnapshotStatusMatches(ctx, plan.ID.ValueString(), SnapshotCompleted)
+	getResult, err := r.waitUntilSnapshotStatusMatches(ctx, plan.ID.ValueString(), SnapshotCompleted)
 	if err != nil {
 		resp.Diagnostics.AddError("Error creating snapshot", err.Error())
+		return
 	}
+
+	convertedGet := r.toTerraformModel(*getResult, plan.SnapshotSourceID.ValueStringPointer())
+	resp.Diagnostics.Append(resp.State.Set(ctx, &convertedGet)...)
 }
 
 func (r *bsSnapshots) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
@@ -262,21 +258,14 @@ func (r *bsSnapshots) Delete(ctx context.Context, req resource.DeleteRequest, re
 }
 
 func (r *bsSnapshots) toTerraformModel(snapshot sdkBlockStorageSnapshots.GetResult, sourceSnapshotId *string) bsSnapshotsResourceModel {
-	var azs []types.String
-	for _, az := range snapshot.AvailabilityZones {
-		azs = append(azs, types.StringValue(az))
-	}
-
 	return bsSnapshotsResourceModel{
 		ID:                types.StringValue(snapshot.Id),
 		Name:              types.StringValue(snapshot.Name),
 		Description:       types.StringPointerValue(snapshot.Description),
 		CreatedAt:         types.StringValue(snapshot.CreatedAt),
 		VolumeId:          types.StringPointerValue(snapshot.Volume.Id),
-		Size:              types.Int64Value(int64(snapshot.Size)),
 		SnapshotSourceID:  types.StringPointerValue(sourceSnapshotId),
 		Type:              types.StringValue(snapshot.Type),
-		AvailabilityZones: azs,
 	}
 }
 

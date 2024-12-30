@@ -161,7 +161,7 @@ func (r *vmInstances) Schema(_ context.Context, _ resource.SchemaRequest, resp *
 				},
 			},
 			"ssh_key_name": schema.StringAttribute{
-				Description: "The name of the SSH key associated with the virtual machine instance.",
+				Description: "The name of the SSH key associated with the virtual machine instance. Not required for Windows instances.",
 				Optional:    true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
@@ -249,7 +249,10 @@ func (r *vmInstances) Read(ctx context.Context, req resource.ReadRequest, resp *
 		return
 	}
 
-	getResult, err := r.vmInstances.GetContext(ctx, sdkVmInstances.GetParameters{Id: data.ID.ValueString()}, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVmInstances.GetConfigs{}))
+	getResult, err := r.vmInstances.GetContext(ctx, sdkVmInstances.GetParameters{
+		Id:     data.ID.ValueString(),
+		Expand: &sdkVmInstances.GetParametersExpand{"image", "machine-type", "network"},
+	}, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVmInstances.GetConfigs{}))
 	if err != nil {
 		resp.Diagnostics.AddError("Error Reading VM", err.Error())
 		return
@@ -361,21 +364,24 @@ func (r *vmInstances) Delete(ctx context.Context, req resource.DeleteRequest, re
 func (r *vmInstances) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	model := vmInstancesResourceModel{
 		ID: types.StringValue(req.ID),
+		NetworkInterfaces: r.toTerraformNetworkInterfacesList(ctx, []VmInstancesNetworkInterfaceModel{}),
 	}
 	resp.Diagnostics.Append(resp.State.Set(ctx, &model)...)
 }
 
 func (r *vmInstances) toTerraformModel(ctx context.Context, server sdkVmInstances.GetResult) *vmInstancesResourceModel {
 	interfaces := []VmInstancesNetworkInterfaceModel{}
-	for _, port := range *server.Network.Interfaces {
-		interfaces = append(interfaces, VmInstancesNetworkInterfaceModel{
-			ID:        types.StringValue(port.Id),
-			Name:      types.StringValue(port.Name),
-			Ipv4:      types.StringPointerValue(port.AssociatedPublicIpv4),
-			LocalIpv4: types.StringValue(port.IpAddresses.PrivateIpv4),
-			Ipv6:      types.StringPointerValue(port.IpAddresses.PublicIpv6),
-			Primary:   types.BoolPointerValue(port.Primary),
-		})
+	if server.Network.Interfaces != nil {
+		for _, port := range *server.Network.Interfaces {
+			interfaces = append(interfaces, VmInstancesNetworkInterfaceModel{
+				ID:        types.StringValue(port.Id),
+				Name:      types.StringValue(port.Name),
+				Ipv4:      types.StringPointerValue(port.AssociatedPublicIpv4),
+				LocalIpv4: types.StringValue(port.IpAddresses.PrivateIpv4),
+				Ipv6:      types.StringPointerValue(port.IpAddresses.PublicIpv6),
+				Primary:   types.BoolPointerValue(port.Primary),
+			})
+		}
 	}
 
 	data := vmInstancesResourceModel{
@@ -383,13 +389,17 @@ func (r *vmInstances) toTerraformModel(ctx context.Context, server sdkVmInstance
 		Name:              types.StringPointerValue(server.Name),
 		CreatedAt:         types.StringValue(server.CreatedAt),
 		SshKeyName:        types.StringPointerValue(server.SshKeyName),
-		VpcId:             types.StringValue(server.Network.Vpc.Id),
 		MachineType:       types.StringPointerValue(server.MachineType.Name),
 		Image:             types.StringPointerValue(server.Image.Name),
 		UserData:          types.StringPointerValue(server.UserData),
 		AvailabilityZone:  types.StringPointerValue(server.AvailabilityZone),
 		NetworkInterfaces: r.toTerraformNetworkInterfacesList(ctx, interfaces),
 	}
+
+	if server.Network.Vpc != nil {
+		data.VpcId = types.StringValue(server.Network.Vpc.Id)
+	}
+
 	return &data
 }
 
@@ -403,7 +413,8 @@ func (r *vmInstances) waitUntilInstanceStatusMatches(ctx context.Context, instan
 			return nil, fmt.Errorf("timeout waiting for instance %s to reach status %s", instanceID, status)
 		case <-time.After(10 * time.Second):
 			instance, err := r.vmInstances.GetContext(ctx, sdkVmInstances.GetParameters{
-				Id: instanceID,
+				Id:     instanceID,
+				Expand: &sdkVmInstances.GetParametersExpand{"image", "machine-type", "network"},
 			}, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVmInstances.GetConfigs{}))
 			if err != nil {
 				return nil, err

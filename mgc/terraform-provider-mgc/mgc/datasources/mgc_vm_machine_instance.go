@@ -225,7 +225,7 @@ func (r *DataSourceVmInstance) Read(ctx context.Context, req datasource.ReadRequ
 	}
 
 	instance, err := r.vmInstances.GetContext(ctx, sdkVMInstances.GetParameters{Id: data.ID.ValueString(),
-		Expand: &sdkVMInstances.GetParametersExpand{"network", "image", "machine_type"}},
+		Expand: &sdkVMInstances.GetParametersExpand{"network", "image", "machine-type"}},
 		tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVMInstances.GetConfigs{}))
 
 	if err != nil {
@@ -246,8 +246,8 @@ func (r *DataSourceVmInstance) Read(ctx context.Context, req datasource.ReadRequ
 			}
 			if iface.SecurityGroups != nil {
 				var secGroups []types.String
-				for i, sg := range *iface.SecurityGroups {
-					secGroups[i] = types.StringValue(sg)
+				for _, sg := range *iface.SecurityGroups {
+					secGroups = append(secGroups, types.StringValue(sg))
 				}
 				networkInterface.SecurityGroups = secGroups
 			}
@@ -282,10 +282,14 @@ func (r *DataSourceVmInstance) Read(ctx context.Context, req datasource.ReadRequ
 		State:            types.StringValue(instance.State),
 		UserData:         types.StringPointerValue(instance.UserData),
 		AvailabilityZone: types.StringPointerValue(instance.AvailabilityZone),
-		ErrorMessage:     types.StringValue(instance.Error.Message),
-		ErrorSlug:        types.StringValue(instance.Error.Slug),
 		Labels:           labels,
 		Interfaces:       interfaces,
 	}
+
+	if instance.Error != nil {
+		data.ErrorMessage = types.StringValue(instance.Error.Message)
+		data.ErrorSlug = types.StringValue(instance.Error.Slug)
+	}
+
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
