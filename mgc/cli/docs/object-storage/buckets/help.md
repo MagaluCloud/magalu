@@ -14,6 +14,7 @@ Usage:
 - delete      Delete an existing Bucket
 - label       Label-related commands
 - list        List all existing Buckets
+- object-lock Object locking commands
 - policy      Policy-related commands
 - public-url  Get bucket public url
 - versioning  Manage bucket versioning
