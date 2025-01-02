@@ -5,15 +5,15 @@ Executor: list
 
 # List all available Configs
 
-import "magalu.cloud/lib/products/config"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/config"
 */
 package config
 
 import (
 	"context"
 
-	mgcCore "magalu.cloud/core"
-	mgcHelpers "magalu.cloud/lib/helpers"
+	mgcCore "github.com/MagaluCloud/magalu/mgc/core"
+	mgcHelpers "github.com/MagaluCloud/magalu/mgc/lib/helpers"
 )
 
 type ListResult map[string]*ListResultProperty

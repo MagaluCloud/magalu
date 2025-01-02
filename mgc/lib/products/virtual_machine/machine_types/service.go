@@ -1,12 +1,12 @@
 /*
-import "magalu.cloud/lib/products/virtual_machine/machine_types"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/virtual_machine/machine_types"
 */
 package machineTypes
 
 import (
 	"context"
 
-	mgcClient "magalu.cloud/lib"
+	mgcClient "github.com/MagaluCloud/magalu/mgc/lib"
 )
 
 type service struct {

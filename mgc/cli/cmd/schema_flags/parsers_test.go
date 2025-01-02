@@ -6,8 +6,8 @@ import (
 	"reflect"
 	"testing"
 
-	"magalu.cloud/core"
-	mgcSchemaPkg "magalu.cloud/core/schema"
+	"github.com/MagaluCloud/magalu/mgc/core"
+	mgcSchemaPkg "github.com/MagaluCloud/magalu/mgc/core/schema"
 )
 
 func checkError(t *testing.T, expected, got error) {

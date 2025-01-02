@@ -1,12 +1,12 @@
 /*
-import "magalu.cloud/lib/products/network/vpcs/subnets"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/network/vpcs/subnets"
 */
 package subnets
 
 import (
 	"context"
 
-	mgcClient "magalu.cloud/lib"
+	mgcClient "github.com/MagaluCloud/magalu/mgc/lib"
 )
 
 type service struct {

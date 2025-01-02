@@ -1,24 +1,24 @@
-module magalu.cloud/terraform-provider-mgc
+module github.com/MagaluCloud/magalu/mgc/terraform-provider-mgc
 
 go 1.23.0
 
 require (
+	github.com/MagaluCloud/magalu/mgc/lib v0.0.0-00010101000000-000000000000
+	github.com/MagaluCloud/magalu/mgc/sdk v0.31.0
 	github.com/geffersonFerraz/brazilian-words-sorter v1.1.0
 	github.com/hashicorp/terraform-plugin-framework v1.11.0
 	github.com/hashicorp/terraform-plugin-framework-validators v0.13.0
 	github.com/hashicorp/terraform-plugin-log v0.9.0
-	magalu.cloud/lib v0.0.0-00010101000000-000000000000
-	magalu.cloud/sdk v0.31.0
 )
 
 require (
+	github.com/MagaluCloud/magalu/mgc/core v0.31.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/getkin/kin-openapi v0.118.0 // indirect
 	github.com/go-test/deep v1.1.0 // indirect
 	github.com/hashicorp/terraform-plugin-go v0.23.0 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/stoewer/go-strcase v1.3.0 // indirect
-	magalu.cloud/core v0.31.0 // indirect
 )
 
 require (
@@ -92,8 +92,8 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
-replace magalu.cloud/core => ../core
+replace github.com/MagaluCloud/magalu/mgc/core => ../core
 
-replace magalu.cloud/sdk => ../sdk
+replace github.com/MagaluCloud/magalu/mgc/sdk => ../sdk
 
-replace magalu.cloud/lib => ../lib
+replace github.com/MagaluCloud/magalu/mgc/lib => ../lib

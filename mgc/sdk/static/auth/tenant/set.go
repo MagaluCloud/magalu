@@ -4,10 +4,10 @@ import (
 	"context"
 	"fmt"
 
-	"magalu.cloud/core"
-	mgcAuthPkg "magalu.cloud/core/auth"
-	"magalu.cloud/core/utils"
-	mgcAuthScope "magalu.cloud/sdk/static/auth/scopes"
+	"github.com/MagaluCloud/magalu/mgc/core"
+	mgcAuthPkg "github.com/MagaluCloud/magalu/mgc/core/auth"
+	"github.com/MagaluCloud/magalu/mgc/core/utils"
+	mgcAuthScope "github.com/MagaluCloud/magalu/mgc/sdk/static/auth/scopes"
 )
 
 type tenantSetParams struct {

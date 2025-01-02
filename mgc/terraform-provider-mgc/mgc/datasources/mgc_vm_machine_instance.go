@@ -6,11 +6,11 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 
+	mgcSdk "github.com/MagaluCloud/magalu/mgc/lib"
+	sdkVMInstances "github.com/MagaluCloud/magalu/mgc/lib/products/virtual_machine/instances"
+	"github.com/MagaluCloud/magalu/mgc/terraform-provider-mgc/mgc/client"
+	"github.com/MagaluCloud/magalu/mgc/terraform-provider-mgc/mgc/tfutil"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	mgcSdk "magalu.cloud/lib"
-	sdkVMInstances "magalu.cloud/lib/products/virtual_machine/instances"
-	"magalu.cloud/terraform-provider-mgc/mgc/client"
-	"magalu.cloud/terraform-provider-mgc/mgc/tfutil"
 )
 
 var _ datasource.DataSource = &DataSourceVmInstance{}

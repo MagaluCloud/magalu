@@ -6,11 +6,11 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 
+	mgcSdk "github.com/MagaluCloud/magalu/mgc/lib"
+	sdkSSHKeys "github.com/MagaluCloud/magalu/mgc/lib/products/profile/ssh_keys"
+	"github.com/MagaluCloud/magalu/mgc/terraform-provider-mgc/mgc/client"
+	"github.com/MagaluCloud/magalu/mgc/terraform-provider-mgc/mgc/tfutil"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	mgcSdk "magalu.cloud/lib"
-	sdkSSHKeys "magalu.cloud/lib/products/profile/ssh_keys"
-	"magalu.cloud/terraform-provider-mgc/mgc/client"
-	"magalu.cloud/terraform-provider-mgc/mgc/tfutil"
 )
 
 var _ datasource.DataSource = &DataSourceSSH{}

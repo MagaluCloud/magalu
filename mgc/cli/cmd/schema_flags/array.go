@@ -3,7 +3,7 @@ package schema_flags
 import (
 	"fmt"
 
-	"magalu.cloud/core"
+	"github.com/MagaluCloud/magalu/mgc/core"
 )
 
 type schemaFlagValueArray struct {

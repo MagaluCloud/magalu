@@ -3,8 +3,8 @@ package logger
 import (
 	"reflect"
 
+	"github.com/MagaluCloud/magalu/mgc/core/utils"
 	"go.uber.org/zap"
-	"magalu.cloud/core/utils"
 )
 
 var rootLogger *zap.SugaredLogger

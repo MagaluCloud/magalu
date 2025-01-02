@@ -6,12 +6,12 @@ import (
 	"slices"
 	"strings"
 
+	"github.com/MagaluCloud/magalu/mgc/cli/ui"
+	"github.com/MagaluCloud/magalu/mgc/core"
+	mgcSchemaPkg "github.com/MagaluCloud/magalu/mgc/core/schema"
+	"github.com/MagaluCloud/magalu/mgc/core/utils"
+	mgcSdk "github.com/MagaluCloud/magalu/mgc/sdk"
 	"github.com/spf13/cobra"
-	"magalu.cloud/cli/ui"
-	"magalu.cloud/core"
-	mgcSchemaPkg "magalu.cloud/core/schema"
-	"magalu.cloud/core/utils"
-	mgcSdk "magalu.cloud/sdk"
 )
 
 const (

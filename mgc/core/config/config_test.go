@@ -6,9 +6,9 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/MagaluCloud/magalu/mgc/core/profile_manager"
+	"github.com/MagaluCloud/magalu/mgc/core/utils"
 	"github.com/spf13/afero"
-	"magalu.cloud/core/profile_manager"
-	"magalu.cloud/core/utils"
 )
 
 type testCaseConfig struct {

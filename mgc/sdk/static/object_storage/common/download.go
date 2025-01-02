@@ -9,9 +9,9 @@ import (
 	"os"
 	"path"
 
-	"magalu.cloud/core"
-	mgcSchemaPkg "magalu.cloud/core/schema"
-	"magalu.cloud/core/utils"
+	"github.com/MagaluCloud/magalu/mgc/core"
+	mgcSchemaPkg "github.com/MagaluCloud/magalu/mgc/core/schema"
+	"github.com/MagaluCloud/magalu/mgc/core/utils"
 )
 
 type DownloadObjectParams struct {

@@ -4,6 +4,9 @@ import (
 	"context"
 	"os"
 
+	datasources "github.com/MagaluCloud/magalu/mgc/terraform-provider-mgc/mgc/datasources"
+	resources "github.com/MagaluCloud/magalu/mgc/terraform-provider-mgc/mgc/resources"
+	"github.com/MagaluCloud/magalu/mgc/terraform-provider-mgc/mgc/tfutil"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/provider"
@@ -12,11 +15,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
-	datasources "magalu.cloud/terraform-provider-mgc/mgc/datasources"
-	resources "magalu.cloud/terraform-provider-mgc/mgc/resources"
-	"magalu.cloud/terraform-provider-mgc/mgc/tfutil"
 
-	mgcSdk "magalu.cloud/sdk"
+	mgcSdk "github.com/MagaluCloud/magalu/mgc/sdk"
 )
 
 const providerTypeName = "mgc"

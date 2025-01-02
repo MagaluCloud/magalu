@@ -11,15 +11,15 @@ Returns a list of security groups for a provided tenant_id
 
 Version: 1.141.3
 
-import "magalu.cloud/lib/products/network/security_groups"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/network/security_groups"
 */
 package securityGroups
 
 import (
 	"context"
 
-	mgcCore "magalu.cloud/core"
-	mgcHelpers "magalu.cloud/lib/helpers"
+	mgcCore "github.com/MagaluCloud/magalu/mgc/core"
+	mgcHelpers "github.com/MagaluCloud/magalu/mgc/lib/helpers"
 )
 
 type ListConfigs struct {

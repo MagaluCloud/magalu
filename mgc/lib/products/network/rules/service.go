@@ -1,12 +1,12 @@
 /*
-import "magalu.cloud/lib/products/network/rules"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/network/rules"
 */
 package rules
 
 import (
 	"context"
 
-	mgcClient "magalu.cloud/lib"
+	mgcClient "github.com/MagaluCloud/magalu/mgc/lib"
 )
 
 type service struct {

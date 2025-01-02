@@ -1,12 +1,12 @@
 /*
-import "magalu.cloud/lib/products/kubernetes/version"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/kubernetes/version"
 */
 package version
 
 import (
 	"context"
 
-	mgcClient "magalu.cloud/lib"
+	mgcClient "github.com/MagaluCloud/magalu/mgc/lib"
 )
 
 type service struct {

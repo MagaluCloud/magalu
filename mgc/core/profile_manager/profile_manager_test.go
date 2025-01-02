@@ -10,8 +10,8 @@ import (
 
 	"slices"
 
+	"github.com/MagaluCloud/magalu/mgc/core/utils"
 	"github.com/spf13/afero"
-	"magalu.cloud/core/utils"
 )
 
 type testCaseProfileManager struct {

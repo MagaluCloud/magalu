@@ -8,6 +8,12 @@ import (
 	"strings"
 	"time"
 
+	mgcSdk "github.com/MagaluCloud/magalu/mgc/lib"
+	dbaasEngines "github.com/MagaluCloud/magalu/mgc/lib/products/dbaas/engines"
+	dbaasInstanceTypes "github.com/MagaluCloud/magalu/mgc/lib/products/dbaas/instance_types"
+	dbaasInstances "github.com/MagaluCloud/magalu/mgc/lib/products/dbaas/instances"
+	"github.com/MagaluCloud/magalu/mgc/terraform-provider-mgc/mgc/client"
+	"github.com/MagaluCloud/magalu/mgc/terraform-provider-mgc/mgc/tfutil"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -16,12 +22,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	mgcSdk "magalu.cloud/lib"
-	dbaasEngines "magalu.cloud/lib/products/dbaas/engines"
-	dbaasInstanceTypes "magalu.cloud/lib/products/dbaas/instance_types"
-	dbaasInstances "magalu.cloud/lib/products/dbaas/instances"
-	"magalu.cloud/terraform-provider-mgc/mgc/client"
-	"magalu.cloud/terraform-provider-mgc/mgc/tfutil"
 )
 
 const instanceStatusTimeout = 90 * time.Minute

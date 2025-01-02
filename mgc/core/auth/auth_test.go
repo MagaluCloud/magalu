@@ -9,10 +9,10 @@ import (
 	"reflect"
 	"testing"
 
-	"magalu.cloud/core/config"
-	mgcHttpPkg "magalu.cloud/core/http"
-	"magalu.cloud/core/profile_manager"
-	"magalu.cloud/core/utils"
+	"github.com/MagaluCloud/magalu/mgc/core/config"
+	mgcHttpPkg "github.com/MagaluCloud/magalu/mgc/core/http"
+	"github.com/MagaluCloud/magalu/mgc/core/profile_manager"
+	"github.com/MagaluCloud/magalu/mgc/core/utils"
 )
 
 var dummyConfigResult *ConfigResult = &ConfigResult{

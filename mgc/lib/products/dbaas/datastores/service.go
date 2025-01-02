@@ -1,12 +1,12 @@
 /*
-import "magalu.cloud/lib/products/dbaas/datastores"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/dbaas/datastores"
 */
 package datastores
 
 import (
 	"context"
 
-	mgcClient "magalu.cloud/lib"
+	mgcClient "github.com/MagaluCloud/magalu/mgc/lib"
 )
 
 type service struct {

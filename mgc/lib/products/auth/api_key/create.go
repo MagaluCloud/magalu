@@ -9,15 +9,15 @@ Executor: create
 
 # Select the scopes that the new API Key will have access to and set an expiration date
 
-import "magalu.cloud/lib/products/auth/api_key"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/auth/api_key"
 */
 package apiKey
 
 import (
 	"context"
 
-	mgcCore "magalu.cloud/core"
-	mgcHelpers "magalu.cloud/lib/helpers"
+	mgcCore "github.com/MagaluCloud/magalu/mgc/core"
+	mgcHelpers "github.com/MagaluCloud/magalu/mgc/lib/helpers"
 )
 
 type CreateParameters struct {

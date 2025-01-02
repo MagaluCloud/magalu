@@ -9,7 +9,7 @@ import (
 	"runtime"
 	"strings"
 
-	"magalu.cloud/core/utils"
+	"github.com/MagaluCloud/magalu/mgc/core/utils"
 )
 
 var isProfileNameValid = regexp.MustCompile(`^[\w-]*.$`).MatchString

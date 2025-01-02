@@ -3,6 +3,11 @@ package resources
 import (
 	"context"
 
+	mgcSdk "github.com/MagaluCloud/magalu/mgc/lib"
+	networkRules "github.com/MagaluCloud/magalu/mgc/lib/products/network/rules"
+	networkSecurityGroupsRules "github.com/MagaluCloud/magalu/mgc/lib/products/network/security_groups/rules"
+	"github.com/MagaluCloud/magalu/mgc/terraform-provider-mgc/mgc/client"
+	"github.com/MagaluCloud/magalu/mgc/terraform-provider-mgc/mgc/tfutil"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -12,11 +17,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	mgcSdk "magalu.cloud/lib"
-	networkRules "magalu.cloud/lib/products/network/rules"
-	networkSecurityGroupsRules "magalu.cloud/lib/products/network/security_groups/rules"
-	"magalu.cloud/terraform-provider-mgc/mgc/client"
-	"magalu.cloud/terraform-provider-mgc/mgc/tfutil"
 )
 
 type NetworkSecurityGroupRuleModel struct {

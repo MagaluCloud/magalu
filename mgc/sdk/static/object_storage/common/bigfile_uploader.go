@@ -11,9 +11,9 @@ import (
 	"net/http"
 	"sort"
 
+	"github.com/MagaluCloud/magalu/mgc/core/pipeline"
+	mgcSchemaPkg "github.com/MagaluCloud/magalu/mgc/core/schema"
 	"go.uber.org/zap"
-	"magalu.cloud/core/pipeline"
-	mgcSchemaPkg "magalu.cloud/core/schema"
 )
 
 var deleteBucketsLogger *zap.SugaredLogger

@@ -11,15 +11,15 @@ Get a backup detail.
 
 Version: 1.34.1
 
-import "magalu.cloud/lib/products/dbaas/instances/backups"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/dbaas/instances/backups"
 */
 package backups
 
 import (
 	"context"
 
-	mgcCore "magalu.cloud/core"
-	mgcHelpers "magalu.cloud/lib/helpers"
+	mgcCore "github.com/MagaluCloud/magalu/mgc/core"
+	mgcHelpers "github.com/MagaluCloud/magalu/mgc/lib/helpers"
 )
 
 type GetParameters struct {

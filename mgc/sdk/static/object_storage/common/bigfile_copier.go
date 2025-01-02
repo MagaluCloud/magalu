@@ -9,9 +9,9 @@ import (
 	"net/http"
 	"sort"
 
-	"magalu.cloud/core/pipeline"
-	"magalu.cloud/core/progress_report"
-	mgcSchemaPkg "magalu.cloud/core/schema"
+	"github.com/MagaluCloud/magalu/mgc/core/pipeline"
+	"github.com/MagaluCloud/magalu/mgc/core/progress_report"
+	mgcSchemaPkg "github.com/MagaluCloud/magalu/mgc/core/schema"
 )
 
 type bigFileCopier struct {

@@ -3,13 +3,13 @@ package datasources
 import (
 	"context"
 
+	mgcSdk "github.com/MagaluCloud/magalu/mgc/lib"
+	networkSecurityGroups "github.com/MagaluCloud/magalu/mgc/lib/products/network/security_groups"
+	"github.com/MagaluCloud/magalu/mgc/terraform-provider-mgc/mgc/client"
+	"github.com/MagaluCloud/magalu/mgc/terraform-provider-mgc/mgc/tfutil"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	mgcSdk "magalu.cloud/lib"
-	networkSecurityGroups "magalu.cloud/lib/products/network/security_groups"
-	"magalu.cloud/terraform-provider-mgc/mgc/client"
-	"magalu.cloud/terraform-provider-mgc/mgc/tfutil"
 )
 
 type NetworkSecurityGroupModel struct {

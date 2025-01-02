@@ -7,6 +7,6 @@ Endpoints related to the creation, listing, deletion, and retrieval of the kubec
 
 Version: 0.1.0
 
-import "magalu.cloud/lib/products/kubernetes/cluster"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/kubernetes/cluster"
 */
 package cluster

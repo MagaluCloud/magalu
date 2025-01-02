@@ -5,6 +5,6 @@ Package: clients
 
 # Manage Clients (Oauth Applications) to use ID Magalu
 
-import "magalu.cloud/lib/products/auth/clients"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/auth/clients"
 */
 package clients

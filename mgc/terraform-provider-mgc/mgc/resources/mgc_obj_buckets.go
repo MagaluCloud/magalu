@@ -6,12 +6,12 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 
+	mgcSdk "github.com/MagaluCloud/magalu/mgc/lib"
+	"github.com/MagaluCloud/magalu/mgc/terraform-provider-mgc/mgc/client"
+	tfutil "github.com/MagaluCloud/magalu/mgc/terraform-provider-mgc/mgc/tfutil"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	mgcSdk "magalu.cloud/lib"
-	"magalu.cloud/terraform-provider-mgc/mgc/client"
-	tfutil "magalu.cloud/terraform-provider-mgc/mgc/tfutil"
 
-	sdkBuckets "magalu.cloud/lib/products/object_storage/buckets"
+	sdkBuckets "github.com/MagaluCloud/magalu/mgc/lib/products/object_storage/buckets"
 )
 
 type ObjectStorageBucket struct {

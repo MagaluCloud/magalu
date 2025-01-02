@@ -11,15 +11,15 @@ Returns a list of available instance types. An instance type is a hardware templ
 
 Version: 1.34.1
 
-import "magalu.cloud/lib/products/dbaas/instance_types"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/dbaas/instance_types"
 */
 package instanceTypes
 
 import (
 	"context"
 
-	mgcCore "magalu.cloud/core"
-	mgcHelpers "magalu.cloud/lib/helpers"
+	mgcCore "github.com/MagaluCloud/magalu/mgc/core"
+	mgcHelpers "github.com/MagaluCloud/magalu/mgc/lib/helpers"
 )
 
 type ListParameters struct {

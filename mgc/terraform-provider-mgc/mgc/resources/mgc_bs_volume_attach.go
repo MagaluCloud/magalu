@@ -7,12 +7,12 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 
+	mgcSdk "github.com/MagaluCloud/magalu/mgc/lib"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	mgcSdk "magalu.cloud/lib"
 
-	sdkVolumes "magalu.cloud/lib/products/block_storage/volumes"
-	"magalu.cloud/terraform-provider-mgc/mgc/client"
-	tfutil "magalu.cloud/terraform-provider-mgc/mgc/tfutil"
+	sdkVolumes "github.com/MagaluCloud/magalu/mgc/lib/products/block_storage/volumes"
+	"github.com/MagaluCloud/magalu/mgc/terraform-provider-mgc/mgc/client"
+	tfutil "github.com/MagaluCloud/magalu/mgc/terraform-provider-mgc/mgc/tfutil"
 )
 
 const (

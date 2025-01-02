@@ -11,11 +11,11 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
-	mgcSdk "magalu.cloud/lib"
-	networkSubnets "magalu.cloud/lib/products/network/subnets"
-	networkVpcsSubnets "magalu.cloud/lib/products/network/vpcs/subnets"
-	"magalu.cloud/terraform-provider-mgc/mgc/client"
-	"magalu.cloud/terraform-provider-mgc/mgc/tfutil"
+	mgcSdk "github.com/MagaluCloud/magalu/mgc/lib"
+	networkSubnets "github.com/MagaluCloud/magalu/mgc/lib/products/network/subnets"
+	networkVpcsSubnets "github.com/MagaluCloud/magalu/mgc/lib/products/network/vpcs/subnets"
+	"github.com/MagaluCloud/magalu/mgc/terraform-provider-mgc/mgc/client"
+	"github.com/MagaluCloud/magalu/mgc/terraform-provider-mgc/mgc/tfutil"
 )
 
 type mgcNetworkVpcsSubnetsModel struct {

@@ -1,14 +1,14 @@
-module magalu.cloud/codegen
+module github.com/MagaluCloud/magalu/mgc/codegen
 
 go 1.23.0
 
 require (
+	github.com/MagaluCloud/magalu/mgc/core v0.18.10-rc1
+	github.com/MagaluCloud/magalu/mgc/sdk v0.18.10-rc1
 	github.com/getkin/kin-openapi v0.118.0
 	github.com/spf13/afero v1.11.0
 	github.com/spf13/cobra v1.7.0
 	github.com/stoewer/go-strcase v1.3.0
-	magalu.cloud/core v0.18.10-rc1
-	magalu.cloud/sdk v0.18.10-rc1
 )
 
 require (
@@ -65,6 +65,6 @@ require (
 )
 
 replace (
-	magalu.cloud/core => ../core
-	magalu.cloud/sdk => ../sdk
+	github.com/MagaluCloud/magalu/mgc/core => ../core
+	github.com/MagaluCloud/magalu/mgc/sdk => ../sdk
 )

@@ -5,10 +5,10 @@ import (
 	"fmt"
 	"slices"
 
+	"github.com/MagaluCloud/magalu/mgc/core"
+	"github.com/MagaluCloud/magalu/mgc/core/auth"
+	"github.com/MagaluCloud/magalu/mgc/core/utils"
 	"go.uber.org/zap"
-	"magalu.cloud/core"
-	"magalu.cloud/core/auth"
-	"magalu.cloud/core/utils"
 )
 
 type removeParameters struct {

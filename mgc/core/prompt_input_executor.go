@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"magalu.cloud/core/utils"
+	"github.com/MagaluCloud/magalu/mgc/core/utils"
 )
 
 type PromptInput func(parameters Parameters, configs Configs) (message string, validate func(input string) error)

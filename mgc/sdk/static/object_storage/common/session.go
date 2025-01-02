@@ -8,8 +8,8 @@ import (
 	"net/url"
 	"strings"
 
-	"magalu.cloud/core/auth"
-	mgcHttpPkg "magalu.cloud/core/http"
+	"github.com/MagaluCloud/magalu/mgc/core/auth"
+	mgcHttpPkg "github.com/MagaluCloud/magalu/mgc/core/http"
 )
 
 // note: must be in HTTP Header Canonical format (Title-Case-With-Dashes)

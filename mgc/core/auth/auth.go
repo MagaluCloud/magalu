@@ -11,10 +11,10 @@ import (
 	"strings"
 	"time"
 
-	"magalu.cloud/core"
-	"magalu.cloud/core/config"
-	mgcHttpPkg "magalu.cloud/core/http"
-	"magalu.cloud/core/profile_manager"
+	"github.com/MagaluCloud/magalu/mgc/core"
+	"github.com/MagaluCloud/magalu/mgc/core/config"
+	mgcHttpPkg "github.com/MagaluCloud/magalu/mgc/core/http"
+	"github.com/MagaluCloud/magalu/mgc/core/profile_manager"
 
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/invopop/yaml"
@@ -189,7 +189,7 @@ func (e FailedRefreshAccessToken) Error() string {
 	return e.Message
 }
 
-var authKey contextKey = "magalu.cloud/core/Authentication"
+var authKey contextKey = "github.com/MagaluCloud/magalu/mgc/core/Authentication"
 
 func NewContext(parentCtx context.Context, auth *Auth) context.Context {
 	return context.WithValue(parentCtx, authKey, auth)

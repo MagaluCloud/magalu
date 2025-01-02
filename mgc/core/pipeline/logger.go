@@ -3,15 +3,15 @@ package pipeline
 import (
 	"context"
 
+	mgcLoggerPkg "github.com/MagaluCloud/magalu/mgc/core/logger"
 	"go.uber.org/zap"
-	mgcLoggerPkg "magalu.cloud/core/logger"
 )
 
 var logger = mgcLoggerPkg.NewLazy[ProcessStatus]()
 
 type contextLoggerKey string
 
-var ctxWrappedKey contextLoggerKey = "magalu.cloud/core/pipeline"
+var ctxWrappedKey contextLoggerKey = "github.com/MagaluCloud/magalu/mgc/core/pipeline"
 
 // Get the logger from context or return the default logger.
 //

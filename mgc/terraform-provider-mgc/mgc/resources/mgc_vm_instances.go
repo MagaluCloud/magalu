@@ -17,14 +17,14 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 
+	mgcSdk "github.com/MagaluCloud/magalu/mgc/lib"
+	sdkVmImages "github.com/MagaluCloud/magalu/mgc/lib/products/virtual_machine/images"
+	sdkVmInstances "github.com/MagaluCloud/magalu/mgc/lib/products/virtual_machine/instances"
+	sdkVmMachineTypes "github.com/MagaluCloud/magalu/mgc/lib/products/virtual_machine/machine_types"
+	"github.com/MagaluCloud/magalu/mgc/terraform-provider-mgc/mgc/client"
+	tfutil "github.com/MagaluCloud/magalu/mgc/terraform-provider-mgc/mgc/tfutil"
 	bws "github.com/geffersonFerraz/brazilian-words-sorter"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	mgcSdk "magalu.cloud/lib"
-	sdkVmImages "magalu.cloud/lib/products/virtual_machine/images"
-	sdkVmInstances "magalu.cloud/lib/products/virtual_machine/instances"
-	sdkVmMachineTypes "magalu.cloud/lib/products/virtual_machine/machine_types"
-	"magalu.cloud/terraform-provider-mgc/mgc/client"
-	tfutil "magalu.cloud/terraform-provider-mgc/mgc/tfutil"
 )
 
 var (

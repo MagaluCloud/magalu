@@ -1,8 +1,8 @@
 package openapi
 
 import (
-	"magalu.cloud/core"
-	mgcHttpPkg "magalu.cloud/core/http"
+	"github.com/MagaluCloud/magalu/mgc/core"
+	mgcHttpPkg "github.com/MagaluCloud/magalu/mgc/core/http"
 )
 
 type linkSpecResolver struct {

@@ -3,10 +3,10 @@ package schema_flags
 import (
 	"errors"
 
+	"github.com/MagaluCloud/magalu/mgc/core"
+	"github.com/MagaluCloud/magalu/mgc/core/config"
 	"github.com/getkin/kin-openapi/openapi3"
 	flag "github.com/spf13/pflag"
-	"magalu.cloud/core"
-	"magalu.cloud/core/config"
 )
 
 type SchemaFlagValue interface {
