@@ -26,7 +26,7 @@ import (
 	"context"
 	{{- end }}
 
-	mgcCore "magalu.cloud/core"
+	mgcCore "github.com/MagaluCloud/magalu/mgc/core"
 	mgcHelpers "{{ .HelpersImport }}"
 )
 {{- range .Types.Types.Definitions }}
