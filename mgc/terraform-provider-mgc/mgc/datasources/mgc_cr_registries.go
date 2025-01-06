@@ -19,7 +19,7 @@ type DataSourceCRRegistries struct {
 	crRegistries sdkCRRegistries.Service
 }
 
-func NewDataSourceDataSourceCRRegistries() datasource.DataSource {
+func NewDataSourceCRRegistries() datasource.DataSource {
 	return &DataSourceCRRegistries{}
 }
 
