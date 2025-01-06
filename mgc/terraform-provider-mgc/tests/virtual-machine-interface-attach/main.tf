@@ -28,25 +28,14 @@ resource "mgc_network_vpcs_interfaces" "primary_interface" {
   depends_on = [ mgc_network_vpcs_subnets.primary_subnet ]
 }
 
-# Test Case 1: Basic VM Instance
 resource "mgc_virtual_machine_instances" "tc1_basic_instance" {
-  name = "tc1-basic-instance-attach-vm"
-  machine_type = {
-    name = "BV1-1-40"
-  }
-
-  image = {
-    name = "cloud-ubuntu-22.04 LTS"
-  }
-
-  network = {
-    associate_public_ip = false
-    delete_public_ip    = false
-  }
-
+  name         = "tc1-basic-instance-attach-vm"
+  machine_type = "BV1-1-40"
+  image        = "cloud-ubuntu-24.04 LTS"
   ssh_key_name = "publio"
 }
 
+# 8141911d-62e8-4337-b735-3dce3c9fd3c7
 resource "mgc_virtual_machine_interface_attach" "attach_vm" {
   instance_id  = mgc_virtual_machine_instances.tc1_basic_instance.id
   interface_id = mgc_network_vpcs_interfaces.primary_interface.id
