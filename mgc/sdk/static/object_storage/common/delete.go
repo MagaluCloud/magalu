@@ -64,47 +64,46 @@ type deleteBatchRequestBody struct {
 	Objects []objectIdentifier `xml:"Object"`
 }
 
-
 func DeleteSingle(ctx context.Context, params DeleteObjectParams, cfg Config) error {
-    objectKey := params.Destination.AsFilePath().String()
-    versionID := params.Version
+	objectKey := params.Destination.AsFilePath().String()
+	versionID := params.Version
 
-    req, err := newDeleteSingleRequest(ctx, cfg, NewBucketNameFromURI(params.Destination), objectKey, versionID)
-    if err != nil {
-        return err
-    }
+	req, err := newDeleteSingleRequest(ctx, cfg, NewBucketNameFromURI(params.Destination), objectKey, versionID)
+	if err != nil {
+		return err
+	}
 
-    resp, err := SendRequest(ctx, req)
-    if err != nil {
-        return err
-    }
+	resp, err := SendRequest(ctx, req)
+	if err != nil {
+		return err
+	}
 
-    err = ExtractErr(resp, req)
-    if err != nil {
-        return err
-    }
+	err = ExtractErr(resp, req)
+	if err != nil {
+		return err
+	}
 
-    return nil
+	return nil
 }
 
 func newDeleteSingleRequest(ctx context.Context, cfg Config, bucketName BucketName, objectKey string, versionID string) (*http.Request, error) {
-    host, err := BuildBucketHost(cfg, bucketName)
-    if err != nil {
-        return nil, core.UsageError{Err: err}
-    }
+	host, err := BuildBucketHost(cfg, bucketName)
+	if err != nil {
+		return nil, core.UsageError{Err: err}
+	}
 
-    url := fmt.Sprintf("%s/%s", host, objectKey)
+	url := fmt.Sprintf("%s/%s", host, objectKey)
 
-    if versionID != "" {
-        url = fmt.Sprintf("%s?versionId=%s", url, versionID)
-    }
+	if versionID != "" {
+		url = fmt.Sprintf("%s?versionId=%s", url, versionID)
+	}
 
-    req, err := http.NewRequestWithContext(ctx, http.MethodDelete, url, nil)
-    if err != nil {
-        return nil, err
-    }
+	req, err := http.NewRequestWithContext(ctx, http.MethodDelete, url, nil)
+	if err != nil {
+		return nil, err
+	}
 
-    return req, nil
+	return req, nil
 }
 
 func newDeleteBatchRequest(ctx context.Context, cfg Config, bucketName BucketName, objKeys []objectIdentifier) (*http.Request, error) {
@@ -243,31 +242,31 @@ func DeleteBucket(ctx context.Context, params DeleteBucketParams, cfg Config) er
 }
 
 func Delete(ctx context.Context, params DeleteObjectParams, cfg Config) error {
-    objKeys := []objectIdentifier{{Key: params.Destination.AsFilePath().String(), VersionId: params.Version}}
+	objKeys := []objectIdentifier{{Key: params.Destination.AsFilePath().String(), VersionId: params.Version}}
 
-    if len(objKeys) > 1 {
-        req, err := newDeleteBatchRequest(ctx, cfg, NewBucketNameFromURI(params.Destination), objKeys)
-        if err != nil {
-            return err
-        }
+	if len(objKeys) > 1 {
+		req, err := newDeleteBatchRequest(ctx, cfg, NewBucketNameFromURI(params.Destination), objKeys)
+		if err != nil {
+			return err
+		}
 
-        resp, err := SendRequest(ctx, req)
-        if err != nil {
-            return err
-        }
+		resp, err := SendRequest(ctx, req)
+		if err != nil {
+			return err
+		}
 
-        err = ExtractErr(resp, req)
-        if err != nil {
-            return err
-        }
-    } else {
-        err := DeleteSingle(ctx, params, cfg)
-        if err != nil {
-            return err
-        }
-    }
+		err = ExtractErr(resp, req)
+		if err != nil {
+			return err
+		}
+	} else {
+		err := DeleteSingle(ctx, params, cfg)
+		if err != nil {
+			return err
+		}
+	}
 
-    return nil
+	return nil
 }
 
 func DeleteObjects(ctx context.Context, params DeleteObjectsParams, cfg Config) error {
