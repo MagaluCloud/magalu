@@ -12,7 +12,7 @@
     "kubernetes_*"
   ],
   "Container Registry":[
-    "container_registries.md"
+    "container_*"
   ],
   "Database": [
     "dbaas*"
