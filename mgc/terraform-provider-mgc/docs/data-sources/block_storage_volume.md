@@ -3,12 +3,12 @@
 page_title: "mgc_block_storage_volume Data Source - terraform-provider-mgc"
 subcategory: "Block Storage"
 description: |-
-  Block storage volumes
+  Block storage volume
 ---
 
 # mgc_block_storage_volume (Data Source)
 
-Block storage volumes
+Block storage volume
 
 ## Example Usage
 
@@ -32,21 +32,18 @@ output "my-volume" {
 
 ### Read-Only
 
+- `attached_at` (String) The timestamp when the block storage was attached.
+- `attached_device` (String) The device path of the attachment.
+- `attached_instance_id` (String) The unique identifier of the instance.
+- `attached_instance_name` (String) The name of the instance.
 - `availability_zone` (String) The availability zones where the block storage is available.
 - `created_at` (String) The timestamp when the block storage was created.
+- `disk_type` (String) The disk type of the block storage.
 - `name` (String) The name of the block storage.
 - `size` (Number) The size of the block storage in GB.
 - `state` (String) The current state of the virtual machine instance.
 - `status` (String) The status of the virtual machine instance.
-- `type` (Attributes) The type of the block storage. (see [below for nested schema](#nestedatt--type))
+- `type_id` (String) The unique identifier of the block storage type.
+- `type_name` (String) The name of the block storage type.
+- `type_status` (String) The status of the block storage type.
 - `updated_at` (String) The timestamp when the block storage was last updated.
-
-<a id="nestedatt--type"></a>
-### Nested Schema for `type`
-
-Read-Only:
-
-- `disk_type` (String) The disk type of the block storage.
-- `id` (String) The unique identifier of the block storage type.
-- `name` (String) The name of the block storage type.
-- `status` (String) The status of the block storage type.

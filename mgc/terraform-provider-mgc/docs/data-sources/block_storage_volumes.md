@@ -41,15 +41,5 @@ Read-Only:
 - `size` (Number) The size of the block storage in GB.
 - `state` (String) The current state of the virtual machine instance.
 - `status` (String) The status of the virtual machine instance.
-- `type` (Attributes) The type of the block storage. (see [below for nested schema](#nestedatt--volumes--type))
+- `type_id` (String) The unique identifier of the block storage type.
 - `updated_at` (String) The timestamp when the block storage was last updated.
-
-<a id="nestedatt--volumes--type"></a>
-### Nested Schema for `volumes.type`
-
-Read-Only:
-
-- `disk_type` (String) The disk type of the block storage.
-- `id` (String) The unique identifier of the block storage type.
-- `name` (String) The name of the block storage type.
-- `status` (String) The status of the block storage type.
