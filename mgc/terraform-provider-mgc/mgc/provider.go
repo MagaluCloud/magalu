@@ -147,6 +147,7 @@ func (p *mgcProvider) Resources(ctx context.Context) []func() resource.Resource 
 		resources.NewDBaaSInstanceBackupResource,
 		resources.NewDBaaSInstanceSnapshotResource,
 		resources.NewContainerRegistryRegistriesResource,
+		resources.NewVirtualMachineInterfaceAttachResource,
 	}
 }
 
