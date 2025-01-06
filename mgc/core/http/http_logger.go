@@ -45,14 +45,14 @@ func getPayloadLogger() payloadLoggerFn {
 		case "1", "progressive":
 			*payloadLogger = func(parent io.Reader, message string, logger *zap.SugaredLogger) io.ReadCloser {
 				return mgcLoggerPkg.NewProgressiveLoggerReader(parent, func(readData mgcLoggerPkg.LogReadData) {
-					logger.Debugw(message, "body", readData)
+					logger.Infow(message, "body", readData)
 				})
 			}
 
 		case "2", "final":
 			*payloadLogger = func(parent io.Reader, message string, logger *zap.SugaredLogger) io.ReadCloser {
 				return mgcLoggerPkg.NewFinalLoggerReader(parent, func(readData mgcLoggerPkg.LogReadData) {
-					logger.Debugw(message, "body", readData)
+					logger.Infow(message, "body", readData)
 				})
 			}
 
@@ -103,7 +103,7 @@ func (t *ClientLogger) RoundTrip(req *http.Request) (*http.Response, error) {
 }
 
 func (t *ClientLogger) logRequest(log *zap.SugaredLogger, req *http.Request) {
-	log.Debugw("request", "headers", LogHttpHeaders(req.Header))
+	log.Infow("request", "headers", LogHttpHeaders(req.Header))
 }
 
 func (t *ClientLogger) logResponse(log *zap.SugaredLogger, req *http.Request, resp *http.Response, err error) {
@@ -111,15 +111,15 @@ func (t *ClientLogger) logResponse(log *zap.SugaredLogger, req *http.Request, re
 		if err == nil {
 			err = errors.New("Unknown Error")
 		}
-		log.Debugw("request error", "error", err)
+		log.Infow("request error", "error", err)
 		return
 	}
 	log = log.With("headers", LogHttpHeaders(resp.Header))
 	respBody, _ := io.ReadAll(resp.Body)
 	if err != nil {
-		log.Debugw("response with error", "status", resp.Status, "error", err)
+		log.Infow("response with error", "status", resp.Status, "error", err)
 	} else {
-		log.Debugw("response", "status", resp.Status, "body", string(respBody))
+		log.Infow("response", "status", resp.Status, "body", string(respBody))
 	}
 
 	resp.Body = io.NopCloser(bytes.NewBuffer(respBody))

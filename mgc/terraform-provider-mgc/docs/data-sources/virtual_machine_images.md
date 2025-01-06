@@ -35,5 +35,8 @@ Read-Only:
 
 - `availability_zones` (List of String) The availability zones of the image.
 - `id` (String) ID of image.
+- `minimum_disk_size` (Number) The minimum disk size of the image.
+- `minimum_memory_size` (Number) The minimum memory size of the image.
+- `minimum_vcpus` (Number) The minimum vcpus of the image.
 - `name` (String) The image name.
 - `platform` (String) The image platform.
