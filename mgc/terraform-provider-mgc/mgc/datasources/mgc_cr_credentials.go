@@ -58,17 +58,17 @@ func (r *DataSourceCRCredentials) Schema(_ context.Context, req datasource.Schem
 		Attributes: map[string]schema.Attribute{
 			"email": schema.StringAttribute{
 				Description: "Email address for the credentials",
-				Required:    true,
+				Computed:    true,
 				Sensitive:   false,
 			},
 			"password": schema.StringAttribute{
 				Description: "Password for authentication",
-				Required:    true,
+				Computed:    true,
 				Sensitive:   true,
 			},
 			"username": schema.StringAttribute{
 				Description: "Username for authentication",
-				Required:    true,
+				Computed:    true,
 				Sensitive:   false,
 			},
 		},
