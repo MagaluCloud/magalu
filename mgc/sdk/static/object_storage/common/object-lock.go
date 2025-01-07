@@ -26,7 +26,7 @@ func DefaultObjectRetentionBody(retainUntilDate time.Time) ObjectRetention {
 	return ObjectRetention{
 		Namespace:       namespace,
 		Mode:            ObjectLockModeCompliance,
-		RetainUntilDate: retainUntilDate.UTC().Format("2006-01-02T15:04:05"),
+		RetainUntilDate: retainUntilDate.UTC().Format(time.RFC3339),
 	}
 
 }

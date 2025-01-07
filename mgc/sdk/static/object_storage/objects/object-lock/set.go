@@ -98,6 +98,7 @@ func newSetObjectLockingRequest(ctx context.Context, p setObjectLockParams, cfg 
 		if err != nil {
 			return nil, core.UsageError{Err: err}
 		}
+		fmt.Printf("Parsed Time: %s\n", parsedTime.Format(time.RFC3339))
 		bodyObj := common.DefaultObjectRetentionBody(parsedTime.In(time.Now().Location()))
 		if p.Mode == string(common.ObjectLockModeGovernance) {
 			bodyObj.Mode = common.ObjectLockModeGovernance
