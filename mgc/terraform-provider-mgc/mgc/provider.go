@@ -184,6 +184,7 @@ func (p *mgcProvider) DataSources(ctx context.Context) []func() datasource.DataS
 		datasources.NewDataSourceCRImages,
 		datasources.NewDataSourceCRRepositories,
 		datasources.NewDataSourceCRRegistries,
+		datasources.NewDataSourceCRCredentials,
 	}
 }
 
