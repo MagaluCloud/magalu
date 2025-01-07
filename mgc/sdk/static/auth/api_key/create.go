@@ -59,7 +59,7 @@ var getCreate = utils.NewLazyLoader[core.Executor](func() core.Executor {
 	})
 })
 
-func create(ctx context.Context, parameter createParams, _ struct{}) (*apiKeyResult, error) {
+func create(ctx context.Context, parameter createParams, _ struct{}) (*getApiKeyResult, error) {
 	auth := mgcAuthPkg.FromContext(ctx)
 	if auth == nil {
 		return nil, fmt.Errorf("programming error: unable to retrieve auth configuration from context")
@@ -169,5 +169,10 @@ func create(ctx context.Context, parameter createParams, _ struct{}) (*apiKeyRes
 		return nil, err
 	}
 
-	return &result, nil
+	res, err := get(ctx, getKeyParams{UUID: result.UUID}, struct{}{})
+	if err != nil {
+		return nil, fmt.Errorf("api-key created successfully.\nID: %s", result.UUID)
+	}
+
+	return &res, nil
 }
