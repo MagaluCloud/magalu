@@ -25,6 +25,9 @@ type ImageModel struct {
 	Name              types.String   `tfsdk:"name"`
 	Platform          types.String   `tfsdk:"platform"`
 	AvailabilityZones []types.String `tfsdk:"availability_zones"`
+	MinimumDiskSize   types.Int64    `tfsdk:"minimum_disk_size"`
+	MinimumMemorySize types.Int64    `tfsdk:"minimum_memory_size"`
+	MinimumVCPU       types.Int64    `tfsdk:"minimum_vcpus"`
 }
 
 type ImagesModel struct {
@@ -83,6 +86,18 @@ func (r *DataSourceVmImages) Schema(_ context.Context, req datasource.SchemaRequ
 							Description: "The availability zones of the image.",
 							ElementType: types.StringType,
 						},
+						"minimum_disk_size": schema.NumberAttribute{
+							Computed:    true,
+							Description: "The minimum disk size of the image.",
+						},
+						"minimum_memory_size": schema.NumberAttribute{
+							Computed:    true,
+							Description: "The minimum memory size of the image.",
+						},
+						"minimum_vcpus": schema.NumberAttribute{
+							Computed:    true,
+							Description: "The minimum vcpus of the image.",
+						},
 					},
 				},
 			},
@@ -127,6 +142,9 @@ func (r *DataSourceVmImages) Read(ctx context.Context, req datasource.ReadReques
 			Name:              types.StringValue(image.Name),
 			Platform:          types.StringValue(platform),
 			AvailabilityZones: azs,
+			MinimumDiskSize:   types.Int64Value(int64(image.MinimumRequirements.Disk)),
+			MinimumMemorySize: types.Int64Value(int64(image.MinimumRequirements.Ram)),
+			MinimumVCPU:       types.Int64Value(int64(image.MinimumRequirements.Vcpu)),
 		})
 
 	}
