@@ -12,7 +12,7 @@ builds:
       - amd64
       - arm64
     ldflags:
-      - -s -w -X magalu.cloud/sdk.Version={{.Version}}"
+      - -s -w -X github.com/MagaluCloud/magalu/sdk.Version={{.Version}}"
     flags:
       - -tags=embed release
     main: mgc/cli/main.go
@@ -25,7 +25,7 @@ builds:
       - amd64
       - arm64
     ldflags:
-      - -s -w -X magalu.cloud/sdk.Version={{.Version}}"
+      - -s -w -X github.com/MagaluCloud/magalu/sdk.Version={{.Version}}"
     flags:
       - -tags=embed release
     main: mgc/cli/main.go
