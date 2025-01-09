@@ -44,11 +44,4 @@ Read-Only:
 - `status` (String) The status of the virtual machine instance.
 - `type` (String) The type of the snapshot.
 - `updated_at` (String) The timestamp when the block storage was last updated.
-- `volume` (Attributes) (see [below for nested schema](#nestedatt--snapshots--volume))
-
-<a id="nestedatt--snapshots--volume"></a>
-### Nested Schema for `snapshots.volume`
-
-Read-Only:
-
-- `id` (String) ID of block storage volume
+- `volume_id` (String) ID of block storage volume

@@ -3,44 +3,86 @@ package resources
 import (
 	"context"
 	"fmt"
-	"math/big"
 	"regexp"
+	"strings"
 	"time"
 
-	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
+	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/boolplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 
-	bws "github.com/geffersonFerraz/brazilian-words-sorter"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	mgcSdk "magalu.cloud/lib"
-	sdkVmImages "magalu.cloud/lib/products/virtual_machine/images"
 	sdkVmInstances "magalu.cloud/lib/products/virtual_machine/instances"
-	sdkVmMachineTypes "magalu.cloud/lib/products/virtual_machine/machine_types"
 	"magalu.cloud/terraform-provider-mgc/mgc/client"
 	tfutil "magalu.cloud/terraform-provider-mgc/mgc/tfutil"
 )
 
-var (
-	_ resource.Resource              = &vmInstances{}
-	_ resource.ResourceWithConfigure = &vmInstances{}
+const (
+	VmInstanceStatusTimeout = 60 * time.Minute
 )
+
+type InstanceStatus string
+
+const (
+	StatusAttachingNic                 InstanceStatus = "attaching_nic"
+	StatusDetachingNic                 InstanceStatus = "detaching_nic"
+	StatusAttachNicPending             InstanceStatus = "attach_nic_pending"
+	StatusDetachNicPending             InstanceStatus = "detach_nic_pending"
+	StatusProvisioning                 InstanceStatus = "provisioning"
+	StatusCreating                     InstanceStatus = "creating"
+	StatusCreatingError                InstanceStatus = "creating_error"
+	StatusCreatingNetworkError         InstanceStatus = "creating_network_error"
+	StatusCreatingErrorQuota           InstanceStatus = "creating_error_quota"
+	StatusCreatingErrorQuotaRam        InstanceStatus = "creating_error_quota_ram"
+	StatusCreatingErrorQuotaVcpu       InstanceStatus = "creating_error_quota_vcpu"
+	StatusCreatingErrorQuotaDisk       InstanceStatus = "creating_error_quota_disk"
+	StatusCreatingErrorQuotaInstance   InstanceStatus = "creating_error_quota_instance"
+	StatusCreatingErrorQuotaFloatingIP InstanceStatus = "creating_error_quota_floating_ip"
+	StatusCreatingErrorQuotaNetwork    InstanceStatus = "creating_error_quota_network"
+	StatusCompleted                    InstanceStatus = "completed"
+	StatusRetypingPending              InstanceStatus = "retyping_pending"
+	StatusRetyping                     InstanceStatus = "retyping"
+	StatusRetypingConfirmed            InstanceStatus = "retyping_confirmed"
+	StatusRetypingError                InstanceStatus = "retyping_error"
+	StatusRetypingErrorQuotaRam        InstanceStatus = "retyping_error_quota_ram"
+	StatusRetypingErrorQuotaVcpu       InstanceStatus = "retyping_error_quota_vcpu"
+	StatusRetypingErrorQuota           InstanceStatus = "retyping_error_quota"
+	StatusStoppingPending              InstanceStatus = "stopping_pending"
+	StatusStopping                     InstanceStatus = "stopping"
+	StatusSuspendingPending            InstanceStatus = "suspending_pending"
+	StatusSuspending                   InstanceStatus = "suspending"
+	StatusRebootingPending             InstanceStatus = "rebooting_pending"
+	StatusRebooting                    InstanceStatus = "rebooting"
+	StatusStartingPending              InstanceStatus = "starting_pending"
+	StatusStarting                     InstanceStatus = "starting"
+	StatusDeletingPending              InstanceStatus = "deleting_pending"
+	StatusDeleting                     InstanceStatus = "deleting"
+	StatusDeletingError                InstanceStatus = "deleting_error"
+	StatusDeletingNetworkError         InstanceStatus = "deleting_network_error"
+	StatusDeleted                      InstanceStatus = "deleted"
+)
+
+func (s InstanceStatus) String() string {
+	return string(s)
+}
+
+func (s InstanceStatus) IsError() bool {
+	return strings.HasSuffix(string(s), "_error")
+}
 
 func NewVirtualMachineInstancesResource() resource.Resource {
 	return &vmInstances{}
 }
 
 type vmInstances struct {
-	sdkClient      *mgcSdk.Client
-	vmInstances    sdkVmInstances.Service
-	vmImages       sdkVmImages.Service
-	vmMachineTypes sdkVmMachineTypes.Service
+	sdkClient   *mgcSdk.Client
+	vmInstances sdkVmInstances.Service
 }
 
 func (r *vmInstances) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -62,69 +104,43 @@ func (r *vmInstances) Configure(ctx context.Context, req resource.ConfigureReque
 		)
 		return
 	}
-
 	r.vmInstances = sdkVmInstances.NewService(ctx, r.sdkClient)
-	r.vmImages = sdkVmImages.NewService(ctx, r.sdkClient)
-	r.vmMachineTypes = sdkVmMachineTypes.NewService(ctx, r.sdkClient)
 }
 
 type vmInstancesResourceModel struct {
-	ID               types.String                `tfsdk:"id"`
-	Name             types.String                `tfsdk:"name"`
-	NameIsPrefix     types.Bool                  `tfsdk:"name_is_prefix"`
-	FinalName        types.String                `tfsdk:"final_name"`
-	UpdatedAt        types.String                `tfsdk:"updated_at"`
-	CreatedAt        types.String                `tfsdk:"created_at"`
-	SshKeyName       types.String                `tfsdk:"ssh_key_name"`
-	State            types.String                `tfsdk:"state"`
-	Status           types.String                `tfsdk:"status"`
-	Network          networkVmInstancesModel     `tfsdk:"network"`
-	MachineType      vmInstancesMachineTypeModel `tfsdk:"machine_type"`
-	Image            tfutil.GenericIDNameModel   `tfsdk:"image"`
-	UserData         types.String                `tfsdk:"user_data"`
-	AvailabilityZone types.String                `tfsdk:"availability_zone"`
+	ID                types.String `tfsdk:"id"`
+	Name              types.String `tfsdk:"name"`
+	CreatedAt         types.String `tfsdk:"created_at"`
+	SshKeyName        types.String `tfsdk:"ssh_key_name"`
+	VpcId             types.String `tfsdk:"vpc_id"`
+	MachineType       types.String `tfsdk:"machine_type"`
+	Image             types.String `tfsdk:"image"`
+	UserData          types.String `tfsdk:"user_data"`
+	AvailabilityZone  types.String `tfsdk:"availability_zone"`
+	NetworkInterfaces types.List   `tfsdk:"network_interfaces"`
 }
 
-type networkVmInstancesModel struct {
-	IPV6              types.String                          `tfsdk:"ipv6"`
-	PrivateAddress    types.String                          `tfsdk:"private_address"`
-	PublicIpAddress   types.String                          `tfsdk:"public_address"`
-	DeletePublicIP    types.Bool                            `tfsdk:"delete_public_ip"`
-	AssociatePublicIP types.Bool                            `tfsdk:"associate_public_ip"`
-	VPC               *tfutil.GenericIDNameModel            `tfsdk:"vpc"`
-	Interface         *vmInstancesNetworkSecurityGroupModel `tfsdk:"interface"`
-}
-
-type vmInstancesNetworkSecurityGroupModel struct {
-	SecurityGroups []tfutil.GenericIDModel `tfsdk:"security_groups"`
-}
-
-type vmInstancesMachineTypeModel struct {
-	ID    types.String `tfsdk:"id"`
-	Disk  types.Number `tfsdk:"disk"`
-	Name  types.String `tfsdk:"name"`
-	RAM   types.Number `tfsdk:"ram"`
-	VCPUs types.Number `tfsdk:"vcpus"`
+type VmInstancesNetworkInterfaceModel struct {
+	ID        types.String `tfsdk:"id"`
+	Name      types.String `tfsdk:"name"`
+	Ipv4      types.String `tfsdk:"ipv4"`
+	LocalIpv4 types.String `tfsdk:"local_ipv4"`
+	Ipv6      types.String `tfsdk:"ipv6"`
+	Primary   types.Bool   `tfsdk:"primary"`
 }
 
 func (r *vmInstances) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
-	description := "Operations with instances, including create, delete, start, stop, reboot and other actions."
+	description := "Manages virtual machine instances in Magalu Cloud."
 	resp.Schema = schema.Schema{
 		Description:         description,
 		MarkdownDescription: description,
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				Description: "The unique identifier of the virtual machine instance.",
+				Computed:    true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.UseStateForUnknown(),
 				},
-				Computed: true,
-			},
-			"name_is_prefix": schema.BoolAttribute{
-				Description: "Indicates whether the provided name is a prefix or the exact name of the virtual machine instance.",
-				Optional:    true,
-				Computed:    true,
-				Default:     booldefault.StaticBool(false),
 			},
 			"name": schema.StringAttribute{
 				Description: "The name of the virtual machine instance.",
@@ -137,46 +153,45 @@ func (r *vmInstances) Schema(_ context.Context, _ resource.SchemaRequest, resp *
 				},
 				Required: true,
 			},
-			"final_name": schema.StringAttribute{
-				Description: "The final name of the virtual machine instance after applying any naming conventions or modifications.",
-				Computed:    true,
-			},
-			"updated_at": schema.StringAttribute{
-				Description: "The timestamp when the virtual machine instance was last updated.",
-				Computed:    true,
-			},
 			"created_at": schema.StringAttribute{
 				Description: "The timestamp when the virtual machine instance was created.",
+				Computed:    true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.UseStateForUnknown(),
 				},
-				Computed: true,
 			},
 			"ssh_key_name": schema.StringAttribute{
-				Description: "The name of the SSH key associated with the virtual machine instance. If the image is Windows, this field is not used.",
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplace(),
-				},
-				Optional: true,
-			},
-			"state": schema.StringAttribute{
-				Description: "The current state of the virtual machine instance.",
-				Computed:    true,
-			},
-			"status": schema.StringAttribute{
-				Description: "The status of the virtual machine instance.",
-				Computed:    true,
-			},
-			"user_data": schema.StringAttribute{
-				Description: "Used to perform automated configuration tasks. Must be sent in base64 format. (between 1 and 65000 characters)",
+				Description: "The name of the SSH key associated with the virtual machine instance. Not required for Windows instances.",
 				Optional:    true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
 				},
-				Validators: []validator.String{
-					stringvalidator.LengthBetween(1, 65000),
-					stringvalidator.RegexMatches(regexp.MustCompile(`^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$`),
-						"Must be a valid base64 string."),
+			},
+			"vpc_id": schema.StringAttribute{
+				Description: "The ID of the VPC the instance is in.",
+				Optional:    true,
+				Computed:    true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplace(),
+					stringplanmodifier.UseStateForUnknown(),
+				},
+			},
+			"machine_type": schema.StringAttribute{
+				Description: "The machine type name of the virtual machine instance.",
+				Required:    true,
+			},
+			"image": schema.StringAttribute{
+				Description: "The image name used for the virtual machine instance.",
+				Required:    true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplace(),
+				},
+			},
+			"user_data": schema.StringAttribute{
+				Description: "User data for instance initialization.",
+				Optional:    true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplace(),
 				},
 			},
 			"availability_zone": schema.StringAttribute{
@@ -184,138 +199,41 @@ func (r *vmInstances) Schema(_ context.Context, _ resource.SchemaRequest, resp *
 				Optional:    true,
 				Computed:    true,
 				PlanModifiers: []planmodifier.String{
-					tfutil.ReplaceIfChangeAndNotIsNotSetOnPlan{},
-				},
-				Validators: []validator.String{},
-			},
-			"image": schema.SingleNestedAttribute{
-				Description: "The image used to create the virtual machine instance.",
-				Required:    true,
-				Attributes: map[string]schema.Attribute{
-					"id": schema.StringAttribute{
-						Description: "The unique identifier of the image.",
-						Computed:    true,
-					},
-					"name": schema.StringAttribute{
-						Description: "The name of the image.",
-						PlanModifiers: []planmodifier.String{
-							stringplanmodifier.RequiresReplace(),
-						},
-						Required: true,
-					},
-				},
-				Validators: []validator.Object{
-					objectvalidator.IsRequired(),
+					stringplanmodifier.RequiresReplace(),
+					stringplanmodifier.UseStateForUnknown(),
 				},
 			},
-			"machine_type": schema.SingleNestedAttribute{
-				Description: "The machine type of the virtual machine instance.",
-				Required:    true,
-				Attributes: map[string]schema.Attribute{
-					"id": schema.StringAttribute{
-						Description: "The unique identifier of the machine type.",
-						Computed:    true,
-					},
-					"name": schema.StringAttribute{
-						Description: "The name of the machine type.",
-						Required:    true,
-					},
-					"disk": schema.NumberAttribute{
-						Description: "The disk size of the machine type.",
-						Computed:    true,
-					},
-					"ram": schema.NumberAttribute{
-						Description: "The RAM size of the machine type.",
-						Computed:    true,
-					},
-					"vcpus": schema.NumberAttribute{
-						Description: "The number of virtual CPUs of the machine type.",
-						Computed:    true,
-					},
+			"network_interfaces": schema.ListNestedAttribute{
+				Description: "The network interfaces of the virtual machine instance.",
+				Computed:    true,
+				PlanModifiers: []planmodifier.List{
+					listplanmodifier.UseStateForUnknown(),
 				},
-				Validators: []validator.Object{
-					objectvalidator.IsRequired(),
-				},
-			},
-			"network": schema.SingleNestedAttribute{
-				Description: "The network configuration of the virtual machine instance.",
-				Optional:    true,
-				Attributes: map[string]schema.Attribute{
-					"delete_public_ip": schema.BoolAttribute{
-						Description: "Indicates whether to delete the public IP address associated with the virtual machine instance.",
-						PlanModifiers: []planmodifier.Bool{
-							boolplanmodifier.UseStateForUnknown(),
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"id": schema.StringAttribute{
+							Description: "The ID of the network interface.",
+							Computed:    true,
 						},
-						Default:  booldefault.StaticBool(true),
-						Optional: true,
-						Computed: true,
-					},
-					"associate_public_ip": schema.BoolAttribute{
-						Description: "Indicates whether to associate a public IP address with the virtual machine instance.",
-						Required:    true,
-						PlanModifiers: []planmodifier.Bool{
-							boolplanmodifier.RequiresReplace(),
+						"name": schema.StringAttribute{
+							Description: "The name of the network interface.",
+							Computed:    true,
 						},
-					},
-					"ipv6": schema.StringAttribute{
-						Description: "The IPv6 address of the virtual machine instance.",
-						PlanModifiers: []planmodifier.String{
-							stringplanmodifier.UseStateForUnknown(),
+						"ipv4": schema.StringAttribute{
+							Description: "The IPv4 address of the network interface.",
+							Computed:    true,
 						},
-						Computed: true,
-					},
-					"private_address": schema.StringAttribute{
-						Description: "The private IP address of the virtual machine instance.",
-						PlanModifiers: []planmodifier.String{
-							stringplanmodifier.UseStateForUnknown(),
+						"local_ipv4": schema.StringAttribute{
+							Description: "The local IPv4 address of the network interface.",
+							Computed:    true,
 						},
-						Computed: true,
-					},
-					"public_address": schema.StringAttribute{
-						Description: "The public IP address of the virtual machine instance.",
-						PlanModifiers: []planmodifier.String{
-							stringplanmodifier.UseStateForUnknown(),
+						"ipv6": schema.StringAttribute{
+							Description: "The IPv6 address of the network interface.",
+							Computed:    true,
 						},
-						Computed: true,
-					},
-					"vpc": schema.SingleNestedAttribute{
-						Description: "The VPC (Virtual Private Cloud) associated with the virtual machine instance.",
-						Optional:    true,
-						Attributes: map[string]schema.Attribute{
-							"id": schema.StringAttribute{
-								Description: "The unique identifier of the VPC.",
-								PlanModifiers: []planmodifier.String{
-									stringplanmodifier.UseStateForUnknown(),
-								},
-								Optional: true,
-								Computed: true,
-							},
-							"name": schema.StringAttribute{
-								Description: "The name of the VPC.",
-								PlanModifiers: []planmodifier.String{
-									stringplanmodifier.UseStateForUnknown(),
-								},
-								Optional: true,
-								Computed: true,
-							},
-						},
-					},
-					"interface": schema.SingleNestedAttribute{
-						Description: "The network interface configuration of the virtual machine instance.",
-						Optional:    true,
-						Attributes: map[string]schema.Attribute{
-							"security_groups": schema.ListNestedAttribute{
-								Description: "The security groups associated with the network interface.",
-								Optional:    true,
-								NestedObject: schema.NestedAttributeObject{
-									Attributes: map[string]schema.Attribute{
-										"id": schema.StringAttribute{
-											Description: "The unique identifier of the security group.",
-											Optional:    true,
-										},
-									},
-								},
-							},
+						"primary": schema.BoolAttribute{
+							Description: "Whether the network interface is primary.",
+							Computed:    true,
 						},
 					},
 				},
@@ -327,19 +245,20 @@ func (r *vmInstances) Schema(_ context.Context, _ resource.SchemaRequest, resp *
 func (r *vmInstances) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
 	data := vmInstancesResourceModel{}
 	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
-
-	getResult, err := r.getInstanceResultWithCompletedStatus(ctx, data.ID.ValueString())
-	if err != nil {
-		resp.Diagnostics.AddError(
-			"Error Reading VM",
-			"Could not read VM ID "+data.ID.ValueString()+": "+err.Error(),
-		)
+	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	data.ID = types.StringValue(getResult.Id)
-	data = r.updateModelFromRemote(data, getResult)
-	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
+	getResult, err := r.vmInstances.GetContext(ctx, sdkVmInstances.GetParameters{
+		Id:     data.ID.ValueString(),
+		Expand: &sdkVmInstances.GetParametersExpand{"image", "machine-type", "network"},
+	}, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVmInstances.GetConfigs{}))
+	if err != nil {
+		resp.Diagnostics.AddError("Error Reading VM", err.Error())
+		return
+	}
+	convertedData := r.toTerraformModel(ctx, getResult)
+	resp.Diagnostics.Append(resp.State.Set(ctx, &convertedData)...)
 }
 
 func (r *vmInstances) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
@@ -349,98 +268,63 @@ func (r *vmInstances) Create(ctx context.Context, req resource.CreateRequest, re
 		return
 	}
 
-	state.FinalName = types.StringValue(state.Name.ValueString())
-	if state.NameIsPrefix.ValueBool() {
-		bwords := bws.BrazilianWords(3, "-")
-		state.FinalName = types.StringValue(state.Name.ValueString() + "-" + bwords.Sort())
-	}
-	if state.Network.DeletePublicIP.IsNull() {
-		state.Network.DeletePublicIP = types.BoolValue(true)
-	}
-	if state.Network.AssociatePublicIP.IsNull() {
-		state.Network.AssociatePublicIP = types.BoolValue(false)
-	}
-
+	createdPublicIp := false
 	createParams := sdkVmInstances.CreateParameters{
-		Name:       state.FinalName.ValueString(),
-		SshKeyName: state.SshKeyName.ValueStringPointer(),
-		Image: sdkVmInstances.CreateParametersImage{
-			Name: state.Image.Name.ValueStringPointer(),
-		},
+		Name: state.Name.ValueString(),
 		MachineType: sdkVmInstances.CreateParametersMachineType{
-			Name: state.MachineType.Name.ValueStringPointer(),
+			Name: state.MachineType.ValueStringPointer(),
 		},
-		Network:          &sdkVmInstances.CreateParametersNetwork{},
-		AvailabilityZone: state.AvailabilityZone.ValueStringPointer(),
+		Image: sdkVmInstances.CreateParametersImage{
+			Name: state.Image.ValueStringPointer(),
+		},
 		UserData:         state.UserData.ValueStringPointer(),
+		AvailabilityZone: state.AvailabilityZone.ValueStringPointer(),
+		SshKeyName:       state.SshKeyName.ValueStringPointer(),
+		Network: &sdkVmInstances.CreateParametersNetwork{
+			AssociatePublicIp: &createdPublicIp,
+		},
 	}
 
-	if state.Network.VPC != nil && state.Network.VPC.ID.ValueString() != "" {
-		createParams.Network.Vpc = &sdkVmInstances.CreateParametersNetworkVpc{
-			Id: state.Network.VPC.ID.ValueString(),
-		}
-	}
-	if state.Network.Interface != nil && len(state.Network.Interface.SecurityGroups) > 0 {
-		network := sdkVmInstances.CreateParametersNetwork{}
-		network.Interface = &sdkVmInstances.CreateParametersNetworkInterface{}
-		network.Interface.SecurityGroups = &sdkVmInstances.CreateParametersNetworkInterfaceSecurityGroups{}
-		items := []sdkVmInstances.CreateParametersNetworkInterfaceSecurityGroupsItem{}
-
-		for _, sg := range state.Network.Interface.SecurityGroups {
-			items = append(items, sdkVmInstances.CreateParametersNetworkInterfaceSecurityGroupsItem{
-				Id: sg.ID.ValueString(),
-			})
-		}
-		vmInstancesNetworkInterfaceSecurityGroups := sdkVmInstances.CreateParametersNetworkInterfaceSecurityGroups(items)
-		createParams.Network.Interface = &sdkVmInstances.CreateParametersNetworkInterface{}
-		createParams.Network.Interface.SecurityGroups = &vmInstancesNetworkInterfaceSecurityGroups
-	}
-	createParams.Network.AssociatePublicIp = state.Network.AssociatePublicIP.ValueBoolPointer()
-
-	result, err := r.vmInstances.CreateContext(ctx, createParams, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVmInstances.CreateConfigs{}))
+	createdId, err := r.vmInstances.CreateContext(ctx, createParams, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVmInstances.CreateConfigs{}))
 	if err != nil {
-		resp.Diagnostics.AddError("Error creating vm", err.Error())
+		resp.Diagnostics.AddError("Error Creating VM", err.Error())
+		return
+	}
+	getResponse, err := r.waitUntilInstanceStatusMatches(ctx, createdId.Id, StatusCompleted)
+	if err != nil {
+		resp.Diagnostics.AddError("Error waiting for VM creation", err.Error())
 		return
 	}
 
-	getResult, err := r.getInstanceResultWithCompletedStatus(ctx, result.Id)
-	if err != nil {
-		resp.Diagnostics.AddError("Error Reading VM", err.Error())
-		return
-	}
-	state.ID = types.StringValue(result.Id)
-	state = r.updateModelFromRemote(state, getResult)
-	resp.Diagnostics.Append(resp.State.Set(ctx, state)...)
+	convertedResult := r.toTerraformModel(ctx, *getResponse)
+	resp.Diagnostics.Append(resp.State.Set(ctx, &convertedResult)...)
 }
 
 func (r *vmInstances) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	data := vmInstancesResourceModel{}
-	currState := &vmInstancesResourceModel{}
-	req.State.Get(ctx, currState)
-	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
+	plan := vmInstancesResourceModel{}
+	state := &vmInstancesResourceModel{}
+	req.State.Get(ctx, state)
+	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
-	if currState.Name.ValueString() != data.Name.ValueString() {
-		data.FinalName = types.StringValue(data.Name.ValueString())
-		if data.NameIsPrefix.ValueBool() {
-			bwords := bws.BrazilianWords(3, "-")
-			data.FinalName = types.StringValue(data.Name.ValueString() + "-" + bwords.Sort())
-		}
+	if state.Name.ValueString() != plan.Name.ValueString() {
 		err := r.vmInstances.RenameContext(ctx, sdkVmInstances.RenameParameters{
-			Id:   data.ID.ValueString(),
-			Name: data.FinalName.ValueString(),
+			Id:   plan.ID.ValueString(),
+			Name: plan.Name.ValueString(),
 		}, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVmInstances.RenameConfigs{}))
-
 		if err != nil {
 			resp.Diagnostics.AddError("Error to rename vm", err.Error())
 			return
 		}
 	}
 
-	if currState.MachineType.Name != data.MachineType.Name {
+	if state.MachineType.ValueString() != plan.MachineType.ValueString() {
 		err := r.vmInstances.RetypeContext(ctx, sdkVmInstances.RetypeParameters{
-			Id: data.ID.ValueString(),
+			Id: plan.ID.ValueString(),
 			MachineType: sdkVmInstances.RetypeParametersMachineType{
-				Name: data.MachineType.Name.ValueStringPointer(),
+				Name: plan.MachineType.ValueStringPointer(),
 			},
 		}, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVmInstances.RetypeConfigs{}))
 		if err != nil {
@@ -449,134 +333,117 @@ func (r *vmInstances) Update(ctx context.Context, req resource.UpdateRequest, re
 		}
 	}
 
-	getResult, err := r.getInstanceResultWithCompletedStatus(ctx, data.ID.ValueString())
+	getResult, err := r.waitUntilInstanceStatusMatches(ctx, plan.ID.ValueString(), StatusCompleted)
 	if err != nil {
 		resp.Diagnostics.AddError("Error Reading VM", err.Error())
 		return
 	}
 
-	data = r.updateModelFromRemote(data, getResult)
-	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
+	convertedResult := r.toTerraformModel(ctx, *getResult)
+	resp.Diagnostics.Append(resp.State.Set(ctx, &convertedResult)...)
 }
 
 func (r *vmInstances) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
 	var data vmInstancesResourceModel
-
 	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	err := r.vmInstances.DeleteContext(ctx,
 		sdkVmInstances.DeleteParameters{
-			DeletePublicIp: data.Network.DeletePublicIP.ValueBoolPointer(),
-			Id:             data.ID.ValueString(),
+			Id: data.ID.ValueString(),
 		},
 		tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVmInstances.DeleteConfigs{}))
 	if err != nil {
 		resp.Diagnostics.AddError("Error Deleting VM", err.Error())
 		return
 	}
-	r.checkVmIsNotFound(ctx, data.ID.ValueString())
 }
 
-func (r *vmInstances) updateModelFromRemote(data vmInstancesResourceModel, server *sdkVmInstances.GetResult) vmInstancesResourceModel {
-	data.ID = types.StringValue(server.Id)
-	data.FinalName = types.StringValue(*server.Name)
-	data.State = types.StringValue(server.State)
-	data.Status = types.StringValue(server.Status)
-	if server.MachineType.Id != data.MachineType.ID.ValueString() {
-		data.MachineType.ID = types.StringValue(server.MachineType.Id)
-		data.MachineType.Name = types.StringValue(*server.MachineType.Name)
-		data.MachineType.Disk = types.NumberValue(new(big.Float).SetInt64(int64(*server.MachineType.Disk)))
-		data.MachineType.RAM = types.NumberValue(new(big.Float).SetInt64(int64(*server.MachineType.Ram)))
-		data.MachineType.VCPUs = types.NumberValue(new(big.Float).SetInt64(int64(*server.MachineType.Vcpus)))
+func (r *vmInstances) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+	model := vmInstancesResourceModel{
+		ID:                types.StringValue(req.ID),
+		NetworkInterfaces: r.toTerraformNetworkInterfacesList(ctx, []VmInstancesNetworkInterfaceModel{}),
 	}
-
-	if server.Image.Id != data.Image.ID.ValueString() {
-		data.Image.Name = types.StringValue(*server.Image.Name)
-		data.Image.ID = types.StringValue(server.Image.Id)
-	}
-
-	if vpc := data.Network.VPC; vpc != nil {
-		vpc.ID = types.StringValue(server.Network.Vpc.Id)
-		vpc.Name = types.StringValue(server.Network.Vpc.Name)
-	}
-
-	data.Network.IPV6 = types.StringValue("")
-	data.Network.PrivateAddress = types.StringValue("")
-	data.Network.PublicIpAddress = types.StringValue("")
-
-	if server.Network.Ports != nil && len(*server.Network.Ports) > 0 {
-		ports := (*server.Network.Ports)[0]
-
-		data.Network.PrivateAddress = types.StringValue(ports.IpAddresses.PrivateIpAddress)
-
-		if ports.IpAddresses.IpV6address != nil {
-			data.Network.IPV6 = types.StringValue(*ports.IpAddresses.IpV6address)
-		}
-
-		if ports.IpAddresses.PublicIpAddress != nil {
-			data.Network.PublicIpAddress = types.StringValue(*ports.IpAddresses.PublicIpAddress)
-		}
-
-	}
-	data.UserData = types.StringPointerValue(server.UserData)
-	data.AvailabilityZone = types.StringPointerValue(server.AvailabilityZone)
-	data.CreatedAt = types.StringValue(server.CreatedAt)
-	data.UpdatedAt = types.StringPointerValue(server.UpdatedAt)
-	return data
+	resp.Diagnostics.Append(resp.State.Set(ctx, &model)...)
 }
 
-func (r *vmInstances) getInstanceResultWithCompletedStatus(ctx context.Context, id string) (*sdkVmInstances.GetResult, error) {
-	getResult := &sdkVmInstances.GetResult{}
-	expand := &sdkVmInstances.GetParametersExpand{"network", "machine-types", "image"}
+func (r *vmInstances) toTerraformModel(ctx context.Context, server sdkVmInstances.GetResult) *vmInstancesResourceModel {
+	interfaces := []VmInstancesNetworkInterfaceModel{}
+	if server.Network.Interfaces != nil {
+		for _, port := range *server.Network.Interfaces {
+			interfaces = append(interfaces, VmInstancesNetworkInterfaceModel{
+				ID:        types.StringValue(port.Id),
+				Name:      types.StringValue(port.Name),
+				Ipv4:      types.StringPointerValue(port.AssociatedPublicIpv4),
+				LocalIpv4: types.StringValue(port.IpAddresses.PrivateIpv4),
+				Ipv6:      types.StringPointerValue(port.IpAddresses.PublicIpv6),
+				Primary:   types.BoolPointerValue(port.Primary),
+			})
+		}
+	}
 
-	duration := 5 * time.Minute
-	startTime := time.Now()
-	getParam := sdkVmInstances.GetParameters{Id: id, Expand: expand}
-	var err error
+	data := vmInstancesResourceModel{
+		ID:                types.StringValue(server.Id),
+		Name:              types.StringPointerValue(server.Name),
+		CreatedAt:         types.StringValue(server.CreatedAt),
+		SshKeyName:        types.StringPointerValue(server.SshKeyName),
+		MachineType:       types.StringPointerValue(server.MachineType.Name),
+		Image:             types.StringPointerValue(server.Image.Name),
+		UserData:          types.StringPointerValue(server.UserData),
+		AvailabilityZone:  types.StringPointerValue(server.AvailabilityZone),
+		NetworkInterfaces: r.toTerraformNetworkInterfacesList(ctx, interfaces),
+	}
+
+	if server.Network.Vpc != nil {
+		data.VpcId = types.StringValue(server.Network.Vpc.Id)
+	}
+
+	return &data
+}
+
+func (r *vmInstances) waitUntilInstanceStatusMatches(ctx context.Context, instanceID string, status InstanceStatus) (*sdkVmInstances.GetResult, error) {
+	timeoutCtx, cancel := context.WithTimeout(ctx, VmInstanceStatusTimeout)
+	defer cancel()
+
 	for {
-		elapsed := time.Since(startTime)
-		remaining := duration - elapsed
-		if remaining <= 0 {
-			if getResult.Status != "" {
-				return getResult, nil
+		select {
+		case <-timeoutCtx.Done():
+			return nil, fmt.Errorf("timeout waiting for instance %s to reach status %s", instanceID, status)
+		case <-time.After(10 * time.Second):
+			instance, err := r.vmInstances.GetContext(ctx, sdkVmInstances.GetParameters{
+				Id:     instanceID,
+				Expand: &sdkVmInstances.GetParametersExpand{"image", "machine-type", "network"},
+			}, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVmInstances.GetConfigs{}))
+			if err != nil {
+				return nil, err
 			}
-			return getResult, fmt.Errorf("timeout to read VM ID")
+			currentStatus := InstanceStatus(instance.Status)
+			if currentStatus == status {
+				return &instance, nil
+			}
+			if currentStatus.IsError() {
+				return nil, fmt.Errorf("instance %s is in error state: %s", instanceID, currentStatus)
+			}
 		}
-
-		*getResult, err = r.vmInstances.GetContext(ctx, getParam, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVmInstances.GetConfigs{}))
-		if err != nil {
-			return getResult, err
-		}
-
-		if getResult.Status == "completed" {
-			return getResult, nil
-		}
-		time.Sleep(3 * time.Second)
 	}
 }
 
-func (r *vmInstances) checkVmIsNotFound(ctx context.Context, id string) {
-	getResult := &sdkVmInstances.GetResult{}
-
-	duration := 5 * time.Minute
-	startTime := time.Now()
-	getParam := sdkVmInstances.GetParameters{Id: id}
-	var err error
-	for {
-		elapsed := time.Since(startTime)
-		remaining := duration - elapsed
-		if remaining <= 0 {
-			if getResult.Status != "" {
-				return
-			}
-			return
-		}
-
-		*getResult, err = r.vmInstances.GetContext(ctx, getParam, tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVmInstances.GetConfigs{}))
-		if err != nil {
-			return
-		}
-
-		time.Sleep(3 * time.Second)
-	}
+func (r *vmInstances) toTerraformNetworkInterfacesList(ctx context.Context, interfaces []VmInstancesNetworkInterfaceModel) types.List {
+	listValue, _ := types.ListValueFrom(
+		ctx,
+		types.ObjectType{
+			AttrTypes: map[string]attr.Type{
+				"id":         types.StringType,
+				"name":       types.StringType,
+				"ipv4":       types.StringType,
+				"local_ipv4": types.StringType,
+				"ipv6":       types.StringType,
+				"primary":    types.BoolType,
+			},
+		},
+		interfaces,
+	)
+	return listValue
 }

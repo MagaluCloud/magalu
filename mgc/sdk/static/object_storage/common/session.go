@@ -56,7 +56,8 @@ func BuildHostURL(cfg Config) (*url.URL, error) {
 
 func BuildBucketHost(cfg Config, bucketName BucketName) (BucketHostString, error) {
 	simpleHost := BuildHost(cfg)
-	host, err := url.JoinPath(string(simpleHost), bucketName.String())
+	escapedBucketName := url.PathEscape(bucketName.String())
+	host, err := url.JoinPath(string(simpleHost), escapedBucketName)
 	if err != nil {
 		return "", err
 	}

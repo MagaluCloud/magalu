@@ -29,7 +29,7 @@ func NewContainerRegistryRegistriesResource() resource.Resource {
 }
 
 func (r *ContainerRegistryResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_container_registry_registries"
+	resp.TypeName = req.ProviderTypeName + "_container_registries"
 }
 
 func (r *ContainerRegistryResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {

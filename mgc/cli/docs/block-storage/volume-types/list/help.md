@@ -16,6 +16,7 @@
 ## Flags:
 ```bash
 Flags:
+      --allows-encryption          Allows-Encryption
       --availability-zone string   Availability-Zone
   -h, --help                       help for list
       --name string                Name

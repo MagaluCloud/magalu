@@ -14,12 +14,10 @@ Block storage volumes are storage devices that can be attached to virtual machin
 
 ```terraform
 resource "mgc_block_storage_volumes" "example_volume" {
-  name = "example-volume"
-  availability_zones = ["br-se1-a"]
-  size = 10
-  type = {
-    name = "cloud_nvme"
-  }
+  name              = "example-volume-renamed"
+  availability_zone = "br-ne1-a"
+  size              = 200
+  type              = "cloud_nvme1k"
 }
 ```
 
@@ -28,34 +26,24 @@ resource "mgc_block_storage_volumes" "example_volume" {
 
 ### Required
 
-- `name` (String) The name of the block storage.
-- `size` (Number) The size of the block storage in GB.
-- `type` (Attributes) The type of the block storage. (see [below for nested schema](#nestedatt--type))
+- `name` (String) The name of the volume.
+- `size` (Number) The size of the volume in GB.
+- `type` (String) The name of the volume type.
 
 ### Optional
 
-- `availability_zone` (String) The availability zones where the block storage is available.
-- `name_is_prefix` (Boolean) Indicates whether the provided name is a prefix or the exact name of the block storage.
-- `snapshot_id` (String) The unique identifier of the snapshot used to create the block storage.
+- `availability_zone` (String) The availability zones where the volume is available.
+- `snapshot_id` (String) Create a volume from a snapshot.
 
 ### Read-Only
 
-- `created_at` (String) The timestamp when the block storage was created.
-- `final_name` (String) The final name of the block storage after applying any naming conventions or modifications.
-- `id` (String) The unique identifier of the block storage.
-- `state` (String) The current state of the virtual machine instance.
-- `status` (String) The status of the virtual machine instance.
-- `updated_at` (String) The timestamp when the block storage was last updated.
+- `created_at` (String) The timestamp when the volume was created.
+- `id` (String) The unique identifier of the volume.
 
-<a id="nestedatt--type"></a>
-### Nested Schema for `type`
+## Import
 
-Required:
+Import is supported using the following syntax:
 
-- `name` (String) The name of the block storage type.
-
-Read-Only:
-
-- `disk_type` (String) The disk type of the block storage.
-- `id` (String) The unique identifier of the block storage type.
-- `status` (String) The status of the block storage type.
+```shell
+terraform import mgc_block_storage_volumes.example_volume 123
+```

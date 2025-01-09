@@ -1,728 +1,771 @@
 [
-    {
-      "uuid": "c5457157-4359-44d7-a0ed-188362c91013",
-      "name": "Magalu Cloud",
-      "icon": "magalu_cloud.png",
-      "api_products": [
-        {
-          "uuid": "d19a3a44-d7a2-4993-b7ab-908faa669c00",
-          "name": "Audit",
-          "icon": "",
-          "scopes": [
-            {
-              "uuid": "2340d257-c1f4-49db-b367-d5f92b3217ba",
-              "title": "Permissão para leitura dos eventos"
-            }
-          ]
-        },
-        {
-          "uuid": "9ec7738f-ffa8-45fb-91af-f554f9ff5032",
-          "name": "Block Storage",
-          "icon": "",
-          "scopes": [
-            {
-              "uuid": "0dfa4d41-404a-468e-960c-fbe41630e6d5",
-              "title": "Permissão para criação de block storage"
-            },
-            {
-              "uuid": "b4e3c769-848e-4634-9a56-bd590959cfbd",
-              "title": "Permissão para leitura de block storage"
-            }
-          ]
-        },
-        {
-          "uuid": "2df34078-e2b6-44ea-9784-584cbabef719",
-          "name": "DBaaS",
-          "icon": "",
-          "scopes": [
-            {
-              "uuid": "c79f099a-65f4-4cf7-b936-158169c56749",
-              "title": "DBaaS Read"
-            },
-            {
-              "uuid": "673feba1-3951-4c9f-b202-68e0a529c1a2",
-              "title": "DBaaS Write"
-            }
-          ]
-        },
-        {
-          "uuid": "cfecba35-85bc-41a2-a0cb-494b4cc06a27",
-          "name": "ID Magalu",
-          "icon": "",
-          "scopes": [
-            {
-              "uuid": "eb3d5648-9d8e-4eac-82a3-fd08095baf71",
-              "title": "Acessar delegações"
-            },
-            {
-              "uuid": "c03623d0-9f22-4053-b561-0963c309790a",
-              "title": "Atualização de Grupos"
-            },
-            {
-              "uuid": "85f3e447-8bf0-49b9-938c-ec8fb599631d",
-              "title": "Consulta de Grupos"
-            },
-            {
-              "uuid": "d1c33e3e-44e7-4ac7-9301-b82aacda0150",
-              "title": "Criação de Grupos"
-            },
-            {
-              "uuid": "9dde41db-1a14-4294-8f65-fd5ff4573b1a",
-              "title": "Criar delegações"
-            },
-            {
-              "uuid": "50447cbf-8a42-4426-8e53-fe84bf0726ad",
-              "title": "Dados básicos"
-            },
-            {
-              "uuid": "5cca18c8-afbc-4c32-97cc-6bc7a76808b2",
-              "title": "Deletar delegações"
-            },
-            {
-              "uuid": "3cf3d71d-7560-4f89-b438-3a28219cfba1",
-              "title": "Exclusão de Grupos"
-            },
-            {
-              "uuid": "a663a78f-4522-4823-9f50-78cb80475748",
-              "title": "Leitura de Tenants"
-            },
-            {
-              "uuid": "8976b670-5b46-44af-b0aa-1ebc6cded103",
-              "title": "Manage Service Account"
-            },
-            {
-              "uuid": "5ebc16ae-fa06-4a3c-b179-f67703fb6d1d",
-              "title": "Permissão para leitura de Forma de Pagamento"
-            },
-            {
-              "uuid": "4afabfe2-4a14-4d5f-a5f4-b0f5f4c8d096",
-              "title": "Permissão para Realizar Operações de Conta de Usuário"
-            },
-            {
-              "uuid": "2836b3ba-093c-416a-92f0-7fc4ee5ac961",
-              "title": "Token de acesso"
-            },
-            {
-              "uuid": "c6fa8852-16b5-41f5-884d-ae367cd709f3",
-              "title": "Validação de Requests"
-            }
-          ]
-        },
-        {
-          "uuid": "7b71d35a-13a5-468d-962e-6a7b1ab37e1b",
-          "name": "MKE",
-          "icon": "",
-          "scopes": [
-            {
-              "uuid": "c06a4bbc-5d37-4600-a842-5e89ae921ffa",
-              "title": "Permissão para criação de mke"
-            },
-            {
-              "uuid": "a110846a-3bc8-4e59-817c-7bd24765c45d",
-              "title": "Permissão para leitura de mke"
-            }
-          ]
-        },
-        {
-          "uuid": "e09e5883-1788-45ea-8785-28141ceea2e3",
-          "name": "Network",
-          "icon": "",
-          "scopes": [
-            {
-              "uuid": "af6884ea-47ac-4c45-9355-7facb4ef491c",
-              "title": "Permissão para criação de network"
-            },
-            {
-              "uuid": "a6e760f8-6378-48bf-8cd9-28220e44a9a4",
-              "title": "Permissão para leitura de network"
-            }
-          ]
-        },
-        {
-          "uuid": "65f5db30-6273-4646-9784-c434286c35f9",
-          "name": "Object Storage",
-          "icon": "",
-          "scopes": [
-            {
-              "uuid": "5ea6d1f7-20eb-4e80-9a9c-c7923636a4bd",
-              "title": "Permissão para criação de object storage"
-            },
-            {
-              "uuid": "b6afac7e-0afd-42de-b4aa-1bc82a27e307",
-              "title": "Permissão para leitura de object storage"
-            }
-          ]
-        },
-        {
-          "uuid": "49361088-52da-472b-ad5d-40671d1365fb",
-          "name": "Profile",
-          "icon": "https://icon.com/icon.png",
-          "scopes": [
-            {
-              "uuid": "2cb63723-8bee-406d-9197-b9732c4a4c56",
-              "title": "SSH Public Keys Read"
-            },
-            {
-              "uuid": "c220b228-26d5-41a0-9a8f-d8d5af454848",
-              "title": "SSH Public Keys Write"
-            }
-          ]
-        },
-        {
-          "uuid": "40ecdd1d-ca17-4898-b7c5-e58be7b24a10",
-          "name": "Virtual Machine",
-          "icon": "",
-          "scopes": [
-            {
-              "uuid": "c28d32ad-0342-4384-afd1-97dbbb219d44",
-              "title": "Permissão para criação de virtual machines"
-            },
-            {
-              "uuid": "d85b09b2-7b38-4e70-90fa-286c96fe0e1d",
-              "title": "Permissão para leitura de virtual machines"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "uuid": "359f21f1-f647-47ea-a121-4e1356ecfa31",
-      "name": "Magalu Open Platform",
-      "icon": "magalu_open_platform.png",
-      "api_products": [
-        {
-          "uuid": "b7be9ea0-7722-41a0-b0d2-59150791c763",
-          "name": "API do Magalu - Marketplace",
-          "icon": "",
-          "scopes": [
-            {
-              "uuid": "352805fa-5485-4d9c-9405-4cca2f32bcad",
-              "title": "Permissão acesso marketplace"
-            }
-          ]
-        },
-        {
-          "uuid": "d99eb33d-91ca-4da4-abdb-06a56227c2f3",
-          "name": "APIs de Marketplace - Pedidos",
-          "icon": "https://developers.magalu.com/docs/assets/images/pedidos-icon-50x50.png",
-          "scopes": [
-            {
-              "uuid": "d43ca5b7-2c87-4306-b45e-c4d4c3933ca1",
-              "title": "Editar dados de entregas"
-            },
-            {
-              "uuid": "3496b975-033d-4990-8a24-968de96bd1fe",
-              "title": "Editar dados de logistica"
-            },
-            {
-              "uuid": "54a20103-32f4-4f9e-a0ca-ec2e5ddd9199",
-              "title": "Permite consultar dados de notas fiscais"
-            },
-            {
-              "uuid": "9ba7c331-f492-4178-812e-eb0a45b28e05",
-              "title": "Ver dados de notas fiscais"
-            },
-            {
-              "uuid": "bac39ba3-34af-4abd-84d6-3a828e8a65fa",
-              "title": "Ver informações sobre entregas"
-            },
-            {
-              "uuid": "77b9acaa-4417-47cd-8999-857d92c1f853",
-              "title": "Ver informações sobre logistica"
-            },
-            {
-              "uuid": "01bae82e-387f-487f-b64e-57099807ceae",
-              "title": "Ver os dados dos seus pedidos"
-            }
-          ]
-        },
-        {
-          "uuid": "143ace7e-e6fe-4502-b6d3-e4e3c2c2005e",
-          "name": "APIs de Marketplace - Portfólio",
-          "icon": "https://developers.magalu.com/docs/assets/images/portfolio-icon-50x50.png",
-          "scopes": [
-            {
-              "uuid": "ac6a845f-73fe-444f-b878-4a60e318ff1b",
-              "title": "Permitir a leitura das posições de estoque do SKU"
-            },
-            {
-              "uuid": "666c3614-6e2a-4926-9df4-2686e0a269de",
-              "title": "Permitir a leitura de dados do SKU"
-            },
-            {
-              "uuid": "cf46513a-9044-4a52-97c9-fa017a9b597e",
-              "title": "Permitir a leitura dos preços do SKU"
-            },
-            {
-              "uuid": "3a34e773-d7a2-4c3b-8681-44e888da3173",
-              "title": "Permitir alterar dados do SKU"
-            },
-            {
-              "uuid": "266fe465-6180-4f70-b20c-e7d7dd092623",
-              "title": "Permitir alterar posições de estoque do SKU"
-            },
-            {
-              "uuid": "1fecc0b1-da82-4e1e-b7bf-4b2e71cb2c65",
-              "title": "Permitir alterar preços do SKU"
-            }
-          ]
-        },
-        {
-          "uuid": "835ccc01-985c-46cc-8199-17fc3fe2aaf6",
-          "name": "app-entregas-mle-admin-api",
-          "icon": "https://icon.com/icon.png",
-          "scopes": [
-            {
-              "uuid": "a78a1e1a-989b-4f8a-97b2-177940f58e4d",
-              "title": "Scope para realizar escrita nos recursos do app entregas"
-            },
-            {
-              "uuid": "1f238119-a5ee-4bf8-8c21-2ce9340983ac",
-              "title": "Scope para realizar leitura nos recursos do app entregas"
-            }
-          ]
-        },
-        {
-          "uuid": "e9394ec0-b3b4-49f3-bc81-203f65d037ca",
-          "name": "Conta Magalu Entregas",
-          "icon": "",
-          "scopes": [
-            {
-              "uuid": "13b6a995-57b4-46d7-8570-26e50c3460a0",
-              "title": "Atualização de Complement"
-            },
-            {
-              "uuid": "7b610f7f-0ae3-4bd8-bea1-da898ed31714",
-              "title": "Atualização de Location"
-            }
-          ]
-        },
-        {
-          "uuid": "a58b58c6-c849-4b15-8aab-f7ca7d15c672",
-          "name": "Gateway-Pagamentos",
-          "icon": "",
-          "scopes": [
-            {
-              "uuid": "097a515f-d63d-492f-8879-e75ad0222d5a",
-              "title": "Escrita"
-            },
-            {
-              "uuid": "6cb41fab-f219-49af-ad75-699156b76c6d",
-              "title": "Leitura"
-            }
-          ]
-        },
-        {
-          "uuid": "cd528bdf-a2d7-4d0a-b05c-b5f43f40e9fc",
-          "name": "GLOG API Product",
-          "icon": "",
-          "scopes": [
-            {
-              "uuid": "065d1587-7689-42ba-813f-13b3a1b8e8a4",
-              "title": "Permissão para manipular dados do gestor logistico."
-            },
-            {
-              "uuid": "374e38b5-dd88-44f0-9b2f-4e81e4e4a1ee",
-              "title": "Permissão para obter dados do gestor logistico."
-            }
-          ]
-        },
-        {
-          "uuid": "2e54da97-699b-4a0a-a8cd-8b1b97aee308",
-          "name": "Plataforma Seller - Perguntas e Respostas",
-          "icon": "",
-          "scopes": [
-            {
-              "uuid": "c3fd0e54-6248-4275-886f-3795ac2950e0",
-              "title": "Permite a consulta de conversas e mensagens do Chat"
-            },
-            {
-              "uuid": "3b5c6e17-0d30-4fb9-b319-3c1d29bf0794",
-              "title": "Permite enviar mensagens e marcar a conversas como lidas"
-            },
-            {
-              "uuid": "70f6c0f6-207f-43ea-8679-6fedbfa45be2",
-              "title": "Permitir acesso de escrita no Perguntas e Repostas"
-            },
-            {
-              "uuid": "66ff5393-5218-4f16-bd1a-401739009b86",
-              "title": "Permitir acesso de leitura no Perguntas e Repostas"
-            }
-          ]
-        },
-        {
-          "uuid": "3339003e-0fea-4925-865e-61a50d484f30",
-          "name": "sinclog-bonvoyage-api",
-          "icon": "",
-          "scopes": [
-            {
-              "uuid": "b9f0b2f3-f2da-4ea0-9c0f-27f7222a1873",
-              "title": "Acesso"
-            },
-            {
-              "uuid": "0ba1a2c7-46ff-4eeb-a1a5-6738156b893f",
-              "title": "Cadastro"
-            },
-            {
-              "uuid": "44c3ec71-df21-4a4e-9d3e-d5e0c1efd742",
-              "title": "Cadastro"
-            },
-            {
-              "uuid": "b0671f19-5eba-4a15-ba0d-24faea79a804",
-              "title": "Consulta"
-            },
-            {
-              "uuid": "3aee3f46-01eb-404f-be56-9364031ef3e5",
-              "title": "Edição"
-            },
-            {
-              "uuid": "05ccc88e-15a3-4bef-8138-3acd86d89862",
-              "title": "Edição"
-            }
-          ]
-        },
-        {
-          "uuid": "96a47757-c754-4beb-ae8d-5adf74202937",
-          "name": "sinclog-coverage-api",
-          "icon": "",
-          "scopes": [
-            {
-              "uuid": "6b8501c8-871e-407a-b15c-eb749c9a87a6",
-              "title": "Consulta"
-            },
-            {
-              "uuid": "c3fe1445-c2e0-4733-99c6-c9f6dcdea74f",
-              "title": "Consulta"
-            },
-            {
-              "uuid": "d84a95fc-3223-4f5a-8ca0-4968b83b6e4d",
-              "title": "Consulta"
-            }
-          ]
-        },
-        {
-          "uuid": "68e273f3-ffbf-46d7-94d9-34c645707e0d",
-          "name": "sinclog.tms.gateway.api",
-          "icon": "",
-          "scopes": [
-            {
-              "uuid": "726fdfdd-f51d-49c6-b497-12f6c19f9442",
-              "title": "Cadastro"
-            },
-            {
-              "uuid": "866c49ef-1ccc-4c62-b387-74efb8af8ead",
-              "title": "Cadastro"
-            },
-            {
-              "uuid": "668309d0-d896-4dd3-b94e-728d3548b36d",
-              "title": "Edição"
-            },
-            {
-              "uuid": "bfd6e3a7-a913-425a-8368-5ed4a4e92c17",
-              "title": "Edição"
-            },
-            {
-              "uuid": "30c08e06-4fe6-4661-acb8-025f75bc357c",
-              "title": "Exclusão"
-            },
-            {
-              "uuid": "0210d433-1620-4278-bc64-e424487f49e5",
-              "title": "Exclusão"
-            }
-          ]
-        },
-        {
-          "uuid": "360240f5-aae7-47d1-a583-7d8e9f2e0ba2",
-          "name": "sinclog-tms-proxy-api",
-          "icon": "",
-          "scopes": [
-            {
-              "uuid": "2cfcf348-5dbd-44fe-9f71-404781944796",
-              "title": "Acesso"
-            },
-            {
-              "uuid": "0110b0d2-de01-4a10-829d-9549e264eadd",
-              "title": "Atualização"
-            },
-            {
-              "uuid": "74e2219e-78b5-4600-8688-9d19f29275d6",
-              "title": "Atualização"
-            },
-            {
-              "uuid": "4ea945c1-90b7-43a5-aa02-3765d6dc6968",
-              "title": "Criação"
-            },
-            {
-              "uuid": "6ced00ba-67e5-47ce-b04a-da7b02d748b1",
-              "title": "Criação/edição"
-            },
-            {
-              "uuid": "38e38187-ccf6-492d-9cf7-450b016a755e",
-              "title": "Criação/edição"
-            },
-            {
-              "uuid": "5c68bf6a-3a17-4032-a6f6-1a6e9c49debf",
-              "title": "Criação/edição"
-            },
-            {
-              "uuid": "75f2e042-437c-4b92-a139-5137e7efc233",
-              "title": "Criação/edição"
-            },
-            {
-              "uuid": "801d13e8-bcfc-49c9-8877-04a88e1bbf5b",
-              "title": "Leitura"
-            },
-            {
-              "uuid": "a7c72927-e201-421b-b19d-675ea3022d4f",
-              "title": "Leitura"
-            },
-            {
-              "uuid": "708b7105-47be-443d-9f0b-b1cc9f8a6ed9",
-              "title": "Leitura"
-            },
-            {
-              "uuid": "0d744328-bbf7-4e14-801a-d426861dfa04",
-              "title": "Leitura"
-            }
-          ]
-        },
-        {
-          "uuid": "1dabb89e-76bf-458b-a356-9a6ad4d1f3c4",
-          "name": "transformers",
-          "icon": "",
-          "scopes": [
-            {
-              "uuid": "17399431-1c33-499e-b565-17c256f1c4ce",
-              "title": "Gravação de cotações"
-            },
-            {
-              "uuid": "ee669869-f563-4f4b-9dca-c3d2e2569fac",
-              "title": "Leitura de cotações"
-            }
-          ]
-        },
-        {
-          "uuid": "f84fdc13-a992-4994-8899-0e9a044d999d",
-          "name": "transport.billing.acl",
-          "icon": "",
-          "scopes": [
-            {
-              "uuid": "76e17a42-f6a5-4abe-a7f4-4005b7f17536",
-              "title": "Consulta"
-            },
-            {
-              "uuid": "49f78bb1-0742-4dad-b620-a9ab6fca7efb",
-              "title": "Edição"
-            },
-            {
-              "uuid": "2457a045-185e-43df-88c7-21f05afa192c",
-              "title": "Exclusão"
-            }
-          ]
-        },
-        {
-          "uuid": "dc231c2f-358d-401d-86ac-1e07d15faf8e",
-          "name": "transport.billing.api",
-          "icon": "",
-          "scopes": [
-            {
-              "uuid": "8f1d436d-57be-48b0-a25b-2abb93749c45",
-              "title": "Cadastro"
-            },
-            {
-              "uuid": "1357b283-82ed-47c6-a82f-40260a3c04f6",
-              "title": "Consulta"
-            },
-            {
-              "uuid": "57aca087-257e-4fbc-bfff-066ff4fdf4a3",
-              "title": "Consulta"
-            },
-            {
-              "uuid": "ccca2a3d-d574-436e-877a-0bf4207d97cf",
-              "title": "Consulta"
-            },
-            {
-              "uuid": "b3425c9a-8938-4424-9a10-051ebfca1e4d",
-              "title": "Consulta"
-            },
-            {
-              "uuid": "4ba8b9a1-906e-4a42-a0af-c46244881c63",
-              "title": "Consulta"
-            },
-            {
-              "uuid": "b2d82310-487c-4fc4-9e7c-2541820d886e",
-              "title": "Consulta"
-            },
-            {
-              "uuid": "5dc6b1ab-7c8f-4d2c-ba62-97fd7526c58a",
-              "title": "Consulta"
-            },
-            {
-              "uuid": "123ed970-c175-4408-a280-89623a806f64",
-              "title": "Consulta"
-            },
-            {
-              "uuid": "2fb6ac75-b4fb-45af-95bc-eeffc2d27ffa",
-              "title": "Consulta"
-            },
-            {
-              "uuid": "ec92c9f6-00af-422b-92db-485adab104d9",
-              "title": "Consulta"
-            },
-            {
-              "uuid": "f421297e-d66a-4dbb-a1a9-0289d96be69e",
-              "title": "Consulta"
-            },
-            {
-              "uuid": "b4aae803-6846-4df2-94bc-c1ae38c2fb5e",
-              "title": "Consulta"
-            },
-            {
-              "uuid": "1c7f6777-9ba3-4163-b12b-d2614afc1cf2",
-              "title": "Consulta"
-            },
-            {
-              "uuid": "8fdbb917-af2d-4066-8afe-7537386eb7b5",
-              "title": "Consulta"
-            },
-            {
-              "uuid": "cc6a1570-e3c8-47b6-b188-3d744053a643",
-              "title": "Consulta"
-            },
-            {
-              "uuid": "5c5d48a7-fc25-4043-96a7-2347d3b181ff",
-              "title": "Criação"
-            },
-            {
-              "uuid": "e80ce418-a9a3-4978-99ca-f09c37b9ba41",
-              "title": "Criação"
-            },
-            {
-              "uuid": "2dcbe2c3-6aeb-4b34-b10b-6d9f9a0678d3",
-              "title": "Criação"
-            },
-            {
-              "uuid": "df8a9b83-fa27-441e-874c-32606584a90a",
-              "title": "Criação"
-            },
-            {
-              "uuid": "c4290d71-5a86-404d-ad14-951b0a13d850",
-              "title": "Criação"
-            },
-            {
-              "uuid": "e389f950-87c8-4f69-b951-9086607995a3",
-              "title": "Edição"
-            },
-            {
-              "uuid": "128464ec-bc8d-4e54-b20f-80453a263f0f",
-              "title": "Edição"
-            },
-            {
-              "uuid": "78d2ccc0-415d-4d95-8310-733550b0240a",
-              "title": "Edição"
-            },
-            {
-              "uuid": "74e656d7-cc8f-4e69-aaed-9ff48c898cf8",
-              "title": "Edição"
-            },
-            {
-              "uuid": "35b70bdb-3e59-47f6-8e72-5acbf73c4872",
-              "title": "Edição"
-            },
-            {
-              "uuid": "762c9209-7431-405f-8d27-298a3b0957a0",
-              "title": "Edição"
-            },
-            {
-              "uuid": "ee3990b2-968c-4ce5-8808-69218a7a0a54",
-              "title": "Exclusão"
-            },
-            {
-              "uuid": "d5d393fe-d2e9-4b79-81c9-7bfa9cf15365",
-              "title": "Exclusão"
-            },
-            {
-              "uuid": "1d60fa73-d403-4504-a438-2f419d784959",
-              "title": "Exclusão"
-            },
-            {
-              "uuid": "544aa22e-8244-46b3-9dee-804fa56fe34b",
-              "title": "Exclusão"
-            },
-            {
-              "uuid": "da40fe99-48b7-44df-aba4-470069619d7c",
-              "title": "Exclusão"
-            },
-            {
-              "uuid": "a5481b34-1b8d-4bf0-ab95-38b503b75618",
-              "title": "Exclusão"
-            }
-          ]
-        },
-        {
-          "uuid": "886ad2a1-1da9-44a9-ad34-6d8c87d7d0c5",
-          "name": "uncle-chan-api-product",
-          "icon": "",
-          "scopes": [
-            {
-              "uuid": "f128ac02-cb44-4e0d-bfb9-cdd9628b9f54",
-              "title": "psp:uncle-chan-api:read"
-            },
-            {
-              "uuid": "8f72471d-a2ef-48b5-9578-39ae4eaf9c2c",
-              "title": "Uncle Chan read api scope"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "uuid": "79f94bde-c60a-4366-b081-8ad9d58ef2e6",
-      "name": "Outros",
-      "icon": "outros.png",
-      "api_products": [
-        {
-          "uuid": "64c08f0f-ff12-40b6-b5f8-fed6031014b8",
-          "name": "Galileo API Product",
-          "icon": "",
-          "scopes": [
-            {
-              "uuid": "02010327-5f8b-4cc4-9430-61e1e10d84f3",
-              "title": "Profile create"
-            },
-            {
-              "uuid": "7f105bce-d8a7-4e8f-a03b-114ca8ee7dc9",
-              "title": "Profile read"
-            },
-            {
-              "uuid": "90dc7b8d-1f1d-444e-8274-a3d88a931fb1",
-              "title": "Profile update"
-            },
-            {
-              "uuid": "5726f285-9080-40f0-a9bf-f2d0d769e073",
-              "title": "shipping create"
-            },
-            {
-              "uuid": "df4729be-2a5f-4089-85cc-f41342b9bb7d",
-              "title": "shipping read"
-            }
-          ]
-        },
-        {
-          "uuid": "73f67373-6d44-48e9-8186-711bf9b4989f",
-          "name": "obi-wan-api",
-          "icon": "url",
-          "scopes": [
-            {
-              "uuid": "35ba134f-3e2f-45bb-9739-baaeedd33931",
-              "title": "Criação de uma nova remessa baseada em uma cotação"
-            },
-            {
-              "uuid": "3faee8b3-56c4-4e42-b92a-b4d3f4d40d63",
-              "title": "Scope to allow creation of shippings of physical stores"
-            }
-          ]
-        }
-      ]
-    }
-  ]
+  {
+    "uuid": "c5457157-4359-44d7-a0ed-188362c91013",
+    "name": "Magalu Cloud",
+    "icon": "magalu_cloud.png",
+    "api_products": [
+      {
+        "uuid": "d19a3a44-d7a2-4993-b7ab-908faa669c00",
+        "name": "Audit",
+        "icon": "",
+        "scopes": [
+          {
+            "uuid": "2340d257-c1f4-49db-b367-d5f92b3217ba",
+            "title": "Permissão para leitura dos eventos"
+          }
+        ]
+      },
+      {
+        "uuid": "9ec7738f-ffa8-45fb-91af-f554f9ff5032",
+        "name": "Block Storage",
+        "icon": "",
+        "scopes": [
+          {
+            "uuid": "0dfa4d41-404a-468e-960c-fbe41630e6d5",
+            "title": "Permissão para criação de block storage"
+          },
+          {
+            "uuid": "b4e3c769-848e-4634-9a56-bd590959cfbd",
+            "title": "Permissão para leitura de block storage"
+          }
+        ]
+      },
+      {
+        "uuid": "2df34078-e2b6-44ea-9784-584cbabef719",
+        "name": "DBaaS",
+        "icon": "",
+        "scopes": [
+          {
+            "uuid": "c79f099a-65f4-4cf7-b936-158169c56749",
+            "title": "DBaaS Read"
+          },
+          {
+            "uuid": "673feba1-3951-4c9f-b202-68e0a529c1a2",
+            "title": "DBaaS Write"
+          }
+        ]
+      },
+      {
+        "uuid": "cfecba35-85bc-41a2-a0cb-494b4cc06a27",
+        "name": "ID Magalu",
+        "icon": "",
+        "scopes": [
+          {
+            "uuid": "eb3d5648-9d8e-4eac-82a3-fd08095baf71",
+            "title": "Acessar delegações"
+          },
+          {
+            "uuid": "c03623d0-9f22-4053-b561-0963c309790a",
+            "title": "Atualização de Grupos"
+          },
+          {
+            "uuid": "85f3e447-8bf0-49b9-938c-ec8fb599631d",
+            "title": "Consulta de Grupos"
+          },
+          {
+            "uuid": "d1c33e3e-44e7-4ac7-9301-b82aacda0150",
+            "title": "Criação de Grupos"
+          },
+          {
+            "uuid": "9dde41db-1a14-4294-8f65-fd5ff4573b1a",
+            "title": "Criar delegações"
+          },
+          {
+            "uuid": "50447cbf-8a42-4426-8e53-fe84bf0726ad",
+            "title": "Dados básicos"
+          },
+          {
+            "uuid": "5cca18c8-afbc-4c32-97cc-6bc7a76808b2",
+            "title": "Deletar delegações"
+          },
+          {
+            "uuid": "3cf3d71d-7560-4f89-b438-3a28219cfba1",
+            "title": "Exclusão de Grupos"
+          },
+          {
+            "uuid": "a663a78f-4522-4823-9f50-78cb80475748",
+            "title": "Leitura de Tenants"
+          },
+          {
+            "uuid": "8976b670-5b46-44af-b0aa-1ebc6cded103",
+            "title": "Manage Service Account"
+          },
+          {
+            "uuid": "5ebc16ae-fa06-4a3c-b179-f67703fb6d1d",
+            "title": "Permissão para leitura de Forma de Pagamento"
+          },
+          {
+            "uuid": "4afabfe2-4a14-4d5f-a5f4-b0f5f4c8d096",
+            "title": "Permissão para Realizar Operações de Conta de Usuário"
+          },
+          {
+            "uuid": "2836b3ba-093c-416a-92f0-7fc4ee5ac961",
+            "title": "Token de acesso"
+          },
+          {
+            "uuid": "c6fa8852-16b5-41f5-884d-ae367cd709f3",
+            "title": "Validação de Requests"
+          }
+        ]
+      },
+      {
+        "uuid": "7b71d35a-13a5-468d-962e-6a7b1ab37e1b",
+        "name": "MKE",
+        "icon": "",
+        "scopes": [
+          {
+            "uuid": "c06a4bbc-5d37-4600-a842-5e89ae921ffa",
+            "title": "Permissão para criação de mke"
+          },
+          {
+            "uuid": "a110846a-3bc8-4e59-817c-7bd24765c45d",
+            "title": "Permissão para leitura de mke"
+          }
+        ]
+      },
+      {
+        "uuid": "9637733d-b0a1-4a30-af6d-7c4a8294e26a",
+        "name": "Container Registry",
+        "icon": "",
+        "scopes": [
+          {
+            "uuid": "952f5903-cec3-4108-8f58-60dbee158cfc",
+            "title": "Permissão para escrita de registries"
+          },
+          {
+            "uuid": "e6e34f5f-b50e-453e-97b0-19ae5176bcca",
+            "title": "Permissão para leitura de registries"
+          }
+        ]
+      },
+      {
+        "uuid": "e09e5883-1788-45ea-8785-28141ceea2e3",
+        "name": "Network",
+        "icon": "",
+        "scopes": [
+          {
+            "uuid": "af6884ea-47ac-4c45-9355-7facb4ef491c",
+            "title": "Permissão para criação de network"
+          },
+          {
+            "uuid": "a6e760f8-6378-48bf-8cd9-28220e44a9a4",
+            "title": "Permissão para leitura de network"
+          }
+        ]
+      },
+      {
+        "uuid": "65f5db30-6273-4646-9784-c434286c35f9",
+        "name": "Object Storage",
+        "icon": "",
+        "scopes": [
+          {
+            "uuid": "5ea6d1f7-20eb-4e80-9a9c-c7923636a4bd",
+            "title": "Permissão para criação de object storage"
+          },
+          {
+            "uuid": "b6afac7e-0afd-42de-b4aa-1bc82a27e307",
+            "title": "Permissão para leitura de object storage"
+          }
+        ]
+      },
+      {
+        "uuid": "49361088-52da-472b-ad5d-40671d1365fb",
+        "name": "Profile",
+        "icon": "https://icon.com/icon.png",
+        "scopes": [
+          {
+            "uuid": "c3cd965d-6f0a-44ea-96dd-f9282c179f9a",
+            "title": "Availability Zones Read"
+          },
+          {
+            "uuid": "2cb63723-8bee-406d-9197-b9732c4a4c56",
+            "title": "SSH Public Keys Read"
+          },
+          {
+            "uuid": "c220b228-26d5-41a0-9a8f-d8d5af454848",
+            "title": "SSH Public Keys Write"
+          }
+        ]
+      },
+      {
+        "uuid": "40ecdd1d-ca17-4898-b7c5-e58be7b24a10",
+        "name": "Virtual Machine",
+        "icon": "",
+        "scopes": [
+          {
+            "uuid": "c28d32ad-0342-4384-afd1-97dbbb219d44",
+            "title": "Permissão para criação de virtual machines"
+          },
+          {
+            "uuid": "d85b09b2-7b38-4e70-90fa-286c96fe0e1d",
+            "title": "Permissão para leitura de virtual machines"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "uuid": "359f21f1-f647-47ea-a121-4e1356ecfa31",
+    "name": "Magalu Open Platform",
+    "icon": "magalu_open_platform.png",
+    "api_products": [
+      {
+        "uuid": "b7be9ea0-7722-41a0-b0d2-59150791c763",
+        "name": "API do Magalu - Marketplace",
+        "icon": "",
+        "scopes": [
+          {
+            "uuid": "352805fa-5485-4d9c-9405-4cca2f32bcad",
+            "title": "Permissão acesso marketplace"
+          }
+        ]
+      },
+      {
+        "uuid": "d99eb33d-91ca-4da4-abdb-06a56227c2f3",
+        "name": "APIs de Marketplace - Pedidos",
+        "icon": "https://developers.magalu.com/docs/assets/images/pedidos-icon-50x50.png",
+        "scopes": [
+          {
+            "uuid": "d43ca5b7-2c87-4306-b45e-c4d4c3933ca1",
+            "title": "Editar dados de entregas"
+          },
+          {
+            "uuid": "3496b975-033d-4990-8a24-968de96bd1fe",
+            "title": "Editar dados de logistica"
+          },
+          {
+            "uuid": "54a20103-32f4-4f9e-a0ca-ec2e5ddd9199",
+            "title": "Permite consultar dados de notas fiscais"
+          },
+          {
+            "uuid": "9ba7c331-f492-4178-812e-eb0a45b28e05",
+            "title": "Ver dados de notas fiscais"
+          },
+          {
+            "uuid": "bac39ba3-34af-4abd-84d6-3a828e8a65fa",
+            "title": "Ver informações sobre entregas"
+          },
+          {
+            "uuid": "77b9acaa-4417-47cd-8999-857d92c1f853",
+            "title": "Ver informações sobre logistica"
+          },
+          {
+            "uuid": "01bae82e-387f-487f-b64e-57099807ceae",
+            "title": "Ver os dados dos seus pedidos"
+          }
+        ]
+      },
+      {
+        "uuid": "143ace7e-e6fe-4502-b6d3-e4e3c2c2005e",
+        "name": "APIs de Marketplace - Portfólio",
+        "icon": "https://developers.magalu.com/docs/assets/images/portfolio-icon-50x50.png",
+        "scopes": [
+          {
+            "uuid": "ac6a845f-73fe-444f-b878-4a60e318ff1b",
+            "title": "Permitir a leitura das posições de estoque do SKU"
+          },
+          {
+            "uuid": "ccb4f401-ed91-4e9a-afa5-ca0e5d76fb38",
+            "title": "Permitir a leitura das posições de estoque do SKU"
+          },
+          {
+            "uuid": "666c3614-6e2a-4926-9df4-2686e0a269de",
+            "title": "Permitir a leitura de dados do SKU"
+          },
+          {
+            "uuid": "c73cb96e-6808-4f0c-971b-97f81f7e24ee",
+            "title": "Permitir a leitura de dados do SKU"
+          },
+          {
+            "uuid": "4ac160a6-32e1-4355-96df-866132caf832",
+            "title": "Permitir a leitura dos preços do SKU"
+          },
+          {
+            "uuid": "cf46513a-9044-4a52-97c9-fa017a9b597e",
+            "title": "Permitir a leitura dos preços do SKU"
+          },
+          {
+            "uuid": "99fddf7e-1b9b-4074-9adb-499a3ab71845",
+            "title": "Permitir alterar dados do SKU"
+          },
+          {
+            "uuid": "3a34e773-d7a2-4c3b-8681-44e888da3173",
+            "title": "Permitir alterar dados do SKU"
+          },
+          {
+            "uuid": "266fe465-6180-4f70-b20c-e7d7dd092623",
+            "title": "Permitir alterar posições de estoque do SKU"
+          },
+          {
+            "uuid": "164ea17f-2ab5-4a12-82c8-bda9c47124f5",
+            "title": "Permitir alterar posições de estoque do SKU"
+          },
+          {
+            "uuid": "46b1c5d6-39d8-48b4-adc5-371e6539eff5",
+            "title": "Permitir alterar preços do SKU"
+          },
+          {
+            "uuid": "1fecc0b1-da82-4e1e-b7bf-4b2e71cb2c65",
+            "title": "Permitir alterar preços do SKU"
+          }
+        ]
+      },
+      {
+        "uuid": "835ccc01-985c-46cc-8199-17fc3fe2aaf6",
+        "name": "app-entregas-mle-admin-api",
+        "icon": "https://icon.com/icon.png",
+        "scopes": [
+          {
+            "uuid": "a78a1e1a-989b-4f8a-97b2-177940f58e4d",
+            "title": "Scope para realizar escrita nos recursos do app entregas"
+          },
+          {
+            "uuid": "1f238119-a5ee-4bf8-8c21-2ce9340983ac",
+            "title": "Scope para realizar leitura nos recursos do app entregas"
+          }
+        ]
+      },
+      {
+        "uuid": "e9394ec0-b3b4-49f3-bc81-203f65d037ca",
+        "name": "Conta Magalu Entregas",
+        "icon": "",
+        "scopes": [
+          {
+            "uuid": "13b6a995-57b4-46d7-8570-26e50c3460a0",
+            "title": "Atualização de Complement"
+          },
+          {
+            "uuid": "7b610f7f-0ae3-4bd8-bea1-da898ed31714",
+            "title": "Atualização de Location"
+          }
+        ]
+      },
+      {
+        "uuid": "a58b58c6-c849-4b15-8aab-f7ca7d15c672",
+        "name": "Gateway-Pagamentos",
+        "icon": "",
+        "scopes": [
+          {
+            "uuid": "097a515f-d63d-492f-8879-e75ad0222d5a",
+            "title": "Escrita"
+          },
+          {
+            "uuid": "6cb41fab-f219-49af-ad75-699156b76c6d",
+            "title": "Leitura"
+          }
+        ]
+      },
+      {
+        "uuid": "cd528bdf-a2d7-4d0a-b05c-b5f43f40e9fc",
+        "name": "GLOG API Product",
+        "icon": "",
+        "scopes": [
+          {
+            "uuid": "065d1587-7689-42ba-813f-13b3a1b8e8a4",
+            "title": "Permissão para manipular dados do gestor logistico."
+          },
+          {
+            "uuid": "374e38b5-dd88-44f0-9b2f-4e81e4e4a1ee",
+            "title": "Permissão para obter dados do gestor logistico."
+          }
+        ]
+      },
+      {
+        "uuid": "2e54da97-699b-4a0a-a8cd-8b1b97aee308",
+        "name": "Plataforma Seller - Perguntas e Respostas",
+        "icon": "",
+        "scopes": [
+          {
+            "uuid": "c3fd0e54-6248-4275-886f-3795ac2950e0",
+            "title": "Permite a consulta de conversas e mensagens do Chat"
+          },
+          {
+            "uuid": "3b5c6e17-0d30-4fb9-b319-3c1d29bf0794",
+            "title": "Permite enviar mensagens e marcar a conversas como lidas"
+          },
+          {
+            "uuid": "70f6c0f6-207f-43ea-8679-6fedbfa45be2",
+            "title": "Permitir acesso de escrita no Perguntas e Repostas"
+          },
+          {
+            "uuid": "66ff5393-5218-4f16-bd1a-401739009b86",
+            "title": "Permitir acesso de leitura no Perguntas e Repostas"
+          }
+        ]
+      },
+      {
+        "uuid": "3339003e-0fea-4925-865e-61a50d484f30",
+        "name": "sinclog-bonvoyage-api",
+        "icon": "",
+        "scopes": [
+          {
+            "uuid": "b9f0b2f3-f2da-4ea0-9c0f-27f7222a1873",
+            "title": "Acesso"
+          },
+          {
+            "uuid": "44c3ec71-df21-4a4e-9d3e-d5e0c1efd742",
+            "title": "Cadastro"
+          },
+          {
+            "uuid": "0ba1a2c7-46ff-4eeb-a1a5-6738156b893f",
+            "title": "Cadastro"
+          },
+          {
+            "uuid": "b0671f19-5eba-4a15-ba0d-24faea79a804",
+            "title": "Consulta"
+          },
+          {
+            "uuid": "3aee3f46-01eb-404f-be56-9364031ef3e5",
+            "title": "Edição"
+          },
+          {
+            "uuid": "05ccc88e-15a3-4bef-8138-3acd86d89862",
+            "title": "Edição"
+          }
+        ]
+      },
+      {
+        "uuid": "96a47757-c754-4beb-ae8d-5adf74202937",
+        "name": "sinclog-coverage-api",
+        "icon": "",
+        "scopes": [
+          {
+            "uuid": "c3fe1445-c2e0-4733-99c6-c9f6dcdea74f",
+            "title": "Consulta"
+          },
+          {
+            "uuid": "6b8501c8-871e-407a-b15c-eb749c9a87a6",
+            "title": "Consulta"
+          },
+          {
+            "uuid": "d84a95fc-3223-4f5a-8ca0-4968b83b6e4d",
+            "title": "Consulta"
+          }
+        ]
+      },
+      {
+        "uuid": "68e273f3-ffbf-46d7-94d9-34c645707e0d",
+        "name": "sinclog.tms.gateway.api",
+        "icon": "",
+        "scopes": [
+          {
+            "uuid": "726fdfdd-f51d-49c6-b497-12f6c19f9442",
+            "title": "Cadastro"
+          },
+          {
+            "uuid": "866c49ef-1ccc-4c62-b387-74efb8af8ead",
+            "title": "Cadastro"
+          },
+          {
+            "uuid": "bfd6e3a7-a913-425a-8368-5ed4a4e92c17",
+            "title": "Edição"
+          },
+          {
+            "uuid": "668309d0-d896-4dd3-b94e-728d3548b36d",
+            "title": "Edição"
+          },
+          {
+            "uuid": "0210d433-1620-4278-bc64-e424487f49e5",
+            "title": "Exclusão"
+          },
+          {
+            "uuid": "30c08e06-4fe6-4661-acb8-025f75bc357c",
+            "title": "Exclusão"
+          }
+        ]
+      },
+      {
+        "uuid": "360240f5-aae7-47d1-a583-7d8e9f2e0ba2",
+        "name": "sinclog-tms-proxy-api",
+        "icon": "",
+        "scopes": [
+          {
+            "uuid": "2cfcf348-5dbd-44fe-9f71-404781944796",
+            "title": "Acesso"
+          },
+          {
+            "uuid": "0110b0d2-de01-4a10-829d-9549e264eadd",
+            "title": "Atualização"
+          },
+          {
+            "uuid": "74e2219e-78b5-4600-8688-9d19f29275d6",
+            "title": "Atualização"
+          },
+          {
+            "uuid": "4ea945c1-90b7-43a5-aa02-3765d6dc6968",
+            "title": "Criação"
+          },
+          {
+            "uuid": "6ced00ba-67e5-47ce-b04a-da7b02d748b1",
+            "title": "Criação/edição"
+          },
+          {
+            "uuid": "75f2e042-437c-4b92-a139-5137e7efc233",
+            "title": "Criação/edição"
+          },
+          {
+            "uuid": "5c68bf6a-3a17-4032-a6f6-1a6e9c49debf",
+            "title": "Criação/edição"
+          },
+          {
+            "uuid": "38e38187-ccf6-492d-9cf7-450b016a755e",
+            "title": "Criação/edição"
+          },
+          {
+            "uuid": "a7c72927-e201-421b-b19d-675ea3022d4f",
+            "title": "Leitura"
+          },
+          {
+            "uuid": "801d13e8-bcfc-49c9-8877-04a88e1bbf5b",
+            "title": "Leitura"
+          },
+          {
+            "uuid": "0d744328-bbf7-4e14-801a-d426861dfa04",
+            "title": "Leitura"
+          },
+          {
+            "uuid": "708b7105-47be-443d-9f0b-b1cc9f8a6ed9",
+            "title": "Leitura"
+          }
+        ]
+      },
+      {
+        "uuid": "1dabb89e-76bf-458b-a356-9a6ad4d1f3c4",
+        "name": "transformers",
+        "icon": "",
+        "scopes": [
+          {
+            "uuid": "17399431-1c33-499e-b565-17c256f1c4ce",
+            "title": "Gravação de cotações"
+          },
+          {
+            "uuid": "ee669869-f563-4f4b-9dca-c3d2e2569fac",
+            "title": "Leitura de cotações"
+          }
+        ]
+      },
+      {
+        "uuid": "f84fdc13-a992-4994-8899-0e9a044d999d",
+        "name": "transport.billing.acl",
+        "icon": "",
+        "scopes": [
+          {
+            "uuid": "76e17a42-f6a5-4abe-a7f4-4005b7f17536",
+            "title": "Consulta"
+          },
+          {
+            "uuid": "49f78bb1-0742-4dad-b620-a9ab6fca7efb",
+            "title": "Edição"
+          },
+          {
+            "uuid": "2457a045-185e-43df-88c7-21f05afa192c",
+            "title": "Exclusão"
+          }
+        ]
+      },
+      {
+        "uuid": "dc231c2f-358d-401d-86ac-1e07d15faf8e",
+        "name": "transport.billing.api",
+        "icon": "",
+        "scopes": [
+          {
+            "uuid": "8f1d436d-57be-48b0-a25b-2abb93749c45",
+            "title": "Cadastro"
+          },
+          {
+            "uuid": "4ba8b9a1-906e-4a42-a0af-c46244881c63",
+            "title": "Consulta"
+          },
+          {
+            "uuid": "b2d82310-487c-4fc4-9e7c-2541820d886e",
+            "title": "Consulta"
+          },
+          {
+            "uuid": "57aca087-257e-4fbc-bfff-066ff4fdf4a3",
+            "title": "Consulta"
+          },
+          {
+            "uuid": "1357b283-82ed-47c6-a82f-40260a3c04f6",
+            "title": "Consulta"
+          },
+          {
+            "uuid": "b3425c9a-8938-4424-9a10-051ebfca1e4d",
+            "title": "Consulta"
+          },
+          {
+            "uuid": "8fdbb917-af2d-4066-8afe-7537386eb7b5",
+            "title": "Consulta"
+          },
+          {
+            "uuid": "cc6a1570-e3c8-47b6-b188-3d744053a643",
+            "title": "Consulta"
+          },
+          {
+            "uuid": "ccca2a3d-d574-436e-877a-0bf4207d97cf",
+            "title": "Consulta"
+          },
+          {
+            "uuid": "5dc6b1ab-7c8f-4d2c-ba62-97fd7526c58a",
+            "title": "Consulta"
+          },
+          {
+            "uuid": "123ed970-c175-4408-a280-89623a806f64",
+            "title": "Consulta"
+          },
+          {
+            "uuid": "2fb6ac75-b4fb-45af-95bc-eeffc2d27ffa",
+            "title": "Consulta"
+          },
+          {
+            "uuid": "ec92c9f6-00af-422b-92db-485adab104d9",
+            "title": "Consulta"
+          },
+          {
+            "uuid": "f421297e-d66a-4dbb-a1a9-0289d96be69e",
+            "title": "Consulta"
+          },
+          {
+            "uuid": "b4aae803-6846-4df2-94bc-c1ae38c2fb5e",
+            "title": "Consulta"
+          },
+          {
+            "uuid": "1c7f6777-9ba3-4163-b12b-d2614afc1cf2",
+            "title": "Consulta"
+          },
+          {
+            "uuid": "5c5d48a7-fc25-4043-96a7-2347d3b181ff",
+            "title": "Criação"
+          },
+          {
+            "uuid": "2dcbe2c3-6aeb-4b34-b10b-6d9f9a0678d3",
+            "title": "Criação"
+          },
+          {
+            "uuid": "df8a9b83-fa27-441e-874c-32606584a90a",
+            "title": "Criação"
+          },
+          {
+            "uuid": "e80ce418-a9a3-4978-99ca-f09c37b9ba41",
+            "title": "Criação"
+          },
+          {
+            "uuid": "c4290d71-5a86-404d-ad14-951b0a13d850",
+            "title": "Criação"
+          },
+          {
+            "uuid": "35b70bdb-3e59-47f6-8e72-5acbf73c4872",
+            "title": "Edição"
+          },
+          {
+            "uuid": "762c9209-7431-405f-8d27-298a3b0957a0",
+            "title": "Edição"
+          },
+          {
+            "uuid": "128464ec-bc8d-4e54-b20f-80453a263f0f",
+            "title": "Edição"
+          },
+          {
+            "uuid": "e389f950-87c8-4f69-b951-9086607995a3",
+            "title": "Edição"
+          },
+          {
+            "uuid": "78d2ccc0-415d-4d95-8310-733550b0240a",
+            "title": "Edição"
+          },
+          {
+            "uuid": "74e656d7-cc8f-4e69-aaed-9ff48c898cf8",
+            "title": "Edição"
+          },
+          {
+            "uuid": "544aa22e-8244-46b3-9dee-804fa56fe34b",
+            "title": "Exclusão"
+          },
+          {
+            "uuid": "1d60fa73-d403-4504-a438-2f419d784959",
+            "title": "Exclusão"
+          },
+          {
+            "uuid": "ee3990b2-968c-4ce5-8808-69218a7a0a54",
+            "title": "Exclusão"
+          },
+          {
+            "uuid": "a5481b34-1b8d-4bf0-ab95-38b503b75618",
+            "title": "Exclusão"
+          },
+          {
+            "uuid": "da40fe99-48b7-44df-aba4-470069619d7c",
+            "title": "Exclusão"
+          },
+          {
+            "uuid": "d5d393fe-d2e9-4b79-81c9-7bfa9cf15365",
+            "title": "Exclusão"
+          }
+        ]
+      },
+      {
+        "uuid": "886ad2a1-1da9-44a9-ad34-6d8c87d7d0c5",
+        "name": "uncle-chan-api-product",
+        "icon": "",
+        "scopes": [
+          {
+            "uuid": "f128ac02-cb44-4e0d-bfb9-cdd9628b9f54",
+            "title": "psp:uncle-chan-api:read"
+          },
+          {
+            "uuid": "8f72471d-a2ef-48b5-9578-39ae4eaf9c2c",
+            "title": "Uncle Chan read api scope"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "uuid": "79f94bde-c60a-4366-b081-8ad9d58ef2e6",
+    "name": "Outros",
+    "icon": "outros.png",
+    "api_products": [
+      {
+        "uuid": "64c08f0f-ff12-40b6-b5f8-fed6031014b8",
+        "name": "Galileo API Product",
+        "icon": "",
+        "scopes": [
+          {
+            "uuid": "02010327-5f8b-4cc4-9430-61e1e10d84f3",
+            "title": "Profile create"
+          },
+          {
+            "uuid": "7f105bce-d8a7-4e8f-a03b-114ca8ee7dc9",
+            "title": "Profile read"
+          },
+          {
+            "uuid": "90dc7b8d-1f1d-444e-8274-a3d88a931fb1",
+            "title": "Profile update"
+          },
+          {
+            "uuid": "5726f285-9080-40f0-a9bf-f2d0d769e073",
+            "title": "shipping create"
+          },
+          {
+            "uuid": "df4729be-2a5f-4089-85cc-f41342b9bb7d",
+            "title": "shipping read"
+          }
+        ]
+      },
+      {
+        "uuid": "73f67373-6d44-48e9-8186-711bf9b4989f",
+        "name": "obi-wan-api",
+        "icon": "url",
+        "scopes": [
+          {
+            "uuid": "35ba134f-3e2f-45bb-9739-baaeedd33931",
+            "title": "Criação de uma nova remessa baseada em uma cotação"
+          },
+          {
+            "uuid": "3faee8b3-56c4-4e42-b92a-b4d3f4d40d63",
+            "title": "Scope to allow creation of shippings of physical stores"
+          }
+        ]
+      }
+    ]
+  }
+]

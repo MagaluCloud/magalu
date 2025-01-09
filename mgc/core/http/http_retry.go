@@ -77,7 +77,7 @@ func (r *ClientRetryer) RoundTrip(req *http.Request) (*http.Response, error) {
 			var sysErr *os.SyscallError
 
 			if os.IsTimeout(err) {
-				logger().Debug("\n\n\nRequest timeout, retrying...\n\n\n", "attempt", i+1, "")
+				logger().Infow("\n\n\nRequest timeout, retrying...\n\n\n", "attempt", i+1, "")
 				time.Sleep(waitBeforeRetry)
 				waitBeforeRetry = waitBeforeRetry * 2
 				continue
@@ -85,7 +85,7 @@ func (r *ClientRetryer) RoundTrip(req *http.Request) (*http.Response, error) {
 
 			if errors.As(err, &sysErr) {
 				if sysErr.Err == syscall.ECONNRESET {
-					logger().Debug("\n\n\nConn reset by peer! THIS IS A SERVER PROBLEM!!!\n\n\n", "attempt", i+1, "")
+					logger().Infow("\n\n\nConn reset by peer! THIS IS A SERVER PROBLEM!!!\n\n\n", "attempt", i+1, "")
 					time.Sleep(waitBeforeRetry)
 					waitBeforeRetry = waitBeforeRetry * 2
 					continue
@@ -94,7 +94,7 @@ func (r *ClientRetryer) RoundTrip(req *http.Request) (*http.Response, error) {
 			return res, err
 		}
 		if res.StatusCode >= 500 {
-			logger().Debug("\n\n\nServer responded with fail, retrying...\n\n\n", "attempt", i+1, "status code", res.StatusCode, "")
+			logger().Infow("\n\n\nServer responded with fail, retrying...\n\n\n", "attempt", i+1, "status code", res.StatusCode, "")
 			time.Sleep(waitBeforeRetry)
 			waitBeforeRetry = waitBeforeRetry * 2
 			continue

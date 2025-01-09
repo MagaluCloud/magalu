@@ -29,22 +29,22 @@ func (r *DataSourceBsVolume) Metadata(_ context.Context, req datasource.Metadata
 }
 
 type bsVolumeResourceModel struct {
-	ID               types.String  `tfsdk:"id"`
-	Name             types.String  `tfsdk:"name"`
-	AvailabilityZone types.String  `tfsdk:"availability_zones"`
-	UpdatedAt        types.String  `tfsdk:"updated_at"`
-	CreatedAt        types.String  `tfsdk:"created_at"`
-	Size             types.Int64   `tfsdk:"size"`
-	Type             *bsVolumeType `tfsdk:"type"`
-	State            types.String  `tfsdk:"state"`
-	Status           types.String  `tfsdk:"status"`
-}
-
-type bsVolumeType struct {
-	DiskType types.String `tfsdk:"disk_type"`
-	Id       types.String `tfsdk:"id"`
-	Name     types.String `tfsdk:"name"`
-	Status   types.String `tfsdk:"status"`
+	ID                   types.String `tfsdk:"id"`
+	Name                 types.String `tfsdk:"name"`
+	AvailabilityZone     types.String `tfsdk:"availability_zone"`
+	UpdatedAt            types.String `tfsdk:"updated_at"`
+	CreatedAt            types.String `tfsdk:"created_at"`
+	Size                 types.Int64  `tfsdk:"size"`
+	State                types.String `tfsdk:"state"`
+	Status               types.String `tfsdk:"status"`
+	TypeName             types.String `tfsdk:"type_name"`
+	DiskType             types.String `tfsdk:"disk_type"`
+	TypeId               types.String `tfsdk:"type_id"`
+	TypeStatus           types.String `tfsdk:"type_status"`
+	AttachedAt           types.String `tfsdk:"attached_at"`
+	AttachedDevice       types.String `tfsdk:"attached_device"`
+	AttachedInstanceId   types.String `tfsdk:"attached_instance_id"`
+	AttachedInstanceName types.String `tfsdk:"attached_instance_name"`
 }
 
 func (r *DataSourceBsVolume) Configure(ctx context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
@@ -66,83 +66,88 @@ func (r *DataSourceBsVolume) Configure(ctx context.Context, req datasource.Confi
 	r.bsVolumes = sdkBlockStorageVolumes.NewService(ctx, r.sdkClient)
 }
 
-func GetBsVolumeAttributes(idRequired bool) map[string]schema.Attribute {
-	return map[string]schema.Attribute{
-		"id": schema.StringAttribute{
-			Description: "The unique identifier of the volume snapshot.",
-			Required:    idRequired,
-			Computed:    !idRequired,
-		},
-		"name": schema.StringAttribute{
-			Description: "The name of the block storage.",
-			Computed:    true,
-		},
-		"availability_zone": schema.StringAttribute{
-			Description: "The availability zones where the block storage is available.",
-			Computed:    true,
-		},
-		"size": schema.Int64Attribute{
-			Description: "The size of the block storage in GB.",
-			Computed:    true,
-		},
-		"updated_at": schema.StringAttribute{
-			Description: "The timestamp when the block storage was last updated.",
-			Computed:    true,
-		},
-		"created_at": schema.StringAttribute{
-			Description: "The timestamp when the block storage was created.",
-			Computed:    true,
-		},
-		"state": schema.StringAttribute{
-			Description: "The current state of the virtual machine instance.",
-			Computed:    true,
-		},
-		"status": schema.StringAttribute{
-			Description: "The status of the virtual machine instance.",
-			Computed:    true,
-		},
-		"type": schema.SingleNestedAttribute{
-			Computed:    true,
-			Description: "The type of the block storage.",
-			Attributes: map[string]schema.Attribute{
-				"name": schema.StringAttribute{
-					Description: "The name of the block storage type.",
-					Computed:    true,
-				},
-				"disk_type": schema.StringAttribute{
-					Description: "The disk type of the block storage.",
-					Computed:    true,
-				},
-				"id": schema.StringAttribute{
-					Description: "The unique identifier of the block storage type.",
-					Computed:    true,
-				},
-				"status": schema.StringAttribute{
-					Description: "The status of the block storage type.",
-					Computed:    true,
-				},
+func (r *DataSourceBsVolume) Schema(_ context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
+	resp.Schema = schema.Schema{
+		Description: "Block storage volume",
+		Attributes: map[string]schema.Attribute{
+			"id": schema.StringAttribute{
+				Description: "The unique identifier of the volume snapshot.",
+				Required:    true,
+			},
+			"name": schema.StringAttribute{
+				Description: "The name of the block storage.",
+				Computed:    true,
+			},
+			"availability_zone": schema.StringAttribute{
+				Description: "The availability zones where the block storage is available.",
+				Computed:    true,
+			},
+			"size": schema.Int64Attribute{
+				Description: "The size of the block storage in GB.",
+				Computed:    true,
+			},
+			"updated_at": schema.StringAttribute{
+				Description: "The timestamp when the block storage was last updated.",
+				Computed:    true,
+			},
+			"created_at": schema.StringAttribute{
+				Description: "The timestamp when the block storage was created.",
+				Computed:    true,
+			},
+			"state": schema.StringAttribute{
+				Description: "The current state of the virtual machine instance.",
+				Computed:    true,
+			},
+			"status": schema.StringAttribute{
+				Description: "The status of the virtual machine instance.",
+				Computed:    true,
+			},
+			"type_name": schema.StringAttribute{
+				Description: "The name of the block storage type.",
+				Computed:    true,
+			},
+			"disk_type": schema.StringAttribute{
+				Description: "The disk type of the block storage.",
+				Computed:    true,
+			},
+			"type_id": schema.StringAttribute{
+				Description: "The unique identifier of the block storage type.",
+				Computed:    true,
+			},
+			"type_status": schema.StringAttribute{
+				Description: "The status of the block storage type.",
+				Computed:    true,
+			},
+			"attached_at": schema.StringAttribute{
+				Description: "The timestamp when the block storage was attached.",
+				Computed:    true,
+			},
+			"attached_device": schema.StringAttribute{
+				Description: "The device path of the attachment.",
+				Computed:    true,
+			},
+			"attached_instance_id": schema.StringAttribute{
+				Description: "The unique identifier of the instance.",
+				Computed:    true,
+			},
+			"attached_instance_name": schema.StringAttribute{
+				Description: "The name of the instance.",
+				Computed:    true,
 			},
 		},
 	}
 }
 
-func (r *DataSourceBsVolume) Schema(_ context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
-	resp.Schema = schema.Schema{
-		Description:         "Block storage volumes",
-		MarkdownDescription: "Block storage volumes",
-		Attributes:          GetBsVolumeAttributes(true),
-	}
-}
-
 func (r *DataSourceBsVolume) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
 	var data bsVolumeResourceModel
-
 	resp.Diagnostics.Append(req.Config.Get(ctx, &data)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	sdkOutput, err := r.bsVolumes.GetContext(ctx, sdkBlockStorageVolumes.GetParameters{Id: data.ID.ValueString()},
+	sdkOutput, err := r.bsVolumes.GetContext(ctx, sdkBlockStorageVolumes.GetParameters{
+		Id:     data.ID.ValueString(),
+		Expand: &sdkBlockStorageVolumes.GetParametersExpand{"volume_type", "attachment"}},
 		tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkBlockStorageVolumes.GetConfigs{}))
 	if err != nil {
 		resp.Diagnostics.AddError("Failed to get versions", err.Error())
@@ -155,14 +160,17 @@ func (r *DataSourceBsVolume) Read(ctx context.Context, req datasource.ReadReques
 	data.UpdatedAt = types.StringValue(sdkOutput.UpdatedAt)
 	data.CreatedAt = types.StringValue(sdkOutput.CreatedAt)
 	data.Size = types.Int64Value(int64(sdkOutput.Size))
-	data.Type = &bsVolumeType{
-		DiskType: types.StringPointerValue(sdkOutput.Type.DiskType),
-		Id:       types.StringPointerValue(sdkOutput.Type.Id),
-		Name:     types.StringPointerValue(sdkOutput.Type.Name),
-		Status:   types.StringPointerValue(sdkOutput.Type.Status),
-	}
+	data.TypeName = types.StringPointerValue(sdkOutput.Type.Name)
+	data.DiskType = types.StringPointerValue(sdkOutput.Type.DiskType)
+	data.TypeId = types.StringPointerValue(sdkOutput.Type.Id)
+	data.TypeStatus = types.StringPointerValue(sdkOutput.Type.Status)
 	data.State = types.StringValue(sdkOutput.State)
 	data.Status = types.StringValue(sdkOutput.Status)
-
+	if sdkOutput.Attachment != nil {
+		data.AttachedAt = types.StringValue(sdkOutput.Attachment.AttachedAt)
+		data.AttachedDevice = types.StringPointerValue(sdkOutput.Attachment.Device)
+		data.AttachedInstanceId = types.StringPointerValue(sdkOutput.Attachment.Instance.Id)
+		data.AttachedInstanceName = types.StringPointerValue(sdkOutput.Attachment.Instance.Name)
+	}
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }

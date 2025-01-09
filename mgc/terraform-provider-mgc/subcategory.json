@@ -9,8 +9,10 @@
     "network_*"
   ],
   "Kubernetes": [
-    "kubernetes_*",
-    "container_registry_registries.md"
+    "kubernetes_*"
+  ],
+  "Container Registry":[
+    "container_*"
   ],
   "Database": [
     "dbaas*"

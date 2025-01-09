@@ -20,6 +20,7 @@ Usage:
 - list         List all objects from a bucket
 - move         Moves one object from source to destination
 - move-dir     Moves objects from source to destination
+- object-lock  Object locking commands
 - presign      Generate a pre-signed URL for accessing an object
 - public-url   Get object public url
 - sync         Synchronizes a local path with a bucket
