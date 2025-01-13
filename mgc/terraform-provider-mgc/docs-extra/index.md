@@ -19,6 +19,7 @@ With the provider you can manage:
 - VPCs (subnets, security rules, public IPs)
 - Virtual Machines (instances, snapshots)
 - Kubernetes (clusters, nodepools)
+- Container Registry (registries)
 - DBaaS (instances, replications)
 - Block Storage (volumes, snapshots, VM attach)
 - Object Storage (Buckets)
