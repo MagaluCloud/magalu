@@ -1,9 +1,9 @@
 package transform
 
 import (
+	"github.com/MagaluCloud/magalu/mgc/core"
+	mgcSchemaPkg "github.com/MagaluCloud/magalu/mgc/core/schema"
 	"go.uber.org/zap"
-	"magalu.cloud/core"
-	mgcSchemaPkg "magalu.cloud/core/schema"
 )
 
 // Common pattern that checks existing specs, if they exist then call transformSpecs(),

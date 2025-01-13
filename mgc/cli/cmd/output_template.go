@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"magalu.cloud/core/utils"
+	"github.com/MagaluCloud/magalu/mgc/core/utils"
 )
 
 type templateOutputFormatter struct{}

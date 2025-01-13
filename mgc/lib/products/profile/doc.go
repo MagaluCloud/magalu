@@ -12,6 +12,6 @@ It allows users to manage their SSH keys, update personal information, and confi
 account-related preferences. This group is essential for maintaining secure access and
 personalizing the user experience within the system.
 
-import "magalu.cloud/lib/products/profile"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/profile"
 */
 package profile

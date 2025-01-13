@@ -1,12 +1,12 @@
 /*
-import "magalu.cloud/lib/products/auth/clients"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/auth/clients"
 */
 package clients
 
 import (
 	"context"
 
-	mgcClient "magalu.cloud/lib"
+	mgcClient "github.com/MagaluCloud/magalu/mgc/lib"
 )
 
 type service struct {

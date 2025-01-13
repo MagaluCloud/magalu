@@ -1,6 +1,6 @@
 package common
 
-import "magalu.cloud/core/config"
+import "github.com/MagaluCloud/magalu/mgc/core/config"
 
 type Config struct {
 	Workers   int    `json:"workers,omitempty" jsonschema:"description=Number of routines that spawn to do parallel operations within object_storage,default=5,minimum=1"`

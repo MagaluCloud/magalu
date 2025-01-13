@@ -3,7 +3,7 @@ package common
 import (
 	"context"
 
-	"magalu.cloud/core/pipeline"
+	"github.com/MagaluCloud/magalu/mgc/core/pipeline"
 )
 
 type Filters struct {

@@ -7,6 +7,6 @@ Package: subnetpools
 
 Version: 1.141.3
 
-import "magalu.cloud/lib/products/network/subnetpools"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/network/subnetpools"
 */
 package subnetpools

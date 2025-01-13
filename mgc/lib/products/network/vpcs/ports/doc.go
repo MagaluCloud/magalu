@@ -11,6 +11,6 @@ ports
 
 Version: 1.141.3
 
-import "magalu.cloud/lib/products/network/vpcs/ports"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/network/vpcs/ports"
 */
 package ports

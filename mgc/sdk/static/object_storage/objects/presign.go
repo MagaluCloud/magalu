@@ -7,11 +7,11 @@ import (
 	"strings"
 	"time"
 
-	"magalu.cloud/core"
-	mgcAuthPkg "magalu.cloud/core/auth"
-	mgcSchemaPkg "magalu.cloud/core/schema"
-	"magalu.cloud/core/utils"
-	"magalu.cloud/sdk/static/object_storage/common"
+	"github.com/MagaluCloud/magalu/mgc/core"
+	mgcAuthPkg "github.com/MagaluCloud/magalu/mgc/core/auth"
+	mgcSchemaPkg "github.com/MagaluCloud/magalu/mgc/core/schema"
+	"github.com/MagaluCloud/magalu/mgc/core/utils"
+	"github.com/MagaluCloud/magalu/mgc/sdk/static/object_storage/common"
 )
 
 type presignObjectParams struct {

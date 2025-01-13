@@ -10,15 +10,15 @@ Executor: move-dir
 Moves objects from a source to a destination.
 They can be either local or remote but not both local (Local -> Remote, Remote -> Local, Remote -> Remote)
 
-import "magalu.cloud/lib/products/object_storage/objects"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/object_storage/objects"
 */
 package objects
 
 import (
 	"context"
 
-	mgcCore "magalu.cloud/core"
-	mgcHelpers "magalu.cloud/lib/helpers"
+	mgcCore "github.com/MagaluCloud/magalu/mgc/core"
+	mgcHelpers "github.com/MagaluCloud/magalu/mgc/lib/helpers"
 )
 
 type MoveDirParameters struct {

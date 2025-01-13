@@ -11,15 +11,15 @@ Retrieves a list of machine types allowed for the current tenant which is logged
 
 Version: v1
 
-import "magalu.cloud/lib/products/virtual_machine/machine_types"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/virtual_machine/machine_types"
 */
 package machineTypes
 
 import (
 	"context"
 
-	mgcCore "magalu.cloud/core"
-	mgcHelpers "magalu.cloud/lib/helpers"
+	mgcCore "github.com/MagaluCloud/magalu/mgc/core"
+	mgcHelpers "github.com/MagaluCloud/magalu/mgc/lib/helpers"
 )
 
 type ListParameters struct {

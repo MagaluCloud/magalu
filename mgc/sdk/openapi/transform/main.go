@@ -3,8 +3,8 @@ package transform
 import (
 	"fmt"
 
+	"github.com/MagaluCloud/magalu/mgc/core"
 	"go.uber.org/zap"
-	"magalu.cloud/core"
 )
 
 func getTransformKey(extensionPrefix *string) string {

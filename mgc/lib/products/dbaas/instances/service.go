@@ -1,12 +1,12 @@
 /*
-import "magalu.cloud/lib/products/dbaas/instances"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/dbaas/instances"
 */
 package instances
 
 import (
 	"context"
 
-	mgcClient "magalu.cloud/lib"
+	mgcClient "github.com/MagaluCloud/magalu/mgc/lib"
 )
 
 type service struct {

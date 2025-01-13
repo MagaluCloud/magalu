@@ -4,9 +4,9 @@ import (
 	"context"
 	"fmt"
 
-	"magalu.cloud/core"
-	mgcAuthPkg "magalu.cloud/core/auth"
-	"magalu.cloud/core/utils"
+	"github.com/MagaluCloud/magalu/mgc/core"
+	mgcAuthPkg "github.com/MagaluCloud/magalu/mgc/core/auth"
+	"github.com/MagaluCloud/magalu/mgc/core/utils"
 )
 
 type accessTokenParameters struct {

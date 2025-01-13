@@ -5,15 +5,15 @@ Executor: current
 
 # Get the current Object Storage credentials
 
-import "magalu.cloud/lib/products/object_storage/api_key"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/object_storage/api_key"
 */
 package apiKey
 
 import (
 	"context"
 
-	mgcCore "magalu.cloud/core"
-	mgcHelpers "magalu.cloud/lib/helpers"
+	mgcCore "github.com/MagaluCloud/magalu/mgc/core"
+	mgcHelpers "github.com/MagaluCloud/magalu/mgc/lib/helpers"
 )
 
 type CurrentResult struct {

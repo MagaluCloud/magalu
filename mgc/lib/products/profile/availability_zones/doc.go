@@ -7,6 +7,6 @@ Package: availability_zones
 
 Version: 0.1.0
 
-import "magalu.cloud/lib/products/profile/availability_zones"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/profile/availability_zones"
 */
 package availabilityZones

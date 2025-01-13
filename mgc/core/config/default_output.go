@@ -1,6 +1,6 @@
 package config
 
-import mgcSchemaPkg "magalu.cloud/core/schema"
+import mgcSchemaPkg "github.com/MagaluCloud/magalu/mgc/core/schema"
 
 func defaultOutputSchema() *mgcSchemaPkg.Schema {
 	s := mgcSchemaPkg.NewStringSchema()

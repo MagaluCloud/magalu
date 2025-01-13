@@ -12,7 +12,7 @@ import (
 
 	"github.com/spf13/afero"
 
-	"magalu.cloud/core/utils"
+	"github.com/MagaluCloud/magalu/mgc/core/utils"
 )
 
 type ProfileManager struct {
@@ -22,7 +22,7 @@ type ProfileManager struct {
 
 type contextKey string
 
-var profileKey contextKey = "magalu.cloud/core/Profile"
+var profileKey contextKey = "github.com/MagaluCloud/magalu/mgc/core/Profile"
 
 func NewContext(parentCtx context.Context, profile *ProfileManager) context.Context {
 	return context.WithValue(parentCtx, profileKey, profile)

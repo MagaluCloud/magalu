@@ -4,8 +4,8 @@ import (
 	"context"
 	"testing"
 
+	"github.com/MagaluCloud/magalu/mgc/core/pipeline"
 	"golang.org/x/exp/constraints"
-	"magalu.cloud/core/pipeline"
 )
 
 type EvenFilter[T constraints.Integer] struct{}

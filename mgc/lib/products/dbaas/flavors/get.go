@@ -12,15 +12,15 @@ Returns an instance type detail. It is recommended to update your integration to
 
 Version: 1.34.1
 
-import "magalu.cloud/lib/products/dbaas/flavors"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/dbaas/flavors"
 */
 package flavors
 
 import (
 	"context"
 
-	mgcCore "magalu.cloud/core"
-	mgcHelpers "magalu.cloud/lib/helpers"
+	mgcCore "github.com/MagaluCloud/magalu/mgc/core"
+	mgcHelpers "github.com/MagaluCloud/magalu/mgc/lib/helpers"
 )
 
 type GetParameters struct {

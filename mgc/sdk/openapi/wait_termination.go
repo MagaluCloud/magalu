@@ -3,8 +3,8 @@ package openapi
 import (
 	"fmt"
 
-	"magalu.cloud/core"
-	"magalu.cloud/core/utils"
+	"github.com/MagaluCloud/magalu/mgc/core"
+	"github.com/MagaluCloud/magalu/mgc/core/utils"
 )
 
 func getDocument(result core.ResultWithValue) any {

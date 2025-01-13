@@ -11,15 +11,15 @@ Create a Port with provided vpc_id and x-tenant-id. You can provide a list of se
 
 Version: 1.141.3
 
-import "magalu.cloud/lib/products/network/vpcs/ports"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/network/vpcs/ports"
 */
 package ports
 
 import (
 	"context"
 
-	mgcCore "magalu.cloud/core"
-	mgcHelpers "magalu.cloud/lib/helpers"
+	mgcCore "github.com/MagaluCloud/magalu/mgc/core"
+	mgcHelpers "github.com/MagaluCloud/magalu/mgc/lib/helpers"
 )
 
 type CreateParameters struct {

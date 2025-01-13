@@ -4,9 +4,9 @@ import (
 	"context"
 	"fmt"
 
-	"magalu.cloud/core"
-	mgcConfigPkg "magalu.cloud/core/config"
-	"magalu.cloud/core/utils"
+	"github.com/MagaluCloud/magalu/mgc/core"
+	mgcConfigPkg "github.com/MagaluCloud/magalu/mgc/core/config"
+	"github.com/MagaluCloud/magalu/mgc/core/utils"
 )
 
 type configDeleteParams struct {

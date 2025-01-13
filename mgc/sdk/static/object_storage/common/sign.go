@@ -14,7 +14,7 @@ import (
 
 	"slices"
 
-	"magalu.cloud/core"
+	"github.com/MagaluCloud/magalu/mgc/core"
 )
 
 type HeaderMap = map[string]any

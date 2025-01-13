@@ -1,8 +1,8 @@
 package client
 
 import (
-	mgcUtils "magalu.cloud/core/utils"
-	mgcSdk "magalu.cloud/sdk"
+	mgcUtils "github.com/MagaluCloud/magalu/mgc/core/utils"
+	mgcSdk "github.com/MagaluCloud/magalu/mgc/sdk"
 )
 
 type Client struct {

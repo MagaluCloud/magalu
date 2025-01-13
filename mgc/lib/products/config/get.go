@@ -11,15 +11,15 @@ Get a specific Config value that has been previously set. If there's an env vari
 matching the key (in uppercase and with the 'MGC_' prefix), it'll be retreived.
 Otherwise, the value will be searched for in the YAML file
 
-import "magalu.cloud/lib/products/config"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/config"
 */
 package config
 
 import (
 	"context"
 
-	mgcCore "magalu.cloud/core"
-	mgcHelpers "magalu.cloud/lib/helpers"
+	mgcCore "github.com/MagaluCloud/magalu/mgc/core"
+	mgcHelpers "github.com/MagaluCloud/magalu/mgc/lib/helpers"
 )
 
 type GetParameters struct {

@@ -7,11 +7,11 @@ import (
 	"net/http"
 	"strings"
 
-	"magalu.cloud/core"
-	mgcAuthPkg "magalu.cloud/core/auth"
-	mgcConfigPkg "magalu.cloud/core/config"
-	mgcHttpPkg "magalu.cloud/core/http"
-	"magalu.cloud/core/utils"
+	"github.com/MagaluCloud/magalu/mgc/core"
+	mgcAuthPkg "github.com/MagaluCloud/magalu/mgc/core/auth"
+	mgcConfigPkg "github.com/MagaluCloud/magalu/mgc/core/config"
+	mgcHttpPkg "github.com/MagaluCloud/magalu/mgc/core/http"
+	"github.com/MagaluCloud/magalu/mgc/core/utils"
 )
 
 type httpParams struct {

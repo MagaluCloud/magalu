@@ -6,11 +6,11 @@ import (
 	"log"
 	"slices"
 
+	"github.com/MagaluCloud/magalu/mgc/core"
+	mgcSdk "github.com/MagaluCloud/magalu/mgc/sdk"
 	"github.com/spf13/cobra"
 	"github.com/stoewer/go-strcase"
 	"gopkg.in/yaml.v2"
-	"magalu.cloud/core"
-	mgcSdk "magalu.cloud/sdk"
 )
 
 //go:embed alias.yml

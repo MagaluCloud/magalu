@@ -11,6 +11,6 @@ Package: block-storage
 
 Version: v1
 
-import "magalu.cloud/lib/products/block_storage"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/block_storage"
 */
 package blockStorage

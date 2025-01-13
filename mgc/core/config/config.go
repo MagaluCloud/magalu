@@ -7,8 +7,8 @@ import (
 	"reflect"
 	"strings"
 
-	"magalu.cloud/core"
-	"magalu.cloud/core/profile_manager"
+	"github.com/MagaluCloud/magalu/mgc/core"
+	"github.com/MagaluCloud/magalu/mgc/core/profile_manager"
 
 	"github.com/invopop/yaml"
 	"github.com/mitchellh/mapstructure"
@@ -40,7 +40,7 @@ const (
 // This prevents collisions with keys defined in other packages.
 type contextKey string
 
-var configKey contextKey = "magalu.cloud/core/Config"
+var configKey contextKey = "github.com/MagaluCloud/magalu/mgc/core/Config"
 
 func NewContext(parent context.Context, config *Config) context.Context {
 	return context.WithValue(parent, configKey, config)

@@ -7,6 +7,6 @@ Operations with machine types for instances.
 
 Version: v1
 
-import "magalu.cloud/lib/products/virtual_machine/machine_types"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/virtual_machine/machine_types"
 */
 package machineTypes

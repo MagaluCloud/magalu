@@ -10,8 +10,8 @@ import (
 
 	"maps"
 
+	"github.com/MagaluCloud/magalu/mgc/core/utils"
 	"github.com/getkin/kin-openapi/openapi3"
-	"magalu.cloud/core/utils"
 )
 
 const testPathRef = "/path/to/ref"

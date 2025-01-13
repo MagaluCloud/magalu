@@ -11,6 +11,6 @@ rules
 
 Version: 1.141.3
 
-import "magalu.cloud/lib/products/network/security_groups/rules"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/network/security_groups/rules"
 */
 package rules

@@ -1,12 +1,12 @@
 /*
-import "magalu.cloud/lib/products/block_storage/volumes"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/block_storage/volumes"
 */
 package volumes
 
 import (
 	"context"
 
-	mgcClient "magalu.cloud/lib"
+	mgcClient "github.com/MagaluCloud/magalu/mgc/lib"
 )
 
 type service struct {

@@ -11,15 +11,15 @@ Detach a Security Group to a Port with provided port_id, security_group_id, x-te
 
 Version: 1.141.3
 
-import "magalu.cloud/lib/products/network/ports"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/network/ports"
 */
 package ports
 
 import (
 	"context"
 
-	mgcCore "magalu.cloud/core"
-	mgcHelpers "magalu.cloud/lib/helpers"
+	mgcCore "github.com/MagaluCloud/magalu/mgc/core"
+	mgcHelpers "github.com/MagaluCloud/magalu/mgc/lib/helpers"
 )
 
 type DetachParameters struct {

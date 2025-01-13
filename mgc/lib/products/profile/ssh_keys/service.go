@@ -1,12 +1,12 @@
 /*
-import "magalu.cloud/lib/products/profile/ssh_keys"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/profile/ssh_keys"
 */
 package sshKeys
 
 import (
 	"context"
 
-	mgcClient "magalu.cloud/lib"
+	mgcClient "github.com/MagaluCloud/magalu/mgc/lib"
 )
 
 type service struct {

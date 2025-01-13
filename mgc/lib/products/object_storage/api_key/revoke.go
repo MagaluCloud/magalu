@@ -5,15 +5,15 @@ Executor: revoke
 
 # Revoke credentials used in Object Storage requests
 
-import "magalu.cloud/lib/products/object_storage/api_key"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/object_storage/api_key"
 */
 package apiKey
 
 import (
 	"context"
 
-	mgcCore "magalu.cloud/core"
-	mgcHelpers "magalu.cloud/lib/helpers"
+	mgcCore "github.com/MagaluCloud/magalu/mgc/core"
+	mgcHelpers "github.com/MagaluCloud/magalu/mgc/lib/helpers"
 )
 
 type RevokeParameters struct {

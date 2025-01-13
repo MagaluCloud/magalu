@@ -21,15 +21,15 @@ than the original instance.
 
 Version: v1
 
-import "magalu.cloud/lib/products/virtual_machine/snapshots"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/virtual_machine/snapshots"
 */
 package snapshots
 
 import (
 	"context"
 
-	mgcCore "magalu.cloud/core"
-	mgcHelpers "magalu.cloud/lib/helpers"
+	mgcCore "github.com/MagaluCloud/magalu/mgc/core"
+	mgcHelpers "github.com/MagaluCloud/magalu/mgc/lib/helpers"
 )
 
 type RestoreParameters struct {

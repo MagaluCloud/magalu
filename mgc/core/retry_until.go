@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"time"
 
-	"magalu.cloud/core/utils"
+	"github.com/MagaluCloud/magalu/mgc/core/utils"
 )
 
 var ErrorResultHasNoValue = errors.New("result has no value")

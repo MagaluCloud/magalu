@@ -5,13 +5,13 @@ import (
 	"reflect"
 	"strings"
 
+	"github.com/MagaluCloud/magalu/mgc/core/utils"
 	"github.com/getkin/kin-openapi/openapi3"
 	"github.com/go-openapi/jsonpointer"
 	"github.com/iancoleman/orderedmap"
 	"github.com/invopop/jsonschema"
 	"go.uber.org/zap"
 	"golang.org/x/exp/constraints"
-	"magalu.cloud/core/utils"
 )
 
 var convertLogger = utils.NewLazyLoader(func() *zap.SugaredLogger {

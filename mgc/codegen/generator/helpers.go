@@ -5,7 +5,7 @@ import (
 	"path"
 	"text/template"
 
-	mgcSdkPkg "magalu.cloud/sdk"
+	mgcSdkPkg "github.com/MagaluCloud/magalu/mgc/sdk"
 )
 
 type helpersTemplateData struct {

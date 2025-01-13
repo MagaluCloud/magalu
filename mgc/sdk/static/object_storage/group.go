@@ -1,11 +1,11 @@
 package object_storage
 
 import (
-	"magalu.cloud/core"
-	"magalu.cloud/core/utils"
-	"magalu.cloud/sdk/static/object_storage/api_key"
-	"magalu.cloud/sdk/static/object_storage/buckets"
-	"magalu.cloud/sdk/static/object_storage/objects"
+	"github.com/MagaluCloud/magalu/mgc/core"
+	"github.com/MagaluCloud/magalu/mgc/core/utils"
+	"github.com/MagaluCloud/magalu/mgc/sdk/static/object_storage/api_key"
+	"github.com/MagaluCloud/magalu/mgc/sdk/static/object_storage/buckets"
+	"github.com/MagaluCloud/magalu/mgc/sdk/static/object_storage/objects"
 )
 
 var GetGroup = utils.NewLazyLoader(func() core.Grouper {

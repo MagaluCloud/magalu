@@ -1,12 +1,12 @@
 /*
-import "magalu.cloud/lib/products/kubernetes/cluster"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/kubernetes/cluster"
 */
 package cluster
 
 import (
 	"context"
 
-	mgcClient "magalu.cloud/lib"
+	mgcClient "github.com/MagaluCloud/magalu/mgc/lib"
 )
 
 type service struct {

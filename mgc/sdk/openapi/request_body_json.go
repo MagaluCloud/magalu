@@ -8,10 +8,10 @@ import (
 
 	"slices"
 
+	"github.com/MagaluCloud/magalu/mgc/core"
+	"github.com/MagaluCloud/magalu/mgc/core/utils"
 	"github.com/getkin/kin-openapi/openapi3"
 	"go.uber.org/zap"
-	"magalu.cloud/core"
-	"magalu.cloud/core/utils"
 )
 
 type requestBodyJSON struct {

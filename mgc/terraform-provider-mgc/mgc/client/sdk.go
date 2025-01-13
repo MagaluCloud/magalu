@@ -3,12 +3,12 @@ package client
 import (
 	"fmt"
 
+	"github.com/MagaluCloud/magalu/mgc/terraform-provider-mgc/mgc/tfutil"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
-	"magalu.cloud/terraform-provider-mgc/mgc/tfutil"
 
-	mgcSdk "magalu.cloud/lib"
-	"magalu.cloud/sdk"
+	mgcSdk "github.com/MagaluCloud/magalu/mgc/lib"
+	"github.com/MagaluCloud/magalu/mgc/sdk"
 )
 
 type SDKFrom interface {

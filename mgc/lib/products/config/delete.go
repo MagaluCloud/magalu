@@ -10,15 +10,15 @@ Delete/unset a Config value that had been previously set
 Delete/unset a Config value that had been previously set. This does not
 affect the environment variables
 
-import "magalu.cloud/lib/products/config"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/config"
 */
 package config
 
 import (
 	"context"
 
-	mgcCore "magalu.cloud/core"
-	mgcHelpers "magalu.cloud/lib/helpers"
+	mgcCore "github.com/MagaluCloud/magalu/mgc/core"
+	mgcHelpers "github.com/MagaluCloud/magalu/mgc/lib/helpers"
 )
 
 type DeleteParameters struct {

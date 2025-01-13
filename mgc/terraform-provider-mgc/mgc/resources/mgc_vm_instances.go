@@ -16,11 +16,11 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 
+	mgcSdk "github.com/MagaluCloud/magalu/mgc/lib"
+	sdkVmInstances "github.com/MagaluCloud/magalu/mgc/lib/products/virtual_machine/instances"
+	"github.com/MagaluCloud/magalu/mgc/terraform-provider-mgc/mgc/client"
+	tfutil "github.com/MagaluCloud/magalu/mgc/terraform-provider-mgc/mgc/tfutil"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	mgcSdk "magalu.cloud/lib"
-	sdkVmInstances "magalu.cloud/lib/products/virtual_machine/instances"
-	"magalu.cloud/terraform-provider-mgc/mgc/client"
-	tfutil "magalu.cloud/terraform-provider-mgc/mgc/tfutil"
 )
 
 const (

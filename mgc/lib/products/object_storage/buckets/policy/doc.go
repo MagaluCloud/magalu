@@ -5,6 +5,6 @@ Package: policy
 
 # Policy-related commands
 
-import "magalu.cloud/lib/products/object_storage/buckets/policy"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/object_storage/buckets/policy"
 */
 package policy

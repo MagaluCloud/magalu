@@ -7,6 +7,6 @@ Package: vpcs
 
 Version: 1.141.3
 
-import "magalu.cloud/lib/products/network/vpcs"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/network/vpcs"
 */
 package vpcs

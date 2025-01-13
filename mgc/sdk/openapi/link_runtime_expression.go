@@ -6,10 +6,10 @@ import (
 	"strings"
 	"text/scanner"
 
+	"github.com/MagaluCloud/magalu/mgc/core"
+	mgcHttpPkg "github.com/MagaluCloud/magalu/mgc/core/http"
 	"github.com/getkin/kin-openapi/openapi3"
 	"github.com/go-openapi/jsonpointer"
-	"magalu.cloud/core"
-	mgcHttpPkg "magalu.cloud/core/http"
 )
 
 func getRemainder(s *scanner.Scanner) string {

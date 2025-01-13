@@ -4,8 +4,8 @@ import (
 	"errors"
 	"testing"
 
+	"github.com/MagaluCloud/magalu/mgc/core/utils"
 	"github.com/getkin/kin-openapi/openapi3"
-	"magalu.cloud/core/utils"
 )
 
 func Test_CompareJsonSchemas(t *testing.T) {

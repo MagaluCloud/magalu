@@ -6,8 +6,8 @@ import (
 	"reflect"
 	"regexp"
 
+	"github.com/MagaluCloud/magalu/mgc/core"
 	"github.com/google/uuid"
-	"magalu.cloud/core"
 )
 
 type AccessControlPolicy struct {

@@ -8,9 +8,9 @@ import (
 	"slices"
 	"strings"
 
-	"magalu.cloud/cli/ui/progress_bar"
-	mgcLoggerPkg "magalu.cloud/core/logger"
-	mgcSdk "magalu.cloud/sdk"
+	"github.com/MagaluCloud/magalu/mgc/cli/ui/progress_bar"
+	mgcLoggerPkg "github.com/MagaluCloud/magalu/mgc/core/logger"
+	mgcSdk "github.com/MagaluCloud/magalu/mgc/sdk"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"

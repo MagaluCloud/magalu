@@ -8,9 +8,9 @@ import (
 
 	"maps"
 
+	"github.com/MagaluCloud/magalu/mgc/core/utils"
 	"github.com/getkin/kin-openapi/openapi3"
 	"github.com/invopop/jsonschema"
-	"magalu.cloud/core/utils"
 )
 
 // NOTE: TODO: should we duplicate this, or find a more generic package?

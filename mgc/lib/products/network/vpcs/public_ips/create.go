@@ -11,15 +11,15 @@ Create async Public IP in a VPC with provided vpc_id and x_tenant_id
 
 Version: 1.141.3
 
-import "magalu.cloud/lib/products/network/vpcs/public_ips"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/network/vpcs/public_ips"
 */
 package publicIps
 
 import (
 	"context"
 
-	mgcCore "magalu.cloud/core"
-	mgcHelpers "magalu.cloud/lib/helpers"
+	mgcCore "github.com/MagaluCloud/magalu/mgc/core"
+	mgcHelpers "github.com/MagaluCloud/magalu/mgc/lib/helpers"
 )
 
 type CreateParameters struct {

@@ -7,8 +7,8 @@ import (
 	"sync"
 	"time"
 
+	"github.com/MagaluCloud/magalu/mgc/core/progress_report"
 	"github.com/jedib0t/go-pretty/v6/progress"
-	"magalu.cloud/core/progress_report"
 )
 
 func parseUnits(units progress_report.Units) progress.Units {

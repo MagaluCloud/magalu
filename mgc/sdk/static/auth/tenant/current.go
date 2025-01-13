@@ -4,10 +4,10 @@ import (
 	"context"
 	"fmt"
 
-	"magalu.cloud/core"
-	"magalu.cloud/core/auth"
-	mgcAuthPkg "magalu.cloud/core/auth"
-	"magalu.cloud/core/utils"
+	"github.com/MagaluCloud/magalu/mgc/core"
+	"github.com/MagaluCloud/magalu/mgc/core/auth"
+	mgcAuthPkg "github.com/MagaluCloud/magalu/mgc/core/auth"
+	"github.com/MagaluCloud/magalu/mgc/core/utils"
 )
 
 var getCurrent = utils.NewLazyLoader[core.Executor](func() core.Executor {

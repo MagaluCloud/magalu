@@ -1,8 +1,8 @@
 package config
 
 import (
+	"github.com/MagaluCloud/magalu/mgc/core/schema"
 	"github.com/invopop/jsonschema"
-	"magalu.cloud/core/schema"
 )
 
 var networkConfigSchema *schema.Schema

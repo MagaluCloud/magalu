@@ -3,10 +3,10 @@ package transform
 import (
 	"fmt"
 
+	"github.com/MagaluCloud/magalu/mgc/core"
+	mgcSchemaPkg "github.com/MagaluCloud/magalu/mgc/core/schema"
+	"github.com/MagaluCloud/magalu/mgc/core/utils"
 	"go.uber.org/zap"
-	"magalu.cloud/core"
-	mgcSchemaPkg "magalu.cloud/core/schema"
-	"magalu.cloud/core/utils"
 )
 
 func doTransformsToSchema(logger *zap.SugaredLogger, transformers []transformer, value *mgcSchemaPkg.COWSchema, transformationKey string) (result *mgcSchemaPkg.COWSchema, err error) {

@@ -3,10 +3,10 @@ package cmd
 import (
 	"fmt"
 
+	mgcLoggerPkg "github.com/MagaluCloud/magalu/mgc/core/logger"
+	mgcSdk "github.com/MagaluCloud/magalu/mgc/sdk"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
-	mgcLoggerPkg "magalu.cloud/core/logger"
-	mgcSdk "magalu.cloud/sdk"
 	"moul.io/zapfilter"
 )
 

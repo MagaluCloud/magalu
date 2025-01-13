@@ -7,6 +7,6 @@ Operations with volumes, including create, delete, extend, retype, list and othe
 
 Version: v1
 
-import "magalu.cloud/lib/products/block_storage/volumes"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/block_storage/volumes"
 */
 package volumes

@@ -5,6 +5,6 @@ Package: acl
 
 # ACL-related commands
 
-import "magalu.cloud/lib/products/object_storage/buckets/acl"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/object_storage/buckets/acl"
 */
 package acl

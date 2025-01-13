@@ -3,16 +3,16 @@ package resources
 import (
 	"context"
 
+	sdkSSHKeys "github.com/MagaluCloud/magalu/mgc/lib/products/profile/ssh_keys"
+	"github.com/MagaluCloud/magalu/mgc/terraform-provider-mgc/mgc/client"
+	tfutil "github.com/MagaluCloud/magalu/mgc/terraform-provider-mgc/mgc/tfutil"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	sdkSSHKeys "magalu.cloud/lib/products/profile/ssh_keys"
-	"magalu.cloud/terraform-provider-mgc/mgc/client"
-	tfutil "magalu.cloud/terraform-provider-mgc/mgc/tfutil"
 
-	mgcSdk "magalu.cloud/lib"
+	mgcSdk "github.com/MagaluCloud/magalu/mgc/lib"
 )
 
 var (

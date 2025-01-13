@@ -5,11 +5,11 @@ import (
 	"fmt"
 	"net/http"
 
-	"magalu.cloud/core"
-	mgcHttpPkg "magalu.cloud/core/http"
-	"magalu.cloud/core/utils"
+	"github.com/MagaluCloud/magalu/mgc/core"
+	mgcHttpPkg "github.com/MagaluCloud/magalu/mgc/core/http"
+	"github.com/MagaluCloud/magalu/mgc/core/utils"
 
-	mgcAuthPkg "magalu.cloud/core/auth"
+	mgcAuthPkg "github.com/MagaluCloud/magalu/mgc/core/auth"
 )
 
 type revokeParams struct {

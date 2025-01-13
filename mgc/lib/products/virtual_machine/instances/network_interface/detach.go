@@ -11,15 +11,15 @@ Detach a non primary network interface from an instance.
 
 Version: v1
 
-import "magalu.cloud/lib/products/virtual_machine/instances/network_interface"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/virtual_machine/instances/network_interface"
 */
 package networkInterface
 
 import (
 	"context"
 
-	mgcCore "magalu.cloud/core"
-	mgcHelpers "magalu.cloud/lib/helpers"
+	mgcCore "github.com/MagaluCloud/magalu/mgc/core"
+	mgcHelpers "github.com/MagaluCloud/magalu/mgc/lib/helpers"
 )
 
 type DetachParameters struct {

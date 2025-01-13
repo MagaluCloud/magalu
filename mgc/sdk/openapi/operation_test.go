@@ -6,11 +6,11 @@ import (
 	"net/url"
 	"testing"
 
+	"github.com/MagaluCloud/magalu/mgc/core"
+	"github.com/MagaluCloud/magalu/mgc/core/auth"
 	"github.com/getkin/kin-openapi/openapi3"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
-	"magalu.cloud/core"
-	"magalu.cloud/core/auth"
 )
 
 type mockAuth struct {

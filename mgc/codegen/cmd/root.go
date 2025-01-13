@@ -6,11 +6,11 @@ import (
 	"path"
 	"path/filepath"
 
+	"github.com/MagaluCloud/magalu/mgc/codegen/generator"
+	"github.com/MagaluCloud/magalu/mgc/codegen/ui"
+	mgcSdkPkg "github.com/MagaluCloud/magalu/mgc/sdk"
 	"github.com/spf13/afero"
 	"github.com/spf13/cobra"
-	"magalu.cloud/codegen/generator"
-	"magalu.cloud/codegen/ui"
-	mgcSdkPkg "magalu.cloud/sdk"
 )
 
 func NewRoot() (rootCmd *cobra.Command) {

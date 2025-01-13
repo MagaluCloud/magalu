@@ -1,7 +1,7 @@
 package schema_flags
 
 import (
-	mgcLoggerPkg "magalu.cloud/core/logger"
+	mgcLoggerPkg "github.com/MagaluCloud/magalu/mgc/core/logger"
 )
 
 var logger = mgcLoggerPkg.NewLazy[SchemaFlagValueDesc]()

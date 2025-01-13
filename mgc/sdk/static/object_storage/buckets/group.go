@@ -1,13 +1,13 @@
 package buckets
 
 import (
-	"magalu.cloud/core"
-	"magalu.cloud/core/utils"
-	"magalu.cloud/sdk/static/object_storage/buckets/acl"
-	"magalu.cloud/sdk/static/object_storage/buckets/label"
-	object_lock "magalu.cloud/sdk/static/object_storage/buckets/object-lock"
-	"magalu.cloud/sdk/static/object_storage/buckets/policy"
-	"magalu.cloud/sdk/static/object_storage/buckets/versioning"
+	"github.com/MagaluCloud/magalu/mgc/core"
+	"github.com/MagaluCloud/magalu/mgc/core/utils"
+	"github.com/MagaluCloud/magalu/mgc/sdk/static/object_storage/buckets/acl"
+	"github.com/MagaluCloud/magalu/mgc/sdk/static/object_storage/buckets/label"
+	object_lock "github.com/MagaluCloud/magalu/mgc/sdk/static/object_storage/buckets/object-lock"
+	"github.com/MagaluCloud/magalu/mgc/sdk/static/object_storage/buckets/policy"
+	"github.com/MagaluCloud/magalu/mgc/sdk/static/object_storage/buckets/versioning"
 )
 
 var GetGroup = utils.NewLazyLoader[core.Grouper](func() core.Grouper {

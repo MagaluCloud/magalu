@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	mgcSchemaPkg "magalu.cloud/core/schema"
+	mgcSchemaPkg "github.com/MagaluCloud/magalu/mgc/core/schema"
 )
 
 func GetAbsSystemURI(uri mgcSchemaPkg.URI) (mgcSchemaPkg.URI, error) {

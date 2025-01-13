@@ -5,12 +5,12 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/MagaluCloud/magalu/mgc/core"
+	"github.com/MagaluCloud/magalu/mgc/core/utils"
+	"github.com/MagaluCloud/magalu/mgc/sdk/static/object_storage/buckets/versioning"
+	"github.com/MagaluCloud/magalu/mgc/sdk/static/object_storage/common"
 	bws "github.com/geffersonFerraz/brazilian-words-sorter"
 	"go.uber.org/zap"
-	"magalu.cloud/core"
-	"magalu.cloud/core/utils"
-	"magalu.cloud/sdk/static/object_storage/buckets/versioning"
-	"magalu.cloud/sdk/static/object_storage/common"
 )
 
 var createLogger = utils.NewLazyLoader(func() *zap.SugaredLogger {

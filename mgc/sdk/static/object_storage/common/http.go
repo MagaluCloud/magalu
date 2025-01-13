@@ -9,9 +9,9 @@ import (
 	"net/http"
 	"strings"
 
-	mgcHttpPkg "magalu.cloud/core/http"
-	"magalu.cloud/core/utils"
-	"magalu.cloud/core/xml"
+	mgcHttpPkg "github.com/MagaluCloud/magalu/mgc/core/http"
+	"github.com/MagaluCloud/magalu/mgc/core/utils"
+	"github.com/MagaluCloud/magalu/mgc/core/xml"
 )
 
 type XMLError struct {

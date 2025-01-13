@@ -1,8 +1,8 @@
 package schema
 
 import (
+	"github.com/MagaluCloud/magalu/mgc/core/utils"
 	"github.com/getkin/kin-openapi/openapi3"
-	"magalu.cloud/core/utils"
 )
 
 // NOTE: COW/COWContainer/COWContainerOfCOW allows some nil receivers, so not doing explicit nil checks in here

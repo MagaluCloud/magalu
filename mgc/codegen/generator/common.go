@@ -1,7 +1,7 @@
 package generator
 
 import (
-	mgcSdkPkg "magalu.cloud/sdk"
+	mgcSdkPkg "github.com/MagaluCloud/magalu/mgc/sdk"
 )
 
 func generateCommon(p string, sdk *mgcSdkPkg.Sdk, ctx *GeneratorContext) (err error) {

@@ -9,15 +9,15 @@ Executor: list
 
 # This APIs Keys are from your account and can be used to authenticate in the Magalu Cloud
 
-import "magalu.cloud/lib/products/auth/api_key"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/auth/api_key"
 */
 package apiKey
 
 import (
 	"context"
 
-	mgcCore "magalu.cloud/core"
-	mgcHelpers "magalu.cloud/lib/helpers"
+	mgcCore "github.com/MagaluCloud/magalu/mgc/core"
+	mgcHelpers "github.com/MagaluCloud/magalu/mgc/lib/helpers"
 )
 
 type ListParameters struct {

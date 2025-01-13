@@ -6,7 +6,7 @@ import (
 
 	"github.com/invopop/jsonschema"
 
-	mgcSchemaPkg "magalu.cloud/core/schema"
+	mgcSchemaPkg "github.com/MagaluCloud/magalu/mgc/core/schema"
 )
 
 type BucketName string

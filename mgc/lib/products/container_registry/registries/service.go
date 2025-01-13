@@ -1,12 +1,12 @@
 /*
-import "magalu.cloud/lib/products/container_registry/registries"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/container_registry/registries"
 */
 package registries
 
 import (
 	"context"
 
-	mgcClient "magalu.cloud/lib"
+	mgcClient "github.com/MagaluCloud/magalu/mgc/lib"
 )
 
 type service struct {

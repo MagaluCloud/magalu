@@ -5,15 +5,15 @@ Executor: set
 
 # Set ACL information for the specified object
 
-import "magalu.cloud/lib/products/object_storage/objects/acl"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/object_storage/objects/acl"
 */
 package acl
 
 import (
 	"context"
 
-	mgcCore "magalu.cloud/core"
-	mgcHelpers "magalu.cloud/lib/helpers"
+	mgcCore "github.com/MagaluCloud/magalu/mgc/core"
+	mgcHelpers "github.com/MagaluCloud/magalu/mgc/lib/helpers"
 )
 
 type SetParameters struct {

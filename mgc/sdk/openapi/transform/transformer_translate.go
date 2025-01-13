@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"reflect"
 
-	mgcSchemaPkg "magalu.cloud/core/schema"
-	"magalu.cloud/core/utils"
+	mgcSchemaPkg "github.com/MagaluCloud/magalu/mgc/core/schema"
+	"github.com/MagaluCloud/magalu/mgc/core/utils"
 )
 
 type transformTranslateSpecItem struct {

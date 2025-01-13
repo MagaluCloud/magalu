@@ -7,15 +7,15 @@ List all availability zones.
 
 Version: 0.1.0
 
-import "magalu.cloud/lib/products/profile/availability_zones"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/profile/availability_zones"
 */
 package availabilityZones
 
 import (
 	"context"
 
-	mgcCore "magalu.cloud/core"
-	mgcHelpers "magalu.cloud/lib/helpers"
+	mgcCore "github.com/MagaluCloud/magalu/mgc/core"
+	mgcHelpers "github.com/MagaluCloud/magalu/mgc/lib/helpers"
 )
 
 type ListParameters struct {

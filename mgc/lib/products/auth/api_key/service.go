@@ -1,12 +1,12 @@
 /*
-import "magalu.cloud/lib/products/auth/api_key"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/auth/api_key"
 */
 package apiKey
 
 import (
 	"context"
 
-	mgcClient "magalu.cloud/lib"
+	mgcClient "github.com/MagaluCloud/magalu/mgc/lib"
 )
 
 type service struct {

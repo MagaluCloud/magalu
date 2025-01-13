@@ -7,6 +7,6 @@ Database replicas management.
 
 Version: 1.34.1
 
-import "magalu.cloud/lib/products/dbaas/replicas"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/dbaas/replicas"
 */
 package replicas

@@ -1,12 +1,12 @@
 /*
-import "magalu.cloud/lib/products/container_registry/credentials"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/container_registry/credentials"
 */
 package credentials
 
 import (
 	"context"
 
-	mgcClient "magalu.cloud/lib"
+	mgcClient "github.com/MagaluCloud/magalu/mgc/lib"
 )
 
 type service struct {

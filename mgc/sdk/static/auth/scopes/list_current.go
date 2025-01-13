@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"slices"
 
-	"magalu.cloud/core"
-	"magalu.cloud/core/auth"
-	"magalu.cloud/core/utils"
+	"github.com/MagaluCloud/magalu/mgc/core"
+	"github.com/MagaluCloud/magalu/mgc/core/auth"
+	"github.com/MagaluCloud/magalu/mgc/core/utils"
 )
 
 var getListCurrent = utils.NewLazyLoader(func() core.Executor {

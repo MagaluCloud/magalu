@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	mgcCore "magalu.cloud/core"
-	mgcClient "magalu.cloud/lib"
+	mgcCore "github.com/MagaluCloud/magalu/mgc/core"
+	mgcClient "github.com/MagaluCloud/magalu/mgc/lib"
 )
 
 func ResolveExecutor(

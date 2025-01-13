@@ -1,12 +1,12 @@
 /*
-import "magalu.cloud/lib/products/kubernetes/nodepool"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/kubernetes/nodepool"
 */
 package nodepool
 
 import (
 	"context"
 
-	mgcClient "magalu.cloud/lib"
+	mgcClient "github.com/MagaluCloud/magalu/mgc/lib"
 )
 
 type service struct {

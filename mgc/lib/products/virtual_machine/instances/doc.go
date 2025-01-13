@@ -7,6 +7,6 @@ Operations with instances, including create, delete, start, stop, reboot and oth
 
 Version: v1
 
-import "magalu.cloud/lib/products/virtual_machine/instances"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/virtual_machine/instances"
 */
 package instances

@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"io"
 
-	mgcCore "magalu.cloud/core"
-	mgcUtils "magalu.cloud/core/utils"
+	mgcCore "github.com/MagaluCloud/magalu/mgc/core"
+	mgcUtils "github.com/MagaluCloud/magalu/mgc/core/utils"
 )
 
 func ConvertResult[T any](r mgcCore.Result) (result T, err error) {

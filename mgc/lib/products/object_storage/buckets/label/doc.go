@@ -5,6 +5,6 @@ Package: label
 
 # Label-related commands
 
-import "magalu.cloud/lib/products/object_storage/buckets/label"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/object_storage/buckets/label"
 */
 package label

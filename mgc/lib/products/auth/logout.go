@@ -5,15 +5,15 @@ Executor: logout
 
 # Run logout
 
-import "magalu.cloud/lib/products/auth"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/auth"
 */
 package auth
 
 import (
 	"context"
 
-	mgcCore "magalu.cloud/core"
-	mgcHelpers "magalu.cloud/lib/helpers"
+	mgcCore "github.com/MagaluCloud/magalu/mgc/core"
+	mgcHelpers "github.com/MagaluCloud/magalu/mgc/lib/helpers"
 )
 
 type LogoutParameters struct {

@@ -8,6 +8,10 @@ import (
 	"strings"
 	"time"
 
+	mgcSdk "github.com/MagaluCloud/magalu/mgc/lib"
+	sdkCluster "github.com/MagaluCloud/magalu/mgc/lib/products/kubernetes/cluster"
+	"github.com/MagaluCloud/magalu/mgc/terraform-provider-mgc/mgc/client"
+	tfutil "github.com/MagaluCloud/magalu/mgc/terraform-provider-mgc/mgc/tfutil"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -19,10 +23,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
-	mgcSdk "magalu.cloud/lib"
-	sdkCluster "magalu.cloud/lib/products/kubernetes/cluster"
-	"magalu.cloud/terraform-provider-mgc/mgc/client"
-	tfutil "magalu.cloud/terraform-provider-mgc/mgc/tfutil"
 )
 
 const (

@@ -4,9 +4,9 @@ import (
 	"context"
 	"errors"
 
-	"magalu.cloud/core"
-	"magalu.cloud/core/profile_manager"
-	"magalu.cloud/core/utils"
+	"github.com/MagaluCloud/magalu/mgc/core"
+	"github.com/MagaluCloud/magalu/mgc/core/profile_manager"
+	"github.com/MagaluCloud/magalu/mgc/core/utils"
 )
 
 var getGet = utils.NewLazyLoader[core.Executor](func() core.Executor {

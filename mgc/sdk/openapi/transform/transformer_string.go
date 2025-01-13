@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strings"
 
+	mgcSchemaPkg "github.com/MagaluCloud/magalu/mgc/core/schema"
 	"github.com/stoewer/go-strcase"
-	mgcSchemaPkg "magalu.cloud/core/schema"
 )
 
 type transformerString struct {

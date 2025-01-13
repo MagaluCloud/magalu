@@ -8,10 +8,10 @@ import (
 	"strings"
 	"text/template"
 
+	"github.com/MagaluCloud/magalu/mgc/core"
+	"github.com/MagaluCloud/magalu/mgc/core/utils"
+	mgcSdkPkg "github.com/MagaluCloud/magalu/mgc/sdk"
 	"github.com/stoewer/go-strcase"
-	"magalu.cloud/core"
-	"magalu.cloud/core/utils"
-	mgcSdkPkg "magalu.cloud/sdk"
 )
 
 type groupTemplateData struct {

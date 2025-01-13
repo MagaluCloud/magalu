@@ -3,10 +3,10 @@ package api_key
 import (
 	"context"
 
-	mgcAuthPkg "magalu.cloud/core/auth"
-	"magalu.cloud/core/utils"
+	mgcAuthPkg "github.com/MagaluCloud/magalu/mgc/core/auth"
+	"github.com/MagaluCloud/magalu/mgc/core/utils"
 
-	"magalu.cloud/core"
+	"github.com/MagaluCloud/magalu/mgc/core"
 )
 
 type addParams struct {

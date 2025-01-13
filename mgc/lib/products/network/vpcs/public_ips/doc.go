@@ -11,6 +11,6 @@ public-ips
 
 Version: 1.141.3
 
-import "magalu.cloud/lib/products/network/vpcs/public_ips"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/network/vpcs/public_ips"
 */
 package publicIps

@@ -5,11 +5,11 @@ import (
 	"reflect"
 	"time"
 
+	"github.com/MagaluCloud/magalu/mgc/core"
+	"github.com/MagaluCloud/magalu/mgc/core/schema"
 	"github.com/invopop/jsonschema"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
-	"magalu.cloud/core"
-	"magalu.cloud/core/schema"
 )
 
 func logfilterSchema() *core.Schema {

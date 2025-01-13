@@ -9,6 +9,6 @@ Package: object-storage
 
 # Create and manage Buckets and Objects via the Object Storage API
 
-import "magalu.cloud/lib/products/object_storage"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/object_storage"
 */
 package objectStorage

@@ -4,7 +4,7 @@ import (
 	"errors"
 	"os"
 
-	mgcSchemaPkg "magalu.cloud/core/schema"
+	mgcSchemaPkg "github.com/MagaluCloud/magalu/mgc/core/schema"
 )
 
 const (

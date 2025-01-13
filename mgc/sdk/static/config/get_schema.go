@@ -3,10 +3,10 @@ package config
 import (
 	"context"
 
+	"github.com/MagaluCloud/magalu/mgc/core"
+	"github.com/MagaluCloud/magalu/mgc/core/utils"
+	"github.com/MagaluCloud/magalu/mgc/sdk/static/config/common"
 	"go.uber.org/zap"
-	"magalu.cloud/core"
-	"magalu.cloud/core/utils"
-	"magalu.cloud/sdk/static/config/common"
 )
 
 var getSchemaLogger = utils.NewLazyLoader[*zap.SugaredLogger](func() *zap.SugaredLogger {

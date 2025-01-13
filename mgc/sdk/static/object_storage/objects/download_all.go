@@ -5,13 +5,13 @@ import (
 	"fmt"
 	"math"
 
+	"github.com/MagaluCloud/magalu/mgc/core"
+	"github.com/MagaluCloud/magalu/mgc/core/pipeline"
+	"github.com/MagaluCloud/magalu/mgc/core/progress_report"
+	mgcSchemaPkg "github.com/MagaluCloud/magalu/mgc/core/schema"
+	"github.com/MagaluCloud/magalu/mgc/core/utils"
+	"github.com/MagaluCloud/magalu/mgc/sdk/static/object_storage/common"
 	"go.uber.org/zap"
-	"magalu.cloud/core"
-	"magalu.cloud/core/pipeline"
-	"magalu.cloud/core/progress_report"
-	mgcSchemaPkg "magalu.cloud/core/schema"
-	"magalu.cloud/core/utils"
-	"magalu.cloud/sdk/static/object_storage/common"
 )
 
 var downloadAllObjectsLogger *zap.SugaredLogger

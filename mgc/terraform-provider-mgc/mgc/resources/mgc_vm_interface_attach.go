@@ -10,11 +10,11 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"golang.org/x/exp/slices"
 
-	mgcSdk "magalu.cloud/lib"
-	sdkVmInstances "magalu.cloud/lib/products/virtual_machine/instances"
-	sdkVmInstancesInterfaces "magalu.cloud/lib/products/virtual_machine/instances/network_interface"
-	"magalu.cloud/terraform-provider-mgc/mgc/client"
-	tfutil "magalu.cloud/terraform-provider-mgc/mgc/tfutil"
+	mgcSdk "github.com/MagaluCloud/magalu/mgc/lib"
+	sdkVmInstances "github.com/MagaluCloud/magalu/mgc/lib/products/virtual_machine/instances"
+	sdkVmInstancesInterfaces "github.com/MagaluCloud/magalu/mgc/lib/products/virtual_machine/instances/network_interface"
+	"github.com/MagaluCloud/magalu/mgc/terraform-provider-mgc/mgc/client"
+	tfutil "github.com/MagaluCloud/magalu/mgc/terraform-provider-mgc/mgc/tfutil"
 )
 
 func NewVirtualMachineInterfaceAttachResource() resource.Resource {

@@ -7,12 +7,12 @@ import (
 
 	"slices"
 
+	"github.com/MagaluCloud/magalu/mgc/cli/cmd/schema_flags"
+	"github.com/MagaluCloud/magalu/mgc/core"
+	"github.com/MagaluCloud/magalu/mgc/core/utils"
+	mgcSdk "github.com/MagaluCloud/magalu/mgc/sdk"
 	"github.com/spf13/cobra"
 	flag "github.com/spf13/pflag"
-	"magalu.cloud/cli/cmd/schema_flags"
-	"magalu.cloud/core"
-	"magalu.cloud/core/utils"
-	mgcSdk "magalu.cloud/sdk"
 )
 
 // It will solve name conflicts between existing flags, parameters and configs,

@@ -7,6 +7,6 @@ Snapshots management.
 
 Version: 1.34.1
 
-import "magalu.cloud/lib/products/dbaas/snapshots"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/dbaas/snapshots"
 */
 package snapshots

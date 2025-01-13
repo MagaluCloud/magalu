@@ -9,12 +9,12 @@ import (
 
 	flag "github.com/spf13/pflag"
 
+	"github.com/MagaluCloud/magalu/mgc/cli/cmd/schema_flags"
+	"github.com/MagaluCloud/magalu/mgc/core"
+	mgcSchemaPkg "github.com/MagaluCloud/magalu/mgc/core/schema"
 	"github.com/jedib0t/go-pretty/v6/table"
 	"github.com/jedib0t/go-pretty/v6/text"
 	"github.com/spf13/cobra"
-	"magalu.cloud/cli/cmd/schema_flags"
-	"magalu.cloud/core"
-	mgcSchemaPkg "magalu.cloud/core/schema"
 )
 
 func showFormatHelp() {

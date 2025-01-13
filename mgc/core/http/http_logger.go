@@ -9,8 +9,8 @@ import (
 	"os"
 	"strings"
 
+	mgcLoggerPkg "github.com/MagaluCloud/magalu/mgc/core/logger"
 	"go.uber.org/zap"
-	mgcLoggerPkg "magalu.cloud/core/logger"
 )
 
 type ClientLogger struct {

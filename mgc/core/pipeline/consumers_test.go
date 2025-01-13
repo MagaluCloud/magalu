@@ -6,7 +6,7 @@ import (
 	"reflect"
 	"testing"
 
-	"magalu.cloud/core/pipeline"
+	"github.com/MagaluCloud/magalu/mgc/core/pipeline"
 )
 
 func TestSliceItemConsumer(t *testing.T) {

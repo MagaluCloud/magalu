@@ -5,15 +5,15 @@ Executor: update
 
 Update a client (Oauth Application)
 
-import "magalu.cloud/lib/products/auth/clients"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/auth/clients"
 */
 package clients
 
 import (
 	"context"
 
-	mgcCore "magalu.cloud/core"
-	mgcHelpers "magalu.cloud/lib/helpers"
+	mgcCore "github.com/MagaluCloud/magalu/mgc/core"
+	mgcHelpers "github.com/MagaluCloud/magalu/mgc/lib/helpers"
 )
 
 type UpdateParameters struct {

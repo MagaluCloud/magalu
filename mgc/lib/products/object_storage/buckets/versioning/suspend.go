@@ -5,15 +5,15 @@ Executor: suspend
 
 # Suspend versioning for a Bucket
 
-import "magalu.cloud/lib/products/object_storage/buckets/versioning"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/object_storage/buckets/versioning"
 */
 package versioning
 
 import (
 	"context"
 
-	mgcCore "magalu.cloud/core"
-	mgcHelpers "magalu.cloud/lib/helpers"
+	mgcCore "github.com/MagaluCloud/magalu/mgc/core"
+	mgcHelpers "github.com/MagaluCloud/magalu/mgc/lib/helpers"
 )
 
 type SuspendParameters struct {

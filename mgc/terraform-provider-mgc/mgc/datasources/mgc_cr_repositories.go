@@ -6,10 +6,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 
+	mgcSdk "github.com/MagaluCloud/magalu/mgc/lib"
+	sdkCRRepositories "github.com/MagaluCloud/magalu/mgc/lib/products/container_registry/repositories"
+	"github.com/MagaluCloud/magalu/mgc/terraform-provider-mgc/mgc/client"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	mgcSdk "magalu.cloud/lib"
-	sdkCRRepositories "magalu.cloud/lib/products/container_registry/repositories"
-	"magalu.cloud/terraform-provider-mgc/mgc/client"
 )
 
 var _ datasource.DataSource = &DataSourceCRRepositories{}
