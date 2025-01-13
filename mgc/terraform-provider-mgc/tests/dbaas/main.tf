@@ -49,15 +49,6 @@ resource "mgc_dbaas_instances" "test_instance" {
   backup_start_at       = "16:00:00"
 }
 
-# DBaaS Backup resource and data source
-resource "mgc_dbaas_instances_backups" "test_backup" {
-  instance_id = mgc_dbaas_instances.test_instance.id
-  mode        = "FULL"
-}
-
-data "mgc_dbaas_instances_backups" "test_instance_backups" {
-  instance_id = mgc_dbaas_instances.test_instance.id
-}
 
 # DBaaS Snapshot resource and data source
 resource "mgc_dbaas_instances_snapshots" "test_snapshot" {
@@ -124,15 +115,6 @@ output "dbaas_instance" {
   }
 
   sensitive = true # Because it contains instance information
-}
-
-# Add outputs for backup and snapshot testing
-output "test_backup" {
-  value = mgc_dbaas_instances_backups.test_backup
-}
-
-output "test_instance_backups" {
-  value = data.mgc_dbaas_instances_backups.test_instance_backups
 }
 
 output "test_snapshot" {

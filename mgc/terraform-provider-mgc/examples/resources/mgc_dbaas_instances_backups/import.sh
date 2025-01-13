@@ -1,1 +1,0 @@
-terraform import mgc_dbaas_instances_backups.example "instance-123,backup-456"
