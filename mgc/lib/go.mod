@@ -2,7 +2,7 @@ module github.com/MagaluCloud/magalu/mgc/lib
 
 go 1.23.0
 
-toolchain go1.23.3
+toolchain go1.23.4
 
 require (
 	github.com/MagaluCloud/magalu/mgc/core v0.31.0

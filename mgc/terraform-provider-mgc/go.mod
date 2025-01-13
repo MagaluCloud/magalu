@@ -5,7 +5,6 @@ go 1.23.0
 require (
 	github.com/MagaluCloud/magalu/mgc/lib v0.0.0-00010101000000-000000000000
 	github.com/MagaluCloud/magalu/mgc/sdk v0.31.0
-	github.com/geffersonFerraz/brazilian-words-sorter v1.1.0
 	github.com/hashicorp/terraform-plugin-framework v1.11.0
 	github.com/hashicorp/terraform-plugin-framework-validators v0.13.0
 	github.com/hashicorp/terraform-plugin-log v0.9.0
@@ -14,6 +13,7 @@ require (
 require (
 	github.com/MagaluCloud/magalu/mgc/core v0.31.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
+	github.com/geffersonFerraz/brazilian-words-sorter v1.1.0 // indirect
 	github.com/getkin/kin-openapi v0.118.0 // indirect
 	github.com/go-test/deep v1.1.0 // indirect
 	github.com/hashicorp/terraform-plugin-go v0.23.0 // indirect
@@ -79,7 +79,7 @@ require (
 	github.com/xo/terminfo v0.0.0-20220910002029-abceb7e1c41e // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	go.uber.org/zap v1.25.0 // indirect
-	golang.org/x/exp v0.0.0-20230905200255-921286631fa9 // indirect
+	golang.org/x/exp v0.0.0-20230905200255-921286631fa9
 	golang.org/x/net v0.25.0 // indirect
 	golang.org/x/sync v0.7.0 // indirect
 	golang.org/x/sys v0.21.0 // indirect

@@ -49,7 +49,6 @@ func (r *DataSourceVmInstance) Configure(ctx context.Context, req datasource.Con
 
 func (r *DataSourceVmInstance) Schema(_ context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				Required:    true,
@@ -57,23 +56,59 @@ func (r *DataSourceVmInstance) Schema(_ context.Context, req datasource.SchemaRe
 			},
 			"name": schema.StringAttribute{
 				Computed:    true,
-				Description: "Name of type.",
+				Description: "Name of instance.",
 			},
-			"public_ipv4": schema.StringAttribute{
+			"created_at": schema.StringAttribute{
 				Computed:    true,
-				Description: "Public IPV4.",
+				Description: "Creation timestamp of the instance.",
 			},
-			"public_ipv6": schema.StringAttribute{
+			"updated_at": schema.StringAttribute{
 				Computed:    true,
-				Description: "Public IPV6.",
+				Description: "Last update timestamp of the instance.",
 			},
-			"private_ipv4": schema.StringAttribute{
+			"image_id": schema.StringAttribute{
 				Computed:    true,
-				Description: "Private IPV4",
+				Description: "Image ID of instance.",
+			},
+			"image_name": schema.StringAttribute{
+				Computed:    true,
+				Description: "Image name of instance.",
+			},
+			"image_platform": schema.StringAttribute{
+				Computed:    true,
+				Description: "Image platform type.",
+			},
+			"machine_type_id": schema.StringAttribute{
+				Computed:    true,
+				Description: "Machine type ID of instance.",
+			},
+			"machine_type_name": schema.StringAttribute{
+				Computed:    true,
+				Description: "Machine type name.",
+			},
+			"machine_type_disk": schema.Int64Attribute{
+				Computed:    true,
+				Description: "Machine type disk size.",
+			},
+			"machine_type_ram": schema.Int64Attribute{
+				Computed:    true,
+				Description: "Machine type RAM size.",
+			},
+			"machine_type_vcpus": schema.Int64Attribute{
+				Computed:    true,
+				Description: "Machine type vCPUs count.",
+			},
+			"vpc_id": schema.StringAttribute{
+				Computed:    true,
+				Description: "VPC ID.",
+			},
+			"vpc_name": schema.StringAttribute{
+				Computed:    true,
+				Description: "VPC name.",
 			},
 			"ssh_key_name": schema.StringAttribute{
 				Computed:    true,
-				Description: "SSH Key name",
+				Description: "SSH Key name.",
 			},
 			"status": schema.StringAttribute{
 				Computed:    true,
@@ -81,35 +116,116 @@ func (r *DataSourceVmInstance) Schema(_ context.Context, req datasource.SchemaRe
 			},
 			"state": schema.StringAttribute{
 				Computed:    true,
-				Description: "State of instance",
-			},
-			"image_id": schema.StringAttribute{
-				Computed:    true,
-				Description: "Image ID of instance",
-			},
-			"machine_type_id": schema.StringAttribute{
-				Computed:    true,
-				Description: "Machine type ID of instance",
+				Description: "State of instance.",
 			},
 			"user_data": schema.StringAttribute{
 				Computed:    true,
-				Description: "User data of instance",
+				Description: "User data of instance.",
 			},
 			"availability_zone": schema.StringAttribute{
 				Computed:    true,
-				Description: "Availability zone of instance",
+				Description: "Availability zone of instance.",
+			},
+			"labels": schema.ListAttribute{
+				ElementType: types.StringType,
+				Computed:    true,
+				Description: "Labels associated with the instance.",
+			},
+			"error_message": schema.StringAttribute{
+				Computed:    true,
+				Description: "Error message if any.",
+			},
+			"error_slug": schema.StringAttribute{
+				Computed:    true,
+				Description: "Error slug if any.",
+			},
+			"interfaces": schema.ListNestedAttribute{
+				Computed: true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"id": schema.StringAttribute{
+							Computed:    true,
+							Description: "Interface ID.",
+						},
+						"name": schema.StringAttribute{
+							Computed:    true,
+							Description: "Interface name.",
+						},
+						"primary": schema.BoolAttribute{
+							Computed:    true,
+							Description: "Whether this is the primary interface.",
+						},
+						"public_ipv4": schema.StringAttribute{
+							Computed:    true,
+							Description: "Public IPv4 address.",
+						},
+						"local_ipv4": schema.StringAttribute{
+							Computed:    true,
+							Description: "Local IPv4 address.",
+						},
+						"public_ipv6": schema.StringAttribute{
+							Computed:    true,
+							Description: "Public IPv6 address.",
+						},
+						"security_groups": schema.ListAttribute{
+							ElementType: types.StringType,
+							Computed:    true,
+							Description: "Security groups associated with the interface.",
+						},
+					},
+				},
+				Description: "Network interfaces attached to the instance.",
 			},
 		},
+		Description: "Get the available virtual-machine instance details",
 	}
-	resp.Schema.Description = "Get the available virtual-machine instance details"
+}
+
+type NetworkInterfaceModel struct {
+	ID             types.String   `tfsdk:"id"`
+	Name           types.String   `tfsdk:"name"`
+	Primary        types.Bool     `tfsdk:"primary"`
+	PublicIPv4     types.String   `tfsdk:"public_ipv4"`
+	LocalIPv4      types.String   `tfsdk:"local_ipv4"`
+	IPv6           types.String   `tfsdk:"public_ipv6"`
+	SecurityGroups []types.String `tfsdk:"security_groups"`
+}
+
+type VMInstanceModel struct {
+	ID               types.String            `tfsdk:"id"`
+	Name             types.String            `tfsdk:"name"`
+	CreatedAt        types.String            `tfsdk:"created_at"`
+	UpdatedAt        types.String            `tfsdk:"updated_at"`
+	ImageID          types.String            `tfsdk:"image_id"`
+	ImageName        types.String            `tfsdk:"image_name"`
+	ImagePlatform    types.String            `tfsdk:"image_platform"`
+	MachineTypeID    types.String            `tfsdk:"machine_type_id"`
+	MachineTypeName  types.String            `tfsdk:"machine_type_name"`
+	MachineTypeDisk  types.Int64             `tfsdk:"machine_type_disk"`
+	MachineTypeRAM   types.Int64             `tfsdk:"machine_type_ram"`
+	MachineTypeVCPUs types.Int64             `tfsdk:"machine_type_vcpus"`
+	VPCID            types.String            `tfsdk:"vpc_id"`
+	VPCName          types.String            `tfsdk:"vpc_name"`
+	SshKeyName       types.String            `tfsdk:"ssh_key_name"`
+	Status           types.String            `tfsdk:"status"`
+	State            types.String            `tfsdk:"state"`
+	UserData         types.String            `tfsdk:"user_data"`
+	AvailabilityZone types.String            `tfsdk:"availability_zone"`
+	ErrorMessage     types.String            `tfsdk:"error_message"`
+	ErrorSlug        types.String            `tfsdk:"error_slug"`
+	Labels           []types.String          `tfsdk:"labels"`
+	Interfaces       []NetworkInterfaceModel `tfsdk:"interfaces"`
 }
 
 func (r *DataSourceVmInstance) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
 	var data VMInstanceModel
-
 	resp.Diagnostics.Append(req.Config.Get(ctx, &data)...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
-	sdkOutput, err := r.vmInstances.GetContext(ctx, sdkVMInstances.GetParameters{Id: data.ID.ValueString(), Expand: &sdkVMInstances.GetParametersExpand{"network"}},
+	instance, err := r.vmInstances.GetContext(ctx, sdkVMInstances.GetParameters{Id: data.ID.ValueString(),
+		Expand: &sdkVMInstances.GetParametersExpand{"network", "image", "machine-type"}},
 		tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVMInstances.GetConfigs{}))
 
 	if err != nil {
@@ -117,35 +233,62 @@ func (r *DataSourceVmInstance) Read(ctx context.Context, req datasource.ReadRequ
 		return
 	}
 
-	instance := sdkOutput
-
-	privateIpAddress := ""
-	publicIpv6Adress := ""
-	publicIpv4Adress := ""
-
-	for _, port := range *instance.Network.Ports {
-		privateIpAddress = port.IpAddresses.PrivateIpAddress
-		if port.IpAddresses.PublicIpAddress != nil {
-			publicIpv4Adress = *port.IpAddresses.PublicIpAddress
+	var interfaces []NetworkInterfaceModel
+	if instance.Network != nil && instance.Network.Interfaces != nil {
+		for _, iface := range *instance.Network.Interfaces {
+			networkInterface := NetworkInterfaceModel{
+				ID:         types.StringValue(iface.Id),
+				Name:       types.StringValue(iface.Name),
+				Primary:    types.BoolPointerValue(iface.Primary),
+				PublicIPv4: types.StringPointerValue(iface.AssociatedPublicIpv4),
+				LocalIPv4:  types.StringValue(iface.IpAddresses.PrivateIpv4),
+				IPv6:       types.StringPointerValue(iface.IpAddresses.PublicIpv6),
+			}
+			if iface.SecurityGroups != nil {
+				var secGroups []types.String
+				for _, sg := range *iface.SecurityGroups {
+					secGroups = append(secGroups, types.StringValue(sg))
+				}
+				networkInterface.SecurityGroups = secGroups
+			}
+			interfaces = append(interfaces, networkInterface)
 		}
-		if port.IpAddresses.IpV6address != nil {
-			publicIpv6Adress = *port.IpAddresses.IpV6address
+	}
+
+	labels := []types.String{}
+	if instance.Labels != nil {
+		for _, label := range *instance.Labels {
+			labels = append(labels, types.StringValue(label))
 		}
 	}
 
 	data = VMInstanceModel{
 		ID:               types.StringValue(instance.Id),
 		Name:             types.StringValue(*instance.Name),
-		PublicIPV4:       types.StringValue(publicIpv4Adress),
-		PublicIPV6:       types.StringValue(publicIpv6Adress),
-		PrivateIPV4:      types.StringValue(privateIpAddress),
+		CreatedAt:        types.StringValue(instance.CreatedAt),
+		UpdatedAt:        types.StringPointerValue(instance.UpdatedAt),
+		ImageID:          types.StringValue(instance.Image.Id),
+		ImageName:        types.StringPointerValue(instance.Image.Name),
+		ImagePlatform:    types.StringPointerValue(instance.Image.Platform),
+		MachineTypeID:    types.StringValue(instance.MachineType.Id),
+		MachineTypeName:  types.StringPointerValue(instance.MachineType.Name),
+		MachineTypeDisk:  types.Int64PointerValue(tfutil.ConvertIntPointerToInt64Pointer(instance.MachineType.Disk)),
+		MachineTypeRAM:   types.Int64PointerValue(tfutil.ConvertIntPointerToInt64Pointer(instance.MachineType.Ram)),
+		MachineTypeVCPUs: types.Int64PointerValue(tfutil.ConvertIntPointerToInt64Pointer(instance.MachineType.Vcpus)),
+		VPCID:            types.StringValue(instance.Network.Vpc.Id),
+		VPCName:          types.StringValue(instance.Network.Vpc.Name),
 		SshKeyName:       types.StringValue(*instance.SshKeyName),
 		Status:           types.StringValue(instance.Status),
 		State:            types.StringValue(instance.State),
-		ImageID:          types.StringValue(instance.Image.Id),
-		MachineTypeID:    types.StringValue(instance.MachineType.Id),
 		UserData:         types.StringPointerValue(instance.UserData),
 		AvailabilityZone: types.StringPointerValue(instance.AvailabilityZone),
+		Labels:           labels,
+		Interfaces:       interfaces,
+	}
+
+	if instance.Error != nil {
+		data.ErrorMessage = types.StringValue(instance.Error.Message)
+		data.ErrorSlug = types.StringValue(instance.Error.Slug)
 	}
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

@@ -20,23 +20,19 @@ type DataSourceVmInstances struct {
 	vmInstances sdkVMInstances.Service
 }
 
-type VMInstanceModel struct {
+type VMInstancesItemModel struct {
 	ID               types.String `tfsdk:"id"`
 	Name             types.String `tfsdk:"name"`
-	PublicIPV4       types.String `tfsdk:"public_ipv4"`
-	PublicIPV6       types.String `tfsdk:"public_ipv6"`
-	PrivateIPV4      types.String `tfsdk:"private_ipv4"`
 	SshKeyName       types.String `tfsdk:"ssh_key_name"`
 	Status           types.String `tfsdk:"status"`
 	State            types.String `tfsdk:"state"`
 	ImageID          types.String `tfsdk:"image_id"`
 	MachineTypeID    types.String `tfsdk:"machine_type_id"`
-	UserData         types.String `tfsdk:"user_data"`
 	AvailabilityZone types.String `tfsdk:"availability_zone"`
 }
 
 type VMInstancesModel struct {
-	Instances []VMInstanceModel `tfsdk:"instances"`
+	Instances []VMInstancesItemModel `tfsdk:"instances"`
 }
 
 func NewDataSourceVmInstances() datasource.DataSource {
@@ -82,18 +78,6 @@ func (r *DataSourceVmInstances) Schema(_ context.Context, req datasource.SchemaR
 							Computed:    true,
 							Description: "Name of type.",
 						},
-						"public_ipv4": schema.StringAttribute{
-							Computed:    true,
-							Description: "Public IPV4.",
-						},
-						"public_ipv6": schema.StringAttribute{
-							Computed:    true,
-							Description: "Public IPV6.",
-						},
-						"private_ipv4": schema.StringAttribute{
-							Computed:    true,
-							Description: "Private IPV4",
-						},
 						"ssh_key_name": schema.StringAttribute{
 							Computed:    true,
 							Description: "SSH Key name",
@@ -114,10 +98,6 @@ func (r *DataSourceVmInstances) Schema(_ context.Context, req datasource.SchemaR
 							Computed:    true,
 							Description: "Machine type ID of instance",
 						},
-						"user_data": schema.StringAttribute{
-							Computed:    true,
-							Description: "User data of instance",
-						},
 						"availability_zone": schema.StringAttribute{
 							Computed:    true,
 							Description: "Availability zone of instance",
@@ -132,46 +112,29 @@ func (r *DataSourceVmInstances) Schema(_ context.Context, req datasource.SchemaR
 
 func (r *DataSourceVmInstances) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
 	var data VMInstancesModel
-
 	resp.Diagnostics.Append(req.Config.Get(ctx, &data)...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
-	sdkOutput, err := r.vmInstances.ListContext(ctx, sdkVMInstances.ListParameters{Expand: &sdkVMInstances.ListParametersExpand{"network"}},
+	instances, err := r.vmInstances.ListContext(ctx, sdkVMInstances.ListParameters{},
 		tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkVMInstances.ListConfigs{}))
 	if err != nil {
 		resp.Diagnostics.AddError("Failed to get instances", err.Error())
 		return
 	}
 
-	for _, instance := range sdkOutput.Instances {
-		privateIpAddress := ""
-		publicIpv6Adress := ""
-		publicIpv4Adress := ""
-
-		for _, port := range *instance.Network.Ports {
-			privateIpAddress = port.IpAddresses.PrivateIpAddress
-			if port.IpAddresses.PublicIpAddress != nil {
-				publicIpv4Adress = *port.IpAddresses.PublicIpAddress
-			}
-			if port.IpAddresses.IpV6address != nil {
-				publicIpv6Adress = *port.IpAddresses.IpV6address
-			}
-		}
-
-		data.Instances = append(data.Instances, VMInstanceModel{
+	for _, instance := range instances.Instances {
+		data.Instances = append(data.Instances, VMInstancesItemModel{
 			ID:               types.StringValue(instance.Id),
-			Name:             types.StringValue(*instance.Name),
-			PublicIPV4:       types.StringValue(publicIpv4Adress),
-			PublicIPV6:       types.StringValue(publicIpv6Adress),
-			PrivateIPV4:      types.StringValue(privateIpAddress),
-			SshKeyName:       types.StringValue(*instance.SshKeyName),
+			Name:             types.StringPointerValue(instance.Name),
+			SshKeyName:       types.StringPointerValue(instance.SshKeyName),
 			Status:           types.StringValue(instance.Status),
 			State:            types.StringValue(instance.State),
 			ImageID:          types.StringValue(instance.Image.Id),
 			MachineTypeID:    types.StringValue(instance.MachineType.Id),
-			UserData:         types.StringPointerValue(instance.UserData),
 			AvailabilityZone: types.StringPointerValue(instance.AvailabilityZone),
 		})
 	}
-
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }

@@ -1,0 +1,1 @@
+terraform import mgc_block_storage_volumes.example_volume 123

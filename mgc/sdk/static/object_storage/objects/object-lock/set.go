@@ -56,6 +56,26 @@ func setObjectLocking(ctx context.Context, params setObjectLockParams, cfg commo
 	return
 }
 
+func parseISODate(dateStr string) (string, error) {
+	formats := []string{
+		time.RFC3339,                       // "2006-01-02T15:04:05Z07:00"
+		"2006-01-02T15:04:05",              // "2006-01-02T15:04:05"
+		"2006-01-02",                       // "2006-01-02"
+		"2006-01-02 15:04:05",              // "2006-01-02 15:04:05"
+		"2006-01-02T15:04:05.000000Z07:00", // "2006-01-02T15:04:05.000000Z07:00"
+		"2006-01-02T15:04:05Z",             // "2006-01-02T15:04:05Z"
+	}
+
+	for _, format := range formats {
+		date, err := time.Parse(format, dateStr)
+		if err == nil {
+			return date.UTC().Format(time.RFC3339), nil
+		}
+	}
+
+	return "", fmt.Errorf("invalid date format: %s", dateStr)
+}
+
 func newSetObjectLockingRequest(ctx context.Context, p setObjectLockParams, cfg common.Config) (*http.Request, error) {
 	url, err := common.BuildBucketHostWithPath(cfg, common.NewBucketNameFromURI(p.Object), p.Object.Path())
 	if err != nil {
@@ -72,20 +92,25 @@ func newSetObjectLockingRequest(ctx context.Context, p setObjectLockParams, cfg 
 	req.URL.RawQuery = query.Encode()
 
 	getBody := func() (io.ReadCloser, error) {
-		var parsedTime time.Time
-
-		parsedTime, err = time.Parse("2006-01-02T15:04:05", p.RetainUntilDate)
+		parsedTimeStr, err := parseISODate(p.RetainUntilDate)
 		if err != nil {
 			return nil, core.UsageError{Err: err}
 		}
-		bodyObj := common.DefaultObjectRetentionBody(parsedTime.In(time.Now().Location()))
+		parsedTime, err := time.Parse(time.RFC3339, parsedTimeStr)
+		if err != nil {
+			return nil, core.UsageError{Err: err}
+		}
+
+		bodyObj := common.DefaultObjectRetentionBody(parsedTime)
 		if p.Mode == string(common.ObjectLockModeGovernance) {
 			bodyObj.Mode = common.ObjectLockModeGovernance
 		}
+
 		body, err := xml.MarshalIndent(bodyObj, "", "  ")
 		if err != nil {
 			return nil, err
 		}
+
 		reader := bytes.NewReader(body)
 		return io.NopCloser(reader), nil
 	}

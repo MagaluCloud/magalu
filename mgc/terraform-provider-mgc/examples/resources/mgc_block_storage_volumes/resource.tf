@@ -1,8 +1,6 @@
 resource "mgc_block_storage_volumes" "example_volume" {
-  name = "example-volume"
-  availability_zones = ["br-se1-a"]
-  size = 10
-  type = {
-    name = "cloud_nvme"
-  }
+  name              = "example-volume-renamed"
+  availability_zone = "br-ne1-a"
+  size              = 200
+  type              = "cloud_nvme1k"
 }
