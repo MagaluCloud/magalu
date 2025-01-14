@@ -6,115 +6,19 @@ info:
         name: Tribo IAAS Cloud
         url: https://gitlab.luizalabs.com/cloud/dbaas/docs
         email: cloud-iaas-dbaas@luizalabs.com
-    version: 1.34.1
+    version: 1.40.1
 tags:
--   name: datastores
-    description: Datastores available for database instances.
 -   name: engines
     description: Engines available for database instances.
--   name: flavors
-    description: Flavors available for database instances.
 -   name: instance_types
     description: Instance Types available for database instances.
 -   name: instances
     description: Database instances management.
--   name: backups
-    description: Database backups management.
 -   name: replicas
     description: Database replicas management.
 -   name: snapshots
     description: Snapshots management.
 paths:
-    /v1/datastores:
-        get:
-            operationId: datastores_v1_get_all
-            deprecated: true
-            tags:
-            - datastores
-            summary: List available datastores (Deprecated).
-            description: '**Deprecated**: This endpoint is being phased out. Please
-                use the `/v1/engines` endpoint to retrieve the list of available engines
-                instead.
-
-
-                Returns a list of available datastores. It is recommended to update
-                your integration to use the newer `/v1/engines` endpoint for improved
-                functionality and future compatibility.
-
-                '
-            parameters:
-            -   $ref: '#/components/parameters/offset'
-            -   $ref: '#/components/parameters/limit_medium'
-            -   $ref: '#/components/parameters/engine_status'
-            responses:
-                '200':
-                    description: Successful Response.
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/EnginesResponse'
-                '400':
-                    $ref: '#/components/responses/RequiredField'
-                '401':
-                    $ref: '#/components/responses/Unauthorized'
-                '403':
-                    $ref: '#/components/responses/Forbidden'
-                '422':
-                    $ref: '#/components/responses/UnprocessableEntity'
-                '500':
-                    $ref: '#/components/responses/InternalServerError'
-            security:
-            -   bearerAuth:
-                - dbaas.read
-            -   OAuth2PreProd:
-                - dbaas.read
-            -   OAuth2Prod:
-                - dbaas.read
-    /v1/datastores/{engine_id}:
-        get:
-            operationId: datastores_v1_get_by_id
-            deprecated: true
-            tags:
-            - datastores
-            summary: Datastore detail (Deprecated).
-            description: '**Deprecated**: This endpoint is being phased out. Please
-                use the `/v1/engines/{engine_id}` endpoint to retrieve the list of
-                available engines instead.
-
-
-                Returns a datastore detail. It is recommended to update your integration
-                to use the newer `/v1/engines/{engine_id}` endpoint for improved functionality
-                and future compatibility.
-
-                '
-            parameters:
-            -   $ref: '#/components/parameters/engine_id'
-            responses:
-                '200':
-                    description: Successful Response.
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/EngineResponse'
-                '400':
-                    $ref: '#/components/responses/RequiredField'
-                '401':
-                    $ref: '#/components/responses/Unauthorized'
-                '403':
-                    $ref: '#/components/responses/Forbidden'
-                '404':
-                    $ref: '#/components/responses/NotFound'
-                '422':
-                    $ref: '#/components/responses/UnprocessableEntity'
-                '500':
-                    $ref: '#/components/responses/InternalServerError'
-            security:
-            -   bearerAuth:
-                - dbaas.read
-            -   OAuth2PreProd:
-                - dbaas.read
-            -   OAuth2Prod:
-                - dbaas.read
     /v1/engines:
         get:
             operationId: engines_v1_get_all
@@ -166,103 +70,6 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/EngineResponse'
-                '400':
-                    $ref: '#/components/responses/RequiredField'
-                '401':
-                    $ref: '#/components/responses/Unauthorized'
-                '403':
-                    $ref: '#/components/responses/Forbidden'
-                '404':
-                    $ref: '#/components/responses/NotFound'
-                '422':
-                    $ref: '#/components/responses/UnprocessableEntity'
-                '500':
-                    $ref: '#/components/responses/InternalServerError'
-            security:
-            -   bearerAuth:
-                - dbaas.read
-            -   OAuth2PreProd:
-                - dbaas.read
-            -   OAuth2Prod:
-                - dbaas.read
-    /v1/flavors:
-        get:
-            operationId: flavor_v1_get_all
-            deprecated: true
-            tags:
-            - flavors
-            summary: List available flavors (Deprecated).
-            description: "**Deprecated**: This endpoint is being phased out. Please\
-                \ use the `/v1/instance-types` endpoint to retrieve the list of available\
-                \ instance types instead.\nReturns a list of available instance types.\
-                \ It is recommended to update your integration to use the newer `/v1/instance-types`\
-                \ endpoint for improved functionality and future compatibility.  \
-                \         \n"
-            parameters:
-            -   $ref: '#/components/parameters/offset'
-            -   $ref: '#/components/parameters/limit_medium'
-            -   $ref: '#/components/parameters/instance_type_status'
-            -   in: query
-                name: engine_id
-                required: false
-                description: Engine Id unique identifier
-                schema:
-                    format: uuid
-                    title: Engine Id
-                    type: string
-            responses:
-                '200':
-                    description: Successful Response.
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/InstanceTypesResponse'
-                '400':
-                    $ref: '#/components/responses/RequiredField'
-                '401':
-                    $ref: '#/components/responses/Unauthorized'
-                '403':
-                    $ref: '#/components/responses/Forbidden'
-                '422':
-                    $ref: '#/components/responses/UnprocessableEntity'
-                '500':
-                    $ref: '#/components/responses/InternalServerError'
-            security:
-            -   bearerAuth:
-                - dbaas.read
-            -   OAuth2PreProd:
-                - dbaas.read
-            -   OAuth2Prod:
-                - dbaas.read
-    /v1/flavors/{instance_type_id}:
-        get:
-            operationId: flavors_v1_get_by_id
-            deprecated: true
-            tags:
-            - flavors
-            summary: Flavor detail (Deprecated).
-            description: "**Deprecated**: This endpoint is being phased out. Please\
-                \ use the /v1/instance-types endpoint to retrieve the list of available\
-                \ instance types instead.\nReturns an instance type detail. It is\
-                \ recommended to update your integration to use the newer `/v1/instance-types/{instance_type_id}`\
-                \ endpoint for improved functionality and future compatibility.  \
-                \         \n"
-            parameters:
-            -   required: true
-                schema:
-                    title: Flavor Id
-                    type: string
-                    format: uuid
-                name: instance_type_id
-                in: path
-                description: Flavor Unique Id.
-            responses:
-                '200':
-                    description: Successful Response.
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Flavor'
                 '400':
                     $ref: '#/components/responses/RequiredField'
                 '401':
@@ -460,11 +267,6 @@ paths:
                             description: Stops a database instance.
                             parameters:
                                 instance_id: $response.body#/id
-                        restores:
-                            operationId: instances_v1_restores_post
-                            description: Backup restore.
-                            parameters:
-                                instance_id: $response.body#/id
                 '400':
                     $ref: '#/components/responses/RequiredField'
                 '401':
@@ -523,11 +325,6 @@ paths:
                         stop:
                             operationId: instances_v1_stop
                             description: Stops a database instance.
-                            parameters:
-                                instance_id: $response.body#/id
-                        restores:
-                            operationId: instances_v1_restores_post
-                            description: Backup restore.
                             parameters:
                                 instance_id: $response.body#/id
                 '400':
@@ -594,11 +391,6 @@ paths:
                         stop:
                             operationId: instances_v1_stop
                             description: Stops a database instance.
-                            parameters:
-                                instance_id: $response.body#/id
-                        restores:
-                            operationId: instances_v1_restores_post
-                            description: Backup restore.
                             parameters:
                                 instance_id: $response.body#/id
                 '400':
@@ -701,11 +493,6 @@ paths:
                             description: Stops a database instance.
                             parameters:
                                 instance_id: $response.body#/id
-                        restores:
-                            operationId: instances_v1_restores_post
-                            description: Backup restore.
-                            parameters:
-                                instance_id: $response.body#/id
                 '400':
                     $ref: '#/components/responses/RequiredField'
                 '401':
@@ -765,11 +552,6 @@ paths:
                         stop:
                             operationId: instances_v1_stop
                             description: Stops a database instance.
-                            parameters:
-                                instance_id: $response.body#/id
-                        restores:
-                            operationId: instances_v1_restores_post
-                            description: Backup restore.
                             parameters:
                                 instance_id: $response.body#/id
                 '400':
@@ -833,309 +615,6 @@ paths:
                             description: Starts a database instance.
                             parameters:
                                 instance_id: $response.body#/id
-                        restores:
-                            operationId: instances_v1_restores_post
-                            description: Backup restore.
-                            parameters:
-                                instance_id: $response.body#/id
-                '400':
-                    $ref: '#/components/responses/RequiredField'
-                '401':
-                    $ref: '#/components/responses/Unauthorized'
-                '403':
-                    $ref: '#/components/responses/Forbidden'
-                '404':
-                    $ref: '#/components/responses/NotFound'
-                '422':
-                    $ref: '#/components/responses/UnprocessableEntity'
-                '500':
-                    $ref: '#/components/responses/InternalServerError'
-            security:
-            -   bearerAuth:
-                - dbaas.write
-            -   OAuth2PreProd:
-                - dbaas.write
-            -   OAuth2Prod:
-                - dbaas.write
-    /v1/instances/{instance_id}/backups:
-        get:
-            tags:
-            - instances
-            summary: Backups List.
-            description: List all backups.
-            operationId: instances_v1_backups_get_all
-            parameters:
-            -   $ref: '#/components/parameters/instance_id'
-            -   $ref: '#/components/parameters/offset'
-            -   $ref: '#/components/parameters/limit_medium'
-            -   $ref: '#/components/parameters/backup_type'
-            -   $ref: '#/components/parameters/backup_mode'
-            -   $ref: '#/components/parameters/backup_status'
-            responses:
-                '200':
-                    description: Successful Response.
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/BackupsResponse'
-                '400':
-                    $ref: '#/components/responses/RequiredField'
-                '401':
-                    $ref: '#/components/responses/Unauthorized'
-                '403':
-                    $ref: '#/components/responses/Forbidden'
-                '422':
-                    $ref: '#/components/responses/UnprocessableEntity'
-                '500':
-                    $ref: '#/components/responses/InternalServerError'
-            security:
-            -   bearerAuth:
-                - dbaas.read
-            -   OAuth2PreProd:
-                - dbaas.read
-            -   OAuth2Prod:
-                - dbaas.read
-        post:
-            tags:
-            - instances
-            summary: Backup Create.
-            description: Creates a new backup asynchronously.
-            operationId: instances_v1_backups_post
-            parameters:
-            -   $ref: '#/components/parameters/instance_id'
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/BackupCreateRequest'
-                required: true
-            responses:
-                '202':
-                    description: Successful Response.
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/BackupResponse'
-                    links:
-                        get:
-                            operationId: instances_v1_backups_get_by_id
-                            description: Backup Detail.
-                            parameters:
-                                backup_id: $response.body#/id
-                            x-mgc-wait-termination:
-                                interval: 5s
-                                maxRetries: 10
-                                jsonPathQuery: $.result.mode == $.owner.parameters.mode
-                        delete:
-                            operationId: instances_v1_backups_delete
-                            description: Delete Backup.
-                            parameters:
-                                backup_id: $response.body#/id
-                '400':
-                    $ref: '#/components/responses/RequiredField'
-                '401':
-                    $ref: '#/components/responses/Unauthorized'
-                '403':
-                    $ref: '#/components/responses/Forbidden'
-                '404':
-                    $ref: '#/components/responses/NotFound'
-                '422':
-                    $ref: '#/components/responses/UnprocessableEntity'
-                '500':
-                    $ref: '#/components/responses/InternalServerError'
-            security:
-            -   bearerAuth:
-                - dbaas.write
-            -   OAuth2PreProd:
-                - dbaas.write
-            -   OAuth2Prod:
-                - dbaas.write
-    /v1/instances/{instance_id}/backups/{backup_id}:
-        get:
-            tags:
-            - instances
-            summary: Backup Detail.
-            description: Get a backup detail.
-            operationId: instances_v1_backups_get_by_id
-            parameters:
-            -   $ref: '#/components/parameters/instance_id'
-            -   $ref: '#/components/parameters/backup_id'
-            responses:
-                '200':
-                    description: Successful Response.
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/BackupDetailResponse'
-                    links:
-                        list:
-                            operationId: instances_v1_backups_get_all
-                            description: Backups List.
-                            parameters:
-                                instance_id: $response.body#/instance_id
-                        create:
-                            operationId: instances_v1_backups_post
-                            description: Backup Create.
-                            parameters:
-                                instance_id: $response.body#/instance_id
-                        update/mode:
-                            operationId: instances_v1_backups_post
-                            description: Backup Create.
-                            parameters:
-                                instance_id: $response.body#/instance_id
-                            x-mgc-hidden: true
-                        delete:
-                            operationId: instances_v1_backups_delete
-                            description: Delete Backup.
-                            parameters:
-                                instance_id: $response.body#/instance_id
-                                backup_id: $response.body#/id
-                '400':
-                    $ref: '#/components/responses/RequiredField'
-                '401':
-                    $ref: '#/components/responses/Unauthorized'
-                '403':
-                    $ref: '#/components/responses/Forbidden'
-                '404':
-                    $ref: '#/components/responses/NotFound'
-                '422':
-                    $ref: '#/components/responses/UnprocessableEntity'
-                '500':
-                    $ref: '#/components/responses/InternalServerError'
-            security:
-            -   bearerAuth:
-                - dbaas.read
-            -   OAuth2PreProd:
-                - dbaas.read
-            -   OAuth2Prod:
-                - dbaas.read
-        delete:
-            tags:
-            - instances
-            summary: Delete Backup.
-            description: Deletes a database backup.
-            operationId: instances_v1_backups_delete
-            parameters:
-            -   $ref: '#/components/parameters/instance_id'
-            -   $ref: '#/components/parameters/backup_id'
-            responses:
-                '202':
-                    content:
-                        application/json:
-                            schema: {}
-                    description: Successful Response.
-                '400':
-                    $ref: '#/components/responses/RequiredField'
-                '401':
-                    $ref: '#/components/responses/Unauthorized'
-                '403':
-                    $ref: '#/components/responses/Forbidden'
-                '404':
-                    $ref: '#/components/responses/NotFound'
-                '422':
-                    $ref: '#/components/responses/UnprocessableEntity'
-                '500':
-                    $ref: '#/components/responses/InternalServerError'
-            security:
-            -   bearerAuth:
-                - dbaas.write
-            -   OAuth2PreProd:
-                - dbaas.write
-            -   OAuth2Prod:
-                - dbaas.write
-    /v1/backups:
-        get:
-            tags:
-            - backups
-            summary: Backups List.
-            description: List all backups.
-            operationId: backups_v1_get_all
-            parameters:
-            -   $ref: '#/components/parameters/offset'
-            -   $ref: '#/components/parameters/limit_medium'
-            -   $ref: '#/components/parameters/backup_type'
-            -   $ref: '#/components/parameters/backup_mode'
-            -   $ref: '#/components/parameters/backup_status'
-            -   $ref: '#/components/parameters/instance_id_query'
-            responses:
-                '200':
-                    description: Successful Response.
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/BackupsResponse'
-                '400':
-                    $ref: '#/components/responses/RequiredField'
-                '401':
-                    $ref: '#/components/responses/Unauthorized'
-                '403':
-                    $ref: '#/components/responses/Forbidden'
-                '422':
-                    $ref: '#/components/responses/UnprocessableEntity'
-                '500':
-                    $ref: '#/components/responses/InternalServerError'
-            security:
-            -   bearerAuth:
-                - dbaas.read
-            -   OAuth2PreProd:
-                - dbaas.read
-            -   OAuth2Prod:
-                - dbaas.read
-    /v1/backups/{backup_id}:
-        get:
-            tags:
-            - backups
-            summary: Backup Detail.
-            description: Get a backup detail.
-            operationId: backups_v1_get_by_id
-            parameters:
-            -   $ref: '#/components/parameters/backup_id'
-            responses:
-                '200':
-                    description: Successful Response.
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/BackupDetailResponse'
-                    links:
-                        delete:
-                            operationId: backups_v1_delete
-                            description: Delete Backup.
-                            parameters:
-                                backup_id: $response.body#/id
-                '400':
-                    $ref: '#/components/responses/RequiredField'
-                '401':
-                    $ref: '#/components/responses/Unauthorized'
-                '403':
-                    $ref: '#/components/responses/Forbidden'
-                '404':
-                    $ref: '#/components/responses/NotFound'
-                '422':
-                    $ref: '#/components/responses/UnprocessableEntity'
-                '500':
-                    $ref: '#/components/responses/InternalServerError'
-            security:
-            -   bearerAuth:
-                - dbaas.read
-            -   OAuth2PreProd:
-                - dbaas.read
-            -   OAuth2Prod:
-                - dbaas.read
-        delete:
-            tags:
-            - backups
-            summary: Delete Backup.
-            description: Deletes a database backup.
-            operationId: backups_v1_delete
-            parameters:
-            -   $ref: '#/components/parameters/backup_id'
-            responses:
-                '202':
-                    content:
-                        application/json:
-                            schema: {}
-                    description: Successful Response.
                 '400':
                     $ref: '#/components/responses/RequiredField'
                 '401':
@@ -1504,78 +983,6 @@ paths:
                             description: Replica Start.
                             parameters:
                                 replica_id: $response.body#/id
-                '400':
-                    $ref: '#/components/responses/RequiredField'
-                '401':
-                    $ref: '#/components/responses/Unauthorized'
-                '403':
-                    $ref: '#/components/responses/Forbidden'
-                '404':
-                    $ref: '#/components/responses/NotFound'
-                '422':
-                    $ref: '#/components/responses/UnprocessableEntity'
-                '500':
-                    $ref: '#/components/responses/InternalServerError'
-            security:
-            -   bearerAuth:
-                - dbaas.write
-            -   OAuth2PreProd:
-                - dbaas.write
-            -   OAuth2Prod:
-                - dbaas.write
-    /v1/instances/{instance_id}/restores:
-        post:
-            tags:
-            - instances
-            summary: Backup restore.
-            description: Restores a backup for an instance asynchronously.
-            operationId: instances_v1_restores_post
-            parameters:
-            -   $ref: '#/components/parameters/instance_id'
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/InstanceRestoreRequest'
-                required: true
-            responses:
-                '202':
-                    description: Accepted - Database restore creation in progress.
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/RestoreResponse'
-                    links:
-                        get:
-                            operationId: instances_v1_get_by_id
-                            description: Database instance details.
-                            parameters:
-                                instance_id: $response.body#/id
-                        update:
-                            operationId: instances_v1_patch
-                            description: Database instance update.
-                            parameters:
-                                instance_id: $response.body#/id
-                        delete:
-                            operationId: instances_v1_delete
-                            description: Deletes a database instance.
-                            parameters:
-                                instance_id: $response.body#/id
-                        resize:
-                            operationId: instances_v1_resize
-                            description: Resizes a database instance.
-                            parameters:
-                                instance_id: $response.body#/id
-                        start:
-                            operationId: instances_v1_start
-                            description: Starts a database instance.
-                            parameters:
-                                instance_id: $response.body#/id
-                        stop:
-                            operationId: instances_v1_stop
-                            description: Stops a database instance.
-                            parameters:
-                                instance_id: $response.body#/id
                 '400':
                     $ref: '#/components/responses/RequiredField'
                 '401':
@@ -2055,30 +1462,12 @@ components:
                 -   $ref: '#/components/schemas/InstanceTypeStatus'
                 default: ACTIVE
             description: An enumeration.
-        backup_type:
-            name: type
-            in: query
-            schema:
-                $ref: '#/components/schemas/BackupType'
-            description: Value referring to backup type.
         snapshot_type:
             name: type
             in: query
             schema:
                 $ref: '#/components/schemas/SnapshotType'
             description: Value referring to snapshot type.
-        backup_mode:
-            name: mode
-            in: query
-            schema:
-                $ref: '#/components/schemas/BackupMode'
-            description: Value referring to backup mode.
-        backup_status:
-            name: status
-            in: query
-            schema:
-                $ref: '#/components/schemas/BackupStatus'
-            description: Value referring to backup status.
         snapshot_status:
             name: status
             in: query
@@ -2155,163 +1544,6 @@ components:
             - max_limit
             title: PageResponse
             type: object
-        BackupsResponse:
-            title: Backups Response
-            required:
-            - meta
-            - results
-            type: object
-            properties:
-                meta:
-                    $ref: '#/components/schemas/MetaResponse'
-                results:
-                    title: Results
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/BackupDetailResponse'
-        BackupDetailResponse:
-            title: Backup Detail Response
-            required:
-            - id
-            - instance_id
-            - type
-            - status
-            - mode
-            - created_at
-            - engine_id
-            type: object
-            properties:
-                id:
-                    title: Id
-                    type: string
-                    format: uuid
-                instance_id:
-                    deprecated: true
-                    title: Instance Id (Deprecated)
-                    type: string
-                    format: uuid
-                    description: '**Deprecated**: This property is being deprecated
-                        in favor of `instance`. Please update your requests to use
-                        `instance` for improved functionality and future compatibility.
-
-                        '
-                instance:
-                    $ref: '#/components/schemas/BackupInstanceDetailResponse'
-                name:
-                    title: Name
-                    type: string
-                location:
-                    title: Location
-                    type: string
-                type:
-                    $ref: '#/components/schemas/BackupType'
-                status:
-                    $ref: '#/components/schemas/BackupStatus'
-                mode:
-                    $ref: '#/components/schemas/BackupMode'
-                db_size:
-                    title: Database Size
-                    type: integer
-                    description: Database size in kilobytes (1024 kilobytes = 1 megabyte).
-                size:
-                    title: Size
-                    type: integer
-                    description: Backup file size in kilobytes (1024 kilobytes = 1
-                        megabyte).
-                started_at:
-                    title: Started At
-                    type: string
-                    format: date-time
-                finished_at:
-                    title: Finished At
-                    type: string
-                    format: date-time
-                created_at:
-                    title: Created At
-                    type: string
-                    format: date-time
-                updated_at:
-                    title: Updated At
-                    type: string
-                    format: date-time
-                engine_id:
-                    format: uuid
-                    title: Engine Id
-                    type: string
-        BackupStatus:
-            title: Backup Status
-            description: An enumeration.
-            type: string
-            enum:
-            - PENDING
-            - CREATING
-            - CREATED
-            - ERROR
-            - DELETING
-            - DELETED
-            - ERROR_DELETING
-        BackupType:
-            title: Backup Type
-            description: An enumeration.
-            type: string
-            enum:
-            - ON_DEMAND
-            - AUTOMATED
-        BackupMode:
-            title: Backup Mode
-            description: An enumeration.
-            type: string
-            enum:
-            - FULL
-            - INCREMENTAL
-        BackupCreateRequest:
-            title: Backup Create Request
-            required:
-            - mode
-            type: object
-            properties:
-                mode:
-                    $ref: '#/components/schemas/BackupModeRequest'
-        BackupModeRequest:
-            title: Backup Mode Request
-            description: An enumeration.
-            type: string
-            enum:
-            - FULL
-        BackupResponse:
-            title: Backup Response
-            required:
-            - id
-            type: object
-            properties:
-                id:
-                    title: Id
-                    type: string
-                    format: uuid
-        BackupInstanceDetailResponse:
-            title: Instance Detail Response
-            description: 'This response object provides details about a database instance
-                associated with a backup.  It is provided only if the originating
-                database instance of the backup is not deleted.  If the originating
-                instance is deleted, no instance details will be provided.
-
-                '
-            required:
-            - id
-            - name
-            type: object
-            properties:
-                id:
-                    title: Id
-                    description: Database instance unique identifier.
-                    type: string
-                    format: uuid
-                name:
-                    title: Name
-                    description: Database instance unique name.
-                    type: string
-                    maxLength: 100
-                    example: mydbinstance
         SnapshotDetailResponse:
             title: Snapshot Detail Response
             required:
@@ -2419,7 +1651,6 @@ components:
         SnapshotCreateRequest:
             required:
             - name
-            - description
             type: object
             properties:
                 name:
@@ -2427,13 +1658,13 @@ components:
                     description: Snapshot unique name.
                     type: string
                     maxLength: 100
-                    example: mysnapshot
+                    example: my-snapshot
                 description:
                     title: Description
                     description: Snapshot description.
                     type: string
                     maxLength: 255
-                    example: mydescription
+                    example: my-description
         SnapshotUpdateRequest:
             type: object
             properties:
@@ -2442,13 +1673,13 @@ components:
                     description: Snapshot unique name.
                     type: string
                     maxLength: 100
-                    example: mysnapshotupdated
+                    example: my-snapshot-updated
                 description:
                     title: Description
                     description: Snapshot description.
                     type: string
                     maxLength: 255
-                    example: mydescriptionupdated
+                    example: my-description-updated
         SnapshotResponse:
             title: Snapshot Response
             required:
@@ -2575,6 +1806,7 @@ components:
             - G8B
             - G9B
             - G10B
+            - G1
             example: G1B
         InstanceParametersNames:
             title: Instance Parameters Name
@@ -2623,8 +1855,6 @@ components:
             - password
             - user
             - volume
-            - engine_id
-            - instance_type_id
             type: object
             properties:
                 name:
@@ -2635,6 +1865,27 @@ components:
                     title: Engine Id
                     type: string
                     format: uuid
+                datastore_id:
+                    deprecated: true
+                    title: Datastore Id (Deprecated)
+                    type: string
+                    format: uuid
+                    description: '**Deprecated**: This property is being deprecated
+                        in favor of `engine_id`. Please update your requests to use
+                        `engine_id` for improved functionality and future compatibility.
+
+                        '
+                flavor_id:
+                    deprecated: true
+                    title: Flavor Id (Deprecated)
+                    type: string
+                    format: uuid
+                    description: '**Deprecated**: This property is being deprecated
+                        in favor of `instance_type_id`. Please update your requests
+                        to use `instance_type_id` for improved functionality and future
+                        compatibility.
+
+                        '
                 instance_type_id:
                     title: Instance Type Id
                     type: string
@@ -2711,26 +1962,6 @@ components:
                     title: Id
                     type: string
                     format: uuid
-        RestoreResponse:
-            title: Restore Response
-            required:
-            - id
-            type: object
-            properties:
-                id:
-                    title: Id
-                    type: string
-                    format: uuid
-        InstanceRestoreRequest:
-            title: Instance Restore Request
-            required:
-            - backup_id
-            type: object
-            properties:
-                backup_id:
-                    title: Backup Id
-                    type: string
-                    format: uuid
         InstanceDetailResponse:
             title: Instance Detail Response
             required:
@@ -2760,7 +1991,7 @@ components:
                     description: Database instance unique name.
                     type: string
                     maxLength: 100
-                    example: mydbinstance
+                    example: my-db-instance
                 engine_id:
                     description: Engine unique identifier.
                     type: string
@@ -3156,60 +2387,6 @@ components:
                     title: Address
                     type: string
                     example: 172.53.10.82
-        Flavor:
-            type: object
-            required:
-            - id
-            - name
-            - label
-            - vcpu
-            - ram
-            - family_description
-            - family_slug
-            - size
-            - sku_source
-            - sku_replica
-            properties:
-                id:
-                    description: Flavor unique identifier.
-                    type: string
-                    format: uuid
-                name:
-                    description: Flavor name.
-                    type: string
-                    example: i0-c1-r4-d10
-                label:
-                    description: Flavor label.
-                    type: string
-                    example: cloud-dbaas-bs1.small
-                vcpu:
-                    description: Number of vCPUs.
-                    type: string
-                    example: '1'
-                ram:
-                    description: RAM Amount.
-                    type: string
-                    example: 4 GB
-                family_description:
-                    description: Flavor Family Description.
-                    type: string
-                    example: Basic
-                family_slug:
-                    description: Flavor Family SLUG.
-                    type: string
-                    example: bs1
-                size:
-                    description: Flavor Size Description.
-                    type: string
-                    example: Small
-                sku_source:
-                    description: SKU Database Instance Source.
-                    type: string
-                    example: BRNE10600101sm
-                sku_replica:
-                    description: SKU Database Instance Replica.
-                    type: string
-                    example: BRNE10610101sm
         InstanceType:
             type: object
             required:
