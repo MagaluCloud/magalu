@@ -8,7 +8,7 @@ Usage:
 
 ## Product catalog:
 - Examples:
-- ./mgc dbaas instances snapshots update --description="mydescriptionupdated" --name="mysnapshotupdated"
+- ./mgc dbaas instances snapshots update --description="my-description-updated" --name="my-snapshot-updated"
 
 ## Other commands:
 - Flags:
