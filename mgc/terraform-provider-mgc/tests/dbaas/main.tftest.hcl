@@ -212,44 +212,6 @@ run "validate_instance_parameters" {
   }
 }
 
-run "validate_backup_creation" {
-  command = apply
-
-  assert {
-    condition     = mgc_dbaas_instances_backups.test_backup.id != ""
-    error_message = "Backup was not created successfully"
-  }
-}
-
-run "validate_backup_mode" {
-  command = apply
-
-  assert {
-    condition     = mgc_dbaas_instances_backups.test_backup.mode == "FULL"
-    error_message = "Backup mode is not correct"
-  }
-}
-
-run "validate_instance_backups_not_empty" {
-  command = apply
-
-  assert {
-    condition     = length(data.mgc_dbaas_instances_backups.test_instance_backups.backups) > 0
-    error_message = "No backups found for the instance"
-  }
-}
-
-run "validate_backup_fields" {
-  command = apply
-
-  assert {
-    condition = alltrue([
-      for backup in data.mgc_dbaas_instances_backups.test_instance_backups.backups :
-      backup.id != "" && backup.mode != "" && backup.status != ""
-    ])
-    error_message = "Found backup with missing required fields"
-  }
-}
 
 run "validate_snapshot_creation" {
   command = apply

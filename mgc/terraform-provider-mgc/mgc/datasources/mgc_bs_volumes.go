@@ -41,7 +41,7 @@ func (r *DataSourceBsVolumes) Metadata(_ context.Context, req datasource.Metadat
 }
 
 type bsVolumesResourceModel struct {
-	volumes []bsVolumesResourceItemModel `tfsdk:"volumes"`
+	Volumes []bsVolumesResourceItemModel `tfsdk:"volumes"`
 }
 
 func (r *DataSourceBsVolumes) Configure(ctx context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
@@ -142,7 +142,7 @@ func (r *DataSourceBsVolumes) Read(ctx context.Context, req datasource.ReadReque
 		item.State = types.StringValue(sdkOutput.State)
 		item.Status = types.StringValue(sdkOutput.Status)
 
-		data.volumes = append(data.volumes, item)
+		data.Volumes = append(data.Volumes, item)
 	}
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }

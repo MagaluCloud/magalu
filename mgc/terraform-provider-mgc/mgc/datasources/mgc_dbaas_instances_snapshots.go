@@ -117,6 +117,7 @@ func (r *DataSourceDbSnapshots) Read(ctx context.Context, req datasource.ReadReq
 		snapshotModels = append(snapshotModels, dbSnapshotModel{
 			ID:          types.StringValue(snapshot.Id),
 			Name:        types.StringValue(snapshot.Name),
+			InstanceId:  data.InstanceId,
 			Description: types.StringValue(snapshot.Description),
 			CreatedAt:   types.StringValue(snapshot.CreatedAt),
 			Status:      types.StringValue(snapshot.Status),

@@ -15,14 +15,16 @@ Magalu Cloud (MGC) it's the first **Brazilian** Cloud with global scale. We spea
 The Magalu Cloud provider is used to configure your Magalu Cloud infrastructure.
 
 With the provider you can manage:
-
-- VPCs (subnets, security rules, public IPs)
-- Virtual Machines (instances, snapshots)
-- Kubernetes (clusters, nodepools)
-- DBaaS (instances, replications)
+- Availability zones
 - Block Storage (volumes, snapshots, VM attach)
+- DBaaS (instances, replications)
+- Container Registry (registries)
+- Kubernetes (clusters, nodepools)
 - Object Storage (Buckets)
-- The provider is in the development phase, so new Magalu Cloud features will be supported soon.
+- Virtual Machines (instances, snapshots)
+- VPCs (subnets, security rules, public IPs)
+
+The provider is in the development phase, so new Magalu Cloud features will be supported soon.
 
 If you don't already have an account on Magalu Cloud (MGC) you can create one through our [console](https://console.magalu.cloud/login).
 

@@ -94,6 +94,7 @@ brew install pre-commit
 pip install pre-commit
 ```
 
+
 For other types of installation, check their
 [official doc](https://pre-commit.com/#install).
 

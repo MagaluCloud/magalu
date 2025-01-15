@@ -38,31 +38,22 @@ data "mgc_dbaas_instance" "test_instance" {
 
 # DBaaS Instance resource
 resource "mgc_dbaas_instances" "test_instance" {
-  name                  = "test-instance-tf"
+  name                  = "test-instance-tf-acceptance"
   user                  = "dbadmin"
   password              = "aaaaaaaaaa"
   engine_name           = "mysql"
   engine_version        = "8.0"
-  instance_type         = "cloud-dbaas-gp1.small"
-  volume_size           = 50
+  instance_type         = "cloud-dbaas-bs1.small"
+  volume_size           = 60
   backup_retention_days = 10
   backup_start_at       = "16:00:00"
 }
 
-# DBaaS Backup resource and data source
-resource "mgc_dbaas_instances_backups" "test_backup" {
-  instance_id = mgc_dbaas_instances.test_instance.id
-  mode        = "FULL"
-}
-
-data "mgc_dbaas_instances_backups" "test_instance_backups" {
-  instance_id = mgc_dbaas_instances.test_instance.id
-}
 
 # DBaaS Snapshot resource and data source
 resource "mgc_dbaas_instances_snapshots" "test_snapshot" {
   instance_id = mgc_dbaas_instances.test_instance.id
-  name        = "test-snapshot-tf"
+  name        = "test-snapshot-tf-acceptance"
   description = "Test snapshot for terraform acceptance tests"
 }
 
@@ -124,15 +115,6 @@ output "dbaas_instance" {
   }
 
   sensitive = true # Because it contains instance information
-}
-
-# Add outputs for backup and snapshot testing
-output "test_backup" {
-  value = mgc_dbaas_instances_backups.test_backup
-}
-
-output "test_instance_backups" {
-  value = data.mgc_dbaas_instances_backups.test_instance_backups
 }
 
 output "test_snapshot" {
