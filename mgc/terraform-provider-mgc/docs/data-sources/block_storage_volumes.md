@@ -36,6 +36,7 @@ Read-Only:
 
 - `availability_zone` (String) The availability zones where the block storage is available.
 - `created_at` (String) The timestamp when the block storage was created.
+- `encrypted` (Boolean) The encryption status of the block storage.
 - `id` (String) The unique identifier of the volume snapshot.
 - `name` (String) The name of the block storage.
 - `size` (Number) The size of the block storage in GB.

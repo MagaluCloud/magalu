@@ -233,20 +233,26 @@ func (r *NewNodePoolResource) Update(ctx context.Context, req resource.UpdateReq
 	}
 
 	repli := int(data.Replicas.ValueInt64())
-	nodepool, err := r.sdkNodepool.UpdateContext(ctx, sdkNodepool.UpdateParameters{
+	updateParam := sdkNodepool.UpdateParameters{
 		ClusterId:  data.ClusterID.ValueString(),
 		NodePoolId: state.ID.ValueString(),
 		Replicas:   &repli,
-		AutoScale:  &sdkNodepool.UpdateParametersAutoScale{},
-	},
+	}
+
+	if !data.MaxReplicas.IsNull() || !data.MinReplicas.IsNull() {
+		updateParam.AutoScale = &sdkNodepool.UpdateParametersAutoScale{}
+	}
+
+	if !data.MaxReplicas.IsNull() {
+		updateParam.AutoScale.MaxReplicas = tfutil.ConvertInt64PointerToIntPointer(data.MaxReplicas.ValueInt64Pointer())
+	}
+	if !data.MinReplicas.IsNull() {
+		updateParam.AutoScale.MinReplicas = tfutil.ConvertInt64PointerToIntPointer(data.MinReplicas.ValueInt64Pointer())
+	}
+
+	nodepool, err := r.sdkNodepool.UpdateContext(ctx, updateParam,
 		tfutil.GetConfigsFromTags(r.sdkClient.Sdk().Config().Get, sdkNodepool.UpdateConfigs{}))
 
-	if !data.MinReplicas.IsNull() {
-		nodepool.AutoScale.MaxReplicas = tfutil.ConvertInt64PointerToIntPointer(data.MaxReplicas.ValueInt64Pointer())
-	}
-	if !data.MinReplicas.IsNull() {
-		nodepool.AutoScale.MinReplicas = tfutil.ConvertInt64PointerToIntPointer(data.MinReplicas.ValueInt64Pointer())
-	}
 	if err != nil {
 		resp.Diagnostics.AddError("Failed to update node pool", err.Error())
 		return

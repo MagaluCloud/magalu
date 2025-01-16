@@ -2,6 +2,7 @@ resource "mgc_block_storage_volumes" "example_volume" {
   name              = "example-volume"
   availability_zone = "br-ne1-a"
   size              = 200
+  encrypted         = true
   type              = "cloud_nvme1k"
 }
 
@@ -35,6 +36,13 @@ data "mgc_block_storage_snapshot" "snapshot_data" {
   id = mgc_block_storage_snapshots.snapshot_example.id
 
   depends_on = [mgc_block_storage_snapshots.snapshot_example]
+}
+
+data "mgc_block_storage_volumes" "volumes_data" {
+}
+
+output "name" {
+  value = data.mgc_block_storage_volumes.volumes_data
 }
 
 output "volume_details" {

@@ -44,6 +44,7 @@ type ListResult struct {
 }
 
 type ListResultTypesItem struct {
+	AllowsEncryption  *bool                                `json:"allows_encryption,omitempty"`
 	AvailabilityZones ListResultTypesItemAvailabilityZones `json:"availability_zones"`
 	DiskType          string                               `json:"disk_type"`
 	Id                string                               `json:"id"`

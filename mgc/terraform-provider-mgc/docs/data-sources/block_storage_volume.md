@@ -39,6 +39,7 @@ output "my-volume" {
 - `availability_zone` (String) The availability zones where the block storage is available.
 - `created_at` (String) The timestamp when the block storage was created.
 - `disk_type` (String) The disk type of the block storage.
+- `encrypted` (Boolean) The encryption status of the block storage.
 - `name` (String) The name of the block storage.
 - `size` (Number) The size of the block storage in GB.
 - `state` (String) The current state of the virtual machine instance.

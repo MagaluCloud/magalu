@@ -33,6 +33,7 @@ resource "mgc_block_storage_volumes" "example_volume" {
 ### Optional
 
 - `availability_zone` (String) The availability zones where the volume is available.
+- `encrypted` (Boolean) Indicates if the volume is encrypted.
 - `snapshot_id` (String) Create a volume from a snapshot.
 
 ### Read-Only

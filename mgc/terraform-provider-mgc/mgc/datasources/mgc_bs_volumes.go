@@ -30,6 +30,7 @@ type bsVolumesResourceItemModel struct {
 	TypeId           types.String `tfsdk:"type_id"`
 	State            types.String `tfsdk:"state"`
 	Status           types.String `tfsdk:"status"`
+	Encrepted        types.Bool   `tfsdk:"encrypted"`
 }
 
 func NewDataSourceBsVolumes() datasource.DataSource {
@@ -107,6 +108,10 @@ func (r *DataSourceBsVolumes) Schema(_ context.Context, req datasource.SchemaReq
 							Description: "The unique identifier of the block storage type.",
 							Computed:    true,
 						},
+						"encrypted": schema.BoolAttribute{
+							Description: "The encryption status of the block storage.",
+							Computed:    true,
+						},
 					},
 				},
 			},
@@ -141,6 +146,7 @@ func (r *DataSourceBsVolumes) Read(ctx context.Context, req datasource.ReadReque
 		item.TypeId = types.StringPointerValue(sdkOutput.Type.Id)
 		item.State = types.StringValue(sdkOutput.State)
 		item.Status = types.StringValue(sdkOutput.Status)
+		item.Encrepted = types.BoolPointerValue(sdkOutput.Encrypted)
 
 		data.Volumes = append(data.Volumes, item)
 	}
