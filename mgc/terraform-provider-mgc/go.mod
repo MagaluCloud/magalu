@@ -7,7 +7,7 @@ require (
 	github.com/hashicorp/terraform-plugin-framework-validators v0.13.0
 	github.com/hashicorp/terraform-plugin-log v0.9.0
 	magalu.cloud/lib v0.0.0-00010101000000-000000000000
-	magalu.cloud/sdk v0.31.0
+	magalu.cloud/sdk v0.32.0
 )
 
 require (
@@ -18,7 +18,7 @@ require (
 	github.com/hashicorp/terraform-plugin-go v0.23.0 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/stoewer/go-strcase v1.3.0 // indirect
-	magalu.cloud/core v0.31.0 // indirect
+	magalu.cloud/core v0.32.0 // indirect
 )
 
 require (

@@ -134,402 +134,6 @@ paths:
             security:
             -   OAuth2:
                 - block-storage.write
-    /v1/backups:
-        get:
-            tags:
-            - backups
-            summary: List all backups.
-            description: "Retrieve a list of Backups for the currently authenticated\
-                \ tenant.\n\n#### Notes\n- Use the **expand** argument to obtain additional\
-                \ details about the\n Volume used to create each Backup."
-            operationId: list_backups_v1_backups_get
-            parameters:
-            -   name: expand
-                in: query
-                required: false
-                schema:
-                    type: array
-                    items:
-                        type: string
-                        title: ExpandBackup
-                        enum:
-                        - volume
-                    title: Expand
-                    default: []
-            -   name: _limit
-                in: query
-                required: false
-                schema:
-                    exclusiveMinimum: false
-                    type: integer
-                    title: ' Limit'
-                    default: 50
-            -   name: _offset
-                in: query
-                required: false
-                schema:
-                    type: integer
-                    title: ' Offset'
-                    default: 0
-            -   name: _sort
-                in: query
-                required: false
-                schema:
-                    type: string
-                    title: ' Sort'
-                    pattern: ^(^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$
-                    default: created_at:asc
-            -   name: name
-                in: query
-                required: false
-                schema:
-                    anyOf:
-                    -   type: string
-                    title: Name
-                    nullable: true
-            responses:
-                '200':
-                    description: Successful Response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/BackupListResponse'
-                '404':
-                    description: Not Found
-                    content:
-                        application/json:
-                            schema:
-                                type: array
-                                items:
-                                    $ref: '#/components/schemas/ErrorResponse'
-                                title: Response 404 List Backups V1 Backups Get
-                '409':
-                    description: Conflict
-                    content:
-                        application/json:
-                            schema:
-                                type: array
-                                items:
-                                    $ref: '#/components/schemas/ErrorResponse'
-                                title: Response 409 List Backups V1 Backups Get
-                '422':
-                    description: Unprocessable Entity
-                    content:
-                        application/json:
-                            schema:
-                                type: array
-                                items:
-                                    $ref: '#/components/schemas/ErrorResponse'
-                                title: Response 422 List Backups V1 Backups Get
-            x-viveiro: true
-            x-mgc-hidden: true
-            security:
-            -   OAuth2:
-                - block-storage.read
-        post:
-            tags:
-            - backups
-            summary: Create a backup.
-            description: "Create a backup for the currently authenticated tenant.\n\
-                \nThe Backup can be used when it reaches the \"available\" state and\
-                \ the\n \"completed\" status.\n\n#### Rules\n- The Backup name must\
-                \ be unique; otherwise, the creation will be disallowed.\n- The Volume\
-                \ can be either in in-use or available states.\n- The Volume must\
-                \ not have an operation in execution.\n\n#### Notes\n- Use the **block-storage\
-                \ volume list** command to retrieve a list of all\n Volumes and obtain\
-                \ the ID of the Volume that will be used to create the\n Backup."
-            operationId: create_backup_v1_backups_post
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/CreateBackup'
-                required: true
-            responses:
-                '202':
-                    description: Successful Response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/IdResponse'
-                '404':
-                    description: Not Found
-                    content:
-                        application/json:
-                            schema:
-                                type: array
-                                items:
-                                    $ref: '#/components/schemas/ErrorResponse'
-                                title: Response 404 Create Backup V1 Backups Post
-                '409':
-                    description: Conflict
-                    content:
-                        application/json:
-                            schema:
-                                type: array
-                                items:
-                                    $ref: '#/components/schemas/ErrorResponse'
-                                title: Response 409 Create Backup V1 Backups Post
-                '422':
-                    description: Unprocessable Entity
-                    content:
-                        application/json:
-                            schema:
-                                type: array
-                                items:
-                                    $ref: '#/components/schemas/ErrorResponse'
-                                title: Response 422 Create Backup V1 Backups Post
-            x-viveiro: true
-            x-mgc-hidden: true
-            security:
-            -   OAuth2:
-                - block-storage.write
-    /v1/backups/copy:
-        post:
-            tags:
-            - backups
-            summary: Copy backup cross region.
-            description: "Copy a backup cross region for the currently authenticated\
-                \ tenant.\n\n#### Rules\n- The copy only be accepted when the destiny\
-                \ region is different from origin region.\n- The copy only be accepted\
-                \ if the backup's name in destiny region is different from input name.\n\
-                - The copy only be accepted if the user has access to destiny region.\n\
-                \n#### Notes\n- Utilize the **block-storage backups list** command\
-                \ to retrieve a list of\n all Backups and obtain the ID of the Backup\
-                \ you wish to copy across different region."
-            operationId: copy_backup_cross_region_v1_backups_copy_post
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/CopyBackupCrossRegionRequest'
-                required: true
-            responses:
-                '204':
-                    description: Successful Response
-                '404':
-                    description: Not Found
-                    content:
-                        application/json:
-                            schema:
-                                type: array
-                                items:
-                                    $ref: '#/components/schemas/ErrorResponse'
-                                title: Response 404 Copy Backup Cross Region V1 Backups
-                                    Copy Post
-                '409':
-                    description: Conflict
-                    content:
-                        application/json:
-                            schema:
-                                type: array
-                                items:
-                                    $ref: '#/components/schemas/ErrorResponse'
-                                title: Response 409 Copy Backup Cross Region V1 Backups
-                                    Copy Post
-                '422':
-                    description: Unprocessable Entity
-                    content:
-                        application/json:
-                            schema:
-                                type: array
-                                items:
-                                    $ref: '#/components/schemas/ErrorResponse'
-                                title: Response 422 Copy Backup Cross Region V1 Backups
-                                    Copy Post
-            x-viveiro: true
-            x-mgc-hidden: true
-            security:
-            -   OAuth2:
-                - block-storage.write
-    /v1/backups/{id}:
-        get:
-            tags:
-            - backups
-            summary: Retrieve the details of a specific backup.
-            description: "Retrieve details of a Backup for the currently authenticated\
-                \ tenant.\n\n#### Notes\n- Use the **expand** argument to obtain additional\
-                \ details about the Volume\n used to create the Backup.\n- Utilize\
-                \ the **block-storage backups list** command to retrieve a list of\n\
-                \ all Backups and obtain the ID of the Backup for which you want to\
-                \ retrieve\n details."
-            operationId: get_backup_v1_backups__id__get
-            parameters:
-            -   name: id
-                in: path
-                required: true
-                schema:
-                    type: string
-                    title: Id
-                    format: uuid
-            -   name: expand
-                in: query
-                required: false
-                schema:
-                    type: array
-                    items:
-                        type: string
-                        title: ExpandBackup
-                        enum:
-                        - volume
-                    title: Expand
-                    default: []
-            responses:
-                '200':
-                    description: Successful Response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/BackupResponse'
-                '404':
-                    description: Not Found
-                    content:
-                        application/json:
-                            schema:
-                                type: array
-                                items:
-                                    $ref: '#/components/schemas/ErrorResponse'
-                                title: Response 404 Get Backup V1 Backups  Id  Get
-                '409':
-                    description: Conflict
-                    content:
-                        application/json:
-                            schema:
-                                type: array
-                                items:
-                                    $ref: '#/components/schemas/ErrorResponse'
-                                title: Response 409 Get Backup V1 Backups  Id  Get
-                '422':
-                    description: Unprocessable Entity
-                    content:
-                        application/json:
-                            schema:
-                                type: array
-                                items:
-                                    $ref: '#/components/schemas/ErrorResponse'
-                                title: Response 422 Get Backup V1 Backups  Id  Get
-            x-viveiro: true
-            x-mgc-hidden: true
-            security:
-            -   OAuth2:
-                - block-storage.read
-        delete:
-            tags:
-            - backups
-            summary: Delete a backup.
-            description: "Delete a Backup for the currently authenticated tenant.\n\
-                \n#### Rules\n- The Backup's status must be \"completed\".\n- The\
-                \ Backup's state must be \"available\".\n\n\n#### Notes\n- Utilize\
-                \ the **block-storage backups** list command to retrieve a list of\n\
-                \ all Backups and obtain the ID of the Backup you wish to delete."
-            operationId: delete_backup_v1_backups__id__delete
-            parameters:
-            -   name: id
-                in: path
-                required: true
-                schema:
-                    type: string
-                    title: Id
-                    format: uuid
-            responses:
-                '204':
-                    description: Successful Response
-                '404':
-                    description: Not Found
-                    content:
-                        application/json:
-                            schema:
-                                type: array
-                                items:
-                                    $ref: '#/components/schemas/ErrorResponse'
-                                title: Response 404 Delete Backup V1 Backups  Id  Delete
-                '409':
-                    description: Conflict
-                    content:
-                        application/json:
-                            schema:
-                                type: array
-                                items:
-                                    $ref: '#/components/schemas/ErrorResponse'
-                                title: Response 409 Delete Backup V1 Backups  Id  Delete
-                '422':
-                    description: Unprocessable Entity
-                    content:
-                        application/json:
-                            schema:
-                                type: array
-                                items:
-                                    $ref: '#/components/schemas/ErrorResponse'
-                                title: Response 422 Delete Backup V1 Backups  Id  Delete
-            x-viveiro: true
-            x-mgc-hidden: true
-            security:
-            -   OAuth2:
-                - block-storage.write
-    /v1/backups/{id}/rename:
-        patch:
-            tags:
-            - backups
-            summary: Rename a backup.
-            description: "Patches a Backup for the currently authenticated tenant.\n\
-                \n#### Rules\n- The Backup name must be unique; otherwise, renaming\
-                \ will not be allowed.\n- The Backup's state must be available.\n\n\
-                #### Notes\n- Utilize the **block-storage backups list** command to\
-                \ retrieve a list of\n all Backups and obtain the ID of the Backup\
-                \ you wish to rename."
-            operationId: patch_backup_v1_backups__id__rename_patch
-            parameters:
-            -   name: id
-                in: path
-                required: true
-                schema:
-                    type: string
-                    title: Id
-                    format: uuid
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/PatchResourceRequest'
-                required: true
-            responses:
-                '204':
-                    description: Successful Response
-                '404':
-                    description: Not Found
-                    content:
-                        application/json:
-                            schema:
-                                type: array
-                                items:
-                                    $ref: '#/components/schemas/ErrorResponse'
-                                title: Response 404 Patch Backup V1 Backups  Id  Rename
-                                    Patch
-                '409':
-                    description: Conflict
-                    content:
-                        application/json:
-                            schema:
-                                type: array
-                                items:
-                                    $ref: '#/components/schemas/ErrorResponse'
-                                title: Response 409 Patch Backup V1 Backups  Id  Rename
-                                    Patch
-                '422':
-                    description: Unprocessable Entity
-                    content:
-                        application/json:
-                            schema:
-                                type: array
-                                items:
-                                    $ref: '#/components/schemas/ErrorResponse'
-                                title: Response 422 Patch Backup V1 Backups  Id  Rename
-                                    Patch
-            x-viveiro: true
-            x-mgc-hidden: true
-            security:
-            -   OAuth2:
-                - block-storage.write
     /v1/snapshots:
         get:
             tags:
@@ -1997,358 +1601,16 @@ components:
                     state: running
                     status: completed
                     updated_at: '2022-01-01T00:00:10Z'
-        BackupIdRequest:
-            type: object
-            properties:
-                id:
-                    anyOf:
-                    -   type: string
-                        maxLength: 255
-                        minLength: 1
-                    title: Id
-                    nullable: true
-                name:
-                    anyOf:
-                    -   type: string
-                        maxLength: 255
-                        minLength: 1
-                    title: Name
-                    nullable: true
-            title: BackupIdRequest
-        BackupListResponse:
-            type: object
-            properties:
-                backups:
-                    type: array
-                    items:
-                        type: object
-                        properties:
-                            id:
-                                type: string
-                                title: Id
-                            name:
-                                type: string
-                                title: Name
-                            size:
-                                type: integer
-                                title: Size
-                            description:
-                                anyOf:
-                                -   type: string
-                                title: Description
-                                nullable: true
-                            state:
-                                type: string
-                                title: BackupState
-                                enum:
-                                - new
-                                - available
-                                - deleted
-                            status:
-                                type: string
-                                title: BackupStatus
-                                enum:
-                                - completed
-                                - creating
-                                - creating_error
-                                - creating_error_quota
-                                - uploading
-                                - uploading_error_quota
-                                - uploading_error
-                                - deleting_pending
-                                - deleting_error
-                                - deleting
-                                - restoring_pending
-                                - restoring
-                                - restoring_error
-                                - provisioning
-                                - copying
-                                - copying_error_quota
-                            created_at:
-                                anyOf:
-                                -   type: string
-                                -   type: string
-                                    format: date-time
-                                title: Created At
-                                example: '2022-01-01T00:00:10Z'
-                            updated_at:
-                                anyOf:
-                                -   type: string
-                                -   type: string
-                                    format: date-time
-                                title: Updated At
-                                example: '2022-01-01T00:00:10Z'
-                            volume:
-                                anyOf:
-                                -   $ref: '#/components/schemas/ExpandedVolume'
-                                -   $ref: '#/components/schemas/IdResponse'
-                                title: Volume
-                                nullable: true
-                            type:
-                                type: string
-                                title: BackupType
-                                enum:
-                                - full
-                                - incremental
-                            source_backup:
-                                anyOf:
-                                -   $ref: '#/components/schemas/IdResponse'
-                                nullable: true
-                            error:
-                                anyOf:
-                                -   $ref: '#/components/schemas/BackupResponseError'
-                                nullable: true
-                        title: BackupResponse
-                        required:
-                        - id
-                        - name
-                        - size
-                        - state
-                        - status
-                        - created_at
-                        - updated_at
-                        - volume
-                        - type
-                        example:
-                            created_at: '2022-01-01T00:00:10Z'
-                            description: my backup for testing
-                            error:
-                                message: You have reached the limit of allowed backups.
-                                    Please, remove unused backups or contact support
-                                    to increase your quota.
-                                slug: creating_error_quota
-                            id: a7ce0545-7a0e-4192-97e7-659aaa66b5c4
-                            name: My backup
-                            size: 10
-                            source_backup:
-                                id: cf495c8d-5b1c-4e3e-b991-f6642944d7a7
-                            state: available
-                            status: completed
-                            type: incremental
-                            updated_at: '2022-01-01T00:00:10Z'
-                            volume:
-                                id: 3961ab7f-4939-4ea0-8f7e-25a2e30731b7
-                    title: Backups
-            title: BackupListResponse
-            required:
-            - backups
-            example:
-                backups:
-                -   created_at: '2022-01-01T00:00:10Z'
-                    description: my backup for testing
-                    error:
-                        message: You have reached the limit of allowed backups. Please,
-                            remove unused backups or contact support to increase your
-                            quota.
-                        slug: creating_error_quota
-                    id: a7ce0545-7a0e-4192-97e7-659aaa66b5c4
-                    name: My backup
-                    size: 10
-                    source_backup:
-                        id: cf495c8d-5b1c-4e3e-b991-f6642944d7a7
-                    state: available
-                    status: completed
-                    type: incremental
-                    updated_at: '2022-01-01T00:00:10Z'
-                    volume:
-                        id: 3961ab7f-4939-4ea0-8f7e-25a2e30731b7
-        BackupResponse:
-            type: object
-            properties:
-                id:
-                    type: string
-                    title: Id
-                name:
-                    type: string
-                    title: Name
-                size:
-                    type: integer
-                    title: Size
-                description:
-                    anyOf:
-                    -   type: string
-                    title: Description
-                    nullable: true
-                state:
-                    type: string
-                    title: BackupState
-                    enum:
-                    - new
-                    - available
-                    - deleted
-                status:
-                    type: string
-                    title: BackupStatus
-                    enum:
-                    - completed
-                    - creating
-                    - creating_error
-                    - creating_error_quota
-                    - uploading
-                    - uploading_error_quota
-                    - uploading_error
-                    - deleting_pending
-                    - deleting_error
-                    - deleting
-                    - restoring_pending
-                    - restoring
-                    - restoring_error
-                    - provisioning
-                    - copying
-                    - copying_error_quota
-                created_at:
-                    anyOf:
-                    -   type: string
-                    -   type: string
-                        format: date-time
-                    title: Created At
-                    example: '2022-01-01T00:00:10Z'
-                updated_at:
-                    anyOf:
-                    -   type: string
-                    -   type: string
-                        format: date-time
-                    title: Updated At
-                    example: '2022-01-01T00:00:10Z'
-                volume:
-                    anyOf:
-                    -   $ref: '#/components/schemas/ExpandedVolume'
-                    -   $ref: '#/components/schemas/IdResponse'
-                    title: Volume
-                    nullable: true
-                type:
-                    type: string
-                    title: BackupType
-                    enum:
-                    - full
-                    - incremental
-                source_backup:
-                    anyOf:
-                    -   $ref: '#/components/schemas/IdResponse'
-                    nullable: true
-                error:
-                    anyOf:
-                    -   $ref: '#/components/schemas/BackupResponseError'
-                    nullable: true
-            title: BackupResponse
-            required:
-            - id
-            - name
-            - size
-            - state
-            - status
-            - created_at
-            - updated_at
-            - volume
-            - type
-            example:
-                created_at: '2022-01-01T00:00:10Z'
-                description: my backup for testing
-                error:
-                    message: You have reached the limit of allowed backups. Please,
-                        remove unused backups or contact support to increase your
-                        quota.
-                    slug: creating_error_quota
-                id: a7ce0545-7a0e-4192-97e7-659aaa66b5c4
-                name: My backup
-                size: 10
-                source_backup:
-                    id: cf495c8d-5b1c-4e3e-b991-f6642944d7a7
-                state: available
-                status: completed
-                type: incremental
-                updated_at: '2022-01-01T00:00:10Z'
-                volume:
-                    id: 3961ab7f-4939-4ea0-8f7e-25a2e30731b7
-        BackupResponseError:
-            type: object
-            properties:
-                message:
-                    title: Message
-                    type: string
-                slug:
-                    title: Slug
-                    type: string
-            title: BackupResponseError
-            required:
-            - slug
-            - message
-            example:
-                message: Unauthorized
-                slug: Unauthorized
-        BackupState:
-            type: string
-            title: BackupState
-            enum:
-            - new
-            - available
-            - deleted
-        BackupStatus:
-            type: string
-            title: BackupStatus
-            enum:
-            - completed
-            - creating
-            - creating_error
-            - creating_error_quota
-            - uploading
-            - uploading_error_quota
-            - uploading_error
-            - deleting_pending
-            - deleting_error
-            - deleting
-            - restoring_pending
-            - restoring
-            - restoring_error
-            - provisioning
-            - copying
-            - copying_error_quota
-        BackupType:
-            type: string
-            title: BackupType
-            enum:
-            - full
-            - incremental
-        CopyBackupCrossRegionRequest:
-            type: object
-            properties:
-                destiny_region:
-                    type: string
-                    title: Destiny Region
-                    maxLength: 255
-                    minLength: 1
-                backup:
-                    type: object
-                    properties:
-                        id:
-                            anyOf:
-                            -   type: string
-                                maxLength: 255
-                                minLength: 1
-                            title: Id
-                            nullable: true
-                        name:
-                            anyOf:
-                            -   type: string
-                                maxLength: 255
-                                minLength: 1
-                            title: Name
-                            nullable: true
-                    title: BackupIdRequest
-            title: CopyBackupCrossRegionRequest
-            required:
-            - destiny_region
-            - backup
-            example:
-                backup:
-                    name: backup-tomato
-                destiny_region: br-ne1
         CopyCrossRegionRequest:
             type: object
             properties:
                 destination_region:
                     type: string
-                    title: Destination Region
+                    title: Regions
+                    enum:
+                    - br-se1
+                    - br-mgl1
+                    - br-ne1
             title: CopyCrossRegionRequest
             required:
             - destination_region
@@ -2396,38 +1658,6 @@ components:
                     id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                 volume:
                     id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-        CreateBackup:
-            type: object
-            properties:
-                description:
-                    anyOf:
-                    -   type: string
-                    title: Description
-                    nullable: true
-                volume:
-                    anyOf:
-                    -   $ref: '#/components/schemas/IdRequest'
-                    -   $ref: '#/components/schemas/Name'
-                    title: Volume
-                name:
-                    type: string
-                    title: Name
-                type:
-                    type: string
-                    title: BackupType
-                    enum:
-                    - full
-                    - incremental
-            title: CreateBackup
-            required:
-            - volume
-            - name
-            example:
-                description: my-backup
-                name: backup name
-                type: full
-                volume:
-                    id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
         DiskType:
             type: string
             title: DiskType
@@ -2451,100 +1681,11 @@ components:
             example:
                 message: Unauthorized
                 slug: Unauthorized
-        ExpandBackup:
-            type: string
-            title: ExpandBackup
-            enum:
-            - volume
         ExpandSnapshots:
             type: string
             title: ExpandSnapshots
             enum:
             - volume
-        ExpandedVolume:
-            type: object
-            properties:
-                id:
-                    type: string
-                    title: Id
-                name:
-                    type: string
-                    title: Name
-                state:
-                    type: string
-                    title: VolumeStateV1
-                    enum:
-                    - new
-                    - available
-                    - in-use
-                    - deleted
-                    - legacy
-                status:
-                    type: string
-                    title: VolumeStatusV1
-                    enum:
-                    - provisioning
-                    - creating
-                    - creating_error
-                    - creating_error_quota
-                    - completed
-                    - extend_pending
-                    - extending
-                    - extend_error
-                    - extend_error_quota
-                    - attaching_pending
-                    - attaching_error
-                    - attaching
-                    - detaching_pending
-                    - detaching_error
-                    - detaching
-                    - retype_pending
-                    - retyping
-                    - retype_error
-                    - retype_error_quota
-                    - deleting_pending
-                    - deleting
-                    - deleted
-                    - deleted_error
-                size:
-                    type: integer
-                    title: Size
-                created_at:
-                    anyOf:
-                    -   type: string
-                    -   type: string
-                        format: date-time
-                    title: Created At
-                    example: '2022-01-01T00:00:10Z'
-                updated_at:
-                    anyOf:
-                    -   type: string
-                    -   type: string
-                        format: date-time
-                    title: Updated At
-                    example: '2022-01-01T00:00:10Z'
-                volume_type:
-                    type: object
-                    properties:
-                        id:
-                            type: string
-                            title: Id
-                            minLength: 1
-                    title: IdResponse
-                    required:
-                    - id
-                    example:
-                        id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-            title: ExpandedVolume
-            required:
-            - id
-            - name
-            - state
-            - status
-            - size
-            - created_at
-            - updated_at
-            - volume_type
         GenericVolumeTypeList_VolumeTypeResponseWithAzs_:
             type: object
             properties:
@@ -2598,6 +1739,10 @@ components:
                                 items:
                                     type: string
                                 title: Availability Zones
+                            allows_encryption:
+                                type: boolean
+                                title: Allows Encryption
+                                default: false
                         title: VolumeTypeResponseWithAzs
                         required:
                         - iops
@@ -2607,6 +1752,7 @@ components:
                         - status
                         - availability_zones
                         example:
+                            allows_encryption: true
                             availability_zones:
                             - a
                             disk_type: nvme
@@ -2623,7 +1769,8 @@ components:
             - types
             example:
                 types:
-                -   availability_zones:
+                -   allows_encryption: true
+                    availability_zones:
                     - a
                     disk_type: nvme
                     id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
@@ -2718,27 +1865,13 @@ components:
             - name
             example:
                 name: some_resource_name
-        PatchResourceRequest:
-            type: object
-            properties:
-                name:
-                    anyOf:
-                    -   type: string
-                        maxLength: 255
-                        minLength: 1
-                    title: Name
-                    nullable: true
-                description:
-                    anyOf:
-                    -   type: string
-                        maxLength: 255
-                        minLength: 1
-                    title: Description
-                    nullable: true
-            title: PatchResourceRequest
-            example:
-                description: new description to my resource
-                name: new name to my resource
+        Regions:
+            type: string
+            title: Regions
+            enum:
+            - br-se1
+            - br-mgl1
+            - br-ne1
         RenameVolumeRequest:
             type: object
             properties:
@@ -3197,6 +2330,12 @@ components:
                     -   $ref: '#/components/schemas/Name'
                     title: Snapshot
                     nullable: true
+                encrypted:
+                    type: boolean
+                    title: Encrypted
+                    description: Indicates if the volume is encrypted. Default is
+                        False.
+                    default: false
             title: VolumeCreateRequestV1
             required:
             - name
@@ -3204,6 +2343,7 @@ components:
             - type
             example:
                 availability_zone: br-se1-a
+                encrypted: false
                 name: volume-name
                 size: 10
                 snapshot:
@@ -3322,6 +2462,10 @@ components:
                     items:
                         type: string
                     title: Availability Zones
+                encrypted:
+                    type: boolean
+                    title: Encrypted
+                    default: false
             title: VolumeResponseV1
             required:
             - id
@@ -3349,6 +2493,7 @@ components:
                 availability_zones:
                 - br-ne1-a
                 created_at: '2022-01-01T00:00:10Z'
+                encrypted: false
                 error:
                     message: You have reached the limit of allowed disks. Please,
                         remove unused disks or contact support to increase your quota.
@@ -3518,6 +2663,10 @@ components:
                     items:
                         type: string
                     title: Availability Zones
+                allows_encryption:
+                    type: boolean
+                    title: Allows Encryption
+                    default: false
             title: VolumeTypeResponseWithAzs
             required:
             - iops
@@ -3527,6 +2676,7 @@ components:
             - status
             - availability_zones
             example:
+                allows_encryption: true
                 availability_zones:
                 - a
                 disk_type: nvme
@@ -3653,6 +2803,10 @@ components:
                                 items:
                                     type: string
                                 title: Availability Zones
+                            encrypted:
+                                type: boolean
+                                title: Encrypted
+                                default: false
                         title: VolumeResponseV1
                         required:
                         - id
@@ -3680,6 +2834,7 @@ components:
                             availability_zones:
                             - br-ne1-a
                             created_at: '2022-01-01T00:00:10Z'
+                            encrypted: false
                             error:
                                 message: You have reached the limit of allowed disks.
                                     Please, remove unused disks or contact support
@@ -3713,6 +2868,7 @@ components:
                     availability_zones:
                     - br-ne1-a
                     created_at: '2022-01-01T00:00:10Z'
+                    encrypted: false
                     error:
                         message: You have reached the limit of allowed disks. Please,
                             remove unused disks or contact support to increase your

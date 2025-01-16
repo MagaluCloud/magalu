@@ -39,6 +39,7 @@ import (
 
 type CreateParameters struct {
 	AvailabilityZone *string                   `json:"availability_zone,omitempty"`
+	Encrypted        *bool                     `json:"encrypted,omitempty"`
 	Name             string                    `json:"name"`
 	Size             int                       `json:"size"`
 	Snapshot         *CreateParametersSnapshot `json:"snapshot,omitempty"`

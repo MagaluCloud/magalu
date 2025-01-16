@@ -8,6 +8,7 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/boolplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 
@@ -100,6 +101,7 @@ type bsVolumesResourceModel struct {
 	CreatedAt        types.String `tfsdk:"created_at"`
 	Size             types.Int64  `tfsdk:"size"`
 	Type             types.String `tfsdk:"type"`
+	Encrypted        types.Bool   `tfsdk:"encrypted"`
 }
 
 func (r *bsVolumes) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
@@ -150,6 +152,14 @@ func (r *bsVolumes) Schema(_ context.Context, _ resource.SchemaRequest, resp *re
 				Required:    true,
 				Description: "The name of the volume type.",
 			},
+			"encrypted": schema.BoolAttribute{
+				Description: "Indicates if the volume is encrypted.",
+				Computed:    true,
+				Optional:    true,
+				PlanModifiers: []planmodifier.Bool{
+					boolplanmodifier.RequiresReplace(),
+				},
+			},
 		},
 	}
 
@@ -182,6 +192,7 @@ func (r *bsVolumes) Create(ctx context.Context, req resource.CreateRequest, resp
 	createParam := sdkBlockStorageVolumes.CreateParameters{
 		Name:             state.Name.ValueString(),
 		Size:             int(state.Size.ValueInt64()),
+		Encrypted:        state.Encrypted.ValueBoolPointer(),
 		AvailabilityZone: state.AvailabilityZone.ValueStringPointer(),
 		Type: sdkBlockStorageVolumes.CreateParametersType{
 			Name: state.Type.ValueStringPointer(),
@@ -304,6 +315,7 @@ func (r *bsVolumes) toTerraformModel(volume sdkBlockStorageVolumes.GetResult, sn
 		Size:             types.Int64PointerValue(tfutil.ConvertIntPointerToInt64Pointer(&volume.Size)),
 		Type:             types.StringPointerValue(volume.Type.Name),
 		SnapshotID:       types.StringPointerValue(snapshotId),
+		Encrypted:        types.BoolPointerValue(volume.Encrypted),
 	}
 }
 
