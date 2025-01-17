@@ -4,14 +4,14 @@ go 1.23.0
 
 require (
 	github.com/MagaluCloud/magalu/mgc/lib v0.0.0-00010101000000-000000000000
-	github.com/MagaluCloud/magalu/mgc/sdk v0.31.0
+	github.com/MagaluCloud/magalu/mgc/sdk v0.33.0
 	github.com/hashicorp/terraform-plugin-framework v1.11.0
 	github.com/hashicorp/terraform-plugin-framework-validators v0.13.0
 	github.com/hashicorp/terraform-plugin-log v0.9.0
 )
 
 require (
-	github.com/MagaluCloud/magalu/mgc/core v0.31.0 // indirect
+	github.com/MagaluCloud/magalu/mgc/core v0.33.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/geffersonFerraz/brazilian-words-sorter v1.1.0 // indirect
 	github.com/getkin/kin-openapi v0.118.0 // indirect
