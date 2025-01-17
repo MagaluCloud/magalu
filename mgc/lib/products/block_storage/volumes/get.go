@@ -47,6 +47,7 @@ type GetResult struct {
 	AvailabilityZone  string                     `json:"availability_zone"`
 	AvailabilityZones GetResultAvailabilityZones `json:"availability_zones"`
 	CreatedAt         string                     `json:"created_at"`
+	Encrypted         *bool                      `json:"encrypted,omitempty"`
 	Error             *GetResultError            `json:"error,omitempty"`
 	Id                string                     `json:"id"`
 	Name              string                     `json:"name"`

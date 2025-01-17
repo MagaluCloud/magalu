@@ -45,6 +45,7 @@ type bsVolumeResourceModel struct {
 	AttachedDevice       types.String `tfsdk:"attached_device"`
 	AttachedInstanceId   types.String `tfsdk:"attached_instance_id"`
 	AttachedInstanceName types.String `tfsdk:"attached_instance_name"`
+	Encrypted            types.Bool   `tfsdk:"encrypted"`
 }
 
 func (r *DataSourceBsVolume) Configure(ctx context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
@@ -134,6 +135,10 @@ func (r *DataSourceBsVolume) Schema(_ context.Context, req datasource.SchemaRequ
 				Description: "The name of the instance.",
 				Computed:    true,
 			},
+			"encrypted": schema.BoolAttribute{
+				Description: "The encryption status of the block storage.",
+				Computed:    true,
+			},
 		},
 	}
 }
@@ -166,6 +171,7 @@ func (r *DataSourceBsVolume) Read(ctx context.Context, req datasource.ReadReques
 	data.TypeStatus = types.StringPointerValue(sdkOutput.Type.Status)
 	data.State = types.StringValue(sdkOutput.State)
 	data.Status = types.StringValue(sdkOutput.Status)
+	data.Encrypted = types.BoolPointerValue(sdkOutput.Encrypted)
 	if sdkOutput.Attachment != nil {
 		data.AttachedAt = types.StringValue(sdkOutput.Attachment.AttachedAt)
 		data.AttachedDevice = types.StringPointerValue(sdkOutput.Attachment.Device)

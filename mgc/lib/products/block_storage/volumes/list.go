@@ -50,6 +50,7 @@ type ListResultVolumesItem struct {
 	AvailabilityZone  string                                 `json:"availability_zone"`
 	AvailabilityZones ListResultVolumesItemAvailabilityZones `json:"availability_zones"`
 	CreatedAt         string                                 `json:"created_at"`
+	Encrypted         *bool                                  `json:"encrypted,omitempty"`
 	Error             *ListResultVolumesItemError            `json:"error,omitempty"`
 	Id                string                                 `json:"id"`
 	Name              string                                 `json:"name"`
