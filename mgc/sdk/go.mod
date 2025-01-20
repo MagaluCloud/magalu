@@ -3,7 +3,7 @@ module github.com/MagaluCloud/magalu/mgc/sdk
 go 1.23.0
 
 require (
-	github.com/MagaluCloud/magalu/mgc/core v0.0.0-unversioned
+	github.com/MagaluCloud/magalu/mgc/core v0.0.0-20250117204804-e16e0869209d
 	github.com/geffersonFerraz/brazilian-words-sorter v1.1.0
 	github.com/getkin/kin-openapi v0.118.0
 	github.com/go-openapi/jsonpointer v0.20.0
@@ -67,5 +67,3 @@ require (
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1
 )
-
-replace github.com/MagaluCloud/magalu/mgc/core => ../core

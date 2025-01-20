@@ -3,8 +3,8 @@ module github.com/MagaluCloud/magalu/mgc/codegen
 go 1.23.0
 
 require (
-	github.com/MagaluCloud/magalu/mgc/core v0.18.10-rc1
-	github.com/MagaluCloud/magalu/mgc/sdk v0.18.10-rc1
+	github.com/MagaluCloud/magalu/mgc/core v0.0.0-20250117204804-e16e0869209d
+	github.com/MagaluCloud/magalu/mgc/sdk v0.0.0-20250117204804-e16e0869209d
 	github.com/getkin/kin-openapi v0.118.0
 	github.com/spf13/afero v1.11.0
 	github.com/spf13/cobra v1.7.0
@@ -62,9 +62,4 @@ require (
 	golang.org/x/text v0.16.0 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
-)
-
-replace (
-	github.com/MagaluCloud/magalu/mgc/core => ../core
-	github.com/MagaluCloud/magalu/mgc/sdk => ../sdk
 )
