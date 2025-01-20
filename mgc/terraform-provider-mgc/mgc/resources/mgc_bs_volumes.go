@@ -189,9 +189,9 @@ func (r *bsVolumes) Create(ctx context.Context, req resource.CreateRequest, resp
 	}
 
 	createParam := sdkBlockStorageVolumes.CreateParameters{
-		Name:             state.Name.ValueString(),
-		Size:             int(state.Size.ValueInt64()),
-		Encrypted:        state.Encrypted.ValueBoolPointer(),
+		Name:      state.Name.ValueString(),
+		Size:      int(state.Size.ValueInt64()),
+		Encrypted: state.Encrypted.ValueBoolPointer(),
 		Type: sdkBlockStorageVolumes.CreateParametersType{
 			Name: state.Type.ValueStringPointer(),
 		},
