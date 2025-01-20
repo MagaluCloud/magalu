@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"time"
 
-	"magalu.cloud/core/schema"
-	"magalu.cloud/core/utils"
+	"github.com/MagaluCloud/magalu/mgc/core/schema"
+	"github.com/MagaluCloud/magalu/mgc/core/utils"
 )
 
 type Schema = schema.Schema
@@ -29,7 +29,7 @@ type contextKey string
 // grouperContextKey is the key for sdk.Grouper values in Contexts. It is
 // unexported; clients use NewGrouperContext() and GrouperFromContext()
 // instead of using this key directly.
-var grouperContextKey contextKey = "magalu.cloud/core/Grouper"
+var grouperContextKey contextKey = "github.com/MagaluCloud/magalu/mgc/core/Grouper"
 
 func NewGrouperContext(parent context.Context, group func() Grouper) context.Context {
 	return context.WithValue(parent, grouperContextKey, group)

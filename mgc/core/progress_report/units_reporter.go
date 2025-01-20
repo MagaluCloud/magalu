@@ -3,7 +3,7 @@ package progress_report
 import (
 	"context"
 
-	"magalu.cloud/core/utils"
+	"github.com/MagaluCloud/magalu/mgc/core/utils"
 )
 
 type unitsProgressReport struct {

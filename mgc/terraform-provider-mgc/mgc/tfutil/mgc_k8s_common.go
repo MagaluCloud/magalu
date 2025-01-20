@@ -1,9 +1,9 @@
 package tfutil
 
 import (
+	"github.com/MagaluCloud/magalu/mgc/lib/products/kubernetes/cluster"
+	sdkNodepool "github.com/MagaluCloud/magalu/mgc/lib/products/kubernetes/nodepool"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"magalu.cloud/lib/products/kubernetes/cluster"
-	sdkNodepool "magalu.cloud/lib/products/kubernetes/nodepool"
 )
 
 type NodePoolCreate struct {

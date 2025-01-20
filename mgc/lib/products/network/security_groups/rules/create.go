@@ -11,15 +11,15 @@ Create a Rule async, returning its ID. To monitor the creation progress, please 
 
 Version: 1.141.3
 
-import "magalu.cloud/lib/products/network/security_groups/rules"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/network/security_groups/rules"
 */
 package rules
 
 import (
 	"context"
 
-	mgcCore "magalu.cloud/core"
-	mgcHelpers "magalu.cloud/lib/helpers"
+	mgcCore "github.com/MagaluCloud/magalu/mgc/core"
+	mgcHelpers "github.com/MagaluCloud/magalu/mgc/lib/helpers"
 )
 
 type CreateParameters struct {

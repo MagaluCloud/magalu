@@ -1,12 +1,12 @@
 /*
-import "magalu.cloud/lib/products/auth/tenant"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/auth/tenant"
 */
 package tenant
 
 import (
 	"context"
 
-	mgcClient "magalu.cloud/lib"
+	mgcClient "github.com/MagaluCloud/magalu/mgc/lib"
 )
 
 type service struct {

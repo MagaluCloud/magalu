@@ -3,10 +3,10 @@ module {{ .ModuleName }}
 go 1.22.3
 
 require (
-	magalu.cloud/core {{ .CoreVersion }}
-	magalu.cloud/sdk  {{ .SdkVersion }}
+	github.com/MagaluCloud/magalu/mgc/core {{ .CoreVersion }}
+	github.com/MagaluCloud/magalu/mgc/sdk  {{ .SdkVersion }}
 )
 
-replace magalu.cloud/core => ../core
+replace github.com/MagaluCloud/magalu/mgc/core => ../core
 
-replace magalu.cloud/sdk => ../sdk
+replace github.com/MagaluCloud/magalu/mgc/sdk => ../sdk

@@ -6,7 +6,7 @@ import (
 	"io"
 	"io/fs"
 
-	mgcSchemaPkg "magalu.cloud/core/schema"
+	mgcSchemaPkg "github.com/MagaluCloud/magalu/mgc/core/schema"
 )
 
 type smallFileUploader struct {

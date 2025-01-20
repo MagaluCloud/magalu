@@ -3,14 +3,14 @@ package resources
 import (
 	"context"
 
+	mgcSdk "github.com/MagaluCloud/magalu/mgc/lib"
+	networkInterfaces "github.com/MagaluCloud/magalu/mgc/lib/products/network/ports"
+	networkVpcInterfaces "github.com/MagaluCloud/magalu/mgc/lib/products/network/vpcs/ports"
+	"github.com/MagaluCloud/magalu/mgc/terraform-provider-mgc/mgc/client"
+	"github.com/MagaluCloud/magalu/mgc/terraform-provider-mgc/mgc/tfutil"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	mgcSdk "magalu.cloud/lib"
-	networkInterfaces "magalu.cloud/lib/products/network/ports"
-	networkVpcInterfaces "magalu.cloud/lib/products/network/vpcs/ports"
-	"magalu.cloud/terraform-provider-mgc/mgc/client"
-	"magalu.cloud/terraform-provider-mgc/mgc/tfutil"
 )
 
 type NetworkVPCInterfaceModel struct {

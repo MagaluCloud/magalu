@@ -6,13 +6,13 @@ import (
 	"fmt"
 	"slices"
 
+	"github.com/MagaluCloud/magalu/mgc/cli/ui"
+	"github.com/MagaluCloud/magalu/mgc/core"
+	"github.com/MagaluCloud/magalu/mgc/core/auth"
+	"github.com/MagaluCloud/magalu/mgc/core/progress_report"
+	mgcSdk "github.com/MagaluCloud/magalu/mgc/sdk"
+	"github.com/MagaluCloud/magalu/mgc/sdk/openapi"
 	"github.com/spf13/cobra"
-	"magalu.cloud/cli/ui"
-	"magalu.cloud/core"
-	"magalu.cloud/core/auth"
-	"magalu.cloud/core/progress_report"
-	mgcSdk "magalu.cloud/sdk"
-	"magalu.cloud/sdk/openapi"
 )
 
 func handleExecutorResult(ctx context.Context, sdk *mgcSdk.Sdk, cmd *cobra.Command, result core.Result, err error) error {

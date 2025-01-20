@@ -11,15 +11,15 @@ Delete an SSH key using its id.
 
 Version: 0.1.0
 
-import "magalu.cloud/lib/products/profile/ssh_keys"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/profile/ssh_keys"
 */
 package sshKeys
 
 import (
 	"context"
 
-	mgcCore "magalu.cloud/core"
-	mgcHelpers "magalu.cloud/lib/helpers"
+	mgcCore "github.com/MagaluCloud/magalu/mgc/core"
+	mgcHelpers "github.com/MagaluCloud/magalu/mgc/lib/helpers"
 )
 
 type DeleteParameters struct {

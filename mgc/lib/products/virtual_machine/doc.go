@@ -11,6 +11,6 @@ Package: virtual-machine
 
 Version: v1
 
-import "magalu.cloud/lib/products/virtual_machine"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/virtual_machine"
 */
 package virtualMachine

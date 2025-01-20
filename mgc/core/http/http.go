@@ -14,16 +14,16 @@ import (
 	"strings"
 	"time"
 
-	"magalu.cloud/core"
-	"magalu.cloud/core/utils"
-	"magalu.cloud/core/xml"
+	"github.com/MagaluCloud/magalu/mgc/core"
+	"github.com/MagaluCloud/magalu/mgc/core/utils"
+	"github.com/MagaluCloud/magalu/mgc/core/xml"
 )
 
 // contextKey is an unexported type for keys defined in this package.
 // This prevents collisions with keys defined in other packages.
 type contextKey string
 
-var httpClientKey contextKey = "magalu.cloud/core/Transport"
+var httpClientKey contextKey = "github.com/MagaluCloud/magalu/mgc/core/Transport"
 
 type Client struct {
 	http.Client

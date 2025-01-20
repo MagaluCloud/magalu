@@ -7,11 +7,11 @@ import (
 	"fmt"
 	"net/http"
 
-	"magalu.cloud/core"
-	"magalu.cloud/core/utils"
+	"github.com/MagaluCloud/magalu/mgc/core"
+	"github.com/MagaluCloud/magalu/mgc/core/utils"
 
-	mgcAuthPkg "magalu.cloud/core/auth"
-	mgcHttpPkg "magalu.cloud/core/http"
+	mgcAuthPkg "github.com/MagaluCloud/magalu/mgc/core/auth"
+	mgcHttpPkg "github.com/MagaluCloud/magalu/mgc/core/http"
 )
 
 type createParams struct {

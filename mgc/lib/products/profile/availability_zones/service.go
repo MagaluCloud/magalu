@@ -1,12 +1,12 @@
 /*
-import "magalu.cloud/lib/products/profile/availability_zones"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/profile/availability_zones"
 */
 package availabilityZones
 
 import (
 	"context"
 
-	mgcClient "magalu.cloud/lib"
+	mgcClient "github.com/MagaluCloud/magalu/mgc/lib"
 )
 
 type service struct {

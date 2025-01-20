@@ -8,10 +8,10 @@ import (
 	"strings"
 	"sync"
 
+	mgcSchema "github.com/MagaluCloud/magalu/mgc/core/schema"
+	"github.com/MagaluCloud/magalu/mgc/core/utils"
 	"github.com/getkin/kin-openapi/openapi3"
 	"github.com/go-openapi/jsonpointer"
-	mgcSchema "magalu.cloud/core/schema"
-	"magalu.cloud/core/utils"
 )
 
 // Similar to JSON Pointers - [RFC6901]
@@ -37,7 +37,7 @@ type refResolverContextKey string
 // theRefResolverContextKey is the key for sdk.Grouper values in Contexts. It is
 // unexported; clients use NewGrouperContext() and GrouperFromContext()
 // instead of using this key directly.
-var theRefResolverContextKey refResolverContextKey = "magalu.cloud/core/RefPathResolver"
+var theRefResolverContextKey refResolverContextKey = "github.com/MagaluCloud/magalu/mgc/core/RefPathResolver"
 
 func NewRefPathResolverContext(parent context.Context, refResolver RefPathResolver) context.Context {
 	return context.WithValue(parent, theRefResolverContextKey, refResolver)
@@ -384,7 +384,7 @@ func resolveExecutorMap(field string, m map[string]Executor) (result Executor, e
 	return nil, MissingFieldError(field)
 }
 
-const extensionResolvedKey = "magalu.cloud/core/resolved"
+const extensionResolvedKey = "github.com/MagaluCloud/magalu/mgc/core/resolved"
 
 func isSchemaResolved(schema *mgcSchema.Schema) bool {
 	return schema.Extensions[extensionResolvedKey] == "true"

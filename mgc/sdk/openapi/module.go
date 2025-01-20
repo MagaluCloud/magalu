@@ -5,10 +5,10 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/MagaluCloud/magalu/mgc/core"
+	"github.com/MagaluCloud/magalu/mgc/core/dataloader"
+	"github.com/MagaluCloud/magalu/mgc/core/utils"
 	"go.uber.org/zap"
-	"magalu.cloud/core"
-	"magalu.cloud/core/dataloader"
-	"magalu.cloud/core/utils"
 
 	"github.com/getkin/kin-openapi/openapi3"
 )

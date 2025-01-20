@@ -1,5 +1,5 @@
 package auth
 
-import mgcLoggerPkg "magalu.cloud/core/logger"
+import mgcLoggerPkg "github.com/MagaluCloud/magalu/mgc/core/logger"
 
 var logger = mgcLoggerPkg.NewLazy[authResult]()

@@ -6,6 +6,10 @@ import (
 	"strings"
 	"time"
 
+	mgcSdk "github.com/MagaluCloud/magalu/mgc/lib"
+	sdkNodepool "github.com/MagaluCloud/magalu/mgc/lib/products/kubernetes/nodepool"
+	"github.com/MagaluCloud/magalu/mgc/terraform-provider-mgc/mgc/client"
+	tfutil "github.com/MagaluCloud/magalu/mgc/terraform-provider-mgc/mgc/tfutil"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -15,10 +19,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
-	mgcSdk "magalu.cloud/lib"
-	sdkNodepool "magalu.cloud/lib/products/kubernetes/nodepool"
-	"magalu.cloud/terraform-provider-mgc/mgc/client"
-	tfutil "magalu.cloud/terraform-provider-mgc/mgc/tfutil"
 )
 
 type NewNodePoolResource struct {

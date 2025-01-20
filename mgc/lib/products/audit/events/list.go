@@ -11,15 +11,15 @@ Lists all events emitted by other products.
 
 Version: 0.17.0
 
-import "magalu.cloud/lib/products/audit/events"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/audit/events"
 */
 package events
 
 import (
 	"context"
 
-	mgcCore "magalu.cloud/core"
-	mgcHelpers "magalu.cloud/lib/helpers"
+	mgcCore "github.com/MagaluCloud/magalu/mgc/core"
+	mgcHelpers "github.com/MagaluCloud/magalu/mgc/lib/helpers"
 )
 
 type ListParameters struct {

@@ -5,10 +5,10 @@ import (
 	"fmt"
 	"strings"
 
-	"magalu.cloud/core"
-	mgcSchemaPkg "magalu.cloud/core/schema"
-	"magalu.cloud/core/utils"
-	"magalu.cloud/sdk/static/object_storage/common"
+	"github.com/MagaluCloud/magalu/mgc/core"
+	mgcSchemaPkg "github.com/MagaluCloud/magalu/mgc/core/schema"
+	"github.com/MagaluCloud/magalu/mgc/core/utils"
+	"github.com/MagaluCloud/magalu/mgc/sdk/static/object_storage/common"
 )
 
 type uploadParams struct {

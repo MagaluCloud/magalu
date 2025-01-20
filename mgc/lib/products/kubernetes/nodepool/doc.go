@@ -7,6 +7,6 @@ Endpoints related to the creation, listing of nodepools and nodes, updating, and
 
 Version: 0.1.0
 
-import "magalu.cloud/lib/products/kubernetes/nodepool"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/kubernetes/nodepool"
 */
 package nodepool

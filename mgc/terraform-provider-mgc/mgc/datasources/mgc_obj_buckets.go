@@ -6,11 +6,11 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 
+	mgcSdk "github.com/MagaluCloud/magalu/mgc/lib"
+	sdkBuckets "github.com/MagaluCloud/magalu/mgc/lib/products/object_storage/buckets"
+	"github.com/MagaluCloud/magalu/mgc/terraform-provider-mgc/mgc/client"
+	"github.com/MagaluCloud/magalu/mgc/terraform-provider-mgc/mgc/tfutil"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	mgcSdk "magalu.cloud/lib"
-	sdkBuckets "magalu.cloud/lib/products/object_storage/buckets"
-	"magalu.cloud/terraform-provider-mgc/mgc/client"
-	"magalu.cloud/terraform-provider-mgc/mgc/tfutil"
 )
 
 var _ datasource.DataSource = &DatasourceBuckets{}

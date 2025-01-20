@@ -6,15 +6,15 @@ import (
 	"strings"
 	"time"
 
+	mgcSdk "github.com/MagaluCloud/magalu/mgc/lib"
+	dbaasSnapshots "github.com/MagaluCloud/magalu/mgc/lib/products/dbaas/instances/snapshots"
+	"github.com/MagaluCloud/magalu/mgc/terraform-provider-mgc/mgc/client"
+	"github.com/MagaluCloud/magalu/mgc/terraform-provider-mgc/mgc/tfutil"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	mgcSdk "magalu.cloud/lib"
-	dbaasSnapshots "magalu.cloud/lib/products/dbaas/instances/snapshots"
-	"magalu.cloud/terraform-provider-mgc/mgc/client"
-	"magalu.cloud/terraform-provider-mgc/mgc/tfutil"
 )
 
 const snapshotStatusTimeout = 70 * time.Minute

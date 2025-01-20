@@ -5,6 +5,6 @@ Package: buckets
 
 # Bucket operations for Object Storage API
 
-import "magalu.cloud/lib/products/object_storage/buckets"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/object_storage/buckets"
 */
 package buckets

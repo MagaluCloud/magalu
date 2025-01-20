@@ -5,8 +5,8 @@ import (
 	"flag"
 	"log"
 
+	"github.com/MagaluCloud/magalu/mgc/terraform-provider-mgc/mgc"
 	"github.com/hashicorp/terraform-plugin-framework/providerserver"
-	"magalu.cloud/terraform-provider-mgc/mgc"
 )
 
 var (

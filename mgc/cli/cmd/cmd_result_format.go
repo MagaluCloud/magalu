@@ -5,10 +5,10 @@ import (
 	"io"
 	"os"
 
+	"github.com/MagaluCloud/magalu/mgc/core"
+	mgcSdk "github.com/MagaluCloud/magalu/mgc/sdk"
 	"github.com/spf13/cobra"
 	"gopkg.in/yaml.v3"
-	"magalu.cloud/core"
-	mgcSdk "magalu.cloud/sdk"
 )
 
 func formatResult(sdk *mgcSdk.Sdk, cmd *cobra.Command, result core.Result) error {

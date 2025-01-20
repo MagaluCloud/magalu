@@ -5,8 +5,8 @@ Package: products
 
 All MagaLu Groups & Executors
 
-Version: v0.32.0
+Version: v0.33.0
 
-import "magalu.cloud/lib/products"
+import "github.com/MagaluCloud/magalu/mgc/lib/products"
 */
 package products

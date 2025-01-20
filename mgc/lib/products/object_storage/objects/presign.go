@@ -5,15 +5,15 @@ Executor: presign
 
 # Generate a pre-signed URL for accessing an object
 
-import "magalu.cloud/lib/products/object_storage/objects"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/object_storage/objects"
 */
 package objects
 
 import (
 	"context"
 
-	mgcCore "magalu.cloud/core"
-	mgcHelpers "magalu.cloud/lib/helpers"
+	mgcCore "github.com/MagaluCloud/magalu/mgc/core"
+	mgcHelpers "github.com/MagaluCloud/magalu/mgc/lib/helpers"
 )
 
 type PresignParameters struct {

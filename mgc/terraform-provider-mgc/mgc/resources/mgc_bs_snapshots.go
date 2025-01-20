@@ -14,12 +14,12 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 
+	mgcSdk "github.com/MagaluCloud/magalu/mgc/lib"
+	"github.com/MagaluCloud/magalu/mgc/terraform-provider-mgc/mgc/client"
+	"github.com/MagaluCloud/magalu/mgc/terraform-provider-mgc/mgc/tfutil"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	mgcSdk "magalu.cloud/lib"
-	"magalu.cloud/terraform-provider-mgc/mgc/client"
-	"magalu.cloud/terraform-provider-mgc/mgc/tfutil"
 
-	sdkBlockStorageSnapshots "magalu.cloud/lib/products/block_storage/snapshots"
+	sdkBlockStorageSnapshots "github.com/MagaluCloud/magalu/mgc/lib/products/block_storage/snapshots"
 )
 
 const volumeSnapshotStatusTimeout = 70 * time.Minute

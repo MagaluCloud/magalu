@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"strings"
 
-	"magalu.cloud/core/utils"
+	"github.com/MagaluCloud/magalu/mgc/core/utils"
 )
 
 const defaultPromptMessage = "This action cannot be undone. Proceed?"

@@ -5,15 +5,15 @@ Executor: list
 
 # List all available workspaces
 
-import "magalu.cloud/lib/products/workspace"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/workspace"
 */
 package workspace
 
 import (
 	"context"
 
-	mgcCore "magalu.cloud/core"
-	mgcHelpers "magalu.cloud/lib/helpers"
+	mgcCore "github.com/MagaluCloud/magalu/mgc/core"
+	mgcHelpers "github.com/MagaluCloud/magalu/mgc/lib/helpers"
 )
 
 type ListResultItem struct {

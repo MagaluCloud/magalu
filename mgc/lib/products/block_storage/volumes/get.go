@@ -18,15 +18,15 @@ Retrieve details of a Volume for the currently authenticated tenant.
 
 Version: v1
 
-import "magalu.cloud/lib/products/block_storage/volumes"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/block_storage/volumes"
 */
 package volumes
 
 import (
 	"context"
 
-	mgcCore "magalu.cloud/core"
-	mgcHelpers "magalu.cloud/lib/helpers"
+	mgcCore "github.com/MagaluCloud/magalu/mgc/core"
+	mgcHelpers "github.com/MagaluCloud/magalu/mgc/lib/helpers"
 )
 
 type GetParameters struct {

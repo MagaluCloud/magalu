@@ -7,6 +7,6 @@ Datastores available for database instances.
 
 Version: 1.34.1
 
-import "magalu.cloud/lib/products/dbaas/datastores"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/dbaas/datastores"
 */
 package datastores

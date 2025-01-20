@@ -11,15 +11,15 @@ Log in to your Magalu Cloud account. When you login with this command,
 the current Tenant will always be set to the default one. To see more details
 about a successful login, use the '--show' flag when logging in
 
-import "magalu.cloud/lib/products/auth"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/auth"
 */
 package auth
 
 import (
 	"context"
 
-	mgcCore "magalu.cloud/core"
-	mgcHelpers "magalu.cloud/lib/helpers"
+	mgcCore "github.com/MagaluCloud/magalu/mgc/core"
+	mgcHelpers "github.com/MagaluCloud/magalu/mgc/lib/helpers"
 )
 
 type LoginParameters struct {

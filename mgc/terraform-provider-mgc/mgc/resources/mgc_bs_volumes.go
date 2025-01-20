@@ -12,12 +12,12 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 
+	mgcSdk "github.com/MagaluCloud/magalu/mgc/lib"
+	"github.com/MagaluCloud/magalu/mgc/terraform-provider-mgc/mgc/client"
+	"github.com/MagaluCloud/magalu/mgc/terraform-provider-mgc/mgc/tfutil"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	mgcSdk "magalu.cloud/lib"
-	"magalu.cloud/terraform-provider-mgc/mgc/client"
-	"magalu.cloud/terraform-provider-mgc/mgc/tfutil"
 
-	sdkBlockStorageVolumes "magalu.cloud/lib/products/block_storage/volumes"
+	sdkBlockStorageVolumes "github.com/MagaluCloud/magalu/mgc/lib/products/block_storage/volumes"
 )
 
 const (

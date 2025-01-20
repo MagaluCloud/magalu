@@ -1,8 +1,8 @@
 package api_key
 
 import (
-	"magalu.cloud/core"
-	"magalu.cloud/core/utils"
+	"github.com/MagaluCloud/magalu/mgc/core"
+	"github.com/MagaluCloud/magalu/mgc/core/utils"
 )
 
 var GetGroup = utils.NewLazyLoader(func() core.Grouper {

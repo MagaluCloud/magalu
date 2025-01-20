@@ -1,8 +1,8 @@
 package cmd
 
 import (
+	mgcSdk "github.com/MagaluCloud/magalu/mgc/sdk"
 	"github.com/spf13/cobra"
-	mgcSdk "magalu.cloud/sdk"
 )
 
 const logFilterFlag = "cli.log"

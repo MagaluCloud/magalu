@@ -11,6 +11,6 @@ Magalu Container Registry product API.
 
 Version: 0.1.0
 
-import "magalu.cloud/lib/products/container_registry"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/container_registry"
 */
 package containerRegistry

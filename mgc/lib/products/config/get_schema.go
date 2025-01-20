@@ -10,15 +10,15 @@ Executor: get-schema
 Get the JSON Schema for the specified Config. The Schema has
 information about the accepted values for the Config, constraints, type, description, etc.
 
-import "magalu.cloud/lib/products/config"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/config"
 */
 package config
 
 import (
 	"context"
 
-	mgcCore "magalu.cloud/core"
-	mgcHelpers "magalu.cloud/lib/helpers"
+	mgcCore "github.com/MagaluCloud/magalu/mgc/core"
+	mgcHelpers "github.com/MagaluCloud/magalu/mgc/lib/helpers"
 )
 
 type GetSchemaParameters struct {

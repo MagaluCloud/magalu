@@ -1,10 +1,10 @@
 package objects
 
 import (
-	"magalu.cloud/core"
-	"magalu.cloud/core/utils"
-	"magalu.cloud/sdk/static/object_storage/objects/acl"
-	object_lock "magalu.cloud/sdk/static/object_storage/objects/object-lock"
+	"github.com/MagaluCloud/magalu/mgc/core"
+	"github.com/MagaluCloud/magalu/mgc/core/utils"
+	"github.com/MagaluCloud/magalu/mgc/sdk/static/object_storage/objects/acl"
+	object_lock "github.com/MagaluCloud/magalu/mgc/sdk/static/object_storage/objects/object-lock"
 )
 
 var GetGroup = utils.NewLazyLoader[core.Grouper](func() core.Grouper {

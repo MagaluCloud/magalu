@@ -8,9 +8,9 @@ import (
 	"strings"
 	"unicode"
 
+	mgcSchemaPkg "github.com/MagaluCloud/magalu/mgc/core/schema"
+	mgcSdk "github.com/MagaluCloud/magalu/mgc/sdk"
 	"golang.org/x/exp/constraints"
-	mgcSchemaPkg "magalu.cloud/core/schema"
-	mgcSdk "magalu.cloud/sdk"
 )
 
 func addXOfSchemaConstraints(message string, refs mgcSchemaPkg.SchemaRefs, dst *[]string) {

@@ -5,13 +5,13 @@ import (
 
 	flag "github.com/spf13/pflag"
 
+	"github.com/MagaluCloud/magalu/mgc/cli/cmd/schema_flags"
+	"github.com/MagaluCloud/magalu/mgc/core"
+	mgcSchemaPkg "github.com/MagaluCloud/magalu/mgc/core/schema"
+	"github.com/MagaluCloud/magalu/mgc/core/utils"
+	mgcSdk "github.com/MagaluCloud/magalu/mgc/sdk"
 	"github.com/jedib0t/go-pretty/v6/table"
 	"github.com/spf13/cobra"
-	"magalu.cloud/cli/cmd/schema_flags"
-	"magalu.cloud/core"
-	mgcSchemaPkg "magalu.cloud/core/schema"
-	"magalu.cloud/core/utils"
-	mgcSdk "magalu.cloud/sdk"
 )
 
 func newListLinkFlag() (f *flag.Flag) {

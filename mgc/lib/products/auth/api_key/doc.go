@@ -15,6 +15,6 @@ Key Pair Secret: Works with Key Pair ID for Object Storage authentication.
 
 The API Key authenticates with the main Magalu services, while the Key Pair ID and Secret are specifically for Object Storage. Using these components correctly allows secure interaction with Magalu services and resources.
 
-import "magalu.cloud/lib/products/auth/api_key"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/auth/api_key"
 */
 package apiKey

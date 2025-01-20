@@ -11,7 +11,7 @@ import (
 
 	"github.com/spf13/afero"
 
-	"magalu.cloud/core/utils"
+	"github.com/MagaluCloud/magalu/mgc/core/utils"
 )
 
 type testCaseProfile struct {
