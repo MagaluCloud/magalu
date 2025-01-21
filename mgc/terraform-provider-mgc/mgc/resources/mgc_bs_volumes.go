@@ -134,6 +134,7 @@ func (r *bsVolumes) Schema(_ context.Context, _ resource.SchemaRequest, resp *re
 				Computed:    true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
+					stringplanmodifier.UseStateForUnknown(),
 				},
 			},
 			"size": schema.Int64Attribute{
@@ -156,7 +157,8 @@ func (r *bsVolumes) Schema(_ context.Context, _ resource.SchemaRequest, resp *re
 				Computed:    true,
 				Optional:    true,
 				PlanModifiers: []planmodifier.Bool{
-					boolplanmodifier.RequiresReplace(),
+					tfutil.ReplaceIfChangeAndNotIsNotSetOnPlanBool{},
+					boolplanmodifier.UseStateForUnknown(),
 				},
 			},
 		},
