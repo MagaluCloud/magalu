@@ -13,8 +13,9 @@ var GetGroup = utils.NewLazyLoader(func() core.Grouper {
 		},
 		func() []core.Descriptor {
 			return []core.Descriptor{
-				getGet(), // object-storage buckets object-lock get
-				getSet(), // object-storage buckets object-lock set
+				getGet(),   // object-storage buckets object-lock get
+				getSet(),   // object-storage buckets object-lock set
+				getUnset(), // object-storage buckets object-lock unset
 			}
 		},
 	)
