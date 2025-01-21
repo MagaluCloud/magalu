@@ -2,6 +2,7 @@ package resources
 
 import (
 	"context"
+	"strings"
 	"time"
 
 	mgcSdk "github.com/MagaluCloud/magalu/mgc/lib"
@@ -110,6 +111,10 @@ func (r *NetworkVPCResource) Create(ctx context.Context, req resource.CreateRequ
 		}
 		if res.Status == "created" {
 			break
+		}
+		if strings.Contains(res.Status, "error") {
+			resp.Diagnostics.AddError("Error in VPC creation", res.Status)
+			return
 		}
 		tflog.Info(ctx, "VPC is not yet created, waiting for 10 seconds",
 			map[string]interface{}{"status": res.Status})
