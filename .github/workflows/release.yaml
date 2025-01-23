@@ -7,10 +7,6 @@ on:
         description: "Run deploy of CLI"
         type: boolean
         required: false
-      runTerraform:
-        description: "Run deploy of Terraform"
-        type: boolean
-        required: false
 
 concurrency:
   group: ci-check-${{ github.ref }}
@@ -76,68 +72,3 @@ jobs:
             --body "This PR updates the mgccli formula to version ${{ github.ref_name }}." \
             --base main \
             --head mgccli-${{ github.ref_name }}
-
-  terraform-release:
-    needs: build
-    runs-on: ${{ vars.RUNNER_RUNS_ON }}
-    timeout-minutes: 20
-    if: ${{ inputs.runTerraform }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4.1.7
-        with:
-          fetch-depth: 1
-          token: ${{ secrets.GH_PAT2 }}
-      - name: Set up Go
-        uses: actions/setup-go@v5.0.2
-        with:
-          cache-dependency-path: "**/go.sum"
-          go-version: stable
-      - name: Import GPG key
-        run: |
-          echo "${{ secrets.GPG_PRIVATE_KEY }}" | gpg --batch --yes --passphrase "${{ secrets.GPG_PASSPHRASE }}" --import
-      - name: Run GoReleaser
-        uses: goreleaser/goreleaser-action@v6
-        with:
-          distribution: goreleaser
-          version: 2
-          args: release --clean --config="goreleaser_terraform.yaml"
-        env:
-          VERSION: ${{ github.ref_name }}
-          GITHUB_TOKEN: ${{ secrets.GH_PAT2 }}
-          GPG_FINGERPRINT: ${{ secrets.GPG_FINGERPRINT }}
-          GPG_PASSPHRASE: ${{ secrets.PASSPHRASE }}
-      - name: Checkout #Clone terraform repository
-        uses: actions/checkout@v4.1.7
-        with:
-          repository: MagaluCloud/terraform-provider-mgc
-          fetch-depth: 1
-          path: terraform-provider-mgc
-          token: ${{ secrets.GH_PAT2 }}
-      - name: Set up Git config
-        run: |
-          git config --global user.name "Magalu Cloud"
-          git config --global user.email "magalucloud.services@luizalabs.com"
-          git config --global commit.gpgsign true
-          git config --global user.signingkey $(gpg --list-secret-keys --keyid-format LONG | grep sec | awk '{print $2}' | cut -d'/' -f2)
-      - name: Setup GitHub CLI
-        uses: ksivamuthu/actions-setup-gh-cli@v3  
-      - name: Copy Docs
-        run: |
-          rm -rf terraform-provider-mgc/docs/**
-          cp -r mgc/terraform-provider-mgc/docs/* terraform-provider-mgc/docs/
-          cp mgc/terraform-provider-mgc/README.md terraform-provider-mgc/README.md
-      - name: Create Pull Request
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_PAT2 }}
-        run: |
-          cd terraform-provider-mgc
-          git checkout -b update-files-${{ github.sha }}
-          git add .
-          git commit -S -m "chore: update docs from ${{ github.ref_name }}"
-          git push --set-upstream origin update-files-${{ github.sha }}       
-          gh pr create \
-            --title "Update files from source repository" \
-            --body "This PR updates files from the source repository." \
-            --base main \
-            --head update-files-${{ github.sha }}
