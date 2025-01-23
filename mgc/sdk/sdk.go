@@ -3,6 +3,7 @@ package sdk
 import (
 	"context"
 	"net/http"
+	"strings"
 
 	"github.com/MagaluCloud/magalu/mgc/core"
 	"github.com/MagaluCloud/magalu/mgc/core/auth"
@@ -123,6 +124,9 @@ func (o *Sdk) Group() core.Grouper {
 func newHttpTransport() http.RoundTripper {
 	userAgent := currentUserAgent + "/" + Version
 
+	if strings.HasPrefix(currentUserAgent, "MgcTF") {
+		userAgent = currentUserAgent
+	}
 	// To avoid creating a transport with zero values, we leverage
 	// DefaultTransport (exemple: `Proxy: ProxyFromEnvironment`)
 	transport := mgcHttpPkg.DefaultTransport()
