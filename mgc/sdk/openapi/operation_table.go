@@ -284,7 +284,7 @@ func renameHttpMethod(httpMethod string, endsWithVariable bool) string {
 }
 
 func isVersion(value string) bool {
-	versionRegex := `^v\d+$`
+	versionRegex := `^v\d+(?:alpha\d+)?$`
 	regex := regexp.MustCompile(versionRegex)
 	return regex.MatchString(value)
 }
@@ -292,6 +292,9 @@ func isVersion(value string) bool {
 func getOperationNameAndVariables(httpMethod, pathName string) (pathEntries []string, variables []string) {
 	endsWithVariable := false
 	for _, pathEntry := range strings.Split(pathName, "/") {
+
+		pathEntry = strings.ReplaceAll(pathEntry, "_", "-")
+
 		if pathEntry == "" {
 			continue
 		}
