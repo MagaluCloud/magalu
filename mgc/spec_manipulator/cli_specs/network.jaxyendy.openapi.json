@@ -7,7 +7,7 @@
             "name": "IaaS Products",
             "url": "https://github.com/luizalabs"
         },
-        "version": "1.141.3"
+        "version": "1.149.2"
     },
     "paths": {
         "/v0/ports": {
@@ -18,6 +18,13 @@
                 "summary": "Details of a Port list",
                 "description": "Return a detailed list of ports from the provided tenant_id",
                 "operationId": "detail_ports_v0_ports_get",
+                "security": [
+                    {
+                        "OAuth2": [
+                            "network.read"
+                        ]
+                    }
+                ],
                 "parameters": [
                     {
                         "name": "port_id_list",
@@ -68,14 +75,7 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false,
-                "security": [
-                    {
-                        "OAuth2": [
-                            "network.read"
-                        ]
-                    }
-                ]
+                "x-mgc-hidden": false
             }
         },
         "/v0/ports/{port_id}": {
@@ -86,6 +86,13 @@
                 "summary": "Delete Port",
                 "description": "Delete a port from the provided tenant_id",
                 "operationId": "delete_port_v0_ports__port_id__delete",
+                "security": [
+                    {
+                        "OAuth2": [
+                            "network.write"
+                        ]
+                    }
+                ],
                 "parameters": [
                     {
                         "name": "port_id",
@@ -124,14 +131,7 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false,
-                "security": [
-                    {
-                        "OAuth2": [
-                            "network.write"
-                        ]
-                    }
-                ]
+                "x-mgc-hidden": false
             },
             "get": {
                 "tags": [
@@ -140,6 +140,13 @@
                 "summary": "Port Details",
                 "description": "Return a port details from the provided tenant_id",
                 "operationId": "detail_port_v0_ports__port_id__get",
+                "security": [
+                    {
+                        "OAuth2": [
+                            "network.read"
+                        ]
+                    }
+                ],
                 "parameters": [
                     {
                         "name": "port_id",
@@ -183,14 +190,7 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false,
-                "security": [
-                    {
-                        "OAuth2": [
-                            "network.read"
-                        ]
-                    }
-                ]
+                "x-mgc-hidden": false
             }
         },
         "/v0/ports/{port_id}/attach/{security_group_id}": {
@@ -201,6 +201,13 @@
                 "summary": "Attach Security Group",
                 "description": "Attach a Security Group to a Port with provided port_id, security_group_id, x-tenant-id of an specific project type",
                 "operationId": "attach_security_group_v0_ports__port_id__attach__security_group_id__post",
+                "security": [
+                    {
+                        "OAuth2": [
+                            "network.write"
+                        ]
+                    }
+                ],
                 "parameters": [
                     {
                         "name": "port_id",
@@ -227,7 +234,6 @@
                         "in": "header",
                         "required": true,
                         "schema": {
-                            "type": "string",
                             "description": "Tenant id of the project",
                             "title": "X-Tenant-Id"
                         },
@@ -250,14 +256,7 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false,
-                "security": [
-                    {
-                        "OAuth2": [
-                            "network.write"
-                        ]
-                    }
-                ]
+                "x-mgc-hidden": false
             }
         },
         "/v0/ports/{port_id}/detach/{security_group_id}": {
@@ -268,6 +267,13 @@
                 "summary": "Detach Security Group",
                 "description": "Detach a Security Group to a Port with provided port_id, security_group_id, x-tenant-id of an specific project type",
                 "operationId": "detach_security_group_v0_ports__port_id__detach__security_group_id__post",
+                "security": [
+                    {
+                        "OAuth2": [
+                            "network.write"
+                        ]
+                    }
+                ],
                 "parameters": [
                     {
                         "name": "port_id",
@@ -294,7 +300,6 @@
                         "in": "header",
                         "required": true,
                         "schema": {
-                            "type": "string",
                             "description": "Tenant id of the project",
                             "title": "X-Tenant-Id"
                         },
@@ -317,14 +322,7 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false,
-                "security": [
-                    {
-                        "OAuth2": [
-                            "network.write"
-                        ]
-                    }
-                ]
+                "x-mgc-hidden": false
             }
         },
         "/v0/public_ips": {
@@ -335,6 +333,13 @@
                 "summary": "Tenant's public IP list",
                 "description": "Return a tenant's public ip list",
                 "operationId": "get_tenant_public_ip_list_v0_public_ips_get",
+                "security": [
+                    {
+                        "OAuth2": [
+                            "network.read"
+                        ]
+                    }
+                ],
                 "parameters": [
                     {
                         "name": "x-tenant-id",
@@ -370,14 +375,7 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false,
-                "security": [
-                    {
-                        "OAuth2": [
-                            "network.read"
-                        ]
-                    }
-                ]
+                "x-mgc-hidden": false
             }
         },
         "/v0/public_ips/{public_ip_id}": {
@@ -388,6 +386,13 @@
                 "summary": "Delete Public IP",
                 "description": "Delete a Public IP from the provided tenant_id",
                 "operationId": "delete_public_ip_v0_public_ips__public_ip_id__delete",
+                "security": [
+                    {
+                        "OAuth2": [
+                            "network.write"
+                        ]
+                    }
+                ],
                 "parameters": [
                     {
                         "name": "public_ip_id",
@@ -426,14 +431,7 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false,
-                "security": [
-                    {
-                        "OAuth2": [
-                            "network.write"
-                        ]
-                    }
-                ]
+                "x-mgc-hidden": false
             },
             "get": {
                 "tags": [
@@ -442,6 +440,13 @@
                 "summary": "Public IP Details",
                 "description": "Return a Public IP details",
                 "operationId": "detail_public_ip_v0_public_ips__public_ip_id__get",
+                "security": [
+                    {
+                        "OAuth2": [
+                            "network.read"
+                        ]
+                    }
+                ],
                 "parameters": [
                     {
                         "name": "public_ip_id",
@@ -487,14 +492,7 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false,
-                "security": [
-                    {
-                        "OAuth2": [
-                            "network.read"
-                        ]
-                    }
-                ]
+                "x-mgc-hidden": false
             }
         },
         "/v0/public_ips/{public_ip_id}/attach/{port_id}": {
@@ -505,6 +503,13 @@
                 "summary": "Attach Public IP",
                 "description": "Attach a Public IP to a Port",
                 "operationId": "attach_public_ip_v0_public_ips__public_ip_id__attach__port_id__post",
+                "security": [
+                    {
+                        "OAuth2": [
+                            "network.write"
+                        ]
+                    }
+                ],
                 "parameters": [
                     {
                         "name": "public_ip_id",
@@ -553,14 +558,7 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false,
-                "security": [
-                    {
-                        "OAuth2": [
-                            "network.write"
-                        ]
-                    }
-                ]
+                "x-mgc-hidden": false
             }
         },
         "/v0/public_ips/{public_ip_id}/detach/{port_id}": {
@@ -571,6 +569,13 @@
                 "summary": "Detach Public IP",
                 "description": "Detach a Public IP to a Port",
                 "operationId": "detach_public_ip_v0_public_ips__public_ip_id__detach__port_id__post",
+                "security": [
+                    {
+                        "OAuth2": [
+                            "network.write"
+                        ]
+                    }
+                ],
                 "parameters": [
                     {
                         "name": "public_ip_id",
@@ -619,14 +624,7 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false,
-                "security": [
-                    {
-                        "OAuth2": [
-                            "network.write"
-                        ]
-                    }
-                ]
+                "x-mgc-hidden": false
             }
         },
         "/v0/rules/{rule_id}": {
@@ -637,6 +635,13 @@
                 "summary": "Delete a Rule",
                 "description": "Delete a rule from the provided tenant_id",
                 "operationId": "delete_rule_v0_rules__rule_id__delete",
+                "security": [
+                    {
+                        "OAuth2": [
+                            "network.write"
+                        ]
+                    }
+                ],
                 "parameters": [
                     {
                         "name": "rule_id",
@@ -675,14 +680,7 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false,
-                "security": [
-                    {
-                        "OAuth2": [
-                            "network.write"
-                        ]
-                    }
-                ]
+                "x-mgc-hidden": false
             },
             "get": {
                 "tags": [
@@ -691,6 +689,13 @@
                 "summary": "Rule Details",
                 "description": "Return a rule details",
                 "operationId": "detail_rule_v0_rules__rule_id__get",
+                "security": [
+                    {
+                        "OAuth2": [
+                            "network.read"
+                        ]
+                    }
+                ],
                 "parameters": [
                     {
                         "name": "rule_id",
@@ -736,14 +741,7 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false,
-                "security": [
-                    {
-                        "OAuth2": [
-                            "network.read"
-                        ]
-                    }
-                ]
+                "x-mgc-hidden": false
             }
         },
         "/v0/security_groups": {
@@ -754,6 +752,13 @@
                 "summary": "List Security Groups by Tenant",
                 "description": "Returns a list of security groups for a provided tenant_id",
                 "operationId": "list_vpc_security_groups_by_tenant_v0_security_groups_get",
+                "security": [
+                    {
+                        "OAuth2": [
+                            "network.read"
+                        ]
+                    }
+                ],
                 "parameters": [
                     {
                         "name": "x-tenant-id",
@@ -789,14 +794,7 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false,
-                "security": [
-                    {
-                        "OAuth2": [
-                            "network.read"
-                        ]
-                    }
-                ]
+                "x-mgc-hidden": false
             },
             "post": {
                 "tags": [
@@ -805,6 +803,13 @@
                 "summary": "Create Security Group",
                 "description": "Create a Security Group",
                 "operationId": "create_security_group_v0_security_groups_post",
+                "security": [
+                    {
+                        "OAuth2": [
+                            "network.write"
+                        ]
+                    }
+                ],
                 "parameters": [
                     {
                         "name": "validate_quota",
@@ -898,14 +903,7 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false,
-                "security": [
-                    {
-                        "OAuth2": [
-                            "network.write"
-                        ]
-                    }
-                ]
+                "x-mgc-hidden": false
             }
         },
         "/v0/security_groups/{security_group_id}": {
@@ -916,6 +914,13 @@
                 "summary": "Delete a security group",
                 "description": "Delete a security group from the provided tenant_id",
                 "operationId": "delete_security_group_v0_security_groups__security_group_id__delete",
+                "security": [
+                    {
+                        "OAuth2": [
+                            "network.write"
+                        ]
+                    }
+                ],
                 "parameters": [
                     {
                         "name": "security_group_id",
@@ -954,14 +959,7 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false,
-                "security": [
-                    {
-                        "OAuth2": [
-                            "network.write"
-                        ]
-                    }
-                ]
+                "x-mgc-hidden": false
             },
             "get": {
                 "tags": [
@@ -970,6 +968,13 @@
                 "summary": "Security Group Details",
                 "description": "Return a security group details",
                 "operationId": "detail_security_group_v0_security_groups__security_group_id__get",
+                "security": [
+                    {
+                        "OAuth2": [
+                            "network.read"
+                        ]
+                    }
+                ],
                 "parameters": [
                     {
                         "name": "security_group_id",
@@ -1015,14 +1020,7 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false,
-                "security": [
-                    {
-                        "OAuth2": [
-                            "network.read"
-                        ]
-                    }
-                ]
+                "x-mgc-hidden": false
             }
         },
         "/v0/security_groups/{security_group_id}/rules": {
@@ -1033,6 +1031,13 @@
                 "summary": "List Rules",
                 "description": "Returns a list of rules for a provided security_group_id",
                 "operationId": "list_security_group_rules_v0_security_groups__security_group_id__rules_get",
+                "security": [
+                    {
+                        "OAuth2": [
+                            "network.read"
+                        ]
+                    }
+                ],
                 "parameters": [
                     {
                         "name": "security_group_id",
@@ -1078,14 +1083,7 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false,
-                "security": [
-                    {
-                        "OAuth2": [
-                            "network.read"
-                        ]
-                    }
-                ]
+                "x-mgc-hidden": false
             },
             "post": {
                 "tags": [
@@ -1094,6 +1092,13 @@
                 "summary": "Create Rule",
                 "description": "Create a Rule async, returning its ID. To monitor the creation progress, please check the status in the service message or implement polling.Either a remote_ip_prefix or a remote_group_id can be specified.With remote_ip_prefix, all IPs that match the criteria will be allowed.With remote_group_id, only the specified security group is allowed to communicatefollowing the specified protocol, direction and port_range_min/max",
                 "operationId": "create_rule_v0_security_groups__security_group_id__rules_post",
+                "security": [
+                    {
+                        "OAuth2": [
+                            "network.write"
+                        ]
+                    }
+                ],
                 "parameters": [
                     {
                         "name": "security_group_id",
@@ -1195,14 +1200,7 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false,
-                "security": [
-                    {
-                        "OAuth2": [
-                            "network.write"
-                        ]
-                    }
-                ]
+                "x-mgc-hidden": false
             }
         },
         "/v0/subnetpools": {
@@ -1213,6 +1211,13 @@
                 "summary": "List Subnet Pools by Tenant",
                 "description": "Returns a list of Subnet Pools for the current tenant's project",
                 "operationId": "list_subnetpools_v0_subnetpools_get",
+                "security": [
+                    {
+                        "OAuth2": [
+                            "network.read"
+                        ]
+                    }
+                ],
                 "parameters": [
                     {
                         "name": "_offset",
@@ -1263,6 +1268,16 @@
                         }
                     },
                     {
+                        "name": "_az_id",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "default": "a",
+                            "title": " Az Id"
+                        }
+                    },
+                    {
                         "name": "x-tenant-id",
                         "in": "header",
                         "required": true,
@@ -1296,14 +1311,7 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false,
-                "security": [
-                    {
-                        "OAuth2": [
-                            "network.read"
-                        ]
-                    }
-                ]
+                "x-mgc-hidden": false
             },
             "post": {
                 "tags": [
@@ -1312,6 +1320,13 @@
                 "summary": "Create a Subnet Pool in a tenant",
                 "description": "Create a Subnet Pool",
                 "operationId": "create_subnetpool_v0_subnetpools_post",
+                "security": [
+                    {
+                        "OAuth2": [
+                            "network.write"
+                        ]
+                    }
+                ],
                 "parameters": [
                     {
                         "name": "x-tenant-id",
@@ -1357,14 +1372,7 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false,
-                "security": [
-                    {
-                        "OAuth2": [
-                            "network.write"
-                        ]
-                    }
-                ]
+                "x-mgc-hidden": false
             }
         },
         "/v0/subnetpools/{subnetpool_id}": {
@@ -1375,6 +1383,13 @@
                 "summary": "Delete Subnet Pool by ID",
                 "description": "Delete one Subnet Pool by ID",
                 "operationId": "delete_subnetpool_v0_subnetpools__subnetpool_id__delete",
+                "security": [
+                    {
+                        "OAuth2": [
+                            "network.write"
+                        ]
+                    }
+                ],
                 "parameters": [
                     {
                         "name": "subnetpool_id",
@@ -1413,14 +1428,7 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false,
-                "security": [
-                    {
-                        "OAuth2": [
-                            "network.write"
-                        ]
-                    }
-                ]
+                "x-mgc-hidden": false
             },
             "get": {
                 "tags": [
@@ -1429,6 +1437,13 @@
                 "summary": "Get Subnet Pool by ID",
                 "description": "Get details of a specific Subnet Pool",
                 "operationId": "get_subnetpool_v0_subnetpools__subnetpool_id__get",
+                "security": [
+                    {
+                        "OAuth2": [
+                            "network.read"
+                        ]
+                    }
+                ],
                 "parameters": [
                     {
                         "name": "subnetpool_id",
@@ -1474,14 +1489,7 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false,
-                "security": [
-                    {
-                        "OAuth2": [
-                            "network.read"
-                        ]
-                    }
-                ]
+                "x-mgc-hidden": false
             }
         },
         "/v0/subnetpools/{subnetpool_id}/book_cidr": {
@@ -1492,6 +1500,13 @@
                 "summary": "Book Subnetpool",
                 "description": "Booking a CIDR range from a subnetpool",
                 "operationId": "book_cidr_v0_subnetpools__subnetpool_id__book_cidr_post",
+                "security": [
+                    {
+                        "OAuth2": [
+                            "network.write"
+                        ]
+                    }
+                ],
                 "parameters": [
                     {
                         "name": "subnetpool_id",
@@ -1561,14 +1576,7 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false,
-                "security": [
-                    {
-                        "OAuth2": [
-                            "network.write"
-                        ]
-                    }
-                ]
+                "x-mgc-hidden": false
             }
         },
         "/v0/subnetpools/{subnetpool_id}/unbook_cidr": {
@@ -1579,6 +1587,13 @@
                 "summary": "Unbook Subnetpool",
                 "description": "Unbooking a CIDR range from a subnetpool",
                 "operationId": "unbook_cidr_v0_subnetpools__subnetpool_id__unbook_cidr_post",
+                "security": [
+                    {
+                        "OAuth2": [
+                            "network.write"
+                        ]
+                    }
+                ],
                 "parameters": [
                     {
                         "name": "subnetpool_id",
@@ -1627,14 +1642,7 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false,
-                "security": [
-                    {
-                        "OAuth2": [
-                            "network.write"
-                        ]
-                    }
-                ]
+                "x-mgc-hidden": false
             }
         },
         "/v0/subnets/{subnet_id}": {
@@ -1645,6 +1653,13 @@
                 "summary": "Delete a Subnet",
                 "description": "Delete a subnet from the provided tenant_id",
                 "operationId": "delete_subnet_v0_subnets__subnet_id__delete",
+                "security": [
+                    {
+                        "OAuth2": [
+                            "network.write"
+                        ]
+                    }
+                ],
                 "parameters": [
                     {
                         "name": "subnet_id",
@@ -1683,14 +1698,7 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false,
-                "security": [
-                    {
-                        "OAuth2": [
-                            "network.write"
-                        ]
-                    }
-                ]
+                "x-mgc-hidden": false
             },
             "get": {
                 "tags": [
@@ -1699,6 +1707,13 @@
                 "summary": "Subnet Details",
                 "description": "Returns a subnet details",
                 "operationId": "detail_subnet_v0_subnets__subnet_id__get",
+                "security": [
+                    {
+                        "OAuth2": [
+                            "network.read"
+                        ]
+                    }
+                ],
                 "parameters": [
                     {
                         "name": "subnet_id",
@@ -1744,14 +1759,7 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false,
-                "security": [
-                    {
-                        "OAuth2": [
-                            "network.read"
-                        ]
-                    }
-                ]
+                "x-mgc-hidden": false
             },
             "patch": {
                 "tags": [
@@ -1760,6 +1768,13 @@
                 "summary": "Update Subnet",
                 "description": "Update a subnet from the provided tenant_id",
                 "operationId": "update_subnet_v0_subnets__subnet_id__patch",
+                "security": [
+                    {
+                        "OAuth2": [
+                            "network.write"
+                        ]
+                    }
+                ],
                 "parameters": [
                     {
                         "name": "subnet_id",
@@ -1815,14 +1830,7 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false,
-                "security": [
-                    {
-                        "OAuth2": [
-                            "network.write"
-                        ]
-                    }
-                ]
+                "x-mgc-hidden": false
             }
         },
         "/v0/vpcs": {
@@ -1833,6 +1841,13 @@
                 "summary": "List VPC",
                 "description": "Returns a list of VPCs for a provided tenant_id",
                 "operationId": "list_vpcs_v0_vpcs_get",
+                "security": [
+                    {
+                        "OAuth2": [
+                            "network.read"
+                        ]
+                    }
+                ],
                 "parameters": [
                     {
                         "name": "x-tenant-id",
@@ -1868,14 +1883,7 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false,
-                "security": [
-                    {
-                        "OAuth2": [
-                            "network.read"
-                        ]
-                    }
-                ]
+                "x-mgc-hidden": false
             }
         },
         "/v0/vpcs/{vpc_id}": {
@@ -1886,6 +1894,13 @@
                 "summary": "Delete VPC",
                 "description": "Delete a VPC from the provided tenant_id",
                 "operationId": "delete_vpc_v0_vpcs__vpc_id__delete",
+                "security": [
+                    {
+                        "OAuth2": [
+                            "network.write"
+                        ]
+                    }
+                ],
                 "parameters": [
                     {
                         "name": "vpc_id",
@@ -1924,14 +1939,7 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false,
-                "security": [
-                    {
-                        "OAuth2": [
-                            "network.write"
-                        ]
-                    }
-                ]
+                "x-mgc-hidden": false
             },
             "get": {
                 "tags": [
@@ -1940,6 +1948,13 @@
                 "summary": "VPC Details",
                 "description": "Return a VPC details",
                 "operationId": "detail_vpc_v0_vpcs__vpc_id__get",
+                "security": [
+                    {
+                        "OAuth2": [
+                            "network.read"
+                        ]
+                    }
+                ],
                 "parameters": [
                     {
                         "name": "vpc_id",
@@ -1985,14 +2000,7 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false,
-                "security": [
-                    {
-                        "OAuth2": [
-                            "network.read"
-                        ]
-                    }
-                ]
+                "x-mgc-hidden": false
             }
         },
         "/v0/vpcs/{vpc_id}/ports": {
@@ -2003,6 +2011,13 @@
                 "summary": "List Ports",
                 "description": "Returns a list of ports for a provided vpc_id and x-tenant-id. The list will be paginated, it means you can easily find what you need just setting the page number(_offset) and the quantity of items per page(_limit). The level of detail can also be set",
                 "operationId": "list_vpc_ports_v0_vpcs__vpc_id__ports_get",
+                "security": [
+                    {
+                        "OAuth2": [
+                            "network.read"
+                        ]
+                    }
+                ],
                 "parameters": [
                     {
                         "name": "vpc_id",
@@ -2103,14 +2118,7 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false,
-                "security": [
-                    {
-                        "OAuth2": [
-                            "network.read"
-                        ]
-                    }
-                ]
+                "x-mgc-hidden": false
             },
             "post": {
                 "tags": [
@@ -2119,6 +2127,13 @@
                 "summary": "Create Port",
                 "description": "Create a Port with provided vpc_id and x-tenant-id. You can provide a list of security_groups_id or subnets",
                 "operationId": "create_port_v0_vpcs__vpc_id__ports_post",
+                "security": [
+                    {
+                        "OAuth2": [
+                            "network.write"
+                        ]
+                    }
+                ],
                 "parameters": [
                     {
                         "name": "vpc_id",
@@ -2188,14 +2203,7 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false,
-                "security": [
-                    {
-                        "OAuth2": [
-                            "network.write"
-                        ]
-                    }
-                ]
+                "x-mgc-hidden": false
             }
         },
         "/v0/vpcs/{vpc_id}/public_ips": {
@@ -2206,6 +2214,13 @@
                 "summary": "List Public IPs",
                 "description": "Returns a list of Public IPs for a provided vpc_id",
                 "operationId": "list_vpc_public_ips_v0_vpcs__vpc_id__public_ips_get",
+                "security": [
+                    {
+                        "OAuth2": [
+                            "network.read"
+                        ]
+                    }
+                ],
                 "parameters": [
                     {
                         "name": "vpc_id",
@@ -2251,14 +2266,7 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false,
-                "security": [
-                    {
-                        "OAuth2": [
-                            "network.read"
-                        ]
-                    }
-                ]
+                "x-mgc-hidden": false
             },
             "post": {
                 "tags": [
@@ -2267,6 +2275,13 @@
                 "summary": "Create Public IP",
                 "description": "Create async Public IP in a VPC with provided vpc_id and x_tenant_id",
                 "operationId": "create_public_ip_v0_vpcs__vpc_id__public_ips_post",
+                "security": [
+                    {
+                        "OAuth2": [
+                            "network.write"
+                        ]
+                    }
+                ],
                 "parameters": [
                     {
                         "name": "vpc_id",
@@ -2363,14 +2378,7 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false,
-                "security": [
-                    {
-                        "OAuth2": [
-                            "network.write"
-                        ]
-                    }
-                ]
+                "x-mgc-hidden": false
             }
         },
         "/v0/vpcs/{vpc_id}/subnets": {
@@ -2381,6 +2389,13 @@
                 "summary": "List Subnets",
                 "description": "Returns a list of subnets for a provided vpc_id",
                 "operationId": "list_subnets_from_vpc_v0_vpcs__vpc_id__subnets_get",
+                "security": [
+                    {
+                        "OAuth2": [
+                            "network.read"
+                        ]
+                    }
+                ],
                 "parameters": [
                     {
                         "name": "vpc_id",
@@ -2426,14 +2441,7 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false,
-                "security": [
-                    {
-                        "OAuth2": [
-                            "network.read"
-                        ]
-                    }
-                ]
+                "x-mgc-hidden": false
             },
             "post": {
                 "tags": [
@@ -2442,6 +2450,13 @@
                 "summary": "Create Subnet",
                 "description": "Create a Subnet",
                 "operationId": "create_subnet_v0_vpcs__vpc_id__subnets_post",
+                "security": [
+                    {
+                        "OAuth2": [
+                            "network.write"
+                        ]
+                    }
+                ],
                 "parameters": [
                     {
                         "name": "vpc_id",
@@ -2539,14 +2554,447 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false,
+                "x-mgc-hidden": false
+            }
+        },
+        "/v1/nat_gateways": {
+            "get": {
+                "tags": [
+                    "nat_gateways"
+                ],
+                "summary": "V1 List Nat Gateways from a VPC",
+                "description": "V1 List Nat Gateways from a VPC",
+                "operationId": "v1_list_nat_gateways_v1_nat_gateways_get",
+                "security": [
+                    {
+                        "OAuth2": [
+                            "network.read"
+                        ]
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "vpc_id",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Vpc Id"
+                        }
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {}
+                            ],
+                            "default": "name:asc",
+                            "title": "Sort"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "default": 1,
+                            "title": "Page"
+                        }
+                    },
+                    {
+                        "name": "items_per_page",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "maximum": 100,
+                            "minimum": 1,
+                            "default": 10,
+                            "title": "Items Per Page"
+                        }
+                    },
+                    {
+                        "name": "x-tenant-id",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "description": "Tenant id of the project",
+                            "title": "X-Tenant-Id"
+                        },
+                        "description": "Tenant id of the project"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/NatGatewayListResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/StatusCode400BadRequest"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/StatusCode409Conflict"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Exception",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/StatusCode500InternalServerError"
+                                }
+                            }
+                        }
+                    },
+                    "504": {
+                        "description": "Gateway Timeout",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/StatusCode504GatewayTimeout"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                },
+                "x-viveiro": true,
+                "x-mgc-hidden": false
+            },
+            "post": {
+                "tags": [
+                    "nat_gateways"
+                ],
+                "summary": "V1 Create Nat Gateway",
+                "description": "V1 Create a Nat Gateway",
+                "operationId": "v1_create_nat_gateways_v1_nat_gateways_post",
                 "security": [
                     {
                         "OAuth2": [
                             "network.write"
                         ]
                     }
-                ]
+                ],
+                "parameters": [
+                    {
+                        "name": "x-tenant-id",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "description": "Tenant id of the project",
+                            "title": "X-Tenant-Id"
+                        },
+                        "description": "Tenant id of the project"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/NatGatewayCreatePayload"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "202": {
+                        "description": "Accepted",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/NatGatewayCreateResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/StatusCode400BadRequest"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/StatusCode409Conflict"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Exception",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/StatusCode500InternalServerError"
+                                }
+                            }
+                        }
+                    },
+                    "504": {
+                        "description": "Gateway Timeout",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/StatusCode504GatewayTimeout"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                },
+                "x-viveiro": true,
+                "x-mgc-hidden": false
+            }
+        },
+        "/v1/nat_gateways/{nat_gateway_id}": {
+            "delete": {
+                "tags": [
+                    "nat_gateways"
+                ],
+                "summary": "V1 Delete Nat Gateway",
+                "description": "V1 Delete a Nat Gateway",
+                "operationId": "v1_delete_nat_gateways_v1_nat_gateways__nat_gateway_id__delete",
+                "security": [
+                    {
+                        "OAuth2": [
+                            "network.delete"
+                        ]
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "nat_gateway_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Nat Gateway Id"
+                        }
+                    },
+                    {
+                        "name": "x-tenant-id",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "description": "Tenant id of the project",
+                            "title": "X-Tenant-Id"
+                        },
+                        "description": "Tenant id of the project"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/StatusCode400BadRequest"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/StatusCode409Conflict"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Exception",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/StatusCode500InternalServerError"
+                                }
+                            }
+                        }
+                    },
+                    "504": {
+                        "description": "Gateway Timeout",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/StatusCode504GatewayTimeout"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                },
+                "x-viveiro": true,
+                "x-mgc-hidden": false
+            },
+            "get": {
+                "tags": [
+                    "nat_gateways"
+                ],
+                "summary": "V1 Detail Nat Gateway",
+                "description": "V1 Detail a Nat Gateway",
+                "operationId": "v1_detail_nat_gateways_v1_nat_gateways__nat_gateway_id__get",
+                "security": [
+                    {
+                        "OAuth2": [
+                            "network.read"
+                        ]
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "nat_gateway_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Nat Gateway Id"
+                        }
+                    },
+                    {
+                        "name": "x-tenant-id",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "description": "Tenant id of the project",
+                            "title": "X-Tenant-Id"
+                        },
+                        "description": "Tenant id of the project"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/NatGatewayDetailsResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/StatusCode400BadRequest"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/StatusCode409Conflict"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Exception",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/StatusCode500InternalServerError"
+                                }
+                            }
+                        }
+                    },
+                    "504": {
+                        "description": "Gateway Timeout",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/StatusCode504GatewayTimeout"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                },
+                "x-viveiro": true,
+                "x-mgc-hidden": false
             }
         },
         "/v1/vpcs": {
@@ -2554,9 +3002,16 @@
                 "tags": [
                     "vpcs"
                 ],
-                "summary": "Create VPC",
-                "description": "This endpoint allows you to create a new Virtual Private Cloud (VPC). It requires the tenant ID and a payload containing the VPC details such as name and description.",
+                "summary": "V1 Create VPC",
+                "description": "V1 Create a VPC",
                 "operationId": "v1_create_vpc_v1_vpcs_post",
+                "security": [
+                    {
+                        "OAuth2": [
+                            "network.write"
+                        ]
+                    }
+                ],
                 "parameters": [
                     {
                         "name": "x-tenant-id",
@@ -2643,14 +3098,7 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false,
-                "security": [
-                    {
-                        "OAuth2": [
-                            "network.write"
-                        ]
-                    }
-                ]
+                "x-mgc-hidden": false
             }
         }
     },
@@ -2796,6 +3244,53 @@
                 ],
                 "title": "LinkModel"
             },
+            "Meta": {
+                "properties": {
+                    "page": {
+                        "$ref": "#/components/schemas/MetaPageInfo"
+                    },
+                    "links": {
+                        "$ref": "#/components/schemas/MetaLinks"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "page",
+                    "links"
+                ],
+                "title": "Meta"
+            },
+            "MetaLinks": {
+                "properties": {
+                    "previous": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {}
+                        ],
+                        "title": "Previous"
+                    },
+                    "next": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {}
+                        ],
+                        "title": "Next"
+                    },
+                    "self": {
+                        "type": "string",
+                        "title": "Self"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "self"
+                ],
+                "title": "MetaLinks"
+            },
             "MetaModel": {
                 "properties": {
                     "page": {
@@ -2811,6 +3306,228 @@
                     "links"
                 ],
                 "title": "MetaModel"
+            },
+            "MetaPageInfo": {
+                "properties": {
+                    "limit": {
+                        "type": "integer",
+                        "title": "Limit"
+                    },
+                    "offset": {
+                        "type": "integer",
+                        "title": "Offset"
+                    },
+                    "count": {
+                        "type": "integer",
+                        "title": "Count"
+                    },
+                    "total": {
+                        "type": "integer",
+                        "title": "Total"
+                    },
+                    "max_items_per_page": {
+                        "type": "integer",
+                        "title": "Max Items Per Page"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "limit",
+                    "offset",
+                    "count",
+                    "total",
+                    "max_items_per_page"
+                ],
+                "title": "MetaPageInfo"
+            },
+            "NatGatewayCreatePayload": {
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "title": "Name"
+                    },
+                    "description": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {}
+                        ],
+                        "title": "Description"
+                    },
+                    "zone": {
+                        "type": "string",
+                        "title": "Zone"
+                    },
+                    "vpc_id": {
+                        "type": "string",
+                        "title": "Vpc Id"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "name",
+                    "zone",
+                    "vpc_id"
+                ],
+                "title": "NatGatewayCreatePayload",
+                "example": {
+                    "description": "Description",
+                    "name": "NatGateway Name",
+                    "vpc_id": "NatGateway vpc id",
+                    "zone": "NatGateway zone"
+                }
+            },
+            "NatGatewayCreateResponse": {
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "title": "Id"
+                    },
+                    "status": {
+                        "$ref": "#/components/schemas/Status"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "id",
+                    "status"
+                ],
+                "title": "NatGatewayCreateResponse",
+                "example": {
+                    "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+                    "status": "pending"
+                }
+            },
+            "NatGatewayDetailsResponse": {
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "title": "Id"
+                    },
+                    "name": {
+                        "type": "string",
+                        "title": "Name"
+                    },
+                    "description": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {}
+                        ],
+                        "title": "Description"
+                    },
+                    "vpc_id": {
+                        "type": "string",
+                        "title": "Vpc Id"
+                    },
+                    "zone": {
+                        "type": "string",
+                        "title": "Zone"
+                    },
+                    "nat_gateway_ip": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {}
+                        ],
+                        "title": "Nat Gateway Ip"
+                    },
+                    "created_at": {
+                        "anyOf": [
+                            {
+                                "type": "string",
+                                "format": "date-time"
+                            },
+                            {}
+                        ],
+                        "title": "Created At"
+                    },
+                    "updated": {
+                        "anyOf": [
+                            {
+                                "type": "string",
+                                "format": "date-time"
+                            },
+                            {}
+                        ],
+                        "title": "Updated"
+                    },
+                    "status": {
+                        "$ref": "#/components/schemas/Status"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "id",
+                    "name",
+                    "vpc_id",
+                    "zone",
+                    "status"
+                ],
+                "title": "NatGatewayDetailsResponse",
+                "example": {
+                    "created_at": "YYYY-MM-DD HH:mm:SS",
+                    "description": "NatGateway description",
+                    "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+                    "name": "NatGateway Name",
+                    "nat_gateway_ip": "127.0.0.1",
+                    "status": "created",
+                    "updated": "YYYY-MM-DD HH:mm:SS",
+                    "vpc_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+                    "zone": "zone"
+                }
+            },
+            "NatGatewayListResponse": {
+                "properties": {
+                    "meta": {
+                        "$ref": "#/components/schemas/Meta"
+                    },
+                    "result": {
+                        "items": {
+                            "$ref": "#/components/schemas/NatGatewayDetailsResponse"
+                        },
+                        "type": "array",
+                        "title": "Result"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "meta",
+                    "result"
+                ],
+                "title": "NatGatewayListResponse",
+                "example": {
+                    "meta": {
+                        "links": {
+                            "next": "?_offset=30\u0026_limit=10",
+                            "previous": "?_offset=10\u0026_limit=10",
+                            "self": "?_offset=20\u0026_limit=10"
+                        },
+                        "page": {
+                            "count": 10,
+                            "limit": 10,
+                            "max_items_per_page": 100,
+                            "offset": 20,
+                            "total": 112
+                        }
+                    },
+                    "result": [
+                        {
+                            "created_at": "YYYY-MM-DD HH:mm:SS",
+                            "description": "NatGateway description",
+                            "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+                            "name": "NatGateway Name",
+                            "nat_gateway_ip": "127.0.0.1",
+                            "status": "created",
+                            "updated": "YYYY-MM-DD HH:mm:SS",
+                            "vpc_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+                            "zone": "zone"
+                        }
+                    ]
+                }
             },
             "PageModel": {
                 "properties": {
@@ -3396,13 +4113,12 @@
             "RuleCreateRequest": {
                 "properties": {
                     "direction": {
-                        "anyOf": [
-                            {
-                                "type": "string"
-                            },
-                            {}
-                        ],
-                        "title": "Direction"
+                        "type": "string",
+                        "title": "Direction",
+                        "description": "Direction of the rule, either ingress or egress",
+                        "examples": [
+                            "ingress"
+                        ]
                     },
                     "port_range_min": {
                         "anyOf": [
@@ -3440,18 +4156,13 @@
                         ],
                         "title": "Remote Ip Prefix"
                     },
-                    "remote_group_id": {
-                        "anyOf": [
-                            {
-                                "type": "string"
-                            },
-                            {}
-                        ],
-                        "title": "Remote Group Id"
-                    },
                     "ethertype": {
                         "type": "string",
-                        "title": "Ethertype"
+                        "title": "Ethertype",
+                        "description": "Ethertype of the rule, either IPv4 or IPv6",
+                        "examples": [
+                            "IPv4"
+                        ]
                     },
                     "description": {
                         "anyOf": [
@@ -3469,6 +4180,7 @@
                 },
                 "type": "object",
                 "required": [
+                    "direction",
                     "ethertype"
                 ],
                 "title": "RuleCreateRequest",
@@ -3479,7 +4191,6 @@
                     "port_range_max": 8028,
                     "port_range_min": 8028,
                     "protocol": "tcp",
-                    "remote_group_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
                     "remote_ip_prefix": "100.94.0.0/24"
                 }
             },
@@ -3573,22 +4284,8 @@
                         ],
                         "title": "Remote Ip Prefix"
                     },
-                    "remote_group_id": {
-                        "anyOf": [
-                            {
-                                "type": "string"
-                            },
-                            {}
-                        ],
-                        "title": "Remote Group Id"
-                    },
                     "ethertype": {
-                        "anyOf": [
-                            {
-                                "type": "string"
-                            },
-                            {}
-                        ],
+                        "type": "string",
                         "title": "Ethertype"
                     },
                     "created_at": {
@@ -3625,6 +4322,7 @@
                 },
                 "type": "object",
                 "required": [
+                    "ethertype",
                     "status"
                 ],
                 "title": "RuleResponse",
@@ -3638,7 +4336,6 @@
                     "port_range_max": 8028,
                     "port_range_min": 8028,
                     "protocol": "tcp",
-                    "remote_group_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
                     "remote_ip_prefix": "100.94.0.0/24",
                     "security_group_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
                     "status": "created"
@@ -3690,15 +4387,6 @@
                             {}
                         ],
                         "title": "Remote Ip Prefix"
-                    },
-                    "remote_group_id": {
-                        "anyOf": [
-                            {
-                                "type": "string"
-                            },
-                            {}
-                        ],
-                        "title": "Remote Group Id"
                     },
                     "status": {
                         "anyOf": [
@@ -3766,7 +4454,6 @@
                     "port_range_max": 8028,
                     "port_range_min": 8028,
                     "protocol": "tcp",
-                    "remote_group_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
                     "remote_ip_prefix": "100.94.0.0/24",
                     "security_group_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
                     "status": "created"
@@ -4008,7 +4695,6 @@
                             "port_range_max": 8028,
                             "port_range_min": 8028,
                             "protocol": "tcp",
-                            "remote_group_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
                             "remote_ip_prefix": "100.94.0.0/24",
                             "security_group_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
                             "status": "created"
@@ -4796,6 +5482,7 @@
                     "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
                     "ip_version": "4",
                     "name": "vpc_name",
+                    "subnetpool_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
                     "updated": "2022-01-01 00:00:00",
                     "vpc_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
                     "zone": "a"
@@ -4861,6 +5548,17 @@
                 "example": {
                     "cidr": "172.26.0.0/16"
                 }
+            },
+            "VPCStatus": {
+                "type": "string",
+                "enum": [
+                    "pending",
+                    "processing",
+                    "processing_interconnect",
+                    "created",
+                    "error"
+                ],
+                "title": "VPCStatus"
             },
             "ValidationError": {
                 "properties": {
@@ -4959,9 +5657,6 @@
                         ],
                         "title": "Description"
                     },
-                    "status": {
-                        "$ref": "#/components/schemas/Status"
-                    },
                     "router_id": {
                         "anyOf": [
                             {
@@ -5038,6 +5733,18 @@
                             {}
                         ],
                         "title": "Is Default"
+                    },
+                    "error": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {}
+                        ],
+                        "title": "Error"
+                    },
+                    "status": {
+                        "$ref": "#/components/schemas/VPCStatus"
                     }
                 },
                 "type": "object",
@@ -5048,6 +5755,7 @@
                 "example": {
                     "created_at": "2022-01-01 00:00:00",
                     "description": "DESCRIPTION",
+                    "error": "error",
                     "external_network": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
                     "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
                     "is_default": true,
@@ -5088,6 +5796,7 @@
                         {
                             "created_at": "2022-01-01 00:00:00",
                             "description": "DESCRIPTION",
+                            "error": "error",
                             "external_network": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
                             "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
                             "is_default": true,
@@ -5097,6 +5806,7 @@
                             "security_groups": [
                                 "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
                             ],
+                            "status": "created",
                             "subnets": [
                                 "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
                             ],
@@ -5130,18 +5840,20 @@
         },
         "securitySchemes": {
             "OAuth2": {
+                "type": "oauth2",
+                "description": "OAuth2 via IDPA",
                 "flows": {
                     "authorizationCode": {
-                        "authorizationUrl": "https://idp-maas-sandbox.ipet.sh/auth/realms/master/protocol/openid-connect/auth",
-                        "tokenUrl": "https://idp-maas-sandbox.ipet.sh/auth/realms/master/protocol/openid-connect/token",
                         "scopes": {
+                            "network.write": "Escrever informacoes de recursos VPC IaaS",
                             "network.read": "Ler informacoes de recursos VPC IaaS",
-                            "network.write": "Escrever informacoes de recursos VPC IaaS"
-                        }
+                            "network.pip-k8s-read": "Ler IP publico de projeto k8s",
+                            "network.pip-k8s-write": "Criar e deletar IP publico de projeto k8s"
+                        },
+                        "authorizationUrl": "https://idp-maas-sandbox.ipet.sh/auth/realms/master/protocol/openid-connect",
+                        "tokenUrl": "https://idp-maas-sandbox.ipet.sh/auth/realms/master/protocol/openid-connect/oauth/token"
                     }
-                },
-                "type": "oauth2",
-                "description": "OAuth2 via IDPA"
+                }
             },
             "ApiKeyAuth": {
                 "type": "apiKey",
@@ -5178,6 +5890,10 @@
         {
             "name": "vpcs",
             "description": "Operations related to VPCs"
+        },
+        {
+            "name": "nat_gateways",
+            "description": "Operations related to Nat Gateway"
         }
     ]
 }

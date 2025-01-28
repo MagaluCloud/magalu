@@ -953,7 +953,7 @@ paths:
             - nodepool
             summary: List node pools by cluster_id
             description: Gets a node pool from a Kubernetes cluster by cluster_uuid.
-            operationId: getClusterNodePools
+            operationId: ListNodePoolsV0
             parameters:
             -   name: cluster_id
                 in: path
@@ -968,7 +968,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/ClusterNodePoolsResponse'
+                                $ref: '#/components/schemas/ListNodePoolsResponseV0'
                 '400':
                     description: Bad Request
                     content:
@@ -1071,6 +1071,7 @@ paths:
                     response = http.request(request)
 
                     puts response.read_body'
+            x-mgc-hidden: true
         post:
             tags:
             - nodepool
@@ -1096,10 +1097,10 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/NodePoolsResponse'
+                                $ref: '#/components/schemas/NodePoolResponse'
                     links:
                         list:
-                            operationId: getClusterNodePools
+                            operationId: ListNodePoolsV0
                             description: List node pools by cluster_id
                             parameters:
                                 cluster_id: $request.path.cluster_id
@@ -1108,25 +1109,21 @@ paths:
                             description: Get node pool by node_pool_id
                             parameters:
                                 cluster_id: $request.path.cluster_id
-                                node_pool_id: $response.body#/id
                         update:
                             operationId: patchNodePool
                             description: Patch node pool replicas by node_pool_id
                             parameters:
                                 cluster_id: $request.path.cluster_id
-                                node_pool_id: $response.body#/id
                         delete:
                             operationId: deleteNodePool
                             description: Delete node pool by node_pool_id
                             parameters:
                                 cluster_id: $request.path.cluster_id
-                                node_pool_id: $response.body#/id
                         nodes:
                             operationId: getNodes
                             description: List nodes from a node pool by node_pool_id
                             parameters:
                                 cluster_id: $request.path.cluster_id
-                                node_pool_id: $response.body#/id
                 '400':
                     description: Bad Request
                     content:
@@ -1290,10 +1287,10 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/NodePoolsResponse'
+                                $ref: '#/components/schemas/NodePoolResponse'
                     links:
                         list:
-                            operationId: getClusterNodePools
+                            operationId: ListNodePoolsV0
                             description: List node pools by cluster_id
                             parameters:
                                 cluster_id: $request.path.cluster_id
@@ -1580,10 +1577,10 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/NodePoolsResponse'
+                                $ref: '#/components/schemas/NodePoolResponse'
                     links:
                         list:
-                            operationId: getClusterNodePools
+                            operationId: ListNodePoolsV0
                             description: List node pools by cluster_id
                             parameters:
                                 cluster_id: $request.path.cluster_id
@@ -1760,7 +1757,7 @@ paths:
                                 $ref: '#/components/schemas/NodesResponse'
                     links:
                         list:
-                            operationId: getClusterNodePools
+                            operationId: ListNodePoolsV0
                             description: List node pools by cluster_id
                             parameters:
                                 cluster_id: $request.path.cluster_id
@@ -2127,6 +2124,130 @@ paths:
                     response = http.request(request)
 
                     puts response.read_body'
+    /v1alpha0/clusters/{cluster_id}/node-pools:
+        get:
+            tags:
+            - nodepool
+            summary: List node pools by cluster_id
+            description: Gets a node pool from a Kubernetes cluster by cluster_uuid.
+            operationId: ListNodePoolsV1alpha0
+            parameters:
+            -   name: cluster_id
+                in: path
+                description: Cluster's UUID.
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+            responses:
+                '200':
+                    description: Successful operation
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ListNodePoolsResponseV1alpha0'
+                '400':
+                    description: Bad Request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '401':
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '404':
+                    description: Not Found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '429':
+                    description: Too Many Requests
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '500':
+                    description: Internal Server Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+            security:
+            -   BearerAuth:
+                - mke.read
+            -   OAuth2:
+                - mke.read
+            x-codeSamples:
+            -   lang: Shell + Curl
+                source: "curl --request GET \\\n  --url https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v1alpha0/clusters/%7Bcluster_id%7D/node-pools\
+                    \ \\\n  --header 'Authorization: Bearer REPLACE_BEARER_TOKEN'\
+                    \ \\\n  --header 'x-tenant-id: SOME_STRING_VALUE'"
+            -   lang: Shell + Httpie
+                source: "http GET https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v1alpha0/clusters/%7Bcluster_id%7D/node-pools\
+                    \ \\\n  Authorization:'Bearer REPLACE_BEARER_TOKEN' \\\n  x-tenant-id:SOME_STRING_VALUE"
+            -   lang: Go + Native
+                source: "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"\
+                    io/ioutil\"\n)\n\nfunc main() {\n\n\turl := \"https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v1alpha0/clusters/%7Bcluster_id%7D/node-pools\"\
+                    \n\n\treq, _ := http.NewRequest(\"GET\", url, nil)\n\n\treq.Header.Add(\"\
+                    x-tenant-id\", \"SOME_STRING_VALUE\")\n\treq.Header.Add(\"Authorization\"\
+                    , \"Bearer REPLACE_BEARER_TOKEN\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\
+                    \n\tdefer res.Body.Close()\n\tbody, _ := ioutil.ReadAll(res.Body)\n\
+                    \n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+            -   lang: Python + Python3
+                source: "import http.client\n\nconn = http.client.HTTPSConnection(\"\
+                    api-mke.pre-prod.br-ne-1.jaxyendy.com\")\n\nheaders = {\n    'x-tenant-id':\
+                    \ \"SOME_STRING_VALUE\",\n    'Authorization': \"Bearer REPLACE_BEARER_TOKEN\"\
+                    \n    }\n\nconn.request(\"GET\", \"/v1alpha0/clusters/%7Bcluster_id%7D/node-pools\"\
+                    , headers=headers)\n\nres = conn.getresponse()\ndata = res.read()\n\
+                    \nprint(data.decode(\"utf-8\"))"
+            -   lang: Node + Native
+                source: "const http = require(\"https\");\n\nconst options = {\n \
+                    \ \"method\": \"GET\",\n  \"hostname\": \"api-mke.pre-prod.br-ne-1.jaxyendy.com\"\
+                    ,\n  \"port\": null,\n  \"path\": \"/v1alpha0/clusters/%7Bcluster_id%7D/node-pools\"\
+                    ,\n  \"headers\": {\n    \"x-tenant-id\": \"SOME_STRING_VALUE\"\
+                    ,\n    \"Authorization\": \"Bearer REPLACE_BEARER_TOKEN\"\n  }\n\
+                    };\n\nconst req = http.request(options, function (res) {\n  const\
+                    \ chunks = [];\n\n  res.on(\"data\", function (chunk) {\n    chunks.push(chunk);\n\
+                    \  });\n\n  res.on(\"end\", function () {\n    const body = Buffer.concat(chunks);\n\
+                    \    console.log(body.toString());\n  });\n});\n\nreq.end();"
+            -   lang: Ruby + Native
+                source: 'require ''uri''
+
+                    require ''net/http''
+
+                    require ''openssl''
+
+
+                    url = URI("https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v1alpha0/clusters/%7Bcluster_id%7D/node-pools")
+
+
+                    http = Net::HTTP.new(url.host, url.port)
+
+                    http.use_ssl = true
+
+                    http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+
+                    request = Net::HTTP::Get.new(url)
+
+                    request["x-tenant-id"] = ''SOME_STRING_VALUE''
+
+                    request["Authorization"] = ''Bearer REPLACE_BEARER_TOKEN''
+
+
+                    response = http.request(request)
+
+                    puts response.read_body'
     /v1/flavors:
         get:
             tags:
@@ -2397,6 +2518,17 @@ components:
                         '
                     default: ''
                     example: This is an example cluster.
+                zone:
+                    type: string
+                    description: '[Deprecated] This parameter is deprecated and its
+                        use won''t create a cluster at requested zone.
+
+                        Identifier of the zone where the Kubernetes cluster will be
+                        located.
+
+                        '
+                    example: br-region-zone
+                    deprecated: true
                 enabled_bastion:
                     type: boolean
                     description: '[Deprecated] This parameter is deprecated and its
@@ -2438,6 +2570,8 @@ components:
                         auto_scale:
                             min_replicas: 2
                             max_replicas: 5
+                    x-oapi-codegen-extra-tags:
+                        binding: dive
                 allowed_cidrs:
                     type: array
                     items:
@@ -2589,13 +2723,13 @@ components:
                 network:
                     $ref: '#/components/schemas/NetworkResponse'
                 controlplane:
-                    $ref: '#/components/schemas/NodePoolsResponse'
+                    $ref: '#/components/schemas/NodePoolResponse'
                 kube_api_server:
                     $ref: '#/components/schemas/KubeApiServer'
                 node_pools:
                     type: array
                     items:
-                        $ref: '#/components/schemas/NodePoolsResponse'
+                        $ref: '#/components/schemas/NodePoolResponse'
                     description: Set of nodes in a Kubernetes cluster.
                 addons:
                     $ref: '#/components/schemas/Addons'
@@ -2677,7 +2811,10 @@ components:
                     type: integer
                     description: Number of replicas of the nodes in the node pool.
                     default: 1
+                    nullable: true
                     example: 3
+                    x-oapi-codegen-extra-tags:
+                        binding: required
                 tags:
                     type: array
                     items:
@@ -2745,7 +2882,7 @@ components:
                     description: Port used by the Kubernetes API Server.
                     example: 6443
             description: Information about the Kubernetes API Server of the cluster.
-        NodePoolsResponse:
+        NodePoolResponse:
             type: object
             properties:
                 id:
@@ -2814,7 +2951,7 @@ components:
                     description: Date of the last change to the Kubernetes cluster.
                     example: '2023-03-01T09:10:00Z'
                 auto_scale:
-                    $ref: '#/components/schemas/AutoScale'
+                    $ref: '#/components/schemas/AutoScaleResponse'
                 status:
                     $ref: '#/components/schemas/Status'
             required:
@@ -2827,13 +2964,56 @@ components:
             - auto_scale
             - status
             description: Object of the node pool response.
-        ClusterNodePoolsResponse:
+        ListNodePoolResponseV1alpha0:
+            type: object
+            properties:
+                id:
+                    type: string
+                    format: uuid
+                    description: Node pool's UUID.
+                    example: 2cc6f625-7d67-4ed2-8c5e-24e5b40b951b
+                name:
+                    type: string
+                    description: Node pool name
+                    example: nodepool-example
+                flavor:
+                    type: string
+                    description: Node pool flavor name
+                    example: cloud-k8s.gp1.small
+                replicas:
+                    type: integer
+                    description: Number of replicas of the nodes in the node pool.
+                    example: 3
+                auto_scale:
+                    $ref: '#/components/schemas/AutoScaleResponse'
+                status:
+                    $ref: '#/components/schemas/Status'
+            required:
+            - id
+            - name
+            - flavor
+            - replicas
+            - auto_scale
+            - status
+            description: Object of the node pool response.
+        ListNodePoolsResponseV0:
             type: object
             properties:
                 results:
                     type: array
                     items:
-                        $ref: '#/components/schemas/NodePoolsResponse'
+                        $ref: '#/components/schemas/NodePoolResponse'
+                    description: List of node pools.
+            required:
+            - results
+            description: Object of the node pool response in the cluster.
+        ListNodePoolsResponseV1alpha0:
+            type: object
+            properties:
+                results:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/ListNodePoolResponseV1alpha0'
                     description: List of node pools.
             required:
             - results
@@ -3206,8 +3386,8 @@ components:
                     type: integer
                     minimum: 0
                     description: 'Minimum number of replicas for autoscaling. If not
-                        provided, or if the value is equal to or less than zero, the
-                        autoscaler value will be assumed based on the "replicas" field.
+                        provided, the autoscale value will be assumed based on the
+                        "replicas" field.
 
                         '
                     nullable: true
@@ -3216,11 +3396,41 @@ components:
                     type: integer
                     minimum: 0
                     description: 'Maximum number of replicas for autoscaling. If not
-                        provided, or if the value is equal to or less than zero, the
-                        autoscaler value will be assumed based on the "replicas" field.
+                        provided, the autoscale value will be assumed based on the
+                        "replicas" field.
 
                         '
                     nullable: true
+                    example: 5
+            required:
+            - min_replicas
+            - max_replicas
+            description: 'Object specifying properties for updating workload resources
+                in the Kubernetes cluster.
+
+                '
+        AutoScaleResponse:
+            type: object
+            properties:
+                min_replicas:
+                    type: integer
+                    minimum: 0
+                    description: 'Minimum number of replicas for autoscaling. If not
+                        provided, the autoscale value will be assumed based on the
+                        "replicas" field.
+
+                        '
+                    default: 1
+                    example: 2
+                max_replicas:
+                    type: integer
+                    minimum: 0
+                    description: 'Maximum number of replicas for autoscaling. If not
+                        provided, the autoscale value will be assumed based on the
+                        "replicas" field.
+
+                        '
+                    default: 1
                     example: 5
             required:
             - min_replicas
@@ -3423,7 +3633,9 @@ components:
             bearerFormat: JWT
         OAuth2:
             type: oauth2
-            description: "OAuth2 by IDPA (Identity Provider Authentication)  \n"
+            description: 'OAuth2 by IDPA (Identity Provider Authentication)
+
+                '
             flows:
                 authorizationCode:
                     authorizationUrl: https://idp-maas-sandbox.ipet.sh/auth/realms/master/protocol/openid-connect/auth

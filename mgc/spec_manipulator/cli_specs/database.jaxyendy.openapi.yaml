@@ -6,7 +6,7 @@ info:
     name: Tribo IAAS Cloud
     url: https://gitlab.luizalabs.com/cloud/dbaas/docs
     email: cloud-iaas-dbaas@luizalabs.com
-  version: 1.40.1
+  version: 1.42.0
 tags:
   - name: engines
     description: Engines available for database instances.
@@ -89,7 +89,6 @@ paths:
             - dbaas.read
         - OAuth2Prod:
             - dbaas.read
-
   /v1/instance-types:
     get:
       operationId: instance_types_v1_get_all
@@ -375,7 +374,7 @@ paths:
         content:
           application/json:
             schema:
-              "$ref": "#/components/schemas/InstanceResizeRequest"
+              $ref: "#/components/schemas/InstanceResizeRequest"
         required: true
       responses:
         "200":
@@ -958,7 +957,6 @@ paths:
             - dbaas.write
         - OAuth2Prod:
             - dbaas.write
-
 components:
   parameters:
     replica_id:
@@ -1168,12 +1166,12 @@ components:
       properties:
         filters:
           items:
-            $ref: '#/components/schemas/FieldValueResponse'
+            $ref: "#/components/schemas/FieldValueResponse"
           title: Filters
           type: array
           description: Data filters use in the current request pagination.
         page:
-          $ref: '#/components/schemas/PageResponse'
+          $ref: "#/components/schemas/PageResponse"
       required:
         - page
         - filters
@@ -1301,7 +1299,7 @@ components:
       type: object
       properties:
         meta:
-          $ref: '#/components/schemas/MetaResponse'
+          $ref: "#/components/schemas/MetaResponse"
         results:
           title: Results
           type: array
@@ -1311,6 +1309,7 @@ components:
       title: Instance Detail Response
       description: >
         This response object provides details about a database instance associated with a snapshot.
+
       required:
         - id
         - name
@@ -1326,7 +1325,7 @@ components:
           description: Database instance unique name.
           type: string
           maxLength: 100
-          example: "mydbinstance"
+          example: "my-db-instance"
     SnapshotCreateRequest:
       required:
         - name
@@ -1405,7 +1404,7 @@ components:
       type: object
       properties:
         meta:
-            $ref: '#/components/schemas/MetaResponse'
+          $ref: "#/components/schemas/MetaResponse"
         results:
           title: Results
           type: array
@@ -1440,7 +1439,7 @@ components:
       type: object
       properties:
         meta:
-          $ref: '#/components/schemas/MetaResponse'
+          $ref: "#/components/schemas/MetaResponse"
         results:
           title: Results
           type: array
@@ -1494,7 +1493,7 @@ components:
     InstanceParametersRequest:
       properties:
         name:
-          $ref: '#/components/schemas/InstanceParametersNames'
+          $ref: "#/components/schemas/InstanceParametersNames"
         value:
           title: Instance Parameters Value
           description: Database parameter value.
@@ -1511,7 +1510,7 @@ components:
     InstanceParametersResponse:
       properties:
         name:
-          $ref: '#/components/schemas/InstanceParametersNames'
+          $ref: "#/components/schemas/InstanceParametersNames"
         value:
           title: Instance Parameters Value
           description: Database parameter value.
@@ -1765,7 +1764,7 @@ components:
       type: object
       properties:
         meta:
-            $ref: '#/components/schemas/MetaResponse'
+          $ref: "#/components/schemas/MetaResponse"
         results:
           title: Results
           type: array
@@ -1835,7 +1834,7 @@ components:
       type: object
       properties:
         meta:
-            $ref: '#/components/schemas/MetaResponse'
+          $ref: "#/components/schemas/MetaResponse"
         results:
           title: Results
           type: array
@@ -1892,7 +1891,6 @@ components:
             **Deprecated**: This property is being deprecated in favor of `instance_type_id`. Please update your requests to use `engine_id` for improved functionality and future compatibility.
           type: string
           format: uuid
-        
         volume:
           $ref: "#/components/schemas/Volume"
         addresses:
@@ -1958,9 +1956,7 @@ components:
           type: string
         flavor_id:
           deprecated: true
-          description: |
-            Flavor Id (Deprecated).
-            **Deprecated**: This property is being deprecated in favor of `instance_type_id`. Please update your requests to use `instance_type_id` for improved functionality and future compatibility.          
+          description: "Flavor Id (Deprecated).\n**Deprecated**: This property is being deprecated in favor of `instance_type_id`. Please update your requests to use `instance_type_id` for improved functionality and future compatibility.          \n"
           type: string
           format: uuid
         instance_type_id:

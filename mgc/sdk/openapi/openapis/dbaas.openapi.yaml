@@ -6,7 +6,7 @@ info:
         name: Tribo IAAS Cloud
         url: https://gitlab.luizalabs.com/cloud/dbaas/docs
         email: cloud-iaas-dbaas@luizalabs.com
-    version: 1.40.1
+    version: 1.42.0
 tags:
 -   name: engines
     description: Engines available for database instances.
@@ -1647,7 +1647,7 @@ components:
                     description: Database instance unique name.
                     type: string
                     maxLength: 100
-                    example: mydbinstance
+                    example: my-db-instance
         SnapshotCreateRequest:
             required:
             - name
