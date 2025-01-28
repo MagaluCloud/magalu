@@ -32,27 +32,6 @@ repos:
         entry: bash -c './scripts/oapi_index_gen.sh'
         additional_dependencies: [PyYAML, typing, argparse]
         stages: [pre-commit]
-    -   id: tf-docs
-        name: generate terraform documentation
-        language: system
-        entry: make -C ./mgc/terraform-provider-mgc/ generate-docs
-        require_serial: true
-        pass_filenames: false
-        stages: [pre-commit]
-    -   id: check-tf-examples
-        name: check terraform examples
-        language: system
-        entry: make -C ./mgc/terraform-provider-mgc/ check-example-usage
-        require_serial: true
-        pass_filenames: false
-        stages: [pre-commit]
-    -   id: check-tf-docs
-        name: check terraform documentation subcategory
-        language: system
-        entry: make -C ./mgc/terraform-provider-mgc/ check-empty-subcategory
-        require_serial: true
-        pass_filenames: false
-        stages: [pre-commit]
     -   id: check-openapi-links
         name: check openapi links
         language: system
@@ -60,7 +39,7 @@ repos:
         stages: [pre-commit]
         require_serial: true
 -   repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.6.0
+    rev: v5.0.0
     hooks:
     -   id: trailing-whitespace
         stages: [pre-commit, pre-push]

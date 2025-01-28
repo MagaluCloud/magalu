@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"net/http"
 
-	mgcHttpPkg "magalu.cloud/core/http"
+	mgcHttpPkg "github.com/MagaluCloud/magalu/mgc/core/http"
 )
 
 type authRoundTripper struct {

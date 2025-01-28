@@ -3,7 +3,7 @@ package common
 import (
 	"context"
 
-	mgcSchemaPkg "magalu.cloud/core/schema"
+	mgcSchemaPkg "github.com/MagaluCloud/magalu/mgc/core/schema"
 )
 
 type PublicUrlResult struct {

@@ -5,7 +5,7 @@ import (
 	"io"
 	"path/filepath"
 
-	generator "magalu.cloud/codegen/generator"
+	generator "github.com/MagaluCloud/magalu/mgc/codegen/generator"
 )
 
 type Reporter struct {

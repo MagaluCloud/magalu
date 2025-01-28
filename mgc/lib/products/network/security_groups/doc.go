@@ -7,6 +7,6 @@ Package: security_groups
 
 Version: 1.141.3
 
-import "magalu.cloud/lib/products/network/security_groups"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/network/security_groups"
 */
 package securityGroups

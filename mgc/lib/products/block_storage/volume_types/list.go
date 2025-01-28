@@ -16,15 +16,15 @@ List Volume Types allowed in the current region.
 
 Version: v1
 
-import "magalu.cloud/lib/products/block_storage/volume_types"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/block_storage/volume_types"
 */
 package volumeTypes
 
 import (
 	"context"
 
-	mgcCore "magalu.cloud/core"
-	mgcHelpers "magalu.cloud/lib/helpers"
+	mgcCore "github.com/MagaluCloud/magalu/mgc/core"
+	mgcHelpers "github.com/MagaluCloud/magalu/mgc/lib/helpers"
 )
 
 type ListParameters struct {
@@ -44,6 +44,7 @@ type ListResult struct {
 }
 
 type ListResultTypesItem struct {
+	AllowsEncryption  *bool                                `json:"allows_encryption,omitempty"`
 	AvailabilityZones ListResultTypesItemAvailabilityZones `json:"availability_zones"`
 	DiskType          string                               `json:"disk_type"`
 	Id                string                               `json:"id"`

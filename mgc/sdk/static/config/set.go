@@ -4,11 +4,11 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/MagaluCloud/magalu/mgc/core"
+	mgcConfigPkg "github.com/MagaluCloud/magalu/mgc/core/config"
+	"github.com/MagaluCloud/magalu/mgc/core/utils"
+	"github.com/MagaluCloud/magalu/mgc/sdk/static/config/common"
 	"github.com/getkin/kin-openapi/openapi3"
-	"magalu.cloud/core"
-	mgcConfigPkg "magalu.cloud/core/config"
-	"magalu.cloud/core/utils"
-	"magalu.cloud/sdk/static/config/common"
 )
 
 type configSetParams struct {

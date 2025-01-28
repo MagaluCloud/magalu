@@ -5,13 +5,13 @@ import (
 	"fmt"
 	"slices"
 
-	"magalu.cloud/core"
-	"magalu.cloud/core/auth"
-	"magalu.cloud/core/utils"
+	"github.com/MagaluCloud/magalu/mgc/core"
+	"github.com/MagaluCloud/magalu/mgc/core/auth"
+	"github.com/MagaluCloud/magalu/mgc/core/utils"
 )
 
 const (
-	mgcSdkDocumentUrl = "http://magalu.cloud/sdk" // url to access Sdk.Group() (executor's root)
+	mgcSdkDocumentUrl = "http://github.com/MagaluCloud/magalu/mgc/sdk" // url to access Sdk.Group() (executor's root)
 )
 
 type listAllParameters struct {

@@ -9,15 +9,15 @@ Executor: download
 
 Download an object from a bucket. If no destination is specified, the default is the current working directory
 
-import "magalu.cloud/lib/products/object_storage/objects"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/object_storage/objects"
 */
 package objects
 
 import (
 	"context"
 
-	mgcCore "magalu.cloud/core"
-	mgcHelpers "magalu.cloud/lib/helpers"
+	mgcCore "github.com/MagaluCloud/magalu/mgc/core"
+	mgcHelpers "github.com/MagaluCloud/magalu/mgc/lib/helpers"
 )
 
 type DownloadParameters struct {

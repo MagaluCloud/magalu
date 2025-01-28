@@ -11,6 +11,6 @@ The authentication credentials set here will be used as a basis for a variety
 of HTTP requests using the MgcSDK. Authentication is done via Magalu Cloud account
 (Object Storage requires special keys, refer to it for more info)
 
-import "magalu.cloud/lib/products/auth"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/auth"
 */
 package auth

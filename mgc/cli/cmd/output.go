@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/MagaluCloud/magalu/mgc/core"
+	mgcSdk "github.com/MagaluCloud/magalu/mgc/sdk"
 	"github.com/spf13/cobra"
-	"magalu.cloud/core"
-	mgcSdk "magalu.cloud/sdk"
 )
 
 const outputFlag = "output"

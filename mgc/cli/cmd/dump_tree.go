@@ -3,9 +3,9 @@ package cmd
 import (
 	"fmt"
 
+	"github.com/MagaluCloud/magalu/mgc/core"
+	mgcSdk "github.com/MagaluCloud/magalu/mgc/sdk"
 	"github.com/spf13/cobra"
-	"magalu.cloud/core"
-	mgcSdk "magalu.cloud/sdk"
 )
 
 func newDumpTreeCmd(sdk *mgcSdk.Sdk) *cobra.Command {

@@ -1,12 +1,12 @@
 /*
-import "magalu.cloud/lib/products/network/vpcs/public_ips"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/network/vpcs/public_ips"
 */
 package publicIps
 
 import (
 	"context"
 
-	mgcClient "magalu.cloud/lib"
+	mgcClient "github.com/MagaluCloud/magalu/mgc/lib"
 )
 
 type service struct {

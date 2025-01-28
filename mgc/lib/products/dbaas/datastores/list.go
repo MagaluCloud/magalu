@@ -13,15 +13,15 @@ Returns a list of available datastores. It is recommended to update your integra
 
 Version: 1.34.1
 
-import "magalu.cloud/lib/products/dbaas/datastores"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/dbaas/datastores"
 */
 package datastores
 
 import (
 	"context"
 
-	mgcCore "magalu.cloud/core"
-	mgcHelpers "magalu.cloud/lib/helpers"
+	mgcCore "github.com/MagaluCloud/magalu/mgc/core"
+	mgcHelpers "github.com/MagaluCloud/magalu/mgc/lib/helpers"
 )
 
 type ListParameters struct {

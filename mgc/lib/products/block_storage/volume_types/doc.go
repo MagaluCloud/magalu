@@ -7,6 +7,6 @@ Operations with volume types for volumes.
 
 Version: v1
 
-import "magalu.cloud/lib/products/block_storage/volume_types"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/block_storage/volume_types"
 */
 package volumeTypes

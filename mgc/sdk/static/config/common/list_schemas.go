@@ -4,11 +4,11 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/MagaluCloud/magalu/mgc/core"
+	mgcConfigPkg "github.com/MagaluCloud/magalu/mgc/core/config"
+	mgcSchemaPkg "github.com/MagaluCloud/magalu/mgc/core/schema"
+	mgcUtilsPkg "github.com/MagaluCloud/magalu/mgc/core/utils"
 	"go.uber.org/zap"
-	"magalu.cloud/core"
-	mgcConfigPkg "magalu.cloud/core/config"
-	mgcSchemaPkg "magalu.cloud/core/schema"
-	mgcUtilsPkg "magalu.cloud/core/utils"
 )
 
 var listAllSchemasLogger = mgcUtilsPkg.NewLazyLoader(func() *zap.SugaredLogger {

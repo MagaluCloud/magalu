@@ -10,11 +10,11 @@ import (
 
 	"slices"
 
+	"github.com/MagaluCloud/magalu/mgc/core"
+	mgcSchemaPkg "github.com/MagaluCloud/magalu/mgc/core/schema"
+	"github.com/MagaluCloud/magalu/mgc/core/utils"
 	"github.com/getkin/kin-openapi/openapi3"
 	"go.uber.org/zap"
-	"magalu.cloud/core"
-	mgcSchemaPkg "magalu.cloud/core/schema"
-	"magalu.cloud/core/utils"
 )
 
 type requestBodyMultipart struct {

@@ -3,7 +3,7 @@ package generator
 import (
 	"path/filepath"
 
-	mgcSdkPkg "magalu.cloud/sdk"
+	mgcSdkPkg "github.com/MagaluCloud/magalu/mgc/sdk"
 )
 
 func GenerateSdk(outputDir string, sdk *mgcSdkPkg.Sdk, ctx *GeneratorContext) (err error) {

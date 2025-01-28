@@ -8,13 +8,13 @@ import (
 	sy "sync"
 	"time"
 
+	"github.com/MagaluCloud/magalu/mgc/core"
+	"github.com/MagaluCloud/magalu/mgc/core/pipeline"
+	mgcSchemaPkg "github.com/MagaluCloud/magalu/mgc/core/schema"
+	"github.com/MagaluCloud/magalu/mgc/core/utils"
+	"github.com/MagaluCloud/magalu/mgc/sdk/openapi"
+	"github.com/MagaluCloud/magalu/mgc/sdk/static/object_storage/common"
 	"github.com/pterm/pterm"
-	"magalu.cloud/core"
-	"magalu.cloud/core/pipeline"
-	mgcSchemaPkg "magalu.cloud/core/schema"
-	"magalu.cloud/core/utils"
-	"magalu.cloud/sdk/openapi"
-	"magalu.cloud/sdk/static/object_storage/common"
 )
 
 type UploadCounter struct {

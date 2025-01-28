@@ -9,13 +9,11 @@ Usage:
 
 ## Product catalog:
 - Commands:
-- backups     backups
 - create      Creates a new database instance.
 - delete      Deletes a database instance.
 - get         Database instance details.
 - list        List all database instances.
 - resize      Resizes a database instance.
-- restores    Backup restore.
 - snapshots   snapshots
 - start       Starts a database instance.
 - stop        Stops a database instance.

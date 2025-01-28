@@ -21,7 +21,7 @@
 ```bash
 Flags:
       --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-      --destination-region string     Destination Region (required)
+      --destination-region enum       Regions (one of "br-mgl1", "br-ne1" or "br-se1") (required)
   -h, --help                          help for copy
       --id uuid                       Id (required)
   -v, --version                       version for copy

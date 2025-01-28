@@ -15,14 +15,14 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/MagaluCloud/magalu/mgc/core"
+	"github.com/MagaluCloud/magalu/mgc/core/auth"
+	mgcAuthPkg "github.com/MagaluCloud/magalu/mgc/core/auth"
+	"github.com/MagaluCloud/magalu/mgc/core/utils"
+	mgcAuthScope "github.com/MagaluCloud/magalu/mgc/sdk/static/auth/scopes"
 	"github.com/pkg/browser"
 	"github.com/skip2/go-qrcode"
 	"go.uber.org/zap"
-	"magalu.cloud/core"
-	"magalu.cloud/core/auth"
-	mgcAuthPkg "magalu.cloud/core/auth"
-	"magalu.cloud/core/utils"
-	mgcAuthScope "magalu.cloud/sdk/static/auth/scopes"
 )
 
 type authResult struct {

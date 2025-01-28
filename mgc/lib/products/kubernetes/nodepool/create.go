@@ -11,15 +11,15 @@ Creates a node pool in a Kubernetes cluster.
 
 Version: 0.1.0
 
-import "magalu.cloud/lib/products/kubernetes/nodepool"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/kubernetes/nodepool"
 */
 package nodepool
 
 import (
 	"context"
 
-	mgcCore "magalu.cloud/core"
-	mgcHelpers "magalu.cloud/lib/helpers"
+	mgcCore "github.com/MagaluCloud/magalu/mgc/core"
+	mgcHelpers "github.com/MagaluCloud/magalu/mgc/lib/helpers"
 )
 
 type CreateParameters struct {

@@ -1,12 +1,12 @@
 /*
-import "magalu.cloud/lib/products/audit/event_types"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/audit/event_types"
 */
 package eventTypes
 
 import (
 	"context"
 
-	mgcClient "magalu.cloud/lib"
+	mgcClient "github.com/MagaluCloud/magalu/mgc/lib"
 )
 
 type service struct {

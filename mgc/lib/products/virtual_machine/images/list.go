@@ -11,15 +11,15 @@ Retrieve a list of images allowed for the current region.
 
 Version: v1
 
-import "magalu.cloud/lib/products/virtual_machine/images"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/virtual_machine/images"
 */
 package images
 
 import (
 	"context"
 
-	mgcCore "magalu.cloud/core"
-	mgcHelpers "magalu.cloud/lib/helpers"
+	mgcCore "github.com/MagaluCloud/magalu/mgc/core"
+	mgcHelpers "github.com/MagaluCloud/magalu/mgc/lib/helpers"
 )
 
 type ListParameters struct {

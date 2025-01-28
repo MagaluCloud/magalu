@@ -7,9 +7,9 @@ import (
 
 	"slices"
 
+	"github.com/MagaluCloud/magalu/mgc/core/utils"
 	"github.com/getkin/kin-openapi/openapi3"
 	"github.com/go-openapi/jsonpointer"
-	"magalu.cloud/core/utils"
 )
 
 var (

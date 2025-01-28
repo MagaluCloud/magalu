@@ -3,10 +3,10 @@ package objects
 import (
 	"context"
 
-	"magalu.cloud/core"
-	"magalu.cloud/core/pipeline"
-	"magalu.cloud/core/utils"
-	"magalu.cloud/sdk/static/object_storage/common"
+	"github.com/MagaluCloud/magalu/mgc/core"
+	"github.com/MagaluCloud/magalu/mgc/core/pipeline"
+	"github.com/MagaluCloud/magalu/mgc/core/utils"
+	"github.com/MagaluCloud/magalu/mgc/sdk/static/object_storage/common"
 )
 
 type listParams struct {

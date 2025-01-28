@@ -11,15 +11,15 @@ Lists all available Kubernetes versions.
 
 Version: 0.1.0
 
-import "magalu.cloud/lib/products/kubernetes/version"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/kubernetes/version"
 */
 package version
 
 import (
 	"context"
 
-	mgcCore "magalu.cloud/core"
-	mgcHelpers "magalu.cloud/lib/helpers"
+	mgcCore "github.com/MagaluCloud/magalu/mgc/core"
+	mgcHelpers "github.com/MagaluCloud/magalu/mgc/lib/helpers"
 )
 
 type ListConfigs struct {

@@ -7,6 +7,6 @@ Package: public_ips
 
 Version: 1.141.3
 
-import "magalu.cloud/lib/products/network/public_ips"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/network/public_ips"
 */
 package publicIps

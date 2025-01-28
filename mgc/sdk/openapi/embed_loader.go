@@ -6,8 +6,8 @@ import (
 	"os"
 	"syscall"
 
+	"github.com/MagaluCloud/magalu/mgc/core/dataloader"
 	"gopkg.in/yaml.v3"
-	"magalu.cloud/core/dataloader"
 )
 
 //go:embed openapis/*.yaml

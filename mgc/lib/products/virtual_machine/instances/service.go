@@ -1,12 +1,12 @@
 /*
-import "magalu.cloud/lib/products/virtual_machine/instances"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/virtual_machine/instances"
 */
 package instances
 
 import (
 	"context"
 
-	mgcClient "magalu.cloud/lib"
+	mgcClient "github.com/MagaluCloud/magalu/mgc/lib"
 )
 
 type service struct {

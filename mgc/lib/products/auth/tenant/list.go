@@ -5,15 +5,15 @@ Executor: list
 
 # List all available tenants for current login
 
-import "magalu.cloud/lib/products/auth/tenant"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/auth/tenant"
 */
 package tenant
 
 import (
 	"context"
 
-	mgcCore "magalu.cloud/core"
-	mgcHelpers "magalu.cloud/lib/helpers"
+	mgcCore "github.com/MagaluCloud/magalu/mgc/core"
+	mgcHelpers "github.com/MagaluCloud/magalu/mgc/lib/helpers"
 )
 
 type ListResultItem struct {

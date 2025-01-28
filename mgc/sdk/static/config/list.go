@@ -5,10 +5,10 @@ import (
 
 	"slices"
 
+	"github.com/MagaluCloud/magalu/mgc/core"
+	mgcUtilsPkg "github.com/MagaluCloud/magalu/mgc/core/utils"
+	"github.com/MagaluCloud/magalu/mgc/sdk/static/config/common"
 	"github.com/jedib0t/go-pretty/v6/table"
-	"magalu.cloud/core"
-	mgcUtilsPkg "magalu.cloud/core/utils"
-	"magalu.cloud/sdk/static/config/common"
 )
 
 type configInfo struct {
