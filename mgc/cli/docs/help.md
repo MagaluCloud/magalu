@@ -24,19 +24,17 @@ Usage:
 - kubernetes         APIs related to the Kubernetes product.
 - network            VPC Api Product
 - object-storage     Operations for Object Storage
-- virtual-machine    Virtual Machine Api Product
+- permissions        RESTful API for permissions
 
 ## Other commands:
-- Settings:
-- auth               Actions with ID Magalu to log in, API Keys, refresh tokens, change tenants and others
-- config             Manage CLI Configuration values
-- profile            Manage account settings, including SSH keys and related configurations
-- workspace          Manage workspaces for isolated auth and config settings
+- virtual-machine    Virtual Machine Api Product
 
 ## Flags:
 ```bash
-Other commands:
-  completion         Generate the autocompletion script for the specified shell
-  help               Help about any command
+Settings:
+  auth               Actions with ID Magalu to log in, API Keys, refresh tokens, change tenants and others
+  config             Manage CLI Configuration values
+  profile            Manage account settings, including SSH keys and related configurations
+  workspace          Manage workspaces for isolated auth and config settings
 ```
 
