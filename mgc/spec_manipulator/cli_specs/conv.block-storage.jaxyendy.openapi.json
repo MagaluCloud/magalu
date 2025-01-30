@@ -672,8 +672,7 @@
             }
           }
         },
-        "x-viveiro": true,
-        "x-mgc-hidden": true
+        "x-viveiro": true
       }
     },
     "/v1/snapshots/{id}/rename": {

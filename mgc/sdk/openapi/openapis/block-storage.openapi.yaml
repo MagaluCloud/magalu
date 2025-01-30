@@ -540,7 +540,6 @@ paths:
                                 title: Response 422 Copy Snapshot Cross Region V1
                                     Snapshots  Id  Copy Post
             x-viveiro: true
-            x-mgc-hidden: true
             security:
             -   OAuth2:
                 - block-storage.write
