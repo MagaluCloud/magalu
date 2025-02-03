@@ -1,17 +1,19 @@
-# V1 Create a VPC
+# V1 List Nat Gateways from a VPC
 
 ## Usage:
 ```bash
 Usage:
-  ./mgc network vpcs create [flags]
+  ./mgc network nat-gateways list [flags]
 ```
 
 ## Product catalog:
 - Flags:
-- --description string   Description
-- -h, --help                 help for create
-- --name string          Name (required)
-- -v, --version              version for create
+- -h, --help                     help for list
+- --items-per-page integer   Items Per Page (range: 1 - 100) (default 10)
+- --page integer             Page (min: 1) (default 1)
+- --sort string              Sort (default "name:asc")
+- -v, --version                  version for list
+- --vpc-id string            Vpc Id (required)
 
 ## Other commands:
 - Global Flags:
