@@ -1852,6 +1852,265 @@ paths:
             x-permission:
                 permission-name: net_vpc-subnet_create
                 product-name: network
+    /v1/nat_gateways:
+        get:
+            tags:
+            - nat_gateways
+            summary: V1 List Nat Gateways from a VPC
+            description: V1 List Nat Gateways from a VPC
+            operationId: v1_list_nat_gateways_v1_nat_gateways_get
+            security:
+            -   OAuth2:
+                - network.read
+            parameters:
+            -   name: vpc_id
+                in: query
+                required: true
+                schema:
+                    type: string
+                    title: Vpc Id
+            -   name: sort
+                in: query
+                required: false
+                schema:
+                    anyOf:
+                    -   type: string
+                    title: Sort
+                    default: name:asc
+            -   name: page
+                in: query
+                required: false
+                schema:
+                    type: integer
+                    title: Page
+                    minimum: 1
+                    default: 1
+            -   name: items_per_page
+                in: query
+                required: false
+                schema:
+                    type: integer
+                    title: Items Per Page
+                    maximum: 100
+                    minimum: 1
+                    default: 10
+            responses:
+                '200':
+                    description: Ok
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/NatGatewayListResponse'
+                '400':
+                    description: Bad Request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/StatusCode400BadRequest'
+                '409':
+                    description: Conflict
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/StatusCode409Conflict'
+                '500':
+                    description: Internal Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/StatusCode500InternalServerError'
+                '504':
+                    description: Gateway Timeout
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/StatusCode504GatewayTimeout'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: true
+            x-mgc-hidden: false
+        post:
+            tags:
+            - nat_gateways
+            summary: V1 Create Nat Gateway
+            description: V1 Create a Nat Gateway
+            operationId: v1_create_nat_gateways_v1_nat_gateways_post
+            security:
+            -   OAuth2:
+                - network.write
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/NatGatewayCreatePayload'
+            responses:
+                '202':
+                    description: Accepted
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/NatGatewayCreateResponse'
+                    links:
+                        get:
+                            operationId: v1_detail_nat_gateways_v1_nat_gateways__nat_gateway_id__get
+                            description: V1 Detail Nat Gateway
+                            parameters:
+                                nat_gateway_id: $response.body#/id
+                        delete:
+                            operationId: v1_delete_nat_gateways_v1_nat_gateways__nat_gateway_id__delete
+                            description: V1 Delete Nat Gateway
+                            parameters:
+                                nat_gateway_id: $response.body#/id
+                '400':
+                    description: Bad Request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/StatusCode400BadRequest'
+                '409':
+                    description: Conflict
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/StatusCode409Conflict'
+                '500':
+                    description: Internal Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/StatusCode500InternalServerError'
+                '504':
+                    description: Gateway Timeout
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/StatusCode504GatewayTimeout'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: true
+            x-mgc-hidden: false
+    /v1/nat_gateways/{nat_gateway_id}:
+        delete:
+            tags:
+            - nat_gateways
+            summary: V1 Delete Nat Gateway
+            description: V1 Delete a Nat Gateway
+            operationId: v1_delete_nat_gateways_v1_nat_gateways__nat_gateway_id__delete
+            security:
+            -   OAuth2:
+                - network.delete
+            parameters:
+            -   name: nat_gateway_id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Nat Gateway Id
+            responses:
+                '204':
+                    description: No Content
+                '400':
+                    description: Bad Request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/StatusCode400BadRequest'
+                '409':
+                    description: Conflict
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/StatusCode409Conflict'
+                '500':
+                    description: Internal Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/StatusCode500InternalServerError'
+                '504':
+                    description: Gateway Timeout
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/StatusCode504GatewayTimeout'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: true
+            x-mgc-hidden: false
+        get:
+            tags:
+            - nat_gateways
+            summary: V1 Detail Nat Gateway
+            description: V1 Detail a Nat Gateway
+            operationId: v1_detail_nat_gateways_v1_nat_gateways__nat_gateway_id__get
+            security:
+            -   OAuth2:
+                - network.read
+            parameters:
+            -   name: nat_gateway_id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Nat Gateway Id
+            responses:
+                '200':
+                    description: Ok
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/NatGatewayDetailsResponse'
+                    links:
+                        delete:
+                            operationId: v1_delete_nat_gateways_v1_nat_gateways__nat_gateway_id__delete
+                            description: V1 Delete Nat Gateway
+                            parameters:
+                                nat_gateway_id: $response.body#/id
+                '400':
+                    description: Bad Request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/StatusCode400BadRequest'
+                '409':
+                    description: Conflict
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/StatusCode409Conflict'
+                '500':
+                    description: Internal Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/StatusCode500InternalServerError'
+                '504':
+                    description: Gateway Timeout
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/StatusCode504GatewayTimeout'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: true
+            x-mgc-hidden: false
     /v1/vpcs:
         post:
             tags:
@@ -4567,6 +4826,8 @@ tags:
     description: Operations related to Subnets
 -   name: vpcs
     description: Operations related to VPCs
+-   name: nat_gateways
+    description: Operations related to Nat Gateway
 $id: https://network.jaxyendy.com/openapi.json
 servers:
 -   url: https://{env}/{region}/network

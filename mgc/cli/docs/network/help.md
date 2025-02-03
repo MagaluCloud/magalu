@@ -9,6 +9,7 @@ Usage:
 
 ## Product catalog:
 - Commands:
+- nat-gateways    Operations related to Nat Gateway
 - ports           Operations related to Ports
 - public-ips      Operations related to Public IPs
 - rules           Operations related to Rules
