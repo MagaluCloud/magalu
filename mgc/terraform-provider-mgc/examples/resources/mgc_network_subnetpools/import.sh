@@ -1,1 +1,0 @@
-terraform import mgc_network_subnetpools.example 123

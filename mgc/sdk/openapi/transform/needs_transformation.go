@@ -1,9 +1,9 @@
 package transform
 
 import (
+	"github.com/MagaluCloud/magalu/mgc/core"
+	mgcSchemaPkg "github.com/MagaluCloud/magalu/mgc/core/schema"
 	"go.uber.org/zap"
-	"magalu.cloud/core"
-	mgcSchemaPkg "magalu.cloud/core/schema"
 )
 
 // Recursively checks whenever the given schema needs transformation

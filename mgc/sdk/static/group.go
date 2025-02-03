@@ -1,14 +1,14 @@
 package static
 
 import (
-	"magalu.cloud/core"
-	"magalu.cloud/core/utils"
-	"magalu.cloud/sdk/static/auth"
-	"magalu.cloud/sdk/static/config"
-	"magalu.cloud/sdk/static/http"
-	"magalu.cloud/sdk/static/object_storage"
-	"magalu.cloud/sdk/static/profile"
-	"magalu.cloud/sdk/static/workspace"
+	"github.com/MagaluCloud/magalu/mgc/core"
+	"github.com/MagaluCloud/magalu/mgc/core/utils"
+	"github.com/MagaluCloud/magalu/mgc/sdk/static/auth"
+	"github.com/MagaluCloud/magalu/mgc/sdk/static/config"
+	"github.com/MagaluCloud/magalu/mgc/sdk/static/http"
+	"github.com/MagaluCloud/magalu/mgc/sdk/static/object_storage"
+	"github.com/MagaluCloud/magalu/mgc/sdk/static/profile"
+	"github.com/MagaluCloud/magalu/mgc/sdk/static/workspace"
 )
 
 var GetGroup = utils.NewLazyLoader(func() core.Grouper {

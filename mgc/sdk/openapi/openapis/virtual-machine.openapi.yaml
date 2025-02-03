@@ -597,6 +597,11 @@ paths:
                     description: 'You can get more detailed info about: [''image'',
                         ''machine-type'', ''machine-types'', ''network'', ''labels''] '
                     default: []
+            -   name: x-api-version
+                in: header
+                schema:
+                    type: string
+                    default: '1.1'
             responses:
                 '200':
                     description: Successful Response
@@ -981,6 +986,11 @@ paths:
                     - network
                     - image
                     - machine-type
+            -   name: x-api-version
+                in: header
+                schema:
+                    type: string
+                    default: '1.1'
             responses:
                 '200':
                     description: Successful Response

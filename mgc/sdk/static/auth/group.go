@@ -1,11 +1,11 @@
 package auth
 
 import (
-	"magalu.cloud/core"
-	"magalu.cloud/core/utils"
-	"magalu.cloud/sdk/static/auth/api_key"
-	"magalu.cloud/sdk/static/auth/clients"
-	"magalu.cloud/sdk/static/auth/tenant"
+	"github.com/MagaluCloud/magalu/mgc/core"
+	"github.com/MagaluCloud/magalu/mgc/core/utils"
+	"github.com/MagaluCloud/magalu/mgc/sdk/static/auth/api_key"
+	"github.com/MagaluCloud/magalu/mgc/sdk/static/auth/clients"
+	"github.com/MagaluCloud/magalu/mgc/sdk/static/auth/tenant"
 )
 
 var GetGroup = utils.NewLazyLoader(func() core.Grouper {

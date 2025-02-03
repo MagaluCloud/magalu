@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"magalu.cloud/codegen/cmd"
+	"github.com/MagaluCloud/magalu/mgc/codegen/cmd"
 )
 
 func main() {

@@ -6,8 +6,8 @@ import (
 	"reflect"
 	"strings"
 
-	mgcSchemaPkg "magalu.cloud/core/schema"
-	"magalu.cloud/core/utils"
+	mgcSchemaPkg "github.com/MagaluCloud/magalu/mgc/core/schema"
+	"github.com/MagaluCloud/magalu/mgc/core/utils"
 )
 
 // Given a base spec and types to be reflected, populate with the schemas

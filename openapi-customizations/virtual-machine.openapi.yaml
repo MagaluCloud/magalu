@@ -7,6 +7,16 @@
 paths:
     /v1/instances:
         get:
+            parameters:
+              - name: _limit
+              - name: _offset
+              - name: _sort
+              - name: expand
+              - name: x-api-version
+                in: header
+                schema:
+                    type: string
+                    default: "1.1"
             x-mgc-description: List Virtual Machine instances
         post:
             x-mgc-description: Create a Virtual Machine instance
@@ -62,6 +72,11 @@ paths:
                     schema:
                         type: array
                         default: [network, image, machine-type]
+                -   name: x-api-version
+                    in: header
+                    schema:
+                        type: string
+                        default: "1.1"
             x-mgc-description: Get a Virtual Machine instance details
             x-mgc-wait-termination:
                 maxRetries: 30

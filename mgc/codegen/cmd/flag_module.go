@@ -10,7 +10,7 @@ var (
 
 const (
 	flagModuleName    = "module"
-	defaultModuleName = "magalu.cloud/lib"
+	defaultModuleName = "github.com/MagaluCloud/magalu/mgc/lib"
 )
 
 func addModuleNameFlag(cmd *cobra.Command) {

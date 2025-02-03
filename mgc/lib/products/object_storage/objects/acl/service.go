@@ -1,12 +1,12 @@
 /*
-import "magalu.cloud/lib/products/object_storage/objects/acl"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/object_storage/objects/acl"
 */
 package acl
 
 import (
 	"context"
 
-	mgcClient "magalu.cloud/lib"
+	mgcClient "github.com/MagaluCloud/magalu/mgc/lib"
 )
 
 type service struct {

@@ -1,10 +1,10 @@
 package cmd
 
 import (
+	"github.com/MagaluCloud/magalu/mgc/cli/cmd/schema_flags"
+	mgcSchemaPkg "github.com/MagaluCloud/magalu/mgc/core/schema"
 	"github.com/spf13/cobra"
 	flag "github.com/spf13/pflag"
-	"magalu.cloud/cli/cmd/schema_flags"
-	mgcSchemaPkg "magalu.cloud/core/schema"
 )
 
 const watchFlag = "cli.watch"

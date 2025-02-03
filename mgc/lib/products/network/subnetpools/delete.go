@@ -11,15 +11,15 @@ Executor: delete
 
 Version: 1.141.3
 
-import "magalu.cloud/lib/products/network/subnetpools"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/network/subnetpools"
 */
 package subnetpools
 
 import (
 	"context"
 
-	mgcCore "magalu.cloud/core"
-	mgcHelpers "magalu.cloud/lib/helpers"
+	mgcCore "github.com/MagaluCloud/magalu/mgc/core"
+	mgcHelpers "github.com/MagaluCloud/magalu/mgc/lib/helpers"
 )
 
 type DeleteParameters struct {

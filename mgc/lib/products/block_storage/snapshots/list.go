@@ -15,15 +15,15 @@ Retrieve a list of Snapshots for the currently authenticated tenant.
 
 Version: v1
 
-import "magalu.cloud/lib/products/block_storage/snapshots"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/block_storage/snapshots"
 */
 package snapshots
 
 import (
 	"context"
 
-	mgcCore "magalu.cloud/core"
-	mgcHelpers "magalu.cloud/lib/helpers"
+	mgcCore "github.com/MagaluCloud/magalu/mgc/core"
+	mgcHelpers "github.com/MagaluCloud/magalu/mgc/lib/helpers"
 )
 
 type ListParameters struct {

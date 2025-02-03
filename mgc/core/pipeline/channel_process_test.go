@@ -6,7 +6,7 @@ import (
 	"strings"
 	"testing"
 
-	"magalu.cloud/core/pipeline"
+	"github.com/MagaluCloud/magalu/mgc/core/pipeline"
 )
 
 func double(ctx context.Context, value int) (int, pipeline.ProcessStatus) {

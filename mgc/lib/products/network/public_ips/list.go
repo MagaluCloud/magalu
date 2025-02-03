@@ -11,15 +11,15 @@ Executor: list
 
 Version: 1.141.3
 
-import "magalu.cloud/lib/products/network/public_ips"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/network/public_ips"
 */
 package publicIps
 
 import (
 	"context"
 
-	mgcCore "magalu.cloud/core"
-	mgcHelpers "magalu.cloud/lib/helpers"
+	mgcCore "github.com/MagaluCloud/magalu/mgc/core"
+	mgcHelpers "github.com/MagaluCloud/magalu/mgc/lib/helpers"
 )
 
 type ListConfigs struct {

@@ -1,12 +1,12 @@
-module magalu.cloud/cli
+module github.com/MagaluCloud/magalu/mgc/cli
 
 go 1.23.0
 
 require (
+	github.com/MagaluCloud/magalu/mgc/core v0.0.0-20250117204804-e16e0869209d
+	github.com/MagaluCloud/magalu/mgc/sdk v0.0.0-20250117204804-e16e0869209d
 	github.com/spf13/cobra v1.7.0
 	github.com/spf13/pflag v1.0.5
-	magalu.cloud/core v0.0.0-unversioned
-	magalu.cloud/sdk v0.0.0-unversioned
 )
 
 require (
@@ -91,7 +91,3 @@ require (
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0
 )
-
-replace magalu.cloud/core => ../core
-
-replace magalu.cloud/sdk => ../sdk

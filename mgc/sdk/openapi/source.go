@@ -3,10 +3,10 @@ package openapi
 import (
 	"fmt"
 
+	"github.com/MagaluCloud/magalu/mgc/core"
+	"github.com/MagaluCloud/magalu/mgc/core/dataloader"
+	"github.com/MagaluCloud/magalu/mgc/core/utils"
 	"github.com/invopop/yaml"
-	"magalu.cloud/core"
-	"magalu.cloud/core/dataloader"
-	"magalu.cloud/core/utils"
 )
 
 type indexModuleSpec struct {

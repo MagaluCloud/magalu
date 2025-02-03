@@ -1,4 +1,4 @@
-module magalu.cloud/core
+module github.com/MagaluCloud/magalu/mgc/core
 
 go 1.23.0
 

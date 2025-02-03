@@ -6,11 +6,11 @@ import (
 
 	"slices"
 
+	"github.com/MagaluCloud/magalu/mgc/core"
+	"github.com/MagaluCloud/magalu/mgc/core/config"
+	mgcSchemaPkg "github.com/MagaluCloud/magalu/mgc/core/schema"
+	"github.com/MagaluCloud/magalu/mgc/core/utils"
 	"github.com/getkin/kin-openapi/openapi3"
-	"magalu.cloud/core"
-	"magalu.cloud/core/config"
-	mgcSchemaPkg "magalu.cloud/core/schema"
-	"magalu.cloud/core/utils"
 )
 
 type server struct {

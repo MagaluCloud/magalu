@@ -8,12 +8,12 @@ import (
 	"math"
 	"net/http"
 
+	"github.com/MagaluCloud/magalu/mgc/core"
+	"github.com/MagaluCloud/magalu/mgc/core/pipeline"
+	"github.com/MagaluCloud/magalu/mgc/core/progress_report"
+	mgcSchemaPkg "github.com/MagaluCloud/magalu/mgc/core/schema"
+	"github.com/MagaluCloud/magalu/mgc/core/utils"
 	"go.uber.org/zap"
-	"magalu.cloud/core"
-	"magalu.cloud/core/pipeline"
-	"magalu.cloud/core/progress_report"
-	mgcSchemaPkg "magalu.cloud/core/schema"
-	"magalu.cloud/core/utils"
 )
 
 var deleteObjectsLogger *zap.SugaredLogger
@@ -62,6 +62,48 @@ type objectIdentifier struct {
 type deleteBatchRequestBody struct {
 	XMLName struct{}           `xml:"Delete"`
 	Objects []objectIdentifier `xml:"Object"`
+}
+
+func DeleteSingle(ctx context.Context, params DeleteObjectParams, cfg Config) error {
+	objectKey := params.Destination.AsFilePath().String()
+	versionID := params.Version
+
+	req, err := newDeleteSingleRequest(ctx, cfg, NewBucketNameFromURI(params.Destination), objectKey, versionID)
+	if err != nil {
+		return err
+	}
+
+	resp, err := SendRequest(ctx, req)
+	if err != nil {
+		return err
+	}
+
+	err = ExtractErr(resp, req)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func newDeleteSingleRequest(ctx context.Context, cfg Config, bucketName BucketName, objectKey string, versionID string) (*http.Request, error) {
+	host, err := BuildBucketHost(cfg, bucketName)
+	if err != nil {
+		return nil, core.UsageError{Err: err}
+	}
+
+	url := fmt.Sprintf("%s/%s", host, objectKey)
+
+	if versionID != "" {
+		url = fmt.Sprintf("%s?versionId=%s", url, versionID)
+	}
+
+	req, err := http.NewRequestWithContext(ctx, http.MethodDelete, url, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
 }
 
 func newDeleteBatchRequest(ctx context.Context, cfg Config, bucketName BucketName, objKeys []objectIdentifier) (*http.Request, error) {
@@ -199,22 +241,29 @@ func DeleteBucket(ctx context.Context, params DeleteBucketParams, cfg Config) er
 	return ExtractErr(resp, req)
 }
 
-func Delete(ctx context.Context, params DeleteObjectParams, cfg Config) (err error) {
+func Delete(ctx context.Context, params DeleteObjectParams, cfg Config) error {
 	objKeys := []objectIdentifier{{Key: params.Destination.AsFilePath().String(), VersionId: params.Version}}
 
-	req, err := newDeleteBatchRequest(ctx, cfg, NewBucketNameFromURI(params.Destination), objKeys)
-	if err != nil {
-		return
-	}
+	if len(objKeys) > 1 {
+		req, err := newDeleteBatchRequest(ctx, cfg, NewBucketNameFromURI(params.Destination), objKeys)
+		if err != nil {
+			return err
+		}
 
-	resp, err := SendRequest(ctx, req)
-	if err != nil {
-		return err
-	}
+		resp, err := SendRequest(ctx, req)
+		if err != nil {
+			return err
+		}
 
-	err = ExtractErr(resp, req)
-	if err != nil {
-		return err
+		err = ExtractErr(resp, req)
+		if err != nil {
+			return err
+		}
+	} else {
+		err := DeleteSingle(ctx, params, cfg)
+		if err != nil {
+			return err
+		}
 	}
 
 	return nil

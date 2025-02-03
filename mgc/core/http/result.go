@@ -6,8 +6,8 @@ import (
 	"mime/multipart"
 	"net/http"
 
+	"github.com/MagaluCloud/magalu/mgc/core"
 	"github.com/getkin/kin-openapi/openapi3"
-	"magalu.cloud/core"
 )
 
 type HttpResult interface {

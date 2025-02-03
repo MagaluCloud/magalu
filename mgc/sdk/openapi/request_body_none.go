@@ -3,8 +3,8 @@ package openapi
 import (
 	"io"
 
-	"magalu.cloud/core"
-	mgcSchemaPkg "magalu.cloud/core/schema"
+	"github.com/MagaluCloud/magalu/mgc/core"
+	mgcSchemaPkg "github.com/MagaluCloud/magalu/mgc/core/schema"
 )
 
 type requestBodyNone struct{}

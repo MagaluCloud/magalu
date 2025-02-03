@@ -6,7 +6,7 @@ import (
 	"strings"
 	"text/template"
 
-	mgcSdkPkg "magalu.cloud/sdk"
+	mgcSdkPkg "github.com/MagaluCloud/magalu/mgc/sdk"
 )
 
 type modTemplateData struct {

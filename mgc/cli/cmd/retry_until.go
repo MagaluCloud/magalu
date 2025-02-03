@@ -5,8 +5,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/MagaluCloud/magalu/mgc/core"
 	"github.com/spf13/cobra"
-	"magalu.cloud/core"
 )
 
 const (

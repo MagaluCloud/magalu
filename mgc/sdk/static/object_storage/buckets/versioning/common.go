@@ -6,8 +6,8 @@ import (
 	"encoding/xml"
 	"net/http"
 
-	"magalu.cloud/core"
-	"magalu.cloud/sdk/static/object_storage/common"
+	"github.com/MagaluCloud/magalu/mgc/core"
+	"github.com/MagaluCloud/magalu/mgc/sdk/static/object_storage/common"
 )
 
 type versioningConfiguration struct {

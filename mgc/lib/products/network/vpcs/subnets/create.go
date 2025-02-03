@@ -11,15 +11,15 @@ Executor: create
 
 Version: 1.141.3
 
-import "magalu.cloud/lib/products/network/vpcs/subnets"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/network/vpcs/subnets"
 */
 package subnets
 
 import (
 	"context"
 
-	mgcCore "magalu.cloud/core"
-	mgcHelpers "magalu.cloud/lib/helpers"
+	mgcCore "github.com/MagaluCloud/magalu/mgc/core"
+	mgcHelpers "github.com/MagaluCloud/magalu/mgc/lib/helpers"
 )
 
 type CreateParameters struct {

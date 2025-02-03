@@ -1,9 +1,9 @@
-module magalu.cloud/sdk
+module github.com/MagaluCloud/magalu/mgc/sdk
 
 go 1.23.0
 
 require (
-	github.com/PaesslerAG/gval v1.2.2
+	github.com/MagaluCloud/magalu/mgc/core v0.0.0-20250117204804-e16e0869209d
 	github.com/geffersonFerraz/brazilian-words-sorter v1.1.0
 	github.com/getkin/kin-openapi v0.118.0
 	github.com/go-openapi/jsonpointer v0.20.0
@@ -17,10 +17,10 @@ require (
 	github.com/stoewer/go-strcase v1.3.0
 	go.uber.org/zap v1.25.0
 	golang.org/x/exp v0.0.0-20230905200255-921286631fa9
-	magalu.cloud/core v0.0.0-unversioned
 )
 
 require (
+	github.com/PaesslerAG/gval v1.2.2 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/stretchr/objx v0.5.2 // indirect
@@ -65,7 +65,5 @@ require (
 	golang.org/x/term v0.16.0 // indirect
 	golang.org/x/text v0.16.0 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
-	gopkg.in/yaml.v3 v3.0.1 // indirect
+	gopkg.in/yaml.v3 v3.0.1
 )
-
-replace magalu.cloud/core => ../core

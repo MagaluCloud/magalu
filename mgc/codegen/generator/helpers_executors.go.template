@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	mgcCore "magalu.cloud/core"
+	mgcCore "github.com/MagaluCloud/magalu/mgc/core"
 	mgcClient "{{ .ClientImport }}"
 )
 

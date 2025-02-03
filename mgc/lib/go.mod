@@ -1,12 +1,12 @@
-module magalu.cloud/lib
+module github.com/MagaluCloud/magalu/mgc/lib
 
 go 1.23.0
 
-toolchain go1.23.3
+toolchain go1.23.4
 
 require (
-	magalu.cloud/core v0.31.0
-	magalu.cloud/sdk v0.31.0
+	github.com/MagaluCloud/magalu/mgc/core v0.0.0-20250117204804-e16e0869209d
+	github.com/MagaluCloud/magalu/mgc/sdk v0.0.0-20250117204804-e16e0869209d
 )
 
 require (
@@ -63,7 +63,3 @@ require (
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
-
-replace magalu.cloud/core => ../core
-
-replace magalu.cloud/sdk => ../sdk

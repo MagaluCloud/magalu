@@ -9,12 +9,12 @@ import (
 	"path"
 	"time"
 
+	"github.com/MagaluCloud/magalu/mgc/core"
+	mgcHttpPkg "github.com/MagaluCloud/magalu/mgc/core/http"
+	"github.com/MagaluCloud/magalu/mgc/core/pipeline"
+	mgcSchemaPkg "github.com/MagaluCloud/magalu/mgc/core/schema"
+	"github.com/MagaluCloud/magalu/mgc/core/utils"
 	"go.uber.org/zap"
-	"magalu.cloud/core"
-	mgcHttpPkg "magalu.cloud/core/http"
-	"magalu.cloud/core/pipeline"
-	mgcSchemaPkg "magalu.cloud/core/schema"
-	"magalu.cloud/core/utils"
 )
 
 var listObjectsLogger = utils.NewLazyLoader(func() *zap.SugaredLogger {

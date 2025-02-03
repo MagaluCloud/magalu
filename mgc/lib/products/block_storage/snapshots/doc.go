@@ -7,6 +7,6 @@ Operations with snapshots for volumes.
 
 Version: v1
 
-import "magalu.cloud/lib/products/block_storage/snapshots"
+import "github.com/MagaluCloud/magalu/mgc/lib/products/block_storage/snapshots"
 */
 package snapshots

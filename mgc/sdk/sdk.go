@@ -3,15 +3,16 @@ package sdk
 import (
 	"context"
 	"net/http"
+	"strings"
 
-	"magalu.cloud/core"
-	"magalu.cloud/core/auth"
-	"magalu.cloud/core/config"
-	"magalu.cloud/core/dataloader"
-	mgcHttpPkg "magalu.cloud/core/http"
-	"magalu.cloud/core/profile_manager"
-	"magalu.cloud/sdk/openapi"
-	"magalu.cloud/sdk/static"
+	"github.com/MagaluCloud/magalu/mgc/core"
+	"github.com/MagaluCloud/magalu/mgc/core/auth"
+	"github.com/MagaluCloud/magalu/mgc/core/config"
+	"github.com/MagaluCloud/magalu/mgc/core/dataloader"
+	mgcHttpPkg "github.com/MagaluCloud/magalu/mgc/core/http"
+	"github.com/MagaluCloud/magalu/mgc/core/profile_manager"
+	"github.com/MagaluCloud/magalu/mgc/sdk/openapi"
+	"github.com/MagaluCloud/magalu/mgc/sdk/static"
 )
 
 // Re-exports from Core
@@ -37,7 +38,7 @@ type Sdk struct {
 
 type contextKey string
 
-var ctxWrappedKey contextKey = "magalu.cloud/sdk/SdkWrapped"
+var ctxWrappedKey contextKey = "github.com/MagaluCloud/magalu/mgc/sdk/SdkWrapped"
 
 var currentUserAgent string = "MgcSDK"
 
@@ -123,6 +124,9 @@ func (o *Sdk) Group() core.Grouper {
 func newHttpTransport() http.RoundTripper {
 	userAgent := currentUserAgent + "/" + Version
 
+	if strings.HasPrefix(currentUserAgent, "MgcTF") {
+		userAgent = currentUserAgent
+	}
 	// To avoid creating a transport with zero values, we leverage
 	// DefaultTransport (exemple: `Proxy: ProxyFromEnvironment`)
 	transport := mgcHttpPkg.DefaultTransport()
