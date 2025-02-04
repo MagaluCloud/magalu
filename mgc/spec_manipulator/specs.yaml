@@ -71,3 +71,11 @@ jaxyendy:
       tf: false
       sdk: true
       dev: true
+    - url: https://gitlab.luizalabs.com/open-platform/pcx/u0/-/raw/main/api_products/permissions/br-se1-pre-prod-blu1/openapi.yaml
+      file: permissions.openapi.yaml
+      menu: permissions
+      enabled: true
+      cli: false
+      tf: false
+      sdk: true
+      dev: false

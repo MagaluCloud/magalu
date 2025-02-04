@@ -30,6 +30,7 @@ Usage:
 - Settings:
 - auth               Actions with ID Magalu to log in, API Keys, refresh tokens, change tenants and others
 - config             Manage CLI Configuration values
+- permissions        Manage account (RBAC) - CHANGE-ME
 - profile            Manage account settings, including SSH keys and related configurations
 - workspace          Manage workspaces for isolated auth and config settings
 

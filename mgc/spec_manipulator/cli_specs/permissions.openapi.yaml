@@ -1,0 +1,485 @@
+openapi: 3.0.0
+info:
+  title: Permissions API
+  description: RESTful API for permissions
+  version: 1.0.0
+  contact:
+    name: Tribo Turia RBAC
+    url: https://gitlab.luizalabs.com/luizalabs/tribo-identidade/permissions-api
+    email: suporte@jaxyendy.com
+paths:
+  /api/healthcheck:
+    get:
+      summary: HealthCheck
+      description: Returns a simple "ok" message to indicate the service is running.
+      operationId: healthcheck
+      tags:
+        - Health
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+  /api/v1/models:
+    get:
+      summary: listPermissionModel
+      description: Endpoint for permission model list.
+      operationId: listmodels
+      tags:
+        - Permission_Models
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+      x-permission:
+        permission-name: turia_iam_adm
+        product-name: turiaiam
+  /api/v1/models/{model_id}/resources/privileges:
+    get:
+      summary: listResourcesPrivileges
+      description: Endpoint for resource privileges list.
+      operationId: listresourceprivileges
+      tags:
+        - Resource_Privileges
+      parameters:
+        - name: model_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Model ID.
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+      x-permission:
+        permission-name: turia_iam_adm
+        product-name: turiaiam
+    post:
+      summary: createResourcesPrivileges
+      description: Endpoint for create resource privileges.
+      operationId: createresourceprivileges
+      tags:
+        - Resource_Privileges
+      parameters:
+        - name: model_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Model ID.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResourcePrivilegeAssingDTO'
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+      x-permission:
+        permission-name: turia_iam_adm
+        product-name: turiaiam
+    delete:
+      summary: deleteResourcesPrivileges
+      description: Endpoint for delete resource privileges.
+      operationId: deleteresourceprivileges
+      tags:
+        - Resource_Privileges
+      parameters:
+        - name: model_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Model ID.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResourcePrivilegeDeleteDTO'
+      responses:
+        "204":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+      x-permission:
+        permission-name: turia_iam_adm
+        product-name: turiaiam
+  /api/v1/models/onboarding:
+    post:
+      summary: onboarding
+      description: Endpoint for onboarding.
+      operationId: onboarding
+      tags:
+        - Onboarding
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OnboardingDTO'
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+  /api/v1/models/{model_id}/check:
+    post:
+      summary: checkResourcesPrivileges
+      description: Endpoint for check resource privileges.
+      operationId: checkresourceprivileges
+      tags:
+        - Resource_Privileges_Check
+      parameters:
+        - name: model_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Model ID.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResourcePrivilegeCheckDTO'
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+  /api/v1/models/{model_id}/privileges/users:
+    get:
+      summary: PrivilegesUsers
+      description: Endpoint for privileges user.
+      operationId: privilegesusers
+      tags:
+        - Privileges_Users
+      parameters:
+        - name: model_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Model ID.
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+      x-permission:
+        permission-name: turia_iam_adm
+        product-name: turiaiam
+  /api/v1/models/{model_id}/privileges/users/{user_id}:
+    delete:
+      summary: userDelete
+      description: Endpoint for delete user.
+      operationId: userdelete
+      tags:
+        - User_Delete
+      parameters:
+        - name: model_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Model ID.
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: User ID.
+      responses:
+        "204":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+      x-permission:
+        permission-name: turia_iam_adm
+        product-name: turiaiam
+  /api/v1/models/{model_id}/resources/products:
+    get:
+      summary: listProductsResources
+      description: Endpoint for listing products resources.
+      operationId: listproductsresources
+      tags:
+        - Products_Resources
+      parameters:
+        - name: model_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Model ID.
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+      x-permission:
+        permission-name: turia_iam_adm
+        product-name: turiaiam
+  /api/v1/models/{model_id}/permissions:
+    get:
+      summary: listPermissions
+      description: Endpoint for listing permissions.
+      operationId: listpermissions
+      tags:
+        - Permissions
+      parameters:
+        - name: model_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Model ID.
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+      x-permission:
+        permission-name: turia_iam_adm
+        product-name: turiaiam
+    post:
+      summary: createPermission
+      description: Endpoint for creating a permission.
+      operationId: createpermissions
+      tags:
+        - Permissions
+      parameters:
+        - name: model_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Model ID.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PermissionCreateDTO'
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+      x-permission:
+        permission-name: turia_iam_adm
+        product-name: turiaiam
+  /api/v1/models/{model_id}/status:
+    get:
+      summary: viewPermissionModelStatus
+      description: Endpoint for view permission model status.
+      operationId: permissionmodelviewstatus
+      tags:
+        - Permission_Model_Status
+      parameters:
+        - name: model_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Model ID.
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+      x-permission:
+        permission-name: turia_iam_adm
+        product-name: turiaiam
+    put:
+      summary: updatePermissionModelStatus
+      description: Endpoint for update permission model status.
+      operationId: permissionmodelupdatestatus
+      tags:
+        - Permission_Model_Status
+      parameters:
+        - name: model_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Model ID.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PermissionModelStatusDTO'
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+      x-permission:
+        permission-name: turia_iam_adm
+        product-name: turiaiam
+servers:
+  - url: https://permissions-api.pre-prod.se1.br.jaxyendy.com
+tags:
+  - name: Health
+    description: Operations related to API health checks.
+  - name: Permission_Models
+    description: Operations related to permission models.
+  - name: Permissions
+    description: Operations related to permissions within models.
+  - name: Resource_Privileges
+    description: Operations related to resource privileges list.
+  - name: Resource_Privileges_Check
+    description: Operations related to resource privileges check.
+  - name: User_Delete
+    description: Operations related to user delete.
+  - name: Onboarding
+    description: Operations related to onboarding.
+  - name: Privileges_Users
+    description: Operations related to privileges users.
+  - name: Products_Resources
+    description: Operations related to products resources list.
+  - name: Permission_Model_Status
+    description: Operations related to view permission model status.
+components:
+  schemas:
+    PermissionCreateDTO:
+      type: object
+      required:
+        - name
+      properties:
+        description:
+          type: string
+        name:
+          type: string
+    ResourcePrivilegeAssingDTO:
+      type: object
+      required:
+        - object_id
+        - relation_name
+        - resource_name
+        - type
+      properties:
+        description:
+          type: string
+        object_id:
+          type: string
+        relation_name:
+          type: string
+        resource_name:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+        type:
+          $ref: "#/components/schemas/ResourceTypeDTO"
+    ResourceTypeDTO:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        relation_set:
+          type: string
+    ResourcePrivilegeCheckDTO:
+      type: object
+      properties:
+        object_id:
+          type: string
+        relation_name:
+          type: string
+        resource_name:
+          type: string
+        type_id:
+          type: string
+    OnboardingDTO:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        tenant_id:
+          type: string
+        user:
+          type: string
+    ResourcePrivilegeDeleteDTO:
+      type: object
+      properties:
+        object_id:
+          type: string
+        relation_name:
+          type: string
+        resource_name:
+          type: string
+        type_id:
+          type: string
+    PermissionModelStatusDTO:
+      type: object
+      properties:
+        enable:
+          type: string

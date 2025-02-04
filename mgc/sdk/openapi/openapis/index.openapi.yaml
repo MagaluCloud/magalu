@@ -35,6 +35,12 @@ modules:
     summary: VPC Api Product
     url: https://network.jaxyendy.com/openapi.json
     version: 1.141.3
+-   description: RESTful API for permissions
+    name: permissions
+    path: permissions.openapi.yaml
+    summary: RESTful API for permissions
+    url: https://permissions.jaxyendy.com/openapi-cli.json
+    version: 1.0.0
 -   description: Manage users global data
     name: profile
     path: profile.openapi.yaml
