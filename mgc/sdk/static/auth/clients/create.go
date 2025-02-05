@@ -19,7 +19,8 @@ type createParams struct {
 	Name         string `json:"name" jsonschema:"description=Name of new client,example=Client Name" mgc:"positional"`
 	Description  string `json:"description" jsonschema:"description=Description of new client,example=Client description" mgc:"positional"`
 	RedirectURIs string `json:"redirect_uris" jsonschema:"description=Redirect URIs (separated by space)" mgc:"positional"`
-	//required by Diego Silva
+
+	//required
 	BackchannelLogoutSessionEnabled *bool   `json:"backchannel_logout_session,omitempty" jsonschema:"description=Client requires backchannel logout session,example=false" mgc:"positional"`
 	ClientTermsUrl                  string  `json:"client_term_url" jsonschema:"description=URL to terms of use" mgc:"positional"`
 	ClientPrivacyTermUrl            string  `json:"client_privacy_term_url" jsonschema:"description=URL to privacy term" mgc:"positional"`
