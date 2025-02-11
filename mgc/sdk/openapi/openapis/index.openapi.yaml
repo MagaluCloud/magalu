@@ -30,8 +30,8 @@ modules:
     url: https://mke.br-ne-1.com/docs/openapi-with-snippets.json
     version: 0.1.0
 -   description: Lbaas RP API
-    name: lbaas
-    path: lbaas.openapi.yaml
+    name: load-balancer
+    path: load-balancer.openapi.yaml
     summary: Lbaas RP API
     url: https://lbaas.jaxyendy.com/openapi-cli.json
     version: 1.2.0
