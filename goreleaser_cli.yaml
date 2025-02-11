@@ -49,20 +49,22 @@ snapcrafts:
     license: GPL-3.0-only
     base: core24
     plugs:
-      dot-config-mgc:
-        interface: personal-files
-        write:
-          - $HOME/.config/mgc
+      # dot-config-mgc:
+        # interface: personal-files
+        # write:
+          # - $HOME/.config/mgc
       network-bind:
         interface: network-bind
     apps:
       mgc:
         command: mgc
+        aliases:
+          - mgc
         plugs:
           - home
           - network
           - network-bind
-          - dot-config-mgc
+          # - dot-config-mgc
     publish: true
     channel_templates:
       - edge
