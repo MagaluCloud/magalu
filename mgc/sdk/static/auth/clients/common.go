@@ -34,6 +34,9 @@ type createClient struct {
 	RefreshTokenCustomExpiresEnabled *bool                `json:"refresh_token_custom_expires_enabled,omitempty" jsonschema:"description=Use custom value for refresh token expiration,example=false" mgc:"positional"`
 	RefreshTokenExp                  *int                 `json:"refresh_token_exp,omitempty" jsonschema:"description=Custom refresh token expiration value (in seconds),example=15778476" mgc:"positional"`
 	Reason                           string               `json:"request_reason,omitempty" jsonschema:"description=Note to inform the reason for creating the client. Will help with the application approval process" mgc:"positional"`
+	SupportUrl                       *string              `json:"support_url,omitempty" jsonschema:"description=URL for client support" mgc:"positional"`
+	GrantTypes                       []string             `json:"grant_types,omitempty" jsonschema:"description=Grant types the client can request for token generation (separated by space)" mgc:"positional"`
+	Email                            *string              `json:"email,omitempty" jsonschema:"description=Email for client support" mgc:"positional"`
 }
 
 type updateClient struct {
@@ -52,6 +55,7 @@ type updateClient struct {
 	RefreshTokenCustomExpiresEnabled *bool    `json:"refresh_token_custom_expires_enabled,omitempty" jsonschema:"description=Use custom value for refresh token expiration,example=false" mgc:"positional"`
 	RefreshTokenExp                  *int     `json:"refresh_token_exp,omitempty" jsonschema:"description=Custom refresh token expiration value (in seconds),example=15778476" mgc:"positional"`
 	Reason                           *string  `json:"request_reason,omitempty" jsonschema:"description=Note to inform the reason for creating the client. Will help with the application approval process" mgc:"positional"`
+	SupportUrl                       *string  `json:"support_url,omitempty" jsonschema:"description=URL for client support" mgc:"positional"`
 }
 
 type createClientResult struct {
