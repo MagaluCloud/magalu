@@ -8,8 +8,23 @@ info:
         email: magalu-cloud-iaas@luizalabs.com
     version: 1.2.0
 servers:
--   url: https://{env}/lbaas
+-   url: https://{env}/{region}/lbaas
     variables:
+        region:
+            description: Region to reach the service
+            default: br-se1
+            enum:
+            - br-ne-1
+            - br-se1
+            - br-mgl1
+            x-mgc-transforms:
+            -   type: translate
+                allowMissing: true
+                translations:
+                -   from: br-ne1
+                    to: br-ne-1
+                -   from: br-mgl1
+                    to: br-se-1
         env:
             description: Environment to use
             default: api.magalu.cloud
