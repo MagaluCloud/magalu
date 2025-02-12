@@ -169,7 +169,7 @@ func buildListRequestURL(cfg Config, bucketURI mgcSchemaPkg.URI) (*url.URL, erro
 		if lastChar != delimiter {
 			path += delimiter
 		}
-		q.Set("prefix", path)
+		q.Set("prefix", url.PathEscape(path))
 	}
 	u.RawQuery = q.Encode()
 	return u, nil
