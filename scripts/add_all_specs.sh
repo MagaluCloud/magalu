@@ -23,7 +23,7 @@ $BASEDIR/add_specs.sh audit audit mgc/spec_manipulator/cli_specs/conv.events-con
 
 $BASEDIR/add_specs_without_region.sh profile profile mgc/spec_manipulator/cli_specs/conv.globaldb.openapi.yaml https://globaldb.jaxyendy.com/openapi-cli.json
 
-$BASEDIR/add_specs.sh load-balancer lbaas mgc/spec_manipulator/cli_specs/conv.lbaas.openapi.yaml https://lbaas.jaxyendy.com/openapi-cli.json
+$BASEDIR/add_specs.sh load-balancer load-balancer mgc/spec_manipulator/cli_specs/conv.lbaas.openapi.yaml https://lbaas.jaxyendy.com/openapi-cli.json
 
 # EXAMPLE
 # $BASEDIR/SCRIPT.sh NOME_NO_MENU URL_PATH LOCAL_DA_SPEC BULLSHIT
