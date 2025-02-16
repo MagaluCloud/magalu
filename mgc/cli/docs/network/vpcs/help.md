@@ -9,7 +9,7 @@ Usage:
 
 ## Product catalog:
 - Commands:
-- create      Create VPC
+- create      V1 Create VPC
 - delete      Delete VPC
 - get         VPC Details
 - list        List VPC
