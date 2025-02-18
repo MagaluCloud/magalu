@@ -30,7 +30,7 @@ jobs:
         uses: actions/setup-go@v5.0.2
         with:
           cache-dependency-path: "**/go.sum"
-          go-version: stable
+          go-version: ${{ vars.GO_VERSION }} # settings > secrets and variables > variables > GO_VERSION
       - name: "Go Imports"
         run: go install golang.org/x/tools/cmd/goimports@latest
       - uses: pre-commit/action@v3.0.1
