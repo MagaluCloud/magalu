@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"net/url"
 	"path"
+	"strings"
 	"time"
 
 	"github.com/MagaluCloud/magalu/mgc/core"
@@ -140,6 +141,7 @@ func newListRequest(ctx context.Context, cfg Config, bucketURI mgcSchemaPkg.URI,
 	}
 
 	listReqQuery := url.Query()
+	fmt.Println("listReqQuery:", listReqQuery.Get("prefix"))
 	listReqQuery.Set("list-type", "2")
 	if page.ContinuationToken != "" {
 		listReqQuery.Set("continuation-token", page.ContinuationToken)
@@ -154,8 +156,20 @@ func newListRequest(ctx context.Context, cfg Config, bucketURI mgcSchemaPkg.URI,
 		listReqQuery.Set("delimiter", delimiter)
 	}
 	url.RawQuery = listReqQuery.Encode()
-
+	EscapeUrlPath(url)
+	fmt.Println("Generated URL:", url.String())
 	return http.NewRequestWithContext(ctx, http.MethodGet, url.String(), nil)
+}
+
+func EscapeUrlPath(u *url.URL) {
+	q := u.Query()
+	queries := make([]string, 0, len(q))
+	for k, v := range q {
+		for _, v := range v {
+			queries = append(queries, k+"="+url.PathEscape(v))
+		}
+	}
+	u.RawQuery = strings.Join(queries, "&")
 }
 
 func buildListRequestURL(cfg Config, bucketURI mgcSchemaPkg.URI) (*url.URL, error) {
@@ -169,9 +183,19 @@ func buildListRequestURL(cfg Config, bucketURI mgcSchemaPkg.URI) (*url.URL, erro
 		if lastChar != delimiter {
 			path += delimiter
 		}
-		q.Set("prefix", url.PathEscape(path))
+		encodedPath := url.PathEscape(path)
+
+		fmt.Println("Encoded Path:", encodedPath)
+		if len(q) > 0 {
+			u.RawQuery = u.RawQuery + "&prefix=" + encodedPath
+		} else {
+			u.RawQuery = "prefix=" + encodedPath
+		}
 	}
-	u.RawQuery = q.Encode()
+	fmt.Println("Generated URL:", u.String())
+	fmt.Println("Generated URL:", q.Encode())
+	fmt.Println("len(q):", len(q))
+	// q.Encode()
 	return u, nil
 }
 
@@ -181,7 +205,6 @@ func ListGenerator(ctx context.Context, params ListObjectsParams, cfg Config, on
 
 	logger := listObjectsLogger().Named("ListGenerator").With(
 		"params", params,
-		"cfg", cfg,
 	)
 
 	generator := func() {
@@ -198,15 +221,62 @@ func ListGenerator(ctx context.Context, params ListObjectsParams, cfg Config, on
 			requestedItems = 0
 
 			req, err := newListRequest(ctx, cfg, dst, page, params.Recursive)
-			var result listObjectsRequestResponse
-			var resp *http.Response
-
 			if err == nil {
-				resp, err = SendRequest(ctx, req)
-			}
+				resp, err := SendRequest(ctx, req)
+				if err == nil {
+					var result listObjectsRequestResponse
+					result, err = UnwrapResponse[listObjectsRequestResponse](resp, req)
+					if err == nil {
+						if onNewPage != nil {
+							onNewPage(uint64(len(result.Contents)))
+						}
+						for _, prefix := range result.CommonPrefixes {
+							dirEntry := pipeline.NewSimpleWalkDirEntry(
+								path.Join(dst.Path(), prefix.Path),
+								prefix,
+								nil,
+							)
+							select {
+							case <-ctx.Done():
+								logger.Debugw("context.Done()", "err", ctx.Err())
+								return
+							case ch <- dirEntry:
+								requestedItems++
+								if requestedItems >= page.MaxItems {
+									logger.Infow("item limit reached", "limit", params.PaginationParams.MaxItems)
+									break MainLoop
+								}
+							}
+						}
 
-			if err == nil {
-				result, err = UnwrapResponse[listObjectsRequestResponse](resp, req)
+						for _, content := range result.Contents {
+							dirEntry := pipeline.NewSimpleWalkDirEntry(
+								content.Key,
+								content,
+								nil,
+							)
+
+							select {
+							case <-ctx.Done():
+								logger.Debugw("context.Done()", "err", ctx.Err())
+								return
+							case ch <- dirEntry:
+								requestedItems++
+								if requestedItems >= page.MaxItems {
+									logger.Infow("item limit reached", "limit", params.PaginationParams.MaxItems)
+									break MainLoop
+								}
+							}
+						}
+
+						page.ContinuationToken = result.NextContinuationToken
+						page.MaxItems = page.MaxItems - requestedItems
+						if !result.IsTruncated || page.MaxItems <= 0 {
+							logger.Info("finished reading contents")
+							break
+						}
+					}
+				}
 			}
 
 			if err != nil {
@@ -217,57 +287,6 @@ func ListGenerator(ctx context.Context, params ListObjectsParams, cfg Config, on
 				case ch <- pipeline.NewSimpleWalkDirEntry[*BucketContent](dst.Path(), nil, err):
 				}
 				return
-			}
-
-			if onNewPage != nil {
-				onNewPage(uint64(len(result.Contents)))
-			}
-
-			for _, prefix := range result.CommonPrefixes {
-				dirEntry := pipeline.NewSimpleWalkDirEntry(
-					path.Join(dst.Path(), prefix.Path),
-					prefix,
-					nil,
-				)
-
-				select {
-				case <-ctx.Done():
-					logger.Debugw("context.Done()", "err", ctx.Err())
-					return
-				case ch <- dirEntry:
-					requestedItems++
-					if requestedItems >= page.MaxItems {
-						logger.Infow("item limit reached", "limit", params.PaginationParams.MaxItems)
-						break MainLoop
-					}
-				}
-			}
-
-			for _, content := range result.Contents {
-				dirEntry := pipeline.NewSimpleWalkDirEntry(
-					content.Key,
-					content,
-					nil,
-				)
-
-				select {
-				case <-ctx.Done():
-					logger.Debugw("context.Done()", "err", ctx.Err())
-					return
-				case ch <- dirEntry:
-					requestedItems++
-					if requestedItems >= page.MaxItems {
-						logger.Infow("item limit reached", "limit", params.PaginationParams.MaxItems)
-						break MainLoop
-					}
-				}
-			}
-
-			page.ContinuationToken = result.NextContinuationToken
-			page.MaxItems = page.MaxItems - requestedItems
-			if !result.IsTruncated || page.MaxItems <= 0 {
-				logger.Info("finished reading contents")
-				break
 			}
 		}
 	}
