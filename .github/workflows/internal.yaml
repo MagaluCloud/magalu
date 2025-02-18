@@ -20,7 +20,7 @@ jobs:
         uses: actions/setup-go@v5.0.2
         with:
           cache-dependency-path: "**/go.sum"
-          go-version: stable
+          go-version: ${{ vars.GO_VERSION }} # settings > secrets and variables > variables > GO_VERSION
       - name: Run GoReleaser
         continue-on-error: true
         uses: goreleaser/goreleaser-action@v6
