@@ -98,7 +98,7 @@ func buildCanonicalQuery(query url.Values) string {
 	pairs := make([]p, 0, len(query))
 	for key, values := range query {
 		for _, value := range values {
-			pairs = append(pairs, p{url.QueryEscape(key), url.QueryEscape(value)})
+			pairs = append(pairs, p{url.QueryEscape(key), url.PathEscape(value)})
 		}
 	}
 
