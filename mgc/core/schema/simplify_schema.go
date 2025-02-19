@@ -514,8 +514,10 @@ func mergeAdditionalProperties(input *COWSchema, target openapi3.AdditionalPrope
 
 // NOTE: this does not simplify parent after it's merged. Do it explicitly in the caller
 func mergeIntoParent(parent *COWSchema, child *Schema) (err error) {
-	if err = mergeComparable(parent.Type, parent.SetType, child.Type.Slice()[0]); err != nil {
-		return &utils.ChainedError{Name: "type", Err: err}
+	if len(child.Type.Slice()) > 0 {
+		if err = mergeComparable(parent.Type, parent.SetType, child.Type.Slice()[0]); err != nil {
+			return &utils.ChainedError{Name: "type", Err: err}
+		}
 	}
 
 	if parent.Description() == "" { // this is okay to have diverging, no need to merge

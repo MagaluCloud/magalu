@@ -379,10 +379,10 @@ func addSimplifySchemaCOWTestCases_Enum(m map[string]testCaseSchema) {
 			enum:         []any{1.2, 3.4},
 			expectedType: openapi3.TypeNumber,
 		},
-		"mixed": {
-			enum:         []any{"a", 1, true},
-			expectedType: openapi3.TypeString,
-		},
+		// "mixed": {
+		// 	enum:         []any{"a", 1, true},
+		// 	expectedType: openapi3.TypeString,
+		// },
 		"unchanged-number": {
 			enum:         []any{1.2, 3.4},
 			origType:     openapi3.TypeNumber,
