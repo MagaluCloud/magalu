@@ -225,69 +225,69 @@ func ListGenerator(ctx context.Context, params ListObjectsParams, cfg Config, on
 				resp, err := SendRequest(ctx, req)
 				if err == nil {
 					var result listObjectsRequestResponse
-					result, err = UnwrapResponse[listObjectsRequestResponse](resp, req)
-					if err == nil {
-						if onNewPage != nil {
-							onNewPage(uint64(len(result.Contents)))
+					result, err := UnwrapResponse[listObjectsRequestResponse](resp, req)
+					if err != nil {
+						logger.Warnw("list request failed", "err", err, "req", (*mgcHttpPkg.LogRequest)(req))
+						select {
+						case <-ctx.Done():
+							logger.Debugw("context.Done()", "err", err)
+						case ch <- pipeline.NewSimpleWalkDirEntry[*BucketContent](dst.Path(), nil, err):
 						}
-						for _, prefix := range result.CommonPrefixes {
-							dirEntry := pipeline.NewSimpleWalkDirEntry(
-								path.Join(dst.Path(), prefix.Path),
-								prefix,
-								nil,
-							)
-							select {
-							case <-ctx.Done():
-								logger.Debugw("context.Done()", "err", ctx.Err())
-								return
-							case ch <- dirEntry:
-								requestedItems++
-								if requestedItems >= page.MaxItems {
-									logger.Infow("item limit reached", "limit", params.PaginationParams.MaxItems)
-									break MainLoop
-								}
+						return
+					}
+
+					if onNewPage != nil {
+						onNewPage(uint64(len(result.Contents)))
+					}
+					for _, prefix := range result.CommonPrefixes {
+						dirEntry := pipeline.NewSimpleWalkDirEntry(
+							path.Join(dst.Path(), prefix.Path),
+							prefix,
+							nil,
+						)
+						select {
+						case <-ctx.Done():
+							logger.Debugw("context.Done()", "err", ctx.Err())
+							return
+						case ch <- dirEntry:
+							requestedItems++
+							if requestedItems >= page.MaxItems {
+								logger.Infow("item limit reached", "limit", params.PaginationParams.MaxItems)
+								break MainLoop
 							}
-						}
-
-						for _, content := range result.Contents {
-							dirEntry := pipeline.NewSimpleWalkDirEntry(
-								content.Key,
-								content,
-								nil,
-							)
-
-							select {
-							case <-ctx.Done():
-								logger.Debugw("context.Done()", "err", ctx.Err())
-								return
-							case ch <- dirEntry:
-								requestedItems++
-								if requestedItems >= page.MaxItems {
-									logger.Infow("item limit reached", "limit", params.PaginationParams.MaxItems)
-									break MainLoop
-								}
-							}
-						}
-
-						page.ContinuationToken = result.NextContinuationToken
-						page.MaxItems = page.MaxItems - requestedItems
-						if !result.IsTruncated || page.MaxItems <= 0 {
-							logger.Info("finished reading contents")
-							break
 						}
 					}
+
+					for _, content := range result.Contents {
+						dirEntry := pipeline.NewSimpleWalkDirEntry(
+							content.Key,
+							content,
+							nil,
+						)
+
+						select {
+						case <-ctx.Done():
+							logger.Debugw("context.Done()", "err", ctx.Err())
+							return
+						case ch <- dirEntry:
+							requestedItems++
+							if requestedItems >= page.MaxItems {
+								logger.Infow("item limit reached", "limit", params.PaginationParams.MaxItems)
+								break MainLoop
+							}
+						}
+					}
+
+					page.ContinuationToken = result.NextContinuationToken
+					page.MaxItems = page.MaxItems - requestedItems
+					if !result.IsTruncated || page.MaxItems <= 0 {
+						logger.Info("finished reading contents")
+						break
+					}
+
 				}
 			}
 
-			if err != nil {
-				logger.Warnw("list request failed", "err", err, "req", (*mgcHttpPkg.LogRequest)(req))
-				select {
-				case <-ctx.Done():
-					logger.Debugw("context.Done()", "err", err)
-				case ch <- pipeline.NewSimpleWalkDirEntry[*BucketContent](dst.Path(), nil, err):
-				}
-				return
-			}
 		}
 	}
 
