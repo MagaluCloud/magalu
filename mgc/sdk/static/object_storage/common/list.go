@@ -141,7 +141,6 @@ func newListRequest(ctx context.Context, cfg Config, bucketURI mgcSchemaPkg.URI,
 	}
 
 	listReqQuery := url.Query()
-	fmt.Println("listReqQuery:", listReqQuery.Get("prefix"))
 	listReqQuery.Set("list-type", "2")
 	if page.ContinuationToken != "" {
 		listReqQuery.Set("continuation-token", page.ContinuationToken)
@@ -157,7 +156,6 @@ func newListRequest(ctx context.Context, cfg Config, bucketURI mgcSchemaPkg.URI,
 	}
 	url.RawQuery = listReqQuery.Encode()
 	EscapeUrlPath(url)
-	fmt.Println("Generated URL:", url.String())
 	return http.NewRequestWithContext(ctx, http.MethodGet, url.String(), nil)
 }
 
@@ -185,18 +183,13 @@ func buildListRequestURL(cfg Config, bucketURI mgcSchemaPkg.URI) (*url.URL, erro
 		}
 		encodedPath := url.PathEscape(path)
 
-		fmt.Println("Encoded Path:", encodedPath)
 		if len(q) > 0 {
 			u.RawQuery = u.RawQuery + "&prefix=" + encodedPath
 		} else {
 			u.RawQuery = "prefix=" + encodedPath
 		}
 	}
-	fmt.Println("Generated URL:", u.String())
-	fmt.Println("Generated URL:", q.Encode())
-	fmt.Println("len(q):", len(q))
 
-	// q.Encode()
 	return u, nil
 }
 
