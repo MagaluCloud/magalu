@@ -9,6 +9,8 @@ concurrency:
 jobs:
   build:
     runs-on: ${{ vars.RUNNER_RUNS_ON }}
+    env:
+      SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.REPO_SNAPCRAFT_TOKEN }}    
     timeout-minutes: 15
     steps:
       - name: Checkout
@@ -16,6 +18,8 @@ jobs:
         with:
           token: ${{ secrets.GH_PAT2 }}
           fetch-depth: 1
+      - name: Install Snapcraft
+        uses: samuelmeuli/action-snapcraft@v3          
       - name: Set up Go
         uses: actions/setup-go@v5.0.2
         with:
