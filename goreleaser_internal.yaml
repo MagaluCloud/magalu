@@ -69,6 +69,8 @@ snapcrafts:
         interface: desktop
       network-bind:
         interface: network-bind
+      home:
+        read: all
     apps:
       mgc:
         command: mgc
