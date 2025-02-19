@@ -75,47 +75,47 @@ func Transform[T any](
 		return value, err
 	}
 
-	switch schema.Type {
-	case "string", "number", "integer", "boolean", "null":
-		return t.Scalar(schema, value)
+	if len(schema.Type.Slice()) > 0 {
+		switch schema.Type.Slice()[0] {
+		case "string", "number", "integer", "boolean", "null":
+			return t.Scalar(schema, value)
 
-	case "object":
-		return t.Object(schema, value)
+		case "object":
+			return t.Object(schema, value)
 
-	case "array":
-		var itemSchema *Schema
-		if schema.Items != nil && schema.Items.Value != nil {
-			itemSchema = (*Schema)(schema.Items.Value)
-		}
-		return t.Array(schema, itemSchema, value)
-
-	default:
-		notSchemaRefs := SchemaRefs{}
-		if schema.Not != nil {
-			notSchemaRefs = append(notSchemaRefs, schema.Not)
-		}
-		sub := map[ConstraintKind]SchemaRefs{
-			ConstraintAllOf: schema.AllOf,
-			ConstraintAnyOf: schema.AnyOf,
-			ConstraintOneOf: schema.OneOf,
-			ConstraintNot:   notSchemaRefs,
-		}
-
-		var err error
-		for kind, refs := range sub {
-			if len(refs) == 0 {
-				continue
+		case "array":
+			var itemSchema *Schema
+			if schema.Items != nil && schema.Items.Value != nil {
+				itemSchema = (*Schema)(schema.Items.Value)
 			}
-			value, err = t.Constraints(kind, refs, value)
-			if err != nil {
-				if err == TransformStop {
-					err = nil
-				}
-				break
-			}
+			return t.Array(schema, itemSchema, value)
 		}
-		return value, err
 	}
+
+	notSchemaRefs := SchemaRefs{}
+	if schema.Not != nil {
+		notSchemaRefs = append(notSchemaRefs, schema.Not)
+	}
+	sub := map[ConstraintKind]SchemaRefs{
+		ConstraintAllOf: schema.AllOf,
+		ConstraintAnyOf: schema.AnyOf,
+		ConstraintOneOf: schema.OneOf,
+		ConstraintNot:   notSchemaRefs,
+	}
+
+	for kind, refs := range sub {
+		if len(refs) == 0 {
+			continue
+		}
+		value, err = t.Constraints(kind, refs, value)
+		if err != nil {
+			if err == TransformStop {
+				err = nil
+			}
+			break
+		}
+	}
+	return value, err
 }
 
 // Applies the Transformer to every element in the list, in order.

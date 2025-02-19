@@ -1,6 +1,6 @@
 module github.com/MagaluCloud/magalu/mgc/lib
 
-go 1.23.0
+go 1.24.0
 
 toolchain go1.23.4
 

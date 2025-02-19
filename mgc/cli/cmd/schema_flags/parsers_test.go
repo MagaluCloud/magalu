@@ -8,6 +8,7 @@ import (
 
 	"github.com/MagaluCloud/magalu/mgc/core"
 	mgcSchemaPkg "github.com/MagaluCloud/magalu/mgc/core/schema"
+	"github.com/getkin/kin-openapi/openapi3"
 )
 
 func checkError(t *testing.T, expected, got error) {
@@ -640,7 +641,7 @@ func Test_help(t *testing.T) {
 	for _, typ := range types {
 		t.Run(typ, func(t *testing.T) {
 			fv := newSchemaFlagValue(SchemaFlagValueDesc{
-				Schema:   &core.Schema{Type: typ},
+				Schema:   &core.Schema{Type: &openapi3.Types{typ}},
 				PropName: "name",
 				FlagName: "name",
 			})

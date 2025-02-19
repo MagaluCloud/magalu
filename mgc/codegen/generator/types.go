@@ -107,38 +107,40 @@ func (t *generatorTemplateTypes) addSchemaInternal(name string, schema *mgcSchem
 		return "any", nil
 	}
 
-	switch schema.Type {
-	case "string":
-		return t.addScalar(name, "string", schema)
+	if len(schema.Type.Slice()) > 0 {
+		switch schema.Type.Slice()[0] {
+		case "string":
+			return t.addScalar(name, "string", schema)
 
-	case "integer":
-		return t.addScalar(name, "int", schema)
+		case "integer":
+			return t.addScalar(name, "int", schema)
 
-	case "number":
-		return t.addScalar(name, "float64", schema)
+		case "number":
+			return t.addScalar(name, "float64", schema)
 
-	case "boolean":
-		return t.addScalar(name, "bool", schema)
+		case "boolean":
+			return t.addScalar(name, "bool", schema)
 
-	case "array":
-		return t.addArray(name, schema)
+		case "array":
+			return t.addArray(name, schema)
 
-	case "object":
-		return t.addObject(name, schema)
+		case "object":
+			return t.addObject(name, schema)
 
-	case "":
-		if len(schema.OneOf) > 0 {
-			return t.addAlternatives(name, "one of", schema, schema.OneOf)
+		case "":
+			if len(schema.OneOf) > 0 {
+				return t.addAlternatives(name, "one of", schema, schema.OneOf)
+			}
+			if len(schema.AnyOf) > 0 {
+				return t.addAlternatives(name, "any of", schema, schema.AnyOf)
+			}
+
+			return "any", nil // let's behave as any
+
 		}
-		if len(schema.AnyOf) > 0 {
-			return t.addAlternatives(name, "any of", schema, schema.AnyOf)
-		}
-
-		return "any", nil // let's behave as any
-
-	default:
-		return "", fmt.Errorf("unsupported JSON schema type: %s (%#v)", schema.Type, schema)
 	}
+
+	return "", fmt.Errorf("unsupported JSON schema type: %s (%#v)", schema.Type, schema)
 }
 
 func (t *generatorTemplateTypes) addScalar(name string, goType string, schema *mgcSchemaPkg.Schema) (signature string, err error) {
