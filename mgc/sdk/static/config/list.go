@@ -63,13 +63,13 @@ func getAllConfigs(ctx context.Context) (map[string]configInfo, error) {
 	result := make(map[string]configInfo, len(configSchemas))
 	for name, schema := range configSchemas {
 		if !slices.Contains(toHide, name) {
-
-			result[name] = configInfo{
-				Name:        name,
-				Type:        schema.Type,
-				Description: schema.Description,
+			if len(schema.Type.Slice()) > 0 {
+				result[name] = configInfo{
+					Name:        name,
+					Type:        schema.Type.Slice()[0],
+					Description: schema.Description,
+				}
 			}
-
 		}
 	}
 

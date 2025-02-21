@@ -1,6 +1,6 @@
 module github.com/MagaluCloud/magalu/mgc/cli
 
-go 1.23.0
+go 1.24.0
 
 require (
 	github.com/MagaluCloud/magalu/mgc/core v0.0.0-20250117204804-e16e0869209d

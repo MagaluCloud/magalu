@@ -44,7 +44,7 @@ func getFlagType(schema *core.Schema) string {
 		return FlagTypeFile
 	}
 
-	if schema.Type == "" {
+	if len(schema.Type.Slice()) > 0 && schema.Type.Slice()[0] == "" {
 		if (mgcSchemaPkg.CheckSimilarJsonSchemas(schema, &mgcSchemaPkg.Schema{}) || // this is like a bug in the schema, but config set takes it
 			mgcSchemaPkg.CheckSimilarJsonSchemas(schema, mgcSchemaPkg.NewAnySchema())) {
 			return "anyValue"
@@ -58,7 +58,7 @@ func getFlagType(schema *core.Schema) string {
 		return "anyValue"
 	}
 
-	return schema.Type
+	return schema.Type.Slice()[0]
 }
 
 // To be used in flag.Value.Type().
