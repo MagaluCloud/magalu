@@ -55,34 +55,20 @@ snapcrafts:
         * VPC (subnets, security rules, public IP)
         * Kubernetes Cluster (create, scale, monitor)
     grade: stable
-    confinement: strict
+    confinement: classic
     license: GPL-3.0-only
     base: core24
-    # plugs:
-    #   # dot-config-mgc:
-    #     # interface: personal-files
-    #     # write:
-    #       # - $HOME/.config/mgc
-    #   browser-support:
-    #     interface: browser-support
-    #   desktop:
-    #     interface: desktop
-    #   network-bind:
-    #     interface: network-bind
-    #   home:
-    #     read: all
     apps:
       mgc:
         command: mgc
         aliases:
           - mgc
         plugs:
-          # - home
-          - desktop
-          - browser-support
-          - network
-          - network-bind
-          # - dot-config-mgc
+          - home ## ??
+          - desktop ## aprove automatically
+          - browser-support ## aprove automatically
+          - network ## aprove automatically
+          - network-bind ## aprove automatically
     publish: true
     channel_templates:
       - edge  
