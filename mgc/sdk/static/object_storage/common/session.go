@@ -40,7 +40,7 @@ func BuildHost(cfg Config) HostString {
 	if cfg.ServerUrl != "" {
 		hostStr = cfg.ServerUrl
 	} else {
-		hostStr = strings.ReplaceAll(templateUrl, "{{region}}", cfg.translateRegion())
+		hostStr = strings.ReplaceAll(templateUrl, "{{region}}", cfg.Region)
 	}
 
 	if hostStr[len(hostStr)-1] != '/' {

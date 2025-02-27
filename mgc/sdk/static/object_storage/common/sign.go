@@ -1,5 +1,4 @@
 package common
-
 import (
 	"bytes"
 	"crypto/md5"
