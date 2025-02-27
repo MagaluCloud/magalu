@@ -58,26 +58,26 @@ snapcrafts:
     confinement: strict
     license: GPL-3.0-only
     base: core24
-    plugs:
-      # dot-config-mgc:
-        # interface: personal-files
-        # write:
-          # - $HOME/.config/mgc
-      browser-support:
-        interface: browser-support
-      desktop:
-        interface: desktop
-      network-bind:
-        interface: network-bind
-      home:
-        read: all
+    # plugs:
+    #   # dot-config-mgc:
+    #     # interface: personal-files
+    #     # write:
+    #       # - $HOME/.config/mgc
+    #   browser-support:
+    #     interface: browser-support
+    #   desktop:
+    #     interface: desktop
+    #   network-bind:
+    #     interface: network-bind
+    #   home:
+    #     read: all
     apps:
       mgc:
         command: mgc
         aliases:
           - mgc
         plugs:
-          - home
+          # - home
           - network
           - network-bind
           # - dot-config-mgc
