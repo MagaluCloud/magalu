@@ -78,6 +78,8 @@ snapcrafts:
           - mgc
         plugs:
           # - home
+          - desktop
+          - browser-support
           - network
           - network-bind
           # - dot-config-mgc
