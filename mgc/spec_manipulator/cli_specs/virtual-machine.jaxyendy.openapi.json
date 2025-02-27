@@ -54,18 +54,6 @@
             }
           },
           {
-            "name": "_labels",
-            "in": "query",
-            "description": "label-1, label2, label 3",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "title": " Labels",
-              "description": "label-1, label2, label 3",
-              "default": ""
-            }
-          },
-          {
             "name": "availability-zone",
             "in": "query",
             "description": "br-ne1-a",
@@ -99,7 +87,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ListImageExternalV1"
+                  "$ref": "#/components/schemas/PaginateListImageExternalV1"
                 }
               }
             }
@@ -218,7 +206,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ListInstanceV1Response"
+                  "$ref": "#/components/schemas/PaginateListInstanceV1Response"
                 }
               }
             }
@@ -1308,7 +1296,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/InstanceTypesV1ListResponse"
+                  "$ref": "#/components/schemas/PaginateInstanceTypesV1ListResponse"
                 }
               }
             }
@@ -1409,7 +1397,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ListSnapshotResponseV1"
+                  "$ref": "#/components/schemas/PaginateListSnapshotResponseV1"
                 }
               }
             }
@@ -2089,7 +2077,7 @@
           "message"
         ],
         "example": {
-          "message": "An error occurred while creating your instance. Please contact our support for assistance.",
+          "message": "An error occurred while creating your instance. Please try again later or contact support for assistance.",
           "slug": "create_instance.keypair.not_found"
         }
       },
@@ -2525,6 +2513,20 @@
               }
             ],
             "title": "Labels"
+          },
+          "volumes": {
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/ID"
+                },
+                {
+                  "$ref": "#/components/schemas/Name"
+                }
+              ]
+            },
+            "title": "Volumes"
           }
         },
         "title": "InstanceCreateRequestV1Default",
@@ -2563,7 +2565,8 @@
             }
           },
           "ssh_key_name": "keypair_name_here",
-          "user_data": "some_base64_script"
+          "user_data": "some_base64_script",
+          "volumes": []
         }
       },
       "InstanceCreateRequestV1NetworkDefault": {
@@ -2749,49 +2752,9 @@
         "example": {
           "disk": 10,
           "id": "3a4dc05b-eb10-42ec-8c0c-848e06f7aded",
-          "name": "abc.small",
+          "name": "BV1-1-40",
           "ram": 2,
           "vcpus": 2
-        }
-      },
-      "InstanceTypesV1ListResponse": {
-        "type": "object",
-        "properties": {
-          "machine_types": {
-            "type": "array",
-            "items": {
-              "anyOf": [
-                {
-                  "$ref": "#/components/schemas/InstanceTypesV1PortalResponse"
-                },
-                {
-                  "$ref": "#/components/schemas/InstanceTypesV1Response"
-                }
-              ]
-            },
-            "title": "Machine Types"
-          }
-        },
-        "title": "InstanceTypesV1ListResponse",
-        "required": [
-          "machine_types"
-        ],
-        "example": {
-          "machine_types": [
-            {
-              "availability_zones": [
-                "br-ne-1-a"
-              ],
-              "disk": 10,
-              "gpu": 1,
-              "id": "3a4dc05b-eb10-42ec-8c0c-848e06f7aded",
-              "name": "abc.small",
-              "ram": 2,
-              "sku": "some_sku",
-              "status": "active",
-              "vcpus": 2
-            }
-          ]
         }
       },
       "InstanceTypesV1PortalResponse": {
@@ -2859,7 +2822,7 @@
           "disk": 10,
           "gpu": 1,
           "id": "3a4dc05b-eb10-42ec-8c0c-848e06f7aded",
-          "name": "abc.small",
+          "name": "BV1-1-40",
           "ram": 2,
           "sku": "some_sku",
           "status": "active",
@@ -2941,7 +2904,7 @@
           "disk": 10,
           "gpu": 0,
           "id": "c78b759d-af80-4489-acf1-04c48851f273",
-          "name": "instance_type_name_0102",
+          "name": "BV1-1-40",
           "ram": 1024,
           "sku": "sku0102",
           "status": "active",
@@ -3112,7 +3075,7 @@
           "availability_zone": "br-regiao-1a",
           "created_at": "2022-06-10T18:33:12Z",
           "error": {
-            "message": "An error occurred while creating your instance. Please contact our support for assistance.",
+            "message": "An error occurred while creating your instance. Please try again later or contact support for assistance.",
             "slug": "create_instance.keypair.not_found"
           },
           "id": "2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6",
@@ -3137,7 +3100,7 @@
           "ssh_key_name": "keypair_name_here",
           "state": "running",
           "status": "completed",
-          "updated_at": "2022-06-11T18:33:12Z",
+          "updated_at": "2022-06-10T18:33:12Z",
           "user_data": "some_base_64_str"
         }
       },
@@ -3164,6 +3127,7 @@
           "provisioning",
           "creating",
           "creating_error",
+          "creating_error_gpu",
           "creating_network_error",
           "creating_error_quota",
           "creating_error_quota_ram",
@@ -3285,138 +3249,45 @@
         },
         "title": "IpAddressNewExpand"
       },
-      "ListImageExternalV1": {
+      "Meta": {
         "type": "object",
         "properties": {
-          "images": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ImageResponseExternalV1"
-            },
-            "title": "Images"
+          "page": {
+            "$ref": "#/components/schemas/MetaPage"
           }
         },
-        "title": "ListImageExternalV1",
+        "title": "Meta",
         "required": [
-          "images"
-        ],
-        "example": {
-          "images": [
-            {
-              "availability_zones": [
-                "br-ne1-a"
-              ],
-              "end_life_at": "2022-06-10T18:33:12Z",
-              "end_standard_support_at": "2022-06-10T18:33:12Z",
-              "id": "c47e974f-8002-46e9-8a63-d66505be2aa1",
-              "labels": [
-                "label-1",
-                "label 2",
-                "label3"
-              ],
-              "minimum_requirements": {
-                "disk": 2,
-                "ram": 1,
-                "vcpu": 1
-              },
-              "name": "ubuntu 22.10",
-              "platform": "linux",
-              "release_at": "2022-06-10T18:33:12Z",
-              "status": "active",
-              "version": "22.10"
-            }
-          ]
-        }
+          "page"
+        ]
       },
-      "ListInstanceV1Response": {
+      "MetaPage": {
         "type": "object",
         "properties": {
-          "instances": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/InstanceV1Response"
-            },
-            "title": "Instances"
+          "limit": {
+            "type": "integer",
+            "title": "Limit"
+          },
+          "offset": {
+            "type": "integer",
+            "title": "Offset"
+          },
+          "count": {
+            "type": "integer",
+            "title": "Count"
+          },
+          "total": {
+            "type": "integer",
+            "title": "Total"
           }
         },
-        "title": "ListInstanceV1Response",
+        "title": "MetaPage",
         "required": [
-          "instances"
-        ],
-        "example": {
-          "instances": [
-            {
-              "availability_zone": "br-regiao-1a",
-              "created_at": "2022-06-10T18:33:12Z",
-              "error": {
-                "message": "An error occurred while creating your instance. Please contact our support for assistance.",
-                "slug": "create_instance.keypair.not_found"
-              },
-              "id": "2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6",
-              "image": {
-                "id": "2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6"
-              },
-              "labels": [
-                "label1",
-                "label2"
-              ],
-              "machine_type": {
-                "id": "2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6"
-              },
-              "name": "instance-name",
-              "network": {
-                "ports": [
-                  {
-                    "id": "2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6"
-                  }
-                ]
-              },
-              "ssh_key_name": "keypair_name_here",
-              "state": "running",
-              "status": "completed",
-              "updated_at": "2022-06-11T18:33:12Z",
-              "user_data": "base64_data"
-            }
-          ]
-        }
-      },
-      "ListSnapshotResponseV1": {
-        "type": "object",
-        "properties": {
-          "snapshots": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/SnapshotResponseV1"
-            },
-            "title": "Snapshots"
-          }
-        },
-        "title": "ListSnapshotResponseV1",
-        "required": [
-          "snapshots"
-        ],
-        "example": {
-          "snapshots": [
-            {
-              "created_at": "2022-06-10T18:33:12Z",
-              "id": "4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a",
-              "instance": {
-                "id": "4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a",
-                "image": {
-                  "id": "4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a"
-                },
-                "machine_type": {
-                  "id": "4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a"
-                }
-              },
-              "name": "snapshot-name",
-              "size": 1000,
-              "state": "available",
-              "status": "completed",
-              "updated_at": "2022-06-11T18:33:12Z"
-            }
-          ]
-        }
+          "limit",
+          "offset",
+          "count",
+          "total"
+        ]
       },
       "NICRequest": {
         "type": "object",
@@ -3573,6 +3444,227 @@
           }
         },
         "title": "NetworkPortsV1Expand"
+      },
+      "PaginateInstanceTypesV1ListResponse": {
+        "type": "object",
+        "properties": {
+          "machine_types": {
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/InstanceTypesV1PortalResponse"
+                },
+                {
+                  "$ref": "#/components/schemas/InstanceTypesV1Response"
+                }
+              ]
+            },
+            "title": "Machine Types"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/Meta"
+          }
+        },
+        "title": "PaginateInstanceTypesV1ListResponse",
+        "required": [
+          "machine_types",
+          "meta"
+        ],
+        "example": {
+          "machine_types": [
+            {
+              "availability_zones": [
+                "br-ne-1-a"
+              ],
+              "disk": 10,
+              "gpu": 1,
+              "id": "3a4dc05b-eb10-42ec-8c0c-848e06f7aded",
+              "name": "BV1-1-40",
+              "ram": 2,
+              "sku": "some_sku",
+              "status": "active",
+              "vcpus": 2
+            }
+          ],
+          "meta": {
+            "page": {
+              "count": 50,
+              "limit": 50,
+              "offset": 0,
+              "total": 100
+            }
+          }
+        }
+      },
+      "PaginateListImageExternalV1": {
+        "type": "object",
+        "properties": {
+          "images": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ImageResponseExternalV1"
+            },
+            "title": "Images"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/Meta"
+          }
+        },
+        "title": "PaginateListImageExternalV1",
+        "required": [
+          "images",
+          "meta"
+        ],
+        "example": {
+          "images": [
+            {
+              "availability_zones": [
+                "br-ne1-a"
+              ],
+              "end_life_at": "2022-06-10T18:33:12Z",
+              "end_standard_support_at": "2022-06-10T18:33:12Z",
+              "id": "c47e974f-8002-46e9-8a63-d66505be2aa1",
+              "labels": [
+                "label-1",
+                "label 2",
+                "label3"
+              ],
+              "minimum_requirements": {
+                "disk": 2,
+                "ram": 1,
+                "vcpu": 1
+              },
+              "name": "ubuntu 22.10",
+              "platform": "linux",
+              "release_at": "2022-06-10T18:33:12Z",
+              "status": "active",
+              "version": "22.10"
+            }
+          ],
+          "meta": {
+            "page": {
+              "count": 50,
+              "limit": 50,
+              "offset": 0,
+              "total": 100
+            }
+          }
+        }
+      },
+      "PaginateListInstanceV1Response": {
+        "type": "object",
+        "properties": {
+          "instances": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/InstanceV1Response"
+            },
+            "title": "Instances"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/Meta"
+          }
+        },
+        "title": "PaginateListInstanceV1Response",
+        "required": [
+          "instances",
+          "meta"
+        ],
+        "example": {
+          "instances": [
+            {
+              "availability_zone": "br-regiao-1a",
+              "created_at": "2022-06-10T18:33:12Z",
+              "error": {
+                "message": "An error occurred while creating your instance. Please try again later or contact support for assistance.",
+                "slug": "create_instance.keypair.not_found"
+              },
+              "id": "2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6",
+              "image": {
+                "id": "2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6"
+              },
+              "labels": [
+                "label1",
+                "label2"
+              ],
+              "machine_type": {
+                "id": "2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6"
+              },
+              "name": "instance-name",
+              "network": {
+                "ports": [
+                  {
+                    "id": "2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6"
+                  }
+                ]
+              },
+              "ssh_key_name": "keypair_name_here",
+              "state": "running",
+              "status": "completed",
+              "updated_at": "2022-06-10T18:33:12Z",
+              "user_data": "base64_data"
+            }
+          ],
+          "meta": {
+            "page": {
+              "count": 50,
+              "limit": 50,
+              "offset": 0,
+              "total": 100
+            }
+          }
+        }
+      },
+      "PaginateListSnapshotResponseV1": {
+        "type": "object",
+        "properties": {
+          "snapshots": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SnapshotResponseV1"
+            },
+            "title": "Snapshots"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/Meta"
+          }
+        },
+        "title": "PaginateListSnapshotResponseV1",
+        "required": [
+          "snapshots",
+          "meta"
+        ],
+        "example": {
+          "meta": {
+            "page": {
+              "count": 50,
+              "limit": 50,
+              "offset": 0,
+              "total": 100
+            }
+          },
+          "snapshots": [
+            {
+              "created_at": "2022-06-10T18:33:12Z",
+              "id": "4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a",
+              "instance": {
+                "id": "4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a",
+                "image": {
+                  "id": "4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a"
+                },
+                "machine_type": {
+                  "id": "4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a"
+                }
+              },
+              "name": "snapshot-name",
+              "size": 1000,
+              "state": "available",
+              "status": "completed",
+              "updated_at": "2022-06-10T18:33:12Z"
+            }
+          ]
+        }
       },
       "PortID": {
         "type": "object",
@@ -3840,7 +3932,7 @@
           "size": 1000,
           "state": "available",
           "status": "completed",
-          "updated_at": "2022-06-11T18:33:12Z"
+          "updated_at": "2022-06-10T18:33:12Z"
         }
       },
       "SnapshotRestoreRequestV1Default": {

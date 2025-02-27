@@ -29,7 +29,7 @@ Usage:
 - -r, --raw                      Output raw data, without any formatting or coloring
 - --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
 - --server-url uri           Manually specify the server to use
-- --x-api-version string      (default "1.1")
+- --x-api-version string     X-Api-Version: api version (default "1.1")
 
 ## Flags:
 ```bash
