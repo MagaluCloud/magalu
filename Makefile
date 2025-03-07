@@ -6,6 +6,5 @@ build-spec:
 	cd mgc/cli; echo "Building...."; \
 	go build -tags "embed" -o mgc
 
-build:
-	cd mgc/cli; echo "Building...."; \
-	go build -tags "embed" -o mgc
+build-local:
+	goreleaser build --clean --snapshot --single-target -f goreleaser_cli.yaml
