@@ -444,12 +444,11 @@ func (c *COWSchema) SetExtensions(v map[string]any) bool {
 	c.initCOWExtensionsIfNeeded()
 	return c.cowExtensions.Replace(v)
 }
-
 func (c *COWSchema) Type() string {
-	if c == nil || c.s == nil {
+	if c == nil || c.s == nil || len(c.s.Type.Slice()) == 0 {
 		return ""
 	}
-	return c.s.Type
+	return c.s.Type.Slice()[0]
 }
 
 func (c *COWSchema) SetType(v string) bool {
@@ -457,7 +456,7 @@ func (c *COWSchema) SetType(v string) bool {
 		return false
 	}
 	c.copyIfNeeded()
-	c.s.Type = v
+	c.s.Type = &openapi3.Types{v}
 	return true
 }
 

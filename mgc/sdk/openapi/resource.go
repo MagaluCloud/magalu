@@ -46,7 +46,7 @@ func collectOperations(
 ) *operationTable {
 	descs := []*operationDesc{}
 
-	for key, path := range doc.Paths {
+	for key, path := range doc.Paths.Map() {
 		pathOps := map[string]*openapi3.Operation{
 			"get":    path.Get,
 			"post":   path.Post,
