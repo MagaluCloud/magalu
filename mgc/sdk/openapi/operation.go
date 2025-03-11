@@ -669,6 +669,11 @@ func (o *operation) Execute(
 			_ = spinnerInfo.Stop()
 		}()
 	}
+
+	pathUrl := GetPathHostFlag(ctx)
+	hostUrl := GetUrlHostFlag(ctx)
+	schemaUrl := GetSchemaHostFlag(ctx)
+
 	m.Lock()
 	defer m.Unlock()
 	logger := o.logger.With("parameters", parameters, "configs", configs)
@@ -745,6 +750,17 @@ func (o *operation) Execute(
 		logger.Warnw("failed to create HTTP request", "error", err)
 		return nil, err
 	}
+
+	if schemaUrl != "" {
+		req.URL.Scheme = schemaUrl
+	}
+	if pathUrl != "" {
+		req.URL.Path = pathUrl
+	}
+	if hostUrl != "" {
+		req.URL.Host = hostUrl
+	}
+
 	logger.Debug("created HTTP request, now execute it...")
 	resp, err := client.Do(req)
 
