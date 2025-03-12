@@ -98,6 +98,10 @@ func buildCanonicalQuery(query url.Values) string {
 	pairs := make([]p, 0, len(query))
 	for key, values := range query {
 		for _, value := range values {
+			if key == "continuation-token" {
+				pairs = append(pairs, p{url.QueryEscape(key), url.QueryEscape(value)})
+				continue
+			}
 			pairs = append(pairs, p{url.QueryEscape(key), url.PathEscape(value)})
 		}
 	}
