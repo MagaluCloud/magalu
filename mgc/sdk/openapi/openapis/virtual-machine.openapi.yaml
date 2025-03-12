@@ -6,466 +6,6 @@ info:
         name: IaaS Products
     version: v1
 paths:
-    /v1/backups:
-        get:
-            tags:
-            - backups
-            summary: Lists all backups in the current tenant.
-            description: 'List Virtual Machine backups in the current tenant which
-                is logged in.
-
-
-                #### Notes
-
-                - You can use the **extend** argument to get more details from the
-                inner objects
-
-                like image or type.'
-            operationId: list_backups_v1_backups_get
-            parameters:
-            -   name: _limit
-                in: query
-                description: limit the number of the results
-                required: false
-                schema:
-                    exclusiveMinimum: false
-                    type: integer
-                    title: ' Limit'
-                    maximum: 1000
-                    description: limit the number of the results
-                    default: 50
-            -   name: _offset
-                in: query
-                description: pagination for the results limited
-                required: false
-                schema:
-                    type: integer
-                    title: ' Offset'
-                    maximum: 2147483647
-                    description: pagination for the results limited
-                    default: 0
-            -   name: _sort
-                in: query
-                description: order of the results using informed fields
-                required: false
-                schema:
-                    type: string
-                    title: ' Sort'
-                    pattern: ^(^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$
-                    description: order of the results using informed fields
-                    default: created_at:asc
-            -   name: expand
-                in: query
-                description: 'You can get more detailed info about: [''instance''] '
-                required: false
-                schema:
-                    type: array
-                    items:
-                        type: string
-                    title: Expand
-                    description: 'You can get more detailed info about: [''instance''] '
-                    default: []
-            responses:
-                '200':
-                    description: Successful Response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ListBackupResponse'
-                '400':
-                    description: Backup Not Allowed Exception
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ExceptionModel'
-                '404':
-                    description: Instance Not Found Exception
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ExceptionModel'
-                '409':
-                    description: Backup Validation Exception
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ExceptionModel'
-                '500':
-                    description: Internal Exception
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ExceptionModel'
-                '422':
-                    description: Validation Error
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/HTTPValidationError'
-            x-viveiro: false
-            x-mgc-hidden: true
-            security:
-            -   OAuth2:
-                - virtual-machine.read
-        post:
-            tags:
-            - backups
-            summary: Create a backup of a virtual machine asynchronously.
-            description: 'Create a backup of a Virtual Machine with the current tenant
-                which is logged in.
-
-
-                A Backup is ready for restore when it''s in completed status.
-
-
-                #### Rules
-
-                - It''s possible to create a maximum of 100 backups per virtual machine.
-
-                - In case quota reached, choose a backup to remove.
-
-                - You can inform ID or Name from a Virtual Machine if both informed
-                the priority will be ID.
-
-                - It''s only possible to create a backup of a valid virtual machine.
-
-                - Each backup must have a unique name. It''s not possible to create
-                backups with the same name.'
-            operationId: create_backup_v1_backups_post
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/BackupRequest'
-                required: true
-            responses:
-                '202':
-                    description: Successful Response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/CreateResponse'
-                '400':
-                    description: Backup Not Allowed Exception
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ExceptionModel'
-                '404':
-                    description: Instance Not Found Exception
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ExceptionModel'
-                '409':
-                    description: Backup Validation Exception
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ExceptionModel'
-                '500':
-                    description: Internal Exception
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ExceptionModel'
-                '422':
-                    description: Validation Error
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/HTTPValidationError'
-            x-viveiro: false
-            x-mgc-hidden: true
-            security:
-            -   OAuth2:
-                - virtual-machine.write
-    /v1/backups/{id}:
-        get:
-            tags:
-            - backups
-            summary: Retrieve the details of a backup.
-            description: 'Get a backup details for the current tenant which is logged
-                in.
-
-
-                #### Notes
-
-                - You can use the backup list command to retrieve all backups,
-
-                so you can get the id of the backup that you want to get details.
-
-
-                - You can use the **expand** argument to get more details from the
-                object
-
-                like instance.'
-            operationId: details_backup_v1_backups__id__get
-            parameters:
-            -   name: id
-                in: path
-                required: true
-                schema:
-                    type: string
-                    title: Id
-            -   name: expand
-                in: query
-                description: 'You can get more detailed info about: [''instance''] '
-                required: false
-                schema:
-                    type: array
-                    items:
-                        type: string
-                    title: Expand
-                    description: 'You can get more detailed info about: [''instance''] '
-                    default: []
-            responses:
-                '200':
-                    description: Successful Response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/BackupResponse'
-                '400':
-                    description: Backup Not Allowed Exception
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ExceptionModel'
-                '404':
-                    description: Instance Not Found Exception
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ExceptionModel'
-                '409':
-                    description: Backup Validation Exception
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ExceptionModel'
-                '500':
-                    description: Internal Exception
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ExceptionModel'
-                '422':
-                    description: Validation Error
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/HTTPValidationError'
-            x-viveiro: false
-            x-mgc-hidden: true
-            security:
-            -   OAuth2:
-                - virtual-machine.read
-        delete:
-            tags:
-            - backups
-            summary: Delete a backup of a virtual machine asynchronously.
-            description: delete a backup from instance
-            operationId: delete_backup_v1_backups__id__delete
-            parameters:
-            -   name: id
-                in: path
-                required: true
-                schema:
-                    type: string
-                    title: Id
-                    format: uuid
-            responses:
-                '204':
-                    description: Successful Response
-                '400':
-                    description: Backup Not Allowed Exception
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ExceptionModel'
-                '404':
-                    description: Instance Not Found Exception
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ExceptionModel'
-                '409':
-                    description: Backup Validation Exception
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ExceptionModel'
-                '500':
-                    description: Internal Exception
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ExceptionModel'
-                '422':
-                    description: Validation Error
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/HTTPValidationError'
-            x-viveiro: false
-            x-mgc-hidden: true
-            security:
-            -   OAuth2:
-                - virtual-machine.write
-    /v1/backups/{id}/rename:
-        patch:
-            tags:
-            - backups
-            summary: Renames a backup
-            description: 'Renames a backup with the id provided in the current tenant
-                which is logged in.
-
-
-                #### Rules
-
-                - You can use the backup list command to retrieve all backups, so
-                you can get the id of
-
-                the backup that you want to rename.
-
-                - A Backup can only renamed when it''s in completed status.
-
-                - Each backup must have a unique name.'
-            operationId: rename_backup_v1_backups__id__rename_patch
-            parameters:
-            -   name: id
-                in: path
-                required: true
-                schema:
-                    type: string
-                    title: Id
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/BackupRenameRequest'
-                required: true
-            responses:
-                '204':
-                    description: Successful Response
-                '400':
-                    description: Backup Not Allowed Exception
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ExceptionModel'
-                '404':
-                    description: Instance Not Found Exception
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ExceptionModel'
-                '409':
-                    description: Backup Validation Exception
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ExceptionModel'
-                '500':
-                    description: Internal Exception
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ExceptionModel'
-                '422':
-                    description: Validation Error
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/HTTPValidationError'
-            x-viveiro: false
-            x-mgc-hidden: true
-            security:
-            -   OAuth2:
-                - virtual-machine.write
-    /v1/backups/{id}/restore:
-        post:
-            tags:
-            - backups
-            summary: Restore a backup to a virtual machine
-            description: 'Restore a backup of a Virtual Machine with the current tenant
-                which is logged in. </br>
-
-                A Backup is ready for restore when it''s in completed status.
-
-
-                #### Notes
-
-                - You can verify the status of backup using the backup list command.
-
-                - Use machine-types list to see all machine types available.
-
-
-                #### Rules
-
-                - To restore a backup you have to inform the new virtual machine information.
-
-                - You can choose a machine-type that has a disk equal or larger
-
-                than the minimum disk of the backup.'
-            operationId: restore_backup_v1_backups__id__restore_post
-            parameters:
-            -   name: id
-                in: path
-                required: true
-                schema:
-                    type: string
-                    title: Id
-                    format: uuid
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/BackupRestoreRequestDefault'
-                required: true
-            responses:
-                '202':
-                    description: Successful Response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/CreateResponse'
-                '400':
-                    description: Backup Not Allowed Exception
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ExceptionModel'
-                '404':
-                    description: Instance Not Found Exception
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ExceptionModel'
-                '409':
-                    description: Backup Validation Exception
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ExceptionModel'
-                '500':
-                    description: Internal Exception
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ExceptionModel'
-                '422':
-                    description: Validation Error
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/HTTPValidationError'
-            x-viveiro: false
-            x-mgc-hidden: true
-            security:
-            -   OAuth2:
-                - virtual-machine.write
     /v1/images:
         get:
             tags:
@@ -499,15 +39,6 @@ paths:
                     title: ' Sort'
                     pattern: ^(^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$
                     default: platform:asc,end_life_at:desc
-            -   name: _labels
-                in: query
-                description: label-1, label2, label 3
-                required: false
-                schema:
-                    type: string
-                    title: ' Labels'
-                    description: label-1, label2, label 3
-                    default: ''
             -   name: availability-zone
                 in: query
                 description: br-ne1-a
@@ -524,7 +55,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/ListImageExternalV1'
+                                $ref: '#/components/schemas/PaginateListImageExternalV1'
                 '422':
                     description: Validation Error
                     content:
@@ -599,7 +130,14 @@ paths:
                     default: []
             -   name: x-api-version
                 in: header
+                description: api version
+                required: false
                 schema:
+                    anyOf:
+                    -   type: string
+                    title: X-Api-Version
+                    description: api version
+                    nullable: true
                     type: string
                     default: '1.1'
             responses:
@@ -608,7 +146,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/ListInstanceV1Response'
+                                $ref: '#/components/schemas/PaginateListInstanceV1Response'
                 '400':
                     description: Instance Not Allowed Exception
                     content:
@@ -988,7 +526,14 @@ paths:
                     - machine-type
             -   name: x-api-version
                 in: header
+                description: api version
+                required: false
                 schema:
+                    anyOf:
+                    -   type: string
+                    title: X-Api-Version
+                    description: api version
+                    nullable: true
                     type: string
                     default: '1.1'
             responses:
@@ -1849,7 +1394,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/InstanceTypesV1ListResponse'
+                                $ref: '#/components/schemas/PaginateInstanceTypesV1ListResponse'
                 '422':
                     description: Validation Error
                     content:
@@ -1927,7 +1472,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/ListSnapshotResponseV1'
+                                $ref: '#/components/schemas/PaginateListSnapshotResponseV1'
                 '400':
                     description: Snapshot Not Allowed Exception
                     content:
@@ -2515,222 +2060,6 @@ paths:
                 - virtual-machine.write
 components:
     schemas:
-        BackupRenameRequest:
-            type: object
-            properties:
-                name:
-                    type: string
-                    title: Name
-                    maxLength: 255
-                    minLength: 1
-            title: BackupRenameRequest
-            required:
-            - name
-            example:
-                name: new backup name
-        BackupRequest:
-            type: object
-            properties:
-                name:
-                    type: string
-                    title: Name
-                    maxLength: 255
-                    minLength: 1
-                instance:
-                    anyOf:
-                    -   $ref: '#/components/schemas/ID'
-                    -   $ref: '#/components/schemas/Name'
-                    title: Instance
-            title: BackupRequest
-            required:
-            - name
-            - instance
-            example:
-                instance:
-                    id: 4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a
-                name: backup name
-        BackupResponse:
-            type: object
-            properties:
-                id:
-                    type: string
-                    title: Id
-                name:
-                    type: string
-                    title: Name
-                backup_type:
-                    type: string
-                    title: Backup Type
-                instance:
-                    anyOf:
-                    -   $ref: '#/components/schemas/InstanceResponseBackupV1'
-                    -   $ref: '#/components/schemas/InstanceSimpleResponseBackupV1'
-                    title: Instance
-                status:
-                    type: string
-                    title: BackupStatus
-                    enum:
-                    - provisioning
-                    - restoring
-                    - creating
-                    - completed
-                    - error
-                    - deleting
-                    - deleted
-                    - pending_copy
-                    - copying
-                    - copy_error
-                state:
-                    type: string
-                    title: BackupState
-                    enum:
-                    - new
-                    - available
-                    - deleted
-                    - error
-                size:
-                    anyOf:
-                    -   type: integer
-                    title: Size
-                    nullable: true
-                min_disk:
-                    anyOf:
-                    -   type: integer
-                    title: Min Disk
-                    nullable: true
-                created_at:
-                    type: string
-                    title: Created At
-                    example: '2022-01-01T00:00:10Z'
-                updated_at:
-                    anyOf:
-                    -   type: string
-                        example: '2022-01-01T00:00:10Z'
-                    title: Updated At
-                    nullable: true
-            title: BackupResponse
-            required:
-            - id
-            - name
-            - backup_type
-            - instance
-            - status
-            - state
-            - created_at
-            example:
-                backup_type: daily
-                created_at: '2022-06-10T18:33:12Z'
-                id: 2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6
-                instance:
-                    id: 4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a
-                min_disk: 10
-                name: backup name
-                size: 1000
-                state: available
-                status: completed
-                updated_at: '2022-06-11T18:33:12Z'
-        BackupRestoreRequestDefault:
-            type: object
-            properties:
-                name:
-                    type: string
-                    title: Name
-                    maxLength: 255
-                    minLength: 1
-                machine_type:
-                    anyOf:
-                    -   $ref: '#/components/schemas/ID'
-                    -   $ref: '#/components/schemas/Name'
-                    title: Machine Type
-                ssh_key_name:
-                    type: string
-                    title: Ssh Key Name
-                availability_zone:
-                    anyOf:
-                    -   type: string
-                        maxLength: 255
-                        minLength: 1
-                    title: Availability Zone
-                    nullable: true
-                network:
-                    type: object
-                    properties:
-                        vpc:
-                            anyOf:
-                            -   $ref: '#/components/schemas/ID'
-                            -   $ref: '#/components/schemas/Name'
-                            title: Vpc
-                            default:
-                                name: vpc_default
-                        interface:
-                            anyOf:
-                            -   $ref: '#/components/schemas/ID'
-                            -   $ref: '#/components/schemas/SecurityGroups'
-                            title: Interface
-                            nullable: true
-                        associate_public_ip:
-                            type: boolean
-                            title: Associate Public Ip
-                            default: true
-                    title: InstanceCreateRequestV1NetworkDefault
-                    example:
-                        associate_public_ip: true
-                        interface:
-                            security_groups:
-                            -   id: f273fbde-2ddf-4dcd-8c41-342671ac0d17
-                            -   id: 02a2acf3-d6db-4424-ac97-0254cb9c329e
-                        vpc:
-                            id: 2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6
-                user_data:
-                    anyOf:
-                    -   type: string
-                        maxLength: 65000
-                        minLength: 1
-                    title: User Data
-                    nullable: true
-            title: BackupRestoreRequestDefault
-            required:
-            - name
-            - machine_type
-            - ssh_key_name
-            - network
-            example:
-                availability_zone: br-regiao-1a
-                machine_type:
-                    id: 4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a
-                name: instance name
-                network:
-                    associate_public_ip: true
-                    interface:
-                        security_groups:
-                        -   id: f273fbde-2ddf-4dcd-8c41-342671ac0d17
-                        -   id: 02a2acf3-d6db-4424-ac97-0254cb9c329e
-                    vpc:
-                        id: 4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a
-                ssh_key_name: keypair_name_here
-                user_data: some_base64_script
-        BackupState:
-            type: string
-            title: BackupState
-            enum:
-            - new
-            - available
-            - deleted
-            - error
-        BackupStatus:
-            type: string
-            title: BackupStatus
-            enum:
-            - provisioning
-            - restoring
-            - creating
-            - completed
-            - error
-            - deleting
-            - deleted
-            - pending_copy
-            - copying
-            - copy_error
         CreateResponse:
             type: object
             properties:
@@ -2869,6 +2198,7 @@ components:
                     - creating
                     - importing
                     - error
+                    - deleting_error
                 version:
                     anyOf:
                     -   type: string
@@ -2964,6 +2294,7 @@ components:
             - creating
             - importing
             - error
+            - deleting_error
         InstanceAccessResponseWithPass:
             type: object
             properties:
@@ -3076,6 +2407,13 @@ components:
                             type: string
                     title: Labels
                     nullable: true
+                volumes:
+                    type: array
+                    items:
+                        anyOf:
+                        -   $ref: '#/components/schemas/ID'
+                        -   $ref: '#/components/schemas/Name'
+                    title: Volumes
             title: InstanceCreateRequestV1Default
             required:
             - name
@@ -3101,6 +2439,7 @@ components:
                         id: 2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6
                 ssh_key_name: keypair_name_here
                 user_data: some_base64_script
+                volumes: []
         InstanceCreateRequestV1NetworkDefault:
             type: object
             properties:
@@ -3130,47 +2469,6 @@ components:
                     -   id: 02a2acf3-d6db-4424-ac97-0254cb9c329e
                 vpc:
                     id: 2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6
-        InstanceResponseBackupV1:
-            type: object
-            properties:
-                id:
-                    type: string
-                    title: Id
-                name:
-                    type: string
-                    title: Name
-                status:
-                    type: string
-                    title: Status
-                state:
-                    type: string
-                    title: State
-                image:
-                    anyOf:
-                    -   $ref: '#/components/schemas/ImageInstanceV1Response'
-                    -   $ref: '#/components/schemas/ImageExtendResponse'
-                    title: Image
-                machine_type:
-                    anyOf:
-                    -   $ref: '#/components/schemas/InstanceTypeForInstanceV1Response'
-                    -   $ref: '#/components/schemas/InstanceTypesExtendResponse'
-                    title: Machine Type
-            title: InstanceResponseBackupV1
-            required:
-            - id
-            - name
-            - status
-            - state
-            - image
-            - machine_type
-            example:
-                instance:
-                    id: 4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a
-                    image:
-                        id: 4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a
-                    machine_type:
-                        id: 4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a
-                    name: instance name
         InstanceResponseSnapshotV1:
             type: object
             properties:
@@ -3215,23 +2513,6 @@ components:
             example:
                 machine_type:
                     id: 2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6
-        InstanceSimpleResponseBackupV1:
-            type: object
-            properties:
-                id:
-                    anyOf:
-                    -   type: string
-                    title: Id
-                    nullable: true
-            title: InstanceSimpleResponseBackupV1
-            example:
-                instance:
-                    id: 4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a
-                    image:
-                        id: 4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a
-                    machine_type:
-                        id: 4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a
-                    name: instance name
         InstanceTypeForInstanceV1Response:
             type: object
             properties:
@@ -3269,34 +2550,9 @@ components:
             example:
                 disk: 10
                 id: 3a4dc05b-eb10-42ec-8c0c-848e06f7aded
-                name: abc.small
+                name: BV1-1-40
                 ram: 2
                 vcpus: 2
-        InstanceTypesV1ListResponse:
-            type: object
-            properties:
-                machine_types:
-                    type: array
-                    items:
-                        anyOf:
-                        -   $ref: '#/components/schemas/InstanceTypesV1PortalResponse'
-                        -   $ref: '#/components/schemas/InstanceTypesV1Response'
-                    title: Machine Types
-            title: InstanceTypesV1ListResponse
-            required:
-            - machine_types
-            example:
-                machine_types:
-                -   availability_zones:
-                    - br-ne-1-a
-                    disk: 10
-                    gpu: 1
-                    id: 3a4dc05b-eb10-42ec-8c0c-848e06f7aded
-                    name: abc.small
-                    ram: 2
-                    sku: some_sku
-                    status: active
-                    vcpus: 2
         InstanceTypesV1PortalResponse:
             type: object
             properties:
@@ -3345,7 +2601,7 @@ components:
                 disk: 10
                 gpu: 1
                 id: 3a4dc05b-eb10-42ec-8c0c-848e06f7aded
-                name: abc.small
+                name: BV1-1-40
                 ram: 2
                 sku: some_sku
                 status: active
@@ -3402,7 +2658,7 @@ components:
                 disk: 10
                 gpu: 0
                 id: c78b759d-af80-4489-acf1-04c48851f273
-                name: instance_type_name_0102
+                name: BV1-1-40
                 ram: 1024
                 sku: sku0102
                 status: active
@@ -3441,6 +2697,7 @@ components:
                     - provisioning
                     - creating
                     - creating_error
+                    - creating_error_gpu
                     - creating_network_error
                     - creating_error_quota
                     - creating_error_quota_ram
@@ -3459,12 +2716,16 @@ components:
                     - retyping_error_quota
                     - stopping_pending
                     - stopping
+                    - stopping_error
                     - suspending_pending
                     - suspending
+                    - suspending_error
                     - rebooting_pending
                     - rebooting
+                    - rebooting_error
                     - starting_pending
                     - starting
+                    - starting_error
                     - deleting_pending
                     - deleting
                     - deleting_error
@@ -3512,6 +2773,7 @@ components:
                 network:
                     anyOf:
                     -   $ref: '#/components/schemas/NetworkPortsV1'
+                    -   $ref: '#/components/schemas/NetworkPortsNew'
                     -   $ref: '#/components/schemas/NetworkPortsV1Expand'
                     -   $ref: '#/components/schemas/NetworkPortsNewExpand'
                     title: Network
@@ -3540,7 +2802,7 @@ components:
                 created_at: '2022-06-10T18:33:12Z'
                 error:
                     message: An error occurred while creating your instance. Please
-                        contact our support for assistance.
+                        try again later or contact support for assistance.
                     slug: create_instance.keypair.not_found
                 id: 2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6
                 image:
@@ -3557,7 +2819,7 @@ components:
                 ssh_key_name: keypair_name_here
                 state: running
                 status: completed
-                updated_at: '2022-06-11T18:33:12Z'
+                updated_at: '2022-06-10T18:33:12Z'
                 user_data: some_base_64_str
         InstanceV1State:
             type: string
@@ -3580,6 +2842,7 @@ components:
             - provisioning
             - creating
             - creating_error
+            - creating_error_gpu
             - creating_network_error
             - creating_error_quota
             - creating_error_quota_ram
@@ -3598,12 +2861,16 @@ components:
             - retyping_error_quota
             - stopping_pending
             - stopping
+            - stopping_error
             - suspending_pending
             - suspending
+            - suspending_error
             - rebooting_pending
             - rebooting
+            - rebooting_error
             - starting_pending
             - starting
+            - starting_error
             - deleting_pending
             - deleting
             - deleting_error
@@ -3632,34 +2899,151 @@ components:
                     title: Publicipaddress
                     nullable: true
                 privateIpAddress:
-                    type: string
+                    anyOf:
+                    -   type: string
                     title: Privateipaddress
+                    nullable: true
                 ipV6Address:
                     anyOf:
                     -   type: string
                     title: Ipv6Address
                     nullable: true
             title: IpAddressExpand
-            required:
-            - privateIpAddress
         IpAddressNewExpand:
             type: object
             properties:
                 private_ipv4:
-                    type: string
+                    anyOf:
+                    -   type: string
                     title: Private Ipv4
+                    nullable: true
                 public_ipv6:
                     anyOf:
                     -   type: string
                     title: Public Ipv6
                     nullable: true
             title: IpAddressNewExpand
-            required:
-            - private_ipv4
-        ListBackupResponse:
+        Meta:
             type: object
             properties:
-                backups:
+                page:
+                    type: object
+                    properties:
+                        limit:
+                            type: integer
+                            title: Limit
+                        offset:
+                            type: integer
+                            title: Offset
+                        count:
+                            type: integer
+                            title: Count
+                        total:
+                            type: integer
+                            title: Total
+                    title: MetaPage
+                    required:
+                    - limit
+                    - offset
+                    - count
+                    - total
+            title: Meta
+            required:
+            - page
+        MetaPage:
+            type: object
+            properties:
+                limit:
+                    type: integer
+                    title: Limit
+                offset:
+                    type: integer
+                    title: Offset
+                count:
+                    type: integer
+                    title: Count
+                total:
+                    type: integer
+                    title: Total
+            title: MetaPage
+            required:
+            - limit
+            - offset
+            - count
+            - total
+        NICRequest:
+            type: object
+            properties:
+                instance:
+                    anyOf:
+                    -   $ref: '#/components/schemas/ID'
+                    -   $ref: '#/components/schemas/Name'
+                    title: Instance
+                network:
+                    type: object
+                    properties:
+                        interface:
+                            type: object
+                            properties:
+                                id:
+                                    type: string
+                                    title: Id
+                                    maxLength: 255
+                                    minLength: 1
+                            title: ID
+                            required:
+                            - id
+                            example:
+                                id: 9ec75090-2872-4f51-8111-53d05d96d2c6
+                    title: NICRequestInterfaceField
+                    required:
+                    - interface
+            title: NICRequest
+            required:
+            - instance
+            - network
+            example:
+                instance:
+                    id: c47e974f-8002-46e9-8a63-d66505be2aa1
+                network:
+                    interface:
+                        id: 31dcb3ea-9320-4122-8fea-3a3b06114ca1
+        NICRequestInterfaceField:
+            type: object
+            properties:
+                interface:
+                    type: object
+                    properties:
+                        id:
+                            type: string
+                            title: Id
+                            maxLength: 255
+                            minLength: 1
+                    title: ID
+                    required:
+                    - id
+                    example:
+                        id: 9ec75090-2872-4f51-8111-53d05d96d2c6
+            title: NICRequestInterfaceField
+            required:
+            - interface
+        Name:
+            type: object
+            properties:
+                name:
+                    type: string
+                    title: Name
+                    maxLength: 255
+                    minLength: 1
+            title: Name
+            required:
+            - name
+            example:
+                name: some_resource_name
+        NetworkPortsNew:
+            type: object
+            properties:
+                interfaces:
                     type: array
                     items:
                         type: object
@@ -3667,98 +3051,186 @@ components:
                             id:
                                 type: string
                                 title: Id
-                            name:
-                                type: string
-                                title: Name
-                            backup_type:
-                                type: string
-                                title: Backup Type
-                            instance:
-                                anyOf:
-                                -   $ref: '#/components/schemas/InstanceResponseBackupV1'
-                                -   $ref: '#/components/schemas/InstanceSimpleResponseBackupV1'
-                                title: Instance
-                            status:
-                                type: string
-                                title: BackupStatus
-                                enum:
-                                - provisioning
-                                - restoring
-                                - creating
-                                - completed
-                                - error
-                                - deleting
-                                - deleted
-                                - pending_copy
-                                - copying
-                                - copy_error
-                            state:
-                                type: string
-                                title: BackupState
-                                enum:
-                                - new
-                                - available
-                                - deleted
-                                - error
-                            size:
-                                anyOf:
-                                -   type: integer
-                                title: Size
-                                nullable: true
-                            min_disk:
-                                anyOf:
-                                -   type: integer
-                                title: Min Disk
-                                nullable: true
-                            created_at:
-                                type: string
-                                title: Created At
-                                example: '2022-01-01T00:00:10Z'
-                            updated_at:
-                                anyOf:
-                                -   type: string
-                                    example: '2022-01-01T00:00:10Z'
-                                title: Updated At
-                                nullable: true
-                        title: BackupResponse
+                        title: PortID
                         required:
                         - id
-                        - name
-                        - backup_type
-                        - instance
-                        - status
-                        - state
-                        - created_at
                         example:
-                            backup_type: daily
-                            created_at: '2022-06-10T18:33:12Z'
-                            id: 2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6
-                            instance:
-                                id: 4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a
-                            min_disk: 10
-                            name: backup name
-                            size: 1000
-                            state: available
-                            status: completed
-                            updated_at: '2022-06-11T18:33:12Z'
-                    title: Backups
-            title: ListBackupResponse
+                            id: c47e974f-8002-46e9-8a63-d66505be2aa1
+                    title: Interfaces
+            title: NetworkPortsNew
             required:
-            - backups
+            - interfaces
+        NetworkPortsNewExpand:
+            type: object
+            properties:
+                vpc:
+                    anyOf:
+                    -   $ref: '#/components/schemas/VpcV1Expand'
+                    nullable: true
+                interfaces:
+                    anyOf:
+                    -   type: array
+                        items:
+                            type: object
+                            properties:
+                                id:
+                                    type: string
+                                    title: Id
+                                name:
+                                    type: string
+                                    title: Name
+                                security_groups:
+                                    type: array
+                                    items:
+                                        type: string
+                                    title: Security Groups
+                                    default: []
+                                primary:
+                                    type: boolean
+                                    title: Primary
+                                    default: true
+                                associated_public_ipv4:
+                                    anyOf:
+                                    -   type: string
+                                    title: Associated Public Ipv4
+                                    nullable: true
+                                ip_addresses:
+                                    anyOf:
+                                    -   $ref: '#/components/schemas/IpAddressNewExpand'
+                                    nullable: true
+                            title: PortNewExpand
+                            required:
+                            - id
+                            - name
+                    title: Interfaces
+                    nullable: true
+            title: NetworkPortsNewExpand
+        NetworkPortsV1:
+            type: object
+            properties:
+                ports:
+                    type: array
+                    items:
+                        type: object
+                        properties:
+                            id:
+                                type: string
+                                title: Id
+                        title: PortID
+                        required:
+                        - id
+                        example:
+                            id: c47e974f-8002-46e9-8a63-d66505be2aa1
+                    title: Ports
+            title: NetworkPortsV1
+            required:
+            - ports
+        NetworkPortsV1Expand:
+            type: object
+            properties:
+                vpc:
+                    anyOf:
+                    -   $ref: '#/components/schemas/VpcV1Expand'
+                    nullable: true
+                ports:
+                    anyOf:
+                    -   type: array
+                        items:
+                            type: object
+                            properties:
+                                id:
+                                    type: string
+                                    title: Id
+                                name:
+                                    type: string
+                                    title: Name
+                                ipAddresses:
+                                    type: object
+                                    properties:
+                                        publicIpAddress:
+                                            anyOf:
+                                            -   type: string
+                                            title: Publicipaddress
+                                            nullable: true
+                                        privateIpAddress:
+                                            anyOf:
+                                            -   type: string
+                                            title: Privateipaddress
+                                            nullable: true
+                                        ipV6Address:
+                                            anyOf:
+                                            -   type: string
+                                            title: Ipv6Address
+                                            nullable: true
+                                    title: IpAddressExpand
+                            title: PortV1Expand
+                            required:
+                            - id
+                            - name
+                            - ipAddresses
+                    title: Ports
+                    nullable: true
+            title: NetworkPortsV1Expand
+        PaginateInstanceTypesV1ListResponse:
+            type: object
+            properties:
+                machine_types:
+                    type: array
+                    items:
+                        anyOf:
+                        -   $ref: '#/components/schemas/InstanceTypesV1PortalResponse'
+                        -   $ref: '#/components/schemas/InstanceTypesV1Response'
+                    title: Machine Types
+                meta:
+                    type: object
+                    properties:
+                        page:
+                            type: object
+                            properties:
+                                limit:
+                                    type: integer
+                                    title: Limit
+                                offset:
+                                    type: integer
+                                    title: Offset
+                                count:
+                                    type: integer
+                                    title: Count
+                                total:
+                                    type: integer
+                                    title: Total
+                            title: MetaPage
+                            required:
+                            - limit
+                            - offset
+                            - count
+                            - total
+                    title: Meta
+                    required:
+                    - page
+            title: PaginateInstanceTypesV1ListResponse
+            required:
+            - machine_types
+            - meta
             example:
-                backups:
-                -   backup_type: daily
-                    created_at: '2022-06-10T18:33:12Z'
-                    id: 2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6
-                    instance:
-                        id: 4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a
-                    min_disk: 10
-                    name: backup name ffff
-                    size: 1000
-                    state: available
-                    status: completed
-                    updated_at: '2022-06-11T18:33:12Z'
-        ListImageExternalV1:
+                machine_types:
+                -   availability_zones:
+                    - br-ne-1-a
+                    disk: 10
+                    gpu: 1
+                    id: 3a4dc05b-eb10-42ec-8c0c-848e06f7aded
+                    name: BV1-1-40
+                    ram: 2
+                    sku: some_sku
+                    status: active
+                    vcpus: 2
+                meta:
+                    page:
+                        count: 50
+                        limit: 50
+                        offset: 0
+                        total: 100
+        PaginateListImageExternalV1:
             type: object
             properties:
                 images:
@@ -3783,6 +3255,7 @@ components:
                                 - creating
                                 - importing
                                 - error
+                                - deleting_error
                             version:
                                 anyOf:
                                 -   type: string
@@ -3868,9 +3341,37 @@ components:
                             status: active
                             version: '22.10'
                     title: Images
-            title: ListImageExternalV1
+                meta:
+                    type: object
+                    properties:
+                        page:
+                            type: object
+                            properties:
+                                limit:
+                                    type: integer
+                                    title: Limit
+                                offset:
+                                    type: integer
+                                    title: Offset
+                                count:
+                                    type: integer
+                                    title: Count
+                                total:
+                                    type: integer
+                                    title: Total
+                            title: MetaPage
+                            required:
+                            - limit
+                            - offset
+                            - count
+                            - total
+                    title: Meta
+                    required:
+                    - page
+            title: PaginateListImageExternalV1
             required:
             - images
+            - meta
             example:
                 images:
                 -   availability_zones:
@@ -3891,7 +3392,13 @@ components:
                     release_at: '2022-06-10T18:33:12Z'
                     status: active
                     version: '22.10'
-        ListInstanceV1Response:
+                meta:
+                    page:
+                        count: 50
+                        limit: 50
+                        offset: 0
+                        total: 100
+        PaginateListInstanceV1Response:
             type: object
             properties:
                 instances:
@@ -3930,6 +3437,7 @@ components:
                                 - provisioning
                                 - creating
                                 - creating_error
+                                - creating_error_gpu
                                 - creating_network_error
                                 - creating_error_quota
                                 - creating_error_quota_ram
@@ -3948,12 +3456,16 @@ components:
                                 - retyping_error_quota
                                 - stopping_pending
                                 - stopping
+                                - stopping_error
                                 - suspending_pending
                                 - suspending
+                                - suspending_error
                                 - rebooting_pending
                                 - rebooting
+                                - rebooting_error
                                 - starting_pending
                                 - starting
+                                - starting_error
                                 - deleting_pending
                                 - deleting
                                 - deleting_error
@@ -3997,6 +3509,7 @@ components:
                             network:
                                 anyOf:
                                 -   $ref: '#/components/schemas/NetworkPortsV1'
+                                -   $ref: '#/components/schemas/NetworkPortsNew'
                                 -   $ref: '#/components/schemas/NetworkPortsV1Expand'
                                 -   $ref: '#/components/schemas/NetworkPortsNewExpand'
                                 title: Network
@@ -4025,7 +3538,8 @@ components:
                             created_at: '2022-06-10T18:33:12Z'
                             error:
                                 message: An error occurred while creating your instance.
-                                    Please contact our support for assistance.
+                                    Please try again later or contact support for
+                                    assistance.
                                 slug: create_instance.keypair.not_found
                             id: 2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6
                             image:
@@ -4042,19 +3556,47 @@ components:
                             ssh_key_name: keypair_name_here
                             state: running
                             status: completed
-                            updated_at: '2022-06-11T18:33:12Z'
+                            updated_at: '2022-06-10T18:33:12Z'
                             user_data: some_base_64_str
                     title: Instances
-            title: ListInstanceV1Response
+                meta:
+                    type: object
+                    properties:
+                        page:
+                            type: object
+                            properties:
+                                limit:
+                                    type: integer
+                                    title: Limit
+                                offset:
+                                    type: integer
+                                    title: Offset
+                                count:
+                                    type: integer
+                                    title: Count
+                                total:
+                                    type: integer
+                                    title: Total
+                            title: MetaPage
+                            required:
+                            - limit
+                            - offset
+                            - count
+                            - total
+                    title: Meta
+                    required:
+                    - page
+            title: PaginateListInstanceV1Response
             required:
             - instances
+            - meta
             example:
                 instances:
                 -   availability_zone: br-regiao-1a
                     created_at: '2022-06-10T18:33:12Z'
                     error:
                         message: An error occurred while creating your instance. Please
-                            contact our support for assistance.
+                            try again later or contact support for assistance.
                         slug: create_instance.keypair.not_found
                     id: 2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6
                     image:
@@ -4071,9 +3613,15 @@ components:
                     ssh_key_name: keypair_name_here
                     state: running
                     status: completed
-                    updated_at: '2022-06-11T18:33:12Z'
+                    updated_at: '2022-06-10T18:33:12Z'
                     user_data: base64_data
-        ListSnapshotResponseV1:
+                meta:
+                    page:
+                        count: 50
+                        limit: 50
+                        offset: 0
+                        total: 100
+        PaginateListSnapshotResponseV1:
             type: object
             properties:
                 snapshots:
@@ -4133,12 +3681,46 @@ components:
                             size: 1000
                             state: available
                             status: completed
-                            updated_at: '2022-06-11T18:33:12Z'
+                            updated_at: '2022-06-10T18:33:12Z'
                     title: Snapshots
-            title: ListSnapshotResponseV1
+                meta:
+                    type: object
+                    properties:
+                        page:
+                            type: object
+                            properties:
+                                limit:
+                                    type: integer
+                                    title: Limit
+                                offset:
+                                    type: integer
+                                    title: Offset
+                                count:
+                                    type: integer
+                                    title: Count
+                                total:
+                                    type: integer
+                                    title: Total
+                            title: MetaPage
+                            required:
+                            - limit
+                            - offset
+                            - count
+                            - total
+                    title: Meta
+                    required:
+                    - page
+            title: PaginateListSnapshotResponseV1
             required:
             - snapshots
+            - meta
             example:
+                meta:
+                    page:
+                        count: 50
+                        limit: 50
+                        offset: 0
+                        total: 100
                 snapshots:
                 -   created_at: '2022-06-10T18:33:12Z'
                     id: 4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a
@@ -4152,198 +3734,7 @@ components:
                     size: 1000
                     state: available
                     status: completed
-                    updated_at: '2022-06-11T18:33:12Z'
-        NICRequest:
-            type: object
-            properties:
-                instance:
-                    anyOf:
-                    -   $ref: '#/components/schemas/ID'
-                    -   $ref: '#/components/schemas/Name'
-                    title: Instance
-                network:
-                    type: object
-                    properties:
-                        interface:
-                            type: object
-                            properties:
-                                id:
-                                    type: string
-                                    title: Id
-                                    maxLength: 255
-                                    minLength: 1
-                            title: ID
-                            required:
-                            - id
-                            example:
-                                id: 9ec75090-2872-4f51-8111-53d05d96d2c6
-                    title: NICRequestInterfaceField
-                    required:
-                    - interface
-            title: NICRequest
-            required:
-            - instance
-            - network
-            example:
-                instance:
-                    id: c47e974f-8002-46e9-8a63-d66505be2aa1
-                network:
-                    interface:
-                        id: 31dcb3ea-9320-4122-8fea-3a3b06114ca1
-        NICRequestInterfaceField:
-            type: object
-            properties:
-                interface:
-                    type: object
-                    properties:
-                        id:
-                            type: string
-                            title: Id
-                            maxLength: 255
-                            minLength: 1
-                    title: ID
-                    required:
-                    - id
-                    example:
-                        id: 9ec75090-2872-4f51-8111-53d05d96d2c6
-            title: NICRequestInterfaceField
-            required:
-            - interface
-        Name:
-            type: object
-            properties:
-                name:
-                    type: string
-                    title: Name
-                    maxLength: 255
-                    minLength: 1
-            title: Name
-            required:
-            - name
-            example:
-                name: some_resource_name
-        NetworkPortsNewExpand:
-            type: object
-            properties:
-                vpc:
-                    anyOf:
-                    -   $ref: '#/components/schemas/VpcV1Expand'
-                    nullable: true
-                interfaces:
-                    anyOf:
-                    -   type: array
-                        items:
-                            type: object
-                            properties:
-                                id:
-                                    type: string
-                                    title: Id
-                                name:
-                                    type: string
-                                    title: Name
-                                security_groups:
-                                    type: array
-                                    items:
-                                        type: string
-                                    title: Security Groups
-                                    default: []
-                                primary:
-                                    type: boolean
-                                    title: Primary
-                                    default: true
-                                associated_public_ipv4:
-                                    anyOf:
-                                    -   type: string
-                                    title: Associated Public Ipv4
-                                    nullable: true
-                                ip_addresses:
-                                    type: object
-                                    properties:
-                                        private_ipv4:
-                                            type: string
-                                            title: Private Ipv4
-                                        public_ipv6:
-                                            anyOf:
-                                            -   type: string
-                                            title: Public Ipv6
-                                            nullable: true
-                                    title: IpAddressNewExpand
-                                    required:
-                                    - private_ipv4
-                            title: PortNewExpand
-                            required:
-                            - id
-                            - name
-                            - ip_addresses
-                    title: Interfaces
-                    nullable: true
-            title: NetworkPortsNewExpand
-        NetworkPortsV1:
-            type: object
-            properties:
-                ports:
-                    type: array
-                    items:
-                        type: object
-                        properties:
-                            id:
-                                type: string
-                                title: Id
-                        title: PortID
-                        required:
-                        - id
-                        example:
-                            id: c47e974f-8002-46e9-8a63-d66505be2aa1
-                    title: Ports
-            title: NetworkPortsV1
-            required:
-            - ports
-        NetworkPortsV1Expand:
-            type: object
-            properties:
-                vpc:
-                    anyOf:
-                    -   $ref: '#/components/schemas/VpcV1Expand'
-                    nullable: true
-                ports:
-                    anyOf:
-                    -   type: array
-                        items:
-                            type: object
-                            properties:
-                                id:
-                                    type: string
-                                    title: Id
-                                name:
-                                    type: string
-                                    title: Name
-                                ipAddresses:
-                                    type: object
-                                    properties:
-                                        publicIpAddress:
-                                            anyOf:
-                                            -   type: string
-                                            title: Publicipaddress
-                                            nullable: true
-                                        privateIpAddress:
-                                            type: string
-                                            title: Privateipaddress
-                                        ipV6Address:
-                                            anyOf:
-                                            -   type: string
-                                            title: Ipv6Address
-                                            nullable: true
-                                    title: IpAddressExpand
-                                    required:
-                                    - privateIpAddress
-                            title: PortV1Expand
-                            required:
-                            - id
-                            - name
-                            - ipAddresses
-                    title: Ports
-                    nullable: true
-            title: NetworkPortsV1Expand
+                    updated_at: '2022-06-10T18:33:12Z'
         PortID:
             type: object
             properties:
@@ -4380,24 +3771,13 @@ components:
                     title: Associated Public Ipv4
                     nullable: true
                 ip_addresses:
-                    type: object
-                    properties:
-                        private_ipv4:
-                            type: string
-                            title: Private Ipv4
-                        public_ipv6:
-                            anyOf:
-                            -   type: string
-                            title: Public Ipv6
-                            nullable: true
-                    title: IpAddressNewExpand
-                    required:
-                    - private_ipv4
+                    anyOf:
+                    -   $ref: '#/components/schemas/IpAddressNewExpand'
+                    nullable: true
             title: PortNewExpand
             required:
             - id
             - name
-            - ip_addresses
         PortV1Expand:
             type: object
             properties:
@@ -4416,16 +3796,16 @@ components:
                             title: Publicipaddress
                             nullable: true
                         privateIpAddress:
-                            type: string
+                            anyOf:
+                            -   type: string
                             title: Privateipaddress
+                            nullable: true
                         ipV6Address:
                             anyOf:
                             -   type: string
                             title: Ipv6Address
                             nullable: true
                     title: IpAddressExpand
-                    required:
-                    - privateIpAddress
             title: PortV1Expand
             required:
             - id
@@ -4563,7 +3943,7 @@ components:
                 size: 1000
                 state: available
                 status: completed
-                updated_at: '2022-06-11T18:33:12Z'
+                updated_at: '2022-06-10T18:33:12Z'
         SnapshotRestoreRequestV1Default:
             type: object
             properties:
@@ -4588,6 +3968,7 @@ components:
                         maxLength: 255
                         minLength: 1
                     title: Availability Zone
+                    default: br-ne1-a
                     nullable: true
                 network:
                     anyOf:

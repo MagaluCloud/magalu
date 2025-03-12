@@ -29,9 +29,20 @@ install, visit the official link with the instructions.
 There are some utility scripts written in [Python](https://www.python.org/downloads/).
 For this, [Poetry](https://python-poetry.org/) is used. Check [Poetry.md](Poetry.md) for instructions.
 
-## Running the CLI
+## Building and running locally
 
-See [cli/RUNNING.md](./mgc/cli/RUNNING.md)
+Building needs [goreleaser](https://goreleaser.com/install/) and can be done using a Makefile target:
+
+```bash
+$ make build-local
+```
+
+If all goes well, the output binary will be a platform-dependent directory, where it can be run:
+
+```bash
+$ cd dist/mgc_<your_platform>
+$ ./mgc
+```
 
 ## OpenAPI
 
