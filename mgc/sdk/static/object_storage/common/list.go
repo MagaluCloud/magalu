@@ -154,7 +154,6 @@ func newListRequest(ctx context.Context, cfg Config, bucketURI mgcSchemaPkg.URI,
 		listReqQuery.Set("delimiter", delimiter)
 	}
 	url.RawQuery = listReqQuery.Encode()
-
 	return http.NewRequestWithContext(ctx, http.MethodGet, url.String(), nil)
 }
 
@@ -169,9 +168,15 @@ func buildListRequestURL(cfg Config, bucketURI mgcSchemaPkg.URI) (*url.URL, erro
 		if lastChar != delimiter {
 			path += delimiter
 		}
-		q.Set("prefix", path)
+		encodedPath := url.PathEscape(path)
+
+		if len(q) > 0 {
+			u.RawQuery = u.RawQuery + "&prefix=" + encodedPath
+		} else {
+			u.RawQuery = "prefix=" + encodedPath
+		}
 	}
-	u.RawQuery = q.Encode()
+
 	return u, nil
 }
 
@@ -181,7 +186,6 @@ func ListGenerator(ctx context.Context, params ListObjectsParams, cfg Config, on
 
 	logger := listObjectsLogger().Named("ListGenerator").With(
 		"params", params,
-		"cfg", cfg,
 	)
 
 	generator := func() {
@@ -198,17 +202,19 @@ func ListGenerator(ctx context.Context, params ListObjectsParams, cfg Config, on
 			requestedItems = 0
 
 			req, err := newListRequest(ctx, cfg, dst, page, params.Recursive)
+			if err != nil {
+				logger.Warnw("failed to create request", "err", err)
+				return
+			}
+
+			resp, err := SendRequest(ctx, req)
+			if err != nil {
+				logger.Warnw("failed to send request", "err", err)
+				return
+			}
+
 			var result listObjectsRequestResponse
-			var resp *http.Response
-
-			if err == nil {
-				resp, err = SendRequest(ctx, req)
-			}
-
-			if err == nil {
-				result, err = UnwrapResponse[listObjectsRequestResponse](resp, req)
-			}
-
+			result, err = UnwrapResponse[listObjectsRequestResponse](resp, req)
 			if err != nil {
 				logger.Warnw("list request failed", "err", err, "req", (*mgcHttpPkg.LogRequest)(req))
 				select {
@@ -222,14 +228,12 @@ func ListGenerator(ctx context.Context, params ListObjectsParams, cfg Config, on
 			if onNewPage != nil {
 				onNewPage(uint64(len(result.Contents)))
 			}
-
 			for _, prefix := range result.CommonPrefixes {
 				dirEntry := pipeline.NewSimpleWalkDirEntry(
 					path.Join(dst.Path(), prefix.Path),
 					prefix,
 					nil,
 				)
-
 				select {
 				case <-ctx.Done():
 					logger.Debugw("context.Done()", "err", ctx.Err())
@@ -269,6 +273,7 @@ func ListGenerator(ctx context.Context, params ListObjectsParams, cfg Config, on
 				logger.Info("finished reading contents")
 				break
 			}
+
 		}
 	}
 

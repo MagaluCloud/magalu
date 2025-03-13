@@ -9,7 +9,6 @@ Usage:
 ## Product catalog:
 - Flags:
 - --availability-zone string   Availability-Zone: br-ne1-a
-- --control.labels string       Labels: label-1, label2, label 3
 - --control.limit integer       Limit (max: 2147483647) (default 50)
 - --control.offset integer      Offset (max: 2147483647)
 - --control.sort string         Sort (pattern: ^(^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$) (default "platform:asc,end_life_at:desc")
