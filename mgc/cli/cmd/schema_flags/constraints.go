@@ -42,16 +42,15 @@ func addSchemaConstraints(s *mgcSchemaPkg.Schema, dst *[]string) {
 		return
 	}
 
-	if len(s.Type.Slice()) > 0 {
-
-		switch s.Type.Slice()[0] {
-		case "string":
+	if s.Type != nil {
+		switch {
+		case s.Type.Includes("string"):
 			addStringConstraints(s, dst)
-		case "integer", "number":
+		case s.Type.Includes("integer"), s.Type.Includes("number"):
 			addNumberConstraints(s, dst)
-		case "array":
+		case s.Type.Includes("array"):
 			addArrayConstraints(s, dst)
-		case "object":
+		case s.Type.Includes("object"):
 			addObjectConstraints(s, dst)
 		}
 	}
@@ -264,18 +263,25 @@ func specificHumanReadableConstraints(schema *mgcSchemaPkg.Schema) *HumanReadabl
 		return newXOfHumanReadableConstraints("At least one of the following must apply", schema, schema.AnyOf)
 	}
 
-	if len(schema.Type.Slice()) > 0 {
-		switch schema.Type.Slice()[0] {
-		case "boolean":
+	typeee := schema.Type
+
+	if typeee != nil {
+		switch {
+		case typeee.Includes("boolean"):
 			return newBooleanHumanReadableConstraints(schema)
-		case "string":
+		case typeee.Includes("string"):
 			return newStringHumanReadableConstraints(schema)
-		case "integer", "number":
+		case typeee.Includes("integer"), typeee.Includes("number"):
 			return newNumberHumanReadableConstraints(schema)
-		case "array":
+		case typeee.Includes("array"):
 			return newArrayHumanReadableConstraints(schema)
-		case "object":
+		case typeee.Includes("object"):
 			return newObjectHumanReadableConstraints(schema)
+		default:
+			if schema.Not != nil {
+				return newNotHumanReadableConstraints(schema)
+			}
+			return newAnyHumanReadableConstraints(schema)
 		}
 	}
 	if schema.Not != nil {
