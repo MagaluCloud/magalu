@@ -127,10 +127,10 @@ func TestNewHttpErrorFromResponse(t *testing.T) {
 		StatusCode: 123,
 		Status:     "not ok",
 		Header:     http.Header{"Content-Type": []string{"application/json"}, "X-Request-Id": []string{"1234"}},
-		Request: &http.Request{Header: http.Header{"X-Request-Id": []string{"1234"}}, 
-		Response: &http.Response{
-			Header: http.Header{"Content-Type": []string{"application/json"}, "X-Request-Id": []string{"1234"}},
-		}},
+		Request: &http.Request{Header: http.Header{"X-Request-Id": []string{"1234"}},
+			Response: &http.Response{
+				Header: http.Header{"Content-Type": []string{"application/json"}, "X-Request-Id": []string{"1234"}},
+			}},
 	}
 	dummyRequest := &http.Request{
 		Header: http.Header{"Content-Type": []string{"application/json"}, "X-Request-Id": []string{"1234"}},
