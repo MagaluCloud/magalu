@@ -20,24 +20,24 @@ repos:
         entry: bash -c './scripts/gen_expected_cli_doc_output_file.sh'
         require_serial: true
         stages: [pre-commit]
-    # -   id: apply-oapi-customizations
-    #     name: apply-oapi-customizations
-    #     language: system
-    #     types_or: [yaml]
-    #     entry: bash -c './scripts/oapi_apply_customizations.sh'
-    #     stages: [pre-commit]
-    # -   id: oapi-index-gen
-    #     name: oapi-index-gen
-    #     language: python
-    #     entry: bash -c './scripts/oapi_index_gen.sh'
-    #     additional_dependencies: [PyYAML, typing, argparse]
-    #     stages: [pre-commit]
-    # -   id: check-openapi-links
-    #     name: check openapi links
-    #     language: system
-    #     entry: bash -c './scripts/oapi_check_links.sh'
-    #     stages: [pre-commit]
-    #     require_serial: true
+      - id: apply-oapi-customizations
+        name: apply-oapi-customizations
+        language: system
+        types_or: [yaml]
+        entry: bash -c './scripts/oapi_apply_customizations.sh'
+        stages: [pre-commit]
+      - id: oapi-index-gen
+        name: oapi-index-gen
+        language: python
+        entry: bash -c './scripts/oapi_index_gen.sh'
+        additional_dependencies: [PyYAML, typing, argparse]
+        stages: [pre-commit]
+      - id: check-openapi-links
+        name: check openapi links
+        language: system
+        entry: bash -c './scripts/oapi_check_links.sh'
+        stages: [pre-commit]
+        require_serial: true
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v5.0.0
     hooks:
