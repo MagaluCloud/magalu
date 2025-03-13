@@ -3,8 +3,8 @@ module github.com/MagaluCloud/magalu/mgc/cli
 go 1.24.0
 
 require (
-	github.com/MagaluCloud/magalu/mgc/core v0.0.0-20250117204804-e16e0869209d
-	github.com/MagaluCloud/magalu/mgc/sdk v0.0.0-20250117204804-e16e0869209d
+	github.com/MagaluCloud/magalu/mgc/core v0.33.3
+	github.com/MagaluCloud/magalu/mgc/sdk v0.33.3
 	github.com/spf13/cobra v1.7.0
 	github.com/spf13/pflag v1.0.5
 )
