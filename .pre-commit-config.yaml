@@ -68,8 +68,7 @@ repos:
         stages: [pre-commit, pre-push]
       - id: mixed-line-ending
         stages: [pre-commit, pre-push]
-
--   repo: https://github.com/golangci/golangci-lint
+  - repo: https://github.com/golangci/golangci-lint
     rev: v1.64.7
     hooks:
       - id: golangci-lint
@@ -78,7 +77,7 @@ repos:
         # https://github.com/golangci/golangci-lint/issues/2654
         entry: bash -c "go list -f '{{.Dir}}/...' -m | xargs golangci-lint run --fix --new-from-rev HEAD"
 
--   repo: https://github.com/golangci/golangci-lint
+  - repo: https://github.com/golangci/golangci-lint
     rev: v1.64.7
     hooks:
       - id: golangci-lint
