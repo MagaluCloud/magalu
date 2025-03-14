@@ -21,7 +21,7 @@ var (
 
 const (
 	VIPER_FILE = "specs.yaml"
-	SPEC_DIR   = "cli_specs"
+	SPEC_DIR   = "../../specs"
 )
 
 var currentDir = func() string {

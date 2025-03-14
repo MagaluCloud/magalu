@@ -3,6 +3,6 @@ build-local:
 
 generate:
 	./mgc/spec_manipulator/build.sh
-	./mgc/spec_manipulator/spec downgrade
+	./mgc/spec_manipulator/specs downgrade
 	poetry install
 	poetry run ./scripts/add_all_specs.sh

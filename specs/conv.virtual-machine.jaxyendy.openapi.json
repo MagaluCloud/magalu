@@ -1,5 +1,5 @@
 {
-  "openapi": "3.1.0",
+  "openapi": "3.0.3",
   "info": {
     "title": "Virtual Machine Api Product - v1",
     "description": "Virtual Machine Api Product",
@@ -23,7 +23,7 @@
             "in": "query",
             "required": false,
             "schema": {
-              "exclusiveMinimum": 0,
+              "exclusiveMinimum": false,
               "type": "integer",
               "title": " Limit",
               "maximum": 2147483647,
@@ -38,7 +38,6 @@
               "type": "integer",
               "title": " Offset",
               "maximum": 2147483647,
-              "minimum": 0,
               "default": 0
             }
           },
@@ -62,13 +61,11 @@
               "anyOf": [
                 {
                   "type": "string"
-                },
-                {
-                  "type": "null"
                 }
               ],
               "title": "Availability-Zone",
-              "description": "br-ne1-a"
+              "description": "br-ne1-a",
+              "nullable": true
             }
           },
           {
@@ -122,7 +119,7 @@
             "description": "limit the number of the results",
             "required": false,
             "schema": {
-              "exclusiveMinimum": 0,
+              "exclusiveMinimum": false,
               "type": "integer",
               "title": " Limit",
               "maximum": 1000,
@@ -139,7 +136,6 @@
               "type": "integer",
               "title": " Offset",
               "maximum": 2147483647,
-              "minimum": 0,
               "description": "pagination for the results limited",
               "default": 0
             }
@@ -190,13 +186,11 @@
               "anyOf": [
                 {
                   "type": "string"
-                },
-                {
-                  "type": "null"
                 }
               ],
               "title": "X-Api-Version",
-              "description": "api version"
+              "description": "api version",
+              "nullable": true
             }
           }
         ],
@@ -639,13 +633,11 @@
               "anyOf": [
                 {
                   "type": "string"
-                },
-                {
-                  "type": "null"
                 }
               ],
               "title": "X-Api-Version",
-              "description": "api version"
+              "description": "api version",
+              "nullable": true
             }
           }
         ],
@@ -1227,7 +1219,7 @@
             "description": "limit the number of the results",
             "required": false,
             "schema": {
-              "exclusiveMinimum": 0,
+              "exclusiveMinimum": false,
               "type": "integer",
               "title": " Limit",
               "maximum": 1000,
@@ -1244,7 +1236,6 @@
               "type": "integer",
               "title": " Offset",
               "maximum": 2147483647,
-              "minimum": 0,
               "description": "pagination for the results limited",
               "default": 0
             }
@@ -1271,13 +1262,11 @@
               "anyOf": [
                 {
                   "type": "string"
-                },
-                {
-                  "type": "null"
                 }
               ],
               "title": "Availability-Zone",
-              "description": "br-ne1-a"
+              "description": "br-ne1-a",
+              "nullable": true
             }
           },
           {
@@ -1331,7 +1320,7 @@
             "description": "limit the number of the results",
             "required": false,
             "schema": {
-              "exclusiveMinimum": 0,
+              "exclusiveMinimum": false,
               "type": "integer",
               "title": " Limit",
               "maximum": 1000,
@@ -1348,7 +1337,6 @@
               "type": "integer",
               "title": " Offset",
               "maximum": 2147483647,
-              "minimum": 0,
               "description": "pagination for the results limited",
               "default": 0
             }
@@ -2110,7 +2098,37 @@
           "detail": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/ValidationError"
+              "type": "object",
+              "properties": {
+                "loc": {
+                  "type": "array",
+                  "items": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "integer"
+                      }
+                    ]
+                  },
+                  "title": "Location"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "Message"
+                },
+                "type": {
+                  "type": "string",
+                  "title": "Error Type"
+                }
+              },
+              "title": "ValidationError",
+              "required": [
+                "loc",
+                "msg",
+                "type"
+              ]
             },
             "title": "Detail"
           }
@@ -2150,12 +2168,10 @@
             "anyOf": [
               {
                 "type": "string"
-              },
-              {
-                "type": "null"
               }
             ],
-            "title": "Platform"
+            "title": "Platform",
+            "nullable": true
           }
         },
         "title": "ImageExtendResponse",
@@ -2180,8 +2196,7 @@
         "title": "ImageInstanceV1Response",
         "required": [
           "id"
-        ],
-        "additionalProperties": true
+        ]
       },
       "ImageReqMin": {
         "type": "object",
@@ -2218,74 +2233,89 @@
             "title": "Name"
           },
           "status": {
-            "$ref": "#/components/schemas/ImageV1Status"
+            "type": "string",
+            "title": "ImageV1Status",
+            "enum": [
+              "active",
+              "deprecated",
+              "deleted",
+              "pending",
+              "creating",
+              "importing",
+              "error",
+              "deleting_error"
+            ]
           },
           "version": {
             "anyOf": [
               {
                 "type": "string"
-              },
-              {
-                "type": "null"
               }
             ],
-            "title": "Version"
+            "title": "Version",
+            "nullable": true
           },
           "platform": {
             "anyOf": [
               {
                 "type": "string"
-              },
-              {
-                "type": "null"
               }
             ],
-            "title": "Platform"
+            "title": "Platform",
+            "nullable": true
           },
           "release_at": {
             "anyOf": [
               {
                 "type": "string",
-                "examples": [
-                  "2022-01-01T00:00:10Z"
-                ]
-              },
-              {
-                "type": "null"
+                "example": "2022-01-01T00:00:10Z"
               }
             ],
-            "title": "Release At"
+            "title": "Release At",
+            "nullable": true
           },
           "end_standard_support_at": {
             "anyOf": [
               {
                 "type": "string",
-                "examples": [
-                  "2022-01-01T00:00:10Z"
-                ]
-              },
-              {
-                "type": "null"
+                "example": "2022-01-01T00:00:10Z"
               }
             ],
-            "title": "End Standard Support At"
+            "title": "End Standard Support At",
+            "nullable": true
           },
           "end_life_at": {
             "anyOf": [
               {
                 "type": "string",
-                "examples": [
-                  "2022-01-01T00:00:10Z"
-                ]
-              },
-              {
-                "type": "null"
+                "example": "2022-01-01T00:00:10Z"
               }
             ],
-            "title": "End Life At"
+            "title": "End Life At",
+            "nullable": true
           },
           "minimum_requirements": {
-            "$ref": "#/components/schemas/ImageReqMin"
+            "type": "object",
+            "properties": {
+              "vcpu": {
+                "type": "integer",
+                "title": "Vcpu"
+              },
+              "ram": {
+                "type": "integer",
+                "title": "Ram"
+              },
+              "disk": {
+                "type": "integer",
+                "title": "Disk"
+              }
+            },
+            "title": "ImageReqMin",
+            "required": [
+              "vcpu",
+              "ram",
+              "disk"
+            ]
           },
           "labels": {
             "anyOf": [
@@ -2294,12 +2324,10 @@
                 "items": {
                   "type": "string"
                 }
-              },
-              {
-                "type": "null"
               }
             ],
-            "title": "Labels"
+            "title": "Labels",
+            "nullable": true
           },
           "availability_zones": {
             "anyOf": [
@@ -2308,12 +2336,10 @@
                 "items": {
                   "type": "string"
                 }
-              },
-              {
-                "type": "null"
               }
             ],
-            "title": "Availability Zones"
+            "title": "Availability Zones",
+            "nullable": true
           }
         },
         "title": "ImageResponseExternalV1",
@@ -2370,10 +2396,8 @@
           },
           "created_at": {
             "type": "string",
-            "examples": [
-              "2022-01-01T00:00:10Z"
-            ],
-            "title": "Created At"
+            "title": "Created At",
+            "example": "2022-01-01T00:00:10Z"
           },
           "user": {
             "type": "string",
@@ -2402,7 +2426,39 @@
         "type": "object",
         "properties": {
           "instance": {
-            "$ref": "#/components/schemas/InstanceAccessResponseWithPass"
+            "type": "object",
+            "properties": {
+              "password": {
+                "type": "string",
+                "title": "Password"
+              },
+              "created_at": {
+                "type": "string",
+                "title": "Created At",
+                "example": "2022-01-01T00:00:10Z"
+              },
+              "user": {
+                "type": "string",
+                "title": "User",
+                "default": "admin"
+              },
+              "id": {
+                "type": "string",
+                "title": "Id"
+              }
+            },
+            "title": "InstanceAccessResponseWithPass",
+            "required": [
+              "password",
+              "created_at",
+              "id"
+            ],
+            "example": {
+              "created_at": "2022-01-01T00:00:10Z",
+              "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+              "password": "admin-password",
+              "user": "admin"
+            }
           }
         },
         "title": "InstanceAccess[InstanceAccessResponseWithPass]",
@@ -2442,12 +2498,10 @@
             "anyOf": [
               {
                 "type": "string"
-              },
-              {
-                "type": "null"
               }
             ],
-            "title": "Ssh key Name"
+            "title": "Ssh key Name",
+            "nullable": true
           },
           "image": {
             "anyOf": [
@@ -2464,28 +2518,18 @@
             "anyOf": [
               {
                 "type": "string"
-              },
-              {
-                "type": "null"
               }
             ],
-            "title": "Availability Zone"
+            "title": "Availability Zone",
+            "nullable": true
           },
           "network": {
             "anyOf": [
               {
                 "$ref": "#/components/schemas/InstanceCreateRequestV1NetworkDefault"
-              },
-              {
-                "type": "null"
               }
             ],
-            "default": {
-              "vpc": {
-                "name": "vpc_default"
-              },
-              "associate_public_ip": true
-            }
+            "nullable": true
           },
           "user_data": {
             "anyOf": [
@@ -2493,12 +2537,10 @@
                 "type": "string",
                 "maxLength": 65000,
                 "minLength": 1
-              },
-              {
-                "type": "null"
               }
             ],
-            "title": "Used to perform automated configuration tasks."
+            "title": "Used to perform automated configuration tasks.",
+            "nullable": true
           },
           "labels": {
             "anyOf": [
@@ -2507,12 +2549,10 @@
                 "items": {
                   "type": "string"
                 }
-              },
-              {
-                "type": "null"
               }
             ],
-            "title": "Labels"
+            "title": "Labels",
+            "nullable": true
           },
           "volumes": {
             "type": "array",
@@ -2566,7 +2606,7 @@
           },
           "ssh_key_name": "keypair_name_here",
           "user_data": "some_base64_script",
-            "volumes": [{"eita": "meu rapaz"}]
+          "volumes": []
         }
       },
       "InstanceCreateRequestV1NetworkDefault": {
@@ -2593,12 +2633,10 @@
               },
               {
                 "$ref": "#/components/schemas/SecurityGroups"
-              },
-              {
-                "type": "null"
               }
             ],
-            "title": "Interface"
+            "title": "Interface",
+            "nullable": true
           },
           "associate_public_ip": {
             "type": "boolean",
@@ -2638,12 +2676,10 @@
               },
               {
                 "$ref": "#/components/schemas/ImageExtendResponse"
-              },
-              {
-                "type": "null"
               }
             ],
-            "title": "Image"
+            "title": "Image",
+            "nullable": true
           },
           "machine_type": {
             "anyOf": [
@@ -2652,12 +2688,10 @@
               },
               {
                 "$ref": "#/components/schemas/InstanceTypesExtendResponse"
-              },
-              {
-                "type": "null"
               }
             ],
-            "title": "Machine Type"
+            "title": "Machine Type",
+            "nullable": true
           }
         },
         "title": "InstanceResponseSnapshotV1",
@@ -2714,8 +2748,7 @@
         "title": "InstanceTypeForInstanceV1Response",
         "required": [
           "id"
-        ],
-        "additionalProperties": true
+        ]
       },
       "InstanceTypesExtendResponse": {
         "type": "object",
@@ -2800,12 +2833,10 @@
                 "items": {
                   "type": "string"
                 }
-              },
-              {
-                "type": "null"
               }
             ],
-            "title": "Availability Zones"
+            "title": "Availability Zones",
+            "nullable": true
           }
         },
         "title": "InstanceTypesV1PortalResponse",
@@ -2865,12 +2896,10 @@
             "anyOf": [
               {
                 "type": "string"
-              },
-              {
-                "type": "null"
               }
             ],
-            "title": "Sku"
+            "title": "Sku",
+            "nullable": true
           },
           "availability_zones": {
             "anyOf": [
@@ -2879,12 +2908,10 @@
                 "items": {
                   "type": "string"
                 }
-              },
-              {
-                "type": "null"
               }
             ],
-            "title": "Availability Zones"
+            "title": "Availability Zones",
+            "nullable": true
           }
         },
         "title": "InstanceTypesV1Response",
@@ -2922,12 +2949,10 @@
             "anyOf": [
               {
                 "type": "string"
-              },
-              {
-                "type": "null"
               }
             ],
-            "title": "Name"
+            "title": "Name",
+            "nullable": true
           },
           "machine_type": {
             "anyOf": [
@@ -2936,12 +2961,10 @@
               },
               {
                 "$ref": "#/components/schemas/InstanceTypesExtendResponse"
-              },
-              {
-                "type": "null"
               }
             ],
-            "title": "Machine Type"
+            "title": "Machine Type",
+            "nullable": true
           },
           "image": {
             "anyOf": [
@@ -2950,72 +2973,111 @@
               },
               {
                 "$ref": "#/components/schemas/ImageExtendResponse"
-              },
-              {
-                "type": "null"
               }
             ],
-            "title": "Image"
+            "title": "Image",
+            "nullable": true
           },
           "status": {
-            "$ref": "#/components/schemas/InstanceV1Status"
+            "type": "string",
+            "title": "InstanceV1Status",
+            "enum": [
+              "attaching_nic",
+              "detaching_nic",
+              "attach_nic_pending",
+              "detach_nic_pending",
+              "provisioning",
+              "creating",
+              "creating_error",
+              "creating_error_gpu",
+              "creating_network_error",
+              "creating_error_quota",
+              "creating_error_quota_ram",
+              "creating_error_quota_vcpu",
+              "creating_error_quota_disk",
+              "creating_error_quota_instance",
+              "creating_error_quota_floating_ip",
+              "creating_error_quota_network",
+              "completed",
+              "retyping_pending",
+              "retyping",
+              "retyping_confirmed",
+              "retyping_error",
+              "retyping_error_quota_ram",
+              "retyping_error_quota_vcpu",
+              "retyping_error_quota",
+              "stopping_pending",
+              "stopping",
+              "stopping_error",
+              "suspending_pending",
+              "suspending",
+              "suspending_error",
+              "rebooting_pending",
+              "rebooting",
+              "rebooting_error",
+              "starting_pending",
+              "starting",
+              "starting_error",
+              "deleting_pending",
+              "deleting",
+              "deleting_error",
+              "deleting_network_error",
+              "deleted"
+            ]
           },
           "state": {
-            "$ref": "#/components/schemas/InstanceV1State"
+            "type": "string",
+            "title": "InstanceV1State",
+            "enum": [
+              "new",
+              "error",
+              "running",
+              "stopped",
+              "suspended",
+              "deleted"
+            ]
           },
           "user_data": {
             "anyOf": [
               {
                 "type": "string"
-              },
-              {
-                "type": "null"
               }
             ],
-            "title": "User Data"
+            "title": "User Data",
+            "nullable": true
           },
           "created_at": {
             "type": "string",
-            "examples": [
-              "2022-01-01T00:00:10Z"
-            ],
-            "title": "Created At"
+            "title": "Created At",
+            "example": "2022-01-01T00:00:10Z"
           },
           "updated_at": {
             "anyOf": [
               {
                 "type": "string",
-                "examples": [
-                  "2022-01-01T00:00:10Z"
-                ]
-              },
-              {
-                "type": "null"
+                "example": "2022-01-01T00:00:10Z"
               }
             ],
-            "title": "Updated At"
+            "title": "Updated At",
+            "nullable": true
           },
           "ssh_key_name": {
             "anyOf": [
               {
                 "type": "string"
-              },
-              {
-                "type": "null"
               }
             ],
-            "title": "Ssh Key Name"
+            "title": "Ssh Key Name",
+            "nullable": true
           },
           "availability_zone": {
             "anyOf": [
               {
                 "type": "string"
-              },
-              {
-                "type": "null"
               }
             ],
-            "title": "Availability Zone"
+            "title": "Availability Zone",
+            "nullable": true
           },
           "network": {
             "anyOf": [
@@ -3030,12 +3092,10 @@
               },
               {
                 "$ref": "#/components/schemas/NetworkPortsNewExpand"
-              },
-              {
-                "type": "null"
               }
             ],
-            "title": "Network"
+            "title": "Network",
+            "nullable": true
           },
           "labels": {
             "anyOf": [
@@ -3044,22 +3104,18 @@
                 "items": {
                   "type": "string"
                 }
-              },
-              {
-                "type": "null"
               }
             ],
-            "title": "Labels"
+            "title": "Labels",
+            "nullable": true
           },
           "error": {
             "anyOf": [
               {
                 "$ref": "#/components/schemas/ErrorMessageV1"
-              },
-              {
-                "type": "null"
               }
-            ]
+            ],
+            "nullable": true
           }
         },
         "title": "InstanceV1Response",
@@ -3189,34 +3245,28 @@
             "anyOf": [
               {
                 "type": "string"
-              },
-              {
-                "type": "null"
               }
             ],
-            "title": "Publicipaddress"
+            "title": "Publicipaddress",
+            "nullable": true
           },
           "privateIpAddress": {
             "anyOf": [
               {
                 "type": "string"
-              },
-              {
-                "type": "null"
               }
             ],
-            "title": "Privateipaddress"
+            "title": "Privateipaddress",
+            "nullable": true
           },
           "ipV6Address": {
             "anyOf": [
               {
                 "type": "string"
-              },
-              {
-                "type": "null"
               }
             ],
-            "title": "Ipv6Address"
+            "title": "Ipv6Address",
+            "nullable": true
           }
         },
         "title": "IpAddressExpand"
@@ -3228,23 +3278,19 @@
             "anyOf": [
               {
                 "type": "string"
-              },
-              {
-                "type": "null"
               }
             ],
-            "title": "Private Ipv4"
+            "title": "Private Ipv4",
+            "nullable": true
           },
           "public_ipv6": {
             "anyOf": [
               {
                 "type": "string"
-              },
-              {
-                "type": "null"
               }
             ],
-            "title": "Public Ipv6"
+            "title": "Public Ipv6",
+            "nullable": true
           }
         },
         "title": "IpAddressNewExpand"
@@ -3253,7 +3299,32 @@
         "type": "object",
         "properties": {
           "page": {
-            "$ref": "#/components/schemas/MetaPage"
+            "type": "object",
+            "properties": {
+              "limit": {
+                "type": "integer",
+                "title": "Limit"
+              },
+              "offset": {
+                "type": "integer",
+                "title": "Offset"
+              },
+              "count": {
+                "type": "integer",
+                "title": "Count"
+              },
+              "total": {
+                "type": "integer",
+                "title": "Total"
+              }
+            },
+            "title": "MetaPage",
+            "required": [
+              "limit",
+              "offset",
+              "count",
+              "total"
+            ]
           }
         },
         "title": "Meta",
@@ -3304,7 +3375,31 @@
             "title": "Instance"
           },
           "network": {
-            "$ref": "#/components/schemas/NICRequestInterfaceField"
+            "type": "object",
+            "properties": {
+              "interface": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "title": "Id",
+                    "maxLength": 255,
+                    "minLength": 1
+                  }
+                },
+                "title": "ID",
+                "required": [
+                  "id"
+                ],
+                "example": {
+                  "id": "9ec75090-2872-4f51-8111-53d05d96d2c6"
+                }
+              }
+            },
+            "title": "NICRequestInterfaceField",
+            "required": [
+              "interface"
+            ]
           }
         },
         "title": "NICRequest",
@@ -3327,7 +3422,22 @@
         "type": "object",
         "properties": {
           "interface": {
-            "$ref": "#/components/schemas/ID"
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "title": "Id",
+                "maxLength": 255,
+                "minLength": 1
+              }
+            },
+            "title": "ID",
+            "required": [
+              "id"
+            ],
+            "example": {
+              "id": "9ec75090-2872-4f51-8111-53d05d96d2c6"
+            }
           }
         },
         "title": "NICRequestInterfaceField",
@@ -3359,7 +3469,20 @@
           "interfaces": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/PortID"
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "title": "Id"
+                }
+              },
+              "title": "PortID",
+              "required": [
+                "id"
+              ],
+              "example": {
+                "id": "c47e974f-8002-46e9-8a63-d66505be2aa1"
+              }
             },
             "title": "Interfaces"
           }
@@ -3376,25 +3499,66 @@
             "anyOf": [
               {
                 "$ref": "#/components/schemas/VpcV1Expand"
-              },
-              {
-                "type": "null"
               }
-            ]
+            ],
+            "nullable": true
           },
           "interfaces": {
             "anyOf": [
               {
                 "type": "array",
                 "items": {
-                  "$ref": "#/components/schemas/PortNewExpand"
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "title": "Id"
+                    },
+                    "name": {
+                      "type": "string",
+                      "title": "Name"
+                    },
+                    "security_groups": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "title": "Security Groups",
+                      "default": []
+                    },
+                    "primary": {
+                      "type": "boolean",
+                      "title": "Primary",
+                      "default": true
+                    },
+                    "associated_public_ipv4": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        }
+                      ],
+                      "title": "Associated Public Ipv4",
+                      "nullable": true
+                    },
+                    "ip_addresses": {
+                      "anyOf": [
+                        {
+                          "$ref": "#/components/schemas/IpAddressNewExpand"
+                        }
+                      ],
+                      "nullable": true
+                    }
+                  },
+                  "title": "PortNewExpand",
+                  "required": [
+                    "id",
+                    "name"
+                  ]
                 }
-              },
-              {
-                "type": "null"
               }
             ],
-            "title": "Interfaces"
+            "title": "Interfaces",
+            "nullable": true
           }
         },
         "title": "NetworkPortsNewExpand"
@@ -3405,7 +3569,20 @@
           "ports": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/PortID"
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "title": "Id"
+                }
+              },
+              "title": "PortID",
+              "required": [
+                "id"
+              ],
+              "example": {
+                "id": "c47e974f-8002-46e9-8a63-d66505be2aa1"
+              }
             },
             "title": "Ports"
           }
@@ -3422,25 +3599,70 @@
             "anyOf": [
               {
                 "$ref": "#/components/schemas/VpcV1Expand"
-              },
-              {
-                "type": "null"
               }
-            ]
+            ],
+            "nullable": true
           },
           "ports": {
             "anyOf": [
               {
                 "type": "array",
                 "items": {
-                  "$ref": "#/components/schemas/PortV1Expand"
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "title": "Id"
+                    },
+                    "name": {
+                      "type": "string",
+                      "title": "Name"
+                    },
+                    "ipAddresses": {
+                      "type": "object",
+                      "properties": {
+                        "publicIpAddress": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            }
+                          ],
+                          "title": "Publicipaddress",
+                          "nullable": true
+                        },
+                        "privateIpAddress": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            }
+                          ],
+                          "title": "Privateipaddress",
+                          "nullable": true
+                        },
+                        "ipV6Address": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            }
+                          ],
+                          "title": "Ipv6Address",
+                          "nullable": true
+                        }
+                      },
+                      "title": "IpAddressExpand"
+                    }
+                  },
+                  "title": "PortV1Expand",
+                  "required": [
+                    "id",
+                    "name",
+                    "ipAddresses"
+                  ]
                 }
-              },
-              {
-                "type": "null"
               }
             ],
-            "title": "Ports"
+            "title": "Ports",
+            "nullable": true
           }
         },
         "title": "NetworkPortsV1Expand"
@@ -3463,7 +3685,41 @@
             "title": "Machine Types"
           },
           "meta": {
-            "$ref": "#/components/schemas/Meta"
+            "type": "object",
+            "properties": {
+              "page": {
+                "type": "object",
+                "properties": {
+                  "limit": {
+                    "type": "integer",
+                    "title": "Limit"
+                  },
+                  "offset": {
+                    "type": "integer",
+                    "title": "Offset"
+                  },
+                  "count": {
+                    "type": "integer",
+                    "title": "Count"
+                  },
+                  "total": {
+                    "type": "integer",
+                    "title": "Total"
+                  }
+                },
+                "title": "MetaPage",
+                "required": [
+                  "limit",
+                  "offset",
+                  "count",
+                  "total"
+                ]
+              }
+            },
+            "title": "Meta",
+            "required": [
+              "page"
+            ]
           }
         },
         "title": "PaginateInstanceTypesV1ListResponse",
@@ -3503,12 +3759,195 @@
           "images": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/ImageResponseExternalV1"
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "title": "Id"
+                },
+                "name": {
+                  "type": "string",
+                  "title": "Name"
+                },
+                "status": {
+                  "type": "string",
+                  "title": "ImageV1Status",
+                  "enum": [
+                    "active",
+                    "deprecated",
+                    "deleted",
+                    "pending",
+                    "creating",
+                    "importing",
+                    "error",
+                    "deleting_error"
+                  ]
+                },
+                "version": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    }
+                  ],
+                  "title": "Version",
+                  "nullable": true
+                },
+                "platform": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    }
+                  ],
+                  "title": "Platform",
+                  "nullable": true
+                },
+                "release_at": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "example": "2022-01-01T00:00:10Z"
+                    }
+                  ],
+                  "title": "Release At",
+                  "nullable": true
+                },
+                "end_standard_support_at": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "example": "2022-01-01T00:00:10Z"
+                    }
+                  ],
+                  "title": "End Standard Support At",
+                  "nullable": true
+                },
+                "end_life_at": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "example": "2022-01-01T00:00:10Z"
+                    }
+                  ],
+                  "title": "End Life At",
+                  "nullable": true
+                },
+                "minimum_requirements": {
+                  "type": "object",
+                  "properties": {
+                    "vcpu": {
+                      "type": "integer",
+                      "title": "Vcpu"
+                    },
+                    "ram": {
+                      "type": "integer",
+                      "title": "Ram"
+                    },
+                    "disk": {
+                      "type": "integer",
+                      "title": "Disk"
+                    }
+                  },
+                  "title": "ImageReqMin",
+                  "required": [
+                    "vcpu",
+                    "ram",
+                    "disk"
+                  ]
+                },
+                "labels": {
+                  "anyOf": [
+                    {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  ],
+                  "title": "Labels",
+                  "nullable": true
+                },
+                "availability_zones": {
+                  "anyOf": [
+                    {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  ],
+                  "title": "Availability Zones",
+                  "nullable": true
+                }
+              },
+              "title": "ImageResponseExternalV1",
+              "required": [
+                "id",
+                "name",
+                "status",
+                "minimum_requirements"
+              ],
+              "example": {
+                "availability_zones": [
+                  "br-ne1-a"
+                ],
+                "end_life_at": "2022-06-10T18:33:12Z",
+                "end_standard_support_at": "2022-06-10T18:33:12Z",
+                "id": "c47e974f-8002-46e9-8a63-d66505be2aa1",
+                "labels": [
+                  "label-1",
+                  "label 2",
+                  "label3"
+                ],
+                "minimum_requirements": {
+                  "disk": 2,
+                  "ram": 1,
+                  "vcpu": 1
+                },
+                "name": "ubuntu 22.10",
+                "platform": "linux",
+                "release_at": "2022-06-10T18:33:12Z",
+                "status": "active",
+                "version": "22.10"
+              }
             },
             "title": "Images"
           },
           "meta": {
-            "$ref": "#/components/schemas/Meta"
+            "type": "object",
+            "properties": {
+              "page": {
+                "type": "object",
+                "properties": {
+                  "limit": {
+                    "type": "integer",
+                    "title": "Limit"
+                  },
+                  "offset": {
+                    "type": "integer",
+                    "title": "Offset"
+                  },
+                  "count": {
+                    "type": "integer",
+                    "title": "Count"
+                  },
+                  "total": {
+                    "type": "integer",
+                    "title": "Total"
+                  }
+                },
+                "title": "MetaPage",
+                "required": [
+                  "limit",
+                  "offset",
+                  "count",
+                  "total"
+                ]
+              }
+            },
+            "title": "Meta",
+            "required": [
+              "page"
+            ]
           }
         },
         "title": "PaginateListImageExternalV1",
@@ -3558,12 +3997,265 @@
           "instances": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/InstanceV1Response"
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "title": "Id"
+                },
+                "name": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    }
+                  ],
+                  "title": "Name",
+                  "nullable": true
+                },
+                "machine_type": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/InstanceTypeForInstanceV1Response"
+                    },
+                    {
+                      "$ref": "#/components/schemas/InstanceTypesExtendResponse"
+                    }
+                  ],
+                  "title": "Machine Type",
+                  "nullable": true
+                },
+                "image": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/ImageInstanceV1Response"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ImageExtendResponse"
+                    }
+                  ],
+                  "title": "Image",
+                  "nullable": true
+                },
+                "status": {
+                  "type": "string",
+                  "title": "InstanceV1Status",
+                  "enum": [
+                    "attaching_nic",
+                    "detaching_nic",
+                    "attach_nic_pending",
+                    "detach_nic_pending",
+                    "provisioning",
+                    "creating",
+                    "creating_error",
+                    "creating_error_gpu",
+                    "creating_network_error",
+                    "creating_error_quota",
+                    "creating_error_quota_ram",
+                    "creating_error_quota_vcpu",
+                    "creating_error_quota_disk",
+                    "creating_error_quota_instance",
+                    "creating_error_quota_floating_ip",
+                    "creating_error_quota_network",
+                    "completed",
+                    "retyping_pending",
+                    "retyping",
+                    "retyping_confirmed",
+                    "retyping_error",
+                    "retyping_error_quota_ram",
+                    "retyping_error_quota_vcpu",
+                    "retyping_error_quota",
+                    "stopping_pending",
+                    "stopping",
+                    "stopping_error",
+                    "suspending_pending",
+                    "suspending",
+                    "suspending_error",
+                    "rebooting_pending",
+                    "rebooting",
+                    "rebooting_error",
+                    "starting_pending",
+                    "starting",
+                    "starting_error",
+                    "deleting_pending",
+                    "deleting",
+                    "deleting_error",
+                    "deleting_network_error",
+                    "deleted"
+                  ]
+                },
+                "state": {
+                  "type": "string",
+                  "title": "InstanceV1State",
+                  "enum": [
+                    "new",
+                    "error",
+                    "running",
+                    "stopped",
+                    "suspended",
+                    "deleted"
+                  ]
+                },
+                "user_data": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    }
+                  ],
+                  "title": "User Data",
+                  "nullable": true
+                },
+                "created_at": {
+                  "type": "string",
+                  "title": "Created At",
+                  "example": "2022-01-01T00:00:10Z"
+                },
+                "updated_at": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "example": "2022-01-01T00:00:10Z"
+                    }
+                  ],
+                  "title": "Updated At",
+                  "nullable": true
+                },
+                "ssh_key_name": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    }
+                  ],
+                  "title": "Ssh Key Name",
+                  "nullable": true
+                },
+                "availability_zone": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    }
+                  ],
+                  "title": "Availability Zone",
+                  "nullable": true
+                },
+                "network": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/NetworkPortsV1"
+                    },
+                    {
+                      "$ref": "#/components/schemas/NetworkPortsNew"
+                    },
+                    {
+                      "$ref": "#/components/schemas/NetworkPortsV1Expand"
+                    },
+                    {
+                      "$ref": "#/components/schemas/NetworkPortsNewExpand"
+                    }
+                  ],
+                  "title": "Network",
+                  "nullable": true
+                },
+                "labels": {
+                  "anyOf": [
+                    {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  ],
+                  "title": "Labels",
+                  "nullable": true
+                },
+                "error": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/ErrorMessageV1"
+                    }
+                  ],
+                  "nullable": true
+                }
+              },
+              "title": "InstanceV1Response",
+              "required": [
+                "id",
+                "machine_type",
+                "image",
+                "status",
+                "state",
+                "created_at"
+              ],
+              "example": {
+                "availability_zone": "br-regiao-1a",
+                "created_at": "2022-06-10T18:33:12Z",
+                "error": {
+                  "message": "An error occurred while creating your instance. Please try again later or contact support for assistance.",
+                  "slug": "create_instance.keypair.not_found"
+                },
+                "id": "2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6",
+                "image": {
+                  "id": "2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6"
+                },
+                "labels": [
+                  "label1",
+                  "label2"
+                ],
+                "machine_type": {
+                  "id": "2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6"
+                },
+                "name": "instance-name",
+                "network": {
+                  "ports": [
+                    {
+                      "id": "2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6"
+                    }
+                  ]
+                },
+                "ssh_key_name": "keypair_name_here",
+                "state": "running",
+                "status": "completed",
+                "updated_at": "2022-06-10T18:33:12Z",
+                "user_data": "some_base_64_str"
+              }
             },
             "title": "Instances"
           },
           "meta": {
-            "$ref": "#/components/schemas/Meta"
+            "type": "object",
+            "properties": {
+              "page": {
+                "type": "object",
+                "properties": {
+                  "limit": {
+                    "type": "integer",
+                    "title": "Limit"
+                  },
+                  "offset": {
+                    "type": "integer",
+                    "title": "Offset"
+                  },
+                  "count": {
+                    "type": "integer",
+                    "title": "Count"
+                  },
+                  "total": {
+                    "type": "integer",
+                    "title": "Total"
+                  }
+                },
+                "title": "MetaPage",
+                "required": [
+                  "limit",
+                  "offset",
+                  "count",
+                  "total"
+                ]
+              }
+            },
+            "title": "Meta",
+            "required": [
+              "page"
+            ]
           }
         },
         "title": "PaginateListInstanceV1Response",
@@ -3622,12 +4314,123 @@
           "snapshots": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/SnapshotResponseV1"
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "title": "Id"
+                },
+                "name": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    }
+                  ],
+                  "title": "Name",
+                  "nullable": true
+                },
+                "status": {
+                  "type": "string",
+                  "title": "Status"
+                },
+                "state": {
+                  "type": "string",
+                  "title": "State"
+                },
+                "created_at": {
+                  "type": "string",
+                  "title": "Created At",
+                  "example": "2022-01-01T00:00:10Z"
+                },
+                "updated_at": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "example": "2022-01-01T00:00:10Z"
+                    }
+                  ],
+                  "title": "Updated At",
+                  "nullable": true
+                },
+                "size": {
+                  "type": "integer",
+                  "title": "Size"
+                },
+                "instance": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/InstanceResponseSnapshotV1"
+                    }
+                  ],
+                  "nullable": true
+                }
+              },
+              "title": "SnapshotResponseV1",
+              "required": [
+                "id",
+                "status",
+                "state",
+                "created_at",
+                "size",
+                "instance"
+              ],
+              "example": {
+                "created_at": "2022-06-10T18:33:12Z",
+                "id": "4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a",
+                "instance": {
+                  "id": "4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a",
+                  "image": {
+                    "id": "4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a"
+                  },
+                  "machine_type": {
+                    "id": "4830bfbe-0362-4ebb-a8ba-f36be4b4bc6a"
+                  }
+                },
+                "name": "snapshot-name",
+                "size": 1000,
+                "state": "available",
+                "status": "completed",
+                "updated_at": "2022-06-10T18:33:12Z"
+              }
             },
             "title": "Snapshots"
           },
           "meta": {
-            "$ref": "#/components/schemas/Meta"
+            "type": "object",
+            "properties": {
+              "page": {
+                "type": "object",
+                "properties": {
+                  "limit": {
+                    "type": "integer",
+                    "title": "Limit"
+                  },
+                  "offset": {
+                    "type": "integer",
+                    "title": "Offset"
+                  },
+                  "count": {
+                    "type": "integer",
+                    "title": "Count"
+                  },
+                  "total": {
+                    "type": "integer",
+                    "title": "Total"
+                  }
+                },
+                "title": "MetaPage",
+                "required": [
+                  "limit",
+                  "offset",
+                  "count",
+                  "total"
+                ]
+              }
+            },
+            "title": "Meta",
+            "required": [
+              "page"
+            ]
           }
         },
         "title": "PaginateListSnapshotResponseV1",
@@ -3710,22 +4513,18 @@
             "anyOf": [
               {
                 "type": "string"
-              },
-              {
-                "type": "null"
               }
             ],
-            "title": "Associated Public Ipv4"
+            "title": "Associated Public Ipv4",
+            "nullable": true
           },
           "ip_addresses": {
             "anyOf": [
               {
                 "$ref": "#/components/schemas/IpAddressNewExpand"
-              },
-              {
-                "type": "null"
               }
-            ]
+            ],
+            "nullable": true
           }
         },
         "title": "PortNewExpand",
@@ -3746,7 +4545,37 @@
             "title": "Name"
           },
           "ipAddresses": {
-            "$ref": "#/components/schemas/IpAddressExpand"
+            "type": "object",
+            "properties": {
+              "publicIpAddress": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  }
+                ],
+                "title": "Publicipaddress",
+                "nullable": true
+              },
+              "privateIpAddress": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  }
+                ],
+                "title": "Privateipaddress",
+                "nullable": true
+              },
+              "ipV6Address": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  }
+                ],
+                "title": "Ipv6Address",
+                "nullable": true
+              }
+            },
+            "title": "IpAddressExpand"
           }
         },
         "title": "PortV1Expand",
@@ -3771,7 +4600,22 @@
           "security_groups": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/ID"
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "title": "Id",
+                  "maxLength": 255,
+                  "minLength": 1
+                }
+              },
+              "title": "ID",
+              "required": [
+                "id"
+              ],
+              "example": {
+                "id": "9ec75090-2872-4f51-8111-53d05d96d2c6"
+              }
             },
             "title": "Security Groups",
             "default": []
@@ -3783,7 +4627,13 @@
         "type": "object",
         "properties": {
           "destination_region": {
-            "$ref": "#/components/schemas/Regions"
+            "type": "string",
+            "title": "Regions",
+            "enum": [
+              "br-se1",
+              "br-mgl1",
+              "br-ne1"
+            ]
           }
         },
         "title": "SnapshotCopyRequest",
@@ -3856,12 +4706,10 @@
             "anyOf": [
               {
                 "type": "string"
-              },
-              {
-                "type": "null"
               }
             ],
-            "title": "Name"
+            "title": "Name",
+            "nullable": true
           },
           "status": {
             "type": "string",
@@ -3873,24 +4721,18 @@
           },
           "created_at": {
             "type": "string",
-            "examples": [
-              "2022-01-01T00:00:10Z"
-            ],
-            "title": "Created At"
+            "title": "Created At",
+            "example": "2022-01-01T00:00:10Z"
           },
           "updated_at": {
             "anyOf": [
               {
                 "type": "string",
-                "examples": [
-                  "2022-01-01T00:00:10Z"
-                ]
-              },
-              {
-                "type": "null"
+                "example": "2022-01-01T00:00:10Z"
               }
             ],
-            "title": "Updated At"
+            "title": "Updated At",
+            "nullable": true
           },
           "size": {
             "type": "integer",
@@ -3900,11 +4742,9 @@
             "anyOf": [
               {
                 "$ref": "#/components/schemas/InstanceResponseSnapshotV1"
-              },
-              {
-                "type": "null"
               }
-            ]
+            ],
+            "nullable": true
           }
         },
         "title": "SnapshotResponseV1",
@@ -3959,12 +4799,10 @@
             "anyOf": [
               {
                 "type": "string"
-              },
-              {
-                "type": "null"
               }
             ],
-            "title": "Ssh Key Name"
+            "title": "Ssh Key Name",
+            "nullable": true
           },
           "availability_zone": {
             "anyOf": [
@@ -3972,29 +4810,19 @@
                 "type": "string",
                 "maxLength": 255,
                 "minLength": 1
-              },
-              {
-                "type": "null"
               }
             ],
             "title": "Availability Zone",
-            "default": "br-ne1-a"
+            "default": "br-ne1-a",
+            "nullable": true
           },
           "network": {
             "anyOf": [
               {
                 "$ref": "#/components/schemas/InstanceCreateRequestV1NetworkDefault"
-              },
-              {
-                "type": "null"
               }
             ],
-            "default": {
-              "vpc": {
-                "name": "vpc_default"
-              },
-              "associate_public_ip": true
-            }
+            "nullable": true
           },
           "user_data": {
             "anyOf": [
@@ -4002,12 +4830,10 @@
                 "type": "string",
                 "maxLength": 65000,
                 "minLength": 1
-              },
-              {
-                "type": "null"
               }
             ],
-            "title": "User Data"
+            "title": "User Data",
+            "nullable": true
           }
         },
         "title": "SnapshotRestoreRequestV1Default",
