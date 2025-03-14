@@ -86,7 +86,7 @@ func getCommonType(children []*SchemaRef) (t string, err error) {
 
 		schema := schemaRef.Value
 
-		if len(schema.Type.Slice()) == 0 || schema.Type.Slice()[0] == "" {
+		if schema.Type == nil && len(schema.Type.Slice()) == 0 || schema.Type.Slice()[0] == "" {
 			continue
 		}
 
