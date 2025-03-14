@@ -104,7 +104,8 @@ func matchListAndSetExecutor(setExec, listExec core.Executor) (matchingListExec 
 
 	for paramName, paramSchemaRef := range setExec.ParametersSchema().Properties {
 		paramSchema := (*mgcSchemaPkg.Schema)(paramSchemaRef.Value)
-		if len(paramSchema.Type.Slice()) > 0 && paramSchema.Type.Slice()[0] == openapi3.TypeArray && listSchema.Type.Slice()[0] != openapi3.TypeArray {
+		if paramSchema.Type != nil && paramSchema.Type.Includes(openapi3.TypeArray) &&
+			listSchema.Type != nil && !listSchema.Type.Includes(openapi3.TypeArray) {
 			// allow multiple selection of items
 			multiple = true
 			paramSchema = (*mgcSchemaPkg.Schema)(paramSchema.Items.Value)
@@ -115,7 +116,7 @@ func matchListAndSetExecutor(setExec, listExec core.Executor) (matchingListExec 
 			continue
 		}
 
-		if len(listSchema.Type.Slice()) > 0 && listSchema.Type.Slice()[0] != "object" {
+		if listSchema.Type != nil && !listSchema.Type.Includes("object") {
 			return
 		}
 		fieldSchemaRef := listSchema.Properties[paramName]
@@ -171,7 +172,7 @@ func matchGetCurrentAndSetExecutor(setExec, getCurrentExec core.Executor, multip
 			continue
 		}
 
-		if len(getCurrentSchema.Type.Slice()) > 0 && getCurrentSchema.Type.Slice()[0] != "object" {
+		if getCurrentSchema.Type != nil && !getCurrentSchema.Type.Includes("object") {
 			return
 		}
 		fieldSchemaRef := getCurrentSchema.Properties[paramName]
@@ -253,7 +254,8 @@ func getChoiceValue(choice any, paramName string, paramSchema, listSchema *mgcSc
 }
 
 func getMultiChoiceValue(choices []any, paramName string, paramSchema, listSchema *mgcSchemaPkg.Schema) (any, bool) {
-	if len(paramSchema.Type.Slice()) > 0 && paramSchema.Type.Slice()[0] == openapi3.TypeArray && listSchema.Type.Slice()[0] != openapi3.TypeArray {
+	if paramSchema.Type != nil && paramSchema.Type.Includes(openapi3.TypeArray) &&
+		listSchema.Type != nil && !listSchema.Type.Includes(openapi3.TypeArray) {
 		paramSchema = (*mgcSchemaPkg.Schema)(paramSchema.Items.Value)
 		lst := make([]any, 0, len(choices))
 		for _, c := range choices {
@@ -304,7 +306,9 @@ func isSelected(setExec, getCurrentExec core.Executor, multiple bool, item, curr
 
 	for paramName, paramSchemaRef := range setExec.ParametersSchema().Properties {
 		paramSchema := (*mgcSchemaPkg.Schema)(paramSchemaRef.Value)
-		if len(paramSchema.Type.Slice()) > 0 && paramSchema.Type.Slice()[0] == openapi3.TypeArray && getCurrentSchema.Type.Slice()[0] != openapi3.TypeArray && multiple {
+		if paramSchema.Type != nil && paramSchema.Type.Includes(openapi3.TypeArray) &&
+			getCurrentSchema.Type != nil && !getCurrentSchema.Type.Includes(openapi3.TypeArray) &&
+			multiple {
 			paramSchema = (*mgcSchemaPkg.Schema)(paramSchema.Items.Value)
 		}
 
@@ -315,7 +319,7 @@ func isSelected(setExec, getCurrentExec core.Executor, multiple bool, item, curr
 			continue
 		}
 
-		if len(getCurrentSchema.Type.Slice()) > 0 && getCurrentSchema.Type.Slice()[0] != "object" {
+		if getCurrentSchema.Type != nil && !getCurrentSchema.Type.Includes(openapi3.TypeObject) {
 			return
 		}
 		fieldSchemaRef := getCurrentSchema.Properties[paramName]

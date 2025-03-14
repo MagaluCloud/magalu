@@ -1,6 +1,8 @@
 package schema
 
 import (
+	"fmt"
+
 	"github.com/MagaluCloud/magalu/mgc/core/utils"
 	"github.com/getkin/kin-openapi/openapi3"
 )
@@ -445,8 +447,11 @@ func (c *COWSchema) SetExtensions(v map[string]any) bool {
 	return c.cowExtensions.Replace(v)
 }
 func (c *COWSchema) Type() string {
-	if c == nil || c.s == nil || len(c.s.Type.Slice()) == 0 {
+	if c == nil || c.s == nil || c.s.Type == nil {
 		return ""
+	}
+	if len(c.s.Type.Slice()) > 1 {
+		fmt.Println("REMOVE ME - 20250313-2212   =>", c.s.Type.Slice())
 	}
 	return c.s.Type.Slice()[0]
 }

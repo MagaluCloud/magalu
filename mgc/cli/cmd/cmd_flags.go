@@ -76,7 +76,7 @@ func (cf *cmdFlags) positionalArgsArrayToExpand() int {
 	first := -1
 	for i, f := range cf.positionalArgs {
 		if fv, ok := f.Value.(schema_flags.SchemaFlagValue); ok {
-			if len(fv.Desc().Schema.Type.Slice()) > 0 && fv.Desc().Schema.Type.Slice()[0] == openapi3.TypeArray {
+			if fv.Desc().Schema.Type != nil && fv.Desc().Schema.Type.Includes(openapi3.TypeArray) {
 				first = i
 				count++
 				if count > 1 {
@@ -101,7 +101,7 @@ func (cf *cmdFlags) positionalArgsNames() (names []string) {
 	for i, f := range cf.positionalArgs {
 		if hasExpandedArrays {
 			if fv, ok := f.Value.(schema_flags.SchemaFlagValue); ok {
-				if len(fv.Desc().Schema.Type.Slice()) > 0 && fv.Desc().Schema.Type.Slice()[0] == openapi3.TypeArray {
+				if fv.Desc().Schema.Type != nil && fv.Desc().Schema.Type.Includes(openapi3.TypeArray) {
 					names[i] = f.Name + "..."
 					continue
 				}

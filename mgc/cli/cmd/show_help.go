@@ -139,7 +139,8 @@ func getExample(schema, container *core.Schema, propName string) (example any) {
 		return
 	}
 
-	if len(schema.Type.Slice()) > 0 && schema.Type.Slice()[0] == openapi3.TypeArray && schema.Items != nil && schema.Items.Value != nil && schema.Items.Value.Example != nil {
+	if schema.Type != nil && schema.Type.Includes(openapi3.TypeArray) &&
+		schema.Items != nil && schema.Items.Value != nil && schema.Items.Value.Example != nil {
 		return []any{schema.Items.Value.Example}
 	}
 
@@ -168,12 +169,12 @@ func getExampleFormattedValue(schema, container *core.Schema, propName string) (
 		return
 	}
 
-	if len(schema.Type.Slice()) > 0 {
-		switch schema.Type.Slice()[0] {
-		case "integer", "number", "boolean":
+	if schema.Type != nil {
+		switch {
+		case schema.Type.Includes("integer"), schema.Type.Includes("number"), schema.Type.Includes("boolean"):
 			return string(data)
 
-		case "string":
+		case schema.Type.Includes("string"):
 			value = string(data)
 			if value == schema_flags.ValueHelpIsRequired {
 				value = schema_flags.ValueVerbatimStringPrefix + value
@@ -181,6 +182,8 @@ func getExampleFormattedValue(schema, container *core.Schema, propName string) (
 				value = fmt.Sprintf("'%s'", data) // keep quotes and wrap in single, so shell doesn't replace variables
 			}
 			return
+		default:
+			return fmt.Sprintf("'%s'", data)
 		}
 	}
 	return fmt.Sprintf("'%s'", data)

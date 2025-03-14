@@ -8,9 +8,9 @@ Usage:
 
 ## Product catalog:
 - Flags:
-- -h, --help             help for set
-- --key string       Name of the desired config (required)
-- --value anyValue   New flag value
+- -h, --help         help for set
+- --key string   Name of the desired config (required)
+- --value        New flag value
 - Use --value=help for more details (required)
 
 ## Other commands:

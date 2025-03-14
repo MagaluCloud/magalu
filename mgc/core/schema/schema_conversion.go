@@ -80,26 +80,17 @@ func isJsonSchemaExclusiveMax(input *json.Number) bool {
 	return max < 0
 }
 
-func convertJsonSchemaNumberToOpenAPIPointer[T constraints.Integer | constraints.Float](v *json.Number) (r *T) {
-	if reflect.TypeOf(r).Kind() == reflect.Float64 {
-		num, err := v.Float64()
-		if err != nil {
-			return nil
-		}
-		r = new(T)
-		*r = T(num)
-		return r
+func convertJsonNumberToFloat64(input *json.Number) *float64 {
+	if input == nil {
+		return nil
 	}
-	if reflect.TypeOf(r).Kind() == reflect.Int64 || reflect.TypeOf(r).Kind() == reflect.Int32 || reflect.TypeOf(r).Kind() == reflect.Int16 || reflect.TypeOf(r).Kind() == reflect.Int8 {
-		num, err := v.Int64()
-		if err != nil {
-			return nil
-		}
-		r = new(T)
-		*r = T(num)
-		return r
+
+	val, err := input.Float64()
+	if err != nil {
+		return nil
 	}
-	return nil
+
+	return &val
 }
 
 func convertUintToOpenAPIPointer[T constraints.Integer | constraints.Float](v *uint64) (r *T) {
@@ -173,9 +164,9 @@ func convertJsonSchemaToOpenAPISchema(input *jsonschema.Schema, refResolver *ref
 		WriteOnly:    input.WriteOnly,
 		// Does not exist: AllowEmptyValue:      input.AllowEmptyValue,
 		Deprecated:           input.Deprecated,
-		Min:                  convertJsonSchemaNumberToOpenAPIPointer[float64](&input.Minimum),
-		Max:                  convertJsonSchemaNumberToOpenAPIPointer[float64](&input.Maximum),
-		MultipleOf:           convertJsonSchemaNumberToOpenAPIPointer[float64](&input.MultipleOf),
+		Min:                  convertJsonNumberToFloat64(&input.Minimum),
+		Max:                  convertJsonNumberToFloat64(&input.Maximum),
+		MultipleOf:           convertJsonNumberToFloat64(&input.MultipleOf),
 		MinLength:            convertUintPointerToUint64(input.MinLength),
 		MaxLength:            convertUintToOpenAPIPointer[uint64](input.MaxLength),
 		Pattern:              input.Pattern,

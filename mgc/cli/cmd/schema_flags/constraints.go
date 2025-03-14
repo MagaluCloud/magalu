@@ -263,19 +263,17 @@ func specificHumanReadableConstraints(schema *mgcSchemaPkg.Schema) *HumanReadabl
 		return newXOfHumanReadableConstraints("At least one of the following must apply", schema, schema.AnyOf)
 	}
 
-	typeee := schema.Type
-
-	if typeee != nil {
+	if schema.Type != nil {
 		switch {
-		case typeee.Includes("boolean"):
+		case schema.Type.Includes("boolean"):
 			return newBooleanHumanReadableConstraints(schema)
-		case typeee.Includes("string"):
+		case schema.Type.Includes("string"):
 			return newStringHumanReadableConstraints(schema)
-		case typeee.Includes("integer"), typeee.Includes("number"):
+		case schema.Type.Includes("integer"), schema.Type.Includes("number"):
 			return newNumberHumanReadableConstraints(schema)
-		case typeee.Includes("array"):
+		case schema.Type.Includes("array"):
 			return newArrayHumanReadableConstraints(schema)
-		case typeee.Includes("object"):
+		case schema.Type.Includes("object"):
 			return newObjectHumanReadableConstraints(schema)
 		default:
 			if schema.Not != nil {

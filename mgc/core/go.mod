@@ -17,6 +17,7 @@ require (
 	github.com/mitchellh/mapstructure v1.5.0
 	github.com/spf13/afero v1.12.0
 	github.com/spf13/viper v1.19.0
+	github.com/wk8/go-ordered-map/v2 v2.1.9-0.20240815153524-6ea36470d1bd
 	go.uber.org/zap v1.27.0
 	golang.org/x/exp v0.0.0-20250215185904-eff6e970281f
 	golang.org/x/sync v0.11.0
@@ -42,7 +43,6 @@ require (
 	github.com/spf13/cast v1.7.1 // indirect
 	github.com/spf13/pflag v1.0.6 // indirect
 	github.com/subosito/gotenv v1.6.0 // indirect
-	github.com/wk8/go-ordered-map/v2 v2.1.9-0.20240815153524-6ea36470d1bd // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	golang.org/x/sys v0.30.0 // indirect
 	golang.org/x/text v0.22.0 // indirect

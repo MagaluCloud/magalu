@@ -325,7 +325,7 @@ func SchemaFromType[T any]() (*Schema, error) {
 	isArray := kind == reflect.Array || kind == reflect.Slice
 
 	// schemaReflector seems to lose the fact that it's an array, so we bring that back
-	if isArray && len(s.Type.Slice()) > 0 && s.Type.Slice()[0] == "object" {
+	if isArray && s.Type.Includes(openapi3.TypeObject) {
 		arrSchema := NewArraySchema(s)
 		s = arrSchema
 	}

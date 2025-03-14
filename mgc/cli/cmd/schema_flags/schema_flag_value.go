@@ -23,15 +23,16 @@ type SchemaFlagValue interface {
 }
 
 func newSchemaFlagValue(desc SchemaFlagValueDesc) SchemaFlagValue {
-	if len(desc.Schema.Type.Slice()) > 0 {
-		switch desc.Schema.Type.Slice()[0] {
-		case "array":
+
+	if desc.Schema.Type != nil {
+		switch {
+		case desc.Schema.Type.Includes("array"):
 			return newSchemaFlagValueArray(desc)
-		case "boolean":
+		case desc.Schema.Type.Includes("boolean"):
 			return newSchemaFlagValueBool(desc)
-		case "string":
+		case desc.Schema.Type.Includes("string"):
 			return newSchemaFlagValueString(desc)
-		case "object":
+		case desc.Schema.Type.Includes("object"):
 			return newSchemaFlagValueObject(desc)
 		}
 	}
