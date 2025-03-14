@@ -534,51 +534,5 @@ func (r *refResolver) resolveOpenAPI(ref string) (oapiSchema *openapi3.Schema, e
 }
 
 func isSchemaEmpty(s *openapi3.Schema) bool {
-	return IsEmpty(s) && s.Description == ""
-}
-
-func IsEmpty(schema *openapi3.Schema) bool {
-	if !schema.Type.Is("") || schema.Format != "" || len(schema.Enum) != 0 ||
-		schema.UniqueItems || schema.ExclusiveMin || schema.ExclusiveMax ||
-		schema.Nullable || schema.ReadOnly || schema.WriteOnly || schema.AllowEmptyValue ||
-		schema.Min != nil || schema.Max != nil || schema.MultipleOf != nil ||
-		schema.MinLength != 0 || schema.MaxLength != nil || schema.Pattern != "" ||
-		schema.MinItems != 0 || schema.MaxItems != nil ||
-		len(schema.Required) != 0 ||
-		schema.MinProps != 0 || schema.MaxProps != nil {
-		return false
-	}
-	if n := schema.Not; n != nil && !n.Value.IsEmpty() {
-		return false
-	}
-	if ap := schema.AdditionalProperties.Schema; ap != nil && !ap.Value.IsEmpty() {
-		return false
-	}
-	if apa := schema.AdditionalProperties.Has; apa != nil && !*apa {
-		return false
-	}
-	if items := schema.Items; items != nil && !items.Value.IsEmpty() {
-		return false
-	}
-	for _, s := range schema.Properties {
-		if !s.Value.IsEmpty() {
-			return false
-		}
-	}
-	for _, s := range schema.OneOf {
-		if !s.Value.IsEmpty() {
-			return false
-		}
-	}
-	for _, s := range schema.AnyOf {
-		if !s.Value.IsEmpty() {
-			return false
-		}
-	}
-	for _, s := range schema.AllOf {
-		if !s.Value.IsEmpty() {
-			return false
-		}
-	}
-	return true
+	return s.IsEmpty() && s.Description == ""
 }

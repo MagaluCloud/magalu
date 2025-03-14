@@ -12,12 +12,12 @@ Usage:
 
 ## Other commands:
 - Flags:
-- --dst uri                Full destination path in the bucket (required)
-- --filter array(object)   File name pattern to include or exclude
+- --dst uri              Full destination path in the bucket (required)
+- --filter array()       File name pattern to include or exclude
 - Use --filter=help for more details
-- -h, --help                   help for copy-all
-- --src uri                Path of objects in a bucket to be copied (required)
-- --storage-class enum     Copy objects to other storage classes (one of "", "cold", "cold_instant", "glacier_ir" or "standard") (default "")
+- -h, --help                 help for copy-all
+- --src uri              Path of objects in a bucket to be copied (required)
+- --storage-class enum   Copy objects to other storage classes (one of "", "cold", "cold_instant", "glacier_ir" or "standard") (default "")
 
 ## Flags:
 ```bash

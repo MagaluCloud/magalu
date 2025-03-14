@@ -12,11 +12,11 @@ Usage:
 
 ## Other commands:
 - Flags:
-- --dst file               Path to save files
-- --filter array(object)   File name pattern to include or exclude
+- --dst file         Path to save files
+- --filter array()   File name pattern to include or exclude
 - Use --filter=help for more details
-- -h, --help                   help for download-all
-- --src uri                Path of objects to be downloaded (required)
+- -h, --help             help for download-all
+- --src uri          Path of objects to be downloaded (required)
 
 ## Flags:
 ```bash

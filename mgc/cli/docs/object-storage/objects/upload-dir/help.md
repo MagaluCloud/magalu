@@ -12,13 +12,13 @@ Usage:
 
 ## Other commands:
 - Flags:
-- --dst uri                Full destination path in the bucket (required)
-- --filter array(object)   File name pattern to include or exclude
+- --dst uri              Full destination path in the bucket (required)
+- --filter array()       File name pattern to include or exclude
 - Use --filter=help for more details
-- -h, --help                   help for upload-dir
-- --shallow                Don't upload subdirectories
-- --src directory          Source directory path for upload (required)
-- --storage-class enum     Type of Storage in which to store object (one of "", "cold", "cold_instant", "glacier_ir" or "standard") (default "")
+- -h, --help                 help for upload-dir
+- --shallow              Don't upload subdirectories
+- --src directory        Source directory path for upload (required)
+- --storage-class enum   Type of Storage in which to store object (one of "", "cold", "cold_instant", "glacier_ir" or "standard") (default "")
 
 ## Flags:
 ```bash
