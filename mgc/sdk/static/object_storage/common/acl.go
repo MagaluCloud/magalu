@@ -86,17 +86,6 @@ type ACLStandardPermissions struct {
 }
 
 func (o ACLStandardPermissions) JSONSchemaExtend(s *jsonschema.Schema) {
-
-	// for _, prop := range s.Properties.FromNewest() {
-	// 	if prop.Type == "array" {
-	// 		if prop.Items == nil {
-	// 			prop.Items = &jsonschema.Schema{}
-	// 		}
-	// 		prop.Items.Type = "object"
-	// 	}
-
-	// }
-
 	prop, exists := s.Properties.Get("grant_write")
 	if exists {
 		prop.Type = "array"
@@ -104,10 +93,6 @@ func (o ACLStandardPermissions) JSONSchemaExtend(s *jsonschema.Schema) {
 			prop.Items = &jsonschema.Schema{}
 		}
 		prop.Items.Type = "object"
-
-		// Se quiser adicionar propriedades aos itens do array
-		// prop.Items.Properties = orderedmap.New[string, *jsonschema.Schema]()
-		// prop.Items.Properties.Set("propriedade", &jsonschema.Schema{Type: "string"})
 	}
 }
 
