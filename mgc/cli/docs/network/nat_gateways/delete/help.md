@@ -1,17 +1,16 @@
-# V1 Create a VPC
+# V1 Delete a Nat Gateway
 
 ## Usage:
 ```bash
 Usage:
-  ./mgc network vpcs create [flags]
+  ./mgc network nat-gateways delete [nat-gateway-id] [flags]
 ```
 
 ## Product catalog:
 - Flags:
-- --description string   Description
-- -h, --help                 help for create
-- --name string          Name (required)
-- -v, --version              version for create
+- -h, --help                    help for delete
+- --nat-gateway-id string   Nat Gateway Id (required)
+- -v, --version                 version for delete
 
 ## Other commands:
 - Global Flags:

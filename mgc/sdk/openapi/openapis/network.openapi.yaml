@@ -5,7 +5,7 @@ info:
     contact:
         name: IaaS Products
         url: https://github.com/luizalabs
-    version: 1.141.3
+    version: 1.150.0
 paths:
     /v0/ports:
         get:
@@ -14,6 +14,9 @@ paths:
             summary: Details of a Port list
             description: Return a detailed list of ports from the provided tenant_id
             operationId: detail_ports_v0_ports_get
+            security:
+            -   OAuth2:
+                - network.read
             parameters:
             -   name: port_id_list
                 in: query
@@ -42,9 +45,6 @@ paths:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
             x-mgc-hidden: false
-            security:
-            -   OAuth2:
-                - network.read
     /v0/ports/{port_id}:
         delete:
             tags:
@@ -52,6 +52,9 @@ paths:
             summary: Delete Port
             description: Delete a port from the provided tenant_id
             operationId: delete_port_v0_ports__port_id__delete
+            security:
+            -   OAuth2:
+                - network.write
             parameters:
             -   name: port_id
                 in: path
@@ -72,15 +75,15 @@ paths:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
             x-mgc-hidden: false
-            security:
-            -   OAuth2:
-                - network.write
         get:
             tags:
             - ports
             summary: Port Details
             description: Return a port details from the provided tenant_id
             operationId: detail_port_v0_ports__port_id__get
+            security:
+            -   OAuth2:
+                - network.read
             parameters:
             -   name: port_id
                 in: path
@@ -119,9 +122,6 @@ paths:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
             x-mgc-hidden: false
-            security:
-            -   OAuth2:
-                - network.read
     /v0/ports/{port_id}/attach/{security_group_id}:
         post:
             tags:
@@ -130,6 +130,9 @@ paths:
             description: Attach a Security Group to a Port with provided port_id,
                 security_group_id, x-tenant-id of an specific project type
             operationId: attach_security_group_v0_ports__port_id__attach__security_group_id__post
+            security:
+            -   OAuth2:
+                - network.write
             parameters:
             -   name: port_id
                 in: path
@@ -175,9 +178,6 @@ paths:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
             x-mgc-hidden: false
-            security:
-            -   OAuth2:
-                - network.write
     /v0/ports/{port_id}/detach/{security_group_id}:
         post:
             tags:
@@ -186,6 +186,9 @@ paths:
             description: Detach a Security Group to a Port with provided port_id,
                 security_group_id, x-tenant-id of an specific project type
             operationId: detach_security_group_v0_ports__port_id__detach__security_group_id__post
+            security:
+            -   OAuth2:
+                - network.write
             parameters:
             -   name: port_id
                 in: path
@@ -231,9 +234,6 @@ paths:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
             x-mgc-hidden: false
-            security:
-            -   OAuth2:
-                - network.write
     /v0/public_ips:
         get:
             tags:
@@ -241,6 +241,9 @@ paths:
             summary: Tenant's public IP list
             description: Return a tenant's public ip list
             operationId: get_tenant_public_ip_list_v0_public_ips_get
+            security:
+            -   OAuth2:
+                - network.read
             responses:
                 '200':
                     description: Successful Response
@@ -256,9 +259,6 @@ paths:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
             x-mgc-hidden: false
-            security:
-            -   OAuth2:
-                - network.read
     /v0/public_ips/{public_ip_id}:
         delete:
             tags:
@@ -266,6 +266,9 @@ paths:
             summary: Delete Public IP
             description: Delete a Public IP from the provided tenant_id
             operationId: delete_public_ip_v0_public_ips__public_ip_id__delete
+            security:
+            -   OAuth2:
+                - network.write
             parameters:
             -   name: public_ip_id
                 in: path
@@ -286,15 +289,15 @@ paths:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
             x-mgc-hidden: false
-            security:
-            -   OAuth2:
-                - network.write
         get:
             tags:
             - public_ips
             summary: Public IP Details
             description: Return a Public IP details
             operationId: detail_public_ip_v0_public_ips__public_ip_id__get
+            security:
+            -   OAuth2:
+                - network.read
             parameters:
             -   name: public_ip_id
                 in: path
@@ -337,9 +340,6 @@ paths:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
             x-mgc-hidden: false
-            security:
-            -   OAuth2:
-                - network.read
     /v0/public_ips/{public_ip_id}/attach/{port_id}:
         post:
             tags:
@@ -347,6 +347,9 @@ paths:
             summary: Attach Public IP
             description: Attach a Public IP to a Port
             operationId: attach_public_ip_v0_public_ips__public_ip_id__attach__port_id__post
+            security:
+            -   OAuth2:
+                - network.write
             parameters:
             -   name: public_ip_id
                 in: path
@@ -392,9 +395,6 @@ paths:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
             x-mgc-hidden: false
-            security:
-            -   OAuth2:
-                - network.write
     /v0/public_ips/{public_ip_id}/detach/{port_id}:
         post:
             tags:
@@ -402,6 +402,9 @@ paths:
             summary: Detach Public IP
             description: Detach a Public IP to a Port
             operationId: detach_public_ip_v0_public_ips__public_ip_id__detach__port_id__post
+            security:
+            -   OAuth2:
+                - network.write
             parameters:
             -   name: public_ip_id
                 in: path
@@ -447,9 +450,6 @@ paths:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
             x-mgc-hidden: false
-            security:
-            -   OAuth2:
-                - network.write
     /v0/rules/{rule_id}:
         delete:
             tags:
@@ -457,6 +457,9 @@ paths:
             summary: Delete a Rule
             description: Delete a rule from the provided tenant_id
             operationId: delete_rule_v0_rules__rule_id__delete
+            security:
+            -   OAuth2:
+                - network.write
             parameters:
             -   name: rule_id
                 in: path
@@ -477,15 +480,15 @@ paths:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
             x-mgc-hidden: false
-            security:
-            -   OAuth2:
-                - network.write
         get:
             tags:
             - rules
             summary: Rule Details
             description: Return a rule details
             operationId: detail_rule_v0_rules__rule_id__get
+            security:
+            -   OAuth2:
+                - network.read
             parameters:
             -   name: rule_id
                 in: path
@@ -516,9 +519,6 @@ paths:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
             x-mgc-hidden: false
-            security:
-            -   OAuth2:
-                - network.read
     /v0/security_groups:
         get:
             tags:
@@ -526,6 +526,9 @@ paths:
             summary: List Security Groups by Tenant
             description: Returns a list of security groups for a provided tenant_id
             operationId: list_vpc_security_groups_by_tenant_v0_security_groups_get
+            security:
+            -   OAuth2:
+                - network.read
             responses:
                 '200':
                     description: Successful Response
@@ -541,15 +544,15 @@ paths:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
             x-mgc-hidden: false
-            security:
-            -   OAuth2:
-                - network.read
         post:
             tags:
             - security_groups
             summary: Create Security Group
             description: Create a Security Group
             operationId: create_security_group_v0_security_groups_post
+            security:
+            -   OAuth2:
+                - network.write
             parameters:
             -   name: validate_quota
                 in: query
@@ -628,9 +631,6 @@ paths:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
             x-mgc-hidden: false
-            security:
-            -   OAuth2:
-                - network.write
     /v0/security_groups/{security_group_id}:
         delete:
             tags:
@@ -638,6 +638,9 @@ paths:
             summary: Delete a security group
             description: Delete a security group from the provided tenant_id
             operationId: delete_security_group_v0_security_groups__security_group_id__delete
+            security:
+            -   OAuth2:
+                - network.write
             parameters:
             -   name: security_group_id
                 in: path
@@ -658,15 +661,15 @@ paths:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
             x-mgc-hidden: false
-            security:
-            -   OAuth2:
-                - network.write
         get:
             tags:
             - security_groups
             summary: Security Group Details
             description: Return a security group details
             operationId: detail_security_group_v0_security_groups__security_group_id__get
+            security:
+            -   OAuth2:
+                - network.read
             parameters:
             -   name: security_group_id
                 in: path
@@ -697,9 +700,6 @@ paths:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
             x-mgc-hidden: false
-            security:
-            -   OAuth2:
-                - network.read
     /v0/security_groups/{security_group_id}/rules:
         get:
             tags:
@@ -707,6 +707,9 @@ paths:
             summary: List Rules
             description: Returns a list of rules for a provided security_group_id
             operationId: list_security_group_rules_v0_security_groups__security_group_id__rules_get
+            security:
+            -   OAuth2:
+                - network.read
             parameters:
             -   name: security_group_id
                 in: path
@@ -731,9 +734,6 @@ paths:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
             x-mgc-hidden: false
-            security:
-            -   OAuth2:
-                - network.read
         post:
             tags:
             - security_groups
@@ -745,6 +745,9 @@ paths:
                 remote_group_id, only the specified security group is allowed to communicatefollowing
                 the specified protocol, direction and port_range_min/max
             operationId: create_rule_v0_security_groups__security_group_id__rules_post
+            security:
+            -   OAuth2:
+                - network.write
             parameters:
             -   name: security_group_id
                 in: path
@@ -819,9 +822,6 @@ paths:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
             x-mgc-hidden: false
-            security:
-            -   OAuth2:
-                - network.write
     /v0/subnetpools:
         get:
             tags:
@@ -829,6 +829,9 @@ paths:
             summary: List Subnet Pools by Tenant
             description: Returns a list of Subnet Pools for the current tenant's project
             operationId: list_subnetpools_v0_subnetpools_get
+            security:
+            -   OAuth2:
+                - network.read
             parameters:
             -   name: _offset
                 in: query
@@ -867,6 +870,13 @@ paths:
                     example_created_at_asc:
                         summary: created_at:asc
                         value: created_at:asc
+            -   name: _az_id
+                in: query
+                required: false
+                schema:
+                    type: string
+                    title: ' Az Id'
+                    default: a
             responses:
                 '200':
                     description: Successful Response
@@ -882,15 +892,15 @@ paths:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
             x-mgc-hidden: false
-            security:
-            -   OAuth2:
-                - network.read
         post:
             tags:
             - subnetpools
             summary: Create a Subnet Pool in a tenant
             description: Create a Subnet Pool
             operationId: create_subnetpool_v0_subnetpools_post
+            security:
+            -   OAuth2:
+                - network.write
             requestBody:
                 required: true
                 content:
@@ -933,9 +943,6 @@ paths:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
             x-mgc-hidden: false
-            security:
-            -   OAuth2:
-                - network.write
     /v0/subnetpools/{subnetpool_id}:
         delete:
             tags:
@@ -943,6 +950,9 @@ paths:
             summary: Delete Subnet Pool by ID
             description: Delete one Subnet Pool by ID
             operationId: delete_subnetpool_v0_subnetpools__subnetpool_id__delete
+            security:
+            -   OAuth2:
+                - network.write
             parameters:
             -   name: subnetpool_id
                 in: path
@@ -963,15 +973,15 @@ paths:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
             x-mgc-hidden: false
-            security:
-            -   OAuth2:
-                - network.write
         get:
             tags:
             - subnetpools
             summary: Get Subnet Pool by ID
             description: Get details of a specific Subnet Pool
             operationId: get_subnetpool_v0_subnetpools__subnetpool_id__get
+            security:
+            -   OAuth2:
+                - network.read
             parameters:
             -   name: subnetpool_id
                 in: path
@@ -1018,9 +1028,6 @@ paths:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
             x-mgc-hidden: false
-            security:
-            -   OAuth2:
-                - network.read
     /v0/subnetpools/{subnetpool_id}/book_cidr:
         post:
             tags:
@@ -1028,6 +1035,9 @@ paths:
             summary: Book Subnetpool
             description: Booking a CIDR range from a subnetpool
             operationId: book_cidr_v0_subnetpools__subnetpool_id__book_cidr_post
+            security:
+            -   OAuth2:
+                - network.write
             parameters:
             -   name: subnetpool_id
                 in: path
@@ -1083,9 +1093,6 @@ paths:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
             x-mgc-hidden: false
-            security:
-            -   OAuth2:
-                - network.write
     /v0/subnetpools/{subnetpool_id}/unbook_cidr:
         post:
             tags:
@@ -1093,6 +1100,9 @@ paths:
             summary: Unbook Subnetpool
             description: Unbooking a CIDR range from a subnetpool
             operationId: unbook_cidr_v0_subnetpools__subnetpool_id__unbook_cidr_post
+            security:
+            -   OAuth2:
+                - network.write
             parameters:
             -   name: subnetpool_id
                 in: path
@@ -1143,9 +1153,6 @@ paths:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
             x-mgc-hidden: false
-            security:
-            -   OAuth2:
-                - network.write
     /v0/subnets/{subnet_id}:
         delete:
             tags:
@@ -1153,6 +1160,9 @@ paths:
             summary: Delete a Subnet
             description: Delete a subnet from the provided tenant_id
             operationId: delete_subnet_v0_subnets__subnet_id__delete
+            security:
+            -   OAuth2:
+                - network.write
             parameters:
             -   name: subnet_id
                 in: path
@@ -1173,15 +1183,15 @@ paths:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
             x-mgc-hidden: false
-            security:
-            -   OAuth2:
-                - network.write
         get:
             tags:
             - subnets
             summary: Subnet Details
             description: Returns a subnet details
             operationId: detail_subnet_v0_subnets__subnet_id__get
+            security:
+            -   OAuth2:
+                - network.read
             parameters:
             -   name: subnet_id
                 in: path
@@ -1223,15 +1233,15 @@ paths:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
             x-mgc-hidden: false
-            security:
-            -   OAuth2:
-                - network.read
         patch:
             tags:
             - subnets
             summary: Update Subnet
             description: Update a subnet from the provided tenant_id
             operationId: update_subnet_v0_subnets__subnet_id__patch
+            security:
+            -   OAuth2:
+                - network.write
             parameters:
             -   name: subnet_id
                 in: path
@@ -1275,9 +1285,6 @@ paths:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
             x-mgc-hidden: false
-            security:
-            -   OAuth2:
-                - network.write
     /v0/vpcs:
         get:
             tags:
@@ -1285,6 +1292,9 @@ paths:
             summary: List VPC
             description: Returns a list of VPCs for a provided tenant_id
             operationId: list_vpcs_v0_vpcs_get
+            security:
+            -   OAuth2:
+                - network.read
             responses:
                 '200':
                     description: Successful Response
@@ -1300,9 +1310,6 @@ paths:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
             x-mgc-hidden: false
-            security:
-            -   OAuth2:
-                - network.read
     /v0/vpcs/{vpc_id}:
         delete:
             tags:
@@ -1310,6 +1317,9 @@ paths:
             summary: Delete VPC
             description: Delete a VPC from the provided tenant_id
             operationId: delete_vpc_v0_vpcs__vpc_id__delete
+            security:
+            -   OAuth2:
+                - network.write
             parameters:
             -   name: vpc_id
                 in: path
@@ -1330,15 +1340,15 @@ paths:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
             x-mgc-hidden: false
-            security:
-            -   OAuth2:
-                - network.write
         get:
             tags:
             - vpcs
             summary: VPC Details
             description: Return a VPC details
             operationId: detail_vpc_v0_vpcs__vpc_id__get
+            security:
+            -   OAuth2:
+                - network.read
             parameters:
             -   name: vpc_id
                 in: path
@@ -1369,9 +1379,6 @@ paths:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
             x-mgc-hidden: false
-            security:
-            -   OAuth2:
-                - network.read
     /v0/vpcs/{vpc_id}/ports:
         get:
             tags:
@@ -1382,6 +1389,9 @@ paths:
                 need just setting the page number(_offset) and the quantity of items
                 per page(_limit). The level of detail can also be set
             operationId: list_vpc_ports_v0_vpcs__vpc_id__ports_get
+            security:
+            -   OAuth2:
+                - network.read
             parameters:
             -   name: vpc_id
                 in: path
@@ -1446,9 +1456,6 @@ paths:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
             x-mgc-hidden: false
-            security:
-            -   OAuth2:
-                - network.read
         post:
             tags:
             - vpcs
@@ -1456,6 +1463,9 @@ paths:
             description: Create a Port with provided vpc_id and x-tenant-id. You can
                 provide a list of security_groups_id or subnets
             operationId: create_port_v0_vpcs__vpc_id__ports_post
+            security:
+            -   OAuth2:
+                - network.write
             parameters:
             -   name: vpc_id
                 in: path
@@ -1499,9 +1509,6 @@ paths:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
             x-mgc-hidden: false
-            security:
-            -   OAuth2:
-                - network.write
     /v0/vpcs/{vpc_id}/public_ips:
         get:
             tags:
@@ -1509,6 +1516,9 @@ paths:
             summary: List Public IPs
             description: Returns a list of Public IPs for a provided vpc_id
             operationId: list_vpc_public_ips_v0_vpcs__vpc_id__public_ips_get
+            security:
+            -   OAuth2:
+                - network.read
             parameters:
             -   name: vpc_id
                 in: path
@@ -1533,9 +1543,6 @@ paths:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
             x-mgc-hidden: false
-            security:
-            -   OAuth2:
-                - network.read
         post:
             tags:
             - vpcs
@@ -1543,6 +1550,9 @@ paths:
             description: Create async Public IP in a VPC with provided vpc_id and
                 x_tenant_id
             operationId: create_public_ip_v0_vpcs__vpc_id__public_ips_post
+            security:
+            -   OAuth2:
+                - network.write
             parameters:
             -   name: vpc_id
                 in: path
@@ -1616,9 +1626,6 @@ paths:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
             x-mgc-hidden: false
-            security:
-            -   OAuth2:
-                - network.write
     /v0/vpcs/{vpc_id}/subnets:
         get:
             tags:
@@ -1626,6 +1633,9 @@ paths:
             summary: List Subnets
             description: Returns a list of subnets for a provided vpc_id
             operationId: list_subnets_from_vpc_v0_vpcs__vpc_id__subnets_get
+            security:
+            -   OAuth2:
+                - network.read
             parameters:
             -   name: vpc_id
                 in: path
@@ -1650,15 +1660,15 @@ paths:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
             x-mgc-hidden: false
-            security:
-            -   OAuth2:
-                - network.read
         post:
             tags:
             - vpcs
             summary: Create Subnet
             description: Create a Subnet
             operationId: create_subnet_v0_vpcs__vpc_id__subnets_post
+            security:
+            -   OAuth2:
+                - network.write
             parameters:
             -   name: vpc_id
                 in: path
@@ -1723,18 +1733,275 @@ paths:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
             x-mgc-hidden: false
+    /v1/nat_gateways:
+        get:
+            tags:
+            - nat_gateways
+            summary: V1 List Nat Gateways from a VPC
+            description: V1 List Nat Gateways from a VPC
+            operationId: v1_list_nat_gateways_v1_nat_gateways_get
+            security:
+            -   OAuth2:
+                - network.read
+            parameters:
+            -   name: vpc_id
+                in: query
+                required: true
+                schema:
+                    type: string
+                    title: Vpc Id
+            -   name: sort
+                in: query
+                required: false
+                schema:
+                    anyOf:
+                    -   type: string
+                    title: Sort
+                    default: name:asc
+            -   name: page
+                in: query
+                required: false
+                schema:
+                    type: integer
+                    title: Page
+                    minimum: 1
+                    default: 1
+            -   name: items_per_page
+                in: query
+                required: false
+                schema:
+                    type: integer
+                    title: Items Per Page
+                    maximum: 100
+                    minimum: 1
+                    default: 10
+            responses:
+                '200':
+                    description: Ok
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/NatGatewayListResponse'
+                '400':
+                    description: Bad Request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/StatusCode400BadRequest'
+                '409':
+                    description: Conflict
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/StatusCode409Conflict'
+                '500':
+                    description: Internal Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/StatusCode500InternalServerError'
+                '504':
+                    description: Gateway Timeout
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/StatusCode504GatewayTimeout'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: true
+            x-mgc-hidden: false
+        post:
+            tags:
+            - nat_gateways
+            summary: V1 Create Nat Gateway
+            description: V1 Create a Nat Gateway
+            operationId: v1_create_nat_gateways_v1_nat_gateways_post
             security:
             -   OAuth2:
                 - network.write
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/NatGatewayCreatePayload'
+            responses:
+                '202':
+                    description: Accepted
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/NatGatewayCreateResponse'
+                    links:
+                        get:
+                            operationId: v1_detail_nat_gateways_v1_nat_gateways__nat_gateway_id__get
+                            description: V1 Detail Nat Gateway
+                            parameters:
+                                nat_gateway_id: $response.body#/id
+                        delete:
+                            operationId: v1_delete_nat_gateways_v1_nat_gateways__nat_gateway_id__delete
+                            description: V1 Delete Nat Gateway
+                            parameters:
+                                nat_gateway_id: $response.body#/id
+                '400':
+                    description: Bad Request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/StatusCode400BadRequest'
+                '409':
+                    description: Conflict
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/StatusCode409Conflict'
+                '500':
+                    description: Internal Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/StatusCode500InternalServerError'
+                '504':
+                    description: Gateway Timeout
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/StatusCode504GatewayTimeout'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: true
+            x-mgc-hidden: false
+    /v1/nat_gateways/{nat_gateway_id}:
+        delete:
+            tags:
+            - nat_gateways
+            summary: V1 Delete Nat Gateway
+            description: V1 Delete a Nat Gateway
+            operationId: v1_delete_nat_gateways_v1_nat_gateways__nat_gateway_id__delete
+            security:
+            -   OAuth2:
+                - network.delete
+            parameters:
+            -   name: nat_gateway_id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Nat Gateway Id
+            responses:
+                '204':
+                    description: No Content
+                '400':
+                    description: Bad Request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/StatusCode400BadRequest'
+                '409':
+                    description: Conflict
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/StatusCode409Conflict'
+                '500':
+                    description: Internal Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/StatusCode500InternalServerError'
+                '504':
+                    description: Gateway Timeout
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/StatusCode504GatewayTimeout'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: true
+            x-mgc-hidden: false
+        get:
+            tags:
+            - nat_gateways
+            summary: V1 Detail Nat Gateway
+            description: V1 Detail a Nat Gateway
+            operationId: v1_detail_nat_gateways_v1_nat_gateways__nat_gateway_id__get
+            security:
+            -   OAuth2:
+                - network.read
+            parameters:
+            -   name: nat_gateway_id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Nat Gateway Id
+            responses:
+                '200':
+                    description: Ok
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/NatGatewayDetailsResponse'
+                    links:
+                        delete:
+                            operationId: v1_delete_nat_gateways_v1_nat_gateways__nat_gateway_id__delete
+                            description: V1 Delete Nat Gateway
+                            parameters:
+                                nat_gateway_id: $response.body#/id
+                '400':
+                    description: Bad Request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/StatusCode400BadRequest'
+                '409':
+                    description: Conflict
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/StatusCode409Conflict'
+                '500':
+                    description: Internal Exception
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/StatusCode500InternalServerError'
+                '504':
+                    description: Gateway Timeout
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/StatusCode504GatewayTimeout'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: true
+            x-mgc-hidden: false
     /v1/vpcs:
         post:
             tags:
             - vpcs
-            summary: Create VPC
-            description: This endpoint allows you to create a new Virtual Private
-                Cloud (VPC). It requires the tenant ID and a payload containing the
-                VPC details such as name and description.
+            summary: V1 Create VPC
+            description: V1 Create a VPC
             operationId: v1_create_vpc_v1_vpcs_post
+            security:
+            -   OAuth2:
+                - network.write
             requestBody:
                 required: true
                 content:
@@ -1780,9 +2047,6 @@ paths:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
             x-mgc-hidden: false
-            security:
-            -   OAuth2:
-                - network.write
 components:
     schemas:
         BookCidrRequest:
@@ -1876,6 +2140,72 @@ components:
             - previous
             - next
             - self
+        Meta:
+            type: object
+            properties:
+                page:
+                    type: object
+                    properties:
+                        limit:
+                            type: integer
+                            title: Limit
+                        offset:
+                            type: integer
+                            title: Offset
+                        count:
+                            type: integer
+                            title: Count
+                        total:
+                            type: integer
+                            title: Total
+                        max_items_per_page:
+                            type: integer
+                            title: Max Items Per Page
+                    title: MetaPageInfo
+                    required:
+                    - limit
+                    - offset
+                    - count
+                    - total
+                    - max_items_per_page
+                links:
+                    type: object
+                    properties:
+                        previous:
+                            anyOf:
+                            -   type: string
+                            title: Previous
+                        next:
+                            anyOf:
+                            -   type: string
+                            title: Next
+                        self:
+                            type: string
+                            title: Self
+                    title: MetaLinks
+                    required:
+                    - self
+            title: Meta
+            required:
+            - page
+            - links
+        MetaLinks:
+            type: object
+            properties:
+                previous:
+                    anyOf:
+                    -   type: string
+                    title: Previous
+                next:
+                    anyOf:
+                    -   type: string
+                    title: Next
+                self:
+                    type: string
+                    title: Self
+            title: MetaLinks
+            required:
+            - self
         MetaModel:
             type: object
             properties:
@@ -1923,6 +2253,275 @@ components:
             required:
             - page
             - links
+        MetaPageInfo:
+            type: object
+            properties:
+                limit:
+                    type: integer
+                    title: Limit
+                offset:
+                    type: integer
+                    title: Offset
+                count:
+                    type: integer
+                    title: Count
+                total:
+                    type: integer
+                    title: Total
+                max_items_per_page:
+                    type: integer
+                    title: Max Items Per Page
+            title: MetaPageInfo
+            required:
+            - limit
+            - offset
+            - count
+            - total
+            - max_items_per_page
+        NatGatewayCreatePayload:
+            type: object
+            properties:
+                name:
+                    type: string
+                    title: Name
+                description:
+                    anyOf:
+                    -   type: string
+                    title: Description
+                zone:
+                    type: string
+                    title: Zone
+                vpc_id:
+                    type: string
+                    title: Vpc Id
+            title: NatGatewayCreatePayload
+            required:
+            - name
+            - zone
+            - vpc_id
+            example:
+                description: Description
+                name: NatGateway Name
+                vpc_id: NatGateway vpc id
+                zone: NatGateway zone
+        NatGatewayCreateResponse:
+            type: object
+            properties:
+                id:
+                    type: string
+                    title: Id
+                status:
+                    type: string
+                    title: Status
+                    enum:
+                    - pending
+                    - processing
+                    - created
+                    - error
+            title: NatGatewayCreateResponse
+            required:
+            - id
+            - status
+            example:
+                id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                status: pending
+        NatGatewayDetailsResponse:
+            type: object
+            properties:
+                id:
+                    type: string
+                    title: Id
+                name:
+                    type: string
+                    title: Name
+                description:
+                    anyOf:
+                    -   type: string
+                    title: Description
+                vpc_id:
+                    type: string
+                    title: Vpc Id
+                zone:
+                    type: string
+                    title: Zone
+                nat_gateway_ip:
+                    anyOf:
+                    -   type: string
+                    title: Nat Gateway Ip
+                created_at:
+                    anyOf:
+                    -   type: string
+                        format: date-time
+                    title: Created At
+                updated:
+                    anyOf:
+                    -   type: string
+                        format: date-time
+                    title: Updated
+                status:
+                    type: string
+                    title: Status
+                    enum:
+                    - pending
+                    - processing
+                    - created
+                    - error
+            title: NatGatewayDetailsResponse
+            required:
+            - id
+            - name
+            - vpc_id
+            - zone
+            - status
+            example:
+                created_at: YYYY-MM-DD HH:mm:SS
+                description: NatGateway description
+                id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                name: NatGateway Name
+                nat_gateway_ip: 127.0.0.1
+                status: created
+                updated: YYYY-MM-DD HH:mm:SS
+                vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                zone: zone
+        NatGatewayListResponse:
+            type: object
+            properties:
+                meta:
+                    type: object
+                    properties:
+                        page:
+                            type: object
+                            properties:
+                                limit:
+                                    type: integer
+                                    title: Limit
+                                offset:
+                                    type: integer
+                                    title: Offset
+                                count:
+                                    type: integer
+                                    title: Count
+                                total:
+                                    type: integer
+                                    title: Total
+                                max_items_per_page:
+                                    type: integer
+                                    title: Max Items Per Page
+                            title: MetaPageInfo
+                            required:
+                            - limit
+                            - offset
+                            - count
+                            - total
+                            - max_items_per_page
+                        links:
+                            type: object
+                            properties:
+                                previous:
+                                    anyOf:
+                                    -   type: string
+                                    title: Previous
+                                next:
+                                    anyOf:
+                                    -   type: string
+                                    title: Next
+                                self:
+                                    type: string
+                                    title: Self
+                            title: MetaLinks
+                            required:
+                            - self
+                    title: Meta
+                    required:
+                    - page
+                    - links
+                result:
+                    type: array
+                    items:
+                        type: object
+                        properties:
+                            id:
+                                type: string
+                                title: Id
+                            name:
+                                type: string
+                                title: Name
+                            description:
+                                anyOf:
+                                -   type: string
+                                title: Description
+                            vpc_id:
+                                type: string
+                                title: Vpc Id
+                            zone:
+                                type: string
+                                title: Zone
+                            nat_gateway_ip:
+                                anyOf:
+                                -   type: string
+                                title: Nat Gateway Ip
+                            created_at:
+                                anyOf:
+                                -   type: string
+                                    format: date-time
+                                title: Created At
+                            updated:
+                                anyOf:
+                                -   type: string
+                                    format: date-time
+                                title: Updated
+                            status:
+                                type: string
+                                title: Status
+                                enum:
+                                - pending
+                                - processing
+                                - created
+                                - error
+                        title: NatGatewayDetailsResponse
+                        required:
+                        - id
+                        - name
+                        - vpc_id
+                        - zone
+                        - status
+                        example:
+                            created_at: YYYY-MM-DD HH:mm:SS
+                            description: NatGateway description
+                            id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                            name: NatGateway Name
+                            nat_gateway_ip: 127.0.0.1
+                            status: created
+                            updated: YYYY-MM-DD HH:mm:SS
+                            vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                            zone: zone
+                    title: Result
+            title: NatGatewayListResponse
+            required:
+            - meta
+            - result
+            example:
+                meta:
+                    links:
+                        next: ?_offset=30&_limit=10
+                        previous: ?_offset=10&_limit=10
+                        self: ?_offset=20&_limit=10
+                    page:
+                        count: 10
+                        limit: 10
+                        max_items_per_page: 100
+                        offset: 20
+                        total: 112
+                result:
+                -   created_at: YYYY-MM-DD HH:mm:SS
+                    description: NatGateway description
+                    id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                    name: NatGateway Name
+                    nat_gateway_ip: 127.0.0.1
+                    status: created
+                    updated: YYYY-MM-DD HH:mm:SS
+                    vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                    zone: zone
         PageModel:
             type: object
             properties:
@@ -2524,9 +3123,10 @@ components:
             type: object
             properties:
                 direction:
-                    anyOf:
-                    -   type: string
+                    type: string
                     title: Direction
+                    description: Direction of the rule, either ingress or egress
+                    example: ingress
                 port_range_min:
                     anyOf:
                     -   type: integer
@@ -2543,13 +3143,11 @@ components:
                     anyOf:
                     -   type: string
                     title: Remote Ip Prefix
-                remote_group_id:
-                    anyOf:
-                    -   type: string
-                    title: Remote Group Id
                 ethertype:
                     type: string
                     title: Ethertype
+                    description: Ethertype of the rule, either IPv4 or IPv6
+                    example: IPv4
                 description:
                     anyOf:
                     -   type: string
@@ -2558,6 +3156,7 @@ components:
                     example: Allow incoming SSH traffic
             title: RuleCreateRequest
             required:
+            - direction
             - ethertype
             example:
                 description: Some rule description
@@ -2566,7 +3165,6 @@ components:
                 port_range_max: 8028
                 port_range_min: 8028
                 protocol: tcp
-                remote_group_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                 remote_ip_prefix: 100.94.0.0/24
         RuleCreateResponse:
             type: object
@@ -2614,13 +3212,8 @@ components:
                     anyOf:
                     -   type: string
                     title: Remote Ip Prefix
-                remote_group_id:
-                    anyOf:
-                    -   type: string
-                    title: Remote Group Id
                 ethertype:
-                    anyOf:
-                    -   type: string
+                    type: string
                     title: Ethertype
                 created_at:
                     anyOf:
@@ -2644,6 +3237,7 @@ components:
                     title: Description
             title: RuleResponse
             required:
+            - ethertype
             - status
             example:
                 created_at: '2022-01-01 00:00:00'
@@ -2655,7 +3249,6 @@ components:
                 port_range_max: 8028
                 port_range_min: 8028
                 protocol: tcp
-                remote_group_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                 remote_ip_prefix: 100.94.0.0/24
                 security_group_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                 status: created
@@ -2682,10 +3275,6 @@ components:
                     anyOf:
                     -   type: string
                     title: Remote Ip Prefix
-                remote_group_id:
-                    anyOf:
-                    -   type: string
-                    title: Remote Group Id
                 status:
                     anyOf:
                     -   $ref: '#/components/schemas/RuleStatus'
@@ -2720,7 +3309,6 @@ components:
                 port_range_max: 8028
                 port_range_min: 8028
                 protocol: tcp
-                remote_group_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                 remote_ip_prefix: 100.94.0.0/24
                 security_group_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                 status: created
@@ -2771,13 +3359,8 @@ components:
                                 anyOf:
                                 -   type: string
                                 title: Remote Ip Prefix
-                            remote_group_id:
-                                anyOf:
-                                -   type: string
-                                title: Remote Group Id
                             ethertype:
-                                anyOf:
-                                -   type: string
+                                type: string
                                 title: Ethertype
                             created_at:
                                 anyOf:
@@ -2801,6 +3384,7 @@ components:
                                 title: Description
                         title: RuleResponse
                         required:
+                        - ethertype
                         - status
                         example:
                             created_at: '2022-01-01 00:00:00'
@@ -2812,7 +3396,6 @@ components:
                             port_range_max: 8028
                             port_range_min: 8028
                             protocol: tcp
-                            remote_group_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                             remote_ip_prefix: 100.94.0.0/24
                             security_group_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                             status: created
@@ -2946,10 +3529,6 @@ components:
                                     anyOf:
                                     -   type: string
                                     title: Remote Ip Prefix
-                                remote_group_id:
-                                    anyOf:
-                                    -   type: string
-                                    title: Remote Group Id
                                 status:
                                     anyOf:
                                     -   $ref: '#/components/schemas/RuleStatus'
@@ -2984,7 +3563,6 @@ components:
                                 port_range_max: 8028
                                 port_range_min: 8028
                                 protocol: tcp
-                                remote_group_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                                 remote_ip_prefix: 100.94.0.0/24
                                 security_group_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                                 status: created
@@ -3011,7 +3589,6 @@ components:
                     port_range_max: 8028
                     port_range_min: 8028
                     protocol: tcp
-                    remote_group_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                     remote_ip_prefix: 100.94.0.0/24
                     security_group_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                     status: created
@@ -3715,6 +4292,7 @@ components:
                 id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                 ip_version: '4'
                 name: vpc_name
+                subnetpool_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                 updated: '2022-01-01 00:00:00'
                 vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                 zone: a
@@ -3818,6 +4396,15 @@ components:
             title: UnbookCidrRequest
             example:
                 cidr: 172.26.0.0/16
+        VPCStatus:
+            type: string
+            title: VPCStatus
+            enum:
+            - pending
+            - processing
+            - processing_interconnect
+            - created
+            - error
         ValidationError:
             type: object
             properties:
@@ -3870,14 +4457,6 @@ components:
                     anyOf:
                     -   type: string
                     title: Description
-                status:
-                    type: string
-                    title: Status
-                    enum:
-                    - pending
-                    - processing
-                    - created
-                    - error
                 router_id:
                     anyOf:
                     -   type: string
@@ -3917,12 +4496,26 @@ components:
                     anyOf:
                     -   type: boolean
                     title: Is Default
+                error:
+                    anyOf:
+                    -   type: string
+                    title: Error
+                status:
+                    type: string
+                    title: VPCStatus
+                    enum:
+                    - pending
+                    - processing
+                    - processing_interconnect
+                    - created
+                    - error
             title: VpcResponse
             required:
             - status
             example:
                 created_at: '2022-01-01 00:00:00'
                 description: DESCRIPTION
+                error: error
                 external_network: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                 id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                 is_default: true
@@ -3961,14 +4554,6 @@ components:
                                     anyOf:
                                     -   type: string
                                     title: Description
-                                status:
-                                    type: string
-                                    title: Status
-                                    enum:
-                                    - pending
-                                    - processing
-                                    - created
-                                    - error
                                 router_id:
                                     anyOf:
                                     -   type: string
@@ -4008,12 +4593,26 @@ components:
                                     anyOf:
                                     -   type: boolean
                                     title: Is Default
+                                error:
+                                    anyOf:
+                                    -   type: string
+                                    title: Error
+                                status:
+                                    type: string
+                                    title: VPCStatus
+                                    enum:
+                                    - pending
+                                    - processing
+                                    - processing_interconnect
+                                    - created
+                                    - error
                             title: VpcResponse
                             required:
                             - status
                             example:
                                 created_at: '2022-01-01 00:00:00'
                                 description: DESCRIPTION
+                                error: error
                                 external_network: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                                 id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                                 is_default: true
@@ -4034,6 +4633,7 @@ components:
                 vpcs:
                 -   created_at: '2022-01-01 00:00:00'
                     description: DESCRIPTION
+                    error: error
                     external_network: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                     id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                     is_default: true
@@ -4042,6 +4642,7 @@ components:
                     router_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                     security_groups:
                     - xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                    status: created
                     subnets:
                     - xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                     tenant_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
@@ -4082,6 +4683,8 @@ tags:
     description: Operations related to Subnets
 -   name: vpcs
     description: Operations related to VPCs
+-   name: nat_gateways
+    description: Operations related to Nat Gateway
 $id: https://network.jaxyendy.com/openapi.json
 servers:
 -   url: https://{env}/{region}/network

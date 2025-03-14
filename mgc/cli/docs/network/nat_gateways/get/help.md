@@ -1,17 +1,17 @@
-# V1 Create a VPC
+# V1 Detail a Nat Gateway
 
 ## Usage:
 ```bash
 Usage:
-  ./mgc network vpcs create [flags]
+  ./mgc network nat-gateways get [nat-gateway-id] [flags]
 ```
 
 ## Product catalog:
 - Flags:
-- --description string   Description
-- -h, --help                 help for create
-- --name string          Name (required)
-- -v, --version              version for create
+- --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
+- -h, --help                          help for get
+- --nat-gateway-id string         Nat Gateway Id (required)
+- -v, --version                       version for get
 
 ## Other commands:
 - Global Flags:
