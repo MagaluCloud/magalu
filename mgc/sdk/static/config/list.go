@@ -2,6 +2,7 @@ package config
 
 import (
 	"context"
+	"fmt"
 
 	"slices"
 
@@ -63,13 +64,18 @@ func getAllConfigs(ctx context.Context) (map[string]configInfo, error) {
 	result := make(map[string]configInfo, len(configSchemas))
 	for name, schema := range configSchemas {
 		if !slices.Contains(toHide, name) {
+			if schema.Type != nil && len(schema.Type.Slice()) > 0 {
+				if len(schema.Type.Slice()) > 1 {
+					fmt.Println("REMOVE ME - 20250313-2341   =>", schema.Type.Slice())
+				}
 
-			result[name] = configInfo{
-				Name:        name,
-				Type:        schema.Type,
-				Description: schema.Description,
+				result[name] = configInfo{
+					Name:        name,
+					Type:        schema.Type.Slice()[0],
+					Description: schema.Description,
+				}
+
 			}
-
 		}
 	}
 

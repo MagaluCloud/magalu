@@ -8,8 +8,7 @@ Usage:
 
 ## Product catalog:
 - Flags:
-- --body anyOf               (at least one of: boolean, string, number, integer, array or object)
-- Use --body=help for more details
+- --body                     Use --body=help for more details
 - --headers object           Use --headers=help for more details
 - -h, --help                     help for patch
 - --security array(object)   Use --security=help for more details
