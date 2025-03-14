@@ -12,7 +12,6 @@ import (
 	"github.com/MagaluCloud/magalu/mgc/core/progress_report"
 	mgcSchemaPkg "github.com/MagaluCloud/magalu/mgc/core/schema"
 	"github.com/MagaluCloud/magalu/mgc/core/utils"
-	"github.com/invopop/jsonschema"
 	"go.uber.org/zap"
 )
 
@@ -37,17 +36,6 @@ type CopyAllObjectsParams struct {
 	Destination  mgcSchemaPkg.URI `json:"dst" jsonschema:"description=Full destination path in the bucket,example=bucket2/dir/" mgc:"positional"`
 	StorageClass string           `json:"storage_class,omitempty" jsonschema:"description=Copy objects to other storage classes,example=cold,enum=,enum=standard,enum=cold,enum=glacier_ir,enum=cold_instant,default="`
 	Filters      `json:",squash"` // nolint
-}
-
-func (o CopyAllObjectsParams) JSONSchemaExtend(s *jsonschema.Schema) {
-	prop, exists := s.Properties.Get("grant_write")
-	if exists {
-		prop.Type = "array"
-		if prop.Items == nil {
-			prop.Items = &jsonschema.Schema{}
-		}
-		prop.Items.Type = "object"
-	}
 }
 
 type copier interface {

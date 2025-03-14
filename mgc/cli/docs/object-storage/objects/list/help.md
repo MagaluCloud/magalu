@@ -14,7 +14,7 @@ Usage:
 - Flags:
 - --continuation-token string   Token of result page to continue from
 - --dst uri                     Path of the bucket to list objects from (required)
-- --filter array()              File name pattern to include or exclude
+- --filter array(object)        File name pattern to include or exclude
 - Use --filter=help for more details
 - -h, --help                        help for list
 - --max-items integer           Limit of items to be listed (min: 1) (default 1000)

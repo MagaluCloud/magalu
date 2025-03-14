@@ -17,7 +17,7 @@ type FilterParams struct {
 }
 
 func (o Filters) JSONSchemaExtend(s *jsonschema.Schema) {
-	prop, exists := s.Properties.Get("grant_write")
+	prop, exists := s.Properties.Get("filter")
 	if exists {
 		prop.Type = "array"
 		if prop.Items == nil {
