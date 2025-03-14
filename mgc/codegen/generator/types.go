@@ -107,27 +107,27 @@ func (t *generatorTemplateTypes) addSchemaInternal(name string, schema *mgcSchem
 		return "any", nil
 	}
 
-	if len(schema.Type.Slice()) > 0 {
-		switch schema.Type.Slice()[0] {
-		case "string":
+	if schema.Type != nil {
+		switch {
+		case schema.Type.Includes("string"):
 			return t.addScalar(name, "string", schema)
 
-		case "integer":
+		case schema.Type.Includes("integer"):
 			return t.addScalar(name, "int", schema)
 
-		case "number":
+		case schema.Type.Includes("number"):
 			return t.addScalar(name, "float64", schema)
 
-		case "boolean":
+		case schema.Type.Includes("boolean"):
 			return t.addScalar(name, "bool", schema)
 
-		case "array":
+		case schema.Type.Includes("array"):
 			return t.addArray(name, schema)
 
-		case "object":
+		case schema.Type.Includes("object"):
 			return t.addObject(name, schema)
 
-		case "":
+		case len(schema.Type.Slice()) == 0:
 			if len(schema.OneOf) > 0 {
 				return t.addAlternatives(name, "one of", schema, schema.OneOf)
 			}

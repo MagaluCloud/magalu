@@ -13,7 +13,6 @@ import (
 	"github.com/invopop/jsonschema"
 	wk8Map "github.com/wk8/go-ordered-map/v2"
 	"go.uber.org/zap"
-	"golang.org/x/exp/constraints"
 )
 
 var convertLogger = utils.NewLazyLoader(func() *zap.SugaredLogger {
@@ -93,21 +92,20 @@ func convertJsonNumberToFloat64(input *json.Number) *float64 {
 	return &val
 }
 
-func convertUintToOpenAPIPointer[T constraints.Integer | constraints.Float](v *uint64) (r *T) {
-	if reflect.TypeOf(r).Kind() == reflect.Float64 {
-		num := float64(*v)
-		r = new(T)
-		*r = T(num)
-		return r
-	}
-	return nil
-}
-
 func addExtensions(output *openapi3.Schema, name string, value any) {
 	if output.Extensions == nil {
 		output.Extensions = map[string]interface{}{}
 	}
 	output.Extensions[name] = value
+}
+
+func CheckNilPtr_uint64(v *uint64) *uint64 {
+	if v == nil {
+		result := new(uint64)
+		*result = 0
+		return result
+	}
+	return v
 }
 
 func convertJsonSchemaToOpenAPISchema(input *jsonschema.Schema, refResolver *refResolver) (output *openapi3.Schema) {
@@ -167,16 +165,16 @@ func convertJsonSchemaToOpenAPISchema(input *jsonschema.Schema, refResolver *ref
 		Min:                  convertJsonNumberToFloat64(&input.Minimum),
 		Max:                  convertJsonNumberToFloat64(&input.Maximum),
 		MultipleOf:           convertJsonNumberToFloat64(&input.MultipleOf),
-		MinLength:            convertUintPointerToUint64(input.MinLength),
-		MaxLength:            convertUintToOpenAPIPointer[uint64](input.MaxLength),
+		MinLength:            *CheckNilPtr_uint64(input.MinLength),
+		MaxLength:            input.MaxLength,
 		Pattern:              input.Pattern,
-		MinItems:             convertUintPointerToUint64(input.MinItems),
-		MaxItems:             convertUintToOpenAPIPointer[uint64](input.MaxItems),
+		MinItems:             *CheckNilPtr_uint64(input.MinItems),
+		MaxItems:             input.MaxItems,
 		Items:                convertJsonSchemaToOpenAPISchemaRef(input.Items, refResolver),
 		Required:             input.Required,
 		Properties:           convertJsonSchemaToOpenAPISchemaMap(convertOrderedMapToAnotherOrderedMap(input.Properties), refResolver),
-		MinProps:             convertUintPointerToUint64(input.MinProperties),
-		MaxProps:             convertUintToOpenAPIPointer[uint64](input.MaxProperties),
+		MinProps:             *CheckNilPtr_uint64(input.MinProperties),
+		MaxProps:             input.MaxProperties,
 		AdditionalProperties: additionalProperties,
 		// Does not exist: Discriminator:        input.Discriminator,
 	}
@@ -202,13 +200,6 @@ func convertJsonSchemaToOpenAPISchema(input *jsonschema.Schema, refResolver *ref
 	convertLogger().Debugw("finished converting 'jsonschema.Schema' to 'kin-openapi.Schema'", "jsonschema", input, "kin-openapi", output)
 
 	return
-}
-
-func convertUintPointerToUint64(input *uint64) (output uint64) {
-	if input == nil {
-		return 0
-	}
-	return *input
 }
 
 func convertJsonSchemaToOpenAPISchemaRef(input *jsonschema.Schema, refResolver *refResolver) (output *openapi3.SchemaRef) {

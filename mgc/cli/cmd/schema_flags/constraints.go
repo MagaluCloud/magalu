@@ -214,20 +214,21 @@ func getMaxNumber(s *mgcSdk.Schema) *float64 {
 }
 
 func shouldRecommendHelpValue(s *mgcSdk.Schema) bool {
-	if len(s.Type.Slice()) > 0 {
-		switch s.Type.Slice()[0] {
-		case "integer", "number", "boolean", "string":
+	if s.Type != nil {
+		switch {
+		case s.Type.Includes("integer"), s.Type.Includes("number"), s.Type.Includes("boolean"), s.Type.Includes("string"):
 			return false
 
-		case "array":
+		case s.Type.Includes("array"):
 			if s.Items != nil && s.Items.Value != nil {
 				return shouldRecommendHelpValue((*mgcSdk.Schema)(s.Items.Value))
 			}
 			return true
 
-		case "object":
+		case s.Type.Includes("object"):
 			return true
-
+		default:
+			return true
 		}
 	}
 	return true

@@ -163,7 +163,8 @@ func matchGetCurrentAndSetExecutor(setExec, getCurrentExec core.Executor, multip
 
 	for paramName, paramSchemaRef := range setExec.ParametersSchema().Properties {
 		paramSchema := (*mgcSchemaPkg.Schema)(paramSchemaRef.Value)
-		if len(paramSchema.Type.Slice()) > 0 && paramSchema.Type.Slice()[0] == openapi3.TypeArray && getCurrentSchema.Type.Slice()[0] != openapi3.TypeArray && multiple {
+		if paramSchema.Type != nil && paramSchema.Type.Includes(openapi3.TypeArray) &&
+			getCurrentSchema.Type != nil && !getCurrentSchema.Type.Includes(openapi3.TypeArray) && multiple {
 			paramSchema = (*mgcSchemaPkg.Schema)(paramSchema.Items.Value)
 		}
 
