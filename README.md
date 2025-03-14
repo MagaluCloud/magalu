@@ -31,7 +31,15 @@ For this, [Poetry](https://python-poetry.org/) is used. Check [Poetry.md](Poetry
 
 ## Building and running locally
 
-Building needs [goreleaser](https://goreleaser.com/install/) and can be done using a Makefile target:
+Building needs [goreleaser](https://goreleaser.com/install/) and can be done using Makefile targets.
+
+If you have API spec changes, update them on `mgc/spec_manipulator/cli_specs/`, on the corresponding product and run
+
+```bash
+$ make generate
+```
+
+After that (or if there are no further spec changes), build the CLI with:
 
 ```bash
 $ make build-local
