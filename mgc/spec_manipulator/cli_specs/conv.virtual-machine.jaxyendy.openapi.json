@@ -2606,7 +2606,11 @@
           },
           "ssh_key_name": "keypair_name_here",
           "user_data": "some_base64_script",
-          "volumes": []
+          "volumes": [
+            {
+              "eita": "meu rapaz"
+            }
+          ]
         }
       },
       "InstanceCreateRequestV1NetworkDefault": {

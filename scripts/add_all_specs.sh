@@ -24,4 +24,4 @@ $BASEDIR/add_specs.sh audit audit mgc/specs/conv.events-consult.openapi.yaml htt
 $BASEDIR/add_specs_without_region.sh profile profile mgc/specs/conv.globaldb.openapi.yaml https://globaldb.jaxyendy.com/openapi-cli.json
 
 # EXAMPLE
-# $BASEDIR/SCRIPT.sh NOME_NO_MENU URL_PATH LOCAL_DA_SPEC BULLSHIT
+# $BASEDIR/SCRIPT.sh NOME_NO_MENU URL_PATH LOCAL_DA_SPEC SPEC_UID
