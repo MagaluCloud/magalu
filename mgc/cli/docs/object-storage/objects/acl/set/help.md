@@ -8,12 +8,12 @@ Usage:
 
 ## Product catalog:
 - Flags:
-- --dst uri               The full object URL to set the ACL information (required)
-- --grant-write array()   Allows grantees to create objects in the bucket
+- --dst uri                     The full object URL to set the ACL information (required)
+- --grant-write array(object)   Allows grantees to create objects in the bucket
 - Use --grant-write=help for more details
-- -h, --help                  help for set
-- --private               Owner gets FULL_CONTROL. Delegated users have access. No one else has access rights
-- --public-read           Owner gets FULL_CONTROL. Everyone else has READ rights
+- -h, --help                        help for set
+- --private                     Owner gets FULL_CONTROL. Delegated users have access. No one else has access rights
+- --public-read                 Owner gets FULL_CONTROL. Everyone else has READ rights
 
 ## Other commands:
 - Global Flags:
