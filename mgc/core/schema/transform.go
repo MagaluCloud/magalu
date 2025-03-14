@@ -75,23 +75,23 @@ func Transform[T any](
 		return value, err
 	}
 
-	if len(schema.Type.Slice()) > 0 {
-		switch schema.Type.Slice()[0] {
-		case "string", "number", "integer", "boolean", "null":
+	if schema.Type != nil {
+		switch {
+		case schema.Type.Includes("string"), schema.Type.Includes("number"), schema.Type.Includes("integer"), schema.Type.Includes("boolean"), schema.Type.Includes("null"):
 			return t.Scalar(schema, value)
 
-		case "object":
+		case schema.Type.Includes("object"):
 			return t.Object(schema, value)
 
-		case "array":
+		case schema.Type.Includes("array"):
 			var itemSchema *Schema
 			if schema.Items != nil && schema.Items.Value != nil {
 				itemSchema = (*Schema)(schema.Items.Value)
 			}
 			return t.Array(schema, itemSchema, value)
+
 		}
 	}
-
 	notSchemaRefs := SchemaRefs{}
 	if schema.Not != nil {
 		notSchemaRefs = append(notSchemaRefs, schema.Not)
@@ -115,6 +115,7 @@ func Transform[T any](
 			break
 		}
 	}
+
 	return value, err
 }
 

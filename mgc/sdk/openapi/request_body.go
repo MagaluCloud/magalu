@@ -134,7 +134,7 @@ func forEachSchemaProperty(schema *openapi3.Schema, extensionPrefix *string, get
 		return false, errors.New("missing schema")
 	}
 
-	if len(schema.Type.Slice()) > 0 && schema.Type.Slice()[0] != "object" {
+	if schema.Type != nil && !schema.Type.Includes("object") {
 		return false, errors.New("must provide a schema with type 'object'")
 	}
 
