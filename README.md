@@ -33,10 +33,10 @@ For this, [Poetry](https://python-poetry.org/) is used. Check [Poetry.md](Poetry
 
 Building needs [goreleaser](https://goreleaser.com/install/) and can be done using Makefile targets.
 
-If you have API spec changes, update them on `mgc/spec_manipulator/cli_specs/`, on the corresponding product and run
+If you have API spec changes, update them on `specs`, on the corresponding product and run
 
 ```bash
-$ make generate
+$ make refresh-specs
 ```
 
 After that (or if there are no further spec changes), build the CLI with:
