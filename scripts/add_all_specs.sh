@@ -5,7 +5,7 @@ BASEDIR=$(dirname $0)
 OAPIDIR=${OAPIDIR:-"mgc/sdk/openapi/openapis"}
 OAPI_PATH=$ROOTDIR/$OAPIDIR
 
-set -xe
+set -ue
 
 $BASEDIR/add_specs.sh block-storage volume specs/conv.block-storage.jaxyendy.openapi.json https://block-storage.jaxyendy.com/openapi.json
 
