@@ -322,7 +322,7 @@ var downgradeSpecCmd = &cobra.Command{
 			}
 
 			if spl := strings.Split(docModel.Model.Version, "."); spl[0] == "3" && spl[1] == "0" {
-				fmt.Printf("Document %s is in 3.0.x format\n", v.File)
+				fmt.Printf("Skipping %s. Already in 3.0.x format\n", v.File)
 				continue
 			}
 
@@ -338,7 +338,7 @@ var downgradeSpecCmd = &cobra.Command{
 				}
 				panic(fmt.Sprintf("cannot create v3 model from document: %d errors reported", len(errors)))
 			}
-			fmt.Println("\nBEGIN FILE:" + file + "\n")
+			fmt.Println("Downgrading " + v.File)
 			// Schemas
 			for pair := docModel.Model.Components.Schemas.Oldest(); pair != nil; pair = pair.Next() {
 				xchema := pair.Value.Schema()
