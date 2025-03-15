@@ -1,2 +1,6 @@
 #!/bin/bash
-(cd mgc/spec_manipulator; echo \"Buildando\"; go build -o specs)
+
+cd mgc/spec_manipulator
+echo 'Building spec manipulator...'
+go build -o specs
+echo 'done.'
