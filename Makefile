@@ -1,10 +1,13 @@
-.ONESHELL:
-# TODO: Develop additional commands: release features, etc., and upon completion, enhance the README.
-
-build-spec:
-	python3 ./scripts/oapi_index_gen.py "--embed=mgc/sdk/openapi/embed_loader.go" mgc/cli/openapis
-	cd mgc/cli; echo "Building...."; \
-	go build -tags "embed" -o mgc
-
 build-local:
-	goreleaser build --clean --snapshot --single-target -f goreleaser_cli.yaml
+	@goreleaser build --clean --snapshot --single-target -f goreleaser_cli.yaml
+
+download-specs: --build-spec-manipulator
+	@./mgc/spec_manipulator/specs download
+
+refresh-specs: --build-spec-manipulator
+	@./mgc/spec_manipulator/specs downgrade
+	@poetry install
+	@poetry run ./scripts/add_all_specs.sh
+
+--build-spec-manipulator:
+	@./mgc/spec_manipulator/build.sh
