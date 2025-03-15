@@ -1,4 +1,5 @@
 import jsonschema
+import warnings
 
 import argparse
 from typing import List, cast
@@ -16,10 +17,10 @@ from spec_add_security import AddSecurityTransformer
 from spec_fix_links import FixLinksTransformer
 from spec_create_links import CreateLinks
 
-if __name__ == "__main__":
 
-    import warnings
-    warnings.filterwarnings("ignore", category=DeprecationWarning)
+warnings.filterwarnings("ignore", category=DeprecationWarning)
+
+if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(
         prog="Transform OAPI Spec",
