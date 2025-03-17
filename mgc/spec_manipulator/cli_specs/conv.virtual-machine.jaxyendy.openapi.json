@@ -2566,7 +2566,12 @@
                 }
               ]
             },
-            "title": "Volumes"
+            "title": "Volumes",
+            "example": [
+              {
+                "id": "a46594d1-9dc3-4c36-8eb3-071259513854"
+              }
+            ]
           }
         },
         "title": "InstanceCreateRequestV1Default",
@@ -2606,7 +2611,11 @@
           },
           "ssh_key_name": "keypair_name_here",
           "user_data": "some_base64_script",
-          "volumes": []
+          "volumes": [
+            {
+              "id": "f438661e-d1d2-48e8-aedf-15a8c84379da"
+            }
+          ]
         }
       },
       "InstanceCreateRequestV1NetworkDefault": {
@@ -2983,9 +2992,11 @@
             "title": "InstanceV1Status",
             "enum": [
               "attaching_nic",
+              "attaching_nic_error",
               "detaching_nic",
               "attach_nic_pending",
               "detach_nic_pending",
+              "detaching_nic_error",
               "provisioning",
               "creating",
               "creating_error",
@@ -3177,9 +3188,11 @@
         "title": "InstanceV1Status",
         "enum": [
           "attaching_nic",
+          "attaching_nic_error",
           "detaching_nic",
           "attach_nic_pending",
           "detach_nic_pending",
+          "detaching_nic_error",
           "provisioning",
           "creating",
           "creating_error",
@@ -4041,9 +4054,11 @@
                   "title": "InstanceV1Status",
                   "enum": [
                     "attaching_nic",
+                    "attaching_nic_error",
                     "detaching_nic",
                     "attach_nic_pending",
                     "detach_nic_pending",
+                    "detaching_nic_error",
                     "provisioning",
                     "creating",
                     "creating_error",
