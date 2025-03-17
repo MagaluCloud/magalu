@@ -2414,6 +2414,8 @@ components:
                         -   $ref: '#/components/schemas/ID'
                         -   $ref: '#/components/schemas/Name'
                     title: Volumes
+                    example:
+                    -   id: a46594d1-9dc3-4c36-8eb3-071259513854
             title: InstanceCreateRequestV1Default
             required:
             - name
@@ -2439,7 +2441,8 @@ components:
                         id: 2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6
                 ssh_key_name: keypair_name_here
                 user_data: some_base64_script
-                volumes: []
+                volumes:
+                -   id: f438661e-d1d2-48e8-aedf-15a8c84379da
         InstanceCreateRequestV1NetworkDefault:
             type: object
             properties:
@@ -2691,9 +2694,11 @@ components:
                     title: InstanceV1Status
                     enum:
                     - attaching_nic
+                    - attaching_nic_error
                     - detaching_nic
                     - attach_nic_pending
                     - detach_nic_pending
+                    - detaching_nic_error
                     - provisioning
                     - creating
                     - creating_error
@@ -2836,9 +2841,11 @@ components:
             title: InstanceV1Status
             enum:
             - attaching_nic
+            - attaching_nic_error
             - detaching_nic
             - attach_nic_pending
             - detach_nic_pending
+            - detaching_nic_error
             - provisioning
             - creating
             - creating_error
@@ -3431,9 +3438,11 @@ components:
                                 title: InstanceV1Status
                                 enum:
                                 - attaching_nic
+                                - attaching_nic_error
                                 - detaching_nic
                                 - attach_nic_pending
                                 - detach_nic_pending
+                                - detaching_nic_error
                                 - provisioning
                                 - creating
                                 - creating_error
