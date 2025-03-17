@@ -1,55 +1,55 @@
 default_install_hook_types: [pre-commit, pre-push, commit-msg]
 fail_fast: true
 repos:
--   repo: local
+  - repo: local
     hooks:
-    -   id: go-test
+      - id: go-test
         name: go-test
         language: golang
         entry: bash -c 'find . -name go.mod -execdir go test ./... \; | grep -zqv FAIL'
         stages: [pre-push]
-    -   id: check-cli-dump-tree-output
+      - id: check-cli-dump-tree-output
         name: check "cli dump-tree" output
         language: system
         entry: bash -c './scripts/gen_expected_cli_dump_tree_output_file.sh'
         require_serial: true
         stages: [pre-commit]
-    -   id: check-cli-docs-outputs
+      - id: check-cli-docs-outputs
         name: check "cli doc" outputs
         language: system
         entry: bash -c './scripts/gen_expected_cli_doc_output_file.sh'
         require_serial: true
         stages: [pre-commit]
-    -   id: apply-oapi-customizations
+      - id: apply-oapi-customizations
         name: apply-oapi-customizations
         language: system
         types_or: [yaml]
         entry: bash -c './scripts/oapi_apply_customizations.sh'
         stages: [pre-commit]
-    -   id: oapi-index-gen
+      - id: oapi-index-gen
         name: oapi-index-gen
         language: python
         entry: bash -c './scripts/oapi_index_gen.sh'
         additional_dependencies: [PyYAML, typing, argparse]
         stages: [pre-commit]
-    -   id: check-openapi-links
+      - id: check-openapi-links
         name: check openapi links
         language: system
         entry: bash -c './scripts/oapi_check_links.sh'
         stages: [pre-commit]
         require_serial: true
--   repo: https://github.com/pre-commit/pre-commit-hooks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v5.0.0
     hooks:
-    -   id: trailing-whitespace
+      - id: trailing-whitespace
         stages: [pre-commit, pre-push]
         exclude: >
-         (?x)(
-            ^mgc/sdk/version.txt|
-            ^script-qa/
-            ^mgc/cli/docs/|
-          )
-    -   id: end-of-file-fixer
+          (?x)(
+             ^mgc/sdk/version.txt|
+             ^script-qa/
+             ^mgc/cli/docs/|
+           )
+      - id: end-of-file-fixer
         stages: [pre-commit, pre-push]
         exclude: >
           (?x)(
@@ -57,52 +57,52 @@ repos:
             ^script-qa/
             ^mgc/cli/docs/|
           )
-    -   id: check-yaml
+      - id: check-yaml
         stages: [pre-commit, pre-push]
-    -   id: check-added-large-files
+      - id: check-added-large-files
         exclude: ^script-qa/
         stages: [pre-commit, pre-push]
-    -   id: check-shebang-scripts-are-executable
+      - id: check-shebang-scripts-are-executable
         stages: [pre-commit, pre-push]
-    -   id: check-merge-conflict
+      - id: check-merge-conflict
         stages: [pre-commit, pre-push]
-    -   id: mixed-line-ending
+      - id: mixed-line-ending
         stages: [pre-commit, pre-push]
 
--   repo: https://github.com/golangci/golangci-lint
+  - repo: https://github.com/golangci/golangci-lint
     rev: v1.61.0
     hooks:
-    -   id: golangci-lint
+      - id: golangci-lint
         stages: [pre-commit]
         # Need to specify manually due to this issue:
         # https://github.com/golangci/golangci-lint/issues/2654
         entry: bash -c "go list -f '{{.Dir}}/...' -m | xargs golangci-lint run --fix --new-from-rev HEAD"
 
--   repo: https://github.com/golangci/golangci-lint
+  - repo: https://github.com/golangci/golangci-lint
     rev: v1.61.0
     hooks:
-    -   id: golangci-lint
+      - id: golangci-lint
         stages: [pre-push]
         # Need to specify manually due to this issue:
         # https://github.com/golangci/golangci-lint/issues/2654
         entry: bash -c "go list -f '{{.Dir}}/...' -m | xargs golangci-lint run --fix"
 
--   repo: https://github.com/TekWizely/pre-commit-golang
+  - repo: https://github.com/TekWizely/pre-commit-golang
     rev: v1.0.0-rc.1
     hooks:
-    -   id: go-mod-tidy
+      - id: go-mod-tidy
         stages: [pre-commit]
 
--   repo: https://github.com/commitizen-tools/commitizen
+  - repo: https://github.com/commitizen-tools/commitizen
     rev: v3.10.0
     hooks:
-    -   id: commitizen
+      - id: commitizen
         stages: [commit-msg]
 
--   repo: https://github.com/pycqa/flake8
+  - repo: https://github.com/pycqa/flake8
     rev: 7.1.0
     hooks:
-    -   id: flake8
+      - id: flake8
         stages: [pre-commit, pre-push]
         additional_dependencies:
           - flake8-builtins
@@ -115,8 +115,8 @@ repos:
           - flake8-rst-docstrings
           - flake8-tidy-imports
 
--   repo: https://github.com/psf/black
+  - repo: https://github.com/psf/black
     rev: 24.8.0
     hooks:
-    -   id: black
+      - id: black
         stages: [pre-commit, pre-push]

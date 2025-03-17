@@ -160,6 +160,7 @@ type BaseApiError struct {
 type IdentifiableHttpError struct {
 	*HttpError
 	RequestID string `json:"requestID"`
+	TraceID   string `json:"traceID"`
 }
 
 func (e *IdentifiableHttpError) Unwrap() error {
@@ -167,9 +168,12 @@ func (e *IdentifiableHttpError) Unwrap() error {
 }
 
 func (e *IdentifiableHttpError) Error() string {
-	msg := e.HttpError.Error()
+	msg := e.HttpError.Error() + "\n"
 	if e.RequestID != "" {
-		msg += " (request-id: " + e.RequestID + ")"
+		msg += "\n Request ID: " + e.RequestID
+	}
+	if e.TraceID != "" {
+		msg += "\n MGC Trace ID: " + e.TraceID
 	}
 	return msg
 }
@@ -227,20 +231,18 @@ func NewHttpErrorFromResponse(resp *http.Response, req *http.Request) *Identifia
 }
 
 func NewIdentifiableHttpError(httpError *HttpError, request *http.Request, response *http.Response) *IdentifiableHttpError {
-	requestId := ""
+	a := IdentifiableHttpError{
+		HttpError: httpError,
+	}
 	if response != nil {
 		if id := response.Header.Get("X-Request-Id"); id != "" {
-			requestId = id
+			a.RequestID = id
+		}
+		if id := response.Header.Get("X-Mgc-Trace-Id"); id != "" {
+			a.TraceID = id
 		}
 	}
-	if id := request.Header.Get("X-Request-Id"); id != "" {
-		requestId = id
-	}
-
-	return &IdentifiableHttpError{
-		HttpError: httpError,
-		RequestID: requestId,
-	}
+	return &a
 }
 
 // Handles the response, and tries to convert the data to T
