@@ -83,38 +83,11 @@ func NewSignatureContext(
 		// Request
 		HTTPMethod:       req.Method,
 		CanonicalURI:     req.URL.EscapedPath(),
-		CanonicalQuery:   buildCanonicalQuery(req.URL.Query()),
+		CanonicalQuery:   req.URL.RawQuery,
 		CanonicalHeaders: canonicalHeaders,
 
 		SignedHeaders: strings.Join(params.SignedHeaders, ";"),
 	}
-}
-
-// sorted as per https://docs.aws.amazon.com/AmazonS3/latest/API/sig-v4-header-based-auth.html
-func buildCanonicalQuery(query url.Values) string {
-	type p struct {
-		key, value string
-	}
-	pairs := make([]p, 0, len(query))
-	for key, values := range query {
-		for _, value := range values {
-			pairs = append(pairs, p{url.QueryEscape(key), url.PathEscape(value)})
-		}
-	}
-
-	slices.SortFunc(pairs, func(a, b p) int {
-		return strings.Compare(a.key, b.key)
-	})
-
-	var result string
-	for _, pair := range pairs {
-		if result != "" {
-			result += "&"
-		}
-		result += pair.key + "=" + pair.value
-	}
-
-	return result
 }
 
 func setContentHeader(req *http.Request, unsigned bool) (payloadHash string, err error) {
