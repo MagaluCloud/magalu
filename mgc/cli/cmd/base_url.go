@@ -4,17 +4,17 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func addHostFlag(cmd *cobra.Command) {
+func addBaseURLFlag(cmd *cobra.Command) {
 	cmd.PersistentFlags().String(
-		"host",
+		"base-url",
 		"",
 		"URL to override the default host. Ex. https://api.magalu.com.br or http://localhost/v1/route",
 	)
-	// _ = cmd.PersistentFlags().MarkHidden("host")
+	_ = cmd.PersistentFlags().MarkHidden("base-url")
 }
 
-func getHostFlag(cmd *cobra.Command) string {
-	host, err := cmd.Root().PersistentFlags().GetString("host")
+func getBaseURLFlag(cmd *cobra.Command) string {
+	host, err := cmd.Root().PersistentFlags().GetString("base-url")
 	if err != nil {
 		return ""
 	}

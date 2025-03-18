@@ -10,6 +10,7 @@ import (
 
 	"github.com/MagaluCloud/magalu/mgc/core/auth"
 	mgcHttpPkg "github.com/MagaluCloud/magalu/mgc/core/http"
+	openapi "github.com/MagaluCloud/magalu/mgc/sdk/openapi"
 )
 
 // note: must be in HTTP Header Canonical format (Title-Case-With-Dashes)
@@ -103,6 +104,17 @@ func SendRequestWithIgnoredHeaders(ctx context.Context, req *http.Request, ignor
 	if httpClient == nil {
 		err = fmt.Errorf("couldn't get http client from context")
 		return
+	}
+
+	schema := openapi.GetSchemaHostFlag(ctx)
+	if schema != "" {
+		hostUrl := openapi.GetUrlHostFlag(ctx)
+		req.URL.Scheme = schema
+
+		if hostUrl != "" {
+			req.URL.Host = hostUrl
+			req.Host = hostUrl
+		}
 	}
 
 	var unsignedPayload bool

@@ -88,7 +88,7 @@ It allows you to interact with the Magalu Cloud to manage your resources.
 	addShowInternalFlag(rootCmd)
 	addShowHiddenFlag(rootCmd)
 	addRawOutputFlag(rootCmd)
-	addHostFlag(rootCmd)
+	addBaseURLFlag(rootCmd)
 	addApiKeyFlag(rootCmd)
 
 	rootCmd.InitDefaultHelpFlag()

@@ -670,9 +670,13 @@ func (o *operation) Execute(
 		}()
 	}
 
-	pathUrl := GetPathHostFlag(ctx)
-	hostUrl := GetUrlHostFlag(ctx)
 	schemaUrl := GetSchemaHostFlag(ctx)
+	pathUrl := ""
+	hostUrl := ""
+	if schemaUrl == "" {
+		pathUrl = GetPathHostFlag(ctx)
+		hostUrl = GetUrlHostFlag(ctx)
+	}
 
 	m.Lock()
 	defer m.Unlock()
@@ -753,12 +757,13 @@ func (o *operation) Execute(
 
 	if schemaUrl != "" {
 		req.URL.Scheme = schemaUrl
-	}
-	if pathUrl != "" {
-		req.URL.Path = pathUrl
-	}
-	if hostUrl != "" {
-		req.URL.Host = hostUrl
+
+		if pathUrl != "" {
+			req.URL.Path = pathUrl
+		}
+		if hostUrl != "" {
+			req.URL.Host = hostUrl
+		}
 	}
 
 	logger.Debug("created HTTP request, now execute it...")
