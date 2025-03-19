@@ -1,4 +1,5 @@
 import jsonschema
+import warnings
 
 import argparse
 from typing import List, cast
@@ -16,7 +17,11 @@ from spec_add_security import AddSecurityTransformer
 from spec_fix_links import FixLinksTransformer
 from spec_create_links import CreateLinks
 
+
+warnings.filterwarnings("ignore", category=DeprecationWarning)
+
 if __name__ == "__main__":
+
     parser = argparse.ArgumentParser(
         prog="Transform OAPI Spec",
         description="Transforms a product OAPI schema removing internal "
@@ -56,7 +61,10 @@ if __name__ == "__main__":
         # Load spec into dict
         product_spec = load_yaml(args.spec_file)
 
+    # TODO: replace with https://github.com/python-jsonschema/referencing
+    print(f"Transforming {args.spec_file}...", end="", flush=True)
     ref_resolver = jsonschema.RefResolver(args.spec_file, cast(dict, product_spec))
+
     oapi = OAPI(
         path=args.spec_file,
         name=args.product_name,
@@ -79,7 +87,9 @@ if __name__ == "__main__":
         CreateLinks(),
     ]
     for t in transformers:
+        print(".", end="", flush=True)
         t.transform(oapi)
+    print("done")
 
     # Write external to output file
     add_spec_uid(product_spec, args.spec_uid)

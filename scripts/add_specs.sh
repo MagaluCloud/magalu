@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+set -ue
 
 BASEDIR=$(dirname $0)
 ROOTDIR=$(builtin cd $BASEDIR/..; pwd)
