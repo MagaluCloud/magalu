@@ -8,6 +8,7 @@ import (
 
 	"github.com/MagaluCloud/magalu/mgc/core"
 	"github.com/google/uuid"
+	"github.com/invopop/jsonschema"
 )
 
 type AccessControlPolicy struct {
@@ -79,9 +80,20 @@ func (p ACLPermissions) SetHeaders(req *http.Request, cfg Config) error {
 type ACLStandardPermissions struct {
 	GrantFullControl []ACLPermission `json:"grant_full_control,omitempty" jsonschema:"description=Grantees get FULL_CONTROL" mgc:"hidden"`
 	GrantRead        []ACLPermission `json:"grant_read,omitempty" jsonschema:"description=Allows grantees to list the objects in the bucket" mgc:"hidden"`
-	GrantWrite       []ACLPermission `json:"grant_write,omitempty" jsonschema:"description=Allows grantees to create objects in the bucket"`
+	GrantWrite       []ACLPermission `json:"grant_write,omitempty" jsonschema:"type=object,description=Allows grantees to create objects in the bucket"`
 	GrantReadAcp     []ACLPermission `json:"grant_read_acp,omitempty" jsonschema:"description=Allows grantees to read the bucket ACL" mgc:"hidden"`
 	GrantWriteAcp    []ACLPermission `json:"grant_write_acp,omitempty" jsonschema:"description=Allows grantees to write the ACL for the applicable bucket" mgc:"hidden"`
+}
+
+func (o ACLStandardPermissions) JSONSchemaExtend(s *jsonschema.Schema) {
+	prop, exists := s.Properties.Get("grant_write")
+	if exists {
+		prop.Type = "array"
+		if prop.Items == nil {
+			prop.Items = &jsonschema.Schema{}
+		}
+		prop.Items.Type = "object"
+	}
 }
 
 func (o ACLStandardPermissions) Validate() error {

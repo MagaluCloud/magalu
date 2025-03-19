@@ -1,6 +1,7 @@
 package schema
 
 import (
+	"encoding/json"
 	"fmt"
 	"reflect"
 	"strings"
@@ -10,8 +11,8 @@ import (
 	"github.com/go-openapi/jsonpointer"
 	"github.com/iancoleman/orderedmap"
 	"github.com/invopop/jsonschema"
+	wk8Map "github.com/wk8/go-ordered-map/v2"
 	"go.uber.org/zap"
-	"golang.org/x/exp/constraints"
 )
 
 var convertLogger = utils.NewLazyLoader(func() *zap.SugaredLogger {
@@ -52,13 +53,43 @@ func isJsonSchemaSchemaNullable(input *jsonschema.Schema) bool {
 	return false
 }
 
-func convertJsonSchemaNumberToOpenAPIPointer[T constraints.Integer | constraints.Float](v int) (r *T) {
-	if v == 0 {
+func isJsonSchemaExclusiveMin(input *json.Number) bool {
+	if input == nil {
+		return false
+	}
+
+	min, err := input.Float64()
+	if err != nil {
+		return false
+	}
+
+	return min > 0
+}
+
+func isJsonSchemaExclusiveMax(input *json.Number) bool {
+	if input == nil {
+		return false
+	}
+
+	max, err := input.Float64()
+	if err != nil {
+		return false
+	}
+
+	return max < 0
+}
+
+func convertJsonNumberToFloat64(input *json.Number) *float64 {
+	if input == nil {
 		return nil
 	}
-	r = new(T)
-	*r = T(v)
-	return
+
+	val, err := input.Float64()
+	if err != nil {
+		return nil
+	}
+
+	return &val
 }
 
 func addExtensions(output *openapi3.Schema, name string, value any) {
@@ -66,6 +97,15 @@ func addExtensions(output *openapi3.Schema, name string, value any) {
 		output.Extensions = map[string]interface{}{}
 	}
 	output.Extensions[name] = value
+}
+
+func CheckNilPtr_uint64(v *uint64) *uint64 {
+	if v == nil {
+		result := new(uint64)
+		*result = 0
+		return result
+	}
+	return v
 }
 
 func convertJsonSchemaToOpenAPISchema(input *jsonschema.Schema, refResolver *refResolver) (output *openapi3.Schema) {
@@ -108,33 +148,33 @@ func convertJsonSchemaToOpenAPISchema(input *jsonschema.Schema, refResolver *ref
 		AnyOf:        convertJsonSchemaToOpenAPISchemaSlice(input.AnyOf, refResolver),
 		AllOf:        convertJsonSchemaToOpenAPISchemaSlice(input.AllOf, refResolver),
 		Not:          convertJsonSchemaToOpenAPISchemaRef(input.Not, refResolver),
-		Type:         input.Type,
+		Type:         &openapi3.Types{input.Type},
 		Title:        input.Title,
 		Format:       input.Format,
 		Description:  input.Description,
 		Enum:         input.Enum,
 		Default:      input.Default,
 		UniqueItems:  input.UniqueItems,
-		ExclusiveMin: input.ExclusiveMinimum,
-		ExclusiveMax: input.ExclusiveMaximum,
+		ExclusiveMin: isJsonSchemaExclusiveMin(&input.ExclusiveMinimum),
+		ExclusiveMax: isJsonSchemaExclusiveMax(&input.ExclusiveMaximum),
 		Nullable:     isJsonSchemaSchemaNullable(input),
 		ReadOnly:     input.ReadOnly,
 		WriteOnly:    input.WriteOnly,
 		// Does not exist: AllowEmptyValue:      input.AllowEmptyValue,
 		Deprecated:           input.Deprecated,
-		Min:                  convertJsonSchemaNumberToOpenAPIPointer[float64](input.Minimum),
-		Max:                  convertJsonSchemaNumberToOpenAPIPointer[float64](input.Maximum),
-		MultipleOf:           convertJsonSchemaNumberToOpenAPIPointer[float64](input.MultipleOf),
-		MinLength:            uint64(input.MinLength),
-		MaxLength:            convertJsonSchemaNumberToOpenAPIPointer[uint64](input.MaxLength),
+		Min:                  convertJsonNumberToFloat64(&input.Minimum),
+		Max:                  convertJsonNumberToFloat64(&input.Maximum),
+		MultipleOf:           convertJsonNumberToFloat64(&input.MultipleOf),
+		MinLength:            *CheckNilPtr_uint64(input.MinLength),
+		MaxLength:            input.MaxLength,
 		Pattern:              input.Pattern,
-		MinItems:             uint64(input.MinItems),
-		MaxItems:             convertJsonSchemaNumberToOpenAPIPointer[uint64](input.MaxItems),
+		MinItems:             *CheckNilPtr_uint64(input.MinItems),
+		MaxItems:             input.MaxItems,
 		Items:                convertJsonSchemaToOpenAPISchemaRef(input.Items, refResolver),
 		Required:             input.Required,
-		Properties:           convertJsonSchemaToOpenAPISchemaMap(input.Properties, refResolver),
-		MinProps:             uint64(input.MinProperties),
-		MaxProps:             convertJsonSchemaNumberToOpenAPIPointer[uint64](input.MaxProperties),
+		Properties:           convertJsonSchemaToOpenAPISchemaMap(convertOrderedMapToAnotherOrderedMap(input.Properties), refResolver),
+		MinProps:             *CheckNilPtr_uint64(input.MinProperties),
+		MaxProps:             input.MaxProperties,
 		AdditionalProperties: additionalProperties,
 		// Does not exist: Discriminator:        input.Discriminator,
 	}
@@ -208,6 +248,21 @@ func convertJsonSchemaToOpenAPISchemaSlice(input []*jsonschema.Schema, refResolv
 		output[i] = convertJsonSchemaToOpenAPISchemaRef(value, refResolver)
 	}
 	return
+}
+
+func convertOrderedMapToAnotherOrderedMap[K comparable, V any](mapa *wk8Map.OrderedMap[K, V]) *orderedmap.OrderedMap {
+	if mapa == nil {
+		return nil
+	}
+
+	orderedMap := orderedmap.New()
+
+	for key := range mapa.KeysFromNewest() {
+		value, _ := mapa.Get(key)
+		orderedMap.Set(fmt.Sprint(key), value)
+	}
+
+	return orderedMap
 }
 
 func convertJsonSchemaToOpenAPISchemaMap(input *orderedmap.OrderedMap, refResolver *refResolver) (output map[string]*openapi3.SchemaRef) {
@@ -287,7 +342,7 @@ func newRefResolver(doc *jsonschema.Schema) *refResolver {
 	refOfSchemaOfSchemas := resolver.add("#/$defs/Schemas")
 
 	schemaOfSchema := &openapi3.Schema{
-		Type:     "object",
+		Type:     &openapi3.Types{openapi3.TypeObject},
 		Nullable: true,
 		Properties: openapi3.Schemas{
 			"extensions":  openapi3.NewSchemaRef("", openapi3.NewObjectSchema().WithAnyAdditionalProperties()),
@@ -338,7 +393,7 @@ func newRefResolver(doc *jsonschema.Schema) *refResolver {
 			"minProps":   openapi3.NewSchemaRef("", openapi3.NewInt64Schema()),
 			"maxProps":   openapi3.NewSchemaRef("", openapi3.NewInt64Schema()),
 			"additionalProperties": openapi3.NewSchemaRef("", &openapi3.Schema{
-				Type: "object",
+				Type: &openapi3.Types{openapi3.TypeObject},
 				Properties: openapi3.Schemas{
 					"has":    openapi3.NewSchemaRef("", openapi3.NewBoolSchema().WithNullable()),
 					"schema": refOfSchemaOfSchemaRef,

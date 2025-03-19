@@ -33,7 +33,7 @@ func New() *ProgressBar {
 	writer := progress.NewWriter()
 	writer.SetAutoStop(true)
 	writer.SetUpdateFrequency(updateFrequency)
-	writer.SetMessageWidth(60)
+	writer.SetMessageLength(60)
 	writer.SetTrackerPosition(progress.PositionRight)
 	writer.SetTrackerLength(progress.DefaultLengthTracker)
 	writer.SetSortBy(progress.SortByPercent)

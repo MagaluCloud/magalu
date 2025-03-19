@@ -88,31 +88,35 @@ def convert_to_markdown(input_text):
     sections = input_text.split("\n\n")
 
     # Header section
-    header = sections[0]
+    header = sections[0] if sections else ""
     markdown_output = f"# {header.strip()}\n\n"
 
     # Usage section
-    markdown_output += "## Usage:\n```bash\n"
-    markdown_output += sections[1].strip()
-    markdown_output += "\n```\n\n"
+    if len(sections) > 1:
+        markdown_output += "## Usage:\n```bash\n"
+        markdown_output += sections[1].strip()
+        markdown_output += "\n```\n\n"
 
     # Product catalog section
     markdown_output += "## Product catalog:\n"
-    product_catalog = sections[2].strip().split("\n")
-    for item in product_catalog:
-        markdown_output += f"- {item.strip()}\n"
+    if len(sections) > 2:
+        product_catalog = sections[2].strip().split("\n")
+        for item in product_catalog:
+            markdown_output += f"- {item.strip()}\n"
     markdown_output += "\n"
 
     # Other commands section
     markdown_output += "## Other commands:\n"
-    other_commands = sections[3].strip().split("\n")
-    for item in other_commands:
-        markdown_output += f"- {item.strip()}\n"
+    if len(sections) > 3:
+        other_commands = sections[3].strip().split("\n")
+        for item in other_commands:
+            markdown_output += f"- {item.strip()}\n"
     markdown_output += "\n"
 
     # Flags section
     markdown_output += "## Flags:\n```bash\n"
-    markdown_output += sections[4].strip()
+    if len(sections) > 4:
+        markdown_output += sections[4].strip()
     markdown_output += "\n```\n\n"
 
     return markdown_output
