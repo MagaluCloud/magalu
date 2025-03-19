@@ -673,7 +673,7 @@ func (o *operation) Execute(
 	schemaUrl := GetSchemaHostFlag(ctx)
 	pathUrl := ""
 	hostUrl := ""
-	if schemaUrl == "" {
+	if schemaUrl != "" {
 		pathUrl = GetPathHostFlag(ctx)
 		hostUrl = GetUrlHostFlag(ctx)
 	}
