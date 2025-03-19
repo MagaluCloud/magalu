@@ -15,14 +15,14 @@ import (
 
 type setBucketPolicyParams struct {
 	Bucket common.BucketName `json:"dst" jsonschema:"description=Name of the bucket to set permissions for,example=my-bucket" mgc:"positional"`
-	Policy map[string]any    `json:"policy" jsonschema:"description=Policy file path to be uploaded,example=./policy.json" mgc:"positional"`
+	Policy map[string]any    `json:"policy" jsonschema:"description=Policy file path to be uploaded,example=@./policy.json or ./policy.json" mgc:"positional"`
 }
 
 var getSet = utils.NewLazyLoader(func() core.Executor {
 	var exec core.Executor = core.NewStaticExecute(
 		core.DescriptorSpec{
 			Name:        "set",
-			Description: "Set policy document for the specified bucket",
+			Description: "Set policy document for the specified bucket. The policy can be provided as a direct JSON string or a file path using @./policy.json.",
 		},
 		setPolicy,
 	)

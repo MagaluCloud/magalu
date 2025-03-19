@@ -17,7 +17,6 @@ type getParams struct {
 	BucketName common.BucketName `json:"bucket" jsonschema:"description=Name of the bucket to retrieve" mgc:"positional"`
 }
 
-// Estrutura para armazenar todas as informações do bucket
 type bucketInfo struct {
 	BucketName    string   `json:"bucket_name"`
 	Versioning    string   `json:"versioning,omitempty"`
@@ -31,7 +30,6 @@ type bucketInfo struct {
 	Permissions   []string `json:"permissions,omitempty"`
 }
 
-// 🟢 Estruturas para Parsing de XML (ACLs)
 type AccessControlPolicy struct {
 	XMLName           xml.Name `xml:"AccessControlPolicy"`
 	Owner             Owner    `xml:"Owner"`
@@ -52,7 +50,6 @@ type Grant struct {
 	Permission string `xml:"Permission"`
 }
 
-// 🟢 Estruturas para Parsing de XML (Versioning e Object Lock)
 type VersioningConfiguration struct {
 	XMLName xml.Name `xml:"VersioningConfiguration"`
 	Status  string   `xml:"Status"`
@@ -87,7 +84,6 @@ func getValidBucket(ctx context.Context, params getParams, cfg common.Config) (*
 		BucketName: params.BucketName.String(),
 	}
 
-	// 🟢 1️⃣ Requisição para pegar ACLs e Owner (XML)
 	aclReq, err := newGetRequest(ctx, params.BucketName, cfg, "acl")
 	if err != nil {
 		return nil, err
@@ -111,7 +107,6 @@ func getValidBucket(ctx context.Context, params getParams, cfg common.Config) (*
 		}
 	}
 
-	// 🟢 2️⃣ Requisição para Versioning (XML)
 	versioningReq, err := newGetRequest(ctx, params.BucketName, cfg, "versioning")
 	if err != nil {
 		return nil, err
@@ -130,7 +125,6 @@ func getValidBucket(ctx context.Context, params getParams, cfg common.Config) (*
 		}
 	}
 
-	// 🟢 3️⃣ Requisição para Object Lock (XML)
 	objectLockReq, err := newGetRequest(ctx, params.BucketName, cfg, "object-lock")
 	if err != nil {
 		return nil, err
@@ -152,7 +146,6 @@ func getValidBucket(ctx context.Context, params getParams, cfg common.Config) (*
 	return info, nil
 }
 
-// 🟢 Atualiza a função para aceitar múltiplos parâmetros
 func newGetRequest(ctx context.Context, bucketName common.BucketName, cfg common.Config, params ...string) (*http.Request, error) {
 	url, err := common.BuildBucketHostURL(cfg, bucketName)
 	if err != nil {
