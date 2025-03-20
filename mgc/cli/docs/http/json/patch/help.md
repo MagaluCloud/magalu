@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc http json patch [flags]
+  mgc http json patch [flags]
 ```
 
 ## Product catalog:

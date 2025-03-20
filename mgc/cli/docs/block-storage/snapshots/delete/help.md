@@ -18,7 +18,7 @@
 
 ## Other commands:
 - Usage:
-- ./mgc block-storage snapshots delete [id] [flags]
+- mgc block-storage snapshots delete [id] [flags]
 
 ## Flags:
 ```bash

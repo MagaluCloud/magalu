@@ -47,7 +47,7 @@ def gen_cli_paths(cli: str, tree: Any) -> Iterator[list[str]]:
 def gen_output(cmd: list[str]) -> str:
     cmd = cmd + ["--raw"]
     logger.debug("running %s", cmd)
-    return subprocess.run(
+    result = subprocess.run(
         cmd,
         encoding="utf-8",
         stdout=subprocess.PIPE,
@@ -55,6 +55,10 @@ def gen_output(cmd: list[str]) -> str:
         env={},  # we don't want to contaminate it with any configs/flags set
         timeout=5,
     ).stdout
+
+    # Replace "./mgc" with "mgc" in the output
+    result = result.replace("./mgc", "mgc")
+    return result
 
 
 def gen_help_output(path: list[str]) -> str:

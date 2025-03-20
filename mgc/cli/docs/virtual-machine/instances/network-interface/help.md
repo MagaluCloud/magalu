@@ -3,8 +3,8 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc virtual-machine instances network-interface [flags]
-  ./mgc virtual-machine instances network-interface [command]
+  mgc virtual-machine instances network-interface [flags]
+  mgc virtual-machine instances network-interface [command]
 ```
 
 ## Product catalog:

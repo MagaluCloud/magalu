@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc object-storage buckets policy get [dst] [flags]
+  mgc object-storage buckets policy get [dst] [flags]
 ```
 
 ## Product catalog:

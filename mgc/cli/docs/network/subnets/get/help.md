@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc network subnets get [subnet-id] [flags]
+  mgc network subnets get [subnet-id] [flags]
 ```
 
 ## Product catalog:

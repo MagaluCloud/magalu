@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc dbaas instance-types list [flags]
+  mgc dbaas instance-types list [flags]
 ```
 
 ## Product catalog:

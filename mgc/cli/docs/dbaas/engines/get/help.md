@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc dbaas engines get [engine-id] [flags]
+  mgc dbaas engines get [engine-id] [flags]
 ```
 
 ## Product catalog:

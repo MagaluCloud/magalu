@@ -3,8 +3,8 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc container-registry images [flags]
-  ./mgc container-registry images [command]
+  mgc container-registry images [flags]
+  mgc container-registry images [command]
 ```
 
 ## Product catalog:

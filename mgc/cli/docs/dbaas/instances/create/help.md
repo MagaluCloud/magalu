@@ -3,12 +3,12 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc dbaas instances create [flags]
+  mgc dbaas instances create [flags]
 ```
 
 ## Product catalog:
 - Examples:
-- ./mgc dbaas instances create --volume.size=30
+- mgc dbaas instances create --volume.size=30
 
 ## Other commands:
 - Flags:

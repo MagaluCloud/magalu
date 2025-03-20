@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc object-storage objects acl get [dst] [flags]
+  mgc object-storage objects acl get [dst] [flags]
 ```
 
 ## Product catalog:

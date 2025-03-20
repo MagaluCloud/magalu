@@ -3,12 +3,12 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc object-storage buckets object-lock set [dst] [flags]
+  mgc object-storage buckets object-lock set [dst] [flags]
 ```
 
 ## Product catalog:
 - Examples:
-- ./mgc object-storage buckets object-lock set --days=30 --dst="my-bucket" --years=5
+- mgc object-storage buckets object-lock set --days=30 --dst="my-bucket" --years=5
 
 ## Other commands:
 - Flags:

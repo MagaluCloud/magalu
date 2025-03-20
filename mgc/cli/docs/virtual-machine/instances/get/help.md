@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc virtual-machine instances get [id] [flags]
+  mgc virtual-machine instances get [id] [flags]
 ```
 
 ## Product catalog:
@@ -11,7 +11,7 @@ Usage:
 - --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
 - --expand array(string)          Expand: You can get more detailed info about: ['image', 'machine-type', 'machine-types', 'network', 'labels']  (default ["network","image","machine-type"])
 - -h, --help                          help for get
-- --id string                     Instance id - for help use ./mgc virtual-machines instances list . (required)
+- --id string                     Instance id - for help use mgc virtual-machines instances list . (required)
 - -v, --version                       version for get
 
 ## Other commands:

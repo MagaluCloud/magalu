@@ -3,8 +3,8 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc dbaas replicas [flags]
-  ./mgc dbaas replicas [command]
+  mgc dbaas replicas [flags]
+  mgc dbaas replicas [command]
 ```
 
 ## Product catalog:

@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc workspace delete [name] [flags]
+  mgc workspace delete [name] [flags]
 ```
 
 ## Product catalog:

@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc kubernetes nodepool delete [cluster-id] [node-pool-id] [flags]
+  mgc kubernetes nodepool delete [cluster-id] [node-pool-id] [flags]
 ```
 
 ## Product catalog:

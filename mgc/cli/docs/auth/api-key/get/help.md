@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc auth api-key get [id] [flags]
+  mgc auth api-key get [id] [flags]
 ```
 
 ## Product catalog:

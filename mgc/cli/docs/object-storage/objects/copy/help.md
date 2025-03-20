@@ -3,12 +3,12 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc object-storage objects copy [src] [dst] [flags]
+  mgc object-storage objects copy [src] [dst] [flags]
 ```
 
 ## Product catalog:
 - Examples:
-- ./mgc object-storage objects copy --dst="bucket2/dir/file.txt" --src="bucket1/file.txt" --storage-class="cold"
+- mgc object-storage objects copy --dst="bucket2/dir/file.txt" --src="bucket1/file.txt" --storage-class="cold"
 
 ## Other commands:
 - Flags:
