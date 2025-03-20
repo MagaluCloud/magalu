@@ -25,7 +25,7 @@ type httpParams struct {
 type httpConfig struct {
 	mgcConfigPkg.NetworkConfig `json:",squash"` // nolint
 
-	Region string `json:"region,omitempty" jsonschema:"description=Region to reach the service,default=br-ne-1,enum=br-ne-1,enum=br-se-1,enum=br-mgl-1"`
+	Region string `json:"region,omitempty" jsonschema:"description=Region to reach the service,default=br-ne1,enum=br-ne1,enum=br-se-1,enum=br-mgl-1"`
 }
 
 type httpResult struct {
