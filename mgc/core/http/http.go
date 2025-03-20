@@ -168,12 +168,15 @@ func (e *IdentifiableHttpError) Unwrap() error {
 }
 
 func (e *IdentifiableHttpError) Error() string {
-	msg := e.HttpError.Error() + "\n"
+	msg := "\n Status: " + e.HttpError.Error()
 	if e.RequestID != "" {
 		msg += "\n Request ID: " + e.RequestID
 	}
 	if e.TraceID != "" {
 		msg += "\n MGC Trace ID: " + e.TraceID
+	}
+	if e.Payload != nil {
+		msg += "\n\n" + string(e.Payload)
 	}
 	return msg
 }
@@ -183,10 +186,6 @@ func (e *HttpError) Error() string {
 	if e.Status != msg {
 		msg = e.Status + " - " + msg
 	}
-	if e.Slug != "" {
-		msg = "(" + e.Slug + ")" + " " + msg
-	}
-
 	return msg
 }
 

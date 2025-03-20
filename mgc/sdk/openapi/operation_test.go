@@ -425,3 +425,83 @@ func TestOperation_SetSecurityHeader(t *testing.T) {
 		})
 	}
 }
+
+func TestOperation_UrlHost(t *testing.T) {
+	testURLs := []struct {
+		input        string
+		expectSchema string
+		expectHost   string
+		expectPath   string
+		expectError  bool
+	}{
+		{
+			input:        "",
+			expectSchema: "",
+			expectHost:   "",
+			expectPath:   "",
+			expectError:  true,
+		},
+		{
+			input:        "http",
+			expectSchema: "http",
+			expectHost:   "",
+			expectPath:   "",
+			expectError:  false,
+		},
+		{
+			input:        "https",
+			expectSchema: "https",
+			expectHost:   "",
+			expectPath:   "",
+			expectError:  false,
+		},
+		{
+			input:        "https://dominio.com",
+			expectSchema: "https",
+			expectHost:   "dominio.com",
+			expectPath:   "",
+			expectError:  false,
+		},
+		{
+			input:        "http://dominio.com",
+			expectSchema: "http",
+			expectHost:   "dominio.com",
+			expectPath:   "",
+			expectError:  false,
+		},
+		{
+			input:        "http://dominio.com/api/v1/xpto",
+			expectSchema: "http",
+			expectHost:   "dominio.com",
+			expectPath:   "/api/v1/xpto",
+			expectError:  false,
+		},
+		{
+			input:        "https://dominio.com/api/v1/xpto",
+			expectSchema: "https",
+			expectHost:   "dominio.com",
+			expectPath:   "/api/v1/xpto",
+			expectError:  false,
+		},
+		{
+			input:        "dominio.com/api/v1/xpto",
+			expectSchema: "http",
+			expectHost:   "dominio.com",
+			expectPath:   "/api/v1/xpto",
+			expectError:  false,
+		},
+	}
+
+	for _, tt := range testURLs {
+		schema, host, path, err := parseURL(tt.input)
+		if tt.expectError {
+			assert.Error(t, err)
+		} else {
+			assert.NoError(t, err)
+			assert.Equal(t, tt.expectSchema, schema)
+			assert.Equal(t, tt.expectHost, host)
+			assert.Equal(t, tt.expectPath, path)
+		}
+	}
+
+}

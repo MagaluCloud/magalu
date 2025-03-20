@@ -51,8 +51,8 @@ func Execute() (err error) {
 	██║╚██╔╝██║██║   ██║██║         ██║     ██║     ██║
 	██║ ╚═╝ ██║╚██████╔╝╚██████╗    ╚██████╗███████╗██║
 	╚═╝     ╚═╝ ╚═════╝  ╚═════╝     ╚═════╝╚══════╝╚═╝
-       
-Magalu Cloud CLI is a command-line interface for the Magalu Cloud. 
+
+Magalu Cloud CLI is a command-line interface for the Magalu Cloud.
 It allows you to interact with the Magalu Cloud to manage your resources.
 `,
 		SilenceErrors: true,
@@ -88,6 +88,7 @@ It allows you to interact with the Magalu Cloud to manage your resources.
 	addShowInternalFlag(rootCmd)
 	addShowHiddenFlag(rootCmd)
 	addRawOutputFlag(rootCmd)
+	addBaseURLFlag(rootCmd)
 	addApiKeyFlag(rootCmd)
 
 	rootCmd.InitDefaultHelpFlag()

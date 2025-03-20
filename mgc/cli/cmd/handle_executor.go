@@ -151,6 +151,9 @@ func handleExecutor(
 	configs core.Configs,
 ) (core.Result, error) {
 	ctx = openapi.WithRawOutputFlag(ctx, getRawOutputFlag(cmd))
+	ctx = openapi.WithUrlHostFlag(ctx, getBaseURLFlag(cmd))
+	ctx = openapi.WithPathHostFlag(ctx, getBaseURLFlag(cmd))
+	ctx = openapi.WithSchemaHostFlag(ctx, getBaseURLFlag(cmd))
 	result, err := handleExecutorPre(ctx, sdk, cmd, exec, parameters, configs)
 	err = handleExecutorResult(ctx, sdk, cmd, result, err)
 	if err != nil {
