@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc dbaas instances get [instance-id] [flags]
+  mgc dbaas instances get [instance-id] [flags]
 ```
 
 ## Product catalog:

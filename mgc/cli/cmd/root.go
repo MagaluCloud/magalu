@@ -40,8 +40,13 @@ func Execute() (err error) {
 		runtime.GOOS,
 		runtime.GOARCH)
 
+	use := argParser.FullProgramPath()
+	if os.Getenv("MGC_GEN_DOC") == "1" {
+		use = "mgc"
+	}
+
 	rootCmd := &cobra.Command{
-		Use:     argParser.FullProgramPath(),
+		Use:     use,
 		Version: vv,
 		Short:   "Magalu Cloud CLI",
 		Long: `

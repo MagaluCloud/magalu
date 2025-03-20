@@ -3,12 +3,12 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc dbaas instances snapshots update [instance-id] [snapshot-id] [flags]
+  mgc dbaas instances snapshots update [instance-id] [snapshot-id] [flags]
 ```
 
 ## Product catalog:
 - Examples:
-- ./mgc dbaas instances snapshots update --description="my-description-updated" --name="my-snapshot-updated"
+- mgc dbaas instances snapshots update --description="my-description-updated" --name="my-snapshot-updated"
 
 ## Other commands:
 - Flags:

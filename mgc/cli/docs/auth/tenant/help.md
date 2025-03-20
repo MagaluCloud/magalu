@@ -5,8 +5,8 @@ under the same account
 ## Usage:
 ```bash
 Usage:
-  ./mgc auth tenant [flags]
-  ./mgc auth tenant [command]
+  mgc auth tenant [flags]
+  mgc auth tenant [command]
 ```
 
 ## Product catalog:

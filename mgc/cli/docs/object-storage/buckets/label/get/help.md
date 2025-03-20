@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc object-storage buckets label get [bucket] [flags]
+  mgc object-storage buckets label get [bucket] [flags]
 ```
 
 ## Product catalog:

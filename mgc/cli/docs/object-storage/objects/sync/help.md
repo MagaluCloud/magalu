@@ -3,12 +3,12 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc object-storage objects sync [local] [bucket] [flags]
+  mgc object-storage objects sync [local] [bucket] [flags]
 ```
 
 ## Product catalog:
 - Examples:
-- ./mgc object-storage objects sync --bucket="my-bucket/dir/" --local="./"
+- mgc object-storage objects sync --bucket="my-bucket/dir/" --local="./"
 
 ## Other commands:
 - Flags:

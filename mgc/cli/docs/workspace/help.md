@@ -5,8 +5,8 @@ current workspace, so users can alter and switch between workspaces without loos
 ## Usage:
 ```bash
 Usage:
-  ./mgc workspace [flags]
-  ./mgc workspace [command]
+  mgc workspace [flags]
+  mgc workspace [command]
 ```
 
 ## Product catalog:

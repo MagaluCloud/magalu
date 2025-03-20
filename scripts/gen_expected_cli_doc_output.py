@@ -52,7 +52,7 @@ def gen_output(cmd: list[str]) -> str:
         encoding="utf-8",
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
-        env={},  # we don't want to contaminate it with any configs/flags set
+        env={"MGC_GEN_DOC": "1"},  # Setting the environment variable for documentation generation
         timeout=5,
     ).stdout
 

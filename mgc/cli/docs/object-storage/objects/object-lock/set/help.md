@@ -3,12 +3,12 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc object-storage objects object-lock set [dst] [flags]
+  mgc object-storage objects object-lock set [dst] [flags]
 ```
 
 ## Product catalog:
 - Examples:
-- ./mgc object-storage objects object-lock set --retain-until-date="2025-10-03T00:00:00"
+- mgc object-storage objects object-lock set --retain-until-date="2025-10-03T00:00:00"
 
 ## Other commands:
 - Flags:

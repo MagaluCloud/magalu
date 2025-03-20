@@ -3,12 +3,12 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc kubernetes nodepool create [cluster-id] [flags]
+  mgc kubernetes nodepool create [cluster-id] [flags]
 ```
 
 ## Product catalog:
 - Examples:
-- ./mgc kubernetes nodepool create --auto-scale.max-replicas=5 --auto-scale.min-replicas=2 --flavor="cloud-k8s.gp1.small" --name="nodepool-example" --replicas=3 --tags='["tag-value1"]'
+- mgc kubernetes nodepool create --auto-scale.max-replicas=5 --auto-scale.min-replicas=2 --flavor="cloud-k8s.gp1.small" --name="nodepool-example" --replicas=3 --tags='["tag-value1"]'
 
 ## Other commands:
 - Flags:

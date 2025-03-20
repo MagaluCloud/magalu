@@ -5,8 +5,8 @@ of HTTP requests using the MgcSDK. Authentication is done via Magalu Cloud accou
 ## Usage:
 ```bash
 Usage:
-  ./mgc auth [flags]
-  ./mgc auth [command]
+  mgc auth [flags]
+  mgc auth [command]
 ```
 
 ## Product catalog:

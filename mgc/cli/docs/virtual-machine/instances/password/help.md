@@ -5,7 +5,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc virtual-machine instances password [id] [flags]
+  mgc virtual-machine instances password [id] [flags]
 ```
 
 ## Product catalog:

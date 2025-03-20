@@ -11,7 +11,7 @@ so you can get the id of the instance that you want to start.
 
 ## Product catalog:
 - Usage:
-- ./mgc virtual-machine instances start [id] [flags]
+- mgc virtual-machine instances start [id] [flags]
 
 ## Other commands:
 - Flags:

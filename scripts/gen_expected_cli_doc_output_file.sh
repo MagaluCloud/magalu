@@ -7,11 +7,13 @@ MGCDIR=${MGCDIR:-"mgc/cli/"}
 DUMP_TREE="mgc/cli/cli-dump-tree.json"
 OUT_DIR="mgc/cli/docs"
 
+
 set -xe
 cd $MGCDIR
 
 go build -tags \"embed\" -o mgc
 
+export MGC_GEN_DOC="1"
 echo "generating $OUT_DIR..."
 python3 ../../scripts/gen_expected_cli_doc_output.py \
     ./mgc \

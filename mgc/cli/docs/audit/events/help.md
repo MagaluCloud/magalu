@@ -3,8 +3,8 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc audit events [flags]
-  ./mgc audit events [command]
+  mgc audit events [flags]
+  mgc audit events [command]
 ```
 
 ## Product catalog:

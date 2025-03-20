@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc dbaas replicas resize [replica-id] [flags]
+  mgc dbaas replicas resize [replica-id] [flags]
 ```
 
 ## Product catalog:

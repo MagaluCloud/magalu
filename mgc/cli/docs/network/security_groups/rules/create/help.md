@@ -3,12 +3,12 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc network security-groups rules create [security-group-id] [flags]
+  mgc network security-groups rules create [security-group-id] [flags]
 ```
 
 ## Product catalog:
 - Examples:
-- ./mgc network security-groups rules create --description="Allow incoming SSH traffic"
+- mgc network security-groups rules create --description="Allow incoming SSH traffic"
 
 ## Other commands:
 - Flags:

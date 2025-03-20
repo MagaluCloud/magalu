@@ -3,8 +3,8 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc object-storage buckets object-lock [flags]
-  ./mgc object-storage buckets object-lock [command]
+  mgc object-storage buckets object-lock [flags]
+  mgc object-storage buckets object-lock [command]
 ```
 
 ## Product catalog:

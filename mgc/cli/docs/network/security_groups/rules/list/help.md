@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc network security-groups rules list [security-group-id] [flags]
+  mgc network security-groups rules list [security-group-id] [flags]
 ```
 
 ## Product catalog:

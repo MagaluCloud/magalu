@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc dbaas replicas delete [replica-id] [flags]
+  mgc dbaas replicas delete [replica-id] [flags]
 ```
 
 ## Product catalog:

@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc object-storage buckets create [bucket] [flags]
+  mgc object-storage buckets create [bucket] [flags]
 ```
 
 ## Product catalog:

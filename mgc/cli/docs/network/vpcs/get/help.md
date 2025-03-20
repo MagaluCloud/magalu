@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc network vpcs get [vpc-id] [flags]
+  mgc network vpcs get [vpc-id] [flags]
 ```
 
 ## Product catalog:
