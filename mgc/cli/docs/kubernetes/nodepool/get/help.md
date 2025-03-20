@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc kubernetes nodepool get [cluster-id] [node-pool-id] [flags]
+  mgc kubernetes nodepool get [cluster-id] [node-pool-id] [flags]
 ```
 
 ## Product catalog:

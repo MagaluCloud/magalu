@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc network subnetpools create-unbook-cidr [subnetpool-id] [flags]
+  mgc network subnetpools create-unbook-cidr [subnetpool-id] [flags]
 ```
 
 ## Product catalog:

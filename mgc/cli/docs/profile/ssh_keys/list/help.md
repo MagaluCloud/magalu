@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc profile ssh-keys list [flags]
+  mgc profile ssh-keys list [flags]
 ```
 
 ## Product catalog:

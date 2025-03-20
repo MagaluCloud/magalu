@@ -3,12 +3,12 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc virtual-machine instances create [flags]
+  mgc virtual-machine instances create [flags]
 ```
 
 ## Product catalog:
 - Examples:
-- ./mgc virtual-machine instances create --image.id="9ec75090-2872-4f51-8111-53d05d96d2c6" --image.name="some_resource_name" --machine-type.id="9ec75090-2872-4f51-8111-53d05d96d2c6" --machine-type.name="some_resource_name" --network.associate-public-ip=true --network.interface.id="9ec75090-2872-4f51-8111-53d05d96d2c6" --network.interface.security-groups='[{"id":"9ec75090-2872-4f51-8111-53d05d96d2c6"}]' --network.vpc.id="9ec75090-2872-4f51-8111-53d05d96d2c6" --network.vpc.name="some_resource_name" --volumes='[{"id":"a46594d1-9dc3-4c36-8eb3-071259513854"}]'
+- mgc virtual-machine instances create --image.id="9ec75090-2872-4f51-8111-53d05d96d2c6" --image.name="some_resource_name" --machine-type.id="9ec75090-2872-4f51-8111-53d05d96d2c6" --machine-type.name="some_resource_name" --network.associate-public-ip=true --network.interface.id="9ec75090-2872-4f51-8111-53d05d96d2c6" --network.interface.security-groups='[{"id":"9ec75090-2872-4f51-8111-53d05d96d2c6"}]' --network.vpc.id="9ec75090-2872-4f51-8111-53d05d96d2c6" --network.vpc.name="some_resource_name" --volumes='[{"id":"a46594d1-9dc3-4c36-8eb3-071259513854"}]'
 
 ## Other commands:
 - Flags:

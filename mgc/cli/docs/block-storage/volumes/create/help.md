@@ -21,6 +21,6 @@ The Volume can be used when it reaches the "available" state and "completed"
 ## Flags:
 ```bash
 Usage:
-  ./mgc block-storage volumes create [flags]
+  mgc block-storage volumes create [flags]
 ```
 

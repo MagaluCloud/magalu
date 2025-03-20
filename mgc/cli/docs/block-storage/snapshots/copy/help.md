@@ -15,7 +15,7 @@
 
 ## Other commands:
 - Usage:
-- ./mgc block-storage snapshots copy [id] [flags]
+- mgc block-storage snapshots copy [id] [flags]
 
 ## Flags:
 ```bash

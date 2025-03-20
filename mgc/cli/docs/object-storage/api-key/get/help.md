@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc object-storage api-key get [uuid] [flags]
+  mgc object-storage api-key get [uuid] [flags]
 ```
 
 ## Product catalog:

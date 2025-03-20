@@ -3,12 +3,12 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc object-storage buckets label delete [bucket] [label] [flags]
+  mgc object-storage buckets label delete [bucket] [label] [flags]
 ```
 
 ## Product catalog:
 - Examples:
-- ./mgc object-storage buckets label delete --bucket="my-bucket"
+- mgc object-storage buckets label delete --bucket="my-bucket"
 
 ## Other commands:
 - Flags:

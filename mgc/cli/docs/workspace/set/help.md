@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc workspace set [name] [flags]
+  mgc workspace set [name] [flags]
 ```
 
 ## Product catalog:

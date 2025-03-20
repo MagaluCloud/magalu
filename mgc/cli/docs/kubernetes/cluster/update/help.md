@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc kubernetes cluster update [cluster-id] [flags]
+  mgc kubernetes cluster update [cluster-id] [flags]
 ```
 
 ## Product catalog:

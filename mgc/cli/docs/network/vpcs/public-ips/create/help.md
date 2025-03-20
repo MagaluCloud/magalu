@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc network vpcs public-ips create [vpc-id] [flags]
+  mgc network vpcs public-ips create [vpc-id] [flags]
 ```
 
 ## Product catalog:
