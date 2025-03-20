@@ -10,7 +10,7 @@ which is logged in.
 
 ## Product catalog:
 - Usage:
-- ./mgc virtual-machine snapshots delete [id] [flags]
+- mgc virtual-machine snapshots delete [id] [flags]
 
 ## Other commands:
 - Flags:

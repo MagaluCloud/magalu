@@ -3,8 +3,8 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc dbaas instance-types [flags]
-  ./mgc dbaas instance-types [command]
+  mgc dbaas instance-types [flags]
+  mgc dbaas instance-types [command]
 ```
 
 ## Product catalog:

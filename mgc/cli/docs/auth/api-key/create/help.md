@@ -3,12 +3,12 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc auth api-key create [name] [description] [expiration] [flags]
+  mgc auth api-key create [name] [description] [expiration] [flags]
 ```
 
 ## Product catalog:
 - Examples:
-- ./mgc auth api-key create --expiration="2024-11-07 (YYYY-MM-DD)"
+- mgc auth api-key create --expiration="2024-11-07 (YYYY-MM-DD)"
 
 ## Other commands:
 - Flags:

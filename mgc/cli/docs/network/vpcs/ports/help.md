@@ -3,8 +3,8 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc network vpcs ports [flags]
-  ./mgc network vpcs ports [command]
+  mgc network vpcs ports [flags]
+  mgc network vpcs ports [command]
 ```
 
 ## Product catalog:

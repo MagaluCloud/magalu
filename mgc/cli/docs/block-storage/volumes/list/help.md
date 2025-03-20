@@ -8,7 +8,7 @@
 
 ## Product catalog:
 - Usage:
-- ./mgc block-storage volumes list [flags]
+- mgc block-storage volumes list [flags]
 
 ## Other commands:
 - Flags:

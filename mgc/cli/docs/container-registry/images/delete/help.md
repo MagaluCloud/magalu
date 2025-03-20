@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc container-registry images delete [registry-id] [repository-name] [digest-or-tag] [flags]
+  mgc container-registry images delete [registry-id] [repository-name] [digest-or-tag] [flags]
 ```
 
 ## Product catalog:

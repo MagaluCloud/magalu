@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc network subnetpools get [subnetpool-id] [flags]
+  mgc network subnetpools get [subnetpool-id] [flags]
 ```
 
 ## Product catalog:

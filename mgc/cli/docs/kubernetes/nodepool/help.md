@@ -3,8 +3,8 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc kubernetes nodepool [flags]
-  ./mgc kubernetes nodepool [command]
+  mgc kubernetes nodepool [flags]
+  mgc kubernetes nodepool [command]
 ```
 
 ## Product catalog:

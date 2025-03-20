@@ -4057,15 +4057,13 @@ servers:
             description: Region to reach the service
             default: br-se1
             enum:
-            - br-ne-1
+            - br-ne1
             - br-se1
             - br-mgl1
             x-mgc-transforms:
             -   type: translate
                 allowMissing: true
                 translations:
-                -   from: br-ne1
-                    to: br-ne-1
                 -   from: br-mgl1
                     to: br-se-1
         env:

@@ -12,7 +12,7 @@
 
 ## Product catalog:
 - Usage:
-- ./mgc block-storage snapshots get [id] [flags]
+- mgc block-storage snapshots get [id] [flags]
 
 ## Other commands:
 - Flags:

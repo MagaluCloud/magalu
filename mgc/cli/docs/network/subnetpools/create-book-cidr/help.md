@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc network subnetpools create-book-cidr [subnetpool-id] [flags]
+  mgc network subnetpools create-book-cidr [subnetpool-id] [flags]
 ```
 
 ## Product catalog:

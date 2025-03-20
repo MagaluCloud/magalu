@@ -11,7 +11,7 @@
 
 ## Other commands:
 - Usage:
-- ./mgc block-storage volume-types list [flags]
+- mgc block-storage volume-types list [flags]
 
 ## Flags:
 ```bash

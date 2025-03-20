@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc network public-ips detach [public-ip-id] [port-id] [flags]
+  mgc network public-ips detach [public-ip-id] [port-id] [flags]
 ```
 
 ## Product catalog:

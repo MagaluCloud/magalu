@@ -3,12 +3,12 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc object-storage buckets policy delete [dst] [flags]
+  mgc object-storage buckets policy delete [dst] [flags]
 ```
 
 ## Product catalog:
 - Examples:
-- ./mgc object-storage buckets policy delete --dst="my-bucket"
+- mgc object-storage buckets policy delete --dst="my-bucket"
 
 ## Other commands:
 - Flags:

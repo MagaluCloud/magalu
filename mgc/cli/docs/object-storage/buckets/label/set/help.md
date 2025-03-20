@@ -3,12 +3,12 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc object-storage buckets label set [bucket] [label] [flags]
+  mgc object-storage buckets label set [bucket] [label] [flags]
 ```
 
 ## Product catalog:
 - Examples:
-- ./mgc object-storage buckets label set --bucket="my-bucket"
+- mgc object-storage buckets label set --bucket="my-bucket"
 
 ## Other commands:
 - Flags:

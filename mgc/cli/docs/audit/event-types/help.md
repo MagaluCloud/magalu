@@ -3,8 +3,8 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc audit event-types [flags]
-  ./mgc audit event-types [command]
+  mgc audit event-types [flags]
+  mgc audit event-types [command]
 ```
 
 ## Product catalog:

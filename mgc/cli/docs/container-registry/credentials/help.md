@@ -3,8 +3,8 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc container-registry credentials [flags]
-  ./mgc container-registry credentials [command]
+  mgc container-registry credentials [flags]
+  mgc container-registry credentials [command]
 ```
 
 ## Product catalog:
