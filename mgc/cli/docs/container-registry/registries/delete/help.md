@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc container-registry registries delete [registry-id] [flags]
+  mgc container-registry registries delete [registry-id] [flags]
 ```
 
 ## Product catalog:

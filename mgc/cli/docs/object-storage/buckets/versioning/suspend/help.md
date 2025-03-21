@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc object-storage buckets versioning suspend [bucket] [flags]
+  mgc object-storage buckets versioning suspend [bucket] [flags]
 ```
 
 ## Product catalog:

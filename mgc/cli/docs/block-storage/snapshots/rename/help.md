@@ -13,7 +13,7 @@
 
 ## Other commands:
 - Usage:
-- ./mgc block-storage snapshots rename [id] [flags]
+- mgc block-storage snapshots rename [id] [flags]
 
 ## Flags:
 ```bash

@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc kubernetes cluster get [cluster-id] [flags]
+  mgc kubernetes cluster get [cluster-id] [flags]
 ```
 
 ## Product catalog:

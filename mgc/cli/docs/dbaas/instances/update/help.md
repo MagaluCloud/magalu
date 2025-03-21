@@ -3,12 +3,12 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc dbaas instances update [instance-id] [flags]
+  mgc dbaas instances update [instance-id] [flags]
 ```
 
 ## Product catalog:
 - Examples:
-- ./mgc dbaas instances update --backup-retention-days=7 --backup-start-at="04:00:00" --status="ACTIVE"
+- mgc dbaas instances update --backup-retention-days=7 --backup-start-at="04:00:00" --status="ACTIVE"
 
 ## Other commands:
 - Flags:

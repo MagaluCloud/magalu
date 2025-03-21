@@ -3,8 +3,8 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc profile availability-zones [flags]
-  ./mgc profile availability-zones [command]
+  mgc profile availability-zones [flags]
+  mgc profile availability-zones [command]
 ```
 
 ## Product catalog:

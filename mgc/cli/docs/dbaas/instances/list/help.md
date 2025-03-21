@@ -3,12 +3,12 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc dbaas instances list [flags]
+  mgc dbaas instances list [flags]
 ```
 
 ## Product catalog:
 - Examples:
-- ./mgc dbaas instances list --status="ACTIVE"
+- mgc dbaas instances list --status="ACTIVE"
 
 ## Other commands:
 - Flags:

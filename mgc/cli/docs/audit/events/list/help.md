@@ -3,12 +3,12 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc audit events list [flags]
+  mgc audit events list [flags]
 ```
 
 ## Product catalog:
 - Examples:
-- ./mgc audit events list --data='{"data.machine_type.name":"cloud-bs1.xsmall","data.tenant_id":"00000000-0000-0000-0000-000000000000"}'
+- mgc audit events list --data='{"data.machine_type.name":"cloud-bs1.xsmall","data.tenant_id":"00000000-0000-0000-0000-000000000000"}'
 
 ## Other commands:
 - Flags:

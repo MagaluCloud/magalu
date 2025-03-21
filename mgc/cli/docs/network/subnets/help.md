@@ -3,8 +3,8 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc network subnets [flags]
-  ./mgc network subnets [command]
+  mgc network subnets [flags]
+  mgc network subnets [command]
 ```
 
 ## Product catalog:

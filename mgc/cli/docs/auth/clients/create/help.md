@@ -3,12 +3,12 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc auth clients create [name] [description] [redirect-uris] [backchannel-logout-session] [client-term-url] [client-privacy-term-url] [audiences] [email] [request-reason] [icon] [access-token-expiration] [always-require-login] [backchannel-logout-uri] [oidc-audience] [refresh-token-custom-expires-enabled] [refresh-token-exp] [support-url] [grant-types] [flags]
+  mgc auth clients create [name] [description] [redirect-uris] [backchannel-logout-session] [client-term-url] [client-privacy-term-url] [audiences] [email] [request-reason] [icon] [access-token-expiration] [always-require-login] [backchannel-logout-uri] [oidc-audience] [refresh-token-custom-expires-enabled] [refresh-token-exp] [support-url] [grant-types] [flags]
 ```
 
 ## Product catalog:
 - Examples:
-- ./mgc auth clients create --access-token-expiration=7200 --audiences="public" --description="Client description" --email="client@example.com" --name="Client Name" --oidc-audience="public" --refresh-token-exp=15778476
+- mgc auth clients create --access-token-expiration=7200 --audiences="public" --description="Client description" --email="client@example.com" --name="Client Name" --oidc-audience="public" --refresh-token-exp=15778476
 
 ## Other commands:
 - Flags:

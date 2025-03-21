@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc container-registry registries get [registry-id] [flags]
+  mgc container-registry registries get [registry-id] [flags]
 ```
 
 ## Product catalog:

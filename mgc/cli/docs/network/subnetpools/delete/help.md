@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc network subnetpools delete [subnetpool-id] [flags]
+  mgc network subnetpools delete [subnetpool-id] [flags]
 ```
 
 ## Product catalog:

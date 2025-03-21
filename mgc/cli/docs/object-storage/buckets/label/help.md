@@ -3,8 +3,8 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc object-storage buckets label [flags]
-  ./mgc object-storage buckets label [command]
+  mgc object-storage buckets label [flags]
+  mgc object-storage buckets label [command]
 ```
 
 ## Product catalog:

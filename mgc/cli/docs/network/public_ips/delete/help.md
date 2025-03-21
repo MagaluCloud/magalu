@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc network public-ips delete [public-ip-id] [flags]
+  mgc network public-ips delete [public-ip-id] [flags]
 ```
 
 ## Product catalog:

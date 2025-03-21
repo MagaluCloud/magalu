@@ -3,8 +3,8 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc network [flags]
-  ./mgc network [command]
+  mgc network [flags]
+  mgc network [command]
 ```
 
 ## Product catalog:

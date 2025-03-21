@@ -3,12 +3,12 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc object-storage buckets policy set [dst] [policy] [flags]
+  mgc object-storage buckets policy set [dst] [policy] [flags]
 ```
 
 ## Product catalog:
 - Examples:
-- ./mgc object-storage buckets policy set --dst="my-bucket"
+- mgc object-storage buckets policy set --dst="my-bucket"
 
 ## Other commands:
 - Flags:

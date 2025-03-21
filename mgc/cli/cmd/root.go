@@ -40,8 +40,11 @@ func Execute() (err error) {
 		runtime.GOOS,
 		runtime.GOARCH)
 
+	use := argParser.FullProgramPath()
+	use = strings.Replace(use, "./", "", 1)
+
 	rootCmd := &cobra.Command{
-		Use:     argParser.FullProgramPath(),
+		Use:     use,
 		Version: vv,
 		Short:   "Magalu Cloud CLI",
 		Long: `
@@ -51,8 +54,8 @@ func Execute() (err error) {
 	██║╚██╔╝██║██║   ██║██║         ██║     ██║     ██║
 	██║ ╚═╝ ██║╚██████╔╝╚██████╗    ╚██████╗███████╗██║
 	╚═╝     ╚═╝ ╚═════╝  ╚═════╝     ╚═════╝╚══════╝╚═╝
-
-Magalu Cloud CLI is a command-line interface for the Magalu Cloud.
+       
+Magalu Cloud CLI is a command-line interface for the Magalu Cloud. 
 It allows you to interact with the Magalu Cloud to manage your resources.
 `,
 		SilenceErrors: true,
@@ -88,7 +91,6 @@ It allows you to interact with the Magalu Cloud to manage your resources.
 	addShowInternalFlag(rootCmd)
 	addShowHiddenFlag(rootCmd)
 	addRawOutputFlag(rootCmd)
-	addBaseURLFlag(rootCmd)
 	addApiKeyFlag(rootCmd)
 
 	rootCmd.InitDefaultHelpFlag()

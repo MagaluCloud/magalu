@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc network rules get [rule-id] [flags]
+  mgc network rules get [rule-id] [flags]
 ```
 
 ## Product catalog:

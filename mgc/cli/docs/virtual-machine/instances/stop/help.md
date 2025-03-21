@@ -11,7 +11,7 @@ the instance that you want to stop.
 
 ## Product catalog:
 - Usage:
-- ./mgc virtual-machine instances stop [id] [flags]
+- mgc virtual-machine instances stop [id] [flags]
 
 ## Other commands:
 - Flags:

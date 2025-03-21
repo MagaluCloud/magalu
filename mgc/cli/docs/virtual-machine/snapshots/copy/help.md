@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc virtual-machine snapshots copy [id] [flags]
+  mgc virtual-machine snapshots copy [id] [flags]
 ```
 
 ## Product catalog:
