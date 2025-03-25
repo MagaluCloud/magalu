@@ -8,19 +8,18 @@ Usage:
 
 ## Product catalog:
 - Examples:
-- mgc network security-groups rules create --description="Allow incoming SSH traffic"
+- mgc network security-groups rules create --description="Allow incoming SSH traffic" --direction="ingress" --ethertype="IPv4"
 
 ## Other commands:
 - Flags:
 - --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
 - --description string            Description of the security group rule
-- --direction string              Direction
-- --ethertype string              Ethertype (required)
+- --direction string              Direction of the rule, either ingress or egress (required)
+- --ethertype string              Ethertype of the rule, either IPv4 or IPv6 (required)
 - -h, --help                          help for create
 - --port-range-max integer        Port Range Max
 - --port-range-min integer        Port Range Min
 - --protocol string               Protocol
-- --remote-group-id string        Remote Group Id
 - --remote-ip-prefix string       Remote Ip Prefix
 - --security-group-id string      Security Group ID: Id of the Security Group (required)
 - --validate-quota                validateQuota: Validate the quota before creating Rule (default true)
