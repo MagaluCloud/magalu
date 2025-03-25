@@ -9,7 +9,7 @@ Usage:
 
 ## Product catalog:
 - Commands:
-- create      Create VPC
+- create      Create a new Virtual Private Cloud (VPC)
 - delete      Delete VPC
 - get         VPC Details
 - list        List VPC
