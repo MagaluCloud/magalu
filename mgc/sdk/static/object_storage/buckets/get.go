@@ -3,13 +3,14 @@ package buckets
 import (
 	"context"
 	"encoding/xml"
+	"errors"
 	"fmt"
-	"io"
-	"net/http"
-	"strings"
 
 	"github.com/MagaluCloud/magalu/mgc/core"
 	"github.com/MagaluCloud/magalu/mgc/core/utils"
+	"github.com/MagaluCloud/magalu/mgc/sdk/static/object_storage/buckets/acl"
+	object_lock "github.com/MagaluCloud/magalu/mgc/sdk/static/object_storage/buckets/object-lock"
+	"github.com/MagaluCloud/magalu/mgc/sdk/static/object_storage/buckets/versioning"
 	"github.com/MagaluCloud/magalu/mgc/sdk/static/object_storage/common"
 )
 
@@ -80,83 +81,46 @@ var getBucket = utils.NewLazyLoader[core.Executor](func() core.Executor {
 })
 
 func getValidBucket(ctx context.Context, params getParams, cfg common.Config) (*bucketInfo, error) {
-	info := &bucketInfo{
-		BucketName: params.BucketName.String(),
-	}
+	info := &bucketInfo{BucketName: params.BucketName.String()}
 
-	aclReq, err := newGetRequest(ctx, params.BucketName, cfg, "acl")
-	if err != nil {
-		return nil, err
-	}
-
-	aclRes, err := common.SendRequest(ctx, aclReq)
+	aclRes, err := acl.GetACL(ctx, acl.GetBucketACLParams{Bucket: params.BucketName}, cfg)
 	if err == nil {
-		body, _ := io.ReadAll(aclRes.Body)
-		defer aclRes.Body.Close()
-
-		if strings.Contains(string(body), "<AccessControlPolicy") {
-			var acp AccessControlPolicy
-			if err := xml.Unmarshal(body, &acp); err == nil {
-				info.OwnerID = acp.Owner.ID
-				info.OwnerName = acp.Owner.DisplayName
-
-				for _, grant := range acp.AccessControlList.Grants {
-					info.Permissions = append(info.Permissions, grant.Permission)
-				}
-			}
+		info.OwnerID = aclRes.Owner.ID
+		info.OwnerName = aclRes.Owner.DisplayName
+		for _, grant := range aclRes.AccessControlList.Grant {
+			info.Permissions = append(info.Permissions, grant.Permission)
 		}
+	} else {
+		info.OwnerID = ""
+		info.OwnerName = ""
+		info.Permissions = nil
+
 	}
 
-	versioningReq, err := newGetRequest(ctx, params.BucketName, cfg, "versioning")
-	if err != nil {
-		return nil, err
-	}
-
-	versioningRes, err := common.SendRequest(ctx, versioningReq)
+	versioningRes, err := versioning.GetBucketVersioning(ctx, versioning.GetBucketVersioningParams{Bucket: params.BucketName}, cfg)
 	if err == nil {
-		body, _ := io.ReadAll(versioningRes.Body)
-		defer versioningRes.Body.Close()
-
-		if strings.Contains(string(body), "<VersioningConfiguration") {
-			var vc VersioningConfiguration
-			if err := xml.Unmarshal(body, &vc); err == nil {
-				info.Versioning = vc.Status
-			}
-		}
+		info.Versioning = versioningRes.Status
+	} else {
+		info.Versioning = "Disabled"
 	}
 
-	objectLockReq, err := newGetRequest(ctx, params.BucketName, cfg, "object-lock")
-	if err != nil {
-		return nil, err
-	}
-
-	objectLockRes, err := common.SendRequest(ctx, objectLockReq)
-	if err == nil {
-		body, _ := io.ReadAll(objectLockRes.Body)
-		defer objectLockRes.Body.Close()
-
-		if strings.Contains(string(body), "<ObjectLockConfiguration") {
-			var ol ObjectLockConfiguration
-			if err := xml.Unmarshal(body, &ol); err == nil {
-				info.ObjectLocking = fmt.Sprintf("%s (%d days)", ol.Rule.DefaultRetention.Mode, ol.Rule.DefaultRetention.Days)
-			}
-		}
+	objectLockRes, err := getObjectLocking(ctx, params.BucketName, cfg)
+	if err == nil && objectLockRes != nil {
+		info.ObjectLocking = fmt.Sprintf("%s (%d days)", objectLockRes.Rule.DefaultRetention.Mode, objectLockRes.Rule.DefaultRetention.Days)
+	} else {
+		info.ObjectLocking = "Not Configured"
 	}
 
 	return info, nil
 }
 
-func newGetRequest(ctx context.Context, bucketName common.BucketName, cfg common.Config, params ...string) (*http.Request, error) {
-	url, err := common.BuildBucketHostURL(cfg, bucketName)
+func getObjectLocking(ctx context.Context, bucket common.BucketName, cfg common.Config) (*object_lock.GetBucketObjectLockResponse, error) {
+	objectLockRes, err := object_lock.GetObjectLocking(ctx, object_lock.GetBucketObjectLockParams{Bucket: bucket}, cfg)
 	if err != nil {
-		return nil, core.UsageError{Err: err}
+		if errors.Is(err, object_lock.ErrBucketMissingObjectLockConfiguration) {
+			return nil, nil
+		}
+		return nil, err
 	}
-
-	query := url.Query()
-	for _, param := range params {
-		query.Set(param, "")
-	}
-
-	url.RawQuery = query.Encode()
-	return http.NewRequestWithContext(ctx, http.MethodGet, url.String(), nil)
+	return &objectLockRes, nil
 }
