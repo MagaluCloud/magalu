@@ -2788,9 +2788,9 @@
                 "tags": [
                     "nat_gateways"
                 ],
-                "summary": "V1 List Nat Gateways from a VPC",
-                "description": "V1 List Nat Gateways from a VPC",
-                "operationId": "v1_list_nat_gateways_v1_nat_gateways_get",
+                "summary": "List the NAT Gateways from a VPC",
+                "description": "List the NAT (Network Address Translation) Gateways from a VPC.",
+                "operationId": "list_nat_gateways_v1_nat_gateways_get",
                 "security": [
                     {
                         "OAuth2": [
@@ -2920,15 +2920,19 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false
+                "x-mgc-hidden": false,
+                "x-permission": {
+                    "permission-name": "net_ng_list",
+                    "product-name": "network"
+                }
             },
             "post": {
                 "tags": [
                     "nat_gateways"
                 ],
-                "summary": "V1 Create Nat Gateway",
-                "description": "V1 Create a Nat Gateway",
-                "operationId": "v1_create_nat_gateways_v1_nat_gateways_post",
+                "summary": "Create a new NAT Gateway resource",
+                "description": "Create a new NAT (Network Address Translation) Gateway for a specified VPC and zone.",
+                "operationId": "create_nat_gateway_v1_nat_gateways_post",
                 "security": [
                     {
                         "OAuth2": [
@@ -3022,7 +3026,11 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false
+                "x-mgc-hidden": false,
+                "x-permission": {
+                    "permission-name": "net_ng_create",
+                    "product-name": "network"
+                }
             }
         },
         "/v1/nat_gateways/{nat_gateway_id}": {
@@ -3030,13 +3038,13 @@
                 "tags": [
                     "nat_gateways"
                 ],
-                "summary": "V1 Delete Nat Gateway",
-                "description": "V1 Delete a Nat Gateway",
-                "operationId": "v1_delete_nat_gateways_v1_nat_gateways__nat_gateway_id__delete",
+                "summary": "Delete a NAT Gateway from a VPC",
+                "description": "Delete a NAT (Network Address Translation) Gateway from a VPC.",
+                "operationId": "delete_nat_gateway_v1_nat_gateways__nat_gateway_id__delete",
                 "security": [
                     {
                         "OAuth2": [
-                            "network.delete"
+                            "network.write"
                         ]
                     }
                 ],
@@ -3063,8 +3071,13 @@
                     }
                 ],
                 "responses": {
-                    "204": {
-                        "description": "No Content"
+                    "202": {
+                        "description": "Accepted",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "400": {
                         "description": "Bad Request",
@@ -3118,15 +3131,19 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false
+                "x-mgc-hidden": false,
+                "x-permission": {
+                    "permission-name": "net_ng_delete",
+                    "product-name": "network"
+                }
             },
             "get": {
                 "tags": [
                     "nat_gateways"
                 ],
-                "summary": "V1 Detail Nat Gateway",
-                "description": "V1 Detail a Nat Gateway",
-                "operationId": "v1_detail_nat_gateways_v1_nat_gateways__nat_gateway_id__get",
+                "summary": "Detail a NAT Gateway from a VPC",
+                "description": "Detail a NAT (Network Address Translation) Gateway from a VPC.",
+                "operationId": "detail_nat_gateway_v1_nat_gateways__nat_gateway_id__get",
                 "security": [
                     {
                         "OAuth2": [
@@ -3219,7 +3236,11 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false
+                "x-mgc-hidden": false,
+                "x-permission": {
+                    "permission-name": "net_ng_get",
+                    "product-name": "network"
+                }
             }
         },
         "/v1/vpcs": {
