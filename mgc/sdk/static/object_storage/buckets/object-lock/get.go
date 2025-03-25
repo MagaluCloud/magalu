@@ -46,6 +46,8 @@ func GetObjectLocking(ctx context.Context, params GetBucketObjectLockParams, cfg
 		return
 	}
 
+	// Se a resposta de GET /bucket?locking for 400, isso quer dizer que o bucket não tem locking habilitado.
+	// Como precisamos tratar esse caso de maneira específica, usamos um erro com tipo específico.
 	if res.StatusCode == 400 {
 		err = ErrBucketMissingObjectLockConfiguration
 	}
