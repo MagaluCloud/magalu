@@ -84,25 +84,26 @@ func getValidBucket(ctx context.Context, params getParams, cfg common.Config) (*
 	info := &bucketInfo{BucketName: params.BucketName.String()}
 
 	aclRes, err := acl.GetACL(ctx, acl.GetBucketACLParams{Bucket: params.BucketName}, cfg)
-	if err == nil {
-		info.OwnerID = aclRes.Owner.ID
-		info.OwnerName = aclRes.Owner.DisplayName
-		for _, grant := range aclRes.AccessControlList.Grant {
-			info.Permissions = append(info.Permissions, grant.Permission)
-		}
-	} else {
+	if err != nil {
 		info.OwnerID = ""
 		info.OwnerName = ""
 		info.Permissions = nil
+		return info, nil
+	}
 
+	info.OwnerID = aclRes.Owner.ID
+	info.OwnerName = aclRes.Owner.DisplayName
+	for _, grant := range aclRes.AccessControlList.Grant {
+		info.Permissions = append(info.Permissions, grant.Permission)
 	}
 
 	versioningRes, err := versioning.GetBucketVersioning(ctx, versioning.GetBucketVersioningParams{Bucket: params.BucketName}, cfg)
-	if err == nil {
-		info.Versioning = versioningRes.Status
-	} else {
+	if err != nil {
 		info.Versioning = "Disabled"
+		return info, nil
 	}
+
+	info.Versioning = versioningRes.Status
 
 	objectLockRes, err := getObjectLocking(ctx, params.BucketName, cfg)
 	if err == nil && objectLockRes != nil {
