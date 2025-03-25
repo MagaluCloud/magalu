@@ -46,7 +46,10 @@ func GetObjectLocking(ctx context.Context, params GetBucketObjectLockParams, cfg
 		return
 	}
 
-	result, err = common.UnwrapResponse[GetBucketObjectLockResponse](res, req)
+	if res.StatusCode == 400 {
+		err = ErrBucketMissingObjectLockConfiguration
+	}
+
 	return
 }
 
