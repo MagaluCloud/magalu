@@ -1,9 +1,9 @@
-# This endpoint allows you to create a new Virtual Private Cloud (VPC). It requires the tenant ID and a payload containing the VPC details such as name and description.
+# Create a new Virtual Private Cloud (VPC).
 
 ## Usage:
 ```bash
 Usage:
-  ./mgc network vpcs create [flags]
+  mgc network vpcs create [flags]
 ```
 
 ## Product catalog:

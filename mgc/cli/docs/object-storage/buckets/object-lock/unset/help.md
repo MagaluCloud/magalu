@@ -3,12 +3,12 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc object-storage buckets object-lock unset [dst] [flags]
+  mgc object-storage buckets object-lock unset [dst] [flags]
 ```
 
 ## Product catalog:
 - Examples:
-- ./mgc object-storage buckets object-lock unset --dst="my-bucket"
+- mgc object-storage buckets object-lock unset --dst="my-bucket"
 
 ## Other commands:
 - Flags:

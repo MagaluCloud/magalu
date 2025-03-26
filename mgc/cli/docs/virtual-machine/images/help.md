@@ -3,8 +3,8 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc virtual-machine images [flags]
-  ./mgc virtual-machine images [command]
+  mgc virtual-machine images [flags]
+  mgc virtual-machine images [command]
 ```
 
 ## Product catalog:

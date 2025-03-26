@@ -3,12 +3,12 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc object-storage objects delete [dst] [flags]
+  mgc object-storage objects delete [dst] [flags]
 ```
 
 ## Product catalog:
 - Examples:
-- ./mgc object-storage objects delete --dst="bucket1/file.txt"
+- mgc object-storage objects delete --dst="bucket1/file.txt"
 
 ## Other commands:
 - Flags:

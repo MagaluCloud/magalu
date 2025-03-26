@@ -19,7 +19,7 @@ var getGet = utils.NewLazyLoader[core.Executor](func() core.Executor {
 			Name:        "get",
 			Description: "Get the ACL for the specified bucket",
 		},
-		getACL,
+		GetACL,
 	)
 	exec = core.NewExecuteResultOutputOptions(exec, func(exec core.Executor, result core.Result) string {
 		return "json"
@@ -27,7 +27,7 @@ var getGet = utils.NewLazyLoader[core.Executor](func() core.Executor {
 	return exec
 })
 
-func getACL(ctx context.Context, params GetBucketACLParams, cfg common.Config) (result common.AccessControlPolicy, err error) {
+func GetACL(ctx context.Context, params GetBucketACLParams, cfg common.Config) (result common.AccessControlPolicy, err error) {
 	req, err := newGetACLRequest(ctx, cfg, params.Bucket)
 	if err != nil {
 		return

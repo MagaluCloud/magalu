@@ -9,7 +9,7 @@ import (
 	"github.com/MagaluCloud/magalu/mgc/sdk/static/object_storage/common"
 )
 
-type getBucketVersioningParams struct {
+type GetBucketVersioningParams struct {
 	Bucket common.BucketName `json:"bucket" jsonschema:"description=Bucket name to get versioning info from" mgc:"positional"`
 }
 
@@ -19,7 +19,7 @@ var getGet = utils.NewLazyLoader(func() core.Executor {
 			Name:        "get",
 			Description: "Get versioning info for a Bucket",
 		},
-		getBucketVersioning,
+		GetBucketVersioning,
 	)
 	exec = core.NewExecuteResultOutputOptions(exec, func(exec core.Executor, result core.Result) string {
 		return "table"
@@ -27,7 +27,7 @@ var getGet = utils.NewLazyLoader(func() core.Executor {
 	return exec
 })
 
-func getBucketVersioning(ctx context.Context, params getBucketVersioningParams, cfg common.Config) (result versioningConfiguration, err error) {
+func GetBucketVersioning(ctx context.Context, params GetBucketVersioningParams, cfg common.Config) (result versioningConfiguration, err error) {
 	req, err := newGetBucketVersioningRequest(ctx, params.Bucket, cfg)
 	if err != nil {
 		return

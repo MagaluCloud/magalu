@@ -7,7 +7,7 @@
             "name": "IaaS Products",
             "url": "https://github.com/luizalabs"
         },
-        "version": "1.149.2"
+        "version": "1.156.0"
     },
     "paths": {
         "/v0/ports": {
@@ -75,7 +75,11 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false
+                "x-mgc-hidden": false,
+                "x-permission": {
+                    "permission-name": "net_port_list",
+                    "product-name": "network"
+                }
             }
         },
         "/v0/ports/{port_id}": {
@@ -131,7 +135,11 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false
+                "x-mgc-hidden": false,
+                "x-permission": {
+                    "permission-name": "net_port_delete",
+                    "product-name": "network"
+                }
             },
             "get": {
                 "tags": [
@@ -190,7 +198,11 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false
+                "x-mgc-hidden": false,
+                "x-permission": {
+                    "permission-name": "net_port_get",
+                    "product-name": "network"
+                }
             }
         },
         "/v0/ports/{port_id}/attach/{security_group_id}": {
@@ -256,7 +268,11 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false
+                "x-mgc-hidden": false,
+                "x-permission": {
+                    "permission-name": "net_port-attach_action",
+                    "product-name": "network"
+                }
             }
         },
         "/v0/ports/{port_id}/detach/{security_group_id}": {
@@ -322,7 +338,11 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false
+                "x-mgc-hidden": false,
+                "x-permission": {
+                    "permission-name": "net_port-attach_action",
+                    "product-name": "network"
+                }
             }
         },
         "/v0/public_ips": {
@@ -375,7 +395,11 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false
+                "x-mgc-hidden": false,
+                "x-permission": {
+                    "permission-name": "net_fip_list",
+                    "product-name": "network"
+                }
             }
         },
         "/v0/public_ips/{public_ip_id}": {
@@ -431,7 +455,11 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false
+                "x-mgc-hidden": false,
+                "x-permission": {
+                    "permission-name": "net_fip_delete",
+                    "product-name": "network"
+                }
             },
             "get": {
                 "tags": [
@@ -492,7 +520,11 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false
+                "x-mgc-hidden": false,
+                "x-permission": {
+                    "permission-name": "net_fip_get",
+                    "product-name": "network"
+                }
             }
         },
         "/v0/public_ips/{public_ip_id}/attach/{port_id}": {
@@ -558,7 +590,11 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false
+                "x-mgc-hidden": false,
+                "x-permission": {
+                    "permission-name": "net_fip-attach_action",
+                    "product-name": "network"
+                }
             }
         },
         "/v0/public_ips/{public_ip_id}/detach/{port_id}": {
@@ -624,7 +660,11 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false
+                "x-mgc-hidden": false,
+                "x-permission": {
+                    "permission-name": "net_fip-attach_action",
+                    "product-name": "network"
+                }
             }
         },
         "/v0/rules/{rule_id}": {
@@ -680,7 +720,11 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false
+                "x-mgc-hidden": false,
+                "x-permission": {
+                    "permission-name": "net_rule_delete",
+                    "product-name": "network"
+                }
             },
             "get": {
                 "tags": [
@@ -741,7 +785,11 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false
+                "x-mgc-hidden": false,
+                "x-permission": {
+                    "permission-name": "net_rule_get",
+                    "product-name": "network"
+                }
             }
         },
         "/v0/security_groups": {
@@ -794,7 +842,11 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false
+                "x-mgc-hidden": false,
+                "x-permission": {
+                    "permission-name": "net_sg_list",
+                    "product-name": "network"
+                }
             },
             "post": {
                 "tags": [
@@ -903,7 +955,11 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false
+                "x-mgc-hidden": false,
+                "x-permission": {
+                    "permission-name": "net_sg_create",
+                    "product-name": "network"
+                }
             }
         },
         "/v0/security_groups/{security_group_id}": {
@@ -959,7 +1015,11 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false
+                "x-mgc-hidden": false,
+                "x-permission": {
+                    "permission-name": "net_sg_delete",
+                    "product-name": "network"
+                }
             },
             "get": {
                 "tags": [
@@ -1020,7 +1080,11 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false
+                "x-mgc-hidden": false,
+                "x-permission": {
+                    "permission-name": "net_sg_get",
+                    "product-name": "network"
+                }
             }
         },
         "/v0/security_groups/{security_group_id}/rules": {
@@ -1083,7 +1147,11 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false
+                "x-mgc-hidden": false,
+                "x-permission": {
+                    "permission-name": "net_sg-rule_list",
+                    "product-name": "network"
+                }
             },
             "post": {
                 "tags": [
@@ -1200,7 +1268,11 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false
+                "x-mgc-hidden": false,
+                "x-permission": {
+                    "permission-name": "net_sg-rule_create",
+                    "product-name": "network"
+                }
             }
         },
         "/v0/subnetpools": {
@@ -1311,7 +1383,11 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false
+                "x-mgc-hidden": false,
+                "x-permission": {
+                    "permission-name": "net_subnetpool_list",
+                    "product-name": "network"
+                }
             },
             "post": {
                 "tags": [
@@ -1372,7 +1448,11 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false
+                "x-mgc-hidden": false,
+                "x-permission": {
+                    "permission-name": "net_subnetpool_create",
+                    "product-name": "network"
+                }
             }
         },
         "/v0/subnetpools/{subnetpool_id}": {
@@ -1428,7 +1508,11 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false
+                "x-mgc-hidden": false,
+                "x-permission": {
+                    "permission-name": "net_subnetpool_delete",
+                    "product-name": "network"
+                }
             },
             "get": {
                 "tags": [
@@ -1489,7 +1573,11 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false
+                "x-mgc-hidden": false,
+                "x-permission": {
+                    "permission-name": "net_subnetpool_get",
+                    "product-name": "network"
+                }
             }
         },
         "/v0/subnetpools/{subnetpool_id}/book_cidr": {
@@ -1576,7 +1664,11 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false
+                "x-mgc-hidden": false,
+                "x-permission": {
+                    "permission-name": "net_subnetpool-book_action",
+                    "product-name": "network"
+                }
             }
         },
         "/v0/subnetpools/{subnetpool_id}/unbook_cidr": {
@@ -1642,7 +1734,11 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false
+                "x-mgc-hidden": false,
+                "x-permission": {
+                    "permission-name": "net_subnetpool-book_action",
+                    "product-name": "network"
+                }
             }
         },
         "/v0/subnets/{subnet_id}": {
@@ -1698,7 +1794,11 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false
+                "x-mgc-hidden": false,
+                "x-permission": {
+                    "permission-name": "net_subnet_delete",
+                    "product-name": "network"
+                }
             },
             "get": {
                 "tags": [
@@ -1759,7 +1859,11 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false
+                "x-mgc-hidden": false,
+                "x-permission": {
+                    "permission-name": "net_subnet_get",
+                    "product-name": "network"
+                }
             },
             "patch": {
                 "tags": [
@@ -1781,16 +1885,16 @@
                         "in": "path",
                         "required": true,
                         "schema": {
-                            "type": "string",
-                            "title": "Subnet Id"
-                        }
+                            "title": "Subnet Id",
+                            "description": "Id of the Subnet to update"
+                        },
+                        "description": "Id of the Subnet to update"
                     },
                     {
                         "name": "x-tenant-id",
                         "in": "header",
                         "required": true,
                         "schema": {
-                            "type": "string",
                             "description": "Tenant id of the project",
                             "title": "X-Tenant-Id"
                         },
@@ -1830,7 +1934,11 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false
+                "x-mgc-hidden": false,
+                "x-permission": {
+                    "permission-name": "net_subnet_update",
+                    "product-name": "network"
+                }
             }
         },
         "/v0/vpcs": {
@@ -1883,7 +1991,11 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false
+                "x-mgc-hidden": false,
+                "x-permission": {
+                    "permission-name": "net_vpc_list",
+                    "product-name": "network"
+                }
             }
         },
         "/v0/vpcs/{vpc_id}": {
@@ -1939,7 +2051,11 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false
+                "x-mgc-hidden": false,
+                "x-permission": {
+                    "permission-name": "net_vpc_delete",
+                    "product-name": "network"
+                }
             },
             "get": {
                 "tags": [
@@ -2000,7 +2116,11 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false
+                "x-mgc-hidden": false,
+                "x-permission": {
+                    "permission-name": "net_vpc_get",
+                    "product-name": "network"
+                }
             }
         },
         "/v0/vpcs/{vpc_id}/ports": {
@@ -2038,6 +2158,22 @@
                             "title": "Detailed",
                             "default": true
                         }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {}
+                            ],
+                            "title": "Name of the port to list",
+                            "description": "Filter ports results with name"
+                        },
+                        "description": "Filter ports results with name"
                     },
                     {
                         "name": "_offset",
@@ -2118,7 +2254,11 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false
+                "x-mgc-hidden": false,
+                "x-permission": {
+                    "permission-name": "net_vpc-port_list",
+                    "product-name": "network"
+                }
             },
             "post": {
                 "tags": [
@@ -2203,7 +2343,11 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false
+                "x-mgc-hidden": false,
+                "x-permission": {
+                    "permission-name": "net_vpc-port_create",
+                    "product-name": "network"
+                }
             }
         },
         "/v0/vpcs/{vpc_id}/public_ips": {
@@ -2266,7 +2410,11 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false
+                "x-mgc-hidden": false,
+                "x-permission": {
+                    "permission-name": "net_vpc-fip_list",
+                    "product-name": "network"
+                }
             },
             "post": {
                 "tags": [
@@ -2378,7 +2526,11 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false
+                "x-mgc-hidden": false,
+                "x-permission": {
+                    "permission-name": "net_vpc-fip_create",
+                    "product-name": "network"
+                }
             }
         },
         "/v0/vpcs/{vpc_id}/subnets": {
@@ -2441,7 +2593,11 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false
+                "x-mgc-hidden": false,
+                "x-permission": {
+                    "permission-name": "net_vpc-subnet_list",
+                    "product-name": "network"
+                }
             },
             "post": {
                 "tags": [
@@ -2554,7 +2710,11 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false
+                "x-mgc-hidden": false,
+                "x-permission": {
+                    "permission-name": "net_vpc-subnet_create",
+                    "product-name": "network"
+                }
             }
         },
         "/v1/nat_gateways": {
@@ -2562,9 +2722,9 @@
                 "tags": [
                     "nat_gateways"
                 ],
-                "summary": "V1 List Nat Gateways from a VPC",
-                "description": "V1 List Nat Gateways from a VPC",
-                "operationId": "v1_list_nat_gateways_v1_nat_gateways_get",
+                "summary": "List the NAT Gateways from a VPC",
+                "description": "List the NAT (Network Address Translation) Gateways from a VPC.",
+                "operationId": "list_nat_gateways_v1_nat_gateways_get",
                 "security": [
                     {
                         "OAuth2": [
@@ -2695,15 +2855,19 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false
+                "x-mgc-hidden": false,
+                "x-permission": {
+                    "permission-name": "net_ng_list",
+                    "product-name": "network"
+                }
             },
             "post": {
                 "tags": [
                     "nat_gateways"
                 ],
-                "summary": "V1 Create Nat Gateway",
-                "description": "V1 Create a Nat Gateway",
-                "operationId": "v1_create_nat_gateways_v1_nat_gateways_post",
+                "summary": "Create a new NAT Gateway resource",
+                "description": "Create a new NAT (Network Address Translation) Gateway for a specified VPC and zone.",
+                "operationId": "create_nat_gateway_v1_nat_gateways_post",
                 "security": [
                     {
                         "OAuth2": [
@@ -2797,7 +2961,11 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false
+                "x-mgc-hidden": false,
+                "x-permission": {
+                    "permission-name": "net_ng_create",
+                    "product-name": "network"
+                }
             }
         },
         "/v1/nat_gateways/{nat_gateway_id}": {
@@ -2805,13 +2973,13 @@
                 "tags": [
                     "nat_gateways"
                 ],
-                "summary": "V1 Delete Nat Gateway",
-                "description": "V1 Delete a Nat Gateway",
-                "operationId": "v1_delete_nat_gateways_v1_nat_gateways__nat_gateway_id__delete",
+                "summary": "Delete a NAT Gateway from a VPC",
+                "description": "Delete a NAT (Network Address Translation) Gateway from a VPC.",
+                "operationId": "delete_nat_gateway_v1_nat_gateways__nat_gateway_id__delete",
                 "security": [
                     {
                         "OAuth2": [
-                            "network.delete"
+                            "network.write"
                         ]
                     }
                 ],
@@ -2838,8 +3006,13 @@
                     }
                 ],
                 "responses": {
-                    "204": {
-                        "description": "No Content"
+                    "202": {
+                        "description": "Accepted",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "400": {
                         "description": "Bad Request",
@@ -2893,15 +3066,19 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false
+                "x-mgc-hidden": false,
+                "x-permission": {
+                    "permission-name": "net_ng_delete",
+                    "product-name": "network"
+                }
             },
             "get": {
                 "tags": [
                     "nat_gateways"
                 ],
-                "summary": "V1 Detail Nat Gateway",
-                "description": "V1 Detail a Nat Gateway",
-                "operationId": "v1_detail_nat_gateways_v1_nat_gateways__nat_gateway_id__get",
+                "summary": "Detail a NAT Gateway from a VPC",
+                "description": "Detail a NAT (Network Address Translation) Gateway from a VPC.",
+                "operationId": "detail_nat_gateway_v1_nat_gateways__nat_gateway_id__get",
                 "security": [
                     {
                         "OAuth2": [
@@ -2994,7 +3171,11 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false
+                "x-mgc-hidden": false,
+                "x-permission": {
+                    "permission-name": "net_ng_get",
+                    "product-name": "network"
+                }
             }
         },
         "/v1/vpcs": {
@@ -3002,8 +3183,8 @@
                 "tags": [
                     "vpcs"
                 ],
-                "summary": "V1 Create VPC",
-                "description": "V1 Create a VPC",
+                "summary": "Create a new Virtual Private Cloud (VPC)",
+                "description": "Create a new Virtual Private Cloud (VPC).",
                 "operationId": "v1_create_vpc_v1_vpcs_post",
                 "security": [
                     {
@@ -3098,7 +3279,11 @@
                     }
                 },
                 "x-viveiro": true,
-                "x-mgc-hidden": false
+                "x-mgc-hidden": false,
+                "x-permission": {
+                    "permission-name": "net_vpc_create",
+                    "product-name": "network"
+                }
             }
         }
     },
@@ -3374,8 +3559,8 @@
                 "example": {
                     "description": "Description",
                     "name": "NatGateway Name",
-                    "vpc_id": "NatGateway vpc id",
-                    "zone": "NatGateway zone"
+                    "vpc_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+                    "zone": "a"
                 }
             },
             "NatGatewayCreateResponse": {
@@ -3586,15 +3771,10 @@
                         "default": true
                     },
                     "subnets": {
-                        "anyOf": [
-                            {
-                                "items": {
-                                    "type": "string"
-                                },
-                                "type": "array"
-                            },
-                            {}
-                        ],
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array",
                         "title": "Subnets",
                         "default": []
                     },
@@ -4669,6 +4849,14 @@
                         ],
                         "title": "Rules",
                         "default": []
+                    },
+                    "ports": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array",
+                        "title": "Ports",
+                        "default": []
                     }
                 },
                 "type": "object",
@@ -4684,6 +4872,9 @@
                     "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
                     "is_default": true,
                     "name": "security_group_name",
+                    "ports": [
+                        "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+                    ],
                     "project_type": "default",
                     "rules": [
                         {
@@ -4871,7 +5062,8 @@
                     "pending",
                     "processing",
                     "created",
-                    "error"
+                    "error",
+                    "deleting"
                 ],
                 "title": "Status"
             },
@@ -5314,7 +5506,12 @@
                         "title": "Cidr Block"
                     },
                     "subnetpool_id": {
-                        "type": "string",
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {}
+                        ],
                         "title": "Subnetpool Id"
                     },
                     "ip_version": {
@@ -5351,7 +5548,6 @@
                     "id",
                     "vpc_id",
                     "cidr_block",
-                    "subnetpool_id",
                     "ip_version",
                     "zone"
                 ],
@@ -5402,7 +5598,12 @@
                         "title": "Cidr Block"
                     },
                     "subnetpool_id": {
-                        "type": "string",
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {}
+                        ],
                         "title": "Subnetpool Id"
                     },
                     "ip_version": {
@@ -5457,7 +5658,6 @@
                     "id",
                     "vpc_id",
                     "cidr_block",
-                    "subnetpool_id",
                     "ip_version",
                     "zone",
                     "gateway_ip",
@@ -5555,6 +5755,9 @@
                     "pending",
                     "processing",
                     "processing_interconnect",
+                    "processing_azdc_migration",
+                    "error_interconnect",
+                    "error_azdc_migration",
                     "created",
                     "error"
                 ],

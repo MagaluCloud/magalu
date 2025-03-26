@@ -3,12 +3,12 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc virtual-machine instances network-interface attach [flags]
+  mgc virtual-machine instances network-interface attach [flags]
 ```
 
 ## Product catalog:
 - Examples:
-- ./mgc virtual-machine instances network-interface attach --instance.id="9ec75090-2872-4f51-8111-53d05d96d2c6" --instance.name="some_resource_name" --network.interface.id="9ec75090-2872-4f51-8111-53d05d96d2c6"
+- mgc virtual-machine instances network-interface attach --instance.id="9ec75090-2872-4f51-8111-53d05d96d2c6" --instance.name="some_resource_name" --network.interface.id="9ec75090-2872-4f51-8111-53d05d96d2c6"
 
 ## Other commands:
 - Flags:

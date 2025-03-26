@@ -1,14 +1,14 @@
-# Get bucket
+# Retrieve detailed information about a bucket
 
 ## Usage:
 ```bash
 Usage:
-  ./mgc object-storage buckets get [bucket] [flags]
+  mgc object-storage buckets get [bucket] [flags]
 ```
 
 ## Product catalog:
 - Flags:
-- --bucket string   Name of the bucket to be created (required)
+- --bucket string   Name of the bucket to retrieve (required)
 - -h, --help            help for get
 
 ## Other commands:

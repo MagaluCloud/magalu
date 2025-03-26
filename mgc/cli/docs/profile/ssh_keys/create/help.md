@@ -7,7 +7,7 @@ The supported key types are: ssh-rsa, ssh-dss, ecdsa-sha, ssh-ed25519, sk-ecdsa-
 
 ## Product catalog:
 - Usage:
-- ./mgc profile ssh-keys create [flags]
+- mgc profile ssh-keys create [flags]
 
 ## Other commands:
 - Flags:

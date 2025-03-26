@@ -3,13 +3,13 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc network vpcs [flags]
-  ./mgc network vpcs [command]
+  mgc network vpcs [flags]
+  mgc network vpcs [command]
 ```
 
 ## Product catalog:
 - Commands:
-- create      Create VPC
+- create      Create a new Virtual Private Cloud (VPC)
 - delete      Delete VPC
 - get         VPC Details
 - list        List VPC

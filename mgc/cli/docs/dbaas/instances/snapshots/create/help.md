@@ -3,12 +3,12 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc dbaas instances snapshots create [instance-id] [flags]
+  mgc dbaas instances snapshots create [instance-id] [flags]
 ```
 
 ## Product catalog:
 - Examples:
-- ./mgc dbaas instances snapshots create --description="my-description" --name="my-snapshot"
+- mgc dbaas instances snapshots create --description="my-description" --name="my-snapshot"
 
 ## Other commands:
 - Flags:

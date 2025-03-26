@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc object-storage objects object-lock get [dst] [flags]
+  mgc object-storage objects object-lock get [dst] [flags]
 ```
 
 ## Product catalog:

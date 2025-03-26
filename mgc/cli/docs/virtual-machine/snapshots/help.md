@@ -3,8 +3,8 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc virtual-machine snapshots [flags]
-  ./mgc virtual-machine snapshots [command]
+  mgc virtual-machine snapshots [flags]
+  mgc virtual-machine snapshots [command]
 ```
 
 ## Product catalog:

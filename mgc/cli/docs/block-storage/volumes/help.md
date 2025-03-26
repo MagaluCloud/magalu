@@ -3,8 +3,8 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc block-storage volumes [flags]
-  ./mgc block-storage volumes [command]
+  mgc block-storage volumes [flags]
+  mgc block-storage volumes [command]
 ```
 
 ## Product catalog:

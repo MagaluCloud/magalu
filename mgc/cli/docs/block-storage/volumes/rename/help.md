@@ -13,7 +13,7 @@
 
 ## Other commands:
 - Usage:
-- ./mgc block-storage volumes rename [id] [flags]
+- mgc block-storage volumes rename [id] [flags]
 
 ## Flags:
 ```bash

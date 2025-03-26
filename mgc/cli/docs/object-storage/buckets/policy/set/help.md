@@ -1,14 +1,14 @@
-# Set policy document for the specified bucket
+# Set policy document for the specified bucket. The policy can be provided as a direct JSON string or a file path using @./policy.json.
 
 ## Usage:
 ```bash
 Usage:
-  ./mgc object-storage buckets policy set [dst] [policy] [flags]
+  mgc object-storage buckets policy set [dst] [policy] [flags]
 ```
 
 ## Product catalog:
 - Examples:
-- ./mgc object-storage buckets policy set --dst="my-bucket"
+- mgc object-storage buckets policy set --dst="my-bucket"
 
 ## Other commands:
 - Flags:

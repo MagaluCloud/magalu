@@ -12,7 +12,7 @@ index.openapi.yaml   -> module-name.openapi.yaml -> tag        -> operation
 [entrypoint]         [module: module-name]       [resource]    [action]
 ```
 
-Currently, the spec of container-registry is the best "example" to follow: https://mcr.br-ne-1.jaxyendy.com/docs/openapi.yaml
+Currently, the spec of container-registry is the best "example" to follow: https://mcr.br-ne1.jaxyendy.com/docs/openapi.yaml
 
 ## Reading
 

@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc virtual-machine instances list [flags]
+  mgc virtual-machine instances list [flags]
 ```
 
 ## Product catalog:

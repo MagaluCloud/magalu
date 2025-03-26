@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc network vpcs delete [vpc-id] [flags]
+  mgc network vpcs delete [vpc-id] [flags]
 ```
 
 ## Product catalog:

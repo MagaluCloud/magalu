@@ -6,8 +6,8 @@ personalizing the user experience within the system.
 ## Usage:
 ```bash
 Usage:
-  ./mgc profile [flags]
-  ./mgc profile [command]
+  mgc profile [flags]
+  mgc profile [command]
 ```
 
 ## Product catalog:

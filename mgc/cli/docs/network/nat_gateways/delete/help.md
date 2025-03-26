@@ -1,19 +1,16 @@
-# Execute generic http request
+# Delete a NAT (Network Address Translation) Gateway from a VPC.
 
 ## Usage:
 ```bash
 Usage:
-  ./mgc http do [flags]
+  mgc network nat-gateways delete [nat-gateway-id] [flags]
 ```
 
 ## Product catalog:
 - Flags:
-- --body string
-- --headers object           Use --headers=help for more details
-- -h, --help                     help for do
-- --method enum              (one of "DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT" or "TRACE") (required)
-- --security array(object)   Use --security=help for more details
-- --url string               Golang template with the URL (required)
+- -h, --help                    help for delete
+- --nat-gateway-id string   Nat Gateway Id (required)
+- -v, --version                 version for delete
 
 ## Other commands:
 - Global Flags:
@@ -24,10 +21,11 @@ Usage:
 - -t, --cli.timeout duration     If > 0, it's the timeout for the action execution. It's specified as numbers and unit suffix.
 - Valid unit suffixes: ns, us, ms, s, m and h. Examples: 300ms, 1m30s
 - --debug                    Display detailed log information at the debug level
+- --env enum                 Environment to use (one of "pre-prod" or "prod") (default "prod")
 - --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 - -o, --output string            Change the output format. Use '--output=help' to know more details.
 - -r, --raw                      Output raw data, without any formatting or coloring
-- --region enum              Region to reach the service (one of "br-mgl-1", "br-ne-1" or "br-se-1") (default "br-ne-1")
+- --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
 - --server-url uri           Manually specify the server to use
 
 ## Flags:
