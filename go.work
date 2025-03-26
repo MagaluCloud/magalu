@@ -2,9 +2,7 @@ go 1.24.0
 
 use (
 	./mgc/cli
-	./mgc/codegen
 	./mgc/core
-	./mgc/lib
 	./mgc/sdk
 	./mgc/spec_manipulator
 )
