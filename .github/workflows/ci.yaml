@@ -25,12 +25,12 @@ jobs:
       - uses: actions/setup-python@v5.2.0
         with:
           python-version: "3.12"
-          cache: "pip" # caching pip dependencies
+          cache: "pip"
       - name: Set up Go
         uses: actions/setup-go@v5.0.2
         with:
           cache-dependency-path: "**/go.sum"
-          go-version: 1.24
+          go-version: ${{ vars.GO_VERSION }}
       - name: "Go Imports"
         run: go install golang.org/x/tools/cmd/goimports@latest
       - uses: pre-commit/action@v3.0.1
