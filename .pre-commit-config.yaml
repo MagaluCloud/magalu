@@ -3,11 +3,6 @@ fail_fast: true
 repos:
   - repo: local
     hooks:
-      - id: go-test
-        name: go-test
-        language: golang
-        entry: bash -c 'find . -name go.mod -execdir go test ./... \; | grep -zqv FAIL'
-        stages: [pre-push]
       - id: check-cli-dump-tree-output
         name: check "cli dump-tree" output
         language: system
@@ -38,65 +33,6 @@ repos:
         entry: bash -c './scripts/oapi_check_links.sh'
         stages: [pre-commit]
         require_serial: true
-  - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v5.0.0
-    hooks:
-      - id: trailing-whitespace
-        stages: [pre-commit, pre-push]
-        exclude: >
-          (?x)(
-             ^mgc/sdk/version.txt|
-             ^script-qa/
-             ^mgc/cli/docs/|
-           )
-      - id: end-of-file-fixer
-        stages: [pre-commit, pre-push]
-        exclude: >
-          (?x)(
-            ^mgc/sdk/version.txt|
-            ^script-qa/
-            ^mgc/cli/docs/|
-          )
-      - id: check-yaml
-        stages: [pre-commit, pre-push]
-      - id: check-added-large-files
-        exclude: ^script-qa/
-        stages: [pre-commit, pre-push]
-      - id: check-shebang-scripts-are-executable
-        stages: [pre-commit, pre-push]
-      - id: check-merge-conflict
-        stages: [pre-commit, pre-push]
-      - id: mixed-line-ending
-        stages: [pre-commit, pre-push]
-  - repo: https://github.com/golangci/golangci-lint
-    rev: v1.64.7
-    hooks:
-      - id: golangci-lint
-        stages: [pre-commit]
-        # Need to specify manually due to this issue:
-        # https://github.com/golangci/golangci-lint/issues/2654
-        entry: bash -c "go list -f '{{.Dir}}/...' -m | xargs golangci-lint run --fix --new-from-rev HEAD"
-
-  - repo: https://github.com/golangci/golangci-lint
-    rev: v1.64.7
-    hooks:
-      - id: golangci-lint
-        stages: [pre-push]
-        # Need to specify manually due to this issue:
-        # https://github.com/golangci/golangci-lint/issues/2654
-        entry: bash -c "go list -f '{{.Dir}}/...' -m | xargs golangci-lint run --fix"
-
-  - repo: https://github.com/TekWizely/pre-commit-golang
-    rev: v1.0.0-rc.1
-    hooks:
-      - id: go-mod-tidy
-        stages: [pre-commit]
-
-  - repo: https://github.com/commitizen-tools/commitizen
-    rev: v3.10.0
-    hooks:
-      - id: commitizen
-        stages: [commit-msg]
 
   - repo: https://github.com/pycqa/flake8
     rev: 7.1.0

@@ -7,13 +7,13 @@ require (
 	github.com/PaesslerAG/gval v1.2.4
 	github.com/PaesslerAG/jsonpath v0.1.1
 	github.com/dustin/go-humanize v1.0.1
-	github.com/getkin/kin-openapi v0.118.0
-	github.com/go-openapi/jsonpointer v0.19.5
+	github.com/getkin/kin-openapi v0.130.0
+	github.com/go-openapi/jsonpointer v0.21.1
 	github.com/golang-jwt/jwt/v5 v5.2.2
-	github.com/iancoleman/orderedmap v0.0.0-20190318233801-ac98e3ecb4b0
-	github.com/invopop/jsonschema v0.7.0
-	github.com/invopop/yaml v0.1.0
-	github.com/magiconair/properties v1.8.7
+	github.com/iancoleman/orderedmap v0.3.0
+	github.com/invopop/jsonschema v0.13.0
+	github.com/invopop/yaml v0.3.1
+	github.com/magiconair/properties v1.8.9
 	github.com/mitchellh/mapstructure v1.5.0
 	github.com/spf13/afero v1.12.0
 	github.com/spf13/viper v1.19.0
@@ -32,8 +32,11 @@ require (
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/mailru/easyjson v0.9.0 // indirect
 	github.com/mohae/deepcopy v0.0.0-20170929034955-c48cc78d4826 // indirect
+	github.com/oasdiff/yaml v0.0.0-20250309154309-f31be36b4037 // indirect
+	github.com/oasdiff/yaml3 v0.0.0-20250309153720-d2182401db90 // indirect
 	github.com/pelletier/go-toml/v2 v2.2.3 // indirect
 	github.com/perimeterx/marshmallow v1.1.5 // indirect
+	github.com/rogpeppe/go-internal v1.14.1 // indirect
 	github.com/sagikazarmark/locafero v0.7.0 // indirect
 	github.com/sagikazarmark/slog-shim v0.1.0 // indirect
 	github.com/shopspring/decimal v1.4.0 // indirect
