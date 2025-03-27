@@ -1,12 +1,12 @@
-name: Release CLI and Terraform
+name: Release CLI
 
 on:
   workflow_dispatch:
     inputs:
-      runCLI:
-        description: "Run deploy of CLI"
-        type: boolean
-        required: false
+      version:
+        description: "Version to release (e.g., v1.0.0)"
+        required: true
+        type: string
 
 concurrency:
   group: ci-check-${{ github.ref }}

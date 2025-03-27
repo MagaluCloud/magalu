@@ -12,9 +12,9 @@ builds:
       - amd64
       - arm64      
     ldflags:
-      - -s -w -X github.com/MagaluCloud/magalu/sdk.Version={{.Version}}"
+      - -s -w -X mgc/sdk/version.RawVersion={{.Version}}
     flags:
-      - -tags=embed release
+      - -tags=embed
     main: mgc/cli/main.go
 nfpms:
 -

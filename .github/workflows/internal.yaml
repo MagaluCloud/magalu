@@ -2,6 +2,11 @@ name: Internal Release
 
 on:
   workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to release (e.g., v1.0.0)"
+        required: true
+        type: string
 
 concurrency:
   group: ci-check-${{ github.ref }}
