@@ -3,15 +3,15 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc object-storage buckets policy [flags]
-  ./mgc object-storage buckets policy [command]
+  mgc object-storage buckets policy [flags]
+  mgc object-storage buckets policy [command]
 ```
 
 ## Product catalog:
 - Commands:
 - delete      Delete policy document for the specified bucket
 - get         Get the policy document for the specified bucket
-- set         Set policy document for the specified bucket
+- set         Set policy document for the specified bucket. The policy can be provided as a direct JSON string or a file path using @./policy.json.
 
 ## Other commands:
 - Flags:

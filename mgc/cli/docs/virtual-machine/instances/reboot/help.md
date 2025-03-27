@@ -13,7 +13,7 @@ of the instance that you want to reboot.
 
 ## Other commands:
 - Usage:
-- ./mgc virtual-machine instances reboot [id] [flags]
+- mgc virtual-machine instances reboot [id] [flags]
 
 ## Flags:
 ```bash

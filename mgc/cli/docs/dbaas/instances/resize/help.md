@@ -3,12 +3,12 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc dbaas instances resize [instance-id] [flags]
+  mgc dbaas instances resize [instance-id] [flags]
 ```
 
 ## Product catalog:
 - Examples:
-- ./mgc dbaas instances resize --volume.size=30
+- mgc dbaas instances resize --volume.size=30
 
 ## Other commands:
 - Flags:

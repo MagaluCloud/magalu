@@ -12,8 +12,8 @@ Key Pair Secret: Works with Key Pair ID for Object Storage authentication.
 
 ## Other commands:
 - Usage:
-- ./mgc auth api-key [flags]
-- ./mgc auth api-key [command]
+- mgc auth api-key [flags]
+- mgc auth api-key [command]
 
 ## Flags:
 ```bash

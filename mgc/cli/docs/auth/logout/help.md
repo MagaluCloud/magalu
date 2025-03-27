@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc auth logout [flags]
+  mgc auth logout [flags]
 ```
 
 ## Product catalog:

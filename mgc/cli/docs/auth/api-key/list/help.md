@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc auth api-key list [flags]
+  mgc auth api-key list [flags]
 ```
 
 ## Product catalog:

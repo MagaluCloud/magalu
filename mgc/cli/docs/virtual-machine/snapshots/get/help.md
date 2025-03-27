@@ -13,7 +13,7 @@ so you can get the id of the snapshot that you want to get details.
 
 ## Other commands:
 - Usage:
-- ./mgc virtual-machine snapshots get [id] [flags]
+- mgc virtual-machine snapshots get [id] [flags]
 
 ## Flags:
 ```bash

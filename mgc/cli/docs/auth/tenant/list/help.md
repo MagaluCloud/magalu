@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc auth tenant list [flags]
+  mgc auth tenant list [flags]
 ```
 
 ## Product catalog:

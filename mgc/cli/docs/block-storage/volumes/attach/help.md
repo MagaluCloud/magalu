@@ -24,6 +24,6 @@ The Volume attachment will be completed when the Volume status returns to
 ## Flags:
 ```bash
 Usage:
-  ./mgc block-storage volumes attach [id] [virtual-machine-id] [flags]
+  mgc block-storage volumes attach [id] [virtual-machine-id] [flags]
 ```
 

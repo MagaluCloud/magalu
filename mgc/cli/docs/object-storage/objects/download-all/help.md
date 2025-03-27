@@ -3,12 +3,12 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc object-storage objects download-all [src] [dst] [flags]
+  mgc object-storage objects download-all [src] [dst] [flags]
 ```
 
 ## Product catalog:
 - Examples:
-- ./mgc object-storage objects download-all --dst="path/to/folder" --src="mybucket"
+- mgc object-storage objects download-all --dst="path/to/folder" --src="mybucket"
 
 ## Other commands:
 - Flags:

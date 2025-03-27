@@ -42,15 +42,17 @@ func addSchemaConstraints(s *mgcSchemaPkg.Schema, dst *[]string) {
 		return
 	}
 
-	switch s.Type {
-	case "string":
-		addStringConstraints(s, dst)
-	case "integer", "number":
-		addNumberConstraints(s, dst)
-	case "array":
-		addArrayConstraints(s, dst)
-	case "object":
-		addObjectConstraints(s, dst)
+	if s.Type != nil {
+		switch {
+		case s.Type.Includes("string"):
+			addStringConstraints(s, dst)
+		case s.Type.Includes("integer"), s.Type.Includes("number"):
+			addNumberConstraints(s, dst)
+		case s.Type.Includes("array"):
+			addArrayConstraints(s, dst)
+		case s.Type.Includes("object"):
+			addObjectConstraints(s, dst)
+		}
 	}
 }
 
@@ -212,22 +214,20 @@ func getMaxNumber(s *mgcSdk.Schema) *float64 {
 }
 
 func shouldRecommendHelpValue(s *mgcSdk.Schema) bool {
-	switch s.Type {
-	case "integer", "number", "boolean", "string":
+	if s.Type != nil &&
+		s.Type.Includes("integer") || s.Type.Includes("number") || s.Type.Includes("boolean") || s.Type.Includes("string") {
 		return false
+	}
 
-	case "array":
+	if s.Type != nil &&
+		s.Type.Includes("array") {
 		if s.Items != nil && s.Items.Value != nil {
 			return shouldRecommendHelpValue((*mgcSdk.Schema)(s.Items.Value))
 		}
 		return true
-
-	case "object":
-		return true
-
-	default:
-		return true
 	}
+
+	return true
 }
 
 type HumanReadableConstraints struct {
@@ -260,23 +260,30 @@ func specificHumanReadableConstraints(schema *mgcSchemaPkg.Schema) *HumanReadabl
 		return newXOfHumanReadableConstraints("At least one of the following must apply", schema, schema.AnyOf)
 	}
 
-	switch schema.Type {
-	case "boolean":
-		return newBooleanHumanReadableConstraints(schema)
-	case "string":
-		return newStringHumanReadableConstraints(schema)
-	case "integer", "number":
-		return newNumberHumanReadableConstraints(schema)
-	case "array":
-		return newArrayHumanReadableConstraints(schema)
-	case "object":
-		return newObjectHumanReadableConstraints(schema)
-	default:
-		if schema.Not != nil {
-			return newNotHumanReadableConstraints(schema)
+	if schema.Type != nil {
+		switch {
+		case schema.Type.Includes("boolean"):
+			return newBooleanHumanReadableConstraints(schema)
+		case schema.Type.Includes("string"):
+			return newStringHumanReadableConstraints(schema)
+		case schema.Type.Includes("integer"), schema.Type.Includes("number"):
+			return newNumberHumanReadableConstraints(schema)
+		case schema.Type.Includes("array"):
+			return newArrayHumanReadableConstraints(schema)
+		case schema.Type.Includes("object"):
+			return newObjectHumanReadableConstraints(schema)
+		default:
+			if schema.Not != nil {
+				return newNotHumanReadableConstraints(schema)
+			}
+			return newAnyHumanReadableConstraints(schema)
 		}
-		return newAnyHumanReadableConstraints(schema)
 	}
+	if schema.Not != nil {
+		return newNotHumanReadableConstraints(schema)
+	}
+	return newAnyHumanReadableConstraints(schema)
+
 }
 
 func getHumanReadableConstraintsDescription(schema *mgcSchemaPkg.Schema) string {
@@ -389,8 +396,12 @@ func newNumberHumanReadableConstraints(schema *mgcSchemaPkg.Schema) *HumanReadab
 	addNumberConstraints(schema, &constraints)
 	childrenMessage, children := getHumanConstraintsChildren(constraints)
 
+	typeStr := "Number"
+	if len(schema.Type.Slice()) > 0 {
+		typeStr = schema.Type.Slice()[0]
+	}
 	return &HumanReadableConstraints{
-		Message:         strings.ToUpper(string(schema.Type[0])) + schema.Type[1:] + " value",
+		Message:         strings.ToUpper(typeStr[:1]) + typeStr[1:] + " value",
 		ChildrenMessage: childrenMessage,
 		Children:        children,
 	}

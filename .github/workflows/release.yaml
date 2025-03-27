@@ -25,7 +25,7 @@ jobs:
         uses: actions/setup-go@v5.0.2
         with:
           cache-dependency-path: "**/go.sum"
-          go-version: stable
+          go-version: ${{ vars.GO_VERSION }} # settings > secrets and variables > variables > GO_VERSION
       - name: Check version candidate
         run: ./scripts/check_release_v2.sh ${{ github.ref_name }}
       - run: go version
@@ -45,7 +45,7 @@ jobs:
         uses: actions/setup-go@v5.0.2
         with:
           cache-dependency-path: "**/go.sum"
-          go-version: stable
+          go-version: ${{ vars.GO_VERSION }} # settings > secrets and variables > variables > GO_VERSION
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v6
         with:

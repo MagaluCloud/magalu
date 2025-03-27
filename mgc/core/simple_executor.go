@@ -32,13 +32,13 @@ func (s *ExecutorSpec) Validate() (err error) {
 
 	if s.ParametersSchema == nil {
 		return &ChainedError{Name: "ParametersSchema", Err: errNil}
-	} else if s.ParametersSchema.Type != "object" {
+	} else if s.ParametersSchema.Type != nil && !s.ParametersSchema.Type.Includes("object") {
 		return &ChainedError{Name: "ParametersSchema", Err: fmt.Errorf("want object, got %q", s.ParametersSchema.Type)}
 	}
 
 	if s.ConfigsSchema == nil {
 		return &ChainedError{Name: "ConfigsSchema", Err: errNil}
-	} else if s.ConfigsSchema.Type != "object" {
+	} else if s.ConfigsSchema.Type != nil && !s.ConfigsSchema.Type.Includes("object") {
 		return &ChainedError{Name: "ConfigsSchema", Err: fmt.Errorf("want object, got %q", s.ConfigsSchema.Type)}
 	}
 

@@ -78,7 +78,6 @@ func (c *simplifyContext) finishSchema(spec *simplifyContextItem) {
 func hasSchemaRefValue(r *SchemaRef) bool {
 	return r != nil && r.Value != nil
 }
-
 func getCommonType(children []*SchemaRef) (t string, err error) {
 	for i, schemaRef := range children {
 		if !hasSchemaRefValue(schemaRef) {
@@ -87,19 +86,19 @@ func getCommonType(children []*SchemaRef) (t string, err error) {
 
 		schema := schemaRef.Value
 
-		if schema.Type == "" {
+		if schema.Type == nil && len(schema.Type.Slice()) == 0 || schema.Type.Slice()[0] == "" {
 			continue
 		}
 
 		if t == "" {
-			t = schema.Type
+			t = schema.Type.Slice()[0]
 			continue
 		}
 
-		if t != schema.Type {
+		if len(schema.Type.Slice()) > 0 && t != schema.Type.Slice()[0] {
 			return "", &utils.ChainedError{
 				Name: fmt.Sprint(i), Err: &utils.ChainedError{
-					Name: "type", Err: &utils.CompareError{A: t, B: schema.Type},
+					Name: "type", Err: &utils.CompareError{A: t, B: schema.Type.Slice()[0]},
 				},
 			}
 		}
@@ -110,10 +109,9 @@ func getCommonType(children []*SchemaRef) (t string, err error) {
 
 func findNullSchema(schemaRefs []*SchemaRef) int {
 	return slices.IndexFunc(schemaRefs, func(schemaRef *SchemaRef) bool {
-		return hasSchemaRefValue(schemaRef) && schemaRef.Value.Type == "null"
+		return hasSchemaRefValue(schemaRef) && len(schemaRef.Value.Type.Slice()) > 0 && schemaRef.Value.Type.Slice()[0] == openapi3.TypeNull
 	})
 }
-
 func createAnyOfIfNeeded(a, b *SchemaRef) *SchemaRef {
 	if !hasSchemaRefValue(a) {
 		return b
@@ -174,7 +172,7 @@ func (c *simplifyContext) simplifyOneOf(input *COWSchema) (err error) {
 		childSchemaRef := children[0]
 		if hasSchemaRefValue(childSchemaRef) {
 			childSchema := (*Schema)(childSchemaRef.Value)
-			if childSchema.Type == "null" {
+			if len(childSchema.Type.Slice()) > 0 && childSchema.Type.Slice()[0] == openapi3.TypeNull {
 				return errorSingleNullChild
 			}
 			err = mergeIntoParent(input, childSchema)
@@ -279,7 +277,7 @@ func (c *simplifyContext) simplifyAnyOf(input *COWSchema) (err error) {
 		childSchemaRef := children[0]
 		if hasSchemaRefValue(childSchemaRef) {
 			childSchema := (*Schema)(childSchemaRef.Value)
-			if childSchema.Type == "null" {
+			if len(childSchema.Type.Slice()) > 0 && childSchema.Type.Slice()[0] == openapi3.TypeNull {
 				return errorSingleNullChild
 			}
 			if err = mergeIntoParent(input, childSchema); err != nil {
@@ -516,8 +514,10 @@ func mergeAdditionalProperties(input *COWSchema, target openapi3.AdditionalPrope
 
 // NOTE: this does not simplify parent after it's merged. Do it explicitly in the caller
 func mergeIntoParent(parent *COWSchema, child *Schema) (err error) {
-	if err = mergeComparable(parent.Type, parent.SetType, child.Type); err != nil {
-		return &utils.ChainedError{Name: "type", Err: err}
+	if len(child.Type.Slice()) > 0 {
+		if err = mergeComparable(parent.Type, parent.SetType, child.Type.Slice()[0]); err != nil {
+			return &utils.ChainedError{Name: "type", Err: err}
+		}
 	}
 
 	if parent.Description() == "" { // this is okay to have diverging, no need to merge

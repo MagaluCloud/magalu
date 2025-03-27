@@ -11,8 +11,8 @@ It allows you to interact with the Magalu Cloud to manage your resources.
 ## Usage:
 ```bash
 Usage:
-  ./mgc [flags]
-  ./mgc [command]
+  mgc [flags]
+  mgc [command]
 ```
 
 ## Product catalog:

@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc workspace create [name] [copy] [flags]
+  mgc workspace create [name] [copy] [flags]
 ```
 
 ## Product catalog:

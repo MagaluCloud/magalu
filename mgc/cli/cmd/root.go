@@ -40,8 +40,11 @@ func Execute() (err error) {
 		runtime.GOOS,
 		runtime.GOARCH)
 
+	use := argParser.FullProgramPath()
+	use = strings.Replace(use, "./", "", 1)
+
 	rootCmd := &cobra.Command{
-		Use:     argParser.FullProgramPath(),
+		Use:     use,
 		Version: vv,
 		Short:   "Magalu Cloud CLI",
 		Long: `

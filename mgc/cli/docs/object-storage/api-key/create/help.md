@@ -3,12 +3,12 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc object-storage api-key create [name] [description] [expiration] [flags]
+  mgc object-storage api-key create [name] [description] [expiration] [flags]
 ```
 
 ## Product catalog:
 - Examples:
-- ./mgc object-storage api-key create --expiration="2024-11-07 (YYYY-MM-DD)"
+- mgc object-storage api-key create --expiration="2024-11-07 (YYYY-MM-DD)"
 
 ## Other commands:
 - Flags:

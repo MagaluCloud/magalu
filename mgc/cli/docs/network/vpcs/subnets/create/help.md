@@ -3,7 +3,7 @@
 ## Usage:
 ```bash
 Usage:
-  ./mgc network vpcs subnets create [vpc-id] [flags]
+  mgc network vpcs subnets create [vpc-id] [flags]
 ```
 
 ## Product catalog:
