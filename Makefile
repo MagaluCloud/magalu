@@ -1,7 +1,7 @@
 MODULES := mgc/cli mgc/core mgc/sdk mgc/spec_manipulator
 
 build-local:
-	@goreleaser build --clean --snapshot --single-target -f goreleaser_internal.yaml
+	@goreleaser build --clean --auto-snapshot --single-target -f goreleaser_internal.yaml
 
 download-specs: --build-spec-manipulator
 	@./mgc/spec_manipulator/specs download

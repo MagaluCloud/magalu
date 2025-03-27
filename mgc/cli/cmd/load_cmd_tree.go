@@ -131,7 +131,7 @@ func loadSdkCommandTree(sdk *mgcSdk.Sdk, cmd *cobra.Command, args []string) erro
 			sdk.Config().Get,
 			sdk.Config().Set,
 		).
-			CheckVersion(mgcSdk.Version, args...)
+			CheckVersion(sdk.GetVersion(), args...)
 	}
 
 	if len(args) > 0 && slices.Contains(builtInCommands, args[0]) {
