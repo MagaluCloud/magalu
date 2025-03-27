@@ -14,7 +14,7 @@ builds:
     ldflags:
       - -s -w -X mgc/sdk/version.RawVersion={{.Version}}
     flags:
-      - -tags=embed
+      - -tags=embed -buildvcs=true
     main: mgc/cli/main.go
 nfpms:
 -
