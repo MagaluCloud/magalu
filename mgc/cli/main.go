@@ -45,7 +45,7 @@ func getVCSInfo(version string) string {
 		}
 
 		if vcs != "" {
-			return fmt.Sprintf("%s-%s-%s%s", version, vcs, rev, status)
+			return fmt.Sprintf("%s %s%s", version, rev, status)
 		}
 	}
 	return "v0.0.0 dev"
