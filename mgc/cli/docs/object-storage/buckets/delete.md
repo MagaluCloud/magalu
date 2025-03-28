@@ -9,9 +9,10 @@ mgc object-storage buckets delete [bucket] [flags]
 
 ## Flags:
 ```
-    --bucket string   Name of the bucket to be deleted (required)
--h, --help            help for delete
-    --recursive       Delete bucket including objects inside (required)
+    --bucket string     Name of the bucket to be deleted (required)
+-h, --help              help for delete
+    --recursive         Delete bucket including objects inside (required)
+    --recursive-async   If set to true the bucket and its contents are deleted asynchronously (required)
 ```
 
 ## Global Flags:
