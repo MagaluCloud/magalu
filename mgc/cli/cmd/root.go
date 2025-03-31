@@ -41,11 +41,8 @@ func Execute(version string) (err error) {
 		runtime.GOOS,
 		runtime.GOARCH)
 
-	use := argParser.FullProgramPath()
-	use = strings.Replace(use, "./", "", 1)
-
 	rootCmd := &cobra.Command{
-		Use:     use,
+		Use:     "mgc",
 		Version: vv,
 		Short:   "Magalu Cloud CLI",
 		Long: `
