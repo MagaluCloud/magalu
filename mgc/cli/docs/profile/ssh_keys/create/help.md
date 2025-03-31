@@ -2,24 +2,21 @@
 
 ## Usage:
 ```bash
-The supported key types are: ssh-rsa, ssh-dss, ecdsa-sha, ssh-ed25519, sk-ecdsa-sha, sk-ssh-ed25519
+mgc profile ssh-keys create [flags]
 ```
-
-## Product catalog:
-- Usage:
-- mgc profile ssh-keys create [flags]
-
-## Other commands:
-- Flags:
-- -h, --help          help for create
-- --key string    The SSH public key. The supported key types are: ssh-rsa, ssh-dss, ecdsa-sha, ssh-ed25519, sk-ecdsa-sha, sk-ssh-ed25519 (max character count: 16384) (required)
-- --name string   The SSH Key name (max character count: 45) (required)
-- -v, --version       version for create
 
 ## Flags:
 ```bash
-Global Flags:
-      --api-key string           Use your API key to authenticate with the API
+-h, --help          help for create
+      --key string    The SSH public key. The supported key types are: ssh-rsa, ssh-dss, ecdsa-sha, ssh-ed25519, sk-ecdsa-sha, sk-ssh-ed25519 (max character count: 16384) (required)
+      --name string   The SSH Key name (max character count: 45) (required)
+  -v, --version       version for create
+
+```
+
+## Global Flags:
+```bash
+--api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is
                                  a duration (ex: 2s) and 'condition' is a 'engine=value' pair such as "jsonpath=expression"
@@ -31,5 +28,6 @@ Global Flags:
   -o, --output string            Change the output format. Use '--output=help' to know more details.
   -r, --raw                      Output raw data, without any formatting or coloring
       --server-url uri           Manually specify the server to use
+
 ```
 

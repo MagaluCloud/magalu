@@ -2,28 +2,23 @@
 
 ## Usage:
 ```bash
-#### Notes
-- You can use the virtual-machine list command to retrieve all instances, so you can get the id of
-the instance that you want to rename.
+mgc virtual-machine instances rename [id] [flags]
 ```
-
-## Product catalog:
-- Usage:
-- mgc virtual-machine instances rename [id] [flags]
-
-## Other commands:
-- Flags:
-- --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-- --cli.watch                     Wait until the operation is completed by calling the 'get' link and waiting until termination. Akin to '! get -w'
-- -h, --help                          help for rename
-- --id string                     Instance id - for help use ./mgc virtual-machines instances list . (required)
-- --name string                   New name (between 1 and 255 characters) (required)
-- -v, --version                       version for rename
 
 ## Flags:
 ```bash
-Global Flags:
-      --api-key string           Use your API key to authenticate with the API
+--cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
+      --cli.watch                     Wait until the operation is completed by calling the 'get' link and waiting until termination. Akin to '! get -w'
+  -h, --help                          help for rename
+      --id string                     Instance id - for help use ./mgc virtual-machines instances list . (required)
+      --name string                   New name (between 1 and 255 characters) (required)
+  -v, --version                       version for rename
+
+```
+
+## Global Flags:
+```bash
+--api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is
                                  a duration (ex: 2s) and 'condition' is a 'engine=value' pair such as "jsonpath=expression"
@@ -36,5 +31,6 @@ Global Flags:
   -r, --raw                      Output raw data, without any formatting or coloring
       --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
       --server-url uri           Manually specify the server to use
+
 ```
 

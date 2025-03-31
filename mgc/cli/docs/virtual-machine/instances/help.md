@@ -2,35 +2,37 @@
 
 ## Usage:
 ```bash
-Usage:
-  mgc virtual-machine instances [flags]
+mgc virtual-machine instances [flags]
   mgc virtual-machine instances [command]
 ```
 
-## Product catalog:
-- Commands:
-- create            Create an instance.
-- delete            Delete an instance.
-- get               Retrieve the details of a specific instance.
-- list              List all instances.
-- network-interface network-interface
-- password          Retrieve the first windows admin password
-- reboot            Reboot an instance.
-- rename            Renames an instance.
-- retype            Changes an instance machine-type.
-- start             Starts an instance.
-- stop              Stops an instance.
-- suspend           Suspends instance.
+## Commands:
+```bash
+create            Create an instance.
+  delete            Delete an instance.
+  get               Retrieve the details of a specific instance.
+  list              List all instances.
+  network-interface network-interface
+  password          Retrieve the first windows admin password
+  reboot            Reboot an instance.
+  rename            Renames an instance.
+  retype            Changes an instance machine-type.
+  start             Starts an instance.
+  stop              Stops an instance.
+  suspend           Suspends instance.
 
-## Other commands:
-- Flags:
-- -h, --help      help for instances
-- -v, --version   version for instances
+```
 
 ## Flags:
 ```bash
-Global Flags:
-      --api-key string           Use your API key to authenticate with the API
+-h, --help      help for instances
+  -v, --version   version for instances
+
+```
+
+## Global Flags:
+```bash
+--api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is
                                  a duration (ex: 2s) and 'condition' is a 'engine=value' pair such as "jsonpath=expression"
@@ -40,5 +42,6 @@ Global Flags:
       --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
   -o, --output string            Change the output format. Use '--output=help' to know more details.
   -r, --raw                      Output raw data, without any formatting or coloring
+
 ```
 

@@ -2,23 +2,19 @@
 
 ## Usage:
 ```bash
-Usage:
-  mgc object-storage buckets object-lock unset [dst] [flags]
+mgc object-storage buckets object-lock unset [dst] [flags]
 ```
-
-## Product catalog:
-- Examples:
-- mgc object-storage buckets object-lock unset --dst="my-bucket"
-
-## Other commands:
-- Flags:
-- --dst string   Name of the bucket to unset object locking for its objects (required)
-- -h, --help         help for unset
 
 ## Flags:
 ```bash
-Global Flags:
-      --api-key string           Use your API key to authenticate with the API
+--dst string   Name of the bucket to unset object locking for its objects (required)
+  -h, --help         help for unset
+
+```
+
+## Global Flags:
+```bash
+--api-key string           Use your API key to authenticate with the API
       --chunk-size integer       Chunk size to consider when doing multipart requests. Specified in Mb (range: 8 - 5120) (default 8)
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is
@@ -32,5 +28,6 @@ Global Flags:
       --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
       --server-url uri           Manually specify the server to use
       --workers integer          Number of routines that spawn to do parallel operations within object_storage (min: 1) (default 5)
+
 ```
 

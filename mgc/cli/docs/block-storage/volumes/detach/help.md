@@ -3,32 +3,33 @@
 
 ## Usage:
 ```bash
-The Volume detachment will be completed when the Volume state returns to
- "available," and the status becomes "completed".
+mgc block-storage volumes detach [id] [flags]
 ```
-
-## Product catalog:
-- #### Rules
-- - The Volume and the Virtual Machine must belong to the same tenant.
-- - Both the Volume and Virtual Machine must have the status "completed".
-- - The Volume's state must be "in-use".
-- - The Virtual Machine's state must be "stopped".
-
-## Other commands:
-- #### Notes
-- - Verify the state and status of your Volume using the
-- **block-storage volume get --id [uuid]** command.
-- - Verify the state and status of your Virtual Machine using the
-- **virtual-machine instances get --id [uuid]** command.
-- - Ensure that any file systems on the device within your operating system are
-- unmounted before detaching the Volume.
 
 ## Flags:
 ```bash
-#### Troubleshooting
-- A failure during detachment can result in the Volume becoming stuck in the
- busy state. If this occurs, detachment may be delayed indefinitely until you
- unmount the Volume, force detachment, reboot the instance, or perform all
- three.
+--cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
+  -h, --help                          help for detach
+      --id uuid                       Id (required)
+  -v, --version                       version for detach
+
+```
+
+## Global Flags:
+```bash
+--api-key string           Use your API key to authenticate with the API
+  -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
+                                 use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is
+                                 a duration (ex: 2s) and 'condition' is a 'engine=value' pair such as "jsonpath=expression"
+  -t, --cli.timeout duration     If > 0, it's the timeout for the action execution. It's specified as numbers and unit suffix.
+                                 Valid unit suffixes: ns, us, ms, s, m and h. Examples: 300ms, 1m30s
+      --debug                    Display detailed log information at the debug level
+      --env enum                 Environment to use (one of "pre-prod" or "prod") (default "prod")
+      --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
+  -o, --output string            Change the output format. Use '--output=help' to know more details.
+  -r, --raw                      Output raw data, without any formatting or coloring
+      --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
+      --server-url uri           Manually specify the server to use
+
 ```
 

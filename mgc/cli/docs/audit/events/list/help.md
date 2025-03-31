@@ -2,33 +2,29 @@
 
 ## Usage:
 ```bash
-Usage:
-  mgc audit events list [flags]
+mgc audit events list [flags]
 ```
-
-## Product catalog:
-- Examples:
-- mgc audit events list --data='{"data.machine_type.name":"cloud-bs1.xsmall","data.tenant_id":"00000000-0000-0000-0000-000000000000"}'
-
-## Other commands:
-- Flags:
-- --authid string            Auth ID: Identification of the principal that triggered the occurrence
-- --control.limit integer    Limit: Number of items per page (default 50)
-- --control.offset integer   Offset for pagination
-- --data object              The raw data event
-- Use --data=help for more details (default {})
-- -h, --help                     help for list
-- --id string                Identification of the event
-- --product-like string      In which producer product an event occurred ('like' operation)
-- --source-like string       Source: Context in which the event occurred ('like' operation)
-- --time date-time           Timestamp of when the occurrence happened
-- --type-like string         Type of event related to the originating occurrence ('like' operation)
-- -v, --version                  version for list
 
 ## Flags:
 ```bash
-Global Flags:
-      --api-key string           Use your API key to authenticate with the API
+--authid string            Auth ID: Identification of the principal that triggered the occurrence
+      --control.limit integer    Limit: Number of items per page (default 50)
+      --control.offset integer   Offset for pagination
+      --data object              The raw data event
+                                 Use --data=help for more details (default {})
+  -h, --help                     help for list
+      --id string                Identification of the event
+      --product-like string      In which producer product an event occurred ('like' operation)
+      --source-like string       Source: Context in which the event occurred ('like' operation)
+      --time date-time           Timestamp of when the occurrence happened
+      --type-like string         Type of event related to the originating occurrence ('like' operation)
+  -v, --version                  version for list
+
+```
+
+## Global Flags:
+```bash
+--api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is
                                  a duration (ex: 2s) and 'condition' is a 'engine=value' pair such as "jsonpath=expression"
@@ -41,5 +37,6 @@ Global Flags:
   -r, --raw                      Output raw data, without any formatting or coloring
       --region enum              Region to reach the service (one of "br-mgl1", "br-ne1", "br-se1" or "global") (default "br-se1")
       --server-url uri           Manually specify the server to use
+
 ```
 

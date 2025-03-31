@@ -2,29 +2,32 @@
 
 ## Usage:
 ```bash
-#### Rules
-- The Snapshot's status must be "completed".
-- The Snapshot's state must be "available".
-- Deleting a Snapshot that has been restored is not possible. If necessary,
- delete the restored Volume first and then proceed to delete the Snapshot.
+mgc block-storage snapshots delete [id] [flags]
 ```
-
-## Product catalog:
-- #### Notes
-- - Utilize the **block-storage snapshots** list command to retrieve a list of
-- all Snapshots and obtain the ID of the Snapshot you wish to delete.
-- - If needed, you can use the **block-storage volume list** command to retrieve
-- a list of all Volumes and obtain the ID of the restored Volume.
-
-## Other commands:
-- Usage:
-- mgc block-storage snapshots delete [id] [flags]
 
 ## Flags:
 ```bash
-Flags:
-  -h, --help      help for delete
+-h, --help      help for delete
       --id uuid   Id (required)
   -v, --version   version for delete
+
+```
+
+## Global Flags:
+```bash
+--api-key string           Use your API key to authenticate with the API
+  -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
+                                 use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is
+                                 a duration (ex: 2s) and 'condition' is a 'engine=value' pair such as "jsonpath=expression"
+  -t, --cli.timeout duration     If > 0, it's the timeout for the action execution. It's specified as numbers and unit suffix.
+                                 Valid unit suffixes: ns, us, ms, s, m and h. Examples: 300ms, 1m30s
+      --debug                    Display detailed log information at the debug level
+      --env enum                 Environment to use (one of "pre-prod" or "prod") (default "prod")
+      --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
+  -o, --output string            Change the output format. Use '--output=help' to know more details.
+  -r, --raw                      Output raw data, without any formatting or coloring
+      --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
+      --server-url uri           Manually specify the server to use
+
 ```
 

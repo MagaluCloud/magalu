@@ -2,30 +2,22 @@
 
 ## Usage:
 ```bash
-#### Notes
-- Use the **expand** argument to obtain additional details about the Volume
- Type.
-- Utilize the **block-storage volume list** command to retrieve a list of all
- Volumes and obtain the ID of the Volume for which you want to retrieve
- details.
+mgc block-storage volumes get [id] [flags]
 ```
-
-## Product catalog:
-- Usage:
-- mgc block-storage volumes get [id] [flags]
-
-## Other commands:
-- Flags:
-- --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-- --expand array(string)          Expand: You can get more detailed info about: ['volume_type', 'attachment'] (default [])
-- -h, --help                          help for get
-- --id uuid                       Id (required)
-- -v, --version                       version for get
 
 ## Flags:
 ```bash
-Global Flags:
-      --api-key string           Use your API key to authenticate with the API
+--cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
+      --expand array(string)          Expand: You can get more detailed info about: ['volume_type', 'attachment'] (default [])
+  -h, --help                          help for get
+      --id uuid                       Id (required)
+  -v, --version                       version for get
+
+```
+
+## Global Flags:
+```bash
+--api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is
                                  a duration (ex: 2s) and 'condition' is a 'engine=value' pair such as "jsonpath=expression"
@@ -38,5 +30,6 @@ Global Flags:
   -r, --raw                      Output raw data, without any formatting or coloring
       --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
       --server-url uri           Manually specify the server to use
+
 ```
 

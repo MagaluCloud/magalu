@@ -2,26 +2,28 @@
 
 ## Usage:
 ```bash
-Usage:
-  mgc container-registry images [flags]
+mgc container-registry images [flags]
   mgc container-registry images [command]
 ```
 
-## Product catalog:
-- Commands:
-- delete      Delete image by digest or tag
-- get         Get image details
-- list        List images in container registry repository
+## Commands:
+```bash
+delete      Delete image by digest or tag
+  get         Get image details
+  list        List images in container registry repository
 
-## Other commands:
-- Flags:
-- -h, --help      help for images
-- -v, --version   version for images
+```
 
 ## Flags:
 ```bash
-Global Flags:
-      --api-key string           Use your API key to authenticate with the API
+-h, --help      help for images
+  -v, --version   version for images
+
+```
+
+## Global Flags:
+```bash
+--api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is
                                  a duration (ex: 2s) and 'condition' is a 'engine=value' pair such as "jsonpath=expression"
@@ -31,5 +33,6 @@ Global Flags:
       --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
   -o, --output string            Change the output format. Use '--output=help' to know more details.
   -r, --raw                      Output raw data, without any formatting or coloring
+
 ```
 

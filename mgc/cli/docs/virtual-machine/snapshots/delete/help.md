@@ -3,25 +3,20 @@ which is logged in.
 
 ## Usage:
 ```bash
-#### Notes
-- You can use the Snapshots list command to retrieve all snapshots, so
-- you can get the id of the snapshot that you want to delete.
+mgc virtual-machine snapshots delete [id] [flags]
 ```
-
-## Product catalog:
-- Usage:
-- mgc virtual-machine snapshots delete [id] [flags]
-
-## Other commands:
-- Flags:
-- -h, --help      help for delete
-- --id uuid   Id (required)
-- -v, --version   version for delete
 
 ## Flags:
 ```bash
-Global Flags:
-      --api-key string           Use your API key to authenticate with the API
+-h, --help      help for delete
+      --id uuid   Id (required)
+  -v, --version   version for delete
+
+```
+
+## Global Flags:
+```bash
+--api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is
                                  a duration (ex: 2s) and 'condition' is a 'engine=value' pair such as "jsonpath=expression"
@@ -34,5 +29,6 @@ Global Flags:
   -r, --raw                      Output raw data, without any formatting or coloring
       --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
       --server-url uri           Manually specify the server to use
+
 ```
 

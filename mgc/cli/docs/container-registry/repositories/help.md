@@ -2,26 +2,28 @@
 
 ## Usage:
 ```bash
-Usage:
-  mgc container-registry repositories [flags]
+mgc container-registry repositories [flags]
   mgc container-registry repositories [command]
 ```
 
-## Product catalog:
-- Commands:
-- delete      Delete a container registry repository by repository_name.
-- get         Get a container registry repository by repository_name
-- list        List all container registry repositories
+## Commands:
+```bash
+delete      Delete a container registry repository by repository_name.
+  get         Get a container registry repository by repository_name
+  list        List all container registry repositories
 
-## Other commands:
-- Flags:
-- -h, --help      help for repositories
-- -v, --version   version for repositories
+```
 
 ## Flags:
 ```bash
-Global Flags:
-      --api-key string           Use your API key to authenticate with the API
+-h, --help      help for repositories
+  -v, --version   version for repositories
+
+```
+
+## Global Flags:
+```bash
+--api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is
                                  a duration (ex: 2s) and 'condition' is a 'engine=value' pair such as "jsonpath=expression"
@@ -31,5 +33,6 @@ Global Flags:
       --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
   -o, --output string            Change the output format. Use '--output=help' to know more details.
   -r, --raw                      Output raw data, without any formatting or coloring
+
 ```
 

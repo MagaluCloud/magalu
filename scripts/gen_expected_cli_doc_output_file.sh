@@ -8,7 +8,7 @@ SPECS_DIR=${SPECS_DIR:-"mgc/spec_manipulator/"}
 DUMP_TREE="mgc/cli/cli-dump-tree.json"
 OUT_DIR="mgc/cli/docs"
 
-#set -xe
+set -xe
 
 cd $SPECS_DIR
 go build -o cicd

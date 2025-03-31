@@ -2,25 +2,27 @@
 
 ## Usage:
 ```bash
-Usage:
-  mgc container-registry credentials [flags]
+mgc container-registry credentials [flags]
   mgc container-registry credentials [command]
 ```
 
-## Product catalog:
-- Commands:
-- list        Get credentials for container registry
-- password    Reset password
+## Commands:
+```bash
+list        Get credentials for container registry
+  password    Reset password
 
-## Other commands:
-- Flags:
-- -h, --help      help for credentials
-- -v, --version   version for credentials
+```
 
 ## Flags:
 ```bash
-Global Flags:
-      --api-key string           Use your API key to authenticate with the API
+-h, --help      help for credentials
+  -v, --version   version for credentials
+
+```
+
+## Global Flags:
+```bash
+--api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is
                                  a duration (ex: 2s) and 'condition' is a 'engine=value' pair such as "jsonpath=expression"
@@ -30,5 +32,6 @@ Global Flags:
       --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
   -o, --output string            Change the output format. Use '--output=help' to know more details.
   -r, --raw                      Output raw data, without any formatting or coloring
+
 ```
 
