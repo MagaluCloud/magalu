@@ -1,4 +1,4 @@
-package cmd
+package spec
 
 import (
 	"fmt"
@@ -7,12 +7,12 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var downloadSpecsCmd = &cobra.Command{
+var DownloadSpecsCmd = &cobra.Command{
 	Use:    "download",
 	Short:  "Download all available specs",
 	Hidden: true,
 	Run: func(cmd *cobra.Command, args []string) {
-		_ = verificarEAtualizarDiretorio(currentDir())
+		_ = verificarEAtualizarDiretorio(CurrentDir())
 
 		currentConfig, err := loadList()
 
@@ -22,7 +22,7 @@ var downloadSpecsCmd = &cobra.Command{
 		}
 
 		for _, v := range currentConfig {
-			_ = getAndSaveFile(v.Url, filepath.Join(currentDir(), v.File))
+			_ = getAndSaveFile(v.Url, filepath.Join(CurrentDir(), v.File))
 		}
 		fmt.Println("Now, run '" + cmd.Root().Name() + " prepare'")
 

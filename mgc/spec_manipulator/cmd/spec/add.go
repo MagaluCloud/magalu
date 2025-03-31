@@ -1,4 +1,4 @@
-package cmd
+package spec
 
 import (
 	"fmt"
@@ -30,13 +30,12 @@ func interfaceToMap(i interface{}) (map[string]interface{}, bool) {
 	return mapa, true
 }
 
-func add(cmd *cobra.Command, args []string) {
+func add(options AddMenu) {
 
 	var toSave []specList
-	file := fmt.Sprintf("%s.jaxyendy.openapi.json", args[1])
+	file := fmt.Sprintf("%s.jaxyendy.openapi.json", options.menu)
 
-	toSave = append(toSave, specList{Url: args[0], File: file, Menu: args[1], Enabled: true, CLI: true, TF: true, SDK: true})
-
+	toSave = append(toSave, specList{Url: options.url, File: file, Menu: options.menu, Enabled: true, CLI: true, TF: true, SDK: true})
 	currentConfig, err := loadList()
 	if err != nil {
 		fmt.Println(err)
@@ -46,7 +45,7 @@ func add(cmd *cobra.Command, args []string) {
 		fmt.Println("url already exists")
 		return
 	}
-	if !validarEndpoint(args[0]) {
+	if !validarEndpoint(options.url) {
 		fmt.Println("url is invalid")
 		return
 	}
@@ -63,18 +62,32 @@ func add(cmd *cobra.Command, args []string) {
 	viper.SetConfigName(VIPER_FILE)
 
 	viper.Set("jaxyendy", toSave)
-	err = viper.WriteConfigAs(viperUsedFile)
+	err = viper.WriteConfigAs(SPEC_DIR)
 	if err != nil {
 		fmt.Println(err)
 	}
 	fmt.Println("done")
 }
 
-var addSpecsCmd = &cobra.Command{
-	Use:     "add [url] [menu]",
-	Short:   "Add new spec",
-	Example: "specs add https://petstore3.swagger.io/api/v3/openapi.json pet-store",
-	Args:    cobra.MinimumNArgs(2),
-	Hidden:  true,
-	Run:     add,
+type AddMenu struct {
+	url  string
+	menu string
+}
+
+func SpecAddNewCmd() *cobra.Command {
+	options := &AddMenu{}
+
+	cmd := &cobra.Command{
+		Use:     "add [url] [menu]",
+		Short:   "Add new spec",
+		Example: "specs add https://block-storage.br-ne-1.jaxyendy.com/v1/openapi.json block-storage",
+		Run: func(cmd *cobra.Command, args []string) {
+			add(*options)
+		},
+	}
+
+	cmd.Flags().StringVarP(&options.url, "url", "u", "", "URL")
+	cmd.Flags().StringVarP(&options.menu, "menu", "m", "", "Menu")
+
+	return cmd
 }

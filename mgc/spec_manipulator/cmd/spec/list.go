@@ -1,4 +1,4 @@
-package cmd
+package spec
 
 import (
 	"fmt"
@@ -7,12 +7,12 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-var listSpecsCmd = &cobra.Command{
+var ListSpecsCmd = &cobra.Command{
 	Use:    "list",
 	Short:  "List all available specs",
 	Hidden: true,
 	Run: func(cmd *cobra.Command, args []string) {
-		_ = verificarEAtualizarDiretorio(currentDir())
+		_ = verificarEAtualizarDiretorio(CurrentDir())
 
 		currentConfig, err := loadList()
 

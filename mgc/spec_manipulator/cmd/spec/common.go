@@ -1,13 +1,30 @@
-package cmd
+package spec
 
 import (
 	"fmt"
 	"io"
 	"net/http"
 	"os"
+	"path"
+	"path/filepath"
 
 	"github.com/spf13/viper"
 )
+
+const (
+	VIPER_FILE = "specs.yaml"
+	SPEC_DIR   = "cli_specs"
+)
+
+var CurrentDir = func() string {
+	ex, err := os.Executable()
+	if err != nil {
+		panic(err)
+	}
+	exPath := filepath.Dir(ex)
+
+	return path.Join(exPath, SPEC_DIR)
+}
 
 func verificarEAtualizarDiretorio(caminho string) error {
 	// Verifica se o diretório já existe

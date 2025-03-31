@@ -1,4 +1,4 @@
-package cmd
+package spec
 
 import (
 	"fmt"
@@ -63,7 +63,7 @@ func removeVersionFromURL(url string) (string, int, error) {
 }
 
 func runPrepare(cmd *cobra.Command, args []string) {
-	_ = verificarEAtualizarDiretorio(currentDir())
+	_ = verificarEAtualizarDiretorio(CurrentDir())
 
 	currentConfig, err := loadList()
 
@@ -76,7 +76,7 @@ func runPrepare(cmd *cobra.Command, args []string) {
 
 	for _, v := range currentConfig {
 		if v.Enabled {
-			file := filepath.Join(currentDir(), v.File)
+			file := filepath.Join(CurrentDir(), v.File)
 			fileBytes, err := os.ReadFile(file)
 			if err != nil {
 				fmt.Println(err)
@@ -332,7 +332,7 @@ func runPrepare(cmd *cobra.Command, args []string) {
 					panic(fmt.Sprintf("cannot re-render document: %d errors reported", len(errs)))
 				}
 
-				err = os.WriteFile(filepath.Join(currentDir(), v.File), fileBytes, 0644)
+				err = os.WriteFile(filepath.Join(CurrentDir(), v.File), fileBytes, 0644)
 				if err != nil {
 					fmt.Println(err)
 					return
@@ -352,7 +352,7 @@ func runPrepare(cmd *cobra.Command, args []string) {
 }
 
 // replace another python scripts
-var prepareToGoCmd = &cobra.Command{
+var PrepareToGoCmd = &cobra.Command{
 	Use:    "prepare",
 	Short:  "Prepare all available specs to MgcSDK",
 	Hidden: true,
