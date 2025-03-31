@@ -8,9 +8,10 @@ Usage:
 
 ## Product catalog:
 - Flags:
-- --bucket string   Name of the bucket to be deleted (required)
-- -h, --help            help for delete
-- --recursive       Delete bucket including objects inside (required)
+- --bucket string     Name of the bucket to be deleted (required)
+- -h, --help              help for delete
+- --recursive         Delete bucket including objects inside (required)
+- --recursive-async   If set to true and Recursive is also set to true (required)
 
 ## Other commands:
 - Global Flags:

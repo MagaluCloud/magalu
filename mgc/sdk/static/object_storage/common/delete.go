@@ -31,8 +31,8 @@ type DeleteObjectParams struct {
 }
 
 type DeleteBucketParams struct {
-	Destination mgcSchemaPkg.URI `json:"dst" jsonschema:"description=Path of the bucket to be deleted,example=bucket1" mgc:"positional"`
-	Async       bool             `json:"async,omitempty" jsonschema:"description=Delete the bucket asynchronously" mgc:"flag=async"`
+	Destination    mgcSchemaPkg.URI `json:"dst" jsonschema:"description=Path of the bucket to be deleted,example=bucket1" mgc:"positional"`
+	RecursiveAsync bool             `json:"recursive-async" jsonschema:"description=If true, objects inside the bucket will be deleted asynchronously after the bucket is deleted"`
 }
 
 type DeleteObjectsParams struct {
@@ -48,22 +48,25 @@ type DeleteAllObjectsInBucketParams struct {
 	Filters    `json:",squash"` // nolint
 }
 
-func newDeleteRequest(ctx context.Context, cfg Config, dst mgcSchemaPkg.URI, async bool) (*http.Request, error) {
-	host, err := BuildBucketHostWithPath(cfg, NewBucketNameFromURI(dst), dst.Path())
+type contextKey string
+
+const forceDeleteKey contextKey = "x-force-delete"
+
+func newDeleteRequest(ctx context.Context, cfg Config, params DeleteBucketParams) (*http.Request, error) {
+	host, err := BuildBucketHostWithPath(cfg, NewBucketNameFromURI(params.Destination), params.Destination.Path())
 	if err != nil {
 		return nil, core.UsageError{Err: err}
 	}
+
 	req, err := http.NewRequestWithContext(ctx, http.MethodDelete, string(host), nil)
+
 	if err != nil {
 		return nil, err
 	}
 
-	if async {
-		q := req.URL.Query()
-		q.Add("async", "true")
-		req.URL.RawQuery = q.Encode()
+	if params.RecursiveAsync {
+		req.Header.Add("X-force-delete", "true")
 	}
-
 	return req, nil
 }
 
@@ -235,125 +238,13 @@ func DeleteAllObjectsInBucket(ctx context.Context, params DeleteAllObjectsInBuck
 	return nil
 }
 
-func createAsyncObjectDeletionProcessor(cfg Config, bucketName BucketName, progressReporter *progress_report.UnitsReporter) pipeline.Processor[[]pipeline.WalkDirEntry, error] {
-	return func(ctx context.Context, dirEntries []pipeline.WalkDirEntry) (error, pipeline.ProcessStatus) {
-		progressReporter.Report(0, uint64(len(dirEntries)), nil)
-
-		var objIdentifiers []objectIdentifier
-		var err error
-
-		for _, dirEntry := range dirEntries {
-			if err = dirEntry.Err(); err != nil {
-				progressReporter.Report(0, 0, err)
-				return &ObjectError{Err: err}, pipeline.ProcessAbort
-			}
-
-			obj, ok := dirEntry.DirEntry().(*BucketContent)
-			if !ok {
-				err = fmt.Errorf("expected object, got directory")
-				progressReporter.Report(0, 0, err)
-				return &ObjectError{Err: err}, pipeline.ProcessAbort
-			}
-
-			objIdentifiers = append(objIdentifiers, objectIdentifier{Key: obj.Key})
-		}
-
-		defer func() { progressReporter.Report(uint64(len(dirEntries)), 0, err) }()
-
-		req, err := newDeleteBatchRequestWithForceHeader(ctx, cfg, bucketName, objIdentifiers)
-		if err != nil {
-			return &ObjectError{Err: err}, pipeline.ProcessAbort
-		}
-
-		resp, err := SendRequest(ctx, req)
-		if err != nil {
-			return &ObjectError{Url: mgcSchemaPkg.URI(bucketName), Err: err}, pipeline.ProcessOutput
-		}
-
-		err = ExtractErr(resp, req)
-		if err != nil {
-			return &ObjectError{Err: err}, pipeline.ProcessAbort
-		}
-
-		deleteLogger().Infow("Started async deletion of objects", "uri", URIPrefix+bucketName)
-		return nil, pipeline.ProcessOutput
-	}
-}
-
-func newDeleteBatchRequestWithForceHeader(ctx context.Context, cfg Config, bucketName BucketName, objKeys []objectIdentifier) (*http.Request, error) {
-	host, err := BuildBucketHost(cfg, bucketName)
-	if err != nil {
-		return nil, core.UsageError{Err: err}
-	}
-	body := deleteBatchRequestBody{
-		Objects: objKeys,
-	}
-	marshalledBody, err := xml.Marshal(body)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequestWithContext(ctx, http.MethodPost, string(host), bytes.NewBuffer(marshalledBody))
-	if err != nil {
-		return nil, err
-	}
-
-	// Adiciona o header x-force-delete
-	req.Header.Set("x-force-delete", "true")
-
-	query := req.URL.Query()
-	query.Set("delete", "")
-	req.URL.RawQuery = query.Encode()
-
-	return req, nil
-}
-
 func DeleteAllObjectsInBucketAsync(ctx context.Context, params DeleteAllObjectsInBucketParams, cfg Config) error {
-	ctx, cancel := context.WithCancelCause(ctx)
-	defer cancel(nil)
-
-	dst := params.BucketName.AsURI()
-	listParams := ListObjectsParams{
-		Destination: dst,
-		Recursive:   true,
-		PaginationParams: PaginationParams{
-			MaxItems: math.MaxInt64,
-		},
-	}
-
-	progressReportMsg := fmt.Sprintf("Starting async deletion of objects from %q", params.BucketName)
-	progressReporter := progress_report.NewUnitsReporter(ctx, progressReportMsg, 0)
-	progressReporter.Start()
-	defer progressReporter.End()
-
-	onNewPage := func(objCount uint64) {
-		progressReporter.Report(0, objCount, nil)
-	}
-
-	objs := ListGenerator(ctx, listParams, cfg, onNewPage)
-	objs = ApplyFilters(ctx, objs, params.FilterParams, cancel)
-
-	if params.BatchSize < MinBatchSize || params.BatchSize > MaxBatchSize {
-		return core.UsageError{Err: fmt.Errorf("invalid item limit per request BatchSize, must not be lower than %d and must not be higher than %d: %d", MinBatchSize, MaxBatchSize, params.BatchSize)}
-	}
-
-	objsBatch := pipeline.Batch(ctx, objs, params.BatchSize)
-	deleteObjectsErrorChan := pipeline.ParallelProcess(ctx, cfg.Workers, objsBatch, createAsyncObjectDeletionProcessor(cfg, params.BucketName, progressReporter), nil)
-	deleteObjectsErrorChan = pipeline.Filter(ctx, deleteObjectsErrorChan, pipeline.FilterNonNil[error]{})
-
-	objErr, err := pipeline.SliceItemConsumer[utils.MultiError](ctx, deleteObjectsErrorChan)
-	if err != nil {
-		return err
-	}
-	if len(objErr) > 0 {
-		return objErr
-	}
-
-	return nil
+	ctx = context.WithValue(ctx, forceDeleteKey, "true")
+	return DeleteAllObjectsInBucket(ctx, params, cfg)
 }
 
 func DeleteBucket(ctx context.Context, params DeleteBucketParams, cfg Config) error {
-	req, err := newDeleteRequest(ctx, cfg, params.Destination, params.Async)
+	req, err := newDeleteRequest(ctx, cfg, params)
 	if err != nil {
 		return err
 	}
