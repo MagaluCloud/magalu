@@ -7,7 +7,7 @@ mgc workspace create [name] [copy] [flags]
 
 ## Flags:
 ```bash
---copy string   Name of the workspace to copy content from. If this parameter is passed, the new workspace will be pre-populated with the contents of the workspace with the specified name
+      --copy string   Name of the workspace to copy content from. If this parameter is passed, the new workspace will be pre-populated with the contents of the workspace with the specified name
   -h, --help          help for create
       --name string   Profile name (required)
 
@@ -15,7 +15,7 @@ mgc workspace create [name] [copy] [flags]
 
 ## Global Flags:
 ```bash
---api-key string           Use your API key to authenticate with the API
+      --api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is
                                  a duration (ex: 2s) and 'condition' is a 'engine=value' pair such as "jsonpath=expression"

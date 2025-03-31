@@ -7,7 +7,7 @@ mgc network vpcs ports list [vpc-id] [flags]
 
 ## Flags:
 ```bash
---control.limit integer        Items Per Page (min: 1) (default 10)
+      --control.limit integer        Items Per Page (min: 1) (default 10)
       --control.offset integer       Page Number (min: 1) (default 1)
       --detailed                     Detailed (default true)
   -h, --help                         help for list
@@ -20,7 +20,7 @@ mgc network vpcs ports list [vpc-id] [flags]
 
 ## Global Flags:
 ```bash
---api-key string           Use your API key to authenticate with the API
+      --api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is
                                  a duration (ex: 2s) and 'condition' is a 'engine=value' pair such as "jsonpath=expression"

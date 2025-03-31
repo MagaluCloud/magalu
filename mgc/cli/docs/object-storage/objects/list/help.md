@@ -7,7 +7,7 @@ mgc object-storage objects list [dst] [flags]
 
 ## Flags:
 ```bash
---continuation-token string   Token of result page to continue from
+      --continuation-token string   Token of result page to continue from
       --dst uri                     Path of the bucket to list objects from (required)
       --filter array(object)        File name pattern to include or exclude
                                     Use --filter=help for more details
@@ -19,7 +19,7 @@ mgc object-storage objects list [dst] [flags]
 
 ## Global Flags:
 ```bash
---api-key string           Use your API key to authenticate with the API
+      --api-key string           Use your API key to authenticate with the API
       --chunk-size integer       Chunk size to consider when doing multipart requests. Specified in Mb (range: 8 - 5120) (default 8)
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is

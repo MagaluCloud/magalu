@@ -7,7 +7,7 @@ mgc virtual-machine instances get [id] [flags]
 
 ## Flags:
 ```bash
---cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
+      --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
       --expand array(string)          Expand: You can get more detailed info about: ['image', 'machine-type', 'machine-types', 'network', 'labels']  (default ["network","image","machine-type"])
   -h, --help                          help for get
       --id string                     Instance id - for help use ./mgc virtual-machines instances list . (required)
@@ -17,7 +17,7 @@ mgc virtual-machine instances get [id] [flags]
 
 ## Global Flags:
 ```bash
---api-key string           Use your API key to authenticate with the API
+      --api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is
                                  a duration (ex: 2s) and 'condition' is a 'engine=value' pair such as "jsonpath=expression"

@@ -7,14 +7,14 @@ mgc object-storage buckets versioning enable [bucket] [flags]
 
 ## Flags:
 ```bash
---bucket string   Bucket name to enable versioning (required)
+      --bucket string   Bucket name to enable versioning (required)
   -h, --help            help for enable
 
 ```
 
 ## Global Flags:
 ```bash
---api-key string           Use your API key to authenticate with the API
+      --api-key string           Use your API key to authenticate with the API
       --chunk-size integer       Chunk size to consider when doing multipart requests. Specified in Mb (range: 8 - 5120) (default 8)
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is

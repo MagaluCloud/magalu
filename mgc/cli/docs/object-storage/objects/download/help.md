@@ -7,7 +7,7 @@ mgc object-storage objects download [src] [dst] [flags]
 
 ## Flags:
 ```bash
---dst file             Path and file name to be saved (relative or absolute).If not specified it defaults to the current working directory
+      --dst file             Path and file name to be saved (relative or absolute).If not specified it defaults to the current working directory
   -h, --help                 help for download
       --obj-version string   Version of the object to be downloaded
       --src uri              Path of the object to be downloaded (required)
@@ -16,7 +16,7 @@ mgc object-storage objects download [src] [dst] [flags]
 
 ## Global Flags:
 ```bash
---api-key string           Use your API key to authenticate with the API
+      --api-key string           Use your API key to authenticate with the API
       --chunk-size integer       Chunk size to consider when doing multipart requests. Specified in Mb (range: 8 - 5120) (default 8)
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is

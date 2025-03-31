@@ -7,14 +7,14 @@ mgc object-storage buckets object-lock unset [dst] [flags]
 
 ## Flags:
 ```bash
---dst string   Name of the bucket to unset object locking for its objects (required)
+      --dst string   Name of the bucket to unset object locking for its objects (required)
   -h, --help         help for unset
 
 ```
 
 ## Global Flags:
 ```bash
---api-key string           Use your API key to authenticate with the API
+      --api-key string           Use your API key to authenticate with the API
       --chunk-size integer       Chunk size to consider when doing multipart requests. Specified in Mb (range: 8 - 5120) (default 8)
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is

@@ -7,7 +7,7 @@ mgc kubernetes nodepool update [cluster-id] [node-pool-id] [flags]
 
 ## Flags:
 ```bash
---auto-scale object                 Object specifying properties for updating workload resources in the Kubernetes cluster.
+      --auto-scale object                 Object specifying properties for updating workload resources in the Kubernetes cluster.
                                            (properties: max_replicas and min_replicas)
                                           Use --auto-scale=help for more details
       --auto-scale.max-replicas integer   Object specifying properties for updating workload resources in the Kubernetes cluster: Maximum number of replicas for autoscaling. If not provided, the autoscale value will be assumed based on the "replicas" field.
@@ -27,7 +27,7 @@ mgc kubernetes nodepool update [cluster-id] [node-pool-id] [flags]
 
 ## Global Flags:
 ```bash
---api-key string           Use your API key to authenticate with the API
+      --api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is
                                  a duration (ex: 2s) and 'condition' is a 'engine=value' pair such as "jsonpath=expression"

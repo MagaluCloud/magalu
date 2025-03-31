@@ -7,7 +7,7 @@ mgc virtual-machine instances delete [id] [flags]
 
 ## Flags:
 ```bash
---delete-public-ip   Delete Public Ip: Flag default value false.
+      --delete-public-ip   Delete Public Ip: Flag default value false.
   -h, --help               help for delete
       --id uuid            Instance id - for help use ./mgc virtual-machines instances list . (required)
   -v, --version            version for delete
@@ -16,7 +16,7 @@ mgc virtual-machine instances delete [id] [flags]
 
 ## Global Flags:
 ```bash
---api-key string           Use your API key to authenticate with the API
+      --api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is
                                  a duration (ex: 2s) and 'condition' is a 'engine=value' pair such as "jsonpath=expression"

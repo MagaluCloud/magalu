@@ -7,7 +7,7 @@ mgc container-registry images delete [registry-id] [repository-name] [digest-or-
 
 ## Flags:
 ```bash
---digest-or-tag string     Digest or tag of an image (required)
+      --digest-or-tag string     Digest or tag of an image (required)
   -h, --help                     help for delete
       --registry-id uuid         Container Registry's UUID. (required)
       --repository-name string   Repository's name. (required)
@@ -17,7 +17,7 @@ mgc container-registry images delete [registry-id] [repository-name] [digest-or-
 
 ## Global Flags:
 ```bash
---api-key string           Use your API key to authenticate with the API
+      --api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is
                                  a duration (ex: 2s) and 'condition' is a 'engine=value' pair such as "jsonpath=expression"

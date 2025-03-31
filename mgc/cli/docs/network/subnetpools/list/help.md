@@ -7,7 +7,7 @@ mgc network subnetpools list [flags]
 
 ## Flags:
 ```bash
---control.az-id string      Az Id (default "a")
+      --control.az-id string      Az Id (default "a")
       --control.limit integer    Pagination: Number of items per page (min: 1) (default 20)
       --control.offset integer   Items Offset: Start item for pagination
       --control.sort string       Sort: Name of the field wich the list must be ordered by ending with :asc or :desc (default "created_at:desc")
@@ -18,7 +18,7 @@ mgc network subnetpools list [flags]
 
 ## Global Flags:
 ```bash
---api-key string           Use your API key to authenticate with the API
+      --api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is
                                  a duration (ex: 2s) and 'condition' is a 'engine=value' pair such as "jsonpath=expression"

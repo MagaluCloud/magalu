@@ -8,7 +8,7 @@ mgc object-storage objects move-dir [src] [dst] [flags]
 
 ## Flags:
 ```bash
---batch-size integer   Limit of items per batch to process (range: 1 - 1000) (default 1000)
+      --batch-size integer   Limit of items per batch to process (range: 1 - 1000) (default 1000)
       --dst uri              Destination to put files into (required)
   -h, --help                 help for move-dir
       --src uri              Source path or uri to move files from (required)
@@ -17,7 +17,7 @@ mgc object-storage objects move-dir [src] [dst] [flags]
 
 ## Global Flags:
 ```bash
---api-key string           Use your API key to authenticate with the API
+      --api-key string           Use your API key to authenticate with the API
       --chunk-size integer       Chunk size to consider when doing multipart requests. Specified in Mb (range: 8 - 5120) (default 8)
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is
