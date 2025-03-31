@@ -8,9 +8,8 @@ import (
 )
 
 var DownloadSpecsCmd = &cobra.Command{
-	Use:    "download",
-	Short:  "Download all available specs",
-	Hidden: true,
+	Use:   "download",
+	Short: "Download all available specs",
 	Run: func(cmd *cobra.Command, args []string) {
 		_ = verificarEAtualizarDiretorio(CurrentDir())
 

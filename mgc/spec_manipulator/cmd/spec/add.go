@@ -15,10 +15,6 @@ type specList struct {
 	File    string `json:"file"`
 	Menu    string `json:"menu"`
 	Enabled bool   `json:"enabled"`
-	CLI     bool   `json:"cli"`
-	TF      bool   `json:"tf"`
-	SDK     bool   `json:"sdk"`
-	DEV     bool   `json:"dev"`
 }
 
 func interfaceToMap(i interface{}) (map[string]interface{}, bool) {
@@ -35,7 +31,7 @@ func add(options AddMenu) {
 	var toSave []specList
 	file := fmt.Sprintf("%s.jaxyendy.openapi.json", options.menu)
 
-	toSave = append(toSave, specList{Url: options.url, File: file, Menu: options.menu, Enabled: true, CLI: true, TF: true, SDK: true})
+	toSave = append(toSave, specList{Url: options.url, File: file, Menu: options.menu, Enabled: true})
 	currentConfig, err := loadList()
 	if err != nil {
 		fmt.Println(err)

@@ -8,9 +8,8 @@ import (
 )
 
 var ListSpecsCmd = &cobra.Command{
-	Use:    "list",
-	Short:  "List all available specs",
-	Hidden: true,
+	Use:   "list",
+	Short: "List all available specs",
 	Run: func(cmd *cobra.Command, args []string) {
 		_ = verificarEAtualizarDiretorio(CurrentDir())
 

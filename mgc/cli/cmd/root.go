@@ -55,8 +55,8 @@ func Execute(version string) (err error) {
 	██║╚██╔╝██║██║   ██║██║         ██║     ██║     ██║
 	██║ ╚═╝ ██║╚██████╔╝╚██████╗    ╚██████╗███████╗██║
 	╚═╝     ╚═╝ ╚═════╝  ╚═════╝     ╚═════╝╚══════╝╚═╝
-       
-Magalu Cloud CLI is a command-line interface for the Magalu Cloud. 
+
+Magalu Cloud CLI is a command-line interface for the Magalu Cloud.
 It allows you to interact with the Magalu Cloud to manage your resources.
 `,
 		SilenceErrors: true,

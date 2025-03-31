@@ -353,8 +353,7 @@ func runPrepare(cmd *cobra.Command, args []string) {
 
 // replace another python scripts
 var PrepareToGoCmd = &cobra.Command{
-	Use:    "prepare",
-	Short:  "Prepare all available specs to MgcSDK",
-	Hidden: true,
-	Run:    runPrepare,
+	Use:   "prepare",
+	Short: "Prepare all available specs to MgcSDK",
+	Run:   runPrepare,
 }

@@ -13,8 +13,8 @@ import (
 var (
 	rootCmd = &cobra.Command{
 		CompletionOptions: cobra.CompletionOptions{DisableDefaultCmd: true},
-		Use:               "specs",
-		Short:             "Utilitário para auxiliar na atualização de specs",
+		Use:               "cicd",
+		Short:             "Utilitário para auxiliar nos pipelines de CI/CD",
 		Long:              `Uma, ou mais uma CLI para ajudar no processo de atualização das specs.`,
 	}
 	viperUsedFile = ""

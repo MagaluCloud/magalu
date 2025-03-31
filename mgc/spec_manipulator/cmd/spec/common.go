@@ -170,10 +170,6 @@ func loadList() ([]specList, error) {
 				Menu:    vv["menu"].(string),
 				File:    vv["file"].(string),
 				Enabled: vv["enabled"].(bool),
-				CLI:     vv["cli"].(bool),
-				TF:      vv["tf"].(bool),
-				SDK:     vv["sdk"].(bool),
-				DEV:     vv["dev"].(bool),
 			})
 		}
 
