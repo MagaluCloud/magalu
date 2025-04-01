@@ -16,7 +16,7 @@ import (
 func addXOfSchemaConstraints(message string, refs mgcSchemaPkg.SchemaRefs, dst *[]string) {
 	constraints := make([]string, 0, len(refs))
 	for _, ref := range refs {
-		if ref == nil || ref.Value == nil {
+		if ref == nil || ref.Value == nil || ref.Value.Type == nil {
 			continue
 		}
 		if desc := getDescriptionConstraints((*mgcSchemaPkg.Schema)(ref.Value)); desc != "" {
