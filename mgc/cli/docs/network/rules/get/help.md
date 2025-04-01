@@ -1,3 +1,5 @@
+# Get
+
 Return a rule details
 
 ## Usage:

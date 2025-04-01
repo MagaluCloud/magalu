@@ -1,3 +1,5 @@
+# Get
+
 Returns a database instance detail.
 
 ## Usage:

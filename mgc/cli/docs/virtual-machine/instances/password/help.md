@@ -1,3 +1,5 @@
+# Password
+
 Retrieves the Windows Administrator password for the informed instance.
     The password is accessible only once and has a built-in
     expiration date to enhance security.

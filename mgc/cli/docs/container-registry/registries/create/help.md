@@ -1,3 +1,5 @@
+# Create
+
 Creates a container registry in Magalu Cloud.
 
 ## Usage:

@@ -1,3 +1,5 @@
+# Download
+
 Download an object from a bucket. If no destination is specified, the default is the current working directory
 
 ## Usage:

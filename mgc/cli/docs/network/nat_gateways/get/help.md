@@ -1,3 +1,5 @@
+# Get
+
 Detail a NAT (Network Address Translation) Gateway from a VPC.
 
 ## Usage:

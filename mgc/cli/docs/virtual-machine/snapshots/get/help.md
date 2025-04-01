@@ -1,3 +1,5 @@
+# Get
+
 Get an snapshot details for the current tenant which is logged in.
 
 ## Usage:

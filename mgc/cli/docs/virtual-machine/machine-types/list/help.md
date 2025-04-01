@@ -1,3 +1,5 @@
+# List
+
 Retrieves a list of machine types allowed for the current tenant which is logged in.
 
 ## Usage:

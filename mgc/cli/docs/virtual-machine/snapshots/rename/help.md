@@ -1,3 +1,5 @@
+# Rename
+
 Renames a Snapshot with the id provided in the current tenant which is logged in.
 
 ## Usage:

@@ -1,3 +1,5 @@
+# Reboot
+
 Reboots a Virtual Machine instance with the id provided in the current tenant which is logged in.
 
 ## Usage:

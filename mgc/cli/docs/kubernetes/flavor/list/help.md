@@ -1,3 +1,5 @@
+# List
+
 Lists all available flavors.
 
 ## Usage:

@@ -1,3 +1,5 @@
+# Snapshots
+
 Operations with snapshots for instances.
 
 ## Usage:

@@ -1,3 +1,5 @@
+# Delete
+
 Delete a NAT (Network Address Translation) Gateway from a VPC.
 
 ## Usage:

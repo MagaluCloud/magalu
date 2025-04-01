@@ -1,3 +1,5 @@
+# Stop
+
 Stop an instance replica.
 
 ## Usage:

@@ -1,3 +1,5 @@
+# List
+
 List the NAT (Network Address Translation) Gateways from a VPC.
 
 ## Usage:

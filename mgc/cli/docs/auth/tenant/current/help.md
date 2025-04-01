@@ -1,3 +1,5 @@
+# Current
+
 The current Tenant is used for all Magalu HTTP requests
 
 ## Usage:

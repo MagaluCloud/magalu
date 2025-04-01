@@ -1,3 +1,5 @@
+# Clients
+
 Manage Clients (Oauth Applications) to use ID Magalu
 
 ## Usage:

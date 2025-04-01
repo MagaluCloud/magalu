@@ -1,3 +1,5 @@
+# Rules
+
 Operations related to Rules
 
 ## Usage:

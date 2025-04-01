@@ -1,3 +1,5 @@
+# Delete
+
 Deletes a node pool in a Kubernetes cluster by nodepool_uuid.
 
 ## Usage:

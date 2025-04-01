@@ -12,6 +12,8 @@ import (
 	"sync"
 
 	"github.com/spf13/cobra"
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 )
 
 type TreeNode struct {
@@ -88,9 +90,16 @@ func prepareOutputString(inputText string, replaceString string, prepareLN bool)
 	return strings.Join(lines, "\n")
 }
 
-func convertToMarkdown(inputText string) string {
+func convertToMarkdown(inputText string, fileHeader string) string {
 	sections := strings.Split(inputText, "\n\n")
 	var markdown strings.Builder
+
+	if fileHeader != "" {
+		caser := cases.Title(language.Portuguese)
+		fileHeader := caser.String(fileHeader)
+		markdown.WriteString(fmt.Sprintf("# %s\n\n", fileHeader))
+	}
+
 	headerCtt := sections[0]
 	// Header section
 	if strings.Contains(sections[0], "██") {
@@ -226,13 +235,18 @@ func runDocParams(params CliDocParams) {
 
 	if params.goroutine {
 		wg := &sync.WaitGroup{}
+		// count := 0
 		for _, path := range genCliPaths(tree) {
+			// count++
 			wg.Add(1)
 			go func(rootDir string, path string) {
 				defer wg.Done()
 				path = fmt.Sprintf("%s %s", params.cli, path)
 				insideRunDocParams(rootDir, strings.Split(path, ""))
 			}(rootDir, path)
+			// if count >= 100 {
+			// 	wg.Wait()
+			// }
 		}
 		wg.Wait()
 	}
@@ -247,9 +261,16 @@ func insideRunDocParams(rootDir string, path []string) {
 		log.Printf("Error generating help output: %v\npath: %v", err, path)
 	}
 	outDir := filepath.Join(rootDir, filepath.Join(path[1:]...))
-	xpto := strings.Split(pathBingo, "/")
-	fmt.Println(xpto)
-	markdownOutput := convertToMarkdown(helpOutput)
+
+	prepareHeader := strings.Split(pathBingo, "/")
+	fileHeader := prepareHeader[len(prepareHeader)-1]
+	prepareHeader = strings.Split(fileHeader, " ")
+	fileHeader = prepareHeader[len(prepareHeader)-1]
+	if prepareHeader[len(prepareHeader)-1] == "mgc" {
+		fileHeader = ""
+	}
+
+	markdownOutput := convertToMarkdown(helpOutput, fileHeader)
 
 	_ = os.MkdirAll(outDir, os.ModePerm)
 	filePath := filepath.Join(outDir, "help.md")

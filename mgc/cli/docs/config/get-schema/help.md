@@ -1,3 +1,5 @@
+# Get-Schema
+
 Get the JSON Schema for the specified Config. The Schema has
 information about the accepted values for the Config, constraints, type, description, etc.
 

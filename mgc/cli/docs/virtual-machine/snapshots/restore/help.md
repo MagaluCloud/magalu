@@ -1,3 +1,5 @@
+# Restore
+
 Restore a snapshot of an instance with the current tenant which is logged in. 
 
 ## Usage:

@@ -1,3 +1,5 @@
+# Public-Ips
+
 Operations related to VPCs | public-ips
 
 ## Usage:

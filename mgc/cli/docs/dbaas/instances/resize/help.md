@@ -1,3 +1,5 @@
+# Resize
+
 Resizes a database instance.
 
 ## Usage:

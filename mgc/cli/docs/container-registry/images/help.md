@@ -1,3 +1,5 @@
+# Images
+
 Routes related to listing and deletion of images.
 
 ## Usage:

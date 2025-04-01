@@ -1,3 +1,5 @@
+# Delete
+
 Delete repository image by digest or tag
 
 ## Usage:

@@ -1,3 +1,5 @@
+# Delete
+
 Delete a Virtual Machine instance
 
 ## Usage:

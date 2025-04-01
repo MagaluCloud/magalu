@@ -1,3 +1,5 @@
+# Instances
+
 Operations with instances, including create, delete, start, stop, reboot and other actions.
 
 ## Usage:

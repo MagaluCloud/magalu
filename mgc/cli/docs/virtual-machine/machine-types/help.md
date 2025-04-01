@@ -1,3 +1,5 @@
+# Machine-Types
+
 Operations with machine types for instances.
 
 ## Usage:

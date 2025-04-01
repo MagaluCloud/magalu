@@ -1,3 +1,5 @@
+# Delete
+
 Deletes the workspace with the specified name
 
 ## Usage:

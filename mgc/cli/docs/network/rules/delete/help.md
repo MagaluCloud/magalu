@@ -1,3 +1,5 @@
+# Delete
+
 Delete a rule from the provided tenant_id
 
 ## Usage:

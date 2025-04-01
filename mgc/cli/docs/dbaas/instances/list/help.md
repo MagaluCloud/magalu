@@ -1,3 +1,5 @@
+# List
+
 Returns a list of database instances for a x-tenant-id.
 
 ## Usage:

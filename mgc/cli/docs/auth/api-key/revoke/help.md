@@ -1,3 +1,5 @@
+# Revoke
+
 Revoke an API key by its ID
 
 ## Usage:

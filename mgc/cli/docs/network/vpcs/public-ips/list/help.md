@@ -1,3 +1,5 @@
+# List
+
 Returns a list of Public IPs for a provided vpc_id
 
 ## Usage:

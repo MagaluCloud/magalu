@@ -1,3 +1,5 @@
+# Api-Key
+
 ID Magalu API Keys are used for authentication across various platforms (CLI, SDK, Terraform, API requests). An API key has three components:
 
 ## Usage:

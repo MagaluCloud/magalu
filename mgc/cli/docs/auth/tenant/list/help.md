@@ -1,3 +1,5 @@
+# List
+
 List all available tenants for current login
 
 ## Usage:

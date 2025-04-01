@@ -1,3 +1,5 @@
+# Delete
+
 Delete an object from a bucket
 
 ## Usage:

@@ -1,3 +1,5 @@
+# Get
+
 Get object locking configuration for the specified bucket
 
 ## Usage:

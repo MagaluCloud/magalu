@@ -1,3 +1,5 @@
+# Delete
+
 Delete a repository by name.
 
 ## Usage:

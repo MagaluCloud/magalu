@@ -1,3 +1,5 @@
+# Delete
+
 Delete an SSH key using its id.
 
 ## Usage:

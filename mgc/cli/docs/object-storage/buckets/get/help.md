@@ -1,3 +1,5 @@
+# Get
+
 Retrieve detailed information about a bucket
 
 ## Usage:

@@ -1,3 +1,5 @@
+# List
+
 List all snapshots.
 
 ## Usage:

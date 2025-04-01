@@ -1,3 +1,5 @@
+# Instance_types
+
 Instance Types available for database instances.
 
 ## Usage:

@@ -1,3 +1,5 @@
+# Policy
+
 Policy-related commands
 
 ## Usage:

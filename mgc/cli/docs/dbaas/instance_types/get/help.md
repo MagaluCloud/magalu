@@ -1,3 +1,5 @@
+# Get
+
 Returns an instance type detail.
 
 ## Usage:

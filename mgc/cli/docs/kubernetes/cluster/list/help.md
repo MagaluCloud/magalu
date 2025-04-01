@@ -1,3 +1,5 @@
+# List
+
 Lists all clusters for a user.
 
 ## Usage:

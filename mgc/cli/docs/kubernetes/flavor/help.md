@@ -1,3 +1,5 @@
+# Flavor
+
 Endpoints related to listing available flavors for a Kubernetes cluster.
 
 ## Usage:

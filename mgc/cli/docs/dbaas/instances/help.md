@@ -1,3 +1,5 @@
+# Instances
+
 Database instances management.
 
 ## Usage:

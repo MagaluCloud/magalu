@@ -1,3 +1,5 @@
+# Start
+
 Starts a Virtual Machine instance with the id provided in the current tenant which is logged in.
 #### Notes
 - You can use the virtual-machine list command to retrieve all instances,

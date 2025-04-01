@@ -1,3 +1,5 @@
+# Snapshots
+
 Database instances management. | snapshots
 
 ## Usage:

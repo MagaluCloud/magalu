@@ -1,3 +1,5 @@
+# Delete
+
 Deletes a cluster by cluster_uuid.
 
 ## Usage:

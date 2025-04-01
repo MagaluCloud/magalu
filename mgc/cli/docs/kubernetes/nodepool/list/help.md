@@ -1,3 +1,5 @@
+# List
+
 Gets a node pool from a Kubernetes cluster by cluster_uuid.
 
 ## Usage:

@@ -1,3 +1,5 @@
+# Versions
+
 Lists all available Kubernetes versions.
 
 ## Usage:

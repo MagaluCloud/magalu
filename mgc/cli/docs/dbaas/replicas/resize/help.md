@@ -1,3 +1,5 @@
+# Resize
+
 Resize an instance replica.
 
 ## Usage:

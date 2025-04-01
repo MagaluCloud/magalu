@@ -1,3 +1,5 @@
+# Delete
+
 Deletes a database instance.
 
 ## Usage:

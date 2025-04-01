@@ -1,3 +1,5 @@
+# Delete
+
 Deletes an snapshot with the id provided in the current tenant
 which is logged in.
 

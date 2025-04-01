@@ -1,3 +1,5 @@
+# Delete
+
 Delete/unset a Config value that had been previously set. This does not
 affect the environment variables
 

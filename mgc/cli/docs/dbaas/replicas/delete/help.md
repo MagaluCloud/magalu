@@ -1,3 +1,5 @@
+# Delete
+
 Deletes a replica instance.
 
 ## Usage:

@@ -1,3 +1,5 @@
+# List
+
 Retrieve a list of Snapshots for the currently authenticated tenant.
 
 ## Usage:

@@ -1,3 +1,5 @@
+# List
+
 Lists all types of events emitted by other products.
 
 ## Usage:

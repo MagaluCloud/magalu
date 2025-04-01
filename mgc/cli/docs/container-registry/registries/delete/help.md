@@ -1,3 +1,5 @@
+# Delete
+
 Delete a container registry by uuid.
 
 ## Usage:

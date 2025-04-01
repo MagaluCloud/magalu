@@ -1,3 +1,5 @@
+# Delete
+
 Delete labels for the specified bucket
 
 ## Usage:

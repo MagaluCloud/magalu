@@ -1,3 +1,5 @@
+# Events
+
 Endpoints related to listing events emitted by other products.
 
 ## Usage:

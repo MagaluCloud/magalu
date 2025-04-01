@@ -1,3 +1,5 @@
+# Stop
+
 Stops a database instance.
 
 ## Usage:

@@ -1,3 +1,5 @@
+# Registries
+
 Routes related to creation, listing and deletion of registries.
 
 ## Usage:

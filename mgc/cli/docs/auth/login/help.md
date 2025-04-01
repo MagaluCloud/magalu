@@ -1,3 +1,5 @@
+# Login
+
 Log in to your Magalu Cloud account. When you login with this command,
 the current Tenant will always be set to the default one. To see more details
 about a successful login, use the '--show' flag when logging in
