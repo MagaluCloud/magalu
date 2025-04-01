@@ -235,18 +235,19 @@ func runDocParams(params CliDocParams) {
 
 	if params.goroutine {
 		wg := &sync.WaitGroup{}
-		// count := 0
+		count := 0
 		for _, path := range genCliPaths(tree) {
-			// count++
+			count++
 			wg.Add(1)
-			go func(rootDir string, path string) {
+			go func(count int, rootDir string, path string) {
 				defer wg.Done()
+				count--
 				path = fmt.Sprintf("%s %s", params.cli, path)
 				insideRunDocParams(rootDir, strings.Split(path, ""))
-			}(rootDir, path)
-			// if count >= 100 {
-			// 	wg.Wait()
-			// }
+			}(count, rootDir, path)
+			if count >= 50 {
+				wg.Wait()
+			}
 		}
 		wg.Wait()
 	}
