@@ -214,6 +214,8 @@ func runDocParams(params CliDocParams) {
 	log.Printf("removing output-dir: %s", rootDir)
 	os.RemoveAll(rootDir)
 
+	insideRunDocParams(rootDir, []string{params.cli})
+
 	if !params.goroutine {
 		for _, path := range genCliPaths(tree) {
 			path = fmt.Sprintf("%s %s", params.cli, path)
@@ -244,9 +246,11 @@ func insideRunDocParams(rootDir string, path []string) {
 	if err != nil {
 		log.Printf("Error generating help output: %v\npath: %v", err, path)
 	}
+	outDir := filepath.Join(rootDir, filepath.Join(path[1:]...))
+	xpto := strings.Split(pathBingo, "/")
+	fmt.Println(xpto)
 	markdownOutput := convertToMarkdown(helpOutput)
 
-	outDir := filepath.Join(rootDir, filepath.Join(path[1:]...))
 	_ = os.MkdirAll(outDir, os.ModePerm)
 	filePath := filepath.Join(outDir, "help.md")
 	err = os.WriteFile(filePath, []byte(markdownOutput), 0644)
