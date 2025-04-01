@@ -3,6 +3,7 @@ package pipeline
 import (
 	"encoding/json"
 	"fmt"
+	"io"
 	"log"
 	"os"
 	"os/exec"
@@ -169,14 +170,12 @@ type CliDocParams struct {
 }
 
 func runDocParams(params CliDocParams) {
-
-	log.SetFlags(0)
-	log.SetPrefix("INF ")
-
-	if params.verbose > 0 {
-		log.SetPrefix("DBG ")
+	if params.verbose == 0 {
+		log.SetOutput(io.Discard)
+	} else if params.verbose == 1 {
+		log.SetFlags(0)
+		log.SetPrefix("INF ")
 	}
-
 	tree, err := loadJSON(params.dumpCliJson)
 	if err != nil {
 		log.Fatalf("Failed to load JSON: %v", err)
@@ -214,7 +213,7 @@ func insideRunDocParams(rootDir string, path []string) {
 	path = strings.Split(pathBingo, " ")
 	helpOutput, err := genHelpOutput(path)
 	if err != nil {
-		log.Printf("Error generating help output: %v\npath:", err, path)
+		log.Printf("Error generating help output: %v\npath: %v", err, path)
 	}
 	markdownOutput := convertToMarkdown(helpOutput)
 
