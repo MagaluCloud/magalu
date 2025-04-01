@@ -12,7 +12,7 @@ mgc dbaas snapshots create --volume.size=30
 
 ## Flags:
 ```
-      --backup-retention-days integer   Backup Retention Days: The number of days that a particular backup is kept until its deletion. (default 7)
+--backup-retention-days integer   Backup Retention Days: The number of days that a particular backup is kept until its deletion. (default 7)
       --backup-start-at time            Backup Start At: Start time (UTC timezone) which is allowed to start the automated backup process. (default "04:00:00")
   -h, --help                            help for create
       --instance-type-id uuid           Instance Type Id (required)
@@ -30,7 +30,7 @@ mgc dbaas snapshots create --volume.size=30
 
 ## Global Flags:
 ```
-      --api-key string           Use your API key to authenticate with the API
+--api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is
                                  a duration (ex: 2s) and 'condition' is a 'engine=value' pair such as "jsonpath=expression"

@@ -1,4 +1,4 @@
-Restore a snapshot of an instance with the current tenant which is logged in. </br>
+Restore a snapshot of an instance with the current tenant which is logged in. 
 
 ## Usage:
 ```
@@ -12,7 +12,7 @@ mgc virtual-machine snapshots restore --machine-type.id="9ec75090-2872-4f51-8111
 
 ## Flags:
 ```
-      --availability-zone string                  Availability Zone (between 1 and 255 characters) (default "br-ne1-a")
+--availability-zone string                  Availability Zone (between 1 and 255 characters) (default "br-ne1-a")
       --cli.list-links enum[=table]               List all available links for this command (one of "json", "table" or "yaml")
   -h, --help                                      help for restore
       --id string                                 Id (required)
@@ -50,7 +50,7 @@ mgc virtual-machine snapshots restore --machine-type.id="9ec75090-2872-4f51-8111
 
 ## Global Flags:
 ```
-      --api-key string           Use your API key to authenticate with the API
+--api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is
                                  a duration (ex: 2s) and 'condition' is a 'engine=value' pair such as "jsonpath=expression"

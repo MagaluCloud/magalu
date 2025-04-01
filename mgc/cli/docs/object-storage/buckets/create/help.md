@@ -7,7 +7,7 @@ mgc object-storage buckets create [bucket] [flags]
 
 ## Flags:
 ```
-      --bucket string                 Name of the bucket to be created (required)
+--bucket string                 Name of the bucket to be created (required)
       --bucket-is-prefix              Use bucket name as prefix value to generate a unique bucket name (required)
       --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
       --enable-versioning             Enable versioning for this bucket (default true)
@@ -21,7 +21,7 @@ mgc object-storage buckets create [bucket] [flags]
 
 ## Global Flags:
 ```
-      --api-key string           Use your API key to authenticate with the API
+--api-key string           Use your API key to authenticate with the API
       --chunk-size integer       Chunk size to consider when doing multipart requests. Specified in Mb (range: 8 - 5120) (default 8)
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is

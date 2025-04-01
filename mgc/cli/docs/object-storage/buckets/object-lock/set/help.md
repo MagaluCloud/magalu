@@ -12,7 +12,7 @@ mgc object-storage buckets object-lock set --days=30 --dst="my-bucket" --years=5
 
 ## Flags:
 ```
-      --days integer    Number of days to lock new objects for. Cannot be used alongside 'years'
+--days integer    Number of days to lock new objects for. Cannot be used alongside 'years'
       --dst string      Name of the bucket to set object locking for its objects (required)
   -h, --help            help for set
       --years integer   Number of years to lock new objects for. Cannot be used alongside 'days'
@@ -21,7 +21,7 @@ mgc object-storage buckets object-lock set --days=30 --dst="my-bucket" --years=5
 
 ## Global Flags:
 ```
-      --api-key string           Use your API key to authenticate with the API
+--api-key string           Use your API key to authenticate with the API
       --chunk-size integer       Chunk size to consider when doing multipart requests. Specified in Mb (range: 8 - 5120) (default 8)
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is

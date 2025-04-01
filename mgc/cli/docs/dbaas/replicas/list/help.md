@@ -7,7 +7,7 @@ mgc dbaas replicas list [flags]
 
 ## Flags:
 ```
-      --control.limit integer    The maximum number of items per page. (range: 1 - 50) (default 10)
+--control.limit integer    The maximum number of items per page. (range: 1 - 50) (default 10)
       --control.offset integer   The number of items to skip before starting to collect the result set. (min: 0)
   -h, --help                     help for list
       --source-id uuid           Value referring to source Id.
@@ -17,7 +17,7 @@ mgc dbaas replicas list [flags]
 
 ## Global Flags:
 ```
-      --api-key string           Use your API key to authenticate with the API
+--api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is
                                  a duration (ex: 2s) and 'condition' is a 'engine=value' pair such as "jsonpath=expression"

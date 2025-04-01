@@ -12,7 +12,7 @@ mgc object-storage api-key create --expiration="2024-11-07 (YYYY-MM-DD)"
 
 ## Flags:
 ```
-      --description string   Description of new api key
+--description string   Description of new api key
       --expiration string    Date to expire new api
   -h, --help                 help for create
       --name string          Name of new api key (required)
@@ -21,7 +21,7 @@ mgc object-storage api-key create --expiration="2024-11-07 (YYYY-MM-DD)"
 
 ## Global Flags:
 ```
-      --api-key string           Use your API key to authenticate with the API
+--api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is
                                  a duration (ex: 2s) and 'condition' is a 'engine=value' pair such as "jsonpath=expression"

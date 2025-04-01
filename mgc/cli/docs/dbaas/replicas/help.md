@@ -20,14 +20,14 @@ create      Replica Create.
 
 ## Flags:
 ```
-  -h, --help      help for replicas
+-h, --help      help for replicas
   -v, --version   version for replicas
 
 ```
 
 ## Global Flags:
 ```
-      --api-key string           Use your API key to authenticate with the API
+--api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is
                                  a duration (ex: 2s) and 'condition' is a 'engine=value' pair such as "jsonpath=expression"

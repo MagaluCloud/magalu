@@ -12,7 +12,7 @@ mgc object-storage objects upload --dst="my-bucket/dir/file.txt" --src="./file.t
 
 ## Flags:
 ```
-      --dst uri              Full destination path in the bucket with desired filename (required)
+--dst uri              Full destination path in the bucket with desired filename (required)
   -h, --help                 help for upload
       --src file             Source file path to be uploaded (required)
       --storage-class enum   Type of Storage in which to store object (one of "", "cold", "cold_instant", "glacier_ir" or "standard") (default "")
@@ -21,7 +21,7 @@ mgc object-storage objects upload --dst="my-bucket/dir/file.txt" --src="./file.t
 
 ## Global Flags:
 ```
-      --api-key string           Use your API key to authenticate with the API
+--api-key string           Use your API key to authenticate with the API
       --chunk-size integer       Chunk size to consider when doing multipart requests. Specified in Mb (range: 8 - 5120) (default 8)
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is

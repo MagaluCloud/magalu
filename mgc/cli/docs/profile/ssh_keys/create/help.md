@@ -7,7 +7,7 @@ mgc profile ssh-keys create [flags]
 
 ## Flags:
 ```
-  -h, --help          help for create
+-h, --help          help for create
       --key string    The SSH public key. The supported key types are: ssh-rsa, ssh-dss, ecdsa-sha, ssh-ed25519, sk-ecdsa-sha, sk-ssh-ed25519 (max character count: 16384) (required)
       --name string   The SSH Key name (max character count: 45) (required)
   -v, --version       version for create
@@ -16,7 +16,7 @@ mgc profile ssh-keys create [flags]
 
 ## Global Flags:
 ```
-      --api-key string           Use your API key to authenticate with the API
+--api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is
                                  a duration (ex: 2s) and 'condition' is a 'engine=value' pair such as "jsonpath=expression"

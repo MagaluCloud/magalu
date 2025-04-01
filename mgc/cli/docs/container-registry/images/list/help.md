@@ -7,7 +7,7 @@ mgc container-registry images list [registry-id] [repository-name] [flags]
 
 ## Flags:
 ```
-      --control.limit integer    Limit (min: 1)
+--control.limit integer    Limit (min: 1)
       --control.offset integer   Offset (min: 0)
       --control.sort string      Fields to use as reference to sort. (pattern: (^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$) (default "pushed_at:desc")
       --expand array(string)     You can get more detailed info about: ['tags_details', 'extra_attr', 'manifest_media_type', 'media_type']
@@ -20,7 +20,7 @@ mgc container-registry images list [registry-id] [repository-name] [flags]
 
 ## Global Flags:
 ```
-      --api-key string           Use your API key to authenticate with the API
+--api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is
                                  a duration (ex: 2s) and 'condition' is a 'engine=value' pair such as "jsonpath=expression"

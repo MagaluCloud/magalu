@@ -7,7 +7,7 @@ mgc container-registry registries create [flags]
 
 ## Flags:
 ```
-      --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
+--cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
       --cli.watch                     Wait until the operation is completed by calling the 'get' link and waiting until termination. Akin to '! get -w'
   -h, --help                          help for create
       --name string                   A unique, global name for the container registry. It must be written in lowercase letters and consists only of numbers and letters, up to a limit of 63 characters. (required)
@@ -17,7 +17,7 @@ mgc container-registry registries create [flags]
 
 ## Global Flags:
 ```
-      --api-key string           Use your API key to authenticate with the API
+--api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is
                                  a duration (ex: 2s) and 'condition' is a 'engine=value' pair such as "jsonpath=expression"

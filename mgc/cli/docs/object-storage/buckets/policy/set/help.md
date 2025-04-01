@@ -12,7 +12,7 @@ mgc object-storage buckets policy set --dst="my-bucket"
 
 ## Flags:
 ```
-      --dst string      Name of the bucket to set permissions for (required)
+--dst string      Name of the bucket to set permissions for (required)
   -h, --help            help for set
       --policy object   Policy file path to be uploaded
                         Use --policy=help for more details (required)
@@ -21,7 +21,7 @@ mgc object-storage buckets policy set --dst="my-bucket"
 
 ## Global Flags:
 ```
-      --api-key string           Use your API key to authenticate with the API
+--api-key string           Use your API key to authenticate with the API
       --chunk-size integer       Chunk size to consider when doing multipart requests. Specified in Mb (range: 8 - 5120) (default 8)
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is

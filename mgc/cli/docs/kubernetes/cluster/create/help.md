@@ -12,7 +12,7 @@ mgc kubernetes cluster create --allowed-cidrs='["192.168.1.0/24","10.0.0.0/16"]'
 
 ## Flags:
 ```
-      --allowed-cidrs array(string)   List of allowed CIDR blocks for API server access.
+--allowed-cidrs array(string)   List of allowed CIDR blocks for API server access.
                                       
       --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
       --description string            A brief description of the Kubernetes cluster.
@@ -44,7 +44,7 @@ mgc kubernetes cluster create --allowed-cidrs='["192.168.1.0/24","10.0.0.0/16"]'
 
 ## Global Flags:
 ```
-      --api-key string           Use your API key to authenticate with the API
+--api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is
                                  a duration (ex: 2s) and 'condition' is a 'engine=value' pair such as "jsonpath=expression"

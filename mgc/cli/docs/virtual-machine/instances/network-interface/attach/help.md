@@ -12,7 +12,7 @@ mgc virtual-machine instances network-interface attach --instance.id="9ec75090-2
 
 ## Flags:
 ```
-  -h, --help                          help for attach
+-h, --help                          help for attach
       --instance object               Instance (at least one of: single property: id or single property: name)
                                       Use --instance=help for more details (required)
       --instance.id string            Instance: Id (between 1 and 255 characters)
@@ -32,7 +32,7 @@ mgc virtual-machine instances network-interface attach --instance.id="9ec75090-2
 
 ## Global Flags:
 ```
-      --api-key string           Use your API key to authenticate with the API
+--api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is
                                  a duration (ex: 2s) and 'condition' is a 'engine=value' pair such as "jsonpath=expression"

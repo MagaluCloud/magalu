@@ -12,7 +12,7 @@ mgc dbaas instances resize --volume.size=30
 
 ## Flags:
 ```
-      --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
+--cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
       --flavor-id uuid                Flavor Id (Deprecated): **Deprecated**: This property is being deprecated in favor of 'instance_type_id'. Please update your requests to use 'instance_type_id' for improved functionality and future compatibility.		
                                       
   -h, --help                          help for resize
@@ -30,7 +30,7 @@ mgc dbaas instances resize --volume.size=30
 
 ## Global Flags:
 ```
-      --api-key string           Use your API key to authenticate with the API
+--api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is
                                  a duration (ex: 2s) and 'condition' is a 'engine=value' pair such as "jsonpath=expression"

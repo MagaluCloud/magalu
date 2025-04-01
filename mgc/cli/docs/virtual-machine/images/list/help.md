@@ -7,7 +7,7 @@ mgc virtual-machine images list [flags]
 
 ## Flags:
 ```
-      --availability-zone string   Availability-Zone: br-ne1-a
+--availability-zone string   Availability-Zone: br-ne1-a
       --control.limit integer       Limit (max: 2147483647) (default 50)
       --control.offset integer      Offset (max: 2147483647)
       --control.sort string         Sort (pattern: ^(^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$) (default "platform:asc,end_life_at:desc")
@@ -18,7 +18,7 @@ mgc virtual-machine images list [flags]
 
 ## Global Flags:
 ```
-      --api-key string           Use your API key to authenticate with the API
+--api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is
                                  a duration (ex: 2s) and 'condition' is a 'engine=value' pair such as "jsonpath=expression"

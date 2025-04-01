@@ -12,7 +12,7 @@ mgc object-storage objects copy --dst="bucket2/dir/file.txt" --src="bucket1/file
 
 ## Flags:
 ```
-      --dst uri              Full destination path in the bucket with desired filename (required)
+--dst uri              Full destination path in the bucket with desired filename (required)
   -h, --help                 help for copy
       --obj-version string   Version of the object to be copied
       --src uri              Path of the object in a bucket to be copied (required)
@@ -22,7 +22,7 @@ mgc object-storage objects copy --dst="bucket2/dir/file.txt" --src="bucket1/file
 
 ## Global Flags:
 ```
-      --api-key string           Use your API key to authenticate with the API
+--api-key string           Use your API key to authenticate with the API
       --chunk-size integer       Chunk size to consider when doing multipart requests. Specified in Mb (range: 8 - 5120) (default 8)
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is

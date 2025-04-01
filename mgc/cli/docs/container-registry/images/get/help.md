@@ -7,7 +7,7 @@ mgc container-registry images get [registry-id] [repository-name] [digest-or-tag
 
 ## Flags:
 ```
-      --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
+--cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
       --digest-or-tag string          Digest or tag of an image. (required)
   -h, --help                          help for get
       --registry-id uuid              Container Registry's UUID. (required)
@@ -18,7 +18,7 @@ mgc container-registry images get [registry-id] [repository-name] [digest-or-tag
 
 ## Global Flags:
 ```
-      --api-key string           Use your API key to authenticate with the API
+--api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is
                                  a duration (ex: 2s) and 'condition' is a 'engine=value' pair such as "jsonpath=expression"

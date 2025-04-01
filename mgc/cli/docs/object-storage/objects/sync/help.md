@@ -12,7 +12,7 @@ mgc object-storage objects sync --bucket="my-bucket/dir/" --local="./"
 
 ## Flags:
 ```
-      --batch-size integer   Limit of items per batch to delete (range: 1 - 1000) (default 1000)
+--batch-size integer   Limit of items per batch to delete (range: 1 - 1000) (default 1000)
       --bucket uri           Bucket path (required)
       --delete               Deletes any item at the bucket not present on the local
   -h, --help                 help for sync
@@ -22,7 +22,7 @@ mgc object-storage objects sync --bucket="my-bucket/dir/" --local="./"
 
 ## Global Flags:
 ```
-      --api-key string           Use your API key to authenticate with the API
+--api-key string           Use your API key to authenticate with the API
       --chunk-size integer       Chunk size to consider when doing multipart requests. Specified in Mb (range: 8 - 5120) (default 8)
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is

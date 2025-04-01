@@ -12,7 +12,7 @@ mgc block-storage snapshots create --source-snapshot.id="xxxxxxxx-xxxx-xxxx-xxxx
 
 ## Flags:
 ```
-      --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
+--cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
       --description string            Description (required)
   -h, --help                          help for create
       --name string                   Name (between 3 and 50 characters) (required)
@@ -35,7 +35,7 @@ mgc block-storage snapshots create --source-snapshot.id="xxxxxxxx-xxxx-xxxx-xxxx
 
 ## Global Flags:
 ```
-      --api-key string           Use your API key to authenticate with the API
+--api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is
                                  a duration (ex: 2s) and 'condition' is a 'engine=value' pair such as "jsonpath=expression"

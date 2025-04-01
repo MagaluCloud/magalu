@@ -78,14 +78,14 @@ func convertToMarkdown(inputText string) string {
 		headerCtt = sections[1]
 	}
 
-	markdown.WriteString(fmt.Sprintf("%s\n\n", strings.TrimSpace(headerCtt)))
+	markdown.WriteString(fmt.Sprintf("%s\n\n", strings.ReplaceAll(strings.TrimSpace(headerCtt), "</br>", "")))
 
 	// Usage section
 	for _, section := range sections {
 		if strings.Contains(section, "Usage:") {
 			markdown.WriteString("## Usage:\n```\n")
 			section = strings.ReplaceAll(section, "Usage:\n", "")
-			markdown.WriteString(strings.TrimSpace(section))
+			markdown.WriteString(strings.ReplaceAll(strings.TrimSpace(section), "</br>", ""))
 			markdown.WriteString("\n```\n\n")
 			break
 		}
@@ -96,7 +96,7 @@ func convertToMarkdown(inputText string) string {
 		if strings.HasPrefix(section, "Examples:") {
 			markdown.WriteString("## Examples:\n```\n")
 			section = strings.ReplaceAll(section, "Examples:\n", "")
-			markdown.WriteString(strings.TrimSpace(section))
+			markdown.WriteString(strings.ReplaceAll(strings.TrimSpace(section), "</br>", ""))
 			markdown.WriteString("\n```\n\n")
 			break
 		}
@@ -107,7 +107,7 @@ func convertToMarkdown(inputText string) string {
 		if strings.Contains(section, "Commands:") {
 			markdown.WriteString("## Commands:\n```\n")
 			section = strings.ReplaceAll(section, "Commands:\n", "")
-			markdown.WriteString(fmt.Sprintf("%s\n", strings.TrimSpace(section)))
+			markdown.WriteString(fmt.Sprintf("%s\n", strings.ReplaceAll(strings.TrimSpace(section), "</br>", "")))
 			markdown.WriteString("\n```\n\n")
 			break
 		}
@@ -118,7 +118,7 @@ func convertToMarkdown(inputText string) string {
 		if strings.Contains(section, "Products:") {
 			markdown.WriteString("## Product catalog:\n```\n")
 			section = strings.ReplaceAll(section, "Products:\n", "")
-			markdown.WriteString(fmt.Sprintf("%s\n", strings.TrimSpace(section)))
+			markdown.WriteString(fmt.Sprintf("%s\n", strings.ReplaceAll(strings.TrimSpace(section), "</br>", "")))
 			markdown.WriteString("\n```\n\n")
 			break
 		}
@@ -129,7 +129,7 @@ func convertToMarkdown(inputText string) string {
 		if strings.Contains(section, "Other commands:") {
 			markdown.WriteString("## Other commands:\n```\n")
 			section = strings.ReplaceAll(section, "Other commands:\n", "")
-			markdown.WriteString(fmt.Sprintf("%s\n", section))
+			markdown.WriteString(fmt.Sprintf("%s\n", strings.ReplaceAll(strings.TrimSpace(section), "</br>", "")))
 			markdown.WriteString("\n```\n\n")
 			break
 		}
@@ -140,7 +140,7 @@ func convertToMarkdown(inputText string) string {
 		if strings.Contains(section, "Flags:") {
 			markdown.WriteString("## Flags:\n```\n")
 			section = strings.ReplaceAll(section, "Flags:\n", "")
-			markdown.WriteString(fmt.Sprintf("%s\n", section))
+			markdown.WriteString(fmt.Sprintf("%s\n", strings.ReplaceAll(strings.TrimSpace(section), "</br>", "")))
 			markdown.WriteString("\n```\n\n")
 			break
 		}
@@ -151,7 +151,7 @@ func convertToMarkdown(inputText string) string {
 		if strings.Contains(section, "Global Flags:") {
 			markdown.WriteString("## Global Flags:\n```\n")
 			section = strings.ReplaceAll(section, "Global Flags:\n", "")
-			markdown.WriteString(fmt.Sprintf("%s\n", section))
+			markdown.WriteString(fmt.Sprintf("%s\n", strings.ReplaceAll(strings.TrimSpace(section), "</br>", "")))
 			markdown.WriteString("\n```\n\n")
 			break
 		}
@@ -162,7 +162,7 @@ func convertToMarkdown(inputText string) string {
 		if strings.Contains(section, "Settings:") {
 			markdown.WriteString("## Settings:\n```\n")
 			section = strings.ReplaceAll(section, "Settings:\n", "")
-			markdown.WriteString(fmt.Sprintf("%s\n", section))
+			markdown.WriteString(fmt.Sprintf("%s\n", strings.ReplaceAll(strings.TrimSpace(section), "</br>", "")))
 			markdown.WriteString("\n```\n\n")
 			break
 		}

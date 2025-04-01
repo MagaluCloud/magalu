@@ -7,7 +7,7 @@ mgc network vpcs public-ips list [vpc-id] [flags]
 
 ## Flags:
 ```
-  -h, --help            help for list
+-h, --help            help for list
   -v, --version         version for list
       --vpc-id string   Vpc ID: Id of the VPC to list the Public IPs in (required)
 
@@ -15,7 +15,7 @@ mgc network vpcs public-ips list [vpc-id] [flags]
 
 ## Global Flags:
 ```
-      --api-key string           Use your API key to authenticate with the API
+--api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is
                                  a duration (ex: 2s) and 'condition' is a 'engine=value' pair such as "jsonpath=expression"

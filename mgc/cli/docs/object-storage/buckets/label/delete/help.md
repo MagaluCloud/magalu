@@ -12,7 +12,7 @@ mgc object-storage buckets label delete --bucket="my-bucket"
 
 ## Flags:
 ```
-      --bucket string   Name of the bucket to delete labels from (required)
+--bucket string   Name of the bucket to delete labels from (required)
   -h, --help            help for delete
       --label string    Label values (required)
 
@@ -20,7 +20,7 @@ mgc object-storage buckets label delete --bucket="my-bucket"
 
 ## Global Flags:
 ```
-      --api-key string           Use your API key to authenticate with the API
+--api-key string           Use your API key to authenticate with the API
       --chunk-size integer       Chunk size to consider when doing multipart requests. Specified in Mb (range: 8 - 5120) (default 8)
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is
