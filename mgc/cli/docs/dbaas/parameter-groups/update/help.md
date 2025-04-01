@@ -1,21 +1,22 @@
-# Snapshots management.
+# Updates a parameter group.
 
 ## Usage:
 ```bash
 Usage:
-  mgc dbaas snapshots [flags]
-  mgc dbaas snapshots [command]
+  mgc dbaas parameter-groups update [parameter-group-id] [flags]
 ```
 
 ## Product catalog:
-- Commands:
-- clusters-snapshots  clusters-snapshots
-- instances-snapshots instances-snapshots
+- Examples:
+- mgc dbaas parameter-groups update --description="Production parameter group for MySQL 8 engine" --name="production_parameter_group"
 
 ## Other commands:
 - Flags:
-- -h, --help      help for snapshots
-- -v, --version   version for snapshots
+- --description string        Description (max character count: 255)
+- -h, --help                      help for update
+- --name string               Name (max character count: 100)
+- --parameter-group-id uuid   Value referring to parameter group Id. (required)
+- -v, --version                   version for update
 
 ## Flags:
 ```bash
@@ -27,8 +28,11 @@ Global Flags:
   -t, --cli.timeout duration     If > 0, it's the timeout for the action execution. It's specified as numbers and unit suffix.
                                  Valid unit suffixes: ns, us, ms, s, m and h. Examples: 300ms, 1m30s
       --debug                    Display detailed log information at the debug level
+      --env enum                 Environment to use (one of "pre-prod" or "prod") (default "prod")
       --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
   -o, --output string            Change the output format. Use '--output=help' to know more details.
   -r, --raw                      Output raw data, without any formatting or coloring
+      --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
+      --server-url uri           Manually specify the server to use
 ```
 

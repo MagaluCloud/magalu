@@ -1,21 +1,26 @@
-# Snapshots management.
+# Clusters management.
 
 ## Usage:
 ```bash
 Usage:
-  mgc dbaas snapshots [flags]
-  mgc dbaas snapshots [command]
+  mgc dbaas clusters [flags]
+  mgc dbaas clusters [command]
 ```
 
 ## Product catalog:
 - Commands:
-- clusters-snapshots  clusters-snapshots
-- instances-snapshots instances-snapshots
+- create      Creates a new database high availability cluster.
+- delete      Deletes a database cluster.
+- get         Database cluster details.
+- list        List all database clusters.
+- start       Starts a database cluster.
+- stop        Stops a database cluster.
+- update      Database cluster update.
 
 ## Other commands:
 - Flags:
-- -h, --help      help for snapshots
-- -v, --version   version for snapshots
+- -h, --help      help for clusters
+- -v, --version   version for clusters
 
 ## Flags:
 ```bash

@@ -1,27 +1,30 @@
-# Resizes a database instance.
+# Create a new instance from snapshot.
 
 ## Usage:
 ```bash
 Usage:
-  mgc dbaas instances resize [instance-id] [flags]
+  mgc dbaas snapshots instances-snapshots restore [instance-id] [snapshot-id] [flags]
 ```
 
 ## Product catalog:
 - Examples:
-- mgc dbaas instances resize --volume.size=30
+- mgc dbaas snapshots instances-snapshots restore --volume.size=30
 
 ## Other commands:
 - Flags:
-- --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-- -h, --help                          help for resize
-- --instance-id uuid              Value referring to instance Id. (required)
-- --instance-type-id uuid         Instance Type Id
-- -v, --version                       version for resize
-- --volume object                 Instance Volume Request (properties: size and type)
+- --backup-retention-days integer   Backup Retention Days: The number of days that a particular backup is kept until its deletion. (default 7)
+- --backup-start-at time            Backup Start At: Start time (UTC timezone) which is allowed to start the automated backup process. (default "04:00:00")
+- -h, --help                            help for restore
+- --instance-id uuid                Value referring to instance Id. (required)
+- --instance-type-id uuid           Instance Type Id (required)
+- --name string                     Name (max character count: 100) (required)
+- --snapshot-id uuid                Value referring to snapshot Id. (required)
+- -v, --version                         version for restore
+- --volume object                   Instance Volume Request (properties: size and type)
 - Use --volume=help for more details
-- --volume.size integer           Instance Volume Request: The size of the volume (in GiB). (range: 10 - 50000)
+- --volume.size integer             Instance Volume Request: The size of the volume (in GiB). (range: 10 - 50000)
 - This is the same as '--volume=size:integer'.
-- --volume.type enum              Instance Volume Request: The type of the volume. (one of "CLOUD_NVME15K" or "CLOUD_NVME20K")
+- --volume.type enum                Instance Volume Request: The type of the volume. (one of "CLOUD_NVME15K" or "CLOUD_NVME20K")
 - This is the same as '--volume=type:enum'. (default "CLOUD_NVME15K")
 
 ## Flags:
