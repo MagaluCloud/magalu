@@ -1,12 +1,15 @@
-# Create a Virtual Machine instance
-
 ## Usage:
-```bash
+```
 mgc virtual-machine instances create [flags]
 ```
 
+## Examples:
+```
+mgc virtual-machine instances create --image.id="9ec75090-2872-4f51-8111-53d05d96d2c6" --image.name="some_resource_name" --machine-type.id="9ec75090-2872-4f51-8111-53d05d96d2c6" --machine-type.name="some_resource_name" --network.associate-public-ip=true --network.interface.id="9ec75090-2872-4f51-8111-53d05d96d2c6" --network.interface.security-groups='[{"id":"9ec75090-2872-4f51-8111-53d05d96d2c6"}]' --network.vpc.id="9ec75090-2872-4f51-8111-53d05d96d2c6" --network.vpc.name="some_resource_name" --volumes='[{"id":"a46594d1-9dc3-4c36-8eb3-071259513854"}]'
+```
+
 ## Flags:
-```bash
+```
       --availability-zone string                  Availability Zone
       --cli.list-links enum[=table]               List all available links for this command (one of "json", "table" or "yaml")
       --cli.watch                                 Wait until the operation is completed by calling the 'get' link and waiting until termination. Akin to '! get -w'
@@ -53,7 +56,7 @@ mgc virtual-machine instances create [flags]
 ```
 
 ## Global Flags:
-```bash
+```
       --api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is

@@ -1,13 +1,15 @@
-# Create a snapshot of a Virtual Machine in the current tenant which is logged in. </br>
-A Snapshot is ready for restore when it's in available state.
-
 ## Usage:
-```bash
+```
 mgc virtual-machine snapshots create [flags]
 ```
 
+## Examples:
+```
+mgc virtual-machine snapshots create --instance.id="9ec75090-2872-4f51-8111-53d05d96d2c6" --instance.name="some_resource_name"
+```
+
 ## Flags:
-```bash
+```
       --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
   -h, --help                          help for create
       --instance object               Instance (at least one of: single property: id or single property: name)
@@ -22,7 +24,7 @@ mgc virtual-machine snapshots create [flags]
 ```
 
 ## Global Flags:
-```bash
+```
       --api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is

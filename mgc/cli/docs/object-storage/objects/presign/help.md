@@ -1,12 +1,15 @@
-# Generate a pre-signed URL for accessing an object
-
 ## Usage:
-```bash
+```
 mgc object-storage objects presign [dst] [flags]
 ```
 
+## Examples:
+```
+mgc object-storage objects presign --dst="bucket1/file.txt" --expires-in="2h"
+```
+
 ## Flags:
-```bash
+```
       --dst uri             Path of the object to generate pre-signed URL for (required)
       --expires-in string   Expiration time for the pre-signed URL. Valid time units are 'ns, 'us' (or 'µs'), 'ms', 's',  'm', and 'h'.default=5m
   -h, --help                help for presign
@@ -15,7 +18,7 @@ mgc object-storage objects presign [dst] [flags]
 ```
 
 ## Global Flags:
-```bash
+```
       --api-key string           Use your API key to authenticate with the API
       --chunk-size integer       Chunk size to consider when doing multipart requests. Specified in Mb (range: 8 - 5120) (default 8)
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters

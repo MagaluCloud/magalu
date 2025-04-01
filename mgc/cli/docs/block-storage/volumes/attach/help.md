@@ -1,13 +1,10 @@
-# Attach a Volume to a Virtual Machine instance for the currently
- authenticated tenant.
-
 ## Usage:
-```bash
+```
 mgc block-storage volumes attach [id] [virtual-machine-id] [flags]
 ```
 
 ## Flags:
-```bash
+```
       --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
   -h, --help                          help for attach
       --id uuid                       Id (required)
@@ -17,7 +14,7 @@ mgc block-storage volumes attach [id] [virtual-machine-id] [flags]
 ```
 
 ## Global Flags:
-```bash
+```
       --api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is

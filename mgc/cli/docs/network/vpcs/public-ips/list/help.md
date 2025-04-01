@@ -1,12 +1,10 @@
-# Returns a list of Public IPs for a provided vpc_id
-
 ## Usage:
-```bash
+```
 mgc network vpcs public-ips list [vpc-id] [flags]
 ```
 
 ## Flags:
-```bash
+```
   -h, --help            help for list
   -v, --version         version for list
       --vpc-id string   Vpc ID: Id of the VPC to list the Public IPs in (required)
@@ -14,7 +12,7 @@ mgc network vpcs public-ips list [vpc-id] [flags]
 ```
 
 ## Global Flags:
-```bash
+```
       --api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is

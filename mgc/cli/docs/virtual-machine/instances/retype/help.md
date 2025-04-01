@@ -1,13 +1,15 @@
-# Changes a Virtual Machine instance machine type with the id provided in the current tenant
-which is logged in.
-
 ## Usage:
-```bash
+```
 mgc virtual-machine instances retype [id] [flags]
 ```
 
+## Examples:
+```
+mgc virtual-machine instances retype --machine-type.id="9ec75090-2872-4f51-8111-53d05d96d2c6" --machine-type.name="some_resource_name"
+```
+
 ## Flags:
-```bash
+```
       --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
       --cli.watch                     Wait until the operation is completed by calling the 'get' link and waiting until termination. Akin to '! get -w'
   -h, --help                          help for retype
@@ -23,7 +25,7 @@ mgc virtual-machine instances retype [id] [flags]
 ```
 
 ## Global Flags:
-```bash
+```
       --api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is

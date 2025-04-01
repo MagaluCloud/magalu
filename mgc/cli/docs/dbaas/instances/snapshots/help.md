@@ -1,13 +1,11 @@
-# Database instances management. | snapshots
-
 ## Usage:
-```bash
+```
 mgc dbaas instances snapshots [flags]
   mgc dbaas instances snapshots [command]
 ```
 
 ## Commands:
-```bash
+```
 create      Snapshot Create.
   delete      Delete Snapshot.
   get         Snapshot Detail.
@@ -17,14 +15,14 @@ create      Snapshot Create.
 ```
 
 ## Flags:
-```bash
+```
   -h, --help      help for snapshots
   -v, --version   version for snapshots
 
 ```
 
 ## Global Flags:
-```bash
+```
       --api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is

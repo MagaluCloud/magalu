@@ -1,13 +1,11 @@
-# Operations related to Nat Gateway
-
 ## Usage:
-```bash
+```
 mgc network nat-gateways [flags]
   mgc network nat-gateways [command]
 ```
 
 ## Commands:
-```bash
+```
 create      Create a new NAT Gateway resource
   delete      Delete a NAT Gateway from a VPC
   get         Detail a NAT Gateway from a VPC
@@ -16,14 +14,14 @@ create      Create a new NAT Gateway resource
 ```
 
 ## Flags:
-```bash
+```
   -h, --help      help for nat-gateways
   -v, --version   version for nat-gateways
 
 ```
 
 ## Global Flags:
-```bash
+```
       --api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is

@@ -1,27 +1,25 @@
-# Operations related to Rules
-
 ## Usage:
-```bash
+```
 mgc network rules [flags]
   mgc network rules [command]
 ```
 
 ## Commands:
-```bash
+```
 delete      Delete a Rule
   get         Rule Details
 
 ```
 
 ## Flags:
-```bash
+```
   -h, --help      help for rules
   -v, --version   version for rules
 
 ```
 
 ## Global Flags:
-```bash
+```
       --api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is

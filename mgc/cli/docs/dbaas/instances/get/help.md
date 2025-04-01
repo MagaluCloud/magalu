@@ -1,12 +1,10 @@
-# Returns a database instance detail.
-
 ## Usage:
-```bash
+```
 mgc dbaas instances get [instance-id] [flags]
 ```
 
 ## Flags:
-```bash
+```
       --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
       --control.expand enum           Instance extra attributes or relations to show with the main query. When available, more than one value can be informed using commas. e.g: '--control.expand="replicas"' (must be "replicas")
   -h, --help                          help for get
@@ -16,7 +14,7 @@ mgc dbaas instances get [instance-id] [flags]
 ```
 
 ## Global Flags:
-```bash
+```
       --api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is

@@ -1,19 +1,22 @@
-# Get bucket public url
-
 ## Usage:
-```bash
+```
 mgc object-storage buckets public-url [dst] [flags]
 ```
 
+## Examples:
+```
+mgc object-storage buckets public-url --dst="bucket1"
+```
+
 ## Flags:
-```bash
+```
       --dst uri   Path of the bucket to generate the public url (required)
   -h, --help      help for public-url
 
 ```
 
 ## Global Flags:
-```bash
+```
       --api-key string           Use your API key to authenticate with the API
       --chunk-size integer       Chunk size to consider when doing multipart requests. Specified in Mb (range: 8 - 5120) (default 8)
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters

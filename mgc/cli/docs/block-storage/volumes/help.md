@@ -1,13 +1,11 @@
-# Operations with volumes, including create, delete, extend, retype, list and other actions.
-
 ## Usage:
-```bash
+```
 mgc block-storage volumes [flags]
   mgc block-storage volumes [command]
 ```
 
 ## Commands:
-```bash
+```
 attach      Attach the volume to an instance.
   create      Create a new volume.
   delete      Delete a volume.
@@ -21,14 +19,14 @@ attach      Attach the volume to an instance.
 ```
 
 ## Flags:
-```bash
+```
   -h, --help      help for volumes
   -v, --version   version for volumes
 
 ```
 
 ## Global Flags:
-```bash
+```
       --api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is

@@ -1,27 +1,25 @@
-# Operations related to VPCs | ports
-
 ## Usage:
-```bash
+```
 mgc network vpcs ports [flags]
   mgc network vpcs ports [command]
 ```
 
 ## Commands:
-```bash
+```
 create      Create Port
   list        List Ports
 
 ```
 
 ## Flags:
-```bash
+```
   -h, --help      help for ports
   -v, --version   version for ports
 
 ```
 
 ## Global Flags:
-```bash
+```
       --api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is

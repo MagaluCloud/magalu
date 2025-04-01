@@ -1,26 +1,24 @@
-# Endpoints related to listing available flavors for a Kubernetes cluster.
-
 ## Usage:
-```bash
+```
 mgc kubernetes flavor [flags]
   mgc kubernetes flavor [command]
 ```
 
 ## Commands:
-```bash
+```
 list        Lists all available flavors
 
 ```
 
 ## Flags:
-```bash
+```
   -h, --help      help for flavor
   -v, --version   version for flavor
 
 ```
 
 ## Global Flags:
-```bash
+```
       --api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is

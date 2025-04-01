@@ -1,12 +1,15 @@
-# Create new client (Oauth Application)
-
 ## Usage:
-```bash
+```
 mgc auth clients create [name] [description] [redirect-uris] [backchannel-logout-session] [client-term-url] [client-privacy-term-url] [audiences] [email] [request-reason] [icon] [access-token-expiration] [always-require-login] [backchannel-logout-uri] [oidc-audience] [refresh-token-custom-expires-enabled] [refresh-token-exp] [support-url] [grant-types] [flags]
 ```
 
+## Examples:
+```
+mgc auth clients create --access-token-expiration=7200 --audiences="public" --description="Client description" --email="client@example.com" --name="Client Name" --oidc-audience="public" --refresh-token-exp=15778476
+```
+
 ## Flags:
-```bash
+```
       --access-token-expiration integer        Access token expiration (in seconds)
       --always-require-login                   Must ignore active Magalu ID session and always require login
       --audiences string                       Client audiences (separated by space)
@@ -30,7 +33,7 @@ mgc auth clients create [name] [description] [redirect-uris] [backchannel-logout
 ```
 
 ## Global Flags:
-```bash
+```
       --api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is

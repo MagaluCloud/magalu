@@ -1,12 +1,10 @@
-# Patches the mutable fields of a cluster
-
 ## Usage:
-```bash
+```
 mgc kubernetes cluster update [cluster-id] [flags]
 ```
 
 ## Flags:
-```bash
+```
       --allowed-cidrs array(string)   
       --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
       --cli.watch                     Wait until the operation is completed by calling the 'get' link and waiting until termination. Akin to '! get -w'
@@ -17,7 +15,7 @@ mgc kubernetes cluster update [cluster-id] [flags]
 ```
 
 ## Global Flags:
-```bash
+```
       --api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is

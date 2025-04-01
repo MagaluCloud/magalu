@@ -1,12 +1,15 @@
-# Returns a list of database instances for a x-tenant-id.
-
 ## Usage:
-```bash
+```
 mgc dbaas instances list [flags]
 ```
 
+## Examples:
+```
+mgc dbaas instances list --status="ACTIVE"
+```
+
 ## Flags:
-```bash
+```
       --control.expand enum       Instance extra attributes or relations to show with the main query. When available, more than one value can be informed using commas. e.g: '--control.expand="replicas"' (must be "replicas")
       --control.limit integer     The maximum number of items per page. (range: 1 - 25) (default 10)
       --control.offset integer    The number of items to skip before starting to collect the result set. (min: 0)
@@ -23,7 +26,7 @@ mgc dbaas instances list [flags]
 ```
 
 ## Global Flags:
-```bash
+```
       --api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is

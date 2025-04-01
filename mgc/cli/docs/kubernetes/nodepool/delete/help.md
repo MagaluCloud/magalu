@@ -1,12 +1,10 @@
-# Deletes a node pool in a Kubernetes cluster by nodepool_uuid.
-
 ## Usage:
-```bash
+```
 mgc kubernetes nodepool delete [cluster-id] [node-pool-id] [flags]
 ```
 
 ## Flags:
-```bash
+```
       --cluster-id uuid     Cluster's UUID. (required)
   -h, --help                help for delete
       --node-pool-id uuid   Nodepool's UUID. (required)
@@ -15,7 +13,7 @@ mgc kubernetes nodepool delete [cluster-id] [node-pool-id] [flags]
 ```
 
 ## Global Flags:
-```bash
+```
       --api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is

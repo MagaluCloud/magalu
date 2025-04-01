@@ -1,26 +1,24 @@
-# Endpoints related to listing available Kubernetes versions for a Kubernetes cluster.
-
 ## Usage:
-```bash
+```
 mgc kubernetes version [flags]
   mgc kubernetes version [command]
 ```
 
 ## Commands:
-```bash
+```
 list        Lists all available versions
 
 ```
 
 ## Flags:
-```bash
+```
   -h, --help      help for version
   -v, --version   version for version
 
 ```
 
 ## Global Flags:
-```bash
+```
       --api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is

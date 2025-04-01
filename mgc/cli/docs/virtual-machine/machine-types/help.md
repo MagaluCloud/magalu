@@ -1,26 +1,24 @@
-# Operations with machine types for instances.
-
 ## Usage:
-```bash
+```
 mgc virtual-machine machine-types [flags]
   mgc virtual-machine machine-types [command]
 ```
 
 ## Commands:
-```bash
+```
 list        Retrieves all machine-types.
 
 ```
 
 ## Flags:
-```bash
+```
   -h, --help      help for machine-types
   -v, --version   version for machine-types
 
 ```
 
 ## Global Flags:
-```bash
+```
       --api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is

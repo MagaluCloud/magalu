@@ -1,13 +1,11 @@
-# Object locking commands
-
 ## Usage:
-```bash
+```
 mgc object-storage buckets object-lock [flags]
   mgc object-storage buckets object-lock [command]
 ```
 
 ## Commands:
-```bash
+```
 get         Get object locking configuration for the specified bucket
   set         set number of either days or years to lock new objects for
   unset       unset object locking for the specified bucket
@@ -15,13 +13,13 @@ get         Get object locking configuration for the specified bucket
 ```
 
 ## Flags:
-```bash
+```
   -h, --help   help for object-lock
 
 ```
 
 ## Global Flags:
-```bash
+```
       --api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is

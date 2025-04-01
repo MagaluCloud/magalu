@@ -1,19 +1,17 @@
-# Get versioning info for a Bucket
-
 ## Usage:
-```bash
+```
 mgc object-storage buckets versioning get [bucket] [flags]
 ```
 
 ## Flags:
-```bash
+```
       --bucket string   Bucket name to get versioning info from (required)
   -h, --help            help for get
 
 ```
 
 ## Global Flags:
-```bash
+```
       --api-key string           Use your API key to authenticate with the API
       --chunk-size integer       Chunk size to consider when doing multipart requests. Specified in Mb (range: 8 - 5120) (default 8)
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters

@@ -1,12 +1,10 @@
-# Detach a Security Group to a Port with provided port_id, security_group_id, x-tenant-id of an specific project type
-
 ## Usage:
-```bash
+```
 mgc network ports detach [port-id] [security-group-id] [flags]
 ```
 
 ## Flags:
-```bash
+```
       --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
   -h, --help                          help for detach
       --port-id string                port_id: ID of the Port to detach security group (required)
@@ -16,7 +14,7 @@ mgc network ports detach [port-id] [security-group-id] [flags]
 ```
 
 ## Global Flags:
-```bash
+```
       --api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is

@@ -1,13 +1,15 @@
-# Moves objects from a source to a destination.
-They can be either local or remote but not both local (Local -> Remote, Remote -> Local, Remote -> Remote)
-
 ## Usage:
-```bash
+```
 mgc object-storage objects move-dir [src] [dst] [flags]
 ```
 
+## Examples:
+```
+mgc object-storage objects move-dir --dst="s3://my-bucket/dir" --src="./dir"
+```
+
 ## Flags:
-```bash
+```
       --batch-size integer   Limit of items per batch to process (range: 1 - 1000) (default 1000)
       --dst uri              Destination to put files into (required)
   -h, --help                 help for move-dir
@@ -16,7 +18,7 @@ mgc object-storage objects move-dir [src] [dst] [flags]
 ```
 
 ## Global Flags:
-```bash
+```
       --api-key string           Use your API key to authenticate with the API
       --chunk-size integer       Chunk size to consider when doing multipart requests. Specified in Mb (range: 8 - 5120) (default 8)
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters

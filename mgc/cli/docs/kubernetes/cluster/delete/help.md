@@ -1,12 +1,10 @@
-# Deletes a cluster by cluster_uuid.
-
 ## Usage:
-```bash
+```
 mgc kubernetes cluster delete [cluster-id] [flags]
 ```
 
 ## Flags:
-```bash
+```
       --cluster-id uuid   Cluster's UUID. (required)
   -h, --help              help for delete
   -v, --version           version for delete
@@ -14,7 +12,7 @@ mgc kubernetes cluster delete [cluster-id] [flags]
 ```
 
 ## Global Flags:
-```bash
+```
       --api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is

@@ -1,27 +1,25 @@
-# Operations related to VPCs | public-ips
-
 ## Usage:
-```bash
+```
 mgc network vpcs public-ips [flags]
   mgc network vpcs public-ips [command]
 ```
 
 ## Commands:
-```bash
+```
 create      Create Public IP
   list        List Public IPs
 
 ```
 
 ## Flags:
-```bash
+```
   -h, --help      help for public-ips
   -v, --version   version for public-ips
 
 ```
 
 ## Global Flags:
-```bash
+```
       --api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is

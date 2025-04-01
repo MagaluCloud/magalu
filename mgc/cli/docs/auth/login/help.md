@@ -1,14 +1,10 @@
-# Log in to your Magalu Cloud account. When you login with this command,
-the current Tenant will always be set to the default one. To see more details
-about a successful login, use the '--show' flag when logging in
-
 ## Usage:
-```bash
+```
 mgc auth login [flags]
 ```
 
 ## Flags:
-```bash
+```
       --headless   Generate URL for the login at local environment
   -h, --help       help for login
       --qrcode     Generate a qrcode for the login URL
@@ -17,7 +13,7 @@ mgc auth login [flags]
 ```
 
 ## Global Flags:
-```bash
+```
       --api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is

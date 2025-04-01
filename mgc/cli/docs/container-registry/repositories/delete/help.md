@@ -1,12 +1,10 @@
-# Delete a repository by name.
-
 ## Usage:
-```bash
+```
 mgc container-registry repositories delete [registry-id] [repository-name] [flags]
 ```
 
 ## Flags:
-```bash
+```
   -h, --help                     help for delete
       --registry-id uuid         Container Registry's UUID. (required)
       --repository-name string   Repository's name. (required)
@@ -15,7 +13,7 @@ mgc container-registry repositories delete [registry-id] [repository-name] [flag
 ```
 
 ## Global Flags:
-```bash
+```
       --api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is

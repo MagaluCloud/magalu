@@ -1,15 +1,11 @@
-# The authentication credentials set here will be used as a basis for a variety
-of HTTP requests using the MgcSDK. Authentication is done via Magalu Cloud account
-(Object Storage requires special keys, refer to it for more info)
-
 ## Usage:
-```bash
+```
 mgc auth [flags]
   mgc auth [command]
 ```
 
 ## Commands:
-```bash
+```
 access-token Retrieve the access token used in the APIs
   api-key      Manage your ID Magalu API keys
   clients      Manage Clients (Oauth Applications) to use ID Magalu
@@ -20,13 +16,13 @@ access-token Retrieve the access token used in the APIs
 ```
 
 ## Flags:
-```bash
+```
   -h, --help   help for auth
 
 ```
 
 ## Global Flags:
-```bash
+```
       --api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is

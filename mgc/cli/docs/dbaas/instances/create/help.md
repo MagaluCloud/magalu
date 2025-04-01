@@ -1,12 +1,15 @@
-# Creates a new database instance asynchronously for a tenant.
-
 ## Usage:
-```bash
+```
 mgc dbaas instances create [flags]
 ```
 
+## Examples:
+```
+mgc dbaas instances create --volume.size=30
+```
+
 ## Flags:
-```bash
+```
       --backup-retention-days integer   Backup Retention Days: The number of days that a particular backup is kept until its deletion. (default 7)
       --backup-start-at time            Backup Start At: Start time (UTC timezone) which is allowed to start the automated backup process. (default "04:00:00")
       --cli.list-links enum[=table]     List all available links for this command (one of "json", "table" or "yaml")
@@ -32,7 +35,7 @@ mgc dbaas instances create [flags]
 ```
 
 ## Global Flags:
-```bash
+```
       --api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is

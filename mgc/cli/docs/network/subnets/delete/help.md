@@ -1,12 +1,10 @@
-# Delete a subnet from the provided tenant_id
-
 ## Usage:
-```bash
+```
 mgc network subnets delete [subnet-id] [flags]
 ```
 
 ## Flags:
-```bash
+```
   -h, --help               help for delete
       --subnet-id string   Subnet Id: Id of the Subnet to delete (required)
   -v, --version            version for delete
@@ -14,7 +12,7 @@ mgc network subnets delete [subnet-id] [flags]
 ```
 
 ## Global Flags:
-```bash
+```
       --api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is

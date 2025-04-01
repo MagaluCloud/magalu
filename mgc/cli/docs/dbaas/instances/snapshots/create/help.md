@@ -1,12 +1,15 @@
-# Creates a new snapshot asynchronously.
-
 ## Usage:
-```bash
+```
 mgc dbaas instances snapshots create [instance-id] [flags]
 ```
 
+## Examples:
+```
+mgc dbaas instances snapshots create --description="my-description" --name="my-snapshot"
+```
+
 ## Flags:
-```bash
+```
       --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
       --description string            Snapshot description. (max character count: 255)
   -h, --help                          help for create
@@ -17,7 +20,7 @@ mgc dbaas instances snapshots create [instance-id] [flags]
 ```
 
 ## Global Flags:
-```bash
+```
       --api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is

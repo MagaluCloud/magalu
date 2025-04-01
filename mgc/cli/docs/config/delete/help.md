@@ -1,20 +1,17 @@
-# Delete/unset a Config value that had been previously set. This does not
-affect the environment variables
-
 ## Usage:
-```bash
+```
 mgc config delete [key] [flags]
 ```
 
 ## Flags:
-```bash
+```
   -h, --help         help for delete
       --key string   Name of the config to be deleted (required)
 
 ```
 
 ## Global Flags:
-```bash
+```
       --api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is

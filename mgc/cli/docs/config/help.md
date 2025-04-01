@@ -1,16 +1,11 @@
-# Configuration values are available to be set so that they persist between
-different executions of the MgcSDK. They reside in a YAML file when set.
-Config values may also be loaded via Environment Variables. Any Config available
-(see 'list') may be exported as an env variable in uppercase with the 'MGC_' prefix
-
 ## Usage:
-```bash
+```
 mgc config [flags]
   mgc config [command]
 ```
 
 ## Commands:
-```bash
+```
 delete      Delete/unset a Config value that had been previously set
   get         Get a specific Config value that has been previously set
   get-schema  Get the JSON Schema for the specified Config
@@ -20,13 +15,13 @@ delete      Delete/unset a Config value that had been previously set
 ```
 
 ## Flags:
-```bash
+```
   -h, --help   help for config
 
 ```
 
 ## Global Flags:
-```bash
+```
       --api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is

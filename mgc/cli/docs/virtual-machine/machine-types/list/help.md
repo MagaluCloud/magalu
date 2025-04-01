@@ -1,12 +1,10 @@
-# Retrieves a list of machine types allowed for the current tenant which is logged in.
-
 ## Usage:
-```bash
+```
 mgc virtual-machine machine-types list [flags]
 ```
 
 ## Flags:
-```bash
+```
       --availability-zone string   Availability-Zone: br-ne1-a
       --control.limit integer       Limit: limit the number of the results (max: 1000) (default 50)
       --control.offset integer      Offset: pagination for the results limited (max: 2147483647)
@@ -17,7 +15,7 @@ mgc virtual-machine machine-types list [flags]
 ```
 
 ## Global Flags:
-```bash
+```
       --api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is

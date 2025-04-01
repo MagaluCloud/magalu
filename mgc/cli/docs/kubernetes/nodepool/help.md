@@ -1,13 +1,11 @@
-# Endpoints related to the creation, listing of nodepools and nodes, updating, and deletion of nodepools for a Kubernetes cluster.
-
 ## Usage:
-```bash
+```
 mgc kubernetes nodepool [flags]
   mgc kubernetes nodepool [command]
 ```
 
 ## Commands:
-```bash
+```
 create      Create a node pool
   delete      Delete node pool by node_pool_id
   get         Get node pool by node_pool_id
@@ -18,14 +16,14 @@ create      Create a node pool
 ```
 
 ## Flags:
-```bash
+```
   -h, --help      help for nodepool
   -v, --version   version for nodepool
 
 ```
 
 ## Global Flags:
-```bash
+```
       --api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is

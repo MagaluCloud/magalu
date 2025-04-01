@@ -1,12 +1,15 @@
-# Create a Snapshot for the currently authenticated tenant.
-
 ## Usage:
-```bash
+```
 mgc block-storage snapshots create [flags]
 ```
 
+## Examples:
+```
+mgc block-storage snapshots create --source-snapshot.id="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" --source-snapshot.name="some_resource_name" --volume.id="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" --volume.name="some_resource_name"
+```
+
 ## Flags:
-```bash
+```
       --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
       --description string            Description (required)
   -h, --help                          help for create
@@ -29,7 +32,7 @@ mgc block-storage snapshots create [flags]
 ```
 
 ## Global Flags:
-```bash
+```
       --api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is

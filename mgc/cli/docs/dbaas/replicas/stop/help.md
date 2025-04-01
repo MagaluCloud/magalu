@@ -1,12 +1,10 @@
-# Stop an instance replica.
-
 ## Usage:
-```bash
+```
 mgc dbaas replicas stop [replica-id] [flags]
 ```
 
 ## Flags:
-```bash
+```
       --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
   -h, --help                          help for stop
       --replica-id uuid               Value referring to replica Id. (required)
@@ -15,7 +13,7 @@ mgc dbaas replicas stop [replica-id] [flags]
 ```
 
 ## Global Flags:
-```bash
+```
       --api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is

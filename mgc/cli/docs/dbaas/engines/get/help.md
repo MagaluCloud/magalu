@@ -1,12 +1,10 @@
-# Returns a engine detail.
-
 ## Usage:
-```bash
+```
 mgc dbaas engines get [engine-id] [flags]
 ```
 
 ## Flags:
-```bash
+```
       --engine-id uuid   Datastore Id (Deprecated): Value referring to datastore Id. (required)
   -h, --help             help for get
   -v, --version          version for get
@@ -14,7 +12,7 @@ mgc dbaas engines get [engine-id] [flags]
 ```
 
 ## Global Flags:
-```bash
+```
       --api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is

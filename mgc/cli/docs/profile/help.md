@@ -1,29 +1,24 @@
-# The profile group provides commands to view and modify user account settings. 
-It allows users to manage their SSH keys, update personal information, and configure other 
-account-related preferences. This group is essential for maintaining secure access and 
-personalizing the user experience within the system.
-
 ## Usage:
-```bash
+```
 mgc profile [flags]
   mgc profile [command]
 ```
 
 ## Commands:
-```bash
+```
 availability-zones Manage Availability Zones
   ssh-keys           Manage SSH Keys
 
 ```
 
 ## Flags:
-```bash
+```
   -h, --help   help for profile
 
 ```
 
 ## Global Flags:
-```bash
+```
       --api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is

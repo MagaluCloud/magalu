@@ -1,19 +1,17 @@
-# Deletes the workspace with the specified name
-
 ## Usage:
-```bash
+```
 mgc workspace delete [name] [flags]
 ```
 
 ## Flags:
-```bash
+```
   -h, --help          help for delete
       --name string   workspace name (required)
 
 ```
 
 ## Global Flags:
-```bash
+```
       --api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is

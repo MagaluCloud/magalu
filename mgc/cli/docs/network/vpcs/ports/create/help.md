@@ -1,12 +1,10 @@
-# Create a Port with provided vpc_id and x-tenant-id. You can provide a list of security_groups_id or subnets
-
 ## Usage:
-```bash
+```
 mgc network vpcs ports create [vpc-id] [flags]
 ```
 
 ## Flags:
-```bash
+```
       --cli.list-links enum[=table]        List all available links for this command (one of "json", "table" or "yaml")
       --has-pip                            Has Pip (default true)
       --has-sg                             Has Sg (default true)
@@ -20,7 +18,7 @@ mgc network vpcs ports create [vpc-id] [flags]
 ```
 
 ## Global Flags:
-```bash
+```
       --api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is

@@ -1,12 +1,10 @@
-# Returns a list of ports for a provided vpc_id and x-tenant-id. The list will be paginated, it means you can easily find what you need just setting the page number(_offset) and the quantity of items per page(_limit). The level of detail can also be set
-
 ## Usage:
-```bash
+```
 mgc network vpcs ports list [vpc-id] [flags]
 ```
 
 ## Flags:
-```bash
+```
       --control.limit integer        Items Per Page (min: 1) (default 10)
       --control.offset integer       Page Number (min: 1) (default 1)
       --detailed                     Detailed (default true)
@@ -19,7 +17,7 @@ mgc network vpcs ports list [vpc-id] [flags]
 ```
 
 ## Global Flags:
-```bash
+```
       --api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is

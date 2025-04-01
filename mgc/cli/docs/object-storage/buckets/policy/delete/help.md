@@ -1,19 +1,22 @@
-# Delete policy document for the specified bucket
-
 ## Usage:
-```bash
+```
 mgc object-storage buckets policy delete [dst] [flags]
 ```
 
+## Examples:
+```
+mgc object-storage buckets policy delete --dst="my-bucket"
+```
+
 ## Flags:
-```bash
+```
       --dst string   Name of the bucket to delete policy file from (required)
   -h, --help         help for delete
 
 ```
 
 ## Global Flags:
-```bash
+```
       --api-key string           Use your API key to authenticate with the API
       --chunk-size integer       Chunk size to consider when doing multipart requests. Specified in Mb (range: 8 - 5120) (default 8)
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters

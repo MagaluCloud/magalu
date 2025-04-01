@@ -1,12 +1,15 @@
-# Create a Rule async, returning its ID. To monitor the creation progress, please check the status in the service message or implement polling.Either a remote_ip_prefix or a remote_group_id can be specified.With remote_ip_prefix, all IPs that match the criteria will be allowed.With remote_group_id, only the specified security group is allowed to communicatefollowing the specified protocol, direction and port_range_min/max
-
 ## Usage:
-```bash
+```
 mgc network security-groups rules create [security-group-id] [flags]
 ```
 
+## Examples:
+```
+mgc network security-groups rules create --description="Allow incoming SSH traffic" --direction="ingress" --ethertype="IPv4"
+```
+
 ## Flags:
-```bash
+```
       --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
       --description string            Description of the security group rule
       --direction string              Direction of the rule, either ingress or egress (required)
@@ -25,7 +28,7 @@ mgc network security-groups rules create [security-group-id] [flags]
 ```
 
 ## Global Flags:
-```bash
+```
       --api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is

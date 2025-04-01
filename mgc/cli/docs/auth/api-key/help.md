@@ -1,13 +1,11 @@
-# ID Magalu API Keys are used for authentication across various platforms (CLI, SDK, Terraform, API requests). An API key has three components:
-
 ## Usage:
-```bash
+```
 mgc auth api-key [flags]
   mgc auth api-key [command]
 ```
 
 ## Commands:
-```bash
+```
 create      Create a new API Key
   get         Get a specific API key by its ID
   list        List your account API keys
@@ -16,13 +14,13 @@ create      Create a new API Key
 ```
 
 ## Flags:
-```bash
+```
   -h, --help   help for api-key
 
 ```
 
 ## Global Flags:
-```bash
+```
       --api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is

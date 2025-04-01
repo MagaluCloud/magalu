@@ -1,15 +1,11 @@
-# Workspace hold auth and runtime configuration, like tokens and log filter settings.
-Users can create as many workspaces as they choose to. Auth and config operations will affect only the
-current workspace, so users can alter and switch between workspaces without loosing the previous configuration
-
 ## Usage:
-```bash
+```
 mgc workspace [flags]
   mgc workspace [command]
 ```
 
 ## Commands:
-```bash
+```
 create      Creates a new workspace
   delete      Deletes the workspace with the specified name
   get         Get current workspace.
@@ -19,13 +15,13 @@ create      Creates a new workspace
 ```
 
 ## Flags:
-```bash
+```
   -h, --help   help for workspace
 
 ```
 
 ## Global Flags:
-```bash
+```
       --api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is

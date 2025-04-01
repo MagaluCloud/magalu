@@ -1,15 +1,11 @@
-# Tenants work like sub-accounts. You may have more than one Tenant under your
-Magalu Cloud account and they each store their data separately, but are billed
-under the same account
-
 ## Usage:
-```bash
+```
 mgc auth tenant [flags]
   mgc auth tenant [command]
 ```
 
 ## Commands:
-```bash
+```
 current     Get the currently active Tenant
   list        List all available tenants for current login
   set         Set the active Tenant to be used for all subsequent requests
@@ -17,13 +13,13 @@ current     Get the currently active Tenant
 ```
 
 ## Flags:
-```bash
+```
   -h, --help   help for tenant
 
 ```
 
 ## Global Flags:
-```bash
+```
       --api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is

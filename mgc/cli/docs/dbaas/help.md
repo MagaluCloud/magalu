@@ -1,13 +1,11 @@
-# DBaaS API Product.
-
 ## Usage:
-```bash
+```
 mgc dbaas [flags]
   mgc dbaas [command]
 ```
 
 ## Commands:
-```bash
+```
 engines        Engines available for database instances.
   instance-types Instance Types available for database instances.
   instances      Database instances management.
@@ -17,14 +15,14 @@ engines        Engines available for database instances.
 ```
 
 ## Flags:
-```bash
+```
   -h, --help      help for dbaas
   -v, --version   version for dbaas
 
 ```
 
 ## Global Flags:
-```bash
+```
       --api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is

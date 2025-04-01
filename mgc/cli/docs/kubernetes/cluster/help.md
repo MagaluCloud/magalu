@@ -1,13 +1,11 @@
-# Endpoints related to the creation, listing, deletion, and retrieval of the kubeconfig for a Kubernetes cluster.
-
 ## Usage:
-```bash
+```
 mgc kubernetes cluster [flags]
   mgc kubernetes cluster [command]
 ```
 
 ## Commands:
-```bash
+```
 create      Create a cluster
   delete      Delete a cluster
   get         List a cluster by uuid
@@ -18,14 +16,14 @@ create      Create a cluster
 ```
 
 ## Flags:
-```bash
+```
   -h, --help      help for cluster
   -v, --version   version for cluster
 
 ```
 
 ## Global Flags:
-```bash
+```
       --api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is

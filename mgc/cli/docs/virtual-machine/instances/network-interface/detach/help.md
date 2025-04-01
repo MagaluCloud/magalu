@@ -1,12 +1,15 @@
-# Detach a non primary network interface from an instance for a default project
-
 ## Usage:
-```bash
+```
 mgc virtual-machine instances network-interface detach [flags]
 ```
 
+## Examples:
+```
+mgc virtual-machine instances network-interface detach --instance.id="9ec75090-2872-4f51-8111-53d05d96d2c6" --instance.name="some_resource_name" --network.interface.id="9ec75090-2872-4f51-8111-53d05d96d2c6"
+```
+
 ## Flags:
-```bash
+```
   -h, --help                          help for detach
       --instance object               Instance (at least one of: single property: id or single property: name)
                                       Use --instance=help for more details (required)
@@ -26,7 +29,7 @@ mgc virtual-machine instances network-interface detach [flags]
 ```
 
 ## Global Flags:
-```bash
+```
       --api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is

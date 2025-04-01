@@ -1,13 +1,11 @@
-# Object operations for Object Storage API
-
 ## Usage:
-```bash
+```
 mgc object-storage objects [flags]
   mgc object-storage objects [command]
 ```
 
 ## Commands:
-```bash
+```
 acl          ACL related operations
   copy         Copy an object from a bucket to another bucket
   copy-all     Copy all objects from a bucket to another bucket
@@ -30,13 +28,13 @@ acl          ACL related operations
 ```
 
 ## Flags:
-```bash
+```
   -h, --help   help for objects
 
 ```
 
 ## Global Flags:
-```bash
+```
       --api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is

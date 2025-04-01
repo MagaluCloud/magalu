@@ -1,12 +1,10 @@
-# Change current Object Storage credential
-
 ## Usage:
-```bash
+```
 mgc object-storage api-key add [key-id] [key-secret] [flags]
 ```
 
 ## Flags:
-```bash
+```
   -h, --help                help for add
       --key-id string       ID of api key to use (required)
       --key-secret string   Secret of api key to use (required)
@@ -14,7 +12,7 @@ mgc object-storage api-key add [key-id] [key-secret] [flags]
 ```
 
 ## Global Flags:
-```bash
+```
       --api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is

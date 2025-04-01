@@ -1,12 +1,10 @@
-# Delete repository image by digest or tag
-
 ## Usage:
-```bash
+```
 mgc container-registry images delete [registry-id] [repository-name] [digest-or-tag] [flags]
 ```
 
 ## Flags:
-```bash
+```
       --digest-or-tag string     Digest or tag of an image (required)
   -h, --help                     help for delete
       --registry-id uuid         Container Registry's UUID. (required)
@@ -16,7 +14,7 @@ mgc container-registry images delete [registry-id] [repository-name] [digest-or-
 ```
 
 ## Global Flags:
-```bash
+```
       --api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is

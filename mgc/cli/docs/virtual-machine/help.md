@@ -1,13 +1,11 @@
-# Virtual Machine Api Product
-
 ## Usage:
-```bash
+```
 mgc virtual-machine [flags]
   mgc virtual-machine [command]
 ```
 
 ## Commands:
-```bash
+```
 images        Operations with images for instances.
   instances     Operations with instances, including create, delete, start, stop, reboot and other actions.
   machine-types Operations with machine types for instances.
@@ -16,14 +14,14 @@ images        Operations with images for instances.
 ```
 
 ## Flags:
-```bash
+```
   -h, --help      help for virtual-machine
   -v, --version   version for virtual-machine
 
 ```
 
 ## Global Flags:
-```bash
+```
       --api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is

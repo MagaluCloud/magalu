@@ -1,12 +1,10 @@
-# Retrieve a list of images allowed for the current region.
-
 ## Usage:
-```bash
+```
 mgc virtual-machine images list [flags]
 ```
 
 ## Flags:
-```bash
+```
       --availability-zone string   Availability-Zone: br-ne1-a
       --control.limit integer       Limit (max: 2147483647) (default 50)
       --control.offset integer      Offset (max: 2147483647)
@@ -17,7 +15,7 @@ mgc virtual-machine images list [flags]
 ```
 
 ## Global Flags:
-```bash
+```
       --api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is

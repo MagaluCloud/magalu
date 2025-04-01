@@ -1,13 +1,11 @@
-# Routes related to listing and deletion of repositories.
-
 ## Usage:
-```bash
+```
 mgc container-registry repositories [flags]
   mgc container-registry repositories [command]
 ```
 
 ## Commands:
-```bash
+```
 delete      Delete a container registry repository by repository_name.
   get         Get a container registry repository by repository_name
   list        List all container registry repositories
@@ -15,14 +13,14 @@ delete      Delete a container registry repository by repository_name.
 ```
 
 ## Flags:
-```bash
+```
   -h, --help      help for repositories
   -v, --version   version for repositories
 
 ```
 
 ## Global Flags:
-```bash
+```
       --api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is

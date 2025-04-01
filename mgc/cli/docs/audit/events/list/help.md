@@ -1,12 +1,15 @@
-# Lists all events emitted by other products.
-
 ## Usage:
-```bash
+```
 mgc audit events list [flags]
 ```
 
+## Examples:
+```
+mgc audit events list --data='{"data.machine_type.name":"cloud-bs1.xsmall","data.tenant_id":"00000000-0000-0000-0000-000000000000"}'
+```
+
 ## Flags:
-```bash
+```
       --authid string            Auth ID: Identification of the principal that triggered the occurrence
       --control.limit integer    Limit: Number of items per page (default 50)
       --control.offset integer   Offset for pagination
@@ -23,7 +26,7 @@ mgc audit events list [flags]
 ```
 
 ## Global Flags:
-```bash
+```
       --api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is

@@ -1,12 +1,15 @@
-# Creates a node pool in a Kubernetes cluster.
-
 ## Usage:
-```bash
+```
 mgc kubernetes nodepool create [cluster-id] [flags]
 ```
 
+## Examples:
+```
+mgc kubernetes nodepool create --auto-scale.max-replicas=5 --auto-scale.min-replicas=2 --flavor="cloud-k8s.gp1.small" --name="nodepool-example" --replicas=3 --tags='["tag-value1"]'
+```
+
 ## Flags:
-```bash
+```
       --auto-scale object                 Object specifying properties for updating workload resources in the Kubernetes cluster.
                                            (properties: max_replicas and min_replicas)
                                           Use --auto-scale=help for more details
@@ -56,7 +59,7 @@ mgc kubernetes nodepool create [cluster-id] [flags]
 ```
 
 ## Global Flags:
-```bash
+```
       --api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is

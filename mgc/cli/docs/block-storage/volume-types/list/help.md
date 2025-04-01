@@ -1,12 +1,10 @@
-# List Volume Types allowed in the current region.
-
 ## Usage:
-```bash
+```
 mgc block-storage volume-types list [flags]
 ```
 
 ## Flags:
-```bash
+```
       --allows-encryption          Allows-Encryption
       --availability-zone string   Availability-Zone
   -h, --help                       help for list
@@ -16,7 +14,7 @@ mgc block-storage volume-types list [flags]
 ```
 
 ## Global Flags:
-```bash
+```
       --api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is

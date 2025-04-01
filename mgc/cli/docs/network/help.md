@@ -1,13 +1,11 @@
-# VPC Api Product
-
 ## Usage:
-```bash
+```
 mgc network [flags]
   mgc network [command]
 ```
 
 ## Commands:
-```bash
+```
 nat-gateways    Operations related to Nat Gateway
   ports           Operations related to Ports
   public-ips      Operations related to Public IPs
@@ -20,14 +18,14 @@ nat-gateways    Operations related to Nat Gateway
 ```
 
 ## Flags:
-```bash
+```
   -h, --help      help for network
   -v, --version   version for network
 
 ```
 
 ## Global Flags:
-```bash
+```
       --api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is

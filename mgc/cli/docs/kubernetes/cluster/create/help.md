@@ -1,12 +1,15 @@
-# Creates a Kubernetes cluster in Magalu Cloud.
-
 ## Usage:
-```bash
+```
 mgc kubernetes cluster create [flags]
 ```
 
+## Examples:
+```
+mgc kubernetes cluster create --allowed-cidrs='["192.168.1.0/24","10.0.0.0/16"]' --description="This is an example cluster." --enabled-bastion=false --enabled-server-group=false --name="cluster-example" --node-pools='[{"auto_scale":{"max_replicas":5,"min_replicas":2},"flavor":"cloud-k8s.gp1.small","name":"nodepool-example","replicas":3,"tags":["tag-value1"],"taints":[{"effect":"NoSchedule","key":"example-key","value":"valor1"}]}]' --param.version="v1.30.2" --zone="br-region-zone"
+```
+
 ## Flags:
-```bash
+```
       --allowed-cidrs array(string)   List of allowed CIDR blocks for API server access.
                                       
       --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
@@ -38,7 +41,7 @@ mgc kubernetes cluster create [flags]
 ```
 
 ## Global Flags:
-```bash
+```
       --api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is

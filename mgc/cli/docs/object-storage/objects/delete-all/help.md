@@ -1,12 +1,10 @@
-# Delete all objects from a bucket
-
 ## Usage:
-```bash
+```
 mgc object-storage objects delete-all [bucket] [flags]
 ```
 
 ## Flags:
-```bash
+```
       --batch-size integer     Limit of items per batch to delete (range: 1 - 1000) (default 1000)
       --bucket string          Name of the bucket to delete objects from (required)
       --filter array(object)   File name pattern to include or exclude
@@ -16,7 +14,7 @@ mgc object-storage objects delete-all [bucket] [flags]
 ```
 
 ## Global Flags:
-```bash
+```
       --api-key string           Use your API key to authenticate with the API
       --chunk-size integer       Chunk size to consider when doing multipart requests. Specified in Mb (range: 8 - 5120) (default 8)
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters

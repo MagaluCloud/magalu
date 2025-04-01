@@ -1,13 +1,11 @@
-# Label-related commands
-
 ## Usage:
-```bash
+```
 mgc object-storage buckets label [flags]
   mgc object-storage buckets label [command]
 ```
 
 ## Commands:
-```bash
+```
 delete      Delete labels for the specified bucket
   get         Get labels for the specified bucket
   set         Set labels for the specified bucket
@@ -15,13 +13,13 @@ delete      Delete labels for the specified bucket
 ```
 
 ## Flags:
-```bash
+```
   -h, --help   help for label
 
 ```
 
 ## Global Flags:
-```bash
+```
       --api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is

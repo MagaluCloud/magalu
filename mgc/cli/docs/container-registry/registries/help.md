@@ -1,13 +1,11 @@
-# Routes related to creation, listing and deletion of registries.
-
 ## Usage:
-```bash
+```
 mgc container-registry registries [flags]
   mgc container-registry registries [command]
 ```
 
 ## Commands:
-```bash
+```
 create      Create a container registry
   delete      Delete a container registry by registry_id
   get         Get registry information
@@ -16,14 +14,14 @@ create      Create a container registry
 ```
 
 ## Flags:
-```bash
+```
   -h, --help      help for registries
   -v, --version   version for registries
 
 ```
 
 ## Global Flags:
-```bash
+```
       --api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is

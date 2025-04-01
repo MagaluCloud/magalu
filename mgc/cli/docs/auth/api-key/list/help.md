@@ -1,19 +1,17 @@
-# This APIs Keys are from your account and can be used to authenticate in the Magalu Cloud
-
 ## Usage:
-```bash
+```
 mgc auth api-key list [flags]
 ```
 
 ## Flags:
-```bash
+```
   -h, --help           help for list
       --invalid-keys   Include Invalid Rekove and Expired Keys (required)
 
 ```
 
 ## Global Flags:
-```bash
+```
       --api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is

@@ -1,12 +1,10 @@
-# Returns a list of available engines.
-
 ## Usage:
-```bash
+```
 mgc dbaas engines list [flags]
 ```
 
 ## Flags:
-```bash
+```
       --control.limit integer    The maximum number of items per page. (range: 1 - 50) (default 10)
       --control.offset integer   The number of items to skip before starting to collect the result set. (min: 0)
   -h, --help                     help for list
@@ -16,7 +14,7 @@ mgc dbaas engines list [flags]
 ```
 
 ## Global Flags:
-```bash
+```
       --api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is

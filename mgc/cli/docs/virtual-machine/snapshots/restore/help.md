@@ -1,12 +1,15 @@
-# Restore a snapshot of an instance with the current tenant which is logged in. </br>
-
 ## Usage:
-```bash
+```
 mgc virtual-machine snapshots restore [id] [flags]
 ```
 
+## Examples:
+```
+mgc virtual-machine snapshots restore --machine-type.id="9ec75090-2872-4f51-8111-53d05d96d2c6" --machine-type.name="some_resource_name" --network.associate-public-ip=true --network.interface.id="9ec75090-2872-4f51-8111-53d05d96d2c6" --network.interface.security-groups='[{"id":"9ec75090-2872-4f51-8111-53d05d96d2c6"}]' --network.vpc.id="9ec75090-2872-4f51-8111-53d05d96d2c6" --network.vpc.name="some_resource_name"
+```
+
 ## Flags:
-```bash
+```
       --availability-zone string                  Availability Zone (between 1 and 255 characters) (default "br-ne1-a")
       --cli.list-links enum[=table]               List all available links for this command (one of "json", "table" or "yaml")
   -h, --help                                      help for restore
@@ -44,7 +47,7 @@ mgc virtual-machine snapshots restore [id] [flags]
 ```
 
 ## Global Flags:
-```bash
+```
       --api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is

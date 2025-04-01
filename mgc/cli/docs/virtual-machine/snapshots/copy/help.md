@@ -1,12 +1,10 @@
-# Snapshot copy
-
 ## Usage:
-```bash
+```
 mgc virtual-machine snapshots copy [id] [flags]
 ```
 
 ## Flags:
-```bash
+```
       --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
       --destination-region enum       Regions (one of "br-mgl1", "br-ne1" or "br-se1") (required)
   -h, --help                          help for copy
@@ -16,7 +14,7 @@ mgc virtual-machine snapshots copy [id] [flags]
 ```
 
 ## Global Flags:
-```bash
+```
       --api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is

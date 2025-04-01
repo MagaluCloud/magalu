@@ -1,13 +1,11 @@
-# Manage bucket versioning
-
 ## Usage:
-```bash
+```
 mgc object-storage buckets versioning [flags]
   mgc object-storage buckets versioning [command]
 ```
 
 ## Commands:
-```bash
+```
 enable      Enable versioning for a Bucket
   get         Get versioning info for a Bucket
   suspend     Suspend versioning for a Bucket
@@ -15,13 +13,13 @@ enable      Enable versioning for a Bucket
 ```
 
 ## Flags:
-```bash
+```
   -h, --help   help for versioning
 
 ```
 
 ## Global Flags:
-```bash
+```
       --api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is

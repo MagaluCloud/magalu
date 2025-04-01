@@ -1,12 +1,10 @@
-# Lists all types of events emitted by other products.
-
 ## Usage:
-```bash
+```
 mgc audit event-types list [flags]
 ```
 
 ## Flags:
-```bash
+```
       --control.limit integer    Limit: Number of items per page (default 50)
       --control.offset integer   Offset for pagination
   -h, --help                     help for list
@@ -15,7 +13,7 @@ mgc audit event-types list [flags]
 ```
 
 ## Global Flags:
-```bash
+```
       --api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is

@@ -1,12 +1,15 @@
-# Copy all objects from a bucket to another bucket
-
 ## Usage:
-```bash
+```
 mgc object-storage objects copy-all [src] [dst] [flags]
 ```
 
+## Examples:
+```
+mgc object-storage objects copy-all --dst="bucket2/dir/" --src="bucket1" --storage-class="cold"
+```
+
 ## Flags:
-```bash
+```
       --dst uri                Full destination path in the bucket (required)
       --filter array(object)   File name pattern to include or exclude
                                Use --filter=help for more details
@@ -17,7 +20,7 @@ mgc object-storage objects copy-all [src] [dst] [flags]
 ```
 
 ## Global Flags:
-```bash
+```
       --api-key string           Use your API key to authenticate with the API
       --chunk-size integer       Chunk size to consider when doing multipart requests. Specified in Mb (range: 8 - 5120) (default 8)
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters

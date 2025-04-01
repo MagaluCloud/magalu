@@ -1,12 +1,15 @@
-# Create a Volume for the currently authenticated tenant.
-
 ## Usage:
-```bash
+```
 mgc block-storage volumes create [flags]
 ```
 
+## Examples:
+```
+mgc block-storage volumes create --snapshot.id="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" --snapshot.name="some_resource_name" --type.id="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" --type.name="some_resource_name"
+```
+
 ## Flags:
-```bash
+```
       --availability-zone string      Availability Zone
       --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
       --encrypted                     Indicates if the volume is encrypted. Default is False.
@@ -30,7 +33,7 @@ mgc block-storage volumes create [flags]
 ```
 
 ## Global Flags:
-```bash
+```
       --api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is

@@ -1,27 +1,25 @@
-# Routes related to credentials to login to Docker.
-
 ## Usage:
-```bash
+```
 mgc container-registry credentials [flags]
   mgc container-registry credentials [command]
 ```
 
 ## Commands:
-```bash
+```
 list        Get credentials for container registry
   password    Reset password
 
 ```
 
 ## Flags:
-```bash
+```
   -h, --help      help for credentials
   -v, --version   version for credentials
 
 ```
 
 ## Global Flags:
-```bash
+```
       --api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is

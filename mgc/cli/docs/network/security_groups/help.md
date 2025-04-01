@@ -1,13 +1,11 @@
-# Operations related to Security Groups
-
 ## Usage:
-```bash
+```
 mgc network security-groups [flags]
   mgc network security-groups [command]
 ```
 
 ## Commands:
-```bash
+```
 create      Create Security Group
   delete      Delete a security group
   get         Security Group Details
@@ -17,14 +15,14 @@ create      Create Security Group
 ```
 
 ## Flags:
-```bash
+```
   -h, --help      help for security-groups
   -v, --version   version for security-groups
 
 ```
 
 ## Global Flags:
-```bash
+```
       --api-key string           Use your API key to authenticate with the API
   -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                  use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is
