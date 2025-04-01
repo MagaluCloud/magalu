@@ -30,9 +30,12 @@ generate-docs: build-cicd
 # specs
 download-specs: build-cicd
 	@./mgc/spec_manipulator/cicd spec download
+	@echo "Now, run 'make prepare-specs' validate and pretify the specs"
+
+prepare-specs: build-cicd
+	@./mgc/spec_manipulator/cicd spec prepare
 
 refresh-specs: build-cicd
-	@./mgc/spec_manipulator/cicd spec prepare
 	@./mgc/spec_manipulator/cicd spec downgrade
 	@poetry install
 	@poetry run ./scripts/add_all_specs.sh
