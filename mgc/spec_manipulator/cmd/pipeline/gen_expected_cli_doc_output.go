@@ -69,6 +69,17 @@ func genHelpOutput(path []string) (string, error) {
 // 	return genOutput(cmd)
 // }
 
+func removeIdentation(inputText string) string {
+	//split string
+	lines := strings.Split(inputText, "\n")
+	for i, x := range lines {
+		if strings.HasPrefix(x, "  ") {
+			lines[i] = strings.TrimPrefix(x, "  ")
+		}
+	}
+	return strings.Join(lines, "\n")
+}
+
 func convertToMarkdown(inputText string) string {
 	sections := strings.Split(inputText, "\n\n")
 	var markdown strings.Builder
@@ -85,7 +96,7 @@ func convertToMarkdown(inputText string) string {
 		if strings.Contains(section, "Usage:") {
 			markdown.WriteString("## Usage:\n```\n")
 			section = strings.ReplaceAll(section, "Usage:\n", "")
-			markdown.WriteString(strings.ReplaceAll(strings.TrimSpace(section), "</br>", ""))
+			markdown.WriteString(strings.ReplaceAll(removeIdentation(section), "</br>", ""))
 			markdown.WriteString("\n```\n\n")
 			break
 		}
@@ -96,7 +107,7 @@ func convertToMarkdown(inputText string) string {
 		if strings.HasPrefix(section, "Examples:") {
 			markdown.WriteString("## Examples:\n```\n")
 			section = strings.ReplaceAll(section, "Examples:\n", "")
-			markdown.WriteString(strings.ReplaceAll(strings.TrimSpace(section), "</br>", ""))
+			markdown.WriteString(strings.ReplaceAll(removeIdentation(section), "</br>", ""))
 			markdown.WriteString("\n```\n\n")
 			break
 		}
@@ -107,7 +118,7 @@ func convertToMarkdown(inputText string) string {
 		if strings.Contains(section, "Commands:") {
 			markdown.WriteString("## Commands:\n```\n")
 			section = strings.ReplaceAll(section, "Commands:\n", "")
-			markdown.WriteString(fmt.Sprintf("%s\n", strings.ReplaceAll(strings.TrimSpace(section), "</br>", "")))
+			markdown.WriteString(fmt.Sprintf("%s\n", strings.ReplaceAll(removeIdentation(section), "</br>", "")))
 			markdown.WriteString("\n```\n\n")
 			break
 		}
@@ -118,7 +129,7 @@ func convertToMarkdown(inputText string) string {
 		if strings.Contains(section, "Products:") {
 			markdown.WriteString("## Product catalog:\n```\n")
 			section = strings.ReplaceAll(section, "Products:\n", "")
-			markdown.WriteString(fmt.Sprintf("%s\n", strings.ReplaceAll(strings.TrimSpace(section), "</br>", "")))
+			markdown.WriteString(fmt.Sprintf("%s\n", strings.ReplaceAll(removeIdentation(section), "</br>", "")))
 			markdown.WriteString("\n```\n\n")
 			break
 		}
@@ -129,7 +140,7 @@ func convertToMarkdown(inputText string) string {
 		if strings.Contains(section, "Other commands:") {
 			markdown.WriteString("## Other commands:\n```\n")
 			section = strings.ReplaceAll(section, "Other commands:\n", "")
-			markdown.WriteString(fmt.Sprintf("%s\n", strings.ReplaceAll(strings.TrimSpace(section), "</br>", "")))
+			markdown.WriteString(fmt.Sprintf("%s\n", strings.ReplaceAll(removeIdentation(section), "</br>", "")))
 			markdown.WriteString("\n```\n\n")
 			break
 		}
@@ -140,7 +151,7 @@ func convertToMarkdown(inputText string) string {
 		if strings.Contains(section, "Flags:") {
 			markdown.WriteString("## Flags:\n```\n")
 			section = strings.ReplaceAll(section, "Flags:\n", "")
-			markdown.WriteString(fmt.Sprintf("%s\n", strings.ReplaceAll(strings.TrimSpace(section), "</br>", "")))
+			markdown.WriteString(fmt.Sprintf("%s\n", strings.ReplaceAll(removeIdentation(section), "</br>", "")))
 			markdown.WriteString("\n```\n\n")
 			break
 		}
@@ -151,7 +162,7 @@ func convertToMarkdown(inputText string) string {
 		if strings.Contains(section, "Global Flags:") {
 			markdown.WriteString("## Global Flags:\n```\n")
 			section = strings.ReplaceAll(section, "Global Flags:\n", "")
-			markdown.WriteString(fmt.Sprintf("%s\n", strings.ReplaceAll(strings.TrimSpace(section), "</br>", "")))
+			markdown.WriteString(fmt.Sprintf("%s\n", strings.ReplaceAll(removeIdentation(section), "</br>", "")))
 			markdown.WriteString("\n```\n\n")
 			break
 		}
@@ -162,7 +173,7 @@ func convertToMarkdown(inputText string) string {
 		if strings.Contains(section, "Settings:") {
 			markdown.WriteString("## Settings:\n```\n")
 			section = strings.ReplaceAll(section, "Settings:\n", "")
-			markdown.WriteString(fmt.Sprintf("%s\n", strings.ReplaceAll(strings.TrimSpace(section), "</br>", "")))
+			markdown.WriteString(fmt.Sprintf("%s\n", strings.ReplaceAll(removeIdentation(section), "</br>", "")))
 			markdown.WriteString("\n```\n\n")
 			break
 		}
