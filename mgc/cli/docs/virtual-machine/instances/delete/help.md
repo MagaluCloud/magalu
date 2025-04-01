@@ -1,3 +1,5 @@
+Delete a Virtual Machine instance
+
 ## Usage:
 ```
 mgc virtual-machine instances delete [id] [flags]

@@ -1,3 +1,5 @@
+Creates a Kubernetes cluster in Magalu Cloud.
+
 ## Usage:
 ```
 mgc kubernetes cluster create [flags]

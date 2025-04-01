@@ -1,3 +1,5 @@
+Delete a security group from the provided tenant_id
+
 ## Usage:
 ```
 mgc network security-groups delete [security-group-id] [flags]

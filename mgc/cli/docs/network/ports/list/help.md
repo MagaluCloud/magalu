@@ -1,3 +1,5 @@
+Return a detailed list of ports from the provided tenant_id
+
 ## Usage:
 ```
 mgc network ports list [flags]

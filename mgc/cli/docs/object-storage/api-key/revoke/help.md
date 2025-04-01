@@ -1,3 +1,5 @@
+Revoke credentials used in Object Storage requests
+
 ## Usage:
 ```
 mgc object-storage api-key revoke [uuid] [flags]

@@ -1,3 +1,5 @@
+Operations with volume types for volumes.
+
 ## Usage:
 ```
 mgc block-storage volume-types [flags]

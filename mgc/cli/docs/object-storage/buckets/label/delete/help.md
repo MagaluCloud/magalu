@@ -1,3 +1,5 @@
+Delete labels for the specified bucket
+
 ## Usage:
 ```
 mgc object-storage buckets label delete [bucket] [label] [flags]

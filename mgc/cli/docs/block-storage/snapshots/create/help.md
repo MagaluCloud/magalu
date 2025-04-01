@@ -1,3 +1,5 @@
+Create a Snapshot for the currently authenticated tenant.
+
 ## Usage:
 ```
 mgc block-storage snapshots create [flags]

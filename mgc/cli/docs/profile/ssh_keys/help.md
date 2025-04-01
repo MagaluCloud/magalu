@@ -1,3 +1,5 @@
+Manage SSH Keys
+
 ## Usage:
 ```
 mgc profile ssh-keys [flags]

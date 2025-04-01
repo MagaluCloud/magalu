@@ -1,3 +1,5 @@
+Returns a database instance detail.
+
 ## Usage:
 ```
 mgc dbaas instances get [instance-id] [flags]

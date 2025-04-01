@@ -1,3 +1,5 @@
+Set ACL information for the specified object
+
 ## Usage:
 ```
 mgc object-storage objects acl set [dst] [flags]

@@ -1,3 +1,5 @@
+Gets a node pool from a Kubernetes cluster by cluster_uuid.
+
 ## Usage:
 ```
 mgc kubernetes nodepool list [cluster-id] [flags]

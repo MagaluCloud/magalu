@@ -72,6 +72,13 @@ func genHelpOutput(path []string) (string, error) {
 func convertToMarkdown(inputText string) string {
 	sections := strings.Split(inputText, "\n\n")
 	var markdown strings.Builder
+	headerCtt := sections[0]
+	// Header section
+	if strings.Contains(sections[0], "██") {
+		headerCtt = sections[1]
+	}
+
+	markdown.WriteString(fmt.Sprintf("%s\n\n", strings.TrimSpace(headerCtt)))
 
 	// Usage section
 	for _, section := range sections {

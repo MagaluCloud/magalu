@@ -1,3 +1,5 @@
+List all images in container registry repository
+
 ## Usage:
 ```
 mgc container-registry images list [registry-id] [repository-name] [flags]

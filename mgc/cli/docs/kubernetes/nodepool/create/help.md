@@ -1,3 +1,5 @@
+Creates a node pool in a Kubernetes cluster.
+
 ## Usage:
 ```
 mgc kubernetes nodepool create [cluster-id] [flags]

@@ -1,3 +1,5 @@
+Label-related commands
+
 ## Usage:
 ```
 mgc object-storage buckets label [flags]

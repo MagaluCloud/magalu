@@ -1,3 +1,5 @@
+Retrieve a list of Volumes for the currently authenticated tenant.
+
 ## Usage:
 ```
 mgc block-storage volumes list [flags]

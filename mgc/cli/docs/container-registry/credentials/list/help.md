@@ -1,3 +1,5 @@
+Return container registry user's authentication credentials.
+
 ## Usage:
 ```
 mgc container-registry credentials list [flags]

@@ -1,3 +1,5 @@
+Start an instance replica.
+
 ## Usage:
 ```
 mgc dbaas replicas start [replica-id] [flags]

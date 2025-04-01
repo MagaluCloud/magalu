@@ -1,3 +1,5 @@
+Operations related to Subnets
+
 ## Usage:
 ```
 mgc network subnets [flags]

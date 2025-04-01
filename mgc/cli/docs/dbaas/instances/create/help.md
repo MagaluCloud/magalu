@@ -1,3 +1,5 @@
+Creates a new database instance asynchronously for a tenant.
+
 ## Usage:
 ```
 mgc dbaas instances create [flags]

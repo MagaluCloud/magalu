@@ -1,3 +1,5 @@
+List all availability zones.
+
 ## Usage:
 ```
 mgc profile availability-zones list [flags]

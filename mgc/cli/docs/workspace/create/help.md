@@ -1,3 +1,5 @@
+Creates a new workspace
+
 ## Usage:
 ```
 mgc workspace create [name] [copy] [flags]

@@ -1,3 +1,5 @@
+Get an instance replica detail.
+
 ## Usage:
 ```
 mgc dbaas replicas get [replica-id] [flags]

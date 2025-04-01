@@ -1,3 +1,5 @@
+List valid Object Storage credentials
+
 ## Usage:
 ```
 mgc object-storage api-key list [flags]

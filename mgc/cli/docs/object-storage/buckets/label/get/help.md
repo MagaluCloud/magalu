@@ -1,3 +1,5 @@
+Get labels for the specified bucket
+
 ## Usage:
 ```
 mgc object-storage buckets label get [bucket] [flags]

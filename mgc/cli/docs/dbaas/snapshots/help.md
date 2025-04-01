@@ -1,3 +1,5 @@
+Snapshots management.
+
 ## Usage:
 ```
 mgc dbaas snapshots [flags]

@@ -1,3 +1,5 @@
+Bucket operations for Object Storage API
+
 ## Usage:
 ```
 mgc object-storage buckets [flags]

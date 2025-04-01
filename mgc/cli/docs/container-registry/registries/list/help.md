@@ -1,3 +1,5 @@
+List user's container registries.
+
 ## Usage:
 ```
 mgc container-registry registries list [flags]

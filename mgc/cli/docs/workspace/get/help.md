@@ -1,3 +1,5 @@
+Get current workspace.
+
 ## Usage:
 ```
 mgc workspace get [flags]

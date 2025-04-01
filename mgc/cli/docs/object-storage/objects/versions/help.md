@@ -1,3 +1,5 @@
+Retrieve all versions of an object
+
 ## Usage:
 ```
 mgc object-storage objects versions [dst] [flags]

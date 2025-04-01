@@ -1,3 +1,5 @@
+Endpoints related to the creation, listing, deletion, and retrieval of the kubeconfig for a Kubernetes cluster.
+
 ## Usage:
 ```
 mgc kubernetes cluster [flags]

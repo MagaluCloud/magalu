@@ -1,3 +1,5 @@
+Get a specific API key by its ID
+
 ## Usage:
 ```
 mgc auth api-key get [id] [flags]

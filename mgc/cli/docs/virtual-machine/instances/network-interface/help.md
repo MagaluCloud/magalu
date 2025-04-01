@@ -1,3 +1,5 @@
+Operations with instances, including create, delete, start, stop, reboot and other actions. | network-interface
+
 ## Usage:
 ```
 mgc virtual-machine instances network-interface [flags]

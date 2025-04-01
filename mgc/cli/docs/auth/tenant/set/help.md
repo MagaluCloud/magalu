@@ -1,3 +1,5 @@
+Set the active Tenant to be used for all subsequent requests
+
 ## Usage:
 ```
 mgc auth tenant set [uuid] [flags]

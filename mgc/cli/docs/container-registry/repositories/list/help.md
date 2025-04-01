@@ -1,3 +1,5 @@
+List all user's repositories in the container registry.
+
 ## Usage:
 ```
 mgc container-registry repositories list [registry-id] [flags]

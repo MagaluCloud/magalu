@@ -1,3 +1,5 @@
+Lists all events emitted by other products.
+
 ## Usage:
 ```
 mgc audit events list [flags]

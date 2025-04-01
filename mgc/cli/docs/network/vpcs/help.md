@@ -1,3 +1,5 @@
+Operations related to VPCs
+
 ## Usage:
 ```
 mgc network vpcs [flags]

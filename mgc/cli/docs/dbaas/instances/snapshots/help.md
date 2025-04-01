@@ -1,3 +1,5 @@
+Database instances management. | snapshots
+
 ## Usage:
 ```
 mgc dbaas instances snapshots [flags]

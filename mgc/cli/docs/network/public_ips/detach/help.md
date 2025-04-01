@@ -1,3 +1,5 @@
+Detach a Public IP to a Port
+
 ## Usage:
 ```
 mgc network public-ips detach [public-ip-id] [port-id] [flags]

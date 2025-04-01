@@ -1,3 +1,5 @@
+Create a new NAT (Network Address Translation) Gateway for a specified VPC and zone.
+
 ## Usage:
 ```
 mgc network nat-gateways create [flags]

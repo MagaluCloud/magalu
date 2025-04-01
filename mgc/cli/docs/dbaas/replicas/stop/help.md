@@ -1,3 +1,5 @@
+Stop an instance replica.
+
 ## Usage:
 ```
 mgc dbaas replicas stop [replica-id] [flags]

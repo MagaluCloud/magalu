@@ -1,3 +1,5 @@
+Delete all objects from a bucket
+
 ## Usage:
 ```
 mgc object-storage objects delete-all [bucket] [flags]

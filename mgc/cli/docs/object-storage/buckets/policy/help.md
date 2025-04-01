@@ -1,3 +1,5 @@
+Policy-related commands
+
 ## Usage:
 ```
 mgc object-storage buckets policy [flags]

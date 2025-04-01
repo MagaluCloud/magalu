@@ -1,3 +1,6 @@
+Create a snapshot of a Virtual Machine in the current tenant which is logged in. </br>
+A Snapshot is ready for restore when it's in available state.
+
 ## Usage:
 ```
 mgc virtual-machine snapshots create [flags]

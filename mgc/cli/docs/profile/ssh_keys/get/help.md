@@ -1,3 +1,5 @@
+Retrieve an SSH key using its ID. If you do not know the ID, retrieve it by listing your keys.
+
 ## Usage:
 ```
 mgc profile ssh-keys get [key-id] [flags]

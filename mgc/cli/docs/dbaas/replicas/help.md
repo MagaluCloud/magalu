@@ -1,3 +1,5 @@
+Database replicas management.
+
 ## Usage:
 ```
 mgc dbaas replicas [flags]

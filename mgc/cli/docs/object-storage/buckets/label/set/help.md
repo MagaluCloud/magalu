@@ -1,3 +1,5 @@
+Set labels for the specified bucket
+
 ## Usage:
 ```
 mgc object-storage buckets label set [bucket] [label] [flags]

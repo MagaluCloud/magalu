@@ -1,3 +1,5 @@
+Delete policy document for the specified bucket
+
 ## Usage:
 ```
 mgc object-storage buckets policy delete [dst] [flags]

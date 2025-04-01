@@ -1,3 +1,5 @@
+Get object locking configuration for the specified bucket
+
 ## Usage:
 ```
 mgc object-storage buckets object-lock get [dst] [flags]

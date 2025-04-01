@@ -1,3 +1,5 @@
+List Virtual Machine instances
+
 ## Usage:
 ```
 mgc virtual-machine instances list [flags]

@@ -1,3 +1,5 @@
+Delete a VPC from the provided tenant_id
+
 ## Usage:
 ```
 mgc network vpcs delete [vpc-id] [flags]

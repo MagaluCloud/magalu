@@ -1,3 +1,5 @@
+Operations related to Rules
+
 ## Usage:
 ```
 mgc network rules [flags]

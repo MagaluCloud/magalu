@@ -1,3 +1,5 @@
+Get object locking configuration for the specified object
+
 ## Usage:
 ```
 mgc object-storage objects object-lock get [dst] [flags]

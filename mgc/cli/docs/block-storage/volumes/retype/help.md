@@ -1,3 +1,6 @@
+Change the Volume Type of an existing Volume for the currently
+ authenticated tenant.
+
 ## Usage:
 ```
 mgc block-storage volumes retype [id] [flags]

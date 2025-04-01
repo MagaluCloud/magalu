@@ -1,3 +1,5 @@
+Delete an existing Bucket
+
 ## Usage:
 ```
 mgc object-storage buckets delete [bucket] [flags]

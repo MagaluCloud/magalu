@@ -1,3 +1,5 @@
+Detach a non primary network interface from an instance for a default project
+
 ## Usage:
 ```
 mgc virtual-machine instances network-interface detach [flags]

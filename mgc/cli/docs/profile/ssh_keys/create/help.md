@@ -1,3 +1,5 @@
+Register new SSH key by providing a name and the public SSH key
+
 ## Usage:
 ```
 mgc profile ssh-keys create [flags]

@@ -1,3 +1,5 @@
+Operations related to Public IPs
+
 ## Usage:
 ```
 mgc network public-ips [flags]

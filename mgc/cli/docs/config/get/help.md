@@ -1,3 +1,7 @@
+Get a specific Config value that has been previously set. If there's an env variable
+matching the key (in uppercase and with the 'MGC_' prefix), it'll be retreived.
+Otherwise, the value will be searched for in the YAML file
+
 ## Usage:
 ```
 mgc config get [key] [flags]

@@ -1,3 +1,5 @@
+Get a Virtual Machine instance details
+
 ## Usage:
 ```
 mgc virtual-machine instances get [id] [flags]

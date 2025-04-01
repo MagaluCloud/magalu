@@ -1,3 +1,5 @@
+Retrieve a list of Snapshots for the currently authenticated tenant.
+
 ## Usage:
 ```
 mgc block-storage snapshots list [flags]

@@ -1,3 +1,6 @@
+Moves one object from a source to a destination.
+It can be either local or remote but not both local (Local -> Remote, Remote -> Local, Remote -> Remote)
+
 ## Usage:
 ```
 mgc object-storage objects move [src] [dst] [flags]

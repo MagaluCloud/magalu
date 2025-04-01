@@ -1,3 +1,5 @@
+List Volume Types allowed in the current region.
+
 ## Usage:
 ```
 mgc block-storage volume-types list [flags]

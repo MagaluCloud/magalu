@@ -1,3 +1,5 @@
+Operations related to Subnet Pools
+
 ## Usage:
 ```
 mgc network subnetpools [flags]

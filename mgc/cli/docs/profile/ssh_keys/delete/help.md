@@ -1,3 +1,5 @@
+Delete an SSH key using its id.
+
 ## Usage:
 ```
 mgc profile ssh-keys delete [key-id] [flags]

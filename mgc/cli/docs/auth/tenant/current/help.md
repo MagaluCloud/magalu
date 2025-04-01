@@ -1,3 +1,5 @@
+The current Tenant is used for all Magalu HTTP requests
+
 ## Usage:
 ```
 mgc auth tenant current [flags]

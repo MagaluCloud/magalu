@@ -1,3 +1,5 @@
+Sets workspace to be used
+
 ## Usage:
 ```
 mgc workspace set [name] [flags]

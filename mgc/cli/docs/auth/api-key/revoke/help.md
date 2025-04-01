@@ -1,3 +1,5 @@
+Revoke an API key by its ID
+
 ## Usage:
 ```
 mgc auth api-key revoke [id] [flags]

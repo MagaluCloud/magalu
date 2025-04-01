@@ -1,3 +1,5 @@
+Lists all available Kubernetes versions.
+
 ## Usage:
 ```
 mgc kubernetes version list [flags]

@@ -1,3 +1,5 @@
+Returns a engine detail.
+
 ## Usage:
 ```
 mgc dbaas engines get [engine-id] [flags]

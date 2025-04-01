@@ -1,3 +1,5 @@
+Returns a list of available engines.
+
 ## Usage:
 ```
 mgc dbaas engines list [flags]

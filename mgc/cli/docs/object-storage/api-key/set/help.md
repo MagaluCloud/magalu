@@ -1,3 +1,5 @@
+Change current Object Storage credential to selected
+
 ## Usage:
 ```
 mgc object-storage api-key set [uuid] [flags]

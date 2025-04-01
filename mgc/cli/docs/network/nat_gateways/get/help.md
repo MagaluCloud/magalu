@@ -1,3 +1,5 @@
+Detail a NAT (Network Address Translation) Gateway from a VPC.
+
 ## Usage:
 ```
 mgc network nat-gateways get [nat-gateway-id] [flags]

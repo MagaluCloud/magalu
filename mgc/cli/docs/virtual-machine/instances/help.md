@@ -1,3 +1,5 @@
+Operations with instances, including create, delete, start, stop, reboot and other actions.
+
 ## Usage:
 ```
 mgc virtual-machine instances [flags]

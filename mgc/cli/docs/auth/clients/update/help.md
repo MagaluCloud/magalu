@@ -1,3 +1,5 @@
+Update a client (Oauth Application)
+
 ## Usage:
 ```
 mgc auth clients update [id] [name] [description] [redirect-uris] [icon] [access-token-expiration] [always-require-login] [client-privacy-term-url] [client-term-url] [audiences] [backchannel-logout-session] [backchannel-logout-uri] [oidc-audience] [refresh-token-custom-expires-enabled] [refresh-token-exp] [request-reason] [support-url] [flags]

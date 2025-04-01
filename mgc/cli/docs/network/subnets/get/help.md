@@ -1,3 +1,5 @@
+Returns a subnet details
+
 ## Usage:
 ```
 mgc network subnets get [subnet-id] [flags]

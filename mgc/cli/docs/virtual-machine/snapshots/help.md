@@ -1,3 +1,5 @@
+Operations with snapshots for instances.
+
 ## Usage:
 ```
 mgc virtual-machine snapshots [flags]

@@ -1,3 +1,6 @@
+Moves objects from a source to a destination.
+They can be either local or remote but not both local (Local -> Remote, Remote -> Local, Remote -> Remote)
+
 ## Usage:
 ```
 mgc object-storage objects move-dir [src] [dst] [flags]

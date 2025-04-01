@@ -1,3 +1,5 @@
+Create new credentials used for Object Storage requests
+
 ## Usage:
 ```
 mgc object-storage api-key create [name] [description] [expiration] [flags]

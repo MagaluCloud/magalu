@@ -1,3 +1,5 @@
+Delete a Volume for the currently authenticated tenant.
+
 ## Usage:
 ```
 mgc block-storage volumes delete [id] [flags]

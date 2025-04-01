@@ -1,3 +1,5 @@
+unset object locking for the specified bucket
+
 ## Usage:
 ```
 mgc object-storage buckets object-lock unset [dst] [flags]

@@ -1,3 +1,5 @@
+Return a security group details
+
 ## Usage:
 ```
 mgc network security-groups get [security-group-id] [flags]

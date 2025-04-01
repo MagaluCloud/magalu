@@ -1,3 +1,5 @@
+Reset container registry user's password.
+
 ## Usage:
 ```
 mgc container-registry credentials password [flags]

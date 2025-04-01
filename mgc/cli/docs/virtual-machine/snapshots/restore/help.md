@@ -1,3 +1,5 @@
+Restore a snapshot of an instance with the current tenant which is logged in. </br>
+
 ## Usage:
 ```
 mgc virtual-machine snapshots restore [id] [flags]

@@ -1,3 +1,5 @@
+Lists nodes in a node pool by nodepool_uuid.
+
 ## Usage:
 ```
 mgc kubernetes nodepool nodes [cluster-id] [node-pool-id] [flags]

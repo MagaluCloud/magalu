@@ -1,3 +1,5 @@
+Create a Subnet Pool
+
 ## Usage:
 ```
 mgc network subnetpools create [flags]

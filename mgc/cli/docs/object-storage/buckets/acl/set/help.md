@@ -1,3 +1,5 @@
+set permission information for the specified bucket
+
 ## Usage:
 ```
 mgc object-storage buckets acl set [dst] [flags]

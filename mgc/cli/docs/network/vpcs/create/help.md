@@ -1,3 +1,5 @@
+Create a new Virtual Private Cloud (VPC).
+
 ## Usage:
 ```
 mgc network vpcs create [flags]

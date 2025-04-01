@@ -1,3 +1,5 @@
+Starts a database instance.
+
 ## Usage:
 ```
 mgc dbaas instances start [instance-id] [flags]

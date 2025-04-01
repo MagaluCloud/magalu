@@ -1,3 +1,5 @@
+Get object metadata
+
 ## Usage:
 ```
 mgc object-storage objects head [dst] [flags]

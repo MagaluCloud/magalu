@@ -1,3 +1,5 @@
+Get a snapshot detail.
+
 ## Usage:
 ```
 mgc dbaas instances snapshots get [instance-id] [snapshot-id] [flags]

@@ -1,3 +1,5 @@
+Routes related to credentials to login to Docker.
+
 ## Usage:
 ```
 mgc container-registry credentials [flags]

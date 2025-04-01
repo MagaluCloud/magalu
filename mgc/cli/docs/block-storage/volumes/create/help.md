@@ -1,3 +1,5 @@
+Create a Volume for the currently authenticated tenant.
+
 ## Usage:
 ```
 mgc block-storage volumes create [flags]

@@ -1,3 +1,5 @@
+Routes related to listing and deletion of repositories.
+
 ## Usage:
 ```
 mgc container-registry repositories [flags]

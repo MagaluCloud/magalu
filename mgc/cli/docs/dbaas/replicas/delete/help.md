@@ -1,3 +1,5 @@
+Deletes a replica instance.
+
 ## Usage:
 ```
 mgc dbaas replicas delete [replica-id] [flags]

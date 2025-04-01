@@ -1,3 +1,5 @@
+Cloud Events API Product.
+
 ## Usage:
 ```
 mgc audit [flags]

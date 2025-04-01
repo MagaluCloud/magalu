@@ -1,3 +1,5 @@
+Routes related to listing and deletion of images.
+
 ## Usage:
 ```
 mgc container-registry images [flags]

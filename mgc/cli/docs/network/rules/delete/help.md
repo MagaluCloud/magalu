@@ -1,3 +1,5 @@
+Delete a rule from the provided tenant_id
+
 ## Usage:
 ```
 mgc network rules delete [rule-id] [flags]

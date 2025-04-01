@@ -1,3 +1,5 @@
+List all replicas for a given instance.
+
 ## Usage:
 ```
 mgc dbaas replicas list [flags]

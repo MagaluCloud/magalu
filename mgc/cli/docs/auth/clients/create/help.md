@@ -1,3 +1,5 @@
+Create new client (Oauth Application)
+
 ## Usage:
 ```
 mgc auth clients create [name] [description] [redirect-uris] [backchannel-logout-session] [client-term-url] [client-privacy-term-url] [audiences] [email] [request-reason] [icon] [access-token-expiration] [always-require-login] [backchannel-logout-uri] [oidc-audience] [refresh-token-custom-expires-enabled] [refresh-token-exp] [support-url] [grant-types] [flags]

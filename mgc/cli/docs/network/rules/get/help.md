@@ -1,3 +1,5 @@
+Return a rule details
+
 ## Usage:
 ```
 mgc network rules get [rule-id] [flags]

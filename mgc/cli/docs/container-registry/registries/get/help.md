@@ -1,3 +1,5 @@
+Show detailed information about the user's container registry.
+
 ## Usage:
 ```
 mgc container-registry registries get [registry-id] [flags]

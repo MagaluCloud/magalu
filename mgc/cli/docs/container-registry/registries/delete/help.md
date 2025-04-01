@@ -1,3 +1,5 @@
+Delete a container registry by uuid.
+
 ## Usage:
 ```
 mgc container-registry registries delete [registry-id] [flags]

@@ -1,3 +1,5 @@
+List all available workspaces
+
 ## Usage:
 ```
 mgc workspace list [flags]

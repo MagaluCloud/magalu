@@ -1,3 +1,5 @@
+Rename a Snapshot for the currently authenticated tenant.
+
 ## Usage:
 ```
 mgc block-storage snapshots rename [id] [flags]

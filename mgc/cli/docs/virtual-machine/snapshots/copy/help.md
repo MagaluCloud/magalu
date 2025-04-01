@@ -1,3 +1,5 @@
+Snapshot copy
+
 ## Usage:
 ```
 mgc virtual-machine snapshots copy [id] [flags]

@@ -1,3 +1,5 @@
+Returns a list of subnets for a provided vpc_id
+
 ## Usage:
 ```
 mgc network vpcs subnets list [vpc-id] [flags]

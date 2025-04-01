@@ -1,3 +1,5 @@
+Delete a subnet from the provided tenant_id
+
 ## Usage:
 ```
 mgc network subnets delete [subnet-id] [flags]

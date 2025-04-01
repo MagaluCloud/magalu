@@ -1,3 +1,5 @@
+Change current Object Storage credential
+
 ## Usage:
 ```
 mgc object-storage api-key add [key-id] [key-secret] [flags]

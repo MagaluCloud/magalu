@@ -1,3 +1,5 @@
+Delete a Snapshot for the currently authenticated tenant.
+
 ## Usage:
 ```
 mgc block-storage snapshots delete [id] [flags]

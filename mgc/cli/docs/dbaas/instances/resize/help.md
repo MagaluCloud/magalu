@@ -1,3 +1,5 @@
+Resizes a database instance.
+
 ## Usage:
 ```
 mgc dbaas instances resize [instance-id] [flags]

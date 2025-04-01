@@ -1,3 +1,5 @@
+List the NAT (Network Address Translation) Gateways from a VPC.
+
 ## Usage:
 ```
 mgc network nat-gateways list [flags]

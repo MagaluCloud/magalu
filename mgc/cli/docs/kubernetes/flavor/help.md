@@ -1,3 +1,5 @@
+Endpoints related to listing available flavors for a Kubernetes cluster.
+
 ## Usage:
 ```
 mgc kubernetes flavor [flags]

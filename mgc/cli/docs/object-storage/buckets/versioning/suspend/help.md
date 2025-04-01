@@ -1,3 +1,5 @@
+Suspend versioning for a Bucket
+
 ## Usage:
 ```
 mgc object-storage buckets versioning suspend [bucket] [flags]

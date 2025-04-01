@@ -1,3 +1,6 @@
+Extend the size of an existing Volume for the currently
+ authenticated tenant.
+
 ## Usage:
 ```
 mgc block-storage volumes extend [id] [flags]

@@ -1,3 +1,5 @@
+Buckets are "containers" that are able to store various Objects inside
+
 ## Usage:
 ```
 mgc object-storage buckets create [bucket] [flags]

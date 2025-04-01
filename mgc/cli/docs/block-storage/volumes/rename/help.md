@@ -1,3 +1,5 @@
+Rename a Volume for the currently authenticated tenant.
+
 ## Usage:
 ```
 mgc block-storage volumes rename [id] [flags]

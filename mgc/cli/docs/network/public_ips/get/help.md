@@ -1,3 +1,5 @@
+Return a Public IP details
+
 ## Usage:
 ```
 mgc network public-ips get [public-ip-id] [flags]

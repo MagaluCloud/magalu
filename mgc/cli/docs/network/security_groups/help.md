@@ -1,3 +1,5 @@
+Operations related to Security Groups
+
 ## Usage:
 ```
 mgc network security-groups [flags]

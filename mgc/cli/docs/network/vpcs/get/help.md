@@ -1,3 +1,5 @@
+Return a VPC details
+
 ## Usage:
 ```
 mgc network vpcs get [vpc-id] [flags]

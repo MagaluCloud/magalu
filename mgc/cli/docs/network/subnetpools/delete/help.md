@@ -1,3 +1,5 @@
+Delete one Subnet Pool by ID
+
 ## Usage:
 ```
 mgc network subnetpools delete [subnetpool-id] [flags]

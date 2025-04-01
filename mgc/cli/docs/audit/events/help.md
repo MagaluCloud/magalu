@@ -1,3 +1,5 @@
+Endpoints related to listing events emitted by other products.
+
 ## Usage:
 ```
 mgc audit events [flags]

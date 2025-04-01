@@ -1,3 +1,5 @@
+Operations related to VPCs | subnets
+
 ## Usage:
 ```
 mgc network vpcs subnets [flags]

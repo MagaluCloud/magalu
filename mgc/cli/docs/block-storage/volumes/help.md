@@ -1,3 +1,5 @@
+Operations with volumes, including create, delete, extend, retype, list and other actions.
+
 ## Usage:
 ```
 mgc block-storage volumes [flags]

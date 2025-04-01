@@ -1,3 +1,5 @@
+Returns a list of available instance types. An instance type is a hardware template that defines the size of RAM and vCPU.
+
 ## Usage:
 ```
 mgc dbaas instance-types list [flags]

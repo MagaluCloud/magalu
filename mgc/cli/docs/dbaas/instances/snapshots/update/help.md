@@ -1,3 +1,5 @@
+Updates a snapshot.
+
 ## Usage:
 ```
 mgc dbaas instances snapshots update [instance-id] [snapshot-id] [flags]

@@ -1,3 +1,5 @@
+Deletes a cluster by cluster_uuid.
+
 ## Usage:
 ```
 mgc kubernetes cluster delete [cluster-id] [flags]

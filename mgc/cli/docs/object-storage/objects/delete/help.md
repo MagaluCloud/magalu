@@ -1,3 +1,5 @@
+Delete an object from a bucket
+
 ## Usage:
 ```
 mgc object-storage objects delete [dst] [flags]

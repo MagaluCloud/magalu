@@ -1,3 +1,5 @@
+Creates a new replica for an instance asynchronously.
+
 ## Usage:
 ```
 mgc dbaas replicas create [flags]

@@ -1,3 +1,5 @@
+Operations with images for instances.
+
 ## Usage:
 ```
 mgc virtual-machine images [flags]

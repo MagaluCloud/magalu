@@ -1,3 +1,6 @@
+Detach a Volume from a Virtual Machine instance for the
+ currently authenticated tenant.
+
 ## Usage:
 ```
 mgc block-storage volumes detach [id] [flags]

@@ -1,3 +1,5 @@
+This command uploads any file from the local path to the bucket if it is not already present or has modified time changed.
+
 ## Usage:
 ```
 mgc object-storage objects sync [local] [bucket] [flags]

@@ -1,3 +1,5 @@
+Update a subnet from the provided tenant_id
+
 ## Usage:
 ```
 mgc network subnets update [subnet-id] [flags]

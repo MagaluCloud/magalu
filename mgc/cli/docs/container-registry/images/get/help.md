@@ -1,3 +1,5 @@
+Show detailed information about the image.
+
 ## Usage:
 ```
 mgc container-registry images get [registry-id] [repository-name] [digest-or-tag] [flags]

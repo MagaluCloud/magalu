@@ -1,3 +1,5 @@
+List all objects from a bucket
+
 ## Usage:
 ```
 mgc object-storage objects list [dst] [flags]

@@ -1,3 +1,5 @@
+Return detailed repository's information filtered by name.
+
 ## Usage:
 ```
 mgc container-registry repositories get [registry-id] [repository-name] [flags]

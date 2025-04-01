@@ -1,3 +1,5 @@
+Deletes a database snapshot.
+
 ## Usage:
 ```
 mgc dbaas instances snapshots delete [instance-id] [snapshot-id] [flags]

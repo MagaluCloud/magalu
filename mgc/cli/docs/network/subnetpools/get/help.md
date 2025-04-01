@@ -1,3 +1,5 @@
+Get details of a specific Subnet Pool
+
 ## Usage:
 ```
 mgc network subnetpools get [subnetpool-id] [flags]

@@ -1,3 +1,5 @@
+APIs related to the Kubernetes product.
+
 ## Usage:
 ```
 mgc kubernetes [flags]

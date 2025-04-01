@@ -1,3 +1,5 @@
+Get the ACL for the specified bucket
+
 ## Usage:
 ```
 mgc object-storage buckets acl get [dst] [flags]

@@ -1,3 +1,5 @@
+Deletes a node pool in a Kubernetes cluster by nodepool_uuid.
+
 ## Usage:
 ```
 mgc kubernetes nodepool delete [cluster-id] [node-pool-id] [flags]

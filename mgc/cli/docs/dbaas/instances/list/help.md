@@ -1,3 +1,5 @@
+Returns a list of database instances for a x-tenant-id.
+
 ## Usage:
 ```
 mgc dbaas instances list [flags]

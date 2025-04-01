@@ -1,3 +1,5 @@
+Delete a port from the provided tenant_id
+
 ## Usage:
 ```
 mgc network ports delete [port-id] [flags]

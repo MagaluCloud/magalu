@@ -1,3 +1,5 @@
+Run logout
+
 ## Usage:
 ```
 mgc auth logout [flags]

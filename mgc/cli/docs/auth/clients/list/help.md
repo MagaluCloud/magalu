@@ -1,3 +1,5 @@
+List user clients
+
 ## Usage:
 ```
 mgc auth clients list [flags]

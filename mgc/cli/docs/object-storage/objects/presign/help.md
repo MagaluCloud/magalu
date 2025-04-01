@@ -1,3 +1,5 @@
+Generate a pre-signed URL for accessing an object
+
 ## Usage:
 ```
 mgc object-storage objects presign [dst] [flags]

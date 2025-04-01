@@ -1,3 +1,5 @@
+Operations with snapshots for volumes.
+
 ## Usage:
 ```
 mgc block-storage snapshots [flags]

@@ -1,3 +1,5 @@
+Updates nodes from a node pool by nodepool_uuid.
+
 ## Usage:
 ```
 mgc kubernetes nodepool update [cluster-id] [node-pool-id] [flags]

@@ -1,3 +1,5 @@
+List all snapshots in the current tenant which is logged in.
+
 ## Usage:
 ```
 mgc virtual-machine snapshots list [flags]

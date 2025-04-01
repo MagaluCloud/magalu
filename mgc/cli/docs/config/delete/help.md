@@ -1,3 +1,6 @@
+Delete/unset a Config value that had been previously set. This does not
+affect the environment variables
+
 ## Usage:
 ```
 mgc config delete [key] [flags]

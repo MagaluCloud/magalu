@@ -1,3 +1,5 @@
+Returns an instance type detail.
+
 ## Usage:
 ```
 mgc dbaas instance-types get [instance-type-id] [flags]

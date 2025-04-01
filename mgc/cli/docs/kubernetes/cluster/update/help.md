@@ -1,3 +1,5 @@
+Patches the mutable fields of a cluster
+
 ## Usage:
 ```
 mgc kubernetes cluster update [cluster-id] [flags]

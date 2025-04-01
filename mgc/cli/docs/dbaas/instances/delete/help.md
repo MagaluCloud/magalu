@@ -1,3 +1,5 @@
+Deletes a database instance.
+
 ## Usage:
 ```
 mgc dbaas instances delete [instance-id] [flags]

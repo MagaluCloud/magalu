@@ -1,3 +1,5 @@
+Magalu Container Registry product API.
+
 ## Usage:
 ```
 mgc container-registry [flags]

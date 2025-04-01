@@ -1,3 +1,5 @@
+Returns a list of security groups for a provided tenant_id
+
 ## Usage:
 ```
 mgc network security-groups list [flags]

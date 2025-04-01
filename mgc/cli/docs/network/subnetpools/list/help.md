@@ -1,3 +1,5 @@
+Returns a list of Subnet Pools for the current tenant's project
+
 ## Usage:
 ```
 mgc network subnetpools list [flags]

@@ -1,3 +1,5 @@
+Copy a object snapshot cross region for the currently authenticated tenant.
+
 ## Usage:
 ```
 mgc block-storage snapshots copy [id] [flags]

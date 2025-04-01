@@ -1,3 +1,5 @@
+Create async Public IP in a VPC with provided vpc_id and x_tenant_id
+
 ## Usage:
 ```
 mgc network vpcs public-ips create [vpc-id] [flags]

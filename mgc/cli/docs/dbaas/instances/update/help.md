@@ -1,3 +1,5 @@
+Updates a database instance.
+
 ## Usage:
 ```
 mgc dbaas instances update [instance-id] [flags]

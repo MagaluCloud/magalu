@@ -1,3 +1,5 @@
+Delete a Public IP from the provided tenant_id
+
 ## Usage:
 ```
 mgc network public-ips delete [public-ip-id] [flags]

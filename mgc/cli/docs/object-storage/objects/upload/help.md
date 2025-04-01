@@ -1,3 +1,5 @@
+Upload a file to a bucket
+
 ## Usage:
 ```
 mgc object-storage objects upload [src] [dst] [flags]

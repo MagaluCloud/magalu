@@ -1,3 +1,5 @@
+Retrieves the kubeconfig of a Kubernetes cluster by cluster_uuid.
+
 ## Usage:
 ```
 mgc kubernetes cluster kubeconfig [cluster-id] [flags]

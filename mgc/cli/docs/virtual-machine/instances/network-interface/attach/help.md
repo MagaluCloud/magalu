@@ -1,3 +1,5 @@
+Attach network interface to an instance for a default project.
+
 ## Usage:
 ```
 mgc virtual-machine instances network-interface attach [flags]

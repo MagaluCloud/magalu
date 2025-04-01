@@ -1,3 +1,5 @@
+Endpoints related to listing types of events emitted by other products.
+
 ## Usage:
 ```
 mgc audit event-types [flags]

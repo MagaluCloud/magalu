@@ -1,3 +1,5 @@
+Object locking commands
+
 ## Usage:
 ```
 mgc object-storage objects object-lock [flags]

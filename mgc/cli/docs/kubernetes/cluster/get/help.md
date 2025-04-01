@@ -1,3 +1,5 @@
+Lists detailed cluster information by cluster_uuid.
+
 ## Usage:
 ```
 mgc kubernetes cluster get [cluster-id] [flags]

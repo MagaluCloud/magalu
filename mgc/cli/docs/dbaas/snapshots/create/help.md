@@ -1,3 +1,5 @@
+Create a new instance from snapshot.
+
 ## Usage:
 ```
 mgc dbaas snapshots create [snapshot-id] [flags]

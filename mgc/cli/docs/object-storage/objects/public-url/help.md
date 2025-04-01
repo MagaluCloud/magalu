@@ -1,3 +1,5 @@
+Get object public url
+
 ## Usage:
 ```
 mgc object-storage objects public-url [dst] [flags]

@@ -1,3 +1,5 @@
+Lists all available flavors.
+
 ## Usage:
 ```
 mgc kubernetes info flavors [flags]

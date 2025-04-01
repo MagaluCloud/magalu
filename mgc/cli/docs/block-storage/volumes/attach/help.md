@@ -1,3 +1,6 @@
+Attach a Volume to a Virtual Machine instance for the currently
+ authenticated tenant.
+
 ## Usage:
 ```
 mgc block-storage volumes attach [id] [virtual-machine-id] [flags]

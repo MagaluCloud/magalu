@@ -1,3 +1,5 @@
+Resize an instance replica.
+
 ## Usage:
 ```
 mgc dbaas replicas resize [replica-id] [flags]

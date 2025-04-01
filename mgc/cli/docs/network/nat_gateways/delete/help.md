@@ -1,3 +1,5 @@
+Delete a NAT (Network Address Translation) Gateway from a VPC.
+
 ## Usage:
 ```
 mgc network nat-gateways delete [nat-gateway-id] [flags]

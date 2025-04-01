@@ -1,3 +1,5 @@
+Object operations for Object Storage API
+
 ## Usage:
 ```
 mgc object-storage objects [flags]

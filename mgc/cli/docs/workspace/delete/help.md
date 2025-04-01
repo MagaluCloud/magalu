@@ -1,3 +1,5 @@
+Deletes the workspace with the specified name
+
 ## Usage:
 ```
 mgc workspace delete [name] [flags]

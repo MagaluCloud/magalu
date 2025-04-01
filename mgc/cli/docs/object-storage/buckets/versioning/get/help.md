@@ -1,3 +1,5 @@
+Get versioning info for a Bucket
+
 ## Usage:
 ```
 mgc object-storage buckets versioning get [bucket] [flags]

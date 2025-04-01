@@ -1,3 +1,5 @@
+List all available tenants for current login
+
 ## Usage:
 ```
 mgc auth tenant list [flags]

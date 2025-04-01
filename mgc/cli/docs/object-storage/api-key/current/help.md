@@ -1,3 +1,5 @@
+Get the current Object Storage credentials
+
 ## Usage:
 ```
 mgc object-storage api-key current [flags]

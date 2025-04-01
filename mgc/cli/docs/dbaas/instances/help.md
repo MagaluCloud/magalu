@@ -1,3 +1,5 @@
+Database instances management.
+
 ## Usage:
 ```
 mgc dbaas instances [flags]

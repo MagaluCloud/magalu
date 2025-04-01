@@ -1,3 +1,5 @@
+Manage Availability Zones
+
 ## Usage:
 ```
 mgc profile availability-zones [flags]

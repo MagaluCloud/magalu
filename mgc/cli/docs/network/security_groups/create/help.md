@@ -1,3 +1,5 @@
+Create a Security Group
+
 ## Usage:
 ```
 mgc network security-groups create [flags]

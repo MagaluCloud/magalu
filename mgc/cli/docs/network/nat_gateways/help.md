@@ -1,3 +1,5 @@
+Operations related to Nat Gateway
+
 ## Usage:
 ```
 mgc network nat-gateways [flags]

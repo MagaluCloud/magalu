@@ -1,3 +1,5 @@
+Delete a repository by name.
+
 ## Usage:
 ```
 mgc container-registry repositories delete [registry-id] [repository-name] [flags]

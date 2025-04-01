@@ -1,3 +1,5 @@
+Retrieves a list of machine types allowed for the current tenant which is logged in.
+
 ## Usage:
 ```
 mgc virtual-machine machine-types list [flags]

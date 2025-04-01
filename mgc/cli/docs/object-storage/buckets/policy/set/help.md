@@ -1,3 +1,5 @@
+Set policy document for the specified bucket. The policy can be provided as a direct JSON string or a file path using @./policy.json.
+
 ## Usage:
 ```
 mgc object-storage buckets policy set [dst] [policy] [flags]

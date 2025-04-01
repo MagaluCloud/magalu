@@ -1,3 +1,5 @@
+Lists all clusters for a user.
+
 ## Usage:
 ```
 mgc kubernetes cluster list [flags]

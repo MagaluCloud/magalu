@@ -1,3 +1,5 @@
+Booking a CIDR range from a subnetpool
+
 ## Usage:
 ```
 mgc network subnetpools create-book-cidr [subnetpool-id] [flags]

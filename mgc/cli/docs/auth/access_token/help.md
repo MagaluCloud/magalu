@@ -1,3 +1,5 @@
+Retrieve the access token used in the APIs
+
 ## Usage:
 ```
 mgc auth access-token [flags]

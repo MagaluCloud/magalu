@@ -1,3 +1,5 @@
+List all available Configs
+
 ## Usage:
 ```
 mgc config list [flags]

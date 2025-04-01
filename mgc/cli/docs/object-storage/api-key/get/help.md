@@ -1,3 +1,5 @@
+Get details about a specific key
+
 ## Usage:
 ```
 mgc object-storage api-key get [uuid] [flags]

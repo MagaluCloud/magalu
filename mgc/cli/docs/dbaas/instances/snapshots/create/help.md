@@ -1,3 +1,5 @@
+Creates a new snapshot asynchronously.
+
 ## Usage:
 ```
 mgc dbaas instances snapshots create [instance-id] [flags]

@@ -1,3 +1,5 @@
+Enable versioning for a Bucket
+
 ## Usage:
 ```
 mgc object-storage buckets versioning enable [bucket] [flags]

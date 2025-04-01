@@ -1,3 +1,5 @@
+Attach a Public IP to a Port
+
 ## Usage:
 ```
 mgc network public-ips attach [public-ip-id] [port-id] [flags]

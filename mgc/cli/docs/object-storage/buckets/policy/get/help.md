@@ -1,3 +1,5 @@
+Get the policy document for the specified bucket
+
 ## Usage:
 ```
 mgc object-storage buckets policy get [dst] [flags]

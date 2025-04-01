@@ -1,3 +1,5 @@
+set number of either days or years to lock new objects for
+
 ## Usage:
 ```
 mgc object-storage buckets object-lock set [dst] [flags]

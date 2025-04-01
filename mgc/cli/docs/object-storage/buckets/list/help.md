@@ -1,3 +1,5 @@
+List all existing Buckets
+
 ## Usage:
 ```
 mgc object-storage buckets list [flags]

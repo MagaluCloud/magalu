@@ -1,3 +1,5 @@
+Set a specific Config value in the configuration file
+
 ## Usage:
 ```
 mgc config set [key] [value] [flags]

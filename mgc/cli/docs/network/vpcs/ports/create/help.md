@@ -1,3 +1,5 @@
+Create a Port with provided vpc_id and x-tenant-id. You can provide a list of security_groups_id or subnets
+
 ## Usage:
 ```
 mgc network vpcs ports create [vpc-id] [flags]

@@ -1,3 +1,5 @@
+Instance Types available for database instances.
+
 ## Usage:
 ```
 mgc dbaas instance-types [flags]

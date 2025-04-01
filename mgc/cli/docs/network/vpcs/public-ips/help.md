@@ -1,3 +1,5 @@
+Operations related to VPCs | public-ips
+
 ## Usage:
 ```
 mgc network vpcs public-ips [flags]

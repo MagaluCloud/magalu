@@ -1,3 +1,5 @@
+Retrieve a list of images allowed for the current region.
+
 ## Usage:
 ```
 mgc virtual-machine images list [flags]

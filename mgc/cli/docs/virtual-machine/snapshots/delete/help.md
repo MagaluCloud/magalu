@@ -1,3 +1,6 @@
+Deletes an snapshot with the id provided in the current tenant
+which is logged in.
+
 ## Usage:
 ```
 mgc virtual-machine snapshots delete [id] [flags]

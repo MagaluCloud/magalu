@@ -1,3 +1,5 @@
+Virtual Machine Api Product
+
 ## Usage:
 ```
 mgc virtual-machine [flags]

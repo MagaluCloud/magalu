@@ -1,3 +1,5 @@
+Copy an object from a bucket to another bucket
+
 ## Usage:
 ```
 mgc object-storage objects copy [src] [dst] [flags]

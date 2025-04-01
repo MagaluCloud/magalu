@@ -1,3 +1,5 @@
+Delete repository image by digest or tag
+
 ## Usage:
 ```
 mgc container-registry images delete [registry-id] [repository-name] [digest-or-tag] [flags]

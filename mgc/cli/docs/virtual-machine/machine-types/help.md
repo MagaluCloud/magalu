@@ -1,3 +1,5 @@
+Operations with machine types for instances.
+
 ## Usage:
 ```
 mgc virtual-machine machine-types [flags]

@@ -1,3 +1,5 @@
+Return a tenant's public ip list
+
 ## Usage:
 ```
 mgc network public-ips list [flags]

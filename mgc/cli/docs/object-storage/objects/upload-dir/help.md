@@ -1,3 +1,5 @@
+Upload a directory to a bucket
+
 ## Usage:
 ```
 mgc object-storage objects upload-dir [src] [dst] [flags]

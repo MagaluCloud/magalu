@@ -1,3 +1,5 @@
+Manage bucket versioning
+
 ## Usage:
 ```
 mgc object-storage buckets versioning [flags]

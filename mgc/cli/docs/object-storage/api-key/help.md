@@ -1,3 +1,5 @@
+Manage credentials to use Object Storage
+
 ## Usage:
 ```
 mgc object-storage api-key [flags]

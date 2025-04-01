@@ -1,3 +1,5 @@
+Creates a container registry in Magalu Cloud.
+
 ## Usage:
 ```
 mgc container-registry registries create [flags]

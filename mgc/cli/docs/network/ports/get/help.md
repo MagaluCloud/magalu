@@ -1,3 +1,5 @@
+Return a port details from the provided tenant_id
+
 ## Usage:
 ```
 mgc network ports get [port-id] [flags]

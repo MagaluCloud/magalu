@@ -1,3 +1,5 @@
+Returns a list of Public IPs for a provided vpc_id
+
 ## Usage:
 ```
 mgc network vpcs public-ips list [vpc-id] [flags]

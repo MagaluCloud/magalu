@@ -1,3 +1,5 @@
+Get bucket public url
+
 ## Usage:
 ```
 mgc object-storage buckets public-url [dst] [flags]

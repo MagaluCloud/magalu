@@ -1,3 +1,5 @@
+Create a Virtual Machine instance
+
 ## Usage:
 ```
 mgc virtual-machine instances create [flags]

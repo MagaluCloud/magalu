@@ -1,3 +1,5 @@
+Retrieve detailed information about a bucket
+
 ## Usage:
 ```
 mgc object-storage buckets get [bucket] [flags]

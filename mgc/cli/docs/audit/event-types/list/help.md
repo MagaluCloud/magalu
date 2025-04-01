@@ -1,3 +1,5 @@
+Lists all types of events emitted by other products.
+
 ## Usage:
 ```
 mgc audit event-types list [flags]

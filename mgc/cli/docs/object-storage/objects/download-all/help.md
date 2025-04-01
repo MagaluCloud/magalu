@@ -1,3 +1,5 @@
+Download all objects from a bucket
+
 ## Usage:
 ```
 mgc object-storage objects download-all [src] [dst] [flags]

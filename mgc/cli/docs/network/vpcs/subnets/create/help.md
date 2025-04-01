@@ -1,3 +1,5 @@
+Create a Subnet
+
 ## Usage:
 ```
 mgc network vpcs subnets create [vpc-id] [flags]

@@ -1,3 +1,5 @@
+Unbooking a CIDR range from a subnetpool
+
 ## Usage:
 ```
 mgc network subnetpools create-unbook-cidr [subnetpool-id] [flags]

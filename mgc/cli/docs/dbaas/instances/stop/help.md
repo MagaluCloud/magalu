@@ -1,3 +1,5 @@
+Stops a database instance.
+
 ## Usage:
 ```
 mgc dbaas instances stop [instance-id] [flags]
