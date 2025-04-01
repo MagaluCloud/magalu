@@ -8,6 +8,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"sort"
 	"strings"
 	"sync"
 
@@ -230,6 +231,11 @@ func runDocParams(params CliDocParams) {
 			path = fmt.Sprintf("%s %s", params.cli, path)
 			insideRunDocParams(rootDir, strings.Split(path, ""))
 		}
+		err = moveSingleFileFolders(rootDir)
+		if err != nil {
+			log.Printf("Erro ao processar pastas com arquivo único: %v", err)
+		}
+
 		return
 	}
 
@@ -250,6 +256,11 @@ func runDocParams(params CliDocParams) {
 			}
 		}
 		wg.Wait()
+
+		err = moveSingleFileFolders(rootDir)
+		if err != nil {
+			log.Printf("Erro ao processar pastas com arquivo único: %v", err)
+		}
 	}
 }
 
@@ -281,6 +292,7 @@ func insideRunDocParams(rootDir string, path []string) {
 	} else {
 		log.Printf("wrote %s", filePath)
 	}
+
 }
 
 func CliDocOutputCmd() *cobra.Command {
@@ -301,4 +313,76 @@ func CliDocOutputCmd() *cobra.Command {
 	cmd.Flags().BoolVarP(&options.goroutine, "goroutine", "g", false, "Goroutine")
 
 	return cmd
+}
+
+func moveSingleFileFolders(rootDirectory string) error {
+	var dirsToProcess []string
+
+	err := filepath.Walk(rootDirectory, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+
+		if info.IsDir() {
+			dirsToProcess = append(dirsToProcess, path)
+		}
+
+		return nil
+	})
+
+	if err != nil {
+		return fmt.Errorf("erro ao percorrer diretórios: %v", err)
+	}
+
+	sort.Slice(dirsToProcess, func(i, j int) bool {
+		depthI := strings.Count(dirsToProcess[i], string(os.PathSeparator))
+		depthJ := strings.Count(dirsToProcess[j], string(os.PathSeparator))
+		return depthI > depthJ
+	})
+
+	for _, dirPath := range dirsToProcess {
+		if dirPath == rootDirectory {
+			continue
+		}
+
+		files, err := os.ReadDir(dirPath)
+		if err != nil {
+			log.Printf("Erro ao ler diretório %s: %v", dirPath, err)
+			continue
+		}
+
+		fileCount := 0
+		dirCount := 0
+		var fileName string
+
+		for _, entry := range files {
+			if entry.IsDir() {
+				dirCount++
+			} else {
+				fileCount++
+				fileName = entry.Name()
+			}
+		}
+
+		if fileCount == 1 && dirCount == 0 {
+			sourcePath := filepath.Join(dirPath, fileName)
+			parentDir := filepath.Dir(dirPath)
+			newFileName := filepath.Base(dirPath) + ".md"
+			destinationPath := filepath.Join(parentDir, newFileName)
+
+			err = os.Rename(sourcePath, destinationPath)
+			if err != nil {
+				log.Printf("Erro ao mover arquivo %s para %s: %v", sourcePath, destinationPath, err)
+				continue
+			}
+			log.Printf("Movido: %s -> %s", sourcePath, destinationPath)
+
+			err = os.Remove(dirPath)
+			if err != nil {
+				log.Printf("Erro ao remover diretório vazio %s: %v", dirPath, err)
+			}
+		}
+	}
+
+	return nil
 }
