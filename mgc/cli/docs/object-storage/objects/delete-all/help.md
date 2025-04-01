@@ -8,12 +8,12 @@ Usage:
 
 ## Product catalog:
 - Flags:
-- --async                  Delete objects asynchronously using x-force-delete header
 - --batch-size integer     Limit of items per batch to delete (range: 1 - 1000) (default 1000)
 - --bucket string          Name of the bucket to delete objects from (required)
 - --filter array(object)   File name pattern to include or exclude
 - Use --filter=help for more details
 - -h, --help                   help for delete-all
+- --recursive-async        Delete objects asynchronously
 
 ## Other commands:
 - Global Flags:

@@ -28,11 +28,6 @@ Please confirm by retyping: {{.confirmationValue}}`,
 })
 
 func deleteAll(ctx context.Context, params common.DeleteAllObjectsInBucketParams, cfg common.Config) (result core.Value, err error) {
-	//if async {
-
-	//} else {
 	err = common.DeleteAllObjectsInBucket(ctx, params, cfg)
-	//}
-
 	return
 }

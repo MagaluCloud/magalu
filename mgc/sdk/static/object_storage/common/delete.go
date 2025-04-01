@@ -42,15 +42,11 @@ type DeleteObjectsParams struct {
 }
 
 type DeleteAllObjectsInBucketParams struct {
-	BucketName BucketName       `json:"bucket" jsonschema:"description=Name of the bucket to delete objects from" mgc:"positional"`
-	BatchSize  int              `json:"batch_size,omitempty" jsonschema:"description=Limit of items per batch to delete,default=1000,minimum=1,maximum=1000" example:"1000"`
-	Async      bool             `json:"async,omitempty" jsonschema:"description=Delete objects asynchronously using x-force-delete header" mgc:"flag=async"`
-	Filters    `json:",squash"` // nolint
+	BucketName      BucketName       `json:"bucket" jsonschema:"description=Name of the bucket to delete objects from" mgc:"positional"`
+	BatchSize       int              `json:"batch_size,omitempty" jsonschema:"description=Limit of items per batch to delete,default=1000,minimum=1,maximum=1000" example:"1000"`
+	Recursive_Async bool             `json:"recursive-async,omitempty" jsonschema:"description=Delete objects asynchronously" mgc:"flag=async"`
+	Filters         `json:",squash"` // nolint
 }
-
-type contextKey string
-
-const forceDeleteKey contextKey = "x-force-delete"
 
 func newDeleteRequest(ctx context.Context, cfg Config, params DeleteBucketParams) (*http.Request, error) {
 	host, err := BuildBucketHostWithPath(cfg, NewBucketNameFromURI(params.Destination), params.Destination.Path())
@@ -238,16 +234,15 @@ func DeleteAllObjectsInBucket(ctx context.Context, params DeleteAllObjectsInBuck
 	return nil
 }
 
-func DeleteAllObjectsInBucketAsync(ctx context.Context, params DeleteAllObjectsInBucketParams, cfg Config) error {
-	ctx = context.WithValue(ctx, forceDeleteKey, "true")
-	return DeleteAllObjectsInBucket(ctx, params, cfg)
-}
-
 func DeleteBucket(ctx context.Context, params DeleteBucketParams, cfg Config) error {
 	req, err := newDeleteRequest(ctx, cfg, params)
 	if err != nil {
 		return err
 	}
+
+	// if params.RecursiveAsync {
+	// 	req.Header.Add("X-force-delete", "true")
+	// }
 
 	resp, err := SendRequest(ctx, req)
 	if err != nil {
