@@ -10,7 +10,6 @@ mgc network ports delete [port-id] [flags]
 -h, --help             help for delete
     --port-id string   port_id: ID of the Port to delete (required)
 -v, --version          version for delete
-
 ```
 
 ## Global Flags:
@@ -28,6 +27,5 @@ mgc network ports delete [port-id] [flags]
 -r, --raw                      Output raw data, without any formatting or coloring
     --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
     --server-url uri           Manually specify the server to use
-
 ```
 

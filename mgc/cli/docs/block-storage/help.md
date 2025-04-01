@@ -11,14 +11,12 @@ mgc block-storage [command]
 snapshots    Operations with snapshots for volumes.
 volume-types Operations with volume types for volumes.
 volumes      Operations with volumes, including create, delete, extend, retype, list and other actions.
-
 ```
 
 ## Flags:
 ```
 -h, --help      help for block-storage
 -v, --version   version for block-storage
-
 ```
 
 ## Global Flags:
@@ -33,6 +31,5 @@ volumes      Operations with volumes, including create, delete, extend, retype, 
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. Use '--output=help' to know more details.
 -r, --raw                      Output raw data, without any formatting or coloring
-
 ```
 

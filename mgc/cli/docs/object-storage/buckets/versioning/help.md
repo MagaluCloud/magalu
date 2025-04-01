@@ -11,13 +11,11 @@ mgc object-storage buckets versioning [command]
 enable      Enable versioning for a Bucket
 get         Get versioning info for a Bucket
 suspend     Suspend versioning for a Bucket
-
 ```
 
 ## Flags:
 ```
 -h, --help   help for versioning
-
 ```
 
 ## Global Flags:
@@ -32,6 +30,5 @@ suspend     Suspend versioning for a Bucket
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. Use '--output=help' to know more details.
 -r, --raw                      Output raw data, without any formatting or coloring
-
 ```
 

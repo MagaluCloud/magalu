@@ -16,7 +16,6 @@ mgc object-storage buckets object-lock set --days=30 --dst="my-bucket" --years=5
     --dst string      Name of the bucket to set object locking for its objects (required)
 -h, --help            help for set
     --years integer   Number of years to lock new objects for. Cannot be used alongside 'days'
-
 ```
 
 ## Global Flags:
@@ -35,6 +34,5 @@ mgc object-storage buckets object-lock set --days=30 --dst="my-bucket" --years=5
     --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
     --server-url uri           Manually specify the server to use
     --workers integer          Number of routines that spawn to do parallel operations within object_storage (min: 1) (default 5)
-
 ```
 

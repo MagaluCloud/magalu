@@ -10,7 +10,6 @@ mgc object-storage buckets delete [bucket] [flags]
     --bucket string   Name of the bucket to be deleted (required)
 -h, --help            help for delete
     --recursive       Delete bucket including objects inside (required)
-
 ```
 
 ## Global Flags:
@@ -29,6 +28,5 @@ mgc object-storage buckets delete [bucket] [flags]
     --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
     --server-url uri           Manually specify the server to use
     --workers integer          Number of routines that spawn to do parallel operations within object_storage (min: 1) (default 5)
-
 ```
 

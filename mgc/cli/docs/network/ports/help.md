@@ -13,14 +13,12 @@ delete      Delete Port
 detach      Detach Security Group
 get         Port Details
 list        Details of a Port list
-
 ```
 
 ## Flags:
 ```
 -h, --help      help for ports
 -v, --version   version for ports
-
 ```
 
 ## Global Flags:
@@ -35,6 +33,5 @@ list        Details of a Port list
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. Use '--output=help' to know more details.
 -r, --raw                      Output raw data, without any formatting or coloring
-
 ```
 

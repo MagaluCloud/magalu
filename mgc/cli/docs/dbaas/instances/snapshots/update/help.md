@@ -19,7 +19,6 @@ mgc dbaas instances snapshots update --description="my-description-updated" --na
     --name string                   Snapshot unique name. (max character count: 100)
     --snapshot-id uuid              Value referring to snapshot Id. (required)
 -v, --version                       version for update
-
 ```
 
 ## Global Flags:
@@ -37,6 +36,5 @@ mgc dbaas instances snapshots update --description="my-description-updated" --na
 -r, --raw                      Output raw data, without any formatting or coloring
     --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
     --server-url uri           Manually specify the server to use
-
 ```
 

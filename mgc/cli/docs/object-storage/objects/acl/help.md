@@ -10,13 +10,11 @@ mgc object-storage objects acl [command]
 ```
 get         Get ACL information for the specified object
 set         Set ACL information for the specified object
-
 ```
 
 ## Flags:
 ```
 -h, --help   help for acl
-
 ```
 
 ## Global Flags:
@@ -31,6 +29,5 @@ set         Set ACL information for the specified object
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. Use '--output=help' to know more details.
 -r, --raw                      Output raw data, without any formatting or coloring
-
 ```
 

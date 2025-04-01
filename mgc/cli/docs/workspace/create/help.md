@@ -10,7 +10,6 @@ mgc workspace create [name] [copy] [flags]
     --copy string   Name of the workspace to copy content from. If this parameter is passed, the new workspace will be pre-populated with the contents of the workspace with the specified name
 -h, --help          help for create
     --name string   Profile name (required)
-
 ```
 
 ## Global Flags:
@@ -25,6 +24,5 @@ mgc workspace create [name] [copy] [flags]
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. Use '--output=help' to know more details.
 -r, --raw                      Output raw data, without any formatting or coloring
-
 ```
 

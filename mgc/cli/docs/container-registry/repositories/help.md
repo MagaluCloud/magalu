@@ -11,14 +11,12 @@ mgc container-registry repositories [command]
 delete      Delete a container registry repository by repository_name.
 get         Get a container registry repository by repository_name
 list        List all container registry repositories
-
 ```
 
 ## Flags:
 ```
 -h, --help      help for repositories
 -v, --version   version for repositories
-
 ```
 
 ## Global Flags:
@@ -33,6 +31,5 @@ list        List all container registry repositories
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. Use '--output=help' to know more details.
 -r, --raw                      Output raw data, without any formatting or coloring
-
 ```
 

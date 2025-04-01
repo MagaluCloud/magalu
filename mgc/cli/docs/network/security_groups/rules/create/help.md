@@ -26,7 +26,6 @@ mgc network security-groups rules create --description="Allow incoming SSH traff
 -v, --version                       version for create
     --wait                          The request will be asynchronous. The wait parameter tells the API that you want the request to simulate synchronous behavior (to maintain endpoint compatibility). You can set an approximate timeout with the waitTimeout parameter (default true)
     --wait-timeout integer          waitTimeout: the approximate time in seconds you want to wait when simulating the request as synchronous (only works with wait=true) (default 120)
-
 ```
 
 ## Global Flags:
@@ -44,6 +43,5 @@ mgc network security-groups rules create --description="Allow incoming SSH traff
 -r, --raw                      Output raw data, without any formatting or coloring
     --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
     --server-url uri           Manually specify the server to use
-
 ```
 

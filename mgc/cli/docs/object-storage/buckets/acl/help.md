@@ -10,13 +10,11 @@ mgc object-storage buckets acl [command]
 ```
 get         Get the ACL for the specified bucket
 set         set permission information for the specified bucket
-
 ```
 
 ## Flags:
 ```
 -h, --help   help for acl
-
 ```
 
 ## Global Flags:
@@ -31,6 +29,5 @@ set         set permission information for the specified bucket
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. Use '--output=help' to know more details.
 -r, --raw                      Output raw data, without any formatting or coloring
-
 ```
 

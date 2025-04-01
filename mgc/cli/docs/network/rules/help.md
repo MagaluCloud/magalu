@@ -10,14 +10,12 @@ mgc network rules [command]
 ```
 delete      Delete a Rule
 get         Rule Details
-
 ```
 
 ## Flags:
 ```
 -h, --help      help for rules
 -v, --version   version for rules
-
 ```
 
 ## Global Flags:
@@ -32,6 +30,5 @@ get         Rule Details
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. Use '--output=help' to know more details.
 -r, --raw                      Output raw data, without any formatting or coloring
-
 ```
 

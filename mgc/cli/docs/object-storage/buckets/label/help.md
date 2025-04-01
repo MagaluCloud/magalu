@@ -11,13 +11,11 @@ mgc object-storage buckets label [command]
 delete      Delete labels for the specified bucket
 get         Get labels for the specified bucket
 set         Set labels for the specified bucket
-
 ```
 
 ## Flags:
 ```
 -h, --help   help for label
-
 ```
 
 ## Global Flags:
@@ -32,6 +30,5 @@ set         Set labels for the specified bucket
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. Use '--output=help' to know more details.
 -r, --raw                      Output raw data, without any formatting or coloring
-
 ```
 

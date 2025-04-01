@@ -9,14 +9,12 @@ mgc kubernetes version [command]
 ## Commands:
 ```
 list        Lists all available versions
-
 ```
 
 ## Flags:
 ```
 -h, --help      help for version
 -v, --version   version for version
-
 ```
 
 ## Global Flags:
@@ -31,6 +29,5 @@ list        Lists all available versions
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. Use '--output=help' to know more details.
 -r, --raw                      Output raw data, without any formatting or coloring
-
 ```
 

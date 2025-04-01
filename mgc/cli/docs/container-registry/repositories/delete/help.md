@@ -11,7 +11,6 @@ mgc container-registry repositories delete [registry-id] [repository-name] [flag
     --registry-id uuid         Container Registry's UUID. (required)
     --repository-name string   Repository's name. (required)
 -v, --version                  version for delete
-
 ```
 
 ## Global Flags:
@@ -29,6 +28,5 @@ mgc container-registry repositories delete [registry-id] [repository-name] [flag
 -r, --raw                      Output raw data, without any formatting or coloring
     --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
     --server-url uri           Manually specify the server to use
-
 ```
 

@@ -9,7 +9,6 @@ mgc auth tenant set [uuid] [flags]
 ```
 -h, --help          help for set
     --uuid string   The UUID of the desired Tenant. To list all possible IDs, run auth tenant list (required)
-
 ```
 
 ## Global Flags:
@@ -24,6 +23,5 @@ mgc auth tenant set [uuid] [flags]
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. Use '--output=help' to know more details.
 -r, --raw                      Output raw data, without any formatting or coloring
-
 ```
 

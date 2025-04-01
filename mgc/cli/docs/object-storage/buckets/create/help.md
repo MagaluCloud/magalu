@@ -16,7 +16,6 @@ mgc object-storage buckets create [bucket] [flags]
 -h, --help                          help for create
     --private                       Owner gets FULL_CONTROL. Delegated users have access. No one else has access rights
     --public-read                   Owner gets FULL_CONTROL. Everyone else has READ rights
-
 ```
 
 ## Global Flags:
@@ -35,6 +34,5 @@ mgc object-storage buckets create [bucket] [flags]
     --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
     --server-url uri           Manually specify the server to use
     --workers integer          Number of routines that spawn to do parallel operations within object_storage (min: 1) (default 5)
-
 ```
 

@@ -14,7 +14,6 @@ mgc object-storage buckets policy delete --dst="my-bucket"
 ```
     --dst string   Name of the bucket to delete policy file from (required)
 -h, --help         help for delete
-
 ```
 
 ## Global Flags:
@@ -33,6 +32,5 @@ mgc object-storage buckets policy delete --dst="my-bucket"
     --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
     --server-url uri           Manually specify the server to use
     --workers integer          Number of routines that spawn to do parallel operations within object_storage (min: 1) (default 5)
-
 ```
 

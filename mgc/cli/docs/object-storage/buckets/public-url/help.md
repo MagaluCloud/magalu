@@ -14,7 +14,6 @@ mgc object-storage buckets public-url --dst="bucket1"
 ```
     --dst uri   Path of the bucket to generate the public url (required)
 -h, --help      help for public-url
-
 ```
 
 ## Global Flags:
@@ -33,6 +32,5 @@ mgc object-storage buckets public-url --dst="bucket1"
     --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
     --server-url uri           Manually specify the server to use
     --workers integer          Number of routines that spawn to do parallel operations within object_storage (min: 1) (default 5)
-
 ```
 

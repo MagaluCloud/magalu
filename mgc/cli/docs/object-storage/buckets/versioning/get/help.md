@@ -9,7 +9,6 @@ mgc object-storage buckets versioning get [bucket] [flags]
 ```
     --bucket string   Bucket name to get versioning info from (required)
 -h, --help            help for get
-
 ```
 
 ## Global Flags:
@@ -28,6 +27,5 @@ mgc object-storage buckets versioning get [bucket] [flags]
     --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
     --server-url uri           Manually specify the server to use
     --workers integer          Number of routines that spawn to do parallel operations within object_storage (min: 1) (default 5)
-
 ```
 

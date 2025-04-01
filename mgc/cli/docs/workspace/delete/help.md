@@ -9,7 +9,6 @@ mgc workspace delete [name] [flags]
 ```
 -h, --help          help for delete
     --name string   workspace name (required)
-
 ```
 
 ## Global Flags:
@@ -24,6 +23,5 @@ mgc workspace delete [name] [flags]
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. Use '--output=help' to know more details.
 -r, --raw                      Output raw data, without any formatting or coloring
-
 ```
 

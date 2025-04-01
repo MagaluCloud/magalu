@@ -14,14 +14,12 @@ delete      Delete a snapshot.
 get         Retrieve the details of a specific snapshot.
 list        List all snapshots.
 rename      Rename a snapshot.
-
 ```
 
 ## Flags:
 ```
 -h, --help      help for snapshots
 -v, --version   version for snapshots
-
 ```
 
 ## Global Flags:
@@ -36,6 +34,5 @@ rename      Rename a snapshot.
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. Use '--output=help' to know more details.
 -r, --raw                      Output raw data, without any formatting or coloring
-
 ```
 

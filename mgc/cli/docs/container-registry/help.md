@@ -12,14 +12,12 @@ credentials  Routes related to credentials to login to Docker.
 images       Routes related to listing and deletion of images.
 registries   Routes related to creation, listing and deletion of registries.
 repositories Routes related to listing and deletion of repositories.
-
 ```
 
 ## Flags:
 ```
 -h, --help      help for container-registry
 -v, --version   version for container-registry
-
 ```
 
 ## Global Flags:
@@ -34,6 +32,5 @@ repositories Routes related to listing and deletion of repositories.
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. Use '--output=help' to know more details.
 -r, --raw                      Output raw data, without any formatting or coloring
-
 ```
 

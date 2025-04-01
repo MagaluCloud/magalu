@@ -12,7 +12,6 @@ mgc virtual-machine instances get [id] [flags]
 -h, --help                          help for get
     --id string                     Instance id - for help use ./mgc virtual-machines instances list . (required)
 -v, --version                       version for get
-
 ```
 
 ## Global Flags:
@@ -31,6 +30,5 @@ mgc virtual-machine instances get [id] [flags]
     --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
     --server-url uri           Manually specify the server to use
     --x-api-version string     X-Api-Version: api version (default "1.1")
-
 ```
 

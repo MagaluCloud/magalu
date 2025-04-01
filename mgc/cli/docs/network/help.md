@@ -16,14 +16,12 @@ security-groups Operations related to Security Groups
 subnetpools     Operations related to Subnet Pools
 subnets         Operations related to Subnets
 vpcs            Operations related to VPCs
-
 ```
 
 ## Flags:
 ```
 -h, --help      help for network
 -v, --version   version for network
-
 ```
 
 ## Global Flags:
@@ -38,6 +36,5 @@ vpcs            Operations related to VPCs
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. Use '--output=help' to know more details.
 -r, --raw                      Output raw data, without any formatting or coloring
-
 ```
 

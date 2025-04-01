@@ -17,13 +17,11 @@ object-lock Object locking commands
 policy      Policy-related commands
 public-url  Get bucket public url
 versioning  Manage bucket versioning
-
 ```
 
 ## Flags:
 ```
 -h, --help   help for buckets
-
 ```
 
 ## Global Flags:
@@ -38,6 +36,5 @@ versioning  Manage bucket versioning
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. Use '--output=help' to know more details.
 -r, --raw                      Output raw data, without any formatting or coloring
-
 ```
 

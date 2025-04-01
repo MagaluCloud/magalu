@@ -45,7 +45,6 @@ mgc virtual-machine snapshots restore --machine-type.id="9ec75090-2872-4f51-8111
     --ssh-key-name string                       Ssh Key Name
     --user-data string                          User Data (between 1 and 65000 characters)
 -v, --version                                   version for restore
-
 ```
 
 ## Global Flags:
@@ -63,6 +62,5 @@ mgc virtual-machine snapshots restore --machine-type.id="9ec75090-2872-4f51-8111
 -r, --raw                      Output raw data, without any formatting or coloring
     --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
     --server-url uri           Manually specify the server to use
-
 ```
 

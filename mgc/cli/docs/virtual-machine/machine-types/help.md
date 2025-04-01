@@ -9,14 +9,12 @@ mgc virtual-machine machine-types [command]
 ## Commands:
 ```
 list        Retrieves all machine-types.
-
 ```
 
 ## Flags:
 ```
 -h, --help      help for machine-types
 -v, --version   version for machine-types
-
 ```
 
 ## Global Flags:
@@ -31,6 +29,5 @@ list        Retrieves all machine-types.
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. Use '--output=help' to know more details.
 -r, --raw                      Output raw data, without any formatting or coloring
-
 ```
 

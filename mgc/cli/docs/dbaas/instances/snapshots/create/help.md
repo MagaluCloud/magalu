@@ -18,7 +18,6 @@ mgc dbaas instances snapshots create --description="my-description" --name="my-s
     --instance-id uuid              Value referring to instance Id. (required)
     --name string                   Snapshot unique name. (max character count: 100) (required)
 -v, --version                       version for create
-
 ```
 
 ## Global Flags:
@@ -36,6 +35,5 @@ mgc dbaas instances snapshots create --description="my-description" --name="my-s
 -r, --raw                      Output raw data, without any formatting or coloring
     --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
     --server-url uri           Manually specify the server to use
-
 ```
 

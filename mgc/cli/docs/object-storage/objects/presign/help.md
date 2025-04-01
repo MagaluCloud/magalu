@@ -16,7 +16,6 @@ mgc object-storage objects presign --dst="bucket1/file.txt" --expires-in="2h"
     --expires-in string   Expiration time for the pre-signed URL. Valid time units are 'ns, 'us' (or 'µs'), 'ms', 's',  'm', and 'h'.default=5m
 -h, --help                help for presign
     --method enum         (one of "GET" or "PUT") (required) (default "GET")
-
 ```
 
 ## Global Flags:
@@ -35,6 +34,5 @@ mgc object-storage objects presign --dst="bucket1/file.txt" --expires-in="2h"
     --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
     --server-url uri           Manually specify the server to use
     --workers integer          Number of routines that spawn to do parallel operations within object_storage (min: 1) (default 5)
-
 ```
 

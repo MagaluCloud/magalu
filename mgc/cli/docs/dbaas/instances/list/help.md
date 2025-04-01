@@ -24,7 +24,6 @@ mgc dbaas instances list --status="ACTIVE"
     --volume.size-gte integer   Volume.Size Gte: Value referring to volume size greater than or equal to.
     --volume.size-lt integer    Volume.Size Lt: Value referring to volume size less than.
     --volume.size-lte integer   Volume.Size Lte: Value referring to volume size less than or equal to.
-
 ```
 
 ## Global Flags:
@@ -42,6 +41,5 @@ mgc dbaas instances list --status="ACTIVE"
 -r, --raw                      Output raw data, without any formatting or coloring
     --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
     --server-url uri           Manually specify the server to use
-
 ```
 

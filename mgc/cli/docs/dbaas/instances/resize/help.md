@@ -25,7 +25,6 @@ mgc dbaas instances resize --volume.size=30
                                     This is the same as '--volume=size:integer'.
     --volume.type enum              Instance Volume Request: The type of the volume. (one of "CLOUD_HDD", "CLOUD_NVME" or "CLOUD_NVME_15K")
                                     This is the same as '--volume=type:enum'. (default "CLOUD_NVME_15K")
-
 ```
 
 ## Global Flags:
@@ -43,6 +42,5 @@ mgc dbaas instances resize --volume.size=30
 -r, --raw                      Output raw data, without any formatting or coloring
     --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
     --server-url uri           Manually specify the server to use
-
 ```
 

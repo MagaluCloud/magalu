@@ -17,14 +17,12 @@ get         Retrieve the details of a specific volume.
 list        List all volumes.
 rename      Rename a volume.
 retype      Change the type of a volume.
-
 ```
 
 ## Flags:
 ```
 -h, --help      help for volumes
 -v, --version   version for volumes
-
 ```
 
 ## Global Flags:
@@ -39,6 +37,5 @@ retype      Change the type of a volume.
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. Use '--output=help' to know more details.
 -r, --raw                      Output raw data, without any formatting or coloring
-
 ```
 

@@ -10,14 +10,12 @@ mgc virtual-machine instances network-interface [command]
 ```
 attach      Attach network interface to an instance.
 detach      Detach a non primary network interface from an instance.
-
 ```
 
 ## Flags:
 ```
 -h, --help      help for network-interface
 -v, --version   version for network-interface
-
 ```
 
 ## Global Flags:
@@ -32,6 +30,5 @@ detach      Detach a non primary network interface from an instance.
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. Use '--output=help' to know more details.
 -r, --raw                      Output raw data, without any formatting or coloring
-
 ```
 

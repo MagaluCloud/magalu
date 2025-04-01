@@ -10,14 +10,12 @@ mgc network vpcs public-ips [command]
 ```
 create      Create Public IP
 list        List Public IPs
-
 ```
 
 ## Flags:
 ```
 -h, --help      help for public-ips
 -v, --version   version for public-ips
-
 ```
 
 ## Global Flags:
@@ -32,6 +30,5 @@ list        List Public IPs
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. Use '--output=help' to know more details.
 -r, --raw                      Output raw data, without any formatting or coloring
-
 ```
 

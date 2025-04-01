@@ -24,7 +24,6 @@ mgc block-storage volumes retype --new-type.id="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxx
     --new-type.name string          New Type: Name (between 1 and 255 characters)
                                     This is the same as '--new-type=name:string'.
 -v, --version                       version for retype
-
 ```
 
 ## Global Flags:
@@ -42,6 +41,5 @@ mgc block-storage volumes retype --new-type.id="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxx
 -r, --raw                      Output raw data, without any formatting or coloring
     --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
     --server-url uri           Manually specify the server to use
-
 ```
 

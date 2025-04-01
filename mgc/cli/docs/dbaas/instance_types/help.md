@@ -10,14 +10,12 @@ mgc dbaas instance-types [command]
 ```
 get         Instance Type detail.
 list        List available instance types.
-
 ```
 
 ## Flags:
 ```
 -h, --help      help for instance-types
 -v, --version   version for instance-types
-
 ```
 
 ## Global Flags:
@@ -32,6 +30,5 @@ list        List available instance types.
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. Use '--output=help' to know more details.
 -r, --raw                      Output raw data, without any formatting or coloring
-
 ```
 

@@ -12,7 +12,6 @@ mgc container-registry registries list [flags]
     --control.sort string      Fields to use as reference to sort. (pattern: (^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$) (default "created_at:asc")
 -h, --help                     help for list
 -v, --version                  version for list
-
 ```
 
 ## Global Flags:
@@ -30,6 +29,5 @@ mgc container-registry registries list [flags]
 -r, --raw                      Output raw data, without any formatting or coloring
     --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
     --server-url uri           Manually specify the server to use
-
 ```
 

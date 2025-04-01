@@ -19,7 +19,6 @@ mgc object-storage objects list --dst="bucket1" --max-items=1000
 -h, --help                        help for list
     --max-items integer           Limit of items to be listed (min: 1) (default 1000)
     --recursive                   List folders and subfolders
-
 ```
 
 ## Global Flags:
@@ -38,6 +37,5 @@ mgc object-storage objects list --dst="bucket1" --max-items=1000
     --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
     --server-url uri           Manually specify the server to use
     --workers integer          Number of routines that spawn to do parallel operations within object_storage (min: 1) (default 5)
-
 ```
 

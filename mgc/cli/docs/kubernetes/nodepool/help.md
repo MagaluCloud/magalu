@@ -14,14 +14,12 @@ get         Get node pool by node_pool_id
 list        List node pools by cluster_id
 nodes       List nodes from a node pool by node_pool_id
 update      Patch node pool replicas by node_pool_id
-
 ```
 
 ## Flags:
 ```
 -h, --help      help for nodepool
 -v, --version   version for nodepool
-
 ```
 
 ## Global Flags:
@@ -36,6 +34,5 @@ update      Patch node pool replicas by node_pool_id
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. Use '--output=help' to know more details.
 -r, --raw                      Output raw data, without any formatting or coloring
-
 ```
 

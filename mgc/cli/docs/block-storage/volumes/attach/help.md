@@ -13,7 +13,6 @@ mgc block-storage volumes attach [id] [virtual-machine-id] [flags]
     --id uuid                       Id (required)
 -v, --version                       version for attach
     --virtual-machine-id uuid       Virtual Machine Id (required)
-
 ```
 
 ## Global Flags:
@@ -31,6 +30,5 @@ mgc block-storage volumes attach [id] [virtual-machine-id] [flags]
 -r, --raw                      Output raw data, without any formatting or coloring
     --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
     --server-url uri           Manually specify the server to use
-
 ```
 

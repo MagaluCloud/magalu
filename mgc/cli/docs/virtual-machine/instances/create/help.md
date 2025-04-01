@@ -54,7 +54,6 @@ mgc virtual-machine instances create --image.id="9ec75090-2872-4f51-8111-53d05d9
 -v, --version                                   version for create
     --volumes array(object)                     Volumes
                                                 Use --volumes=help for more details
-
 ```
 
 ## Global Flags:
@@ -72,6 +71,5 @@ mgc virtual-machine instances create --image.id="9ec75090-2872-4f51-8111-53d05d9
 -r, --raw                      Output raw data, without any formatting or coloring
     --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
     --server-url uri           Manually specify the server to use
-
 ```
 

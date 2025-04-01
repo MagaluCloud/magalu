@@ -19,7 +19,6 @@ mgc object-storage objects upload-dir --dst="my-bucket/dir/" --src="path/to/fold
     --shallow                Don't upload subdirectories
     --src directory          Source directory path for upload (required)
     --storage-class enum     Type of Storage in which to store object (one of "", "cold", "cold_instant", "glacier_ir" or "standard") (default "")
-
 ```
 
 ## Global Flags:
@@ -38,6 +37,5 @@ mgc object-storage objects upload-dir --dst="my-bucket/dir/" --src="path/to/fold
     --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
     --server-url uri           Manually specify the server to use
     --workers integer          Number of routines that spawn to do parallel operations within object_storage (min: 1) (default 5)
-
 ```
 

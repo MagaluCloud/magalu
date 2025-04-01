@@ -20,14 +20,12 @@ retype            Changes an instance machine-type.
 start             Starts an instance.
 stop              Stops an instance.
 suspend           Suspends instance.
-
 ```
 
 ## Flags:
 ```
 -h, --help      help for instances
 -v, --version   version for instances
-
 ```
 
 ## Global Flags:
@@ -42,6 +40,5 @@ suspend           Suspends instance.
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. Use '--output=help' to know more details.
 -r, --raw                      Output raw data, without any formatting or coloring
-
 ```
 

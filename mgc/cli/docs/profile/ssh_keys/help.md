@@ -12,14 +12,12 @@ create      Register new SSH key
 delete      Delete SSH Key
 get         Retrieve a SSH key
 list        List SSH keys
-
 ```
 
 ## Flags:
 ```
 -h, --help      help for ssh-keys
 -v, --version   version for ssh-keys
-
 ```
 
 ## Global Flags:
@@ -34,6 +32,5 @@ list        List SSH keys
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. Use '--output=help' to know more details.
 -r, --raw                      Output raw data, without any formatting or coloring
-
 ```
 

@@ -13,7 +13,6 @@ mgc dbaas instance-types list [flags]
 -h, --help                     help for list
     --status enum              An enumeration. (one of "ACTIVE" or "DEPRECATED") (default "ACTIVE")
 -v, --version                  version for list
-
 ```
 
 ## Global Flags:
@@ -31,6 +30,5 @@ mgc dbaas instance-types list [flags]
 -r, --raw                      Output raw data, without any formatting or coloring
     --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
     --server-url uri           Manually specify the server to use
-
 ```
 

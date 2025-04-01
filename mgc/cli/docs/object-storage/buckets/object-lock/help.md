@@ -11,13 +11,11 @@ mgc object-storage buckets object-lock [command]
 get         Get object locking configuration for the specified bucket
 set         set number of either days or years to lock new objects for
 unset       unset object locking for the specified bucket
-
 ```
 
 ## Flags:
 ```
 -h, --help   help for object-lock
-
 ```
 
 ## Global Flags:
@@ -32,6 +30,5 @@ unset       unset object locking for the specified bucket
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. Use '--output=help' to know more details.
 -r, --raw                      Output raw data, without any formatting or coloring
-
 ```
 

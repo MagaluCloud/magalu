@@ -11,14 +11,12 @@ mgc container-registry images [command]
 delete      Delete image by digest or tag
 get         Get image details
 list        List images in container registry repository
-
 ```
 
 ## Flags:
 ```
 -h, --help      help for images
 -v, --version   version for images
-
 ```
 
 ## Global Flags:
@@ -33,6 +31,5 @@ list        List images in container registry repository
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. Use '--output=help' to know more details.
 -r, --raw                      Output raw data, without any formatting or coloring
-
 ```
 

@@ -24,7 +24,6 @@ mgc audit events list --data='{"data.machine_type.name":"cloud-bs1.xsmall","data
     --time date-time           Timestamp of when the occurrence happened
     --type-like string         Type of event related to the originating occurrence ('like' operation)
 -v, --version                  version for list
-
 ```
 
 ## Global Flags:
@@ -42,6 +41,5 @@ mgc audit events list --data='{"data.machine_type.name":"cloud-bs1.xsmall","data
 -r, --raw                      Output raw data, without any formatting or coloring
     --region enum              Region to reach the service (one of "br-mgl1", "br-ne1", "br-se1" or "global") (default "br-se1")
     --server-url uri           Manually specify the server to use
-
 ```
 

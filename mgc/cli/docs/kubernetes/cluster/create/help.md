@@ -39,7 +39,6 @@ mgc kubernetes cluster create --allowed-cidrs='["192.168.1.0/24","10.0.0.0/16"]'
 -v, --version                       version for create
     --zone string                   [Deprecated] This parameter is deprecated and its use won't create a cluster at requested zone.
                                     Identifier of the zone where the Kubernetes cluster will be located.
-
 ```
 
 ## Global Flags:
@@ -57,6 +56,5 @@ mgc kubernetes cluster create --allowed-cidrs='["192.168.1.0/24","10.0.0.0/16"]'
 -r, --raw                      Output raw data, without any formatting or coloring
     --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
     --server-url uri           Manually specify the server to use
-
 ```
 

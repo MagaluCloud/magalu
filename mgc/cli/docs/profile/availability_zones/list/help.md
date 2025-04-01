@@ -10,7 +10,6 @@ mgc profile availability-zones list [flags]
 -h, --help              help for list
     --show-is-blocked   Show Is Blocked
 -v, --version           version for list
-
 ```
 
 ## Global Flags:
@@ -27,6 +26,5 @@ mgc profile availability-zones list [flags]
 -o, --output string            Change the output format. Use '--output=help' to know more details.
 -r, --raw                      Output raw data, without any formatting or coloring
     --server-url uri           Manually specify the server to use
-
 ```
 

@@ -14,7 +14,6 @@ mgc network subnetpools create [flags]
     --name string                   The name of the subnet pool. (required)
     --type string                   The type of subnetpool, pip or default. (pattern: ^(pip|default)$) (default "default")
 -v, --version                       version for create
-
 ```
 
 ## Global Flags:
@@ -32,6 +31,5 @@ mgc network subnetpools create [flags]
 -r, --raw                      Output raw data, without any formatting or coloring
     --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
     --server-url uri           Manually specify the server to use
-
 ```
 

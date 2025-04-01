@@ -13,14 +13,12 @@ flavor      Endpoints related to listing available flavors for a Kubernetes clus
 info        Endpoints related to listing available flavors (resource configurations) and Kubernetes versions for a Kubernetes cluster.
 nodepool    Endpoints related to the creation, listing of nodepools and nodes, updating, and deletion of nodepools for a Kubernetes cluster.
 version     Endpoints related to listing available Kubernetes versions for a Kubernetes cluster.
-
 ```
 
 ## Flags:
 ```
 -h, --help      help for kubernetes
 -v, --version   version for kubernetes
-
 ```
 
 ## Global Flags:
@@ -35,6 +33,5 @@ version     Endpoints related to listing available Kubernetes versions for a Kub
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. Use '--output=help' to know more details.
 -r, --raw                      Output raw data, without any formatting or coloring
-
 ```
 

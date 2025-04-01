@@ -19,7 +19,6 @@ mgc dbaas instances update --backup-retention-days=7 --backup-start-at="04:00:00
     --instance-id uuid                Value referring to instance Id. (required)
     --status enum                     Instance Status Update (one of "ACTIVE" or "STOPPED")
 -v, --version                         version for update
-
 ```
 
 ## Global Flags:
@@ -37,6 +36,5 @@ mgc dbaas instances update --backup-retention-days=7 --backup-start-at="04:00:00
 -r, --raw                      Output raw data, without any formatting or coloring
     --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
     --server-url uri           Manually specify the server to use
-
 ```
 

@@ -9,14 +9,12 @@ mgc profile availability-zones [command]
 ## Commands:
 ```
 list        List all availability zones.
-
 ```
 
 ## Flags:
 ```
 -h, --help      help for availability-zones
 -v, --version   version for availability-zones
-
 ```
 
 ## Global Flags:
@@ -31,6 +29,5 @@ list        List all availability zones.
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. Use '--output=help' to know more details.
 -r, --raw                      Output raw data, without any formatting or coloring
-
 ```
 

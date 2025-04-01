@@ -10,7 +10,6 @@ mgc network security-groups rules list [security-group-id] [flags]
 -h, --help                       help for list
     --security-group-id string   Security Group ID: Id of the Security Group (required)
 -v, --version                    version for list
-
 ```
 
 ## Global Flags:
@@ -28,6 +27,5 @@ mgc network security-groups rules list [security-group-id] [flags]
 -r, --raw                      Output raw data, without any formatting or coloring
     --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
     --server-url uri           Manually specify the server to use
-
 ```
 

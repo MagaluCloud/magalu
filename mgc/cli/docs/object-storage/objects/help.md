@@ -26,13 +26,11 @@ sync         Synchronizes a local path with a bucket
 upload       Upload a file to a bucket
 upload-dir   Upload a directory to a bucket
 versions     Retrieve all versions of an object
-
 ```
 
 ## Flags:
 ```
 -h, --help   help for objects
-
 ```
 
 ## Global Flags:
@@ -47,6 +45,5 @@ versions     Retrieve all versions of an object
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. Use '--output=help' to know more details.
 -r, --raw                      Output raw data, without any formatting or coloring
-
 ```
 

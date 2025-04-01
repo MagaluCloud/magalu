@@ -10,7 +10,6 @@ mgc object-storage api-key add [key-id] [key-secret] [flags]
 -h, --help                help for add
     --key-id string       ID of api key to use (required)
     --key-secret string   Secret of api key to use (required)
-
 ```
 
 ## Global Flags:
@@ -25,6 +24,5 @@ mgc object-storage api-key add [key-id] [key-secret] [flags]
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. Use '--output=help' to know more details.
 -r, --raw                      Output raw data, without any formatting or coloring
-
 ```
 

@@ -11,13 +11,11 @@ mgc object-storage buckets policy [command]
 delete      Delete policy document for the specified bucket
 get         Get the policy document for the specified bucket
 set         Set policy document for the specified bucket. The policy can be provided as a direct JSON string or a file path using @./policy.json.
-
 ```
 
 ## Flags:
 ```
 -h, --help   help for policy
-
 ```
 
 ## Global Flags:
@@ -32,6 +30,5 @@ set         Set policy document for the specified bucket. The policy can be prov
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. Use '--output=help' to know more details.
 -r, --raw                      Output raw data, without any formatting or coloring
-
 ```
 

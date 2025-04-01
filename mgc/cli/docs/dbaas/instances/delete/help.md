@@ -10,7 +10,6 @@ mgc dbaas instances delete [instance-id] [flags]
 -h, --help               help for delete
     --instance-id uuid   Value referring to instance Id. (required)
 -v, --version            version for delete
-
 ```
 
 ## Global Flags:
@@ -28,6 +27,5 @@ mgc dbaas instances delete [instance-id] [flags]
 -r, --raw                      Output raw data, without any formatting or coloring
     --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
     --server-url uri           Manually specify the server to use
-
 ```
 

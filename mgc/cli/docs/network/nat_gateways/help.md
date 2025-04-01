@@ -12,14 +12,12 @@ create      Create a new NAT Gateway resource
 delete      Delete a NAT Gateway from a VPC
 get         Detail a NAT Gateway from a VPC
 list        List the NAT Gateways from a VPC
-
 ```
 
 ## Flags:
 ```
 -h, --help      help for nat-gateways
 -v, --version   version for nat-gateways
-
 ```
 
 ## Global Flags:
@@ -34,6 +32,5 @@ list        List the NAT Gateways from a VPC
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. Use '--output=help' to know more details.
 -r, --raw                      Output raw data, without any formatting or coloring
-
 ```
 

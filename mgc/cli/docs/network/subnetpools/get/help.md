@@ -11,7 +11,6 @@ mgc network subnetpools get [subnetpool-id] [flags]
 -h, --help                          help for get
     --subnetpool-id string          subnetpoolId: Id of the Subnet Pool to get details (required)
 -v, --version                       version for get
-
 ```
 
 ## Global Flags:
@@ -29,6 +28,5 @@ mgc network subnetpools get [subnetpool-id] [flags]
 -r, --raw                      Output raw data, without any formatting or coloring
     --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
     --server-url uri           Manually specify the server to use
-
 ```
 

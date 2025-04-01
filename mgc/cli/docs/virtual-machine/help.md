@@ -12,14 +12,12 @@ images        Operations with images for instances.
 instances     Operations with instances, including create, delete, start, stop, reboot and other actions.
 machine-types Operations with machine types for instances.
 snapshots     Operations with snapshots for instances.
-
 ```
 
 ## Flags:
 ```
 -h, --help      help for virtual-machine
 -v, --version   version for virtual-machine
-
 ```
 
 ## Global Flags:
@@ -34,6 +32,5 @@ snapshots     Operations with snapshots for instances.
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. Use '--output=help' to know more details.
 -r, --raw                      Output raw data, without any formatting or coloring
-
 ```
 

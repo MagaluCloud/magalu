@@ -16,7 +16,6 @@ mgc auth api-key create --expiration="2024-11-07 (YYYY-MM-DD)"
     --expiration string    Date to expire new api
 -h, --help                 help for create
     --name string          Name of new api key (required)
-
 ```
 
 ## Global Flags:
@@ -31,6 +30,5 @@ mgc auth api-key create --expiration="2024-11-07 (YYYY-MM-DD)"
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. Use '--output=help' to know more details.
 -r, --raw                      Output raw data, without any formatting or coloring
-
 ```
 

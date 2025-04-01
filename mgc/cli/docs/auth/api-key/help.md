@@ -12,13 +12,11 @@ create      Create a new API Key
 get         Get a specific API key by its ID
 list        List your account API keys
 revoke      Revoke an API key by its ID
-
 ```
 
 ## Flags:
 ```
 -h, --help   help for api-key
-
 ```
 
 ## Global Flags:
@@ -33,6 +31,5 @@ revoke      Revoke an API key by its ID
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. Use '--output=help' to know more details.
 -r, --raw                      Output raw data, without any formatting or coloring
-
 ```
 

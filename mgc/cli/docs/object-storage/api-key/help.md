@@ -14,13 +14,11 @@ get         Get details about a specific key
 list        List valid Object Storage credentials
 revoke      Revoke credentials used in Object Storage requests
 set         Change current Object Storage credential to selected
-
 ```
 
 ## Flags:
 ```
 -h, --help   help for api-key
-
 ```
 
 ## Global Flags:
@@ -35,6 +33,5 @@ set         Change current Object Storage credential to selected
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. Use '--output=help' to know more details.
 -r, --raw                      Output raw data, without any formatting or coloring
-
 ```
 

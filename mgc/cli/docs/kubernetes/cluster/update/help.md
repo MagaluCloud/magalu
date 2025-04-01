@@ -13,7 +13,6 @@ mgc kubernetes cluster update [cluster-id] [flags]
     --cluster-id uuid               Cluster's UUID (required)
 -h, --help                          help for update
 -v, --version                       version for update
-
 ```
 
 ## Global Flags:
@@ -31,6 +30,5 @@ mgc kubernetes cluster update [cluster-id] [flags]
 -r, --raw                      Output raw data, without any formatting or coloring
     --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
     --server-url uri           Manually specify the server to use
-
 ```
 

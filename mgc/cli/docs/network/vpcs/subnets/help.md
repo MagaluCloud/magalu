@@ -10,14 +10,12 @@ mgc network vpcs subnets [command]
 ```
 create      Create Subnet
 list        List Subnets
-
 ```
 
 ## Flags:
 ```
 -h, --help      help for subnets
 -v, --version   version for subnets
-
 ```
 
 ## Global Flags:
@@ -32,6 +30,5 @@ list        List Subnets
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. Use '--output=help' to know more details.
 -r, --raw                      Output raw data, without any formatting or coloring
-
 ```
 

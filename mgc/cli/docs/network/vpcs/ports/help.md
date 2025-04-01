@@ -10,14 +10,12 @@ mgc network vpcs ports [command]
 ```
 create      Create Port
 list        List Ports
-
 ```
 
 ## Flags:
 ```
 -h, --help      help for ports
 -v, --version   version for ports
-
 ```
 
 ## Global Flags:
@@ -32,6 +30,5 @@ list        List Ports
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. Use '--output=help' to know more details.
 -r, --raw                      Output raw data, without any formatting or coloring
-
 ```
 

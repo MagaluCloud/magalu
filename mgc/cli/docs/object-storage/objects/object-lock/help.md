@@ -10,13 +10,11 @@ mgc object-storage objects object-lock [command]
 ```
 get         Get object locking configuration for the specified object
 set         set number of either days or years to lock new objects for
-
 ```
 
 ## Flags:
 ```
 -h, --help   help for object-lock
-
 ```
 
 ## Global Flags:
@@ -31,6 +29,5 @@ set         set number of either days or years to lock new objects for
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. Use '--output=help' to know more details.
 -r, --raw                      Output raw data, without any formatting or coloring
-
 ```
 

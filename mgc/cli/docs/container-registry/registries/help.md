@@ -12,14 +12,12 @@ create      Create a container registry
 delete      Delete a container registry by registry_id
 get         Get registry information
 list        List all container registries
-
 ```
 
 ## Flags:
 ```
 -h, --help      help for registries
 -v, --version   version for registries
-
 ```
 
 ## Global Flags:
@@ -34,6 +32,5 @@ list        List all container registries
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. Use '--output=help' to know more details.
 -r, --raw                      Output raw data, without any formatting or coloring
-
 ```
 

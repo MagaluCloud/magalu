@@ -13,14 +13,12 @@ delete      Delete Public IP
 detach      Detach Public IP
 get         Public IP Details
 list        Tenant's public IP list
-
 ```
 
 ## Flags:
 ```
 -h, --help      help for public-ips
 -v, --version   version for public-ips
-
 ```
 
 ## Global Flags:
@@ -35,6 +33,5 @@ list        Tenant's public IP list
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. Use '--output=help' to know more details.
 -r, --raw                      Output raw data, without any formatting or coloring
-
 ```
 

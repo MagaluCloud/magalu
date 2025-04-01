@@ -13,7 +13,6 @@ mgc virtual-machine instances list [flags]
     --expand array(string)     Expand: You can get more detailed info about: ['image', 'machine-type', 'machine-types', 'network', 'labels']  (default [])
 -h, --help                     help for list
 -v, --version                  version for list
-
 ```
 
 ## Global Flags:
@@ -32,6 +31,5 @@ mgc virtual-machine instances list [flags]
     --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
     --server-url uri           Manually specify the server to use
     --x-api-version string     X-Api-Version: api version (default "1.1")
-
 ```
 

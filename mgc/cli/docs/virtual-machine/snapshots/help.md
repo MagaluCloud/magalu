@@ -15,14 +15,12 @@ get         Retrieve the details of an snapshot.
 list        Lists all snapshots.
 rename      Renames a snapshot.
 restore     Restore a snapshot to an instance.
-
 ```
 
 ## Flags:
 ```
 -h, --help      help for snapshots
 -v, --version   version for snapshots
-
 ```
 
 ## Global Flags:
@@ -37,6 +35,5 @@ restore     Restore a snapshot to an instance.
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. Use '--output=help' to know more details.
 -r, --raw                      Output raw data, without any formatting or coloring
-
 ```
 

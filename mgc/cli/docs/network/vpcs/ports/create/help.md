@@ -16,7 +16,6 @@ mgc network vpcs ports create [vpc-id] [flags]
     --subnets array(string)              Subnets (default [])
 -v, --version                            version for create
     --vpc-id string                      vpc_id: ID of the VPC to create port (required)
-
 ```
 
 ## Global Flags:
@@ -35,6 +34,5 @@ mgc network vpcs ports create [vpc-id] [flags]
     --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
     --server-url uri           Manually specify the server to use
     --x-zone string            X-Zone
-
 ```
 

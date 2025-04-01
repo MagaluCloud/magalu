@@ -57,7 +57,6 @@ mgc kubernetes nodepool create --auto-scale.max-replicas=5 --auto-scale.min-repl
     --taints array(object)              Property associating a set of nodes.
                                         Use --taints=help for more details
 -v, --version                           version for create
-
 ```
 
 ## Global Flags:
@@ -75,6 +74,5 @@ mgc kubernetes nodepool create --auto-scale.max-replicas=5 --auto-scale.min-repl
 -r, --raw                      Output raw data, without any formatting or coloring
     --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
     --server-url uri           Manually specify the server to use
-
 ```
 

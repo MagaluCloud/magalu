@@ -17,7 +17,6 @@ mgc object-storage objects copy --dst="bucket2/dir/file.txt" --src="bucket1/file
     --obj-version string   Version of the object to be copied
     --src uri              Path of the object in a bucket to be copied (required)
     --storage-class enum   Copy objects to other storage classes (one of "", "cold", "cold_instant", "glacier_ir" or "standard") (default "")
-
 ```
 
 ## Global Flags:
@@ -36,6 +35,5 @@ mgc object-storage objects copy --dst="bucket2/dir/file.txt" --src="bucket1/file
     --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
     --server-url uri           Manually specify the server to use
     --workers integer          Number of routines that spawn to do parallel operations within object_storage (min: 1) (default 5)
-
 ```
 

@@ -31,7 +31,6 @@ mgc auth clients create --access-token-expiration=7200 --audiences="public" --de
     --refresh-token-exp integer              Custom refresh token expiration value (in seconds)
     --request-reason string                  Note to inform the reason for creating the client. Will help with the application approval process
     --support-url string                     Support URL
-
 ```
 
 ## Global Flags:
@@ -46,6 +45,5 @@ mgc auth clients create --access-token-expiration=7200 --audiences="public" --de
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. Use '--output=help' to know more details.
 -r, --raw                      Output raw data, without any formatting or coloring
-
 ```
 

@@ -12,7 +12,6 @@ mgc object-storage objects delete-all [bucket] [flags]
     --filter array(object)   File name pattern to include or exclude
                              Use --filter=help for more details
 -h, --help                   help for delete-all
-
 ```
 
 ## Global Flags:
@@ -31,6 +30,5 @@ mgc object-storage objects delete-all [bucket] [flags]
     --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
     --server-url uri           Manually specify the server to use
     --workers integer          Number of routines that spawn to do parallel operations within object_storage (min: 1) (default 5)
-
 ```
 

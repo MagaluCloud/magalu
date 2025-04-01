@@ -11,14 +11,12 @@ mgc network subnets [command]
 delete      Delete a Subnet
 get         Subnet Details
 update      Update Subnet
-
 ```
 
 ## Flags:
 ```
 -h, --help      help for subnets
 -v, --version   version for subnets
-
 ```
 
 ## Global Flags:
@@ -33,6 +31,5 @@ update      Update Subnet
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. Use '--output=help' to know more details.
 -r, --raw                      Output raw data, without any formatting or coloring
-
 ```
 

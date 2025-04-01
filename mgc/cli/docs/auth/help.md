@@ -16,13 +16,11 @@ clients      Manage Clients (Oauth Applications) to use ID Magalu
 login        Authenticate with Magalu Cloud
 logout       Run logout
 tenant       Manage Tenants
-
 ```
 
 ## Flags:
 ```
 -h, --help   help for auth
-
 ```
 
 ## Global Flags:
@@ -37,6 +35,5 @@ tenant       Manage Tenants
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. Use '--output=help' to know more details.
 -r, --raw                      Output raw data, without any formatting or coloring
-
 ```
 

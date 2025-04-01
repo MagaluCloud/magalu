@@ -10,14 +10,12 @@ mgc dbaas engines [command]
 ```
 get         Engine detail.
 list        List available engines.
-
 ```
 
 ## Flags:
 ```
 -h, --help      help for engines
 -v, --version   version for engines
-
 ```
 
 ## Global Flags:
@@ -32,6 +30,5 @@ list        List available engines.
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. Use '--output=help' to know more details.
 -r, --raw                      Output raw data, without any formatting or coloring
-
 ```
 

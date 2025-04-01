@@ -14,7 +14,6 @@ mgc object-storage objects versions --dst="bucket1/file.txt"
 ```
     --dst uri   Path of the object to retrieve versions from (required)
 -h, --help      help for versions
-
 ```
 
 ## Global Flags:
@@ -33,6 +32,5 @@ mgc object-storage objects versions --dst="bucket1/file.txt"
     --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
     --server-url uri           Manually specify the server to use
     --workers integer          Number of routines that spawn to do parallel operations within object_storage (min: 1) (default 5)
-
 ```
 

@@ -15,7 +15,6 @@ mgc virtual-machine instances stop [id] [flags]
 -h, --help                          help for stop
     --id uuid                       Instance id - for help use ./mgc virtual-machines instances list . (required)
 -v, --version                       version for stop
-
 ```
 
 ## Global Flags:
@@ -33,6 +32,5 @@ mgc virtual-machine instances stop [id] [flags]
 -r, --raw                      Output raw data, without any formatting or coloring
     --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
     --server-url uri           Manually specify the server to use
-
 ```
 

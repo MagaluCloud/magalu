@@ -13,7 +13,6 @@ mgc auth login [flags]
 -h, --help       help for login
     --qrcode     Generate a qrcode for the login URL
     --show       Show the access token after the login completes
-
 ```
 
 ## Global Flags:
@@ -28,6 +27,5 @@ mgc auth login [flags]
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. Use '--output=help' to know more details.
 -r, --raw                      Output raw data, without any formatting or coloring
-
 ```
 

@@ -17,7 +17,6 @@ mgc network vpcs subnets create [vpc-id] [flags]
     --subnetpool-id string                   Subnetpool Id
 -v, --version                                version for create
     --vpc-id string                          Vpc Id: Id of the VPC to create Subnet (required)
-
 ```
 
 ## Global Flags:
@@ -36,6 +35,5 @@ mgc network vpcs subnets create [vpc-id] [flags]
     --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
     --server-url uri           Manually specify the server to use
     --x-zone string            X-Zone
-
 ```
 

@@ -13,7 +13,6 @@ mgc network subnetpools list [flags]
     --control.sort string       Sort: Name of the field wich the list must be ordered by ending with :asc or :desc (default "created_at:desc")
 -h, --help                     help for list
 -v, --version                  version for list
-
 ```
 
 ## Global Flags:
@@ -31,6 +30,5 @@ mgc network subnetpools list [flags]
 -r, --raw                      Output raw data, without any formatting or coloring
     --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
     --server-url uri           Manually specify the server to use
-
 ```
 

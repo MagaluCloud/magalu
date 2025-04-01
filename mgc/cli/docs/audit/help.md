@@ -10,14 +10,12 @@ mgc audit [command]
 ```
 event-types Endpoints related to listing types of events emitted by other products.
 events      Endpoints related to listing events emitted by other products.
-
 ```
 
 ## Flags:
 ```
 -h, --help      help for audit
 -v, --version   version for audit
-
 ```
 
 ## Global Flags:
@@ -32,6 +30,5 @@ events      Endpoints related to listing events emitted by other products.
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. Use '--output=help' to know more details.
 -r, --raw                      Output raw data, without any formatting or coloring
-
 ```
 

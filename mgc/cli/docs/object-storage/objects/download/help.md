@@ -16,7 +16,6 @@ mgc object-storage objects download --dst="file.txt" --src="bucket1/file.txt"
 -h, --help                 help for download
     --obj-version string   Version of the object to be downloaded
     --src uri              Path of the object to be downloaded (required)
-
 ```
 
 ## Global Flags:
@@ -35,6 +34,5 @@ mgc object-storage objects download --dst="file.txt" --src="bucket1/file.txt"
     --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
     --server-url uri           Manually specify the server to use
     --workers integer          Number of routines that spawn to do parallel operations within object_storage (min: 1) (default 5)
-
 ```
 

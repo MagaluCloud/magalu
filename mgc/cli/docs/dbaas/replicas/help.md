@@ -15,14 +15,12 @@ list        Replicas List.
 resize      Replica Resize.
 start       Replica Start.
 stop        Replica Stop.
-
 ```
 
 ## Flags:
 ```
 -h, --help      help for replicas
 -v, --version   version for replicas
-
 ```
 
 ## Global Flags:
@@ -37,6 +35,5 @@ stop        Replica Stop.
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. Use '--output=help' to know more details.
 -r, --raw                      Output raw data, without any formatting or coloring
-
 ```
 

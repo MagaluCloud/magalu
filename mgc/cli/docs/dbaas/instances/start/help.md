@@ -11,7 +11,6 @@ mgc dbaas instances start [instance-id] [flags]
 -h, --help                          help for start
     --instance-id uuid              Value referring to instance Id. (required)
 -v, --version                       version for start
-
 ```
 
 ## Global Flags:
@@ -29,6 +28,5 @@ mgc dbaas instances start [instance-id] [flags]
 -r, --raw                      Output raw data, without any formatting or coloring
     --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
     --server-url uri           Manually specify the server to use
-
 ```
 

@@ -10,14 +10,12 @@ mgc network security-groups rules [command]
 ```
 create      Create Rule
 list        List Rules
-
 ```
 
 ## Flags:
 ```
 -h, --help      help for rules
 -v, --version   version for rules
-
 ```
 
 ## Global Flags:
@@ -32,6 +30,5 @@ list        List Rules
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. Use '--output=help' to know more details.
 -r, --raw                      Output raw data, without any formatting or coloring
-
 ```
 

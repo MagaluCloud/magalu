@@ -13,13 +13,11 @@ mgc auth tenant [command]
 current     Get the currently active Tenant
 list        List all available tenants for current login
 set         Set the active Tenant to be used for all subsequent requests
-
 ```
 
 ## Flags:
 ```
 -h, --help   help for tenant
-
 ```
 
 ## Global Flags:
@@ -34,6 +32,5 @@ set         Set the active Tenant to be used for all subsequent requests
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. Use '--output=help' to know more details.
 -r, --raw                      Output raw data, without any formatting or coloring
-
 ```
 

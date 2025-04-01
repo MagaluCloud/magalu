@@ -14,14 +14,12 @@ create-unbook-cidr Unbook Subnetpool
 delete             Delete Subnet Pool by ID
 get                Get Subnet Pool by ID
 list               List Subnet Pools by Tenant
-
 ```
 
 ## Flags:
 ```
 -h, --help      help for subnetpools
 -v, --version   version for subnetpools
-
 ```
 
 ## Global Flags:
@@ -36,6 +34,5 @@ list               List Subnet Pools by Tenant
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. Use '--output=help' to know more details.
 -r, --raw                      Output raw data, without any formatting or coloring
-
 ```
 

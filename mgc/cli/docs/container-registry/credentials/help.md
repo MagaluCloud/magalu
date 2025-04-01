@@ -10,14 +10,12 @@ mgc container-registry credentials [command]
 ```
 list        Get credentials for container registry
 password    Reset password
-
 ```
 
 ## Flags:
 ```
 -h, --help      help for credentials
 -v, --version   version for credentials
-
 ```
 
 ## Global Flags:
@@ -32,6 +30,5 @@ password    Reset password
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. Use '--output=help' to know more details.
 -r, --raw                      Output raw data, without any formatting or coloring
-
 ```
 

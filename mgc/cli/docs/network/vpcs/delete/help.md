@@ -10,7 +10,6 @@ mgc network vpcs delete [vpc-id] [flags]
 -h, --help            help for delete
 -v, --version         version for delete
     --vpc-id string   VPC Id: ID of the VPC to delete (required)
-
 ```
 
 ## Global Flags:
@@ -28,6 +27,5 @@ mgc network vpcs delete [vpc-id] [flags]
 -r, --raw                      Output raw data, without any formatting or coloring
     --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
     --server-url uri           Manually specify the server to use
-
 ```
 

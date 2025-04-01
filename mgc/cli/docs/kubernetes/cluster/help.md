@@ -14,14 +14,12 @@ get         List a cluster by uuid
 kubeconfig  Get kubeconfig cluster
 list        List all clusters
 update      Patches a cluster
-
 ```
 
 ## Flags:
 ```
 -h, --help      help for cluster
 -v, --version   version for cluster
-
 ```
 
 ## Global Flags:
@@ -36,6 +34,5 @@ update      Patches a cluster
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. Use '--output=help' to know more details.
 -r, --raw                      Output raw data, without any formatting or coloring
-
 ```
 

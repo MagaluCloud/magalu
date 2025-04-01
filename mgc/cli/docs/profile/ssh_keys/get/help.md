@@ -11,7 +11,6 @@ mgc profile ssh-keys get [key-id] [flags]
 -h, --help                          help for get
     --key-id uuid                   Key Id (required)
 -v, --version                       version for get
-
 ```
 
 ## Global Flags:
@@ -28,6 +27,5 @@ mgc profile ssh-keys get [key-id] [flags]
 -o, --output string            Change the output format. Use '--output=help' to know more details.
 -r, --raw                      Output raw data, without any formatting or coloring
     --server-url uri           Manually specify the server to use
-
 ```
 

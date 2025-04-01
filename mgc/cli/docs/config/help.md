@@ -16,13 +16,11 @@ get         Get a specific Config value that has been previously set
 get-schema  Get the JSON Schema for the specified Config
 list        List all available Configs
 set         Set a specific Config value in the configuration file
-
 ```
 
 ## Flags:
 ```
 -h, --help   help for config
-
 ```
 
 ## Global Flags:
@@ -37,6 +35,5 @@ set         Set a specific Config value in the configuration file
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. Use '--output=help' to know more details.
 -r, --raw                      Output raw data, without any formatting or coloring
-
 ```
 

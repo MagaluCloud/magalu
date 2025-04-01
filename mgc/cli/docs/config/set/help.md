@@ -11,7 +11,6 @@ mgc config set [key] [value] [flags]
     --key string   Name of the desired config (required)
     --value        New flag value
                    Use --value=help for more details (required)
-
 ```
 
 ## Global Flags:
@@ -26,6 +25,5 @@ mgc config set [key] [value] [flags]
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. Use '--output=help' to know more details.
 -r, --raw                      Output raw data, without any formatting or coloring
-
 ```
 

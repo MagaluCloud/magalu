@@ -15,14 +15,12 @@ list        List VPC
 ports       ports
 public-ips  public-ips
 subnets     subnets
-
 ```
 
 ## Flags:
 ```
 -h, --help      help for vpcs
 -v, --version   version for vpcs
-
 ```
 
 ## Global Flags:
@@ -37,6 +35,5 @@ subnets     subnets
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. Use '--output=help' to know more details.
 -r, --raw                      Output raw data, without any formatting or coloring
-
 ```
 

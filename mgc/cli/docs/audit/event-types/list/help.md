@@ -11,7 +11,6 @@ mgc audit event-types list [flags]
     --control.offset integer   Offset for pagination
 -h, --help                     help for list
 -v, --version                  version for list
-
 ```
 
 ## Global Flags:
@@ -29,6 +28,5 @@ mgc audit event-types list [flags]
 -r, --raw                      Output raw data, without any formatting or coloring
     --region enum              Region to reach the service (one of "br-mgl1", "br-ne1", "br-se1" or "global") (default "br-se1")
     --server-url uri           Manually specify the server to use
-
 ```
 
