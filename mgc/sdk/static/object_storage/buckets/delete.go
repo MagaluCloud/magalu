@@ -60,7 +60,7 @@ func deleteBucket(ctx context.Context, params deleteParams, cfg common.Config) (
 		return nil, errors.New("bucket deletion can either be recursive OR recursive-async, not both")
 	}
 
-	if params.Recursive || params.RecursiveAsync {
+	if params.Recursive {
 		logger.Info("Deleting all objects in bucket before deleting bucket itself because 'force' parameter was true")
 		err := common.DeleteAllObjectsInBucket(ctx, common.DeleteAllObjectsInBucketParams{BucketName: params.BucketName, BatchSize: common.MaxBatchSize}, cfg)
 		if err != nil {
