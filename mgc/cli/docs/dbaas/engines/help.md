@@ -11,6 +11,7 @@ Usage:
 - Commands:
 - get         Engine detail.
 - list        List available engines.
+- parameters  List available engine parameters.
 
 ## Other commands:
 - Flags:

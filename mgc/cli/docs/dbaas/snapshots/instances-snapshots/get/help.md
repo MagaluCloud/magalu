@@ -1,19 +1,17 @@
-# Resize an instance replica.
+# Get a snapshot detail.
 
 ## Usage:
 ```bash
 Usage:
-  mgc dbaas replicas resize [replica-id] [flags]
+  mgc dbaas snapshots instances-snapshots get [instance-id] [snapshot-id] [flags]
 ```
 
 ## Product catalog:
 - Flags:
-- --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-- --cli.watch                     Wait until the operation is completed by calling the 'get' link and waiting until termination. Akin to '! get -w'
-- -h, --help                          help for resize
-- --instance-type-id uuid         Instance Type Id
-- --replica-id uuid               Value referring to replica Id. (required)
-- -v, --version                       version for resize
+- -h, --help               help for get
+- --instance-id uuid   Value referring to instance Id. (required)
+- --snapshot-id uuid   Value referring to snapshot Id. (required)
+- -v, --version            version for get
 
 ## Other commands:
 - Global Flags:

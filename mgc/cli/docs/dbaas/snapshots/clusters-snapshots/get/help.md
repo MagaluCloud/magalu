@@ -3,16 +3,15 @@
 ## Usage:
 ```bash
 Usage:
-  mgc dbaas instances snapshots get [instance-id] [snapshot-id] [flags]
+  mgc dbaas snapshots clusters-snapshots get [cluster-id] [snapshot-id] [flags]
 ```
 
 ## Product catalog:
 - Flags:
-- --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-- -h, --help                          help for get
-- --instance-id uuid              Value referring to instance Id. (required)
-- --snapshot-id uuid              Value referring to snapshot Id. (required)
-- -v, --version                       version for get
+- --cluster-id uuid    Value referring to cluster Id. (required)
+- -h, --help               help for get
+- --snapshot-id uuid   Value referring to snapshot Id. (required)
+- -v, --version            version for get
 
 ## Other commands:
 - Global Flags:

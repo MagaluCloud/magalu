@@ -1,19 +1,16 @@
-# Resize an instance replica.
+# Deletes a parameter group.
 
 ## Usage:
 ```bash
 Usage:
-  mgc dbaas replicas resize [replica-id] [flags]
+  mgc dbaas parameter-groups delete [parameter-group-id] [flags]
 ```
 
 ## Product catalog:
 - Flags:
-- --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-- --cli.watch                     Wait until the operation is completed by calling the 'get' link and waiting until termination. Akin to '! get -w'
-- -h, --help                          help for resize
-- --instance-type-id uuid         Instance Type Id
-- --replica-id uuid               Value referring to replica Id. (required)
-- -v, --version                       version for resize
+- -h, --help                      help for delete
+- --parameter-group-id uuid   Value referring to parameter group Id. (required)
+- -v, --version                   version for delete
 
 ## Other commands:
 - Global Flags:

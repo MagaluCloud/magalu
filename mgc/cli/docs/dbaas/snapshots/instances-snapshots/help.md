@@ -1,21 +1,25 @@
-# Snapshots management.
+# Snapshots management. | instances-snapshots
 
 ## Usage:
 ```bash
 Usage:
-  mgc dbaas snapshots [flags]
-  mgc dbaas snapshots [command]
+  mgc dbaas snapshots instances-snapshots [flags]
+  mgc dbaas snapshots instances-snapshots [command]
 ```
 
 ## Product catalog:
 - Commands:
-- clusters-snapshots  clusters-snapshots
-- instances-snapshots instances-snapshots
+- create      Snapshot Create.
+- delete      Delete Snapshot.
+- get         Snapshot Detail.
+- list        Snapshots List.
+- restore     Create a new instance from snapshot asynchronously.
+- update      Snapshot Update.
 
 ## Other commands:
 - Flags:
-- -h, --help      help for snapshots
-- -v, --version   version for snapshots
+- -h, --help      help for instances-snapshots
+- -v, --version   version for instances-snapshots
 
 ## Flags:
 ```bash

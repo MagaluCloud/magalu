@@ -1,30 +1,23 @@
-# Create a new instance from snapshot.
+# List all Parameter Groups for a x-tenant-id
 
 ## Usage:
 ```bash
 Usage:
-  mgc dbaas snapshots create [snapshot-id] [flags]
+  mgc dbaas parameter-groups list [flags]
 ```
 
 ## Product catalog:
 - Examples:
-- mgc dbaas snapshots create --volume.size=30
+- mgc dbaas parameter-groups list --type="USER"
 
 ## Other commands:
 - Flags:
-- --backup-retention-days integer   Backup Retention Days: The number of days that a particular backup is kept until its deletion. (default 7)
-- --backup-start-at time            Backup Start At: Start time (UTC timezone) which is allowed to start the automated backup process. (default "04:00:00")
-- -h, --help                            help for create
-- --instance-type-id uuid           Instance Type Id (required)
-- --name string                     Name (max character count: 100) (required)
-- --snapshot-id uuid                Value referring to snapshot Id. (required)
-- -v, --version                         version for create
-- --volume object                   Instance Volume Request (properties: size and type)
-- Use --volume=help for more details
-- --volume.size integer             Instance Volume Request: The size of the volume (in GiB). (range: 10 - 50000)
-- This is the same as '--volume=size:integer'.
-- --volume.type enum                Instance Volume Request: The type of the volume. (one of "CLOUD_HDD", "CLOUD_NVME" or "CLOUD_NVME_15K")
-- This is the same as '--volume=type:enum'. (default "CLOUD_NVME_15K")
+- --control.limit integer    The maximum number of items per page. (range: 1 - 25) (default 10)
+- --control.offset integer   The number of items to skip before starting to collect the result set. (min: 0)
+- --engine-id uuid           Value referring to engine Id.
+- -h, --help                     help for list
+- --type enum                Type (one of "SYSTEM" or "USER")
+- -v, --version                  version for list
 
 ## Flags:
 ```bash

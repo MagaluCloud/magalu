@@ -1,19 +1,17 @@
-# Resize an instance replica.
+# Deletes a database snapshot.
 
 ## Usage:
 ```bash
 Usage:
-  mgc dbaas replicas resize [replica-id] [flags]
+  mgc dbaas snapshots clusters-snapshots delete [cluster-id] [snapshot-id] [flags]
 ```
 
 ## Product catalog:
 - Flags:
-- --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-- --cli.watch                     Wait until the operation is completed by calling the 'get' link and waiting until termination. Akin to '! get -w'
-- -h, --help                          help for resize
-- --instance-type-id uuid         Instance Type Id
-- --replica-id uuid               Value referring to replica Id. (required)
-- -v, --version                       version for resize
+- --cluster-id uuid    Value referring to cluster Id. (required)
+- -h, --help               help for delete
+- --snapshot-id uuid   Value referring to snapshot Id. (required)
+- -v, --version            version for delete
 
 ## Other commands:
 - Global Flags:

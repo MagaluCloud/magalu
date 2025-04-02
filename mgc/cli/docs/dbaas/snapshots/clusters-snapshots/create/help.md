@@ -1,19 +1,18 @@
-# Resize an instance replica.
+# Creates a new snapshot asynchronously.
 
 ## Usage:
 ```bash
 Usage:
-  mgc dbaas replicas resize [replica-id] [flags]
+  mgc dbaas snapshots clusters-snapshots create [cluster-id] [flags]
 ```
 
 ## Product catalog:
 - Flags:
-- --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-- --cli.watch                     Wait until the operation is completed by calling the 'get' link and waiting until termination. Akin to '! get -w'
-- -h, --help                          help for resize
-- --instance-type-id uuid         Instance Type Id
-- --replica-id uuid               Value referring to replica Id. (required)
-- -v, --version                       version for resize
+- --cluster-id uuid      Value referring to cluster Id. (required)
+- --description string   Description (max character count: 255)
+- -h, --help                 help for create
+- --name string          Name (max character count: 100) (required)
+- -v, --version              version for create
 
 ## Other commands:
 - Global Flags:
