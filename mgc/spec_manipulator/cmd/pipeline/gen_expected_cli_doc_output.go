@@ -48,7 +48,6 @@ func printPaths(node TreeNode, path string, result *[]string) {
 
 func genCliPaths(tree []TreeNode) []string {
 	results := &[]string{}
-	// Se o caminho está vazio, começamos apenas com o nome do nó atual
 	for _, node := range tree {
 		printPaths(node, "", results)
 	}
@@ -66,11 +65,6 @@ func genHelpOutput(path []string) (string, error) {
 	cmd := append([]string{path[0], "help"}, path[1:]...)
 	return genOutput(cmd)
 }
-
-// func genOutputHFlag(path []string) (string, error) {
-// 	cmd := append(path, "-h")
-// 	return genOutput(cmd)
-// }
 
 func prepareOutputString(inputText string, replaceString string, prepareLN bool) string {
 	inputText = strings.ReplaceAll(inputText, replaceString, "")
@@ -279,7 +273,7 @@ func insideRunDocParams(rootDir string, path []string) {
 	prepareHeader = strings.Split(fileHeader, " ")
 	fileHeader = prepareHeader[len(prepareHeader)-1]
 	if prepareHeader[len(prepareHeader)-1] == "mgc" {
-		fileHeader = ""
+		fileHeader = "Commands-reference"
 	}
 
 	markdownOutput := convertToMarkdown(helpOutput, fileHeader)

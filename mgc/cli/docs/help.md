@@ -1,3 +1,5 @@
+# Commands-Reference
+
 Magalu Cloud CLI is a command-line interface for the Magalu Cloud.
 It allows you to interact with the Magalu Cloud to manage your resources.
 
