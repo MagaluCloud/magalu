@@ -329,7 +329,7 @@ var DowngradeSpecCmd = &cobra.Command{
 			// downgrade to 3.0.x
 			docModel.Model.Version = "3.0.3"
 
-			docModel.Model.Security = nil
+			// docModel.Model.Security = nil
 
 			_, document, docModel, errors = document.RenderAndReload()
 			if len(errors) > 0 {
@@ -361,7 +361,7 @@ var DowngradeSpecCmd = &cobra.Command{
 				}
 			}
 
-			docModel.Model.Components.SecuritySchemes = nil
+			// docModel.Model.Components.SecuritySchemes = nil
 
 			_, document, _, errs := document.RenderAndReload()
 			if len(errors) > 0 {

@@ -17,6 +17,7 @@ func SpecCmd() *cobra.Command {
 	specMenu.AddCommand(PrepareToGoCmd)   // convert spec to golang
 	specMenu.AddCommand(DowngradeSpecCmd) // downgrade spec
 	specMenu.AddCommand(MergeSpecsCmd())  // spc merge
+	specMenu.AddCommand(DowngradeUniqueSpecCmd())
 
 	return specMenu
 }

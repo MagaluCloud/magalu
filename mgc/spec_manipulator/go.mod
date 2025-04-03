@@ -44,4 +44,5 @@ require (
 	github.com/pb33f/libopenapi-validator v0.3.0
 	github.com/spf13/pflag v1.0.6 // indirect
 	github.com/spf13/viper v1.19.0
+	github.com/wk8/go-ordered-map v1.0.0
 )

@@ -27,6 +27,40 @@ generate-docs: build-cicd
 	@echo "generating $(OUT_DIR): done"
 	@echo "ENDING $@"
 
+
+spec-add-vm: build-cicd
+	$(SPECS_DIR)cicd spec merge \
+	 -p compute \
+	 -a /home/gfz/git/magaluCloud/magalu/specs/virtual-machine.jaxyendy.openapi.json \
+	 -b /home/gfz/git/magaluCloud/magalu/openapi-customizations/virtual-machine.openapi.yaml\
+	 -o /home/gfz/git/magaluCloud/magalu/mgc/sdk/openapi/openapis/virtual-machine.openapi.yaml 
+
+	$(SPECS_DIR)cicd spec downgrade-unique \
+	-s /home/gfz/git/magaluCloud/magalu/mgc/sdk/openapi/openapis/virtual-machine.openapi.yaml
+
+spec-add-k8s: build-cicd
+	$(SPECS_DIR)cicd spec merge \
+	 -p kubernetes \
+	 -a /home/gfz/git/magaluCloud/magalu/specs/kubernetes.jaxyendy.openapi.json \
+	 -b /home/gfz/git/magaluCloud/magalu/openapi-customizations/kubernetes.openapi.yaml\
+	 -o /home/gfz/git/magaluCloud/magalu/mgc/sdk/openapi/openapis/kubernetes.openapi.yaml 
+
+	$(SPECS_DIR)cicd spec downgrade-unique \
+	-s /home/gfz/git/magaluCloud/magalu/mgc/sdk/openapi/openapis/kubernetes.openapi.yaml
+
+spec-add-container: build-cicd
+	$(SPECS_DIR)cicd spec merge \
+	 -p container \
+	 -a /home/gfz/git/magaluCloud/magalu/specs/container-registry.openapi.yaml \
+	 -o /home/gfz/git/magaluCloud/magalu/mgc/sdk/openapi/openapis/container-registry.openapi.yaml
+	 
+	$(SPECS_DIR)cicd spec downgrade-unique \
+	-s /home/gfz/git/magaluCloud/magalu/mgc/sdk/openapi/openapis/container-registry.openapi.yaml
+
+
+
+add-all-specs: spec-add-vm spec-add-k8s spec-add-container 
+
 # specs
 download-specs: build-cicd
 	@./mgc/spec_manipulator/cicd spec download
