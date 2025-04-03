@@ -1,10 +1,10 @@
 MODULES := mgc/cli mgc/core mgc/sdk mgc/spec_manipulator
 
 MGCDIR ?= mgc/cli/
-SPECS_DIR ?= mgc/spec_manipulator/
+CICD_DIR ?= mgc/spec_manipulator/
 DUMP_TREE = mgc/cli/cli-dump-tree.json
 OUT_DIR = mgc/cli/docs
-
+OAPIDIR=mgc/sdk/openapi/openapis
 
 build-local:
 	@goreleaser build --clean --snapshot --single-target -f internal.yaml
@@ -12,20 +12,23 @@ build-local:
 # cicd
 build-cicd:
 	@echo "RUNNING $@"
-	cd $(SPECS_DIR) && go build -o cicd
+	cd $(CICD_DIR) && go build -o cicd
 	cd $(MGCDIR) && go build -tags \"embed\" -o mgc
 
 dump-tree: build-cicd
 	@echo "generating $(DUMP_TREE)..."
-	$(SPECS_DIR)cicd pipeline dumptree -c $(MGCDIR)mgc -o "$(DUMP_TREE)"
+	$(CICD_DIR)cicd pipeline dumptree -c $(MGCDIR)mgc -o "$(DUMP_TREE)"
 	@echo "generating $(DUMP_TREE): done"
 	@echo "ENDING $@"
 
 generate-docs: build-cicd
 	@echo "generating $(OUT_DIR)..."
-	$(SPECS_DIR)cicd pipeline cligendoc -g true -c $(MGCDIR)mgc -d "$(DUMP_TREE)" -o "$(OUT_DIR)" -v "0"
+	$(CICD_DIR)cicd pipeline cligendoc -g true -c $(MGCDIR)mgc -d "$(DUMP_TREE)" -o "$(OUT_DIR)" -v "0"
 	@echo "generating $(OUT_DIR): done"
 	@echo "ENDING $@"
+
+oapi-index-gen: build-cicd
+	$(CICD_DIR)cicd pipeline oapi-index $(OAPIDIR)
 
 # specs
 download-specs: build-cicd
