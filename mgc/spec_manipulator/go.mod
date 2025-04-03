@@ -1,4 +1,4 @@
-module spec_manipulator
+module github.com/MagaluCloud/magalu/mgc/spec_manipulator
 
 go 1.24.0
 

@@ -32,19 +32,17 @@ func normalizeFlagName(f *pflag.FlagSet, name string) pflag.NormalizedName {
 	return pflag.NormalizedName(name)
 }
 
-func Execute() (err error) {
+func Execute(version string) (err error) {
 	sdk := &mgcSdk.Sdk{}
+	sdk.SetVersion(version)
 
 	vv := fmt.Sprintf("%s (%s/%s)",
-		mgcSdk.Version,
+		version,
 		runtime.GOOS,
 		runtime.GOARCH)
 
-	use := argParser.FullProgramPath()
-	use = strings.Replace(use, "./", "", 1)
-
 	rootCmd := &cobra.Command{
-		Use:     use,
+		Use:     "mgc",
 		Version: vv,
 		Short:   "Magalu Cloud CLI",
 		Long: `
@@ -54,8 +52,8 @@ func Execute() (err error) {
 	██║╚██╔╝██║██║   ██║██║         ██║     ██║     ██║
 	██║ ╚═╝ ██║╚██████╔╝╚██████╗    ╚██████╗███████╗██║
 	╚═╝     ╚═╝ ╚═════╝  ╚═════╝     ╚═════╝╚══════╝╚═╝
-       
-Magalu Cloud CLI is a command-line interface for the Magalu Cloud. 
+
+Magalu Cloud CLI is a command-line interface for the Magalu Cloud.
 It allows you to interact with the Magalu Cloud to manage your resources.
 `,
 		SilenceErrors: true,

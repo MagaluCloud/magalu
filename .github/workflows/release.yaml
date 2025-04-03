@@ -1,12 +1,12 @@
-name: Release CLI and Terraform
+name: Release CLI
 
 on:
   workflow_dispatch:
     inputs:
-      runCLI:
-        description: "Run deploy of CLI"
-        type: boolean
-        required: false
+      version:
+        description: "Version to release (e.g., v1.0.0)"
+        required: true
+        type: string
 
 concurrency:
   group: ci-check-${{ github.ref }}
@@ -51,7 +51,7 @@ jobs:
         with:
           distribution: goreleaser
           version: '2'
-          args: release --clean --config="goreleaser_cli.yaml"
+          args: release --clean --config="release.yaml"
         env:
           VERSION: ${{ github.ref_name }}
           GITHUB_TOKEN: ${{ secrets.GH_PAT2 }}

@@ -1,27 +1,38 @@
-# Operations related to Nat Gateway
+# Nat_gateways
+
+Operations related to Nat Gateway
 
 ## Usage:
-```bash
-Usage:
-  mgc network nat-gateways [flags]
-  mgc network nat-gateways [command]
+```
+mgc network nat-gateways [flags]
+mgc network nat-gateways [command]
 ```
 
-## Product catalog:
-- Aliases:
-- nat-gateways, nat_gateways
-
-## Other commands:
-- Commands:
-- create      Create a new NAT Gateway resource
-- delete      Delete a NAT Gateway from a VPC
-- get         Detail a NAT Gateway from a VPC
-- list        List the NAT Gateways from a VPC
+## Commands:
+```
+create      Create a new NAT Gateway resource
+delete      Delete a NAT Gateway from a VPC
+get         Detail a NAT Gateway from a VPC
+list        List the NAT Gateways from a VPC
+```
 
 ## Flags:
-```bash
-Flags:
-  -h, --help      help for nat-gateways
-  -v, --version   version for nat-gateways
+```
+-h, --help      help for nat-gateways
+-v, --version   version for nat-gateways
+```
+
+## Global Flags:
+```
+    --api-key string           Use your API key to authenticate with the API
+-U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
+                               use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is
+                               a duration (ex: 2s) and 'condition' is a 'engine=value' pair such as "jsonpath=expression"
+-t, --cli.timeout duration     If > 0, it's the timeout for the action execution. It's specified as numbers and unit suffix.
+                               Valid unit suffixes: ns, us, ms, s, m and h. Examples: 300ms, 1m30s
+    --debug                    Display detailed log information at the debug level
+    --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
+-o, --output string            Change the output format. Use '--output=help' to know more details.
+-r, --raw                      Output raw data, without any formatting or coloring
 ```
 

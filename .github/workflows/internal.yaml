@@ -2,6 +2,11 @@ name: Internal Release
 
 on:
   workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to release (e.g., v1.0.0)"
+        required: true
+        type: string
 
 concurrency:
   group: ci-check-${{ github.ref }}
@@ -27,7 +32,7 @@ jobs:
         with:
           distribution: goreleaser
           version: 2
-          args: release --clean --config="goreleaser_internal.yaml"
+          args: release --clean --config="internal.yaml"
         env:
           VERSION: ${{ github.ref_name }}
           GITHUB_TOKEN: ${{ secrets.GH_PAT2 }}

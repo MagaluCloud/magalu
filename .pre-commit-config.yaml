@@ -6,13 +6,13 @@ repos:
       - id: check-cli-dump-tree-output
         name: check "cli dump-tree" output
         language: system
-        entry: bash -c './scripts/gen_expected_cli_dump_tree_output_file.sh'
+        entry: bash -c 'make dump-tree'
         require_serial: true
         stages: [pre-commit]
       - id: check-cli-docs-outputs
         name: check "cli doc" outputs
         language: system
-        entry: bash -c './scripts/gen_expected_cli_doc_output_file.sh'
+        entry: bash -c 'make generate-docs'
         require_serial: true
         stages: [pre-commit]
       - id: apply-oapi-customizations

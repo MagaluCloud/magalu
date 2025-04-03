@@ -1,19 +1,45 @@
 MODULES := mgc/cli mgc/core mgc/sdk mgc/spec_manipulator
 
+MGCDIR ?= mgc/cli/
+SPECS_DIR ?= mgc/spec_manipulator/
+DUMP_TREE = mgc/cli/cli-dump-tree.json
+OUT_DIR = mgc/cli/docs
+
+
 build-local:
-	@goreleaser build --clean --snapshot --single-target -f goreleaser_cli.yaml
+	@goreleaser build --clean --snapshot --single-target -f internal.yaml
 
-download-specs: --build-spec-manipulator
-	@./mgc/spec_manipulator/specs download
+# cicd
+build-cicd:
+	@echo "RUNNING $@"
+	cd $(SPECS_DIR) && go build -o cicd
+	cd $(MGCDIR) && go build -tags \"embed\" -o mgc
 
-refresh-specs: --build-spec-manipulator
-	@./mgc/spec_manipulator/specs prepare
-	@./mgc/spec_manipulator/specs downgrade
+dump-tree: build-cicd
+	@echo "generating $(DUMP_TREE)..."
+	$(SPECS_DIR)cicd pipeline dumptree -c $(MGCDIR)mgc -o "$(DUMP_TREE)"
+	@echo "generating $(DUMP_TREE): done"
+	@echo "ENDING $@"
+
+generate-docs: build-cicd
+	@echo "generating $(OUT_DIR)..."
+	$(SPECS_DIR)cicd pipeline cligendoc -g true -c $(MGCDIR)mgc -d "$(DUMP_TREE)" -o "$(OUT_DIR)" -v "0"
+	@echo "generating $(OUT_DIR): done"
+	@echo "ENDING $@"
+
+# specs
+download-specs: build-cicd
+	@./mgc/spec_manipulator/cicd spec download
+	@echo "Now, run 'make prepare-specs' validate and pretify the specs"
+
+prepare-specs: build-cicd
+	@./mgc/spec_manipulator/cicd spec prepare
+
+refresh-specs: build-cicd
+	@./mgc/spec_manipulator/cicd spec downgrade
 	@poetry install
 	@poetry run ./scripts/add_all_specs.sh
 
---build-spec-manipulator:
-	@./mgc/spec_manipulator/build.sh
 
 # Testing targets
 test:
