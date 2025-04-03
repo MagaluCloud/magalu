@@ -23,5 +23,7 @@ $BASEDIR/add_specs.sh audit audit specs/conv.events-consult.openapi.yaml https:/
 
 $BASEDIR/add_specs_without_region.sh profile profile specs/conv.globaldb.openapi.yaml https://globaldb.jaxyendy.com/openapi-cli.json
 
+$BASEDIR/add_specs.sh load-balancer load-balancer specs/lbaas.openapi.yaml https://lbaas.jaxyendy.com/openapi-cli.json
+
 # EXAMPLE
 # $BASEDIR/SCRIPT.sh NOME_NO_MENU URL_PATH LOCAL_DA_SPEC SPEC_UID

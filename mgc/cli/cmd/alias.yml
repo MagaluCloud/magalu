@@ -27,3 +27,6 @@ object-storage:
 container-registry:
   - cr
   - registry
+load-balancer:
+  - lb
+  - lbaas
