@@ -13,7 +13,8 @@
           "enum": [
             "br-ne1",
             "br-se1",
-            "br-mgl1"
+            "br-mgl1",
+            "global"
           ],
           "default": "br-se1",
           "description": "Region to reach the service",

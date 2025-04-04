@@ -95,6 +95,10 @@ func mergeSpecs(specA, specB libopenapi.Document, options MergeSpecs) libopenapi
 		Extensions: orderedmap.New[string, *yaml.Node](),
 	}
 
+	if options.hasGlobalRegion {
+		regionVar.Enum = append(regionVar.Enum, "global")
+	}
+
 	regionVar.Description = "Region to reach the service"
 	regionVar.Default = "br-se1"
 
@@ -409,11 +413,12 @@ func saveSpec(spec libopenapi.Document, filename string) error {
 }
 
 type MergeSpecs struct {
-	specA          string
-	specB          string
-	output         string
-	withRegion     bool
-	productPathURL string
+	specA           string
+	specB           string
+	output          string
+	withRegion      bool
+	hasGlobalRegion bool
+	productPathURL  string
 }
 
 func MergeSpecsCmd() *cobra.Command {
@@ -432,6 +437,7 @@ func MergeSpecsCmd() *cobra.Command {
 	cmd.Flags().StringVarP(&options.specB, "specb", "b", "", "Path to the second OpenAPI specification file")
 	cmd.Flags().StringVarP(&options.output, "output", "o", "", "Output filename OpenAPI specification file")
 	cmd.Flags().BoolVarP(&options.withRegion, "with-region", "r", false, "Include region in the URL")
+	cmd.Flags().BoolVarP(&options.hasGlobalRegion, "has-global-region", "g", false, "Include global region in the URL")
 	cmd.Flags().StringVarP(&options.productPathURL, "product", "p", "", "productURLPath")
 
 	_ = cmd.MarkFlagRequired("speca")

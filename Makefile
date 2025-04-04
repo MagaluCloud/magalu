@@ -116,6 +116,7 @@ add-spec-events:
 	@echo "Adding events(audit) spec..."
 	$(SPECS_DIR)cicd spec merge \
 	 -p audit \
+	 -g \
 	 -a specs/events-consult.openapi.yaml \
 	 -b openapi-customizations/audit.openapi.yaml \
 	 -o mgc/sdk/openapi/openapis/audit.openapi.yaml
