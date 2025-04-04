@@ -9,10 +9,9 @@ mgc dbaas replicas start [replica-id] [flags]
 
 ## Flags:
 ```
-    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
--h, --help                          help for start
-    --replica-id uuid               Value referring to replica Id. (required)
--v, --version                       version for start
+-h, --help              help for start
+    --replica-id uuid   Value referring to replica Id. (required)
+-v, --version           version for start
 ```
 
 ## Global Flags:

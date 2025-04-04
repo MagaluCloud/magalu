@@ -236,9 +236,9 @@ func PrepareSchema(xchema *base.Schema) *base.Schema {
 			N: 0,
 		}
 
-		if newChema.Minimum == nil {
-			newChema.Minimum = new(float64)
-			*newChema.Minimum = xchema.ExclusiveMaximum.B
+		if newChema.Maximum == nil {
+			newChema.Maximum = new(float64)
+			*newChema.Maximum = xchema.ExclusiveMaximum.B
 		}
 	} else if xchema.ExclusiveMaximum != nil && xchema.ExclusiveMaximum.IsA() {
 		//assume que é um boolean

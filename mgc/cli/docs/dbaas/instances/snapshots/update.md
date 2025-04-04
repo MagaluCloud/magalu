@@ -14,13 +14,12 @@ mgc dbaas instances snapshots update --description="my-description-updated" --na
 
 ## Flags:
 ```
-    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-    --description string            Snapshot description. (max character count: 255)
--h, --help                          help for update
-    --instance-id uuid              Value referring to instance Id. (required)
-    --name string                   Snapshot unique name. (max character count: 100)
-    --snapshot-id uuid              Value referring to snapshot Id. (required)
--v, --version                       version for update
+    --description string   Snapshot description. (max character count: 255)
+-h, --help                 help for update
+    --instance-id uuid     Value referring to instance Id. (required)
+    --name string          Snapshot unique name. (max character count: 100)
+    --snapshot-id uuid     Value referring to snapshot Id. (required)
+-v, --version              version for update
 ```
 
 ## Global Flags:

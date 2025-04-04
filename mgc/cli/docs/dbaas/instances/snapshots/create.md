@@ -14,12 +14,11 @@ mgc dbaas instances snapshots create --description="my-description" --name="my-s
 
 ## Flags:
 ```
-    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-    --description string            Snapshot description. (max character count: 255)
--h, --help                          help for create
-    --instance-id uuid              Value referring to instance Id. (required)
-    --name string                   Snapshot unique name. (max character count: 100) (required)
--v, --version                       version for create
+    --description string   Snapshot description. (max character count: 255)
+-h, --help                 help for create
+    --instance-id uuid     Value referring to instance Id. (required)
+    --name string          Snapshot unique name. (max character count: 100) (required)
+-v, --version              version for create
 ```
 
 ## Global Flags:

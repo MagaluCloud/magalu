@@ -9,11 +9,10 @@ mgc network public-ips attach [public-ip-id] [port-id] [flags]
 
 ## Flags:
 ```
-    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
--h, --help                          help for attach
-    --port-id string                Port ID: Id of the Port to attach the Public IP (required)
-    --public-ip-id string           Public IP ID: Id of the Public IP to attach port to (required)
--v, --version                       version for attach
+-h, --help                  help for attach
+    --port-id string        Port ID: Id of the Port to attach the Public IP (required)
+    --public-ip-id string   Public IP ID: Id of the Public IP to attach port to (required)
+-v, --version               version for attach
 ```
 
 ## Global Flags:

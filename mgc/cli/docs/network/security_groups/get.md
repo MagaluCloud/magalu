@@ -9,10 +9,9 @@ mgc network security-groups get [security-group-id] [flags]
 
 ## Flags:
 ```
-    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
--h, --help                          help for get
-    --security-group-id string      Security Group ID: Id of the security group to detail (required)
--v, --version                       version for get
+-h, --help                       help for get
+    --security-group-id string   Security Group ID: Id of the security group to detail (required)
+-v, --version                    version for get
 ```
 
 ## Global Flags:

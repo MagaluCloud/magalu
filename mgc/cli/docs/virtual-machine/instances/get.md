@@ -1,6 +1,6 @@
 # Get
 
-Get a Virtual Machine instance details
+Get an instance details for the current tenant which is logged in.
 
 ## Usage:
 ```
@@ -9,11 +9,10 @@ mgc virtual-machine instances get [id] [flags]
 
 ## Flags:
 ```
-    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-    --expand array(string)          Expand: You can get more detailed info about: ['image', 'machine-type', 'machine-types', 'network', 'labels']  (default ["network","image","machine-type"])
--h, --help                          help for get
-    --id string                     Instance id - for help use ./mgc virtual-machines instances list . (required)
--v, --version                       version for get
+    --expand array(string)   Expand: You can get more detailed info about: ['image', 'machine-type', 'machine-types', 'network', 'labels']  (default [])
+-h, --help                   help for get
+    --id string              Instance id - for help use ./mgc virtual-machines instances list . (required)
+-v, --version                version for get
 ```
 
 ## Global Flags:
@@ -31,6 +30,6 @@ mgc virtual-machine instances get [id] [flags]
 -r, --raw                      Output raw data, without any formatting or coloring
     --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
     --server-url uri           Manually specify the server to use
-    --x-api-version string     X-Api-Version: api version (default "1.1")
+    --x-api-version string     api version (default "1.1")
 ```
 

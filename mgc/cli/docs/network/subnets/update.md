@@ -9,8 +9,6 @@ mgc network subnets update [subnet-id] [flags]
 
 ## Flags:
 ```
-    --cli.list-links enum[=table]            List all available links for this command (one of "json", "table" or "yaml")
-    --cli.watch                              Wait until the operation is completed by calling the 'get' link and waiting until termination. Akin to '! get -w'
     --dns-nameservers array(ipvanyaddress)   Dns Nameservers (default [])
 -h, --help                                   help for update
     --subnet-id string                       Subnet Id: Id of the Subnet to update (required)

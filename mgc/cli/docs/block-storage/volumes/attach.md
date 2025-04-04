@@ -10,11 +10,10 @@ mgc block-storage volumes attach [id] [virtual-machine-id] [flags]
 
 ## Flags:
 ```
-    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
--h, --help                          help for attach
-    --id uuid                       Id (required)
--v, --version                       version for attach
-    --virtual-machine-id uuid       Virtual Machine Id (required)
+-h, --help                      help for attach
+    --id uuid                   Id (required)
+-v, --version                   version for attach
+    --virtual-machine-id uuid   Virtual Machine Id (required)
 ```
 
 ## Global Flags:

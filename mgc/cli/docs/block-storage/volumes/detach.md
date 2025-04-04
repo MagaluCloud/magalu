@@ -10,10 +10,9 @@ mgc block-storage volumes detach [id] [flags]
 
 ## Flags:
 ```
-    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
--h, --help                          help for detach
-    --id uuid                       Id (required)
--v, --version                       version for detach
+-h, --help      help for detach
+    --id uuid   Id (required)
+-v, --version   version for detach
 ```
 
 ## Global Flags:

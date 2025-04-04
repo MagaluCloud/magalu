@@ -15,16 +15,15 @@ mgc virtual-machine snapshots create --instance.id="9ec75090-2872-4f51-8111-53d0
 
 ## Flags:
 ```
-    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
--h, --help                          help for create
-    --instance object               Instance (at least one of: single property: id or single property: name)
-                                    Use --instance=help for more details (required)
-    --instance.id string            Instance: Id (between 1 and 255 characters)
-                                    This is the same as '--instance=id:string'.
-    --instance.name string          Instance: Name (between 1 and 255 characters)
-                                    This is the same as '--instance=name:string'.
-    --name string                   Name (between 1 and 255 characters) (required)
--v, --version                       version for create
+-h, --help                   help for create
+    --instance object        Instance (at least one of: single property: id or single property: name)
+                             Use --instance=help for more details (required)
+    --instance.id string     Instance: Id (between 1 and 255 characters)
+                             This is the same as '--instance=id:string'.
+    --instance.name string   Instance: Name (between 1 and 255 characters)
+                             This is the same as '--instance=name:string'.
+    --name string            Name (between 1 and 255 characters) (required)
+-v, --version                version for create
 ```
 
 ## Global Flags:

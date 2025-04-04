@@ -10,7 +10,6 @@ mgc network vpcs subnets create [vpc-id] [flags]
 ## Flags:
 ```
     --cidr-block string                      Cidr Block (required)
-    --cli.list-links enum[=table]            List all available links for this command (one of "json", "table" or "yaml")
     --description string                     Description
     --dns-nameservers array(ipvanyaddress)   Dns Nameservers (default [])
 -h, --help                                   help for create

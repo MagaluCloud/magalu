@@ -9,11 +9,10 @@ mgc kubernetes nodepool nodes [cluster-id] [node-pool-id] [flags]
 
 ## Flags:
 ```
-    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-    --cluster-id uuid               Cluster's UUID. (required)
--h, --help                          help for nodes
-    --node-pool-id uuid             Nodepool's UUID. (required)
--v, --version                       version for nodes
+    --cluster-id uuid     Cluster's UUID. (required)
+-h, --help                help for nodes
+    --node-pool-id uuid   Nodepool's UUID. (required)
+-v, --version             version for nodes
 ```
 
 ## Global Flags:

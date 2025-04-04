@@ -9,15 +9,14 @@ mgc network security-groups create [flags]
 
 ## Flags:
 ```
-    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-    --description string            Description
--h, --help                          help for create
-    --name string                   Name (between 5 and 100 characters) (required)
-    --skip-default-rules            Skip Default Rules: Skip creation of default security group rules
-    --validate-quota                validateQuota: Validate the quota before creating Security Group (default true)
--v, --version                       version for create
-    --wait                          The request will be asynchronous. The wait parameter tells the API that you want the request to simulate synchronous behavior (to maintain endpoint compatibility). You can set an approximate timeout with the waitTimeout parameter (default true)
-    --wait-timeout integer          waitTimeout: the approximate time in seconds you want to wait when simulating the request as synchronous (only works with wait=true) (default 120)
+    --description string     Description
+-h, --help                   help for create
+    --name string            Name (between 5 and 100 characters) (required)
+    --skip-default-rules     Skip Default Rules: Skip creation of default security group rules
+    --validate-quota         validateQuota: Validate the quota before creating Security Group (default true)
+-v, --version                version for create
+    --wait                   The request will be asynchronous. The wait parameter tells the API that you want the request to simulate synchronous behavior (to maintain endpoint compatibility). You can set an approximate timeout with the waitTimeout parameter (default true)
+    --wait-timeout integer   waitTimeout: the approximate time in seconds you want to wait when simulating the request as synchronous (only works with wait=true) (default 120)
 ```
 
 ## Global Flags:

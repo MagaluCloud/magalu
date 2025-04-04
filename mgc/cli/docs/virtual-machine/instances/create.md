@@ -1,6 +1,6 @@
 # Create
 
-Create a Virtual Machine instance
+Creates a Virtual Machine instance in the current tenant which is logged in.
 
 ## Usage:
 ```
@@ -15,8 +15,6 @@ mgc virtual-machine instances create --image.id="9ec75090-2872-4f51-8111-53d05d9
 ## Flags:
 ```
     --availability-zone string                  Availability Zone
-    --cli.list-links enum[=table]               List all available links for this command (one of "json", "table" or "yaml")
-    --cli.watch                                 Wait until the operation is completed by calling the 'get' link and waiting until termination. Akin to '! get -w'
 -h, --help                                      help for create
     --image object                              Image (at least one of: single property: id or single property: name)
                                                 Use --image=help for more details (required)

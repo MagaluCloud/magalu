@@ -16,7 +16,6 @@ mgc kubernetes cluster create --allowed-cidrs='["192.168.1.0/24","10.0.0.0/16"]'
 ```
     --allowed-cidrs array(string)   List of allowed CIDR blocks for API server access.
                                     
-    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
     --description string            A brief description of the Kubernetes cluster.
                                     
     --enabled-bastion               [Deprecated] This parameter is deprecated and its use won't create a bastion server

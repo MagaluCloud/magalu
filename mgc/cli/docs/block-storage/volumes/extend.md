@@ -10,12 +10,10 @@ mgc block-storage volumes extend [id] [flags]
 
 ## Flags:
 ```
-    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-    --cli.watch                     Wait until the operation is completed by calling the 'get' link and waiting until termination. Akin to '! get -w'
--h, --help                          help for extend
-    --id uuid                       Id (required)
-    --size integer                  New volume size in GB (required)
--v, --version                       version for extend
+-h, --help           help for extend
+    --id uuid        Id (required)
+    --size integer   New volume size in GB (required)
+-v, --version        version for extend
 ```
 
 ## Global Flags:

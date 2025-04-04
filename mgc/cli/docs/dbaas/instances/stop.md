@@ -9,10 +9,9 @@ mgc dbaas instances stop [instance-id] [flags]
 
 ## Flags:
 ```
-    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
--h, --help                          help for stop
-    --instance-id uuid              Value referring to instance Id. (required)
--v, --version                       version for stop
+-h, --help               help for stop
+    --instance-id uuid   Value referring to instance Id. (required)
+-v, --version            version for stop
 ```
 
 ## Global Flags:

@@ -26,6 +26,7 @@
             "required": false,
             "schema": {
               "type": "integer",
+              "title": " Limit",
               "default": 50
             }
           },
@@ -35,6 +36,7 @@
             "required": false,
             "schema": {
               "type": "integer",
+              "title": " Offset",
               "default": 0
             }
           },
@@ -44,7 +46,8 @@
             "required": false,
             "schema": {
               "type": "string",
-              "default": "name:asc"
+              "title": " Sort",
+              "default": ""
             }
           }
         ],
@@ -612,29 +615,8 @@
   ],
   "servers": [
     {
-      "url": "https://{env}/{region}/profile",
+      "url": "https://{env}/profile",
       "variables": {
-        "region": {
-          "enum": [
-            "br-ne1",
-            "br-se1",
-            "br-mgl1"
-          ],
-          "default": "br-se1",
-          "description": "Region to reach the service",
-          "x-mgc-transforms": [
-            {
-              "allowMissing": true,
-              "translations": [
-                {
-                  "from": "br-mgl1",
-                  "to": "br-se-1"
-                }
-              ],
-              "type": "translate"
-            }
-          ]
-        },
         "env": {
           "enum": [
             "api.magalu.cloud",

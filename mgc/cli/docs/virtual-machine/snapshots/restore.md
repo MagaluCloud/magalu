@@ -15,7 +15,6 @@ mgc virtual-machine snapshots restore --machine-type.id="9ec75090-2872-4f51-8111
 ## Flags:
 ```
     --availability-zone string                  Availability Zone (between 1 and 255 characters) (default "br-ne1-a")
-    --cli.list-links enum[=table]               List all available links for this command (one of "json", "table" or "yaml")
 -h, --help                                      help for restore
     --id string                                 Id (required)
     --machine-type object                       Machine Type (at least one of: single property: id or single property: name)

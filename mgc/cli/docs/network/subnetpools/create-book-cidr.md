@@ -9,12 +9,11 @@ mgc network subnetpools create-book-cidr [subnetpool-id] [flags]
 
 ## Flags:
 ```
-    --cidr string                   Cidr
-    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
--h, --help                          help for create-book-cidr
-    --mask integer                  Mask
-    --subnetpool-id string          subnetpoolId: Id of the Subnet Pool to get details (required)
--v, --version                       version for create-book-cidr
+    --cidr string            Cidr
+-h, --help                   help for create-book-cidr
+    --mask integer           Mask
+    --subnetpool-id string   subnetpoolId: Id of the Subnet Pool to get details (required)
+-v, --version                version for create-book-cidr
 ```
 
 ## Global Flags:

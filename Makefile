@@ -27,10 +27,13 @@ generate-docs: build-cicd
 	@echo "generating $(OUT_DIR): done"
 	@echo "ENDING $@"
 
+oapi-index-gen:
+	$(CICD_DIR)cicd pipeline oapi-index $(OAPIDIR)
+
 
 add-spec-vm:
 	@echo "Adding virtual-machine spec..."
-	$(SPECS_DIR)cicd spec merge \
+	$(CICD_DIR)cicd spec merge \
 	 -p compute \
 	 -a specs/virtual-machine.jaxyendy.openapi.json \
 	 -b openapi-customizations/virtual-machine.openapi.yaml \
@@ -38,27 +41,14 @@ add-spec-vm:
 
 	@echo "\nDowngrading to 3.0.3...\n"
 
-	$(SPECS_DIR)cicd spec downgrade-unique \
+	$(CICD_DIR)cicd spec downgrade-unique \
 	-s mgc/sdk/openapi/openapis/virtual-machine.openapi.yaml
 	@echo "Virtual-machine spec added successfully.\n\n"
 
-add-spec-vm:
-	@echo "Adding virtual-machine spec..."
-	$(SPECS_DIR)cicd spec merge \
-	 -p compute \
-	 -a specs/virtual-machine.jaxyendy.openapi.json \
-	 -b openapi-customizations/virtual-machine.openapi.yaml \
-	 -o mgc/sdk/openapi/openapis/virtual-machine.openapi.yaml 
-
-	@echo "\nDowngrading to 3.0.3...\n"
-
-	$(SPECS_DIR)cicd spec downgrade-unique \
-	-s mgc/sdk/openapi/openapis/virtual-machine.openapi.yaml
-	@echo "Virtual-machine spec added successfully.\n\n"
 
 add-spec-k8s:
 	@echo "Adding kubernetes spec..."
-	$(SPECS_DIR)cicd spec merge \
+	$(CICD_DIR)cicd spec merge \
 	 -p kubernetes \
 	 -a specs/kubernetes.jaxyendy.openapi.json \
 	 -b openapi-customizations/kubernetes.openapi.yaml \
@@ -66,55 +56,55 @@ add-spec-k8s:
 
 	@echo "\nDowngrading to 3.0.3...\n"
 
-	$(SPECS_DIR)cicd spec downgrade-unique \
+	$(CICD_DIR)cicd spec downgrade-unique \
 	-s mgc/sdk/openapi/openapis/kubernetes.openapi.yaml
 	@echo "Kubernetes spec added successfully.\n\n"
 
 add-spec-container:
 	@echo "Adding container-registry spec..."
-	$(SPECS_DIR)cicd spec merge \
+	$(CICD_DIR)cicd spec merge \
 	 -p container-registry \
 	 -a specs/container-registry.openapi.yaml \
 	 -o mgc/sdk/openapi/openapis/container-registry.openapi.yaml
 
 	@echo "\nDowngrading to 3.0.3...\n"
 
-	$(SPECS_DIR)cicd spec downgrade-unique \
+	$(CICD_DIR)cicd spec downgrade-unique \
 	-s mgc/sdk/openapi/openapis/container-registry.openapi.yaml
 
 	@echo "Container-registry spec added successfully.\n\n"
 
 add-spec-block-storage:
 	@echo "Adding block-storage spec..."
-	$(SPECS_DIR)cicd spec merge \
+	$(CICD_DIR)cicd spec merge \
 	 -p block-storage \
 	 -a specs/block-storage.jaxyendy.openapi.json \
 	 -o mgc/sdk/openapi/openapis/block-storage.openapi.yaml
 
 	@echo "\nDowngrading to 3.0.3...\n"
 
-	$(SPECS_DIR)cicd spec downgrade-unique \
+	$(CICD_DIR)cicd spec downgrade-unique \
 	-s mgc/sdk/openapi/openapis/block-storage.openapi.yaml
 
 	@echo "Block-storage spec added successfully.\n\n"
 
 add-spec-database:
 	@echo "Adding database(dbaas) spec..."
-	$(SPECS_DIR)cicd spec merge \
+	$(CICD_DIR)cicd spec merge \
 	 -p dbaas \
-	 -a specs/database.jaxyendy.openapi.json \
-	 -o mgc/sdk/openapi/openapis/database.openapi.yaml
+	 -a specs/database.jaxyendy.openapi.yaml \
+	 -o mgc/sdk/openapi/openapis/dbaas.openapi.yaml
 
 	@echo "\nDowngrading to 3.0.3...\n"
 
-	$(SPECS_DIR)cicd spec downgrade-unique \
-	-s mgc/sdk/openapi/openapis/database.openapi.yaml
+	$(CICD_DIR)cicd spec downgrade-unique \
+	-s mgc/sdk/openapi/openapis/dbaas.openapi.yaml
 	@echo "Database spec added successfully.\n\n"
 
 
 add-spec-events:
 	@echo "Adding events(audit) spec..."
-	$(SPECS_DIR)cicd spec merge \
+	$(CICD_DIR)cicd spec merge \
 	 -p audit \
 	 -g \
 	 -a specs/events-consult.openapi.yaml \
@@ -123,43 +113,44 @@ add-spec-events:
 
 	@echo "\nDowngrading to 3.0.3...\n"
 
-	$(SPECS_DIR)cicd spec downgrade-unique \
+	$(CICD_DIR)cicd spec downgrade-unique \
 	-s mgc/sdk/openapi/openapis/audit.openapi.yaml
 
 	@echo "Audit spec added successfully.\n\n"
 
 add-spec-globaldb:
 	@echo "Adding globaldb(profile) spec..."
-	$(SPECS_DIR)cicd spec merge \
+	$(CICD_DIR)cicd spec merge \
 	 -p profile \
+	 -r \
 	 -a specs/globaldb.openapi.yaml \
-	 -b openapi-customizations/profile.openapi.yaml \
 	 -o mgc/sdk/openapi/openapis/profile.openapi.yaml
 
 	@echo "\nDowngrading to 3.0.3...\n"
 
-	$(SPECS_DIR)cicd spec downgrade-unique \
+	$(CICD_DIR)cicd spec downgrade-unique \
 	-s mgc/sdk/openapi/openapis/profile.openapi.yaml
 	@echo "Globaldb spec added successfully.\n\n"
 
 
 add-spec-network:
 	@echo "Adding network spec..."
-	$(SPECS_DIR)cicd spec merge \
+	$(CICD_DIR)cicd spec merge \
 	 -p network \
 	 -a specs/network.jaxyendy.openapi.json \
 	 -o mgc/sdk/openapi/openapis/network.openapi.yaml
 
 	@echo "\nDowngrading to 3.0.3...\n"
 
-	$(SPECS_DIR)cicd spec downgrade-unique \
+	$(CICD_DIR)cicd spec downgrade-unique \
 	-s mgc/sdk/openapi/openapis/network.openapi.yaml
 
 	@echo "Network spec added successfully.\n\n"
 
-add-all-specs: build-cicd add-spec-vm add-spec-k8s add-spec-container add-spec-block-storage add-spec-database add-spec-events add-spec-globaldb add-spec-network
-oapi-index-gen: build-cicd
-	$(CICD_DIR)cicd pipeline oapi-index $(OAPIDIR)
+
+
+add-all-specs: build-cicd add-spec-vm add-spec-k8s add-spec-container add-spec-block-storage add-spec-database add-spec-events add-spec-globaldb add-spec-network oapi-index-gen
+
 
 # specs
 download-specs: build-cicd

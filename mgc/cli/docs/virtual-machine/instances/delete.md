@@ -1,6 +1,7 @@
 # Delete
 
-Delete a Virtual Machine instance
+Deletes permanently an instance with the id provided in the current tenant
+which is logged in.
 
 ## Usage:
 ```

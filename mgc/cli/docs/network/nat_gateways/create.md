@@ -9,13 +9,12 @@ mgc network nat-gateways create [flags]
 
 ## Flags:
 ```
-    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-    --description string            Description
--h, --help                          help for create
-    --name string                   Name (required)
--v, --version                       version for create
-    --vpc-id string                 Vpc Id (required)
-    --zone string                   Zone (required)
+    --description string   Description
+-h, --help                 help for create
+    --name string          Name (required)
+-v, --version              version for create
+    --vpc-id string        Vpc Id (required)
+    --zone string          Zone (required)
 ```
 
 ## Global Flags:

@@ -9,11 +9,10 @@ mgc network ports attach [port-id] [security-group-id] [flags]
 
 ## Flags:
 ```
-    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
--h, --help                          help for attach
-    --port-id string                port_id: ID of the Port to attach security group (required)
-    --security-group-id string      security_group_id: ID of the Security Group to attach (required)
--v, --version                       version for attach
+-h, --help                       help for attach
+    --port-id string             port_id: ID of the Port to attach security group (required)
+    --security-group-id string   security_group_id: ID of the Security Group to attach (required)
+-v, --version                    version for attach
 ```
 
 ## Global Flags:

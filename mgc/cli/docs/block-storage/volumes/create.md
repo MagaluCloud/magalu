@@ -14,25 +14,24 @@ mgc block-storage volumes create --snapshot.id="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxx
 
 ## Flags:
 ```
-    --availability-zone string      Availability Zone
-    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-    --encrypted                     Indicates if the volume is encrypted. Default is False.
--h, --help                          help for create
-    --name string                   Name (between 3 and 50 characters) (required)
-    --size integer                  Size: Gibibytes (GiB) (range: 10 - 2147483648) (required)
-    --snapshot object               Snapshot (at least one of: single property: id or single property: name)
-                                    Use --snapshot=help for more details
-    --snapshot.id string            Snapshot: Id (min character count: 1)
-                                    This is the same as '--snapshot=id:string'.
-    --snapshot.name string          Snapshot: Name (between 1 and 255 characters)
-                                    This is the same as '--snapshot=name:string'.
-    --type object                   Type (at least one of: single property: id or single property: name)
-                                    Use --type=help for more details (required)
-    --type.id string                Type: Id (min character count: 1)
-                                    This is the same as '--type=id:string'.
-    --type.name string              Type: Name (between 1 and 255 characters)
-                                    This is the same as '--type=name:string'.
--v, --version                       version for create
+    --availability-zone string   Availability Zone
+    --encrypted                  Indicates if the volume is encrypted. Default is False.
+-h, --help                       help for create
+    --name string                Name (between 3 and 50 characters) (required)
+    --size integer               Size: Gibibytes (GiB) (range: 10 - 2147483648) (required)
+    --snapshot object            Snapshot (at least one of: single property: id or single property: name)
+                                 Use --snapshot=help for more details
+    --snapshot.id string         Snapshot: Id (min character count: 1)
+                                 This is the same as '--snapshot=id:string'.
+    --snapshot.name string       Snapshot: Name (between 1 and 255 characters)
+                                 This is the same as '--snapshot=name:string'.
+    --type object                Type (at least one of: single property: id or single property: name)
+                                 Use --type=help for more details (required)
+    --type.id string             Type: Id (min character count: 1)
+                                 This is the same as '--type=id:string'.
+    --type.name string           Type: Name (between 1 and 255 characters)
+                                 This is the same as '--type=name:string'.
+-v, --version                    version for create
 ```
 
 ## Global Flags:

@@ -9,7 +9,6 @@ mgc network vpcs ports create [vpc-id] [flags]
 
 ## Flags:
 ```
-    --cli.list-links enum[=table]        List all available links for this command (one of "json", "table" or "yaml")
     --has-pip                            Has Pip (default true)
     --has-sg                             Has Sg (default true)
 -h, --help                               help for create

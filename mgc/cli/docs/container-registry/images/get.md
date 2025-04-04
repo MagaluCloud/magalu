@@ -9,12 +9,11 @@ mgc container-registry images get [registry-id] [repository-name] [digest-or-tag
 
 ## Flags:
 ```
-    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-    --digest-or-tag string          Digest or tag of an image. (required)
--h, --help                          help for get
-    --registry-id uuid              Container Registry's UUID. (required)
-    --repository-name string        Repository's name. (required)
--v, --version                       version for get
+    --digest-or-tag string     Digest or tag of an image. (required)
+-h, --help                     help for get
+    --registry-id uuid         Container Registry's UUID. (required)
+    --repository-name string   Repository's name. (required)
+-v, --version                  version for get
 ```
 
 ## Global Flags:

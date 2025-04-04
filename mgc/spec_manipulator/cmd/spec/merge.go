@@ -112,7 +112,9 @@ func mergeSpecs(specA, specB libopenapi.Document, options MergeSpecs) libopenapi
 		},
 	}
 	regionVar.Extensions.Set("x-mgc-transforms", createExtension(regionTransforms))
-	server.Variables.Set("region", regionVar)
+	if !options.withRegion {
+		server.Variables.Set("region", regionVar)
+	}
 
 	envVar := &v3.ServerVariable{
 		Enum:       []string{"api.magalu.cloud", "api.pre-prod.jaxyendy.com"},

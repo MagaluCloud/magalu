@@ -15,17 +15,15 @@ mgc block-storage volumes retype --new-type.id="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxx
 
 ## Flags:
 ```
-    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-    --cli.watch                     Wait until the operation is completed by calling the 'get' link and waiting until termination. Akin to '! get -w'
--h, --help                          help for retype
-    --id uuid                       Id (required)
-    --new-type object               New Type (at least one of: single property: id or single property: name)
-                                    Use --new-type=help for more details (required)
-    --new-type.id string            New Type: Id (min character count: 1)
-                                    This is the same as '--new-type=id:string'.
-    --new-type.name string          New Type: Name (between 1 and 255 characters)
-                                    This is the same as '--new-type=name:string'.
--v, --version                       version for retype
+-h, --help                   help for retype
+    --id uuid                Id (required)
+    --new-type object        New Type (at least one of: single property: id or single property: name)
+                             Use --new-type=help for more details (required)
+    --new-type.id string     New Type: Id (min character count: 1)
+                             This is the same as '--new-type=id:string'.
+    --new-type.name string   New Type: Name (between 1 and 255 characters)
+                             This is the same as '--new-type=name:string'.
+-v, --version                version for retype
 ```
 
 ## Global Flags:
