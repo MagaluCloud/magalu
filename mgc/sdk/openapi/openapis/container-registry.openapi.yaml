@@ -16,7 +16,7 @@
   },
   "servers": [
     {
-      "url": "https://{env}/{region}/container",
+      "url": "https://{env}/{region}/container-registry",
       "variables": {
         "region": {
           "enum": [
