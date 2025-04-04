@@ -430,6 +430,7 @@ func MergeSpecsCmd() *cobra.Command {
 		Use:     "merge",
 		Short:   "Merge OpenAPI specifications",
 		Example: "merge -a speca.yaml -b specb.yaml -o output.yaml",
+		Hidden:  true,
 		Run: func(cmd *cobra.Command, args []string) {
 			mergeSpecsMain(*options)
 		},

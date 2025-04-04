@@ -7,23 +7,38 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var DownloadSpecsCmd = &cobra.Command{
-	Use:   "download",
-	Short: "Download all available specs",
-	Run: func(cmd *cobra.Command, args []string) {
-		_ = verificarEAtualizarDiretorio(CurrentDir())
+type DownloadOptions struct {
+	All      bool
+	Menu     string
+	SpecsDir string
+}
 
-		currentConfig, err := loadList()
+func DownloadSpecsCmd() *cobra.Command {
+	var opts DownloadOptions
+	cmd := &cobra.Command{
+		Use:   "download",
+		Short: "Download all available specs",
+		Run: func(cmd *cobra.Command, args []string) {
+			_ = verificarEAtualizarDiretorio(opts.SpecsDir)
 
-		if err != nil {
-			fmt.Println(err)
-			return
-		}
+			currentConfig, err := loadList()
 
-		for _, v := range currentConfig {
-			_ = getAndSaveFile(v.Url, filepath.Join(CurrentDir(), v.File))
-		}
-		fmt.Println("Now, run '" + cmd.Root().Name() + " prepare'")
+			if err != nil {
+				fmt.Println(err)
+				return
+			}
 
-	},
+			for _, v := range currentConfig {
+				if v.Enabled && ((opts.Menu == "" && opts.All) || v.Menu == opts.Menu) {
+					_ = getAndSaveFile(v.Url, filepath.Join(opts.SpecsDir, v.File))
+				}
+			}
+		},
+	}
+
+	cmd.Flags().BoolVarP(&opts.All, "all", "a", false, "Download all specs")
+	cmd.Flags().StringVarP(&opts.Menu, "menu", "m", "", "Menu to download")
+	cmd.Flags().StringVarP(&opts.SpecsDir, "specs-dir", "s", "", "Directory containing the specs")
+
+	return cmd
 }

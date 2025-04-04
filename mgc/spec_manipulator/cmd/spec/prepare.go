@@ -62,8 +62,8 @@ func removeVersionFromURL(url string) (string, int, error) {
 	return cleanURL, version, nil
 }
 
-func runPrepare(cmd *cobra.Command, args []string) {
-	_ = verificarEAtualizarDiretorio(CurrentDir())
+func runPrepare(opts *PrepareOptions) {
+	_ = verificarEAtualizarDiretorio(opts.SpecsDir)
 
 	currentConfig, err := loadList()
 
@@ -73,10 +73,9 @@ func runPrepare(cmd *cobra.Command, args []string) {
 	}
 
 	rejectedPaths := []rejected{}
-
 	for _, v := range currentConfig {
-		if v.Enabled {
-			file := filepath.Join(CurrentDir(), v.File)
+		if v.Enabled && ((opts.Menu == "" && opts.All) || v.Menu == opts.Menu) {
+			file := filepath.Join(opts.SpecsDir, v.File)
 			fileBytes, err := os.ReadFile(file)
 			if err != nil {
 				fmt.Println(err)
@@ -332,7 +331,7 @@ func runPrepare(cmd *cobra.Command, args []string) {
 					panic(fmt.Sprintf("cannot re-render document: %d errors reported", len(errs)))
 				}
 
-				err = os.WriteFile(filepath.Join(CurrentDir(), v.File), fileBytes, 0644)
+				err = os.WriteFile(filepath.Join(opts.SpecsDir, v.File), fileBytes, 0644)
 				if err != nil {
 					fmt.Println(err)
 					return
@@ -351,9 +350,27 @@ func runPrepare(cmd *cobra.Command, args []string) {
 	}
 }
 
+type PrepareOptions struct {
+	All      bool
+	SpecsDir string
+	Menu     string
+}
+
 // replace another python scripts
-var PrepareToGoCmd = &cobra.Command{
-	Use:   "prepare",
-	Short: "Prepare all available specs to MgcSDK",
-	Run:   runPrepare,
+func PrepareToGoCmd() *cobra.Command {
+	var opts PrepareOptions
+	cmd := &cobra.Command{
+		Use:    "prepare",
+		Short:  "Prepare all available specs to MgcSDK",
+		Hidden: true,
+		Run: func(cmd *cobra.Command, args []string) {
+			runPrepare(&opts)
+		},
+	}
+
+	cmd.Flags().BoolVarP(&opts.All, "all", "a", false, "Prepare all available specs")
+	cmd.Flags().StringVarP(&opts.SpecsDir, "specs-dir", "s", "", "Directory containing the specs")
+	cmd.Flags().StringVarP(&opts.Menu, "menu", "m", "", "Menu to prepare")
+
+	return cmd
 }

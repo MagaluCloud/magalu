@@ -5,6 +5,7 @@ CICD_DIR ?= mgc/spec_manipulator/
 DUMP_TREE = mgc/cli/cli-dump-tree.json
 OUT_DIR = mgc/cli/docs
 OAPIDIR=mgc/sdk/openapi/openapis
+SPECS_DIR=specs
 
 build-local:
 	@goreleaser build --clean --snapshot --single-target -f internal.yaml
@@ -30,9 +31,15 @@ generate-docs: build-cicd
 oapi-index-gen:
 	$(CICD_DIR)cicd pipeline oapi-index $(OAPIDIR)
 
+update-spec-vm:
+	$(CICD_DIR)cicd spec download -m virtual-machine -s $(SPECS_DIR)
+	$(CICD_DIR)cicd spec prepare -m virtual-machine -s $(SPECS_DIR)
 
 add-spec-vm:
 	@echo "Adding virtual-machine spec..."
+
+	$(CICD_DIR)cicd spec prepare -m virtual-machine -s $(SPECS_DIR)
+	
 	$(CICD_DIR)cicd spec merge \
 	 -p compute \
 	 -a specs/virtual-machine.jaxyendy.openapi.json \
@@ -46,8 +53,15 @@ add-spec-vm:
 	@echo "Virtual-machine spec added successfully.\n\n"
 
 
+update-spec-k8s:
+	$(CICD_DIR)cicd spec download -m kubernetes -s $(SPECS_DIR)
+	$(CICD_DIR)cicd spec prepare -m kubernetes -s $(SPECS_DIR)
+
 add-spec-k8s:
 	@echo "Adding kubernetes spec..."
+
+	$(CICD_DIR)cicd spec prepare -m kubernetes -s $(SPECS_DIR)
+
 	$(CICD_DIR)cicd spec merge \
 	 -p kubernetes \
 	 -a specs/kubernetes.jaxyendy.openapi.json \
@@ -60,8 +74,16 @@ add-spec-k8s:
 	-s mgc/sdk/openapi/openapis/kubernetes.openapi.yaml
 	@echo "Kubernetes spec added successfully.\n\n"
 
+
+update-spec-container:
+	$(CICD_DIR)cicd spec download -m container-registry -s $(SPECS_DIR)
+	$(CICD_DIR)cicd spec prepare -m container-registry -s $(SPECS_DIR)
+
 add-spec-container:
 	@echo "Adding container-registry spec..."
+
+	$(CICD_DIR)cicd spec prepare -m container-registry -s $(SPECS_DIR)
+
 	$(CICD_DIR)cicd spec merge \
 	 -p container-registry \
 	 -a specs/container-registry.openapi.yaml \
@@ -74,8 +96,15 @@ add-spec-container:
 
 	@echo "Container-registry spec added successfully.\n\n"
 
+update-spec-block-storage:
+	$(CICD_DIR)cicd spec download -m block-storage -s $(SPECS_DIR)
+	$(CICD_DIR)cicd spec prepare -m block-storage -s $(SPECS_DIR)
+
 add-spec-block-storage:
 	@echo "Adding block-storage spec..."
+
+	$(CICD_DIR)cicd spec prepare -m block-storage -s $(SPECS_DIR)
+
 	$(CICD_DIR)cicd spec merge \
 	 -p block-storage \
 	 -a specs/block-storage.jaxyendy.openapi.json \
@@ -88,8 +117,15 @@ add-spec-block-storage:
 
 	@echo "Block-storage spec added successfully.\n\n"
 
+update-spec-database:
+	$(CICD_DIR)cicd spec download -m database -s $(SPECS_DIR)
+	$(CICD_DIR)cicd spec prepare -m database -s $(SPECS_DIR)
+
 add-spec-database:
 	@echo "Adding database(dbaas) spec..."
+
+	$(CICD_DIR)cicd spec prepare -m database -s $(SPECS_DIR)
+
 	$(CICD_DIR)cicd spec merge \
 	 -p dbaas \
 	 -a specs/database.jaxyendy.openapi.yaml \
@@ -101,9 +137,15 @@ add-spec-database:
 	-s mgc/sdk/openapi/openapis/dbaas.openapi.yaml
 	@echo "Database spec added successfully.\n\n"
 
+update-spec-events:
+	$(CICD_DIR)cicd spec download -m audit -s $(SPECS_DIR)
+	$(CICD_DIR)cicd spec prepare -m audit -s $(SPECS_DIR)
 
 add-spec-events:
 	@echo "Adding events(audit) spec..."
+
+	$(CICD_DIR)cicd spec prepare -m audit -s $(SPECS_DIR)
+
 	$(CICD_DIR)cicd spec merge \
 	 -p audit \
 	 -g \
@@ -118,8 +160,15 @@ add-spec-events:
 
 	@echo "Audit spec added successfully.\n\n"
 
+update-spec-globaldb:
+	$(CICD_DIR)cicd spec download -m profile -s $(SPECS_DIR)
+	$(CICD_DIR)cicd spec prepare -m profile -s $(SPECS_DIR)
+
 add-spec-globaldb:
 	@echo "Adding globaldb(profile) spec..."
+
+	$(CICD_DIR)cicd spec prepare -m profile -s $(SPECS_DIR)
+
 	$(CICD_DIR)cicd spec merge \
 	 -p profile \
 	 -r \
@@ -132,9 +181,15 @@ add-spec-globaldb:
 	-s mgc/sdk/openapi/openapis/profile.openapi.yaml
 	@echo "Globaldb spec added successfully.\n\n"
 
+update-spec-network:
+	$(CICD_DIR)cicd spec download -m network -s $(SPECS_DIR)
+	$(CICD_DIR)cicd spec prepare -m network -s $(SPECS_DIR)	
 
 add-spec-network:
 	@echo "Adding network spec..."
+
+	$(CICD_DIR)cicd spec prepare -m network -s $(SPECS_DIR)
+
 	$(CICD_DIR)cicd spec merge \
 	 -p network \
 	 -a specs/network.jaxyendy.openapi.json \
@@ -150,7 +205,7 @@ add-spec-network:
 
 
 add-all-specs: build-cicd add-spec-vm add-spec-k8s add-spec-container add-spec-block-storage add-spec-database add-spec-events add-spec-globaldb add-spec-network oapi-index-gen
-
+update-all-specs: build-cicd update-spec-vm update-spec-k8s update-spec-container update-spec-block-storage update-spec-database update-spec-events update-spec-globaldb update-spec-network
 
 # specs
 download-specs: build-cicd

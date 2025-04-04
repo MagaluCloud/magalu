@@ -286,23 +286,19 @@ func PrepareSchema(xchema *base.Schema) *base.Schema {
 
 }
 
-var DowngradeSpecCmd = &cobra.Command{
-	Use:    "downgrade",
-	Short:  "Downgrade specs from 3.1.x to 3.0.x",
-	Hidden: true,
-	Run: func(cmd *cobra.Command, args []string) {
-		// runPrepare(cmd, args)
-		_ = verificarEAtualizarDiretorio(CurrentDir())
+func runDowngrade(opts *DowngradeOptions) {
+	_ = verificarEAtualizarDiretorio(opts.SpecsDir)
 
-		currentConfig, err := loadList()
+	currentConfig, err := loadList()
 
-		if err != nil {
-			fmt.Println(err)
-			return
-		}
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 
-		for _, v := range currentConfig {
-			file := filepath.Join(CurrentDir(), v.File)
+	for _, v := range currentConfig {
+		if v.Enabled && ((opts.Menu == "" && opts.All) || v.Menu == opts.Menu) {
+			file := filepath.Join(opts.SpecsDir, v.File)
 			fileBytes, err := os.ReadFile(file)
 			if err != nil {
 				fmt.Println(err)
@@ -387,7 +383,31 @@ var DowngradeSpecCmd = &cobra.Command{
 				panic(fmt.Sprintf("cannot re-render document: %d errors reported", len(errs)))
 			}
 
-			_ = os.WriteFile(filepath.Join(CurrentDir(), "conv."+v.File), fileBytes, 0644)
+			_ = os.WriteFile(filepath.Join(opts.SpecsDir, "conv."+v.File), fileBytes, 0644)
 		}
-	},
+	}
+}
+
+type DowngradeOptions struct {
+	All      bool
+	Menu     string
+	SpecsDir string
+}
+
+func DowngradeSpecCmd() *cobra.Command {
+	var opts DowngradeOptions
+	cmd := &cobra.Command{
+		Use:    "downgrade",
+		Short:  "Downgrade specs from 3.1.x to 3.0.x",
+		Hidden: true,
+		Run: func(cmd *cobra.Command, args []string) {
+			runDowngrade(&opts)
+		},
+	}
+
+	cmd.Flags().BoolVarP(&opts.All, "all", "a", false, "Downgrade all specs")
+	cmd.Flags().StringVarP(&opts.Menu, "menu", "m", "", "Menu to downgrade")
+	cmd.Flags().StringVarP(&opts.SpecsDir, "specs-dir", "s", "", "Directory containing the specs")
+
+	return cmd
 }
