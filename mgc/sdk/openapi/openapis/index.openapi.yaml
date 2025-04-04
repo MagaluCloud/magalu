@@ -1,50 +1,50 @@
-modules:
--   description: Cloud Events API Product.
-    name: audit
-    path: audit.openapi.yaml
-    summary: Cloud Events API Product.
-    url: https://events-consult.jaxyendy.com/openapi-cli.json
-    version: 0.17.0
--   description: Block Storage API Product
-    name: block-storage
-    path: block-storage.openapi.yaml
-    summary: Block Storage API Product
-    url: https://block-storage.jaxyendy.com/openapi.json
-    version: v1
--   description: Magalu Container Registry product API.
-    name: container-registry
-    path: container-registry.openapi.yaml
-    summary: Magalu Container Registry product API.
-    url: https://container-registry.jaxyendy.com/openapi.json
-    version: 0.1.0
--   description: DBaaS API Product.
-    name: dbaas
-    path: dbaas.openapi.yaml
-    summary: DBaaS API Product.
-    url: https://dbaas.jaxyendy.com/openapi.json
-    version: 1.42.0
--   description: APIs related to the Kubernetes product.
-    name: kubernetes
-    path: kubernetes.openapi.yaml
-    summary: APIs related to the Kubernetes product.
-    url: https://mke.br-ne-1.com/docs/openapi-with-snippets.json
-    version: 0.1.0
--   description: VPC Api Product
-    name: network
-    path: network.openapi.yaml
-    summary: VPC Api Product
-    url: https://network.jaxyendy.com/openapi.json
-    version: 1.156.0
--   description: Manage users global data
-    name: profile
-    path: profile.openapi.yaml
-    summary: Manage users global data
-    url: https://globaldb.jaxyendy.com/openapi-cli.json
-    version: 0.1.0
--   description: Virtual Machine Api Product
-    name: virtual-machine
-    path: virtual-machine.openapi.yaml
-    summary: Virtual Machine Api Product
-    url: https://virtual-machine.jaxyendy.com/openapi.json
-    version: v1
 version: 1.0.0
+modules:
+    - name: audit
+      url: https://events-consult.jaxyendy.com/openapi-cli.json
+      path: audit.openapi.yaml
+      version: 0.17.0
+      description: Cloud Events API Product.
+      summary: Cloud Events API Product.
+    - name: block-storage
+      url: https://block-storage.jaxyendy.com/openapi.json
+      path: block-storage.openapi.yaml
+      version: v1
+      description: Block Storage API Product
+      summary: Block Storage API Product
+    - name: container-registry
+      url: https://container-registry.jaxyendy.com/openapi.json
+      path: container-registry.openapi.yaml
+      version: 0.1.0
+      description: Magalu Container Registry product API.
+      summary: Magalu Container Registry product API.
+    - name: dbaas
+      url: https://dbaas.jaxyendy.com/openapi.json
+      path: dbaas.openapi.yaml
+      version: 1.42.0
+      description: DBaaS API Product.
+      summary: DBaaS API Product.
+    - name: kubernetes
+      url: https://mke.br-ne-1.com/docs/openapi-with-snippets.json
+      path: kubernetes.openapi.yaml
+      version: 0.1.0
+      description: APIs related to the Kubernetes product.
+      summary: APIs related to the Kubernetes product.
+    - name: network
+      url: https://network.jaxyendy.com/openapi.json
+      path: network.openapi.yaml
+      version: 1.156.0
+      description: VPC Api Product
+      summary: VPC Api Product
+    - name: profile
+      url: https://globaldb.jaxyendy.com/openapi-cli.json
+      path: profile.openapi.yaml
+      version: 0.1.0
+      description: Manage users global data
+      summary: Manage users global data
+    - name: virtual-machine
+      url: https://virtual-machine.jaxyendy.com/openapi.json
+      path: virtual-machine.openapi.yaml
+      version: v1
+      description: Virtual Machine Api Product
+      summary: Virtual Machine Api Product
