@@ -15,40 +15,12 @@ repos:
         entry: bash -c 'make generate-docs'
         require_serial: true
         stages: [pre-commit]
-      - id: apply-oapi-customizations
-        name: apply-oapi-customizations
+      - id: add-all-specs
+        name: add all specs
         language: system
-        types_or: [yaml]
-        entry: bash -c './scripts/oapi_apply_customizations.sh'
-        stages: [pre-commit]
-      - id: oapi-index-gen
-        name: oapi-index-gen
-        language: python
-        entry: bash -c './scripts/oapi_index_gen.sh'
-        additional_dependencies: [PyYAML, typing, argparse]
-        stages: [pre-commit]
-      - id: check-openapi-links
-        name: check openapi links
-        language: system
-        entry: bash -c './scripts/oapi_check_links.sh'
-        stages: [pre-commit]
+        entry: bash -c 'make add-all-specs'
         require_serial: true
-
-  - repo: https://github.com/pycqa/flake8
-    rev: 7.1.0
-    hooks:
-      - id: flake8
-        stages: [pre-commit, pre-push]
-        additional_dependencies:
-          - flake8-builtins
-          - flake8-colors
-          - flake8-comprehensions
-          - flake8-deprecated
-          - flake8-module-name
-          - flake8-print
-          - flake8-requirements
-          - flake8-rst-docstrings
-          - flake8-tidy-imports
+        stages: [pre-commit]
 
   - repo: https://github.com/psf/black
     rev: 24.8.0

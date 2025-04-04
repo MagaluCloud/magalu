@@ -28,7 +28,7 @@ generate-docs: build-cicd
 	@echo "ENDING $@"
 
 
-spec-add-vm: build-cicd
+add-spec-vm:
 	@echo "Adding virtual-machine spec..."
 	$(SPECS_DIR)cicd spec merge \
 	 -p compute \
@@ -42,21 +42,35 @@ spec-add-vm: build-cicd
 	-s mgc/sdk/openapi/openapis/virtual-machine.openapi.yaml
 	@echo "Virtual-machine spec added successfully.\n\n"
 
-spec-add-k8s: build-cicd
+add-spec-vm:
+	@echo "Adding virtual-machine spec..."
+	$(SPECS_DIR)cicd spec merge \
+	 -p compute \
+	 -a specs/virtual-machine.jaxyendy.openapi.json \
+	 -b openapi-customizations/virtual-machine.openapi.yaml \
+	 -o mgc/sdk/openapi/openapis/virtual-machine.openapi.yaml 
+
+	@echo "\nDowngrading to 3.0.3...\n"
+
+	$(SPECS_DIR)cicd spec downgrade-unique \
+	-s mgc/sdk/openapi/openapis/virtual-machine.openapi.yaml
+	@echo "Virtual-machine spec added successfully.\n\n"
+
+add-spec-k8s:
 	@echo "Adding kubernetes spec..."
 	$(SPECS_DIR)cicd spec merge \
 	 -p kubernetes \
 	 -a specs/kubernetes.jaxyendy.openapi.json \
 	 -b openapi-customizations/kubernetes.openapi.yaml \
 	 -o mgc/sdk/openapi/openapis/kubernetes.openapi.yaml 
-	 
+
 	@echo "\nDowngrading to 3.0.3...\n"
 
 	$(SPECS_DIR)cicd spec downgrade-unique \
 	-s mgc/sdk/openapi/openapis/kubernetes.openapi.yaml
 	@echo "Kubernetes spec added successfully.\n\n"
 
-spec-add-container: build-cicd
+add-spec-container:
 	@echo "Adding container-registry spec..."
 	$(SPECS_DIR)cicd spec merge \
 	 -p container-registry \
@@ -70,7 +84,7 @@ spec-add-container: build-cicd
 
 	@echo "Container-registry spec added successfully.\n\n"
 
-spec-add-block-storage: build-cicd
+add-spec-block-storage:
 	@echo "Adding block-storage spec..."
 	$(SPECS_DIR)cicd spec merge \
 	 -p block-storage \
@@ -84,7 +98,7 @@ spec-add-block-storage: build-cicd
 
 	@echo "Block-storage spec added successfully.\n\n"
 
-spec-add-database: build-cicd
+add-spec-database:
 	@echo "Adding database(dbaas) spec..."
 	$(SPECS_DIR)cicd spec merge \
 	 -p dbaas \
@@ -98,7 +112,7 @@ spec-add-database: build-cicd
 	@echo "Database spec added successfully.\n\n"
 
 
-spec-add-events: build-cicd
+add-spec-events:
 	@echo "Adding events(audit) spec..."
 	$(SPECS_DIR)cicd spec merge \
 	 -p audit \
@@ -113,7 +127,7 @@ spec-add-events: build-cicd
 
 	@echo "Audit spec added successfully.\n\n"
 
-spec-add-globaldb: build-cicd
+add-spec-globaldb:
 	@echo "Adding globaldb(profile) spec..."
 	$(SPECS_DIR)cicd spec merge \
 	 -p profile \
@@ -128,7 +142,7 @@ spec-add-globaldb: build-cicd
 	@echo "Globaldb spec added successfully.\n\n"
 
 
-spec-add-network: build-cicd
+add-spec-network:
 	@echo "Adding network spec..."
 	$(SPECS_DIR)cicd spec merge \
 	 -p network \
@@ -142,7 +156,7 @@ spec-add-network: build-cicd
 
 	@echo "Network spec added successfully.\n\n"
 
-add-all-specs: spec-add-vm spec-add-k8s spec-add-container spec-add-block-storage spec-add-database spec-add-events spec-add-globaldb spec-add-network
+add-all-specs: build-cicd add-spec-vm add-spec-k8s add-spec-container add-spec-block-storage add-spec-database add-spec-events add-spec-globaldb add-spec-network
 
 # specs
 download-specs: build-cicd
