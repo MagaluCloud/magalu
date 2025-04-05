@@ -49,9 +49,9 @@ merge-all:
 	@make merge-events-consult
 
 
-refresh-specs: build-cicd downgrade-all customize-all merge-all
+refresh-specs: downgrade-all customize-all merge-all
 
-refresh-all: build-cicd download-all downgrade-all customize-all merge-all
+refresh-all: download-all downgrade-all customize-all merge-all
 
 pre-commit-install:
 	@go run github.com/evilmartians/lefthook install
