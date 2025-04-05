@@ -1,19 +1,39 @@
 pre-commit:
   parallel: false
-  commands:
-    format:
+  jobs:
+    - name: format
       run: bash -c 'make check'
-    build-cicd:
+    - name: build-cicd
       run: bash -c 'make build-cicd'
-    add-all-specs:
+    - name: add-all-specs
       run: bash -c 'make refresh-specs'
-    build-cli:
+    - name: build-cli
       run: bash -c 'make build-go'
-    dump-tree:
+    - name: dump-tree
       run: bash -c 'make dump-tree'
-    generate-docs:
+    - name: generate-docs
       run: bash -c 'make generate-docs'
-    check-unstaged:
+    - name: check-unstaged
+      run: |
+        if ! git diff --quiet; then
+          echo "🔥 Existem alterações não commitadas após formatação:"
+          git --no-pager diff --name-only
+          echo "Por favor, adicione estas alterações ao stage e tente novamente"
+          exit 1
+        fi
+
+pipeline-validation:
+  parallel: false
+  jobs:
+    - name: add-all-specs
+      run: bash -c 'make refresh-specs'
+    - name: build-cli
+      run: bash -c 'make build-go'
+    - name: dump-tree
+      run: bash -c 'make dump-tree'
+    - name: generate-docs
+      run: bash -c 'make generate-docs'
+    - name: check-unstaged
       run: |
         if ! git diff --quiet; then
           echo "🔥 Existem alterações não commitadas após formatação:"

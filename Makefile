@@ -59,6 +59,8 @@ pre-commit-install:
 pre-commit:
 	@go run github.com/evilmartians/lefthook run pre-commit
 
+pipeline-validation: 
+	@go run github.com/evilmartians/lefthook run pipeline-validation
 
 # DevQA - Combined check
 check: format vet lint test
