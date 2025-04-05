@@ -9,11 +9,10 @@ mgc container-registry repositories get [registry-id] [repository-name] [flags]
 
 ## Flags:
 ```
-    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
--h, --help                          help for get
-    --registry-id uuid              Container Registry's UUID. (required)
-    --repository-name string        Repository's name. (required)
--v, --version                       version for get
+-h, --help                     help for get
+    --registry-id uuid         Container Registry's UUID. (required)
+    --repository-name string   Repository's name. (required)
+-v, --version                  version for get
 ```
 
 ## Global Flags:

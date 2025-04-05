@@ -9,10 +9,10 @@ mgc network vpcs get [vpc-id] [flags]
 
 ## Flags:
 ```
-    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
--h, --help                          help for get
--v, --version                       version for get
-    --vpc-id string                 VPC Id: ID of the VPC to detail (required)
+-h, --help            help for get
+-v, --version         version for get
+    --vpc-id string   VPC Id: ID of the VPC to detail
+                      Use --vpc-id=help for more details (required)
 ```
 
 ## Global Flags:

@@ -9,12 +9,11 @@ mgc dbaas replicas resize [replica-id] [flags]
 
 ## Flags:
 ```
-    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-    --flavor-id uuid                Flavor Id
--h, --help                          help for resize
-    --instance-type-id uuid         Instance Type Id
-    --replica-id uuid               Value referring to replica Id. (required)
--v, --version                       version for resize
+    --flavor-id uuid          Flavor Id
+-h, --help                    help for resize
+    --instance-type-id uuid   Instance Type Id
+    --replica-id uuid         Value referring to replica Id. (required)
+-v, --version                 version for resize
 ```
 
 ## Global Flags:

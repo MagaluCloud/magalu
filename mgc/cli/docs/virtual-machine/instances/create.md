@@ -1,6 +1,6 @@
 # Create
 
-Create a Virtual Machine instance
+Creates a Virtual Machine instance in the current tenant which is logged in.
 
 ## Usage:
 ```
@@ -9,14 +9,13 @@ mgc virtual-machine instances create [flags]
 
 ## Examples:
 ```
-mgc virtual-machine instances create --image.id="9ec75090-2872-4f51-8111-53d05d96d2c6" --image.name="some_resource_name" --machine-type.id="9ec75090-2872-4f51-8111-53d05d96d2c6" --machine-type.name="some_resource_name" --network.associate-public-ip=true --network.interface.id="9ec75090-2872-4f51-8111-53d05d96d2c6" --network.interface.security-groups='[{"id":"9ec75090-2872-4f51-8111-53d05d96d2c6"}]' --network.vpc.id="9ec75090-2872-4f51-8111-53d05d96d2c6" --network.vpc.name="some_resource_name" --volumes='[{"id":"a46594d1-9dc3-4c36-8eb3-071259513854"}]'
+mgc virtual-machine instances create --image.id="9ec75090-2872-4f51-8111-53d05d96d2c6" --image.name="some_resource_name" --machine-type.id="9ec75090-2872-4f51-8111-53d05d96d2c6" --machine-type.name="some_resource_name" --network.associate-public-ip=true --network.interface.id="9ec75090-2872-4f51-8111-53d05d96d2c6" --network.interface.security-groups='[{"id":"9ec75090-2872-4f51-8111-53d05d96d2c6"}]' --network.vpc.id="9ec75090-2872-4f51-8111-53d05d96d2c6" --network.vpc.name="some_resource_name"
 ```
 
 ## Flags:
 ```
-    --availability-zone string                  Availability Zone
-    --cli.list-links enum[=table]               List all available links for this command (one of "json", "table" or "yaml")
-    --cli.watch                                 Wait until the operation is completed by calling the 'get' link and waiting until termination. Akin to '! get -w'
+    --availability-zone string                  Availability Zone (at least one of: string)
+    --force-authentication                      Force authentication by sending the header even if this API doesn't require it
 -h, --help                                      help for create
     --image object                              Image (at least one of: single property: id or single property: name)
                                                 Use --image=help for more details (required)
@@ -24,7 +23,8 @@ mgc virtual-machine instances create --image.id="9ec75090-2872-4f51-8111-53d05d9
                                                 This is the same as '--image=id:string'.
     --image.name string                         Image: Name (between 1 and 255 characters)
                                                 This is the same as '--image=name:string'.
-    --labels array(string)                      Labels
+    --labels array                              Labels (at least one of: array)
+                                                Use --labels=help for more details
     --machine-type object                       Machine Type (at least one of: single property: id or single property: name)
                                                 Use --machine-type=help for more details (required)
     --machine-type.id string                    Machine Type: Id (between 1 and 255 characters)
@@ -32,8 +32,7 @@ mgc virtual-machine instances create --image.id="9ec75090-2872-4f51-8111-53d05d9
     --machine-type.name string                  Machine Type: Name (between 1 and 255 characters)
                                                 This is the same as '--machine-type=name:string'.
     --name string                               Name (between 1 and 255 characters) (required)
-    --network object                            (properties: associate_public_ip, interface and vpc)
-                                                Use --network=help for more details
+    --network object                            Use --network=help for more details (default {"associate_public_ip":true,"vpc":{"name":"vpc_default"}})
     --network.associate-public-ip boolean       network's associate_public_ip property: Associate Public Ip
                                                 This is the same as '--network=associate_public_ip:boolean'. (default true)
     --network.interface object                  network's interface property: Interface (at least one of: single property: id or single property: security_groups)
@@ -51,8 +50,8 @@ mgc virtual-machine instances create --image.id="9ec75090-2872-4f51-8111-53d05d9
                                                 This is the same as '--network.vpc=id:string'.
     --network.vpc.name string                   Vpc: Name (between 1 and 255 characters)
                                                 This is the same as '--network.vpc=name:string'.
-    --ssh-key-name string                       Ssh key Name
-    --user-data string                          Used to perform automated configuration tasks. (between 1 and 65000 characters)
+    --ssh-key-name string                       Ssh key Name (at least one of: string)
+    --user-data string                          Used to perform automated configuration tasks. (at least one of: between 1 and 65000 characters)
 -v, --version                                   version for create
     --volumes array(object)                     Volumes
                                                 Use --volumes=help for more details

@@ -9,10 +9,11 @@ mgc virtual-machine images list [flags]
 
 ## Flags:
 ```
-    --availability-zone string   Availability-Zone: br-ne1-a
+    --availability-zone string   Availability-Zone: br-ne1-a (at least one of: string)
     --control.limit integer       Limit (max: 2147483647) (default 50)
-    --control.offset integer      Offset (max: 2147483647)
+    --control.offset integer      Offset (range: 0 - 2147483647)
     --control.sort string         Sort (pattern: ^(^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$) (default "platform:asc,end_life_at:desc")
+    --force-authentication       Force authentication by sending the header even if this API doesn't require it
 -h, --help                       help for list
 -v, --version                    version for list
 ```

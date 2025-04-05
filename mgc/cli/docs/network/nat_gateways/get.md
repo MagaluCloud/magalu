@@ -9,10 +9,9 @@ mgc network nat-gateways get [nat-gateway-id] [flags]
 
 ## Flags:
 ```
-    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
--h, --help                          help for get
-    --nat-gateway-id string         Nat Gateway Id (required)
--v, --version                       version for get
+-h, --help                    help for get
+    --nat-gateway-id string   Nat Gateway Id (required)
+-v, --version                 version for get
 ```
 
 ## Global Flags:

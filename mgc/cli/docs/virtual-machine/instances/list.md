@@ -1,6 +1,6 @@
 # List
 
-List Virtual Machine instances
+List Virtual Machine instances in the current tenant which is logged in.
 
 ## Usage:
 ```
@@ -9,10 +9,11 @@ mgc virtual-machine instances list [flags]
 
 ## Flags:
 ```
-    --control.limit integer     Limit: limit the number of the results (max: 1000) (default 50)
-    --control.offset integer    Offset: pagination for the results limited (max: 2147483647)
+    --control.limit integer     Limit: limit the number of the results (max: 1000) (default 200)
+    --control.offset integer    Offset: pagination for the results limited (range: 0 - 2147483647)
     --control.sort string       Sort: order of the results using informed fields (pattern: ^(^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$) (default "created_at:asc")
     --expand array(string)     Expand: You can get more detailed info about: ['image', 'machine-type', 'machine-types', 'network', 'labels']  (default [])
+    --force-authentication     Force authentication by sending the header even if this API doesn't require it
 -h, --help                     help for list
 -v, --version                  version for list
 ```
@@ -32,6 +33,6 @@ mgc virtual-machine instances list [flags]
 -r, --raw                      Output raw data, without any formatting or coloring
     --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
     --server-url uri           Manually specify the server to use
-    --x-api-version string     X-Api-Version: api version (default "1.1")
+    --x-api-version string     api version (default "1.1")
 ```
 

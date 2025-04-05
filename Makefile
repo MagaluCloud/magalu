@@ -1,78 +1,66 @@
-MODULES := mgc/cli mgc/core mgc/sdk mgc/spec_manipulator
-
-MGCDIR ?= mgc/cli/
-CICD_DIR ?= mgc/spec_manipulator/
-DUMP_TREE = mgc/cli/cli-dump-tree.json
-OUT_DIR = mgc/cli/docs
-OAPIDIR=mgc/sdk/openapi/openapis
+include makefiles/cicd.mk
+include makefiles/devqa.mk
+include makefiles/download-specs.mk
+include makefiles/downgrade-specs.mk
+include makefiles/merge-specs.mk
+include makefiles/customize-specs.mk
 
 build-local:
 	@goreleaser build --clean --snapshot --single-target -f internal.yaml
 
-# cicd
-build-cicd:
-	@echo "RUNNING $@"
-	cd $(CICD_DIR) && go build -o cicd
-	cd $(MGCDIR) && go build -tags \"embed\" -o mgc
+build-go:
+	@cd $(MGCDIR) && CGO_ENABLED=0 go build -tags \"embed\" -o mgc
+	@echo "Build completed successfully at 'mgc/cli/mgc'"
 
-dump-tree: build-cicd
-	@echo "generating $(DUMP_TREE)..."
-	$(CICD_DIR)cicd pipeline dumptree -c $(MGCDIR)mgc -o "$(DUMP_TREE)"
-	@echo "generating $(DUMP_TREE): done"
-	@echo "ENDING $@"
+# Specs
+download-all:
+	@make download-k8s
+	@make download-container-registry
+	@make download-network
+	@make download-block-storage
+	@make download-database
+	@make download-compute
+	@make download-events-consult
+	@make download-profile
 
-generate-docs: build-cicd
-	@echo "generating $(OUT_DIR)..."
-	$(CICD_DIR)cicd pipeline cligendoc -g true -c $(MGCDIR)mgc -d "$(DUMP_TREE)" -o "$(OUT_DIR)" -v "0"
-	@echo "generating $(OUT_DIR): done"
-	@echo "ENDING $@"
+downgrade-all:
+	@make downgrade-k8s
+	@make downgrade-container-registry
+	@make downgrade-network
+	@make downgrade-block-storage
+	@make downgrade-database
+	@make downgrade-compute
+	@make downgrade-events-consult
+	@make downgrade-profile
 
-oapi-index-gen: build-cicd
-	$(CICD_DIR)cicd pipeline oapi-index $(OAPIDIR)
+customize-all:
+	@make customize-k8s
+	@make customize-container-registry
+	@make customize-network
+	@make customize-block-storage
+	@make customize-database
+	@make customize-compute
+	@make customize-events-consult
+	@make customize-profile
 
-# specs
-download-specs: build-cicd
-	@./mgc/spec_manipulator/cicd spec download
-	@echo "Now, run 'make prepare-specs' validate and pretify the specs"
-
-prepare-specs: build-cicd
-	@./mgc/spec_manipulator/cicd spec prepare
-
-refresh-specs: build-cicd
-	@./mgc/spec_manipulator/cicd spec downgrade
-	@poetry install
-	@poetry run ./scripts/add_all_specs.sh
+merge-all:
+	@make merge-kubernetes
+	@make merge-compute
+	@make merge-events-consult
 
 
-# Testing targets
-test:
-	@echo "Running tests for all modules..."
-	@for module in $(MODULES); do \
-		echo "Testing $$module"; \
-		(cd $$module && go test ./...); \
-	done
+refresh-specs: downgrade-all customize-all merge-all
 
-# Code quality targets
-vet:
-	@echo "Vetting all modules..."
-	@for module in $(MODULES); do \
-		echo "Vetting $$module"; \
-		(cd $$module && go vet ./...); \
-	done
+refresh-all: download-all downgrade-all customize-all merge-all
 
-lint:
-	@echo "Linting all modules..."
-	@for module in $(MODULES); do \
-		echo "Linting $$module"; \
-		(cd $$module && go vet ./...); \
-	done
+pre-commit-install:
+	@go run github.com/evilmartians/lefthook install
 
-format:
-	@echo "Formatting all modules..."
-	@for module in $(MODULES); do \
-		echo "Formatting $$module"; \
-		(cd $$module && gofmt -s -w .); \
-	done
+pre-commit:
+	@go run github.com/evilmartians/lefthook run pre-commit
 
-# Combined check
+pipeline-validation: build-cicd
+	@go run github.com/evilmartians/lefthook run pipeline-validation
+
+# DevQA - Combined check
 check: format vet lint test

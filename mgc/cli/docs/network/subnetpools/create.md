@@ -9,13 +9,12 @@ mgc network subnetpools create [flags]
 
 ## Flags:
 ```
-    --cidr string                   The CIDR notation for the subnet pool. (default "172.26.0.0/16")
-    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-    --description string            The description for the subnet pool (required)
--h, --help                          help for create
-    --name string                   The name of the subnet pool. (required)
-    --type string                   The type of subnetpool, pip or default. (pattern: ^(pip|default)$) (default "default")
--v, --version                       version for create
+    --cidr string          The CIDR notation for the subnet pool. (default "172.26.0.0/16")
+    --description string   The description for the subnet pool (required)
+-h, --help                 help for create
+    --name string          The name of the subnet pool. (required)
+    --type string          The type of subnetpool, pip or default. (pattern: ^(pip|default)$) (default "default")
+-v, --version              version for create
 ```
 
 ## Global Flags:
