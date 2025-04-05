@@ -11,6 +11,10 @@ build-local:
 build-go:
 	@cd mgc/cli && go build -tags "embed" -o mgc 
 
+# DevQA - Combined check
+check: format vet lint test
+
+# Specs
 download-all:
 	@make download-k8s
 	@make download-container-registry
@@ -46,5 +50,6 @@ merge-all:
 	@make merge-compute
 	@make merge-events-consult
 
-refresh-all: download-all downgrade-all customize-all merge-all
+
 add-all-specs: downgrade-all customize-all merge-all
+refresh-all: download-all add-all-specs

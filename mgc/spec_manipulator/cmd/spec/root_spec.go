@@ -10,9 +10,9 @@ func SpecCmd() *cobra.Command {
 		Short: "Menu com opções para manipulação de specs",
 	}
 
-	specMenu.AddCommand(MergeSpecsCmd()) // spc merge
+	specMenu.AddCommand(MergeSpecsCmd())
 	specMenu.AddCommand(DowngradeUniqueSpecCmd())
-	specMenu.AddCommand(CustomizeSpecCmd()) // personalizar para padrão Magalu
-	specMenu.AddCommand(DownloadSpecCmd())  // downgrade spec
+	specMenu.AddCommand(CustomizeSpecCmd())
+	specMenu.AddCommand(DownloadSpecCmd())
 	return specMenu
 }

@@ -29,5 +29,4 @@ format:
 		(cd $$module && gofmt -s -w .); \
 	done
 
-# Combined check
-check: format vet lint test
+

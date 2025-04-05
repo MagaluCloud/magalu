@@ -15,7 +15,6 @@ func customizeSpec(options *CustomizeSpec) {
 	var paramsToRemove []string
 	if options.removeParams != "" {
 		paramsToRemove = strings.Split(options.removeParams, ",")
-		// Remover espaços em branco
 		for i, param := range paramsToRemove {
 			paramsToRemove[i] = strings.TrimSpace(param)
 		}
@@ -38,7 +37,6 @@ func customizeSpec(options *CustomizeSpec) {
 
 	fmt.Println("Especificação personalizada com sucesso. Resultado salvo em '" + options.output + "'")
 
-	// Informar parâmetros removidos
 	if len(paramsToRemove) > 0 {
 		fmt.Println("Parâmetros removidos: " + strings.Join(paramsToRemove, ", "))
 	}

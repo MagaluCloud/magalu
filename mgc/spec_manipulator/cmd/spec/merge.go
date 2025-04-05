@@ -11,9 +11,8 @@ import (
 func mergeSpecs(options *MergeSpecs) {
 	merger := mergers.NewSpecMerger()
 
-	// Criar opções básicas para o merger (sem as personalizações Magalu)
 	mOptions := &mergers.MergeOptions{
-		DowngradeToVersion: "3.0.3", // Por padrão, garante compatibilidade
+		DowngradeToVersion: "3.0.3",
 	}
 
 	err := merger.MergeSpecs(options.specA, options.specB, options.output, mOptions)

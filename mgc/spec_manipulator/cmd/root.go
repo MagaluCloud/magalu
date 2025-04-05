@@ -13,14 +13,11 @@ var (
 		Short:             "Utilitário para auxiliar nos pipelines de CI/CD",
 		Long:              `Uma, ou mais uma CLI para ajudar no processo de atualização das specs.`,
 	}
-	viperUsedFile = ""
 )
 
-// Execute executes the root command.
 func Execute() error {
 	rootCmd.AddCommand(spec.SpecCmd())
 	rootCmd.AddCommand(pipeline.PipelineCmd())
 	rootCmd.AddCommand(versionCmd) // version
 	return rootCmd.Execute()
 }
-

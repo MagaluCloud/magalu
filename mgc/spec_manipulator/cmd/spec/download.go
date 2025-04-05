@@ -11,7 +11,6 @@ import (
 func downloadSpecFile(options *DownloadSpec) {
 	down := downloader.NewSpecDownloader()
 
-	// Configurar validação
 	down.ValidateSpec = !options.skipValidation
 
 	err := down.DownloadSpec(options.source, options.destination)
