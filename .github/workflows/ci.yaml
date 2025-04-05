@@ -22,10 +22,7 @@ jobs:
         with:
           token: ${{ secrets.GH_PAT2 }}
           fetch-depth: 1
-      - uses: actions/setup-python@v5.2.0
-        with:
-          python-version: "3.12"
-          cache: "pip"
+
       - name: Set up Go
         uses: actions/setup-go@v5.0.2
         with:
@@ -33,9 +30,7 @@ jobs:
           go-version: ${{ vars.GO_VERSION }}
       - name: "Go Imports"
         run: go install golang.org/x/tools/cmd/goimports@latest
-      - uses: pre-commit/action@v3.0.1
-        name: "Pre-commit run"
-        with:
-          extra_args: --show-diff-on-failure --color=always --hook-stage push --all-files
+      - name: "Pre-commit run"
+        run: make pre-commit
       - name: "Go checks"
         run: make check
