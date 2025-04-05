@@ -27,12 +27,12 @@ func (m *SpecMerger) MergeSpecs(specAPath, specBPath, outputPath string, options
 	file := filepath.Join(specAPath)
 	fileBytes, err := os.ReadFile(file)
 	if err != nil {
-		return fmt.Errorf("erro ao ler arquivo de especificação A: %v", err)
+		return fmt.Errorf("error reading specification A file: %v", err)
 	}
 
 	docA, err := libopenapi.NewDocument(fileBytes)
 	if err != nil {
-		return fmt.Errorf("erro ao carregar a especificação A: %v", err)
+		return fmt.Errorf("error loading specification A: %v", err)
 	}
 
 	var docB libopenapi.Document
@@ -41,23 +41,23 @@ func (m *SpecMerger) MergeSpecs(specAPath, specBPath, outputPath string, options
 		file = filepath.Join(specBPath)
 		fileBytes, err = os.ReadFile(file)
 		if err != nil {
-			return fmt.Errorf("erro ao ler arquivo de especificação B: %v", err)
+			return fmt.Errorf("error reading specification B file: %v", err)
 		}
 
 		docB, err = libopenapi.NewDocument(fileBytes)
 		if err != nil {
-			return fmt.Errorf("erro ao carregar a especificação B: %v", err)
+			return fmt.Errorf("error loading specification B: %v", err)
 		}
 	}
 
 	mergedSpec, err := m.performMerge(docA, docB, options)
 	if err != nil {
-		return fmt.Errorf("erro ao mesclar especificações: %v", err)
+		return fmt.Errorf("error merging specifications: %v", err)
 	}
 
 	err = m.saveSpec(mergedSpec, outputPath)
 	if err != nil {
-		return fmt.Errorf("erro ao salvar a especificação mesclada: %v", err)
+		return fmt.Errorf("error saving merged specification: %v", err)
 	}
 
 	return nil
@@ -68,7 +68,7 @@ func (m *SpecMerger) performMerge(specA, specB libopenapi.Document, options *Mer
 
 	mergedSpecA, err := mergedSpec.BuildV3Model()
 	if err != nil {
-		return mergedSpec, fmt.Errorf("erro ao construir modelo V3 para spec A: %v", err)
+		return mergedSpec, fmt.Errorf("error building V3 model for spec A: %v", err)
 	}
 
 	var specModelB *libopenapi.DocumentModel[v3.Document]
@@ -76,7 +76,7 @@ func (m *SpecMerger) performMerge(specA, specB libopenapi.Document, options *Mer
 		var errs []error
 		specModelB, errs = specB.BuildV3Model()
 		if len(errs) > 0 {
-			return mergedSpec, fmt.Errorf("erro ao construir modelo V3 para spec B: %v", errs)
+			return mergedSpec, fmt.Errorf("error building V3 model for spec B: %v", errs)
 		}
 	}
 
@@ -89,15 +89,15 @@ func (m *SpecMerger) performMerge(specA, specB libopenapi.Document, options *Mer
 	}
 
 	if err := m.mergePaths(mergedSpecA, specModelB); err != nil {
-		return mergedSpec, fmt.Errorf("erro ao mesclar caminhos: %v", err)
+		return mergedSpec, fmt.Errorf("error merging paths: %v", err)
 	}
 
 	if err := m.mergeSchemas(mergedSpecA, specModelB); err != nil {
-		return mergedSpec, fmt.Errorf("erro ao mesclar esquemas: %v", err)
+		return mergedSpec, fmt.Errorf("error merging schemas: %v", err)
 	}
 
 	if err := m.mergeTags(mergedSpecA, specModelB); err != nil {
-		return mergedSpec, fmt.Errorf("erro ao mesclar tags: %v", err)
+		return mergedSpec, fmt.Errorf("error merging tags: %v", err)
 	}
 
 	return mergedSpec, nil
@@ -116,10 +116,12 @@ func (m *SpecMerger) mergePaths(mergedSpecA *libopenapi.DocumentModel[v3.Documen
 			for opB := operationsB.Oldest(); opB != nil; opB = opB.Next() {
 				if operationA, isOpPresent := operationsA.Get(opB.Key); isOpPresent {
 					m.mergeOperation(operationA, opB.Value)
+				} else {
+					return fmt.Errorf("operation %s on route %s exists in spec B but not in spec A; merge blocked", opB.Key, path.Key)
 				}
 			}
 		} else {
-			mergedSpecA.Model.Paths.PathItems.Set(path.Key, path.Value)
+			return fmt.Errorf("route %s exists in spec B but not in spec A; merge blocked", path.Key)
 		}
 
 		m.addPathTagsToMainTags(mergedSpecA, path.Key)
@@ -341,17 +343,17 @@ func (m *SpecMerger) mergeTags(mergedSpecA *libopenapi.DocumentModel[v3.Document
 func (m *SpecMerger) saveSpec(spec libopenapi.Document, filename string) error {
 	model, errs := spec.BuildV3Model()
 	if errs != nil {
-		return fmt.Errorf("erro ao gerar modelo do spec mesclado: %v", errs)
+		return fmt.Errorf("error generating merged spec model: %v", errs)
 	}
 
 	byteFile, err := model.Model.RenderJSON("  ")
 	if err != nil {
-		return fmt.Errorf("erro ao renderizar spec mesclado: %v", err)
+		return fmt.Errorf("error rendering merged spec: %v", err)
 	}
 
 	err = os.WriteFile(filename, byteFile, 0644)
 	if err != nil {
-		return fmt.Errorf("erro ao salvar arquivo: %v", err)
+		return fmt.Errorf("error saving file: %v", err)
 	}
 
 	return nil
