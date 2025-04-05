@@ -24,7 +24,6 @@ in Python as well.
 To run the project, the main dependency needed is [Go](https://go.dev/dl/). To
 install, visit the official link with the instructions.
 
-Our project is prepared to use [Lefthook](https://github.com/evilmartians/lefthook?tab=readme-ov-file#guides), see how to install it to get the most out of our automations"
 
 ## Building and running locally
 
@@ -54,7 +53,6 @@ Alternatively, you can compile the project using only Golang's native tools, wit
 ```bash
 $ make build-go
 ```
-```
 
 ## OpenAPI
 
@@ -64,7 +62,7 @@ See [sdk/openapi/README.md](./mgc/sdk/openapi/README.md)
 
 ### OpenAPIs
 
-To add a new API spec, see `ADD_NEW_API.md`.
+To add a new API spec, see [ADD_NEW_API.md](ADD_NEW_API.mdd).
 
 ### Static APIs
 
@@ -75,57 +73,19 @@ structure in the exiting modules (`auth`, `config`).
 
 ### pre-commit
 
-We use [pre-commit](https://lefthook.dev/installation/index.html) to install git hooks and enforce
-lint, formatting, tests, commit messages and others. This tool depends on
-Python as well. On pre-commit we enforce:
-
-- On `commit-msg` for all commits:
-  - [Conventional commit](https://www.conventionalcommits.org/en/v1.0.0/) pattern
-    with [commitzen](https://github.com/commitizen/cz-cli)
-- On `pre-commit` for Go files:
-  - Complete set of [golangci-lint](https://golangci-lint.run/): `errcheck`,
-    `gosimple`, `govet`, `ineffasign`, `staticcheck`, `unused`
-- On `pre-commit` for Python files:
-  - `flake8` and `black` enforcing pep code styles
-
+We use [Lefthook](https://github.com/evilmartians/lefthook) to install git hooks and enforce
+lint, formatting, tests, commit messages and others. 
 #### Installation
 
-#### Mac
-
 ```sh
-brew install pre-commit
+make pre-commit-install
 ```
 
-#### pip
 
-```sh
-pip install pre-commit
-```
-
-For other types of installation, check their
-[official doc](https://pre-commit.com/#install).
-
-#### Configuration
-
-After installing, the developer must configure the git hooks inside its clone:
-
-```sh
-pre-commit install
-```
-
-### Linters
-
-We install the go linters via `pre-commit`, so it is automatically run by the
-pre-commit git hook. However, if one wants to run standalone it can be done via:
-
-```sh
-pre-commit run golangci-lint
-```
-
-### Run all
+### Run manually
 
 Run pre-commit without any file modified:
 
 ```sh
-pre-commit run -a
+make pre-commit
 ```
