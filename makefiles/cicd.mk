@@ -3,7 +3,6 @@ include makefiles/variables.mk
 build-cicd:
 	@echo "RUNNING $@"
 	cd $(CICD_DIR) && go build -o cicd
-	cd $(MGCDIR) && go build -tags \"embed\" -o mgc
 
 dump-tree:
 	@echo "generating $(DUMP_TREE)..."

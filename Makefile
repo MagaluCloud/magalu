@@ -9,7 +9,7 @@ build-local:
 	@goreleaser build --clean --snapshot --single-target -f internal.yaml
 
 build-go:
-	@cd mgc/cli && CGO_ENABLED=0 go build -tags "embed" -o mgc 
+	@cd $(MGCDIR) && CGO_ENABLED=0 go build -tags \"embed\" -o mgc
 	@echo "Build completed successfully at 'mgc/cli/mgc'"
 
 # Specs
