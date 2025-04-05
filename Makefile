@@ -9,7 +9,8 @@ build-local:
 	@goreleaser build --clean --snapshot --single-target -f internal.yaml
 
 build-go:
-	@cd mgc/cli && go build -tags "embed" -o mgc 
+	@cd mgc/cli && CGO_ENABLED=0 go build -tags "embed" -o mgc 
+	@echo "Build completed successfully at 'mgc/cli/mgc'"
 
 # DevQA - Combined check
 check: format vet lint test
@@ -51,5 +52,14 @@ merge-all:
 	@make merge-events-consult
 
 
-add-all-specs: downgrade-all customize-all merge-all
-refresh-all: download-all add-all-specs
+
+add-all-specs: build-cicd downgrade-all customize-all merge-all
+refresh-specs: add-all-specs #keep compatibility with old users
+
+refresh-all: build-cicd download-all downgrade-all customize-all merge-all
+
+pre-commit-install:
+	@go run github.com/evilmartians/lefthook install
+
+pre-commit:
+	@go run github.com/evilmartians/lefthook run pre-commit

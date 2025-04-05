@@ -24,8 +24,7 @@ in Python as well.
 To run the project, the main dependency needed is [Go](https://go.dev/dl/). To
 install, visit the official link with the instructions.
 
-There are some utility scripts written in [Python](https://www.python.org/downloads/).
-For this, [Poetry](https://python-poetry.org/) is used. Check [Poetry.md](Poetry.md) for instructions.
+Our project is prepared to use [Lefthook](https://github.com/evilmartians/lefthook?tab=readme-ov-file#guides), see how to install it to get the most out of our automations"
 
 ## Building and running locally
 
@@ -50,6 +49,13 @@ $ cd dist/mgc_<your_platform>
 $ ./mgc
 ```
 
+Alternatively, you can compile the project using only Golang's native tools, without relying on Goreleaser:
+
+```bash
+$ make build-go
+```
+```
+
 ## OpenAPI
 
 See [sdk/openapi/README.md](./mgc/sdk/openapi/README.md)
@@ -69,7 +75,7 @@ structure in the exiting modules (`auth`, `config`).
 
 ### pre-commit
 
-We use [pre-commit](https://pre-commit.com/) to install git hooks and enforce
+We use [pre-commit](https://lefthook.dev/installation/index.html) to install git hooks and enforce
 lint, formatting, tests, commit messages and others. This tool depends on
 Python as well. On pre-commit we enforce:
 
