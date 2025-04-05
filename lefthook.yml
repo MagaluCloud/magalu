@@ -1,0 +1,14 @@
+pre-commit:
+  jobs:
+
+    - name: format
+      run: bash -c 'make check'
+
+    - name: dump tree
+      run: bash -c 'make dump-tree'
+
+    - name: generate docs
+      run: bash -c 'make generate-docs'
+
+    - name: add all specs
+      run: bash -c 'make add-all-specs'
