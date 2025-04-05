@@ -17,7 +17,7 @@ tags:
   - name: replicas
     description: Database replicas management.
   - name: snapshots
-    description: Snapshots management.
+    description: TESTE-PRE-COMMIT management.
 paths:
   /v1/engines:
     get:
