@@ -4,11 +4,15 @@ pre-commit:
     - name: format
       run: bash -c 'make check'
 
+    - name: build
+      run: bash -c 'make build-cicd'
+
+    - name: add all specs
+      run: bash -c 'make refresh-specs'
+
     - name: dump tree
       run: bash -c 'make dump-tree'
 
     - name: generate docs
       run: bash -c 'make generate-docs'
 
-    - name: add all specs
-      run: bash -c 'make add-all-specs'

@@ -12,9 +12,6 @@ build-go:
 	@cd mgc/cli && CGO_ENABLED=0 go build -tags "embed" -o mgc 
 	@echo "Build completed successfully at 'mgc/cli/mgc'"
 
-# DevQA - Combined check
-check: format vet lint test
-
 # Specs
 download-all:
 	@make download-k8s
@@ -52,9 +49,7 @@ merge-all:
 	@make merge-events-consult
 
 
-
-add-all-specs: build-cicd downgrade-all customize-all merge-all
-refresh-specs: add-all-specs #keep compatibility with old users
+refresh-specs: build-cicd downgrade-all customize-all merge-all
 
 refresh-all: build-cicd download-all downgrade-all customize-all merge-all
 
@@ -63,3 +58,7 @@ pre-commit-install:
 
 pre-commit:
 	@go run github.com/evilmartians/lefthook run pre-commit
+
+
+# DevQA - Combined check
+check: format vet lint test
