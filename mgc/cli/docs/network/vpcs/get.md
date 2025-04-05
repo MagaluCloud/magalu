@@ -11,7 +11,8 @@ mgc network vpcs get [vpc-id] [flags]
 ```
 -h, --help            help for get
 -v, --version         version for get
-    --vpc-id string   VPC Id: ID of the VPC to detail (required)
+    --vpc-id string   VPC Id: ID of the VPC to detail
+                      Use --vpc-id=help for more details (required)
 ```
 
 ## Global Flags:

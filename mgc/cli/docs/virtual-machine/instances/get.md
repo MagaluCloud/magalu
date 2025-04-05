@@ -10,6 +10,7 @@ mgc virtual-machine instances get [id] [flags]
 ## Flags:
 ```
     --expand array(string)   Expand: You can get more detailed info about: ['image', 'machine-type', 'machine-types', 'network', 'labels']  (default [])
+    --force-authentication   Force authentication by sending the header even if this API doesn't require it
 -h, --help                   help for get
     --id string              Instance id - for help use ./mgc virtual-machines instances list . (required)
 -v, --version                version for get

@@ -10,7 +10,8 @@ mgc network public-ips delete [public-ip-id] [flags]
 ## Flags:
 ```
 -h, --help                  help for delete
-    --public-ip-id string   Public IP ID: Id of the Public IP to delete (required)
+    --public-ip-id string   Public IP ID: Id of the Public IP to delete
+                            Use --public-ip-id=help for more details (required)
 -v, --version               version for delete
 ```
 

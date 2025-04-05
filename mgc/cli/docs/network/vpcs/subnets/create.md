@@ -10,14 +10,15 @@ mgc network vpcs subnets create [vpc-id] [flags]
 ## Flags:
 ```
     --cidr-block string                      Cidr Block (required)
-    --description string                     Description
+    --description string                     Description (at least one of: string)
     --dns-nameservers array(ipvanyaddress)   Dns Nameservers (default [])
 -h, --help                                   help for create
     --ip-version integer                     Ip Version (required)
     --name string                            Name (required)
-    --subnetpool-id string                   Subnetpool Id
+    --subnetpool-id string                   Subnetpool Id (at least one of: string)
 -v, --version                                version for create
-    --vpc-id string                          Vpc Id: Id of the VPC to create Subnet (required)
+    --vpc-id string                          Vpc Id: Id of the VPC to create Subnet
+                                             Use --vpc-id=help for more details (required)
 ```
 
 ## Global Flags:
@@ -35,6 +36,6 @@ mgc network vpcs subnets create [vpc-id] [flags]
 -r, --raw                      Output raw data, without any formatting or coloring
     --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
     --server-url uri           Manually specify the server to use
-    --x-zone string            X-Zone
+    --x-zone string            X-Zone (at least one of: string)
 ```
 

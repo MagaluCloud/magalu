@@ -9,9 +9,10 @@ mgc virtual-machine instances reboot [id] [flags]
 
 ## Flags:
 ```
--h, --help      help for reboot
-    --id uuid   Instance id - for help use ./mgc virtual-machines instances list . (required)
--v, --version   version for reboot
+    --force-authentication   Force authentication by sending the header even if this API doesn't require it
+-h, --help                   help for reboot
+    --id uuid                Instance id - for help use ./mgc virtual-machines instances list . (required)
+-v, --version                version for reboot
 ```
 
 ## Global Flags:

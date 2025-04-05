@@ -2,43 +2,58 @@ package spec
 
 import (
 	"fmt"
-	"path/filepath"
+	"os"
 
+	"github.com/MagaluCloud/magalu/mgc/spec_manipulator/cmd/spec/downloader"
 	"github.com/spf13/cobra"
 )
 
-type DownloadOptions struct {
-	All      bool
-	Menu     string
-	SpecsDir string
+func downloadSpecFile(options *DownloadSpec) {
+	down := downloader.NewSpecDownloader()
+
+	// Configurar validação
+	down.ValidateSpec = !options.skipValidation
+
+	err := down.DownloadSpec(options.source, options.destination)
+	if err != nil {
+		fmt.Printf("Erro ao baixar/carregar especificação: %v\n", err)
+		os.Exit(1)
+	}
+	fmt.Printf("Especificação salva com sucesso em: %s\n", options.destination)
 }
 
-func DownloadSpecsCmd() *cobra.Command {
-	var opts DownloadOptions
+type DownloadSpec struct {
+	source         string
+	destination    string
+	skipValidation bool
+}
+
+func DownloadSpecCmd() *cobra.Command {
+	options := &DownloadSpec{}
+
 	cmd := &cobra.Command{
 		Use:   "download",
-		Short: "Download all available specs",
+		Short: "Baixa ou carrega uma especificação OpenAPI de uma URL ou arquivo local",
+		Example: `
+  # Baixar de uma URL:
+  spec download -s https://example.com/api/openapi.json -d ./specs/
+
+  # Carregar de um arquivo local (com prefixo @):
+  spec download -s @./caminho/para/spec.yaml -d ./specs/destino.yaml
+  
+  # Baixar sem validar a especificação:
+  spec download -s https://example.com/api/openapi.json -d ./specs/ --skip-validation`,
 		Run: func(cmd *cobra.Command, args []string) {
-			_ = verificarEAtualizarDiretorio(opts.SpecsDir)
-
-			currentConfig, err := loadList()
-
-			if err != nil {
-				fmt.Println(err)
-				return
-			}
-
-			for _, v := range currentConfig {
-				if v.Enabled && ((opts.Menu == "" && opts.All) || v.Menu == opts.Menu) {
-					_ = getAndSaveFile(v.Url, filepath.Join(opts.SpecsDir, v.File))
-				}
-			}
+			downloadSpecFile(options)
 		},
 	}
 
-	cmd.Flags().BoolVarP(&opts.All, "all", "a", false, "Download all specs")
-	cmd.Flags().StringVarP(&opts.Menu, "menu", "m", "", "Menu to download")
-	cmd.Flags().StringVarP(&opts.SpecsDir, "specs-dir", "s", "", "Directory containing the specs")
+	cmd.Flags().StringVarP(&options.source, "source", "s", "", "URL ou caminho do arquivo de origem (com prefixo @ para arquivos locais)")
+	cmd.Flags().StringVarP(&options.destination, "destination", "d", "", "Caminho do arquivo ou diretório de destino")
+	cmd.Flags().BoolVar(&options.skipValidation, "skip-validation", false, "Pular a validação da especificação OpenAPI")
+
+	_ = cmd.MarkFlagRequired("source")
+	_ = cmd.MarkFlagRequired("destination")
 
 	return cmd
 }

@@ -10,8 +10,10 @@ mgc network public-ips detach [public-ip-id] [port-id] [flags]
 ## Flags:
 ```
 -h, --help                  help for detach
-    --port-id string        Port ID: Id of the Port to detach the Public IP (required)
-    --public-ip-id string   Public IP ID: Id of the Public IP to detach port to (required)
+    --port-id string        Port ID: Id of the Port to detach the Public IP
+                            Use --port-id=help for more details (required)
+    --public-ip-id string   Public IP ID: Id of the Public IP to detach port to
+                            Use --public-ip-id=help for more details (required)
 -v, --version               version for detach
 ```
 

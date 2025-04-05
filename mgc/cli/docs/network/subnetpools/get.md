@@ -10,7 +10,8 @@ mgc network subnetpools get [subnetpool-id] [flags]
 ## Flags:
 ```
 -h, --help                   help for get
-    --subnetpool-id string   subnetpoolId: Id of the Subnet Pool to get details (required)
+    --subnetpool-id string   subnetpoolId: Id of the Subnet Pool to get details
+                             Use --subnetpool-id=help for more details (required)
 -v, --version                version for get
 ```
 

@@ -10,7 +10,8 @@ mgc network subnets get [subnet-id] [flags]
 ## Flags:
 ```
 -h, --help               help for get
-    --subnet-id string   Subnet Id: Id of the Subnet to detail (required)
+    --subnet-id string   Subnet Id: Id of the Subnet to detail
+                         Use --subnet-id=help for more details (required)
 -v, --version            version for get
 ```
 

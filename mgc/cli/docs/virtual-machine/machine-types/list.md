@@ -9,10 +9,11 @@ mgc virtual-machine machine-types list [flags]
 
 ## Flags:
 ```
-    --availability-zone string   Availability-Zone: br-ne1-a
-    --control.limit integer       Limit: limit the number of the results (max: 1000) (default 50)
-    --control.offset integer      Offset: pagination for the results limited (max: 2147483647)
+    --availability-zone string   Availability-Zone: br-ne1-a (at least one of: string)
+    --control.limit integer       Limit: limit the number of the results (max: 1000) (default 200)
+    --control.offset integer      Offset: pagination for the results limited (range: 0 - 2147483647)
     --control.sort string         Sort: order of the results using informed fields (pattern: ^(^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$) (default "created_at:asc")
+    --force-authentication       Force authentication by sending the header even if this API doesn't require it
 -h, --help                       help for list
 -v, --version                    version for list
 ```

@@ -10,7 +10,8 @@ mgc network subnets delete [subnet-id] [flags]
 ## Flags:
 ```
 -h, --help               help for delete
-    --subnet-id string   Subnet Id: Id of the Subnet to delete (required)
+    --subnet-id string   Subnet Id: Id of the Subnet to delete
+                         Use --subnet-id=help for more details (required)
 -v, --version            version for delete
 ```
 

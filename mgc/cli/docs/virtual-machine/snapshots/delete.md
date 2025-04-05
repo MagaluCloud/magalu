@@ -10,9 +10,10 @@ mgc virtual-machine snapshots delete [id] [flags]
 
 ## Flags:
 ```
--h, --help      help for delete
-    --id uuid   Id (required)
--v, --version   version for delete
+    --force-authentication   Force authentication by sending the header even if this API doesn't require it
+-h, --help                   help for delete
+    --id uuid                Id (required)
+-v, --version                version for delete
 ```
 
 ## Global Flags:

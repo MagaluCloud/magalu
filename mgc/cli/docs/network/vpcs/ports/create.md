@@ -9,14 +9,16 @@ mgc network vpcs ports create [vpc-id] [flags]
 
 ## Flags:
 ```
-    --has-pip                            Has Pip (default true)
-    --has-sg                             Has Sg (default true)
--h, --help                               help for create
-    --name string                        Name (between 5 and 100 characters) (required)
-    --security-groups-id array(string)   Security Groups Id (default [])
-    --subnets array(string)              Subnets (default [])
--v, --version                            version for create
-    --vpc-id string                      vpc_id: ID of the VPC to create port (required)
+    --has-pip                    Has Pip (at least one of: boolean) (default true)
+    --has-sg                     Has Sg (at least one of: boolean) (default true)
+-h, --help                       help for create
+    --name string                Name (between 5 and 100 characters) (required)
+    --security-groups-id array   Security Groups Id (at least one of: array)
+                                 Use --security-groups-id=help for more details (default [])
+    --subnets array(string)      Subnets (default [])
+-v, --version                    version for create
+    --vpc-id string              vpc_id: ID of the VPC to create port
+                                 Use --vpc-id=help for more details (required)
 ```
 
 ## Global Flags:
@@ -34,6 +36,6 @@ mgc network vpcs ports create [vpc-id] [flags]
 -r, --raw                      Output raw data, without any formatting or coloring
     --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
     --server-url uri           Manually specify the server to use
-    --x-zone string            X-Zone
+    --x-zone string            X-Zone (at least one of: string)
 ```
 

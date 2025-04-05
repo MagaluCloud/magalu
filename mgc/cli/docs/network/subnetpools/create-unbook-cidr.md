@@ -11,7 +11,8 @@ mgc network subnetpools create-unbook-cidr [subnetpool-id] [flags]
 ```
     --cidr string            The CIDR notation for the subnet pool. (default "172.26.0.0/16")
 -h, --help                   help for create-unbook-cidr
-    --subnetpool-id string   subnetpoolId: Id of the Subnet Pool to get details (required)
+    --subnetpool-id string   subnetpoolId: Id of the Subnet Pool to get details
+                             Use --subnetpool-id=help for more details (required)
 -v, --version                version for create-unbook-cidr
 ```
 

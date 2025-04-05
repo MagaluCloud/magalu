@@ -14,7 +14,7 @@ mgc block-storage snapshots create --source-snapshot.id="xxxxxxxx-xxxx-xxxx-xxxx
 
 ## Flags:
 ```
-    --description string            Description (required)
+    --description string            Description (at least one of: string) (required)
 -h, --help                          help for create
     --name string                   Name (between 3 and 50 characters) (required)
     --source-snapshot object        Source Snapshot (at least one of: single property: id or single property: name)

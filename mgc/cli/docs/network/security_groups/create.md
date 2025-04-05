@@ -9,9 +9,9 @@ mgc network security-groups create [flags]
 
 ## Flags:
 ```
-    --description string     Description
+    --description string     Description (at least one of: string)
 -h, --help                   help for create
-    --name string            Name (between 5 and 100 characters) (required)
+    --name string            Name (at least one of: between 5 and 100 characters) (required)
     --skip-default-rules     Skip Default Rules: Skip creation of default security group rules
     --validate-quota         validateQuota: Validate the quota before creating Security Group (default true)
 -v, --version                version for create

@@ -6,7 +6,7 @@ info:
     name: Tribo IAAS Cloud
     url: https://gitlab.luizalabs.com/cloud/dbaas/docs
     email: cloud-iaas-dbaas@luizalabs.com
-  version: 1.42.0
+  version: 1.51.2
 tags:
   - name: engines
     description: Engines available for database instances.
@@ -918,9 +918,49 @@ paths:
             - dbaas.write
         - OAuth2Prod:
             - dbaas.write
+  /v1/instances/{instance_id}/snapshots/{snapshot_id}/restore:
+    post:
+      operationId: restore_instance_from_snapshot_v1__snapshot_id__post
+      parameters:
+        - $ref: "#/components/parameters/snapshot_id"
+      tags:
+        - snapshots
+      summary: Create a new instance from snapshot asynchronously.
+      description: Create a new instance from snapshot.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RestoreSnapshotRequest"
+        required: true
+      responses:
+        "202":
+          description: Accepted - Snapshot restore instance in progress.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InstanceResponse"
+        "400":
+          $ref: "#/components/responses/RequiredField"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "422":
+          $ref: "#/components/responses/UnprocessableEntity"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+      security:
+        - bearerAuth:
+            - dbaas.write
+        - OAuth2PreProd:
+            - dbaas.write
+        - OAuth2Prod:
+            - dbaas.write
   /v1/snapshots/{snapshot_id}/restores:
     post:
       operationId: restores_instance_from_snapshot_v1__snapshot_id__post
+      deprecated: true
       parameters:
         - $ref: "#/components/parameters/snapshot_id"
       tags:
@@ -1233,6 +1273,7 @@ components:
         - description
         - type
         - status
+        - availability_zone
         - created_at
       type: object
       properties:
@@ -1252,6 +1293,8 @@ components:
           $ref: "#/components/schemas/SnapshotType"
         status:
           $ref: "#/components/schemas/SnapshotStatus"
+        availability_zone:
+          $ref: "#/components/schemas/AvailabilityZone"
         allocated_size:
           title: Allocated Size
           type: integer
@@ -1466,6 +1509,16 @@ components:
         - MAINTENANCE
         - MAINTENANCE_ERROR
       example: ACTIVE
+    AvailabilityZone:
+      title: Availability Zone
+      type: string
+      enum:
+        - br-se1-a
+        - br-se1-b
+        - br-se1-c
+        - br-ne1-a
+        - br-ne1-b
+      example: br-ne1-a
     InstanceGeneration:
       title: Instance Generation
       description: Current database instance generation
@@ -1483,7 +1536,8 @@ components:
         - G9B
         - G10B
         - G1
-      example: G1B
+        - G2
+      example: G2
     InstanceParametersNames:
       title: Instance Parameters Name
       description: Database parameter name.
@@ -1585,6 +1639,8 @@ components:
           type: string
           format: time
           default: "04:00:00"
+        availability_zone:
+          $ref: "#/components/schemas/AvailabilityZone"
     InstanceVolumeRequest:
       title: Instance Volume Request
       required:
@@ -1601,7 +1657,7 @@ components:
           description: The type of the volume.
           allOf:
             - $ref: "#/components/schemas/VolumeType"
-          default: CLOUD_NVME_15K
+          default: CLOUD_NVME15K
     InstanceVolumeResizeRequest:
       title: Instance Volume Request
       type: object
@@ -1618,7 +1674,7 @@ components:
           description: The type of the volume.
           allOf:
             - $ref: "#/components/schemas/VolumeType"
-          default: CLOUD_NVME_15K
+          default: CLOUD_NVME15K
     InstanceResponse:
       title: Instance Response
       required:
@@ -1641,6 +1697,7 @@ components:
         - volume
         - addresses
         - status
+        - availability_zone
         - generation
         - parameters
         - created_at
@@ -1690,6 +1747,8 @@ components:
             $ref: "#/components/schemas/Address"
         status:
           $ref: "#/components/schemas/InstanceStatus"
+        availability_zone:
+          $ref: "#/components/schemas/AvailabilityZone"
         generation:
           $ref: "#/components/schemas/InstanceGeneration"
         parameters:
@@ -1820,12 +1879,14 @@ components:
         - replicas
     VolumeType:
       title: Volume Type
-      description: The type of the volume.
+      description: The type of the volume. CLOUD_NVME_15K will soon be deprecated, use CLOUD_NVME15K instead.
       type: string
       enum:
         - CLOUD_NVME_15K
         - CLOUD_NVME
         - CLOUD_HDD
+        - CLOUD_NVME15K
+        - CLOUD_NVME20K
     ReplicasResponse:
       title: Replicas Response
       required:
@@ -1854,6 +1915,7 @@ components:
         - name
         - source_id
         - status
+        - availability_zone
         - generation
         - parameters
       type: object
@@ -1900,6 +1962,8 @@ components:
             $ref: "#/components/schemas/ReplicaAddressResponse"
         status:
           $ref: "#/components/schemas/InstanceStatus"
+        availability_zone:
+          $ref: "#/components/schemas/AvailabilityZone"
         generation:
           $ref: "#/components/schemas/InstanceGeneration"
         parameters:
@@ -1956,7 +2020,9 @@ components:
           type: string
         flavor_id:
           deprecated: true
-          description: "Flavor Id (Deprecated).\n**Deprecated**: This property is being deprecated in favor of `instance_type_id`. Please update your requests to use `instance_type_id` for improved functionality and future compatibility.          \n"
+          description: |
+            Flavor Id (Deprecated).
+            **Deprecated**: This property is being deprecated in favor of `instance_type_id`. Please update your requests to use `instance_type_id` for improved functionality and future compatibility.
           type: string
           format: uuid
         instance_type_id:
@@ -2002,6 +2068,8 @@ components:
             - CLOUD_NVME
             - CLOUD_HDD
             - CLOUD_NVME_15K
+            - CLOUD_NVME15K
+            - CLOUD_NVME20K
       required:
         - size
         - type
@@ -2110,7 +2178,7 @@ components:
           type: string
           format: uuid
           description: |
-            **Deprecated**: This property is being deprecated in favor of `instance_type_id`. Please update your requests to use `instance_type_id` for improved functionality and future compatibility.		
+            **Deprecated**: This property is being deprecated in favor of `instance_type_id`. Please update your requests to use `instance_type_id` for improved functionality and future compatibility.
         volume:
           $ref: "#/components/schemas/InstanceVolumeResizeRequest"
   securitySchemes:

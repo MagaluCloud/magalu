@@ -10,8 +10,10 @@ mgc network ports attach [port-id] [security-group-id] [flags]
 ## Flags:
 ```
 -h, --help                       help for attach
-    --port-id string             port_id: ID of the Port to attach security group (required)
-    --security-group-id string   security_group_id: ID of the Security Group to attach (required)
+    --port-id string             port_id: ID of the Port to attach security group
+                                 Use --port-id=help for more details (required)
+    --security-group-id string   security_group_id: ID of the Security Group to attach
+                                 Use --security-group-id=help for more details (required)
 -v, --version                    version for attach
 ```
 

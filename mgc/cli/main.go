@@ -52,7 +52,7 @@ func getVCSInfo(version string) string {
 }
 
 func main() {
-	defer panicRecover()
+	// defer panicRecover()
 	mgcSdk.SetUserAgent("MgcCLI")
 
 	err := cmd.Execute(Version)

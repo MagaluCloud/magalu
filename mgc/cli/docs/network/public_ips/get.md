@@ -10,7 +10,8 @@ mgc network public-ips get [public-ip-id] [flags]
 ## Flags:
 ```
 -h, --help                  help for get
-    --public-ip-id string   Public IP ID: Id of the Public IP to retrieve (required)
+    --public-ip-id string   Public IP ID: Id of the Public IP to retrieve
+                            Use --public-ip-id=help for more details (required)
 -v, --version               version for get
 ```
 

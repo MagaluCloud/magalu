@@ -15,6 +15,7 @@ mgc virtual-machine snapshots create --instance.id="9ec75090-2872-4f51-8111-53d0
 
 ## Flags:
 ```
+    --force-authentication   Force authentication by sending the header even if this API doesn't require it
 -h, --help                   help for create
     --instance object        Instance (at least one of: single property: id or single property: name)
                              Use --instance=help for more details (required)

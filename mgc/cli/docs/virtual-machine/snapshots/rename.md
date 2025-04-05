@@ -9,10 +9,11 @@ mgc virtual-machine snapshots rename [id] [flags]
 
 ## Flags:
 ```
--h, --help          help for rename
-    --id string     Id (required)
-    --name string   Name (between 1 and 255 characters) (required)
--v, --version       version for rename
+    --force-authentication   Force authentication by sending the header even if this API doesn't require it
+-h, --help                   help for rename
+    --id string              Id (required)
+    --name string            Name (between 1 and 255 characters) (required)
+-v, --version                version for rename
 ```
 
 ## Global Flags:

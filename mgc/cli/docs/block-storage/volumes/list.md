@@ -10,11 +10,11 @@ mgc block-storage volumes list [flags]
 ## Flags:
 ```
     --control.limit integer     Limit (default 50)
-    --control.offset integer    Offset
+    --control.offset integer    Offset (min: 0)
     --control.sort string       Sort (pattern: ^(^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$) (default "created_at:asc")
     --expand array(string)     Expand: You can get more detailed info about: ['volume_type', 'attachment'] (default [])
 -h, --help                     help for list
-    --name string              Name
+    --name string              Name (at least one of: string)
 -v, --version                  version for list
 ```
 

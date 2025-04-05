@@ -10,6 +10,7 @@ mgc virtual-machine snapshots get [id] [flags]
 ## Flags:
 ```
     --expand array(string)   Expand: You can get more detailed info about: ['image', 'machine-type']  (default [])
+    --force-authentication   Force authentication by sending the header even if this API doesn't require it
 -h, --help                   help for get
     --id string              Id (required)
 -v, --version                version for get

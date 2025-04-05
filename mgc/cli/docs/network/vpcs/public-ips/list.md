@@ -11,7 +11,8 @@ mgc network vpcs public-ips list [vpc-id] [flags]
 ```
 -h, --help            help for list
 -v, --version         version for list
-    --vpc-id string   Vpc ID: Id of the VPC to list the Public IPs in (required)
+    --vpc-id string   Vpc ID: Id of the VPC to list the Public IPs in
+                      Use --vpc-id=help for more details (required)
 ```
 
 ## Global Flags:

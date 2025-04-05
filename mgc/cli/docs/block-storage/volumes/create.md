@@ -14,7 +14,7 @@ mgc block-storage volumes create --snapshot.id="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxx
 
 ## Flags:
 ```
-    --availability-zone string   Availability Zone
+    --availability-zone string   Availability Zone (at least one of: string)
     --encrypted                  Indicates if the volume is encrypted. Default is False.
 -h, --help                       help for create
     --name string                Name (between 3 and 50 characters) (required)

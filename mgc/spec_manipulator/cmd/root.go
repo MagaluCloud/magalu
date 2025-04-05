@@ -1,13 +1,9 @@
 package cmd
 
 import (
-	"os"
-	"path/filepath"
-
 	"github.com/MagaluCloud/magalu/mgc/spec_manipulator/cmd/pipeline"
 	"github.com/MagaluCloud/magalu/mgc/spec_manipulator/cmd/spec"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 )
 
 var (
@@ -28,24 +24,3 @@ func Execute() error {
 	return rootCmd.Execute()
 }
 
-func init() {
-	cobra.OnInitialize(initConfig)
-}
-
-func initConfig() {
-
-	ex, err := os.Executable()
-	home := filepath.Dir(ex)
-	cobra.CheckErr(err)
-
-	// Search config in home directory with name ".cobra" (without extension).
-	viper.AddConfigPath(home)
-	viper.SetConfigType("yaml")
-	viper.SetConfigName(spec.VIPER_FILE)
-
-	viper.AutomaticEnv()
-	if err := viper.ReadInConfig(); err == nil {
-		viperUsedFile = viper.ConfigFileUsed()
-	}
-
-}

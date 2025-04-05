@@ -10,7 +10,8 @@ mgc network ports delete [port-id] [flags]
 ## Flags:
 ```
 -h, --help             help for delete
-    --port-id string   port_id: ID of the Port to delete (required)
+    --port-id string   port_id: ID of the Port to delete
+                       Use --port-id=help for more details (required)
 -v, --version          version for delete
 ```
 

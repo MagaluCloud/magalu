@@ -10,7 +10,8 @@ mgc network ports get [port-id] [flags]
 ## Flags:
 ```
 -h, --help             help for get
-    --port-id string   Port Id (required)
+    --port-id string   Port Id
+                       Use --port-id=help for more details (required)
 -v, --version          version for get
 ```
 

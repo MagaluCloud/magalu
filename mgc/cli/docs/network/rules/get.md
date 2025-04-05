@@ -10,7 +10,8 @@ mgc network rules get [rule-id] [flags]
 ## Flags:
 ```
 -h, --help             help for get
-    --rule-id string   Rule ID: Id of the Rule (required)
+    --rule-id string   Rule ID: Id of the Rule
+                       Use --rule-id=help for more details (required)
 -v, --version          version for get
 ```
 

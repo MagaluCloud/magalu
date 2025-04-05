@@ -13,10 +13,12 @@ mgc network vpcs ports list [vpc-id] [flags]
     --control.offset integer       Page Number (min: 1) (default 1)
     --detailed                     Detailed (default true)
 -h, --help                         help for list
-    --name string                  Name of the port to list: Filter ports results with name
-    --port-id-list array(string)   Port Id List (default [])
+    --name string                  Name of the port to list: Filter ports results with name (at least one of: string)
+    --port-id-list array(string)   Port Id List
+                                   Use --port-id-list=help for more details (default [])
 -v, --version                      version for list
-    --vpc-id string                vpc_id: ID of VPC to list ports (required)
+    --vpc-id string                vpc_id: ID of VPC to list ports
+                                   Use --vpc-id=help for more details (required)
 ```
 
 ## Global Flags:

@@ -10,7 +10,8 @@ mgc network security-groups get [security-group-id] [flags]
 ## Flags:
 ```
 -h, --help                       help for get
-    --security-group-id string   Security Group ID: Id of the security group to detail (required)
+    --security-group-id string   Security Group ID: Id of the security group to detail
+                                 Use --security-group-id=help for more details (required)
 -v, --version                    version for get
 ```
 

@@ -14,7 +14,8 @@ mgc virtual-machine snapshots restore --machine-type.id="9ec75090-2872-4f51-8111
 
 ## Flags:
 ```
-    --availability-zone string                  Availability Zone (between 1 and 255 characters) (default "br-ne1-a")
+    --availability-zone string                  Availability Zone (at least one of: between 1 and 255 characters) (default "br-ne1-a")
+    --force-authentication                      Force authentication by sending the header even if this API doesn't require it
 -h, --help                                      help for restore
     --id string                                 Id (required)
     --machine-type object                       Machine Type (at least one of: single property: id or single property: name)
@@ -24,8 +25,7 @@ mgc virtual-machine snapshots restore --machine-type.id="9ec75090-2872-4f51-8111
     --machine-type.name string                  Machine Type: Name (between 1 and 255 characters)
                                                 This is the same as '--machine-type=name:string'.
     --name string                               Name (between 1 and 255 characters) (required)
-    --network object                            (properties: associate_public_ip, interface and vpc)
-                                                Use --network=help for more details
+    --network object                            Use --network=help for more details (default {"associate_public_ip":true,"vpc":{"name":"vpc_default"}})
     --network.associate-public-ip boolean       network's associate_public_ip property: Associate Public Ip
                                                 This is the same as '--network=associate_public_ip:boolean'. (default true)
     --network.interface object                  network's interface property: Interface (at least one of: single property: id or single property: security_groups)
@@ -43,8 +43,8 @@ mgc virtual-machine snapshots restore --machine-type.id="9ec75090-2872-4f51-8111
                                                 This is the same as '--network.vpc=id:string'.
     --network.vpc.name string                   Vpc: Name (between 1 and 255 characters)
                                                 This is the same as '--network.vpc=name:string'.
-    --ssh-key-name string                       Ssh Key Name
-    --user-data string                          User Data (between 1 and 65000 characters)
+    --ssh-key-name string                       Ssh Key Name (at least one of: string)
+    --user-data string                          User Data (at least one of: between 1 and 65000 characters)
 -v, --version                                   version for restore
 ```
 

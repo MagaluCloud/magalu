@@ -11,7 +11,8 @@ mgc network vpcs subnets list [vpc-id] [flags]
 ```
 -h, --help            help for list
 -v, --version         version for list
-    --vpc-id string   Vpc Id: Id of the VPC to list Subnets (required)
+    --vpc-id string   Vpc Id: Id of the VPC to list Subnets
+                      Use --vpc-id=help for more details (required)
 ```
 
 ## Global Flags:

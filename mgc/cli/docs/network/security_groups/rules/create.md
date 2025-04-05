@@ -7,26 +7,22 @@ Create a Rule async, returning its ID. To monitor the creation progress, please 
 mgc network security-groups rules create [security-group-id] [flags]
 ```
 
-## Examples:
-```
-mgc network security-groups rules create --description="Allow incoming SSH traffic" --direction="ingress" --ethertype="IPv4"
-```
-
 ## Flags:
 ```
-    --description string         Description of the security group rule
+    --description string         Description of the security group rule (at least one of: string)
     --direction string           Direction of the rule, either ingress or egress (required)
     --ethertype string           Ethertype of the rule, either IPv4 or IPv6 (required)
 -h, --help                       help for create
-    --port-range-max integer     Port Range Max
-    --port-range-min integer     Port Range Min
-    --protocol string            Protocol
-    --remote-ip-prefix string    Remote Ip Prefix
-    --security-group-id string   Security Group ID: Id of the Security Group (required)
+    --port-range-max integer     Port Range Max (at least one of: integer)
+    --port-range-min integer     Port Range Min (at least one of: integer)
+    --protocol string            Protocol (at least one of: string)
+    --remote-ip-prefix string    Remote Ip Prefix (at least one of: string)
+    --security-group-id string   Security Group ID: Id of the Security Group
+                                 Use --security-group-id=help for more details (required)
     --validate-quota             validateQuota: Validate the quota before creating Rule (default true)
 -v, --version                    version for create
-    --wait                       The request will be asynchronous. The wait parameter tells the API that you want the request to simulate synchronous behavior (to maintain endpoint compatibility). You can set an approximate timeout with the waitTimeout parameter (default true)
-    --wait-timeout integer       waitTimeout: the approximate time in seconds you want to wait when simulating the request as synchronous (only works with wait=true) (default 120)
+    --wait                       The request will be asynchronous. The wait parameter tells the API that you want the request to simulate synchronous behavior (to maintain endpoint compatibility). You can set an approximate timeout with the waitTimeout parameter (at least one of: boolean) (default true)
+    --wait-timeout integer       waitTimeout: the approximate time in seconds you want to wait when simulating the request as synchronous (only works with wait=true) (at least one of: integer) (default 120)
 ```
 
 ## Global Flags:
