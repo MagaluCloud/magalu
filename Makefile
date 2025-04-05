@@ -59,7 +59,7 @@ pre-commit-install:
 pre-commit:
 	@go run github.com/evilmartians/lefthook run pre-commit
 
-pipeline-validation: 
+pipeline-validation: build-cicd
 	@go run github.com/evilmartians/lefthook run pipeline-validation
 
 # DevQA - Combined check
