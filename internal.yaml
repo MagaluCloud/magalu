@@ -55,7 +55,7 @@ snapcrafts:
         * VPC (subnets, security rules, public IP)
         * Kubernetes Cluster (create, scale, monitor)
     grade: stable
-    confinement: classic
+    confinement: strict #classic
     license: GPL-3.0-only
     base: core24
     apps:
