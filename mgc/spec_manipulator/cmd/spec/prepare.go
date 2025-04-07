@@ -62,8 +62,8 @@ func removeVersionFromURL(url string) (string, int, error) {
 	return cleanURL, version, nil
 }
 
-func runPrepare(cmd *cobra.Command, args []string) {
-	_ = verificarEAtualizarDiretorio(CurrentDir())
+func runPrepare(dir string) {
+	_ = verificarEAtualizarDiretorio(dir)
 
 	currentConfig, err := loadList()
 
@@ -76,7 +76,7 @@ func runPrepare(cmd *cobra.Command, args []string) {
 
 	for _, v := range currentConfig {
 		if v.Enabled {
-			file := filepath.Join(CurrentDir(), v.File)
+			file := filepath.Join(dir, v.File)
 			fileBytes, err := os.ReadFile(file)
 			if err != nil {
 				fmt.Println(err)
@@ -332,7 +332,7 @@ func runPrepare(cmd *cobra.Command, args []string) {
 					panic(fmt.Sprintf("cannot re-render document: %d errors reported", len(errs)))
 				}
 
-				err = os.WriteFile(filepath.Join(CurrentDir(), v.File), fileBytes, 0644)
+				err = os.WriteFile(filepath.Join(dir, v.File), fileBytes, 0644)
 				if err != nil {
 					fmt.Println(err)
 					return
@@ -352,8 +352,15 @@ func runPrepare(cmd *cobra.Command, args []string) {
 }
 
 // replace another python scripts
-var PrepareToGoCmd = &cobra.Command{
-	Use:   "prepare",
-	Short: "Prepare all available specs to MgcSDK",
-	Run:   runPrepare,
+func prepareToGoCmd() *cobra.Command {
+	var dir string
+	cmd := &cobra.Command{
+		Use:   "prepare",
+		Short: "Prepare all available specs to MgcSDK",
+		Run: func(cmd *cobra.Command, args []string) {
+			runPrepare(dir)
+		},
+	}
+	cmd.Flags().StringVarP(&dir, "dir", "d", "", "Directory to save the converted specs")
+	return cmd
 }

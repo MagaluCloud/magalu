@@ -10,13 +10,13 @@ func SpecCmd() *cobra.Command {
 		Short: "Menu com opções para manipulação de specs",
 	}
 
-	specMenu.AddCommand(DownloadSpecsCmd) // download all
-	specMenu.AddCommand(SpecAddNewCmd())  // add spec
-	specMenu.AddCommand(DeleteSpecsCmd)   // delete spec
-	specMenu.AddCommand(ListSpecsCmd)     // list specs
-	specMenu.AddCommand(PrepareToGoCmd)   // convert spec to golang
-	specMenu.AddCommand(DowngradeSpecCmd) // downgrade spec
-	specMenu.AddCommand(MergeSpecsCmd())  // spc merge
+	specMenu.AddCommand(downloadSpecsCmd()) // download all
+	specMenu.AddCommand(specAddNewCmd())    // add spec
+	specMenu.AddCommand(deleteSpecsCmd)     // delete spec
+	specMenu.AddCommand(listSpecsCmd())     // list specs
+	specMenu.AddCommand(prepareToGoCmd())   // convert spec to golang
+	specMenu.AddCommand(downgradeSpec())    // downgrade spec
+	specMenu.AddCommand(mergeSpecsCmd())    // spc merge
 
 	return specMenu
 }

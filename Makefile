@@ -2,6 +2,7 @@ MODULES := mgc/cli mgc/core mgc/sdk mgc/spec_manipulator
 
 MGCDIR ?= mgc/cli/
 CICD_DIR ?= mgc/spec_manipulator/
+SPECS_DIR ?= specs/
 DUMP_TREE = mgc/cli/cli-dump-tree.json
 OUT_DIR = mgc/cli/docs
 OAPIDIR=mgc/sdk/openapi/openapis
@@ -32,16 +33,17 @@ oapi-index-gen: build-cicd
 
 # specs
 download-specs: build-cicd
-	@./mgc/spec_manipulator/cicd spec download
+	@./mgc/spec_manipulator/cicd spec download -d $(SPECS_DIR)
 	@echo "Now, run 'make prepare-specs' validate and pretify the specs"
 
 prepare-specs: build-cicd
-	@./mgc/spec_manipulator/cicd spec prepare
+	@./mgc/spec_manipulator/cicd spec prepare -d $(SPECS_DIR)
 
 refresh-specs: build-cicd
-	@./mgc/spec_manipulator/cicd spec downgrade
+	@./mgc/spec_manipulator/cicd spec downgrade -d $(SPECS_DIR)
 	@poetry install
 	@poetry run ./scripts/add_all_specs.sh
+	@$(CICD_DIR)cicd pipeline oapi-index $(OAPIDIR)
 
 
 # Testing targets
