@@ -23,18 +23,21 @@ type SchemaFlagValue interface {
 }
 
 func newSchemaFlagValue(desc SchemaFlagValueDesc) SchemaFlagValue {
-	switch desc.Schema.Type {
-	case "array":
-		return newSchemaFlagValueArray(desc)
-	case "boolean":
-		return newSchemaFlagValueBool(desc)
-	case "string":
-		return newSchemaFlagValueString(desc)
-	case "object":
-		return newSchemaFlagValueObject(desc)
-	default:
-		return newSchemaFlagValueCommon(desc)
+
+	if desc.Schema.Type != nil {
+		switch {
+		case desc.Schema.Type.Includes("array"):
+			return newSchemaFlagValueArray(desc)
+		case desc.Schema.Type.Includes("boolean"):
+			return newSchemaFlagValueBool(desc)
+		case desc.Schema.Type.Includes("string"):
+			return newSchemaFlagValueString(desc)
+		case desc.Schema.Type.Includes("object"):
+			return newSchemaFlagValueObject(desc)
+		}
 	}
+	return newSchemaFlagValueCommon(desc)
+
 }
 
 func newFlag(value SchemaFlagValue) *flag.Flag {

@@ -126,8 +126,11 @@ func TestNewHttpErrorFromResponse(t *testing.T) {
 		Body:       io.NopCloser(bytes.NewBufferString("some value")),
 		StatusCode: 123,
 		Status:     "not ok",
-		Header:     http.Header{"Content-Type": []string{"application/json"}},
-		Request:    &http.Request{Header: http.Header{"X-Request-Id": []string{"1234"}}, Response: &http.Response{}},
+		Header:     http.Header{"Content-Type": []string{"application/json"}, "X-Request-Id": []string{"1234"}},
+		Request: &http.Request{Header: http.Header{"X-Request-Id": []string{"1234"}},
+			Response: &http.Response{
+				Header: http.Header{"Content-Type": []string{"application/json"}, "X-Request-Id": []string{"1234"}},
+			}},
 	}
 	dummyRequest := &http.Request{
 		Header: http.Header{"Content-Type": []string{"application/json"}, "X-Request-Id": []string{"1234"}},
@@ -137,7 +140,7 @@ func TestNewHttpErrorFromResponse(t *testing.T) {
 	expectedHttpErrr := &HttpError{
 		Code:    123,
 		Status:  "not ok",
-		Headers: http.Header{"Content-Type": []string{"application/json"}},
+		Headers: http.Header{"Content-Type": []string{"application/json"}, "X-Request-Id": []string{"1234"}},
 		Payload: bytes.NewBufferString("some value").Bytes(),
 		Message: "not ok",
 		Slug:    "unknown",

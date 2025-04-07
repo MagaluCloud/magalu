@@ -3,7 +3,8 @@ package main
 import (
 	"fmt"
 	"os"
-	"spec_manipulator/cmd"
+
+	"github.com/MagaluCloud/magalu/mgc/spec_manipulator/cmd"
 )
 
 func main() {

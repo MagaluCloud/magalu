@@ -47,3 +47,4 @@ terraform.tfstate
 terraform.tfstate.backup
 terraform.tfstate.d
 **/__debug_bin**
+mgc/spec_manipulator/cicd

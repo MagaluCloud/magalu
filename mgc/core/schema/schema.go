@@ -49,7 +49,7 @@ func NewAnySchema() *Schema {
 	s := &openapi3.Schema{
 		Nullable: true,
 		AnyOf: openapi3.SchemaRefs{
-			&openapi3.SchemaRef{Value: &openapi3.Schema{Type: "null", Nullable: true}},
+			&openapi3.SchemaRef{Value: &openapi3.Schema{Type: &openapi3.Types{openapi3.TypeNull}, Nullable: true}},
 			&openapi3.SchemaRef{Value: openapi3.NewBoolSchema()},
 			&openapi3.SchemaRef{Value: openapi3.NewStringSchema()},
 			&openapi3.SchemaRef{Value: openapi3.NewFloat64Schema()},
@@ -71,7 +71,7 @@ func NewObjectSchema(properties map[string]*Schema, required []string) *Schema {
 	}
 
 	return &Schema{
-		Type:                 "object",
+		Type:                 &openapi3.Types{openapi3.TypeObject},
 		AdditionalProperties: openapi3.AdditionalProperties{Has: &hasAdditionalProperties},
 		Properties:           p,
 		Required:             required,
@@ -96,14 +96,14 @@ func NewBooleanSchema() *Schema {
 
 func NewNullSchema() *Schema {
 	return &Schema{
-		Type:     "null",
+		Type:     &openapi3.Types{openapi3.TypeNull},
 		Nullable: true,
 	}
 }
 
 func NewArraySchema(item *Schema) *Schema {
 	return &Schema{
-		Type:  "array",
+		Type:  &openapi3.Types{openapi3.TypeArray},
 		Items: &openapi3.SchemaRef{Value: (*openapi3.Schema)(item)},
 	}
 }
@@ -325,7 +325,7 @@ func SchemaFromType[T any]() (*Schema, error) {
 	isArray := kind == reflect.Array || kind == reflect.Slice
 
 	// schemaReflector seems to lose the fact that it's an array, so we bring that back
-	if isArray && s.Type == "object" {
+	if isArray && s.Type.Includes(openapi3.TypeObject) {
 		arrSchema := NewArraySchema(s)
 		s = arrSchema
 	}

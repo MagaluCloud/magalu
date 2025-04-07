@@ -202,7 +202,7 @@ func (o *operation) ConfigsSchema() *core.Schema {
 type cbForEachSuccessResponse func(code string, resp *openapi3.Response) (bool, error)
 
 func (o *operation) forEachSuccessResponse(cb cbForEachSuccessResponse) (finished bool, err error) {
-	for code, ref := range o.operation.Responses {
+	for code, ref := range o.operation.Responses.Map() {
 		if !(len(code) == 3 && strings.HasPrefix(code, "2")) && code != defaultResponseStatusCode {
 			continue
 		}
@@ -289,7 +289,7 @@ func (o *operation) initLinksAndRelated() core.Links {
 		o.links = core.Links{}
 		o.related = map[string]core.Executor{}
 		// TODO: Handle 'default' status code
-		for _, respRef := range o.operation.Responses {
+		for _, respRef := range o.operation.Responses.Map() {
 			resp := respRef.Value
 			for key, linkRef := range resp.Links {
 				link := linkRef.Value

@@ -259,8 +259,8 @@ func parseAnyItem(s string) (value any, end int, err error) {
 
 func getItemTypeParser(schema *core.Schema) (itemParser func(s string) (any, int, error)) {
 	var itemType string
-	if schema != nil {
-		itemType = schema.Type
+	if schema != nil && len(schema.Type.Slice()) > 0 {
+		itemType = schema.Type.Slice()[0]
 	}
 
 	switch itemType {
@@ -279,6 +279,7 @@ func getItemTypeParser(schema *core.Schema) (itemParser func(s string) (any, int
 	default:
 		return parseAnyItem
 	}
+
 }
 
 func parseArrayCSV(itemsSchema *core.Schema, rawValue string) (value []any, err error) {

@@ -40,7 +40,8 @@ func (o *requestBodySingle) addToSchema(schema *mgcSchemaPkg.Schema) (err error)
 	mimeTypes := make([]string, 0, len(o.content))
 	for k, mediaType := range o.content {
 		mimeTypes = append(mimeTypes, k)
-		if mediaType.Schema != nil && mediaType.Schema.Value != nil && mediaType.Schema.Value.Type != "" {
+		if mediaType.Schema != nil && mediaType.Schema.Value != nil &&
+			mediaType.Schema.Value.Type != nil && len(mediaType.Schema.Value.Type.Slice()) > 0 {
 			// spec gives the following example, that we do not support:
 			//	Binary content transferred with base64 encoding:
 			//		content:

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+set -ue
 
 BASEDIR=$(dirname $0)
 ROOTDIR=$(builtin cd $BASEDIR/..; pwd)
@@ -32,15 +32,13 @@ servers:
             description: Region to reach the service
             default: br-se1
             enum:
-            - br-ne-1
+            - br-ne1
             - br-se1
             - br-mgl1
             x-mgc-transforms:
             -   type: translate
                 allowMissing: true
                 translations:
-                -   from: br-ne1
-                    to: br-ne-1
                 -   from: br-mgl1
                     to: br-se-1
         env:
@@ -61,4 +59,4 @@ fi
 
 python3 $BASEDIR/transformers/transform.py $API_NAME $API_SPEC_FILE $SPEC_UID -o $OAPI_PATH/$SPEC_FILE
 python3 $BASEDIR/yaml_merge.py --override $OAPI_PATH/$SPEC_FILE $CUSTOM_PATH/$SPEC_FILE
-$BASEDIR/oapi_index_gen.sh
+

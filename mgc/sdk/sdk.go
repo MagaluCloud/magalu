@@ -2,8 +2,9 @@ package sdk
 
 import (
 	"context"
+	"fmt"
 	"net/http"
-	"strings"
+	"runtime"
 
 	"github.com/MagaluCloud/magalu/mgc/core"
 	"github.com/MagaluCloud/magalu/mgc/core/auth"
@@ -28,6 +29,7 @@ type Result = core.Result
 type Config = config.Config
 
 type Sdk struct {
+	version        string
 	group          *core.MergeGroup
 	profileManager *profile_manager.ProfileManager
 	auth           *auth.Auth
@@ -48,6 +50,13 @@ func SetUserAgent(userAgent string) {
 
 func NewSdk() *Sdk {
 	return &Sdk{}
+}
+
+func (o *Sdk) GetVersion() string {
+	return o.version
+}
+func (o *Sdk) SetVersion(version string) {
+	o.version = version
 }
 
 // The Context is created with the following values:
@@ -107,7 +116,7 @@ func (o *Sdk) Group() core.Grouper {
 		o.group = core.NewMergeGroup(
 			core.DescriptorSpec{
 				Name:        "products",
-				Version:     Version,
+				Version:     o.version,
 				Description: "All MagaLu Groups & Executors",
 			},
 			func() []core.Grouper {
@@ -121,12 +130,8 @@ func (o *Sdk) Group() core.Grouper {
 	return o.group
 }
 
-func newHttpTransport() http.RoundTripper {
-	userAgent := currentUserAgent + "/" + Version
-
-	if strings.HasPrefix(currentUserAgent, "MgcTF") {
-		userAgent = currentUserAgent
-	}
+func newHttpTransport(version string) http.RoundTripper {
+	userAgent := fmt.Sprintf("MgcCLI/%s (%s; %s)", version, runtime.GOOS, runtime.GOARCH)
 	// To avoid creating a transport with zero values, we leverage
 	// DefaultTransport (exemple: `Proxy: ProxyFromEnvironment`)
 	transport := mgcHttpPkg.DefaultTransport()
@@ -149,7 +154,7 @@ func (o *Sdk) ProfileManager() *profile_manager.ProfileManager {
 
 func (o *Sdk) Auth() *auth.Auth {
 	if o.auth == nil {
-		client := &http.Client{Transport: newHttpTransport()}
+		client := &http.Client{Transport: newHttpTransport(o.version)}
 		o.auth = auth.New(authConfigMap, client, o.ProfileManager(), o.Config())
 	}
 
@@ -158,7 +163,7 @@ func (o *Sdk) Auth() *auth.Auth {
 
 func (o *Sdk) HttpClient() *mgcHttpPkg.Client {
 	if o.httpClient == nil {
-		transport := o.addHttpRefreshHandler(newHttpTransport())
+		transport := o.addHttpRefreshHandler(newHttpTransport(o.version))
 		o.httpClient = mgcHttpPkg.NewClient(transport)
 	}
 	return o.httpClient

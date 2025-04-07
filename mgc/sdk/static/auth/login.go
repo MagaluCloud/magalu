@@ -31,14 +31,9 @@ type authResult struct {
 }
 
 type loginParameters struct {
-	// TODO: Remove 'omitempty', this parameter should not optional, but unfortunately the
-	// default values aren't being generated correctly in the schema. When this issue is
-	// resolved, 'omitempty' should be removed.
-	// Ref: https://github.com/invopop/jsonschema/issues/127
-	Scopes   core.Scopes `json:"scopes,omitempty" jsonschema:"description=All desired scopes for the resulting access token"`
-	Show     bool        `json:"show,omitempty" jsonschema:"description=Show the access token after the login completes"`
-	QRcode   bool        `json:"qrcode,omitempty" jsonschema:"description=Generate a qrcode for the login URL,default=false"`
-	Headless bool        `json:"headless,omitempty" jsonschema:"description=Generate URL for the login at local environment,default=false"`
+	Show     bool `json:"show,omitempty" jsonschema:"description=Show the access token after the login completes"`
+	QRcode   bool `json:"qrcode,omitempty" jsonschema:"description=Generate a qrcode for the login URL,default=false"`
+	Headless bool `json:"headless,omitempty" jsonschema:"description=Generate URL for the login at local environment,default=false"`
 }
 
 type loginResult struct {
@@ -102,25 +97,23 @@ func login(ctx context.Context, parameters loginParameters, _ struct{}) (*loginR
 	defer cancel()
 
 	// Always force built-in parameters
-	scopes := parameters.Scopes
+	scopes := core.Scopes{}
 	for _, builtIn := range auth.BuiltInScopes() {
 		scopes.Add(builtIn)
 	}
 
-	if parameters.Scopes == nil {
-		// Also add all available scopes by default when logging if no scope is explicitly passed in
-		allScopes, err := mgcAuthScope.ListAllAvailable(ctx)
-		if err != nil {
-			return nil, err
-		}
-
-		for _, scope := range allScopes {
-			scopes.Add(scope)
-		}
-
-		scopes.Add("evt:event-tr")
-		scopes.Add("pa:sa:manage")
+	// Also add all available scopes by default when logging if no scope is explicitly passed in
+	allScopes, err := mgcAuthScope.ListAllAvailable(ctx)
+	if err != nil {
+		return nil, err
 	}
+
+	for _, scope := range allScopes {
+		scopes.Add(scope)
+	}
+
+	scopes.Add("evt:event-tr")
+	scopes.Add("pa:sa:manage")
 
 	codeUrl, err := auth.CodeChallengeToURL(scopes)
 	if err != nil {

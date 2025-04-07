@@ -7,6 +7,7 @@ import (
 	"strings"
 	"unicode"
 
+	"github.com/getkin/kin-openapi/openapi3"
 	flag "github.com/spf13/pflag"
 
 	"github.com/MagaluCloud/magalu/mgc/cli/cmd/schema_flags"
@@ -138,7 +139,8 @@ func getExample(schema, container *core.Schema, propName string) (example any) {
 		return
 	}
 
-	if schema.Type == "array" && schema.Items != nil && schema.Items.Value != nil && schema.Items.Value.Example != nil {
+	if schema.Type != nil && schema.Type.Includes(openapi3.TypeArray) &&
+		schema.Items != nil && schema.Items.Value != nil && schema.Items.Value.Example != nil {
 		return []any{schema.Items.Value.Example}
 	}
 
@@ -167,22 +169,24 @@ func getExampleFormattedValue(schema, container *core.Schema, propName string) (
 		return
 	}
 
-	switch schema.Type {
-	case "integer", "number", "boolean":
-		return string(data)
+	if schema.Type != nil {
+		switch {
+		case schema.Type.Includes("integer"), schema.Type.Includes("number"), schema.Type.Includes("boolean"):
+			return string(data)
 
-	case "string":
-		value = string(data)
-		if value == schema_flags.ValueHelpIsRequired {
-			value = schema_flags.ValueVerbatimStringPrefix + value
-		} else if strings.HasPrefix(value, schema_flags.ValueVerbatimStringPrefix) || strings.Contains(value, "$") {
-			value = fmt.Sprintf("'%s'", data) // keep quotes and wrap in single, so shell doesn't replace variables
+		case schema.Type.Includes("string"):
+			value = string(data)
+			if value == schema_flags.ValueHelpIsRequired {
+				value = schema_flags.ValueVerbatimStringPrefix + value
+			} else if strings.HasPrefix(value, schema_flags.ValueVerbatimStringPrefix) || strings.Contains(value, "$") {
+				value = fmt.Sprintf("'%s'", data) // keep quotes and wrap in single, so shell doesn't replace variables
+			}
+			return
+		default:
+			return fmt.Sprintf("'%s'", data)
 		}
-		return
-
-	default:
-		return fmt.Sprintf("'%s'", data)
 	}
+	return fmt.Sprintf("'%s'", data)
 }
 
 func getFlagHelpUsageLine(f *flag.Flag) (s string) {
