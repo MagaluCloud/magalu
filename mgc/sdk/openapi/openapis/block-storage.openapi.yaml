@@ -1390,12 +1390,6 @@
         "title": "VolumesResponseV1",
         "type": "object"
       }
-    },
-    "securitySchemes": {
-      "OAuth2": {
-        "type": "oauth2",
-        "description": "Segurança OAuth2 para autenticação na API Magalu Cloud"
-      }
     }
   },
   "info": {
@@ -1480,7 +1474,7 @@
         "security": [
           {
             "OAuth2": [
-              "block-storage:write"
+              "block-storage.write"
             ]
           }
         ]
@@ -1558,7 +1552,7 @@
         "security": [
           {
             "OAuth2": [
-              "block-storage:write"
+              "block-storage.write"
             ]
           }
         ]
@@ -1711,7 +1705,7 @@
         "security": [
           {
             "OAuth2": [
-              "block-storage:read"
+              "block-storage.read"
             ]
           }
         ]
@@ -1792,7 +1786,7 @@
         "security": [
           {
             "OAuth2": [
-              "block-storage:write"
+              "block-storage.write"
             ]
           }
         ]
@@ -1870,7 +1864,7 @@
         "security": [
           {
             "OAuth2": [
-              "block-storage:write"
+              "block-storage.write"
             ]
           }
         ]
@@ -1966,7 +1960,7 @@
         "security": [
           {
             "OAuth2": [
-              "block-storage:read"
+              "block-storage.read"
             ]
           }
         ]
@@ -2054,7 +2048,7 @@
         "security": [
           {
             "OAuth2": [
-              "block-storage:write"
+              "block-storage.write"
             ]
           }
         ]
@@ -2142,7 +2136,7 @@
         "security": [
           {
             "OAuth2": [
-              "block-storage:write"
+              "block-storage.write"
             ]
           }
         ]
@@ -2233,7 +2227,7 @@
         "security": [
           {
             "OAuth2": [
-              "block-storage:read"
+              "block-storage.read"
             ]
           }
         ]
@@ -2368,7 +2362,7 @@
         "security": [
           {
             "OAuth2": [
-              "block-storage:read"
+              "block-storage.read"
             ]
           }
         ]
@@ -2449,7 +2443,7 @@
         "security": [
           {
             "OAuth2": [
-              "block-storage:write"
+              "block-storage.write"
             ]
           }
         ]
@@ -2527,7 +2521,7 @@
         "security": [
           {
             "OAuth2": [
-              "block-storage:write"
+              "block-storage.write"
             ]
           }
         ]
@@ -2621,7 +2615,7 @@
         "security": [
           {
             "OAuth2": [
-              "block-storage:read"
+              "block-storage.read"
             ]
           }
         ]
@@ -2709,7 +2703,7 @@
         "security": [
           {
             "OAuth2": [
-              "block-storage:write"
+              "block-storage.write"
             ]
           }
         ]
@@ -2787,7 +2781,7 @@
         "security": [
           {
             "OAuth2": [
-              "block-storage:write"
+              "block-storage.write"
             ]
           }
         ]
@@ -2861,7 +2855,7 @@
         "security": [
           {
             "OAuth2": [
-              "block-storage:write"
+              "block-storage.write"
             ]
           }
         ]
@@ -2949,7 +2943,7 @@
         "security": [
           {
             "OAuth2": [
-              "block-storage:write"
+              "block-storage.write"
             ]
           }
         ]
@@ -3023,7 +3017,7 @@
         "security": [
           {
             "OAuth2": [
-              "block-storage:write"
+              "block-storage.write"
             ]
           }
         ]
@@ -3093,14 +3087,6 @@
           ]
         }
       }
-    }
-  ],
-  "security": [
-    {
-      "OAuth2": [
-        "block-storage:read",
-        "block-storage:write"
-      ]
     }
   ]
 }

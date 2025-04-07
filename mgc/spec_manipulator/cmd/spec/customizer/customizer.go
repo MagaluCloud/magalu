@@ -415,9 +415,9 @@ func (m *MagaluCustomizer) configureSecurity(model *libopenapi.DocumentModel[v3.
 			opMethod := strings.ToLower(op.Key)
 
 			if readMethods[opMethod] {
-				scope = fmt.Sprintf("%s:read", productPathURL)
+				scope = fmt.Sprintf("%s.read", productPathURL)
 			} else {
-				scope = fmt.Sprintf("%s:write", productPathURL)
+				scope = fmt.Sprintf("%s.write", productPathURL)
 			}
 
 			sec := orderedmap.New[string, []string]()
@@ -435,38 +435,38 @@ func (m *MagaluCustomizer) configureSecurity(model *libopenapi.DocumentModel[v3.
 		}
 	}
 
-	if model.Model.Components == nil {
-		model.Model.Components = &v3.Components{
-			SecuritySchemes: orderedmap.New[string, *v3.SecurityScheme](),
-		}
-	} else if model.Model.Components.SecuritySchemes == nil {
-		model.Model.Components.SecuritySchemes = orderedmap.New[string, *v3.SecurityScheme]()
-	}
+	// if model.Model.Components == nil {
+	// 	model.Model.Components = &v3.Components{
+	// 		SecuritySchemes: orderedmap.New[string, *v3.SecurityScheme](),
+	// 	}
+	// } else if model.Model.Components.SecuritySchemes == nil {
+	// 	model.Model.Components.SecuritySchemes = orderedmap.New[string, *v3.SecurityScheme]()
+	// }
 
-	if _, exists := model.Model.Components.SecuritySchemes.Get("OAuth2"); !exists {
-		oauthScheme := &v3.SecurityScheme{
-			Type:        "oauth2",
-			Description: "Segurança OAuth2 para autenticação na API Magalu Cloud",
-		}
+	// if _, exists := model.Model.Components.SecuritySchemes.Get("OAuth2"); !exists {
+	// 	oauthScheme := &v3.SecurityScheme{
+	// 		Type:        "oauth2",
+	// 		Description: "Segurança OAuth2 para autenticação na API Magalu Cloud",
+	// 	}
 
-		model.Model.Components.SecuritySchemes.Set("OAuth2", oauthScheme)
-		fmt.Printf("Esquema de segurança OAuth2 adicionado à especificação\n")
-	}
+	// 	model.Model.Components.SecuritySchemes.Set("OAuth2", oauthScheme)
+	// 	fmt.Printf("Esquema de segurança OAuth2 adicionado à especificação\n")
+	// }
 
-	if len(model.Model.Security) == 0 {
-		readScope := fmt.Sprintf("%s:read", productPathURL)
-		writeScope := fmt.Sprintf("%s:write", productPathURL)
+	// if len(model.Model.Security) == 0 {
+	// 	readScope := fmt.Sprintf("%s:read", productPathURL)
+	// 	writeScope := fmt.Sprintf("%s:write", productPathURL)
 
-		sec := orderedmap.New[string, []string]()
-		sec.Set("OAuth2", []string{readScope, writeScope})
+	// 	sec := orderedmap.New[string, []string]()
+	// 	sec.Set("OAuth2", []string{readScope, writeScope})
 
-		model.Model.Security = []*base.SecurityRequirement{
-			{
-				Requirements: sec,
-			},
-		}
-		fmt.Printf("Segurança global padrão adicionada à especificação\n")
-	}
+	// 	model.Model.Security = []*base.SecurityRequirement{
+	// 		{
+	// 			Requirements: sec,
+	// 		},
+	// 	}
+	// 	fmt.Printf("Segurança global padrão adicionada à especificação\n")
+	// }
 
 	fmt.Printf("\n=== Resumo da configuração de segurança ===\n")
 	fmt.Printf("Total de operações que já possuíam segurança: %d\n", totalSecurity)
