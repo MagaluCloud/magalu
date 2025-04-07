@@ -15,17 +15,15 @@ mgc virtual-machine instances retype --machine-type.id="9ec75090-2872-4f51-8111-
 
 ## Flags:
 ```
-    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-    --cli.watch                     Wait until the operation is completed by calling the 'get' link and waiting until termination. Akin to '! get -w'
--h, --help                          help for retype
-    --id uuid                       Instance id - for help use ./mgc virtual-machines instances list . (required)
-    --machine-type object           Machine Type (at least one of: single property: id or single property: name)
-                                    Use --machine-type=help for more details (required)
-    --machine-type.id string        Machine Type: Id (between 1 and 255 characters)
-                                    This is the same as '--machine-type=id:string'.
-    --machine-type.name string      Machine Type: Name (between 1 and 255 characters)
-                                    This is the same as '--machine-type=name:string'.
--v, --version                       version for retype
+-h, --help                       help for retype
+    --id uuid                    Instance id - for help use ./mgc virtual-machines instances list . (required)
+    --machine-type object        Machine Type (at least one of: single property: id or single property: name)
+                                 Use --machine-type=help for more details (required)
+    --machine-type.id string     Machine Type: Id (between 1 and 255 characters)
+                                 This is the same as '--machine-type=id:string'.
+    --machine-type.name string   Machine Type: Name (between 1 and 255 characters)
+                                 This is the same as '--machine-type=name:string'.
+-v, --version                    version for retype
 ```
 
 ## Global Flags:

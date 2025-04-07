@@ -10,7 +10,8 @@ mgc dbaas snapshots [command]
 
 ## Commands:
 ```
-create      Create a new instance from snapshot asynchronously.
+restore     Create a new instance from snapshot asynchronously.
+restores    Create a new instance from snapshot asynchronously.
 ```
 
 ## Flags:

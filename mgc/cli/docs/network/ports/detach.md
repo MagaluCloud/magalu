@@ -9,11 +9,12 @@ mgc network ports detach [port-id] [security-group-id] [flags]
 
 ## Flags:
 ```
-    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
--h, --help                          help for detach
-    --port-id string                port_id: ID of the Port to detach security group (required)
-    --security-group-id string      security_group_id: ID of the Security Group to detach (required)
--v, --version                       version for detach
+-h, --help                       help for detach
+    --port-id string             port_id: ID of the Port to detach security group
+                                 Use --port-id=help for more details (required)
+    --security-group-id string   security_group_id: ID of the Security Group to detach
+                                 Use --security-group-id=help for more details (required)
+-v, --version                    version for detach
 ```
 
 ## Global Flags:

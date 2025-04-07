@@ -9,10 +9,9 @@ mgc profile ssh-keys get [key-id] [flags]
 
 ## Flags:
 ```
-    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
--h, --help                          help for get
-    --key-id uuid                   Key Id (required)
--v, --version                       version for get
+-h, --help          help for get
+    --key-id uuid   Key Id (required)
+-v, --version       version for get
 ```
 
 ## Global Flags:
@@ -28,6 +27,7 @@ mgc profile ssh-keys get [key-id] [flags]
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. Use '--output=help' to know more details.
 -r, --raw                      Output raw data, without any formatting or coloring
+    --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
     --server-url uri           Manually specify the server to use
 ```
 

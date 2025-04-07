@@ -57,6 +57,12 @@ func getFlagType(schema *core.Schema) string {
 		}
 		return "anyValue"
 	}
+
+	// Proteger contra acesso a array vazio
+	if schema.Type == nil || len(schema.Type.Slice()) == 0 {
+		return "string" // Valor padrão seguro
+	}
+
 	if len(schema.Type.Slice()) > 1 {
 		fmt.Println("REMOVE ME - 20250313-1857   =>", schema.Type.Slice())
 	}
@@ -152,6 +158,10 @@ func (d SchemaFlagValueDesc) Description() (description string) {
 
 	// spf13/pflag have UnquoteUsage() that messes up with back quotes, so remove them
 	description = strings.ReplaceAll(description, "`", "'")
+
+	if description == "" {
+		return ""
+	}
 
 	description = d.fixDescriptionFlagUsage(description)
 

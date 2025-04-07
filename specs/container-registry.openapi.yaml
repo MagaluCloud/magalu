@@ -14,11 +14,11 @@ servers:
   - url: https://api-mcr.pre-prod.br-ne-1.jaxyendy.com
     description: "NE-1 pre-prod"
   - url: https://api-mcr.team-integration.br-ne-1.jaxyendy.com
-    description: "NE-1 team-integration"
+    description: "NE-1 team-integration" 
   - url: https://api-mcr.br-ne-1.jaxyendy.com
-    description: "NE-1 prod"
+    description: "NE-1 prod"     
   - url: https://api-mcr.pre-prod.br-se-1.jaxyendy.com
-    description: "SE1 pre-prod"
+    description: "SE1 pre-prod"  
   - url: https://api-mcr.team-integration.br-se-1.jaxyendy.com
     description: "SE1 team-integration"
   - url: https://api-mcr.br-se-1.jaxyendy.com
@@ -29,13 +29,13 @@ paths:
       tags:
         - credentials
       summary: Get credentials for container registry
-      description: Return container registry user's authentication credentials.
+      description: Return container registry user's authentication credentials. 
       operationId: getCredentials
       security:
         - BearerAuth:
-            - mcr.read
+          - mcr.read
         - OAuth2:
-            - mcr.read
+          - mcr.read 
       responses:
         '200':
           description: Successful operation
@@ -60,13 +60,13 @@ paths:
       tags:
         - credentials
       summary: Reset password
-      description: Reset container registry user's password.
+      description: Reset container registry user's password. 
       operationId: resetPassword
       security:
         - BearerAuth:
-            - mcr.write
+          - mcr.write
         - OAuth2:
-            - mcr.write
+          - mcr.write
       responses:
         '200':
           description: Successful operation
@@ -88,14 +88,14 @@ paths:
     post:
       tags:
         - registries
-      summary: Create a container registry
+      summary: Create a container registry 
       description: Creates a container registry in Magalu Cloud.
       operationId: createRegistry
       security:
         - BearerAuth:
-            - mcr.write
+          - mcr.write
         - OAuth2:
-            - mcr.write
+          - mcr.write
       requestBody:
         content:
           application/json:
@@ -124,37 +124,37 @@ paths:
       tags:
         - registries
       summary: List all container registries
-      description: List user's container registries.
+      description:  List user's container registries.
       operationId: getRegistries
       security:
         - BearerAuth:
-            - mcr.read
+          - mcr.read
         - OAuth2:
-            - mcr.read
+          - mcr.read
       parameters:
-        - name: _limit
-          in: query
-          required: false
-          schema:
-            minimum: 1
-            title: "Limit"
-            type: integer
-          description: Limit
-        - name: _offset
-          in: query
-          required: false
-          schema:
-            minimum: 0
-            type: integer
-          description: Offset
-        - name: _sort
-          in: query
-          required: false
-          schema:
-            default: created_at:asc
-            pattern: (^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$
-            type: string
-          description: Fields to use as reference to sort.
+      - name: _limit
+        in: query
+        required: false
+        schema:
+          minimum: 1
+          title: "Limit"
+          type: integer
+        description: Limit
+      - name: _offset
+        in: query
+        required: false
+        schema:
+          minimum: 0
+          type: integer
+        description: Offset
+      - name: _sort
+        in: query
+        required: false
+        schema:
+          default: created_at:asc
+          pattern: (^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$
+          type: string
+        description: Fields to use as reference to sort.
       responses:
         '200':
           description: Successful operation
@@ -167,7 +167,7 @@ paths:
         '401':
           $ref: '#/components/responses/UnauthorizedError'
         '403':
-          $ref: '#/components/responses/ForbiddenError'
+           $ref: '#/components/responses/ForbiddenError'
         '404':
           $ref: '#/components/responses/NotFoundError'
         '429':
@@ -183,17 +183,17 @@ paths:
       operationId: getRegistry
       security:
         - BearerAuth:
-            - mcr.read
+          - mcr.read
         - OAuth2:
-            - mcr.read
+          - mcr.read
       parameters:
-        - name: registry_id
-          in: path
-          required: true
-          schema:
-            type: string
-            format: uuid
-          description: Container Registry's UUID.
+      - name: registry_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+        description: Container Registry's UUID.
       responses:
         '200':
           description: Successful operation
@@ -221,17 +221,17 @@ paths:
       operationId: deleteRegistry
       security:
         - BearerAuth:
-            - mcr.write
+          - mcr.write
         - OAuth2:
-            - mcr.write
+          - mcr.write
       parameters:
-        - name: registry_id
-          in: path
-          required: true
-          schema:
-            type: string
-            format: uuid
-          description: Container Registry's UUID.
+      - name: registry_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+        description: Container Registry's UUID.
       responses:
         '204':
           description: Successful operation
@@ -246,50 +246,50 @@ paths:
         '429':
           $ref: '#/components/responses/TooManyRequestsError'
         '500':
-          $ref: '#/components/responses/InternalServerError'
+          $ref: '#/components/responses/InternalServerError'        
   /v0/registries/{registry_id}/repositories:
     get:
       tags:
         - repositories
       summary: List all container registry repositories
-      description: List all user's repositories in the container registry.
+      description: List all user's repositories in the container registry. 
       operationId: getRepositories
       security:
         - BearerAuth:
-            - mcr.read
+          - mcr.read
         - OAuth2:
-            - mcr.read
+          - mcr.read
       parameters:
-        - name: registry_id
-          in: path
-          required: true
-          schema:
-            type: string
-            format: uuid
-          description: Container Registry's UUID.
-        - name: _limit
-          in: query
-          required: false
-          schema:
-            minimum: 1
-            title: "Limit"
-            type: integer
-          description: Limit
-        - name: _offset
-          in: query
-          required: false
-          schema:
-            minimum: 0
-            type: integer
-          description: Offset
-        - name: _sort
-          in: query
-          required: false
-          schema:
-            default: created_at:desc
-            pattern: (^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$
-            type: string
-          description: Fields to use as reference to sort.
+      - name: registry_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+        description: Container Registry's UUID.
+      - name: _limit
+        in: query
+        required: false
+        schema:
+          minimum: 1
+          title: "Limit"
+          type: integer
+        description: Limit
+      - name: _offset
+        in: query
+        required: false
+        schema:
+          minimum: 0
+          type: integer
+        description: Offset
+      - name: _sort
+        in: query
+        required: false
+        schema:
+          default: created_at:desc
+          pattern: (^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$
+          type: string
+        description: Fields to use as reference to sort.
       responses:
         '200':
           description: Successful operation
@@ -318,23 +318,23 @@ paths:
       operationId: getRepository
       security:
         - BearerAuth:
-            - mcr.read
+          - mcr.read
         - OAuth2:
-            - mcr.read
+          - mcr.read
       parameters:
-        - name: registry_id
-          in: path
-          required: true
-          schema:
-            type: string
-            format: uuid
-          description: Container Registry's UUID.
-        - required: true
-          name: repository_name
-          in: path
-          schema:
-            type: string
-          description: Repository's name.
+      - name: registry_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+        description: Container Registry's UUID. 
+      - required: true
+        name: repository_name
+        in: path
+        schema:
+          type: string
+        description:  Repository's name. 
       responses:
         '201':
           description: Successful operation
@@ -362,23 +362,23 @@ paths:
       operationId: deleteRepository
       security:
         - BearerAuth:
-            - mcr.write
+          - mcr.write
         - OAuth2:
-            - mcr.write
+          - mcr.write 
       parameters:
-        - name: registry_id
-          in: path
-          required: true
-          schema:
-            type: string
-            format: uuid
-          description: Container Registry's UUID.
-        - required: true
-          name: repository_name
-          in: path
-          schema:
-            type: string
-          description: Repository's name.
+      - name: registry_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+        description: Container Registry's UUID. 
+      - required: true
+        name: repository_name
+        in: path
+        schema:
+          type: string
+        description: Repository's name. 
       responses:
         '204':
           description: Successful operation
@@ -403,54 +403,54 @@ paths:
       operationId: getImages
       security:
         - BearerAuth:
-            - mcr.read
+          - mcr.read
         - OAuth2:
-            - mcr.read
+          - mcr.read
       parameters:
-        - name: registry_id
-          in: path
-          required: true
-          schema:
+      - name: registry_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+        description: Container Registry's UUID.
+      - required: true
+        name: repository_name
+        in: path
+        schema:
+          type: string
+        description: Repository's name.
+      - name: _limit
+        in: query
+        required: false
+        schema:
+          minimum: 1
+          title: Limit
+          type: integer
+        description: Limit
+      - name: _offset
+        in: query
+        required: false
+        schema:
+          minimum: 0
+          type: integer
+        description: Offset
+      - name: _sort
+        in: query
+        required: false
+        schema:
+          default: pushed_at:desc
+          pattern: (^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$
+          type: string
+        description: Fields to use as reference to sort.
+      - name: expand
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
             type: string
-            format: uuid
-          description: Container Registry's UUID.
-        - required: true
-          name: repository_name
-          in: path
-          schema:
-            type: string
-          description: Repository's name.
-        - name: _limit
-          in: query
-          required: false
-          schema:
-            minimum: 1
-            title: Limit
-            type: integer
-          description: Limit
-        - name: _offset
-          in: query
-          required: false
-          schema:
-            minimum: 0
-            type: integer
-          description: Offset
-        - name: _sort
-          in: query
-          required: false
-          schema:
-            default: pushed_at:desc
-            pattern: (^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$
-            type: string
-          description: Fields to use as reference to sort.
-        - name: expand
-          in: query
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-          description: "You can get more detailed info about: ['tags_details', 'extra_attr', 'manifest_media_type', 'media_type']"
+        description: "You can get more detailed info about: ['tags_details', 'extra_attr', 'manifest_media_type', 'media_type']"
       responses:
         '200':
           description: Successful operation
@@ -479,31 +479,31 @@ paths:
       operationId: deleteImage
       security:
         - BearerAuth:
-            - mcr.write
-            - mcr.read
+          - mcr.write
+          - mcr.read
         - OAuth2:
-            - mcr.write
-            - mcr.read
+          - mcr.write
+          - mcr.read
       parameters:
-        - name: registry_id
-          in: path
-          required: true
-          schema:
-            type: string
-            format: uuid
-          description: Container Registry's UUID.
-        - required: true
-          name: repository_name
-          in: path
-          schema:
-            type: string
-          description: Repository's name.
-        - name: digest_or_tag
-          in: path
-          required: true
-          schema:
-            type: string
-          description: Digest or tag of an image
+      - name: registry_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+        description: Container Registry's UUID.
+      - required: true
+        name: repository_name
+        in: path
+        schema:
+          type: string
+        description: Repository's name.
+      - name: digest_or_tag
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Digest or tag of an image
       responses:
         '204':
           description: Successful operation
@@ -521,35 +521,35 @@ paths:
           $ref: '#/components/responses/InternalServerError'
     get:
       tags:
-        - images
+      - images
       summary: Get image details
       description: Show detailed information about the image.
       operationId: getImage
       security:
         - BearerAuth:
-            - mcr.read
+          - mcr.read
         - OAuth2:
-            - mcr.read
+          - mcr.read
       parameters:
-        - name: registry_id
-          in: path
-          required: true
-          schema:
-            type: string
-            format: uuid
-          description: Container Registry's UUID.
-        - name: repository_name
-          in: path
-          required: true
-          schema:
-            type: string
-          description: Repository's name.
-        - name: digest_or_tag
-          in: path
-          required: true
-          schema:
-            type: string
-          description: Digest or tag of an image.
+      - name: registry_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+        description: Container Registry's UUID.
+      - name: repository_name
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Repository's name.
+      - name: digest_or_tag
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Digest or tag of an image.
       responses:
         '200':
           description: Successful operation
@@ -611,7 +611,7 @@ components:
             $ref: '#/components/schemas/RegistryResponse'
     RegistryResponse:
       type: object
-      description: Container Registry's response data.
+      description: Container Registry's response data. 
       required:
         - id
         - name
@@ -668,7 +668,7 @@ components:
           description: Name of the container registry.
         name:
           type: string
-          description: Name of the repository.
+          description: Name of the repository.     
         image_count:
           type: integer
           description: Number of images in the repository.
@@ -777,10 +777,10 @@ components:
         manifest_media_type: "application/vnd.docker.distribution.manifest.v2+json"
         media_type: "application/vnd.docker.container.image.v1+json"
         tags_details:
-          - name: latest
-            pushed_at: "2024-05-15T19:56:47Z"
-            pulled_at: "2024-05-15T19:56:47Z"
-            signed: false
+            - name: latest
+              pushed_at: "2024-05-15T19:56:47Z"
+              pulled_at: "2024-05-15T19:56:47Z"
+              signed: false
         extra_attr: {}
     ImageTagResponse:
       type: object
@@ -806,8 +806,8 @@ components:
     Error:
       type: object
       required:
-        - slug
-        - message
+      - slug
+      - message
       description: Details regarding an error.
       properties:
         slug:
@@ -825,15 +825,16 @@ components:
       scheme: bearer
       bearerFormat: JWT
     OAuth2:
-      flows:
-        authorizationCode:
-          authorizationUrl: 'https://idp-maas-sandbox.ipet.sh/auth/realms/master/protocol/openid-connect/auth'
-          tokenUrl: 'https://idp-maas-sandbox.ipet.sh/auth/realms/master/protocol/openid-connect/token'
-          scopes:
-            mcr.read: Read IaaS resource information
-            mcr.write: Write IaaS resource information
-      type: oauth2
-      description: OAuth2 via IDPA
+        flows:
+            authorizationCode:
+                authorizationUrl: 'https://idp-maas-sandbox.ipet.sh/auth/realms/master/protocol/openid-connect/auth'
+                tokenUrl: 'https://idp-maas-sandbox.ipet.sh/auth/realms/master/protocol/openid-connect/token'
+                scopes:
+                    mcr.read: Read IaaS resource information
+                    mcr.write: Write IaaS resource information
+        type: oauth2
+        description:
+            OAuth2 via IDPA
   responses:
     InternalServerError:
       description: Internal Server Error

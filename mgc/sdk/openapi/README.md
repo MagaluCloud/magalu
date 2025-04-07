@@ -1,9 +1,9 @@
 # OpenAPI
 
 The MGC SDK is heavily based on the
-[OpenAPI](https://www.openapis.org/),
+[OpenAPI 3.0.3](https://www.openapis.org/),
 most of the commands are auto-generated in runtime from a
-[schema file](https://spec.openapis.org/oas/latest.html)
+[schema file](https://spec.openapis.org/oas/v3.0.3.html)
 where each schema file is mapped to a module, each module is composed of
 resources (OpenAPI tag), each composed by actions (OpenAPI operation).
 
@@ -12,7 +12,7 @@ index.openapi.yaml   -> module-name.openapi.yaml -> tag        -> operation
 [entrypoint]         [module: module-name]       [resource]    [action]
 ```
 
-Currently, the spec of container-registry is the best "example" to follow: https://mcr.br-ne1.jaxyendy.com/docs/openapi.yaml
+Currently, the spec of container-registry is the best "example" to follow: specs/container-registry.openapi.yaml
 
 ## Reading
 
@@ -26,19 +26,6 @@ environment variable `$MGC_SDK_OPENAPI_DIR` or `./openapis` if not set.
 > In order to add a new file, one must create the `index.openapi.yaml`
 > including that file.
 
-
-## Adding new spec
-
-In the `scripts/add_all_specs.sh` you can add a new spec, like this:
-```
-$BASEDIR/add_specs_without_region.sh profile profile mgc/spec_manipulator/cli_specs/conv.globaldb.openapi.yaml https://globaldb.jaxyendy.com/openapi-cli.json
-echo "SSH"
-
-# EXAMPLE
-# $BASEDIR/SCRIPT.sh NOME_NO_MENU URL_PATH LOCAL_DA_SPEC HTTPS://LOCAL_DA_SPEC
-```
-
-After this, just run `./scripts/add_all_specs.sh` and BUILD all.
 
 ## Entry Point (index.openapi.yaml)
 
@@ -79,8 +66,6 @@ elements. The following list shows which extensions can be used in the spec:
     - `x-mgc-wait-termination`
     - `x-mgc-output-flag`
 - Link
-    - `x-mgc-wait-termination`
-    - `x-mgc-extra-parameters`
     - `x-mgc-hidden`
 - Schema
     - `x-mgc-name`
@@ -157,26 +142,6 @@ paths:
                 confirmValue: "I agree with this operation"
 ```
 
-### `x-mgc-wait-termination`
-
-Add this extension to an operation to add a termination conditon. The operation will be executed until the condition
-is satisfied, or until a maximum number of attempts. The `x-mgc-wait-termination` extension is an object with three properties:
-
-- `maxRetries`: an integer defining the max number of attempts
-- `interval`: interval in seconds between each attempt
-- `jsonPathQuery`: the termination condition expressed in jsonpath syntax
-- `templateQuery`: the termination condition expressed in Go Template syntax
-
-```yaml
-paths:
-   /v0/some/path:
-        post:
-            x-mgc-wait-termination:
-                maxRetries: 10
-                interval: 1s
-                jsonPathQuery: $.result.status == "completed"
-```
-
 ### `x-mgc-output-flag`
 
 Defines the default output format. Accepted formats: json, yaml, table, template, jsonpath, template-file and jsonpath-file.
@@ -197,56 +162,9 @@ paths:
 ```
 
 
-### `x-mgc-extra-parameters`
-
-Add extra parameters to a link. This extension is an array of objects of the form:
-
-- name: parameter name
-- required: a bool indicating whether the parameter is required or not
-- schema: parameter schema
-
-> NOTE: if a extra parameter has the same name of an existing parameter in the target request, it will not be added
-
-```yaml
-paths:
-   /v0/some/path:
-        post:
-            links:
-                delete:
-                    x-mgc-extra-parameters:
-                        - name: id
-                          required: true
-                          schema:
-                            type: string
-                            format: uuid
-                            title: Id
-```
-
 ## Parameters x Config
 
 Server variables, header and cookie parameters are handled as **Config**.
 
 Query and path parameters, as well as request body properties are
 handled as **Parameters**.
-
-## Links
-
-Links are an effective strategy for chaining operations. This is because links
-make it easier to use a command response to call another executor,
-automatically mapping the parameters.
-
-When you add a new OpenAPI YAML file using the `scripts/add_specs.sh` script,
-the links between endpoints are automatically generated and included in the
-specification.
-
-Example: Suppose you have two endpoints in your API:
-
-```yaml
-/product (POST) : Creates a new product
-/product/{product_id} (GET): Retrieves details about a specific product
-```
-
-The script will generate a link from `/product` to `/product/{product_id}`.
-This allows users to easily create a new product using the POST method and then
-immediately retrieve the details of the newly created product using the GET
-method with the ID in POST response

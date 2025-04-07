@@ -9,12 +9,10 @@ mgc block-storage volumes rename [id] [flags]
 
 ## Flags:
 ```
-    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-    --cli.watch                     Wait until the operation is completed by calling the 'get' link and waiting until termination. Akin to '! get -w'
--h, --help                          help for rename
-    --id uuid                       Id (required)
-    --name string                   Name (between 3 and 50 characters) (required)
--v, --version                       version for rename
+-h, --help          help for rename
+    --id uuid       Id (required)
+    --name string   Name (between 3 and 50 characters) (required)
+-v, --version       version for rename
 ```
 
 ## Global Flags:

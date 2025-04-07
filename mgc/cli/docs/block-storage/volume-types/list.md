@@ -9,10 +9,10 @@ mgc block-storage volume-types list [flags]
 
 ## Flags:
 ```
-    --allows-encryption          Allows-Encryption
-    --availability-zone string   Availability-Zone
+    --allows-encryption          Allows-Encryption (at least one of: boolean)
+    --availability-zone string   Availability-Zone (at least one of: string)
 -h, --help                       help for list
-    --name string                Name
+    --name string                Name (at least one of: string)
 -v, --version                    version for list
 ```
 

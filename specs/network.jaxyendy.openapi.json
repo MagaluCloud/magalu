@@ -7,7 +7,7 @@
             "name": "IaaS Products",
             "url": "https://github.com/luizalabs"
         },
-        "version": "1.156.0"
+        "version": "1.158.1"
     },
     "paths": {
         "/v0/ports": {
@@ -3687,9 +3687,9 @@
                 "example": {
                     "meta": {
                         "links": {
-                            "next": "?_offset=30\u0026_limit=10",
-                            "previous": "?_offset=10\u0026_limit=10",
-                            "self": "?_offset=20\u0026_limit=10"
+                            "next": "?_offset=30&_limit=10",
+                            "previous": "?_offset=10&_limit=10",
+                            "self": "?_offset=20&_limit=10"
                         },
                         "page": {
                             "count": 10,
@@ -5450,9 +5450,9 @@
                 "example": {
                     "meta": {
                         "links": {
-                            "next": "?_offset=30\u0026_limit=10",
-                            "previous": "?_offset=10\u0026_limit=10",
-                            "self": "?_offset=30\u0026_limit=10"
+                            "next": "?_offset=30&_limit=10",
+                            "previous": "?_offset=10&_limit=10",
+                            "self": "?_offset=30&_limit=10"
                         },
                         "page": {
                             "count": 10,

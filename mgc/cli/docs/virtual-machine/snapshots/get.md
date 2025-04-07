@@ -9,11 +9,10 @@ mgc virtual-machine snapshots get [id] [flags]
 
 ## Flags:
 ```
-    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-    --expand array(string)          Expand: You can get more detailed info about: ['image', 'machine-type']  (default [])
--h, --help                          help for get
-    --id string                     Id (required)
--v, --version                       version for get
+    --expand array(string)   Expand: You can get more detailed info about: ['image', 'machine-type']  (default [])
+-h, --help                   help for get
+    --id string              Id (required)
+-v, --version                version for get
 ```
 
 ## Global Flags:

@@ -9,10 +9,9 @@ mgc kubernetes cluster get [cluster-id] [flags]
 
 ## Flags:
 ```
-    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-    --cluster-id uuid               Cluster's UUID. (required)
--h, --help                          help for get
--v, --version                       version for get
+    --cluster-id uuid   Cluster's UUID. (required)
+-h, --help              help for get
+-v, --version           version for get
 ```
 
 ## Global Flags:

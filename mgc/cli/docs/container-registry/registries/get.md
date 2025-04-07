@@ -9,10 +9,9 @@ mgc container-registry registries get [registry-id] [flags]
 
 ## Flags:
 ```
-    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
--h, --help                          help for get
-    --registry-id uuid              Container Registry's UUID. (required)
--v, --version                       version for get
+-h, --help               help for get
+    --registry-id uuid   Container Registry's UUID. (required)
+-v, --version            version for get
 ```
 
 ## Global Flags:

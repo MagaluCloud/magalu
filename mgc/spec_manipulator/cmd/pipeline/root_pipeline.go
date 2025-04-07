@@ -10,7 +10,7 @@ func PipelineCmd() *cobra.Command {
 		Short: "Menu com opções uteis ao pipeline e ao pre-commit",
 	}
 
-	pipeMenu.AddCommand(CliDumpTreeCmd()) // download all
+	pipeMenu.AddCommand(CliDumpTreeCmd())
 	pipeMenu.AddCommand(CliDocOutputCmd())
 	pipeMenu.AddCommand(NewOAPIIndexCommand())
 

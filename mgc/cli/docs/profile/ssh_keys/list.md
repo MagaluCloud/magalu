@@ -11,7 +11,7 @@ mgc profile ssh-keys list [flags]
 ```
     --control.limit integer     Limit (default 50)
     --control.offset integer    Offset
-    --control.sort string       Sort (default "name:asc")
+    --control.sort string       Sort
 -h, --help                     help for list
 -v, --version                  version for list
 ```
@@ -29,6 +29,7 @@ mgc profile ssh-keys list [flags]
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. Use '--output=help' to know more details.
 -r, --raw                      Output raw data, without any formatting or coloring
+    --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
     --server-url uri           Manually specify the server to use
 ```
 

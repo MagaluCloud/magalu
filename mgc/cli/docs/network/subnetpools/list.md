@@ -11,7 +11,7 @@ mgc network subnetpools list [flags]
 ```
     --control.az-id string      Az Id (default "a")
     --control.limit integer    Pagination: Number of items per page (min: 1) (default 20)
-    --control.offset integer   Items Offset: Start item for pagination
+    --control.offset integer   Items Offset: Start item for pagination (min: 0)
     --control.sort string       Sort: Name of the field wich the list must be ordered by ending with :asc or :desc (default "created_at:desc")
 -h, --help                     help for list
 -v, --version                  version for list

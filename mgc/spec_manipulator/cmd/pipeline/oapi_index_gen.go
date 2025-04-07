@@ -114,6 +114,9 @@ func loadModules(oapiDir, outDir string) ([]IndexModule, error) {
 		if id, ok := data["$id"].(string); ok {
 			url = id
 		}
+		if url == "" {
+			url = fmt.Sprintf("just-for-cli-reference-%s", matches[1])
+		}
 
 		modules = append(modules, IndexModule{
 			Name:        matches[1],
